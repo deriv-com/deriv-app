@@ -11,7 +11,7 @@ import {
 import { CONTRACT_TYPES, TRADE_TYPES } from '../../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
-const card_label = 'Apply';
+const card_labels = { APPLY: 'Apply', MULTIPLIER: 'Multiplier:' };
 const markets_name = 'AUD/CAD';
 const unsupported_contract = {
     name: 'Spread Up',
@@ -34,8 +34,9 @@ jest.mock('../../storage', () => ({
 }));
 
 describe('getCardLabels', () => {
-    it('should return an object with card labels, e.g. such as Apply', () => {
-        expect(getCardLabels().APPLY).toEqual(card_label);
+    it('should return an object with card labels, e.g. such as Apply or Multiplier', () => {
+        expect(getCardLabels().APPLY).toEqual(card_labels.APPLY);
+        expect(getCardLabels().MULTIPLIER).toEqual(card_labels.MULTIPLIER);
     });
 });
 
@@ -56,8 +57,11 @@ describe('getUnsupportedContracts', () => {
     it('should return an object with unsupported contracts, e.g. such as Spread Up', () => {
         expect(getUnsupportedContracts().CALLSPREAD).toEqual(unsupported_contract);
     });
-    it('should not return TICKHIGH as a part of unsupported contracts', () => {
-        expect(Object.keys(getUnsupportedContracts())).not.toContain('TICKHIGH');
+    it('should not return High Tick contract type as a part of unsupported contracts', () => {
+        expect(Object.keys(getUnsupportedContracts())).not.toContain(CONTRACT_TYPES.TICK_HIGH_LOW.HIGH);
+    });
+    it('should not return High-Close contract type as a part of unsupported contracts', () => {
+        expect(Object.keys(getUnsupportedContracts())).not.toContain(CONTRACT_TYPES.LB_PUT);
     });
 });
 

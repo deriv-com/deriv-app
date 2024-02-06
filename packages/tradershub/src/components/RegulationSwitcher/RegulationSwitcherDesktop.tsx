@@ -22,6 +22,7 @@ const RegulationSwitcherDesktop = () => {
                 />
             </div>
             <Tabs
+                TitleFontSize='sm'
                 activeTab={activeRegulation}
                 className='flex rounded-300 p-200 w-[200px] h-2000'
                 key={activeRegulation}

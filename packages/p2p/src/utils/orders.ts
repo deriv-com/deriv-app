@@ -576,3 +576,26 @@ export default ExtendedOrderDetails;
 
 export const createExtendedOrderDetails = (order_details: P2POrderInfo, loginid: string, server_time: TServerTime) =>
     new ExtendedOrderDetails(order_details, loginid, server_time);
+
+/**
+ * The below function is used to format the display the time given in minutes to hours and minutes
+ * e.g. 90 minutes will be displayed as 1 hour 30 minutes
+ * @param {number} minutes
+ * @returns {string} formatted time string e.g. 1 hour 30 minutes
+ */
+export const formatTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const remaining_minutes = minutes % 60;
+    const hours_text = hours === 1 ? localize('hour') : localize('hours');
+    const minutes_text = remaining_minutes === 1 ? localize('minute') : localize('minutes');
+
+    if (hours === 0) {
+        return `${remaining_minutes} ${minutes_text}`;
+    }
+
+    if (remaining_minutes === 0) {
+        return `${hours} ${hours_text}`;
+    }
+
+    return `${hours} ${hours_text} ${remaining_minutes} ${minutes_text}`;
+};

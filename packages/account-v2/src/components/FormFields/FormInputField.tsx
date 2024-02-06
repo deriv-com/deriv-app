@@ -1,6 +1,7 @@
 import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
+import { validateField } from '../../utils/validation';
 import { WalletTextField as TextField } from '../base/WalletTextField';
 
 type FormInputFieldProps = Omit<ComponentProps<typeof TextField>, 'errorMessage' | 'isInvalid' | 'showMessage'> & {
@@ -16,32 +17,20 @@ type FormInputFieldProps = Omit<ComponentProps<typeof TextField>, 'errorMessage'
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => {
-    const validateField = (value: unknown) => {
-        try {
-            if (validationSchema) {
-                validationSchema.validateSync(value);
-            }
-        } catch (err: unknown) {
-            return (err as Yup.ValidationError).message;
-        }
-    };
-
-    return (
-        <Field name={name} validate={validateField}>
-            {({ field, meta: { error, touched } }: FieldProps<string>) => (
-                <TextField
-                    {...field}
-                    {...rest}
-                    autoComplete='off'
-                    errorMessage={touched && error}
-                    isInvalid={touched && !!error}
-                    showMessage
-                    type='text'
-                />
-            )}
-        </Field>
-    );
-};
+const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
+    <Field name={name} validate={validateField(validationSchema)}>
+        {({ field, meta: { error, touched } }: FieldProps<string>) => (
+            <TextField
+                {...field}
+                {...rest}
+                autoComplete='off'
+                errorMessage={touched && error}
+                isInvalid={touched && !!error}
+                showMessage
+                type='text'
+            />
+        )}
+    </Field>
+);
 
 export default FormInputField;

@@ -9,6 +9,7 @@ type TChecklistItem = {
     isDisabled?: boolean;
     onClick?: () => void;
     status: string;
+    testId?: string;
     text: string;
 };
 
@@ -29,7 +30,12 @@ const Checklist = ({ items }: { items: TChecklistItem[] }) => {
                         <Button
                             className='p2p-v2-checklist__item-button'
                             disabled={item.isDisabled}
-                            icon={<ArrowRightIcon className='p2p-v2-checklist__item-button-icon' />}
+                            icon={
+                                <ArrowRightIcon
+                                    className='p2p-v2-checklist__item-button-icon'
+                                    {...(item.testId && { 'data-testid': item.testId })}
+                                />
+                            }
                             onClick={item.onClick}
                         />
                     )}

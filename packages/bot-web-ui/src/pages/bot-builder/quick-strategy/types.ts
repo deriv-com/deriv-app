@@ -77,6 +77,17 @@ export type TShouldHave = {
     multiple?: Array<string>;
 };
 
+export type TDropdownItems = {
+    text: string;
+    value: string;
+};
+
+export type TApiHelpersInstance = {
+    contracts_for: {
+        getContractTypes: (tradetype: string | number | boolean) => Promise<TDropdownItems[]>;
+    };
+};
+
 export type TRsStrategyType =
     | `d'alembert`
     | `martingale`

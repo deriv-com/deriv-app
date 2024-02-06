@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
+import { Dropzone } from '../../components/base/Dropzone';
 import { WalletText } from '../../components/base/WalletText';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { getTitleForDocumentUpload, getUploadConfig } from '../../utils/manualFormUtils';
-import { Dropzone } from '../../components/base/Dropzone';
-import classNames from 'classnames';
-import { useDevice } from '@deriv-com/ui';
 
 type TManualFormDocumentUploadProps = { selectedDocument: TManualDocumentTypes };
 

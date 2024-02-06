@@ -4,6 +4,9 @@ import userEvent from '@testing-library/user-event';
 import Dropzone from '../Dropzone';
 
 describe('Dropzone', () => {
+    const textPlainText = 'text/plain';
+    const dropZoneInputTestId = 'dt_dropzone-input';
+
     beforeAll(() => {
         global.URL.createObjectURL = jest.fn();
     });
@@ -13,9 +16,9 @@ describe('Dropzone', () => {
     });
 
     it('should open file explorer when clicking on the button', async () => {
-        const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
+        const file = new File(['foo'], 'foo.txt', { type: textPlainText });
         render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
-        const input: HTMLInputElement = screen.getByTestId('dt_dropzone-input');
+        const input: HTMLInputElement = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             userEvent.upload(input, file);
         });
@@ -36,7 +39,7 @@ describe('Dropzone', () => {
     });
 
     it('should show error message if file type is invalid', async () => {
-        const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
+        const file = new File(['foo'], 'foo.txt', { type: textPlainText });
         render(
             <Dropzone
                 buttonText='Find file'
@@ -44,7 +47,7 @@ describe('Dropzone', () => {
                 icon={<i data-testid='dt_dropzone-icon'>icon</i>}
             />
         );
-        const input = screen.getByTestId('dt_dropzone-input');
+        const input = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             userEvent.upload(input, file);
         });
@@ -52,7 +55,7 @@ describe('Dropzone', () => {
     });
 
     it('should call onFileChange when file is changed', async () => {
-        const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
+        const file = new File(['foo'], 'foo.txt', { type: textPlainText });
         const onFileChange = jest.fn();
         render(
             <Dropzone
@@ -62,7 +65,7 @@ describe('Dropzone', () => {
                 onFileChange={onFileChange}
             />
         );
-        const input = screen.getByTestId('dt_dropzone-input');
+        const input = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             userEvent.upload(input, file);
         });
@@ -70,9 +73,9 @@ describe('Dropzone', () => {
     });
 
     it('should show error message if file size is invalid', async () => {
-        const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
+        const file = new File(['foo'], 'foo.txt', { type: textPlainText });
         render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} maxSize={1} />);
-        const input = screen.getByTestId('dt_dropzone-input');
+        const input = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             userEvent.upload(input, file);
         });
@@ -80,9 +83,9 @@ describe('Dropzone', () => {
     });
 
     it('should show hover message when dragging the file', async () => {
-        const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
+        const file = new File(['foo'], 'foo.txt', { type: textPlainText });
         render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
-        const input: HTMLInputElement = screen.getByTestId('dt_dropzone-input');
+        const input: HTMLInputElement = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             Object.defineProperty(input, 'files', {
                 value: [file],
@@ -94,9 +97,9 @@ describe('Dropzone', () => {
     });
 
     it('should be able to drop the file', async () => {
-        const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
+        const file = new File(['foo'], 'foo.txt', { type: textPlainText });
         render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
-        const input: HTMLInputElement = screen.getByTestId('dt_dropzone-input');
+        const input: HTMLInputElement = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             Object.defineProperty(input, 'files', {
                 value: [file],

@@ -1,11 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
 import IcPoiClearPhoto from '../../assets/manual-form/ic-poi-clear-photo.svg';
 import IcPoiDocExpiry from '../../assets/manual-form/ic-poi-doc-expiry.svg';
 import IcPoiFileFormat from '../../assets/manual-form/ic-poi-file-format.svg';
 import IcPoiFileSize from '../../assets/manual-form/ic-poi-file-size.svg';
 import { WalletText } from '../../components/base/WalletText';
-import { useDevice } from '@deriv-com/ui';
-import classNames from 'classnames';
 
 const FOOTER_ITEMS = [
     { icon: <IcPoiClearPhoto />, text: 'A clear colour photo or scanned image' },
@@ -20,8 +20,8 @@ export const ManualFormFooter = () => {
     return (
         <div
             className={classNames({
-                'grid grid-cols-2 justify-items-center items-center gap-1200': !isDesktop,
                 'flex justify-evenly': isDesktop,
+                'grid grid-cols-2 justify-items-center items-center gap-1200': !isDesktop,
             })}
         >
             {FOOTER_ITEMS.map(footer => (

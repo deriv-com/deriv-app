@@ -20,18 +20,21 @@ export const MANUAL_FORM_INITIAL_VALUES = Object.freeze({
     document_number: '',
 });
 
+const documentExpiry = {
+    errorMessage: 'Expiry date is required.',
+    label: 'Expiry date',
+};
+
 export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
     [MANUAL_DOCUMENT_TYPES.DRIVING_LICENCE]: {
         fields: {
+            documentExpiry,
             documentNumber: {
-                label: 'Driving licence number',
                 errorMessage: 'Driving licence number is required.',
-            },
-            documentExpiry: {
-                label: 'Expiry date',
-                errorMessage: 'Expiry date is required.',
+                label: 'Driving licence number',
             },
         },
+        inputSectionHeader: 'First, enter your Driving licence number and the expiry date.',
         upload: [
             {
                 fileUploadIcon: <DrivingLicenseCardFront />,
@@ -42,20 +45,17 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
                 fileUploadText: 'Upload the back of your driving licence.',
             },
         ],
-        inputSectionHeader: 'First, enter your Driving licence number and the expiry date.',
         uploadSectionHeader: 'Next, upload the front and back of your driving licence.',
     },
     [MANUAL_DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD]: {
         fields: {
+            documentExpiry,
             documentNumber: {
-                label: 'Identity card number',
                 errorMessage: 'Identity card number is required.',
-            },
-            documentExpiry: {
-                label: 'Expiry date',
-                errorMessage: 'Expiry date is required.',
+                label: 'Identity card number',
             },
         },
+        inputSectionHeader: 'First, enter your Identity card number and the expiry date.',
         upload: [
             {
                 fileUploadIcon: <IdentityCardFront />,
@@ -66,20 +66,17 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
                 fileUploadText: 'Upload the back of your identity card.',
             },
         ],
-        inputSectionHeader: 'First, enter your Identity card number and the expiry date.',
         uploadSectionHeader: 'Next, upload the front and back of your identity card.',
     },
     [MANUAL_DOCUMENT_TYPES.NIMC_SLIP]: {
         fields: {
+            documentExpiry,
             documentNumber: {
-                label: 'NIMC slip number',
                 errorMessage: 'NIMC slip number is required.',
-            },
-            documentExpiry: {
-                label: 'Expiry date',
-                errorMessage: 'Expiry date is required.',
+                label: 'NIMC slip number',
             },
         },
+        inputSectionHeader: 'First, enter your NIMC slip number and the expiry date.',
         upload: [
             {
                 fileUploadIcon: <NIMCSlipFront />,
@@ -90,27 +87,23 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
                 fileUploadText: 'Upload your proof of age: birth certificate or age declaration document.',
             },
         ],
-        inputSectionHeader: 'First, enter your NIMC slip number and the expiry date.',
         uploadSectionHeader: 'Next, upload the page of your NIMC slip that contains your photo.',
     },
     [MANUAL_DOCUMENT_TYPES.PASSPORT]: {
         fields: {
+            documentExpiry,
             documentNumber: {
-                label: 'Passport number',
                 errorMessage: 'Passport number is required.',
-            },
-            documentExpiry: {
-                label: 'Expiry date',
-                errorMessage: 'Expiry date is required.',
+                label: 'Passport number',
             },
         },
+        inputSectionHeader: 'First, enter your Passport number and the expiry date.',
         upload: [
             {
                 fileUploadIcon: <PassportPlaceholder />,
                 fileUploadText: 'Upload the page of your passport that contains your photo.',
             },
         ],
-        inputSectionHeader: 'First, enter your Passport number and the expiry date.',
         uploadSectionHeader: 'Next, upload the page of your passport that contains your photo.',
     },
 });

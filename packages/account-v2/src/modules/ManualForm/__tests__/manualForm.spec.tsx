@@ -17,8 +17,8 @@ describe('ManualForm', () => {
         selectedDocument?: React.ComponentProps<typeof ManualForm>['selectedDocument'];
     }) => {
         const mockProps: React.ComponentProps<typeof ManualForm> = {
-            selectedDocument: selectedDocument ?? 'driving_licence',
             onSubmit: jest.fn(),
+            selectedDocument: selectedDocument ?? 'driving_licence',
         };
         render(
             <APIProvider>

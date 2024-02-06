@@ -1,12 +1,12 @@
-import { Input, useDevice } from '@deriv-com/ui';
-import { Field, FieldProps } from 'formik';
 import React, { Fragment } from 'react';
+import classNames from 'classnames';
+import { Field, FieldProps } from 'formik';
+import { Input, useDevice } from '@deriv-com/ui';
 import { WalletDatePicker } from '../../components/base/WalletDatePicker';
 import { WalletText } from '../../components/base/WalletText';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { useManualForm } from '../../hooks';
 import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
-import classNames from 'classnames';
 
 type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
 

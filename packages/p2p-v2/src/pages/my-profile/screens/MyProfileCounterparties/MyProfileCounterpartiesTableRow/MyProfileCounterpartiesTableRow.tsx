@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
+import { UserAvatar } from '@/components';
+import { BlockUnblockUserModal } from '@/components/Modals';
+import { useDevice } from '@/hooks';
 import { Button, Text } from '@deriv-com/ui';
-import { UserAvatar } from '../../../../../components';
-import { BlockUnblockUserModal } from '../../../../../components/Modals/BlockUnblockUserModal';
-import { useDevice } from '../../../../../hooks';
 import './MyProfileCounterpartiesTableRow.scss';
 
 type TMyProfileCounterpartiesTableRowProps = {

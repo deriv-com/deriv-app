@@ -1,7 +1,7 @@
 import React, { forwardRef, ReactElement } from 'react';
 import clsx from 'clsx';
+import { useDevice } from '@/hooks';
 import { Text } from '@deriv-com/ui';
-import { useDevice } from '../../hooks';
 import './Input.scss';
 
 type TInputProps = {

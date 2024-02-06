@@ -9,11 +9,8 @@ import { useUIContext } from '../../UIProvider';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => {
     const history = useHistory();
-    const { getUIState } = useUIContext();
-
-    const accountType = getUIState('accountType');
-
-    const regulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
 
     const { isEU } = useRegulationFlags(regulation, accountType);
 

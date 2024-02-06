@@ -148,9 +148,9 @@
             top: 0;
             left: 0;
             overflow: auto;
-            &:has(.settings-language__language-container) {
-                z-index: 7;
-            }
+            // &:has(.settings-language__language-container) {
+            //     z-index: 7;
+            // }
 
             &--enter,
             &--exit {

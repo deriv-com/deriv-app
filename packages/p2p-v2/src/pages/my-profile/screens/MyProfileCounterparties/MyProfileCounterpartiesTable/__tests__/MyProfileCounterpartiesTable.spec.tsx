@@ -24,7 +24,7 @@ jest.mock('@deriv/api', () => ({
     },
 }));
 
-jest.mock('../../../../../../components/Modals/BlockUnblockUserModal', () => ({
+jest.mock('@/components/Modals/BlockUnblockUserModal', () => ({
     BlockUnblockUserModal: () => <div>BlockUnblockUserModal</div>,
 }));
 

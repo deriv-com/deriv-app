@@ -9,7 +9,7 @@ const mockProps = {
     isBlocked: false,
 };
 
-jest.mock('../../../../../../components/UserAvatar', () => ({
+jest.mock('@/components/UserAvatar', () => ({
     UserAvatar: () => <div>UserAvatar</div>,
 }));
 

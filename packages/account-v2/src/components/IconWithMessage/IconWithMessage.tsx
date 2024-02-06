@@ -15,8 +15,8 @@ export const IconWithMessage = ({ actionButton, children, icon, title }: TIconWi
             <Text align='center' size='md' weight='bold'>
                 {title}
             </Text>
-            <div className='grid gap-200'>{children}</div>
+            {children && <div className='grid gap-200'>{children}</div>}
         </div>
-        {actionButton ? <div className='mt-500'>{actionButton}</div> : null}
+        {actionButton && <div className='mt-500'>{actionButton}</div>}
     </div>
 );

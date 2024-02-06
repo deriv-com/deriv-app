@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
+import { Input } from '@/components';
 import SearchIcon from '../../public/ic-search.svg';
-import { Input } from '../Input';
 import './Search.scss';
 
 type TSearchProps = {

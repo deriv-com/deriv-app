@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { DailyLimitModal } from '@/components/Modals';
+import { useAdvertiserStats, useDevice } from '@/hooks';
 import { useActiveAccount } from '@deriv/api';
 import { Button, Text } from '@deriv-com/ui';
-import DailyLimitModal from '../../../../components/Modals/DailyLimitModal/DailyLimitModal';
-import { useAdvertiserStats, useDevice } from '../../../../hooks';
 import './MyProfileDailyLimit.scss';
 
 const MyProfileDailyLimit = () => {
@@ -27,7 +27,7 @@ const MyProfileDailyLimit = () => {
                 </Text>
                 <Button
                     onClick={() => setIsModalOpen(true)}
-                    size='xs'
+                    size='sm'
                     textSize={isMobile ? 'sm' : 'xs'}
                     variant='ghost'
                 >

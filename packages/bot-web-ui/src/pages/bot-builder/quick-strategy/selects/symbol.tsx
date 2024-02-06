@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Analytics } from '@deriv-com/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useStore } from '@deriv/stores';
+import { Analytics } from '@deriv-com/analytics';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
 
@@ -12,7 +12,7 @@ type TSymbol = {
     component?: React.ReactNode;
     text: string;
     value: string;
-    group: string;
+    group?: string;
 };
 
 type TMarketOption = {
@@ -34,7 +34,7 @@ const SymbolSelect: React.FC = () => {
         ui: { is_mobile, is_desktop },
     } = useStore();
     const { setValue } = quick_strategy;
-    const [active_symbols, setActiveSymbols] = React.useState([]);
+    const [active_symbols, setActiveSymbols] = React.useState<TSymbol[]>([]);
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });
     const [last_selected_symbol, setLastSelectedSymbol] = useState({ text: '', value: '' });
@@ -50,17 +50,18 @@ const SymbolSelect: React.FC = () => {
     );
 
     useEffect(() => {
-        const { active_symbols } = ApiHelpers.instance;
+        const { active_symbols } = ApiHelpers.instance as unknown as {
+            active_symbols: {
+                getSymbolsForBot: () => TSymbol[];
+            };
+        };
         const symbols = active_symbols.getSymbolsForBot();
-
         setActiveSymbols(symbols);
 
-        if (values?.symbol) {
-            const has_symbol = !!symbols.find((symbol: { [key: string]: string }) => symbol.value === values.symbol);
-            if (!has_symbol) {
-                setFieldValue('symbol', symbols?.[0]?.value);
-                setValue('symbol', symbols?.[0]?.value);
-            }
+        const has_symbol = !!symbols?.find(symbol => symbol?.value === values?.symbol);
+        if (!has_symbol) {
+            setFieldValue('symbol', symbols?.[0]?.value);
+            setValue('symbol', symbols?.[0]?.value);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -93,8 +94,8 @@ const SymbolSelect: React.FC = () => {
 
     const handleItemSelection = (item: TItem) => {
         if (item) {
-            const { value } = item as TSymbol;
-            sendAssetValueToRudderStack(item.text);
+            const { value, text } = item as TSymbol;
+            sendAssetValueToRudderStack(text);
             setFieldValue('symbol', value);
             setValue('symbol', value);
             setIsInputStarted(false);

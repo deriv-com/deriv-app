@@ -11,16 +11,24 @@ jest.mock('@deriv-com/ui', () => ({
 }));
 
 describe('ManualForm', () => {
-    const mockProps: React.ComponentProps<typeof ManualForm> = { selectedDocument: 'driving_licence' };
-    const renderComponent = (props = mockProps) =>
+    const renderComponent = ({
+        selectedDocument,
+    }: {
+        selectedDocument?: React.ComponentProps<typeof ManualForm>['selectedDocument'];
+    }) => {
+        const mockProps: React.ComponentProps<typeof ManualForm> = {
+            selectedDocument: selectedDocument ?? 'driving_licence',
+            onSubmit: jest.fn(),
+        };
         render(
             <APIProvider>
-                <ManualForm {...props} />
+                <ManualForm {...mockProps} />
             </APIProvider>
         );
+    };
 
     it('should render the header texts correctly for the document Driving licence', () => {
-        renderComponent();
+        renderComponent({});
         expect(screen.getByText(/First, enter your Driving licence number and the expiry date./)).toBeInTheDocument();
         expect(screen.getByText(/Next, upload the front and back of your driving licence./)).toBeInTheDocument();
     });
@@ -66,7 +74,7 @@ describe('ManualForm', () => {
     });
 
     it('should render the footer items correctly', () => {
-        renderComponent();
+        renderComponent({});
         expect(screen.getByText(/A clear colour photo or scanned image/)).toBeInTheDocument();
         expect(screen.getByText(/JPEG, JPG, PNG, PDF, or GIF/)).toBeInTheDocument();
         expect(screen.getByText(/Less than 8MB/)).toBeInTheDocument();

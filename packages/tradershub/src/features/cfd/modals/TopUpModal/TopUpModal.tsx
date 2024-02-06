@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIsEuRegion, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
-import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Button, Text } from '@deriv-com/ui';
 import { Modal } from '../../../../components/Modal';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';

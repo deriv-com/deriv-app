@@ -18,7 +18,7 @@ const AdvertiserName = () => {
     const name = advertiserStats?.name || email;
 
     return (
-        <div className='p2p-v2-advertiser-name'>
+        <div className='p2p-v2-advertiser-name' data-testid='dt_p2p_v2_advertiser_name'>
             <UserAvatar nickname={name!} size={isDesktop ? 64 : 42} textSize='lg' />
             <div className='p2p-v2-advertiser-name__details'>
                 <Text size='md' weight='bold'>

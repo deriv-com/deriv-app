@@ -1,6 +1,6 @@
 import React, { ChangeEvent, ReactNode } from 'react';
-import { Button, TextField, useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Button, PasswordInput, Text } from '@deriv-com/ui';
 import { TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { PlatformDetails } from '../../constants';
@@ -42,15 +42,9 @@ const CreatePassword = ({
                 <Text weight='bold'>Create a {title} password</Text>
                 <Text size='sm'>You can use this password for all your {title} accounts.</Text>
             </div>
-            <TextField
-                className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
-                onChange={onPasswordChange}
-                placeholder={`${title} password`}
-                value={password}
-            />
+            <PasswordInput label={`${title} password`} onChange={onPasswordChange} value={password} />
             {!isMobile && (
                 <Button
-                    className='rounded-200'
                     disabled={!password || isLoading || !validPassword(password)}
                     isLoading={isLoading}
                     onClick={onPrimaryClick}

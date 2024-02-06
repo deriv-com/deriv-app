@@ -3,7 +3,7 @@
     flex-direction: column;
     margin-left: auto;
 
-    @include mobile {
+    @include new-not-desktop {
         align-items: center;
     }
 
@@ -12,7 +12,7 @@
         cursor: not-allowed;
         margin-left: auto;
 
-        @include mobile {
+        @include new-not-desktop {
             width: 23rem;
         }
     }
@@ -21,7 +21,7 @@
         display: flex;
         border-bottom: 4px dotted var(--checkbox-disabled-grey);
 
-        @include mobile {
+        @include new-not-desktop {
             margin-top: 3rem;
         }
     }

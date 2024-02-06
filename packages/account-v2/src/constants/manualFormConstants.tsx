@@ -16,7 +16,6 @@ export const MANUAL_DOCUMENT_TYPES = Object.freeze({
 });
 
 export const MANUAL_FORM_INITIAL_VALUES = Object.freeze({
-    document: '',
     document_expiry: '',
     document_number: '',
 });

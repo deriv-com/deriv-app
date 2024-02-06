@@ -40,13 +40,15 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                 </Field>
                 {isExpiryDateRequired && (
                     <Field name='document_expiry'>
-                        {({ field, meta }: FieldProps) => (
+                        {({ field, meta, form }: FieldProps) => (
                             <WalletDatePicker
                                 {...field}
                                 errorMessage={meta.error}
-                                isInvalid={meta.touched && !!meta.error}
+                                isInvalid={(meta.touched && !!meta.error) || !!form.errors.document_expiry}
                                 label={`${fieldsConfig.documentExpiry.label}*`}
-                                onDateChange={field.onChange}
+                                onDateChange={(date: string | null) => {
+                                    form.setFieldValue('document_expiry', date);
+                                }}
                             />
                         )}
                     </Field>

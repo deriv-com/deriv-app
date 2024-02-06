@@ -84,10 +84,10 @@ export default class ServerBotStore implements IServerBotStore {
             })
             .then(() => this.getBotList());
 
-        localStorage?.setItem(
-            'qs-fields',
-            JSON.stringify({ ...initial_req_schema.data.parameters, ...initial_req_schema.data.contract_parameters })
-        );
+        // localStorage?.setItem(
+        //     'qs-fields',
+        //     JSON.stringify({ ...initial_req_schema.data.parameters, ...initial_req_schema.data.contract_parameters })
+        // );
     };
 
     removeBot = (bot_id: string) => {

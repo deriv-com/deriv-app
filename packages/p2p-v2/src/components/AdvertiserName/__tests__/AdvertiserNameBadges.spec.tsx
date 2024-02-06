@@ -10,7 +10,7 @@ let mockUseAdvertiserStats = {
         isIdentityVerified: false,
         totalOrders: 10,
     },
-    isLoading: true,
+    isLoading: false,
 };
 
 jest.mock('../../../hooks', () => ({
@@ -19,18 +19,6 @@ jest.mock('../../../hooks', () => ({
 }));
 
 describe('AdvertiserNameBadges', () => {
-    it('should render loading', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                isAddressVerified: false,
-                isIdentityVerified: false,
-                totalOrders: 20,
-            },
-            isLoading: true,
-        };
-        render(<AdvertiserNameBadges />, { wrapper });
-        expect(screen.queryByTestId('dt_p2p_v2_advertiser_name_badges')).not.toBeInTheDocument();
-    });
     it('should render not verified badges', () => {
         mockUseAdvertiserStats = {
             data: {

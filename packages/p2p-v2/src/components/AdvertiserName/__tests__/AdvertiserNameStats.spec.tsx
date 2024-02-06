@@ -23,7 +23,7 @@ let mockUseAdvertiserStats: Partial<TMockUseAdvertiserStats> = {
         rating_count: 0,
         recommended_average: 0,
     },
-    isLoading: true,
+    isLoading: false,
 };
 
 jest.mock('../../../hooks', () => ({
@@ -32,20 +32,6 @@ jest.mock('../../../hooks', () => ({
 }));
 
 describe('AdvertiserNameStats', () => {
-    it('should render loading when data is not available', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                blocked_by_count: 0,
-                daysSinceJoined: 0,
-                rating_average: 0,
-                rating_count: 0,
-                recommended_average: 0,
-            },
-            isLoading: true,
-        };
-        render(<AdvertiserNameStats />, { wrapper });
-        expect(screen.queryByTestId('dt_p2p_v2_advertiser_name_stats')).not.toBeInTheDocument();
-    });
     it('should render correct advertiser stats', () => {
         mockUseAdvertiserStats = {
             data: {

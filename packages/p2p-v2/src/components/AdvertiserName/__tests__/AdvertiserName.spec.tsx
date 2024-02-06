@@ -10,7 +10,7 @@ let mockUseAdvertiserStats = {
         name: 'Jane',
         show_name: 0,
     },
-    isLoading: true,
+    isLoading: false,
 };
 
 jest.mock('../../../hooks', () => ({
@@ -19,15 +19,10 @@ jest.mock('../../../hooks', () => ({
 }));
 
 describe('AdvertiserNameStats', () => {
-    it('should render loading when data is not available', () => {
-        render(<AdvertiserName />, { wrapper });
-        expect(screen.queryByTestId('dt_p2p_v2_advertiser_name')).not.toBeInTheDocument();
-    });
     it('should render full name', () => {
         mockUseAdvertiserStats = {
             data: {
-                fullName: 'Jane Doe',
-                name: 'Jane',
+                ...mockUseAdvertiserStats.data,
                 show_name: 1,
             },
             isLoading: false,

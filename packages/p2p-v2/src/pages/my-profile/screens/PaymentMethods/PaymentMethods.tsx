@@ -1,9 +1,9 @@
 import React, { useReducer } from 'react';
 import { TSelectedPaymentMethod } from 'types';
+import { PaymentMethodForm } from '@/components';
+import { advertiserPaymentMethodsReducer } from '@/reducers';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
-import { PaymentMethodForm } from '../../../../components/PaymentMethodForm';
-import { advertiserPaymentMethodsReducer } from '../../../../reducers';
 import { PaymentMethodsEmpty } from './PaymentMethodsEmpty';
 import { PaymentMethodsList } from './PaymentMethodsList';
 

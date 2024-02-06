@@ -675,6 +675,7 @@
     "706727320": "Częstotliwość handlowania opcjami binarnymi",
     "706755289": "Ten blok oblicza funkcje trygonometryczne.",
     "706960383": "Zaoferujemy zakup Państwa kontraktu po tej cenie, jeśli zdecydują się Państwo sprzedać go przed wygaśnięciem. Jest to oparte na kilku czynnikach, takich jak bieżąca cena spot, czas trwania itp. Nie zaoferujemy jednak wartości kontraktu, jeśli pozostały czas trwania jest krótszy niż 60 sekund.",
+    "707189572": "Twój adres e-mail uległ zmianie. <0/> Teraz zaloguj się za pomocą nowego adresu e-mail.",
     "707662672": "{{unblock_date}} o {{unblock_time}}",
     "708055868": "Numer prawa jazdy",
     "710123510": "powtórz {{ while_or_until }} {{ boolean }}",

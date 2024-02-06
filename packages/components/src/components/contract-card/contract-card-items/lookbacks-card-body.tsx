@@ -29,7 +29,7 @@ const LookBacksCardBody = ({
         let base: string;
         switch (contract_type) {
             case CONTRACT_TYPES.LB_PUT:
-                base = 'Hight - Close';
+                base = 'High - Close';
                 break;
             case CONTRACT_TYPES.LB_CALL:
                 base = 'Close - Low';

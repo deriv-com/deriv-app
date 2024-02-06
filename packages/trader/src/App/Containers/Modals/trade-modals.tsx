@@ -6,7 +6,6 @@ import ServicesErrorModal from 'App/Components/Elements/Modals/ServicesErrorModa
 import AccountVerificationPendingModal from 'App/Components/Elements/Modals/AccountVerificationPendingModal';
 import UrlUnavailableModal from 'App/Components/Elements/Modals/UrlUnavailableModal';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const TradeModals = observer(() => {
@@ -24,6 +23,7 @@ const TradeModals = observer(() => {
     const {
         is_services_error_visible,
         is_mf_verification_pending_modal_visible,
+        is_mobile,
         setHasOnlyForwardingContracts,
         toggleServicesErrorModal,
         toggleUnsupportedContractModal,
@@ -80,12 +80,10 @@ const TradeModals = observer(() => {
             />
 
             <UrlUnavailableModal
-                is_visible={isUrlUnavailableModalVisible}
+                isMobile={is_mobile}
+                isVisible={isUrlUnavailableModalVisible}
                 onConfirm={() => toggleUrlUnavailableModal(false)}
-                title={<Localize i18n_default_text="The URL you requested isn't available" />}
-            >
-                bla
-            </UrlUnavailableModal>
+            />
         </React.Fragment>
     );
 });

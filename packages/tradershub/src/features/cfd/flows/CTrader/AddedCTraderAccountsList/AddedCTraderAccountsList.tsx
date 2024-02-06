@@ -67,7 +67,7 @@ const AddedCTraderAccountsList = () => {
             <TradingAccountCard leading={leading} trailing={trailing}>
                 <div className='flex flex-col flex-grow'>
                     {account && (
-                        <Fragment key={`added-ctrader-${account.login}`}>
+                        <Fragment>
                             <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
                             <Text bold size='sm'>
                                 {account?.formatted_balance}

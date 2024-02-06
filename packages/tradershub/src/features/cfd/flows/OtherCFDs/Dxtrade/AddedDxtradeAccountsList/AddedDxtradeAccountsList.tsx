@@ -67,7 +67,7 @@ const AddedDxtradeAccountsList = () => {
         <TradingAccountCard leading={leading} trailing={trailing}>
             <div className='flex flex-col flex-grow'>
                 {account && (
-                    <Fragment key={account?.account_id}>
+                    <Fragment>
                         <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
                         <Text bold size='sm'>
                             {account?.display_balance}

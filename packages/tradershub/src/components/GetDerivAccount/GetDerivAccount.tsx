@@ -8,6 +8,8 @@ const TrailingButton = () => {
     return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
 };
 
+const LeadingIcon = () => <AccountsDerivAccountLightIcon height='80px' width='80px' />;
+
 const GetDerivAccount = () => {
     const title = 'Deriv account';
 
@@ -15,10 +17,7 @@ const GetDerivAccount = () => {
 
     return (
         <div className='grid grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
-            <TradingAccountCard
-                leading={() => <AccountsDerivAccountLightIcon height='60px' width='60px' />}
-                trailing={TrailingButton}
-            >
+            <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
                 <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
             </TradingAccountCard>
         </div>

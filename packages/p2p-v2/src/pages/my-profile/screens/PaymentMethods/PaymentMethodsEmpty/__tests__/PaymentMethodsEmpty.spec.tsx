@@ -74,7 +74,7 @@ describe('PaymentMethodsEmpty', () => {
         });
         const onAddPaymentMethod = jest.fn();
         render(<PaymentMethodsEmpty onAddPaymentMethod={onAddPaymentMethod} />);
-        const back = screen.getByRole('go-back-button');
+        const back = screen.getByRole('dt_p2p_v2_mobile_wrapper_button');
         userEvent.click(back);
         expect(mockSetQueryString).toHaveBeenCalledWith({ tab: 'default' });
     });

@@ -31,7 +31,9 @@ const FullPageMobileWrapper = ({
         >
             {renderHeader && (
                 <div className='p2p-v2-mobile-wrapper__header'>
-                    {shouldShowBackIcon && <LeftArrowIcon onClick={onBack} role='go-back-button' />}
+                    {shouldShowBackIcon && (
+                        <LeftArrowIcon data-testid='dt_p2p_v2_mobile_wrapper_button' onClick={onBack} />
+                    )}
                     {renderHeader()}
                 </div>
             )}

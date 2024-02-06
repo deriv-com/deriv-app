@@ -4,6 +4,7 @@ import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } 
 import { routes, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
@@ -12,10 +13,9 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
-import { useDevice } from '@deriv-com/ui';
 
 const TradersHub = observer(() => {
-    const { isDesktop, isMobile, isTablet } = useDevice();
+    const { isDesktop } = useDevice();
     const { traders_hub, client, ui } = useStore();
     const {
         notification_messages_ui: Notifications,

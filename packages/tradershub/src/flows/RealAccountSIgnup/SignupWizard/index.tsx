@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import ReactModal from 'react-modal';
 import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
@@ -31,7 +31,7 @@ const SignupWizard = () => {
     const { isMobile } = useBreakpoint();
 
     return (
-        <>
+        <Fragment>
             <ReactModal
                 ariaHideApp={false}
                 isOpen={isWizardOpen}
@@ -64,7 +64,7 @@ const SignupWizard = () => {
                 isOpen={isConfirmationDialogOpen}
                 onClose={() => setIsConfirmationDialogOpen(false)}
             />
-        </>
+        </Fragment>
     );
 };
 

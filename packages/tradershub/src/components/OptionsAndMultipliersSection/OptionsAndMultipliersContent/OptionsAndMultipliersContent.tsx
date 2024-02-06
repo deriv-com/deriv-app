@@ -1,11 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { Button, useBreakpoint } from '@deriv/quill-design';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import { optionsAndMultipliersContent } from '../../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { TradingAppCardLoader } from '../../Loaders';
 import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
+import { useUIContext } from '../../UIProvider';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -67,24 +70,26 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { data } = useActiveTradingAccount();
-    if (data?.loginid) {
-        return (
-            <Button
-                className='rounded-200'
-                onClick={() => {
-                    if (isExternal) {
-                        window.open(redirect, '_blank');
-                    } else {
-                        history.push(redirect);
-                    }
-                }}
-            >
-                Open
-            </Button>
-        );
-    }
-    return null;
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
+
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+
+    if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
+
+    return (
+        <Button
+            onClick={() => {
+                if (isExternal) {
+                    window.open(redirect, '_blank');
+                } else {
+                    history.push(redirect);
+                }
+            }}
+        >
+            Open
+        </Button>
+    );
 };
 
 /**
@@ -94,15 +99,20 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 const OptionsAndMultipliersContent = () => {
     const { isMobile } = useBreakpoint();
     const { data } = useActiveTradingAccount();
-    const { isEU, isSuccess } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU || false);
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
+
+    const { isEU } = useRegulationFlags(activeRegulation);
+
+    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 
     const filteredContent = isEU
         ? getoptionsAndMultipliersContent.filter(account => account.title === 'Deriv Trader')
         : getoptionsAndMultipliersContent;
 
-    if (!isSuccess)
+    if (!isRegulationAccessible)
         return (
             <div className='pt-2000'>
                 <TradingAppCardLoader />

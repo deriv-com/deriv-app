@@ -1,24 +1,22 @@
 import React from 'react';
 import { useActiveAccount } from '@deriv/api';
-import { MobileCloseHeader } from '../../components';
-import { useDevice } from '../../hooks';
-import './index.scss';
+import { Loader } from '@deriv-com/ui';
 
 const Home: React.FC<{ path: string }> = ({ path }) => {
     const { data: activeAccountData, isLoading } = useActiveAccount();
-    const { isMobile } = useDevice();
 
-    // NOTE: Replace this with Loading component
-    if (isLoading || !activeAccountData) return <h1>Loading...</h1>;
+    if (isLoading || !activeAccountData) return <Loader />;
 
     // NOTE: Replace this with P2PBlocked component later and a custom hook useIsP2PEnabled, P2P is only available for USD accounts
     if (activeAccountData?.currency !== 'USD') return <h1>P2P is only available for USD accounts.</h1>;
 
     return (
         <>
-            {isMobile && <MobileCloseHeader />}
             <div className='p2p-v2-home-style'>
-                <div> Welcome to P2P Version 2 from {path} Page ;) </div>
+                <div className='flex justify-center px-10 text-red-500 font-bold'>
+                    {' '}
+                    Welcome to P2P Version 2 from {path} Page ;){' '}
+                </div>
             </div>
         </>
     );

@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
 import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import { useUIContext } from '../../../../components';
 import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
+import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
@@ -13,8 +15,11 @@ type TMT5PlatformsListProps = {
 
 const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) => {
     const { isFetching } = useAuthorize();
-    const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts();
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
+    const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts(activeRegulation ?? '');
     const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { isEU } = useRegulationFlags(activeRegulation);
     const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
@@ -32,6 +37,9 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
         return () => onMT5PlatformListLoaded?.(false);
     }, [isFetchedAfterMount, onMT5PlatformListLoaded]);
 
+    const shouldShowGetMoreMT5Accounts =
+        hasMT5Account && !activeTradingAccount?.is_virtual && !areAllAccountsCreated && !isEU && isFetchedAfterMount;
+
     return (
         <CFDPlatformLayout title={PlatformDetails.mt5.title}>
             {!isFetchedAfterMount && <TradingAppCardLoader />}
@@ -47,7 +55,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
                         />
                     );
                 })}
-            {hasMT5Account && !activeTradingAccount?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
+            {shouldShowGetMoreMT5Accounts && <GetMoreMT5Accounts />}
         </CFDPlatformLayout>
     );
 };

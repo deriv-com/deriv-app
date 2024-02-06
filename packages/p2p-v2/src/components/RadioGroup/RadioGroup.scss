@@ -1,0 +1,48 @@
+.p2p-v2-radio-group {
+    display: flex;
+    margin-top: 1.6rem;
+    flex-direction: row;
+    align-items: center;
+    &__input {
+        display: none;
+    }
+    &__item {
+        display: flex;
+        @include typeface(--paragraph-left-normal-prominent);
+
+        cursor: pointer;
+        color: var(--text-general);
+    }
+    &__item:not(:last-child) {
+        margin-right: 1.6rem;
+    }
+    &__circle {
+        border: 2px solid var(--text-general);
+        border-radius: 50%;
+        box-shadow: 0 0 1px 0 var(--shadow-menu);
+        min-width: 1.6rem;
+        height: 1.6rem;
+        transition: all 0.3s ease-in-out;
+        margin-right: 0.8rem;
+        align-self: center;
+
+        &--disabled {
+            border-color: var(--border-disabled);
+        }
+        &--selected {
+            border-width: 4px;
+            border-color: var(--brand-red-coral);
+        }
+        &--error {
+            border-color: var(--text-less-prominent);
+        }
+    }
+    &__label {
+        &--disabled {
+            color: var(--text-disabled);
+        }
+        &--error {
+            color: var(--text-loss-danger);
+        }
+    }
+}

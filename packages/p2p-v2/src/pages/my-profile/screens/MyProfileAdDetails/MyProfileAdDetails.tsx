@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useAdvertiserInfo, useAdvertiserUpdate } from '@deriv/api';
-import { Button, FullPageMobileWrapper, TextArea } from '../../../../components';
-import { useDevice } from '../../../../hooks';
+import { FullPageMobileWrapper, TextArea } from '@/components';
+import { useDevice, useQueryString } from '@/hooks';
+import { p2p } from '@deriv/api';
+import { Button, Loader } from '@deriv-com/ui';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
-    advertiserInfo: NonNullable<ReturnType<typeof useAdvertiserInfo>>['data'];
+    advertiserInfo: NonNullable<ReturnType<typeof p2p.advertiser.useGetInfo>>['data'];
     setAdvertDescription: React.Dispatch<React.SetStateAction<string>>;
     setContactInfo: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -33,11 +34,12 @@ const MyProfileAdDetailsTextArea = ({
 };
 
 const MyProfileAdDetails = () => {
-    const { data: advertiserInfo, isLoading } = useAdvertiserInfo();
-    const { mutate: updateAdvertiser } = useAdvertiserUpdate();
+    const { data: advertiserInfo, isLoading } = p2p.advertiser.useGetInfo();
+    const { mutate: updateAdvertiser } = p2p.advertiser.useUpdate();
     const [contactInfo, setContactInfo] = useState('');
     const [advertDescription, setAdvertDescription] = useState('');
     const { isMobile } = useDevice();
+    const { setQueryString } = useQueryString();
 
     const hasUpdated = useMemo(() => {
         return (
@@ -58,13 +60,18 @@ const MyProfileAdDetails = () => {
         });
     };
 
-    if (isLoading) return <h1>Loading...</h1>;
+    if (isLoading) return <Loader />;
 
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                onBack={() =>
+                    setQueryString({
+                        tab: 'default',
+                    })
+                }
                 renderFooter={() => (
-                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails}>
+                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails} size='lg'>
                         Save
                     </Button>
                 )}
@@ -88,7 +95,7 @@ const MyProfileAdDetails = () => {
                 setContactInfo={setContactInfo}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
-            <Button disabled={!hasUpdated} onClick={submitAdDetails}>
+            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg'>
                 Save
             </Button>
         </div>

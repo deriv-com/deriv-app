@@ -19,21 +19,29 @@ const Loading = () => {
     );
 };
 
+const cashierV2RoutesConfig = {
+    p2p_v2: {
+        path: routes.cashier_p2p_v2,
+        getTitle: () => localize('Deriv P2P-V2'),
+        icon_component: 'IcDp2p',
+    },
+} as const;
+
 const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const { is_p2p_v2_enabled } = useFeatureFlags();
     const [routesConfig, setRoutesConfig] = React.useState(getRoutesConfig());
+
     useEffect(() => {
-        const is_p2p_v2_added = routesConfig[0].routes?.some(route => route.path === routes.cashier_p2p_v2);
-        if (is_p2p_v2_enabled && !is_p2p_v2_added) {
+        const isRouteAdded = (routePath: string) => routesConfig[0].routes?.some(route => route.path === routePath);
+
+        const should_add_p2p_v2_route = is_p2p_v2_enabled && !isRouteAdded(routes.cashier_p2p_v2);
+
+        if (should_add_p2p_v2_route) {
             const routes_replicate = [...routesConfig];
-            routes_replicate[0].routes?.push({
-                path: routes.cashier_p2p_v2,
-                getTitle: () => localize('Deriv P2P-V2'),
-                icon_component: 'IcDp2p',
-            });
+            routes_replicate[0].routes?.push(cashierV2RoutesConfig.p2p_v2);
             setRoutesConfig(routes_replicate);
         }
-    }, [is_p2p_v2_enabled]);
+    }, [is_p2p_v2_enabled, routesConfig]);
 
     return (
         <React.Suspense fallback={<Loading />}>

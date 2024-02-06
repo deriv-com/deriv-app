@@ -1,14 +1,16 @@
-import React from 'react';
-import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
+import React, { ChangeEvent } from 'react';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
+import { useUIContext } from '../../../../components';
+import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
 
-type TProps = {
+type TEnterPasswordProps = {
     isLoading?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
-    onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onPasswordChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
     password: string;
@@ -26,10 +28,10 @@ type TProps = {
  * @param {string} password - password value
  * @param {boolean} passwordError - password error state
  * @param {TPlatforms.All} platform - platform Mt5 or Dxtrade
- * @returns {React.ReactNode} - returns the enter password screen component
+ * @returns {ReactNode} - returns the enter password screen component
  */
 
-const EnterPassword: React.FC<TProps> = ({
+const EnterPassword = ({
     isLoading,
     marketType,
     onPasswordChange,
@@ -38,10 +40,14 @@ const EnterPassword: React.FC<TProps> = ({
     password,
     passwordError,
     platform,
-}) => {
+}: TEnterPasswordProps) => {
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
-    const { isEU } = useIsEuRegion();
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
+
+    const { isEU } = useRegulationFlags(activeRegulation);
+
     const { data } = useActiveTradingAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
     const marketTypeDetails = MarketTypeDetails(isEU);
@@ -68,13 +74,21 @@ const EnterPassword: React.FC<TProps> = ({
             </div>
             {isDesktop && (
                 <div className='flex items-center justify-center w-full gap-400'>
-                    <Button colorStyle='black' onClick={onSecondaryClick} variant='secondary'>
+                    <Button
+                        className='rounded-200'
+                        colorStyle='black'
+                        onClick={onSecondaryClick}
+                        size='lg'
+                        variant='secondary'
+                    >
                         Forgot password?
                     </Button>
                     <Button
+                        className='rounded-200'
                         disabled={!password || isLoading || !validPassword(password) || passwordError}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
+                        size='lg'
                     >
                         Add account
                     </Button>

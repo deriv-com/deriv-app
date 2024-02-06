@@ -28,6 +28,7 @@ const svg_loaders = [
         },
     },
 ];
+
 module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
     return {
@@ -183,6 +184,9 @@ module.exports = function (env) {
             publicPath: base,
         },
         resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'src'),
+            },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
     };

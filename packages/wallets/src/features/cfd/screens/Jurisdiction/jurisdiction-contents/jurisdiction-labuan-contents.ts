@@ -23,7 +23,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
                 },
             },
             {
-                key: 'spreadsFrom',
+                key: 'spreads-from',
                 title: 'Spreads from',
                 titleIndicators: {
                     displayText: '0.6 pips',
@@ -65,7 +65,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
                 title: 'Leverage',
             },
             {
-                key: 'spreadsFrom',
+                key: 'spreads-from',
                 title: 'Spreads from',
             },
             {

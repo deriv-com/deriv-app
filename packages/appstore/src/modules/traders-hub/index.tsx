@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { Fragment } from 'react';
-import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
+import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { routes, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -126,7 +126,7 @@ const TradersHub = observer(() => {
         return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
     };
 
-    const responsiveContent = (
+    const mobileTabletContent = (
         <Fragment>
             {is_mt5_allowed &&
                 (is_landing_company_loaded ? (
@@ -165,7 +165,7 @@ const TradersHub = observer(() => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    {isDesktop ? getOrderedPlatformSections() : responsiveContent}
+                    {isDesktop ? getOrderedPlatformSections() : mobileTabletContent}
                     <ModalManager />
                     {scrolled && <TourGuide />}
                 </div>

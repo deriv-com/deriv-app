@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Checklist } from '@/components';
+import { useDevice, usePoiPoaStatus } from '@/hooks';
 import { Loader, Text } from '@deriv-com/ui';
-import { useDevice, usePoiPoaStatus } from '../../hooks';
 import SendEmailIcon from '../../public/ic-send-email.svg';
-import { Checklist } from '../Checklist';
 import './Verification.scss';
 
 const getPoiAction = (status: string | undefined) => {
@@ -56,9 +56,9 @@ const Verification = () => {
         {
             isDisabled: isPoiPending,
             onClick: () => {
-                if (!isPoaVerified) redirectToVerification('/account/proof-of-identity');
+                if (!isPoiVerified) redirectToVerification('/account/proof-of-identity');
             },
-            status: isPoaVerified ? 'done' : 'action',
+            status: isPoiVerified ? 'done' : 'action',
             text: getPoiAction(poiStatus),
         },
         ...(isP2PPoaRequired
@@ -66,9 +66,9 @@ const Verification = () => {
                   {
                       isDisabled: isPoaPending,
                       onClick: () => {
-                          if (!isPoiVerified) redirectToVerification('/account/proof-of-address');
+                          if (!isPoaVerified) redirectToVerification('/account/proof-of-address');
                       },
-                      status: isPoiVerified ? 'done' : 'action',
+                      status: isPoaVerified ? 'done' : 'action',
                       text: getPoaAction(poaStatus),
                   },
               ]

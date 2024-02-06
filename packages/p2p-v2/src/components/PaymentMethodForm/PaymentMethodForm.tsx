@@ -1,15 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TSelectedPaymentMethod } from 'types';
+import { Dropdown, PaymentMethodField, PaymentMethodsFormFooter, PaymentMethodsHeader } from '@/components';
+import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
+import { TFormState } from '@/reducers/types';
 import { p2p } from '@deriv/api';
 import { Button, Input, Text } from '@deriv-com/ui';
 import CloseCircle from '../../public/ic-close-circle.svg';
-import { TFormState } from '../../reducers/types';
-import { Dropdown } from '../Dropdown';
-import { PaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
-import { PaymentMethodField } from '../PaymentMethodField';
-import { PaymentMethodsFormFooter } from '../PaymentMethodsFormFooter';
-import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {

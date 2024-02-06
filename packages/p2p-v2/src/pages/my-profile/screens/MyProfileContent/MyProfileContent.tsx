@@ -1,6 +1,6 @@
 import React from 'react';
-import { AdvertiserName, AdvertiserNameToggle } from '../../../../components';
-import { useDevice } from '../../../../hooks';
+import { AdvertiserName, AdvertiserNameToggle } from '@/components';
+import { useDevice } from '@/hooks';
 import { MyProfileBalance } from '../MyProfileBalance';
 import './MyProfileContent.scss';
 

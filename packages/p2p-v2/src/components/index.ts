@@ -8,6 +8,7 @@ export * from './FlyoutMenu';
 export * from './FullPageMobileWrapper';
 export * from './Input';
 export * from './MobileTabs';
+export * from './OnlineStatus';
 export * from './PageReturn';
 export * from './PaymentMethodCard';
 export * from './PaymentMethodField';

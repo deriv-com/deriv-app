@@ -1,6 +1,7 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { useFetchMore } from '@/hooks';
+import { useDevice, useFetchMore } from '@/hooks';
+import { Text } from '@deriv-com/ui';
 import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
 import './Table.scss';
 
@@ -10,8 +11,7 @@ type TProps<T> = {
     groupBy?: GroupingState;
     isFetching: boolean;
     loadMoreFunction: () => void;
-    rowClassname: string;
-    rowGroupRender?: (data: T) => JSX.Element;
+    renderHeader?: (data: string) => JSX.Element;
     rowRender: (data: T) => JSX.Element;
     tableClassname: string;
 };
@@ -21,10 +21,11 @@ const Table = <T,>({
     data,
     isFetching,
     loadMoreFunction,
-    rowClassname,
+    renderHeader = () => <div />,
     rowRender,
     tableClassname,
 }: TProps<T>) => {
+    const { isDesktop } = useDevice();
     const table = useReactTable({
         columns,
         data,
@@ -33,23 +34,49 @@ const Table = <T,>({
     });
 
     const tableContainerRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const [height, setHeight] = useState(0);
+
+    useLayoutEffect(() => {
+        if (headerRef?.current) {
+            const topPosition = headerRef.current.getBoundingClientRect().bottom;
+            setHeight(window.innerHeight - topPosition);
+        }
+    }, [headerRef?.current]);
+
     const { fetchMoreOnBottomReached } = useFetchMore({
+        isFetching,
         loadMore: loadMoreFunction,
         ref: tableContainerRef,
-        isFetching,
     });
 
     return (
-        <div
-            className={clsx('p2p-v2-table', tableClassname)}
-            onScroll={e => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
-            ref={tableContainerRef}
-        >
-            {table.getRowModel().rows.map(row => (
-                <div className={rowClassname} key={row.id}>
-                    {rowRender(row.original)}
+        <div className='w-full'>
+            {isDesktop && columns.length > 0 && (
+                <div
+                    className='p2p-v2-table__header grid'
+                    ref={headerRef}
+                    style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
+                >
+                    {table.getFlatHeaders().map(header => (
+                        <Text className='p2p-v2-table__header-items' key={header.id} size='sm' weight='bold'>
+                            {renderHeader(header.column.columnDef.header as string)}
+                        </Text>
+                    ))}
                 </div>
-            ))}
+            )}
+            <div
+                className={clsx('p2p-v2-table__content', tableClassname)}
+                onScroll={e => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
+                ref={tableContainerRef}
+                style={{ height: isDesktop && columns.length > 0 ? `calc(${height}px - 3.6rem)` : '100%' }}
+            >
+                {table.getRowModel().rows.map(row => (
+                    <div className='p2p-v2-table__content-row' key={row.id}>
+                        {rowRender(row.original)}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

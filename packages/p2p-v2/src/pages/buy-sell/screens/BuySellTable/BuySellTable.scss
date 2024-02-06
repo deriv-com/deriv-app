@@ -1,0 +1,13 @@
+.p2p-v2-buy-sell-table {
+    & .p2p-v2-table {
+        &__header {
+            padding: 1.6rem 0;
+            border-bottom: 1px solid #f2f3f4;
+            // stylelint-disable-next-line declaration-no-important
+            grid-template-columns: 2fr 1.4fr 1fr 1.8fr 0.8fr !important;
+        }
+        &__content {
+            height: 100%;
+        }
+    }
+}

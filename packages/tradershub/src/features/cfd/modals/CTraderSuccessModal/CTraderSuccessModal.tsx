@@ -4,7 +4,7 @@ import { ButtonGroup, Modal } from '@/components';
 import { PlatformDetails } from '@cfd/constants';
 import { CFDSuccess } from '@cfd/screens';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 
 type TCTraderSuccessModal = {
     isDemo: boolean;
@@ -24,10 +24,9 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
                 <ButtonGroup>
                     <Button
                         className='rounded-200 border-system-light-less-prominent border-100'
-                        colorStyle='black'
                         onClick={() => hide()}
                         size='lg'
-                        variant='secondary'
+                        variant='outlined'
                     >
                         Maybe later
                     </Button>

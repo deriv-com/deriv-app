@@ -1,16 +1,16 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
-import useMT5AccountHandler from '../../../../../hooks/useMT5AccountHandler';
-import { validPassword } from '../../../../../utils/password';
-import { MarketType, TTM5FilterLandingCompany } from '../../../constants';
+import { Button } from '@deriv-com/ui';
+import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
+import { validPassword } from '../../../../utils/password';
+import { MarketType, TTM5FilterLandingCompany } from '../../constants';
 
 type TCreateAccountButtonProps = {
     buttonText: string;
     password: string;
 };
 
-const CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonProps) => {
+const MT5CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonProps) => {
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
@@ -18,14 +18,14 @@ const CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonProps
         marketType,
         selectedJurisdiction,
     });
+    const isLoading = tradingPlatformPasswordChangeLoading || createMT5AccountLoading;
+    const isDisabled = !password || isLoading || !validPassword(password);
 
     return (
         <Button
-            disabled={
-                !password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading || !validPassword(password)
-            }
-            fullWidth
-            isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+            disabled={isDisabled}
+            isFullWidth
+            isLoading={isLoading}
             onClick={() => handleSubmit(password)}
             size='lg'
         >
@@ -34,4 +34,4 @@ const CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonProps
     );
 };
 
-export default CreateAccountButton;
+export default MT5CreateAccountButton;

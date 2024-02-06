@@ -11,29 +11,29 @@ import {
 import { CFDSuccess } from '@cfd/screens';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
+import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 
-const SuccessComponent = () => {
+const MT5SuccessModal = () => {
     const { isEU } = useRegulationFlags();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
     const isDemo = activeTrading?.is_virtual;
 
     const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform') ?? PlatformDetails.mt5.platform;
+    const platform = getCFDState('platform');
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
 
     const marketTypeTitle =
-        marketType === MarketType.ALL && Object.keys(PlatformDetails).includes(platform)
+        marketType === MarketType.ALL && platform && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails(isEU)[marketType].title;
 
     const landingCompanyName = `(${companyNamesAndUrls?.[selectedJurisdiction]?.shortcode})`;
 
     const SuccessDescription = isDemo
-        ? `Let's practise trading with ${activeTrading?.display_balance} virtual funds.`
-        : `Transfer funds from your ${activeTrading?.currency} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
+        ? `Congratulations, you have successfully created your ${Category.DEMO} ${PlatformDetails.mt5.title} account. To start trading, transfer funds from your Deriv account into this account.`
+        : `Congratulations, you have successfully created your ${Category.REAL} ${PlatformDetails.mt5.title} ${landingCompanyName} ${selectedJurisdiction} account. To start trading, top-up funds from your Deriv account into this account.`;
 
     const SuccessTitle = `Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`;
 
@@ -50,4 +50,4 @@ const SuccessComponent = () => {
     );
 };
 
-export default SuccessComponent;
+export default MT5SuccessModal;

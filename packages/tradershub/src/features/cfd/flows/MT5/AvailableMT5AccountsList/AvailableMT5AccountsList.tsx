@@ -7,7 +7,7 @@ import {
 } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { THooks } from '@/types';
-import { MarketType, MarketTypeDetails } from '@cfd/constants';
+import { MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { JurisdictionModal, MT5PasswordModal } from '@cfd/modals';
 import { useAuthorize } from '@deriv/api';
 import { Provider } from '@deriv/library';
@@ -25,6 +25,7 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
 
     const trailingButtonClick = () => {
         setCfdState('marketType', account.market_type);
+        setCfdState('platform', PlatformDetails.mt5.platform);
         !activeAccount?.is_virtual && show(<JurisdictionModal />);
         activeAccount?.is_virtual && show(<MT5PasswordModal />);
     };

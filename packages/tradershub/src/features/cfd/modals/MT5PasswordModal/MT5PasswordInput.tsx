@@ -1,25 +1,25 @@
 import React from 'react';
 import { ActionScreen, SentEmailContent } from '@/components';
 import { useMT5AccountHandler } from '@/hooks';
-import { MarketType, PlatformDetails, QueryStatus, TTM5FilterLandingCompany } from '@cfd/constants';
+import { MarketType, QueryStatus, TTM5FilterLandingCompany } from '@cfd/constants';
 import { useAccountStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { CreatePassword, EnterPassword } from '../../screens';
-import SuccessComponent from './SuccessComponent';
+import MT5SuccessModal from './MT5SuccessModal';
 
-type TPasswordComponentProps = {
+type TMT5PasswordInputProps = {
     password: string;
     setPassword: (password: string) => void;
 };
 
-const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) => {
+const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
 
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
-    const platform = getCFDState('platform') ?? PlatformDetails.mt5.platform;
+    const platform = getCFDState('platform');
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
 
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
@@ -34,7 +34,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
         selectedJurisdiction,
     });
 
-    if (status === QueryStatus.ERROR && isCreateMT5AccountError?.error?.code !== 'PasswordError') {
+    if (!platform || (status === QueryStatus.ERROR && isCreateMT5AccountError?.error?.code !== 'PasswordError')) {
         return (
             <ActionScreen
                 description={isCreateMT5AccountError?.error.message}
@@ -43,7 +43,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
         );
     }
 
-    if (isCreateMT5AccountSuccess) return <SuccessComponent />;
+    if (isCreateMT5AccountSuccess) return <MT5SuccessModal />;
 
     if (isMT5PasswordNotSet) {
         return (
@@ -53,7 +53,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={() => handleSubmit(password)}
                 password={password}
-                platform={PlatformDetails.mt5.platform}
+                platform={platform}
             />
         );
     }
@@ -67,9 +67,9 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
             onSecondaryClick={() => show(<SentEmailContent platform={platform} />)}
             password={password}
             passwordError={isCreateMT5AccountError?.error?.code === 'PasswordError'}
-            platform={PlatformDetails.mt5.platform}
+            platform={platform}
         />
     );
 };
 
-export default PasswordComponent;
+export default MT5PasswordInput;

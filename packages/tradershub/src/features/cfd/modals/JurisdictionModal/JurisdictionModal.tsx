@@ -7,7 +7,8 @@ import { MT5PasswordModal } from '@cfd/modals';
 import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen } from '@cfd/screens';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -72,7 +73,7 @@ const JurisdictionModal = () => {
                                 !selectedJurisdiction ||
                                 (selectedJurisdiction !== Jurisdiction.SVG && !isCheckBoxChecked)
                             }
-                            fullWidth={isMobile}
+                            isFullWidth={isMobile}
                             onClick={() => show(<JurisdictionFlow />)}
                         >
                             Next

@@ -1,15 +1,16 @@
 import React from 'react';
 import { useMT5AccountsList } from '@deriv/api';
 import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
-import AddAccountButtonsGroup from './ButtonGroups/AddAccountButtonsGroup';
-import CreateAccountButton from './ButtonGroups/CreateAccountButton';
-import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
+import { PlatformDetails } from '../../constants';
+import AddAccountButtonsGroup from '../ButtonGroups/AddAccountButtonsGroup';
+import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
+import MT5CreateAccountButton from './MT5CreateAccountButton';
 
-type TFooterComponentProps = {
+type TMT5PasswordFooterProps = {
     password: string;
 };
 
-const FooterComponent = ({ password }: TFooterComponentProps) => {
+const MT5PasswordFooter = ({ password }: TMT5PasswordFooterProps) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { isCreateMT5AccountSuccess } = useMT5AccountHandler();
     const hasMT5Account = mt5Accounts?.find(account => account.login);
@@ -18,6 +19,6 @@ const FooterComponent = ({ password }: TFooterComponentProps) => {
 
     if (hasMT5Account) return <AddAccountButtonsGroup password={password} />;
 
-    return <CreateAccountButton buttonText='Create Deriv MT5 password' password={password} />;
+    return <MT5CreateAccountButton buttonText={`Create ${PlatformDetails.mt5.title} password`} password={password} />;
 };
-export default FooterComponent;
+export default MT5PasswordFooter;

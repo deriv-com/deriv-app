@@ -48,35 +48,48 @@ const WalletDropdown: React.FC<TProps> = ({
         setShouldFilterList(false);
         setItems(list);
     }, [list]);
-    const { closeMenu, getInputProps, getItemProps, getMenuProps, getToggleButtonProps, isOpen, openMenu } =
-        useCombobox({
-            defaultSelectedItem: items.find(item => item.value === value) ?? null,
-            items,
-            itemToString(item) {
-                return item ? reactNodeToString(item.text) : '';
-            },
-            onInputValueChange({ inputValue }) {
-                onChange?.(inputValue ?? '');
-                if (shouldFilterList) {
-                    setItems(
-                        list.filter(item =>
-                            reactNodeToString(item.text)
-                                .toLowerCase()
-                                .includes(inputValue?.toLowerCase() ?? '')
-                        )
-                    );
+    const {
+        closeMenu,
+        getInputProps,
+        getItemProps,
+        getMenuProps,
+        getToggleButtonProps,
+        inputValue,
+        isOpen,
+        openMenu,
+        selectItem,
+        selectedItem,
+    } = useCombobox({
+        defaultSelectedItem: items.find(item => item.value === value) ?? null,
+        items,
+        itemToString(item) {
+            return item ? reactNodeToString(item.text) : '';
+        },
+        onInputValueChange({ inputValue }) {
+            onChange?.(inputValue ?? '');
+            if (shouldFilterList) {
+                setItems(
+                    list.filter(item =>
+                        reactNodeToString(item.text)
+                            .toLowerCase()
+                            .includes(inputValue?.toLowerCase() ?? '')
+                    )
+                );
+            }
+        },
+        onIsOpenChange({ isOpen }) {
+            if (!isOpen) {
+                clearFilter();
+                if (inputValue !== selectedItem?.text) {
+                    selectItem(null);
                 }
-            },
-            onIsOpenChange({ isOpen }) {
-                if (!isOpen) {
-                    clearFilter();
-                }
-            },
-            onSelectedItemChange({ selectedItem }) {
-                onSelect(selectedItem?.value ?? '');
-                closeMenu();
-            },
-        });
+            }
+        },
+        onSelectedItemChange({ selectedItem }) {
+            onSelect(selectedItem?.value ?? '');
+            closeMenu();
+        },
+    });
 
     const handleInputClick = useCallback(() => {
         variant === 'comboBox' && setShouldFilterList(true);

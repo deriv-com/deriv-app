@@ -13,7 +13,7 @@ export const ManualFormDocumentUpload = ({ selectedDocument }: TManualFormDocume
     const { isDesktop } = useDevice();
 
     return (
-        <div className='flex flex-col gap-1200 pt-1200 border-t-solid-general-section-1  border-solid border-t-100'>
+        <div className='flex flex-col gap-1200 pt-1200 border-t-solid-grey-2  border-solid border-t-100'>
             <WalletText>{getTitleForDocumentUpload(selectedDocument)}</WalletText>
             <div
                 className={classNames('flex gap-1200 w-full justify-between', {

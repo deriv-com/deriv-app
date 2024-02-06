@@ -26,7 +26,7 @@ export const ManualForm = ({ onSubmit, selectedDocument }: TManualFormProps) => 
                             <ManualFormInputs selectedDocument={selectedDocument} />
                             <ManualFormDocumentUpload selectedDocument={selectedDocument} />
                             <ManualFormFooter />
-                            <div className='flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-general-section-1 border-solid border-t-100'>
+                            <div className='flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-grey-2 border-solid border-t-100'>
                                 <Button color='secondary' type='button'>
                                     Back
                                 </Button>

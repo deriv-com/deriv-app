@@ -14,11 +14,6 @@ export default {
                         '5': '#d6dadb',
                         '6': '#d6d6d6',
                     },
-                    general: {
-                        section: {
-                            1: '#f2f3f4',
-                        },
-                    },
                 },
             },
         },

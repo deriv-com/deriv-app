@@ -13,7 +13,7 @@ type TDocumentSelection = {
 export const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelection) => {
     const { isMobile } = useBreakpoint();
 
-    const documentList = getManualUploadDocumentList(countryCode);
+    const documentList = getManualUploadDocumentList(countryCode === 'ng');
 
     return (
         <div className='flex flex-col'>

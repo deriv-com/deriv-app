@@ -1,6 +1,6 @@
 import React from 'react';
-import { MobileTabs } from '../../../../components';
-import { useQueryString } from '../../../../hooks';
+import { MobileTabs } from '@/components';
+import { useQueryString } from '@/hooks';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileContent } from '../MyProfileContent';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';

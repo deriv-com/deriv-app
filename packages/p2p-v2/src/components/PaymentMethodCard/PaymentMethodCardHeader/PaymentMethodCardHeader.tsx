@@ -1,11 +1,11 @@
 import React, { ComponentType, SVGAttributes } from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
+import { FlyoutMenu } from '@/components';
 import { Button } from '@deriv-com/ui';
 import IcCashierBankTransfer from '../../../public/ic-cashier-bank-transfer.svg';
 import IcCashierEwallet from '../../../public/ic-cashier-ewallet.svg';
 import IcCashierOther from '../../../public/ic-cashier-other.svg';
 import IcCashierVerticalEllipsis from '../../../public/ic-cashier-vertical-ellipsis.svg';
-import { FlyoutMenu } from '../../FlyoutMenu';
 import './PaymentMethodCardHeader.scss';
 
 type TPaymentMethodCardHeaderProps = {

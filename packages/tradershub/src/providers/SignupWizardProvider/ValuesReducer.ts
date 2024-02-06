@@ -14,8 +14,7 @@ export function valuesReducer(state: TState, action: TActions) {
         case ACTION_TYPES.SET_PERSONAL_DETAILS:
             return {
                 ...state,
-                firstName: payload.firstName,
-                lastName: payload.lastName,
+                ...payload,
             };
         case ACTION_TYPES.SET_ADDRESS:
             return {

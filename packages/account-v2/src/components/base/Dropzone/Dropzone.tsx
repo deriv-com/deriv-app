@@ -40,6 +40,7 @@ type TFile = {
     preview: string;
 };
 
+// TODO: Move this component to @deriv-com/ui
 const Dropzone: React.FC<TProps> = ({
     buttonText,
     className,

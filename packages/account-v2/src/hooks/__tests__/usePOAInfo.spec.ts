@@ -1,6 +1,6 @@
 import { useAuthentication, useMT5AccountsList } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
-import usePOAInfo from '../usePOAInfo';
+import { usePOAInfo } from '../usePOAInfo';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

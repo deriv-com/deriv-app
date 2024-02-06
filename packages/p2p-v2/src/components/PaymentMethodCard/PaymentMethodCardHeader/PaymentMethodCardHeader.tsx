@@ -54,9 +54,7 @@ const PaymentMethodCardHeader = ({
             {isEditable && (
                 <FlyoutMenu
                     listItems={flyoutMenuItems}
-                    renderIcon={() => {
-                        return <IcCashierVerticalEllipsis height={16} width={16} />;
-                    }}
+                    renderIcon={() => <IcCashierVerticalEllipsis height={16} width={16} />}
                 />
             )}
             {/*TODO: wire up logic for the selectable payment method cards here*/}

@@ -6,16 +6,11 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { Category, CFDPlatforms, MarketType } from '../features/cfd/constants';
+import { Provider } from '@deriv/library';
+import { Category, CFDPlatforms, MarketType, TTM5FilterLandingCompany } from '../features/cfd/constants';
 import { Jurisdiction } from '../features/cfd/screens/CFDCompareAccounts/constants';
-import { TMarketTypes, TMT5LandingCompanyName } from '../types';
 
-type TUseMT5AccountHandler = {
-    marketType: TMarketTypes.All;
-    selectedJurisdiction: TMT5LandingCompanyName;
-};
-
-const useMT5AccountHandler = ({ marketType, selectedJurisdiction }: TUseMT5AccountHandler) => {
+const useMT5AccountHandler = () => {
     const { data: accountStatus, status } = useAccountStatus();
     const {
         error: isCreateMT5AccountError,
@@ -29,6 +24,10 @@ const useMT5AccountHandler = ({ marketType, selectedJurisdiction }: TUseMT5Accou
     const { data: settings } = useSettings();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
+
+    const { getCFDState } = Provider.useCFDContext();
+    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
 
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
     const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;

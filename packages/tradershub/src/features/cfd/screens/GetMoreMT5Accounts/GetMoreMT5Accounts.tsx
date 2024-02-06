@@ -25,9 +25,7 @@ const GetMoreMT5Accounts: FC = () => {
                 </div>
                 <div className='flex flex-col items-start flex-1'>
                     <div className='self-stretch'>
-                        <Text size='md' weight='bold'>
-                            Get more
-                        </Text>
+                        <Text weight='bold'>Get more</Text>
                     </div>
                     <div className='self-stretch'>
                         <Text size='sm'>Get more Deriv MT5 accounts under your preferred jurisdictions.</Text>

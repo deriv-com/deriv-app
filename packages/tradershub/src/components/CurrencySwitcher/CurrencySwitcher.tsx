@@ -71,7 +71,7 @@ const CurrencySwitcher = () => {
                     {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
                 </Text>
                 <Text
-                    className={!isDemo ? 'text-status-light-success' : undefined}
+                    className={!isDemo ? 'text-status-light-success' : ''}
                     size='sm'
                     weight={isDemo ? 'normal' : 'bold'}
                 >

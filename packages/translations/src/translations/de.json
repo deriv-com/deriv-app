@@ -675,6 +675,7 @@
     "706727320": "Häufigkeit des Handels mit binären Optionen",
     "706755289": "Dieser Block führt trigonometrische Funktionen aus.",
     "706960383": "Wir bieten Ihnen an, Ihren Kontrakt zu diesem Preis zu kaufen, wenn Sie ihn vor Ablauf der Laufzeit verkaufen möchten. Dies hängt von verschiedenen Faktoren ab, wie dem aktuellen Spotpreis, der Laufzeit usw. Wir bieten jedoch keinen Kontraktwert an, wenn die verbleibende Laufzeit unter 60 Sekunden liegt.",
+    "707189572": "Ihre E-Mail-Adresse hat sich geändert.<0/>Melden Sie sich jetzt mit Ihrer neuen E-Mail-Adresse an.",
     "707662672": "{{unblock_date}} bei {{unblock_time}}",
     "708055868": "Nummer des Führerscheins",
     "710123510": "wiederhole {{ while_or_until }} {{ boolean }}",

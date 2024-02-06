@@ -20,9 +20,7 @@ const ExitConfirmationDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose:
                 <Text as='p' size='lg' weight='bold'>
                     Stop creating an account?
                 </Text>
-                <Text as='p' size='md'>
-                    If you hit Yes, the info you entered will be lost.
-                </Text>
+                <Text as='p'>If you hit Yes, the info you entered will be lost.</Text>
                 <div className='flex justify-end gap-400'>
                     <Button onClick={handleClose} variant='outlined'>
                         Yes

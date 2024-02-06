@@ -9,9 +9,9 @@ type TProps<T> = {
     columns?: ColumnDef<T>[];
     data: T[];
     groupBy?: GroupingState;
-    headerRender?: (data: string) => JSX.Element;
     isFetching: boolean;
     loadMoreFunction: () => void;
+    renderHeader?: (data: string) => JSX.Element;
     rowRender: (data: T) => JSX.Element;
     tableClassname: string;
 };
@@ -19,9 +19,9 @@ type TProps<T> = {
 const Table = <T,>({
     columns = [],
     data,
-    headerRender = () => <div />,
     isFetching,
     loadMoreFunction,
+    renderHeader = () => <div />,
     rowRender,
     tableClassname,
 }: TProps<T>) => {
@@ -60,7 +60,7 @@ const Table = <T,>({
                 >
                     {table.getFlatHeaders().map(header => (
                         <Text className='p2p-v2-table__header-items' key={header.id} size='sm' weight='bold'>
-                            {headerRender(header.column.columnDef.header as string)}
+                            {renderHeader(header.column.columnDef.header as string)}
                         </Text>
                     ))}
                 </div>

@@ -2,13 +2,13 @@ import * as CurrencyUtils from '../currency';
 import { TCurrenciesConfig } from '../currency';
 
 describe('CurrencyUtils', () => {
-    const website_status: { currencies_config: TCurrenciesConfig } = {
-        currencies_config: {
-            AUD: { fractional_digits: 2, type: 'fiat' },
-            EUR: { fractional_digits: 2, type: 'fiat' },
-            GBP: { fractional_digits: 2, type: 'fiat' },
-            USD: { fractional_digits: 2, type: 'fiat', transfer_between_accounts: { limits: { max: 2500, min: 1.0 } } },
-            BTC: { fractional_digits: 8, type: 'crypto' },
+    const website_status: { currenciesConfig: TCurrenciesConfig } = {
+        currenciesConfig: {
+            AUD: { fractionalDigits: 2, type: 'fiat' },
+            EUR: { fractionalDigits: 2, type: 'fiat' },
+            GBP: { fractionalDigits: 2, type: 'fiat' },
+            USD: { fractionalDigits: 2, type: 'fiat', transferBetweenAccounts: { limits: { max: 2500, min: 1.0 } } },
+            BTC: { fractionalDigits: 8, type: 'crypto' },
         },
     };
     beforeEach(() => {

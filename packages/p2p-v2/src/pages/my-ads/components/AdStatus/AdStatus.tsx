@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/ui';
-import { useDevice } from '../../../../hooks';
+import { useDevice } from '@/hooks';
 import './AdStatus.scss';
 
 type TAdStatusProps = {
@@ -17,7 +17,7 @@ const AdStatus = ({ isActive = false }: TAdStatusProps) => {
                 'p2p-v2-ad-status--active': isActive,
                 'p2p-v2-ad-status--inactive': !isActive,
             })}
-            color={isActive ? 'success': 'error'}
+            color={isActive ? 'success' : 'error'}
             size={isMobile ? 'md' : 'sm'}
             weight='bold'
         >

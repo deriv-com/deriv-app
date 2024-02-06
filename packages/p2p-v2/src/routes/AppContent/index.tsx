@@ -13,11 +13,7 @@ export const routesConfiguration = [
     { Component: <div> Buy sell Page </div>, path: 'buy-sell', title: 'Buy / Sell' },
     { Component: <div> Orders Page </div>, path: 'orders', title: 'Orders' },
     {
-        Component: (
-            <div>
-                <MyAds />{' '}
-            </div>
-        ),
+        Component: <MyAds />,
         path: 'my-ads',
         title: 'My Ads',
     },

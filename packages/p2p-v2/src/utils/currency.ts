@@ -16,27 +16,27 @@ export const numberToCurrencyText = (value: number) =>
 
 export type TCurrenciesConfig = {
     [key: string]: {
-        fractional_digits: number;
-        is_deposit_suspended?: 0 | 1;
-        is_suspended?: 0 | 1;
-        is_withdrawal_suspended?: 0 | 1;
+        fractionalDigits: number;
+        isDepositSuspended?: 0 | 1;
+        isSuspended?: 0 | 1;
+        isWithdrawalSuspended?: 0 | 1;
         name?: string;
-        stake_default?: number;
-        transfer_between_accounts?: {
+        stakeDefault?: number;
+        transferBetweenAccounts?: {
             fees?: { [key: string]: number };
             limits: {
                 [key: string]: unknown;
                 max?: number;
                 min: number;
             } | null;
-            limits_dxtrade?: { [key: string]: unknown };
-            limits_mt5?: { [key: string]: unknown };
+            limitsDxtrade?: { [key: string]: unknown };
+            limitsMt5?: { [key: string]: unknown };
         };
         type: string;
     };
 };
 
-let currencies_config: TCurrenciesConfig = {};
+let currenciesConfig: TCurrenciesConfig = {};
 
 export const AMOUNT_MAX_LENGTH = 10;
 
@@ -45,17 +45,35 @@ export const CURRENCY_TYPE = {
     FIAT: 'fiat',
 } as const;
 
+/**
+ * Formats a monetary value based on the given currency and formatting options.
+ *
+ * @param {string} currencyValue - The currency symbol or code.
+ * @param {number|string} amount - The monetary value to be formatted.
+ * @param {boolean} [excludeCurrency=false] - Whether to exclude the currency symbol from the formatted result.
+ * @param {number} [decimals=0] - The number of decimal places for the formatted result.
+ * @param {number} [minimumFractionDigits=0] - The minimum number of decimal places for the formatted result.
+ *
+ * @returns {string} - The formatted monetary value as a string.
+ *
+ * @example
+ * ```
+ * const formattedAmount = formatMoney('USD', 1234.567, false, 2, 0);
+ * console.log(formattedAmount); // "$1,234.57"
+ * ```
+ */
+
 export const formatMoney = (
-    currency_value: string,
+    currencyValue: string,
     amount: number | string,
-    exclude_currency?: boolean,
+    excludeCurrency?: boolean,
     decimals = 0,
     minimumFractionDigits = 0
 ) => {
     let money: number | string = amount;
     if (money) money = String(money).replace(/,/g, '');
     const sign = money && Number(money) < 0 ? '-' : '';
-    const decimal_places = decimals || getDecimalPlaces(currency_value);
+    const decimal_places = decimals || getDecimalPlaces(currencyValue);
 
     money = isNaN(+money) ? 0 : Math.abs(+money);
     if (typeof Intl !== 'undefined') {
@@ -69,19 +87,41 @@ export const formatMoney = (
         money = addComma(money, decimal_places);
     }
 
-    return sign + (exclude_currency ? '' : formatCurrency(currency_value)) + money;
+    return sign + (excludeCurrency ? '' : formatCurrency(currencyValue)) + money;
 };
 
+/**
+ * Formats the given currency into a string that includes a span element with a class name.
+ * The class name is a combination of "symbols" and the lowercased currency string.
+ *
+ * @param {string} currency - The currency string to be formatted.
+ * @returns {string} The formatted string that includes a span element with a class name.
+ */
 export const formatCurrency = (currency: string) => {
     return `<span class="symbols ${(currency || '').toLowerCase()}"></span>`;
 };
 
-export const addComma = (num?: number | string | null, decimal_points?: number, is_crypto?: boolean) => {
+/**
+ * Adds commas to a numeric value for better readability.
+ *
+ * @param {number|string|null} [num=0] - The numeric value to add commas to.
+ * @param {number} [decimalPoints] - The number of decimal points to include. If provided, the value will be formatted with fixed decimal points.
+ * @param {boolean} [isCrypto] - Specifies if the number represents a cryptocurrency value.
+ *
+ * @returns {string} - The formatted numeric value with commas.
+ *
+ * @example
+ * ```
+ * const formattedNumber = addComma(1234567.89, 2, false);
+ * console.log(formattedNumber); // "1,234,567.89"
+ * ```
+ */
+export const addComma = (num?: number | string | null, decimalPoints?: number, isCrypto?: boolean) => {
     let number: number | string = String(num || 0).replace(/,/g, '');
-    if (typeof decimal_points !== 'undefined') {
-        number = (+number).toFixed(decimal_points);
+    if (typeof decimalPoints !== 'undefined') {
+        number = (+number).toFixed(decimalPoints);
     }
-    if (is_crypto) {
+    if (isCrypto) {
         number = parseFloat(String(number));
     }
 
@@ -90,23 +130,68 @@ export const addComma = (num?: number | string | null, decimal_points?: number, 
         .replace(/(^|[^\w.])(\d{4,})/g, ($0, $1, $2) => $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, '$&,'));
 };
 
+/**
+ * Calculates the number of decimal places for the given currency.
+ *
+ * @param {string} currency - The currency symbol or code.
+ * @returns {number} - The number of decimal places for the currency.
+ *
+ * @example
+ * ```
+ * const decimalPlaces = calcDecimalPlaces('BTC');
+ * console.log(decimalPlaces); // 8
+ * ```
+ */
 export const calcDecimalPlaces = (currency: string) => {
-    return isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'fractional_digits']) : 2;
+    return isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'fractionalDigits']) : 2;
 };
 
+/**
+ * Gets the number of decimal places for the given currency.
+ *
+ * @param {string} [currency=''] - The currency symbol or code.
+ * @returns {number} - The number of decimal places for the currency.
+ *
+ * @example
+ * ```
+ * const decimalPlaces = getDecimalPlaces('EUR');
+ * console.log(decimalPlaces); // 2
+ * ```
+ */
 export const getDecimalPlaces = (currency = '') =>
-    // need to check currencies_config[currency] exists instead of || in case of 0 value
-    currencies_config[currency]
-        ? getPropertyValue(currencies_config, [currency, 'fractional_digits'])
+    // need to check currenciesConfig[currency] exists instead of || in case of 0 value
+    currenciesConfig[currency]
+        ? getPropertyValue(currenciesConfig, [currency, 'fractionalDigits'])
         : calcDecimalPlaces(currency);
 
-export const setCurrencies = (website_status: { currencies_config: TCurrenciesConfig }) => {
-    currencies_config = website_status.currencies_config;
+/**
+ * Sets the currencies configuration for the website.
+ *
+ * @param {Object} website_status - The website status object containing currencies configuration.
+ * @param {TCurrenciesConfig} website_status.currenciesConfig - The currencies configuration object.
+ *
+ * @returns {void}
+ *
+ * @example
+ * ```
+ * const websiteStatus = {
+ *     currenciesConfig: {
+ *         EUR: { fractionalDigits: 2 },
+ *         USD: { fractionalDigits: 2 },
+ *         GBP: { fractionalDigits: 2 },
+ *         BTC: { fractionalDigits: 8 },
+ *     },
+ * };
+ * setCurrencies(websiteStatus);
+ * ```
+ */
+export const setCurrencies = (website_status: { currenciesConfig: TCurrenciesConfig }) => {
+    currenciesConfig = website_status.currenciesConfig;
 };
 
 // (currency in crypto_config) is a back-up in case website_status doesn't include the currency config, in some cases where it's disabled
 export const isCryptocurrency = (currency: string) => {
-    return /crypto/i.test(getPropertyValue(currencies_config, [currency, 'type'])) || currency in CryptoConfig.get();
+    return /crypto/i.test(getPropertyValue(currenciesConfig, [currency, 'type'])) || currency in CryptoConfig.get();
 };
 
 export const CryptoConfig = (() => {
@@ -116,140 +201,140 @@ export const CryptoConfig = (() => {
     const initCryptoConfig = () =>
         deepFreeze({
             BTC: {
-                display_code: 'BTC',
+                displayCode: 'BTC',
                 name: 'Bitcoin',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 8,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 8,
             },
             BUSD: {
-                display_code: 'BUSD',
+                displayCode: 'BUSD',
                 name: 'Binance USD',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             DAI: {
-                display_code: 'DAI',
+                displayCode: 'DAI',
                 name: 'Multi-Collateral DAI',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             EURS: {
-                display_code: 'EURS',
+                displayCode: 'EURS',
                 name: 'STATIS Euro',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             IDK: {
-                display_code: 'IDK',
+                displayCode: 'IDK',
                 name: 'IDK',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 0,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 0,
             },
             PAX: {
-                display_code: 'PAX',
+                displayCode: 'PAX',
                 name: 'Paxos Standard',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             TUSD: {
-                display_code: 'TUSD',
+                displayCode: 'TUSD',
                 name: 'True USD',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             USDC: {
-                display_code: 'USDC',
+                displayCode: 'USDC',
                 name: 'USD Coin',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             USDK: {
-                display_code: 'USDK',
+                displayCode: 'USDK',
                 name: 'USDK',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             eUSDT: {
-                display_code: 'eUSDT',
+                displayCode: 'eUSDT',
                 name: 'Tether ERC20',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             tUSDT: {
-                display_code: 'tUSDT',
+                displayCode: 'tUSDT',
                 name: 'Tether TRC20',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 2,
             },
             BCH: {
-                display_code: 'BCH',
+                displayCode: 'BCH',
                 name: 'Bitcoin Cash',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 8,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 8,
             },
             ETH: {
-                display_code: 'ETH',
+                displayCode: 'ETH',
                 name: 'Ether',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 8,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 8,
             },
             ETC: {
-                display_code: 'ETC',
+                displayCode: 'ETC',
                 name: 'Ether Classic',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 8,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 8,
             },
             LTC: {
-                display_code: 'LTC',
+                displayCode: 'LTC',
                 name: 'Litecoin',
-                min_withdrawal: 0.002,
-                pa_max_withdrawal: 5,
-                pa_min_withdrawal: 0.002,
-                fractional_digits: 8,
+                minWithdrawal: 0.002,
+                paMaxWithdrawal: 5,
+                paMinWithdrawal: 0.002,
+                fractionalDigits: 8,
             },
             UST: {
-                display_code: 'USDT',
+                displayCode: 'USDT',
                 name: 'Tether Omni',
-                min_withdrawal: 0.02,
-                pa_max_withdrawal: 2000,
-                pa_min_withdrawal: 10,
-                fractional_digits: 2,
+                minWithdrawal: 0.02,
+                paMaxWithdrawal: 2000,
+                paMinWithdrawal: 10,
+                fractionalDigits: 2,
             },
             // USB: {
-            //     display_code: 'USB',
+            //     displayCode: 'USB',
             //     name: 'Binary Coin',
-            //     min_withdrawal: 0.02,
-            //     pa_max_withdrawal: 2000,
-            //     pa_min_withdrawal: 10,
-            //     fractional_digits: 2,
+            //     minWithdrawal: 0.02,
+            //     paMaxWithdrawal: 2000,
+            //     paMinWithdrawal: 10,
+            //     fractionalDigits: 2,
             // },
         });
 

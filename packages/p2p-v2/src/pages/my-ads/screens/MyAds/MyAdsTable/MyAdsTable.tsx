@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
-import { Table } from '../../../../../components';
+import { Table } from '@/components';
 import { MyAdsTableRow } from '../MyAdsTableRow';
 import './MyAdsTable.scss';
 
@@ -18,31 +18,28 @@ MyAdsTableRowRenderer.displayName = 'MyAdsTableRowRenderer';
 
 const headerRenderer = (header: string) => <span>{header}</span>;
 
-const MyAdsTable = () => {
-    const columns = useMemo(
-        () => [
-            {
-                header: 'Ad ID',
-            },
-            {
-                header: 'Limits',
-            },
-            {
-                header: 'Rate (1 BTC)',
-            },
-            {
-                header: 'Available amount',
-            },
-            {
-                header: 'Payment methods',
-            },
-            {
-                header: 'Status',
-            },
-        ],
-        []
-    );
+const columns = [
+    {
+        header: 'Ad ID',
+    },
+    {
+        header: 'Limits',
+    },
+    {
+        header: 'Rate (1 BTC)',
+    },
+    {
+        header: 'Available amount',
+    },
+    {
+        header: 'Payment methods',
+    },
+    {
+        header: 'Status',
+    },
+];
 
+const MyAdsTable = () => {
     const { data = [], isFetching, isLoading, loadMoreAdverts } = p2p.advertiserAdverts.useGet();
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
     const { mutate } = p2p.advert.useUpdate();
@@ -59,7 +56,6 @@ const MyAdsTable = () => {
                 mutate({ id, is_active: 0 });
                 break;
             case 'edit':
-                break;
             default:
                 break;
         }
@@ -70,9 +66,9 @@ const MyAdsTable = () => {
             <Table
                 columns={columns}
                 data={data}
-                headerRender={headerRenderer}
                 isFetching={isFetching}
                 loadMoreFunction={loadMoreAdverts}
+                renderHeader={headerRenderer}
                 rowRender={(rowData: unknown) => (
                     <MyAdsTableRowRenderer
                         {...(rowData as TMyAdsTableRowRendererProps)}

@@ -156,6 +156,20 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        let timer_counter = 1;
+        if (window.sendRequestsStatistic) {
+            performance.clearMeasures();
+            // Log is sent every 10 seconds for 5 minutes
+            this.timer = setInterval(() => {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+                if (timer_counter === 12) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }, 10000);
+        }
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
         const is_ios = mobileOSDetect() === 'iOS';

@@ -1,7 +1,5 @@
 import React from 'react';
-import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
-import { Provider } from '@deriv/library';
-import useRegulationFlags from '../../../../hooks/useRegulationFlags';
+import { useRegulationFlags } from '@/hooks';
 import {
     Category,
     companyNamesAndUrls,
@@ -9,8 +7,10 @@ import {
     MarketTypeDetails,
     PlatformDetails,
     TTM5FilterLandingCompany,
-} from '../../constants';
-import { CFDSuccess } from '../../screens';
+} from '@cfd/constants';
+import { CFDSuccess } from '@cfd/screens';
+import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
 
 const SuccessComponent = () => {

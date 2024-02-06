@@ -1,9 +1,9 @@
 import React from 'react';
+import { Modal } from '@/components';
+import { THooks, TPlatforms } from '@/types';
+import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useIsEuRegion, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
 import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
-import { Modal } from '../../../../components/Modal';
-import { THooks, TPlatforms } from '../../../../types';
-import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
 
 type TTopUpModalProps = {
     account: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;

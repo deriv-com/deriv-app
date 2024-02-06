@@ -1,10 +1,10 @@
 import React from 'react';
+import { TradingAppCardLoader } from '@/components';
+import { THooks } from '@/types';
+import { CFDPlatformLayout } from '@cfd/components';
+import { PlatformDetails } from '@cfd/constants';
+import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '@cfd/flows';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
-import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
-import { THooks } from '../../../../types';
-import { PlatformDetails } from '../../constants';
-import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '../../flows/CTrader';
-import { CFDPlatformLayout } from '../CFDPlatformLayout';
 
 const CTraderList = () => {
     const { data: cTraderAccounts, isFetchedAfterMount } = useCtraderAccountsList();

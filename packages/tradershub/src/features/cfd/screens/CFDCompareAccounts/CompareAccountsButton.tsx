@@ -1,4 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
+import { THooks, TPlatforms } from '@/types';
+import { DummyComponent } from '@cfd/components';
+import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
+import { CTraderSuccessModal, DxtradePasswordModal } from '@cfd/modals';
 import {
     useActiveTradingAccount,
     useAuthentication,
@@ -8,11 +12,6 @@ import {
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
-import { THooks, TPlatforms } from '../../../../types';
-import { DummyComponent } from '../../components/DummyComponent';
-import { Category, CFDPlatforms, MarketType } from '../../constants';
-import { DxtradePasswordModal } from '../../modals';
-import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
 import {
     getAccountVerificationStatus,
     shouldRestrictBviAccountCreation,

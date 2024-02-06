@@ -1,7 +1,7 @@
 import React from 'react';
+import { useMT5AccountHandler } from '@/hooks';
 import { useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import { MarketType, TTM5FilterLandingCompany } from '../../constants';
 import AddAccountButtonsGroup from './ButtonGroups/AddAccountButtonsGroup';
 import CreateAccountButton from './ButtonGroups/CreateAccountButton';

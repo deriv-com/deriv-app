@@ -1,6 +1,6 @@
 import React from 'react';
+import { THooks } from '@/types';
 import { CaptionText, Text } from '@deriv/quill-design';
-import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
 
 type TDynamicLeverageMarketCardProps = {

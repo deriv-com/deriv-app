@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { Dialog, Modal } from '@/components';
+import { Category, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Dialog, Modal } from '../../../../components';
-import { Category, PlatformDetails } from '../../constants';
 import FooterComponent from './FooterComponent';
 import PasswordComponent from './PasswordComponent';
 

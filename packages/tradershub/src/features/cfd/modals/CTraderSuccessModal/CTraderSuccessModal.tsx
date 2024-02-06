@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import { ButtonGroup, Modal } from '@/components';
+import { PlatformDetails } from '@cfd/constants';
+import { CFDSuccess } from '@cfd/screens';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
-import { ButtonGroup, Modal } from '../../../../components';
-import { PlatformDetails } from '../../constants';
-import { CFDSuccess } from '../../screens';
 
 type TCTraderSuccessModal = {
     isDemo: boolean;

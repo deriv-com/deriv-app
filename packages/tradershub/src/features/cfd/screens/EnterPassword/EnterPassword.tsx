@@ -1,11 +1,11 @@
 import React, { ChangeEvent } from 'react';
+import { useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { TMarketTypes, TPlatforms } from '@/types';
+import { validPassword } from '@/utils';
+import { MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
-import { useUIContext } from '../../../../components';
-import useRegulationFlags from '../../../../hooks/useRegulationFlags';
-import { TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
 
 type TEnterPasswordProps = {
     isLoading?: boolean;

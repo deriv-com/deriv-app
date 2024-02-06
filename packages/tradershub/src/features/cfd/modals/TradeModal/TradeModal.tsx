@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
+import { Modal } from '@/components';
+import { THooks, TMarketTypes, TPlatforms } from '@/types';
+import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '@cfd/constants';
+import { TradeScreen } from '@cfd/screens';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import { Modal } from '../../../../components/Modal';
-import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '../../constants';
-import { TradeScreen } from '../../screens/TradeScreen';
 
 type TTradeModalProps = {
     account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;

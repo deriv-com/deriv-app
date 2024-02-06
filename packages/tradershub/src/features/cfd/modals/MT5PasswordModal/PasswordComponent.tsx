@@ -1,10 +1,10 @@
 import React from 'react';
+import { ActionScreen, SentEmailContent } from '@/components';
+import { useMT5AccountHandler } from '@/hooks';
+import { MarketType, PlatformDetails, QueryStatus, TTM5FilterLandingCompany } from '@cfd/constants';
 import { useAccountStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { ActionScreen, SentEmailContent } from '../../../../components';
-import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { MarketType, PlatformDetails, QueryStatus, TTM5FilterLandingCompany } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
 import SuccessComponent from './SuccessComponent';
 

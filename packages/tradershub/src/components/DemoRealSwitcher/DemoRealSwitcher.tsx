@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
+import { useUIContext } from '@/components';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
-import { useUIContext } from '../UIProvider';
 
 type TAccount = {
     label: string;

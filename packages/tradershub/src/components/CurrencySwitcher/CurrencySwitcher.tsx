@@ -1,17 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { CurrencySwitcherLoader, Modal, TradingAccountsList, useUIContext } from '@/components';
+import { IconToCurrencyMapper } from '@/constants';
+import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
-import { IconToCurrencyMapper } from '../../constants/constants';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
 import { THooks } from '../../types';
-import { CurrencySwitcherLoader } from '../Loaders';
-import { Modal } from '../Modal';
-import { TradingAccountsList } from '../TradingAccountsList';
-import { useUIContext } from '../UIProvider';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];

@@ -1,5 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { ActionScreen, ButtonGroup, Dialog, Modal, SentEmailContent } from '@/components';
+import { Category, MarketType, PlatformDetails, QueryStatus } from '@cfd/constants';
+import { CFDSuccess, CreatePassword, EnterPassword } from '@cfd/screens';
 import {
     useAccountStatus,
     useActiveTradingAccount,
@@ -8,10 +11,7 @@ import {
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { ActionScreen, ButtonGroup, Dialog, Modal, SentEmailContent } from '../../../../components';
 import DxTradePasswordIcon from '../../../../public/images/cfd/dxtrade-password.svg';
-import { Category, MarketType, PlatformDetails, QueryStatus } from '../../constants';
-import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
 const DxtradePasswordModal = () => {
     const history = useHistory();

@@ -1,7 +1,7 @@
 import React from 'react';
+import { THooks } from '@/types';
+import { MarketTypeDetails } from '@cfd/constants';
 import { Text } from '@deriv/quill-design';
-import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
 
 type TJurisdictionFootNoteTitle = {
     marketType: Exclude<THooks.SortedMT5Accounts['market_type'], undefined>;

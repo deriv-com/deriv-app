@@ -8,14 +8,16 @@ import { ManualFormFooter } from './manualFormFooter';
 import { ManualFormInputs } from './manualFormInputs';
 
 type TManualFormProps = {
+    onSubmit: (values: typeof MANUAL_FORM_INITIAL_VALUES) => void;
     selectedDocument: TManualDocumentTypes;
 };
 
-export const ManualForm = ({ selectedDocument }: TManualFormProps) => {
+export const ManualForm = ({ onSubmit, selectedDocument }: TManualFormProps) => {
     return (
         <div className='m-400 p-800 border-100 border-solid rounded-400'>
             <Formik
                 initialValues={MANUAL_FORM_INITIAL_VALUES}
+                onSubmit={onSubmit}
                 validationSchema={() => getManualFormValidationSchema(selectedDocument)}
             >
                 {({ isValid }) => (

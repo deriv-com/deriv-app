@@ -145,6 +145,7 @@ const Dropzone: React.FC<TProps> = ({
                                 className={classNames('wallets-dropzone__thumb', {
                                     'wallets-dropzone__thumb--has-frame': hasFrame,
                                 })}
+                                data-testid='dt_remove-button'
                                 style={{ backgroundImage: `url(${file.preview})` }}
                             >
                                 {hasFrame && <DropzoneFrame />}

@@ -57,7 +57,7 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
                             })}
                         </div>
                         {isDesktop && (
-                            <div className='border-75 border-system-light-hover-background rounded-200 flex flex-col justify-center items-center w-[150px] gap-[5px] p-400'>
+                            <div className='border-75 border-solid border-system-light-hover-background rounded-200 flex flex-col justify-center items-center w-[150px] gap-[5px] p-400'>
                                 <QRCode size={80} value={PlatformDetails[platform].link} />
                                 <Text align='center' size='xs'>
                                     Scan the QR code to download {PlatformDetails[platform].title}

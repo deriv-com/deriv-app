@@ -7,7 +7,7 @@ import {
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Category, CFDPlatforms, MarketType, TTM5FilterLandingCompany } from '../features/cfd/constants';
+import { Category, CFDPlatforms, MarketType } from '../features/cfd/constants';
 import { Jurisdiction } from '../features/cfd/screens/CFDCompareAccounts/constants';
 
 const useMT5AccountHandler = () => {
@@ -27,7 +27,7 @@ const useMT5AccountHandler = () => {
 
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
-    const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
+    const selectedJurisdiction = getCFDState('selectedJurisdiction');
 
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
     const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;

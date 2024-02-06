@@ -28,12 +28,11 @@ const WalletDatePicker = ({
     isInvalid,
     label,
     maxDate,
-    message,
     minDate,
     mobileAlignment = 'below',
-    name,
+    onBlur,
+    onChange,
     onDateChange,
-    ...field
 }: TDatePickerProps) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
@@ -63,11 +62,12 @@ const WalletDatePicker = ({
     return (
         <div className='wallets-datepicker' ref={datePickerRef}>
             <Input
-                {...field}
                 aria-label={label}
                 error={isInvalid}
                 label={label}
                 message={isInvalid ? errorMessage?.toString() : ''}
+                onBlur={onBlur}
+                onChange={onChange}
                 onClick={toggleCalendar}
                 rightPlaceholder={
                     <button

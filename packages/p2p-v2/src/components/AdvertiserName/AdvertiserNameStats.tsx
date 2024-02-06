@@ -21,7 +21,7 @@ const AdvertiserNameStats = () => {
         advertiserStats || {};
 
     return (
-        <div className='p2p-v2-advertiser-name-stats'>
+        <div className='p2p-v2-advertiser-name-stats' data-testid='dt_p2p_v2_advertiser_name_stats'>
             <div>
                 <Text color='less-prominent' size='sm'>
                     Joined {daysSinceJoined}d

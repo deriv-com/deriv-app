@@ -4,7 +4,7 @@ import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import WalletsImage from 'Assets/svgs/wallets';
 import './wallets-upgrade-modal.scss';
-import { useWalletMigration } from '@deriv/api';
+import { useWalletMigration } from '@deriv/hooks';
 
 const WalletsUpgradeModal = () => {
     const { traders_hub, ui } = useStore();

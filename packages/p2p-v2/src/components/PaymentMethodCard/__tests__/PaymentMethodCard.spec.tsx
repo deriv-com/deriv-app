@@ -19,6 +19,6 @@ describe('PaymentMethodCard', () => {
                 }}
             />
         );
-        expect(screen.getByTestId('dt_p2p_v2_payment-method-card__header')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_p2p_v2_payment_method_card_header')).toBeInTheDocument();
     });
 });

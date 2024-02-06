@@ -13,6 +13,8 @@
         }
     }
     &__mobile-header {
+        display: flex;
+        align-items: center;
         margin: 1.6rem;
         text-align: unset;
     }

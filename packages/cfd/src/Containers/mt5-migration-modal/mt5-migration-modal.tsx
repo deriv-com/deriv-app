@@ -42,10 +42,10 @@ const MT5MigrationModal = observer(() => {
                             exit_classname='cfd-modal--custom-exit'
                             is_open={is_mt5_migration_modal_open}
                             title={modal_title}
-                            has_return_icon={!show_modal_front_side}
-                            onReturn={() => setShowModalFrontSide(true)}
                             toggleModal={closeModal}
                             width='58.8rem'
+                            has_return_icon={!show_modal_front_side}
+                            onReturn={() => setShowModalFrontSide(true)}
                         >
                             <MT5MigrationModalContent />
                         </Modal>
@@ -56,7 +56,12 @@ const MT5MigrationModal = observer(() => {
                             header_classname='mt5-migration-modal__mobile-header'
                             portal_id='deriv_app'
                             header={modal_title}
-                            onClickClose={toggleMT5MigrationModal}
+                            onClickClose={() => {
+                                toggleMT5MigrationModal();
+                                setShowModalFrontSide(true);
+                            }}
+                            has_return_icon={!show_modal_front_side}
+                            onReturn={() => setShowModalFrontSide(true)}
                         >
                             <MT5MigrationModalContent />
                         </PageOverlay>

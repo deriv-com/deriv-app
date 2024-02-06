@@ -20,6 +20,7 @@ interface TDatePickerProps extends WalletTextFieldProps {
     validationSchema?: Yup.AnySchema;
 }
 
+// TODO: Move this component to @deriv-com/ui
 const WalletDatePicker = ({
     defaultValue,
     disabled,

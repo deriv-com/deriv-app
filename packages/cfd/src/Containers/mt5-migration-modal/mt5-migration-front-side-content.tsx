@@ -1,28 +1,19 @@
 import React from 'react';
 import { Button, Modal, Text, HintBox } from '@deriv/components';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { CFD_PLATFORMS, Jurisdiction, getCFDPlatformNames } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import Icon from '@deriv/components/src/components/icon/icon';
+import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 
 const MT5MigrationFrontSideContent = observer(() => {
-    const { ui, common } = useStore();
-    const { is_mobile, setMT5MigrationModalEnabled, toggleMT5MigrationModal } = ui;
-    const { setAppstorePlatform } = common;
-    const { enableCFDPasswordModal, mt5_migration_error, setJurisdictionSelectedShortcode } = useCfdStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+    const { mt5_migration_error } = useCfdStore();
     const content_size = is_mobile ? 'xxs' : 'xs';
-    const { getEligibleAccountToMigrate } = useMT5SVGEligibleToMigrate();
-
-    const onConfirmMigration = () => {
-        setAppstorePlatform(CFD_PLATFORMS.MT5);
-        setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
-        setMT5MigrationModalEnabled(true);
-        toggleMT5MigrationModal();
-        enableCFDPasswordModal();
-    };
+    const { setShowModalFrontSide } = useMT5MigrationModalContext();
 
     return (
         <React.Fragment>
@@ -70,11 +61,12 @@ const MT5MigrationFrontSideContent = observer(() => {
                 />
             </div>
             <Modal.Footer has_separator>
-                <Button type='button' has_effect large primary onClick={onConfirmMigration}>
+                <Button type='button' has_effect large primary onClick={() => setShowModalFrontSide(false)}>
                     <Localize i18n_default_text='Next' />
                 </Button>
             </Modal.Footer>
         </React.Fragment>
     );
 });
+
 export default MT5MigrationFrontSideContent;

@@ -42,6 +42,8 @@ const MT5MigrationModal = observer(() => {
                             exit_classname='cfd-modal--custom-exit'
                             is_open={is_mt5_migration_modal_open}
                             title={modal_title}
+                            has_return_icon={!show_modal_front_side}
+                            onReturn={() => setShowModalFrontSide(true)}
                             toggleModal={closeModal}
                             width='58.8rem'
                         >

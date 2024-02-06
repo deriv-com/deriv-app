@@ -30,7 +30,7 @@ jest.mock('../../TransactionsNoDataState', () => ({
 let reference: ((arg0: unknown) => void) | null = null;
 
 const setOnCashierScroll = jest.fn(fn => {
-    reference = fn();
+    reference = fn?.();
 });
 
 const onCashierScroll = (el: unknown) => {
@@ -49,11 +49,14 @@ describe('TransactionsCompleted', () => {
         (useAllAccountsList as jest.Mock).mockReturnValue({ data: null, isLoading: true });
         (useInfiniteTransactions as jest.Mock).mockReturnValue({ data: null, isLoading: true, setFilter: jest.fn() });
 
-        render(
-            <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
-                <TransactionsCompleted />
-            </CashierScrollContext.Provider>
-        );
+        await act(async () => {
+            render(
+                <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
+                    <TransactionsCompleted />
+                </CashierScrollContext.Provider>
+            );
+        });
+
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
@@ -62,11 +65,14 @@ describe('TransactionsCompleted', () => {
         (useAllAccountsList as jest.Mock).mockReturnValue({ data: [], isLoading: false });
         (useInfiniteTransactions as jest.Mock).mockReturnValue({ data: null, isLoading: true, setFilter: jest.fn() });
 
-        render(
-            <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
-                <TransactionsCompleted />
-            </CashierScrollContext.Provider>
-        );
+        await act(async () => {
+            render(
+                <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
+                    <TransactionsCompleted />
+                </CashierScrollContext.Provider>
+            );
+        });
+
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
@@ -75,11 +81,14 @@ describe('TransactionsCompleted', () => {
         (useAllAccountsList as jest.Mock).mockReturnValue({ data: [], isLoading: false });
         (useInfiniteTransactions as jest.Mock).mockReturnValue({ data: null, isLoading: false, setFilter: jest.fn() });
 
-        render(
-            <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
-                <TransactionsCompleted />
-            </CashierScrollContext.Provider>
-        );
+        await act(async () => {
+            render(
+                <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
+                    <TransactionsCompleted />
+                </CashierScrollContext.Provider>
+            );
+        });
+
         expect(screen.getByText('No Data')).toBeInTheDocument();
     });
 
@@ -95,11 +104,14 @@ describe('TransactionsCompleted', () => {
             setFilter: jest.fn(),
         });
 
-        render(
-            <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
-                <TransactionsCompleted />
-            </CashierScrollContext.Provider>
-        );
+        await act(async () => {
+            render(
+                <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
+                    <TransactionsCompleted />
+                </CashierScrollContext.Provider>
+            );
+        });
+
         expect(screen.getByText('01 Feb 2022')).toBeInTheDocument();
         expect(screen.getByText('02 Feb 2022')).toBeInTheDocument();
         expect(screen.getAllByText('Transaction Row')).toHaveLength(2);
@@ -118,20 +130,22 @@ describe('TransactionsCompleted', () => {
             setFilter: jest.fn(),
         });
 
-        render(
-            <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
-                <div
-                    data-testid='dt_transactions_completed'
-                    onScroll={onCashierScroll}
-                    style={{
-                        height: '300px',
-                        width: '1920px',
-                    }}
-                >
-                    <TransactionsCompleted />
-                </div>
-            </CashierScrollContext.Provider>
-        );
+        await act(async () => {
+            render(
+                <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
+                    <div
+                        data-testid='dt_transactions_completed'
+                        onScroll={onCashierScroll}
+                        style={{
+                            height: '300px',
+                            width: '1920px',
+                        }}
+                    >
+                        <TransactionsCompleted />
+                    </div>
+                </CashierScrollContext.Provider>
+            );
+        });
 
         const el = screen.getByTestId('dt_transactions_completed');
 
@@ -155,20 +169,22 @@ describe('TransactionsCompleted', () => {
             setFilter: jest.fn(),
         });
 
-        render(
-            <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
-                <div
-                    data-testid='dt_transactions_completed'
-                    onScroll={onCashierScroll}
-                    style={{
-                        height: '300px',
-                        width: '1920px',
-                    }}
-                >
-                    <TransactionsCompleted />
-                </div>
-            </CashierScrollContext.Provider>
-        );
+        await act(async () => {
+            render(
+                <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
+                    <div
+                        data-testid='dt_transactions_completed'
+                        onScroll={onCashierScroll}
+                        style={{
+                            height: '300px',
+                            width: '1920px',
+                        }}
+                    >
+                        <TransactionsCompleted />
+                    </div>
+                </CashierScrollContext.Provider>
+            );
+        });
 
         const el = screen.getByTestId('dt_transactions_completed');
 

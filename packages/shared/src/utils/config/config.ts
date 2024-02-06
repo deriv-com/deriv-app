@@ -68,12 +68,21 @@ export const getAppId = () => {
     }
     if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = _app_id || 16303; // it's being used in endpoint chrome extension - please do not remove
+        app_id = _app_id ?? 16303; // it's being used in endpoint chrome extension - please do not remove
+        //added for testing purpose
+        // eslint-disable-next-line no-console
+        console.log('is_statging');
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 36300;
+        //added for testing purpose
+        // eslint-disable-next-line no-console
+        console.log('is_local');
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = _app_id || 16929;
+        app_id = isBot() ? 1020 : 1022 ?? 16929;
+        //added for testing purpose
+        // eslint-disable-next-line no-console
+        console.log('is_test_link');
     }
     return app_id;
 };

@@ -14,6 +14,13 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
                 },
             },
             {
+                clickableDescription: [
+                    {
+                        tag: 'dynamicLeverage',
+                        text: 'Dynamic Leverage',
+                        type: 'link',
+                    },
+                ],
                 key: 'leverage',
                 title: 'Leverage',
                 titleIndicators: {

@@ -21,7 +21,7 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
         setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
     };
 
-    const content = getStatusContent(passkey_status, onSecondaryButtonClick);
+    const content = getStatusContent(passkey_status);
 
     if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE) {
         onSecondaryButtonClick = () => setPasskeyStatus(prev_passkey_status.current);

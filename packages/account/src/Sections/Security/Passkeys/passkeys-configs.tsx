@@ -1,14 +1,12 @@
 import React from 'react';
-import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { mobileOSDetect } from '@deriv/shared';
 import { DescriptionContainer } from './components/description-container';
-import { EffortLessLoginTips } from './components/effortless-login-tips';
 import { TipsBlock } from './components/tips-block';
+import { TServerError } from '../../../Types/common.type';
 
 export const PASSKEY_STATUS_CODES = {
     CREATED: 'created',
-    EFFORTLESS_LOGIN: 'effortless_login',
     LEARN_MORE: 'learn_more',
     NONE: '',
     NO_PASSKEY: 'no_passkey',
@@ -19,7 +17,7 @@ export const PASSKEY_STATUS_CODES = {
 
 export type TPasskeysStatus = typeof PASSKEY_STATUS_CODES[keyof typeof PASSKEY_STATUS_CODES];
 
-export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextClick?: () => void) => {
+export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     const learn_more_button_text = <Localize i18n_default_text='Learn more' />;
     const create_passkey_button_text = <Localize i18n_default_text='Create passkey' />;
     const continue_button_text = <Localize i18n_default_text='Continue' />;
@@ -45,9 +43,8 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
 
     const titles = {
         created: <Localize i18n_default_text='Success!' />,
-        effortless_login: <Localize i18n_default_text='Effortless login with passkeys' />,
         learn_more: <Localize i18n_default_text='Passwordless login with passkeys' />,
-        no_passkey: <Localize i18n_default_text='No passkey found' />,
+        no_passkey: <Localize i18n_default_text='Experience safer logins' />,
         removed: <Localize i18n_default_text='Passkey successfully removed' />,
         renaming: <Localize i18n_default_text='Edit passkey' />,
         verifying: <Localize i18n_default_text='Verify your request' />,
@@ -59,8 +56,6 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
                 components={[<br key={0} />]}
             />
         ),
-        //TODO add the rest of decriptions
-        effortless_login: <EffortLessLoginTips onLearnMoreClick={onTextClick} />,
         learn_more: (
             <React.Fragment>
                 <DescriptionContainer />
@@ -69,8 +64,8 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
         ),
         no_passkey: (
             <Localize
-                i18n_default_text="To enhance your security, tap 'Create passkey' below. Learn more about passkeys <0>here</0>."
-                components={[<Text key={0} color='loss-danger' size='xs' onClick={onTextClick} />]}
+                i18n_default_text='To enhance your security,<0/>tap ‘Create passkey’ below.'
+                components={[<br key={0} />]}
             />
         ),
         removed: getPasskeysRemovedDescription(),
@@ -81,7 +76,6 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
     };
     const icons = {
         created: 'IcSuccessPasskey',
-        effortless_login: 'IcInfoPasskey',
         learn_more: 'IcInfoPasskey',
         no_passkey: 'IcAddPasskey',
         removed: 'IcSuccessPasskey',
@@ -90,7 +84,6 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
     };
     const button_texts = {
         created: continue_button_text,
-        effortless_login: create_passkey_button_text,
         learn_more: create_passkey_button_text,
         no_passkey: create_passkey_button_text,
         removed: continue_button_text,
@@ -99,7 +92,6 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
     };
     const back_button_texts = {
         created: undefined,
-        effortless_login: undefined,
         learn_more: undefined,
         no_passkey: learn_more_button_text,
         removed: undefined,
@@ -116,14 +108,15 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
     };
 };
 
-export const getErrorContent = (error_message: string | null) => {
-    const is_not_allowed_error = error_message?.includes('NotAllowedError');
+export const getErrorContent = (error_message: string | null | TServerError) => {
+    const is_not_allowed_error = typeof error_message === 'string' ? error_message.includes('NotAllowedError') : false;
+
+    const passkey_error_message = typeof error_message === 'string' ? error_message : error_message?.message;
 
     const try_again_button_text = <Localize i18n_default_text='Try again' />;
 
     if (is_not_allowed_error) {
         return {
-            title: <Localize i18n_default_text='Unable to setup passkey' />,
             description: (
                 <Localize i18n_default_text='We encountered an issue while setting up your passkey. The process might have been interrupted or the session timed out. Please try again.' />
             ),
@@ -132,8 +125,7 @@ export const getErrorContent = (error_message: string | null) => {
     }
 
     return {
-        title: <Localize i18n_default_text='Passkey error' />,
-        description: error_message ?? '',
+        description: passkey_error_message ?? '',
         button_text: try_again_button_text,
     };
 };

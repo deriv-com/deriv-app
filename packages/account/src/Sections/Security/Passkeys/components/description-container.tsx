@@ -22,14 +22,14 @@ const getPasskeysDescriptions = () =>
             id: 3,
             question: <Localize i18n_default_text='How to create a passkey?' />,
             description: (
-                <Localize i18n_default_text="Go to 'Account Settings' on Deriv GO to set up your passkey. Each device can only save one passkey; however, iOS users may still see the 'Create passkey' button due to iOS’s ability to save passkeys on other devices." />
+                <Localize i18n_default_text="Go to ‘Account Settings’ on Deriv to set up your passkey. Each device can only save one passkey; however, iOS users may still see the 'Create passkey' button due to iOS’s ability to save passkeys on other devices." />
             ),
         },
         {
             id: 4,
             question: <Localize i18n_default_text='Where are Passkeys saved?' />,
             description: (
-                <Localize i18n_default_text='Passkeys are saved in your password manager to help you sign in on other devices.' />
+                <Localize i18n_default_text='Passkeys are saved in your Google password manager for Android devices and in iCloud keychain on iOS devices to help you sign in on other devices.' />
             ),
         },
         {

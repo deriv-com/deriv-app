@@ -19,6 +19,7 @@ const useRegisterPasskey = () => {
         },
     });
     const public_key = data?.passkeys_register_options?.publicKey;
+    const challenge = public_key?.challenge;
 
     const {
         mutate: registerPasskey,
@@ -33,7 +34,7 @@ const useRegisterPasskey = () => {
 
     const startPasskeyRegistration = React.useCallback(async () => {
         try {
-            if (public_key) {
+            if (challenge) {
                 const attResp = await startRegistration(public_key);
                 registerPasskey({
                     payload: {
@@ -44,24 +45,20 @@ const useRegisterPasskey = () => {
         } catch (e) {
             setRegistrationError(String(e));
         }
-    }, [public_key, registerPasskey]);
+    }, [challenge, registerPasskey, public_key]);
 
-    React.useEffect(
-        () => {
-            if (public_key) {
-                startPasskeyRegistration();
-            }
-        },
-        // adding registerPasskey to trigger startPasskeyRegistration for the case when user clicks on the button to register passkey again
-        [public_key, fetchRegisterOptions, registerPasskey, startPasskeyRegistration]
-    );
+    React.useEffect(() => {
+        if (challenge) {
+            startPasskeyRegistration();
+        }
+    }, [challenge, startPasskeyRegistration]);
 
     // eslint-disable-next-line no-console
-    console.log('optionsError', optionsError);
+    console.log('optionsError', optionsError?.error);
     // eslint-disable-next-line no-console
     console.log('deviceRegistrationError', deviceRegistrationError);
     // eslint-disable-next-line no-console
-    console.log('passkeyRegisterError', passkeyRegisterError);
+    console.log('passkeyRegisterError', passkeyRegisterError?.error);
 
     const createPasskey = () => {
         setIsPasskeyRegistered(false);
@@ -73,7 +70,7 @@ const useRegisterPasskey = () => {
         createPasskey,
         is_passkey_registered,
         is_registration_in_progress: isFetching || isMutationLoading,
-        registration_error: optionsError || deviceRegistrationError || passkeyRegisterError,
+        registration_error: (optionsError?.error || deviceRegistrationError || passkeyRegisterError?.error) ?? null,
     };
 };
 

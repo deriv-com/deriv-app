@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { useGetPasskeysList, useIsPasskeySupported, useRegisterPasskey } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
+import { isEmptyObject, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import PasskeysStatusContainer from './components/passkeys-status-container';
 import PasskeysList from './components/passkeys-list';
@@ -51,18 +51,8 @@ const Passkeys = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    const getErrorText = () => {
-        if (passkeys_list_error) {
-            return passkeys_list_error.error.message ? passkeys_list_error.error.message : String(passkeys_list_error);
-        }
-        if (registration_error) {
-            if (typeof registration_error === 'string') return registration_error;
-            return registration_error.error.message ? registration_error?.error?.message : String(registration_error);
-        }
-        return null;
-    };
+    const error_message = !isEmptyObject(passkeys_list_error) ? passkeys_list_error : registration_error;
 
-    //TODO consider different error messages with title and descriptions
     return (
         <div className='passkeys'>
             {passkey_status ? (
@@ -82,9 +72,8 @@ const Passkeys = observer(() => {
             <PasskeyModal
                 className='passkeys-modal__error'
                 is_modal_open={passkey_error_modal_open}
-                title={getErrorContent(getErrorText()).title}
-                description={getErrorContent(getErrorText()).description}
-                button_text={getErrorContent(getErrorText()).button_text}
+                description={getErrorContent(error_message).description}
+                button_text={getErrorContent(error_message).button_text}
                 onButtonClick={() => setPasskeyErrorModalOpen(false)}
             />
         </div>

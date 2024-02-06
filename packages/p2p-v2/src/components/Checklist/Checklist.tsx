@@ -1,7 +1,7 @@
 import React from 'react';
+import { useDevice } from '@/hooks';
 import { LabelPairedArrowRightLgBoldIcon, LabelPairedCheckMdBoldIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
-import { useDevice } from '../../hooks';
 import './Checklist.scss';
 
 type TChecklistItem = {

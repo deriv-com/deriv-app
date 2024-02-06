@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
-import { ColumnDef, GroupingState, getCoreRowModel, getGroupedRowModel, useReactTable } from '@tanstack/react-table';
-import useFetchMore from '../../hooks/useFetchMore';
+import { useFetchMore } from '@/hooks';
+import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
 import './Table.scss';
 
 type TProps<T> = {

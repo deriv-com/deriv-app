@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
+import { AvailableP2PBalanceModal, DailyLimitModal } from '@/components/Modals';
+import { useAdvertiserStats, useDevice } from '@/hooks';
+import { numberToCurrencyText } from '@/utils';
 import { useActiveAccount } from '@deriv/api';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import { AvailableP2PBalanceModal, DailyLimitModal } from '../../../../components';
-import { useAdvertiserStats, useDevice } from '../../../../hooks';
-import { numberToCurrencyText } from '../../../../utils';
 import { MyProfileDailyLimit } from '../MyProfileDailyLimit';
 import './MyProfileBalance.scss';
 

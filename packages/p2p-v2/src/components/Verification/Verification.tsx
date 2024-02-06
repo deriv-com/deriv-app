@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Checklist } from '@/components';
+import { useDevice, usePoiPoaStatus } from '@/hooks';
 import { DerivLightIcCashierSendEmailIcon } from '@deriv/quill-icons';
 import { Loader, Text } from '@deriv-com/ui';
-import { useDevice, usePoiPoaStatus } from '../../hooks';
-import { Checklist } from '../Checklist';
 import './Verification.scss';
 
 const getPoiAction = (status: string | undefined) => {

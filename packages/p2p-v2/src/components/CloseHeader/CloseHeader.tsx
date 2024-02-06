@@ -1,7 +1,7 @@
 import React from 'react';
+import { useDevice } from '@/hooks';
 import { LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import { useDevice } from '../../hooks';
 import './CloseHeader.scss';
 
 const CloseHeader = () => {

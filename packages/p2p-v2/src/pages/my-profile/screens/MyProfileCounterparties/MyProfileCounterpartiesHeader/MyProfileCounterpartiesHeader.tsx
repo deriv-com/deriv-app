@@ -1,10 +1,9 @@
 import React from 'react';
+import { Dropdown, Search } from '@/components';
+import { COUNTERPARTIES_DROPDOWN_LIST } from '@/constants';
+import { useDevice } from '@/hooks';
 import { Button, Text } from '@deriv-com/ui';
-import { Dropdown } from '../../../../../components/Dropdown';
-import { Search } from '../../../../../components/Search';
-import { useDevice } from '../../../../../hooks';
 import SortIcon from '../../../../../public/ic-cashier-sort.svg';
-import { COUNTERPARTIES_DROPDOWN_LIST } from '../../../../../utils/constants';
 import './MyProfileCounterpartiesHeader.scss';
 
 type MyProfileCounterpartiesHeaderProps = {

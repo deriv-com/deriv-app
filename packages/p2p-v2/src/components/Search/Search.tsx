@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
+import { Input } from '@/components';
 import { LabelPairedSearchMdRegularIcon } from '@deriv/quill-icons';
-import { Input } from '../Input';
 import './Search.scss';
 
 type TSearchProps = {

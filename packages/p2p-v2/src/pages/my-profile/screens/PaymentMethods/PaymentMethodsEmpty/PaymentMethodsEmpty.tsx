@@ -1,8 +1,8 @@
 import React from 'react';
+import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
+import { useDevice, useQueryString } from '@/hooks';
 import { DerivLightIcPaymentMethodsWalletIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
-import { FullPageMobileWrapper, PaymentMethodsHeader } from '../../../../../components';
-import { setQueryString, useDevice } from '../../../../../hooks';
 import './PaymentMethodsEmpty.scss';
 
 type TPaymentMethodsEmptyProps = {
@@ -17,6 +17,7 @@ type TPaymentMethodsEmptyProps = {
  * **/
 const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) => {
     const { isMobile } = useDevice();
+    const { setQueryString } = useQueryString();
 
     if (isMobile) {
         return (

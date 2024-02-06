@@ -79,7 +79,7 @@ export const getAppId = () => {
         console.log('is_local');
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = isBot() ? 1020 : 1022 ?? 16929;
+        app_id = isBot() ? 1020 : 1022;
         //added for testing purpose
         // eslint-disable-next-line no-console
         console.log('is_test_link');

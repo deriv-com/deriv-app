@@ -1,7 +1,7 @@
 import React from 'react';
+import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
+import { useDevice, useQueryString } from '@/hooks';
 import { Button, Text } from '@deriv-com/ui';
-import { FullPageMobileWrapper, PaymentMethodsHeader } from '../../../../../components';
-import { useDevice, useQueryString } from '../../../../../hooks';
 import WalletIcon from '../../../../../public/ic-payment-methods-wallet.svg';
 import './PaymentMethodsEmpty.scss';
 
@@ -18,6 +18,7 @@ type TPaymentMethodsEmptyProps = {
 const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) => {
     const { isMobile } = useDevice();
     const { setQueryString } = useQueryString();
+
     if (isMobile) {
         return (
             <FullPageMobileWrapper
@@ -30,7 +31,7 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
             >
                 <div className='p2p-v2-payment-methods-empty'>
                     <WalletIcon />
-                    {/* TODO: Remember to localise the text below */}
+                    {/* TODO: Remember to localize the text below */}
                     <Text className='p2p-v2-payment-methods-empty__heading' size='lg' weight='bold'>
                         You haven’t added any payment methods yet
                     </Text>
@@ -51,7 +52,7 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
     return (
         <div className='p2p-v2-payment-methods-empty'>
             <WalletIcon />
-            {/* TODO: Remember to localise the text below */}
+            {/* TODO: Remember to localize the text below */}
             <Text className='p2p-v2-payment-methods-empty__heading' weight='bold'>
                 You haven’t added any payment methods yet
             </Text>

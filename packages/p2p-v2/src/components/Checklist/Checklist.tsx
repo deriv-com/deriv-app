@@ -1,6 +1,6 @@
 import React from 'react';
+import { useDevice } from '@/hooks';
 import { Button, Text } from '@deriv-com/ui';
-import { useDevice } from '../../hooks';
 import ArrowRightIcon from '../../public/ic-arrow-right.svg';
 import CheckmarkIcon from '../../public/ic-checkmark.svg';
 import './Checklist.scss';

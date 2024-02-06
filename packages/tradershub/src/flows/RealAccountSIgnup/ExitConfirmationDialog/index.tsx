@@ -17,10 +17,10 @@ const ExitConfirmationDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose:
     return (
         <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
             <div className='w-[calc(100vw-24px)] md:w-[440px] bg-system-light-primary-background p-1200 rounded-400 flex justify-between flex-col gap-1200'>
-                <Text as='p' className='text-100' weight='bold'>
+                <Text as='p' size='lg' weight='bold'>
                     Stop creating an account?
                 </Text>
-                <Text as='p' className='text-75'>
+                <Text as='p' size='md'>
                     If you hit Yes, the info you entered will be lost.
                 </Text>
                 <div className='flex justify-end gap-400'>

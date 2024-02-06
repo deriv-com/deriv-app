@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { isDesktop, routes, ContentFlag } from '@deriv/shared';
+import { routes, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
@@ -12,8 +12,10 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
+import { useDevice } from '@deriv-com/ui';
 
 const TradersHub = observer(() => {
+    const { isDesktop, isMobile, isTablet } = useDevice();
     const { traders_hub, client, ui } = useStore();
     const {
         notification_messages_ui: Notifications,
@@ -132,7 +134,7 @@ const TradersHub = observer(() => {
                     'traders-hub--mobile--eu-user': is_eu_user,
                 })}
                 height_offset='50px'
-                is_disabled={isDesktop()}
+                is_disabled={isDesktop}
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>

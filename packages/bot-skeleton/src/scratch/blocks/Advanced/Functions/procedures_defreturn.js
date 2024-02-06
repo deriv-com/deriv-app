@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { plusIconDark } from '../../images';
+import { isDarkRgbColour } from '../../../utils';
 
 Blockly.Blocks.procedures_defreturn = {
     init() {
@@ -14,11 +15,17 @@ Blockly.Blocks.procedures_defreturn = {
 
         // Render a ➕-icon for adding parameters
         const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
-        const fieldImage2 = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.setCollapsed(true));
+
+        const dropdown_path =
+            this.workspace.options.pathToMedia +
+            (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
+        // Render a v-icon for adding parameters
+        const fieldImageCollapse = new Blockly.FieldImage(dropdown_path, 16, 16, 'v', () => this.setCollapsed(true));
+
         this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-        this.appendDummyInput('ADD_ICON2').appendField(fieldImage2);
+        this.appendDummyInput('COLLAPSED_INPUT').appendField(fieldImageCollapse);
         this.moveInputBefore('ADD_ICON', 'RETURN');
-        this.moveInputBefore('ADD_ICON2', 'RETURN');
+        this.moveInputBefore('COLLAPSED_INPUT', 'RETURN');
 
         this.setStatements(true);
     },

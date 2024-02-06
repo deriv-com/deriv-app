@@ -278,15 +278,9 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         const dropdown_path =
             this.workspace.options.pathToMedia +
             (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
-        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () => {
+        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
             this.setCollapsed(false)
-            // this.setClass('custom-block-class')
-            Blockly.utils.addClass(this.svgGroup_, '777');
-        }
         );
-        // const field_expand_icon2 = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
-        //     this.setCollapsed(true)
-        // );
 
         if (this.type === 'procedures_defreturn' || this.type === 'procedures_defnoreturn') {
             const function_name = this.getFieldValue('NAME');
@@ -296,14 +290,12 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
                 .appendField(new Blockly.FieldLabel(localize('function'), field_class))
                 .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
                 .appendField(field_expand_icon)
-                // .appendField(field_expand_icon2)
                 .init();
         } else {
             const text = this.toString(Blockly.COLLAPSE_CHARS);
             const field_label = new Blockly.FieldLabel(text, field_class);
 
             this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
-            // this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon2).init();
         }
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);

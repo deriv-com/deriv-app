@@ -65,7 +65,6 @@ const WalletDatePicker = ({
             <Input
                 {...field}
                 aria-label={label}
-                className='h-2100 w-full'
                 error={isInvalid}
                 label={label}
                 message={isInvalid ? errorMessage?.toString() : ''}

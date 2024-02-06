@@ -1,23 +1,20 @@
-import { Input } from '@deriv-com/ui';
 import React, { useEffect, useRef, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import { useOnClickOutside } from 'usehooks-ts';
-import * as Yup from 'yup';
+import { Input } from '@deriv-com/ui';
 import CalendarIcon from '../../../assets/date-picker/ic-calendar.svg';
-import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import unixToDateString from '../utils';
-import './WalletDatePicker.scss';
+import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import customFormatShortWeekday from './utils';
+import 'react-calendar/dist/Calendar.css';
+import './WalletDatePicker.scss';
 
 interface TDatePickerProps extends WalletTextFieldProps {
     isInvalid?: WalletTextFieldProps['isInvalid'];
     maxDate?: Date;
     minDate?: Date;
     mobileAlignment?: 'above' | 'below';
-    name: string;
     onDateChange: (formattedDate: string | null) => void;
-    validationSchema?: Yup.AnySchema;
 }
 
 // TODO: Move this component to @deriv-com/ui

@@ -13,10 +13,6 @@ type TTradeUrlParams = {
     symbol?: string;
 };
 
-type TTradeParamsResult = TTradeUrlParams & {
-    showModal?: boolean;
-};
-
 type TTradeURLParamsConfig = {
     [key: string]: TTextValueStrings[];
 };
@@ -57,7 +53,7 @@ const getParamTextByValue = (value: number | string, key: string) =>
 
 export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {} }: TGetTradeURLParamsArgs = {}) => {
     const searchParams = new URLSearchParams(window.location.search);
-    const result: TTradeParamsResult = {};
+    const result: TTradeUrlParams & { showModal?: boolean } = {};
     if (searchParams.toString()) {
         const { chart_type, interval, trade_type, symbol } = [...searchParams.entries()].reduce<{
             [key: string]: string | null;

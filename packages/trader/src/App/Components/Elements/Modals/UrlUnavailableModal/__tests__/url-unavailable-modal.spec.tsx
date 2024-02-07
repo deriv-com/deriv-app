@@ -31,6 +31,9 @@ describe('<UrlUnavailableModal />', () => {
         expect(screen.getByRole('heading', { name: modalHeading })).toBeInTheDocument();
         expect(screen.getByText(modalInfo)).toBeInTheDocument();
 
+        const redirectLink = screen.getByRole('link', { name: /Explore our website/i });
+        expect(redirectLink).toBeInTheDocument();
+
         const okButton = screen.getByRole('button', { name: okButtonName });
         expect(okButton).toBeInTheDocument();
         expect(okButton).toBeEnabled();

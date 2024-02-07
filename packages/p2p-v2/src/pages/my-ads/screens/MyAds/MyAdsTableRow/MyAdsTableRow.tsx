@@ -61,6 +61,9 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
     const adPauseColor = isAdvertListed ? 'general' : 'less-prominent';
     const amountDealt = (amount ?? 0) - (remaining_amount ?? 0);
 
+    const isRowDisabled = !is_active || isBarred || !isListed;
+    const isAdActive = !!is_active && !isBarred;
+
     const exchangeRate = exchangeRateValue?.rates?.[local_currency ?? ''];
 
     const { displayEffectiveRate } = generateEffectiveRate({
@@ -84,7 +87,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
         return (
             <div
                 className={clsx('p2p-v2-my-ads-table-row__line', {
-                    'p2p-v2-my-ads-table-row__line-disabled': !is_active,
+                    'p2p-v2-my-ads-table-row__line-disabled': isRowDisabled,
                 })}
             >
                 <Text color='less-prominent' size='sm'>
@@ -95,7 +98,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                         {advertType} {account_currency}
                     </Text>
                     <div className='p2p-v2-my-ads-table-row__line__type-and-status__wrapper'>
-                        <AdStatus isActive={!!is_active && !isBarred} />
+                        <AdStatus isActive={isAdActive} />
                         <PopoverDropdown
                             dataTestId='dt_p2p_v2_actions_menu'
                             dropdownList={list}
@@ -153,7 +156,9 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
 
     return (
         <div
-            className={clsx('p2p-v2-my-ads-table-row__line', { 'p2p-v2-my-ads-table-row__line-disabled': !is_active })}
+            className={clsx('p2p-v2-my-ads-table-row__line', {
+                'p2p-v2-my-ads-table-row__line-disabled': isRowDisabled,
+            })}
             onMouseEnter={() => setIsActionsVisible(true)}
             onMouseLeave={() => setIsActionsVisible(false)}
         >
@@ -216,7 +221,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                         </Button>
                     </div>
                 ) : (
-                    <AdStatus isActive={is_active} />
+                    <AdStatus isActive={isAdActive} />
                 )}
             </div>
         </div>

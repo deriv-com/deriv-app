@@ -3764,7 +3764,7 @@
     "-565990678": "Votre contrat expirera à cette date (en GMT), en fonction de l'heure de fin que vous avez sélectionnée.",
     "-1545819495": "Votre transaction sera fermée automatiquement au prix de l'actif disponible le plus proche lorsque votre perte atteindra un certain pourcentage de votre mise, mais votre perte ne dépassera jamais votre mise. Ce pourcentage dépend de l'actif sous-jacent choisi et du multiplier.",
     "-468501352": "Si vous sélectionnez cette fonction, votre contrat sera clôturé automatiquement au prix de l'actif disponible le plus proche lorsque votre profit atteindra ou dépassera le montant du take profit. Votre profit peut être supérieur au montant que vous avez saisi en fonction du prix du marché à la clôture.",
-    "-477936848": "We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers.",
+    "-477936848": "Nous utilisons le mécanisme d'exécution du prochain prix, qui est le prix de l'actif suivant lorsque l'ouverture de la transaction est traitée par nos serveurs.",
     "-1476381873": "Dernier prix de l'actif au moment du traitement de la clôture de la transaction par nos serveurs.",
     "-148680560": "Prix spot du dernier tick au moment de l'expiration.",
     "-1123926839": "Les contrats expireront exactement à 14 h 00 min 00 s GMT à la date d'expiration que vous avez choisie.",

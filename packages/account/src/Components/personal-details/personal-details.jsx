@@ -256,6 +256,7 @@ const PersonalDetails = observer(
                                                     />
                                                 }
                                                 no_confirmation_needed={no_confirmation_needed}
+                                                account_status={account_status}
                                             />
                                         </div>
                                     </ThemedScrollbars>

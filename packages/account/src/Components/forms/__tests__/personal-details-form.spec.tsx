@@ -13,7 +13,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('PersonalDetailsForm', () => {
     const mock_props = {
-        editable_fields: ['salutation'],
+        editable_fields: ['salutation', 'first_name', 'last_name'],
         salutation_list: [
             { value: 'Mr', label: 'Mr' },
             { value: 'Ms', label: 'Ms' },
@@ -69,5 +69,70 @@ describe('PersonalDetailsForm', () => {
         expect(
             screen.queryByLabelText(/i confirm that my tax information is accurate and complete/i)
         ).toBeInTheDocument();
+    });
+
+    it('should disable First name field is POI is attempted', () => {
+        const props = {
+            ...mock_props,
+            has_real_account: true,
+            account_status: {
+                authentication: {
+                    identity: {
+                        status: 'pending',
+                    },
+                },
+            },
+        };
+        render(
+            <Formik initialValues={{ first_name: 'demo' }} onSubmit={jest.fn()}>
+                <PersonalDetailsForm {...props} />
+            </Formik>
+        );
+
+        const el_first_name = screen.getByTestId('first_name');
+        expect(el_first_name).toBeDisabled();
+    });
+
+    it('should enable First name field is POI is not attempted', () => {
+        const props = {
+            ...mock_props,
+            has_real_account: true,
+            account_status: {
+                authentication: {
+                    identity: {
+                        status: 'none',
+                    },
+                },
+            },
+        };
+        render(
+            <Formik initialValues={{ first_name: '' }} onSubmit={jest.fn()}>
+                <PersonalDetailsForm {...props} />
+            </Formik>
+        );
+
+        const el_first_name = screen.getByTestId('first_name');
+        expect(el_first_name).toBeEnabled();
+    });
+
+    fit('should enable Last name field is POI is attempted', () => {
+        const props = {
+            ...mock_props,
+            account_status: {
+                authentication: {
+                    identity: {
+                        status: 'none',
+                    },
+                },
+            },
+        };
+        render(
+            <Formik initialValues={{ last_name: '' }} onSubmit={jest.fn()}>
+                <PersonalDetailsForm {...props} />
+            </Formik>
+        );
+
+        const el_last_name = screen.getByTestId('last_name');
+        expect(el_last_name).toBeEnabled();
     });
 });

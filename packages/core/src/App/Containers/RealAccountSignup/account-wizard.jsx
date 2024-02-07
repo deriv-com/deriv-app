@@ -366,10 +366,6 @@ const AccountWizard = observer(props => {
 
         submitForm(payload)
             .then(async response => {
-                // clear the store
-                setRealAccountSignupFormData([]);
-                setRealAccountSignupFormStep(0);
-
                 trackEvent({
                     action: 'real_signup_finished',
                     user_choice: JSON.stringify(response?.echo_req),

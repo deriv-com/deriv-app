@@ -3,7 +3,6 @@ import { localize } from '@deriv/translations';
 import { Modal, FormSubmitButton, Text } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
-import { useStore } from '@deriv/stores';
 
 const WarningMessageModal = ({
     is_closing_create_real_account_modal,
@@ -12,9 +11,6 @@ const WarningMessageModal = ({
     routing_history,
     real_account_signup_target,
 }) => {
-    const { client } = useStore();
-    const { setRealAccountSignupFormData, setRealAccountSignupFormStep } = client;
-
     const closeModal = () => {
         real_account_signup_target !== 'maltainvest' &&
             Analytics.trackEvent('ce_real_account_signup_form', {
@@ -26,10 +22,6 @@ const WarningMessageModal = ({
         setIsClosingCreateRealAccountModal(false);
 
         closeRealAccountSignup();
-
-        // clear the store
-        setRealAccountSignupFormData([]);
-        setRealAccountSignupFormStep(0);
 
         if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
             window.location = routes.smarttrader;

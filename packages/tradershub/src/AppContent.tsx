@@ -1,8 +1,8 @@
 import React from 'react';
+import { EUDisclaimerMessage, useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { Router } from '@/routes';
 import SignupWizard from './flows/RealAccountSIgnup/SignupWizard';
-import useRegulationFlags from './hooks/useRegulationFlags';
-import { EUDisclaimerMessage, useUIContext } from './components';
-import { Router } from './routes';
 
 const AppContent = () => {
     const { uiState } = useUIContext();

@@ -1,10 +1,10 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import { useDynamicLeverageModalState } from '@cfd/components';
+import { Jurisdiction } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { qtMerge } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
-import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
-import { Jurisdiction } from '../../constants';
 import { JurisdictionCard } from './JurisdictionCard';
 import { JurisdictionTncSection } from './JurisdictionTncSection';
 
@@ -36,7 +36,7 @@ const JurisdictionScreen = ({
     const addedJurisdictions = useMemo(
         () =>
             mt5AccountsList
-                ?.filter(account => account.market_type === marketType)
+                ?.filter(account => account.market_type === marketType && !account.is_virtual)
                 .map(account => account.landing_company_short) || [],
         [marketType, mt5AccountsList]
     );

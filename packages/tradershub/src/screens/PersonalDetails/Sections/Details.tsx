@@ -1,10 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import { useFormikContext } from 'formik';
+import { useBreakpoint } from '@deriv/quill-design';
 import { InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
 
 const ExampleImage = lazy(() => import('../../../public/images/personal-details-example.svg'));
 
 const Details = () => {
+    const isMobile = useBreakpoint();
     const { handleBlur, handleChange, values } = useFormikContext<{
         dateOfBirth: string;
         firstName: string;
@@ -15,16 +17,16 @@ const Details = () => {
             <Text as='p' className='my-800' weight='bold'>
                 Details
             </Text>
-            <div className='outline outline-1 outline-system-light-active-background mx-800 p-800 rounded-400 pb-2000'>
+            <div className='outline outline-1 outline-system-light-active-background md:mx-800 p-800 rounded-400 pb-2000'>
                 <InlineMessage className='items-start mb-800' variant='warning'>
-                    <Text>
+                    <Text size={isMobile ? 'sm' : 'md'}>
                         To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
                         <span className='font-bold'>date of birth</span> exactly as they appear on your identity
                         document.
                     </Text>
                 </InlineMessage>
-                <div className='flex justify-center gap-800'>
-                    <div className='flex flex-col w-1/2 gap-2000'>
+                <div className='flex flex-col-reverse justify-center md:flex-row gap-800'>
+                    <div className='flex flex-col md:w-1/2 gap-2000'>
                         <Input
                             className='w-full text-body-md'
                             label='First name*'
@@ -57,7 +59,7 @@ const Details = () => {
                             value={values.dateOfBirth}
                         />
                     </div>
-                    <div className='relative w-1/2 text-center'>
+                    <div className='relative text-center md:w-1/2'>
                         <Text as='p' className='mt-2 mb-4' size='xs' weight='bold'>
                             Example:
                         </Text>

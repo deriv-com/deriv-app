@@ -82,7 +82,7 @@ const PersonalDetailsForm = props => {
     const is_poi_verified =
         has_real_account &&
         [AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(
-            account_status?.authentication?.identity.status
+            account_status?.authentication?.identity?.status
         );
 
     const getFieldHint = field_name =>

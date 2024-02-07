@@ -1,9 +1,10 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
-import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
-import { PlatformDetails } from '../../../constants';
-import CreateAccountButton from './CreateAccountButton';
+import { Button } from '@deriv-com/ui';
+import { ButtonGroup, Modal, SentEmailContent } from '../../../../components';
+import { PlatformDetails } from '../../constants';
+import DxtradeCreateAccountButton from '../DxtradePasswordModal/DxtradeCreateAccountButton';
+import MT5CreateAccountButton from '../MT5PasswordModal/MT5CreateAccountButton';
 
 type TAddAccountButtonsGroupProps = {
     password: string;
@@ -12,12 +13,12 @@ type TAddAccountButtonsGroupProps = {
 const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform') ?? PlatformDetails.mt5.platform;
+    const platform = getCFDState('platform');
 
     return (
         <ButtonGroup className='w-full'>
             <Button
-                fullWidth
+                isFullWidth
                 onClick={() => {
                     show(
                         <Modal>
@@ -29,11 +30,16 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
                     );
                 }}
                 size='lg'
-                variant='secondary'
+                variant='outlined'
             >
                 Forgot password?
             </Button>
-            <CreateAccountButton buttonText='Add account' password={password} />;
+            {platform === PlatformDetails.dxtrade.platform && (
+                <DxtradeCreateAccountButton buttonText='Add account' password={password} />
+            )}
+            {platform === PlatformDetails.mt5.platform && (
+                <MT5CreateAccountButton buttonText='Add account' password={password} />
+            )}
         </ButtonGroup>
     );
 };

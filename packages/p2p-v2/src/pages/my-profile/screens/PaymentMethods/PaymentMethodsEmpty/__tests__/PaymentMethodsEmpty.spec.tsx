@@ -1,11 +1,11 @@
 import React from 'react';
+import { useDevice, useQueryString } from '@/hooks';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useDevice, useQueryString } from '../../../../../../hooks';
 import PaymentMethodsEmpty from '../PaymentMethodsEmpty';
 
-jest.mock('../../../../../../hooks', () => ({
-    ...jest.requireActual('../../../../../../hooks'),
+jest.mock('@/hooks', () => ({
+    ...jest.requireActual('@/hooks'),
     useDevice: jest.fn().mockReturnValue({
         isDesktop: false,
         isMobile: false,

@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
-import { useDebounce } from 'usehooks-ts';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
@@ -29,7 +28,6 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
     const { data: mt5AccountsList } = useMT5AccountsList();
     const marketType = getModalState('marketType') as keyof typeof MarketTypeDetails;
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
-    const isJurisdictionScreenHidden = useDebounce(isDynamicLeverageVisible, 500);
     const jurisdictions = useMemo(
         () => data?.filter(account => account.market_type === marketType).map(account => account.shortcode) || [],
         [data, marketType]
@@ -51,7 +49,6 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
     return (
         <div
             className={classNames('wallets-jurisdiction-screen', {
-                'wallets-jurisdiction-screen--hidden': isDynamicLeverageVisible && isJurisdictionScreenHidden,
                 'wallets-jurisdiction-screen--flip': isDynamicLeverageVisible,
             })}
         >

@@ -1,4 +1,11 @@
 .wallets-jurisdiction-modal {
     position: relative;
+    max-width: 120rem;
+    padding: 2.4rem;
     perspective: 200rem;
+
+    @include mobile {
+        width: 100%;
+        padding: 0;
+    }
 }

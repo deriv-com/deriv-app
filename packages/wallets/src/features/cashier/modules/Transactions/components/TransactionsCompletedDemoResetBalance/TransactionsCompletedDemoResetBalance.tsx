@@ -36,7 +36,7 @@ const TransactionsCompletedDemoResetBalance: React.FC = () => {
 
     if (!wallet || isLoading) return <Loader />;
 
-    if (!resetBalanceTransactions) return <TransactionsNoDataState />;
+    if (!resetBalanceTransactions.length) return <TransactionsNoDataState />;
 
     return (
         <TransactionsTable

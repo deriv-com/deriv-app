@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Text } from '@deriv/quill-design';
+import { Button } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { Dialog } from '../Dialog';
 
 /**

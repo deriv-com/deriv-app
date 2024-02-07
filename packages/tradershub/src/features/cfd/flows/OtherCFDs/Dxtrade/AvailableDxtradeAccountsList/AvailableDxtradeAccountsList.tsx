@@ -1,38 +1,43 @@
 import React from 'react';
+import { Provider } from '@deriv/library';
 import {
+    PlatformIcon,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
-} from '../../../../../../components/TradingAccountCard';
+} from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
-import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 import { PlatformDetails } from '../../../../constants';
+import { DxtradePasswordModal } from '../../../../modals/DxtradePasswordModal';
 
 const LeadingIcon = () => (
-    <div
-        className='cursor-pointer'
-        onClick={() => {
-            window.open(getStaticUrl('/derivx'));
-        }}
-        onKeyDown={e => {
-            if (e.key === 'Enter') {
+    <div>
+        <PlatformIcon
+            icon='DerivX'
+            onClick={() => {
                 window.open(getStaticUrl('/derivx'));
-            }
-        }}
-        role='button'
-    >
-        <DerivX />
+            }}
+        />
     </div>
 );
 
-const TrailingButton = () => <TradingAccountCardLightButton />;
+const AvailableDxtradeAccountsList = () => {
+    const { show } = Provider.useModal();
+    const { setCfdState } = Provider.useCFDContext();
 
-const AvailableDxtradeAccountsList = () => (
-    <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
-        <TradingAccountCardContent title={PlatformDetails.dxtrade.title}>
-            This account offers CFDs on a highly customisable CFD trading platform.
-        </TradingAccountCardContent>
-    </TradingAccountCard>
-);
+    const TrailingButton = () => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />;
+
+    const trailingButtonClick = () => {
+        setCfdState('platform', PlatformDetails.dxtrade.platform);
+        show(<DxtradePasswordModal />);
+    };
+    return (
+        <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
+            <TradingAccountCardContent title={PlatformDetails.dxtrade.title}>
+                This account offers CFDs on a highly customisable CFD trading platform.
+            </TradingAccountCardContent>
+        </TradingAccountCard>
+    );
+};
 
 export default AvailableDxtradeAccountsList;

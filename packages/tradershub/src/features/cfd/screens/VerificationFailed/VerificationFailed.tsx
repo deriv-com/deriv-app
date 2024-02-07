@@ -1,7 +1,8 @@
 import React from 'react';
 import { usePOA, usePOI } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, Text } from '@deriv/quill-design';
+import { Button } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
     if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address';
@@ -25,7 +26,7 @@ const VerificationFailed = () => {
 
     return (
         <div className='flex flex-col w-[320px] p-800 gap-800 h-auto bg-system-light-primary-background rounded-400 lg:p-1200 lg:gap-1200 lg:w-[440px]'>
-            <Text bold size='sm'>
+            <Text size='sm' weight='bold'>
                 Why did my verification fail?
             </Text>
             <Text size='sm'>
@@ -34,7 +35,7 @@ const VerificationFailed = () => {
             </Text>
             <ul>
                 {reasons.map(reason => (
-                    <li className='relative list-disc  left-500' key={reason}>
+                    <li className='relative list-disc left-500' key={reason}>
                         <Text size='sm'>{reason}</Text>
                     </li>
                 ))}

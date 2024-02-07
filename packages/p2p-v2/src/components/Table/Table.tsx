@@ -53,11 +53,7 @@ const Table = <T,>({
     return (
         <div className='w-full'>
             {isDesktop && columns.length > 0 && (
-                <div
-                    className='p2p-v2-table__header grid'
-                    ref={headerRef}
-                    style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
-                >
+                <div className='p2p-v2-table__header' ref={headerRef}>
                     {table.getFlatHeaders().map(header => (
                         <Text className='p2p-v2-table__header-items' key={header.id} size='sm' weight='bold'>
                             {renderHeader(header.column.columnDef.header as string)}

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { Dialog, Modal } from '@/components';
+import { Category, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Dialog, Modal } from '../../../../components';
-import { Category, PlatformDetails } from '../../constants';
 import MT5PasswordFooter from './MT5PasswordFooter';
 import MT5PasswordInput from './MT5PasswordInput';
 

@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { Rating } from 'react-simple-star-rating';
-import EmptyStarIcon from '../../public/ic-empty-star.svg';
-import FullStarIcon from '../../public/ic-full-star.svg';
+import { LabelPairedStarLgFillIcon, LabelPairedStarLgRegularIcon } from '@deriv/quill-icons';
 import './StarRating.scss';
 
 type TStarRatingProps = {
@@ -28,8 +27,8 @@ const StarRating = ({
             allowHalfIcon
             allowHover={false}
             className='p2p-v2-star-rating'
-            emptyIcon={<EmptyStarIcon scale={0.5} />}
-            fullIcon={<FullStarIcon scale={0.5} />}
+            emptyIcon={<LabelPairedStarLgRegularIcon fill='#FFAD3A' />}
+            fullIcon={<LabelPairedStarLgFillIcon fill='#FFAD3A' />}
             iconsCount={5}
             initialValue={ratingValue}
             onClick={onClick}

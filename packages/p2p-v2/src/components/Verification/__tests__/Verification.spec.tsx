@@ -124,8 +124,8 @@ describe('<Verification />', () => {
 
         render(<Verification />, { wrapper });
 
-        const poaButton = screen.getByTestId('dt_p2p_v2_verification_poa_arrow_button');
-        const poiButton = screen.getByTestId('dt_p2p_v2_verification_poi_arrow_button');
+        const poaButton = screen.getAllByRole('button')[0];
+        const poiButton = screen.getAllByRole('button')[1];
 
         expect(screen.getByText('Identity verification in progress.')).toBeInTheDocument();
         expect(screen.getByText('Address verification in progress.')).toBeInTheDocument();

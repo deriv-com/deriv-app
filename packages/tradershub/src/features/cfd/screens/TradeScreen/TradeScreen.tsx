@@ -39,7 +39,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const ctraderPlatform = PlatformDetails.ctrader.platform;
 
     const marketType = getCFDState('marketType');
-    const platform = getCFDState('platform') ?? mt5Platform;
+    const platform = getCFDState('platform');
 
     const platformToAccountsListMapper = useMemo(
         () => ({

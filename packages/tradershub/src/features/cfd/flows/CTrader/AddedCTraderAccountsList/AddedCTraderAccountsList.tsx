@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
+import { PlatformIcon, TradingAccountCard } from '@/components';
+import { getStaticUrl } from '@/helpers';
+import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
+import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
-import { PlatformIcon, TradingAccountCard } from '../../../../../components';
-import { getStaticUrl } from '../../../../../helpers/urls';
-import { CFDPlatforms, PlatformDetails } from '../../../constants';
-import { TopUpModal, TradeModal } from '../../../modals';
 
 const LeadingIcon = () => (
     <PlatformIcon

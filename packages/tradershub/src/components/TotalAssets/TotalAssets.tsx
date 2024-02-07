@@ -1,9 +1,9 @@
 import React from 'react';
+import { TotalAssetsLoader } from '@/components';
+import { useTotalAssets } from '@/hooks';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import useTotalAssets from '../../hooks/useTotalAssets';
-import { TotalAssetsLoader } from '../Loaders';
 
 const TotalAssets = () => {
     const { data: totalAssets, isSuccess } = useTotalAssets();

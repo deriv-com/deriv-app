@@ -1,7 +1,7 @@
 import React from 'react';
+import { THooks } from '@/types';
 import { CaptionText } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
 
 type TDynamicLeverageMarketCardProps = {

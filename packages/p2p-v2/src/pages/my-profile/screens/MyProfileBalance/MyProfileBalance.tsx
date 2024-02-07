@@ -3,8 +3,8 @@ import { AvailableP2PBalanceModal, DailyLimitModal } from '@/components/Modals';
 import { useAdvertiserStats, useDevice } from '@/hooks';
 import { numberToCurrencyText } from '@/utils';
 import { useActiveAccount } from '@deriv/api';
+import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import InfoOutlineIcon from '../../../../public/ic-info-outline.svg';
 import { MyProfileDailyLimit } from '../MyProfileDailyLimit';
 import './MyProfileBalance.scss';
 
@@ -55,7 +55,7 @@ const MyProfileBalance = () => {
                         <Text color='less-prominent' size={isDesktop ? 'sm' : 'xs'}>
                             Available Deriv P2P Balance
                         </Text>
-                        <InfoOutlineIcon
+                        <LabelPairedCircleInfoMdRegularIcon
                             className='cursor-pointer fill-gray-400'
                             onClick={() => setShouldShowAvailableBalanceModal(true)}
                         />

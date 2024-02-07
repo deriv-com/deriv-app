@@ -4,8 +4,6 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PoiConfirmWithExampleFormContainer from '../poi-confirm-with-example-form-container';
 
-jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isDesktop: jest.fn(() => true),
@@ -59,8 +57,7 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
     it('should render PersonalDetailsForm with image and checkbox', async () => {
         render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
 
-        expect(await screen.findByText('PoiNameDobExampleImage')).toBeInTheDocument();
-        expect(screen.getByText(clarification_message)).toBeInTheDocument();
+        expect(await screen.findByText(clarification_message)).toBeInTheDocument();
         expect(screen.getByText(checkbox_label)).toBeInTheDocument();
         const checkbox_el: HTMLInputElement = screen.getByRole('checkbox');
         expect(checkbox_el.checked).toBeFalsy();

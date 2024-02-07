@@ -6,13 +6,13 @@ import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
     filterObjProperties,
+    getUrlBase,
     isEmptyObject,
     isMobile,
     removeEmptyPropertiesFromObject,
     toMoment,
     WS,
 } from '@deriv/shared';
-import PoiNameDobExample from '../../../Assets/ic-poi-name-dob-example.svg';
 import FormBody from '../../form-body';
 import LoadErrorMessage from '../../load-error-message';
 import PersonalDetailsForm from '../../forms/personal-details-form.jsx';
@@ -49,7 +49,9 @@ const PoiConfirmWithExampleFormContainer = ({
         api_error: '',
     });
 
-    const side_note_image = <PoiNameDobExample />;
+    const side_note_image = (
+        <img src={getUrlBase('/public/images/common/account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+    );
 
     React.useEffect(() => {
         const initializeFormValues = () => {

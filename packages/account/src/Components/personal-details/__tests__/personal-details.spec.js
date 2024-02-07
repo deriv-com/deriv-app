@@ -10,8 +10,6 @@ import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumen
 import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 
-jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),

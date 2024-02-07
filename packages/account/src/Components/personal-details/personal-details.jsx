@@ -10,7 +10,13 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import {
+    getIDVNotApplicableOption,
+    getUrlBase,
+    isDesktop,
+    isMobile,
+    removeEmptyPropertiesFromObject,
+} from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import {
@@ -19,7 +25,6 @@ import {
     isDocumentTypeValid,
     shouldShowIdentityInformation,
 } from '../../Helpers/utils';
-import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
@@ -54,7 +59,12 @@ const PersonalDetails = observer(
         const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
         const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
 
-        const PoiNameDobExampleIcon = PoiNameDobExample;
+        const side_note_image = (
+            <img
+                src={getUrlBase('/public/images/common/account/ic-poi-name-dob-example.png')}
+                alt='PoiNameDobExample'
+            />
+        );
 
         const handleCancel = values => {
             const current_step = getCurrentStep() - 1;
@@ -235,7 +245,7 @@ const PersonalDetails = observer(
                                                 is_virtual={is_virtual}
                                                 is_svg={is_svg}
                                                 is_eu_user={is_eu_user}
-                                                side_note={<PoiNameDobExampleIcon />}
+                                                side_note={side_note_image}
                                                 is_rendered_for_idv={is_rendered_for_idv}
                                                 editable_fields={getEditableFields(
                                                     values.confirmation_checkbox,

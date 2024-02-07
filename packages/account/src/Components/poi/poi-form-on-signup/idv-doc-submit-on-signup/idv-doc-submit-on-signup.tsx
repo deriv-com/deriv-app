@@ -3,8 +3,7 @@ import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik'
 import { Localize, localize } from '@deriv/translations';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
-import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
-import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
+import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject, getUrlBase } from '@deriv/shared';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';
 import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
@@ -35,7 +34,9 @@ export const IdvDocSubmitOnSignup = ({
     getChangeableFields,
     residence_list,
 }: TIdvDocSubmitOnSignup) => {
-    const side_note_image = <PoiNameDobExample />;
+    const side_note_image = (
+        <img src={getUrlBase('/public/images/common/account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+    );
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;

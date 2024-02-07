@@ -6,6 +6,7 @@ import { Button, HintBox, Loading, Text } from '@deriv/components';
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
+    getUrlBase,
     IDV_ERROR_STATUS,
     isEmptyObject,
     removeEmptyPropertiesFromObject,
@@ -15,7 +16,6 @@ import {
 } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
 import FormBody from '../../../form-body';
 import IDVForm from '../../../forms/idv-form';
 import FormFooter from '../../../form-footer';
@@ -83,10 +83,13 @@ const IdvFailed = ({
     const { client, ui } = useStore();
     const { setIsAlreadyAttempted } = client;
     const { is_mobile } = ui;
+    const side_note_image = (
+        <img src={getUrlBase('/public/images/common/account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+    );
 
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
-        side_note_image: <PoiNameDobExample />,
+        side_note_image,
         failure_message: null,
         inline_note_text: null,
     });

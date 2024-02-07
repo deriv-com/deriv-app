@@ -21,11 +21,14 @@ const useAdvertiserStats = (advertiserId?: string) => {
             ...data,
 
             /** The average buy time in minutes */
-            averagePayTime: data?.buy_time_avg && data.buy_time_avg > 60 ? Math.round(data.buy_time_avg / 60) : 1,
+            averagePayTime: data?.buy_time_avg ? (data.buy_time_avg > 60 ? Math.round(data.buy_time_avg / 60) : 1) : -1,
 
             /** The average release time in minutes */
-            averageReleaseTime:
-                data?.release_time_avg && data.release_time_avg > 60 ? Math.round(data.release_time_avg / 60) : 1,
+            averageReleaseTime: data?.release_time_avg
+                ? data.release_time_avg > 60
+                    ? Math.round(data.release_time_avg / 60)
+                    : 1
+                : -1,
 
             /** The percentage of completed orders out of total orders as a buyer within the past 30 days. */
             buyCompletionRate: data?.buy_completion_rate || 0,

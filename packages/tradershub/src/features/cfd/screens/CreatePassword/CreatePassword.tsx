@@ -46,7 +46,12 @@ const CreatePassword = ({
                     You can use this password for all your {title} accounts.
                 </Text>
             </div>
-            <PasswordInput label={`${title} password`} onChange={onPasswordChange} value={password} />
+            <PasswordInput
+                className='text-body-sm'
+                label={`${title} password`}
+                onChange={onPasswordChange}
+                value={password}
+            />
             {!isMobile && (
                 <Button
                     disabled={!password || isLoading || !validPassword(password)}

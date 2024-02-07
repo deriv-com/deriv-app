@@ -7,7 +7,7 @@ import { MyAdsTableRow } from '../MyAdsTableRow';
 import { MyAdsToggle } from '../MyAdsToggle';
 import './MyAdsTable.scss';
 
-export type TMyAdsTableRowRendererProps = Partial<
+export type TMyAdsTableRowRendererProps = Required<
     NonNullable<ReturnType<typeof p2p.advertiserAdverts.useGet>['data']>[0]
 > & {
     isBarred: boolean;

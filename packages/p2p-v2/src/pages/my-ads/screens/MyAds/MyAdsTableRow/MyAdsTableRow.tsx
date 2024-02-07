@@ -52,7 +52,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
     useEffect(() => {
         subscribe({
             base_currency: BASE_CURRENCY,
-            target_currency: local_currency!,
+            target_currency: local_currency,
         });
     }, [local_currency, subscribe]);
 
@@ -64,7 +64,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
     const isRowDisabled = !is_active || isBarred || !isListed;
     const isAdActive = !!is_active && !isBarred;
 
-    const exchangeRate = exchangeRateValue?.rates?.[local_currency ?? ''];
+    const exchangeRate = exchangeRateValue?.rates?.[local_currency];
 
     const { displayEffectiveRate } = generateEffectiveRate({
         price: Number(price_display),
@@ -80,7 +80,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
     const advertType = type === 'buy' ? ADVERT_TYPE.BUY : ADVERT_TYPE.SELL;
 
     const onClickActionItem = (value: string) => {
-        onClickIcon(id!, value);
+        onClickIcon(id, value);
     };
 
     if (isMobile) {
@@ -108,7 +108,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                 </div>
                 <div className='p2p-v2-my-ads-table-row__line-details'>
                     <Text color='success' size='sm'>
-                        {`${formatMoney(account_currency!, amountDealt, true)}`} {account_currency}&nbsp;
+                        {`${formatMoney(account_currency, amountDealt, true)}`} {account_currency}&nbsp;
                         {advertType === 'Buy' ? 'Bought' : 'Sold'}
                     </Text>
                     <Text color='less-prominent' size='sm'>
@@ -117,7 +117,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                 </div>
                 <ProgressIndicator
                     className={'p2p-v2-my-ads-table-row__available-progress'}
-                    total={amount!}
+                    total={amount}
                     value={amountDealt}
                 />
                 <div className='p2p-v2-my-ads-table-row__line-details'>
@@ -136,7 +136,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                         <div className='display-layout'>
                             {displayEffectiveRate} {local_currency}
                             {rate_type === RATE_TYPE.FLOAT && (
-                                <AdType adPauseColor={adPauseColor} floatRate={rate_display!} />
+                                <AdType adPauseColor={adPauseColor} floatRate={rate_display} />
                             )}
                         </div>
                     </Text>
@@ -170,13 +170,13 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
             </Text>
             <Text className='p2p-v2-my-ads-table-row__rate' size='sm'>
                 {displayEffectiveRate} {local_currency}
-                {rate_type === RATE_TYPE.FLOAT && <AdType adPauseColor={adPauseColor} floatRate={rate_display!} />}
+                {rate_type === RATE_TYPE.FLOAT && <AdType adPauseColor={adPauseColor} floatRate={rate_display} />}
             </Text>
             <Text className='p2p-v2-my-ads-table-row__available' size='sm'>
                 <ProgressIndicator
                     className={'p2p-v2-my-ads-table-row__available-progress'}
-                    total={amount!}
-                    value={remaining_amount!}
+                    total={amount}
+                    value={remaining_amount}
                 />
                 {remaining_amount_display}/{amount_display} {account_currency}
             </Text>

@@ -83,11 +83,13 @@ module.exports = function () {
                 'react-content-loader': 'react-content-loader',
                 'react-dom': 'react-dom',
                 'react-dropzone': 'react-dropzone',
+                '@deriv/shared': '@deriv/shared',
                 '@deriv/translations': '@deriv/translations',
                 'react-router-dom': 'react-router-dom',
                 'react-swipeable': 'react-swipeable',
                 'react-tiny-popover': 'react-tiny-popover',
             },
+            /^@deriv\/shared\/.+$/,
             /^@deriv\/translations\/.+$/,
         ],
     };

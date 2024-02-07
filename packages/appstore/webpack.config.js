@@ -62,7 +62,7 @@ module.exports = function (env) {
                 Utils: path.resolve(__dirname, 'src/utils'),
                 Hooks: path.resolve(__dirname, 'src/hooks'),
             },
-            extensions: ['.ts', '.tsx', '.js', '.jsx'],
+            extensions: ['.ts', '.tsx', '.js'],
         },
         module: {
             rules: [
@@ -175,6 +175,8 @@ module.exports = function (env) {
                 mobx: true,
                 'react-router': true,
                 'react-router-dom': true,
+                '@deriv/shared': true,
+                '@deriv/components': true,
                 '@deriv/translations': true,
                 '@deriv/account': true,
                 '@deriv/cashier': true,

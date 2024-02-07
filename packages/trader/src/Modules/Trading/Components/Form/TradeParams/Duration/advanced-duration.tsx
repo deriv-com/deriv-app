@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
-// import { getDurationMinMaxValues, getUnitMap, hasIntradayDurationUnit, toMoment } from '@deriv/shared';
+import { getDurationMinMaxValues, getUnitMap, hasIntradayDurationUnit, toMoment } from '@deriv/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
@@ -10,7 +10,6 @@ import DurationRangeText from './duration-range-text';
 import type { TDuration } from './duration';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getDurationMinMaxValues, getUnitMap, hasIntradayDurationUnit, toMoment } from '@deriv/shared';
 
 type TAdvancedDuration = Pick<
     TDuration,

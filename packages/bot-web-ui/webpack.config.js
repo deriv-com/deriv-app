@@ -146,6 +146,8 @@ module.exports = function (env) {
             {
                 '@babel/polyfill': '@babel/polyfill',
                 classnames: 'classnames',
+                '@deriv/components': '@deriv/components',
+                '@deriv/shared': '@deriv/shared',
                 '@deriv/translations': '@deriv/translations',
                 formik: 'formik',
                 react: 'react',
@@ -155,6 +157,8 @@ module.exports = function (env) {
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv-com/analytics': `@deriv-com/analytics`,
             },
+            /^@deriv\/shared\/.+$/,
+            /^@deriv\/components\/.+$/,
             /^@deriv\/translations\/.+$/,
             /^@deriv\/analytics\/.+$/,
         ],

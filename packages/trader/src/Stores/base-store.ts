@@ -1,5 +1,5 @@
 import { action, intercept, observable, reaction, toJS, when, makeObservable } from 'mobx';
-import { isProduction, isEmptyObject } from '@deriv/shared';
+import { isProduction, isEmptyObject, Validator } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 import { getValidationRules } from './Modules/Trading/Constants/validation-rules';
 
@@ -282,13 +282,13 @@ export default class BaseStore {
             validation_rules[trigger as keyof TValidationRules] =
                 'rules' in validation_rules_for_trigger ? validation_rules_for_trigger.rules : [];
         }
-        // const validator = new Validator(inputs, validation_rules, this);
+        const validator = new Validator(inputs, validation_rules, this);
 
-        // validator.isPassed();
+        validator.isPassed();
 
-        // Object.keys(inputs).forEach(key => {
-        //     this.setValidationErrorMessages(key, validator.errors.get(key));
-        // });
+        Object.keys(inputs).forEach(key => {
+            this.setValidationErrorMessages(key, validator.errors.get(key));
+        });
     }
 
     /**

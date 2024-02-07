@@ -1,7 +1,8 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
 import { StandaloneCircleInfoRegularIcon as CircleInfoIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { getCurrencyConfig } from '../../helpers/currencyConfig';
 
 type TCurrencyCard = ReturnType<typeof getCurrencyConfig>[number];
@@ -32,10 +33,10 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
             >
                 <Icon />
                 {info && <CircleInfoIcon className='absolute top-50 opacity-300' />}
-                <Text bold={isSelected} className='my-200 bold' size='sm'>
+                <Text className='my-200 bold' size='sm' weight={isSelected ? 'bold' : 'normal'}>
                     {title}
                 </Text>
-                <Text bold={isSelected} size='sm'>
+                <Text size='sm' weight={isSelected ? 'bold' : 'normal'}>
                     ({id})
                 </Text>
             </button>

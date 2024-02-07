@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Text } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { PlatformIcon, TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import { CFDPlatforms, PlatformDetails } from '../../../../constants';
@@ -57,9 +56,9 @@ const AddedDxtradeAccountsList = () => {
         <TradingAccountCard leading={LeadingIcon} trailing={trailing}>
             <div className='flex flex-col flex-grow'>
                 {account && (
-                    <Fragment key={account?.account_id}>
+                    <Fragment>
                         <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
-                        <Text bold size='sm'>
+                        <Text size='sm' weight='bold'>
                             {account?.display_balance}
                         </Text>
                         <Text color='primary' size='sm'>

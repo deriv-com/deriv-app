@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
-import { Link, Text, useBreakpoint } from '@deriv/quill-design';
+import { Link, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '../../../constants';

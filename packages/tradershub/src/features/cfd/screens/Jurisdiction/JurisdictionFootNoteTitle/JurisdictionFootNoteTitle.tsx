@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
 
@@ -38,7 +38,7 @@ const JurisdictionFootNoteTitle = ({ marketType, selectedJurisdiction }: TJurisd
     }
 
     return (
-        <Text bold size='sm'>
+        <Text size='sm' weight='bold'>
             {footnoteText}
         </Text>
     );

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { getJurisdictionDescription } from './CompareAccountsConfig';
 
@@ -23,14 +24,14 @@ const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode 
             )}
         >
             <div className='m-[9px]'>
-                <Text bold size='xl'>
+                <Text size='xl' weight='bold'>
                     {'Up to'} {jurisdictionData.leverage}
                 </Text>
                 <Text size='sm'>{!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}</Text>
             </div>
             {!isEuRegion && (
                 <div className='m-[9px]'>
-                    <Text bold size='xl'>
+                    <Text size='xl' weight='bold'>
                         {jurisdictionData.spread}
                     </Text>
                     <Text size='sm'>{jurisdictionData.spread_description}</Text>
@@ -39,19 +40,19 @@ const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode 
             {!isDemo && (
                 <Fragment>
                     <div className='m-[9px]'>
-                        <Text bold size='sm'>
+                        <Text size='sm' weight='bold'>
                             {jurisdictionData.counterparty_company}
                         </Text>
                         <Text size='sm'>{jurisdictionData.counterparty_company_description}</Text>
                     </div>
                     <div className='m-[9px]'>
-                        <Text bold size='sm'>
+                        <Text size='sm' weight='bold'>
                             {jurisdictionData.jurisdiction}
                         </Text>
                         <Text size='sm'>{jurisdictionData.jurisdiction_description}</Text>
                     </div>
                     <div className='m-[9px]'>
-                        <Text bold size='sm'>
+                        <Text size='sm' weight='bold'>
                             {jurisdictionData.regulator}
                         </Text>
                         {jurisdictionData.regulator_license && (

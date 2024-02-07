@@ -1,19 +1,25 @@
 .wallets-dynamic-leverage-screen {
     &__container {
         position: absolute;
-        height: 0;
+        top: 0;
         display: flex;
         flex-direction: column;
         gap: 2.4rem;
         margin: 2.4rem 12.8rem 6rem;
-        overflow: hidden;
         transform: rotateY(180deg);
+        -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-        z-index: 1;
-        transition: transform 0.6s ease;
+        z-index: 100;
+        transition: transform 600ms ease;
 
         @include mobile {
             margin: 1.5rem 2.4rem 2.4rem;
+        }
+
+        &--hidden {
+            position: absolute;
+            height: 0;
+            overflow: hidden;
         }
 
         &--flip {

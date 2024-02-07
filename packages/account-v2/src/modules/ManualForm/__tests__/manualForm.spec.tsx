@@ -5,10 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { ManualForm } from '../manualForm';
 
 jest.mock('react-calendar/dist/Calendar.css', () => jest.fn());
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({ isDesktop: true, isMobile: false, isTablet: false })),
-}));
 
 describe('ManualForm', () => {
     const renderComponent = ({

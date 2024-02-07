@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
-import classNames from 'classnames';
 import { Field, FieldProps } from 'formik';
-import { Input, useDevice } from '@deriv-com/ui';
+import { Input } from '@deriv-com/ui';
 import { WalletDatePicker } from '../../components/base/WalletDatePicker';
 import { WalletText } from '../../components/base/WalletText';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
@@ -13,17 +12,11 @@ type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
 export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) => {
     const fieldsConfig = getFieldsConfig(selectedDocument);
     const { isExpiryDateRequired } = useManualForm();
-    const { isDesktop } = useDevice();
 
     return (
         <Fragment>
             <WalletText>{getTitleForFormInputs(selectedDocument)}</WalletText>
-            <div
-                className={classNames('gap-1200', {
-                    'flex flex-col': !isDesktop,
-                    'grid grid-cols-2': isDesktop,
-                })}
-            >
+            <div className='gap-1200 flex flex-col lg:grid lg:grid-cols-2'>
                 <Field name='document_number'>
                     {({ field, meta }: FieldProps) => {
                         const hasError = meta.touched && !!meta.error;
@@ -32,6 +25,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                             <Input
                                 {...field}
                                 aria-label={fieldLabel}
+                                className='w-full'
                                 error={hasError}
                                 label={fieldLabel}
                                 message={hasError ? meta.error : ''}

@@ -12,30 +12,28 @@ type TManualFormProps = {
     selectedDocument: TManualDocumentTypes;
 };
 
-export const ManualForm = ({ onSubmit, selectedDocument }: TManualFormProps) => {
-    return (
-        <div className='m-400 p-800 border-100 border-solid rounded-400'>
-            <Formik
-                initialValues={MANUAL_FORM_INITIAL_VALUES}
-                onSubmit={onSubmit}
-                validationSchema={() => getManualFormValidationSchema(selectedDocument)}
-            >
-                {({ isValid }) => (
-                    <Form>
-                        <div className='flex flex-col gap-1200 max-w-[67rem]'>
-                            <ManualFormInputs selectedDocument={selectedDocument} />
-                            <ManualFormDocumentUpload selectedDocument={selectedDocument} />
-                            <ManualFormFooter />
-                            <div className='flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-grey-2 dark:border-t-solid-black-3 border-solid border-t-100'>
-                                <Button color='secondary' type='button'>
-                                    Back
-                                </Button>
-                                <Button disabled={!isValid}>Next</Button>
-                            </div>
+export const ManualForm = ({ onSubmit, selectedDocument }: TManualFormProps) => (
+    <div className='m-400 p-800 border-100 border-solid rounded-400'>
+        <Formik
+            initialValues={MANUAL_FORM_INITIAL_VALUES}
+            onSubmit={onSubmit}
+            validationSchema={() => getManualFormValidationSchema(selectedDocument)}
+        >
+            {({ isValid }) => (
+                <Form>
+                    <div className='flex flex-col gap-1200 max-w-[67rem]'>
+                        <ManualFormInputs selectedDocument={selectedDocument} />
+                        <ManualFormDocumentUpload selectedDocument={selectedDocument} />
+                        <ManualFormFooter />
+                        <div className='flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-grey-2 dark:border-t-solid-black-3 border-solid border-t-100'>
+                            <Button color='secondary' type='button'>
+                                Back
+                            </Button>
+                            <Button disabled={!isValid}>Next</Button>
                         </div>
-                    </Form>
-                )}
-            </Formik>
-        </div>
-    );
-};
+                    </div>
+                </Form>
+            )}
+        </Formik>
+    </div>
+);

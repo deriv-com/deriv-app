@@ -127,7 +127,7 @@ const Dropzone: React.FC<TProps> = ({
                             </WalletText>
                             {buttonText && (
                                 <div className='wallets-dropzone__placeholder-text'>
-                                    <Button onClick={open} variant='outlined'>
+                                    <Button onClick={open} type='button' variant='outlined'>
                                         {buttonText}
                                     </Button>
                                 </div>

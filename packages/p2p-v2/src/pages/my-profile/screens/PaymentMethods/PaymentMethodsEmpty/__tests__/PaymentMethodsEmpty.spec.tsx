@@ -50,7 +50,7 @@ describe('PaymentMethodsEmpty', () => {
         expect(screen.getByText('You haven’t added any payment methods yet')).toBeInTheDocument();
         expect(screen.getByText('Hit the button below to add payment methods.')).toBeInTheDocument();
         expect(screen.getByText('Add payment methods')).toBeInTheDocument();
-        expect(screen.queryByRole('full-page-mobile-wrapper')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_p2p_v2_full_page_mobile_wrapper')).not.toBeInTheDocument();
     });
     it('should render the correct content when ismobile is true', () => {
         mockUseDevice.mockReturnValueOnce({
@@ -63,7 +63,7 @@ describe('PaymentMethodsEmpty', () => {
         expect(screen.getByText('You haven’t added any payment methods yet')).toBeInTheDocument();
         expect(screen.getByText('Hit the button below to add payment methods.')).toBeInTheDocument();
         expect(screen.getByText('Add payment methods')).toBeInTheDocument();
-        expect(screen.queryByRole('full-page-mobile-wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_p2p_v2_full_page_mobile_wrapper')).toBeInTheDocument();
     });
     it('should call setQueryString when ismobile is true', () => {
         const { setQueryString: mockSetQueryString } = mockuseQueryString();

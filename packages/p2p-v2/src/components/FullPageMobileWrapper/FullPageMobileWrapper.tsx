@@ -27,7 +27,7 @@ const FullPageMobileWrapper = ({
                 'p2p-v2-mobile-wrapper--no-header': !renderHeader,
                 'p2p-v2-mobile-wrapper--no-header-fixed-footer': !renderHeader && shouldFixedFooter,
             })}
-            role='full-page-mobile-wrapper'
+            data-testid='dt_p2p_v2_full_page_mobile_wrapper'
         >
             {renderHeader && (
                 <div className='p2p-v2-mobile-wrapper__header'>

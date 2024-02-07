@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from 'react';
-import { useUIContext } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { TMarketTypes, TPlatforms } from '@/types';
 import { validPassword } from '@/utils';
@@ -44,10 +43,7 @@ const EnterPassword = ({
 }: TEnterPasswordProps) => {
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const { data } = useActiveTradingAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';

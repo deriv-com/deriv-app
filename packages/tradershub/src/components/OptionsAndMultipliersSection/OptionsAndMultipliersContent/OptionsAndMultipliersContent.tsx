@@ -1,14 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader, useUIContext } from '@/components';
+import { optionsAndMultipliersContent } from '@/constants';
+import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Button } from '@deriv-com/ui';
-import { optionsAndMultipliersContent } from '../../../constants/constants';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
-import useRegulationFlags from '../../../hooks/useRegulationFlags';
-import { TradingAppCardLoader } from '../../Loaders';
-import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
-import { useUIContext } from '../../UIProvider';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -70,11 +68,8 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { getUIState } = useUIContext();
-
-    const accountType = getUIState('accountType');
-
-    const regulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
 
@@ -104,8 +99,8 @@ const OptionsAndMultipliersContent = () => {
     const { data } = useActiveTradingAccount();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
 
     const { isEU } = useRegulationFlags(activeRegulation);
 

@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
+import { useUIContext } from '@/components';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { Button, qtMerge, Text } from '@deriv/quill-design';
+import { Button, qtMerge } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
-import { useUIContext } from '../UIProvider';
+import { Text } from '@deriv-com/ui';
 
 type TAccount = {
     label: string;
@@ -36,7 +37,9 @@ const DemoRealSwitcher = () => {
     useEffect(() => {
         if (activeType) {
             setSelected(activeType);
-            setUIState('accountType', activeAccountType);
+            setUIState({
+                accountType: activeAccountType,
+            });
         }
     }, [activeAccountType, activeType, setUIState]);
 
@@ -50,7 +53,9 @@ const DemoRealSwitcher = () => {
 
     const selectAccount = (account: TAccount) => {
         setSelected(account);
-        setUIState('accountType', account.value);
+        setUIState({
+            accountType: account.value,
+        });
 
         const loginId = account.value === 'demo' ? demoLoginId : firstRealLoginId;
         if (loginId) {
@@ -99,7 +104,11 @@ const DemoRealSwitcher = () => {
                             }}
                             role='button'
                         >
-                            <Text bold={account.value === value} className='text-center px-800 py-300' size='sm'>
+                            <Text
+                                className='text-center px-800 py-300'
+                                size='sm'
+                                weight={account.value === value ? 'bold' : 'normal'}
+                            >
                                 {account.label}
                             </Text>
                         </div>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
-import { Button, Text } from '@deriv-com/ui';
-import { SentEmailContent, ActionScreen } from '../../../../components';
 import { Provider } from '@deriv/library';
+import { Button, Text } from '@deriv-com/ui';
+import { ActionScreen, SentEmailContent } from '../../../../components';
 import DerivXPasswordIcon from '../../../../public/images/ic-derivx-password-updated.svg';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';

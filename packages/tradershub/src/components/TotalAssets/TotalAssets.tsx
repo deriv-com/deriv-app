@@ -1,8 +1,9 @@
 import React from 'react';
-import { useActiveTradingAccount, useTotalAssets } from '@deriv/api';
-import { Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
-
-const Loader = () => <div className='flex animate-pulse bg-solid-slate-100 w-5000 h-2000 rounded-200' />;
+import { TotalAssetsLoader } from '@/components';
+import { useTotalAssets } from '@/hooks';
+import { useActiveTradingAccount } from '@deriv/api';
+import { Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 const TotalAssets = () => {
     const { data: totalAssets, isSuccess } = useTotalAssets();
@@ -11,7 +12,7 @@ const TotalAssets = () => {
     const { isDesktop } = useBreakpoint();
     const HeadingTag = isDesktop ? Heading.H3 : Heading.H2;
 
-    if (!isSuccess) return <Loader />;
+    if (!isSuccess) return <TotalAssetsLoader />;
 
     return (
         <div className='relative inline-block w-auto text-center lg:text-right'>

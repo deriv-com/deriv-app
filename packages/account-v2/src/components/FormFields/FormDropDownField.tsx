@@ -2,6 +2,7 @@ import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { useBreakpoint } from '@deriv/quill-design';
+import { validateField } from '../../utils/validation';
 import { WalletDropdown as DropDown } from '../base/WalletDropdown';
 
 type FormDropDownFieldProps = Omit<
@@ -22,18 +23,8 @@ type FormDropDownFieldProps = Omit<
 const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropDownFieldProps) => {
     const { isMobile } = useBreakpoint();
 
-    const validateField = (value: unknown) => {
-        try {
-            if (validationSchema) {
-                validationSchema.validateSync(value);
-            }
-        } catch (err: unknown) {
-            return (err as Yup.ValidationError).message;
-        }
-    };
-
     return (
-        <Field name={name} validate={validateField}>
+        <Field name={name} validate={validateField(validationSchema)}>
             {({ field, form, meta: { error, touched } }: FieldProps<string>) => (
                 <DropDown
                     {...field}

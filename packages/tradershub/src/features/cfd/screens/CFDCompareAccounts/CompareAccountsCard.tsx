@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms } from '../../constants';
 import CompareAccountsButton from './CompareAccountsButton';
@@ -33,7 +33,7 @@ const CompareAccountsCard = ({
                 <CompareAccountsPlatformLabel platform={platform} />
                 {platform === CFDPlatforms.CTRADER && (
                     <div className='p-75 lg:p-[15px] absolute z-10 flex items-center justify-center w-[150px] h-1000 bg-brand-orange text-system-light-primary-background translate-x-400 -translate-y-1000 rotate-45 lg:translate-x-[170px] transform'>
-                        <Text bold className='text-system-light-primary-background' size='sm'>
+                        <Text className='text-system-light-primary-background' size='sm' weight='bold'>
                             New!
                         </Text>
                     </div>

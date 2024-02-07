@@ -12,13 +12,6 @@ type TProps = {
     onMT5PlatformListLoaded?: (value: boolean) => void;
 };
 
-const descriptionLink = (
-    <Trans
-        components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
-        defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
-    />
-);
-
 const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
@@ -71,7 +64,12 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                                 {t('Compare accounts')}
                             </WalletButton>
                         </div>
-                        <WalletText size='md'>{descriptionLink}</WalletText>
+                        <WalletText size='md'>
+                            <Trans
+                                components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
+                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                            />
+                        </WalletText>
                     </div>
                 )}
             </section>

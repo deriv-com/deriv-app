@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
+import { ActionScreen } from '@/components';
+import { platformPasswordResetRedirectLink } from '@/utils';
+import { PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { PlatformDetails } from '../../features/cfd/constants';
 import ChangePassword from '../../public/images/change-password-email.svg';
 import { TPlatforms } from '../../types';
-import { platformPasswordResetRedirectLink } from '../../utils/cfd';
-import { ActionScreen } from '../ActionScreen';
 
 type TSentEmailContentProps = {
     description?: string;

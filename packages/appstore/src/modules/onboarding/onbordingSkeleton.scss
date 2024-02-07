@@ -32,11 +32,13 @@
             margin: 2.4rem 0;
             flex-direction: column;
             gap: 24px;
+            overflow-x: hidden;
             &--platforms {
                 display: flex;
                 flex-direction: row;
                 width: 100%;
                 justify-content: space-between;
+                gap: 24px;
             }
         }
 
@@ -48,12 +50,14 @@
             margin: 2.4rem 0;
             flex-direction: column;
             gap: 24px;
+            overflow-x: hidden;
 
             &--platforms {
                 display: flex;
                 flex-direction: row;
                 width: 100%;
                 justify-content: space-between;
+                gap: 24px;
             }
         }
     }

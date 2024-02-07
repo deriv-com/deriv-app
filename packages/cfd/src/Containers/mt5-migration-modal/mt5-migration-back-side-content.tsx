@@ -5,6 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import React from 'react';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 
 const MT5MigrationBackSideContent = observer(() => {
     const { ui, common } = useStore();
@@ -12,6 +13,7 @@ const MT5MigrationBackSideContent = observer(() => {
     const { setAppstorePlatform } = common;
     const { enableCFDPasswordModal, setJurisdictionSelectedShortcode } = useCfdStore();
     const { getEligibleAccountToMigrate } = useMT5SVGEligibleToMigrate();
+    const { setShowModalFrontSide } = useMT5MigrationModalContext();
 
     const header_size = is_mobile ? 'xs' : 's';
     const content_size = is_mobile ? 'xxs' : 'xs';
@@ -45,7 +47,15 @@ const MT5MigrationBackSideContent = observer(() => {
                 </div>
             </div>
             <Modal.Footer has_separator>
-                <Button type='button' large primary onClick={onConfirmMigration}>
+                <Button
+                    type='button'
+                    large
+                    primary
+                    onClick={() => {
+                        setShowModalFrontSide(true);
+                        onConfirmMigration();
+                    }}
+                >
                     <Localize i18n_default_text='Upgrade' />
                 </Button>
             </Modal.Footer>

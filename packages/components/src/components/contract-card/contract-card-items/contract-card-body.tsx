@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus } from '@deriv/shared';
+import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus, getTotalProfit } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -25,7 +25,6 @@ export type TContractCardBodyProps = {
 
 const ContractCardBody = ({
     addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
@@ -68,13 +67,13 @@ const ContractCardBody = ({
 
     const toggle_card_dialog_props = {
         addToast,
-        connectWithContractUpdate,
         current_focus,
         error_message_alignment,
         getContractById,
         onMouseLeave,
         removeToast,
         setCurrentFocus,
+        totalProfit: is_multiplier && !isNaN(Number(profit)) ? getTotalProfit(contract_info) : Number(profit),
     };
 
     let card_body;

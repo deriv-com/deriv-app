@@ -23,7 +23,7 @@ const TakeProfit = observer((props: TTakeProfitProps) => {
 
     const { addToast, removeToast, current_focus, setCurrentFocus } = ui;
     const { is_single_currency } = client;
-    const { is_accumulator, is_multiplier, currency, has_open_accu_contract } = trade;
+    const { is_accumulator, currency, has_open_accu_contract } = trade;
 
     const validation_errors = props.validation_errors ?? trade.validation_errors;
     const take_profit = props.take_profit ?? trade.take_profit;
@@ -42,11 +42,6 @@ const TakeProfit = observer((props: TTakeProfitProps) => {
             onChange(e);
         }
     };
-    const tooltip_text = is_multiplier ? (
-        <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
-    ) : (
-        <Localize i18n_default_text='Your contract will be closed automatically if your profit reaches this amount.' />
-    );
 
     return (
         <Fieldset className='trade-container__fieldset'>
@@ -73,7 +68,9 @@ const TakeProfit = observer((props: TTakeProfitProps) => {
                 name='take_profit'
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
-                tooltip_label={tooltip_text}
+                tooltip_label={
+                    <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
+                }
                 tooltip_alignment='left'
                 error_message_alignment='left'
                 value={take_profit ?? ''}

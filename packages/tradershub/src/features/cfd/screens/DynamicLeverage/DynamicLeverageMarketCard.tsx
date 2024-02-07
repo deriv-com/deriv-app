@@ -1,5 +1,6 @@
 import React from 'react';
-import { CaptionText, Text } from '@deriv/quill-design';
+import { CaptionText } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
 
@@ -20,7 +21,7 @@ export const DynamicLeverageMarketCard = ({
 }: TDynamicLeverageMarketCardProps) => (
     <div className='overflow-hidden border-75 border-solid rounded-400 border-system-light-less-prominent-text h-[248px] bg-system-light-hover-background'>
         <div className='flex flex-col pt-500 h-3500 bg-system-light-secondary-background'>
-            <Text align='center' bold size='sm'>
+            <Text align='center' size='sm' weight='bold'>
                 {displayName}
             </Text>
             {!!instruments.length && (

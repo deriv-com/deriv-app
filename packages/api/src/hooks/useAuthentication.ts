@@ -26,7 +26,7 @@ const useAuthentication = () => {
             /** client IDV is revoked */
             is_idv_revoked: account_status.has('idv_revoked'),
             /** client is allowed to perform POI and POA (allow uploading documents) */
-            is_allow_document_upload: account_status.has('is_allow_document_upload'),
+            is_allow_document_upload: account_status.has('allow_document_upload'),
             /** client can resubmit POI documents */
             is_poi_resubmission_allowed: account_status.has('allow_poi_resubmission'),
             /** client can resubmit POA documents */

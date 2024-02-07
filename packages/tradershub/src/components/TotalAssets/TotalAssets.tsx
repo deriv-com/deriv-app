@@ -1,6 +1,7 @@
 import React from 'react';
 import { useActiveTradingAccount } from '@deriv/api';
-import { Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import { Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import useTotalAssets from '../../hooks/useTotalAssets';
 import { TotalAssetsLoader } from '../Loaders';
 

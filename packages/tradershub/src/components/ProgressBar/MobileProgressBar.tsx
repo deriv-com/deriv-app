@@ -31,7 +31,7 @@ const MobileProgressBar = ({ activeStep, onClickClose, steps = [] }: TMobileProg
             </div>
             <div className='grid grid-flow-col gap-gap-2xs'>
                 {steps.map((step, index) => (
-                    <StepConnector isActive={index + 1 <= activeStep} key={String(step)} />
+                    <StepConnector isActive={index + 1 <= activeStep} key={step} />
                 ))}
             </div>
         </div>

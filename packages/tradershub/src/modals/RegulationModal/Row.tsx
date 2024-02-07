@@ -14,7 +14,7 @@ const Row = ({ attribute, content, id, idx }: TRowProps) => (
                 idx === 0 ? 'bg-brand-pink-light' : 'bg-system-light-primary-background'
             }`}
         >
-            <Text align='left' as='p' color='general' size='xs' weight='bold'>
+            <Text align='left' color='general' size='xs' weight='bold'>
                 {attribute}
             </Text>
         </td>
@@ -27,7 +27,6 @@ const Row = ({ attribute, content, id, idx }: TRowProps) => (
                     (content[rowKey] as TRowItem[])?.map(item => (
                         <Text
                             align={item?.options?.align ?? 'center'}
-                            as='p'
                             color={item?.options?.color ?? 'prominent'}
                             key={`${id}_${rowKey}_${item?.text}`}
                             size='2xs'
@@ -40,7 +39,6 @@ const Row = ({ attribute, content, id, idx }: TRowProps) => (
                 ) : (
                     <Text
                         align={(content[rowKey] as TRowItem)?.options?.align ?? 'center'}
-                        as='p'
                         color={(content[rowKey] as TRowItem)?.options?.color ?? 'prominent'}
                         size='2xs'
                         weight={(content[rowKey] as TRowItem)?.options?.weight}

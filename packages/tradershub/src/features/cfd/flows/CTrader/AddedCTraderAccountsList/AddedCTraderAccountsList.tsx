@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react';
+import { TradingAccountCard } from '@/components';
+import { getStaticUrl } from '@/helpers';
+import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
+import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Text } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
-import { TradingAccountCard } from '../../../../../components';
-import { getStaticUrl } from '../../../../../helpers/urls';
+import { Button, Text } from '@deriv-com/ui';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
-import { CFDPlatforms, PlatformDetails } from '../../../constants';
-import { TopUpModal, TradeModal } from '../../../modals';
 
 const AddedCTraderAccountsList = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
@@ -67,9 +66,9 @@ const AddedCTraderAccountsList = () => {
             <TradingAccountCard leading={leading} trailing={trailing}>
                 <div className='flex flex-col flex-grow'>
                     {account && (
-                        <Fragment key={`added-ctrader-${account.login}`}>
+                        <Fragment>
                             <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
-                            <Text bold size='sm'>
+                            <Text size='sm' weight='bold'>
                                 {account?.formatted_balance}
                             </Text>
                             <Text color='primary' size='sm'>

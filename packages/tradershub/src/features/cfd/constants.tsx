@@ -1,4 +1,5 @@
 import React, { ComponentType, ReactNode, SVGAttributes } from 'react';
+import { TJurisdiction, TMarketTypes, TPlatforms } from '@/types';
 import CTraderIcon from '../../public/images/cfd/ctrader.svg';
 import DerivXIcon from '../../public/images/cfd/derivx.svg';
 import FinancialEUMT5Icon from '../../public/images/cfd/eu-mt5-financial.svg';
@@ -14,7 +15,6 @@ import LinuxIcon from '../../public/images/ic-linux-logo.svg';
 import MacOSIcon from '../../public/images/ic-macos-logo.svg';
 import MT5Icon from '../../public/images/ic-mt5.svg';
 import WindowsIcon from '../../public/images/ic-windows-logo.svg';
-import { TJurisdiction, TMarketTypes, TPlatforms } from '../../types';
 
 type TAppContent = {
     description: string;

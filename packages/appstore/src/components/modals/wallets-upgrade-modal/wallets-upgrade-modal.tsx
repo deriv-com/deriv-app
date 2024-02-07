@@ -19,8 +19,6 @@ const WalletsUpgradeModal = () => {
         localStorage.setItem('is_wallet_migration_modal_closed', 'true');
     };
 
-    const image = is_mobile ? 'upgrade_mobile' : 'upgrade_modal_desktop';
-
     return (
         <Modal
             className='wallets-upgrade-modal'
@@ -35,9 +33,9 @@ const WalletsUpgradeModal = () => {
                         <Text size={is_mobile ? 's' : 'm'} weight='bold'>
                             <Localize i18n_default_text='Introducing Wallets' />
                         </Text>
-                        <Text size={is_mobile ? 's' : 'm'}>
+                        <Text size={is_mobile ? 'xs' : 'sm'}>
                             <Localize
-                                i18n_default_text='Enjoy smoother and more secure transactions in multiple currencies with Wallets – <1></1>our new and improved Cashier.'
+                                i18n_default_text='Enjoy smoother and more secure transactions in multiple currencies with Wallets – <0></0>our new and improved Cashier.'
                                 components={[<br key={0} />]}
                             />
                         </Text>
@@ -53,7 +51,7 @@ const WalletsUpgradeModal = () => {
                         text={localize('Upgrade now')}
                     />
                 </div>
-                <WalletsImage image={image} className='wallets-upgrade-modal__image' />
+                <WalletsImage image='upgrade_modal' className='wallets-upgrade-modal__image' />
             </Modal.Body>
         </Modal>
     );

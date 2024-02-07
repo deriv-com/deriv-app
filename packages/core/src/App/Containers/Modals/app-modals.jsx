@@ -3,20 +3,65 @@ import { useLocation } from 'react-router-dom';
 
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 
-import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
-import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
-import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { observer, useStore } from '@deriv/stores';
 
-import CompletedAssessmentModal from './completed-assessment-modal.jsx';
-import ReadyToVerifyModal from './ready-to-verify-modal';
-import CooldownWarningModal from './cooldown-warning-modal.jsx';
-import MT5Notification from './mt5-notification';
-import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
-import ReadyToDepositModal from './ready-to-deposit-modal';
-import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
-import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
-import VerificationModal from '../VerificationModal';
+const MT5Notification = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './mt5-notification'))
+);
+
+const TradingAssessmentExistingUser = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './trading-assessment-existing-user.jsx'))
+);
+
+const RedirectNoticeModal = React.lazy(() =>
+    moduleLoader(() =>
+        import(/* webpackChunkName: "account-signup-modal" */ 'App/Components/Elements/Modals/RedirectNotice')
+    )
+);
+
+const DerivRealAccountRequiredModal = React.lazy(() =>
+    moduleLoader(() =>
+        import(
+            /* webpackChunkName: "account-signup-modal" */ 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx'
+        )
+    )
+);
+
+const MT5AccountNeededModal = React.lazy(() =>
+    moduleLoader(() =>
+        import(
+            /* webpackChunkName: "account-signup-modal" */ 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx'
+        )
+    )
+);
+
+const CompletedAssessmentModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './completed-assessment-modal.jsx'))
+);
+
+const NeedRealAccountForCashierModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './need-real-account-for-cashier-modal'))
+);
+
+const RiskAcceptTestWarningModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './ready-to-deposit-modal'))
+);
+
+const ReadyToDepositModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './ready-to-deposit-modal'))
+);
+
+const ReadyToVerifyModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './ready-to-verify-modal'))
+);
+
+const CooldownWarningModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './cooldown-warning-modal.jsx'))
+);
+
+const VerificationModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../VerificationModal'))
+);
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))

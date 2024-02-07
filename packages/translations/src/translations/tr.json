@@ -3764,7 +3764,7 @@
     "-565990678": "Sözleşmeniz, seçtiğiniz Bitiş saatine bağlı olarak, bu tarihte (GMT olarak) sona erecektir.",
     "-1545819495": "Zararınız bahisinizin belirli bir yüzdesine ulaştığında işleminiz en yakın mevcut varlık fiyatından otomatik olarak kapatılır, ancak zararınız asla bahsinizi aşmaz. Bu yüzde, seçilen dayanak varlığa ve Multiplier bağlıdır.",
     "-468501352": "Bu özelliği seçerseniz, kârınız kâr alma tutarına ulaştığında veya aştığında işleminiz mevcut en yakın varlık fiyatından otomatik olarak kapatılacaktır. Kârınız, kapanıştaki piyasa fiyatına bağlı olarak girdiğiniz tutardan daha fazla olabilir.",
-    "-477936848": "We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers.",
+    "-477936848": "İşlem açılışı sunucularımız tarafından işlendiğinde bir sonraki varlık fiyatı olan bir sonraki tıklama yürütme mekanizmasını kullanıyoruz.",
     "-1476381873": "İşlem kapanışı sunucularımız tarafından işlendiğinde en son varlık fiyatı.",
     "-148680560": "Vade sonuna ulaşıldığında son tikin spot fiyatı.",
     "-1123926839": "Sözleşmeler, seçtiğiniz vade tarihinde GMT saatiyle tam olarak 14:00:00'da sona erecektir.",

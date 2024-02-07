@@ -193,7 +193,7 @@
 
     &__progress-dot {
         position: absolute;
-        left: 97.7%;
+        left: calc(100% - 0.6rem);
         bottom: -0.3rem;
 
         @include desktop {

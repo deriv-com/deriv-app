@@ -120,7 +120,6 @@ const TradersHubHeaderWallets = observer(() => {
                         <div className='traders-hub-header__menu-right--items--onboarding'>
                             <TradersHubOnboarding />
                         </div>
-
                         <div className='traders-hub-header__menu-right--items--notifications'>
                             <ShowNotifications />
                         </div>

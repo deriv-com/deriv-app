@@ -16,7 +16,7 @@ const TradersHubOnboarding = observer(() => {
         ? () => {
               setWalletsOnboarding('started');
           }
-        : () => () => {
+        : () => {
               toggleIsTourOpen(true);
               setIsOnboardingVisited(false);
               setIsFirstTimeVisit(false);

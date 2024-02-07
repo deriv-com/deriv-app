@@ -38,9 +38,13 @@ const CreatePassword = ({
     return (
         <div className='inline-flex flex-col items-center w-full text-center gap-1200  rounded-400 bg-system-light-primary-background lg:w-[360px]'>
             {!isMobile && icon}
-            <div className='flex flex-col justify-center gap-1200 lg:gap-400'>
-                <Text weight='bold'>Create a {title} password</Text>
-                <Text size='sm'>You can use this password for all your {title} accounts.</Text>
+            <div className='flex flex-col items-center justify-center gap-1200 lg:gap-400'>
+                <Text as='h1' weight='bold'>
+                    Create a {title} password
+                </Text>
+                <Text align='center' size='sm'>
+                    You can use this password for all your {title} accounts.
+                </Text>
             </div>
             <PasswordInput label={`${title} password`} onChange={onPasswordChange} value={password} />
             {!isMobile && (

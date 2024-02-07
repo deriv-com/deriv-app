@@ -17,7 +17,7 @@ import { MT5AccountIcon } from '../MT5AccountIcon';
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { uiState } = useUIContext();
     const activeRegulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { hasActiveDerivAccount, isEU } = useRegulationFlags(activeRegulation);
     const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
     const description = marketTypeDetails?.description ?? '';
     const { data: activeAccount } = useAuthorize();

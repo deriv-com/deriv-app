@@ -33,10 +33,10 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
             >
                 <Icon />
                 {info && <CircleInfoIcon className='absolute top-50 opacity-300' />}
-                <Text className='my-200 bold' size='sm' weight={isSelected ? 'bold' : 'normal'}>
+                <Text align='center' as='h1' className='my-200' size='sm' weight={isSelected ? 'bold' : 'normal'}>
                     {title}
                 </Text>
-                <Text size='sm' weight={isSelected ? 'bold' : 'normal'}>
+                <Text align='center' as='p' size='sm' weight={isSelected ? 'bold' : 'normal'}>
                     ({id})
                 </Text>
             </button>

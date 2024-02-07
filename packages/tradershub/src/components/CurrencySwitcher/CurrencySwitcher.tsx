@@ -64,6 +64,7 @@ const CurrencySwitcher = () => {
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
             <div className='grow'>
                 <Text
+                    as='p'
                     className={isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'}
                     size='sm'
                     weight={isDemo ? 'bold' : 'normal'}

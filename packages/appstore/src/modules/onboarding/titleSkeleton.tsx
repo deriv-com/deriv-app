@@ -1,0 +1,13 @@
+import React from 'react';
+import './titleSkeleton.scss';
+
+const TitleSkeleton = () => {
+    return (
+        <div className='title-skeleton-loader'>
+            <div className='skeleton-loader title-skeleton-loader__title' />
+            <div className='skeleton-loader title-skeleton-loader__description' />
+        </div>
+    );
+};
+
+export default TitleSkeleton;

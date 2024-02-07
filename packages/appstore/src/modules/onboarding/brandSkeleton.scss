@@ -1,0 +1,11 @@
+@import './skeletonLoader.scss';
+
+.brand-skeleton-loader {
+    display: flex;
+    align-items: center;
+    &__brand {
+        height: 16px;
+        border-radius: 4px;
+        width: 50px;
+    }
+}

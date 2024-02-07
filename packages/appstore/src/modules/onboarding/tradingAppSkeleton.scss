@@ -1,0 +1,46 @@
+@import './skeletonLoader.scss';
+
+.trading-app-card-loader {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 1rem 0rem;
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+        gap: 14px;
+        align-items: center;
+
+        &__icon {
+            height: 48px;
+            border-radius: 8px;
+            width: 48px;
+        }
+
+        &__details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            &--title {
+                height: 20px;
+                border-radius: 8px;
+                width: 75px;
+            }
+
+            &--description {
+                height: 18px;
+                border-radius: 8px;
+                width: 191px;
+            }
+        }
+
+        &__button {
+            justify-self: end;
+            height: 32px;
+            border-radius: 4px;
+            width: 67px;
+        }
+    }
+}

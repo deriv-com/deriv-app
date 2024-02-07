@@ -1,0 +1,19 @@
+@import './skeletonLoader.scss';
+
+.total-asset-skeleton-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 4px;
+
+    &__title {
+        height: 20px;
+        border-radius: 8px;
+        width: 75px;
+    }
+    &__description {
+        height: 26px;
+        border-radius: 8px;
+        width: 176px;
+    }
+}

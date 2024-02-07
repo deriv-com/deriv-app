@@ -1,0 +1,33 @@
+@import './skeletonLoader.scss';
+
+.options-multipliers-skeleton-loader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &__left {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        &--title {
+            height: 36px;
+            border-radius: 8px;
+            width: 238px;
+        }
+
+        &--description {
+            height: 24px;
+            border-radius: 4px;
+            max-width: 799px;
+            min-width: 238px;
+        }
+    }
+
+    &__right {
+        &--currency-switcher {
+            height: 72px;
+            border-radius: 8px;
+            width: 305px;
+        }
+    }
+}

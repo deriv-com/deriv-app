@@ -1,0 +1,33 @@
+@import './skeletonLoader.scss';
+
+.header-skeleton-loader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    &__left {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+        .box-1 {
+            &__title {
+                height: 16px;
+                border-radius: 4px;
+                width: 50px;
+            }
+        }
+    }
+
+    &__right {
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        &--icon {
+            height: 16px;
+            border-radius: 4px;
+            width: 16px;
+        }
+    }
+}

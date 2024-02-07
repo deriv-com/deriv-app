@@ -2,12 +2,12 @@ import React from 'react';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import StepConnector from './StepConnector';
-import { TStep } from './Stepper';
+import { TSteps } from './Stepper';
 
 type TMobileProgressBar = {
     activeStep: number;
     onClickClose: VoidFunction;
-    steps: TStep[];
+    steps: TSteps;
 };
 
 /**
@@ -25,13 +25,13 @@ const MobileProgressBar = ({ activeStep, onClickClose, steps = [] }: TMobileProg
                     <Text weight='bold'>
                         Step {activeStep}/{steps.length}:
                     </Text>{' '}
-                    <Text>{steps[activeStep - 1].title}</Text>
+                    <Text>{steps[activeStep - 1]}</Text>
                 </div>
                 <StandaloneXmarkBoldIcon className='cursor-pointer' onClick={onClickClose} />
             </div>
             <div className='grid grid-flow-col gap-gap-2xs'>
                 {steps.map((step, index) => (
-                    <StepConnector isActive={index + 1 <= activeStep} key={step.title} />
+                    <StepConnector isActive={index + 1 <= activeStep} key={String(step)} />
                 ))}
             </div>
         </div>

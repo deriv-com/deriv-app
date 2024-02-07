@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
+import { TSteps } from 'src/components/ProgressBar/Stepper';
 import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
@@ -9,12 +10,7 @@ import { ACTION_TYPES, useSignupWizardContext } from '../../../providers/SignupW
 import WizardScreens from './WizardScreens';
 import './index.scss';
 
-const FORM_PROGRESS_STEPS = [
-    { isFilled: false, title: 'Account currency' },
-    { isFilled: false, title: 'Personal details' },
-    { isFilled: false, title: 'Address' },
-    { isFilled: false, title: 'Terms of use' },
-];
+const FORM_PROGRESS_STEPS: TSteps = ['Account currency', 'Personal details', 'Address', 'Terms of use'];
 
 /**
  * @name SignupWizard

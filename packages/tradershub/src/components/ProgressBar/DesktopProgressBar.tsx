@@ -1,9 +1,9 @@
 import React from 'react';
-import Stepper, { TStep } from './Stepper';
+import Stepper, { TSteps } from './Stepper';
 
 type TDesktopProgressBar = {
     activeStep: number;
-    steps: TStep[];
+    steps: TSteps;
 };
 
 /**
@@ -19,7 +19,7 @@ const DesktopProgressBar = ({ activeStep, steps = [] }: TDesktopProgressBar) => 
                 <Stepper
                     isActive={index + 1 <= activeStep}
                     isFilled={index + 2 <= activeStep}
-                    key={step.title}
+                    key={step}
                     step={step}
                     stepCount={index}
                 />

@@ -5,12 +5,12 @@ import { Text } from '@deriv-com/ui';
 import { desktopStyle, stepperVariants } from './ProgressBar.classnames';
 import StepConnector from './StepConnector';
 
-export type TStep = { isFilled: boolean; title: string };
+export type TSteps = string[];
 
 type TStepperProps = {
     isActive: boolean;
     isFilled?: boolean;
-    step: TStep;
+    step: TSteps[number];
     stepCount: number;
 };
 
@@ -23,7 +23,7 @@ const Stepper = ({ isActive, isFilled = false, step, stepCount }: TStepperProps)
             </span>
         </div>
         <Text className='relative top-200' size='sm' weight={isActive ? 'bold' : 'normal'}>
-            {step.title}
+            {step}
         </Text>
     </div>
 );

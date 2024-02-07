@@ -1,10 +1,10 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import { useDynamicLeverageModalState } from '@cfd/components';
+import { Jurisdiction, MarketType } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { qtMerge } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
-import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
-import { Jurisdiction, MarketType } from '../../constants';
 import { JurisdictionCard } from './JurisdictionCard';
 import { JurisdictionTncSection } from './JurisdictionTncSection';
 

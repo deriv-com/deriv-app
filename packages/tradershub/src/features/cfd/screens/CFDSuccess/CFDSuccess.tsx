@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
-import { ActionScreen } from '../../../../components';
+import { ActionScreen } from '@/components';
+import { TMarketTypes, TPlatforms } from '@/types';
+import { PlatformDetails } from '@cfd/constants';
 import CTraderSuccess from '../../../../public/images/cfd/ctrader-success.svg';
 import DerivXSuccess from '../../../../public/images/cfd/dxtrade-success.svg';
 import MT5DerivedSuccess from '../../../../public/images/cfd/mt5-derived-success.svg';
 import MT5FinancialSuccess from '../../../../public/images/cfd/mt5-financial-success.svg';
 import MT5SwapFreeSuccess from '../../../../public/images/cfd/mt5-swap-free-success.svg';
 import CheckMark from '../../../../public/images/checkmark.svg';
-import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformDetails } from '../../constants';
 
 type TCFDSuccessProps = {
     description: string;
@@ -58,7 +58,7 @@ const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSu
     if (platform === 'mt5') {
         icon = marketTypeToDetailsMapper[platform][marketType]?.icon;
     } else {
-        icon = PlatformDetails[platform as keyof typeof PlatformDetails]?.icon;
+        icon = PlatformDetails[platform as keyof typeof PlatformDetails]?.icon();
     }
 
     const IconWithCheckMark = () => (

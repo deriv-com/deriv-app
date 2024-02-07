@@ -1,6 +1,6 @@
 import React from 'react';
-import { AccountsDerivAccountLightIcon } from '@deriv/quill-icons';
 import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
+import { PlatformIcon } from '../PlatformIcon';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
 
 const TrailingButton = () => {
@@ -8,7 +8,7 @@ const TrailingButton = () => {
     return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
 };
 
-const LeadingIcon = () => <AccountsDerivAccountLightIcon height='80px' width='80px' />;
+const LeadingIcon = () => <PlatformIcon icon='DerivApps' />;
 
 const GetDerivAccount = () => {
     const title = 'Deriv account';

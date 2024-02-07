@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
 import { Table } from '@/components';

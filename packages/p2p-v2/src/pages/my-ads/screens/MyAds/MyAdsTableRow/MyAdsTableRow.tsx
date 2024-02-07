@@ -4,6 +4,7 @@ import { useExchangeRateSubscription } from '@deriv/api';
 import { Button, Text, Tooltip } from '@deriv-com/ui';
 import { useDevice } from '@/hooks';
 import { generateEffectiveRate } from '@/utils/format-value';
+//TODO: Replace with quill icons once available
 import DeactivateIcon from '../../../../../public/ic-archive.svg';
 import ActivateIcon from '../../../../../public/ic-unarchive.svg';
 import EditIcon from '../../../../../public/ic-edit.svg';

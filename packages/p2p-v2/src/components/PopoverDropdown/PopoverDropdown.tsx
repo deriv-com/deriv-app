@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Button, Text } from '@deriv-com/ui';
 import { useOnClickOutside } from 'usehooks-ts';
-import DropdownIcon from '../../public/ic-more.svg';
+import { LabelPairedEllipsisVerticalMdRegularIcon } from '@deriv/quill-icons';
 import './PopoverDropdown.scss';
 
 type TItem = {
@@ -22,7 +22,7 @@ const PopoverDropdown = ({ dataTestId, dropdownList, onClick }: TPopoverDropdown
 
     return (
         <div className='p2p-v2-popover-dropdown' ref={ref}>
-            <DropdownIcon
+            <LabelPairedEllipsisVerticalMdRegularIcon
                 className='p2p-v2-popover-dropdown__icon'
                 data-testid={dataTestId}
                 onClick={() => setVisible(prevState => !prevState)}

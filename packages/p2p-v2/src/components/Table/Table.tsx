@@ -1,8 +1,8 @@
 import React, { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
 import { Text } from '@deriv-com/ui';
 import { useFetchMore, useDevice } from '@/hooks';
-import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
 import './Table.scss';
 
 type TProps<T> = {
@@ -53,11 +53,7 @@ const Table = <T,>({
     return (
         <div className='w-full'>
             {isDesktop && columns.length > 0 && (
-                <div
-                    className='p2p-v2-table__header'
-                    ref={headerRef}
-                    style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
-                >
+                <div className='p2p-v2-table__header' ref={headerRef}>
                     {table.getFlatHeaders().map(header => (
                         <Text className='p2p-v2-table__header-items' key={header.id} size='sm' weight='bold'>
                             {renderHeader(header.column.columnDef.header as string)}

@@ -3,6 +3,10 @@
     flex-direction: column;
     position: relative;
 
+    &__icon {
+        margin-left: 1rem;
+    }
+
     &__list {
         display: flex;
         flex-direction: column;

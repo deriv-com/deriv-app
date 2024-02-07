@@ -4,8 +4,7 @@
     position: relative;
     & .p2p-v2-table {
         &__header {
-            // stylelint-disable-next-line declaration-no-important
-            grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.9fr !important;
+            grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.9fr;
         }
 
         &__content {

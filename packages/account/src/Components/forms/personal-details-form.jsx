@@ -14,7 +14,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
+import { AUTH_STATUS_CODES, getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
@@ -46,6 +46,7 @@ const PersonalDetailsForm = props => {
         side_note,
         no_confirmation_needed,
         mismatch_status,
+        account_status,
     } = props;
     const autocomplete_value = 'none';
     // need to put this check related to DIEL clients
@@ -77,6 +78,12 @@ const PersonalDetailsForm = props => {
     };
 
     const is_rendered_for_idv_or_onfido = is_rendered_for_idv || is_rendered_for_onfido;
+
+    const is_poi_verified =
+        has_real_account &&
+        [AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(
+            account_status?.authentication?.identity.status
+        );
 
     const getFieldHint = field_name =>
         is_svg_only || is_rendered_for_idv_or_onfido ? (
@@ -203,7 +210,7 @@ const PersonalDetailsForm = props => {
                                 hint={getFieldHint(localize('first name'))}
                                 disabled={
                                     isFieldImmutable('first_name', editable_fields) ||
-                                    (values?.first_name && has_real_account)
+                                    (values?.first_name && is_poi_verified)
                                 }
                                 placeholder={localize('John')}
                                 data-testid='first_name'
@@ -217,7 +224,7 @@ const PersonalDetailsForm = props => {
                                 hint={getFieldHint(localize('last name'))}
                                 disabled={
                                     isFieldImmutable('last_name', editable_fields) ||
-                                    (values?.last_name && has_real_account)
+                                    (values?.last_name && is_poi_verified)
                                 }
                                 placeholder={localize('Doe')}
                                 data-testid='last_name'
@@ -232,7 +239,7 @@ const PersonalDetailsForm = props => {
                                 hint={getFieldHint(localize('date of birth'))}
                                 disabled={
                                     isFieldImmutable('date_of_birth', editable_fields) ||
-                                    (values?.date_of_birth && has_real_account)
+                                    (values?.date_of_birth && is_poi_verified)
                                 }
                                 placeholder={localize('01-07-1999')}
                                 portal_id='modal_root'
@@ -375,7 +382,7 @@ const PersonalDetailsForm = props => {
                                                 disabled={
                                                     (values?.citizen && is_fully_authenticated) ||
                                                     isFieldImmutable('citizen', editable_fields) ||
-                                                    (values?.citizen && has_real_account)
+                                                    (values?.citizen && is_poi_verified)
                                                 }
                                                 list_items={residence_list}
                                                 onItemSelection={({ value, text }) =>
@@ -393,7 +400,7 @@ const PersonalDetailsForm = props => {
                                                 disabled={
                                                     (values?.citizen && is_fully_authenticated) ||
                                                     isFieldImmutable('citizen', editable_fields) ||
-                                                    (values?.citizen && has_real_account)
+                                                    (values?.citizen && is_poi_verified)
                                                 }
                                                 label={is_eu_user ? localize('Citizenship*') : localize('Citizenship')}
                                                 list_items={residence_list}
@@ -418,7 +425,7 @@ const PersonalDetailsForm = props => {
                             <PhoneField
                                 value={values.phone}
                                 editable_fields={editable_fields}
-                                has_real_account={has_real_account}
+                                is_disabled={is_poi_verified}
                                 required
                             />
                         )}
@@ -520,7 +527,7 @@ const PersonalDetailsForm = props => {
                                 setFieldValue={setFieldValue}
                                 disabled={
                                     isFieldImmutable('account_opening_reason', editable_fields) ||
-                                    (values?.account_opening_reason && has_real_account)
+                                    (values?.account_opening_reason && is_poi_verified)
                                 }
                             />
                         )}
@@ -549,7 +556,7 @@ const PersonalDetailsForm = props => {
                         <PhoneField
                             value={values.phone}
                             editable_fields={editable_fields}
-                            has_real_account={has_real_account}
+                            is_disabled={is_poi_verified}
                             required
                         />
                     )}
@@ -588,7 +595,7 @@ const PersonalDetailsForm = props => {
                                 setFieldValue={setFieldValue}
                                 disabled={
                                     isFieldImmutable('account_opening_reason', editable_fields) ||
-                                    (values?.account_opening_reason && has_real_account)
+                                    (values?.account_opening_reason && is_poi_verified)
                                 }
                                 required
                             />
@@ -617,14 +624,14 @@ const PersonalDetailsForm = props => {
 
 export default PersonalDetailsForm;
 
-const PhoneField = ({ value, editable_fields, has_real_account, required }) => (
+const PhoneField = ({ value, editable_fields, is_disabled, required }) => (
     <FormInputField
         name='phone'
         label={required ? localize('Phone number*') : localize('Phone number')}
         placeholder={required ? localize('Phone number*') : localize('Phone number')}
         disabled={
             isFieldImmutable('phone', editable_fields) ||
-            (value && has_real_account && validPhone(value) && value?.length >= 9 && value?.length <= 35)
+            (value && is_disabled && validPhone(value) && value?.length >= 9 && value?.length <= 35)
         }
         maxLength={50}
         data-testid='phone'

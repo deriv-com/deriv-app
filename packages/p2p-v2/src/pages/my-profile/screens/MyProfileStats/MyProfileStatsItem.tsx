@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import { Text } from '@deriv-com/ui';
 import './MyProfileStatsItem.scss';
 
 type TMyProfileStatsItemProps = {
@@ -27,8 +28,8 @@ const MyProfileStatsItem = ({
 
     return (
         <div className='p2p-v2-my-profile-stats__item'>
-            <span>
-                {label}{' '}
+            <div>
+                <Text size='sm'>{label} </Text>
                 {shouldShowDuration && (
                     <button
                         className={clsx('p2p-v2-my-profile-stats__item--inactive', {
@@ -52,12 +53,10 @@ const MyProfileStatsItem = ({
                         </button>
                     </>
                 )}
-            </span>
-            <span>
-                <strong>
-                    {value} {currency}
-                </strong>
-            </span>
+            </div>
+            <Text size='sm' weight='bold'>
+                {value} {currency}
+            </Text>
         </div>
     );
 };

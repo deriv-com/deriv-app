@@ -103,17 +103,17 @@ export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
         {
             exclude: /node_modules/,
             generator: {
-                filename: 'account-v2/public/[name].[contenthash][ext]',
+                filename: 'account-v2/assets/[name].[contenthash][ext]',
             },
-            include: /public\//,
-            issuer: /\/packages\/account-v2\/[^/]*\.scss/,
+            include: /assets\//,
+            issuer: /\/packages\/account-v2\/[^/]+(?:\/[^/]+)*\.scss/,
             test: /\.svg$/,
             type: 'asset/resource',
         },
         {
             exclude: /node_modules/,
-            include: /public\//,
-            issuer: /\/packages\/account-v2\/[^/]*\.tsx/,
+            include: /assets\//,
+            issuer: /\/packages\/account-v2\/[^/]+(?:\/[^/]+)*\.tsx/,
             test: /\.svg$/,
             use: svgLoaders,
         },

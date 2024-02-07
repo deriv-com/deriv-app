@@ -1,9 +1,8 @@
 import React from 'react';
 import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
-import { FullPageMobileWrapper } from '../../../../../components';
-import { PaymentMethodsHeader } from '../../../../../components/PaymentMethodsHeader';
-import { useDevice, useQueryString } from '../../../../../hooks';
-import { TFormState } from '../../../../../reducers/types';
+import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
+import { useDevice, useQueryString } from '@/hooks';
+import { TFormState } from '@/reducers/types';
 import AddNewButton from './AddNewButton';
 import PaymentMethodsListContent from './PaymentMethodsListContent';
 import './PaymentMethodsList.scss';

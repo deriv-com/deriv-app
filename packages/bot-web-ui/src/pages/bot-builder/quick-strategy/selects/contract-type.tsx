@@ -7,6 +7,7 @@ import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
+import { setRsDropdownTextToLocalStorage } from '../analytics/utils';
 import { TApiHelpersInstance, TDropdownItems, TFormData } from '../types';
 
 type TContractTypes = {
@@ -35,6 +36,10 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                     setFieldValue?.(name, categories?.[0]?.value);
                     setValue(name, categories?.[0]?.value);
                     validateForm();
+                    setRsDropdownTextToLocalStorage(categories?.[0]?.text, name);
+                } else {
+                    const curzrent_selected = categories?.find(contract => contract.value === selected);
+                    setRsDropdownTextToLocalStorage(curzrent_selected?.text ?? '', name);
                 }
             };
             getContractTypes();
@@ -46,10 +51,11 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
         setFieldValue?.(name, value);
         setValue(name, value);
         rudderStackSendQsParameterChangeEvent({
-            parameter_type: name === 'type' ? 'purchase_condition' : name,
+            parameter_type: name,
             parameter_value: text,
             parameter_field_type: 'dropdown',
         });
+        setRsDropdownTextToLocalStorage(text, name);
     };
 
     const key = `qs-contract-type-${name}`;

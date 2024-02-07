@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type TDurationItemRaw = {
     display: string;
     unit: string;
@@ -82,9 +84,31 @@ export type TDropdownItems = {
     value: string;
 };
 
+export type TDurationUnitItem = {
+    text: string;
+    value: string;
+    min: number;
+    max: number;
+    display?: string;
+    unit?: string;
+};
+
+export type TTradeType = {
+    component?: ReactNode;
+    text: string;
+    value: string;
+    group: string;
+    icon: string[];
+};
+
 export type TApiHelpersInstance = {
     contracts_for: {
+        getTradeTypesForQuickStrategy: (tradetype: string | number | boolean) => Promise<TTradeType[]>;
         getContractTypes: (tradetype: string | number | boolean) => Promise<TDropdownItems[]>;
+        getDurations: (
+            symbol: string | number | boolean,
+            tradetype: string | number | boolean
+        ) => Promise<TDurationUnitItem[]>;
     };
 };
 
@@ -96,8 +120,10 @@ export type TRsStrategyType =
     | `reverse d'alembert`
     | `1-3-2-6`;
 
+export type TDurationType = 't' | 's' | 'm' | 'h' | 'd';
+
 export type TFormValues = Record<string, string | number | boolean> & {
-    durationtype: 't' | 's' | 'm' | 'h' | 'd';
+    durationtype: TDurationType;
     symbol: string;
     tradetype: string;
     type?: string;

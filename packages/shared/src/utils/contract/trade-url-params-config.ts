@@ -1,34 +1,28 @@
 import { ActiveSymbols } from '@deriv/api-types';
-
-type TTradeURLParamsConfig = {
-    [key: string]: {
-        text: string;
-        value: string;
-    }[];
-};
-
-export type TTextValueStrings = {
-    text: string;
-    value: string;
-};
-
-type TContractTypesList = {
-    [key: string]: {
-        name: string;
-        categories: Array<string | TTextValueStrings>;
-    };
-};
+import { TTextValueStrings, TTradeTypesCategories } from '../constants/contract';
 
 type TGetTradeURLParamsArgs = {
     active_symbols?: ActiveSymbols;
-    contract_types_list?: TContractTypesList;
+    contract_types_list?: TTradeTypesCategories;
 };
 
 type TTradeParams = {
     contract_type?: string;
-    symbol?: string;
     chart_type?: string;
     granularity?: number;
+    symbol?: string;
+};
+
+type TTradeParamsResult = {
+    contractType?: string;
+    chartType?: string;
+    granularity?: number;
+    showModal?: boolean;
+    symbol?: string;
+};
+
+type TTradeURLParamsConfig = {
+    [key: string]: TTextValueStrings[];
 };
 
 const TRADE_URL_PARAMS = {
@@ -66,46 +60,47 @@ const getParamTextByValue = (value: number | string, key: string) =>
     tradeURLParamsConfig[key].find(interval => interval.value === value.toString())?.text ?? '';
 
 export const setTradeURLParams = ({ contract_type, symbol, chart_type, granularity }: TTradeParams) => {
-    if ('URLSearchParams' in window) {
-        const searchParams = new URLSearchParams(window.location.search);
-        chart_type && searchParams.set('chart_type', getParamTextByValue(chart_type, 'chartType'));
-        !isNaN(Number(granularity)) &&
-            searchParams.set('interval', getParamTextByValue(Number(granularity), 'interval'));
-        symbol && searchParams.set('symbol', symbol);
-        contract_type && searchParams.set('trade_type', contract_type);
-        const newRelativePathQuery = `${window.location.pathname}?${searchParams.toString()}`;
-        window.history.pushState(null, '', newRelativePathQuery);
-    }
+    const searchParams = new URLSearchParams(window.location.search);
+    chart_type && searchParams.set(TRADE_URL_PARAMS.CHART_TYPE, getParamTextByValue(chart_type, 'chartType'));
+    !isNaN(Number(granularity)) &&
+        searchParams.set(
+            TRADE_URL_PARAMS.INTERVAL,
+            getParamTextByValue(Number(granularity), TRADE_URL_PARAMS.INTERVAL)
+        );
+    symbol && searchParams.set(TRADE_URL_PARAMS.SYMBOL, symbol);
+    contract_type && searchParams.set(TRADE_URL_PARAMS.TRADE_TYPE, contract_type);
+    const newRelativePathQuery = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.pushState(null, '', newRelativePathQuery);
 };
 
-export const getTradeURLParams = ({ active_symbols, contract_types_list }: TGetTradeURLParamsArgs) => {
+export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {} }: TGetTradeURLParamsArgs = {}) => {
     const searchParams = new URLSearchParams(window.location.search);
-    const result: TTradeParams & { showModal?: boolean } = {};
+    const result: TTradeParamsResult = {};
     if (searchParams) {
         const { chart_type, interval, trade_type, symbol } = Object.values(TRADE_URL_PARAMS).reduce<{
             [key: string]: string | null;
         }>((acc, key) => (searchParams.get(key) ? { ...acc, [key]: searchParams.get(key) } : acc), {});
-        const configInterval = tradeURLParamsConfig.interval.find(item => item.text === interval);
-        const configChartType = tradeURLParamsConfig.chartType.find(item => item.text === chart_type);
-        const hasSymbol = active_symbols?.some(item => item.symbol === symbol);
-        const contractList = Object.keys(contract_types_list || {}).reduce<string[]>((acc, key) => {
-            const categories: TContractTypesList['Ups & Downs']['categories'] =
-                contract_types_list?.[key]?.categories || [];
+        const validInterval = tradeURLParamsConfig.interval.find(item => item.text === interval);
+        const validChartType = tradeURLParamsConfig.chartType.find(item => item.text === chart_type);
+        const isSymbolValid = active_symbols.some(item => item.symbol === symbol);
+        const contractList = Object.keys(contract_types_list).reduce<string[]>((acc, key) => {
+            const categories: TTradeTypesCategories['Ups & Downs']['categories'] =
+                contract_types_list[key]?.categories || [];
             return [...acc, ...categories.map(contract => (contract as TTextValueStrings).value)];
         }, []);
-        const hasTradeType = contractList.includes(trade_type ?? '');
-        if (configInterval) {
-            result.granularity = Number(configInterval?.value);
+        const isTradeTypeValid = contractList.includes(trade_type ?? '');
+
+        if (validInterval) {
+            result.granularity = Number(validInterval.value);
         }
-        if (configChartType) {
-            // rename chart_type & contract_type to camel case
-            result.chart_type = configChartType?.value;
+        if (validChartType) {
+            result.chartType = validChartType.value;
         }
-        if (hasSymbol) {
+        if (isSymbolValid) {
             result.symbol = symbol || '';
         }
-        if (hasTradeType) {
-            result.contract_type = trade_type || '';
+        if (isTradeTypeValid) {
+            result.contractType = trade_type || '';
         } else if (trade_type) {
             result.showModal = true;
         }

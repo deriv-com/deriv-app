@@ -707,11 +707,10 @@ export default class TradeStore extends BaseStore {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
                 const contract_categories = ContractType.getContractCategories();
-                const params = getTradeURLParams({
+                const { contractType: contractTypeParam, showModal: shouldShowModal } = getTradeURLParams({
                     contract_types_list: contract_categories.contract_types_list,
                 });
-                contractType = params.contract_type;
-                showModal = params.showModal;
+                [contractType, showModal] = [contractTypeParam, shouldShowModal];
                 this.processNewValuesAsync({
                     ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
                         has_only_forward_starting_contracts: boolean;
@@ -1528,8 +1527,8 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
             await this.prepareTradeStore();
 
-            const { chart_type, granularity } = getTradeURLParams({});
-            const chartType = chart_type && granularity === 0 ? 'line' : chart_type;
+            const { chartType: chartTypeParam, granularity } = getTradeURLParams();
+            const chartType = chartTypeParam && granularity === 0 ? 'line' : chartTypeParam;
             if (!isNaN(Number(granularity)) && granularity !== this.root_store.contract_trade.granularity) {
                 this.root_store.contract_trade.updateGranularity(Number(granularity));
             }

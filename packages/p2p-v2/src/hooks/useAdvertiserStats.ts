@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { daysSince } from '@/utils';
 import { p2p, useAuthentication, useSettings } from '@deriv/api';
-import { daysSince } from '../utils';
 
 /**
  * Hook to calculate an advertiser's stats based on their information.
@@ -52,6 +52,9 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** Checks if the user is already an advertiser */
             isAdvertiser,
+
+            /** Checks if the user is eligible to upgrade their daily limits */
+            isEligibleForLimitUpgrade: Boolean(data?.upgradable_daily_limits),
 
             /** Checks if the advertiser has completed proof of identity verification */
             isIdentityVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.identity?.status,

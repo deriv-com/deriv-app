@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { useDevice } from '../../hooks';
+import { useDevice } from '@/hooks';
+import { Button, Text } from '@deriv-com/ui';
 import ArrowRightIcon from '../../public/ic-arrow-right.svg';
 import CheckmarkIcon from '../../public/ic-checkmark.svg';
 import './Checklist.scss';
@@ -10,6 +9,7 @@ type TChecklistItem = {
     isDisabled?: boolean;
     onClick?: () => void;
     status: string;
+    testId?: string;
     text: string;
 };
 
@@ -30,7 +30,12 @@ const Checklist = ({ items }: { items: TChecklistItem[] }) => {
                         <Button
                             className='p2p-v2-checklist__item-button'
                             disabled={item.isDisabled}
-                            icon={<ArrowRightIcon className='p2p-v2-checklist__item-button-icon' />}
+                            icon={
+                                <ArrowRightIcon
+                                    className='p2p-v2-checklist__item-button-icon'
+                                    {...(item.testId && { 'data-testid': item.testId })}
+                                />
+                            }
                             onClick={item.onClick}
                         />
                     )}

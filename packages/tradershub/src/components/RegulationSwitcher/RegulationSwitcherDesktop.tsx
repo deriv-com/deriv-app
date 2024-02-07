@@ -1,17 +1,16 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Tab, Tabs, Text } from '@deriv-com/ui';
 import { useRegulationSwitcher } from '../../hooks/useRegulationSwitcher';
 import { RegulationModal } from '../../modals';
 import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherDesktop = () => {
-    const { getUIState } = useUIContext();
+    const { uiState } = useUIContext();
     const { show } = Provider.useModal();
     const { buttons, handleButtonClick } = useRegulationSwitcher();
-    const activeRegulation = getUIState('regulation');
+    const activeRegulation = uiState.regulation;
 
     return (
         <div className='flex items-center gap-400'>
@@ -23,6 +22,7 @@ const RegulationSwitcherDesktop = () => {
                 />
             </div>
             <Tabs
+                TitleFontSize='sm'
                 activeTab={activeRegulation}
                 className='flex rounded-300 p-200 w-[200px] h-2000'
                 key={activeRegulation}

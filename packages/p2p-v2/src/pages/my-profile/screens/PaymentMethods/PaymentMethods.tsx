@@ -1,9 +1,9 @@
 import React, { useReducer } from 'react';
 import { TSelectedPaymentMethod } from 'types';
+import { PaymentMethodForm } from '@/components';
+import { advertiserPaymentMethodsReducer } from '@/reducers';
 import { p2p } from '@deriv/api';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { PaymentMethodForm } from '../../../../components/PaymentMethodForm';
-import { advertiserPaymentMethodsReducer } from '../../../../reducers';
+import { Loader } from '@deriv-com/ui';
 import { PaymentMethodsEmpty } from './PaymentMethodsEmpty';
 import { PaymentMethodsList } from './PaymentMethodsList';
 
@@ -13,7 +13,7 @@ import { PaymentMethodsList } from './PaymentMethodsList';
  * @example <PaymentMethods />
  * **/
 const PaymentMethods = () => {
-    const { data: p2pAdvertiserPaymentMethods, isLoading, isRefetching } = p2p.advertiserPaymentMethods.useGet();
+    const { data: p2pAdvertiserPaymentMethods, isLoading } = p2p.advertiserPaymentMethods.useGet();
     const [formState, dispatch] = useReducer(advertiserPaymentMethodsReducer, {});
 
     const handleAddPaymentMethod = (selectedPaymentMethod?: TSelectedPaymentMethod) => {
@@ -45,7 +45,11 @@ const PaymentMethods = () => {
     };
 
     if (isLoading) {
-        return <Loader />;
+        return <Loader className='m-auto' isFullScreen={false} />;
+    }
+
+    if (!p2pAdvertiserPaymentMethods?.length && !formState.isVisible) {
+        return <PaymentMethodsEmpty onAddPaymentMethod={handleAddPaymentMethod} />;
     }
 
     if (formState?.isVisible) {
@@ -56,10 +60,6 @@ const PaymentMethods = () => {
                 onResetFormState={handleResetFormState}
             />
         );
-    }
-
-    if (!p2pAdvertiserPaymentMethods?.length && !isRefetching) {
-        return <PaymentMethodsEmpty onAddPaymentMethod={handleAddPaymentMethod} />;
     }
 
     return (

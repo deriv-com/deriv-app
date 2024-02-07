@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useCombobox } from 'downshift';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { TextField, TextFieldProps } from '@/components';
+import { reactNodeToString } from '@/utils';
+import { Text } from '@deriv-com/ui';
 import ArrowDown from '../../public/ic-chevron-down.svg';
-import reactNodeToString from '../../utils/react-node-to-string';
-import TextField, { TextFieldProps } from '../TextField/TextField';
 import './Dropdown.scss';
 
 type TGenericSizes = '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';

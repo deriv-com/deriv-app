@@ -44,7 +44,7 @@ const getMessage = ({
         const description = isVirtual
             ? 'Please reset the balance of your Demo Wallet to make a transfer.'
             : `Please make a deposit to your ${currency} Wallet to make a transfer.`;
-        const locationPathName = `wallets/cashier/${isVirtual ? 'reset-balance' : 'deposit'}`;
+        const locationPathName = `/wallets/cashier/${isVirtual ? 'reset-balance' : 'deposit'}` as const;
         const buttonText = isVirtual ? 'Reset balance' : 'Deposit';
 
         return {

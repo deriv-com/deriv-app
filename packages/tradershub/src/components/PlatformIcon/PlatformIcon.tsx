@@ -1,5 +1,10 @@
 import React, { CSSProperties, ElementType } from 'react';
 import {
+    AccountsDerivAccountLightIcon,
+    AccountsDmt5CfdsIcon,
+    AccountsDmt5DerivedIcon,
+    AccountsDmt5FinancialIcon,
+    AccountsDmt5SwfIcon,
     DerivProductDerivBotBrandLightLogoHorizontalIcon,
     DerivProductDerivGoBrandLightLogoHorizontalIcon,
     DerivProductDerivTraderBrandLightLogoHorizontalIcon,
@@ -7,11 +12,6 @@ import {
     PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
     PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
     PartnersProductSmarttraderBrandLightLogoIcon,
-    PlatformsDerivAppsLightIcon,
-    PlatformsDmt5CFDsIcon,
-    PlatformsDmt5DerivedIcon,
-    PlatformsDmt5FinancialIcon,
-    PlatformsDmt5SWFIcon,
 } from '@deriv/quill-icons';
 
 interface IconProps<T> {
@@ -22,28 +22,22 @@ interface IconProps<T> {
     width?: CSSProperties['width'];
 }
 
-export const PlatformIcons = {
+export const PlatformIcons: Record<string, ElementType> = {
     BinaryBot: PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
-    CFDs: PlatformsDmt5CFDsIcon,
+    CFDs: AccountsDmt5CfdsIcon,
     CTrader: PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
     DBot: DerivProductDerivBotBrandLightLogoHorizontalIcon,
-    DerivApps: PlatformsDerivAppsLightIcon,
-    Derived: PlatformsDmt5DerivedIcon,
+    DerivApps: AccountsDerivAccountLightIcon,
+    Derived: AccountsDmt5DerivedIcon,
     DerivGo: DerivProductDerivGoBrandLightLogoHorizontalIcon,
     DerivX: DerivProductDerivXBrandLightLogoIcon,
     DTrader: DerivProductDerivTraderBrandLightLogoHorizontalIcon,
-    Financial: PlatformsDmt5FinancialIcon,
+    Financial: AccountsDmt5FinancialIcon,
     SmartTrader: PartnersProductSmarttraderBrandLightLogoIcon,
-    SwapFree: PlatformsDmt5SWFIcon,
+    SwapFree: AccountsDmt5SwfIcon,
 };
 
-const PlatformIcon = ({
-    className,
-    height = '48px',
-    icon,
-    onClick,
-    width = '48px',
-}: IconProps<keyof typeof PlatformIcons>) => {
+const PlatformIcon = ({ className, height = 48, icon, onClick, width = 48 }: IconProps<keyof typeof PlatformIcons>) => {
     const TradingPlatformIcon = PlatformIcons[icon] as ElementType;
 
     return TradingPlatformIcon ? (

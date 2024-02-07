@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
+import { PaymentMethodCard } from '@/components';
+import { PaymentMethodModal } from '@/components/Modals';
+import { PAYMENT_METHOD_CATEGORIES } from '@/constants';
+import { TFormState } from '@/reducers/types';
+import { sortPaymentMethods } from '@/utils';
 import { p2p } from '@deriv/api';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { PaymentMethodModal } from '../../../../../components/Modals';
-import { PaymentMethodCard } from '../../../../../components/PaymentMethodCard';
-import { PAYMENT_METHOD_CATEGORIES } from '../../../../../constants';
-import { TFormState } from '../../../../../reducers/types';
-import { sortPaymentMethods } from '../../../../../utils/payment-methods';
+import { Text } from '@deriv-com/ui';
 import AddNewButton from './AddNewButton';
 
 type TPaymentMethodsGroup = Record<

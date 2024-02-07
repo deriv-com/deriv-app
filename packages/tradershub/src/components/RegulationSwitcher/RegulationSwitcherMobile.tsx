@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
+import { Tab, Tabs } from '@deriv-com/ui';
 import { useRegulationSwitcher } from '../../hooks/useRegulationSwitcher';
 import { RegulationModal } from '../../modals';
 import InfoIcon from '../../public/images/ic-info-outline.svg';
@@ -8,11 +8,11 @@ import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherMobile = () => {
     const { show } = Provider.useModal();
-    const { getUIState } = useUIContext();
+    const { uiState } = useUIContext();
 
     const { buttons, handleButtonClick } = useRegulationSwitcher();
 
-    const activeRegulation = getUIState('regulation');
+    const activeRegulation = uiState.regulation;
 
     return (
         <div className='flex items-center gap-400'>

@@ -1,11 +1,11 @@
 import React, { ComponentType, SVGAttributes } from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
 import { FlyoutMenu } from '@/components';
+import { LabelPairedEllipsisVerticalXlRegularIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
 import IcCashierBankTransfer from '../../../public/ic-cashier-bank-transfer.svg';
 import IcCashierEwallet from '../../../public/ic-cashier-ewallet.svg';
 import IcCashierOther from '../../../public/ic-cashier-other.svg';
-import IcCashierVerticalEllipsis from '../../../public/ic-cashier-vertical-ellipsis.svg';
 import './PaymentMethodCardHeader.scss';
 
 type TPaymentMethodCardHeaderProps = {
@@ -53,7 +53,7 @@ const PaymentMethodCardHeader = ({
             {isEditable && (
                 <FlyoutMenu
                     listItems={flyoutMenuItems}
-                    renderIcon={() => <IcCashierVerticalEllipsis height={16} width={16} />}
+                    renderIcon={() => <LabelPairedEllipsisVerticalXlRegularIcon />}
                 />
             )}
             {/*TODO: wire up logic for the selectable payment method cards here*/}

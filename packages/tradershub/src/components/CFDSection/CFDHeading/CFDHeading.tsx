@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
+import { StaticLink, TitleDescriptionLoader, useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 import { useIsEuRegion } from '@deriv/api';
-import { Button, Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
-import useRegulationFlags from '../../../hooks/useRegulationFlags';
-import { TitleDescriptionLoader } from '../../Loaders';
-import { StaticLink } from '../../StaticLink';
-import { useUIContext } from '../../UIProvider';
+import { Button, Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => {
     const history = useHistory();

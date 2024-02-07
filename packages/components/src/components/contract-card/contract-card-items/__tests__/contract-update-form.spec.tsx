@@ -1,8 +1,13 @@
 import React from 'react';
 import { configure, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CONTRACT_TYPES, mockContractInfo, getCardLabels } from '@deriv/shared';
+import { CONTRACT_TYPES, mockContractInfo, getCardLabels, isMobile } from '@deriv/shared';
 import ContractUpdateForm from '../contract-update-form';
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
+}));
 
 const contract_info = mockContractInfo({
     contract_id: 1,
@@ -43,10 +48,15 @@ describe('ContractUpdateForm', () => {
         removeToast: jest.fn(),
         setCurrentFocus: jest.fn(),
         toggleDialog: jest.fn(),
+        totalProfit: 2.43,
     };
+    const popoverTestid = 'dt_popover_wrapper';
     beforeAll(() => {
         el_modal.setAttribute('id', 'modal_root');
         document.body.appendChild(el_modal);
+    });
+    afterEach(() => {
+        configure({ testIdAttribute: 'data-testid' });
     });
     afterAll(() => {
         document.body.removeChild(el_modal);
@@ -165,8 +175,8 @@ describe('ContractUpdateForm', () => {
         userEvent.type(take_profit_input, '5');
         expect(new_props.contract.onChange).toHaveBeenCalled();
     });
-    it(`should render unchecked Take profit & Stop loss inputs with checkboxes and disabled Apply button
-        for Multipliers when neither take profit, nor stop loss is selected or applied`, () => {
+    it(`should render unchecked Take profit & Stop loss checkboxes with popover icons, inputs and disabled Apply button
+        for Multipliers when neither take profit, nor stop loss is selected or applied in desktop`, () => {
         const new_props = {
             ...mock_props,
             contract: {
@@ -185,7 +195,27 @@ describe('ContractUpdateForm', () => {
         const apply_button = screen.getByRole('button', { name: getCardLabels().APPLY });
         expect(stop_loss_checkbox).not.toBeChecked();
         expect(take_profit_checkbox).not.toBeChecked();
+        expect(screen.getAllByTestId(popoverTestid)).toHaveLength(2);
         expect(inputs).toHaveLength(2);
         expect(apply_button).toBeDisabled();
+    });
+    it('should render correct Total profit/loss, unchecked checkboxes without inputs & popover icons on mobile', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        const newProps = {
+            ...mock_props,
+            contract: {
+                ...contract,
+                contract_info: mockContractInfo({
+                    ...contract_info,
+                    contract_type: CONTRACT_TYPES.MULTIPLIER.DOWN,
+                }),
+            },
+            is_accumulator: false,
+        };
+        render(<ContractUpdateForm {...newProps} isMobile />);
+        expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText('2.43 USD')).toBeInTheDocument();
+        expect(screen.getAllByTestId(popoverTestid)).toHaveLength(2);
+        expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
     });
 });

@@ -4,7 +4,7 @@ import { Provider } from '@deriv/library';
 import { qtMerge } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
-import { Jurisdiction } from '../../constants';
+import { Jurisdiction, MarketType } from '../../constants';
 import { JurisdictionCard } from './JurisdictionCard';
 import { JurisdictionTncSection } from './JurisdictionTncSection';
 
@@ -48,11 +48,13 @@ const JurisdictionScreen = ({
     return (
         <div
             className={qtMerge(
-                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-1500 sm:h-[75vh] transition-all ease-in duration-[0.6s]',
+                `flex flex-col ${
+                    marketType === MarketType.FINANCIAL ? 'w-[1200px] h-[700px]' : 'w-[1040px] h-[600px]'
+                }  items-center justify-center transition-all ease-in duration-[0.6s]`,
                 isDynamicLeverageVisible && '[transform:rotateY(-180deg)] h-[700px] opacity-50'
             )}
         >
-            <div className='flex flex-col py-1000 items-center gap-800 justify-center w-full h-[82%] sm:flex-row sm:py-50'>
+            <div className='flex flex-col items-center justify-center w-full py-1000 gap-800 sm:flex-row sm:py-50'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}

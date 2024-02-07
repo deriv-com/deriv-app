@@ -116,7 +116,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                         ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
                 })}
             >
-                <Text className='leading-[1] text-system-light-primary-background text-50' weight='bold'>
+                <Text className='leading-[1] text-system-light-primary-background' size='2xs' weight='bold'>
                     {row?.titleIndicators.displayText}
                 </Text>
             </div>
@@ -124,7 +124,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
 
     return (
         <div
-            className={qtMerge(JurisdictionCardClass({ isAdded, isFlipped, isSelected }))}
+            className={qtMerge(JurisdictionCardClass({ isAdded, isFlipped, isSelected }), 'w-[280px]')}
             onClick={() => {
                 !isAdded && onSelect(jurisdiction);
             }}
@@ -134,14 +134,14 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                 }
             }}
         >
-            <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 backface-hidden px-800 pt-1000 pb-1800 transform-gpu'>
+            <div className='flex flex-col w-full h-full transition-transform duration-300 backface-hidden px-800 pt-1000 pb-1800 transform-gpu'>
                 {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
                 <div className='mt-[25px] mb-[15px] text-center'>
                     <Text size='lg' weight='bold'>
                         {header}
                     </Text>
                 </div>
-                <div>
+                <div className='gap-800'>
                     {rows.map(row => (
                         <JurisdictionCardRow
                             description={parseDescription(row)}

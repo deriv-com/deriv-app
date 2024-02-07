@@ -27,7 +27,7 @@ export const AddressFields = () => {
     } = addressDetailValidations(settings.country_code ?? '', isSvg);
 
     return (
-        <div className='space-y-600'>
+        <div className='space-y-600 pt-400'>
             <FormInputField
                 label='First line of address*'
                 name='addressLine1'

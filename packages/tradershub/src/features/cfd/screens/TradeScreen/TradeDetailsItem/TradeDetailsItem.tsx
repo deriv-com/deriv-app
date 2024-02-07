@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
 import { useHover } from 'usehooks-ts';
+import { Provider } from '@deriv/library';
 import { Button, qtMerge, useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
 import { Clipboard, Tooltip } from '../../../../../components';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
+import { ChangePassword } from '../../ChangePassword';
 
 type TTradeDetailsItemProps = {
     className?: string;
@@ -16,6 +18,7 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
     const { isDesktop } = useBreakpoint();
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
+    const { show } = Provider.useModal();
     return (
         <div
             className={qtMerge(
@@ -39,7 +42,7 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
                     <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
                         <div ref={hoverRef}>
                             <Button colorStyle='white' size='sm' variant='tertiary'>
-                                <EditIcon className='cursor-pointer' />
+                                <EditIcon className='cursor-pointer' onClick={() => show(<ChangePassword />)} />
                             </Button>
                         </div>
                     </Tooltip>

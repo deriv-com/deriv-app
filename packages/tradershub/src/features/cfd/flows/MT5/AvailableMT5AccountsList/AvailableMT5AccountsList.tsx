@@ -1,21 +1,21 @@
 import React from 'react';
-import { useAuthorize } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import {
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
     useUIContext,
-} from '../../../../../components';
-import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
-import { THooks } from '../../../../../types';
-import { MarketType, MarketTypeDetails } from '../../../constants';
-import { JurisdictionModal } from '../../../modals/JurisdictionModal';
+} from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { THooks } from '@/types';
+import { MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
+import { JurisdictionModal, MT5PasswordModal } from '@cfd/modals';
+import { useAuthorize } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
     const { isEU } = useRegulationFlags(activeRegulation);
     const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
     const description = marketTypeDetails?.description ?? '';
@@ -25,7 +25,9 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
 
     const trailingButtonClick = () => {
         setCfdState('marketType', account.market_type);
-        !activeAccount?.is_virtual && show(<JurisdictionModal />); /* show MT5PasswordModal for demo */
+        setCfdState('platform', PlatformDetails.mt5.platform);
+        !activeAccount?.is_virtual && show(<JurisdictionModal />);
+        activeAccount?.is_virtual && show(<MT5PasswordModal />);
     };
 
     const title = marketTypeDetails?.title ?? '';

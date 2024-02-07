@@ -1,7 +1,9 @@
 import React, { ComponentProps, isValidElement, ReactNode } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 type TActionScreenProps = {
+    children?: ReactNode;
     className?: string;
     description: ReactNode;
     descriptionSize?: ComponentProps<typeof Text>['size'];
@@ -17,6 +19,7 @@ type TActionScreenProps = {
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
 const ActionScreen = ({
+    children,
     className,
     description,
     descriptionSize = 'md',
@@ -35,7 +38,7 @@ const ActionScreen = ({
             {icon}
             <div className='flex flex-col items-center justify-center gap-400'>
                 {title && (
-                    <Text bold size={titleSize}>
+                    <Text size={titleSize} weight='bold'>
                         {title}
                     </Text>
                 )}
@@ -48,6 +51,7 @@ const ActionScreen = ({
                 )}
             </div>
             {renderButtons?.()}
+            {children}
         </div>
     );
 };

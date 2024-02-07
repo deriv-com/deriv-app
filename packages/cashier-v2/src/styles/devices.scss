@@ -4,19 +4,19 @@
 $tablet-width: 601px;
 $desktop-width: 1280px;
 
-@mixin mobile-v2 {
+@mixin mobile-cashier-v2 {
     @media (max-width: #{$tablet-width - 1px}) {
         @content;
     }
 }
 
-@mixin tablet-v2 {
+@mixin tablet-cashier-v2 {
     @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
         @content;
     }
 }
 
-@mixin desktop-v2 {
+@mixin desktop-cashier-v2 {
     @media (min-width: #{$desktop-width}) {
         @content;
     }

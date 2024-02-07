@@ -15,11 +15,13 @@ import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ './trading-assessment-existing-user.jsx'))
+    moduleLoader(() =>
+        import(/* webpackChunkName: "trading-assessment-existing-user" */ './trading-assessment-existing-user.jsx')
+    )
 );
 
 const VerificationModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../VerificationModal'))
+    moduleLoader(() => import(/* webpackChunkName: "verification-modal" */ '../VerificationModal'))
 );
 
 const AccountSignupModal = React.lazy(() =>

@@ -10,6 +10,7 @@
     &__left {
         display: flex;
         flex-direction: row;
+        align-items: center;
         gap: 16px;
         .box-1 {
             &__title {
@@ -23,7 +24,12 @@
     &__right {
         display: flex;
         flex-direction: row;
+        align-items: center;
         gap: 24px;
+
+        @include mobile {
+            gap: 16px;
+        }
         &--icon {
             height: 16px;
             border-radius: 4px;

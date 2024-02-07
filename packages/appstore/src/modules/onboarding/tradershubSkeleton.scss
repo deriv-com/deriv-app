@@ -9,10 +9,18 @@
         height: 16px;
         border-radius: 4px;
         width: 16px;
+        @include mobile {
+            display: none;
+        }
     }
     &__title {
         height: 24px;
         border-radius: 4px;
         width: 92px;
+
+        @include mobile {
+            width: 48px;
+            height: 16px;
+        }
     }
 }

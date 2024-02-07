@@ -4,7 +4,9 @@ import './headerSkeleton.scss';
 import TradershubSkeleton from './tradershubSkeleton';
 import MenuSkeleton from './menuSkeleton';
 import HeaderRightMenuSkeleton from './headerRightMenuSkeleon';
-import VerticalDevider from './devider';
+import { VerticalDevider } from './devider';
+import { isMobile } from '@deriv/shared';
+import CashierButtonSkeleton from './cashierButtonSkeleton';
 
 const HeaderSkeleton = () => {
     return (
@@ -16,8 +18,9 @@ const HeaderSkeleton = () => {
                 <MenuSkeleton />
             </div>
             <div className='header-skeleton-loader__right'>
-                <VerticalDevider />
+                {!isMobile() && <VerticalDevider />}
                 <HeaderRightMenuSkeleton />
+                <CashierButtonSkeleton />
             </div>
         </div>
     );

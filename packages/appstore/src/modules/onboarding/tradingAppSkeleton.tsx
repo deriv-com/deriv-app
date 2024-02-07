@@ -1,16 +1,20 @@
 import React from 'react';
 import './tradingAppSkeleton.scss';
+import { HorizentalDevider } from './devider';
 
 const TradingAppCardSkeleton = () => {
     return (
         <div className='trading-app-card-loader'>
-            <div className='trading-app-card-loader__content'>
-                <div className='skeleton-loader trading-app-card-loader__content__icon' />
-                <div className='trading-app-card-loader__content__details'>
-                    <div className='skeleton-loader trading-app-card-loader__content__details--title' />
-                    <div className='skeleton-loader trading-app-card-loader__content__details--description' />
+            <div className='skeleton-loader trading-app-card-loader__icon' />
+            <div className='trading-app-card-loader__container'>
+                <div className='trading-app-card-loader__container__content'>
+                    <div className='trading-app-card-loader__container__content--details'>
+                        <div className='skeleton-loader trading-app-card-loader__container__content--details__title' />
+                        <div className='skeleton-loader trading-app-card-loader__container__content--details__description' />
+                    </div>
+                    <div className='skeleton-loader trading-app-card-loader__container__content--button' />
                 </div>
-                <div className='skeleton-loader trading-app-card-loader__content__button' />
+                <HorizentalDevider />
             </div>
         </div>
     );

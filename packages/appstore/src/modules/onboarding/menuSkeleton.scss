@@ -5,6 +5,9 @@
     flex-direction: row;
     align-items: center;
     gap: 8px;
+    @include mobile {
+        display: none;
+    }
     &__icon {
         height: 16px;
         border-radius: 4px;

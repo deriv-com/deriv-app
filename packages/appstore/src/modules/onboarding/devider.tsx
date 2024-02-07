@@ -5,4 +5,6 @@ export const VerticalDevider = () => {
     return <div className='vertical-devider' />;
 };
 
-export default VerticalDevider;
+export const HorizentalDevider = () => {
+    return <div className='horizental-devider' />;
+};

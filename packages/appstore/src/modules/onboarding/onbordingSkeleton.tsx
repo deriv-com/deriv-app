@@ -4,10 +4,10 @@ import HeaderSkeleton from './headerSkeleton';
 import TitleSkeleton from './titleSkeleton';
 import TotalAssetSkeleton from './totalAssetSkeleton';
 import OptionsAndMultipliersSkeleton from './optionsAndMultipliers';
-import TradershubSkeleton from './tradershubSkeleton';
-import './onbordingSkeleton.scss';
 import CfdAppSkeleton from './cfdAppSkeleton';
 import Mt5TitleLSkeleton from './mt5TitleSkeleton';
+import CFDToggleSkeleton from './cfdToggleSkeleton';
+import './onbordingSkeleton.scss';
 
 const OnboardingSkeleton = () => {
     return (
@@ -19,6 +19,7 @@ const OnboardingSkeleton = () => {
                 <div className='onboarding-skeleton__content--title-bar'>
                     <TitleSkeleton />
                     <TotalAssetSkeleton />
+                    <CFDToggleSkeleton />
                 </div>
                 <div className='onboarding-skeleton__content--options'>
                     <OptionsAndMultipliersSkeleton />

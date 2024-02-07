@@ -2,45 +2,58 @@
 
 .trading-app-card-loader {
     display: flex;
-    flex-direction: column;
     gap: 24px;
     padding: 1rem 0rem;
 
-    &__content {
+    &__icon {
+        height: 48px;
+        border-radius: 8px;
+        width: 48px;
+    }
+
+    &__container {
+        width: 100%;
         display: flex;
-        flex-direction: row;
-        gap: 14px;
-        align-items: center;
-
-        &__icon {
-            height: 48px;
-            border-radius: 8px;
-            width: 48px;
-        }
-
-        &__details {
+        flex-direction: column;
+        gap: 24px;
+        &__content {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
             gap: 4px;
+            &--details {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
 
-            &--title {
-                height: 20px;
-                border-radius: 8px;
-                width: 75px;
+                &__title {
+                    height: 20px;
+                    border-radius: 8px;
+                    width: 75px;
+                    @include mobile {
+                        width: 88px;
+                        height: 18px;
+                    }
+                }
+
+                &__description {
+                    height: 18px;
+                    border-radius: 8px;
+                    width: 191px;
+                    @include mobile {
+                        width: 181px;
+                        height: 12px;
+                    }
+                }
             }
 
-            &--description {
-                height: 18px;
-                border-radius: 8px;
-                width: 191px;
+            &--button {
+                justify-self: end;
+                height: 32px;
+                border-radius: 4px;
+                width: 67px;
             }
-        }
-
-        &__button {
-            justify-self: end;
-            height: 32px;
-            border-radius: 4px;
-            width: 67px;
         }
     }
 }

@@ -10,10 +10,17 @@
         height: 20px;
         border-radius: 8px;
         width: 75px;
+        @include mobile {
+            display: none;
+        }
     }
     &__description {
-        height: 26px;
+        height: 36px;
         border-radius: 8px;
         width: 176px;
+
+        @include mobile {
+            height: 30px;
+        }
     }
 }

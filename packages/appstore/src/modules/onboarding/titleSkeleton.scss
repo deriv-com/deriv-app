@@ -6,15 +6,29 @@
     align-items: center;
     gap: 8px;
 
+    @include mobile {
+        flex-direction: column;
+        align-self: flex-start;
+        align-items: flex-start;
+    }
+
     &__title {
         height: 46px;
         border-radius: 8px;
         width: 145px;
+        @include mobile {
+            width: 109px;
+            height: 26px;
+        }
     }
 
     &__description {
-        height: 29px;
+        height: 28px;
         border-radius: 4px;
         width: 79px;
+        @include mobile {
+            width: 73px;
+            height: 24px;
+        }
     }
 }

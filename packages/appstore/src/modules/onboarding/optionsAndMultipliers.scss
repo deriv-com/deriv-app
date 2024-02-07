@@ -5,6 +5,10 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 48px;
+
+    @include mobile {
+        display: none;
+    }
     &__left {
         display: flex;
         flex-direction: column;

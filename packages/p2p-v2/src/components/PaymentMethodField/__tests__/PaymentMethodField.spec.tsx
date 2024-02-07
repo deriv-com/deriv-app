@@ -15,6 +15,7 @@ jest.mock('react-hook-form', () => ({
 }));
 
 const mockUseForm = useForm as jest.MockedFunction<typeof useForm>;
+
 describe('PaymentMethodField', () => {
     const { control } = mockUseForm();
     it('should render a textarea when the field prop is set to instructions', () => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDynamicLeverage } from '@deriv/api';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { PlatformDetails } from '../../constants';
 import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';

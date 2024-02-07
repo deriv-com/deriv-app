@@ -49,13 +49,13 @@ const MyProfileCounterpartiesTable = ({
         }
     }, [data, setShowHeader]);
 
+    if (isLoading) {
+        return <Loader className='p2p-v2-my-profile-counterparties-table__loader' isFullScreen={false} />;
+    }
+
     if (!isFetching && data.length === 0) {
         if (searchValue === '') return <MyProfileCounterpartiesEmpty />;
         return <Text weight='bold'>There are no matching name</Text>;
-    }
-
-    if (isLoading) {
-        return <Loader className='p2p-v2-my-profile-counterparties-table__loader' isFullScreen={false} />;
     }
 
     return (

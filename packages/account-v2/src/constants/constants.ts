@@ -5,3 +5,12 @@ export const LANDING_COMPANY = {
     SVG: 'svg',
     VANUATU: 'vanuatu',
 } as const;
+
+export const AUTH_STATUS_CODES = {
+    EXPIRED: 'expired',
+    NONE: 'none',
+    PENDING: 'pending',
+    REJECTED: 'rejected',
+    SUSPECTED: 'suspected',
+    VERIFIED: 'verified',
+} as const;

@@ -18,7 +18,6 @@ const useAdvertiserAdverts = (
                 return pages.length;
             },
             enabled: isSuccess && (config?.enabled === undefined || config.enabled),
-            refetchOnWindowFocus: false,
         },
     });
 

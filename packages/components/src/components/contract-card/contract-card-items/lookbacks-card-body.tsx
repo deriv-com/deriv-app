@@ -26,29 +26,25 @@ const LookBacksCardBody = ({
         getCardLabels();
 
     const getPayoutLimit = (contract_type?: string, multiplier?: number) => {
-        let base: string;
-        switch (contract_type) {
-            case CONTRACT_TYPES.LB_PUT:
-                base = 'High - Close';
-                break;
-            case CONTRACT_TYPES.LB_CALL:
-                base = 'Close - Low';
-                break;
-            case CONTRACT_TYPES.LB_HIGH_LOW:
-                base = 'High - Low';
-                break;
-            default:
-                base = '';
+        let formula_base: string | React.ReactNode = '';
+        if (contract_type === CONTRACT_TYPES.LB_PUT) {
+            formula_base = <Localize i18n_default_text='(High - Close)' />;
+        } else if (contract_type === CONTRACT_TYPES.LB_CALL) {
+            formula_base = <Localize i18n_default_text='(Close - Low)' />;
+        } else if (contract_type === CONTRACT_TYPES.LB_HIGH_LOW) {
+            formula_base = <Localize i18n_default_text='(High - Low)' />;
         }
 
         return (
-            <Localize
-                i18n_default_text='Payout limit: {{multiplier}} x ({{base}})'
-                values={{
-                    multiplier,
-                    base,
-                }}
-            />
+            <React.Fragment>
+                <Localize
+                    i18n_default_text='Payout limit: {{multiplier}} x '
+                    values={{
+                        multiplier,
+                    }}
+                />
+                {formula_base}
+            </React.Fragment>
         );
     };
 

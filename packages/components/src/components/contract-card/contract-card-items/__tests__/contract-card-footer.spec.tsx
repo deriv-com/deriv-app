@@ -18,7 +18,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<CardFooter />', () => {
-    const mock_props: TCardFooter = {
+    const mockProps: TCardFooter = {
         contract_info: mockContractInfo(),
         getCardLabels: () => getCardLabels(),
         is_multiplier: false,
@@ -34,20 +34,20 @@ describe('<CardFooter />', () => {
 
     it('should render note for Lookbacks contract if it is valid to sell', () => {
         (isValidToSell as jest.Mock).mockReturnValue(true);
-        render(<CardFooter {...mock_props} />);
+        render(<CardFooter {...mockProps} />);
 
         expect(screen.getByText(/Note:/i)).toBeInTheDocument();
     });
 
     it('should not render note for Lookbacks contract if it is NOT valid to sell', () => {
         (isValidToSell as jest.Mock).mockReturnValue(false);
-        render(<CardFooter {...mock_props} />);
+        render(<CardFooter {...mockProps} />);
 
         expect(screen.queryByText(/Note:/i)).not.toBeInTheDocument();
     });
 
     it('should not render note if it is not Lookbacks contract', () => {
-        render(<CardFooter {...mock_props} is_lookbacks={false} />);
+        render(<CardFooter {...mockProps} is_lookbacks={false} />);
 
         expect(screen.queryByText(/Note:/i)).not.toBeInTheDocument();
     });

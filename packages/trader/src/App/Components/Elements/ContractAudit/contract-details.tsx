@@ -83,6 +83,9 @@ const ContractDetails = ({
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${ticks_label}`;
 
+    const INDICATIVE_HIGH = 'H';
+    const INDICATIVE_LOW = 'L';
+
     const additional_info = isResetContract(contract_type) ? (
         <Localize
             i18n_default_text='The reset time is {{ reset_time }}'
@@ -97,29 +100,20 @@ const ContractDetails = ({
         ''
     );
 
-    const createLookBacksMarker = (abbreviation?: string) => {
-        let label: string;
+    const createLookBacksMarker = (abbreviation?: string) => ({
+        label: abbreviation === INDICATIVE_LOW ? localize('Indicative low spot') : localize('Indicative high spot'),
+        icon: (
+            <div className='lookbacks-marker__wrapper'>
+                <Text color='colored-background' size='xxxs' className='lookbacks-marker__asset'>
+                    {abbreviation}
+                </Text>
+            </div>
+        ),
+    });
 
-        switch (abbreviation) {
-            case 'L':
-                label = localize('Indicative low spot');
-                break;
-            case 'H':
-            default:
-                label = localize('Indicative high spot');
-        }
-
-        return {
-            label,
-            icon: (
-                <div className='lookbacks-marker__wrapper'>
-                    <Text color='colored-background' size='xxxs' className='lookbacks-marker__asset'>
-                        {abbreviation}
-                    </Text>
-                </div>
-            ),
-        };
-    };
+    const lookbacks_marker = createLookBacksMarker(
+        contract_type === CONTRACT_TYPES.LB_PUT ? INDICATIVE_HIGH : INDICATIVE_LOW
+    );
 
     const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
         ? getLocalizedBasis().payout_per_pip
@@ -283,21 +277,27 @@ const ContractDetails = ({
                     <React.Fragment>
                         {contract_type === CONTRACT_TYPES.LB_HIGH_LOW ? (
                             <React.Fragment>
-                                {[high_barrier, low_barrier].map((barrier, index) => (
-                                    <ContractAuditItem
-                                        id={`dt_bt_label_${index + 1}`}
-                                        icon={createLookBacksMarker(index === 0 ? 'H' : 'L').icon}
-                                        key={barrier}
-                                        label={createLookBacksMarker(index === 0 ? 'H' : 'L').label}
-                                        value={barrier}
-                                    />
-                                ))}
+                                {[high_barrier, low_barrier].map((barrier, index) => {
+                                    const high_low_marker = createLookBacksMarker(
+                                        index === 0 ? INDICATIVE_HIGH : INDICATIVE_LOW
+                                    );
+
+                                    return (
+                                        <ContractAuditItem
+                                            id={`dt_bt_label_${index + 1}`}
+                                            icon={high_low_marker.icon}
+                                            key={barrier}
+                                            label={high_low_marker.label}
+                                            value={barrier}
+                                        />
+                                    );
+                                })}
                             </React.Fragment>
                         ) : (
                             <ContractAuditItem
                                 id='dt_indicative_high_spot'
-                                icon={createLookBacksMarker(contract_type === CONTRACT_TYPES.LB_PUT ? 'H' : 'L').icon}
-                                label={createLookBacksMarker(contract_type === CONTRACT_TYPES.LB_PUT ? 'H' : 'L').label}
+                                icon={lookbacks_marker.icon}
+                                label={lookbacks_marker.label}
                                 value={contract_info?.barrier}
                             />
                         )}

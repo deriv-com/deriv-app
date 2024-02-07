@@ -6,7 +6,7 @@ import LookBacksCardBody from '../lookbacks-card-body';
 type TLookBacksCardBody = React.ComponentProps<typeof LookBacksCardBody>;
 
 describe('<LookBacksCardBody />', () => {
-    const mock_props: TLookBacksCardBody = {
+    const mockProps: TLookBacksCardBody = {
         contract_info: mockContractInfo({
             buy_price: 6.55,
             contract_type: CONTRACT_TYPES.LB_HIGH_LOW,
@@ -21,7 +21,7 @@ describe('<LookBacksCardBody />', () => {
     };
 
     it('should display all appropriate contract card fields, labels and values for ongoing contract', () => {
-        render(<LookBacksCardBody {...mock_props} />);
+        render(<LookBacksCardBody {...mockProps} />);
 
         expect(screen.getByText('Potential profit/loss:')).toBeInTheDocument();
         expect(screen.getByText('1.49')).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('<LookBacksCardBody />', () => {
     });
 
     it('should display all appropriate contract card fields, labels and values for sold contract', () => {
-        render(<LookBacksCardBody {...mock_props} is_sold />);
+        render(<LookBacksCardBody {...mockProps} is_sold />);
 
         expect(screen.getByText('Profit/Loss:')).toBeInTheDocument();
         expect(screen.getByText('1.49')).toBeInTheDocument();
@@ -49,21 +49,21 @@ describe('<LookBacksCardBody />', () => {
     });
 
     it('should display correct Payout limit for High-Low contract', () => {
-        render(<LookBacksCardBody {...mock_props} />);
+        render(<LookBacksCardBody {...mockProps} />);
 
         expect(screen.getByText('Payout limit: 5 x (High - Low)')).toBeInTheDocument();
     });
 
     it('should display correct Payout limit for High-Close contract', () => {
-        mock_props.contract_info.contract_type = CONTRACT_TYPES.LB_PUT;
-        render(<LookBacksCardBody {...mock_props} />);
+        mockProps.contract_info.contract_type = CONTRACT_TYPES.LB_PUT;
+        render(<LookBacksCardBody {...mockProps} />);
 
         expect(screen.getByText('Payout limit: 5 x (High - Close)')).toBeInTheDocument();
     });
 
     it('should display correct Payout limit for Close-Low contract', () => {
-        mock_props.contract_info.contract_type = CONTRACT_TYPES.LB_CALL;
-        render(<LookBacksCardBody {...mock_props} />);
+        mockProps.contract_info.contract_type = CONTRACT_TYPES.LB_CALL;
+        render(<LookBacksCardBody {...mockProps} />);
 
         expect(screen.getByText('Payout limit: 5 x (Close - Low)')).toBeInTheDocument();
     });

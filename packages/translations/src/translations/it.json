@@ -675,6 +675,7 @@
     "706727320": "Frequenza del trading di opzioni binarie",
     "706755289": "Questo blocco esegue funzioni trigonometriche.",
     "706960383": "Le offriremo di acquistare il suo contratto a questo prezzo, qualora decidesse di venderlo prima della sua scadenza. Questo si basa su diversi fattori, come il prezzo spot attuale, la durata, ecc. Tuttavia, non offriremo il valore del contratto se la durata residua è inferiore a 60 secondi.",
+    "707189572": "Il suo indirizzo e-mail è cambiato.<0/>Ora, acceda con il suo nuovo indirizzo e-mail.",
     "707662672": "{{unblock_date}} alle {{unblock_time}}",
     "708055868": "Numero della patente di guida",
     "710123510": "ripeti {{ while_or_until }} {{ boolean }}",

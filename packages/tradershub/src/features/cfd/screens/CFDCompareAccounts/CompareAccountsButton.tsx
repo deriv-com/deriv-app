@@ -13,6 +13,7 @@ import { DummyComponent } from '../../components/DummyComponent';
 import { Category, CFDPlatforms, MarketType } from '../../constants';
 import { DxtradePasswordModal } from '../../modals';
 import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
+import { MT5PasswordModal } from '../../modals/MT5PasswordModal';
 import {
     getAccountVerificationStatus,
     shouldRestrictBviAccountCreation,
@@ -94,15 +95,14 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
 
     const onClickAdd = () => {
         if (platform === CFDPlatforms.MT5) {
-            // Going to remove Placeholder once the MT5PasswordModal
-            // and Verification flow is implemented
+            // Going to remove Placeholder once Verification flow is implemented
             if (isAccountStatusVerified) show(<DummyComponent />);
 
-            // if (isAccountStatusVerified) {
-            //     show(<MT5PasswordModal)
-            // } else {
-            //     show(<Verifaication />);
-            // }
+            if (isAccountStatusVerified) {
+                show(<MT5PasswordModal />);
+            } else {
+                // show(<Verifaication />);
+            }
         } else if (platform === CFDPlatforms.DXTRADE) {
             show(<DxtradePasswordModal />);
         } else {

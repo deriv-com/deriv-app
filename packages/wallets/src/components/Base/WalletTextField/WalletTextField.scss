@@ -20,6 +20,7 @@
             border: 1px solid var(--brand-blue, #ec3f3f);
         }
 
+        .wallets-textfield__field:placeholder-shown ~ .wallets-textfield__label,
         .wallets-textfield__label {
             color: #ec3f3f;
         }
@@ -86,6 +87,7 @@
     }
 
     &__field:placeholder-shown ~ &__label {
+        color: var(--system-light-3-less-prominent-text, #999);
         font-size: 1.4rem;
         cursor: text;
         top: 2rem;
@@ -100,7 +102,7 @@
         display: block;
         transition: 0.2s;
         font-size: 1rem;
-        color: var(--system-light-3-less-prominent-text, #999);
+        color: var(--text-general, #333);
         background: var(--system-light-8-primary-background, #fff);
         padding-inline: 0.4rem;
         left: 1.6rem;
@@ -128,7 +130,7 @@
     }
 
     &__message-container {
-        height: 2rem;
+        min-height: 2rem;
         padding: 0rem 0rem 0rem 1.6rem;
         width: 100%;
 

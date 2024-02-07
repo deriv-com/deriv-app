@@ -1,14 +1,14 @@
 .wallets-jurisdiction-card {
-    position: relative;
-    height: 100%;
-    width: 25%;
+    align-items: center;
+    border-radius: 1.6rem;
+    border: 0.2rem solid #f2f3f4;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    border: 0.2rem solid #f2f3f4;
-    border-radius: 1.6rem;
-    cursor: pointer;
+    width: 25%;
+    position: relative;
+    height: 100%;
 
     transition-duration: 0.3s;
     transition-property: transform, box-shadow;
@@ -61,7 +61,7 @@
         height: 100%;
         width: 100%;
         justify-content: center;
-        padding: 4rem 1.6rem 3.6rem;
+        padding: 2rem 1.6rem 3.6rem;
 
         @include mobile {
             width: 100%;

@@ -1,51 +1,26 @@
 .wallets-jurisdiction-screen {
-    height: 100%;
+    align-items: center;
+    border-radius: 1.6rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    border-radius: 1.6rem;
-    backface-visibility: hidden;
+    margin: auto 3rem;
+    height: 75vh;
+    width: 85vw;
+    transition: all 0.6s ease;
 
     @include mobile {
         height: auto;
-        width: 100%;
     }
 
-    @keyframes flip-from-view {
-        from {
-            opacity: 1;
-            transform: rotateY(0deg);
-        }
-        to {
-            height: 0;
-            opacity: 0;
-            transform: rotateY(-180deg);
-        }
-    }
-
-    @keyframes flip-into-view {
-        from {
-            opacity: 0;
-            transform: rotateY(-180deg);
-        }
-        to {
-            opacity: 1;
-            transform: rotateY(0deg);
-        }
+    &--flip {
+        transform: rotateY(-180deg);
+        opacity: 0;
+        height: 70rem;
     }
 
     &--hidden {
         display: none;
-    }
-
-    &--hide {
-        position: absolute;
-        animation: flip-from-view 0.6s ease;
-    }
-
-    &--show {
-        animation: flip-into-view 0.6s ease;
     }
 
     &__button {
@@ -71,15 +46,15 @@
     }
 
     &__cards {
+        align-items: center;
+        display: flex;
+        gap: 1.6rem;
+        justify-content: center;
         width: 100%;
         height: 82%;
-        display: flex;
-        justify-content: center;
-        gap: 1.6rem;
 
         @include mobile {
             flex-direction: column;
-            align-items: center;
             padding: 2rem 0;
         }
     }

@@ -20,8 +20,7 @@ const DynamicLeverageScreen = () => {
             className={classNames('wallets-dynamic-leverage-screen__container', {
                 'wallets-dynamic-leverage-screen__container--hidden':
                     !isDynamicLeverageVisible && isDynamicLeverageScreenHidden,
-                'wallets-dynamic-leverage-screen__container--hide': !isDynamicLeverageVisible,
-                'wallets-dynamic-leverage-screen__container--show': isDynamicLeverageVisible,
+                'wallets-dynamic-leverage-screen__container--flip': !isDynamicLeverageVisible,
             })}
         >
             <WalletText>

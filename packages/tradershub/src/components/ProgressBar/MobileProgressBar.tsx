@@ -14,6 +14,7 @@ type TMobileProgressBar = {
  * @name MobileProgressBar
  * @param steps - List of steps to be rendered
  * @param activeStep - The current active step
+ * @param onClickClose - Function to close the modal
  * @returns React Component
  */
 const MobileProgressBar = ({ activeStep, onClickClose, steps = [] }: TMobileProgressBar) => {
@@ -21,10 +22,10 @@ const MobileProgressBar = ({ activeStep, onClickClose, steps = [] }: TMobileProg
         <div>
             <div className='flex items-center justify-between px-800 py-700'>
                 <div>
-                    <Text size='md' weight='bold'>
+                    <Text weight='bold'>
                         Step {activeStep}/{steps.length}:
                     </Text>{' '}
-                    <Text size='md'>{steps[activeStep - 1].title}</Text>
+                    <Text>{steps[activeStep - 1].title}</Text>
                 </div>
                 <StandaloneXmarkBoldIcon className='cursor-pointer' onClick={onClickClose} />
             </div>

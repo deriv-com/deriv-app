@@ -60,6 +60,7 @@ const WalletDatePicker = ({
         <div className='wallets-datepicker' ref={datePickerRef}>
             <Input
                 aria-label={label}
+                className='w-full'
                 error={isInvalid}
                 label={label}
                 message={isInvalid ? errorMessage?.toString() : ''}
@@ -78,6 +79,7 @@ const WalletDatePicker = ({
                     </button>
                 }
                 value={selectedDate ? unixToDateString(selectedDate) : ''}
+                wrapperClassName='w-full'
             />
             {isCalendarOpen && (
                 <div
@@ -89,7 +91,7 @@ const WalletDatePicker = ({
                         maxDate={maxDate}
                         minDate={minDate}
                         onChange={handleDateChange}
-                        value={selectedDate !== null ? selectedDate : ''}
+                        value={selectedDate ?? ''}
                     />
                 </div>
             )}

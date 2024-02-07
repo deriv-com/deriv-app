@@ -25,9 +25,11 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                             <Input
                                 {...field}
                                 aria-label={fieldLabel}
+                                className='w-full'
                                 error={hasError}
                                 label={fieldLabel}
                                 message={hasError ? meta.error : ''}
+                                wrapperClassName='w-full'
                             />
                         );
                     }}

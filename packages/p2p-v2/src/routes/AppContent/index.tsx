@@ -47,7 +47,7 @@ const AppContent = () => {
     return (
         <>
             <CloseHeader />
-            <div className='p2p-v2-tab__wrapper'>
+            <div className='p2p-v2-tab__wrapper overflow-hidden'>
                 <Tabs
                     activeTab={activeTab}
                     className='p2p-v2-tab__items-wrapper'

@@ -1,13 +1,15 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { Table } from '@/components';
+import { BUY_SELL } from '@/constants';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
-import { BuySellRow } from './BuySellRow';
+import { BuySellHeader } from '../BuySellHeader';
+import { BuySellTableRow } from './BuySellTableRow';
 import './BuySellTable.scss';
 
-export type TBuySellRowRenderer = Partial<NonNullable<ReturnType<typeof p2p.advert.useGetList>['data']>[0]>;
+export type TBuySellTableRowRenderer = Partial<NonNullable<ReturnType<typeof p2p.advert.useGetList>['data']>[0]>;
 
-const BuySellRowRenderer = memo((values: TBuySellRowRenderer) => <BuySellRow {...values} />);
+const BuySellRowRenderer = memo((values: TBuySellTableRowRenderer) => <BuySellTableRow {...values} />);
 BuySellRowRenderer.displayName = 'BuySellRowRenderer';
 
 const columns = [
@@ -20,23 +22,28 @@ const columns = [
 const headerRenderer = (header: string) => <span>{header}</span>;
 
 const BuySellTable = () => {
-    const { data, isFetching, isLoading } = p2p.advert.useGetList();
-
-    if (isLoading) return <Loader />;
+    const [activeTab, setActiveTab] = useState<string>('Buy');
+    const { data, isFetching, isLoading, loadMoreAdverts } = p2p.advert.useGetList({
+        counterparty_type: activeTab === 'Buy' ? BUY_SELL.BUY : BUY_SELL.SELL,
+    });
 
     return (
-        <div className='p2p-v2-buy-sell-table h-full w-full relative'>
-            <Table
-                columns={columns}
-                data={data}
-                isFetching={isFetching}
-                loadMoreFunction={() => {
-                    // TODO: Implement load more
-                }}
-                renderHeader={headerRenderer}
-                rowRender={(data: unknown) => <BuySellRowRenderer {...(data as TBuySellRowRenderer)} />}
-                tableClassname=''
-            />
+        <div className='p2p-v2-buy-sell-table h-full w-full relative flex flex-col'>
+            <BuySellHeader activeTab={activeTab} setActiveTab={setActiveTab} />
+            {isLoading ? (
+                <Loader className='mt-80' />
+            ) : (
+                // TODO: Add empty state
+                <Table
+                    columns={columns}
+                    data={data}
+                    isFetching={isFetching}
+                    loadMoreFunction={loadMoreAdverts}
+                    renderHeader={headerRenderer}
+                    rowRender={(data: unknown) => <BuySellRowRenderer {...(data as TBuySellTableRowRenderer)} />}
+                    tableClassname=''
+                />
+            )}
         </div>
     );
 };

@@ -1,0 +1,18 @@
+.p2p-v2-buy-sell-header {
+    @apply py-10 w-full flex lg:flex-row flex-col items-center justify-center lg:justify-start;
+    @apply lg:border-none border-solid border-b-[1px] border-b-[#f2f3f4];
+
+    &__tabs {
+        & .derivs-primary-tabs {
+            height: 4rem;
+            width: 18rem;
+            border-radius: 0.6rem;
+            padding: 0.5rem;
+        }
+
+        & .derivs-primary-tabs__btn--active {
+            border-radius: 0.4rem;
+            padding: 0.8rem 0.6rem;
+        }
+    }
+}

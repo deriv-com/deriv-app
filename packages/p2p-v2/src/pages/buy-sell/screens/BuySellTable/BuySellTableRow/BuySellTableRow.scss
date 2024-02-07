@@ -1,0 +1,8 @@
+.p2p-v2-buy-sell-table-row {
+    @apply w-full grid lg:grid-cols-[2fr_1.4fr_1.4fr_2.4fr_0.8fr] grid-cols-[2fr_0.7fr] p-[1.6rem] items-center;
+    @apply border-solid border-b-[1px] border-b-[#f2f3f4];
+
+    &__payment-method {
+        @apply border-solid border-[1px] border-[#D6DADB] rounded-lg px-[8px] py-1;
+    }
+}

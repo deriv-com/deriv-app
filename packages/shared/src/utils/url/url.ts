@@ -121,6 +121,8 @@ export const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
+export const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
+
 export const removeBranchName = (path = '') => {
     return path.replace(/^\/br_.*?\//, '/');
 };

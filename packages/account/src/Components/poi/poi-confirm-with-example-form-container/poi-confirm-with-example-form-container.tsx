@@ -6,7 +6,7 @@ import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
     filterObjProperties,
-    getUrlBase,
+    getImageLocation,
     isEmptyObject,
     isMobile,
     removeEmptyPropertiesFromObject,
@@ -50,7 +50,7 @@ const PoiConfirmWithExampleFormContainer = ({
     });
 
     const side_note_image = (
-        <img src={getUrlBase('/public/images/common/account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+        <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
     );
 
     React.useEffect(() => {

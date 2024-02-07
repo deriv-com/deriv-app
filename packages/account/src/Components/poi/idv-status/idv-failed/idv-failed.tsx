@@ -6,7 +6,7 @@ import { Button, HintBox, Loading, Text } from '@deriv/components';
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
-    getUrlBase,
+    getImageLocation,
     IDV_ERROR_STATUS,
     isEmptyObject,
     removeEmptyPropertiesFromObject,
@@ -84,7 +84,7 @@ const IdvFailed = ({
     const { setIsAlreadyAttempted } = client;
     const { is_mobile } = ui;
     const side_note_image = (
-        <img src={getUrlBase('/public/images/common/account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+        <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
     );
 
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({

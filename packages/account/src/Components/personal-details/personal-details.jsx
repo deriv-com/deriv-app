@@ -12,13 +12,13 @@ import {
 } from '@deriv/components';
 import {
     getIDVNotApplicableOption,
-    getUrlBase,
+    getImageLocation,
     isDesktop,
     isMobile,
     removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
@@ -60,10 +60,7 @@ const PersonalDetails = observer(
         const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
 
         const side_note_image = (
-            <img
-                src={getUrlBase('/public/images/common/account/ic-poi-name-dob-example.png')}
-                alt='PoiNameDobExample'
-            />
+            <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
         );
 
         const handleCancel = values => {

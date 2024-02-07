@@ -56,10 +56,11 @@ export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {
     const result: TTradeUrlParams & { showModal?: boolean } = {};
     if (searchParams.toString()) {
         const { chart_type, interval, trade_type, symbol } = [...searchParams.entries()].reduce<{
-            [key: string]: string | null;
+            [key: string]: string;
         }>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
         const validInterval = tradeURLParamsConfig.interval.find(item => item.text === interval);
         const validChartType = tradeURLParamsConfig.chartType.find(item => item.text === chart_type);
+        const chartTypeParam = Number(validInterval?.value) === 0 ? 'line' : validChartType?.value;
         const isSymbolValid = active_symbols.some(item => item.symbol === symbol);
         const contractList = Object.keys(contract_types_list).reduce<string[]>((acc, key) => {
             const categories: TTradeTypesCategories['Ups & Downs']['categories'] =
@@ -72,13 +73,13 @@ export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {
             result.granularity = Number(validInterval.value);
         }
         if (validChartType) {
-            result.chartType = validInterval && Number(validInterval.value) === 0 ? 'line' : validChartType.value;
+            result.chartType = chartTypeParam;
         }
         if (isSymbolValid) {
-            result.symbol = symbol || '';
+            result.symbol = symbol;
         }
         if (isTradeTypeValid) {
-            result.contractType = trade_type || '';
+            result.contractType = trade_type;
         } else if (trade_type) {
             result.showModal = true;
         }

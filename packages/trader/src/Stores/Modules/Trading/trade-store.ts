@@ -723,16 +723,16 @@ export default class TradeStore extends BaseStore {
                     }),
                     ...ContractType.getContractType(
                         contract_categories.contract_types_list,
-                        contractType || this.contract_type
+                        contractType ?? this.contract_type
                     ),
                 });
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
-        this.root_store.common.setSelectedContractType(contractType || this.contract_type);
-        this.root_store.portfolio.setContractType(contractType || this.contract_type);
+        this.root_store.common.setSelectedContractType(contractType ?? this.contract_type);
+        this.root_store.portfolio.setContractType(contractType ?? this.contract_type);
         setTradeURLParams({
-            contractType: contractType || this.contract_type,
+            contractType: contractType ?? this.contract_type,
         });
     }
 
@@ -1529,8 +1529,8 @@ export default class TradeStore extends BaseStore {
                 this.root_store.contract_trade.updateChartType(chartType);
             }
             setTradeURLParams({
-                chartType: chartType || this.root_store.contract_trade.chart_type,
-                granularity: granularity || Number(this.root_store.contract_trade.granularity),
+                chartType: chartType ?? this.root_store.contract_trade.chart_type,
+                granularity: granularity ?? Number(this.root_store.contract_trade.granularity),
             });
 
             this.root_store.notifications.setShouldShowPopups(true);

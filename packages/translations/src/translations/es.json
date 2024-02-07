@@ -3764,7 +3764,7 @@
     "-565990678": "Su contrato expirará en esta fecha (en GMT), en función de la Hora de finalización que haya seleccionado.",
     "-1545819495": "Su operación se cerrará automáticamente al precio del activo disponible más cercano cuando su pérdida alcance un determinado porcentaje de su inversión, pero su pérdida nunca superará su inversión. Este porcentaje depende del activo subyacente elegido y del Multiplier.",
     "-468501352": "Si selecciona esta función, su operación se cerrará automáticamente al precio del activo disponible más próximo cuando su ganancia alcance o supere el importe de Take Profit. Su ganancia puede ser superior a la cantidad introducida en función del precio de mercado al cierre.",
-    "-477936848": "We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers.",
+    "-477936848": "Utilizamos el mecanismo de ejecución del siguiente tick, que es el precio del siguiente activo cuando la apertura de la operación es procesada por nuestros servidores.",
     "-1476381873": "El último precio del activo cuando el cierre de la operación es procesado por nuestros servidores.",
     "-148680560": "Precio al contado actual del último tick al alcanzar el vencimiento.",
     "-1123926839": "Los contratos vencerán exactamente a las 14:00:00 GMT en la fecha de expiración seleccionada.",

@@ -11,7 +11,7 @@ type TDocumentType = {
     value: string;
 };
 
-export const getManualUploadDocumentList: (isNimcRequired: boolean) => TDocumentType[] = (isNimcRequired: boolean) => {
+export const getManualUploadDocumentList = (isNimcRequired: boolean): TDocumentType[] => {
     const baseDocumentList = [
         {
             description: 'Upload the page that contains your photo.',

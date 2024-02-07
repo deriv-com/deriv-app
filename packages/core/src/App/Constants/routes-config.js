@@ -312,7 +312,6 @@ const getModules = () => {
                     component: Cashier_V2,
                     getTitle: () => localize('Deposit'),
                     icon_component: 'IcCashierAdd',
-                    default: true,
                 },
                 {
                     path: routes.cashier_v2_withdrawal,

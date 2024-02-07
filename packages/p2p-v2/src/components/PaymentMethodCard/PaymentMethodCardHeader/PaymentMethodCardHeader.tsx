@@ -44,9 +44,10 @@ const PaymentMethodCardHeader = ({
         </Button>,
     ];
     return (
-        <div className='p2p-v2-payment-method-card__header'>
+        <div className='p2p-v2-payment-method-card__header' data-testid='dt_p2p_v2_payment_method_card_header'>
             <Icon
                 className='p2p-v2-payment-method-card__icon'
+                data-testid='dt_p2p_v2_payment_method_card_header_icon'
                 height={medium || small ? 16 : 24}
                 width={medium || small ? 16 : 24}
             />
@@ -57,7 +58,7 @@ const PaymentMethodCardHeader = ({
                 />
             )}
             {/*TODO: wire up logic for the selectable payment method cards here*/}
-            {isSelectable && <input type='checkbox' />}
+            {isSelectable && <input data-testid='p2p_v2_payment_method_card_header_checkbox' type='checkbox' />}
         </div>
     );
 };

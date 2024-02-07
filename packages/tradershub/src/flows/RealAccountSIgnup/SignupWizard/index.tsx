@@ -53,7 +53,13 @@ const SignupWizard = () => {
                     </div>
                 )}
                 <div className='flex flex-col justify-between w-full'>
-                    {isMobile && <MobileProgressBar activeStep={currentStep} steps={FORM_PROGRESS_STEPS} />}
+                    {isMobile && (
+                        <MobileProgressBar
+                            activeStep={currentStep}
+                            onClickClose={handleClose}
+                            steps={FORM_PROGRESS_STEPS}
+                        />
+                    )}
                     <WizardScreens />
                 </div>
             </div>

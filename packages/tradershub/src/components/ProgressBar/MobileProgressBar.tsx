@@ -6,6 +6,7 @@ import { TStep } from './Stepper';
 
 type TMobileProgressBar = {
     activeStep: number;
+    onClickClose?: VoidFunction;
     steps: TStep[];
 };
 
@@ -15,17 +16,17 @@ type TMobileProgressBar = {
  * @param activeStep - The current active step
  * @returns React Component
  */
-const MobileProgressBar = ({ activeStep, steps = [] }: TMobileProgressBar) => {
+const MobileProgressBar = ({ activeStep, onClickClose, steps = [] }: TMobileProgressBar) => {
     return (
         <div>
-            <div className='flex items-center justify-between p-800'>
+            <div className='flex items-center justify-between px-800 py-700'>
                 <div>
                     <Text size='md' weight='bold'>
-                        Step 3/4:
+                        Step {activeStep}/{steps.length}:
                     </Text>{' '}
-                    <Text size='md'>Address</Text>
+                    <Text size='md'>{steps[activeStep - 1].title}</Text>
                 </div>
-                <StandaloneXmarkBoldIcon className='cursor-pointer ' />
+                <StandaloneXmarkBoldIcon className='cursor-pointer' onClick={onClickClose} />
             </div>
             <div className='grid grid-flow-col gap-gap-2xs'>
                 {steps.map((step, index) => (

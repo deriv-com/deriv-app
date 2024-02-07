@@ -16,7 +16,13 @@ const DesktopProgressBar = ({ activeStep, steps = [] }: TDesktopProgressBar) => 
     return (
         <div className='pl-100'>
             {steps.map((step, index) => (
-                <Stepper isActive={index + 1 <= activeStep} key={step.title} step={step} stepCount={index} />
+                <Stepper
+                    isActive={index + 1 <= activeStep}
+                    isFilled={index + 2 <= activeStep}
+                    key={step.title}
+                    step={step}
+                    stepCount={index}
+                />
             ))}
         </div>
     );

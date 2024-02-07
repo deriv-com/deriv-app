@@ -115,7 +115,7 @@ describe('PersonalDetailsForm', () => {
         expect(el_first_name).toBeEnabled();
     });
 
-    fit('should enable Last name field is POI is attempted', () => {
+    it('should enable Last name field is POI is attempted', () => {
         const props = {
             ...mock_props,
             account_status: {

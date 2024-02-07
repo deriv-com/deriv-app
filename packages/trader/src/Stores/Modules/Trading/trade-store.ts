@@ -510,7 +510,9 @@ export default class TradeStore extends BaseStore {
                 }
                 this.setDefaultGrowthRate();
                 this.resetAccumulatorData();
-                setTradeURLParams({ symbol: this.symbol });
+                if (this.active_symbols.length) {
+                    setTradeURLParams({ symbol: this.symbol });
+                }
                 this.root_store.notifications.removeTradeNotifications();
             }
         );

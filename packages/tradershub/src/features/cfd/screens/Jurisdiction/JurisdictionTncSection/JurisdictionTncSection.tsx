@@ -3,7 +3,8 @@ import { getStaticUrl } from '@/helpers';
 import { THooks } from '@/types';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { Link, Text, useBreakpoint } from '@deriv/quill-design';
+import { Link, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
 type TJurisdictionTncSectionProps = {

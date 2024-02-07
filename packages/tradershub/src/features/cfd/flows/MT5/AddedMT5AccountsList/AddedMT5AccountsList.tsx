@@ -6,8 +6,7 @@ import { CFDPlatforms, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Text } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
@@ -66,14 +65,14 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                     <Text size='sm'>{title}</Text>
                     {!activeAccount?.is_virtual && (
                         <div className='flex items-center rounded-md h-1200 py-50 px-200 gap-200 bg-system-light-secondary-background'>
-                            <Text bold size='xs'>
+                            <Text size='xs' weight='bold'>
                                 {account.landing_company_short?.toUpperCase()}
                             </Text>
                         </div>
                     )}
                 </div>
                 {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
-                    <Text bold size='sm'>
+                    <Text size='sm' weight='bold'>
                         {account.display_balance}
                     </Text>
                 )}

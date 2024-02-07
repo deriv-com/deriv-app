@@ -3,7 +3,8 @@ import { useUIContext } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 const TradingAccountsList = () => {
     const { data: tradingAccountsList } = useTradingAccountsList();

@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { StaticLink, TitleDescriptionLoader, useUIContext } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useIsEuRegion } from '@deriv/api';
-import { Button, Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import { Button, Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => {
     const history = useHistory();

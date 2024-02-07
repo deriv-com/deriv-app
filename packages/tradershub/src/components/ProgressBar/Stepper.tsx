@@ -1,6 +1,7 @@
 import React from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
 import { StandaloneCheckBoldIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { desktopStyle, stepperVariants } from './ProgressBar.classnames';
 import StepConnector from './StepConnector';
 
@@ -20,7 +21,7 @@ const Stepper = ({ isActive, step, stepCount }: TStepperProps) => (
                 {step.isFilled ? <StandaloneCheckBoldIcon fill={isActive ? '#fff' : '#000'} /> : null}
             </span>
         </div>
-        <Text bold={isActive} className='relative top-200' size='sm'>
+        <Text className='relative top-200' size='sm' weight={isActive ? 'bold' : 'normal'}>
             {step.title}
         </Text>
     </div>

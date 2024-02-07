@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import { CurrencySwitcher, StaticLink, TitleDescriptionLoader, useUIContext } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useIsEuRegion } from '@deriv/api';
-import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 /**
  *  `OptionsAndMultipliersHeading` is a component that renders the heading title and currency switcher.

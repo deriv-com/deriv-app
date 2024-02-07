@@ -510,6 +510,7 @@ export default class TradeStore extends BaseStore {
                 }
                 this.setDefaultGrowthRate();
                 this.resetAccumulatorData();
+                setTradeURLParams({ symbol: this.symbol });
                 this.root_store.notifications.removeTradeNotifications();
             }
         );
@@ -544,6 +545,9 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
+                if (!isEmptyObject(this.contract_types_list)) {
+                    setTradeURLParams({ contractType: this.contract_type });
+                }
                 this.root_store.notifications.removeTradeNotifications();
             }
         );
@@ -711,6 +715,9 @@ export default class TradeStore extends BaseStore {
                     contract_types_list: contract_categories.contract_types_list,
                 });
                 [contractType, showModal] = [contractTypeParam, shouldShowModal];
+                if (showModal) {
+                    this.toggleUrlUnavailableModal(true);
+                }
                 this.processNewValuesAsync({
                     ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
                         has_only_forward_starting_contracts: boolean;
@@ -728,9 +735,6 @@ export default class TradeStore extends BaseStore {
         setTradeURLParams({
             contractType: contractType || this.contract_type,
         });
-        if (showModal) {
-            this.toggleUrlUnavailableModal(true);
-        }
     }
 
     async prepareTradeStore(should_set_default_symbol = true) {
@@ -1096,15 +1100,6 @@ export default class TradeStore extends BaseStore {
             updateGranularity(prev_granularity);
             updateChartType(prev_chart_type);
             savePreviousChartMode('', null);
-        }
-        if (obj_new_values.contract_type) {
-            setTradeURLParams({
-                contractType: obj_new_values.contract_type,
-            });
-        } else if (obj_new_values.symbol) {
-            setTradeURLParams({
-                symbol: obj_new_values.symbol,
-            });
         }
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {
             // TODO: fix this in input-field.jsx

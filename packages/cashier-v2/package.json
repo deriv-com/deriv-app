@@ -12,12 +12,12 @@
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
-        "@deriv-com/ui": "1.0.1",
+        "@deriv-com/ui": "1.3.0",
         "@deriv/api": "^1.0.0",
         "@deriv/integration": "^1.0.0",
         "@deriv/library": "^1.0.0",
         "@deriv/quill-design": "^1.3.2",
-        "@deriv/quill-icons": "^1.17.0",
+        "@deriv/quill-icons": "^1.17.4",
         "@deriv/utils": "^1.0.0",
         "formik": "^2.1.4",
         "i18next": "^22.4.6",

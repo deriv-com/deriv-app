@@ -39,7 +39,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const ctraderPlatform = PlatformDetails.ctrader.platform;
 
     const marketType = getCFDState('marketType');
-    const platform = getCFDState('platform') ?? mt5Platform;
+    const platform = getCFDState('platform');
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -64,7 +64,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const platformIcon =
         platform === mt5Platform
             ? marketTypeDetails[marketType ?? MarketType.ALL]?.iconWithWidth?.(24)
-            : PlatformDetails[platform as keyof typeof PlatformDetails].iconWithWidth(24);
+            : PlatformDetails[platform as keyof typeof PlatformDetails].icon(24);
 
     return (
         <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>

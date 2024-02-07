@@ -1,7 +1,7 @@
 import React from 'react';
+import { Modal } from '@/components';
+import { getCFDContents, getOptionsContents } from '@/constants';
 import { Text } from '@deriv-com/ui';
-import { Modal } from '../../components/Modal';
-import { getCFDContents, getOptionsContents } from '../../constants/regulators-modal-content';
 import Row from './Row';
 
 const RegulationModal = () => (

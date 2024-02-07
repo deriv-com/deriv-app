@@ -1,9 +1,9 @@
 import React from 'react';
+import { StarRating } from '@/components';
+import { useAdvertiserStats, useDevice } from '@/hooks';
 import { Text } from '@deriv-com/ui';
-import { useAdvertiserStats, useDevice } from '../../hooks';
 import ThumbUpIcon from '../../public/ic-thumb-up.svg';
 import BlockedUserOutlineIcon from '../../public/ic-user-blocked-outline.svg';
-import { StarRating } from '../StarRating';
 import './AdvertiserNameStats.scss';
 
 /**
@@ -21,7 +21,7 @@ const AdvertiserNameStats = () => {
         advertiserStats || {};
 
     return (
-        <div className='p2p-v2-advertiser-name-stats'>
+        <div className='p2p-v2-advertiser-name-stats' data-testid='dt_p2p_v2_advertiser_name_stats'>
             <div>
                 <Text color='less-prominent' size='sm'>
                     Joined {daysSinceJoined}d

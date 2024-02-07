@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { ActionScreen } from '../../../../../components';
 import MT5PasswordUpdatedIcon from '../../../../../public/images/ic-mt5-password-updated.svg';
 

@@ -1,6 +1,7 @@
 import React, { Fragment, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
-import { Text, useBreakpoint } from '@deriv/quill-design';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { Tooltip } from '../../../../components';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
@@ -75,7 +76,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
             <div className={'flex flex-col gap-[5px] pt-1000 items-center'}>
                 <TradingPlatformIcon height={48} width={48} />
                 <div className='flex items-center gap-400'>
-                    <Text bold size='sm'>
+                    <Text size='sm' weight='bold'>
                         {jurisdictionCardTitle}
                     </Text>
                     {marketTypeShortCode === MarketTypeShortcode.FINANCIAL_LABUAN && (

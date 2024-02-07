@@ -38,16 +38,8 @@ describe('<ContractTypeGlossary />', () => {
         expect(screen.getByText(deal_cancellation)).toBeInTheDocument();
         expect(screen.getByText(stop_out)).toBeInTheDocument();
     });
-    it('Ensure TRADE_TYPES.MULTIPLIER glossary is rendered properly if it is multiplier_fx', () => {
-        render(<ContractTypeGlossary category={TRADE_TYPES.MULTIPLIER} is_multiplier_fx />);
-
-        expect(screen.queryByText(deal_cancellation)).not.toBeInTheDocument();
-        expect(screen.getByText(/current-tick-execution/i)).toBeInTheDocument();
-        expect(screen.queryByText(/next-tick-execution/i)).not.toBeInTheDocument();
-        expect(screen.getByText(stop_out)).toBeInTheDocument();
-    });
     it('Ensure TRADE_TYPES.MULTIPLIER glossary is rendered properly if it is major pairs  symbol and multiplier_fx', () => {
-        render(<ContractTypeGlossary category={TRADE_TYPES.MULTIPLIER} is_multiplier_fx is_major_pairs />);
+        render(<ContractTypeGlossary category={TRADE_TYPES.MULTIPLIER} is_multiplier_fx />);
 
         expect(screen.queryByText(deal_cancellation)).not.toBeInTheDocument();
         expect(screen.queryByText(/current-tick-execution/i)).not.toBeInTheDocument();

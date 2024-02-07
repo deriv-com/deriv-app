@@ -101,7 +101,7 @@ const WalletDropdown: React.FC<TProps> = ({
             <div className='wallets-dropdown__content'>
                 <WalletTextField
                     disabled={disabled}
-                    errorMessage={errorMessage}
+                    errorMessage={hasSelected && !value && errorMessage}
                     isInvalid={hasSelected && !value && isRequired}
                     label={label}
                     name={name}

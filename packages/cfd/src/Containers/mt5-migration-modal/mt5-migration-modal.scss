@@ -1,4 +1,17 @@
 .mt5-migration-modal {
+    &__container {
+        min-height: 42.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.4rem;
+        padding: 2.4rem;
+        @include mobile {
+            padding: 2.4rem 1.6rem;
+            justify-content: flex-start;
+        }
+    }
     &__error {
         margin: 3.2rem 2.4rem 0;
         background-color: var(--button-primary-light-default);
@@ -77,6 +90,27 @@
         justify-content: center;
         padding-bottom: 2rem;
     }
+    &__password {
+        &-header-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        &-input-container {
+            width: 35.2rem;
+            @include mobile {
+                width: 100%;
+            }
+        }
+        &-forgot-container {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            @include mobile {
+                justify-content: flex-end;
+            }
+        }
+    }
 }
 
 .dc-modal__container_mt5-migration-modal {
@@ -86,6 +120,7 @@
 }
 
 .mt5-migration-modal__mobile-container {
+    width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     .dc-modal-footer {

@@ -17,48 +17,50 @@ const MT5MigrationFrontSideContent = observer(() => {
 
     return (
         <React.Fragment>
-            {!!mt5_migration_error && (
-                <div className='mt5-migration-modal__error'>
-                    <div className='mt5-migration-modal__error-header'>
-                        <Icon icon='IcAlertDanger' />
-                        <Text align='center' size='xs'>
-                            <Localize i18n_default_text={mt5_migration_error} value={{ mt5_migration_error }} />
-                        </Text>
+            <div className='mt5-migration-modal__container'>
+                {!!mt5_migration_error && (
+                    <div className='mt5-migration-modal__error'>
+                        <div className='mt5-migration-modal__error-header'>
+                            <Icon icon='IcAlertDanger' />
+                            <Text align='center' size='xs'>
+                                <Localize i18n_default_text={mt5_migration_error} value={{ mt5_migration_error }} />
+                            </Text>
+                        </div>
+                    </div>
+                )}
+                <div className='mt5-migration-modal__description'>
+                    <Text as='p' size={content_size} align='center'>
+                        <Localize
+                            i18n_default_text='We are giving you a new {{platform}} account(s) to enhance your trading experience'
+                            values={{
+                                platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
+                            }}
+                        />
+                    </Text>
+                </div>
+                <div className='mt5-migration-modal__migration_content'>
+                    <div className='mt5-migration-modal__migration_content-items'>
+                        <MT5MigrationAccountIcons />
                     </div>
                 </div>
-            )}
-            <div className='mt5-migration-modal__description'>
-                <Text as='p' size={content_size} align='center'>
-                    <Localize
-                        i18n_default_text='We are giving you a new {{platform}} account(s) to enhance your trading experience'
-                        values={{
-                            platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
-                        }}
+                <div className='mt5-migration-modal__migration_infobox'>
+                    <HintBox
+                        icon='IcInfoBlue'
+                        message={
+                            <Text as='p' size='xxxs'>
+                                <Localize
+                                    i18n_default_text='Your existing <0>{{platform}} {{account}}</0> account(s) will remain accessible.'
+                                    components={[<strong key={0} />]}
+                                    values={{
+                                        account: Jurisdiction.SVG.toUpperCase(),
+                                        platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
+                                    }}
+                                />
+                            </Text>
+                        }
+                        is_info
                     />
-                </Text>
-            </div>
-            <div className='mt5-migration-modal__migration_content'>
-                <div className='mt5-migration-modal__migration_content-items'>
-                    <MT5MigrationAccountIcons />
                 </div>
-            </div>
-            <div className='mt5-migration-modal__migration_infobox'>
-                <HintBox
-                    icon='IcInfoBlue'
-                    message={
-                        <Text as='p' size='xxxs'>
-                            <Localize
-                                i18n_default_text='Your existing <0>{{platform}} {{account}}</0> account(s) will remain accessible.'
-                                components={[<strong key={0} />]}
-                                values={{
-                                    account: Jurisdiction.SVG.toUpperCase(),
-                                    platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
-                                }}
-                            />
-                        </Text>
-                    }
-                    is_info
-                />
             </div>
             <Modal.Footer has_separator>
                 <Button type='button' has_effect large primary onClick={() => setShowModalFrontSide(false)}>

@@ -1,25 +1,18 @@
-import React from 'react';
-import { Button, Checkbox, Modal, Text, StaticUrl, Icon } from '@deriv/components';
+import { Button, Input, Modal, Text } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { CFD_PLATFORMS, DBVI_COMPANY_NAMES } from '@deriv/shared';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import getMigrationModalDetails from '../../Constants/mt5-migration-modal-content';
+import React from 'react';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 
 const MT5MigrationBackSideContent = observer(() => {
     const { ui, common } = useStore();
     const { toggleMT5MigrationModal, setMT5MigrationModalEnabled, is_mobile } = ui;
     const { setAppstorePlatform } = common;
-    const { enableCFDPasswordModal, mt5_migration_error, setJurisdictionSelectedShortcode } = useCfdStore();
+    const { enableCFDPasswordModal, setJurisdictionSelectedShortcode } = useCfdStore();
+    const { getEligibleAccountToMigrate } = useMT5SVGEligibleToMigrate();
 
-    const { getEligibleAccountToMigrate, eligible_account_to_migrate_label } = useMT5SVGEligibleToMigrate();
-    const { setShowModalFrontSide } = useMT5MigrationModalContext();
-    const [is_checked, setIsChecked] = React.useState(false);
-
-    const content = getMigrationModalDetails(eligible_account_to_migrate_label);
-    const checkbox_text_size = is_mobile ? 'xxs' : 'xs';
     const header_size = is_mobile ? 'xs' : 's';
     const content_size = is_mobile ? 'xxs' : 'xs';
 
@@ -33,78 +26,27 @@ const MT5MigrationBackSideContent = observer(() => {
 
     return (
         <React.Fragment>
-            {!!mt5_migration_error && (
-                <div className='mt5-migration-modal__error'>
-                    <div className='mt5-migration-modal__error-header'>
-                        <Icon icon='IcAlertDanger' />
-                        <Text align='center' size='xs'>
-                            <Localize i18n_default_text={mt5_migration_error} value={{ mt5_migration_error }} />
-                        </Text>
-                    </div>
-                </div>
-            )}
-            <div>
-                <div className='mt5-migration-modal__description'>
-                    <Text as='p' size={header_size} align='center' weight='bold'>
-                        <Localize i18n_default_text='What will happen to the funds in my existing account(s)?' />
+            <div className='mt5-migration-modal__container'>
+                <div className='mt5-migration-modal__password-header-container'>
+                    <Text as='p' weight='bold' size={header_size} align='center'>
+                        <Localize i18n_default_text=' Enter your Deriv MT5 password' />
+                    </Text>
+                    <Text as='p' size={content_size} align='center'>
+                        Enter your Deriv MT5 password to upgrade your account(s).
                     </Text>
                 </div>
-                <div className='mt5-migration-modal__existing-accounts'>
-                    {content.map(item => (
-                        <React.Fragment key={item.key}>
-                            <div className='mt5-migration-modal__existing-accounts-card'>
-                                <div className='mt5-migration-modal__existing-accounts-card-content'>
-                                    <Text as='div' size={content_size} weight='bold'>
-                                        {item.title}
-                                    </Text>
-                                    {item.description.map(({ id, text }) => (
-                                        <div
-                                            key={id}
-                                            className='mt5-migration-modal__existing-accounts-card-content__message'
-                                        >
-                                            <Icon icon='IcGreenArrowCheck' />
-                                            <Text size={content_size}>{text}</Text>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </React.Fragment>
-                    ))}
+                <div className='mt5-migration-modal__password-input-container'>
+                    <Input />
                 </div>
-                <div>
-                    <div className='mt5-migration-modal__existing-accounts-card-content'>
-                        <Checkbox
-                            value={is_checked}
-                            onChange={() => setIsChecked(!is_checked)}
-                            label={
-                                <Text as='p' size={checkbox_text_size} line_height='xs'>
-                                    <Localize
-                                        i18n_default_text='I agree to move my {{platform}} account(s) and agree to Deriv {{account_to_migrate}} Ltd’s <0>terms and conditions</0>'
-                                        components={[
-                                            <StaticUrl
-                                                key={0}
-                                                className='link'
-                                                href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()].tnc_url}
-                                            />,
-                                        ]}
-                                        values={{
-                                            platform: CFD_PLATFORMS.MT5.toUpperCase(),
-                                            account_to_migrate: eligible_account_to_migrate_label,
-                                        }}
-                                    />
-                                </Text>
-                            }
-                        />
-                    </div>
+                <div className='mt5-migration-modal__password-forgot-container'>
+                    <Button type='button' large secondary>
+                        Forgot password?
+                    </Button>
                 </div>
             </div>
             <Modal.Footer has_separator>
-                <Button type='button' large secondary onClick={() => setShowModalFrontSide(true)}>
-                    <Localize i18n_default_text='Back' />
-                </Button>
-
-                <Button type='button' large primary onClick={onConfirmMigration} disabled={!is_checked}>
-                    <Localize i18n_default_text='Next' />
+                <Button type='button' large primary onClick={onConfirmMigration}>
+                    <Localize i18n_default_text='Upgrade' />
                 </Button>
             </Modal.Footer>
         </React.Fragment>

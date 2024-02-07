@@ -14,6 +14,7 @@ export * from './PaymentMethodField';
 export * from './PaymentMethodForm';
 export * from './PaymentMethodsFormFooter';
 export * from './PaymentMethodsHeader';
+export * from './PopoverDropdown';
 export * from './RadioGroup';
 export * from './Search';
 export * from './StarRating';

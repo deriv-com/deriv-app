@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { WalletText } from '../../../../components';
 import { TPlatforms } from '../../../../types';
 import { getPlatformType } from './compareAccountsConfig';
@@ -15,10 +14,10 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
 
     return (
         <div
-            className={classNames('wallets-compare-accounts-platform-label', {
-                'wallets-compare-accounts-platform-label--ctrader': platformType === 'CTrader',
-                'wallets-compare-accounts-platform-label--other-cfds': platformType === 'OtherCFDs',
-            })}
+            className={`
+            wallets-compare-accounts-platform-label
+            wallets-compare-accounts-platform-label--${platformType.toLowerCase()}
+            `}
         >
             <WalletText align='center' as='p' color={headerColor[platformType]} size='xs' weight='bold'>
                 {platformLabel[platformType]}

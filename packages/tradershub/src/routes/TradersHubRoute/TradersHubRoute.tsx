@@ -1,7 +1,4 @@
 import React from 'react';
-import { useIsDIELEnabled } from '@deriv/api';
-import { Heading, useBreakpoint } from '@deriv/quill-design';
-import { Tab, Tabs } from '@deriv-com/ui';
 import {
     CFDSection,
     DemoRealSwitcher,
@@ -11,15 +8,17 @@ import {
     TotalAssets,
     TradersHubContent,
     useUIContext,
-} from '../../components';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
+} from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { useIsDIELEnabled } from '@deriv/api';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Tab, Tabs } from '@deriv-com/ui';
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
     const { data: isDIEL } = useIsDIELEnabled();
-    const { getUIState } = useUIContext();
-    const accountType = getUIState('accountType');
-    const regulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
     const isReal = accountType === 'real';
     const isDemo = accountType === 'demo';
     const { hasActiveDerivAccount } = useRegulationFlags(regulation, accountType);

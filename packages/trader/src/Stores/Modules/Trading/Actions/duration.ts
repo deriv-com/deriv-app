@@ -46,10 +46,10 @@ const assertDuration = ({
 }: TAssertDurationParams = {}) => {
     const [min, max] = getDurationMinMaxValues(duration_min_max ?? {}, contract_expiry_type ?? '', duration_unit ?? '');
 
-    if (duration && min && duration < min) {
+    if (Number(duration) < Number(min)) {
         return { duration: min };
     }
-    if (duration && max && duration > max) {
+    if (Number(duration) > Number(max)) {
         return { duration: max };
     }
     return {};

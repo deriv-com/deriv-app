@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
+import { THooks } from '@/types';
 import { useAuthentication } from '@deriv/api';
 import VerificationFailedIcon from '../../../../../public/images/ic-verification-failed-status.svg';
 import VerificationPendingIcon from '../../../../../public/images/ic-verification-pending-status.svg';
 import VerificationSuccessIcon from '../../../../../public/images/ic-verification-success-status.svg';
-import { THooks } from '../../../../../types';
 
 type TJurisdictionCardVerificationTagProps = {
     category: 'poa' | 'poi' | null;

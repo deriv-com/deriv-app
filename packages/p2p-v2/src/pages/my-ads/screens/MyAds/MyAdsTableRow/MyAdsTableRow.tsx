@@ -59,7 +59,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
     const [isActionsVisible, setIsActionsVisible] = useState(false);
     const isAdvertListed = isListed && !isBarred;
     const adPauseColor = isAdvertListed ? 'general' : 'less-prominent';
-    const amountDealt = (amount ?? 0) - (remaining_amount ?? 0);
+    const amountDealt = amount - remaining_amount;
 
     const isRowDisabled = !is_active || isBarred || !isListed;
     const isAdActive = !!is_active && !isBarred;

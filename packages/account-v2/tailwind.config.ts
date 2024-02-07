@@ -3,7 +3,6 @@ import QuillTailwindConfig from '@deriv/quill-design/quill-tailwind/tailwind.con
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
-    darkMode: 'class',
     presets: [QuillTailwindConfig],
     theme: {
         extend: {

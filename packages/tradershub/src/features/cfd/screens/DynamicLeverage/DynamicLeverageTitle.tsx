@@ -1,7 +1,7 @@
 import React from 'react';
+import { useDynamicLeverageModalState } from '@cfd/components';
 import { StandaloneArrowLeftBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 
 export const DynamicLeverageTitle = () => {
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();

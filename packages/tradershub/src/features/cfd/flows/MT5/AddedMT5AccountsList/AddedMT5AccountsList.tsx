@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
+import { TradingAccountCard, useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { THooks } from '@/types';
+import { CFDPlatforms, MarketType, MarketTypeDetails } from '@cfd/constants';
+import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
-import { useUIContext } from '../../../../../components';
-import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
-import { THooks } from '../../../../../types';
-import { CFDPlatforms, MarketType, MarketTypeDetails } from '../../../constants';
-import { TopUpModal, TradeModal } from '../../../modals';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {

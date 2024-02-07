@@ -2,11 +2,19 @@ import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
-import { TradingAccountCard } from '../../../../../../components';
+import { PlatformIcon, TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
-import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 import { CFDPlatforms, PlatformDetails } from '../../../../constants';
 import { TopUpModal, TradeModal } from '../../../../modals';
+
+const LeadingIcon = () => (
+    <PlatformIcon
+        icon='DerivX'
+        onClick={() => {
+            window.open(getStaticUrl('/derivx'));
+        }}
+    />
+);
 
 const AddedDxtradeAccountsList = () => {
     const { data: dxTradeAccounts } = useDxtradeAccountsList();
@@ -14,24 +22,6 @@ const AddedDxtradeAccountsList = () => {
     const { show } = Provider.useModal();
     const account = dxTradeAccounts?.find(account => account.is_virtual === activeTrading?.is_virtual);
     const isVirtual = account?.is_virtual;
-
-    const leading = () => (
-        <div
-            className='cursor-pointer'
-            onClick={() => {
-                window.open(getStaticUrl('/derivx'));
-            }}
-            // Fix sonarcloud issue
-            onKeyDown={event => {
-                if (event.key === 'Enter') {
-                    window.open(getStaticUrl('/derivx'));
-                }
-            }}
-            role='button'
-        >
-            <DerivX />
-        </div>
-    );
 
     const trailing = () => (
         <div className='flex flex-col gap-y-200'>
@@ -63,7 +53,7 @@ const AddedDxtradeAccountsList = () => {
     );
 
     return (
-        <TradingAccountCard leading={leading} trailing={trailing}>
+        <TradingAccountCard leading={LeadingIcon} trailing={trailing}>
             <div className='flex flex-col flex-grow'>
                 {account && (
                     <Fragment>

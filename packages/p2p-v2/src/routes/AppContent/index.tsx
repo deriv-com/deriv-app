@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 import { CloseHeader } from '@/components';
-import { MyProfile } from '@/pages';
+import { MyAds, MyProfile } from '@/pages';
 import { useActiveAccount } from '@deriv/api';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import './index.scss';
@@ -10,9 +10,13 @@ import './index.scss';
 const DEFAULT_TAB = 'buy-sell';
 
 export const routesConfiguration = [
-    { Component: <div> Buy Sell Page </div>, path: 'buy-sell', title: 'Buy / Sell' },
+    { Component: <div> Buy sell Page </div>, path: 'buy-sell', title: 'Buy / Sell' },
     { Component: <div> Orders Page </div>, path: 'orders', title: 'Orders' },
-    { Component: <div> My Ads Page </div>, path: 'my-ads', title: 'My Ads' },
+    {
+        Component: <MyAds />,
+        path: 'my-ads',
+        title: 'My Ads',
+    },
     { Component: <MyProfile />, path: 'my-profile', title: 'My Profile' },
 ];
 

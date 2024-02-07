@@ -1,17 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Modal, useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
+import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
+import { MT5PasswordModal } from '@cfd/modals';
+import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen } from '@cfd/screens';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Heading, useBreakpoint } from '@deriv/quill-design';
 import { Button } from '@deriv-com/ui';
-import { useUIContext } from '../../../../components';
-import { Modal } from '../../../../components/Modal';
-import useRegulationFlags from '../../../../hooks/useRegulationFlags';
-import { DummyComponent } from '../../components/DummyComponent';
-import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
-import { Jurisdiction, MarketType, MarketTypeDetails } from '../../constants';
-import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
-import { JurisdictionScreen } from '../../screens/Jurisdiction';
-import { MT5PasswordModal } from '../MT5PasswordModal';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');

@@ -1,15 +1,11 @@
 import React, { useEffect } from 'react';
+import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '@/components';
+import { getStaticUrl } from '@/helpers';
+import { PlatformDetails } from '@cfd/constants';
+import { CTraderSuccessModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import {
-    TradingAccountCard,
-    TradingAccountCardContent,
-    TradingAccountCardLightButton,
-} from '../../../../../components/TradingAccountCard';
-import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
-import { PlatformDetails } from '../../../constants';
-import { CTraderSuccessModal } from '../../../modals';
 
 const LeadingIcon = () => (
     <button

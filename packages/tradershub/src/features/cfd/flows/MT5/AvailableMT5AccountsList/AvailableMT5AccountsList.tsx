@@ -1,17 +1,16 @@
 import React from 'react';
-import { useAuthorize } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import {
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
     useUIContext,
-} from '../../../../../components';
-import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
-import { THooks } from '../../../../../types';
-import { MarketType, MarketTypeDetails, PlatformDetails } from '../../../constants';
-import { JurisdictionModal } from '../../../modals/JurisdictionModal';
-import { MT5PasswordModal } from '../../../modals/MT5PasswordModal';
+} from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { THooks } from '@/types';
+import { MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
+import { JurisdictionModal, MT5PasswordModal } from '@cfd/modals';
+import { useAuthorize } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {

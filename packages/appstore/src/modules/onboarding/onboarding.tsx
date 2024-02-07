@@ -9,12 +9,12 @@ const Onboarding = observer(() => {
     const { client } = useStore();
     const { is_landing_company_loaded, is_logged_in } = client;
 
-    // if (is_logged_in && is_landing_company_loaded) {
-    //     history.push(routes.traders_hub);
-    // }
+    if (is_logged_in && is_landing_company_loaded) {
+        history.push(routes.traders_hub);
+    }
 
     return (
-        <div data-testid='dt_onboarding-skeleton-loader'>
+        <div data-testid='dt_onboarding_skeleton_loader'>
             <OnboardingSkeleton />;
         </div>
     );

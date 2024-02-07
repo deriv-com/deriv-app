@@ -1,6 +1,6 @@
 import React from 'react';
 import './tradingAppSkeleton.scss';
-import { HorizentalDevider } from './devider';
+import { HorizentalDevider } from '../devider/devider';
 
 const TradingAppCardSkeleton = () => {
     return (

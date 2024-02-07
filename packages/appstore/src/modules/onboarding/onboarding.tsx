@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import OnboardingSkeleton from './onbordingSkeleton';
+import OnboardingSkeleton from '../../components/loader';
 
 const Onboarding = observer(() => {
     const history = useHistory();
@@ -13,7 +13,11 @@ const Onboarding = observer(() => {
     //     history.push(routes.traders_hub);
     // }
 
-    return <OnboardingSkeleton />;
+    return (
+        <div data-testid='dt_onboarding-skeleton-loader'>
+            <OnboardingSkeleton />;
+        </div>
+    );
 });
 
 export default Onboarding;

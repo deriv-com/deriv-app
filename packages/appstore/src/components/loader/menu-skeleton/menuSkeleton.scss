@@ -1,26 +1,21 @@
-@import './skeletonLoader.scss';
+@import '../skeletonLoader.scss';
 
-.tradershub-skeleton-loader {
+.menu-skeleton-loader {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 8px;
+    @include mobile {
+        display: none;
+    }
     &__icon {
         height: 16px;
         border-radius: 4px;
         width: 16px;
-        @include mobile {
-            display: none;
-        }
     }
     &__title {
         height: 24px;
         border-radius: 4px;
-        width: 92px;
-
-        @include mobile {
-            width: 48px;
-            height: 16px;
-        }
+        width: 56px;
     }
 }

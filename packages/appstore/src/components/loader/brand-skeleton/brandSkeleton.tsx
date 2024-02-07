@@ -1,7 +1,7 @@
 import React from 'react';
 import './brandSkeleton.scss';
 
-export const brandSkeleton = () => {
+export const BrandSkeleton = () => {
     return (
         <div className='brand-skeleton-loader'>
             <div className='skeleton-loader brand-skeleton-loader__brand' />
@@ -9,4 +9,4 @@ export const brandSkeleton = () => {
     );
 };
 
-export default brandSkeleton;
+export default BrandSkeleton;

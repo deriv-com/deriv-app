@@ -1,12 +1,13 @@
 import React from 'react';
-import BrandSkeleton from './brandSkeleton';
-import './headerSkeleton.scss';
-import TradershubSkeleton from './tradershubSkeleton';
-import MenuSkeleton from './menuSkeleton';
-import HeaderRightMenuSkeleton from './headerRightMenuSkeleon';
-import { VerticalDevider } from './devider';
+import BrandSkeleton from '../brand-skeleton/brandSkeleton';
+import CashierButtonSkeleton from '../cashier-button-skeleton/cashierButtonSkeleton';
+import { VerticalDevider } from '../devider/devider';
+import HeaderRightMenuSkeleton from '../header-right-menu-skeleton/headerRightMenuSkeleon';
+import MenuSkeleton from '../menu-skeleton/menuSkeleton';
+import TradershubMenuSkeleton from '../traders-hub-menu-skeleton/tradershubMenuSkeleton';
 import { isMobile } from '@deriv/shared';
-import CashierButtonSkeleton from './cashierButtonSkeleton';
+
+import './headerSkeleton.scss';
 
 const HeaderSkeleton = () => {
     return (
@@ -14,7 +15,7 @@ const HeaderSkeleton = () => {
             <div className='header-skeleton-loader__left'>
                 <BrandSkeleton />
                 <VerticalDevider />
-                <TradershubSkeleton />
+                <TradershubMenuSkeleton />
                 <MenuSkeleton />
             </div>
             <div className='header-skeleton-loader__right'>

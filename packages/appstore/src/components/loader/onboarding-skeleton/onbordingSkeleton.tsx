@@ -1,12 +1,13 @@
 import React from 'react';
-import TradingAppCardSkeleton from './tradingAppSkeleton';
-import HeaderSkeleton from './headerSkeleton';
-import TitleSkeleton from './titleSkeleton';
-import TotalAssetSkeleton from './totalAssetSkeleton';
-import OptionsAndMultipliersSkeleton from './optionsAndMultipliers';
-import CfdAppSkeleton from './cfdAppSkeleton';
-import Mt5TitleLSkeleton from './mt5TitleSkeleton';
-import CFDToggleSkeleton from './cfdToggleSkeleton';
+import CfdAppSkeleton from '../cfd-app-skeleton/cfdAppSkeleton';
+import CFDToggleSkeleton from '../cfd-toggle-skeleton/cfdToggleSkeleton';
+import HeaderSkeleton from '../header-skeleton/headerSkeleton';
+import Mt5TitleLSkeleton from '../mt5-title-skeleton/mt5TitleSkeleton';
+import OptionsAndMultipliersSkeleton from '../options-and-multipliers-skeleton/optionsAndMultipliers';
+import TitleSkeleton from '../title-skeleton/titleSkeleton';
+import TotalAssetSkeleton from '../total-asset-skeleton/totalAssetSkeleton';
+import TradingAppCardSkeleton from '../trading-app-skeleton/tradingAppSkeleton';
+
 import './onbordingSkeleton.scss';
 
 const OnboardingSkeleton = () => {

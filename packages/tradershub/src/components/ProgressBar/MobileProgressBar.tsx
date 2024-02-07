@@ -6,7 +6,7 @@ import { TStep } from './Stepper';
 
 type TMobileProgressBar = {
     activeStep: number;
-    onClickClose?: VoidFunction;
+    onClickClose: VoidFunction;
     steps: TStep[];
 };
 

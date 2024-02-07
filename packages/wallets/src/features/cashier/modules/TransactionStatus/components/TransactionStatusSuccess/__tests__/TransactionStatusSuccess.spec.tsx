@@ -192,7 +192,7 @@ describe('TransactionStatusSuccess', () => {
                 formatted_amount: '',
                 formatted_confirmations: '',
                 formatted_transaction_hash: '',
-                id: '',
+                id: `transaction_${i}`,
                 is_deposit: false,
                 is_valid_to_cancel: 1 as const,
                 is_withdrawal: true,

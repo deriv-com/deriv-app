@@ -1,11 +1,11 @@
 import React from 'react';
 import { ActionScreen, SentEmailContent } from '@/components';
 import { useMT5AccountHandler } from '@/hooks';
-import { MarketType, QueryStatus, TTM5FilterLandingCompany } from '@cfd/constants';
+import { MarketType, QueryStatus } from '@cfd/constants';
+import { CreatePassword, EnterPassword } from '@cfd/screens';
 import { useAccountStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { CreatePassword, EnterPassword } from '../../screens';
 import MT5SuccessModal from './MT5SuccessModal';
 
 type TMT5PasswordInputProps = {
@@ -20,7 +20,6 @@ const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => 
 
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const platform = getCFDState('platform');
-    const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
 
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
     const {
@@ -29,10 +28,7 @@ const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => 
         isCreateMT5AccountError,
         isCreateMT5AccountSuccess,
         tradingPlatformPasswordChangeLoading,
-    } = useMT5AccountHandler({
-        marketType,
-        selectedJurisdiction,
-    });
+    } = useMT5AccountHandler();
 
     if (!platform || (status === QueryStatus.ERROR && isCreateMT5AccountError?.error?.code !== 'PasswordError')) {
         return (

@@ -36,7 +36,7 @@ const JurisdictionScreen = ({
     const addedJurisdictions = useMemo(
         () =>
             mt5AccountsList
-                ?.filter(account => account.market_type === marketType)
+                ?.filter(account => account.market_type === marketType && !account.is_virtual)
                 .map(account => account.landing_company_short) || [],
         [marketType, mt5AccountsList]
     );

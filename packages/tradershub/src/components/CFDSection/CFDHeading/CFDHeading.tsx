@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIsEuRegion } from '@deriv/api';
-import { Button, Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import { Button, Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { TitleDescriptionLoader } from '../../Loaders';
 import { StaticLink } from '../../StaticLink';

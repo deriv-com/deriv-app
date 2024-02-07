@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useIsEuRegion } from '@deriv/api';
-import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { CurrencySwitcher } from '../../CurrencySwitcher';
 import { TitleDescriptionLoader } from '../../Loaders';

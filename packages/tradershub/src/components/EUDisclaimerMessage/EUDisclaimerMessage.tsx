@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 const EUDisclaimerMessage = () => (
     <div className='absolute w-full bottom-50 bg-system-light-secondary-background'>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
 import { useDevice, useQueryString } from '@/hooks';
+import { DerivLightIcPaymentMethodsWalletIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
-import WalletIcon from '../../../../../public/ic-payment-methods-wallet.svg';
 import './PaymentMethodsEmpty.scss';
 
 type TPaymentMethodsEmptyProps = {
@@ -30,7 +30,7 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
                 renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
             >
                 <div className='p2p-v2-payment-methods-empty'>
-                    <WalletIcon />
+                    <DerivLightIcPaymentMethodsWalletIcon height='16rem' />
                     {/* TODO: Remember to localize the text below */}
                     <Text className='p2p-v2-payment-methods-empty__heading' size='lg' weight='bold'>
                         You haven’t added any payment methods yet
@@ -51,7 +51,7 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
 
     return (
         <div className='p2p-v2-payment-methods-empty'>
-            <WalletIcon />
+            <DerivLightIcPaymentMethodsWalletIcon height='16rem' />
             {/* TODO: Remember to localize the text below */}
             <Text className='p2p-v2-payment-methods-empty__heading' weight='bold'>
                 You haven’t added any payment methods yet

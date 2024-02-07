@@ -81,6 +81,7 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
         // TODO: below modal will be rewritten to use @deriv/ui modal
         <Modal
             className='p2p-v2-daily-limit-modal'
+            data-testid='dt_p2p_v2_daily_limit_modal'
             isOpen={isModalOpen}
             onRequestClose={onRequestClose}
             style={customStyles}

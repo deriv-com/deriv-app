@@ -6,19 +6,15 @@ type TGetTradeURLParamsArgs = {
     contract_types_list?: TTradeTypesCategories;
 };
 
-type TTradeParams = {
-    contract_type?: string;
-    chart_type?: string;
+type TTradeUrlParams = {
+    contractType?: string;
+    chartType?: string;
     granularity?: number;
     symbol?: string;
 };
 
-type TTradeParamsResult = {
-    contractType?: string;
-    chartType?: string;
-    granularity?: number;
+type TTradeParamsResult = TTradeUrlParams & {
     showModal?: boolean;
-    symbol?: string;
 };
 
 type TTradeURLParamsConfig = {
@@ -59,27 +55,13 @@ const tradeURLParamsConfig: TTradeURLParamsConfig = {
 const getParamTextByValue = (value: number | string, key: string) =>
     tradeURLParamsConfig[key].find(interval => interval.value === value.toString())?.text ?? '';
 
-export const setTradeURLParams = ({ contract_type, symbol, chart_type, granularity }: TTradeParams) => {
-    const searchParams = new URLSearchParams(window.location.search);
-    chart_type && searchParams.set(TRADE_URL_PARAMS.CHART_TYPE, getParamTextByValue(chart_type, 'chartType'));
-    !isNaN(Number(granularity)) &&
-        searchParams.set(
-            TRADE_URL_PARAMS.INTERVAL,
-            getParamTextByValue(Number(granularity), TRADE_URL_PARAMS.INTERVAL)
-        );
-    symbol && searchParams.set(TRADE_URL_PARAMS.SYMBOL, symbol);
-    contract_type && searchParams.set(TRADE_URL_PARAMS.TRADE_TYPE, contract_type);
-    const newRelativePathQuery = `${window.location.pathname}?${searchParams.toString()}`;
-    window.history.pushState(null, '', newRelativePathQuery);
-};
-
 export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {} }: TGetTradeURLParamsArgs = {}) => {
     const searchParams = new URLSearchParams(window.location.search);
     const result: TTradeParamsResult = {};
-    if (searchParams) {
-        const { chart_type, interval, trade_type, symbol } = Object.values(TRADE_URL_PARAMS).reduce<{
+    if (searchParams.toString()) {
+        const { chart_type, interval, trade_type, symbol } = [...searchParams.entries()].reduce<{
             [key: string]: string | null;
-        }>((acc, key) => (searchParams.get(key) ? { ...acc, [key]: searchParams.get(key) } : acc), {});
+        }>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
         const validInterval = tradeURLParamsConfig.interval.find(item => item.text === interval);
         const validChartType = tradeURLParamsConfig.chartType.find(item => item.text === chart_type);
         const isSymbolValid = active_symbols.some(item => item.symbol === symbol);
@@ -94,7 +76,7 @@ export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {
             result.granularity = Number(validInterval.value);
         }
         if (validChartType) {
-            result.chartType = validChartType.value;
+            result.chartType = validInterval && Number(validInterval.value) === 0 ? 'line' : validChartType.value;
         }
         if (isSymbolValid) {
             result.symbol = symbol || '';
@@ -106,4 +88,20 @@ export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {
         }
     }
     return result;
+};
+
+export const setTradeURLParams = ({ contractType, symbol, chartType, granularity }: TTradeUrlParams) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    chartType && searchParams.set(TRADE_URL_PARAMS.CHART_TYPE, getParamTextByValue(chartType, 'chartType'));
+    !isNaN(Number(granularity)) &&
+        searchParams.set(
+            TRADE_URL_PARAMS.INTERVAL,
+            getParamTextByValue(Number(granularity), TRADE_URL_PARAMS.INTERVAL)
+        );
+    symbol && searchParams.set(TRADE_URL_PARAMS.SYMBOL, symbol);
+    contractType && searchParams.set(TRADE_URL_PARAMS.TRADE_TYPE, contractType);
+    if (searchParams.toString()) {
+        const newQuery = `${window.location.pathname}?${searchParams.toString()}`;
+        window.history.pushState(null, '', newQuery);
+    }
 };

@@ -203,7 +203,7 @@ export default class ContractTradeStore extends BaseStore {
     updateChartType(type) {
         LocalStore.set('contract_trade.chart_style', type);
         this.chart_type = type;
-        setTradeURLParams({ chart_type: this.chart_type });
+        setTradeURLParams({ chartType: this.chart_type });
     }
 
     updateGranularity(granularity) {

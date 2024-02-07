@@ -726,7 +726,7 @@ export default class TradeStore extends BaseStore {
         this.root_store.common.setSelectedContractType(contractType || this.contract_type);
         this.root_store.portfolio.setContractType(contractType || this.contract_type);
         setTradeURLParams({
-            contract_type: contractType || this.contract_type,
+            contractType: contractType || this.contract_type,
         });
         if (showModal) {
             this.toggleUrlUnavailableModal(true);
@@ -1099,7 +1099,7 @@ export default class TradeStore extends BaseStore {
         }
         if (obj_new_values.contract_type) {
             setTradeURLParams({
-                contract_type: obj_new_values.contract_type,
+                contractType: obj_new_values.contract_type,
             });
         } else if (obj_new_values.symbol) {
             setTradeURLParams({
@@ -1527,8 +1527,7 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
             await this.prepareTradeStore();
 
-            const { chartType: chartTypeParam, granularity } = getTradeURLParams();
-            const chartType = chartTypeParam && granularity === 0 ? 'line' : chartTypeParam;
+            const { chartType, granularity } = getTradeURLParams();
             if (!isNaN(Number(granularity)) && granularity !== this.root_store.contract_trade.granularity) {
                 this.root_store.contract_trade.updateGranularity(Number(granularity));
             }
@@ -1536,7 +1535,7 @@ export default class TradeStore extends BaseStore {
                 this.root_store.contract_trade.updateChartType(chartType);
             }
             setTradeURLParams({
-                chart_type: chartType || this.root_store.contract_trade.chart_type,
+                chartType: chartType || this.root_store.contract_trade.chart_type,
                 granularity: granularity || Number(this.root_store.contract_trade.granularity),
             });
 

@@ -16,6 +16,7 @@ const UrlUnavailableModal = ({ isMobile, isVisible, onConfirm }: TUrlUnavailable
         title={<Localize i18n_default_text='The URL you requested isn&rsquo;t available' />}
         toggleModal={onConfirm}
         className='url-unavailable-modal'
+        should_close_on_click_outside
         width={isMobile ? 'calc(100vw - 3.2rem)' : 'auto'}
     >
         <Modal.Body>

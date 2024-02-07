@@ -3,8 +3,7 @@
         &__header {
             padding: 1.6rem;
             border-bottom: 1px solid #f2f3f4;
-            // stylelint-disable-next-line declaration-no-important
-            grid-template-columns: 2fr 1.4fr 1.4fr 2.4fr 0.8fr !important;
+            grid-template-columns: 2fr 1.4fr 1.4fr 2.4fr 0.8fr;
         }
         &__content {
             overflow: auto;

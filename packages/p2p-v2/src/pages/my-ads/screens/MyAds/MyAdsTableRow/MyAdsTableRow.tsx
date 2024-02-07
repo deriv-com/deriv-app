@@ -1,17 +1,17 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { PaymentMethodLabel, PopoverDropdown } from '@/components';
+import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
+import { useDevice } from '@/hooks';
+import { formatMoney } from '@/utils/currency';
+import { generateEffectiveRate } from '@/utils/format-value';
 import { useExchangeRateSubscription } from '@deriv/api';
 import { Button, Text, Tooltip } from '@deriv-com/ui';
-import { useDevice } from '@/hooks';
-import { generateEffectiveRate } from '@/utils/format-value';
 //TODO: Replace with quill icons once available
 import DeactivateIcon from '../../../../../public/ic-archive.svg';
-import ActivateIcon from '../../../../../public/ic-unarchive.svg';
-import EditIcon from '../../../../../public/ic-edit.svg';
 import DeleteIcon from '../../../../../public/ic-delete.svg';
-import { PopoverDropdown } from '@/components';
-import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
-import { formatMoney } from '@/utils/currency';
+import EditIcon from '../../../../../public/ic-edit.svg';
+import ActivateIcon from '../../../../../public/ic-unarchive.svg';
 import { AdStatus, AdType, ProgressIndicator } from '../../../components';
 import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';
 import './MyAdsTableRow.scss';
@@ -138,13 +138,14 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                         </div>
                     </Text>
                 </div>
-                <div className='p2p-v2-my-ads-table-row__line-methods'>
-                    {payment_method_names?.map(payment_method => (
-                        <div className='p2p-v2-my-ads-table-row__payment-method--label' key={payment_method}>
-                            <Text color={adPauseColor} size='xs'>
-                                {payment_method}
-                            </Text>
-                        </div>
+                <div className='p2p-v2-my-ads-table-row__line-methods gap-2'>
+                    {payment_method_names?.map(paymentMethod => (
+                        <PaymentMethodLabel
+                            color={adPauseColor}
+                            key={paymentMethod}
+                            paymentMethodName={paymentMethod}
+                            size='xs'
+                        />
                     ))}
                 </div>
             </div>
@@ -175,13 +176,14 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                 />
                 {remaining_amount_display}/{amount_display} {account_currency}
             </Text>
-            <div className='p2p-v2-my-ads-table-row__payment-method'>
+            <div className='flex flex-wrap gap-2'>
                 {payment_method_names?.map(paymentMethod => (
-                    <div className='p2p-v2-my-ads-table-row__payment-method--label' key={paymentMethod}>
-                        <Text color={adPauseColor} size='sm'>
-                            {paymentMethod}
-                        </Text>
-                    </div>
+                    <PaymentMethodLabel
+                        color={adPauseColor}
+                        key={paymentMethod}
+                        paymentMethodName={paymentMethod}
+                        size='xs'
+                    />
                 ))}
             </div>
             <div className='p2p-v2-my-ads-table-row__actions'>

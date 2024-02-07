@@ -3,6 +3,13 @@ import { getLastOnlineLabel } from '@/utils';
 import { render, screen } from '@testing-library/react';
 import OnlineStatusLabel from '../OnlineStatusLabel';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({
+        isMobile: false,
+    }),
+}));
+
 jest.mock('@/utils', () => ({
     ...jest.requireActual('@/utils'),
     getLastOnlineLabel: jest.fn().mockReturnValue('Seen 2 days ago'),

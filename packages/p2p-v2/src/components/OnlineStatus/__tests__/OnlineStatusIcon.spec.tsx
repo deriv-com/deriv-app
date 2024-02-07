@@ -6,14 +6,14 @@ describe('<OnlineStatusIcon/>', () => {
     it('should render the default state as offline', () => {
         render(<OnlineStatusIcon isOnline={false} />);
 
-        const icon = screen.getByTestId('dt_online_status_icon');
-        expect(icon).toHaveClass('online-status__icon--offline');
+        const icon = screen.getByTestId('dt_p2p_v2_online_status_icon');
+        expect(icon).toHaveClass('p2p-v2-online-status__icon--offline');
     });
 
     it('should render online state when user is online', () => {
         render(<OnlineStatusIcon isOnline />);
 
-        const icon = screen.getByTestId('dt_online_status_icon');
-        expect(icon).toHaveClass('online-status__icon--online');
+        const icon = screen.getByTestId('dt_p2p_v2_online_status_icon');
+        expect(icon).toHaveClass('p2p-v2-online-status__icon--online');
     });
 });

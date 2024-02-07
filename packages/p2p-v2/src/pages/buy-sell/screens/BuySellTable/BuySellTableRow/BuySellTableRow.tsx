@@ -1,12 +1,14 @@
 /* eslint-disable camelcase */
 import React, { Fragment, useEffect } from 'react';
-import { Badge, StarRating, UserAvatar } from '@/components';
+import { Badge, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
 import { BUY_SELL } from '@/constants';
 import { generateEffectiveRate } from '@/utils';
 import { p2p, useExchangeRateSubscription } from '@deriv/api';
+import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { TBuySellTableRowRenderer } from '../BuySellTable';
 import './BuySellTableRow.scss';
+import clsx from 'clsx';
 
 const BASE_CURRENCY = 'USD';
 
@@ -48,6 +50,7 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
         rate,
         rate_type,
     });
+    const hasRating = !!rating_average && !!rating_count;
     const isBuyAdvert = counterparty_type === BUY_SELL.BUY;
     const isMyAdvert = data?.id === id;
     const ratingAverageDecimal = rating_average ? Number(rating_average).toFixed(1) : null;
@@ -59,20 +62,24 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
                     <UserAvatar isOnline={is_online} nickname={name!} showOnlineStatus size={25} textSize='xs' />
                     <div className='flex flex-col'>
                         <div className='flex flex-row items-center gap-2'>
-                            <Text size='sm' weight={isMobile ? 'bold' : 400}>
+                            <Text
+                                className={clsx({ 'mb-[-1rem]': hasRating })}
+                                size='sm'
+                                weight={isMobile ? 'bold' : 400}
+                            >
                                 {name}
                             </Text>
                             <Badge tradeCount={completed_orders_count} />
                         </div>
                         <div className='flex flex-row items-center'>
-                            {!!rating_average && !!rating_count ? (
+                            {hasRating ? (
                                 <>
                                     <Text className='lg:mr-0 mr-[-1.2rem]' color='less-prominent' size='xs'>
                                         {ratingAverageDecimal}
                                     </Text>
                                     <StarRating
                                         isReadonly
-                                        ratingValue={ratingAverageDecimal}
+                                        ratingValue={Number(ratingAverageDecimal)}
                                         starsScale={isMobile ? 0.7 : 0.9}
                                     />
                                     <Text className='lg:ml-1 ml-[-1rem]' color='less-prominent' size='xs'>
@@ -88,9 +95,9 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
                     </div>
                 </div>
                 <Container {...(isMobile && { className: 'flex flex-col ml-14 mt-3' })}>
-                    {isMobile && <Text size='xs'>Rate (1 USD)</Text>}
+                    {isMobile && <Text size='2xs'>Rate (1 USD)</Text>}
                     <Container {...(isMobile && { className: 'flex flex-col-reverse mb-7' })}>
-                        <Text color={isMobile ? 'less-prominent' : 'general'} size='sm'>
+                        <Text color={isMobile ? 'less-prominent' : 'general'} size={isMobile ? 'xs' : 'sm'}>
                             {isMobile && 'Limits:'} {min_order_amount_limit_display}-{max_order_amount_limit_display}{' '}
                             {account_currency}
                         </Text>
@@ -101,31 +108,25 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
                     <div className='flex flex-wrap gap-2'>
                         {payment_method_names ? (
                             payment_method_names.map((method: string, idx: number) => (
-                                <Text
-                                    className='p2p-v2-buy-sell-table-row__payment-method'
+                                <PaymentMethodLabel
                                     color={isMobile ? 'less-prominent' : 'general'}
                                     key={idx}
-                                    size='sm'
-                                >
-                                    {method}
-                                </Text>
+                                    paymentMethodName={method}
+                                />
                             ))
                         ) : (
-                            <Text
-                                className='p2p-v2-buy-sell-table-row__payment-method'
-                                color={isMobile ? 'less-prominent' : 'general'}
-                                size='sm'
-                            >
-                                -
-                            </Text>
+                            <PaymentMethodLabel color={isMobile ? 'less-prominent' : 'general'} paymentMethodName='-' />
                         )}
                     </div>
                 </Container>
             </Container>
             {!isMyAdvert && (
-                <Button className='lg:w-[7.5rem]' size={isMobile ? 'md' : 'sm'} textSize={isMobile ? 'md' : 'xs'}>
-                    {isBuyAdvert ? 'Buy' : 'Sell'} {account_currency}
-                </Button>
+                <div className='h-full flex flex-col justify-center relative'>
+                    {isMobile && <LabelPairedChevronRightMdRegularIcon className='absolute top-0 right-4' />}
+                    <Button className='lg:w-[7.5rem]' size={isMobile ? 'md' : 'sm'} textSize={isMobile ? 'md' : 'xs'}>
+                        {isBuyAdvert ? 'Buy' : 'Sell'} {account_currency}
+                    </Button>
+                </div>
             )}
         </div>
     );

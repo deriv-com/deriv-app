@@ -1,16 +1,13 @@
 import React from 'react';
-import { TradingAppCardLoader, useUIContext } from '@/components';
+import { TradingAppCardLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from '@cfd/components';
 import { useIsEuRegion } from '@deriv/api';
 
 const CFDContent = () => {
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
-    const { uiState } = useUIContext();
 
-    const activeRegulation = uiState.regulation;
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     if (!isRegulationAccessible)
         return (

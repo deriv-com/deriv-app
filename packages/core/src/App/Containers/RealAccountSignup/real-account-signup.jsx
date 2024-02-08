@@ -131,18 +131,20 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         {
             action: 'signup',
             body: local_props => (
-                <AccountWizard
-                    setIsRiskWarningVisible={setIsRiskWarningVisible}
-                    onFinishSuccess={showStatusDialog}
-                    onOpenDepositModal={closeModalthenOpenDepositModal}
-                    onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
-                    is_loading={local_props.is_loading}
-                    setLoading={setLoading}
-                    onError={showErrorModal}
-                    onClose={closeModal}
-                    realAccountSignup={realAccountSignup}
-                    setRealAccountFormData={setRealAccountFormData}
-                />
+                <React.Suspense fallback={<div />}>
+                    <AccountWizard
+                        setIsRiskWarningVisible={setIsRiskWarningVisible}
+                        onFinishSuccess={showStatusDialog}
+                        onOpenDepositModal={closeModalthenOpenDepositModal}
+                        onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
+                        is_loading={local_props.is_loading}
+                        setLoading={setLoading}
+                        onError={showErrorModal}
+                        onClose={closeModal}
+                        realAccountSignup={realAccountSignup}
+                        setRealAccountFormData={setRealAccountFormData}
+                    />
+                </React.Suspense>
             ),
             title: WizardHeading,
         },

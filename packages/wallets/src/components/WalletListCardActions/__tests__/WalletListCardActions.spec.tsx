@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { APIProvider } from '@deriv/api-v2';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import useDevice from '../../../hooks/useDevice';
 import WalletListCardActions from '../WalletListCardActions';
@@ -27,7 +27,9 @@ const mockedUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 const history = createMemoryHistory();
 const wrapper = ({ children }: PropsWithChildren) => (
     <Router history={history}>
-        <APIProvider>{children}</APIProvider>
+        <APIProvider>
+            <AuthProvider>{children}</AuthProvider>
+        </APIProvider>{' '}
     </Router>
 );
 describe('WalletListCardActions', () => {

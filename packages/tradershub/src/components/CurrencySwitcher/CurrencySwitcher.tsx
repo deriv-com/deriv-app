@@ -1,16 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { CurrencySwitcherLoader, Modal, TradingAccountsList, useUIContext } from '@/components';
+import { IconToCurrencyMapper } from '@/constants';
+import { useRegulationFlags } from '@/hooks';
+import { THooks } from '@/types';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
-import { IconToCurrencyMapper } from '../../constants/constants';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
-import { THooks } from '../../types';
-import { CurrencySwitcherLoader } from '../Loaders';
-import { Modal } from '../Modal';
-import { TradingAccountsList } from '../TradingAccountsList';
-import { useUIContext } from '../UIProvider';
 import { DemoCurrencySwitcherAccountInfo, RealCurrencySwitcherAccountInfo } from './CurrencySwitcherAccountInfo';
 
 type AccountActionButtonProps = {
@@ -48,11 +45,9 @@ const CurrencySwitcher = () => {
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
-    const { getUIState } = useUIContext();
+    const { uiState } = useUIContext();
 
-    const accountType = getUIState('accountType');
-
-    const regulation = getUIState('regulation');
+    const { accountType, regulation } = uiState;
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
 

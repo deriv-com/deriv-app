@@ -1,17 +1,18 @@
 import React from 'react';
+import { useUIContext } from '@/components';
+import { IconToCurrencyMapper } from '@/constants';
+import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { qtMerge, Text } from '@deriv/quill-design';
-import { IconToCurrencyMapper } from '../../constants/constants';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
-import { useUIContext } from '../UIProvider';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 const TradingAccountsList = () => {
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { data: activeAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
 
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
 
     const { isEU } = useRegulationFlags(activeRegulation);
 

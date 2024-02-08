@@ -1,14 +1,13 @@
 import React from 'react';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
+import { useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 import { GetADerivAccountBanner } from '../GetADerivAccountBanner';
-import { useUIContext } from '../UIProvider';
 import { CFDContent } from './CFDContent';
 import { CFDHeading } from './CFDHeading';
 
 const CFDSection = () => {
-    const { getUIState } = useUIContext();
-    const regulation = getUIState('regulation');
-    const accountType = getUIState('accountType');
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
     const { isSuccess, noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
 
     return (

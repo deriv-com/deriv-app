@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
+import { getShortNickname, TGenericSizes } from '@/utils';
 import { Text } from '@deriv-com/ui';
-import { getShortNickname, TGenericSizes } from '../../utils';
 import './UserAvatar.scss';
 
 type TUserAvatarProps = {
@@ -15,6 +15,7 @@ const UserAvatar = memo(({ className, nickname, size = 32, textSize = 'md' }: TU
     return (
         <div
             className={clsx('p2p-v2-user-avatar', className)}
+            data-testid='dt_p2p_v2_user_avatar'
             style={{
                 height: `${size}px`,
                 width: `${size}px`,

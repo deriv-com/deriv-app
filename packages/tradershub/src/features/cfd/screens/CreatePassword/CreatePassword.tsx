@@ -1,9 +1,9 @@
 import React, { ChangeEvent, ReactNode } from 'react';
+import { TPlatforms } from '@/types';
+import { validPassword } from '@/utils';
+import { PlatformDetails } from '@cfd/constants';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Button, PasswordInput, Text } from '@deriv-com/ui';
-import { TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password';
-import { PlatformDetails } from '../../constants';
 
 type TCreatePasswordProps = {
     icon: ReactNode;

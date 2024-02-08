@@ -141,6 +141,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     name='Time'
                     value={moment
                         .unix(transaction.submit_date)
+                        .utc()
                         .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]')}
                     valueTextProps={{
                         color: 'general',

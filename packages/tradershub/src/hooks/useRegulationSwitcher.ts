@@ -10,7 +10,7 @@ import useRegulationFlags from './useRegulationFlags';
  * @example
  * const { buttons, handleButtonClick } = useRegulationSwitcher();
  */
-export const useRegulationSwitcher = () => {
+const useRegulationSwitcher = () => {
     const { switchAccount } = useAuthorize();
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { setUIState, uiState } = useUIContext();
@@ -66,3 +66,5 @@ export const useRegulationSwitcher = () => {
         handleButtonClick,
     };
 };
+
+export default useRegulationSwitcher;

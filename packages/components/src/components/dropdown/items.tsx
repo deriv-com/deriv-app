@@ -46,6 +46,7 @@ const Item = ({
     const symbol_type_class_name =
         item.text && typeof item.text === 'string' ? `symbols--${item.text.toLowerCase()}` : null;
     const is_selected = value === item.value;
+
     React.useEffect(() => {
         const removeListeners = () => {
             nodes?.delete(item.value);

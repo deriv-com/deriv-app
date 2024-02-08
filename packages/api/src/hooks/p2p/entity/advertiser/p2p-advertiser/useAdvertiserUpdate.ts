@@ -24,7 +24,7 @@ const useAdvertiserUpdate = () => {
         ...rest
     } = useMutation('p2p_advertiser_update', {
         onSuccess: () => {
-            invalidate('p2p_advertiser_list');
+            invalidate('p2p_advertiser_info');
         },
     });
 

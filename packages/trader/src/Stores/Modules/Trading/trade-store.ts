@@ -708,15 +708,14 @@ export default class TradeStore extends BaseStore {
 
     async setContractTypes() {
         let contractType: string | undefined = '';
-        let showModal: boolean | undefined = false;
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
                 const contract_categories = ContractType.getContractCategories();
-                const { contractType: contractTypeParam, showModal: shouldShowModal } = getTradeURLParams({
+                const { contractType: contractTypeParam, showModal } = getTradeURLParams({
                     contract_types_list: contract_categories.contract_types_list,
                 });
-                [contractType, showModal] = [contractTypeParam, shouldShowModal];
+                contractType = contractTypeParam;
                 if (showModal) {
                     this.toggleUrlUnavailableModal(true);
                 }

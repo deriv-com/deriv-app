@@ -8,7 +8,7 @@ This repository contains the various platforms of the Deriv application.
 ![Sonar Violations (short format)](https://img.shields.io/sonar/violations/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
 [![Coverage Status](https://coveralls.io/repos/github/binary-com/deriv-app/badge.svg?branch=master)](https://coveralls.io/github/binary-com/deriv-app?branch=master)
 
-**In this document**:
+**In THIS document**:
 
 -   [Other Documents](#other-documents)
 -   [Pre-installation](#Pre-installation)

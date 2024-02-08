@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TradingAccountCard, useUIContext } from '@/components';
+import { TradingAccountCard } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { THooks } from '@/types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '@cfd/constants';
@@ -11,10 +11,7 @@ import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeAccount } = useActiveTradingAccount();
-
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const { show } = Provider.useModal();
     const { getVerificationStatus } = useJurisdictionStatus();

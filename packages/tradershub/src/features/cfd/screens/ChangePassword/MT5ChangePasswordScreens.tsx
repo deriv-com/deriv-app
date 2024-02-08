@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
+import IcBackArrow from '@/assets/svgs/ic-back-arrow.svg';
+import { SentEmailContent } from '@/components';
 import { Tab, Tabs, Text } from '@deriv-com/ui';
-import { SentEmailContent } from '../../../../components';
-import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { CFDPlatforms, PlatformDetails } from '../../constants';
 import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
 import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';

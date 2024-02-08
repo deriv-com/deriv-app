@@ -21,12 +21,26 @@
     flex-direction: column;
 
     &__line {
-        border-bottom: 1px solid var(--general-section-1);
+        border-bottom: 1px solid #f2f3f4;
         padding: 1.6rem;
         position: relative;
         display: grid;
         align-items: center;
         grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.9fr;
+
+        &-disabled {
+            span:not(.p2p-v2-my-ads-table-row__actions span) {
+                color: #999;
+            }
+            .p2p-v2-progress-indicator {
+                &__container {
+                    background-color: #999;
+                }
+                &__bar {
+                    background-color: #eaeced;
+                }
+            }
+        }
 
         @include mobile {
             grid-template-columns: unset;

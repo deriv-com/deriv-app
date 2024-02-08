@@ -3764,7 +3764,7 @@
     "-565990678": "Il suo contratto scadrà in questa data (in GMT), in base all'ora di fine che ha selezionato.",
     "-1545819495": "La sua operazione verrà chiusa automaticamente al prezzo dell'attività più vicina disponibile quando la sua perdita raggiunge una certa percentuale della sua puntata, ma la sua perdita non supera mai la sua puntata. Questa percentuale dipende dall'attività sottostante scelta e dal Multiplier.",
     "-468501352": "Se seleziona questa funzione, la sua operazione verrà chiusa automaticamente al prezzo dell'attività più vicino disponibile quando il suo profitto raggiunge o supera l'importo del take profit. Il suo profitto potrebbe essere superiore all'importo inserito, a seconda del prezzo di mercato alla chiusura.",
-    "-477936848": "We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers.",
+    "-477936848": "Utilizziamo il meccanismo dell'esecuzione del prossimo punto, che è il prezzo successivo dell'attività quando l'apertura del trade viene elaborata dai nostri server.",
     "-1476381873": "Il prezzo più recente dell'attività quando la chiusura dell'operazione viene elaborata dai nostri server.",
     "-148680560": "Prezzo spot dell'ultimo tick al raggiungimento della scadenza.",
     "-1123926839": "I contratti scadranno esattamente alle 14:00:00 GMT della data di scadenza selezionata.",

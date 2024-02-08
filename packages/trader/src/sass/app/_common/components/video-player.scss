@@ -14,7 +14,7 @@
         align-items: center;
         opacity: 0;
         // Line below fixes the z-index problem in Safari
-        -webkit-transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 200px);
 
         &--visible {
             opacity: 1;
@@ -38,7 +38,7 @@
             pointer-events: none;
             transition: opacity 0.25s linear;
             // Line below fixes the z-index problem in Safari
-            -webkit-transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 200px);
 
             &--visible {
                 opacity: 1;

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Provider } from '@deriv/library';
+import { Button, Text } from '@deriv-com/ui';
+import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
 import { Dialog } from '../Dialog';
 
 /**
@@ -10,17 +11,25 @@ import { Dialog } from '../Dialog';
  * @returns {React.ReactElement} A `<Dialog>` component containing the dialog message and action button.
  */
 const GetADerivAccountDialog = () => {
+    const { hide } = Provider.useModal();
+    const { setIsWizardOpen } = useSignupWizardContext();
+
     return (
         <Dialog className='lg:w-[440px]'>
             <Dialog.Header heading='h5' hideCloseButton title="You'll need a Deriv account" />
             <Dialog.Content>
-                <Text size='sm'>A Deriv account will allow you to fund (and withdraw from) your MT5 account(s). </Text>
+                <Text size='sm'>A Deriv account will allow you to fund (and withdraw from) your CFDs account(s). </Text>
             </Dialog.Content>
             <Dialog.Action align='right'>
-                <Button className='rounded-200 h-2000 px-500' colorStyle='black' size='md' variant='secondary'>
+                <Button onClick={hide} variant='outlined'>
                     Cancel
                 </Button>
-                <Button className='rounded-200 h-2000 px-500' colorStyle='coral' size='md' variant='primary'>
+                <Button
+                    onClick={() => {
+                        hide();
+                        setIsWizardOpen(true);
+                    }}
+                >
                     Add a Deriv account
                 </Button>
             </Dialog.Action>

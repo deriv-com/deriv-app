@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, useUIContext } from '@/components';
+import { Modal } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
@@ -16,9 +16,7 @@ const JurisdictionModal = () => {
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
     const { show } = Provider.useModal();
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
     const { getCFDState, setCfdState } = Provider.useCFDContext();
 
     const { isLoading } = useAvailableMT5Accounts();

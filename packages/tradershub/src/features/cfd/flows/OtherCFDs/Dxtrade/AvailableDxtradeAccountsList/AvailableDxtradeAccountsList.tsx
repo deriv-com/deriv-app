@@ -1,6 +1,8 @@
 import React from 'react';
+import { useRegulationFlags } from '@/hooks';
 import { Provider } from '@deriv/library';
 import {
+    GetADerivAccountDialog,
     PlatformIcon,
     TradingAccountCard,
     TradingAccountCardContent,
@@ -22,6 +24,7 @@ const LeadingIcon = () => (
 );
 
 const AvailableDxtradeAccountsList = () => {
+    const { hasActiveDerivAccount } = useRegulationFlags();
     const { show } = Provider.useModal();
     const { setCfdState } = Provider.useCFDContext();
 
@@ -29,7 +32,11 @@ const AvailableDxtradeAccountsList = () => {
 
     const trailingButtonClick = () => {
         setCfdState('platform', PlatformDetails.dxtrade.platform);
-        show(<DxtradePasswordModal />);
+        if (!hasActiveDerivAccount) {
+            show(<GetADerivAccountDialog />);
+        } else {
+            show(<DxtradePasswordModal />);
+        }
     };
     return (
         <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>

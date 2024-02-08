@@ -2,13 +2,12 @@ import React, { MouseEvent, useMemo, useState } from 'react';
 import DocumentsIcon from '@/assets/svgs/ic-documents.svg';
 import IdCardIcon from '@/assets/svgs/ic-id-card.svg';
 import SelfieIcon from '@/assets/svgs/ic-selfie.svg';
-import { useUIContext } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useDynamicLeverageModalState } from '@cfd/components';
+import { MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
 import { Link, qtMerge } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import { MarketType } from '../../../constants';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import {
     TClickableDescription,
@@ -62,9 +61,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getCFDState } = Provider.useCFDContext();
-    const { uiState } = useUIContext();
-    const regulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(regulation);
+    const { isEU } = useRegulationFlags();
 
     const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();

@@ -1,15 +1,15 @@
 import React, { ComponentType, ReactNode, SVGAttributes } from 'react';
+import CTraderLabelIcon from '@/assets/svgs/ctrader-label.svg';
+import DerivXLabelIcon from '@/assets/svgs/derivx-label.svg';
+import InstallationAppleIcon from '@/assets/svgs/ic-installation-apple.svg';
+import InstallationGoogleIcon from '@/assets/svgs/ic-installation-google.svg';
+import InstallationHuaweiIcon from '@/assets/svgs/ic-installation-huawei.svg';
+import LinuxIcon from '@/assets/svgs/ic-linux-logo.svg';
+import MacOSIcon from '@/assets/svgs/ic-macos-logo.svg';
+import MT5Icon from '@/assets/svgs/ic-mt5.svg';
+import WindowsIcon from '@/assets/svgs/ic-windows-logo.svg';
 import { PlatformIcon } from '@/components';
 import { TJurisdiction, TMarketTypes, TPlatforms } from '@/types';
-import CTraderLabelIcon from '../../public/images/ctrader-label.svg';
-import DerivXLabelIcon from '../../public/images/derivx-label.svg';
-import InstallationAppleIcon from '../../public/images/ic-installation-apple.svg';
-import InstallationGoogleIcon from '../../public/images/ic-installation-google.svg';
-import InstallationHuaweiIcon from '../../public/images/ic-installation-huawei.svg';
-import LinuxIcon from '../../public/images/ic-linux-logo.svg';
-import MacOSIcon from '../../public/images/ic-macos-logo.svg';
-import MT5Icon from '../../public/images/ic-mt5.svg';
-import WindowsIcon from '../../public/images/ic-windows-logo.svg';
 
 type TAppContent = {
     description: string;

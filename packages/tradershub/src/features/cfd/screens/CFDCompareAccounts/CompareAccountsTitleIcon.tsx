@@ -1,11 +1,11 @@
 import React, { Fragment, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
+import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
+import { Tooltip } from '@/components';
+import { THooks, TPlatforms } from '@/types';
+import { CFDPlatforms } from '@cfd/constants';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import { Tooltip } from '../../../../components';
-import InfoIcon from '../../../../public/images/ic-info-outline.svg';
-import { THooks, TPlatforms } from '../../../../types';
-import { CFDPlatforms } from '../../constants';
 import { AccountIcons, MarketTypeShortcode } from './constants';
 import TradingPlatformIcons from './tradingPlatformIcons';
 

@@ -3,7 +3,7 @@ import { useFormikContext } from 'formik';
 import { useBreakpoint } from '@deriv/quill-design';
 import { InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
 
-const ExampleImage = lazy(() => import('../../../public/images/personal-details-example.svg'));
+const ExampleImage = lazy(() => import('@/assets/svgs/personal-details-example.svg'));
 
 const Details = () => {
     const isMobile = useBreakpoint();

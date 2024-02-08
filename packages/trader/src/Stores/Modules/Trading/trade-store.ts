@@ -1528,17 +1528,17 @@ export default class TradeStore extends BaseStore {
     }
 
     setChartModeFromURL() {
-        const { chartType, granularity: newGranularity } = getTradeURLParams();
+        const { chartType: chartTypeParam, granularity: granularityParam } = getTradeURLParams();
         const { chart_type, granularity, updateChartType, updateGranularity } = this.root_store.contract_trade;
-        if (!isNaN(Number(newGranularity)) && newGranularity !== granularity) {
-            updateGranularity(Number(newGranularity));
+        if (!isNaN(Number(granularityParam)) && granularityParam !== granularity) {
+            updateGranularity(Number(granularityParam));
         }
-        if (chartType && chartType !== chart_type) {
-            updateChartType(chartType);
+        if (chartTypeParam && chartTypeParam !== chart_type) {
+            updateChartType(chartTypeParam);
         }
         setTradeURLParams({
-            chartType: chartType ?? chart_type,
-            granularity: newGranularity ?? Number(granularity),
+            chartType: chartTypeParam ?? chart_type,
+            granularity: granularityParam ?? Number(granularity),
         });
     }
 

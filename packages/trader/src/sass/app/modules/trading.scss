@@ -1034,6 +1034,10 @@
                 }
             }
         }
+        .modal-root .dc-modal:not(:first-child) & {
+            // multiple modals will appear one by one
+            display: none;
+        }
     }
     &_url-unavailable-modal {
         .dc-modal {

@@ -1,5 +1,5 @@
 import React from 'react';
-import './optionsAndmultipliers.scss';
+import './optionsAndMultipliers.scss';
 
 const OptionsAndMultipliersSkeleton = () => (
     <div className='options-multipliers-skeleton-loader'>

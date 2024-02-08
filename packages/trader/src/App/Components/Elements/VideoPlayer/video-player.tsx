@@ -34,40 +34,9 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const animation_ref = React.useRef(0);
     const play_on_rewind_timeout = React.useRef<ReturnType<typeof setTimeout>>();
     const replay_animation_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+    const toggle_animation_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+
     const is_dragging = React.useRef(false);
-
-    const togglePlay = React.useCallback(
-        (
-            e:
-                | React.MouseEvent<HTMLDivElement | HTMLButtonElement>
-                | React.KeyboardEvent<HTMLDivElement | HTMLButtonElement>
-        ) => {
-            e.stopPropagation();
-
-            if (!video_ref.current || !progress_bar_filled_ref.current) return;
-
-            if (is_playing) {
-                video_ref.current.pause();
-                setIsAnimated(false);
-            } else {
-                video_ref.current.play();
-
-                if (is_ended) {
-                    replay_animation_timeout.current = setTimeout(() => {
-                        animation_ref.current = requestAnimationFrame(repeat);
-                        setIsAnimated(true);
-                    }, 200);
-                } else {
-                    setIsAnimated(true);
-                }
-            }
-
-            setIsPlaying(prev => !prev);
-            cancelAnimationFrame(animation_ref.current);
-            setIsEnded(false);
-        },
-        [is_playing, animation_ref.current, video_ref?.current?.ended, progress_bar_filled_ref, is_ended]
-    );
 
     const calculateNewWidth = (
         e:
@@ -88,7 +57,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             100;
         if (new_width >= 100) new_width = 100;
         if (new_width <= 0) new_width = 0;
-        return parseFloat(new_width.toFixed(2));
+        return parseFloat(new_width.toFixed(3));
     };
 
     const dragStartHandler = (e: React.MouseEvent<HTMLSpanElement> | React.TouchEvent<HTMLSpanElement>) => {
@@ -137,7 +106,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         setIsEnded(false);
         setIsPlaying(true);
         play_on_rewind_timeout.current = setTimeout(() => {
-            setIsAnimated(true);
+            if (!video_ref?.current?.ended) setIsAnimated(true);
+            animation_ref.current = requestAnimationFrame(repeat);
         }, 500);
 
         if (is_mobile) setHasEnlargedDot(false);
@@ -154,24 +124,26 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         cancelAnimationFrame(animation_ref.current);
+        setIsAnimated(false);
         setIsEnded(false);
         video_ref.current.pause();
-        setIsAnimated(false);
 
         const new_width = calculateNewWidth(e as React.MouseEvent<HTMLDivElement>);
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width}%`);
         video_ref.current.currentTime = Math.round((Number(video_ref.current.duration) * new_width) / 100);
-
         video_ref?.current?.play();
         if (!is_playing) {
             play_on_rewind_timeout.current = setTimeout(() => {
-                if (!video_ref?.current?.ended) setIsPlaying(true);
-                if (!video_ref?.current?.ended) setIsAnimated(true);
+                if (!video_ref?.current?.ended) {
+                    setIsPlaying(true);
+                    setIsAnimated(true);
+                }
+                animation_ref.current = requestAnimationFrame(repeat);
             }, 500);
         } else {
             play_on_rewind_timeout.current = setTimeout(() => {
-                animation_ref.current = requestAnimationFrame(repeat);
                 if (!video_ref?.current?.ended) setIsAnimated(true);
+                animation_ref.current = requestAnimationFrame(repeat);
             }, 500);
         }
     };
@@ -181,6 +153,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         setVideoDuration(video_ref.current.duration);
         setIsPlaying(should_autoplay);
+
+        if (should_autoplay) animation_ref.current = requestAnimationFrame(repeat);
     };
 
     const onEnded = () => {
@@ -194,25 +168,48 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
     const repeat = React.useCallback(() => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
-        if (!is_playing && video_ref?.current?.ended) return;
+        if (video_ref?.current?.ended) return;
 
         setCurrentTime(video_ref.current.currentTime);
         const new_width = parseFloat(
-            ((video_ref.current.currentTime / Number(video_ref.current.duration)) * 100).toFixed(2)
+            ((video_ref.current.currentTime / Number(video_ref.current.duration)) * 100).toFixed(3)
         );
 
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width >= 99 ? 100 : new_width}%`);
 
         animation_ref.current = requestAnimationFrame(repeat);
-    }, [is_playing, video_ref?.current?.ended]);
+    }, []);
 
-    React.useEffect(() => {
-        if (is_playing && !video_ref?.current?.ended) {
-            animation_ref.current = requestAnimationFrame(repeat);
-        } else {
+    const togglePlay = React.useCallback(
+        (
+            e:
+                | React.MouseEvent<HTMLDivElement | HTMLButtonElement>
+                | React.KeyboardEvent<HTMLDivElement | HTMLButtonElement>
+        ) => {
+            e.stopPropagation();
+
+            if (!video_ref.current || !progress_bar_filled_ref.current) return;
             cancelAnimationFrame(animation_ref.current);
-        }
-    }, [is_playing, video_ref?.current?.ended]);
+            setIsAnimated(false);
+            setIsEnded(false);
+
+            if (is_playing) {
+                video_ref.current.pause();
+                setIsPlaying(false);
+            } else {
+                video_ref.current.play();
+                setIsPlaying(true);
+
+                replay_animation_timeout.current = setTimeout(() => {
+                    animation_ref.current = requestAnimationFrame(repeat);
+                }, 200);
+                toggle_animation_timeout.current = setTimeout(() => {
+                    setIsAnimated(true);
+                }, 1000);
+            }
+        },
+        [is_playing, repeat]
+    );
 
     React.useEffect(() => {
         if (is_mobile) {
@@ -237,6 +234,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
             clearTimeout(play_on_rewind_timeout.current);
             clearTimeout(replay_animation_timeout.current);
+            clearTimeout(toggle_animation_timeout.current);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

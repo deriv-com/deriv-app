@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { TooltipClass, TooltipPointerClass } from './Tooltip.classnames';
 
 /**

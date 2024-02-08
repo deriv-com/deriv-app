@@ -30,6 +30,7 @@ export const validatePassword = (password: string) => {
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     autoComplete,
     label,
+    message,
     name = 'walletPasswordField',
     onChange,
     password,
@@ -58,6 +59,15 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
         }
     }, [isTouched]);
 
+    function getMessage() {
+        if (isTouched) {
+            if (errorMessage) {
+                return errorMessage;
+            }
+            return message;
+        }
+    }
+
     return (
         <div className='wallets-password'>
             <WalletTextField
@@ -65,15 +75,14 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 errorMessage={isTouched && (passwordError ? passwordErrorMessage.PasswordError : errorMessage)}
                 isInvalid={(!validPassword(password) && isTouched) || passwordError}
                 label={label}
-                message={isTouched ? errorMessage : ''}
-                messageVariant='warning'
+                message={getMessage()}
+                messageVariant={errorMessage ? 'warning' : undefined}
                 name={name}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
                 )}
-                shouldShowWarningMessage
                 showMessage={showMessage}
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={password}

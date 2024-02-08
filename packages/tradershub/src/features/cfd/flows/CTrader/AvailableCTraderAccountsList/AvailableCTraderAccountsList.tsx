@@ -1,48 +1,47 @@
 import React, { useEffect } from 'react';
-import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import {
+    GetADerivAccountDialog,
+    PlatformIcon,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
-} from '../../../../../components/TradingAccountCard';
-import { getStaticUrl } from '../../../../../helpers/urls';
-import CTrader from '../../../../../public/images/cfd/ctrader.svg';
-import { PlatformDetails } from '../../../constants';
-import { CTraderSuccessModal } from '../../../modals';
+} from '@/components';
+import { getStaticUrl } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
+import { PlatformDetails } from '@cfd/constants';
+import { CTraderSuccessModal } from '@cfd/modals';
+import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
+import { Provider } from '@deriv/library';
 
 const LeadingIcon = () => (
-    <button
-        className='cursor-pointer'
+    <PlatformIcon
+        icon='CTrader'
         onClick={() => {
             window.open(getStaticUrl('/deriv-ctrader'));
         }}
-        // Fix sonarcloud issue
-        onKeyDown={event => {
-            if (event.key === 'Enter') {
-                window.open(getStaticUrl('/deriv-ctrader'));
-            }
-        }}
-    >
-        <CTrader />
-    </button>
+    />
 );
 
 const AvailableCTraderAccountsList = () => {
     const { mutate, status } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { hasActiveDerivAccount } = useRegulationFlags();
     const { show } = Provider.useModal();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
 
     const onSubmit = () => {
-        mutate({
-            payload: {
-                account_type: accountType,
-                market_type: 'all',
-                platform: PlatformDetails.ctrader.platform,
-            },
-        });
+        if (!hasActiveDerivAccount) {
+            show(<GetADerivAccountDialog />);
+        } else {
+            mutate({
+                payload: {
+                    account_type: accountType,
+                    market_type: 'all',
+                    platform: PlatformDetails.ctrader.platform,
+                },
+            });
+        }
     };
 
     useEffect(() => {

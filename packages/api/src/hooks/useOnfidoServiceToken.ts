@@ -4,19 +4,18 @@ import useSettings from './useSettings';
 
 // TODO: Merge service token hooks into a single service token hook call
 /** A custom hook that get Service Token for Onfido. */
-const useOnfidoServiceToken = () => {
-    const { data: settings, isSuccess } = useSettings();
+const useOnfidoServiceToken = (country?: string) => {
+    const { data: settings } = useSettings();
+    const country_code = country ?? settings.country_code ?? '';
+    const countryCode = country_code.length >= 3 ? ALPHA_3_TO_ALPHA_2[country_code] : country_code;
     const { data: onfido_token_data, ...rest } = useQuery('service_token', {
         payload: {
             service: 'onfido',
-            country: settings?.country_code
-                ? settings?.country_code?.length >= 3
-                    ? ALPHA_3_TO_ALPHA_2[settings?.country_code]
-                    : settings?.country_code
-                : '',
+            country: countryCode,
         },
         options: {
-            enabled: isSuccess,
+            retry: 3,
+            enabled: !!countryCode,
         },
     });
 

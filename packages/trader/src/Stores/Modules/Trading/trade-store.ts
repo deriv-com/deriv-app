@@ -471,6 +471,7 @@ export default class TradeStore extends BaseStore {
             resetPreviousSymbol: action.bound,
             setActiveSymbols: action.bound,
             setBarrierChoices: action.bound,
+            setChartModeFromURL: action.bound,
             setChartStatus: action.bound,
             setContractTypes: action.bound,
             setDefaultSymbol: action.bound,
@@ -1518,24 +1519,27 @@ export default class TradeStore extends BaseStore {
         this.onLogout(this.logoutListener);
         this.onClientInit(this.clientInitListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
+        this.setChartModeFromURL();
         this.setChartStatus(true);
         runInAction(async () => {
             this.is_trade_component_mounted = true;
             await this.prepareTradeStore();
-
-            const { chartType, granularity } = getTradeURLParams();
-            if (!isNaN(Number(granularity)) && granularity !== this.root_store.contract_trade.granularity) {
-                this.root_store.contract_trade.updateGranularity(Number(granularity));
-            }
-            if (chartType && chartType !== this.root_store.contract_trade.chart_type) {
-                this.root_store.contract_trade.updateChartType(chartType);
-            }
-            setTradeURLParams({
-                chartType: chartType ?? this.root_store.contract_trade.chart_type,
-                granularity: granularity ?? Number(this.root_store.contract_trade.granularity),
-            });
-
             this.root_store.notifications.setShouldShowPopups(true);
+        });
+    }
+
+    setChartModeFromURL() {
+        const { chartType, granularity: newGranularity } = getTradeURLParams();
+        const { chart_type, granularity, updateChartType, updateGranularity } = this.root_store.contract_trade;
+        if (!isNaN(Number(newGranularity)) && newGranularity !== granularity) {
+            updateGranularity(Number(newGranularity));
+        }
+        if (chartType && chartType !== chart_type) {
+            updateChartType(chartType);
+        }
+        setTradeURLParams({
+            chartType: chartType ?? chart_type,
+            granularity: newGranularity ?? Number(granularity),
         });
     }
 

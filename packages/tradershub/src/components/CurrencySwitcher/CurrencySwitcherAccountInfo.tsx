@@ -1,6 +1,6 @@
 import React from 'react';
-import { IconToCurrencyMapperType } from 'src/constants/constants';
-import { THooks } from 'src/types';
+import { IconToCurrencyMapperType } from '@/constants';
+import { THooks } from '@/types';
 import { Text } from '@deriv-com/ui';
 
 type DemoCurrencySwitcherAccountInfoProps = {

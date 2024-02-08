@@ -1,7 +1,7 @@
 import React from 'react';
+import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
 import { Provider } from '@deriv/library';
 import { Heading, qtMerge } from '@deriv/quill-design';
-import CloseIcon from '../../public/images/ic-close-dark.svg';
 import { TModalComponents } from './Modal';
 
 /**

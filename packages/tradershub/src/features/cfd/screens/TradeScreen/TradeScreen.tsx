@@ -1,13 +1,13 @@
 import React, { Fragment, useMemo } from 'react';
+import ImportantIcon from '@/assets/svgs/ic-important.svg';
+import { useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import { useUIContext } from '../../../../components';
-import useRegulationFlags from '../../../../hooks/useRegulationFlags';
-import ImportantIcon from '../../../../public/images/ic-important.svg';
 import { THooks, TPlatforms } from '../../../../types';
-import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
 

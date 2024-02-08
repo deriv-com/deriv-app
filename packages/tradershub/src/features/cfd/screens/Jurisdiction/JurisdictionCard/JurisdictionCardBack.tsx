@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import BackArrowIcon from '@/assets/svgs/ic-back-arrow.svg';
 import { Text } from '@deriv-com/ui';
-import BackArrowIcon from '../../../../../public/images/ic-back-arrow.svg';
 import { verificationIconsMapper, verificationStatusIconsMapper } from '../constants';
 import { jurisdictionVerificationContents } from '../jurisdiction-contents/jurisdiction-verification-contents';
 import {

@@ -1,6 +1,5 @@
 export * from './AdvertiserName';
 export * from './Badge';
-export * from './Button';
 export * from './Checklist';
 export * from './CloseHeader';
 export * from './Dropdown';

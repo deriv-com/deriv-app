@@ -6,10 +6,12 @@ import { Localize } from '@deriv/translations';
 const ContractTypeGlossary = ({
     category,
     is_vanilla_fx = false,
+    is_major_pairs = false,
     is_multiplier_fx = false,
 }: {
     category: string;
     is_vanilla_fx?: boolean;
+    is_major_pairs?: boolean;
     is_multiplier_fx?: boolean;
 }) => {
     let content;
@@ -233,8 +235,10 @@ const ContractTypeGlossary = ({
                     { type: 'heading', text: <Localize i18n_default_text='Entry spot' /> },
                     {
                         type: 'paragraph',
-                        text: (
-                            <Localize i18n_default_text='We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers.' />
+                        text: is_major_pairs ? (
+                            <Localize i18n_default_text='We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers for Major Pairs.' />
+                        ) : (
+                            <Localize i18n_default_text='We use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers for Volatility Index, Basket Indices, Jump Indices and Crash/Boom Indices.' />
                         ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Exit spot' /> },

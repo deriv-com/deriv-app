@@ -53,18 +53,22 @@ const EnterPassword = ({
         platform === PlatformDetails.dxtrade.platform ? accountType : marketTypeDetails[marketType]?.title;
 
     return (
-        <div className='flex ps-800 w-full lg:inline-flex lg:w-[400px] lg:pt-1000 lg:pb-1200 lg:px-[24px] flex-col justify-center items-start rounded-400 border-sm bg-system-light-primary-background'>
-            <div className='flex flex-col items-center w-full'>
-                <Text weight='bold'>Enter your {title} password</Text>
-                <div className='flex flex-col text-center gap-800 lg:gap-400 lg:py-1200'>
-                    <Text size='sm'>
-                        Enter your {title} password to add a {title} {marketTypeTitle} account.
-                    </Text>
-                    <PasswordInput label={`${title} password`} onChange={onPasswordChange} value={password} />
-                </div>
+        <div className='flex lg:inline-flex lg:w-[400px] flex-col justify-center items-start rounded-400 border-sm bg-system-light-primary-background'>
+            <Text weight='bold'>Enter your {title} password</Text>
+            <div className='flex flex-col gap-800 lg:gap-400 lg:pt-1200'>
+                <Text size='sm'>
+                    Enter your {title} password to add a {title} {marketTypeTitle} account.
+                </Text>
+                <PasswordInput
+                    className='z-10 text-body-sm'
+                    isFullWidth
+                    label={`${title} password`}
+                    onChange={onPasswordChange}
+                    value={password}
+                />
             </div>
             {isDesktop && (
-                <div className='flex items-center justify-center w-full gap-400'>
+                <div className='flex items-center justify-end w-full gap-400 pt-1200'>
                     <Button onClick={onSecondaryClick} size='lg' variant='outlined'>
                         Forgot password?
                     </Button>

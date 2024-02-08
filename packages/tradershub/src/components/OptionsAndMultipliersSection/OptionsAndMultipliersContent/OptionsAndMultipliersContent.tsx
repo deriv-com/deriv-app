@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader, useUIContext } from '@/components';
+import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } from '@/components';
 import { optionsAndMultipliersContent } from '@/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
 import { useRegulationFlags } from '@/hooks';
@@ -68,10 +68,7 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { uiState } = useUIContext();
-    const { accountType, regulation } = uiState;
-
-    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
 
     if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
 
@@ -99,10 +96,7 @@ const OptionsAndMultipliersContent = () => {
     const { data } = useActiveTradingAccount();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 

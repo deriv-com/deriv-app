@@ -119,16 +119,16 @@ module.exports = function (env) {
                 {
                     exclude: /node_modules/,
                     generator: {
-                        filename: 'tradershub/public/[name].[contenthash][ext]',
+                        filename: 'tradershub/assets/[name].[contenthash][ext]',
                     },
-                    include: /public\//,
+                    include: /assets\//,
                     issuer: /\/packages\/tradershub\/.*(\/)?.*.scss/,
                     test: /\.svg$/,
                     type: 'asset/resource',
                 },
                 {
                     exclude: /node_modules/,
-                    include: /public\//,
+                    include: /assets\//,
                     issuer: /\/packages\/tradershub\/.*(\/)?.*.tsx/,
                     test: /\.svg$/,
                     use: svgLoaders,

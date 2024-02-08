@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { FlowProvider } from '../../../../../components';
 import ManualDocumentUpload from '../ManualDocumentUpload';

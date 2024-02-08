@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api';
+import { useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api-v2';
 import { AccountsList } from '../AccountsList';
 import { WalletsAccordionLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';

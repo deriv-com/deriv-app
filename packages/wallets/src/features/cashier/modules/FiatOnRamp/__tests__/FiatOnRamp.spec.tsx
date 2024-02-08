@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import FiatOnRamp from '../FiatOnRamp';
 

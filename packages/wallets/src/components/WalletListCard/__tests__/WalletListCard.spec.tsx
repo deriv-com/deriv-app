@@ -1,14 +1,14 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletListCard from '../WalletListCard';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useBalance: () => ({
-        ...jest.requireActual('@deriv/api').useBalance(),
+        ...jest.requireActual('@deriv/api-v2').useBalance(),
         isLoading: false,
     }),
 }));

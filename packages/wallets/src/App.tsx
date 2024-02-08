@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { ModalProvider } from './components/ModalProvider';
 import AppContent from './AppContent';
 import './styles/fonts.scss';

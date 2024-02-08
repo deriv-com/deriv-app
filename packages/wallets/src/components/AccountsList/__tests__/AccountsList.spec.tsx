@@ -1,5 +1,5 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';

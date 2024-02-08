@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import { Formik } from 'formik';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TransferProvider } from '../../../provider';
@@ -46,8 +46,8 @@ const FORM_VALUES: TInitialTransferFormValues = {
     toAmount: 0,
 };
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useGetExchangeRate: jest.fn(({ base_currency }: { base_currency: string }) => ({
         data: {
             base_currency,

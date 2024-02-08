@@ -1,7 +1,7 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { APIProvider, useActiveWalletAccount, useJurisdictionStatus, usePOI } from '@deriv/api';
+import { APIProvider, useActiveWalletAccount, useJurisdictionStatus, usePOI } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
@@ -17,8 +17,8 @@ jest.mock('../../../../../components/ModalProvider', () => ({
     }),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
     useJurisdictionStatus: jest.fn(() => ({
         getVerificationStatus: jest.fn(() => ({

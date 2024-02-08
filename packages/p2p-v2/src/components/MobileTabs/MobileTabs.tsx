@@ -1,6 +1,6 @@
 import React from 'react';
+import { LabelPairedChevronRightLgBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import RightArrowIcon from '../../public/ic-chevron-right.svg';
 import './MobileTabs.scss';
 
 type TMobileTabsProps<T extends string[]> = {
@@ -14,7 +14,7 @@ function MobileTabs<T extends string[]>({ onChangeTab, tabs }: TMobileTabsProps<
             {tabs.map((tab, i) => (
                 <button className='p2p-v2-mobile-tabs__tab' key={`${tab}-${i}`} onClick={() => onChangeTab(tab)}>
                     <Text size='sm'>{tab}</Text>
-                    <RightArrowIcon />
+                    <LabelPairedChevronRightLgBoldIcon />
                 </button>
             ))}
         </div>

@@ -1,8 +1,7 @@
 import React from 'react';
 import { useDevice } from '@/hooks';
+import { LabelPairedArrowRightLgBoldIcon, LabelPairedCheckMdBoldIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
-import ArrowRightIcon from '../../public/ic-arrow-right.svg';
-import CheckmarkIcon from '../../public/ic-checkmark.svg';
 import './Checklist.scss';
 
 type TChecklistItem = {
@@ -24,14 +23,14 @@ const Checklist = ({ items }: { items: TChecklistItem[] }) => {
                     </Text>
                     {item.status === 'done' ? (
                         <div className='p2p-v2-checklist__item-checkmark'>
-                            <CheckmarkIcon className='p2p-v2-checklist__item-checkmark-icon' />
+                            <LabelPairedCheckMdBoldIcon className='p2p-v2-checklist__item-checkmark-icon' />
                         </div>
                     ) : (
                         <Button
                             className='p2p-v2-checklist__item-button'
                             disabled={item.isDisabled}
                             icon={
-                                <ArrowRightIcon
+                                <LabelPairedArrowRightLgBoldIcon
                                     className='p2p-v2-checklist__item-button-icon'
                                     {...(item.testId && { 'data-testid': item.testId })}
                                 />

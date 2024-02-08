@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Dialog, Modal } from '@/components';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Dialog, Modal } from '../../../../components';
 import DxtradePasswordFooter from './DxtradePasswordFooter';
 import DxtradePasswordInput from './DxtradePasswordInput';
 

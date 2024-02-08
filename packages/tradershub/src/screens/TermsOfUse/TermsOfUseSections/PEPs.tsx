@@ -11,7 +11,6 @@ const PEPs = () => (
             A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates
             and family members of a PEP are also considered to be PEPs.
         </Text>
-        {/*  Add checkbox here once we have it in deriv-com/ui  */}
         <Checkbox label='I am not a PEP and never have been a PEP.' />
         <Checkbox
             label={

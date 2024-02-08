@@ -84,7 +84,6 @@ const Details = () => {
                             <ExampleImage />
                         </Suspense>
                     </div>
-                    {/** Add confirmation checkbox for the confirmation when available in deriv/ui */}
                 </div>
                 <div className='mt-800'>
                     <Checkbox label='I confirm that the name and date of birth above match my chosen identity document.' />

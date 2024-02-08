@@ -1,27 +1,23 @@
 import React, { useEffect } from 'react';
-import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '@/components';
+import {
+    PlatformIcon,
+    TradingAccountCard,
+    TradingAccountCardContent,
+    TradingAccountCardLightButton,
+} from '@/components';
 import { getStaticUrl } from '@/helpers';
 import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import CTrader from '../../../../../public/images/cfd/ctrader.svg';
 
 const LeadingIcon = () => (
-    <button
-        className='cursor-pointer'
+    <PlatformIcon
+        icon='CTrader'
         onClick={() => {
             window.open(getStaticUrl('/deriv-ctrader'));
         }}
-        // Fix sonarcloud issue
-        onKeyDown={event => {
-            if (event.key === 'Enter') {
-                window.open(getStaticUrl('/deriv-ctrader'));
-            }
-        }}
-    >
-        <CTrader />
-    </button>
+    />
 );
 
 const AvailableCTraderAccountsList = () => {

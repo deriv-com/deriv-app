@@ -58,7 +58,7 @@ const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSu
     if (platform === 'mt5') {
         icon = marketTypeToDetailsMapper[platform][marketType]?.icon;
     } else {
-        icon = PlatformDetails[platform as keyof typeof PlatformDetails]?.icon;
+        icon = PlatformDetails[platform as keyof typeof PlatformDetails]?.icon();
     }
 
     const IconWithCheckMark = () => (

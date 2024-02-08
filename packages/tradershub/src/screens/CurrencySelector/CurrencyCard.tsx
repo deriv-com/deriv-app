@@ -25,8 +25,10 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
         <div className='relative flex justify-center w-1/2 md:w-1/4 my-400'>
             <button
                 className={qtMerge(
-                    `w-10/12 rounded-400 items-center py-1100 hover:cursor-pointer hover:outline outline-1 ${
-                        isSelected ? 'outline outline-2 outline-brand-blue' : ''
+                    `w-10/12 rounded-400 items-center py-1100 hover:cursor-pointer ${
+                        isSelected
+                            ? 'outline outline-2 outline-status-light-success'
+                            : 'hover:outline outline-1 hover:outline-system-light-less-prominent'
                     }`
                 )}
                 onClick={() => setFieldValue('currency', isSelected ? '' : id)}

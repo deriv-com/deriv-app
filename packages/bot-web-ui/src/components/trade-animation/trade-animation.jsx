@@ -96,15 +96,13 @@ const TradeAnimation = observer(({ className }) => {
                 text={is_stop_button_visible ? localize('Stop') : localize('Run')}
                 icon={<Icon icon={is_stop_button_visible ? 'IcBotStop' : 'IcPlay'} color='active' />}
                 onClick={() => {
-                    setTimeout(() => {
+                    updateIsButtonDisabled(true);
+                    if (is_stop_button_visible) {
+                        onStopBotClick();
                         updateIsButtonDisabled(true);
-                        if (is_stop_button_visible) {
-                            onStopBotClick();
-                            updateIsButtonDisabled(true);
-                            return;
-                        }
-                        onRunButtonClick();
-                    }, 0);
+                        return;
+                    }
+                    onRunButtonClick();
                 }}
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}

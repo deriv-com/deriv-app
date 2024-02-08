@@ -307,28 +307,16 @@ export default class TicksService {
 
     unsubscribeFromTicksService() {
         return new Promise((resolve, reject) => {
-            if (this.ticks_history_promise) {
-                const { stringified_options } = this.ticks_history_promise;
-                const { symbol = '' } = JSON.parse(stringified_options);
-                if (symbol) {
-                    this.forget()
-                        .then(res => {
-                            if (this.candles_promise) {
-                                this.forgetCandleSubscription().then(() => resolve());
-                            } else {
-                                resolve(res);
-                            }
+            this.forget()
+                .then(() => {
+                    this.forgetCandleSubscription()
+                        .then(() => {
+                            resolve();
                         })
                         .catch(reject);
-                } else {
-                    resolve();
-                }
-                this.ticks_history_promise = null;
-            }
-
-            if (!this.ticks_history_promise && !this.candles_promise) {
-                resolve();
-            }
+                })
+                .catch(reject);
+            this.ticks_history_promise = null;
         });
     }
 }

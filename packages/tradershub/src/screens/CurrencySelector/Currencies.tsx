@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
-import { Heading, useBreakpoint } from '@deriv/quill-design';
-import { InlineMessage } from '@deriv-com/ui';
+import { useBreakpoint } from '@deriv/quill-design';
+import { InlineMessage, Text } from '@deriv-com/ui';
 import { CURRENCY_TYPES, getCurrencyConfig } from '../../helpers/currencyConfig';
 import CurrencyCard from './CurrencyCard';
 
@@ -23,9 +23,9 @@ const Currencies = ({ type }: TCurrencies) => {
 
     return (
         <div className='text-center'>
-            <Heading.H5 className='mb-300'>
+            <Text align='center' as='p' className='mb-300' weight='bold'>
                 {type === CURRENCY_TYPES.CRYPTO ? 'Cryptocurrencies' : 'Fiat Currencies'}
-            </Heading.H5>
+            </Text>
             {type === CURRENCY_TYPES.FIAT && (
                 <InlineMessage className='my-800 md:w-[261px]' variant='info'>
                     Please note that you can only have 1 fiat account.

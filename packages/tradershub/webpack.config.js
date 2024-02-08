@@ -185,6 +185,10 @@ module.exports = function (env) {
             publicPath: base,
         },
         resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'src'),
+                '@cfd': path.resolve(__dirname, 'src/features/cfd'),
+            },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
     };

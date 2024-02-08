@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Text } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import InstrumentsIcons from '../../../../public/images/cfd/tradingInstruments';
 
 type TInstrumentsIcon = {
@@ -21,7 +21,7 @@ const InstrumentsIconWithLabel: FC<TInstrumentsIcon> = ({ highlighted, icon, isA
         >
             <InstrumentIcon height={24} width={24} />
             <div className='ml-[5px]'>
-                <Text bold size='sm'>
+                <Text size='sm' weight='bold'>
                     {text}
                 </Text>
             </div>

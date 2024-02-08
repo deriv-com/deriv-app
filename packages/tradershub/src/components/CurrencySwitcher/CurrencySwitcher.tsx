@@ -1,17 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { CurrencySwitcherLoader, Modal, TradingAccountsList, useUIContext } from '@/components';
+import { IconToCurrencyMapper } from '@/constants';
+import { useRegulationFlags } from '@/hooks';
+import { THooks } from '@/types';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
-import { IconToCurrencyMapper } from '../../constants/constants';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
-import { THooks } from '../../types';
-import { CurrencySwitcherLoader } from '../Loaders';
-import { Modal } from '../Modal';
-import { TradingAccountsList } from '../TradingAccountsList';
-import { useUIContext } from '../UIProvider';
+import { Button, Text } from '@deriv-com/ui';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];
@@ -65,13 +61,17 @@ const CurrencySwitcher = () => {
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
             <div className='grow'>
                 <Text
-                    bold={isDemo}
                     className={isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'}
                     size='sm'
+                    weight={isDemo ? 'bold' : 'normal'}
                 >
                     {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
                 </Text>
-                <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
+                <Text
+                    className={!isDemo ? 'text-status-light-success' : ''}
+                    size='sm'
+                    weight={isDemo ? 'normal' : 'bold'}
+                >
                     {isDemo ? 'Demo' : activeAccount?.display_balance}
                 </Text>
             </div>

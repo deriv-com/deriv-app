@@ -7,6 +7,7 @@ import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
 
 let client_store, common_store, gtm_store;
+const RECONNECTION_COUNTER_KEY = 'reconnection_counter';
 
 // TODO: update commented statements to the corresponding functions from app
 const BinarySocketGeneral = (() => {
@@ -68,7 +69,6 @@ const BinarySocketGeneral = (() => {
                     const is_active_tab = sessionStorage.getItem('active_tab') === '1';
                     if (getPropertyValue(response, ['error', 'code']) === 'SelfExclusion' && is_active_tab) {
                         sessionStorage.removeItem('active_tab');
-                        // Dialog.alert({ id: 'authorize_error_alert', message: response.error.message });
                     }
                     client_store.logout();
                 } else if (!/authorize/.test(State.get('skip_response'))) {
@@ -307,21 +307,25 @@ export default BinarySocketGeneral;
 const ResponseHandlers = (() => {
     const websiteStatus = response => {
         if (response.website_status) {
-            const is_available = !BinarySocket.isSiteDown(response.website_status.site_status);
-            if (is_available && BinarySocket.getAvailability().is_down) {
-                window.location.reload();
-                return;
-            }
-            const is_updating = BinarySocket.isSiteUpdating(response.website_status.site_status);
-            if (is_updating && !BinarySocket.getAvailability().is_updating) {
-                // the existing connection is alive for one minute while status is updating
-                // switch to the new connection somewhere between 1-30 seconds from now
-                // to avoid everyone switching to the new connection at the same time
-                const rand_timeout = Math.floor(Math.random() * 30) + 1;
+            const { site_status } = response.website_status;
+            const isServerDown = site_status === 'down' || site_status === 'updating';
+
+            // If site is down or updating, connect to WebSocket with an exponenentially increasing delay on every attempt
+            if (isServerDown) {
+                let reconnectionCounter = +(window.localStorage.getItem(RECONNECTION_COUNTER_KEY) || 1);
+                const reconnectionDelay = Math.min(Math.pow(2, reconnectionCounter + 9), 600000);
+
                 window.setTimeout(() => {
+                    window.localStorage.setItem(RECONNECTION_COUNTER_KEY, (++reconnectionCounter).toString());
                     BinarySocket.closeAndOpenNewConnection();
-                }, rand_timeout * 1000);
+                }, reconnectionDelay);
+            } else if (window.localStorage.getItem(RECONNECTION_COUNTER_KEY)) {
+                // If site is up, reset reconnection counter amd reload
+                window.localStorage.removeItem(RECONNECTION_COUNTER_KEY);
+                window.reload();
             }
+
+            BinarySocket.blockRequest(isServerDown);
             BinarySocket.setAvailability(response.website_status.site_status);
             client_store.setWebsiteStatus(response);
         }

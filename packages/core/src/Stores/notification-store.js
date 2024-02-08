@@ -328,7 +328,9 @@ export default class NotificationStore extends BaseStore {
 
         let has_missing_required_field;
 
-        if (website_status?.message?.length) {
+        const isServerDown = true;
+
+        if (website_status?.message?.length || isServerDown) {
             this.addNotificationMessage(this.client_notifications.site_maintenance);
         } else {
             this.removeNotificationByKey({ key: this.client_notifications.site_maintenance });

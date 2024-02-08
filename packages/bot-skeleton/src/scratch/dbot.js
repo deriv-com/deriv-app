@@ -227,6 +227,7 @@ class DBot {
      */
     runBot() {
         try {
+            api_base.has_candles = false;
             const code = this.generateCode();
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();

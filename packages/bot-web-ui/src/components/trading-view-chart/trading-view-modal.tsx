@@ -36,7 +36,7 @@ const TradingViewModal = observer(() => {
 
     return (
         <Draggable
-            bounds='.bot-dashboard'
+            bounds='.main'
             xaxis={xaxis}
             yaxis={yaxis}
             is_visible={is_trading_view_modal_visible}

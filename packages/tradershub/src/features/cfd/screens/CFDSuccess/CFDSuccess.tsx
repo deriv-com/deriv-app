@@ -70,6 +70,7 @@ const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSu
 
     return (
         <ActionScreen
+            className='w-[440px] h-[364px]'
             description={description}
             icon={<IconWithCheckMark />}
             renderButtons={renderButtons}

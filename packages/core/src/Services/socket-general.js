@@ -322,7 +322,7 @@ const ResponseHandlers = (() => {
             } else if (window.localStorage.getItem(RECONNECTION_COUNTER_KEY)) {
                 // If site is up, reset reconnection counter amd reload
                 window.localStorage.removeItem(RECONNECTION_COUNTER_KEY);
-                window.reload();
+                window.location.reload();
             }
 
             BinarySocket.blockRequest(isServerDown);

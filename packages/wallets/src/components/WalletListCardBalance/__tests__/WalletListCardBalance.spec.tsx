@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, useBalance } from '@deriv/api-v2';
+import { APIProvider, AuthProvider, useBalance } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletListCardBalance from '../WalletListCardBalance';
 
@@ -12,7 +12,11 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 describe('WalletListCardBalance', () => {
-    const wrapper = ({ children }: { children: React.ReactNode }) => <APIProvider>{children}</APIProvider>;
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+        <APIProvider>
+            <AuthProvider>{children}</AuthProvider>
+        </APIProvider>
+    );
 
     it('should show account balance', () => {
         render(<WalletListCardBalance balance={'100 USD'} />, { wrapper });

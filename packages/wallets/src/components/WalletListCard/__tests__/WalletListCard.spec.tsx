@@ -16,7 +16,7 @@ jest.mock('@deriv/api-v2', () => ({
 describe('WalletListCard', () => {
     it('should render the demo wallet list card with the correct details', () => {
         render(
-            <APIProvider>
+            <APIProvider standalone>
                 <AuthProvider>
                     <WalletListCard
                         badge='SVG'
@@ -43,7 +43,7 @@ describe('WalletListCard', () => {
 
     it('should render the real wallet list card with the correct details', () => {
         render(
-            <APIProvider>
+            <APIProvider standalone>
                 <AuthProvider>
                     <WalletListCard
                         badge='MALTA'
@@ -73,7 +73,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='SVG'
@@ -100,7 +100,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='MALTA'
@@ -127,7 +127,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='MALTA'
@@ -154,7 +154,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='MALTA'
@@ -181,7 +181,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='MALTA'

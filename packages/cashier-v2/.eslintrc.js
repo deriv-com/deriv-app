@@ -9,6 +9,7 @@ module.exports = {
             },
         },
     ],
+    ignorePatterns: ['*.spec.*'],
     parserOptions: { sourceType: 'module' },
     plugins: [
         'eslint-plugin-local-rules',

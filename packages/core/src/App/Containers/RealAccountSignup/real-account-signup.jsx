@@ -4,10 +4,9 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
-import { ContentFlag, WS, routes } from '@deriv/shared';
+import { ContentFlag, WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import ChooseCurrency from './choose-currency.jsx';
@@ -20,6 +19,8 @@ import { Analytics } from '@deriv-com/analytics';
 
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
+
+const AccountWizard = React.lazy(() => moduleLoader(() => import('./account-wizard.jsx')));
 
 const modal_pages_indices = {
     account_wizard: 0,

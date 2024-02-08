@@ -1034,10 +1034,6 @@
                 }
             }
         }
-        .modal-root .dc-modal:not(:first-child) & {
-            // multiple modals will appear one by one
-            display: none;
-        }
     }
     &_url-unavailable-modal {
         .dc-modal {
@@ -1058,6 +1054,10 @@
                     font-weight: unset;
                 }
             }
+        }
+        .modal-root .dc-modal:not(:first-child) & {
+            // modal will appear only after all other modals in modal-root are closed
+            display: none;
         }
     }
 }

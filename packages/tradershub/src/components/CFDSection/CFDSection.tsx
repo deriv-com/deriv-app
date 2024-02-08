@@ -1,7 +1,7 @@
 import React from 'react';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
+import { useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 import { GetADerivAccountBanner } from '../GetADerivAccountBanner';
-import { useUIContext } from '../UIProvider';
 import { CFDContent } from './CFDContent';
 import { CFDHeading } from './CFDHeading';
 

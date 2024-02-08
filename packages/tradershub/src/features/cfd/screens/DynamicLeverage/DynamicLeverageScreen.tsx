@@ -1,8 +1,9 @@
 import React from 'react';
+import { useDynamicLeverageModalState } from '@cfd/components';
+import { PlatformDetails } from '@cfd/constants';
 import { useDynamicLeverage } from '@deriv/api';
-import { qtMerge, Text } from '@deriv/quill-design';
-import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
-import { PlatformDetails } from '../../constants';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';
 
 const DynamicLeverageScreen = () => {

@@ -1,5 +1,6 @@
 import React, { ComponentProps, isValidElement, ReactNode } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 type TActionScreenProps = {
     children?: ReactNode;
@@ -37,7 +38,7 @@ const ActionScreen = ({
             {icon}
             <div className='flex flex-col items-center justify-center gap-400'>
                 {title && (
-                    <Text bold size={titleSize}>
+                    <Text size={titleSize} weight='bold'>
                         {title}
                     </Text>
                 )}

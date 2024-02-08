@@ -1,13 +1,13 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
+import DocumentsIcon from '@/assets/svgs/ic-documents.svg';
+import IdCardIcon from '@/assets/svgs/ic-id-card.svg';
+import SelfieIcon from '@/assets/svgs/ic-selfie.svg';
+import { useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { useDynamicLeverageModalState } from '@cfd/components';
 import { Provider } from '@deriv/library';
 import { Link, qtMerge } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import { useUIContext } from '../../../../../components';
-import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
-import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
-import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
-import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
-import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
 import { MarketType } from '../../../constants';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import {

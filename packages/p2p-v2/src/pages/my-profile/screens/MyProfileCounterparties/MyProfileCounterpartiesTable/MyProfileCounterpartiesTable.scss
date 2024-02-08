@@ -9,9 +9,6 @@
         &:last-child {
             position: relative;
         }
-        &-loader {
-            margin-top: 3rem;
-        }
         &:not(:last-child) {
             border-bottom: 1px solid var(--general-section-1);
         }

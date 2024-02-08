@@ -1,7 +1,6 @@
 import React from 'react';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
-import { GetDerivAccount } from '../GetDerivAccount';
-import { useUIContext } from '../UIProvider';
+import { GetDerivAccount, useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 import { OptionsAndMultipliersContent } from './OptionsAndMultipliersContent';
 import { OptionsAndMultipliersHeading } from './OptionsAndMultipliersHeading';
 

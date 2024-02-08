@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { Formik } from 'formik';
-import { Button, Text } from '@deriv-com/ui';
-import { TextField, useBreakpoint } from '@deriv/quill-design';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
+import { Provider } from '@deriv/library';
+import { TextField, useBreakpoint } from '@deriv/quill-design';
+import { Button, Text } from '@deriv-com/ui';
 import { ActionScreen } from '../../../../../components';
 import { validPassword } from '../../../../../utils/password';
-import { Provider } from '@deriv/library';
 import { CFDPlatforms } from '../../../constants';
 
 type TFormInitialValues = {

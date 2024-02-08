@@ -1,5 +1,6 @@
 import React from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { TPlatforms } from '../../../../types';
 import {
     CompareAccountsPlatformLabelClass,
@@ -26,13 +27,13 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
             )}
         >
             <Text
-                bold
                 className={qtMerge(
                     CompareAccountsPlatformLabelTextColorClass({
                         label: platformType,
                     } as unknown as TCompareAccountsPlatformLabelTextClassProps)
                 )}
                 size='sm'
+                weight='bold'
             >
                 {platformLabel[platformType]}
             </Text>

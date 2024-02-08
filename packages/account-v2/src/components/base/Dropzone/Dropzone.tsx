@@ -40,6 +40,7 @@ type TFile = {
     preview: string;
 };
 
+// TODO: Move this component to @deriv-com/ui
 const Dropzone: React.FC<TProps> = ({
     buttonText,
     className,
@@ -126,7 +127,7 @@ const Dropzone: React.FC<TProps> = ({
                             </WalletText>
                             {buttonText && (
                                 <div className='wallets-dropzone__placeholder-text'>
-                                    <Button onClick={open} variant='outlined'>
+                                    <Button onClick={open} type='button' variant='outlined'>
                                         {buttonText}
                                     </Button>
                                 </div>
@@ -144,6 +145,7 @@ const Dropzone: React.FC<TProps> = ({
                                 className={classNames('wallets-dropzone__thumb', {
                                     'wallets-dropzone__thumb--has-frame': hasFrame,
                                 })}
+                                data-testid='dt_remove-button'
                                 style={{ backgroundImage: `url(${file.preview})` }}
                             >
                                 {hasFrame && <DropzoneFrame />}

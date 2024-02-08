@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 type TMT5AccountTypeCardProps = {
     description: string;
@@ -32,7 +33,7 @@ const MT5AccountTypeCard = ({ description, icon, isSelected, onClick, title }: T
                         {icon}
                         <div className='flex flex-col items-center self-stretch gap-400'>
                             <div className='flex items-center flex-1 text-center'>
-                                <Text bold>{title}</Text>
+                                <Text weight='bold'>{title}</Text>
                             </div>
                             <div className='self-stretch text-center'>
                                 <Text size='sm'>{description}</Text>

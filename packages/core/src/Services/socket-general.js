@@ -310,7 +310,7 @@ const ResponseHandlers = (() => {
             const { site_status } = response.website_status;
             const isServerDown = site_status === 'down' || site_status === 'updating';
 
-            // If site is down or updating, connect to WebSocket with an exponenentially increasing delay on every attempt
+            // If site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt
             if (isServerDown) {
                 let reconnectionCounter = +(window.localStorage.getItem(RECONNECTION_COUNTER_KEY) || 1);
                 const reconnectionDelay = Math.min(Math.pow(2, reconnectionCounter + 9), 600000);

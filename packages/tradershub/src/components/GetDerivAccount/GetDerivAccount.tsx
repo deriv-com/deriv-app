@@ -8,7 +8,7 @@ const TrailingButton = () => {
     return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
 };
 
-const LeadingIcon = () => <PlatformIcon icon='DerivApps' />;
+const LeadingIcon = () => <PlatformIcon icon='DerivApps' width={60} />;
 
 const GetDerivAccount = () => {
     const title = 'Deriv account';

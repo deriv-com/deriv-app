@@ -105,6 +105,7 @@ const DemoRealSwitcher = () => {
                             role='button'
                         >
                             <Text
+                                as='p'
                                 className='text-center px-800 py-300'
                                 size='sm'
                                 weight={account.value === value ? 'bold' : 'normal'}

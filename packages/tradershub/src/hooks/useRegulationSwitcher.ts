@@ -14,10 +14,8 @@ const useRegulationSwitcher = () => {
     const { switchAccount } = useAuthorize();
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { setUIState, uiState } = useUIContext();
-
     const currentRegulation = uiState.regulation;
-    const accountType = uiState.accountType;
-    const { isEU, isHighRisk } = useRegulationFlags(currentRegulation, accountType);
+    const { isEU, isHighRisk } = useRegulationFlags();
 
     const realCRAccount = tradingAccountsList?.find(account => account.loginid.startsWith('CR'))?.loginid ?? '';
     const realMFAccount = tradingAccountsList?.find(account => account.loginid.startsWith('MF'))?.loginid ?? '';

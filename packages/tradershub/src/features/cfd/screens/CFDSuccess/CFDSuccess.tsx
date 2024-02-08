@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
+import CTraderSuccess from '@/assets/cfd/ctrader-success.svg';
+import DerivXSuccess from '@/assets/cfd/dxtrade-success.svg';
+import MT5DerivedSuccess from '@/assets/cfd/mt5-derived-success.svg';
+import MT5FinancialSuccess from '@/assets/cfd/mt5-financial-success.svg';
+import MT5SwapFreeSuccess from '@/assets/cfd/mt5-swap-free-success.svg';
+import CheckMark from '@/assets/svgs/checkmark.svg';
 import { ActionScreen } from '@/components';
 import { TMarketTypes, TPlatforms } from '@/types';
 import { PlatformDetails } from '@cfd/constants';
-import CTraderSuccess from '../../../../public/images/cfd/ctrader-success.svg';
-import DerivXSuccess from '../../../../public/images/cfd/dxtrade-success.svg';
-import MT5DerivedSuccess from '../../../../public/images/cfd/mt5-derived-success.svg';
-import MT5FinancialSuccess from '../../../../public/images/cfd/mt5-financial-success.svg';
-import MT5SwapFreeSuccess from '../../../../public/images/cfd/mt5-swap-free-success.svg';
-import CheckMark from '../../../../public/images/checkmark.svg';
 
 type TCFDSuccessProps = {
     description: string;
@@ -70,6 +70,7 @@ const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSu
 
     return (
         <ActionScreen
+            className='w-[440px] h-[364px]'
             description={description}
             icon={<IconWithCheckMark />}
             renderButtons={renderButtons}

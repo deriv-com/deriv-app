@@ -3,15 +3,16 @@ import { useFormikContext } from 'formik';
 import { useBreakpoint } from '@deriv/quill-design';
 import { InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
 
-const ExampleImage = lazy(() => import('../../../public/images/personal-details-example.svg'));
+const ExampleImage = lazy(() => import('@/assets/svgs/personal-details-example.svg'));
 
 const Details = () => {
     const isMobile = useBreakpoint();
-    const { handleBlur, handleChange, values } = useFormikContext<{
+    const { errors, handleBlur, handleChange, touched, values } = useFormikContext<{
         dateOfBirth: string;
         firstName: string;
         lastName: string;
     }>();
+
     return (
         <>
             <Text as='p' className='my-800' weight='bold'>
@@ -29,33 +30,45 @@ const Details = () => {
                     <div className='flex flex-col md:w-1/2 gap-2000'>
                         <Input
                             className='w-full text-body-md'
+                            error={Boolean(errors.firstName && touched.firstName)}
                             label='First name*'
-                            message='Your first name as in your identity document.'
+                            message={
+                                errors.firstName && touched.firstName
+                                    ? errors.firstName
+                                    : 'Your first name as in your identity document'
+                            }
                             name='firstName'
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            required
                             value={values.firstName}
                         />
                         <Input
                             className='w-full text-body-sm'
+                            error={Boolean(errors.lastName && touched.lastName)}
                             label='Last name*'
-                            message='Your last name as in your identity document.'
+                            message={
+                                errors.lastName && touched.lastName
+                                    ? errors.lastName
+                                    : 'Your last name as in your identity document'
+                            }
                             name='lastName'
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            required
                             value={values.lastName}
                         />
                         {/** Add date picker when available from deriv/ui */}
                         <Input
                             className='w-full text-body-sm'
+                            error={Boolean(errors.dateOfBirth && touched.dateOfBirth)}
                             label='Date of birth*'
-                            message='Your last name as in your identity document.'
+                            message={
+                                errors.dateOfBirth && touched.dateOfBirth
+                                    ? errors.dateOfBirth
+                                    : 'Your last name as in your identity document'
+                            }
                             name='dateOfBirth'
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            required
                             value={values.dateOfBirth}
                         />
                     </div>

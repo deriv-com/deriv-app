@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
 import { Text } from '@deriv-com/ui';
-import CloseIcon from '../../../../public/images/ic-close-dark.svg';
 
 type TCompareAccountsHeader = {
     isDemo?: boolean;

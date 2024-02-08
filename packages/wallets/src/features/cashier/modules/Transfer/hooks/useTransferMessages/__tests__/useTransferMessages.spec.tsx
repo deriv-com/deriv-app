@@ -7,7 +7,7 @@ import {
     lifetimeAccountLimitsBetweenWalletsMessageFn,
 } from '../utils';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({ data: { mockWallets } })),
     useAuthorize: jest.fn(() => ({ data: { preferred_language: 'en' } })),
     usePOI: jest.fn(() => ({ data: { is_verified: true } })),

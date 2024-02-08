@@ -5,7 +5,6 @@ import { Button, Text, Tooltip } from '@deriv-com/ui';
 import { useDevice } from '@/hooks';
 import { generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
 //TODO: Replace with quill icons once available
-import AlertIcon from '../../../../../public/ic-alert-warning.svg';
 import DeactivateIcon from '../../../../../public/ic-archive.svg';
 import ActivateIcon from '../../../../../public/ic-unarchive.svg';
 import EditIcon from '../../../../../public/ic-edit.svg';

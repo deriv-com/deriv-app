@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
+import ChangePassword from '@/assets/svgs/change-password-email.svg';
 import { ActionScreen } from '@/components';
 import { platformPasswordResetRedirectLink } from '@/utils';
 import { PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import ChangePassword from '../../public/images/change-password-email.svg';
 import { TPlatforms } from '../../types';
 
 type TSentEmailContentProps = {

@@ -9,6 +9,9 @@
 @import '~@deriv/shared/src/styles/themes.scss';
 
 // General
+@import 'details-form.scss';
+@import 'account-wizard.scss';
+@import 'real-account-signup.scss';
 
 // Layout
 @import 'app/_common/layout/app-layouts';

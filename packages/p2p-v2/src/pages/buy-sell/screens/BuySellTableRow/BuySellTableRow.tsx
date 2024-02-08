@@ -31,10 +31,12 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
     } = props;
 
     useEffect(() => {
-        subscribe({
-            base_currency: BASE_CURRENCY,
-            target_currency: local_currency!,
-        });
+        if (local_currency) {
+            subscribe({
+                base_currency: BASE_CURRENCY,
+                target_currency: local_currency,
+            });
+        }
     }, [local_currency, subscribe]);
 
     const exchangeRate = exchangeRateValue?.rates?.[local_currency ?? ''];
@@ -59,7 +61,7 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
         <div className='p2p-v2-buy-sell-table-row'>
             <Container>
                 <div className='flex flex-row gap-4 items-center'>
-                    <UserAvatar isOnline={is_online} nickname={name!} showOnlineStatus size={25} textSize='xs' />
+                    <UserAvatar isOnline={is_online} nickname={name || ''} showOnlineStatus size={25} textSize='xs' />
                     <div className='flex flex-col'>
                         <div className='flex flex-row items-center gap-2'>
                             <Text

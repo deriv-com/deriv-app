@@ -5,7 +5,7 @@ import { useCallback } from 'react';
  *
  * @returns Function `switchTab` that switches the primary tabs in P2P when invoked with a tab name
  */
-export const useSwitchTab = () => {
+const useSwitchTab = () => {
     const switchTab = useCallback((tab: 'buy-sell' | 'my-ads' | 'my-profile' | 'orders') => {
         dispatchEvent(
             new CustomEvent('switchTab', {
@@ -15,3 +15,5 @@ export const useSwitchTab = () => {
     }, []);
     return switchTab;
 };
+
+export default useSwitchTab;

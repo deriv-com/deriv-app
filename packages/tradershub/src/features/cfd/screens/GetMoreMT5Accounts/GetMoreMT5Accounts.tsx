@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
+import AddIcon from '@/assets/svgs/add-icon.svg';
+import { MT5AccountTypeModal } from '@cfd/modals';
 import { Provider } from '@deriv/library';
-import { Text } from '@deriv/quill-design';
-import AddIcon from '../../../../public/images/add-icon.svg';
-import { MT5AccountTypeModal } from '../../modals';
+import { Text } from '@deriv-com/ui';
 
 const GetMoreMT5Accounts: FC = () => {
     const { show } = Provider.useModal();
@@ -25,9 +25,7 @@ const GetMoreMT5Accounts: FC = () => {
                 </div>
                 <div className='flex flex-col items-start flex-1'>
                     <div className='self-stretch'>
-                        <Text bold size='md'>
-                            Get more
-                        </Text>
+                        <Text weight='bold'>Get more</Text>
                     </div>
                     <div className='self-stretch'>
                         <Text size='sm'>Get more Deriv MT5 accounts under your preferred jurisdictions.</Text>

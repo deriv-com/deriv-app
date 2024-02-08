@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, Button } from '@deriv-com/ui';
-import { ActionScreen } from '../../../../../components';
-import MT5PasswordUpdatedIcon from '../../../../../public/images/ic-mt5-password-updated.svg';
+import MT5PasswordUpdatedIcon from '@/assets/svgs/ic-mt5-password-updated.svg';
+import { ActionScreen } from '@/components';
+import { Button, Text } from '@deriv-com/ui';
 
 type TMT5ChangeInvestorPasswordSavedScreen = {
     setNextScreen?: VoidFunction;

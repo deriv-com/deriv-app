@@ -1,13 +1,13 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
+import DocumentsIcon from '@/assets/svgs/ic-documents.svg';
+import IdCardIcon from '@/assets/svgs/ic-id-card.svg';
+import SelfieIcon from '@/assets/svgs/ic-selfie.svg';
+import { useRegulationFlags } from '@/hooks';
+import { useDynamicLeverageModalState } from '@cfd/components';
+import { MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { Link, qtMerge, Text } from '@deriv/quill-design';
-import { useUIContext } from '../../../../../components';
-import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
-import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
-import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
-import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
-import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
-import { MarketType } from '../../../constants';
+import { Link, qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import {
     TClickableDescription,
@@ -61,9 +61,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getCFDState } = Provider.useCFDContext();
-    const { uiState } = useUIContext();
-    const regulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(regulation);
+    const { isEU } = useRegulationFlags();
 
     const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
@@ -115,7 +113,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                         ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
                 })}
             >
-                <Text bold className='leading-[1] text-system-light-primary-background text-50'>
+                <Text className='leading-[1] text-system-light-primary-background text-50' weight='bold'>
                     {row?.titleIndicators.displayText}
                 </Text>
             </div>
@@ -136,7 +134,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
             <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 backface-hidden px-800 pt-1000 pb-1800 transform-gpu'>
                 {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
                 <div className='mt-[25px] mb-[15px] text-center'>
-                    <Text bold size='lg'>
+                    <Text size='lg' weight='bold'>
                         {header}
                     </Text>
                 </div>
@@ -180,7 +178,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                 </div>
                 {isAdded && (
                     <div className='absolute w-full text-center rounded-b-[13px] rounded-t-50 bottom-50 left-50 p-400 bg-brand-blue'>
-                        <Text bold className='text-system-light-primary-background' size='sm'>
+                        <Text className='text-system-light-primary-background' size='sm' weight='bold'>
                             Added
                         </Text>
                     </div>

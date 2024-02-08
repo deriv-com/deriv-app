@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
+import { LabelPairedArrowLeftLgBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import ArrowLeftIcon from '../../public/ic-arrow-left.svg';
 import './PageReturn.scss';
 
 type TPageReturnProps = {
@@ -13,7 +13,7 @@ type TPageReturnProps = {
 const PageReturn = ({ className = '', onClick, pageTitle }: TPageReturnProps) => {
     return (
         <div className={clsx('p2p-v2-page-return', className)}>
-            <ArrowLeftIcon className='p2p-v2-page-return__button' onClick={onClick} />
+            <LabelPairedArrowLeftLgBoldIcon className='p2p-v2-page-return__button' onClick={onClick} />
             <Text>{pageTitle}</Text>
         </div>
     );

@@ -5,6 +5,7 @@ import {
     getSupportedContracts,
     getContractConfig,
     getContractTypeDisplay,
+    getContractCategoriesConfig,
     getContractTypePosition,
     getCleanedUpCategories,
 } from '../contract';
@@ -184,5 +185,43 @@ describe('getCleanedUpCategories', () => {
             },
         };
         expect(getCleanedUpCategories(initial_categories)).toEqual(resulting_categories);
+    });
+});
+
+describe('getContractCategoriesConfig', () => {
+    it('should return object with categories', () => {
+        const categories = {
+            Turbos: { name: 'Turbos', categories: [TRADE_TYPES.TURBOS.LONG, TRADE_TYPES.TURBOS.SHORT] },
+            Multipliers: { name: 'Multipliers', categories: [TRADE_TYPES.MULTIPLIER] },
+            'Ups & Downs': {
+                name: 'Ups & Downs',
+                categories: [
+                    TRADE_TYPES.RISE_FALL,
+                    TRADE_TYPES.RISE_FALL_EQUAL,
+                    TRADE_TYPES.HIGH_LOW,
+                    TRADE_TYPES.RUN_HIGH_LOW,
+                    TRADE_TYPES.RESET,
+                    TRADE_TYPES.ASIAN,
+                    TRADE_TYPES.CALL_PUT_SPREAD,
+                ],
+            },
+            'Highs & Lows': {
+                name: 'Highs & Lows',
+                categories: [TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
+            },
+            'Ins & Outs': { name: 'Ins & Outs', categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
+            'Look Backs': {
+                name: 'Look Backs',
+                categories: [TRADE_TYPES.LB_HIGH_LOW, TRADE_TYPES.LB_PUT, TRADE_TYPES.LB_CALL],
+            },
+            Digits: {
+                name: 'Digits',
+                categories: [TRADE_TYPES.MATCH_DIFF, TRADE_TYPES.EVEN_ODD, TRADE_TYPES.OVER_UNDER],
+            },
+            Vanillas: { name: 'Vanillas', categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT] },
+            Accumulators: { name: 'Accumulators', categories: [TRADE_TYPES.ACCUMULATOR] },
+        };
+
+        expect(getContractCategoriesConfig()).toEqual(categories);
     });
 });

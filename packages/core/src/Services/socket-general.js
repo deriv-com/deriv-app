@@ -320,7 +320,7 @@ const ResponseHandlers = (() => {
                     BinarySocket.closeAndOpenNewConnection();
                 }, reconnectionDelay);
             } else if (window.localStorage.getItem(RECONNECTION_COUNTER_KEY)) {
-                // If site is up, reset reconnection counter amd reload
+                // If site is up, reset reconnection counter and reload
                 window.localStorage.removeItem(RECONNECTION_COUNTER_KEY);
                 window.location.reload();
             }

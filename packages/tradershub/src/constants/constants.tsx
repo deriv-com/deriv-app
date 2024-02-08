@@ -13,7 +13,7 @@ import {
 import { PlatformIcon } from '../components';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
 
-type IconToCurrencyMapperType = {
+export type IconToCurrencyMapperType = {
     [key: string]: {
         icon: React.ReactNode;
         text: string;

@@ -57,6 +57,7 @@ export type TCFDStore = {
     has_cfd_error: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
+    is_sent_email_modal_enabled: boolean;
     setCFDSuccessDialog: (value: boolean) => void;
     setMT5MigrationError: (value: string) => void;
     setMigratedMT5Accounts: (value: Record<string, string>[]) => void;
@@ -70,6 +71,7 @@ export type TCFDStore = {
     is_cfd_verification_modal_visible: boolean;
     has_created_account_for_selected_jurisdiction: boolean;
     enableCFDPasswordModal: () => void;
+    setSentEmailModalStatus: (status: boolean) => void;
     onMount: () => void;
     onUnmount: () => void;
     setCurrentAccount: (

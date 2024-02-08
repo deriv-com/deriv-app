@@ -28,6 +28,7 @@ export default class CFDStore extends BaseStore {
     map_type = {};
     has_cfd_error = false;
     error_message = '';
+    is_sent_email_modal_enabled = false;
 
     is_account_being_created = false;
     is_cfd_success_dialog_enabled = false;
@@ -74,6 +75,7 @@ export default class CFDStore extends BaseStore {
             is_cfd_success_dialog_enabled: observable,
             is_mt5_financial_stp_modal_open: observable,
             is_cfd_password_modal_enabled: observable,
+            is_sent_email_modal_enabled: observable,
             current_account: observable,
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
@@ -108,6 +110,7 @@ export default class CFDStore extends BaseStore {
             setCFDSuccessDialog: action.bound,
             setMT5MigrationError: action.bound,
             setMigratedMT5Accounts: action.bound,
+            setSentEmailModalStatus: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -328,6 +331,10 @@ export default class CFDStore extends BaseStore {
 
     enableCFDPasswordModal() {
         this.is_cfd_password_modal_enabled = true;
+    }
+
+    setSentEmailModalStatus(status) {
+        this.is_sent_email_modal_enabled = status;
     }
 
     getName(account_type = this.account_type) {

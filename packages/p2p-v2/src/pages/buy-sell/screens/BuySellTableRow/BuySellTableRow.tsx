@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
 import React, { Fragment, useEffect } from 'react';
+import clsx from 'clsx';
 import { Badge, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
 import { BUY_SELL } from '@/constants';
 import { generateEffectiveRate } from '@/utils';
 import { p2p, useExchangeRateSubscription } from '@deriv/api';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
-import { TBuySellTableRowRenderer } from '../BuySellTable';
+import { TBuySellTableRowRenderer } from '../BuySellTable/BuySellTable';
 import './BuySellTableRow.scss';
-import clsx from 'clsx';
 
 const BASE_CURRENCY = 'USD';
 

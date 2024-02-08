@@ -4,7 +4,7 @@ import { BUY_SELL } from '@/constants';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
 import { BuySellHeader } from '../BuySellHeader';
-import { BuySellTableRow } from './BuySellTableRow';
+import { BuySellTableRow } from '../BuySellTableRow';
 import './BuySellTable.scss';
 
 export type TBuySellTableRowRenderer = Partial<NonNullable<ReturnType<typeof p2p.advert.useGetList>['data']>[0]>;

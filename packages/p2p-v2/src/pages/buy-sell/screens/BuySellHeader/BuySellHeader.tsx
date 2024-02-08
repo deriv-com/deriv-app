@@ -9,7 +9,7 @@ type TBuySellHeaderProps = {
 
 const BuySellHeader = ({ activeTab, setActiveTab }: TBuySellHeaderProps) => {
     return (
-        <div className='p2p-v2-buy-sell-header'>
+        <div className='p2p-v2-buy-sell-header' data-testid='dt_p2p_v2_buy_sell_header'>
             <Tabs
                 TitleFontSize='sm'
                 activeTab={activeTab}

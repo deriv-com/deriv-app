@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { getBrandWebsiteName, getStaticUrl, getPlatformSettings, PlatformContext } from '@deriv/shared';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
@@ -15,17 +15,7 @@ type TSelfExclusionArticleContent = {
     is_in_overlay: boolean;
 };
 
-export const selfExclusionArticleItems = ({
-    is_eu,
-    is_uk,
-    is_deriv_crypto,
-    is_app_settings,
-}: TSelfExclusionArticleItems) => {
-    const platform_name_trader = getPlatformSettings('trader').name;
-    const platform_name_dbot = getPlatformSettings('dbot').name;
-    const platform_name_bbot = getPlatformSettings('bbot').name;
-    const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
-
+export const selfExclusionArticleItems = ({ is_eu, is_deriv_crypto, is_app_settings }: TSelfExclusionArticleItems) => {
     const getEuItems = () => {
         const eu_items = [
             {

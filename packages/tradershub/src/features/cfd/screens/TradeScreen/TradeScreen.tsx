@@ -1,4 +1,5 @@
 import React, { Fragment, useMemo } from 'react';
+import ImportantIcon from '@/assets/svgs/ic-important.svg';
 import { useRegulationFlags } from '@/hooks';
 import { THooks, TPlatforms } from '@/types';
 import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
@@ -6,7 +7,6 @@ import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import ImportantIcon from '../../../../public/images/ic-important.svg';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
 

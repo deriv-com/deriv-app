@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
+import InstrumentsIcons from '@/assets/cfd/tradingInstruments';
 import { Text } from '@deriv-com/ui';
-import InstrumentsIcons from '../../../../public/images/cfd/tradingInstruments';
 
 type TInstrumentsIcon = {
     highlighted: boolean;

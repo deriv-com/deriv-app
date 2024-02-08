@@ -1,4 +1,4 @@
-import { useActiveWalletAccount, usePOI } from '@deriv/api';
+import { useActiveWalletAccount, usePOI } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import useTransferMessages from '../useTransferMessages';
 import {

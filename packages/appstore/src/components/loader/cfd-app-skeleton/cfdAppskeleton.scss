@@ -7,25 +7,24 @@
 
     &__header {
         display: flex;
-        flex-direction: row;
         align-items: center;
         gap: 8px;
 
         &__icon {
             height: 38px;
-            border-radius: 8px;
+            border-radius: $BORDER_RADIUS_2;
             width: 57px;
         }
         &__title {
             height: 24px;
-            border-radius: 8px;
+            border-radius: $BORDER_RADIUS_2;
             width: 106px;
         }
     }
 
     &__body {
         height: 24px;
-        border-radius: 8px;
+        border-radius: $BORDER_RADIUS_2;
         width: 422px;
     }
 }

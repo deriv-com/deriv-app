@@ -2,7 +2,6 @@
 
 .options-multipliers-skeleton-loader {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     gap: 48px;
 
@@ -16,13 +15,13 @@
         width: 799px;
         &--title {
             height: 36px;
-            border-radius: 8px;
+            border-radius: $BORDER_RADIUS_2;
             width: 238px;
         }
 
         &--description {
             height: 24px;
-            border-radius: 4px;
+            border-radius: $BORDER_RADIUS;
             width: 100%;
         }
     }
@@ -30,7 +29,7 @@
     &__right {
         &--currency-switcher {
             height: 72px;
-            border-radius: 8px;
+            border-radius: $BORDER_RADIUS_2;
             width: 305px;
         }
     }

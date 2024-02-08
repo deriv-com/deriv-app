@@ -2,12 +2,11 @@
 
 .tradershub-skeleton-loader {
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 8px;
     &__icon {
         height: 16px;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         width: 16px;
         @include mobile {
             display: none;
@@ -15,7 +14,7 @@
     }
     &__title {
         height: 24px;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         width: 92px;
 
         @include mobile {

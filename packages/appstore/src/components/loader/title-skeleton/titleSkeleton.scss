@@ -2,19 +2,17 @@
 
 .title-skeleton-loader {
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 8px;
 
     @include mobile {
         flex-direction: column;
-        align-self: flex-start;
         align-items: flex-start;
     }
 
     &__title {
         height: 46px;
-        border-radius: 8px;
+        border-radius: $BORDER_RADIUS_2;
         width: 145px;
         @include mobile {
             width: 109px;
@@ -24,7 +22,7 @@
 
     &__description {
         height: 28px;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         width: 79px;
         @include mobile {
             width: 73px;

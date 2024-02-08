@@ -10,12 +10,12 @@
     }
     &__icon {
         height: 16px;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         width: 16px;
     }
     &__title {
         height: 24px;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         width: 56px;
     }
 }

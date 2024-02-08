@@ -15,7 +15,7 @@
         .box-1 {
             &__title {
                 height: 16px;
-                border-radius: 4px;
+                border-radius: $BORDER_RADIUS;
                 width: 50px;
             }
         }
@@ -32,7 +32,7 @@
         }
         &--icon {
             height: 16px;
-            border-radius: 4px;
+            border-radius: $BORDER_RADIUS;
             width: 16px;
         }
     }

@@ -6,6 +6,6 @@
     border-radius: 4px;
     width: 59px;
     @include mobile {
-        display: flex;
+        display: block;
     }
 }

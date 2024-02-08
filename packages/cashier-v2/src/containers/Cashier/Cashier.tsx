@@ -8,6 +8,7 @@ import styles from './Cashier.module.scss';
 const Cashier = ({ routes }: TRouteTypes.TRouteComponent) => {
     return (
         <div className={styles.container}>
+            <PageLayout sidebar={<Menu routes={routes} />}>
                 <Switch>
                     {routes?.map(route => {
                         const { path, title } = route;

@@ -35,7 +35,7 @@ export const IdvDocSubmitOnSignup = ({
     residence_list,
 }: TIdvDocSubmitOnSignup) => {
     const side_note_image = (
-        <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+        <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExampleImage' />
     );
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};

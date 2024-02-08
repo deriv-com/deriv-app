@@ -50,7 +50,7 @@ const PoiConfirmWithExampleFormContainer = ({
     });
 
     const side_note_image = (
-        <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+        <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExampleImage' />
     );
 
     React.useEffect(() => {

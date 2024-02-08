@@ -57,7 +57,8 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
     it('should render PersonalDetailsForm with image and checkbox', async () => {
         render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
 
-        expect(await screen.findByText(clarification_message)).toBeInTheDocument();
+        expect(await screen.findByAltText('PoiNameDobExampleImage')).toBeInTheDocument();
+        expect(screen.getByText(clarification_message)).toBeInTheDocument();
         expect(screen.getByText(checkbox_label)).toBeInTheDocument();
         const checkbox_el: HTMLInputElement = screen.getByRole('checkbox');
         expect(checkbox_el.checked).toBeFalsy();

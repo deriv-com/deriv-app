@@ -38,7 +38,9 @@ export const generateIDVError = (
         case IDV_ERROR_STATUS.NameMismatch.code:
             return {
                 required_fields: ['first_name', 'last_name'],
-                side_note_image: <img src={getImageLocation('account/ic-poi-name-example.png')} alt='PoiNameExample' />,
+                side_note_image: (
+                    <img src={getImageLocation('account/ic-poi-name-example.png')} alt='PoiNameExampleImage' />
+                ),
                 inline_note_text: (
                     <Localize
                         i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your {{document_name}}.'
@@ -51,7 +53,9 @@ export const generateIDVError = (
         case IDV_ERROR_STATUS.DobMismatch.code:
             return {
                 required_fields: ['date_of_birth'],
-                side_note_image: <img src={getImageLocation('account/ic-poi-dob-example.png')} alt='PoiDobExample' />,
+                side_note_image: (
+                    <img src={getImageLocation('account/ic-poi-dob-example.png')} alt='PoiDobExampleImage' />
+                ),
                 inline_note_text: (
                     <Localize
                         i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your {{document_name}}.'
@@ -65,7 +69,7 @@ export const generateIDVError = (
             return {
                 required_fields: ['first_name', 'last_name', 'date_of_birth'],
                 side_note_image: (
-                    <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+                    <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExampleImage' />
                 ),
                 inline_note_text: (
                     <Localize

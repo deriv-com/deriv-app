@@ -60,7 +60,7 @@ const PersonalDetails = observer(
         const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
 
         const side_note_image = (
-            <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+            <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExampleImage' />
         );
 
         const handleCancel = values => {

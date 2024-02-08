@@ -56,7 +56,7 @@ const IdvDocumentSubmit = observer(
         const shouldSkipIdv = (document_id?: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
         const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
         const side_note_image = (
-            <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+            <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExampleImage' />
         );
 
         const form_initial_values = filterObjProperties(account_settings, visible_settings) as {

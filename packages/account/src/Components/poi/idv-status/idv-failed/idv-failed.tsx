@@ -84,7 +84,7 @@ const IdvFailed = ({
     const { setIsAlreadyAttempted } = client;
     const { is_mobile } = ui;
     const side_note_image = (
-        <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExample' />
+        <img src={getImageLocation('account/ic-poi-name-dob-example.png')} alt='PoiNameDobExampleImage' />
     );
 
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({

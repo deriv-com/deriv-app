@@ -99,7 +99,6 @@ const TradeAnimation = observer(({ className }) => {
                     updateIsButtonDisabled(true);
                     if (is_stop_button_visible) {
                         onStopBotClick();
-                        updateIsButtonDisabled(true);
                         return;
                     }
                     onRunButtonClick();

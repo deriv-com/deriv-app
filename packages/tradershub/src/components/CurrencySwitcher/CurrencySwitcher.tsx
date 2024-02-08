@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { CurrencySwitcherLoader, Modal, TradingAccountsList, useUIContext } from '@/components';
+import { CurrencySwitcherLoader, Modal, TradingAccountsList } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
 import { THooks } from '@/types';
@@ -44,11 +44,8 @@ const CurrencySwitcher = () => {
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
-    const { uiState } = useUIContext();
 
-    const { accountType, regulation } = uiState;
-
-    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
@@ -61,6 +58,7 @@ const CurrencySwitcher = () => {
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
             <div className='grow'>
                 <Text
+                    as='p'
                     className={isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'}
                     size='sm'
                     weight={isDemo ? 'bold' : 'normal'}

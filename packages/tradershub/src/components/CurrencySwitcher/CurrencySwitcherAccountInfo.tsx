@@ -29,7 +29,7 @@ export const RealCurrencySwitcherAccountInfo = ({
 }: RealCurrencySwitcherAccountInfoProps) => (
     <div className='flex flex-col'>
         <Text className='text-status-light-success' size='sm' weight='bold'>
-            {displayBalance}
+            {displayBalance ?? '0.00'}
         </Text>
         <Text className='text-system-light-less-prominent-text' size='sm'>
             {currencyText}

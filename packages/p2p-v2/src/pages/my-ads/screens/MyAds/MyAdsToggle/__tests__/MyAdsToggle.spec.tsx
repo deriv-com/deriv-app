@@ -1,6 +1,7 @@
 import React from 'react';
 import MyAdsToggle from '../MyAdsToggle';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 const mockProps = {
     isPaused: false,
@@ -23,7 +24,7 @@ describe('MyAdsToggle', () => {
     it('should handle onclick toggle', () => {
         render(<MyAdsToggle {...mockProps} />);
         const input: HTMLInputElement = screen.getByRole('checkbox');
-        input.click();
+        userEvent.click(input);
         expect(mockProps.onClickToggle).toHaveBeenCalled();
     });
 });

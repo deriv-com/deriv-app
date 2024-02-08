@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useExchangeRateSubscription } from '@deriv/api';
-import MyAdsTableRow from '../MyAdsTableRow/MyAdsTableRow';
-import useDevice from '../../../../../hooks/useDevice';
+import MyAdsTableRow from '../MyAdsTableRow';
+import { useDevice } from '@/hooks';
 
 const mockProps = {
     account_currency: 'USD',
@@ -31,7 +31,9 @@ const mockProps = {
     counterparty_type: 'sell' as const,
     country: 'id',
     created_time: new Date(1688460999),
+    days_until_archive: 1,
     description: '',
+    eligible_countries: ['ID'],
     effective_rate: 22,
     effective_rate_display: '22.00',
     id: '138',
@@ -42,6 +44,9 @@ const mockProps = {
     max_order_amount_display: '22.00',
     max_order_amount_limit: 22,
     max_order_amount_limit_display: '22.00',
+    min_completion_rate: 22,
+    min_join_days: 4,
+    min_rating: 4,
     min_order_amount: 22,
     min_order_amount_display: '22.00',
     min_order_amount_limit: 22,
@@ -51,22 +56,25 @@ const mockProps = {
     payment_method_names: ['Bank Transfer'],
     price: 22,
     price_display: '22.00',
+    order_expiry_period: 900,
     rate: 22,
     rate_display: '22.00',
     rate_type: 'fixed' as const,
     remaining_amount: 22,
     remaining_amount_display: '22.00',
     type: 'buy' as const,
+    visibility_status: [],
     onClickIcon: jest.fn(),
     isBarred: false,
     isListed: true,
+    setIsModalOpen: jest.fn(),
 };
 
 jest.mock('@deriv/api', () => ({
     useExchangeRateSubscription: jest.fn(),
 }));
 
-jest.mock('../../../../../hooks/useDevice', () => ({
+jest.mock('@/hooks/useDevice', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         isMobile: false,

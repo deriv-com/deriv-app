@@ -24,7 +24,14 @@ const GetADerivAccountDialog = () => {
                 <Button onClick={hide} variant='outlined'>
                     Cancel
                 </Button>
-                <Button onClick={() => setIsWizardOpen(true)}>Add a Deriv account</Button>
+                <Button
+                    onClick={() => {
+                        hide();
+                        setIsWizardOpen(true);
+                    }}
+                >
+                    Add a Deriv account
+                </Button>
             </Dialog.Action>
         </Dialog>
     );

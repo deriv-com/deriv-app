@@ -25,11 +25,10 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
         setCfdState('marketType', account.market_type);
         setCfdState('platform', PlatformDetails.mt5.platform);
         if (!hasActiveDerivAccount) {
-            show(<GetADerivAccountDialog />);
-        } else {
-            !activeAccount?.is_virtual && show(<JurisdictionModal />);
-            activeAccount?.is_virtual && hasActiveDerivAccount && show(<MT5PasswordModal />);
+            return <GetADerivAccountDialog />;
         }
+        !activeAccount?.is_virtual && show(<JurisdictionModal />);
+        activeAccount?.is_virtual && hasActiveDerivAccount && show(<MT5PasswordModal />);
     };
 
     const title = marketTypeDetails?.title ?? '';

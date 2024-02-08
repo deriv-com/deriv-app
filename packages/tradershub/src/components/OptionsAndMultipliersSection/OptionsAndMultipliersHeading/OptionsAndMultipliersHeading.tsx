@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { CurrencySwitcher, StaticLink, TitleDescriptionLoader, useUIContext } from '@/components';
+import { CurrencySwitcher, StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useIsEuRegion } from '@deriv/api';
 import { Heading, useBreakpoint } from '@deriv/quill-design';
@@ -12,9 +12,7 @@ import { Text } from '@deriv-com/ui';
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const title = isEU ? 'Multipliers' : 'Options & multipliers';
 

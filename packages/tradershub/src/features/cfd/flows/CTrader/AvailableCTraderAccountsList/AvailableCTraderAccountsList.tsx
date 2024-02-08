@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import {
+    GetADerivAccountDialog,
     PlatformIcon,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '@/components';
 import { getStaticUrl } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
 import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
@@ -23,18 +25,23 @@ const LeadingIcon = () => (
 const AvailableCTraderAccountsList = () => {
     const { mutate, status } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { hasActiveDerivAccount } = useRegulationFlags();
     const { show } = Provider.useModal();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
 
     const onSubmit = () => {
-        mutate({
-            payload: {
-                account_type: accountType,
-                market_type: 'all',
-                platform: PlatformDetails.ctrader.platform,
-            },
-        });
+        if (!hasActiveDerivAccount) {
+            show(<GetADerivAccountDialog />);
+        } else {
+            mutate({
+                payload: {
+                    account_type: accountType,
+                    market_type: 'all',
+                    platform: PlatformDetails.ctrader.platform,
+                },
+            });
+        }
     };
 
     useEffect(() => {

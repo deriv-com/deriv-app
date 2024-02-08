@@ -49,7 +49,7 @@ const JurisdictionScreen = ({
         <div
             className={qtMerge(
                 `flex flex-col ${
-                    marketType === MarketType.FINANCIAL ? 'w-[1200px] h-[700px]' : 'w-[1040px] h-[600px]'
+                    marketType === MarketType.FINANCIAL ? 'w-[1200px] h-[700px]' : 'w-[1040px] h-[700px]'
                 }  items-center justify-center transition-all ease-in duration-[0.6s]`,
                 isDynamicLeverageVisible && '[transform:rotateY(-180deg)] h-[700px] opacity-50'
             )}

@@ -124,7 +124,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
 
     return (
         <div
-            className={qtMerge(JurisdictionCardClass({ isAdded, isFlipped, isSelected }), 'w-[280px]')}
+            className={qtMerge(JurisdictionCardClass({ isAdded, isFlipped, isSelected }), 'w-[276px]')}
             onClick={() => {
                 !isAdded && onSelect(jurisdiction);
             }}

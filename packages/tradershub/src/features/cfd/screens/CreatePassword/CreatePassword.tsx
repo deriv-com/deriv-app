@@ -36,22 +36,13 @@ const CreatePassword = ({
 
     const { title } = PlatformDetails[platform];
     return (
-        <div className='inline-flex flex-col items-center w-full text-center gap-1200 rounded-400 bg-system-light-primary-background lg:w-[360px]'>
+        <div className='inline-flex flex-col items-center w-full gap-1200 rounded-400 bg-system-light-primary-background lg:w-[360px]'>
             {!isMobile && icon}
-            <div className='flex flex-col items-center justify-center lg:gap-400'>
-                <Text align='center' weight='bold'>
-                    Create a {title} password
-                </Text>
-                <Text align='center' size='sm'>
-                    You can use this password for all your {title} accounts.
-                </Text>
+            <div className='flex flex-col items-center justify-center text-center lg:gap-400'>
+                <Text weight='bold'>Create a {title} password</Text>
+                <Text size='sm'>You can use this password for all your {title} accounts.</Text>
             </div>
-            <PasswordInput
-                className='text-body-sm'
-                label={`${title} password`}
-                onChange={onPasswordChange}
-                value={password}
-            />
+            <PasswordInput isFullWidth label={`${title} password`} onChange={onPasswordChange} value={password} />
             {!isMobile && (
                 <Button
                     disabled={!password || isLoading || !validPassword(password)}

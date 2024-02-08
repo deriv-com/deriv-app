@@ -8,7 +8,7 @@ import FatcaDeclaration from './TermsOfUseSections/FatcaDeclaration';
 import PEPs from './TermsOfUseSections/PEPs';
 
 // Replace divider from deriv-com/ui once it is implemented
-export const Divider = () => <hr className=' bg-system-light-primary-background' />;
+const Divider = () => <hr className=' bg-system-light-primary-background' />;
 
 /**
  * @name TermsOfUse

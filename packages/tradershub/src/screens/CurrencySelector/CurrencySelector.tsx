@@ -12,10 +12,11 @@ import Currencies from './Currencies';
  * @returns {React.ReactNode}
  */
 const CurrencySelector = () => {
-    const { dispatch, state } = useSignupWizardContext();
+    const { dispatch, helpers, state } = useSignupWizardContext();
 
     const handleSubmit = (values: FormikValues) => {
         dispatch({ payload: { currency: values.currency }, type: ACTION_TYPES.SET_CURRENCY });
+        helpers.goToNextStep();
     };
     return (
         <WizardScreenWrapper heading='Select your preferred currency'>
@@ -32,7 +33,7 @@ const CurrencySelector = () => {
                             <hr className='opacity-100 my-1200' />
                             <Currencies type={CURRENCY_TYPES.CRYPTO} />
                         </div>
-                        <Actions canGoNext={!!values.currency} />
+                        <Actions submitDisabled={!values.currency} />
                     </Form>
                 )}
             </Formik>

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Text } from '@deriv-com/ui';
+import PEPConfirmation from './PEPConfirmation';
 
 const PEPs = () => (
     <Fragment>
@@ -10,7 +11,7 @@ const PEPs = () => (
             A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates
             and family members of a PEP are also considered to be PEPs.
         </Text>
-        {/*  Add checkbox here once we have it in deriv-com/ui  */}
+        <PEPConfirmation />
     </Fragment>
 );
 

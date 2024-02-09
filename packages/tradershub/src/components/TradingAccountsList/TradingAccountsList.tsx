@@ -1,5 +1,4 @@
 import React from 'react';
-import { useUIContext } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
@@ -10,11 +9,7 @@ const TradingAccountsList = () => {
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { data: activeAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
-
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     return (
         <div className='lg:w-[500px] lg:h-[350px] rounded-400'>

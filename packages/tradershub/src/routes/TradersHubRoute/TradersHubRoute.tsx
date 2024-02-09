@@ -18,10 +18,10 @@ const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
     const { data: isDIEL } = useIsDIELEnabled();
     const { uiState } = useUIContext();
-    const { accountType, regulation } = uiState;
+    const { accountType } = uiState;
     const isReal = accountType === 'real';
     const isDemo = accountType === 'demo';
-    const { hasActiveDerivAccount } = useRegulationFlags(regulation, accountType);
+    const { hasActiveDerivAccount } = useRegulationFlags();
 
     const isSwitcherVisible = isDIEL && isReal;
     const isTotalAssetsVisible = hasActiveDerivAccount || isDemo;

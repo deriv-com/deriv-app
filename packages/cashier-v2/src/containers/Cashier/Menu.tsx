@@ -2,15 +2,16 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Text } from '@deriv-com/ui';
 import { TRouteTypes } from '../../types';
+import styles from './Menu.module.scss';
 
 const Menu = ({ routes }: Pick<TRouteTypes.TRouteComponent, 'routes'>) => {
     return (
-        <div className='flex min-w-[278px] flex-col rounded-400 bg-[#f2f3f4] p-400'>
+        <div className={styles.container}>
             {routes?.map(route => {
                 return (
-                    <div className='px-800 py-500' key={route.path}>
+                    <div className={styles.navlinkWrapper} key={route.path}>
                         <Text size='sm' weight='bold'>
-                            <NavLink activeClassName='text-solid-red-500' to={route.path}>
+                            <NavLink activeClassName={styles.navlinkActive} to={route.path}>
                                 {route.title}
                             </NavLink>
                         </Text>

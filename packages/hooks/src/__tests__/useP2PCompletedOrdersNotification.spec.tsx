@@ -92,6 +92,7 @@ describe('useP2PCompletedOrdersNotification', () => {
         });
 
         mockUseGetAccountStatus.mockReturnValue({
+            // @ts-expect-error need to come up with a way to mock the return type of useGetAccountStatus
             data: {
                 is_p2p_user: true,
             },

@@ -15,7 +15,7 @@
         "@deriv-com/ui": "1.3.1",
         "@deriv/api": "^1.0.0",
         "@deriv/integration": "^1.0.0",
-        "@deriv/quill-icons": "^1.17.16",
+        "@deriv/quill-icons": "^1.17.23",
         "@deriv/react-joyride": "^2.6.2",
         "@sendbird/chat": "^4.9.7",
         "@tanstack/react-table": "^8.10.3",

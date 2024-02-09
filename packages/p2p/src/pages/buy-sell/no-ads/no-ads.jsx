@@ -49,7 +49,7 @@ const NoAds = ({ is_ads_page = false }) => {
                         primary
                         large
                         onClick={() => {
-                            if (general_store.is_advertiser || !is_ads_page) {
+                            if (general_store.is_advertiser) {
                                 onClickButton();
                             } else {
                                 showModal({

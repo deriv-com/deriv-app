@@ -145,7 +145,11 @@ const Redirect = observer(() => {
                 // though can't use "verification_code" as name param
                 // as there is general logic within client-store
                 // which removes anything which resembles code=XYZ
-                history.push(`${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}`);
+                history.push(
+                    `${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}${
+                        client.loginid ? `&loginid=${client.loginid}` : ''
+                    }`
+                );
             } else {
                 history.push(routes.cashier_withdrawal);
             }

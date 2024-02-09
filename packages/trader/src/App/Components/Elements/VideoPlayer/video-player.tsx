@@ -201,7 +201,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     };
 
     const onEnded = () => {
-        console.log('test onEnded');
+        // console.log('test onEnded');
         setIsEnded(true);
         progress_bar_filled_ref?.current?.style.setProperty('width', '100%');
         setCurrentTime(video_duration);
@@ -242,7 +242,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             e.stopPropagation();
 
             if (!video_ref.current || !progress_bar_filled_ref.current) return;
-            console.log('test togglePlay');
+            // console.log('test togglePlay');
             cancelAnimationFrame(animation_ref.current);
             clearTimeout(replay_animation_timeout.current);
             clearTimeout(toggle_animation_timeout.current);
@@ -256,7 +256,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 // setIsPlaying(true);
                 // console.log('test should_check_time_ref.current', should_check_time_ref.current);
                 replay_animation_timeout.current = setTimeout(() => {
-                    console.log('test should_check_time_ref.current', should_check_time_ref.current);
+                    // console.log('test should_check_time_ref.current', should_check_time_ref.current);
 
                     video_ref?.current?.play();
                     animation_ref.current = requestAnimationFrame(repeat);

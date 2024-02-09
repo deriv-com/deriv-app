@@ -32,8 +32,6 @@ describe('<CurrencySelector/>', () => {
 
     const fiat_msg =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.';
-    const mt5_cfd_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.';
     const dxtrade_non_eu_msg =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 or Deriv X account.';
     const mt5_eu =
@@ -262,7 +260,7 @@ describe('<CurrencySelector/>', () => {
         });
     });
 
-    fit('should not disable fiat if crypto is disabled ', () => {
+    it('should not disable fiat if crypto is disabled ', () => {
         const new_store: TStores = {
             ...store,
             client: {
@@ -344,7 +342,7 @@ describe('<CurrencySelector/>', () => {
         expect(screen.getByRole('radio', { name: /Bitcoin/i })).toBeDisabled();
     });
 
-    fit('should disable fiat accout is one account is already created', () => {
+    it('should disable fiat accout is one account is already created', () => {
         const new_store: TStores = {
             ...store,
             client: {

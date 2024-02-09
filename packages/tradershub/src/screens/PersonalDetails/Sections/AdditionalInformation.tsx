@@ -41,10 +41,11 @@ const AdditionalInformation = () => {
             <Text as='p' className='my-800' weight='bold'>
                 Additional information
             </Text>
-            <div className='flex flex-col gap-1400'>
+            <div className='flex flex-col gap-1000'>
                 <Input
-                    className='w-full text-body-sm'
+                    className='text-body-sm'
                     error={Boolean(errors.phoneNumber && touched.phoneNumber)}
+                    isFullWidth
                     label='Phone number*'
                     message={touched.phoneNumber && errors.phoneNumber}
                     name='phoneNumber'
@@ -86,7 +87,8 @@ const AdditionalInformation = () => {
                 </div>
                 <div className='flex items-center justify-between gap-800'>
                     <Input
-                        className='w-full text-body-sm'
+                        className='text-body-sm'
+                        isFullWidth
                         label='Tax identification number'
                         name='taxIdentificationNumber'
                         onBlur={handleBlur}

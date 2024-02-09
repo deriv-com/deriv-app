@@ -406,13 +406,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
     padding: 0 0.8rem;
     display: flex;
     flex-direction: column;
-    height: 212px;
+    height: 218px;
     position: relative;
     z-index: 2;
 
     .trade-container--accumulators &,
     .trade-container--turbos & {
-        height: 24.8rem;
+        height: 25.4rem;
     }
     &__content-loader {
         position: absolute;

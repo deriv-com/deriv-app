@@ -44,6 +44,7 @@ export default class GeneralStore extends BaseStore {
     is_listed = false;
     is_loading = false;
     is_p2p_blocked_for_pa = false;
+    is_p2p_user = null;
     is_restricted = false;
     nickname = null;
     nickname_error = '';
@@ -109,6 +110,7 @@ export default class GeneralStore extends BaseStore {
             is_high_risk: observable,
             is_listed: observable,
             is_loading: observable,
+            is_p2p_user: observable,
             is_p2p_blocked_for_pa: observable,
             is_restricted: observable,
             nickname: observable,
@@ -165,6 +167,7 @@ export default class GeneralStore extends BaseStore {
             setIsListed: action.bound,
             setIsLoading: action.bound,
             setIsP2pBlockedForPa: action.bound,
+            setIsP2PUser: action.bound,
             setIsRestricted: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
@@ -172,7 +175,6 @@ export default class GeneralStore extends BaseStore {
             setOrderTableType: action.bound,
             setP2PConfig: action.bound,
             setP2pPoaRequired: action.bound,
-            setP2pOrderList: action.bound,
             setP2PSettings: action.bound,
             setParameters: action.bound,
             setPoaStatus: action.bound,
@@ -470,6 +472,9 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
+            const { p2p_status } = get_account_status;
+            this.setIsP2PUser(p2p_status !== 'none' && p2p_status !== 'perm_ban');
+
             const hasStatuses = statuses => statuses?.every(status => get_account_status.status.includes(status));
 
             const is_authenticated = hasStatuses(['authenticated']);
@@ -519,16 +524,8 @@ export default class GeneralStore extends BaseStore {
                         p2p_advertiser_info: 1,
                         subscribe: 1,
                     },
-                    [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
-                ),
-                order_list_subscription: subscribeWS(
-                    {
-                        p2p_order_list: 1,
-                        subscribe: 1,
-                        offset: 0,
-                        limit: this.list_item_limit,
-                    },
-                    [this.setP2pOrderList]
+                    [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)],
+                    this.is_p2p_user
                 ),
                 p2p_settings_subscription: subscribeWS({ p2p_settings: 1 }, [this.setP2PSettings]),
             };
@@ -676,6 +673,10 @@ export default class GeneralStore extends BaseStore {
         this.is_p2p_blocked_for_pa = is_p2p_blocked_for_pa;
     }
 
+    setIsP2PUser(is_p2p_user) {
+        this.is_p2p_user = is_p2p_user;
+    }
+
     setIsRestricted(is_restricted) {
         this.is_restricted = is_restricted;
     }
@@ -713,37 +714,6 @@ export default class GeneralStore extends BaseStore {
                 floating_rate_store.setApiErrorMessage(null);
             }
         });
-    }
-
-    setP2pOrderList(order_response) {
-        if (order_response.error) {
-            this.ws_subscriptions.order_list_subscription.unsubscribe();
-            return;
-        }
-
-        const { p2p_order_list, p2p_order_info } = order_response ?? {};
-        const { order_store } = this.root_store;
-
-        if (p2p_order_list) {
-            const { list } = p2p_order_list;
-            // it's an array of orders from p2p_order_list
-            this.handleNotifications(order_store.orders, list);
-            list?.forEach(order => order_store.syncOrder(order));
-        } else if (p2p_order_info) {
-            // it's a single order from p2p_order_info
-            const idx_order_to_update = order_store.orders.findIndex(order => order.id === p2p_order_info.id);
-            const updated_orders = [...order_store.orders];
-            // if it's a new order, add it to the top of the list
-            if (idx_order_to_update < 0) {
-                updated_orders.unshift(p2p_order_info);
-            } else {
-                // otherwise, update the correct order
-                updated_orders[idx_order_to_update] = p2p_order_info;
-            }
-
-            this.handleNotifications(order_store.orders, updated_orders);
-            order_store.syncOrder(p2p_order_info);
-        }
     }
 
     setOrderPaymentPeriod(order_payment_period) {

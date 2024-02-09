@@ -45,11 +45,7 @@ const MyProfile = () => {
         }
     }, [is_poi_poa_verified]);
 
-    if (
-        isEmptyObject(general_store.advertiser_info) &&
-        !general_store.poi_status &&
-        !general_store.should_show_dp2p_blocked
-    ) {
+    if (general_store.is_p2p_user === null) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -63,7 +59,7 @@ const MyProfile = () => {
         );
     }
 
-    if (general_store.is_advertiser || is_poi_poa_verified) {
+    if (general_store.is_advertiser || is_poi_poa_verified || general_store.is_p2p_user) {
         return (
             <div className='my-profile'>
                 <div className='my-profile__content'>

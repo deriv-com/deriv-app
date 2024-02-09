@@ -96,7 +96,6 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     form_error?: string;
     has_mt5_account: boolean;
     is_bvi: boolean;
-    is_mt5_migration_modal_enabled: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
     onCancel: () => void;
@@ -399,7 +398,6 @@ const CFDPasswordForm = observer(
         platform,
         should_set_trading_password,
         submitPassword,
-        is_mt5_migration_modal_enabled,
         validatePassword,
     }: TCFDPasswordFormProps) => {
         const { ui } = useStore();
@@ -409,10 +407,6 @@ const CFDPasswordForm = observer(
             if (error_type === 'PasswordReset') {
                 return localize('Try later');
             }
-            if (is_mt5_migration_modal_enabled) {
-                return localize('Upgrade');
-            }
-
             return localize('Add account');
         }, [error_type]);
 
@@ -876,7 +870,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             platform={platform}
             is_dxtrade_allowed={is_dxtrade_allowed}
             onCancel={closeModal}
-            is_mt5_migration_modal_enabled={is_mt5_migration_modal_enabled}
         />
     );
 

@@ -54,7 +54,19 @@ describe('<WalletCashier />', () => {
         expect(screen.getByText('WalletCashierContent')).toBeInTheDocument();
     });
 
-    it('should hide the wallet header when content is scrolled', async () => {
+    it('should contain the wallet header when the content is not scrolled', () => {
+        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+        (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({
+            isFetchedAfterMount: true,
+            isLoading: false,
+        });
+
+        render(<WalletCashier />);
+
+        expect(screen.queryByText('WalletCashierHeader')).toBeInTheDocument();
+    });
+
+    it('should hide the wallet header when content is scrolled', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({
             isFetchedAfterMount: true,
@@ -66,6 +78,6 @@ describe('<WalletCashier />', () => {
         const walletsCashierContent = screen.getByTestId('dt_wallets_cashier_content');
         fireEvent.scroll(walletsCashierContent, { target: { scrollTop: 300 } });
 
-        await expect(screen.queryByText('WalletCashierHeader')).not.toBeInTheDocument();
+        expect(screen.queryByText('WalletCashierHeader')).not.toBeInTheDocument();
     });
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TradingAppCardLoader } from '@/components';
+import { TradingAppCardLoader, useUIContext } from '@/components';
 import { THooks } from '@/types';
 import { CFDPlatformLayout } from '@cfd/components';
 import { PlatformDetails } from '@cfd/constants';
@@ -7,11 +7,14 @@ import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '@cfd/flo
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 
 const CTraderList = () => {
+    const { uiState } = useUIContext();
+    const { accountType } = uiState;
     const { data: cTraderAccounts, isFetchedAfterMount } = useCtraderAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
     const hasCTraderAccount = cTraderAccounts?.some(
-        (account: THooks.CtraderAccountsList) => account.is_virtual === activeTradingAccount?.is_virtual
+        (account: THooks.CtraderAccountsList) =>
+            account.is_virtual === activeTradingAccount?.is_virtual && account.account_type === accountType
     );
 
     return (

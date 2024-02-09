@@ -3,13 +3,13 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AvailableP2PBalanceModal from '../AvailableP2PBalanceModal';
 
-const MockApp = () => {
-    const [isModalOpen, setIsModalOpen] = useState(true);
+const mockOnRequestClose = jest.fn();
 
+const MockApp = () => {
     return (
         <>
             <div id='v2_modal_root' />
-            <AvailableP2PBalanceModal isModalOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
+            <AvailableP2PBalanceModal isModalOpen={true} onRequestClose={mockOnRequestClose} />
         </>
     );
 };
@@ -25,6 +25,6 @@ describe('AvailableP2PBalanceModal', () => {
             name: 'Ok',
         });
         userEvent.click(okBtn);
-        expect(screen.queryByTestId('dt_p2p_v2_available_p2p_balance_modal')).not.toBeInTheDocument();
+        expect(mockOnRequestClose).toBeCalled();
     });
 });

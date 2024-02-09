@@ -61,6 +61,7 @@ const AdditionalInformation = () => {
                         text: residence.text,
                         value: residence.value ?? '',
                     }))}
+                    listHeight='sm'
                     name='placeOfBirth'
                     onSelect={selectedItem => {
                         setFieldValue('placeOfBirth', selectedItem);
@@ -76,6 +77,7 @@ const AdditionalInformation = () => {
                             text: residence.text,
                             value: residence.value ?? '',
                         }))}
+                        listHeight='sm'
                         name='taxResidence'
                         onSelect={selectedItem => {
                             setFieldValue('taxResidence', selectedItem);
@@ -102,6 +104,7 @@ const AdditionalInformation = () => {
                     errorMessage={touched.accountOpeningReason && errors.accountOpeningReason}
                     label='Account opening reason*'
                     list={AccountOpeningReasonList}
+                    listHeight='sm'
                     name='accountOpeningReason'
                     onSelect={selectedItem => {
                         setFieldValue('accountOpeningReason', selectedItem);

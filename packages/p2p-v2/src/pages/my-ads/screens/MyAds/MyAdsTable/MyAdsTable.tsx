@@ -1,8 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
+import { Table } from '@/components';
+import MyAdsDeleteModal from '@/components/Modals/MyAdsDeleteModal/MyAdsDeleteModal';
+import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';
 import { Button, Loader } from '@deriv-com/ui';
-import { Table } from '@/components';
-import { useDevice } from '@/hooks';
 import { MyAdsTableRow } from '../MyAdsTableRow';
 import { MyAdsToggle } from '../MyAdsToggle';
 import './MyAdsTable.scss';
@@ -46,12 +47,15 @@ const MyAdsTable = () => {
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
     const { mutate } = p2p.advert.useUpdate();
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
+    const { error, mutate: deleteAd } = p2p.advert.useDelete();
     const { isDesktop } = useDevice();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [advertId, setAdvertId] = useState('');
 
     if (isLoading) return <Loader />;
 
     const onClickIcon = (id: string, action: string) => {
-        //TODO: to implement the onclick actions
+        //TODO: to implement the onclick actions for share and edit.
         switch (action) {
             case 'activate':
                 mutate({ id, is_active: 1 });
@@ -59,13 +63,29 @@ const MyAdsTable = () => {
             case 'deactivate':
                 mutate({ id, is_active: 0 });
                 break;
-            case 'edit':
+            case 'delete': {
+                setAdvertId(id);
+                setIsModalOpen(true);
+                break;
+            }
             default:
                 break;
         }
     };
 
     const onClickToggle = () => updateAds({ is_listed: advertiserInfo?.is_listed ? 0 : 1 });
+
+    const onRequestClose = () => {
+        setAdvertId('');
+        if (isModalOpen) {
+            setIsModalOpen(false);
+        }
+    };
+
+    const onClickDelete = () => {
+        deleteAd({ id: advertId });
+        onRequestClose();
+    };
 
     return (
         <>
@@ -98,6 +118,15 @@ const MyAdsTable = () => {
                     tableClassname=''
                 />
             </div>
+            {(isModalOpen || error?.error?.message) && (
+                <MyAdsDeleteModal
+                    error={error}
+                    id={advertId}
+                    isModalOpen={isModalOpen || !!error?.error?.message}
+                    onClickDelete={onClickDelete}
+                    onRequestClose={onRequestClose}
+                />
+            )}
         </>
     );
 };

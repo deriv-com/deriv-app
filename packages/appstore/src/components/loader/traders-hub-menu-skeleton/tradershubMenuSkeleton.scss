@@ -3,23 +3,23 @@
 .tradershub-skeleton-loader {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.8rem;
     &__icon {
-        height: 16px;
+        height: 1.6rem;
         border-radius: $BORDER_RADIUS;
-        width: 16px;
+        width: 1.6rem;
         @include mobile {
             display: none;
         }
     }
     &__title {
-        height: 24px;
+        height: 2.4rem;
         border-radius: $BORDER_RADIUS;
-        width: 92px;
+        width: 9.2rem;
 
         @include mobile {
-            width: 48px;
-            height: 16px;
+            width: 4.8rem;
+            height: 1.6rem;
         }
     }
 }

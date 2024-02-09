@@ -2,17 +2,16 @@
 
 .header-right-menu-skeleton-loader {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: 24px;
+    gap: 2.4rem;
 
     @include mobile {
-        gap: 16px;
+        gap: 1.6rem;
     }
 
     &__icon {
-        height: 24px;
-        border-radius: 4px;
-        width: 24px;
+        height: 2.4rem;
+        border-radius: 0.4rem;
+        width: 2.4rem;
     }
 }

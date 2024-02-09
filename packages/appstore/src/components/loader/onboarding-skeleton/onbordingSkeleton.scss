@@ -11,18 +11,23 @@
         justify-content: center;
         align-items: center;
         padding: 0 1.6rem;
-        border: 1px solid $COLOR_LIGHT_GRAY_6;
+        border: 1px solid var(--general-section-1, #f2f3f4);
     }
 
     &__content {
         padding: 4rem;
         width: 100%;
+
+        @include mobile {
+            padding: 1.6rem;
+        }
+
         &--title-bar {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 24px;
+            gap: 2.4rem;
             @include mobile {
                 flex-direction: column;
             }
@@ -30,12 +35,12 @@
 
         &--options {
             display: flex;
-            border: 1px solid $COLOR_LIGHT_GRAY_6;
-            border-radius: 24px;
+            border: 1px solid var(--general-section-1, #f2f3f4);
+            border-radius: 2.4rem;
             padding: 2.4rem;
             margin: 2.4rem 0;
             flex-direction: column;
-            gap: 24px;
+            gap: 2.4rem;
             overflow-x: hidden;
             &--platforms {
                 display: flex;
@@ -56,12 +61,12 @@
 
         &--cfds {
             display: flex;
-            border: 1px solid $COLOR_LIGHT_GRAY_6;
-            border-radius: 24px;
+            flex-direction: column;
+            border: 1px solid var(--general-section-1, #f2f3f4);
+            border-radius: 2.4rem;
             padding: 2.4rem;
             margin: 2.4rem 0;
-            flex-direction: column;
-            gap: 24px;
+            gap: 2.4rem;
             overflow-x: hidden;
             @include mobile {
                 display: none;
@@ -72,7 +77,7 @@
                 flex-direction: row;
                 width: 100%;
                 justify-content: space-between;
-                gap: 24px;
+                gap: 2.4rem;
             }
             @include mobile {
                 border: none;

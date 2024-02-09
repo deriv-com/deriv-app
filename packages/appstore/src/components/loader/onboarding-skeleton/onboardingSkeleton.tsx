@@ -7,15 +7,14 @@ import OptionsAndMultipliersSkeleton from '../options-and-multipliers-skeleton/o
 import TitleSkeleton from '../title-skeleton/titleSkeleton';
 import TotalAssetSkeleton from '../total-asset-skeleton/totalAssetSkeleton';
 import TradingAppCardSkeleton from '../trading-app-skeleton/tradingAppSkeleton';
-
 import './onbordingSkeleton.scss';
 
 const TradingAppCardSkeletonBox = () => (
-    <>
+    <React.Fragment>
         <TradingAppCardSkeleton />
         <TradingAppCardSkeleton />
         <TradingAppCardSkeleton />
-    </>
+    </React.Fragment>
 );
 const OnboardingSkeleton = () => (
     <div className='onboarding-skeleton'>

@@ -1,3 +1,3 @@
-import OnboardingSkeleton from './onboarding-skeleton/onbordingSkeleton';
+import OnboardingSkeleton from './onboarding-skeleton/onboardingSkeleton';
 
 export default OnboardingSkeleton;

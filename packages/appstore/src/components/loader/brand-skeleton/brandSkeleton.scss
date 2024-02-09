@@ -4,11 +4,11 @@
     display: flex;
     align-items: center;
     &__brand {
-        height: 16px;
-        border-radius: 4px;
-        width: 50px;
+        height: 1.6rem;
+        border-radius: 0.4rem;
+        width: 5rem;
         @include mobile {
-            width: 16px;
+            width: 1.6rem;
         }
     }
 }

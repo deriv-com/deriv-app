@@ -3,7 +3,7 @@
 .title-skeleton-loader {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: $BORDER_RADIUS_2;
 
     @include mobile {
         flex-direction: column;
@@ -12,22 +12,22 @@
     }
 
     &__title {
-        height: 46px;
+        height: 4.6rem;
         border-radius: $BORDER_RADIUS_2;
-        width: 145px;
+        width: 14.5rem;
         @include mobile {
-            width: 109px;
-            height: 26px;
+            width: 10.9rem;
+            height: 2.6rem;
         }
     }
 
     &__description {
-        height: 28px;
+        height: 2.8rem;
         border-radius: $BORDER_RADIUS;
-        width: 79px;
+        width: 7.9rem;
         @include mobile {
-            width: 73px;
-            height: 24px;
+            width: 7.3rem;
+            height: 2.4rem;
         }
     }
 }

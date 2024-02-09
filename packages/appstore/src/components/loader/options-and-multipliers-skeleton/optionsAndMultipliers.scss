@@ -3,7 +3,7 @@
 .options-multipliers-skeleton-loader {
     display: flex;
     justify-content: space-between;
-    gap: 48px;
+    gap: 4.8rem;
 
     @include mobile {
         display: none;
@@ -11,16 +11,16 @@
     &__left {
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        width: 799px;
+        gap: 0.8rem;
+        width: 79.9rem;
         &--title {
-            height: 36px;
+            height: 3.6rem;
             border-radius: $BORDER_RADIUS_2;
-            width: 238px;
+            width: 23.8rem;
         }
 
         &--description {
-            height: 24px;
+            height: 2.4rem;
             border-radius: $BORDER_RADIUS;
             width: 100%;
         }
@@ -28,9 +28,9 @@
 
     &__right {
         &--currency-switcher {
-            height: 72px;
+            height: 7.2rem;
             border-radius: $BORDER_RADIUS_2;
-            width: 305px;
+            width: 30.5rem;
         }
     }
 }

@@ -26,7 +26,7 @@ const getAdErrorMessage = (
     advertType: string,
     dailyBuyLimit: string,
     dailySellLimit: string
-): ReactNode | string => {
+): string => {
     const errorMessages: { [key: string]: ReactNode | string } = {
         [ERROR_CODES.ADVERT_INACTIVE]: <AdRateError />,
         [ERROR_CODES.ADVERT_MAX_LIMIT]: `This ad is not listed on Buy/Sell because its minimum order is higher than the maximum amount per order ${accountCurrency}.`,
@@ -41,7 +41,7 @@ const getAdErrorMessage = (
         [ERROR_CODES.ADVERTISER_TEMP_BAN]: `You’re not allowed to use Deriv P2P to advertise. Please contact us via live chat for more information.`,
     };
 
-    return errorMessages[errorCode] || 'Your ad is not listed';
+    return (errorMessages[errorCode] as string) ?? 'Your ad is not listed';
 };
 
 const AdErrorTooltipModal = ({

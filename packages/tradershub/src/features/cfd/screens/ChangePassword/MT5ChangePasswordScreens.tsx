@@ -16,7 +16,7 @@ const MT5ChangePasswordScreens = () => {
     return showSentEmailContentWithoutTabs ? (
         <Fragment>
             <div
-                className='flex content-center self-start cursor-pointer gap-400'
+                className='flex content-center self-start cursor-pointer gap-8'
                 onClick={() => {
                     setShowSentEmailContentWithoutTabs(false);
                     setTabNumber(1);

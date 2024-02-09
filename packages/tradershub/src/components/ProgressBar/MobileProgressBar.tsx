@@ -20,7 +20,7 @@ type TMobileProgressBar = {
 const MobileProgressBar = ({ activeStep, onClickClose, steps = [] }: TMobileProgressBar) => {
     return (
         <div>
-            <div className='flex items-center justify-between px-800 py-700'>
+            <div className='flex items-center justify-between px-16 py-700'>
                 <div>
                     <Text weight='bold'>
                         Step {activeStep}/{steps.length}:

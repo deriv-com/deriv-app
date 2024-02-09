@@ -46,7 +46,7 @@ const CFDHeading = () => {
                     Learn more
                 </StaticLink>
             </Text>
-            {isMobile && <CompareAccountsButton className='mt-800' />}
+            {isMobile && <CompareAccountsButton className='mt-16' />}
         </Fragment>
     );
 };

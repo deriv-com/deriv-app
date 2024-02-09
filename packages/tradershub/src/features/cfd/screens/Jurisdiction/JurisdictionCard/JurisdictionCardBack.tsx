@@ -17,7 +17,7 @@ const JurisdictionCardBack = ({ setIsFlipped, verificationDocs }: TJurisdictionC
     const verificationContents = jurisdictionVerificationContents();
     if (!verificationDocs) return null;
     return (
-        <div className='absolute flex flex-col h-full backface-hidden [transform:rotateY(180deg)] gap-800 pt-[15px] px-800 pb-12000'>
+        <div className='absolute flex flex-col h-full backface-hidden [transform:rotateY(180deg)] gap-16 pt-[15px] px-16 pb-12000'>
             <BackArrowIcon
                 className='cursor-pointer'
                 onClick={e => {
@@ -36,7 +36,7 @@ const JurisdictionCardBack = ({ setIsFlipped, verificationDocs }: TJurisdictionC
                     </div>
                 );
             })}
-            <div className='border-t border-solid border-75 my-800 border-system-light-secondary-background' />
+            <div className='border-t border-solid border-1 my-16 border-system-light-secondary-background' />
             {verificationContents.statusReferences.map(statusReference => {
                 return (
                     <div className='grid justify-start grid-flow-col gap-500' key={statusReference?.color}>

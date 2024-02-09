@@ -106,13 +106,13 @@ const OptionsAndMultipliersContent = () => {
 
     if (!isRegulationAccessible)
         return (
-            <div className='pt-2000'>
+            <div className='pt-40'>
                 <TradingAppCardLoader />
             </div>
         );
 
     return (
-        <div className='grid w-full grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
+        <div className='grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-4'>
             {filteredContent.map(account => {
                 const { description, icon, isExternal, redirect, smallIcon, title } = account;
 

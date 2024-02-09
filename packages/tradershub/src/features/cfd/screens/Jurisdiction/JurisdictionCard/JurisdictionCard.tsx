@@ -131,7 +131,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                 }
             }}
         >
-            <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 backface-hidden px-800 pt-1000 pb-1800 transform-gpu'>
+            <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 backface-hidden px-16 pt-20 pb-1800 transform-gpu'>
                 {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
                 <div className='mt-[25px] mb-[15px] text-center'>
                     <Text size='lg' weight='bold'>
@@ -177,7 +177,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                     ))}
                 </div>
                 {isAdded && (
-                    <div className='absolute w-full text-center rounded-b-[13px] rounded-t-50 bottom-50 left-50 p-400 bg-brand-blue'>
+                    <div className='absolute w-full text-center rounded-b-[13px] rounded-t-50 bottom-50 left-50 p-8 bg-brand-blue'>
                         <Text className='text-system-light-primary-background' size='sm' weight='bold'>
                             Added
                         </Text>

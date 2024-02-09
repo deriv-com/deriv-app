@@ -9,7 +9,7 @@ const AppContent = () => {
 
     return (
         <div className='h-full-mobile lg:h-full-desktop'>
-            <div className='font-sans max-w-[1232px] mx-auto lg:py-2500 lg:px-50'>
+            <div className='font-sans max-w-[1232px] mx-auto lg:py-50 lg:px-0'>
                 <div className='z-10' id='v2_modal_show_header_root' />
                 <Router />
             </div>

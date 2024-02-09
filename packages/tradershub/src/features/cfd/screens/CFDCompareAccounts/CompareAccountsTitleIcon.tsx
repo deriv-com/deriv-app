@@ -70,9 +70,9 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     return (
         <Fragment>
-            <div className={'flex flex-col gap-[5px] pt-1000 items-center'}>
+            <div className={'flex flex-col gap-[5px] pt-20 items-center'}>
                 <PlatformIcon icon={jurisdictionCardIcon} />
-                <div className='flex items-center gap-400'>
+                <div className='flex items-center gap-8'>
                     <Text size='sm' weight='bold'>
                         {jurisdictionCardTitle}
                     </Text>

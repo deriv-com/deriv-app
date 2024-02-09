@@ -19,7 +19,7 @@ export const DynamicLeverageMarketCard = ({
     max,
     min,
 }: TDynamicLeverageMarketCardProps) => (
-    <div className='overflow-hidden border-75 border-solid rounded-400 border-system-light-less-prominent-text h-[248px] bg-system-light-hover-background'>
+    <div className='overflow-hidden border-1 border-solid rounded-default border-system-light-less-prominent-text h-[248px] bg-system-light-hover-background'>
         <div className='flex flex-col pt-500 h-3500 bg-system-light-secondary-background'>
             <Text align='center' size='sm' weight='bold'>
                 {displayName}

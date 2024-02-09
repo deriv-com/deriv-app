@@ -600,6 +600,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         );
     const is_password_error = error_type === 'PasswordError';
     const is_password_reset = error_type === 'PasswordReset';
+    const is_incorrect_mt5_password_format_error = error_type === 'IncorrectMT5PasswordFormat';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =
@@ -641,18 +642,25 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const validatePassword = (values: TCFDPasswordFormValues) => {
         const errors: FormikErrors<TCFDPasswordFormValues> = {};
+        const pattern = '^(?=.*[!@#$%^&*()+\\-=[\\]{};\':"|,.<>/?_~])[ -~]{8,16}$';
+        const regex = new RegExp(pattern);
+        const max_length = platform === CFD_PLATFORMS.MT5 && should_set_trading_password ? 16 : 25;
         if (
             !validLength(values.password, {
                 min: 8,
-                max: 25,
+                max: max_length,
             })
         ) {
             errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
                 min_number: 8,
-                max_number: 25,
+                max_number: max_length,
             });
         } else if (!validPassword(values.password)) {
             errors.password = getErrorMessages().password();
+        } else if (platform === CFD_PLATFORMS.MT5 && should_set_trading_password && !regex.test(values.password)) {
+            errors.password = localize(
+                'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
+            );
         }
         if (values.password?.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');

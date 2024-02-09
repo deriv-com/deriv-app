@@ -38,9 +38,11 @@ describe('<ChatMessages />', () => {
     it('should render the bot message with appropriate styles', () => {
         render(<ChatMessages />);
         const bot_message = screen.getByText(
-            /Hello! This is where you can chat with the counterparty to confirm the order details. Note: In case of a dispute, we'll use this chat as a reference./
+            /Hello! This is where you can chat with the counterparty to confirm the order details./
         );
+        const bot_message2 = screen.getByText(/Note: In case of a dispute, we'll use this chat as a reference./);
         expect(bot_message).toBeInTheDocument();
+        expect(bot_message2).toBeInTheDocument();
         expect(bot_message).toHaveStyle('--text-lh: var(--text-lh-xl)');
         expect(bot_message).toHaveStyle('--text-size: var(--text-size-xxs)');
     });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
+import { ButtonGroup } from '@/components';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Button } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
@@ -30,10 +31,9 @@ const Actions = ({ canGoNext = true }: TActions) => {
     return (
         <div>
             <hr className='opacity-100' />
-            <div className='flex justify-end divide-y-75 p-1200'>
+            <ButtonGroup className='justify-end p-1200'>
                 {canGoToPrevStep && (
                     <Button
-                        className='mr-400'
                         isFullWidth={isMobile}
                         onClick={goToPrevStep}
                         size={isMobile ? 'lg' : 'md'}
@@ -52,7 +52,7 @@ const Actions = ({ canGoNext = true }: TActions) => {
                 >
                     {canGoToNextStep ? 'Next' : 'Add account'}
                 </Button>
-            </div>
+            </ButtonGroup>
         </div>
     );
 };

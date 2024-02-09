@@ -24,6 +24,6 @@ describe('EmptyOnboarding test cases:', () => {
         render(<Onboarding />, {
             wrapper,
         });
-        expect(screen.getByTestId('dt_onboarding_skeleton_loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_onboarding_logo')).toBeInTheDocument();
     });
 });

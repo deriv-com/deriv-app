@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import OnboardingSkeleton from '../../components/loader';
+import TradingPlatformIcon from 'Assets/svgs/trading-platform';
+import './onboarding.scss';
 
 const Onboarding = observer(() => {
     const history = useHistory();
@@ -11,7 +13,10 @@ const Onboarding = observer(() => {
     const { is_landing_company_loaded, is_logged_in, setPrevAccountType } = client;
     const { is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
 
-    if (is_logged_in && is_landing_company_loaded) {
+    if (is_logged_in) {
+        if (!is_landing_company_loaded) {
+            return <OnboardingSkeleton />;
+        }
         toggleIsTourOpen(true);
         history.push(routes.traders_hub);
         if (is_demo_low_risk) {
@@ -21,8 +26,10 @@ const Onboarding = observer(() => {
     }
 
     return (
-        <div data-testid='dt_onboarding_skeleton_loader'>
-            <OnboardingSkeleton />;
+        <div className='onboarding'>
+            <div className='onboarding__logo' data-testid='dt_onboarding_logo'>
+                <TradingPlatformIcon icon='DerivLogo' />
+            </div>
         </div>
     );
 });

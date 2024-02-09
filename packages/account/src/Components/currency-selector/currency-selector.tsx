@@ -89,8 +89,7 @@ const CurrencySelector = observer(
 
         const has_currency = Boolean(currency);
 
-        const { real_account_signup, real_account_signup_target, resetRealAccountSignupParams, is_desktop, is_mobile } =
-            ui;
+        const { real_account_signup, resetRealAccountSignupParams, is_desktop, is_mobile } = ui;
 
         // Wrapped with String() to avoid type mismatch
         const crypto = legal_allowed_currencies.filter(
@@ -103,9 +102,18 @@ const CurrencySelector = observer(
         );
         const [is_bypass_step, setIsBypassStep] = React.useState<boolean>(false);
 
-        const should_disable_fiat = !!Object.values(accounts).filter(
-            item => item.landing_company_shortcode === real_account_signup_target
-        ).length;
+        const should_disable_fiat = React.useMemo(() => {
+            const disabled_accounts = Object.values(accounts).filter(account => account.is_disabled);
+            const disabled_currencies = disabled_accounts.map(account => account.currency);
+            const existing_account = legal_allowed_currencies.find(allowed_currency_data =>
+                disabled_currencies.includes(allowed_currency_data.value)
+            );
+
+            if (existing_account?.type) {
+                return existing_account.type === CURRENCY_TYPE.FIAT;
+            }
+            return false;
+        }, [accounts, legal_allowed_currencies]);
 
         const handleCancel = (values: TCurrencySelectorFormProps) => {
             const current_step = getCurrentStep() - 1;

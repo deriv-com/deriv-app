@@ -262,7 +262,7 @@ describe('<CurrencySelector/>', () => {
         });
     });
 
-    it('should disable fiat if user already have a fiat ', () => {
+    fit('should not disable fiat if crypto is disabled ', () => {
         const new_store: TStores = {
             ...store,
             client: {
@@ -284,9 +284,136 @@ describe('<CurrencySelector/>', () => {
                         balance: 10000,
                         accepted_bch: 0,
                     },
+                    CR90000123: {
+                        account_category: 'trading',
+                        account_type: 'binary',
+                        broker: 'CR',
+                        created_at: 1707466247,
+                        currency: 'ETH',
+                        is_disabled: 1,
+                        is_virtual: 0,
+                        landing_company_shortcode: 'svg',
+                        linked_to: [],
+                        excluded_until: '',
+                        landing_company_name: 'svg',
+                    },
                 },
                 has_active_real_account: true,
                 has_fiat: true,
+                upgradeable_currencies: [
+                    {
+                        value: 'BTC',
+                        fractional_digits: 8,
+                        is_deposit_suspended: 0,
+                        is_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                        name: 'Bitcoin',
+                        stake_default: 0.0002,
+                        type: 'crypto',
+                    },
+                    {
+                        value: 'AUD',
+                        fractional_digits: 2,
+                        is_deposit_suspended: 0,
+                        is_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                        name: 'Australian Dollar',
+                        stake_default: 15,
+                        type: 'fiat',
+                    },
+                    {
+                        value: 'USD',
+                        fractional_digits: 2,
+                        is_deposit_suspended: 0,
+                        is_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                        name: 'US Dollar',
+                        stake_default: 10,
+                        type: 'fiat',
+                    },
+                ],
+            },
+            ui: {
+                ...store.ui,
+                real_account_signup_target: 'svg',
+            },
+        };
+
+        renderComponent({ store_config: new_store });
+        expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeEnabled();
+        expect(screen.getByRole('radio', { name: /Bitcoin/i })).toBeDisabled();
+    });
+
+    fit('should disable fiat accout is one account is already created', () => {
+        const new_store: TStores = {
+            ...store,
+            client: {
+                ...store.client,
+                accounts: {
+                    VRTC90000010: {
+                        account_type: 'trading',
+                        currency: 'USD',
+                        is_disabled: 0,
+                        is_virtual: 1,
+                        landing_company_shortcode: 'svg',
+                        trading: {},
+                        token: '',
+                        email: '',
+                        session_start: 1651059038,
+                        excluded_until: '',
+                        landing_company_name: 'svg',
+                        residence: 'es',
+                        balance: 10000,
+                        accepted_bch: 0,
+                    },
+                    CR90000123: {
+                        account_category: 'trading',
+                        account_type: 'binary',
+                        broker: 'CR',
+                        created_at: 1707466247,
+                        currency: 'USD',
+                        is_disabled: 1,
+                        is_virtual: 0,
+                        landing_company_shortcode: 'svg',
+                        linked_to: [],
+                        excluded_until: '',
+                        landing_company_name: 'svg',
+                    },
+                },
+                has_active_real_account: true,
+                has_fiat: true,
+                upgradeable_currencies: [
+                    {
+                        value: 'BTC',
+                        fractional_digits: 8,
+                        is_deposit_suspended: 0,
+                        is_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                        name: 'Bitcoin',
+                        stake_default: 0.0002,
+                        type: 'crypto',
+                    },
+                    {
+                        value: 'AUD',
+                        fractional_digits: 2,
+                        is_deposit_suspended: 0,
+                        is_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                        name: 'Australian Dollar',
+                        stake_default: 15,
+                        type: 'fiat',
+                    },
+                    {
+                        value: 'USD',
+                        fractional_digits: 2,
+                        is_deposit_suspended: 0,
+                        is_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                        name: 'US Dollar',
+                        stake_default: 10,
+                        type: 'fiat',
+                    },
+                ],
             },
             ui: {
                 ...store.ui,
@@ -296,7 +423,6 @@ describe('<CurrencySelector/>', () => {
 
         renderComponent({ store_config: new_store });
         expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeDisabled();
-        expect(screen.getByRole('radio', { name: /euro \(eur\)/i })).toBeDisabled();
     });
 
     it('should render Fiat currencies when is_dxtrade_allowed and is_mt5_allowed are true', () => {

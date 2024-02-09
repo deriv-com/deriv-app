@@ -12,8 +12,8 @@ type TProps = {
 };
 
 const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) => {
-    const { data: wallets } = useWalletAccountsList();
     const { switchAccount } = useAuthorize();
+    const { data: wallets } = useWalletAccountsList();
     const [dropdownWidth, setDropdownWidth] = useState('auto');
 
     useEffect(() => {

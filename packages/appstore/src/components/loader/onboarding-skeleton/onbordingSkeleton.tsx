@@ -10,6 +10,13 @@ import TradingAppCardSkeleton from '../trading-app-skeleton/tradingAppSkeleton';
 
 import './onbordingSkeleton.scss';
 
+const TradingAppCardSkeletonBox = () => (
+    <>
+        <TradingAppCardSkeleton />
+        <TradingAppCardSkeleton />
+        <TradingAppCardSkeleton />
+    </>
+);
 const OnboardingSkeleton = () => (
     <div className='onboarding-skeleton'>
         <div className='onboarding-skeleton__header'>
@@ -24,18 +31,14 @@ const OnboardingSkeleton = () => (
             <div className='onboarding-skeleton__content--options'>
                 <OptionsAndMultipliersSkeleton />
                 <div className='onboarding-skeleton__content--options--platforms'>
-                    <TradingAppCardSkeleton />
-                    <TradingAppCardSkeleton />
-                    <TradingAppCardSkeleton />
+                    <TradingAppCardSkeletonBox />
                 </div>
             </div>
             <div className='onboarding-skeleton__content--cfds'>
                 <CfdAppSkeleton />
                 <Mt5TitleLSkeleton />
                 <div className='onboarding-skeleton__content--cfds--platforms'>
-                    <TradingAppCardSkeleton />
-                    <TradingAppCardSkeleton />
-                    <TradingAppCardSkeleton />
+                    <TradingAppCardSkeletonBox />
                 </div>
             </div>
         </div>

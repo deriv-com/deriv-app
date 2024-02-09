@@ -1,7 +1,8 @@
 import React, { Fragment, lazy, Suspense } from 'react';
 import { useFormikContext } from 'formik';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Checkbox, InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
+import { InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
+import DetailsConfirmation from './DetailsConfirmation';
 
 const ExampleImage = lazy(() => import('@/assets/svgs/personal-details-example.svg'));
 
@@ -86,7 +87,7 @@ const Details = () => {
                     </div>
                 </div>
                 <div className='mt-800'>
-                    <Checkbox label='I confirm that the name and date of birth above match my chosen identity document.' />
+                    <DetailsConfirmation />
                 </div>
             </div>
         </Fragment>

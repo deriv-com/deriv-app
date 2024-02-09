@@ -54,7 +54,8 @@ export const initial_value: TFormData = {
 };
 
 export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
-    const { quick_strategy } = useDBotStore();
+    const { client } = useStore();
+    const { quick_strategy, dashboard, server_bot } = useDBotStore();
     const {
         selected_strategy,
         form_data,
@@ -63,11 +64,13 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) =
         current_duration_min_max,
         initializeLossThresholdWarningData,
     } = quick_strategy;
+    const { active_tab } = dashboard;
+    const { setValueServerBot, createBot, setFormValues } = server_bot;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
 
     React.useEffect(() => {
-        const data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
+        const data = JSON.parse(localStorage.getItem(active_tab === 4 ? 'server-form-fields' : 'qs-fields') || '{}');
         Object.keys(data).forEach(key => {
             initial_value[key as keyof TFormData] = data[key];
             setValue(key, data[key]);
@@ -159,8 +162,16 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) =
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        onSubmit(form_data); // true to load and run the bot
-        localStorage?.setItem('qs-fields', JSON.stringify(form_data));
+        const is_server_qs_form = active_tab === 4;
+        if (is_server_qs_form) {
+            localStorage?.setItem('server-form-fields', JSON.stringify(form_data));
+            setValueServerBot(form_data);
+            setFormValues(client?.currency);
+            createBot();
+        } else {
+            onSubmit(form_data); // true to load and run the bot
+            localStorage?.setItem('qs-fields', JSON.stringify(form_data));
+        }
     };
 
     return (

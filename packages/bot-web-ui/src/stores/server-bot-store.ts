@@ -1,27 +1,20 @@
 import { action, makeObservable, observable } from 'mobx';
 import { api_base } from '@deriv/bot-skeleton';
 import RootStore from './root-store';
-import { initial_req_schema } from '../pages/server-bot/request_schema';
+import { initial_req_schema, TRequestSchema, TBotList, TBotListItem } from '../pages/server-bot/request_schema';
 
 interface IServerBotStore {
     bot_list: TBotListItem[];
     getBotList: () => void;
     createBot: () => void;
     removeBot: (bot_id: string) => void;
+    startBot: (bot_id: string) => void;
+    stopBot: (bot_id: string) => void;
+    setValue: (name: string, value: string) => void;
+    setValueServerBot: (form_data: any) => void;
+    makeRequest: (req_schema: TRequestSchema) => Promise<TBotResponse>;
+    setFormValues: (currency: string) => void;
 }
-
-export type TBotListItem = {
-    bot_id: string;
-    name: string;
-    status: string;
-    strategy: string;
-};
-
-type TBotList = {
-    bot_listing: Array<TBotListItem>;
-    message: string;
-    status: string;
-};
 
 type TBotListResponse = {
     bot_list: TBotList;
@@ -33,26 +26,87 @@ type TBotListResponse = {
     req_id: number;
 };
 
+type TKeysResponse =
+    | { bot_list: TBotList }
+    | { bot_create: number }
+    | { bot_start: number }
+    | { bot_stop: number }
+    | { bot_notification: number };
+
+type TBotResponse = {
+    echo_req: {
+        bot_list: number;
+        req_id: number;
+    };
+    msg_type: 'bot_list';
+    req_id: number;
+} & TKeysResponse;
+
+export type TFormData = {
+    [key: string]: string | number | boolean;
+};
+
 export default class ServerBotStore implements IServerBotStore {
     bot_list: TBotListItem[] = [];
     root_store: RootStore;
+    form_data: TFormData = {};
 
     constructor(root_store: RootStore) {
         this.root_store = root_store;
         makeObservable(this, {
             bot_list: observable,
+            form_data: observable,
+            setValueServerBot: action.bound,
+            setValue: action.bound,
             getBotList: action.bound,
             createBot: action.bound,
             removeBot: action.bound,
+            startBot: action.bound,
+            stopBot: action.bound,
+            setFormValues: action.bound,
         });
     }
 
-    makeRequest = req_schema => {
+    setValue = (name: string, value: string | number | boolean) => {
+        this.form_data[name as keyof TFormData] = value;
+    };
+
+    setValueServerBot = (form_data: any) => {
+        this.form_data = form_data;
+    };
+
+    makeRequest = (req_schema: TRequestSchema): Promise<TBotResponse> => {
         return new Promise((resolve, reject) => {
             api_base.api
                 ?.send(req_schema)
-                .then(data => resolve(data))
+                .then((data: TBotResponse) => resolve(data))
                 .catch((error: Error) => reject(error));
+        });
+    };
+
+    setFormValues = (currency: string) => {
+        const data = JSON.parse(localStorage.getItem('server-form-fields') ?? '{}');
+
+        const parameters = initial_req_schema.data.parameters;
+        const contract_parameters = initial_req_schema.data.contract_parameters;
+
+        Object.keys(data).forEach(key => {
+            if (key === 'size' || key === 'take_profit' || key === 'stop_loss') {
+                parameters[key] = data[key];
+            }
+            if (key === 'stake') {
+                parameters.initial_stake = data.stake;
+            }
+            if (key === 'type') {
+                contract_parameters.contract_type = data.type;
+            }
+            if (key === 'duration' || key === 'symbol' || key === 'duration_unit' || key === 'amount') {
+                (contract_parameters[key] as string | number) = data[key];
+            }
+            if (key === 'currency') {
+                contract_parameters[key] = data[currency || 'USD'];
+            }
+            this.setValue(key, data[key]);
         });
     };
 
@@ -76,18 +130,21 @@ export default class ServerBotStore implements IServerBotStore {
     };
 
     createBot = () => {
+        console.log('create', this.form_data);
+
         this.makeRequest(initial_req_schema)
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data);
+                if (this.form_data.action === 'RUN') {
+                    this.startBot(data?.bot_create?.bot_id);
+                }
+                return data;
+            })
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
             })
             .then(() => this.getBotList());
-
-        // localStorage?.setItem(
-        //     'qs-fields',
-        //     JSON.stringify({ ...initial_req_schema.data.parameters, ...initial_req_schema.data.contract_parameters })
-        // );
     };
 
     removeBot = (bot_id: string) => {
@@ -104,6 +161,7 @@ export default class ServerBotStore implements IServerBotStore {
     };
 
     startBot = (bot_id: string) => {
+        this.notifyBot(bot_id);
         this.makeRequest({
             bot_start: 1,
             bot_id,
@@ -112,8 +170,7 @@ export default class ServerBotStore implements IServerBotStore {
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
-            })
-            .then(() => this.notifyBot(bot_id));
+            });
     };
 
     stopBot = (bot_id: string) => {
@@ -125,7 +182,8 @@ export default class ServerBotStore implements IServerBotStore {
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
-            });
+            })
+            .then(() => this.getBotList());
     };
 
     notifyBot = (bot_id: string) => {

@@ -22,10 +22,32 @@ type TDataBotItemParameters = {
     contract_parameters: TContractParametersItem;
 };
 
-export type TRequestSchema = {
-    bot_create: number;
-    data: TDataBotItemParameters;
+export type TBotListItem = {
+    bot_id: string;
+    name: string;
+    status: string;
+    strategy: string;
 };
+
+export type TBotList = {
+    bot_listing: Array<TBotListItem>;
+    message: string;
+    status: string;
+};
+
+type TRequestSchemaKeys =
+    | { bot_list: TBotList }
+    | { bot_create: number }
+    | { bot_remove: number }
+    | { bot_start: number }
+    | { bot_stop: number }
+    | { bot_notification: number };
+
+export type TRequestSchema = {
+    data?: TDataBotItemParameters;
+    subscribe?: number;
+    bot_id?: string;
+} & TRequestSchemaKeys;
 
 export const initial_req_schema: TRequestSchema = {
     bot_create: 1,

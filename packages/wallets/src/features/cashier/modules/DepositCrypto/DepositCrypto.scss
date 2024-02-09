@@ -5,6 +5,7 @@
     display: flex;
     justify-content: center;
     gap: 2.4rem;
+    padding-bottom: 2.4rem;
 
     @include mobile {
         flex-direction: column;

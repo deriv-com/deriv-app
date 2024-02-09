@@ -944,7 +944,7 @@ type TNotificationStore = {
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
     notifications: TNotificationMessage[];
-    p2p_advertiser_info: NonNullable<P2PAdvertiserInformationResponse['p2p_advertiser_info']>;
+    p2p_advertiser_info: P2PAdvertiserInformationResponse['p2p_advertiser_info'];
     p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];
     refreshNotifications: () => void;
     removeAllNotificationMessages: (should_close_persistent: boolean) => void;

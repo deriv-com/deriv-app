@@ -11,14 +11,14 @@ const Onboarding = observer(() => {
     const { is_landing_company_loaded, is_logged_in, setPrevAccountType } = client;
     const { is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
 
-    if (is_logged_in && is_landing_company_loaded) {
-        toggleIsTourOpen(true);
-        history.push(routes.traders_hub);
-        if (is_demo_low_risk) {
-            selectAccountType('real');
-            setPrevAccountType('demo');
-        }
-    }
+    // if (is_logged_in && is_landing_company_loaded) {
+    //     toggleIsTourOpen(true);
+    //     history.push(routes.traders_hub);
+    //     if (is_demo_low_risk) {
+    //         selectAccountType('real');
+    //         setPrevAccountType('demo');
+    //     }
+    // }
 
     return (
         <div data-testid='dt_onboarding_skeleton_loader'>

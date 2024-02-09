@@ -13,13 +13,11 @@
         height: 40px;
         border-radius: 6px;
         margin-bottom: 12px;
-        @include mobile {
-            height: 16px;
-        }
     }
     &__description {
         width: 100%;
         height: 12px;
         border-radius: $BORDER_RADIUS;
+        margin-bottom: 4px;
     }
 }

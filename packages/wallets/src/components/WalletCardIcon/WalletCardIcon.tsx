@@ -74,20 +74,20 @@ type TProps = {
     device?: 'desktop' | 'mobile';
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm' | 'xl'>;
     type: Omit<string, keyof typeof typeToIconMapper> | keyof typeof typeToIconMapper;
-    variant?: 'logo' | 'normal';
+    variant?: 'circular' | 'normal';
 };
 
 const WalletCardIcon: React.FC<TProps> = ({ device, size = 'lg', type, variant = 'normal' }) => {
     const { isMobile } = useDevice();
 
     const iconType = type as keyof typeof typeToIconMapper;
-    const logoIconType = type as keyof typeof typeToCircularIconMapper;
+    const circularIconType = type as keyof typeof typeToCircularIconMapper;
 
-    const Icon = variant === 'logo' ? typeToCircularIconMapper[logoIconType] : typeToIconMapper[iconType];
+    const Icon = variant === 'circular' ? typeToCircularIconMapper[circularIconType] : typeToIconMapper[iconType];
     const isRoundedIcon = typesWithRoundedIcon.includes(iconType);
 
     let iconGroup: 'circularIcon' | 'rectangleIcon' | 'roundedIcon' = 'rectangleIcon';
-    if (variant === 'logo') {
+    if (variant === 'circular') {
         iconGroup = 'circularIcon';
     } else if (isRoundedIcon) {
         iconGroup = 'roundedIcon';

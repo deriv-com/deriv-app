@@ -38,7 +38,7 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
                                     device='desktop'
                                     size='md'
                                     type={wallet.wallet_currency_type}
-                                    variant='logo'
+                                    variant='circular'
                                 />
                                 <div className='wallets-list-card-dropdown__item-content'>
                                     <WalletText size='2xs'>

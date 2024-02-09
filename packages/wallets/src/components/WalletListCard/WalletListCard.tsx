@@ -18,7 +18,7 @@ const WalletListCard: React.FC<TProps> = ({ balance, currency, isActive, isDemo,
         <div className='wallets-list-header__content'>
             <div className='wallets-list-header__details-container'>
                 <div className='wallets-list-header__details-container-icon'>
-                    <WalletCardIcon device='desktop' size='lg' type={isDemo ? 'Demo' : currency} variant='logo' />
+                    <WalletCardIcon device='desktop' size='lg' type={isDemo ? 'Demo' : currency} variant='circular' />
                 </div>
                 <WalletListCardDetails
                     balance={balance}

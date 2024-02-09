@@ -13,7 +13,12 @@ const MyAdsTableRowView = ({
 }: TMyAdsTableRowRendererProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { account_currency, remaining_amount, type, visibility_status = [] } = rest;
+    const {
+        account_currency,
+        remaining_amount,
+        type,
+        visibility_status = ['advert_inactive', 'advert_max_limit', 'advert_min_limit'],
+    } = rest;
 
     return (
         <>
@@ -27,7 +32,7 @@ const MyAdsTableRowView = ({
                 isModalOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 remainingAmount={remaining_amount}
-                visibilityStatus={getVisibilityErrorCodes(visibility_status, false, isListed)}
+                visibilityStatus={getVisibilityErrorCodes(visibility_status, true, isListed)}
             />
         </>
     );

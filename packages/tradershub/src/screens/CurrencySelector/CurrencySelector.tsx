@@ -33,7 +33,7 @@ const CurrencySelector = () => {
                             <hr className='opacity-100 my-1200' />
                             <Currencies type={CURRENCY_TYPES.CRYPTO} />
                         </div>
-                        <Actions canGoNext={!!values.currency} />
+                        <Actions submitDisabled={!values.currency} />
                     </Form>
                 )}
             </Formik>

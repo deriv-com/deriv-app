@@ -4,6 +4,9 @@ import WalletListCardDropdown from '../WalletListCardDropdown';
 import { useWalletAccountsList } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
+    useAuthorize: jest.fn(() => ({
+        switchAccount: jest.fn(),
+    })),
     useWalletAccountsList: jest.fn(() => ({
         data: [
             {
@@ -23,9 +26,6 @@ jest.mock('@deriv/api', () => ({
                 wallet_currency_type: 'Demo',
             },
         ],
-    })),
-    useAuthorize: jest.fn(() => ({
-        switchAccount: jest.fn(),
     })),
 }));
 

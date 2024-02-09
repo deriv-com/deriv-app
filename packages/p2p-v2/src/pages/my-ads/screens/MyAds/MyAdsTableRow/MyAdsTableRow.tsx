@@ -1,17 +1,17 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { useExchangeRateSubscription } from '@deriv/api';
-import { Button, Text, Tooltip } from '@deriv-com/ui';
-import { useDevice } from '@/hooks';
-import { generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
-//TODO: Replace with quill icons once available
-import DeactivateIcon from '../../../../../public/ic-archive.svg';
-import ActivateIcon from '../../../../../public/ic-unarchive.svg';
-import EditIcon from '../../../../../public/ic-edit.svg';
-import DeleteIcon from '../../../../../public/ic-delete.svg';
 import { PopoverDropdown } from '@/components';
 import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
+import { useDevice } from '@/hooks';
+//TODO: Replace with quill icons once available
+import DeactivateIcon from '@/public/ic-archive.svg';
+import DeleteIcon from '@/public/ic-delete.svg';
+import EditIcon from '@/public/ic-edit.svg';
+import ActivateIcon from '@/public/ic-unarchive.svg';
+import { generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
 import { formatMoney } from '@/utils/currency';
+import { useExchangeRateSubscription } from '@deriv/api';
+import { Button, Text, Tooltip } from '@deriv-com/ui';
 import { AdStatus, AdType, AlertComponent, ProgressIndicator } from '../../../components';
 import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';
 import './MyAdsTableRow.scss';

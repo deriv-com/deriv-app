@@ -1,6 +1,6 @@
 import React from 'react';
+import AlertIcon from '@/public/ic-alert-warning.svg';
 import { Button, Tooltip } from '@deriv-com/ui';
-import AlertIcon from '../../../../public/ic-alert-warning.svg';
 import './AlertComponent.scss';
 
 type TProps = {

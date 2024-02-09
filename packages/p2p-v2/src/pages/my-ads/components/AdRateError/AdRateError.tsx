@@ -4,9 +4,9 @@ import { useAuthorize } from '@deriv/api';
 const AdRateError = () => {
     //TODO: get rate values after implementation of floatingRate hook
     const floatingRateValues = {
+        fixedRateAdvertsEndDate: '2024/12/31',
         rateType: RATE_TYPE.FLOAT,
         reachedTargetDate: false,
-        fixedRateAdvertsEndDate: '2024/12/31',
     };
 
     const { data } = useAuthorize();

@@ -1,6 +1,6 @@
 import React from 'react';
-import AdRateError from '../AdRateError';
 import { render, screen } from '@testing-library/react';
+import AdRateError from '../AdRateError';
 
 jest.mock('@deriv/api', () => ({
     useAuthorize: () => ({

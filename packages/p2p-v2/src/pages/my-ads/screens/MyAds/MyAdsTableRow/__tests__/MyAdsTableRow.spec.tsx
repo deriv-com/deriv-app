@@ -1,17 +1,21 @@
 import React from 'react';
+import { useDevice } from '@/hooks';
+import { useExchangeRateSubscription } from '@deriv/api';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useExchangeRateSubscription } from '@deriv/api';
 import MyAdsTableRow from '../MyAdsTableRow';
-import { useDevice } from '@/hooks';
 
 const mockProps = {
     account_currency: 'USD',
     active_orders: 0,
     advertiser_details: {
         completed_orders_count: 0,
+        has_not_been_recommended: false,
         id: '34',
+        is_blocked: false,
+        is_favourite: false,
         is_online: true,
+        is_recommended: false,
         last_online_time: 1688480346,
         name: 'client CR90000212',
         rating_average: null,
@@ -19,10 +23,6 @@ const mockProps = {
         recommended_average: null,
         recommended_count: null,
         total_completion_rate: null,
-        is_blocked: false,
-        is_favourite: false,
-        has_not_been_recommended: false,
-        is_recommended: false,
     },
     amount: 22,
     amount_display: '22.00',
@@ -33,12 +33,14 @@ const mockProps = {
     created_time: new Date(1688460999),
     days_until_archive: 1,
     description: '',
-    eligible_countries: ['ID'],
     effective_rate: 22,
     effective_rate_display: '22.00',
+    eligible_countries: ['ID'],
     id: '138',
     is_active: true,
     is_visible: true,
+    isBarred: false,
+    isListed: true,
     local_currency: 'IDR',
     max_order_amount: 22,
     max_order_amount_display: '22.00',
@@ -46,28 +48,26 @@ const mockProps = {
     max_order_amount_limit_display: '22.00',
     min_completion_rate: 22,
     min_join_days: 4,
-    min_rating: 4,
     min_order_amount: 22,
     min_order_amount_display: '22.00',
     min_order_amount_limit: 22,
     min_order_amount_limit_display: '22.00',
+    min_rating: 4,
+    onClickIcon: jest.fn(),
+    order_expiry_period: 900,
     payment_info: '',
     payment_method: null,
     payment_method_names: ['Bank Transfer'],
     price: 22,
     price_display: '22.00',
-    order_expiry_period: 900,
     rate: 22,
     rate_display: '22.00',
     rate_type: 'fixed' as const,
     remaining_amount: 22,
     remaining_amount_display: '22.00',
+    setIsModalOpen: jest.fn(),
     type: 'buy' as const,
     visibility_status: [],
-    onClickIcon: jest.fn(),
-    isBarred: false,
-    isListed: true,
-    setIsModalOpen: jest.fn(),
 };
 
 jest.mock('@deriv/api', () => ({

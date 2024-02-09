@@ -1,7 +1,7 @@
 import React from 'react';
-import AlertComponent from '../AlertComponent';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import AlertComponent from '../AlertComponent';
 
 const mockProps = {
     setIsModalOpen: jest.fn(),

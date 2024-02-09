@@ -1,12 +1,12 @@
 import React from 'react';
-import AdErrorTooltipModal from '../AdErrorTooltipModal';
 import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
+import AdErrorTooltipModal from '../AdErrorTooltipModal';
 
 const mockProps = {
     accountCurrency: 'USD',
-    balanceAvailable: 100,
     advertType: 'buy',
+    balanceAvailable: 100,
     dailyBuyLimit: '150',
     dailySellLimit: '230',
     isModalOpen: true,

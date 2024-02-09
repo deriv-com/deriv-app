@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import { p2p } from '@deriv/api';
-import { Button, Loader } from '@deriv-com/ui';
 import { Table } from '@/components';
 import { useDevice } from '@/hooks';
-import { MyAdsToggle } from '../MyAdsToggle';
+import { p2p } from '@deriv/api';
+import { Button, Loader } from '@deriv-com/ui';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
+import { MyAdsToggle } from '../MyAdsToggle';
 import './MyAdsTable.scss';
 
 export type TMyAdsTableRowRendererProps = Required<

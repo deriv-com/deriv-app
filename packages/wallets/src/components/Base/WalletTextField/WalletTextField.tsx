@@ -7,12 +7,14 @@ import './WalletTextField.scss';
 export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
     disabled?: boolean;
+    dropdownWidth?: string;
     errorMessage?: FormikErrors<unknown> | FormikErrors<unknown>[] | string[] | string;
     isInvalid?: boolean;
     label?: string;
     renderLeftIcon?: () => React.ReactNode;
     renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
+    showMessageContainer?: boolean;
 }
 
 const WalletTextField = forwardRef(
@@ -20,6 +22,7 @@ const WalletTextField = forwardRef(
         {
             defaultValue = '',
             disabled,
+            dropdownWidth,
             errorMessage,
             isInvalid,
             label,
@@ -31,6 +34,7 @@ const WalletTextField = forwardRef(
             renderLeftIcon,
             renderRightIcon,
             showMessage = false,
+            showMessageContainer = true,
             ...rest
         }: WalletTextFieldProps,
         ref: Ref<HTMLInputElement>
@@ -65,6 +69,7 @@ const WalletTextField = forwardRef(
                         onChange={handleChange}
                         placeholder={label}
                         ref={ref}
+                        style={{ width: dropdownWidth }}
                         value={value}
                         {...rest}
                     />
@@ -79,26 +84,28 @@ const WalletTextField = forwardRef(
                         </div>
                     )}
                 </div>
-                <div className='wallets-textfield__message-container'>
-                    {errorMessage ? (
-                        <HelperMessage
-                            inputValue={value}
-                            isError={isInvalid}
-                            maxLength={maxLength}
-                            message={errorMessage as string}
-                            messageVariant={isInvalid ? 'error' : 'warning'}
-                        />
-                    ) : (
-                        showMessage && (
+                {showMessageContainer && (
+                    <div className='wallets-textfield__message-container'>
+                        {errorMessage ? (
                             <HelperMessage
                                 inputValue={value}
+                                isError={isInvalid}
                                 maxLength={maxLength}
-                                message={message}
-                                messageVariant={messageVariant}
+                                message={errorMessage as string}
+                                messageVariant={isInvalid ? 'error' : 'warning'}
                             />
-                        )
-                    )}
-                </div>
+                        ) : (
+                            showMessage && (
+                                <HelperMessage
+                                    inputValue={value}
+                                    maxLength={maxLength}
+                                    message={message}
+                                    messageVariant={messageVariant}
+                                />
+                            )
+                        )}
+                    </div>
+                )}
             </div>
         );
     }

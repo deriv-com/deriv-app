@@ -10,33 +10,42 @@ import './WalletDropdown.scss';
 
 type TProps = {
     disabled?: boolean;
+    dropdownWidth?: string;
     errorMessage?: WalletTextFieldProps['errorMessage'];
     icon?: React.ReactNode;
     isRequired?: boolean;
     label?: WalletTextFieldProps['label'];
     list: {
+        listItem?: React.ReactNode;
         text?: React.ReactNode;
         value?: string;
     }[];
+    listHeader?: React.ReactNode;
     listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     name: WalletTextFieldProps['name'];
     onChange?: (inputValue: string) => void;
     onSelect: (value: string) => void;
+    showListHeader?: boolean;
+    showMessageContainer?: boolean;
     value?: WalletTextFieldProps['value'];
     variant?: 'comboBox' | 'prompt';
 };
 
 const WalletDropdown: React.FC<TProps> = ({
     disabled,
+    dropdownWidth,
     errorMessage,
     icon = false,
     isRequired = false,
     label,
     list,
+    listHeader,
     listHeight = 'md',
     name,
     onChange,
     onSelect,
+    showListHeader = false,
+    showMessageContainer = true,
     value,
     variant = 'prompt',
 }) => {
@@ -101,6 +110,7 @@ const WalletDropdown: React.FC<TProps> = ({
             <div className='wallets-dropdown__content'>
                 <WalletTextField
                     disabled={disabled}
+                    dropdownWidth={dropdownWidth}
                     errorMessage={hasSelected && !value && errorMessage}
                     isInvalid={hasSelected && !value && isRequired}
                     label={label}
@@ -120,12 +130,14 @@ const WalletDropdown: React.FC<TProps> = ({
                             <ArrowIcon />
                         </button>
                     )}
+                    showMessageContainer={showMessageContainer}
                     type='text'
                     value={value}
                     {...getInputProps()}
                 />
             </div>
             <ul className={`wallets-dropdown__items wallets-dropdown__items--${listHeight}`} {...getMenuProps()}>
+                {isOpen && showListHeader && <div className='wallets-dropdown__list-header'>{listHeader}</div>}
                 {isOpen &&
                     items.map((item, index) => (
                         <li
@@ -136,9 +148,13 @@ const WalletDropdown: React.FC<TProps> = ({
                             onClick={() => clearFilter()}
                             {...getItemProps({ index, item })}
                         >
-                            <WalletText size='sm' weight={value === item.value ? 'bold' : 'normal'}>
-                                {item.text}
-                            </WalletText>
+                            {item?.listItem ? (
+                                item?.listItem
+                            ) : (
+                                <WalletText size='sm' weight={value === item.value ? 'bold' : 'normal'}>
+                                    {item.text}
+                                </WalletText>
+                            )}
                         </li>
                     ))}
             </ul>

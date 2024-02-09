@@ -17,6 +17,9 @@ import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
 
+import 'Sass/account-wizard.scss';
+import 'Sass/real-account-signup.scss';
+
 const AccountWizard = React.lazy(() => moduleLoader(() => import('./account-wizard.jsx')));
 
 const modal_pages_indices = {

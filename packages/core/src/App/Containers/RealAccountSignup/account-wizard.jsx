@@ -13,6 +13,10 @@ import { getItems } from './account-wizard-form';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import { Analytics } from '@deriv-com/analytics';
 
+import 'Sass/details-form.scss';
+import 'Sass/account-wizard.scss';
+import 'Sass/real-account-signup.scss';
+
 const STEP_IDENTIFIERS = ['account_currency', 'personal_details', 'address_details', 'terms_of_use'];
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {

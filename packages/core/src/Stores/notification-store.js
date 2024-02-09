@@ -1469,7 +1469,7 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Submit proof of identity'),
                 },
-                closeOnClick: () => this.markNotificationMessage({ key: 'svg_needs_poi_poa' }),
+                closeOnClick: () => this.markNotificationMessage({ key: 'svg_needs_poi' }),
             },
             svg_poi_expired: {
                 key: 'svg_poi_expired',

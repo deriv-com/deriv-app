@@ -1,3 +1,11 @@
 .p2p-v2-buy-sell-table-row {
-    @apply w-full grid lg:grid-cols-[2fr_1.4fr_1.4fr_2.4fr_0.8fr] grid-cols-[2fr_0.7fr] p-[1.6rem] items-center;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1.4fr 1.4fr 2.4fr 0.8fr;
+    padding: 1.6rem;
+    align-items: center;
+
+    @include mobile {
+        grid-template-columns: 2fr 0.7fr;
+    }
 }

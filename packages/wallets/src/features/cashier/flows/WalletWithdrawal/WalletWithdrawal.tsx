@@ -21,7 +21,7 @@ const WalletWithdrawal = () => {
         }
 
         // given that loginid query param matches active wallet's loginid on mount, clear query params and proceed
-        if (loginidQueryParam && verificationQueryParam) {
+        if (verificationQueryParam) {
             setVerificationCode(verificationQueryParam);
 
             const url = new URL(window.location.href);

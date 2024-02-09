@@ -147,7 +147,7 @@ const Redirect = observer(() => {
                 //    which removes anything which resembles code=XYZ
                 // 2. pass loginid as a query param so that the withdrawal component knows what account is being withdrawn from
                 history.push(
-                    `${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}${
+                    `${routes.wallets_withdrawal}?verification=${verification_code.payment_withdraw}${
                         client.loginid ? `&loginid=${client.loginid}` : ''
                     }`
                 );

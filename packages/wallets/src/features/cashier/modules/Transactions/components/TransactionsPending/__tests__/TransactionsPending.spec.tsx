@@ -1,5 +1,5 @@
-import React, { Children, PropsWithChildren } from 'react';
-import { useCryptoTransactions, APIProvider } from '@deriv/api';
+import React from 'react';
+import { useCryptoTransactions } from '@deriv/api';
 import { act, render, screen } from '@testing-library/react';
 import TransactionsPending from '../TransactionsPending';
 

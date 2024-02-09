@@ -4,19 +4,22 @@ import MyAdsDeleteModal from '@/components/Modals/MyAdsDeleteModal/MyAdsDeleteMo
 import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';
 import { Button, Loader } from '@deriv-com/ui';
-import { MyAdsTableRow } from '../MyAdsTableRow';
+import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
 import { MyAdsToggle } from '../MyAdsToggle';
 import './MyAdsTable.scss';
 
 export type TMyAdsTableRowRendererProps = Required<
     NonNullable<ReturnType<typeof p2p.advertiserAdverts.useGet>['data']>[0]
 > & {
+    balanceAvailable: number;
+    dailyBuyLimit: string;
+    dailySellLimit: string;
     isBarred: boolean;
     isListed: boolean;
     onClickIcon: (id: string, action: string) => void;
 };
 
-const MyAdsTableRowRenderer = memo((values: TMyAdsTableRowRendererProps) => <MyAdsTableRow {...values} />);
+const MyAdsTableRowRenderer = memo((values: TMyAdsTableRowRendererProps) => <MyAdsTableRowView {...values} />);
 MyAdsTableRowRenderer.displayName = 'MyAdsTableRowRenderer';
 
 const headerRenderer = (header: string) => <span>{header}</span>;
@@ -110,6 +113,9 @@ const MyAdsTable = () => {
                     rowRender={(rowData: unknown) => (
                         <MyAdsTableRowRenderer
                             {...(rowData as TMyAdsTableRowRendererProps)}
+                            balanceAvailable={advertiserInfo?.balance_available ?? 0}
+                            dailyBuyLimit={advertiserInfo?.daily_buy_limit ?? ''}
+                            dailySellLimit={advertiserInfo?.daily_sell_limit ?? ''}
                             isBarred={!!advertiserInfo?.blocked_until}
                             isListed={!!advertiserInfo?.is_listed}
                             onClickIcon={onClickIcon}

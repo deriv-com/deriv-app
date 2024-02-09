@@ -23,6 +23,7 @@ const PersonalDetails = () => {
 
     const initialValues = {
         accountOpeningReason: state.accountOpeningReason ?? '',
+        confirmation: false,
         dateOfBirth: state.dateOfBirth ?? '',
         firstName: state.firstName ?? '',
         lastName: state.lastName ?? '',
@@ -31,7 +32,6 @@ const PersonalDetails = () => {
         taxIdentificationNumber: state.taxIdentificationNumber ?? '',
         taxResidence: state.taxResidence ?? '',
     };
-
     return (
         <WizardScreenWrapper heading='Complete your personal details'>
             <Formik

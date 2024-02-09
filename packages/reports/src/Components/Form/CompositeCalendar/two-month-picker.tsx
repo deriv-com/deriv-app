@@ -81,7 +81,6 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
                     navigateTo={navigateFrom}
                     isPeriodDisabled={validateFromArrows}
                     hide_disabled_periods
-                    switchView={() => ({})}
                 />
                 <Calendar.Body
                     calendar_view='date'
@@ -100,7 +99,6 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
                     isPeriodDisabled={validateToArrows}
                     navigateTo={navigateTo}
                     hide_disabled_periods
-                    switchView={() => ({})}
                 />
                 <Calendar.Body
                     calendar_view='date'

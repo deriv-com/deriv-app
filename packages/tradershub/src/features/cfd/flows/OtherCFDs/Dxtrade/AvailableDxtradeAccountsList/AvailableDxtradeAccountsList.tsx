@@ -1,33 +1,30 @@
 import React from 'react';
+import { useRegulationFlags } from '@/hooks';
 import { Provider } from '@deriv/library';
 import {
+    GetADerivAccountDialog,
+    PlatformIcon,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
-} from '../../../../../../components/TradingAccountCard';
+} from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
-import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 import { PlatformDetails } from '../../../../constants';
 import { DxtradePasswordModal } from '../../../../modals/DxtradePasswordModal';
 
 const LeadingIcon = () => (
-    <div
-        className='cursor-pointer'
-        onClick={() => {
-            window.open(getStaticUrl('/derivx'));
-        }}
-        onKeyDown={e => {
-            if (e.key === 'Enter') {
+    <div>
+        <PlatformIcon
+            icon='DerivX'
+            onClick={() => {
                 window.open(getStaticUrl('/derivx'));
-            }
-        }}
-        role='button'
-    >
-        <DerivX />
+            }}
+        />
     </div>
 );
 
 const AvailableDxtradeAccountsList = () => {
+    const { hasActiveDerivAccount } = useRegulationFlags();
     const { show } = Provider.useModal();
     const { setCfdState } = Provider.useCFDContext();
 
@@ -35,7 +32,11 @@ const AvailableDxtradeAccountsList = () => {
 
     const trailingButtonClick = () => {
         setCfdState('platform', PlatformDetails.dxtrade.platform);
-        show(<DxtradePasswordModal />);
+        if (!hasActiveDerivAccount) {
+            show(<GetADerivAccountDialog />);
+        } else {
+            show(<DxtradePasswordModal />);
+        }
     };
     return (
         <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>

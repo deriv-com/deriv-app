@@ -35,7 +35,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         mutate,
         status,
     } = useCreateMT5Account();
-    const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
+    const { isLoading: tradingPlatformPasswordChangeLoading, mutateAsync: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: accountStatus } = useAccountStatus();
     const { data: activeWallet } = useActiveWalletAccount();

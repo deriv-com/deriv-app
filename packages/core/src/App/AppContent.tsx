@@ -13,17 +13,15 @@ import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.
 import Routes from './Containers/Routes/routes.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import Devtools from './Devtools';
-import { useDisableLandscapeBlocker } from './hooks';
+import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
-    // observe route to disable landscape_blocker
-    useDisableLandscapeBlocker();
-
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
 
     return (
         <PlatformContainer>
+            <LandscapeBlocker />
             <Header />
             <ErrorBoundary root_store={store}>
                 <AppContents>

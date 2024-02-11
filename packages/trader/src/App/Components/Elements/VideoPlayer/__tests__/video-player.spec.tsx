@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 type TMockedStreamProps = {
     onEnded: () => void;
+    onPlay: () => void;
     onLoadedMetaData: () => void;
     streamRef: React.MutableRefObject<HTMLVideoElement>;
     src: string;
@@ -30,11 +31,12 @@ jest.mock('@deriv/components', () => ({
 
 jest.mock('@cloudflare/stream-react', () => ({
     ...jest.requireActual('@cloudflare/stream-react'),
-    Stream: jest.fn(({ onEnded, onLoadedMetaData, streamRef, src }: TMockedStreamProps) => (
+    Stream: jest.fn(({ onEnded, onPlay, onLoadedMetaData, streamRef, src }: TMockedStreamProps) => (
         <video
             data-testid='dt_video'
             onClick={onEnded}
             onLoadedData={onLoadedMetaData}
+            onPlay={onPlay}
             src={src}
             ref={() => {
                 streamRef.current = {
@@ -83,12 +85,6 @@ describe('<VideoPlayer />', () => {
         expect(player_progress_bar).toBeInTheDocument();
         userEvent.click(player_progress_bar);
         expect(screen.getByText(icon_play)).toBeInTheDocument();
-
-        // a click upon replay overlay on desktop should resume playing:
-        const replay_button = screen.getByText(icon_replay);
-        expect(replay_button).toBeInTheDocument();
-        userEvent.click(replay_button);
-        expect(screen.getByText(icon_pause)).toBeInTheDocument();
     });
     it('should render the component for mobile browsers except for Safari', () => {
         render(<VideoPlayer {...mocked_props} is_mobile />);
@@ -118,22 +114,18 @@ describe('<VideoPlayer />', () => {
         expect(screen.getByTestId(player_data_testid)).toBeInTheDocument();
 
         const play_button = screen.getByText(icon_play);
-        userEvent.click(play_button);
-        expect(screen.queryByText(icon_play)).not.toBeInTheDocument();
-        expect(screen.getByText(icon_pause)).toBeInTheDocument();
+        expect(play_button).toBeInTheDocument();
     });
-    it('should resume playing when replay overlay is clicked after the video ended', () => {
+    it('should not resume playing if user taps upon replay overlay while the video is not ended', () => {
         render(<VideoPlayer {...mocked_props} />);
         const video = screen.getByTestId(video_data_testid);
         fireEvent.loadedData(video);
-        // the mocked video element rewinds the video to the end when clicked, and the video stops playing:
         userEvent.click(video);
         expect(screen.getByText(icon_play)).toBeInTheDocument();
 
         const replay_button = screen.getByText(icon_replay);
         expect(replay_button).toBeInTheDocument();
         userEvent.click(replay_button);
-        expect(screen.queryByText(icon_play)).not.toBeInTheDocument();
-        expect(screen.getByText(icon_pause)).toBeInTheDocument();
+        expect(screen.getByText(icon_play)).toBeInTheDocument();
     });
 });

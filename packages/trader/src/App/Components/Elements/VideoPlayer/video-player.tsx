@@ -281,7 +281,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 volume={volume}
             />
             <VideoOverlay
-                onClick={is_mobile && !is_ended ? () => setShowControls(!show_controls) : togglePlay}
+                onClick={is_mobile && !is_ended.current ? () => setShowControls(!show_controls) : togglePlay}
                 is_ended={is_ended.current}
                 is_mobile={is_mobile}
             />

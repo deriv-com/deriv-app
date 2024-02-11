@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Formik, FormikValues } from 'formik';
+import { Form, Formik } from 'formik';
+import { termsOfUse } from '@/utils';
 import { Text } from '@deriv-com/ui';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
 import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
@@ -17,22 +18,27 @@ const Divider = () => <hr className=' bg-system-light-primary-background' />;
  * @returns {React.ReactNode}
  */
 const TermsOfUse = () => {
-    const { dispatch } = useSignupWizardContext();
+    const { dispatch, helpers, setIsWizardOpen } = useSignupWizardContext();
 
     // Temporary function to handle form submission till we have the validations in place
-    const handleSubmit = (values: FormikValues) => {
-        dispatch({ payload: { firstName: values.firstName }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
+    const handleSubmit = () => {
+        dispatch({ type: ACTION_TYPES.RESET });
+        setIsWizardOpen(false);
+        helpers.setStep(1);
     };
+
     return (
         <WizardScreenWrapper heading='Terms of Use'>
             <Formik
-                // Temporary initial values
                 initialValues={{
-                    firstName: '',
+                    fatcaDeclaration: '',
+                    pepConfirmation: false,
+                    termsAndCondition: false,
                 }}
                 onSubmit={handleSubmit}
+                validationSchema={termsOfUse}
             >
-                {() => (
+                {({ isValid, values }) => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
                         <div className='flex-1 overflow-y-auto p-1200'>
                             <div className='flex flex-col gap-800'>
@@ -61,7 +67,14 @@ const TermsOfUse = () => {
                                 <PEPs />
                             </div>
                         </div>
-                        <Actions />
+                        <Actions
+                            submitDisabled={
+                                !values.pepConfirmation ||
+                                !values.termsAndCondition ||
+                                !values.fatcaDeclaration ||
+                                !isValid
+                            }
+                        />
                     </Form>
                 )}
             </Formik>

@@ -4,19 +4,19 @@ export const COUNTERPARTIES_DROPDOWN_LIST = [
 ];
 
 export const RATE_TYPE = {
-    FLOAT: 'float',
     FIXED: 'fixed',
+    FLOAT: 'float',
 };
 
 export const AD_ACTION = {
-    EDIT: 'edit',
-    CREATE: 'create',
     ACTIVATE: 'activate',
+    CREATE: 'create',
     DEACTIVATE: 'deactivate',
     DELETE: 'delete',
+    EDIT: 'edit',
 };
 
 export const ADVERT_TYPE = {
-    SELL: 'Sell',
     BUY: 'Buy',
+    SELL: 'Sell',
 };

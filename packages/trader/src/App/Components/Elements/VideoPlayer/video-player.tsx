@@ -151,8 +151,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const debouncedRewind = debounce(() => {
         if (!video_ref?.current?.ended || is_ended.current) {
             setIsAnimated(true);
-            video_ref?.current?.play();
             animation_ref.current = requestAnimationFrame(repeat);
+            video_ref?.current?.play();
         }
         if (is_ended.current) {
             is_ended.current = false;
@@ -181,10 +181,10 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const repeat = () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
         if (should_check_time_ref.current && new_time_ref.current !== video_ref.current.currentTime) {
+            video_ref.current.currentTime = new_time_ref.current;
             animation_ref.current = requestAnimationFrame(repeat);
             return;
         }
-
         if (should_check_time_ref.current) should_check_time_ref.current = false;
         setCurrentTime(video_ref.current.currentTime);
 
@@ -218,8 +218,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 setIsPlaying(false);
             } else {
                 replay_animation_timeout.current = setTimeout(() => {
-                    video_ref?.current?.play();
                     animation_ref.current = requestAnimationFrame(repeat);
+                    video_ref?.current?.play();
                 }, 500);
                 toggle_animation_timeout.current = setTimeout(() => {
                     setIsAnimated(true);

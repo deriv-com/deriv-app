@@ -1,6 +1,14 @@
 import moment from 'moment';
 import { flow } from 'mobx';
-import { State, getSocketURL, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
+import {
+    State,
+    getSocketURL,
+    getActivePlatform,
+    getPropertyValue,
+    routes,
+    getActionFromUrl,
+    isServerMaintenance,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -307,8 +315,7 @@ export default BinarySocketGeneral;
 const ResponseHandlers = (() => {
     const websiteStatus = response => {
         if (response.website_status) {
-            const { site_status } = response.website_status;
-            const isServerDown = site_status === 'down' || site_status === 'updating';
+            const isServerDown = isServerMaintenance(response.websiteStatus);
 
             // If site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt.
             // Starts off with 1.024 seconds and grow exponentially.

@@ -15,6 +15,7 @@ export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMes
     renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
     showMessageContainer?: boolean;
+    typeVariant?: 'listcard' | 'normal';
 }
 
 const WalletTextField = forwardRef(
@@ -35,6 +36,7 @@ const WalletTextField = forwardRef(
             renderRightIcon,
             showMessage = false,
             showMessageContainer = true,
+            typeVariant = 'normal',
             ...rest
         }: WalletTextFieldProps,
         ref: Ref<HTMLInputElement>
@@ -49,20 +51,30 @@ const WalletTextField = forwardRef(
 
         return (
             <div
-                className={classNames('wallets-textfield', {
-                    'wallets-textfield--disabled': disabled,
-                    'wallets-textfield--error': isInvalid,
-                })}
+                className={classNames(
+                    `wallets-textfield ${typeVariant === 'listcard' ? 'wallets-textfield--listcard' : ''}`,
+                    {
+                        'wallets-textfield--disabled': disabled,
+                        'wallets-textfield--error': isInvalid,
+                    }
+                )}
                 data-testid='dt_wallets_textfield'
             >
-                <div className='wallets-textfield__box' data-testid='dt_wallets_textfield_box'>
+                <div
+                    className={`wallets-textfield__box ${
+                        typeVariant === 'listcard' ? 'wallets-textfield__box--listcard' : ''
+                    }`}
+                    data-testid='dt_wallets_textfield_box'
+                >
                     {typeof renderLeftIcon === 'function' && (
                         <div className='wallets-textfield__icon-left' data-testid='dt_wallets_textfield_icon_left'>
                             {renderLeftIcon()}
                         </div>
                     )}
                     <input
-                        className='wallets-textfield__field'
+                        className={`wallets-textfield__field ${
+                            typeVariant === 'listcard' ? 'wallets-textfield__field--listcard' : ''
+                        }`}
                         disabled={disabled}
                         id={name}
                         maxLength={maxLength}
@@ -79,7 +91,12 @@ const WalletTextField = forwardRef(
                         </label>
                     )}
                     {typeof renderRightIcon === 'function' && (
-                        <div className='wallets-textfield__icon-right' data-testid='dt_wallets_textfield_icon_right'>
+                        <div
+                            className={`wallets-textfield__icon-right ${
+                                typeVariant === 'listcard' ? 'wallets-textfield__icon-right--listcard' : ''
+                            }`}
+                            data-testid='dt_wallets_textfield_icon_right'
+                        >
                             {renderRightIcon()}
                         </div>
                     )}

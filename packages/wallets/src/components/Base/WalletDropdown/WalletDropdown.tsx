@@ -27,6 +27,7 @@ type TProps = {
     onSelect: (value: string) => void;
     showListHeader?: boolean;
     showMessageContainer?: boolean;
+    typeVariant?: 'listcard' | 'normal';
     value?: WalletTextFieldProps['value'];
     variant?: 'comboBox' | 'prompt';
 };
@@ -46,6 +47,7 @@ const WalletDropdown: React.FC<TProps> = ({
     onSelect,
     showListHeader = false,
     showMessageContainer = true,
+    typeVariant = 'normal',
     value,
     variant = 'prompt',
 }) => {
@@ -107,7 +109,11 @@ const WalletDropdown: React.FC<TProps> = ({
             })}
             {...getToggleButtonProps()}
         >
-            <div className='wallets-dropdown__content'>
+            <div
+                className={`wallets-dropdown__content ${
+                    typeVariant === 'listcard' ? 'wallets-dropdown__content--listcard' : ''
+                }`}
+            >
                 <WalletTextField
                     disabled={disabled}
                     dropdownWidth={dropdownWidth}
@@ -132,18 +138,29 @@ const WalletDropdown: React.FC<TProps> = ({
                     )}
                     showMessageContainer={showMessageContainer}
                     type='text'
+                    typeVariant={typeVariant}
                     value={value}
                     {...getInputProps()}
                 />
             </div>
-            <ul className={`wallets-dropdown__items wallets-dropdown__items--${listHeight}`} {...getMenuProps()}>
+            <ul
+                className={`wallets-dropdown__items wallets-dropdown__items--${listHeight} ${
+                    typeVariant === 'listcard' ? 'wallets-dropdown__items--listcard' : ''
+                }`}
+                {...getMenuProps()}
+            >
                 {isOpen && showListHeader && <div className='wallets-dropdown__list-header'>{listHeader}</div>}
                 {isOpen &&
                     items.map((item, index) => (
                         <li
-                            className={classNames('wallets-dropdown__item', {
-                                'wallets-dropdown__item--active': value === item.value,
-                            })}
+                            className={classNames(
+                                `wallets-dropdown__item ${
+                                    typeVariant === 'listcard' ? 'wallets-dropdown__item--listcard' : ''
+                                }`,
+                                {
+                                    'wallets-dropdown__item--active': value === item.value,
+                                }
+                            )}
                             key={item.value}
                             onClick={() => clearFilter()}
                             {...getItemProps({ index, item })}

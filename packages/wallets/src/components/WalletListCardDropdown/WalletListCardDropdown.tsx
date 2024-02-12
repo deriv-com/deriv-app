@@ -16,13 +16,15 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
     const { data: wallets } = useWalletAccountsList();
     const [dropdownWidth, setDropdownWidth] = useState('auto');
 
+    const generateTitleText = (wallet: THooks.WalletAccountsList) => {
+        return `${wallet?.currency} ${wallet?.wallet_currency_type === 'Demo' ? 'Demo ' : ''}Wallet`;
+    };
+
     useEffect(() => {
         const selectedWallet = wallets?.find(wallet => wallet.loginid === loginid);
         if (selectedWallet) {
-            const selectedTextWidth = `${selectedWallet.currency} ${
-                selectedWallet.wallet_currency_type === 'Demo' ? 'Demo ' : ''
-            }Wallet`.length;
-            setDropdownWidth(`${selectedTextWidth - 2}rem`);
+            const selectedTextWidth = generateTitleText(selectedWallet).length;
+            setDropdownWidth(`${selectedTextWidth * 10 - 20}px`);
         }
     }, [wallets, loginid]);
 
@@ -54,7 +56,7 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
                                 </div>
                             </div>
                         ),
-                        text: `${wallet.currency} ${wallet.wallet_currency_type === 'Demo' ? 'Demo ' : ''}Wallet`,
+                        text: generateTitleText(wallet),
                         value: wallet.loginid,
                     }))}
                     listHeader={
@@ -69,6 +71,7 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
                     }}
                     showListHeader
                     showMessageContainer={false}
+                    typeVariant='listcard'
                     value={loginid}
                 />
             )}

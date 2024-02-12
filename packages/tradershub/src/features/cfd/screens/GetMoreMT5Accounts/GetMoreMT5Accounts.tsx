@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
+import AddIcon from '@/assets/svgs/add-icon.svg';
 import { MT5AccountTypeModal } from '@cfd/modals';
 import { Provider } from '@deriv/library';
 import { Text } from '@deriv-com/ui';
-import AddIcon from '../../../../public/images/add-icon.svg';
 
 const GetMoreMT5Accounts: FC = () => {
     const { show } = Provider.useModal();

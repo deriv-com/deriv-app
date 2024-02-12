@@ -6,7 +6,7 @@ import { Button } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
 type TActions = {
-    canGoNext?: boolean;
+    submitDisabled?: boolean;
 };
 
 /**
@@ -14,14 +14,14 @@ type TActions = {
  * @description The Actions component is used to navigate between steps in the SignupWizard component.
  * Intended to be used as a child component of the Formik component.
  * @param {Object} props - React props object
- * @param {boolean} [props.canGoNext] - A boolean that determines whether the Next button is disabled
+ * @param {boolean} [props.submitDisabled] - A boolean that determines whether the Next button is disabled
  * @example
  * return (
- *     <Actions canGoNext />
+ *     <Actions submitDisabled />
  * );
  */
 
-const Actions = ({ canGoNext = true }: TActions) => {
+const Actions = ({ submitDisabled = false }: TActions) => {
     const {
         helpers: { canGoToNextStep, canGoToPrevStep, goToPrevStep },
     } = useSignupWizardContext();
@@ -44,7 +44,7 @@ const Actions = ({ canGoNext = true }: TActions) => {
                 )}
                 <Button
                     className='bg-solid-coral-700'
-                    disabled={!canGoNext}
+                    disabled={submitDisabled}
                     isFullWidth={isMobile}
                     onClick={() => handleSubmit()}
                     size={isMobile ? 'lg' : 'md'}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { useAuthorize, useWalletAccountsList } from '@deriv/api';
@@ -15,9 +15,10 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
     const { switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const [dropdownWidth, setDropdownWidth] = useState('auto');
+    const { t } = useTranslation();
 
     const generateTitleText = (wallet: THooks.WalletAccountsList) => {
-        return `${wallet?.currency} ${wallet?.wallet_currency_type === 'Demo' ? 'Demo ' : ''}Wallet`;
+        return t(`${wallet?.currency} ${wallet?.wallet_currency_type === 'Demo' ? 'Demo ' : ''}Wallet`);
     };
 
     useEffect(() => {

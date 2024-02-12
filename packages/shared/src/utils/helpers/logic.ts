@@ -65,7 +65,7 @@ export const getBuyPrice = (contract_store: TContractStore) => {
  * @param {WebsiteStatusResponse} response - The response object containing the status of the website.
  * @returns {boolean} True if the website status is 'down' or 'updating', false otherwise.
  */
-export const isServerMaintenance = (website_status: WebsiteStatus | undefined | null) => {
+export const checkServerMaintenance = (website_status: WebsiteStatus | undefined | null) => {
     const { site_status = '' } = website_status || {};
     return site_status === 'down' || site_status === 'updating';
 };

@@ -7,7 +7,7 @@ import {
     getPropertyValue,
     routes,
     getActionFromUrl,
-    isServerMaintenance,
+    checkServerMaintenance,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
@@ -315,11 +315,11 @@ export default BinarySocketGeneral;
 const ResponseHandlers = (() => {
     const websiteStatus = response => {
         if (response.website_status) {
-            const isServerDown = isServerMaintenance(response.websiteStatus);
+            const is_server_down = checkServerMaintenance(response.websiteStatus);
 
             // If site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt.
             // Starts off with 1.024 seconds and grow exponentially.
-            if (isServerDown) {
+            if (is_server_down) {
                 const reconnectionDelay = Math.min(Math.pow(2, reconnectionCounter + 9), 600000);
 
                 window.setTimeout(() => {
@@ -327,12 +327,12 @@ const ResponseHandlers = (() => {
                     BinarySocket.closeAndOpenNewConnection();
                 }, reconnectionDelay);
                 // If site is up, and there was a reconnection attempted before
-            } else if (!isServerDown && reconnectionCounter > 1) {
+            } else if (!is_server_down && reconnectionCounter > 1) {
                 window.location.reload();
             }
 
             // @deriv/deriv-api blockRequest(true) affects all API requests except website_status
-            BinarySocket.blockRequest(isServerDown);
+            BinarySocket.blockRequest(is_server_down);
             BinarySocket.setAvailability(response.website_status.site_status);
             client_store.setWebsiteStatus(response);
         }

@@ -20,7 +20,7 @@ import {
     isHighLow,
     isMobile,
     isMultiplierContract,
-    isServerMaintenance,
+    checkServerMaintenance,
     isTurbosContract,
     LocalStore,
     routes,
@@ -332,9 +332,9 @@ export default class NotificationStore extends BaseStore {
 
         let has_missing_required_field;
 
-        const isServerDown = isServerMaintenance(website_status);
+        const is_server_down = checkServerMaintenance(website_status);
 
-        if (website_status?.message?.length || isServerDown) {
+        if (website_status?.message?.length || is_server_down) {
             this.addNotificationMessage(this.client_notifications.site_maintenance);
         } else {
             this.removeNotificationByKey({ key: this.client_notifications.site_maintenance });

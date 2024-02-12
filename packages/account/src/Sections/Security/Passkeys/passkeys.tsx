@@ -16,6 +16,7 @@ const Passkeys = observer(() => {
     //TODO: add feature flag with growthbook
     const is_passkeys_enabled = true;
 
+    const [key, setKey] = React.useState(0);
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
     const { is_passkey_supported, is_loading: is_passkey_support_checked } = useIsPasskeySupported();
     const [passkey_error_modal_open, setPasskeyErrorModalOpen] = React.useState(false);
@@ -25,6 +26,10 @@ const Passkeys = observer(() => {
         error: passkeys_list_error,
     } = useGetPasskeysList();
     const { createPasskey, is_passkey_registered, registration_error } = useRegisterPasskey();
+
+    const handleReload = () => {
+        setKey(prevKey => prevKey + 1); // Increment the key to trigger re-mounting
+    };
 
     const should_show_passkeys = is_passkeys_enabled && is_passkey_supported && is_mobile;
 
@@ -54,7 +59,7 @@ const Passkeys = observer(() => {
     const error_message = !isEmptyObject(passkeys_list_error) ? passkeys_list_error : registration_error;
 
     return (
-        <div className='passkeys'>
+        <div className='passkeys' key={key}>
             {passkey_status ? (
                 <PasskeysStatusContainer
                     createPasskey={createPasskey}
@@ -74,7 +79,10 @@ const Passkeys = observer(() => {
                 is_modal_open={passkey_error_modal_open}
                 description={getErrorContent(error_message).description}
                 button_text={getErrorContent(error_message).button_text}
-                onButtonClick={() => setPasskeyErrorModalOpen(false)}
+                onButtonClick={() => {
+                    setPasskeyErrorModalOpen(false);
+                    handleReload();
+                }}
             />
         </div>
     );

@@ -18,6 +18,7 @@ type TMyAdsDeleteModalProps = {
 const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClose }: TMyAdsDeleteModalProps) => {
     const { data: advertInfo, isLoading: isLoadingInfo } = p2p.advert.useGet({ id });
     const { isMobile } = useDevice();
+    const textSize = isMobile ? 'md' : 'sm';
 
     const hasActiveOrders = advertInfo?.active_orders && advertInfo?.active_orders > 0;
 
@@ -38,7 +39,7 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
         if (hasActiveOrders || error) {
             return (
                 <div className='flex justify-end'>
-                    <Button onClick={onRequestClose} size='lg' textSize={isMobile ? 'md' : 'sm'}>
+                    <Button onClick={onRequestClose} size='lg' textSize={textSize}>
                         Ok
                     </Button>
                 </div>
@@ -47,10 +48,10 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
 
         return (
             <div className='flex justify-end gap-[1rem] pt-[1.6rem]'>
-                <Button onClick={onRequestClose} size='lg' textSize={isMobile ? 'md' : 'sm'} variant='outlined'>
+                <Button onClick={onRequestClose} size='lg' textSize={textSize} variant='outlined'>
                     Cancel
                 </Button>
-                <Button onClick={onClickDelete} size='lg' textSize={isMobile ? 'md' : 'sm'}>
+                <Button onClick={onClickDelete} size='lg' textSize={textSize}>
                     Delete
                 </Button>
             </div>

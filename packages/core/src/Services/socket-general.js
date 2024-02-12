@@ -7,7 +7,7 @@ import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
 
 let client_store, common_store, gtm_store;
-const RECONNECTION_COUNTER_KEY = 'reconnection_counter';
+let reconnectionCounter = 1;
 
 // TODO: update commented statements to the corresponding functions from app
 const BinarySocketGeneral = (() => {
@@ -310,21 +310,21 @@ const ResponseHandlers = (() => {
             const { site_status } = response.website_status;
             const isServerDown = site_status === 'down' || site_status === 'updating';
 
-            // If site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt
+            // If site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt.
+            // Starts off with 1.024 seconds and grow exponentially.
             if (isServerDown) {
-                let reconnectionCounter = +(window.localStorage.getItem(RECONNECTION_COUNTER_KEY) || 1);
                 const reconnectionDelay = Math.min(Math.pow(2, reconnectionCounter + 9), 600000);
 
                 window.setTimeout(() => {
-                    window.localStorage.setItem(RECONNECTION_COUNTER_KEY, (++reconnectionCounter).toString());
+                    reconnectionCounter++;
                     BinarySocket.closeAndOpenNewConnection();
                 }, reconnectionDelay);
-            } else if (window.localStorage.getItem(RECONNECTION_COUNTER_KEY)) {
-                // If site is up, reset reconnection counter and reload
-                window.localStorage.removeItem(RECONNECTION_COUNTER_KEY);
+                // If site is up, and there was a reconnection attempted before
+            } else if (!isServerDown && reconnectionCounter > 1) {
                 window.location.reload();
             }
 
+            // @deriv/deriv-api blockRequest(true) affects all API requests except website_status
             BinarySocket.blockRequest(isServerDown);
             BinarySocket.setAvailability(response.website_status.site_status);
             client_store.setWebsiteStatus(response);

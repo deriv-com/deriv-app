@@ -60,10 +60,14 @@ const useRegisterPasskey = () => {
     // eslint-disable-next-line no-console
     console.log('passkeyRegisterError', passkeyRegisterError?.error);
 
-    const createPasskey = () => {
+    const createPasskey = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        // eslint-disable-next-line no-console
+        console.log('event begin', e);
         setIsPasskeyRegistered(false);
         setRegistrationError('');
         fetchRegisterOptions();
+        // eslint-disable-next-line no-console
+        console.log('event end', e);
     };
 
     return {

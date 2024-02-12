@@ -34,7 +34,8 @@ const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {
                 )}
                 <div>
                     <Text as='p' size='xs'>
-                        <Localize i18n_default_text='Last used: ' /> {getLongDate(last_used)}
+                        <Localize i18n_default_text='Last used: ' />{' '}
+                        {last_used ? getLongDate(last_used) : <Localize i18n_default_text='Never' />}
                     </Text>
                 </div>
                 {icon && <Icon icon={icon} size={24} className='passkeys-card__passkey-type-icon' />}

@@ -52,7 +52,7 @@ export type TRequestSchema = {
 export const initial_req_schema: TRequestSchema = {
     bot_create: 1,
     data: {
-        name: 'your bot',
+        name: 'Martingale strategy',
         strategy: 'martingale',
         parameters: {
             initial_stake: 1,

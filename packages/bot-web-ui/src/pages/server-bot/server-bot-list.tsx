@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore } from '@deriv/stores';
 import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { TBotListItem } from 'Stores/server-bot-store';
+import { TBotListItem } from './request_schema';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type THeader = {
@@ -42,6 +42,7 @@ const ServerBotList = () => {
     const {
         server_bot: { bot_list, removeBot, startBot, stopBot },
     } = DBotStores;
+
     return (
         <div className='bot-list__wrapper'>
             {bot_list && (
@@ -80,7 +81,7 @@ const ServerBotList = () => {
                                 <Button primary onClick={() => stopBot(bot_id)}>
                                     {localize('Stop')}
                                 </Button>
-                                <Button green>{localize('Pause')}</Button>
+                                <Button className='bot-list-btn--disabled' disabled>{localize('Pause')}</Button>
                                 <Button primary onClick={() => removeBot(bot_id)}>
                                     {localize('Remove')}
                                 </Button>

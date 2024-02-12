@@ -30,6 +30,25 @@
         height: 41.5rem;
         width: calc(100vw - 55rem);
     }
+
+    &-list {
+        margin-bottom: 2rem;
+    }
+
+    &__notifications {
+        background-color: var(--general-main-1);
+        border-radius: 1rem;
+        margin: 1rem;
+        padding: 1rem;
+        height: calc(100vh - 17rem);
+        overflow: auto;
+        width: 30rem;
+    }
+
+    &__notification {
+        margin: 1rem;
+        font-size: small;
+    }
 }
 
 .bot-list-contract__wrapper {
@@ -69,4 +88,9 @@
         display: flex;
         gap: 2rem;
     }
+
 }
+        .bot-list-btn--disabled {
+            pointer-events: none !important;
+            cursor: none !important;
+        }

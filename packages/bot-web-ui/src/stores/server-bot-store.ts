@@ -5,6 +5,8 @@ import { initial_req_schema, TRequestSchema, TBotList, TBotListItem } from '../p
 
 interface IServerBotStore {
     bot_list: TBotListItem[];
+    notifications: Array<string>;
+    setNotifications: (notifications: string) => void;
     getBotList: () => void;
     createBot: () => void;
     removeBot: (bot_id: string) => void;
@@ -48,6 +50,7 @@ export type TFormData = {
 
 export default class ServerBotStore implements IServerBotStore {
     bot_list: TBotListItem[] = [];
+    notifications: Array<string> = [];
     root_store: RootStore;
     form_data: TFormData = {};
 
@@ -55,8 +58,10 @@ export default class ServerBotStore implements IServerBotStore {
         this.root_store = root_store;
         makeObservable(this, {
             bot_list: observable,
+            notifications: observable,
             form_data: observable,
             setValueServerBot: action.bound,
+            setNotifications: action.bound,
             setValue: action.bound,
             getBotList: action.bound,
             createBot: action.bound,
@@ -124,8 +129,10 @@ export default class ServerBotStore implements IServerBotStore {
                     this.bot_list = data.bot_list.bot_listing;
                     return data.bot_list.bot_listing;
                 })
-                /* eslint-disable no-console */
-                .catch((e: Error) => console.error('error: ', e));
+                .catch((error: Error) => {
+                    /* eslint-disable no-console */
+                    this.setNotifications(error?.error?.message)
+                });
         }, 2000);
     };
 
@@ -134,7 +141,7 @@ export default class ServerBotStore implements IServerBotStore {
 
         this.makeRequest(initial_req_schema)
             .then(data => {
-                console.log(data);
+                this.setNotifications(data.bot_create.message);
                 if (this.form_data.action === 'RUN') {
                     this.startBot(data?.bot_create?.bot_id);
                 }
@@ -143,6 +150,7 @@ export default class ServerBotStore implements IServerBotStore {
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
+                this.setNotifications(error?.error?.message)
             })
             .then(() => this.getBotList());
     };
@@ -152,10 +160,13 @@ export default class ServerBotStore implements IServerBotStore {
             bot_remove: 1,
             bot_id,
         })
-            .then(data => console.log(data))
+            .then(data => {
+                this.setNotifications(data.bot_remove.message);
+            })
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
+                this.setNotifications(error?.error?.message);
             })
             .then(() => this.getBotList());
     };
@@ -166,10 +177,13 @@ export default class ServerBotStore implements IServerBotStore {
             bot_start: 1,
             bot_id,
         })
-            .then(data => console.log(data))
+            .then(data => {
+                this.setNotifications(data.bot_start.message);
+            })
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
+                this.setNotifications(error?.error?.message);
             });
     };
 
@@ -178,10 +192,13 @@ export default class ServerBotStore implements IServerBotStore {
             bot_stop: 1,
             bot_id,
         })
-            .then(data => console.log(data))
+            .then(data => {
+                this.setNotifications(data.bot_stop.message);
+            })
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
+                this.setNotifications(error?.error?.message);
             })
             .then(() => this.getBotList());
     };
@@ -192,10 +209,18 @@ export default class ServerBotStore implements IServerBotStore {
             subscribe: 1,
             bot_id,
         })
-            .then(data => console.log(data))
+            .then(data => {
+                this.setNotifications(data?.bot_notification?.message)
+                return data;
+            })
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
+                this.setNotifications(error?.error?.message);
             });
     };
+
+    setNotifications = (notifications: string) => {
+        this.notifications.push(notifications);
+    }
 }

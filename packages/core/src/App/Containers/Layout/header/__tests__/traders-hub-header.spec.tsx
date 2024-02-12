@@ -35,6 +35,14 @@ jest.mock('@deriv/hooks', () => ({
     useHasSetCurrency: () => true,
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({
+        isDesktop: true,
+        isMobile: false,
+        isTablet: false,
+    })),
+}));
+
 describe('TradersHubHeader', () => {
     const renderComponent = (mock_store?: TStores) =>
         render(

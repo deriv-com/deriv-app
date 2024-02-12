@@ -22,7 +22,7 @@ const useAdvertDelete = () => {
         ...rest
     } = useMutation('p2p_advert_update', {
         onSuccess: () => {
-            invalidate('p2p_advertiser_adverts');
+            invalidate('p2p_advert_list');
             invalidate('p2p_advertiser_adverts');
         },
     });

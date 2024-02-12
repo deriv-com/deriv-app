@@ -8,7 +8,7 @@ import { customStyles } from '../helpers';
 import './MyAdsDeleteModal.scss';
 
 type TMyAdsDeleteModalProps = {
-    error: ReturnType<typeof p2p.advert.useDelete>['error'];
+    error?: string;
     id: string;
     isModalOpen: boolean;
     onClickDelete: () => void;
@@ -26,10 +26,10 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
     }, []);
 
     const getModalText = () => {
-        if (hasActiveOrders) {
+        if (hasActiveOrders && !error) {
             return 'You have open orders for this ad. Complete all open orders before deleting this ad.';
         } else if (error) {
-            return `${error?.error?.message}`;
+            return `${error}`;
         }
         return 'You will NOT be able to restore it.';
     };

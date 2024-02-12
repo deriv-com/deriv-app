@@ -1,6 +1,6 @@
 export const COUNTERPARTIES_DROPDOWN_LIST = [
-    { value: 'all', text: 'All' },
-    { value: 'blocked', text: 'Blocked' },
+    { text: 'All', value: 'all' },
+    { text: 'Blocked', value: 'blocked' },
 ];
 
 export const RATE_TYPE = {

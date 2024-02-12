@@ -3,7 +3,14 @@ import useQuery from '../useQuery';
 import useSettings from './useSettings';
 
 // TODO: Merge service token hooks into a single service token hook call
-/** A custom hook that get Service Token for Onfido. */
+/** A custom hook that get Service Token for Onfido.
+ * @param [country] - The country code to be used to retrieve the Onfido service token.
+ * For example:
+ * ```
+ * const { data: { token } } = useOnfidoServiceToken()
+ * ```
+ */
+
 const useOnfidoServiceToken = (country?: string) => {
     const { data: settings } = useSettings();
     const country_code = country ?? settings.country_code ?? '';

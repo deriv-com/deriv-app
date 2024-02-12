@@ -12,7 +12,7 @@ export const ErrorMessage = ({ message }: TErrorMessage) => (
         </Text>
         <div className='grid justify-center gap-500'>
             <Text align='center' size='md'>
-                {message || 'Sorry, an error occurred while processing your request.'}
+                {message ?? 'Sorry, an error occurred while processing your request.'}
             </Text>
             <Text align='center' size='md' weight='bold'>
                 Please refresh this page to continue.

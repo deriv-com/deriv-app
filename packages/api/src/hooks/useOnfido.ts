@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 /** A custom hook to initialize Onfido SDK.
  * To initialize Onfido, ensure that an empty container is present.
  * Call the hook and use `onfidoContainerId` to mark the empty container where the Onfido UI is to be mounted.
+ *  @param [country] - The country code to be used to retrieve the Onfido service token.
  * For example:
  * ```
  * const { data: { onfidoContainerId } } = useOnfido()
@@ -56,7 +57,7 @@ const useOnfido = (country?: string) => {
     // residence list for retrieving supported documents for onfido for the user's country
     const { data: residenceList } = useResidenceList();
     const countryCode = useMemo(() => {
-        return (country || settings?.country_code) ?? '';
+        return country ?? settings?.country_code ?? '';
     }, [country, settings?.country_code]);
     // onfido service token to be passed in Onfido SDK
     const {

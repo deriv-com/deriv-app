@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Button, Loader, Text } from '@deriv-com/ui';
+import { useHistory } from 'react-router-dom';
 import { useOnfido } from '@deriv/api';
+import { qtMerge } from '@deriv/quill-design';
+import { Button, Loader, Text } from '@deriv-com/ui';
 import IcAccountMissingDetails from '../../assets/proof-of-identity/ic-account-missing-details.svg';
 import { ErrorMessage } from '../../components/ErrorMessage';
-import { OnfidoView } from '../../containers/Onfido/OnfidoView';
 import { IconWithMessage } from '../../components/IconWithMessage';
-import { useHistory } from 'react-router-dom';
-import { qtMerge } from '@deriv/quill-design';
+import { OnfidoView } from '../../containers/Onfido/OnfidoView';
 
-// remove optional and default props when POI is ready
+// TODO: Remove optional and default props when POI is ready
 type TOnfidoContainer = {
     country?: string;
     isEnabledByDefault?: boolean;
@@ -94,14 +94,16 @@ export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, on
         <div className={qtMerge('flex flex-col items-center gap-800 p-800 lg:p-50')}>
             <div
                 className={clsx(
-                    '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-1300 p-800 max-w-[670px]',
-                    { 'scale-y-0 opacity-50': isOnfidoEnabled, '[display:none]': transitionEnd }
+                    '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-1300 p-800',
+                    { '[display:none]': transitionEnd, 'scale-y-0 opacity-50': isOnfidoEnabled }
                 )}
             >
-                {/* Dummy div here replace with PoiConfirmWithExample */}
+                {/* TODO: Dummy div here replace with PoiConfirmWithExample */}
                 <div
                     className='border-75 border-solid border-solid-slate-300 rounded-500 w-[200px] sm:w-[638px] h-[384px]'
                     onClick={() => setIsOnfidoEnabled(true)}
+                    onKeyDown={() => setIsOnfidoEnabled(true)}
+                    tabIndex={0}
                 />
             </div>
             <OnfidoView

@@ -21,6 +21,7 @@ export const ManualFormDocumentUpload = ({ selectedDocument }: TManualFormDocume
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={upload.fileUploadIcon}
                             maxSize={8388608}
+                            onFileChange={file => console.log(file.name)}
                         />
                     </div>
                 ))}

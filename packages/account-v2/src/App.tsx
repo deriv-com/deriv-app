@@ -5,6 +5,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import { APIProvider } from '@deriv/api';
 import { BreakpointProvider } from '@deriv/quill-design';
+import { SelfieDocumentUpload } from './containers/SelfieDocumentUpload';
 import { DOCUMENT_LIST, INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
 import { IDVForm } from './modules/IDVForm';
 import { getIDVFormValidationSchema } from './modules/IDVForm/utils';
@@ -23,7 +24,8 @@ const App: React.FC = () => {
                 {/* <ManualForm onSubmit={() => {}} selectedDocument='driving_licence' /> */}
                 {/* [TODO]:Mock - Remove Mock values */}
                 <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}} validationSchema={getValidationSchema}>
-                    <IDVForm selectedCountry={SELECTED_COUNTRY} />
+                    {/* <IDVForm selectedCountry={SELECTED_COUNTRY} /> */}
+                    <SelfieDocumentUpload />
                 </Formik>
                 <RouteLinks />
                 {/* [TODO]:Mock - Remove Mock values */}

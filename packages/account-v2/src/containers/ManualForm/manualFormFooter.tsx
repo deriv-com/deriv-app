@@ -1,8 +1,8 @@
 import React from 'react';
-import IcPoiClearPhoto from '../../assets/manual-form/ic-poi-clear-photo.svg';
-import IcPoiDocExpiry from '../../assets/manual-form/ic-poi-doc-expiry.svg';
-import IcPoiFileFormat from '../../assets/manual-form/ic-poi-file-format.svg';
-import IcPoiFileSize from '../../assets/manual-form/ic-poi-file-size.svg';
+import IcPoiClearPhoto from '../../assets/manual-upload/ic-poi-clear-photo.svg';
+import IcPoiDocExpiry from '../../assets/manual-upload/ic-poi-doc-expiry.svg';
+import IcPoiFileFormat from '../../assets/manual-upload/ic-poi-file-format.svg';
+import IcPoiFileSize from '../../assets/manual-upload/ic-poi-file-size.svg';
 import { WalletText } from '../../components/base/WalletText';
 
 const FOOTER_ITEMS = [

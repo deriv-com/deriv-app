@@ -1,10 +1,10 @@
 import React from 'react';
-import IdentityCardBack from '../assets/manual-form/document-back.svg';
-import DrivingLicenseCardFront from '../assets/manual-form/driving-license-front.svg';
-import IdentityCardFront from '../assets/manual-form/identity-card-front.svg';
-import NIMCSlipFront from '../assets/manual-form/nimc-slip-front.svg';
-import PassportPlaceholder from '../assets/manual-form/passport-placeholder.svg';
-import ProofOfAgeIcon from '../assets/manual-form/proof-of-age.svg';
+import IdentityCardBack from '../assets/manual-upload/document-back.svg';
+import DrivingLicenseCardFront from '../assets/manual-upload/driving-license-front.svg';
+import IdentityCardFront from '../assets/manual-upload/identity-card-front.svg';
+import NIMCSlipFront from '../assets/manual-upload/nimc-slip-front.svg';
+import PassportPlaceholder from '../assets/manual-upload/passport-placeholder.svg';
+import ProofOfAgeIcon from '../assets/manual-upload/proof-of-age.svg';
 
 export type TManualDocumentTypes = typeof MANUAL_DOCUMENT_TYPES[keyof typeof MANUAL_DOCUMENT_TYPES];
 

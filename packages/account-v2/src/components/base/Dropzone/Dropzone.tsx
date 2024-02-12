@@ -13,6 +13,7 @@ import { useDropzone } from 'react-dropzone';
 import { StandaloneXmarkRegularIcon as CloseIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
 import DropzoneFrame from '../../../assets/dropzone/dropzone-frame.svg';
+import { IconButton } from '../IconButton';
 import { WalletText } from '../WalletText';
 import './Dropzone.scss';
 
@@ -53,7 +54,6 @@ const Dropzone: React.FC<TProps> = ({
     hoverMessage = 'Drop file here',
     icon,
     maxSize,
-    noClick = false,
     onFileChange,
     title = false,
     titleType = 'normal',
@@ -67,7 +67,7 @@ const Dropzone: React.FC<TProps> = ({
         accept: fileFormats,
         maxSize,
         multiple: false,
-        noClick,
+        noClick: true,
         onDragEnter: () => setShowHoverMessage(true),
         onDragLeave: () => setShowHoverMessage(false),
         onDrop: acceptedFiles => {
@@ -114,7 +114,7 @@ const Dropzone: React.FC<TProps> = ({
             >
                 <div className='wallets-dropzone__content'>
                     {showHoverMessage && <WalletText size='sm'>{hoverMessage}</WalletText>}
-                    {!showHoverMessage && !file && (
+                    {!file && (
                         <div className='wallets-dropzone__placeholder'>
                             <div className='wallets-dropzone__placeholder-icon'>{icon}</div>
                             {title && (
@@ -139,7 +139,7 @@ const Dropzone: React.FC<TProps> = ({
                             )}
                         </div>
                     )}
-                    {!showHoverMessage && file && (
+                    {file && (
                         <React.Fragment key={file.name}>
                             <div
                                 className={classNames('wallets-dropzone__thumb', {
@@ -149,7 +149,13 @@ const Dropzone: React.FC<TProps> = ({
                                 style={{ backgroundImage: `url(${file.preview})` }}
                             >
                                 {hasFrame && <DropzoneFrame />}
-                                <CloseIcon iconSize='sm' onClick={removeFile} />
+                                <IconButton
+                                    className='wallets-dropzone__remove-file'
+                                    data-testid='dt_remove-button'
+                                    icon={<CloseIcon iconSize='sm' />}
+                                    onClick={removeFile}
+                                    size='sm'
+                                />
                             </div>
                             {description && (
                                 <WalletText align='center' color={descriptionColor}>

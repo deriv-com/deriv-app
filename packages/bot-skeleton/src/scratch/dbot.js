@@ -328,6 +328,8 @@ class DBot {
      * that trade will be completed first to reflect correct contract status in UI.
      */
     async stopBot() {
+        if (api_base.is_stopping) return;
+
         api_base.setIsRunning(false);
 
         await this.interpreter.stop();

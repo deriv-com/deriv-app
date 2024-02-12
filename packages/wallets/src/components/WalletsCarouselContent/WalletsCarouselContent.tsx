@@ -13,9 +13,6 @@ type TProps = {
 
 /**
  * carousel component
- * idea behind data flow here:
- * - Embla is the SINGLE SOURCE OF TRUTH for current active card, so the state flow / data flow is simple
- * - everything else gets in sync with Embla eventually
  */
 const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     const { switchAccount } = useAuthorize();

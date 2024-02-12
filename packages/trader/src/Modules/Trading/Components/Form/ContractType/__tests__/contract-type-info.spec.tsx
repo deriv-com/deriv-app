@@ -15,7 +15,6 @@ jest.mock('../../../../Helpers/contract-type', () => ({
 }));
 
 const mocked_props: React.ComponentProps<typeof Info> = {
-    handleSelect: jest.fn(),
     item: {
         text: 'Multipliers',
         value: TRADE_TYPES.MULTIPLIER,
@@ -302,7 +301,6 @@ describe('<Info />', () => {
         userEvent.click(trade_type_button);
 
         expect(trade_type_button).toBeInTheDocument();
-        expect(mocked_props.handleSelect).toHaveBeenCalled();
     });
     it('Should render toggle buttons if TRADE_TYPES.VANILLA.CALL info page is open', () => {
         mocked_props.item.text = 'Call/Put';

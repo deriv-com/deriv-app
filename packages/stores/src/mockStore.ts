@@ -620,6 +620,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 enableCFDPasswordModal: jest.fn(),
                 is_sent_email_modal_enabled: false,
                 setSentEmailModalStatus: jest.fn(),
+                submitMt5Password: jest.fn(() => Promise.resolve()),
                 setJurisdictionSelectedShortcode: jest.fn(),
                 setAccountType: jest.fn(),
                 setMigratedMT5Accounts: jest.fn(),

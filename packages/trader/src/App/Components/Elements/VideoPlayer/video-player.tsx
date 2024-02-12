@@ -149,12 +149,13 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     };
 
     const debouncedRewind = debounce(() => {
-        if (!video_ref?.current?.ended || is_ended.current) {
+        if (!video_ref.current) return;
+
+        const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
+        if (!video_ref.current?.ended || !is_rewind_to_the_end) {
             setIsAnimated(true);
             animation_ref.current = requestAnimationFrame(repeat);
             video_ref?.current?.play();
-        }
-        if (is_ended.current) {
             is_ended.current = false;
         }
     }, 500);

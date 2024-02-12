@@ -346,6 +346,7 @@ export default class CFDStore extends BaseStore {
     }
 
     async migrateMT5Accounts(values, actions) {
+        actions.setSubmitting(true);
         const account_to_migrate = this.root_store.client.mt5_login_list.filter(
             acc => acc.landing_company_short === Jurisdiction.SVG && !!acc.eligible_to_migrate
         );
@@ -369,7 +370,6 @@ export default class CFDStore extends BaseStore {
 
             if (!has_error) {
                 actions.setStatus({ success: true });
-                actions.setSubmitting(false);
                 this.setError(false);
                 this.setCFDSuccessDialog(true);
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
@@ -380,16 +380,19 @@ export default class CFDStore extends BaseStore {
                 WS.transferBetweenAccounts();
                 this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
             } else {
+                actions.setStatus({ success: false });
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
                 this.clearCFDError();
                 this.setMT5MigrationError(has_error?.error?.message);
                 this.setMigratedMT5Accounts([]);
-                this.root_store.ui.toggleMT5MigrationModal();
             }
         } catch (error) {
             // At least one request has failed
             // eslint-disable-next-line no-console
             console.warn('One or more MT5 migration requests failed:', error);
+            actions.setStatus({ success: false });
+        } finally {
+            actions.setSubmitting(false);
         }
     }
 
@@ -562,7 +565,7 @@ export default class CFDStore extends BaseStore {
         }
 
         this.resetFormErrors();
-        if (this.root_store.ui.is_mt5_migration_modal_enabled) {
+        if (this.root_store.ui.is_mt5_migration_modal_open) {
             await this.migrateMT5Accounts(values, actions);
         } else {
             const response = await this.openMT5Account(values);

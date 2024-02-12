@@ -62,7 +62,10 @@ export type TCFDStore = {
     setMT5MigrationError: (value: string) => void;
     setMigratedMT5Accounts: (value: Record<string, string>[]) => void;
     setError: (state: boolean, obj?: Error) => void;
-    submitMt5Password: (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
+    submitMt5Password: (
+        values: TCFDPasswordFormValues,
+        actions: FormikHelpers<TCFDPasswordFormValues>
+    ) => Promise<void>;
     submitCFDPassword: (
         values: TCFDPasswordFormValues & { platform?: string },
         actions: FormikHelpers<TCFDPasswordFormValues>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { routes } from '@deriv/shared';
 import './landscape-blocker.scss';
 
-const DISABLE_LANDSCAPE_BLOCKER_ROUTES = ['/appstore'];
+const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [routes.appstore, routes.traders_hub, routes.onboarding, routes.compare_cfds];
 
 const LandscapeBlocker = () => {
     const location = useLocation();

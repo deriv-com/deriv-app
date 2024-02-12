@@ -12,12 +12,12 @@ export const ManualUpload = ({ countryCode }: TManualUploadProps) => {
     if (selectedDocument) {
         return (
             <ManualForm
-                onSubmit={() => console.log('Called submit')}
-                selectedDocument={selectedDocument as TManualDocumentTypes}
                 onCancel={() => {
                     console.log('Called on Cancel');
                     setSelectedDocument(null);
                 }}
+                onSubmit={() => console.log('Called submit')}
+                selectedDocument={selectedDocument as TManualDocumentTypes}
             />
         );
     }

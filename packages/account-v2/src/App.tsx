@@ -8,7 +8,7 @@ import { BreakpointProvider } from '@deriv/quill-design';
 import { DOCUMENT_LIST, INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
 import { IDVForm } from './modules/IDVForm';
 import { getIDVFormValidationSchema } from './modules/IDVForm/utils';
-import { ManualUpload } from './modules/ManualUpload';
+import { ManualUpload } from './modules/ManualUpload/manual-upload';
 import RouteLinks from './router/components/route-links/route-links';
 import './index.scss';
 

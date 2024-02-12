@@ -17,11 +17,3 @@ const mock_onfido = {
 };
 
 window.Onfido = mock_onfido;
-
-jest.mock('@deriv-com/ui', () => ({
-    useDevice: jest.fn(() => ({
-        isDesktop: true,
-        isMobile: false,
-        isTablet: false,
-    })),
-}));

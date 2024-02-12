@@ -4,30 +4,17 @@ import { CFD_PLATFORMS, Jurisdiction, getCFDPlatformNames } from '@deriv/shared'
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
-import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import Icon from '@deriv/components/src/components/icon/icon';
 import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 
 const MT5MigrationFrontSideContent = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const { mt5_migration_error } = useCfdStore();
     const content_size = is_mobile ? 'xxs' : 'xs';
     const { setShowModalFrontSide } = useMT5MigrationModalContext();
 
     return (
         <React.Fragment>
             <div className='mt5-migration-modal__container'>
-                {!!mt5_migration_error && (
-                    <div className='mt5-migration-modal__error'>
-                        <div className='mt5-migration-modal__error-header'>
-                            <Icon icon='IcAlertDanger' />
-                            <Text align='center' size='xs'>
-                                <Localize i18n_default_text={mt5_migration_error} value={{ mt5_migration_error }} />
-                            </Text>
-                        </div>
-                    </div>
-                )}
                 <div className='mt5-migration-modal__description'>
                     <Text as='p' size={content_size} align='center'>
                         <Localize

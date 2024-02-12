@@ -36,7 +36,11 @@ describe('MT5MigrationModal', () => {
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <MT5MigrationModalContext.Provider
-                value={{ show_modal_front_side: true, setShowModalFrontSide: () => null }}
+                value={{
+                    show_modal_front_side: true,
+                    setShowModalFrontSide: () => null,
+                    setShowMigrationError: () => null,
+                }}
             >
                 <StoreProvider store={mock_store}>
                     <CFDStoreProvider>{children}</CFDStoreProvider>

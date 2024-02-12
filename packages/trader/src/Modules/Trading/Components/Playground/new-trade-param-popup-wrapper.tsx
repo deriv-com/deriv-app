@@ -4,25 +4,35 @@ import classNames from 'classnames';
 import { ButtonToggle } from '@deriv/components';
 import { useSwipeable } from 'react-swipeable';
 import { CSSTransition } from 'react-transition-group';
+import WheelPicker from './Wheel-picker/wheel-picker';
 
 const NewTradeParamPopupWrapper = ({
     onClick,
     show_details,
     is_risk_management,
     is_stake,
+    is_multiplier,
     is_portal,
+    setSelectedMultiplier,
 }: {
     onClick: () => void;
     show_details?: boolean;
     is_risk_management?: boolean;
     is_stake?: boolean;
+    is_multiplier?: boolean;
     is_portal?: boolean;
+    setSelectedMultiplier: (index: number) => void;
 }) => {
     const [hide_parent, setHideParent] = React.useState(true);
     const [show_take_profit, setShowTakeProfit] = React.useState(true);
     const [show_stop_loss, setShowStopLoss] = React.useState(false);
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+    const [selected_multiplier, setMultiplier] = React.useState(0);
+
+    const multipliers = ['x15', 'x20', 'x50', 'x100', 'x150', 'x200', 'x250', 'x500'];
+    // console.log('test is_multiplier', is_multiplier);
+    // console.log('test is_stake', is_stake);
 
     React.useEffect(() => {
         return () => clearTimeout(focus_timeout.current);
@@ -72,6 +82,7 @@ const NewTradeParamPopupWrapper = ({
                     className={classNames('trade-param_popup_container', {
                         'trade-param_popup_container--risk': is_risk_management,
                         'trade-param_popup_container--stake': is_stake,
+                        'trade-param_popup_container--is_multiplier': is_multiplier,
                     })}
                     {...swipe_handlers}
                     onClick={onClickHandler}
@@ -204,8 +215,32 @@ const NewTradeParamPopupWrapper = ({
                                 </div>
                             </React.Fragment>
                         )}
+                        {is_multiplier && (
+                            <React.Fragment>
+                                <div className='trade-param_popup_title' style={{ height: '6.4rem' }}>
+                                    Multipliers <span className='info-icon'>i</span>
+                                </div>
+                                <p style={{ fontSize: '16px', lineHeight: '24px', textAlign: 'center' }}>
+                                    Multiply your potential profit
+                                </p>
+                                <WheelPicker
+                                    // @ts-expect-error library has no types
+                                    animation='flat'
+                                    data={multipliers}
+                                    height={40}
+                                    parentHeight={200}
+                                    fontSize={16}
+                                    defaultSelection={selected_multiplier}
+                                    updateSelection={(index: number) => {
+                                        setSelectedMultiplier(index);
+                                        setMultiplier(index);
+                                    }}
+                                    scrollerId='scroll-select-subject'
+                                />
+                            </React.Fragment>
+                        )}
                     </div>
-                    <div className='trade-param_popup_bottom'>
+                    <div className='trade-param_popup_bottom' style={{ width: '100%' }}>
                         <button className='footer-new_bottom-sheet_button'>Save</button>
                     </div>
                 </div>
@@ -218,4 +253,4 @@ const NewTradeParamPopupWrapper = ({
     return content;
 };
 
-export default NewTradeParamPopupWrapper;
+export default React.memo(NewTradeParamPopupWrapper);

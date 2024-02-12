@@ -12,16 +12,24 @@ const NewTrade = () => {
     const [show_details, setShowDetails] = React.useState(false);
     const [is_risk_management, setIsRiskManagement] = React.useState(false);
     const [is_stake, setIsStake] = React.useState(false);
+    const [is_multiplier, setIsMultiplier] = React.useState(false);
+
     const [is_portal, setIsPortal] = React.useState(false);
     const [selected_left_type, setSelectedType] = React.useState(true);
     const [show_purchase_details, setShowPurchaseDetails] = React.useState(false);
 
+    const [selected_multiplier, setSelectedMultiplier] = React.useState(0);
+
+    const multipliers = ['x15', 'x20', 'x50', 'x100', 'x150', 'x200', 'x250', 'x500'];
+
     const onTradeParamClickHandler = (trade_param: string) => {
         setIsRiskManagement(false);
         setIsStake(false);
+        setIsMultiplier(false);
 
         if (trade_param === 'risk_management') setIsRiskManagement(true);
         if (trade_param === 'stake') setIsStake(true);
+        if (trade_param === 'multiplier') setIsMultiplier(true);
 
         setShowDetails(true);
     };
@@ -50,6 +58,7 @@ const NewTrade = () => {
                             key={1}
                             setSelectedType={setSelectedType}
                             selected_left_type={selected_left_type}
+                            selected_multiplier={selected_multiplier}
                         />,
                         <div key={2} style={{ marginTop: '-0.5rem' }}>
                             <Icon icon='IcNewChart' className='new-chart-icon' />
@@ -70,6 +79,8 @@ const NewTrade = () => {
                 is_risk_management={is_risk_management}
                 is_stake={is_stake}
                 is_portal={is_portal}
+                is_multiplier={is_multiplier}
+                setSelectedMultiplier={setSelectedMultiplier}
             />
             <div
                 className={show_purchase_details && !show_details ? 'trade-param_popup_overlay' : ''}
@@ -135,8 +146,16 @@ const NewTrade = () => {
                                         >
                                             Multiplier
                                         </div>
-                                        <button className='footer-new_bottom-sheet_edit-button'>
-                                            <span>x15 </span> <Icon icon='IcNewPencil' height={22} width={14} />
+                                        <button
+                                            className='footer-new_bottom-sheet_edit-button'
+                                            onClick={e => {
+                                                setIsPortal(true);
+                                                onTradeParamClickHandler('multiplier');
+                                                e.stopPropagation();
+                                            }}
+                                        >
+                                            <span>{multipliers[selected_multiplier]}</span>
+                                            <Icon icon='IcNewPencil' height={22} width={14} />
                                         </button>
                                     </div>
                                     <div className='footer-new_bottom-sheet_payout'>

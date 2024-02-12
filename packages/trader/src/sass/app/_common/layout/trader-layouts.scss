@@ -1204,6 +1204,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
         &--stake {
             height: 32rem;
         }
+        &--is_multiplier {
+            height: 43.7rem;
+        }
         .contract-type-info__button-wrapper {
             margin: 0.8rem 0 1.6rem;
         }
@@ -1217,6 +1220,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        width: 100%;
     }
 
     &_bottom {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text, Dialog } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import MT5MigrationModalContent from './mt5-migration-modal-content';
 import { MT5MigrationModalContext } from './mt5-migration-modal-context';
@@ -17,6 +17,7 @@ const MT5MigrationModal = observer(() => {
     } = ui;
 
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
+    const [show_migration_error, setShowMigrationError] = React.useState(false);
 
     const modal_title = (
         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
@@ -33,7 +34,30 @@ const MT5MigrationModal = observer(() => {
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>
-                <MT5MigrationModalContext.Provider value={{ show_modal_front_side, setShowModalFrontSide }}>
+                <MT5MigrationModalContext.Provider
+                    value={{ show_modal_front_side, setShowModalFrontSide, setShowMigrationError }}
+                >
+                    <Dialog
+                        title={localize('Sorry for the interruption')}
+                        confirm_button_text={localize('Try again')}
+                        onConfirm={() => {
+                            setShowMigrationError(false);
+                            closeModal();
+                        }}
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        has_close_icon
+                        className='mt5-migration-modal__error-dialog'
+                        is_visible={show_migration_error}
+                        onClose={() => {
+                            setShowMigrationError(false);
+                        }}
+                    >
+                        <Localize
+                            i18n_default_text="We're unable to upgrade your <0>MT5 account</0> at this time and we're working to get this fixed as soon as we can.  Please try again."
+                            components={[<strong key={0} />]}
+                        />
+                    </Dialog>
                     <DesktopWrapper>
                         <Modal
                             className='mt5-migration-modal'

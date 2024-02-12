@@ -23,6 +23,12 @@
         }
         @include mobile {
             margin: 1.6rem;
+            &-dialog {
+                padding: 1.6rem;
+                .dc-dialog__dialog {
+                    padding: 1.6rem;
+                }
+            }
         }
     }
     &__mobile-header {

@@ -1,9 +1,10 @@
 .wallets-jurisdiction-screen {
-    align-items: center;
-    border-radius: 1.6rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
+    padding: 2.4rem;
+    border-radius: 1.6rem;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     transform-style: preserve-3d;
@@ -55,7 +56,6 @@
         gap: 1.6rem;
         justify-content: center;
         width: 100%;
-        height: 82%;
 
         @include mobile {
             flex-direction: column;

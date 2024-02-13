@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus } from '@deriv/shared';
+import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus, getTotalProfit } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -25,7 +25,6 @@ export type TContractCardBodyProps = {
 
 const ContractCardBody = ({
     addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
@@ -68,13 +67,13 @@ const ContractCardBody = ({
 
     const toggle_card_dialog_props = {
         addToast,
-        connectWithContractUpdate,
         current_focus,
         error_message_alignment,
         getContractById,
         onMouseLeave,
         removeToast,
         setCurrentFocus,
+        totalProfit: is_multiplier && !isNaN(Number(profit)) ? getTotalProfit(contract_info) : Number(profit),
     };
 
     let card_body;
@@ -141,14 +140,18 @@ const ContractCardBody = ({
                         is_won={Number(profit) > 0}
                     >
                         <Money amount={profit} currency={currency} />
-                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                        {!is_sold && (
+                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                        )}
                     </ContractCardItem>
                     <ContractCardItem header={is_sold ? PAYOUT : INDICATIVE_PRICE}>
                         <Money currency={currency} amount={Number(sell_price || indicative)} />
-                        <ArrowIndicator
-                            className='dc-contract-card__indicative--movement'
-                            value={Number(sell_price || indicative)}
-                        />
+                        {!is_sold && (
+                            <ArrowIndicator
+                                className='dc-contract-card__indicative--movement'
+                                value={Number(sell_price || indicative)}
+                            />
+                        )}
                     </ContractCardItem>
                     <ContractCardItem header={PURCHASE_PRICE}>
                         <Money amount={buy_price} currency={currency} />

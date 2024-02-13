@@ -1,17 +1,15 @@
 import React from 'react';
-import { Text } from '@deriv/quill-design';
+import { useDynamicLeverageModalState } from '@cfd/components';
 import { StandaloneArrowLeftBoldIcon } from '@deriv/quill-icons';
-import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
+import { Text } from '@deriv-com/ui';
 
 export const DynamicLeverageTitle = () => {
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
 
     return (
-        <div className='flex items-center border-b py-50 pr-800 pl-1200 gap-800 h-14 border-system-light-secondary-background '>
+        <div className='flex items-center border-solid border-b-1 -mx-8 pb-12 pr-16 pl-24 gap-16 h-14 border-system-light-secondary-background '>
             <StandaloneArrowLeftBoldIcon className='flex items-center cursor-pointer' onClick={toggleDynamicLeverage} />
-            <Text bold size='md'>
-                Get more out of Deriv MT5 Financial
-            </Text>
+            <Text weight='bold'>Get more out of Deriv MT5 Financial</Text>
         </div>
     );
 };

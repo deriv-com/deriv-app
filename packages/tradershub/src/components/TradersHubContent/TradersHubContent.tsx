@@ -1,12 +1,9 @@
 import React, { Fragment } from 'react';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
-import { CFDSection, OptionsAndMultipliersSection, useUIContext } from '..';
+import { CFDSection, OptionsAndMultipliersSection } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 
 const TradersHubContent = () => {
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     if (isEU) {
         return (

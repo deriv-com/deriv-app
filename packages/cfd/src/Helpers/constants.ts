@@ -49,8 +49,6 @@ const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
 const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
-const getBrokerName = () => 'Deriv.com Limited';
-
 const CTRADER_URL = is_staging || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
 
 const getTopUpConfig = () => {
@@ -88,18 +86,12 @@ const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
-        case DESKTOP_PLATFORMS.WINDOWS:
-            return 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe';
         case DESKTOP_PLATFORMS.LINUX:
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
-        case MOBILE_PLATFORMS.IOS:
-            return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
         case DESKTOP_PLATFORMS.MACOS:
             return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
         case MOBILE_PLATFORMS.HAUWEI:
             return 'https://appgallery.huawei.com/#/app/C102015329';
-        case MOBILE_PLATFORMS.ANDROID:
-            return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
         default:
             return '';
     }
@@ -124,7 +116,6 @@ export {
     DEMO_DXTRADE_URL,
     CTRADER_URL,
     CTRADER_DOWNLOAD_LINK,
-    getBrokerName,
     platformsText,
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,

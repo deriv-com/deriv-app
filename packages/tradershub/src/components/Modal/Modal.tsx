@@ -14,7 +14,8 @@ import ModalHeader from './ModalHeader';
 type TModalChildren =
     | ReactElement<typeof ModalContent>
     | ReactElement<typeof ModalFooter>
-    | ReactElement<typeof ModalHeader>;
+    | ReactElement<typeof ModalHeader>
+    | null;
 
 /**
  * Type for the Modal component props
@@ -46,7 +47,7 @@ const Modal = ({ children, className }: TModal) => {
     return (
         <div
             className={qtMerge(
-                'flex flex-col h-[calc(100vh-40px)] w-screen bg-system-light-primary-background lg:mx-auto lg:h-full lg:w-full lg:rounded-400',
+                'flex flex-col h-[calc(100vh-40px)] w-screen bg-system-light-primary-background lg:mx-auto lg:h-full lg:w-full lg:rounded-default',
                 className
             )}
         >

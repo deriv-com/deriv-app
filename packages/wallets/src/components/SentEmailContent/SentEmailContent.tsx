@@ -24,7 +24,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
     const { mutate: verifyEmail } = useVerifyEmail();
     const { isMobile } = useDevice();
     const mt5Platform = PlatformDetails.mt5.platform;
-    const title = PlatformDetails[platform ?? mt5Platform].title;
+    const { title } = PlatformDetails[platform ?? mt5Platform];
     const titleSize = 'md';
     const descriptionSize = 'sm';
     const emailLinkSize = isMobile ? 'lg' : 'md';
@@ -39,6 +39,10 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
 
     const { data: activeWallet } = useActiveWalletAccount();
 
+    const mt5ResetType = isInvestorPassword
+        ? 'trading_platform_investor_password_reset'
+        : 'trading_platform_mt5_password_reset';
+
     return (
         <div className='wallets-sent-email-content'>
             <WalletsActionScreen
@@ -52,7 +56,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
                                 setShouldShowResendEmailReasons(true);
                             }}
                             size={emailLinkSize}
-                            variant='ghost'
+                            variant='contained'
                         >
                             <Trans defaults="Didn't receive the email?" />
                         </WalletButton>
@@ -80,7 +84,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
                                 verifyEmail({
                                     type:
                                         platform === mt5Platform
-                                            ? 'trading_platform_mt5_password_reset'
+                                            ? mt5ResetType
                                             : 'trading_platform_dxtrade_password_reset',
                                     url_parameters: {
                                         redirect_to: platformPasswordResetRedirectLink(
@@ -96,7 +100,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
                             }
                         }}
                     >
-                        {hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
+                        {hasCountdownStarted ? `Resend email in ${count} seconds` : 'Resend email'}
                     </WalletButton>
                 </Fragment>
             )}

@@ -1,7 +1,7 @@
 import React from 'react';
+import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
 import { Provider } from '@deriv/library';
 import { Heading, qtMerge } from '@deriv/quill-design';
-import CloseIcon from '../../public/images/ic-close-dark.svg';
 import { TModalComponents } from './Modal';
 
 /**
@@ -25,12 +25,12 @@ const ModalHeader = ({ className, hideCloseButton = false, title, titleClassName
     return (
         <div
             className={qtMerge(
-                'flex items-center pl-800 pr-1200 py-800 lg:px-1200 border border-solid border-b-100 border-system-light-secondary-background w-full',
+                'flex items-center pl-16 pr-24 py-16 lg:px-24 border border-solid border-b-2 border-system-light-secondary-background w-full',
                 title ? 'justify-between' : 'justify-end',
                 className
             )}
         >
-            {title && <Heading.H5 className={qtMerge('flex-1', titleClassName)}>{title}</Heading.H5>}
+            {title && <Heading.H5 className={qtMerge('flex-1 font-sans', titleClassName)}>{title}</Heading.H5>}
             {!hideCloseButton && <CloseIcon className='cursor-pointer' onClick={hide} />}
         </div>
     );

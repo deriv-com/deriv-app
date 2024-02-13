@@ -1,18 +1,18 @@
-import React, { Dispatch, useEffect, useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import { useDynamicLeverageModalState } from '@cfd/components';
+import { Jurisdiction } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
-import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
-import { Jurisdiction } from '../../constants';
 import { JurisdictionCard } from './JurisdictionCard';
 import { JurisdictionTncSection } from './JurisdictionTncSection';
 
 type TJurisdictionScreenProps = {
     isCheckBoxChecked: boolean;
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
-    setIsCheckBoxChecked: Dispatch<React.SetStateAction<boolean>>;
-    setSelectedJurisdiction: Dispatch<React.SetStateAction<string>>;
+    setIsCheckBoxChecked: Dispatch<SetStateAction<boolean>>;
+    setSelectedJurisdiction: Dispatch<SetStateAction<string>>;
 };
 
 const JurisdictionScreen = ({
@@ -22,18 +22,21 @@ const JurisdictionScreen = ({
     setSelectedJurisdiction,
 }: TJurisdictionScreenProps) => {
     const { getCFDState } = Provider.useCFDContext();
-    const { data, isLoading } = useAvailableMT5Accounts();
+    const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: mt5AccountsList } = useMT5AccountsList();
     const marketType = getCFDState('marketType');
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const jurisdictions = useMemo(
-        () => data?.filter(account => account.market_type === marketType).map(account => account.shortcode) || [],
-        [data, marketType]
+        () =>
+            availableMT5Accounts
+                ?.filter(account => account.market_type === marketType)
+                .map(account => account.shortcode) || [],
+        [availableMT5Accounts, marketType]
     );
     const addedJurisdictions = useMemo(
         () =>
             mt5AccountsList
-                ?.filter(account => account.market_type === marketType)
+                ?.filter(account => account.market_type === marketType && !account.is_virtual)
                 .map(account => account.landing_company_short) || [],
         [marketType, mt5AccountsList]
     );
@@ -42,16 +45,14 @@ const JurisdictionScreen = ({
         setIsCheckBoxChecked(false);
     }, [selectedJurisdiction, setIsCheckBoxChecked]);
 
-    if (isLoading) return <Text>Loading...</Text>;
-
     return (
         <div
             className={qtMerge(
-                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-1500 h-[75vh] transition-all ease-in duration-[0.6s]',
+                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-1500 sm:h-[75vh] transition-all ease-in duration-[0.6s]',
                 isDynamicLeverageVisible && '[transform:rotateY(-180deg)] h-[700px] opacity-50'
             )}
         >
-            <div className='flex flex-col py-1000 items-center gap-800 justify-center w-full h-[82%] sm:flex-row sm:py-50'>
+            <div className='flex py-20 items-center gap-16 justify-center w-full h-[82%] sm:flex-col sm:py-50'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}

@@ -1,16 +1,22 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Analytics, BotTActions } from '@deriv/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { waitForDomElement } from 'Utils/dom-observer';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
 import { useComponentVisibility } from '../../../hooks';
+import {
+    rudderstackDashboardChooseYourBot,
+    rudderstackDashboardDeleteYourBot,
+    rudderstackDashboardEditYourBot,
+    rudderstackDashboardSaveYourBot,
+} from '../analytics/rudderstack-dashboard';
 import './index.scss';
 
 type TRecentWorkspace = {
@@ -45,14 +51,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
     const is_desktop = isDesktop();
-
-    const sendToRudderStack = (action: BotTActions) => {
-        Analytics.trackEvent('ce_bot_builder_form', {
-            action,
-            form_source: 'ce_bot_dashboard_form',
-            bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
-        });
-    };
 
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
@@ -110,14 +108,8 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     };
 
     const handleSave = () => {
-        /* Send the event on rudderstack on strategy save */
-        Analytics.trackEvent('ce_bot_dashboard_form', {
-            bot_name: workspace?.name,
-            form_source: 'ce_bot_dashboard_form',
-        });
         updateBotName(workspace?.name);
         toggleSaveModal();
-        sendToRudderStack('save_your_bot');
     };
 
     const viewRecentStrategy = async (type: string) => {
@@ -127,28 +119,43 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             case STRATEGY.INIT:
                 // Fires for desktop preview
                 handleInit();
-                sendToRudderStack('choose_your_bot');
+                rudderstackDashboardChooseYourBot({
+                    bot_name: workspace?.name,
+                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+                });
                 break;
 
             case STRATEGY.PREVIEW_LIST:
                 // Fires for mobile preview
                 handlePreviewList();
-                sendToRudderStack('choose_your_bot');
+                rudderstackDashboardChooseYourBot({
+                    bot_name: workspace?.name,
+                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+                });
                 break;
 
             case STRATEGY.EDIT:
                 await handleEdit();
-                sendToRudderStack('edit_your_bot');
+                rudderstackDashboardEditYourBot({
+                    bot_name: workspace?.name,
+                });
                 break;
 
             case STRATEGY.SAVE:
                 handleSave();
-                sendToRudderStack('save_your_bot');
+                rudderstackDashboardSaveYourBot({
+                    bot_name: workspace?.name,
+                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+                    bot_status: dashboard_strategies?.[0]?.save_type,
+                });
                 break;
 
             case STRATEGY.DELETE:
                 onToggleDeleteDialog(true);
-                sendToRudderStack('delete_your_bot');
+                rudderstackDashboardDeleteYourBot({
+                    bot_name: workspace?.name,
+                    delete_popup_respond: 'yes',
+                });
                 break;
 
             default:

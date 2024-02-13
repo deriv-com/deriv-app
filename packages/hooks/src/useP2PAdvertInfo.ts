@@ -1,13 +1,18 @@
 import React from 'react';
-import { useFetch } from '@deriv/api';
-import { TSocketRequestQueryOptions } from '@deriv/api/types';
+import { useSubscription } from '@deriv/api';
 
 /**
  * @deprecated Please use `useAdvertInfo` from the `api` package instead.
  * This custom hook returns the advert info for a specific advert by calling 'p2p_advert_info' endpoint
  */
-const useP2PAdvertInfo = (id: string, options: TSocketRequestQueryOptions<'p2p_advert_info'>) => {
-    const { data, ...rest } = useFetch('p2p_advert_info', { payload: { id }, options });
+const useP2PAdvertInfo = (id: string) => {
+    const { subscribe, data, unsubscribe, ...rest } = useSubscription('p2p_advert_info');
+
+    React.useEffect(() => {
+        subscribe({ payload: { id } });
+
+        return () => unsubscribe();
+    }, [subscribe]);
 
     const modified_data = React.useMemo(() => {
         const p2p_advert_info = data?.p2p_advert_info;

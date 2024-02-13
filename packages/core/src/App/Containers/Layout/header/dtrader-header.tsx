@@ -30,7 +30,6 @@ const DTraderHeader = observer(() => {
     const {
         header_extension,
         is_app_disabled,
-        is_desktop,
         is_mobile,
         is_route_modal_on,
         toggleReadyToDepositModal,
@@ -87,7 +86,7 @@ const DTraderHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {is_desktop && (
+                    {!is_mobile && (
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
@@ -103,7 +102,7 @@ const DTraderHeader = observer(() => {
                             )}
                         </React.Fragment>
                     )}
-                    {is_desktop && <TradersHubHomeButton />}
+                    {!is_mobile && <TradersHubHomeButton />}
                     <MenuLinks />
                 </div>
 
@@ -112,7 +111,7 @@ const DTraderHeader = observer(() => {
                         'header__menu-right--hidden': is_mobile && is_logging_in,
                     })}
                 >
-                    {is_desktop && (
+                    {!is_mobile && (
                         <div className='header__menu--dtrader--separator--account'>
                             <div className='header__menu--dtrader--separator' />
                         </div>

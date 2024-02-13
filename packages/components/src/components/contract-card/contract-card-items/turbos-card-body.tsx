@@ -12,7 +12,6 @@ import ArrowIndicator from '../../arrow-indicator';
 type TTurbosCardBody = Pick<
     TGeneralContractCardBodyProps,
     | 'addToast'
-    | 'connectWithContractUpdate'
     | 'contract_info'
     | 'contract_update'
     | 'currency'
@@ -26,6 +25,7 @@ type TTurbosCardBody = Pick<
     | 'setCurrentFocus'
 > & {
     progress_slider_mobile_el: React.ReactNode;
+    totalProfit: number;
 };
 
 const TurbosCardBody = ({
@@ -106,7 +106,7 @@ const TurbosCardBody = ({
                 is_won={Number(profit) > 0}
             >
                 <Money amount={profit} currency={currency} />
-                <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                {!is_sold && <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />}
             </ContractCardItem>
         </React.Fragment>
     );

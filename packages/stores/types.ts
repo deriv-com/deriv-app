@@ -468,6 +468,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
+    is_p2p_enabled: boolean;
     is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
@@ -596,6 +597,10 @@ type TClientStore = {
     setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
     should_show_eu_error: boolean;
     is_options_blocked: boolean;
+    real_account_signup_form_data: Array<Record<string, unknown>>;
+    real_account_signup_form_step: number;
+    setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
+    setRealAccountSignupFormStep: (step: number) => void;
 };
 
 type TCommonStoreError = {

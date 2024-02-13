@@ -452,7 +452,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 };
 
 export const mt5_community_url =
-    'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';
+    'https://community.deriv.com/t/mt5-new-server-name-and-mobile-app-re-login-guide/70617';
 
 export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
     let formatted_label = '';
@@ -511,10 +511,13 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
 export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
     const { authentication } = account_status;
 
-    if (authentication?.attempts?.latest?.service !== 'idv') {
-        return !['pending', 'verified'].includes(authentication?.document?.status ?? '');
+    if (authentication?.attempts?.latest?.service === 'idv') {
+        if (authentication?.document?.status === 'pending') {
+            return false;
+        }
+        // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
+        return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
     }
 
-    // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
-    return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
+    return !['pending', 'verified'].includes(authentication?.document?.status ?? '');
 };

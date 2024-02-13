@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import {
     AutoHeightWrapper,
     Div100vhContainer,
@@ -118,6 +118,9 @@ const PersonalDetails = observer(
         };
 
         const handleValidate = values => {
+            const current_step = getCurrentStep() - 1;
+            onSave(current_step, values);
+
             setNoConfirmationNeeded(values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id);
             let idv_error = {};
             if (is_rendered_for_idv) {

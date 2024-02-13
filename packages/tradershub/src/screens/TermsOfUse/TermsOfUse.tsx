@@ -18,13 +18,14 @@ const Divider = () => <hr className=' bg-system-light-primary-background' />;
  * @returns {React.ReactNode}
  */
 const TermsOfUse = () => {
-    const { dispatch, helpers, setIsWizardOpen } = useSignupWizardContext();
+    const { dispatch, helpers, setIsSuccessModalOpen, setIsWizardOpen } = useSignupWizardContext();
 
     // Temporary function to handle form submission till we have the validations in place
     const handleSubmit = () => {
         dispatch({ type: ACTION_TYPES.RESET });
         setIsWizardOpen(false);
         helpers.setStep(1);
+        setIsSuccessModalOpen(true);
     };
 
     return (

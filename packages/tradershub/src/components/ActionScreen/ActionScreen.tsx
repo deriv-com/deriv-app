@@ -31,12 +31,12 @@ const ActionScreen = ({
     return (
         <div
             className={qtMerge([
-                'flex flex-col items-center justify-center gap-1200  w-auto h-auto rounded-200',
+                'flex flex-col items-center justify-center gap-24  w-auto h-auto rounded-xs',
                 className,
             ])}
         >
             {icon}
-            <div className='flex flex-col items-center justify-center gap-400'>
+            <div className='flex flex-col items-center justify-center gap-8'>
                 {title && (
                     <Text size={titleSize} weight='bold'>
                         {title}

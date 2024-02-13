@@ -44,8 +44,8 @@ const PersonalDetails = () => {
             >
                 {() => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
-                            <p className='text-75'>
+                        <div className='flex-1 overflow-y-auto p-24'>
+                            <p className='text-1'>
                                 Any information you provide is confidential and will be used for verification purposes
                                 only.
                             </p>

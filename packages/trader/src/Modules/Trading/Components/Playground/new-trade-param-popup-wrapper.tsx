@@ -89,7 +89,7 @@ const NewTradeParamPopupWrapper = ({
                     <div className='trade-param_popup_top'>
                         <div className='footer-new_bottom-sheet_separator' {...swipe_handlers} />
                         {is_risk_management && (
-                            <React.Fragment>
+                            <div className='trade-param_popup_top' {...swipe_handlers}>
                                 <div className='trade-param_popup_title'>Risk management [IN PROGRESS]</div>
                                 <div className='contract-type-info__button-wrapper trade-param_toggle-button'>
                                     <ButtonToggle
@@ -188,10 +188,10 @@ const NewTradeParamPopupWrapper = ({
                                         </React.Fragment>
                                     )}
                                 </div>
-                            </React.Fragment>
+                            </div>
                         )}
                         {is_stake && (
-                            <React.Fragment>
+                            <div className='trade-param_popup_top' {...swipe_handlers}>
                                 <div className='trade-param_popup_title' style={{ height: '6.4rem' }}>
                                     Stake <span className='info-icon'>i</span>
                                 </div>
@@ -212,16 +212,18 @@ const NewTradeParamPopupWrapper = ({
                                         </div>
                                     </React.Fragment>
                                 </div>
-                            </React.Fragment>
+                            </div>
                         )}
                         {is_multiplier && (
                             <React.Fragment>
-                                <div className='trade-param_popup_title' style={{ height: '6.4rem' }}>
-                                    Multipliers <span className='info-icon'>i</span>
+                                <div {...swipe_handlers}>
+                                    <div className='trade-param_popup_title' style={{ height: '6.4rem' }}>
+                                        Multipliers <span className='info-icon'>i</span>
+                                    </div>
+                                    <p style={{ fontSize: '16px', lineHeight: '24px', textAlign: 'center' }}>
+                                        Multiply your potential profit
+                                    </p>
                                 </div>
-                                <p style={{ fontSize: '16px', lineHeight: '24px', textAlign: 'center' }}>
-                                    Multiply your potential profit
-                                </p>
                                 {/* <WheelPicker
                                     // @ts-expect-error library has no types
                                     animation='flat'

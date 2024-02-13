@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
@@ -17,9 +17,12 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
     const [dropdownWidth, setDropdownWidth] = useState('auto');
     const { t } = useTranslation();
 
-    const generateTitleText = (wallet: THooks.WalletAccountsList) => {
-        return t(`${wallet?.currency} ${wallet?.wallet_currency_type === 'Demo' ? 'Demo ' : ''}Wallet`);
-    };
+    const generateTitleText = useCallback(
+        (wallet: THooks.WalletAccountsList) => {
+            return t(`${wallet?.currency} ${wallet?.wallet_currency_type === 'Demo' ? 'Demo ' : ''}Wallet`);
+        },
+        [t, wallets]
+    );
 
     useEffect(() => {
         const selectedWallet = wallets?.find(wallet => wallet.loginid === loginid);

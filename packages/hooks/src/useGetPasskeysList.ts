@@ -2,17 +2,19 @@ import { useQuery } from '@deriv/api';
 import useAuthorize from './useAuthorize';
 
 const useGetPasskeysList = () => {
-    const { isSuccess } = useAuthorize();
+    const { isSuccess, isFetching } = useAuthorize();
 
-    const { data, error, ...rest } = useQuery('passkeys_list', {
+    const { data, error, isLoading, refetch, ...rest } = useQuery('passkeys_list', {
         options: {
-            enabled: isSuccess,
+            enabled: isSuccess && !isFetching,
         },
     });
 
     return {
-        data: data?.passkeys_list,
-        error: error?.error ?? null,
+        passkeys_list: data?.passkeys_list,
+        passkeys_list_error: error?.error ?? null,
+        reloadPasskeysList: refetch,
+        is_passkeys_list_loading: isLoading,
         ...rest,
     };
 };

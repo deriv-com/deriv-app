@@ -1,76 +1,44 @@
 import React from 'react';
-import { useQuery, useMutation, useInvalidateQuery } from '@deriv/api';
 import { startRegistration } from '@simplewebauthn/browser';
+import { useInvalidateQuery } from '@deriv/api';
+import { WS } from '@deriv/shared';
+
+type TError = { code?: string; name?: string; message: string };
 
 const useRegisterPasskey = () => {
     const invalidate = useInvalidateQuery();
 
-    const [deviceRegistrationError, setRegistrationError] = React.useState('');
+    const [passkey_registration_error, setPasskeyRegistrationError] = React.useState<TError | null>(null);
     const [is_passkey_registered, setIsPasskeyRegistered] = React.useState(false);
 
-    const {
-        data,
-        refetch: fetchRegisterOptions,
-        error: optionsError,
-        isFetching,
-    } = useQuery('passkeys_register_options', {
-        options: {
-            enabled: false,
-        },
-    });
-    const public_key = data?.passkeys_register_options?.publicKey;
-    const challenge = public_key?.challenge;
-
-    const {
-        mutate: registerPasskey,
-        error: passkeyRegisterError,
-        isLoading: isMutationLoading,
-    } = useMutation('passkeys_register', {
-        onSuccess: () => {
-            invalidate('passkeys_list');
-            setIsPasskeyRegistered(true);
-        },
-    });
-
-    const startPasskeyRegistration = React.useCallback(async () => {
+    const createPasskey = async () => {
         try {
-            if (challenge) {
-                const attResp = await startRegistration(public_key);
-                registerPasskey({
-                    payload: {
-                        publicKeyCredential: attResp,
-                    },
+            const passkeys_register_options_response = await WS.send({ passkeys_register_options: 1 });
+            const public_key = passkeys_register_options_response.passkeys_register_options.publicKey;
+            if (public_key) {
+                const authenticator_response = await startRegistration(public_key);
+                const passkeys_register_response = await WS.send({
+                    passkeys_register: 1,
+                    publicKeyCredential: authenticator_response,
                 });
+                if (passkeys_register_response.passkeys_register.properties.name) {
+                    setIsPasskeyRegistered(true);
+                    invalidate('passkeys_list');
+                }
             }
         } catch (e) {
-            setRegistrationError(String(e));
+            setPasskeyRegistrationError(e as TError);
         }
-    }, [challenge, registerPasskey, public_key]);
-
-    React.useEffect(() => {
-        if (challenge) {
-            startPasskeyRegistration();
-        }
-    }, [challenge, startPasskeyRegistration]);
-
-    // eslint-disable-next-line no-console
-    console.log('optionsError', optionsError?.error);
-    // eslint-disable-next-line no-console
-    console.log('deviceRegistrationError', deviceRegistrationError);
-    // eslint-disable-next-line no-console
-    console.log('passkeyRegisterError', passkeyRegisterError?.error);
-
-    const createPasskey = () => {
-        setIsPasskeyRegistered(false);
-        setRegistrationError('');
-        fetchRegisterOptions();
     };
+
+    // eslint-disable-next-line no-console
+    console.log('passkey_registration_error', passkey_registration_error);
 
     return {
         createPasskey,
         is_passkey_registered,
-        is_registration_in_progress: isFetching || isMutationLoading,
-        registration_error: (optionsError?.error || deviceRegistrationError || passkeyRegisterError?.error) ?? null,
+        passkey_registration_error,
+        clearPasskeyRegistrationError: () => setPasskeyRegistrationError(null),
     };
 };
 

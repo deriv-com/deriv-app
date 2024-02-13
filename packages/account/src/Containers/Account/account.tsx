@@ -32,12 +32,11 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         should_allow_poinc_authentication,
     } = client;
     const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
-    //TODO: add feature flag with growthbook
-    const is_passkeys_enabled = true;
+
     const [available_routes, setAvailableRoutes] = React.useState(routes);
     const { is_passkey_supported, is_loading } = useIsPasskeySupported();
 
-    const should_remove_passkey_route = !is_passkeys_enabled || is_desktop || (is_mobile && !is_passkey_supported);
+    const should_remove_passkey_route = is_desktop || (is_mobile && !is_passkey_supported);
 
     React.useEffect(() => {
         if (is_loading) return;

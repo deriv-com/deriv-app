@@ -64,7 +64,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
         ),
         no_passkey: (
             <Localize
-                i18n_default_text='To enhance your security,<0/>tap ‘Create passkey’ below.'
+                i18n_default_text="Enhanced security is just a tap away.<0/>Hit 'Learn more' to explore passkeys or 'Create passkey' to get started."
                 components={[<br key={0} />]}
             />
         ),
@@ -108,10 +108,8 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     };
 };
 
-export const getErrorContent = (error_message: string | null | TServerError) => {
-    const is_not_allowed_error = typeof error_message === 'string' ? error_message.includes('NotAllowedError') : false;
-
-    const passkey_error_message = typeof error_message === 'string' ? error_message : error_message?.message;
+export const getErrorContent = (error_message: null | TServerError) => {
+    const is_not_allowed_error = error_message?.name === 'NotAllowedError';
 
     const try_again_button_text = <Localize i18n_default_text='Try again' />;
 
@@ -125,7 +123,7 @@ export const getErrorContent = (error_message: string | null | TServerError) => 
     }
 
     return {
-        description: passkey_error_message ?? '',
+        description: error_message?.message ?? '',
         button_text: try_again_button_text,
     };
 };

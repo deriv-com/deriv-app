@@ -59,9 +59,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const { is_passkey_supported, is_loading } = useIsPasskeySupported();
 
-    //TODO: add feature flag with growthbook
-    const is_passkeys_enabled = true;
-
     const { pathname: route } = useLocation();
 
     const is_trading_hub_category =
@@ -77,7 +74,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const history = useHistory();
     const { is_next_wallet_enabled } = useFeatureFlags();
 
-    const should_remove_passkeys_route = !is_passkeys_enabled || !is_mobile || !is_passkey_supported;
+    const should_remove_passkeys_route = !is_mobile || !is_passkey_supported;
 
     React.useEffect(() => {
         const processRoutes = () => {

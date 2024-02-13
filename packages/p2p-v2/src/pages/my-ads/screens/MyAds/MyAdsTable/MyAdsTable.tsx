@@ -3,6 +3,7 @@ import { Table } from '@/components';
 import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';
 import { Button, Loader } from '@deriv-com/ui';
+import { MyAdsEmpty } from '../../MyAdsEmpty';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
 import { MyAdsToggle } from '../MyAdsToggle';
 import './MyAdsTable.scss';
@@ -52,6 +53,8 @@ const MyAdsTable = () => {
     const { isDesktop } = useDevice();
 
     if (isLoading) return <Loader />;
+
+    if (!data.length) return <MyAdsEmpty />;
 
     const onClickIcon = (id: string, action: string) => {
         //TODO: to implement the onclick actions

@@ -5,7 +5,6 @@ import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';
 import { Button, Text } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
-import './MyAdsDeleteModal.scss';
 
 type TMyAdsDeleteModalProps = {
     error?: string;
@@ -61,7 +60,9 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
         <>
             {!isLoadingInfo && (
                 <Modal
-                    className={clsx('p2p-v2-ads-delete-modal w-[44rem] p-[1.6rem]', { 'w-[32.8rem]': isMobile })}
+                    className={clsx('p2p-v2-modal-styles w-[44rem] p-[1.6rem]', {
+                        'w-[32.8rem]': isMobile,
+                    })}
                     isOpen={isModalOpen}
                     onRequestClose={onRequestClose}
                     shouldCloseOnOverlayClick={false}

@@ -315,7 +315,7 @@ export default BinarySocketGeneral;
 const ResponseHandlers = (() => {
     const websiteStatus = response => {
         if (response.website_status) {
-            const is_server_down = checkServerMaintenance(response.websiteStatus);
+            const is_server_down = checkServerMaintenance(response.website_status);
 
             // If site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt.
             // Starts off with 1.024 seconds and grow exponentially.

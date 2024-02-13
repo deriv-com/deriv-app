@@ -1,6 +1,5 @@
 import React, { ComponentProps, isValidElement, PropsWithChildren, ReactNode } from 'react';
 import { Text } from '@deriv-com/ui';
-// import { WalletButton, WalletButtonGroup } from '../Base';
 import './ActionScreen.scss';
 
 type TProps = {
@@ -17,7 +16,7 @@ type TProps = {
  * As its common and repeated in many places,
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
-const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
+const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     description,
     descriptionSize = 'md',
     icon,
@@ -26,9 +25,9 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     titleSize = 'md',
 }) => {
     return (
-        <div className='wallets-action-screen'>
+        <div className='action-screen'>
             {icon}
-            <div className='wallets-action-screen__info'>
+            <div className='action-screen__info'>
                 {title && (
                     <Text align='center' size={titleSize} weight='bold'>
                         {title}
@@ -47,4 +46,4 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     );
 };
 
-export default WalletsActionScreen;
+export default ActionScreen;

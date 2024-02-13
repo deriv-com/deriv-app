@@ -1,6 +1,7 @@
 module.exports = {
     env: { es6: true },
     extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended', 'plugin:sonarjs/recommended'],
+    ignorePatterns: ['*.spec.*'],
     overrides: [
         {
             files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
@@ -9,7 +10,6 @@ module.exports = {
             },
         },
     ],
-    ignorePatterns: ['*.spec.*'],
     parserOptions: { sourceType: 'module' },
     plugins: [
         'eslint-plugin-local-rules',

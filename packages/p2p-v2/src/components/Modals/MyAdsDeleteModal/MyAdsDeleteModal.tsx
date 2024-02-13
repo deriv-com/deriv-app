@@ -30,7 +30,7 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
         if (hasActiveOrders && !error) {
             return 'You have open orders for this ad. Complete all open orders before deleting this ad.';
         } else if (error) {
-            return `${error}`;
+            return error;
         }
         return 'You will NOT be able to restore it.';
     };
@@ -61,7 +61,7 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
         <>
             {!isLoadingInfo && (
                 <Modal
-                    className='p2p-v2-ads-delete-modal'
+                    className={clsx('p2p-v2-ads-delete-modal w-[44rem] p-[1.6rem]', { 'w-[32.8rem]': isMobile })}
                     isOpen={isModalOpen}
                     onRequestClose={onRequestClose}
                     shouldCloseOnOverlayClick={false}

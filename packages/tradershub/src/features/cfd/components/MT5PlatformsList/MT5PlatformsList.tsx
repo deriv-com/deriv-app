@@ -25,6 +25,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
         return data?.some(account => account.is_added);
     }, [data]);
 
+    // Check if we need to invalidate the query
     useEffect(() => {
         if (!isFetching) {
             invalidate('mt5_login_list');
@@ -41,7 +42,11 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
 
     return (
         <CFDPlatformLayout title={PlatformDetails.mt5.title}>
-            {!isFetchedAfterMount && <TradingAppCardLoader />}
+            {!isFetchedAfterMount && (
+                <div className='pt-8 lg:pt-18'>
+                    <TradingAppCardLoader />
+                </div>
+            )}
             {isFetchedAfterMount &&
                 data?.map(account => {
                     if (account.is_added)

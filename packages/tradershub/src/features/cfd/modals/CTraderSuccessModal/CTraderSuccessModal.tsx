@@ -17,13 +17,13 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
     const renderButtons = useCallback(
         () =>
             isDemo ? (
-                <Button className='rounded-200 ' onClick={() => hide()} size='lg'>
+                <Button className='rounded-xs' onClick={() => hide()} size='lg'>
                     Continue
                 </Button>
             ) : (
                 <ButtonGroup>
                     <Button
-                        className='rounded-200 border-system-light-less-prominent border-100'
+                        className='border-2 rounded-xs border-system-light-less-prominent'
                         onClick={() => hide()}
                         size='lg'
                         variant='outlined'
@@ -31,7 +31,7 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
                         Maybe later
                     </Button>
                     <Button
-                        className='rounded-200'
+                        className='rounded-xs'
                         onClick={() => {
                             hide();
                             history.push('/cashier/transfer');
@@ -50,7 +50,7 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
         : `Congratulations, you have successfully created your real ${PlatformDetails.ctrader.title} CFDs account. To start trading, transfer funds from your Deriv account into this account.`;
 
     return (
-        <Modal className='max-w-[330px] p-800 md:max-w-[440px] md:p-1200'>
+        <Modal className='max-w-[330px] p-16 md:max-w-[440px] md:p-24'>
             <CFDSuccess
                 description={description}
                 platform={PlatformDetails.ctrader.platform}

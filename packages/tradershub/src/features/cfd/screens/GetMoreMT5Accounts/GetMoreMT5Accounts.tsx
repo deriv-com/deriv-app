@@ -19,8 +19,8 @@ const GetMoreMT5Accounts: FC = () => {
             role='button'
             tabIndex={0}
         >
-            <div className='flex items-center self-stretch flex-1 border-dashed rounded-lg p-800 border-system-light-active-background gap-800 border-75'>
-                <div className='w-12 h-12'>
+            <div className='flex items-center self-stretch flex-1 gap-16 p-16 border-dashed rounded-lg border-system-light-active-background border-1'>
+                <div className='w-36 h-36'>
                     <AddIcon />
                 </div>
                 <div className='flex flex-col items-start flex-1'>

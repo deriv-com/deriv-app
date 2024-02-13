@@ -108,6 +108,9 @@
                 &__color--primary:hover:not(:disabled) {
                     background-color: var(--general-hover);
                 }
+                &__size--md {
+                    padding: 0.6rem 0.85rem;
+                }
             }
             & svg {
                 fill: #333333;

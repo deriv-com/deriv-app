@@ -1,0 +1,22 @@
+.p2p-v2-alert-component {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    right: 4rem;
+    height: 99%;
+    .derivs-button {
+        background-color: #fff;
+        &__color--primary:hover:not(:disabled) {
+            background-color: var(--general-hover);
+        }
+        &__size--md {
+            padding: 0;
+        }
+    }
+
+    @include mobile {
+        position: unset;
+        margin-left: 1rem;
+    }
+}

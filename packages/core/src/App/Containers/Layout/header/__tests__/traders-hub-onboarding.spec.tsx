@@ -18,7 +18,7 @@ jest.mock('@deriv/hooks', () => ({
 describe('TradersHubOnboarding', () => {
     const onboarding_icon_testid = 'dt_traders_hub_onboarding_icon';
     const popover_wrapper_testid = 'dt_popover_wrapper';
-    const view_onboarding_message = /view onboarding/i;
+    const view_onboarding_message = /view tutorial/i;
 
     const history = createBrowserHistory();
     const renderTradersHubOnboardingWithRouter = (mocked_store: TCoreStores = mockStore({})) => {

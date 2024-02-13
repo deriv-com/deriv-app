@@ -144,6 +144,8 @@ const Trade = observer(() => {
         return '259px';
     }, [is_turbos, is_accumulator]);
 
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am DTrader 2.0.</Text>;
     return (
         <div
             className={classNames('trade-container', {
@@ -168,7 +170,11 @@ const Trade = observer(() => {
                     fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || !!is_chart_loading} />}
                 >
                     <DesktopWrapper>
-                        <div className={classNames('chart-container__wrapper', { 'vanilla-trade-chart': is_vanilla })}>
+                        <div
+                            className={classNames('chart-container__wrapper', {
+                                'vanilla-trade-chart': is_vanilla,
+                            })}
+                        >
                             <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                             <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />
                         </div>

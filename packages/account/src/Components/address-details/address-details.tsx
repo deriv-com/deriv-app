@@ -106,6 +106,9 @@ const AddressDetails = observer(
         };
 
         const handleValidate = (values: TAddressDetailFormProps) => {
+            const current_step = (getCurrentStep?.() || 1) - 1;
+            onSave(current_step, values);
+
             const { errors } = splitValidationResultTypes(validate(values));
             return errors;
         };
@@ -171,7 +174,11 @@ const AddressDetails = observer(
                                     )}
 
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
-                                        <div className={classNames('details-form__elements', 'address-details-form ')}>
+                                        <div
+                                            className={classNames('details-form__elements', 'address-details-form', {
+                                                'address-details-form__eu': is_eu_user,
+                                            })}
+                                        >
                                             <FormInputField
                                                 name='address_line_1'
                                                 required

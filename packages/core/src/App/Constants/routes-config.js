@@ -64,10 +64,38 @@ const Wallets = React.lazy(() =>
     })
 );
 
+const TradersHub = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "tradershub" */ '@deriv/tradershub');
+    })
+);
+
 const P2P = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "p2p" */ '@deriv/p2p');
+    })
+);
+
+const P2P_V2 = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "p2p-v2" */ '@deriv/p2p-v2');
+    })
+);
+
+const Account_V2 = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "account-v2" */ '@deriv/account-v2');
+    })
+);
+
+const Cashier_V2 = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "cashier-v2" */ '@deriv/cashier-v2');
     })
 );
 
@@ -253,6 +281,30 @@ const getModules = () => {
             component: Wallets,
             is_authenticated: true,
             getTitle: () => localize('Wallets'),
+        },
+        {
+            path: routes.cashier_p2p_v2,
+            component: P2P_V2,
+            getTitle: () => localize('P2P-V2'),
+            is_authenticated: true,
+        },
+        {
+            path: routes.traders_hub_v2,
+            component: TradersHub,
+            is_authenticated: true,
+            getTitle: () => localize('Trader’s Hub V2'),
+        },
+        {
+            path: routes.account_v2,
+            component: Account_V2,
+            is_authenticated: true,
+            getTitle: () => localize('Account V2'),
+        },
+        {
+            path: routes.cashier_v2,
+            component: Cashier_V2,
+            is_authenticated: true,
+            getTitle: () => localize('Cashier'),
         },
         {
             path: routes.onboarding,

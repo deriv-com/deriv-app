@@ -96,6 +96,12 @@ export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
             <Localize i18n_default_text='For enhanced security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.' />
         ),
     },
+    ReportNotAvailable: {
+        code: 'ReportNotAvailable',
+        message: (
+            <Localize i18n_default_text='We were unable to verify the identity document with the details provided.' />
+        ),
+    },
 });
 
 export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({
@@ -164,6 +170,10 @@ export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({
     DataValidationNoDocumentNumbers: {
         code: 'DataValidationNoDocumentNumbers',
         message: <Localize i18n_default_text='The serial number of your document couldn’t be verified.' />,
+    },
+    DuplicatedDocument: {
+        code: 'DuplicatedDocument',
+        message: <Localize i18n_default_text='Your verification documents were already used for another account.' />,
     },
     Expired: { code: 'Expired', message: <Localize i18n_default_text='Your document has expired.' /> },
     ImageIntegrityColourPicture: {

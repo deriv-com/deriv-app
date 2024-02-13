@@ -8,10 +8,12 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
 type TDigits = React.ComponentProps<typeof Digits>;
+
 type TChartTopWidgets = {
     open_market: React.ComponentProps<typeof TopWidgets>['open_market'];
     open: React.ComponentProps<typeof TopWidgets>['open'];
 };
+
 type TChartBottomWidgets = {
     digits: TDigits['digits_array'];
     tick: TDigits['tick'];
@@ -50,20 +52,19 @@ export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digit
 
 // Chart widgets passed into SmartCharts
 export const ChartTopWidgets = observer(({ open_market, open }: TChartTopWidgets) => {
-    const { client, ui } = useStore();
+    const { ui } = useStore();
     const { is_digits_widget_active, onChange: onSymbolChange } = useTraderStore();
-    const { is_beta_chart } = client;
     const { is_dark_mode_on, is_mobile } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
+
     return (
         <TopWidgets
             open_market={open_market}
             open={open}
             is_mobile={is_mobile}
             is_digits_widget_active={is_digits_widget_active}
-            onSymbolChange={symbolChange(onSymbolChange)}
+            onSymbolChange={symbolChange(onSymbolChange) as ReturnType<typeof useTraderStore>['onChange']}
             theme={theme}
-            is_beta_chart={is_beta_chart}
         />
     );
 });

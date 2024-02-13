@@ -409,7 +409,7 @@
 
 .cfd-trade-modal {
     display: flex;
-    margin: 2.4rem;
+    margin: 1.2rem 2.4rem;
     align-items: center;
     gap: 0.8rem;
     &__acc_status {
@@ -448,15 +448,10 @@
             align-items: center;
             gap: 0.8rem;
         }
-        &-text {
-            overflow: hidden;
-        }
         &-action {
-            padding: 0;
-            height: 1.5rem;
-            .dc-btn__icon {
-                padding-right: 0;
-            }
+            text-decoration: underline;
+            padding-right: 0;
+            height: 2.1rem;
         }
     }
 
@@ -928,13 +923,18 @@
 
         .manual-poi {
             margin: auto;
-            width: max-content;
             height: 100%;
+            max-width: 68rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
 
+            .dc-card__wrapper {
+                margin-bottom: 0;
+            }
+
             &-details {
+                max-width: 68rem;
                 margin: auto;
                 @include mobile {
                     overflow-y: scroll;
@@ -944,11 +944,10 @@
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
-                }
 
-                &__btns {
-                    height: 7.2rem;
-                    padding-bottom: 0;
+                    .account-form__footer {
+                        max-width: 100%;
+                    }
                 }
 
                 &__field {
@@ -979,6 +978,10 @@
         .proof-of-identity__mismatch-container {
             max-width: 70.2rem;
             margin-inline: auto;
+
+            .proof-of-identity__footer {
+                max-width: 100%;
+            }
 
             .account__scrollbars_container {
                 padding-top: 2.4rem;
@@ -1363,6 +1366,62 @@
         }
     }
 }
+.cfd-success-dialog-migration {
+    text-align: center;
+    margin: auto;
+    padding: 2.4rem;
+    width: fit-content;
+    justify-content: center;
+    .dc-modal-footer {
+        padding: 0.8rem 2rem 2.4rem;
+    }
+    &__body {
+        padding: 8.9rem 2.4rem;
+        &-has-open-positions {
+            padding: 6rem 2.4rem;
+        }
+    }
+    &__title {
+        display: flex;
+        justify-content: center;
+    }
+    &__inline-msg {
+        margin: 2.4rem 2.4rem 0;
+        @include mobile {
+            margin: 2.4rem 0;
+        }
+    }
+    &__icon-area {
+        width: 12.8rem;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    &__content-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+        margin: 0.8rem auto;
+
+        &__desc {
+            @include mobile {
+                padding: 0 3.8rem;
+            }
+        }
+    }
+    &-footer {
+        @include mobile {
+            position: absolute;
+            bottom: 3.6rem;
+            width: 100%;
+
+            .dc-btn {
+                width: 100%;
+            }
+        }
+    }
+}
+
 .dc-modal__container_cfd-success-dialog {
     .success {
         &-change__icon-area {

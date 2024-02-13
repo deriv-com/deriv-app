@@ -12,7 +12,7 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { getPlatformMt5DownloadLink, getBrokerName } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
 import PasswordBox from '../Components/passwordbox';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
@@ -20,10 +20,17 @@ import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
+import MigrationBanner from './migration-banner';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
-        webtrader_url?: string;
+        white_label?: {
+            download_links?: {
+                windows?: string;
+                ios?: string;
+                android?: string;
+            };
+        };
     };
     show_eu_related_content: boolean;
     onPasswordManager: (
@@ -43,9 +50,12 @@ const getTitle = (market_type: string, show_eu_related_content: boolean) => {
 
 const DMT5TradeModal = observer(
     ({ mt5_trade_account, show_eu_related_content, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
-        const { ui } = useStore();
+        const { ui, client } = useStore();
         const { is_mobile } = ui;
-
+        const {
+            account_status: { authentication },
+        } = client;
+        const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
         const getCompanyShortcode = () => {
             if (
                 (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -74,12 +84,20 @@ const DMT5TradeModal = observer(
             return 'Financial';
         };
 
+        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+            mt5_trade_account?.status,
+            undefined,
+            undefined,
+            undefined,
+            {
+                poi_status: authentication?.identity?.status,
+                poa_status: authentication?.document?.status,
+            }
+        );
         const has_migration_status = [
             MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
-
-        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(mt5_trade_account?.status);
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -124,7 +142,7 @@ const DMT5TradeModal = observer(
                 <div className='cfd-trade-modal__login-specs'>
                     <div className='cfd-trade-modal__login-specs-item'>
                         <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                        <SpecBox is_bold is_broker value={getBrokerName()} />
+                        <SpecBox is_bold is_broker value={mt5_trade_account?.landing_company} />
                     </div>
                     <div className='cfd-trade-modal__login-specs-item'>
                         <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
@@ -172,6 +190,7 @@ const DMT5TradeModal = observer(
                         </div>
                     </div>
                 </div>
+                {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
                 <div className='cfd-trade-modal__download-center-app'>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Icon icon='IcRebrandingMt5Logo' size={32} />
@@ -198,7 +217,7 @@ const DMT5TradeModal = observer(
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={getPlatformMt5DownloadLink('windows')}
+                            href={mt5_trade_account?.white_label?.download_links?.windows}
                             target='_blank'
                             rel='noopener noreferrer'
                         >
@@ -259,10 +278,18 @@ const DMT5TradeModal = observer(
                 </Text>
                 <div className='cfd-trade-modal__download-center-options'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links'>
-                        <a href={getPlatformMt5DownloadLink('ios')} target='_blank' rel='noopener noreferrer'>
+                        <a
+                            href={mt5_trade_account?.white_label?.download_links?.ios}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
                             <Icon icon='IcInstallationApple' width={135} height={40} />
                         </a>
-                        <a href={getPlatformMt5DownloadLink('android')} target='_blank' rel='noopener noreferrer'>
+                        <a
+                            href={mt5_trade_account?.white_label?.download_links?.android}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
                             <Icon icon='IcInstallationGoogle' width={135} height={40} />
                         </a>
                         <a href={getPlatformMt5DownloadLink('huawei')} target='_blank' rel='noopener noreferrer'>

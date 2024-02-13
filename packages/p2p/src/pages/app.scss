@@ -12,7 +12,6 @@
 
     & .dc-tabs {
         width: 100%;
-        overflow-x: auto;
 
         &::-webkit-scrollbar {
             display: none;
@@ -60,6 +59,10 @@
         &--highlight {
             background-color: var(--state-normal) !important;
         }
+    }
+
+    &__loading {
+        height: 80vh;
     }
 
     @include mobile {

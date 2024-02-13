@@ -1,0 +1,55 @@
+{
+    "name": "@deriv/p2p-v2",
+    "private": true,
+    "version": "1.0.0",
+    "main": "dist/p2p-v2/js/index.js",
+    "engines": {
+        "node": "18.x"
+    },
+    "scripts": {
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.js\"",
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.js\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "start": "rimraf dist && npm run test && npm run serve"
+    },
+    "dependencies": {
+        "@deriv-com/ui": "1.3.1",
+        "@deriv/api": "^1.0.0",
+        "@deriv/integration": "^1.0.0",
+        "@deriv/quill-icons": "^1.17.4",
+        "@deriv/react-joyride": "^2.6.2",
+        "@sendbird/chat": "^4.9.7",
+        "@tanstack/react-table": "^8.10.3",
+        "clsx": "^2.0.0",
+        "downshift": "^8.2.2",
+        "i18next": "^22.4.6",
+        "moment": "^2.29.2",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-hook-form": "^7.49.3",
+        "react-i18next": "^11.11.0",
+        "react-modal": "^3.16.1",
+        "react-router-dom": "^5.2.0",
+        "react-simple-star-rating": "4.0.4",
+        "usehooks-ts": "^2.7.0"
+    },
+    "devDependencies": {
+        "@testing-library/react": "^12.0.0",
+        "@types/react-dom": "^18.0.0",
+        "@types/react-modal": "^3.16.3",
+        "@typescript-eslint/eslint-plugin": "5.45.0",
+        "@typescript-eslint/parser": "5.45.0",
+        "autoprefixer": "^10.4.16",
+        "eslint-plugin-local-rules": "2.0.0",
+        "eslint-plugin-react": "^7.22.0",
+        "eslint-plugin-react-hooks": "^4.2.0",
+        "eslint-plugin-simple-import-sort": "^10.0.0",
+        "eslint-plugin-sort-destructure-keys": "^1.5.0",
+        "eslint-plugin-typescript-sort-keys": "^2.3.0",
+        "postcss": "^8.4.24",
+        "tailwindcss": "^3.3.6",
+        "typescript": "^4.6.3",
+        "webpack": "^5.81.0",
+        "webpack-cli": "^4.7.2",
+        "history": "^5.0.0"
+    }
+}

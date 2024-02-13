@@ -27,7 +27,11 @@ const WalletCashier = () => {
         <div className='wallets-cashier'>
             <WalletCashierHeader hideWalletDetails={isContentScrolled} />
             <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
-                <div className='wallets-cashier-content' onScroll={onContentScroll}>
+                <div
+                    className='wallets-cashier-content'
+                    data-testid='dt_wallets_cashier_content'
+                    onScroll={onContentScroll}
+                >
                     <WalletCashierContent />
                 </div>
             </CashierScrollContext.Provider>

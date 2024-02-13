@@ -43,7 +43,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
-        is_pending_proof_of_ownership,
+        is_proof_of_ownership_enabled,
         is_eu,
     } = client;
     const { cashier } = modules;
@@ -96,7 +96,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             processRoutes();
         }
 
-        return () => clearTimeout(timeout);
+        return () => clearTimeout(timeout.current);
     }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
 
     const toggleDrawer = React.useCallback(() => {
@@ -149,7 +149,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             } else if (/proof-of-income/.test(route_path)) {
                 return !should_allow_poinc_authentication;
             } else if (/proof-of-ownership/.test(route_path)) {
-                return is_virtual || !is_pending_proof_of_ownership;
+                return is_virtual || !is_proof_of_ownership_enabled;
             }
             return false;
         };
@@ -391,7 +391,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 <MobileDrawer.Item className='header__menu-mobile-livechat'>
-                                    {is_appstore ? null : <LiveChat is_mobile_drawer />}
+                                    <LiveChat />
                                 </MobileDrawer.Item>
                                 {is_logged_in && (
                                     <MobileDrawer.Item

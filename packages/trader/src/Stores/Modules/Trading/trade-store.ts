@@ -30,9 +30,11 @@ import {
     BARRIER_LINE_STYLES,
     TRADE_TYPES,
     hasBarrier,
+    isHighLow,
+    CONTRACT_TYPES,
 } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
-import type { TEvents } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
+import type { TEvents } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -385,6 +387,7 @@ export default class TradeStore extends BaseStore {
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
             is_purchase_enabled: observable,
+            is_synthetics_trading_market_available: computed,
             is_trade_component_mounted: observable,
             is_trade_enabled: observable,
             is_trade_params_expanded: observable,
@@ -549,9 +552,13 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-        when(
-            () => !!this.accumulator_range_list.length,
-            () => this.setDefaultGrowthRate()
+        reaction(
+            () => this.accumulator_range_list.length,
+            () => {
+                if (this.accumulator_range_list.length) {
+                    this.setDefaultGrowthRate();
+                }
+            }
         );
     }
 
@@ -908,8 +915,21 @@ export default class TradeStore extends BaseStore {
                             const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
                             const is_multiplier = isMultiplierContract(category);
                             const contract_type = category?.toUpperCase();
+                            const is_call = category.toUpperCase() === CONTRACT_TYPES.CALL;
+                            const is_put = category.toUpperCase() === CONTRACT_TYPES.PUT;
+                            const is_high_low = isHighLow({ shortcode_info: extractInfoFromShortcode(shortcode) });
+                            let higher_lower_contact = CONTRACT_TYPES.LOWER.toLowerCase();
+                            let rise_fall_contract = CONTRACT_TYPES.FALL.toLowerCase();
+                            if (is_call) {
+                                higher_lower_contact = CONTRACT_TYPES.HIGHER.toLowerCase();
+                                rise_fall_contract = CONTRACT_TYPES.RISE.toLowerCase();
+                            }
+                            const call_put_contract = is_high_low ? higher_lower_contact : rise_fall_contract;
 
-                            if ((window as any).hj) (window as any).hj('event', `placed_${category}_trade`);
+                            if ((window as any).hj) {
+                                const event_string = `placed_${is_call || is_put ? call_put_contract : category}_trade`;
+                                (window as any).hj('event', event_string);
+                            }
 
                             this.root_store.contract_trade.addContract({
                                 contract_id,
@@ -1039,7 +1059,7 @@ export default class TradeStore extends BaseStore {
         if (isAccumulatorContract(obj_new_values.contract_type) || isDigitTradeType(obj_new_values.contract_type)) {
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
-            updateChartType(this.root_store.client.is_beta_chart ? 'line' : 'mountain');
+            updateChartType('line');
         } else if (
             (obj_new_values.contract_type || obj_new_values.symbol) &&
             prev_chart_type &&
@@ -1135,7 +1155,7 @@ export default class TradeStore extends BaseStore {
 
     get is_synthetics_trading_market_available() {
         return !!this.active_symbols?.find(
-            item => item.market === 'synthetic_index' && !isMarketClosed(this.active_symbols, item.symbol)
+            item => item.subgroup === 'synthetics' && !isMarketClosed(this.active_symbols, item.symbol)
         );
     }
 
@@ -1568,7 +1588,10 @@ export default class TradeStore extends BaseStore {
                 this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
         };
-        if (req.subscribe === 1) {
+        if (this.is_market_closed) {
+            delete req.subscribe;
+            WS.getTicksHistory(req).then(passthrough_callback, passthrough_callback);
+        } else if (req.subscribe === 1) {
             const key = JSON.stringify(req);
             const subscriber = WS.subscribeTicksHistory(req, passthrough_callback);
             g_subscribers_map[key] = subscriber;

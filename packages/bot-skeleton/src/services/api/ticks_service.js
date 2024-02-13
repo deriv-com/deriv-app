@@ -197,6 +197,13 @@ export default class TicksService {
     observe() {
         if (api_base.api) {
             const subscription = api_base.api.onMessage().subscribe(({ data }) => {
+                if (data.msg_type === 'history') {
+                    const {
+                        subscription: { id },
+                    } = data;
+                    this.subscriptions = this.subscriptions.set('history', id);
+                }
+
                 if (data.msg_type === 'tick') {
                     const { tick } = data;
                     const { symbol, id } = tick;
@@ -304,11 +311,19 @@ export default class TicksService {
                 const { stringified_options } = this.ticks_history_promise;
                 const { symbol = '' } = JSON.parse(stringified_options);
                 if (symbol) {
-                    this.forget(this.subscriptions.getIn(['tick', symbol]))
-                        .then(res => {
-                            resolve(res);
-                        })
-                        .catch(reject);
+                    if (!this.subscriptions.getIn(['tick', symbol])) {
+                        this.forget(this.subscriptions.get('history'))
+                            .then(res => {
+                                resolve(res);
+                            })
+                            .catch(reject);
+                    } else {
+                        this.forget(this.subscriptions.getIn(['tick', symbol]))
+                            .then(res => {
+                                resolve(res);
+                            })
+                            .catch(reject);
+                    }
                 } else {
                     resolve();
                 }

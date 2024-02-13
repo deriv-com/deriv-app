@@ -15,6 +15,7 @@ import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import OrderTimeSelection from './order-time-selection';
 import './edit-ad-form.scss';
 
 const EditAdFormWrapper = ({ children }) => {
@@ -36,6 +37,7 @@ const EditAdForm = () => {
         local_currency,
         max_order_amount_display,
         min_order_amount_display,
+        order_expiry_period,
         payment_method_names,
         payment_method_details,
         rate_display,
@@ -145,6 +147,8 @@ const EditAdForm = () => {
                     max_transaction: max_order_amount_display,
                     min_transaction: min_order_amount_display,
                     offer_amount: amount_display,
+                    // set a max of 1 hour if expiry period is more than 1 hour
+                    order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
                     rate_type: setInitialAdRate(),
                     type,
                     is_active:
@@ -156,7 +160,7 @@ const EditAdForm = () => {
                 validate={my_ads_store.validateEditAdForm}
                 validateOnMount
             >
-                {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
+                {({ dirty, errors, handleChange, isSubmitting, isValid, setFieldTouched, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
                     // Form should not be checked for value change when ad switch is triggered
                     const check_dirty =
@@ -201,6 +205,7 @@ const EditAdForm = () => {
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
+                                                            onFocus={() => setFieldTouched('offer_amount', true)}
                                                             hint={
                                                                 // Using two "==" is intentional as we're checking for nullish
                                                                 // rather than falsy values.
@@ -242,6 +247,7 @@ const EditAdForm = () => {
                                                                         floating_rate_store.float_rate_offset_limit *
                                                                         -1,
                                                                 }}
+                                                                onFocus={() => setFieldTouched('rate_type', true)}
                                                                 required
                                                                 change_handler={e => {
                                                                     my_ads_store.restrictDecimalPlace(e, handleChange);
@@ -274,6 +280,7 @@ const EditAdForm = () => {
                                                                 onChange={e => {
                                                                     my_ads_store.restrictLength(e, handleChange);
                                                                 }}
+                                                                onFocus={() => setFieldTouched('rate_type', true)}
                                                                 required
                                                             />
                                                         )
@@ -302,6 +309,7 @@ const EditAdForm = () => {
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
+                                                            onFocus={() => setFieldTouched('min_transaction', true)}
                                                             required
                                                         />
                                                     )}
@@ -327,6 +335,7 @@ const EditAdForm = () => {
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
+                                                            onFocus={() => setFieldTouched('max_transaction', true)}
                                                             required
                                                         />
                                                     )}
@@ -352,6 +361,7 @@ const EditAdForm = () => {
                                                                 required
                                                                 has_character_counter
                                                                 max_characters={300}
+                                                                onFocus={() => setFieldTouched('contact_info', true)}
                                                             />
                                                         )}
                                                     </Field>
@@ -375,8 +385,12 @@ const EditAdForm = () => {
                                                         initial_character_count={description ? description.length : 0}
                                                         has_character_counter
                                                         max_characters={300}
+                                                        onFocus={() => setFieldTouched('description', true)}
                                                     />
                                                 )}
+                                            </Field>
+                                            <Field name='order_completion_time'>
+                                                {({ field }) => <OrderTimeSelection {...field} />}
                                             </Field>
                                             <div className='edit-ad-form__payment-methods--text'>
                                                 <Text color='prominent'>

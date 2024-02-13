@@ -25,7 +25,6 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseFieldset> = {
         has_error_details: false,
         error_code: '',
         error_field: '',
-        has_increased: false,
         limit_order: undefined,
         obj_contract_basis: { text: 'mocked text', value: 'mocked value' },
         payout: 0,
@@ -48,7 +47,6 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseFieldset> = {
     purchased_states_arr: [true, false],
     setPurchaseState: jest.fn(),
     type: '',
-    is_beta_chart: false,
 };
 
 jest.mock('@deriv/shared', () => ({

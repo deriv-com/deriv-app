@@ -26,7 +26,9 @@ export const WalletsPrimaryTabs = ({ children, className }: React.PropsWithChild
 
     return (
         <TabsContext.Provider value={{ activeTabIndex, setActiveTabIndex }}>
-            <div className={className}>{children}</div>
+            <div className={className} data-testid='dt_tabs'>
+                {children}
+            </div>
         </TabsContext.Provider>
     );
 };

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { MT5MarketTypeDetails, PlatformDetails } from '../../../constants';
 import { getMarketType } from '../../../helpers';
 import { TAccount, TAccountsList } from '../types';
 
@@ -66,7 +67,7 @@ const sortTradingAccounts = (a: TAccount, b: TAccount) => {
     }
 
     // For mt5 accounts, compare market types
-    if (typeA === 'mt5') {
+    if (typeA === PlatformDetails.mt5.name) {
         const marketTypeA = getMarketType(a.mt5_group);
         const marketTypeB = getMarketType(b.mt5_group);
 
@@ -75,7 +76,10 @@ const sortTradingAccounts = (a: TAccount, b: TAccount) => {
         }
 
         // For 'synthetic' and 'financial' market types, compare landing company name
-        if (marketTypeA === 'synthetic' || marketTypeA === 'financial') {
+        if (
+            marketTypeA === MT5MarketTypeDetails.synthetic.name ||
+            marketTypeA === MT5MarketTypeDetails.financial.name
+        ) {
             const landingCompanyTypeA = a.landingCompanyName as TMt5LandingCompanyName;
             const landingCompanyTypeB = b.landingCompanyName as TMt5LandingCompanyName;
 

@@ -31,7 +31,7 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
 
                 // The field value is positive or negative sign, So we return the new value without
                 // any calculations.
-                if ((left === '-' || left === '+') && !hasRight) return newValue;
+                if ((text[0] === '-' || text[0] === '+') && !hasRight) return newValue;
 
                 // The field value is 0, So we return the new value without any calculations.
                 if (left === '0' && !hasRight) return newValue;
@@ -50,8 +50,8 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
 
                 // The field have a decimal point and decimal places are already as allowed fraction
                 // digits, So we remove the extra decimal digits from the right and return the new value.
-                if (hasRight && right.length > fractionDigits) {
-                    const newRight = right.substring(0, fractionDigits);
+                if (fractionDigits) {
+                    const newRight = `${right ?? ''}${'0'.repeat(fractionDigits)}`.slice(0, fractionDigits);
 
                     return `${left}.${newRight}`;
                 }

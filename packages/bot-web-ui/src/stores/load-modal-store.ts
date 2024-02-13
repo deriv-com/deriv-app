@@ -1,10 +1,11 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
-import { isMobile } from '@deriv/shared';
+import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
+import RootStore from './root-store';
 
 interface ILoadModalStore {
     active_index: number;
@@ -13,7 +14,7 @@ interface ILoadModalStore {
     is_open_button_loading: boolean;
     is_strategy_loaded: boolean;
     loaded_local_file: File | null;
-    recent_strategies: string[];
+    recent_strategies: TStrategy[];
     dashboard_strategies: Array<TStrategy>;
     selected_strategy_id: string | undefined;
     is_strategy_removed: boolean;
@@ -39,7 +40,7 @@ interface ILoadModalStore {
     setActiveTabIndex: (index: number) => void;
     setLoadedLocalFile: (loaded_local_file: File | null) => void;
     setDashboardStrategies: (strategies: Array<TStrategy>) => void;
-    setRecentStrategies: (recent_strategies: string[]) => void;
+    setRecentStrategies: (recent_strategies: TStrategy[]) => void;
     setSelectedStrategyId: (selected_strategy_id: string) => void;
     toggleExplanationExpand: () => void;
     toggleLoadModal: () => void;
@@ -51,10 +52,11 @@ interface ILoadModalStore {
 }
 
 export default class LoadModalStore implements ILoadModalStore {
-    root_store: any;
+    root_store: RootStore;
+    core: TStores;
     previewed_strategy_id = '';
 
-    constructor(root_store: any) {
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             active_index: observable,
             previewed_strategy_id: observable,
@@ -101,6 +103,7 @@ export default class LoadModalStore implements ILoadModalStore {
         });
 
         this.root_store = root_store;
+        this.core = core;
 
         reaction(
             () => this.active_index,
@@ -127,7 +130,7 @@ export default class LoadModalStore implements ILoadModalStore {
     is_explanation_expand = false;
     is_open_button_loading = false;
     loaded_local_file: File | null = null;
-    recent_strategies: Array<string> = [];
+    recent_strategies: Array<TStrategy> = [];
     dashboard_strategies: Array<TStrategy> | [] = [];
     selected_strategy_id = '';
     is_strategy_loaded = false;
@@ -149,7 +152,7 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     get tab_name() {
-        if (isMobile()) {
+        if (this.core.ui.is_mobile) {
             if (this.active_index === 0) return tabs_title.TAB_LOCAL;
             if (this.active_index === 1) return tabs_title.TAB_GOOGLE;
         }
@@ -425,7 +428,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.loaded_local_file = loaded_local_file;
     };
 
-    setRecentStrategies = (recent_strategies: string[]): void => {
+    setRecentStrategies = (recent_strategies: TStrategy[]): void => {
         this.recent_strategies = recent_strategies;
     };
 
@@ -444,6 +447,7 @@ export default class LoadModalStore implements ILoadModalStore {
     toggleLoadModal = (): void => {
         this.is_load_modal_open = !this.is_load_modal_open;
         if (this.selected_strategy_id) this.previewRecentStrategy(this.selected_strategy_id);
+        this.setLoadedLocalFile(null);
     };
 
     toggleTourLoadModal = (toggle = !this.is_load_modal_open) => {

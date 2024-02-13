@@ -40,18 +40,18 @@ $border-radius-map: (
     lg: 50%,
 );
 
-.wallets-icon-button {
-    display: grid;
-    place-content: center;
-    border: none;
+.icon-button {
+    // display: grid;
+    // place-content: center;
+    // border: none;
 
-    &:hover {
-        cursor: pointer;
-    }
+    // &:hover {
+    //     cursor: pointer;
+    // }
 
-    &:disabled {
-        display: none;
-    }
+    // &:disabled {
+    //     display: none;
+    // }
 
     &__border-radius {
         &--round {
@@ -85,10 +85,10 @@ $border-radius-map: (
         }
     }
 
-    &__icon {
-        display: grid;
-        place-content: center;
-        width: 1.6rem;
-        height: 1.6rem;
-    }
+    // &__icon {
+    //     display: grid;
+    //     place-content: center;
+    //     width: 1.6rem;
+    //     height: 1.6rem;
+    // }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 import { Text, useDevice } from '@deriv-com/ui';
 import SelfieIcon from '../../assets/manual-upload/selfie-icon.svg';
-import { Dropzone } from '../../components/base/Dropzone';
+import { Dropzone } from '../../components/Dropzone';
 
 export const SelfieDocumentUpload = () => {
     const { isMobile } = useDevice();

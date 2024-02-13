@@ -1,7 +1,8 @@
 import React, { ButtonHTMLAttributes, ComponentProps, forwardRef, Ref } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { TGenericSizes } from '../types';
-import './IconButton.scss';
+import { iconButtonVariants } from './icon-button.classnames';
+import './icon-button.scss';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: 'black' | 'primary' | 'transparent' | 'white';
@@ -11,26 +12,23 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
 }
 
-const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     (
         { className, color = 'primary', disabled, icon, isRound, onClick, size = 'sm', ...rest },
         ref: Ref<HTMLButtonElement>
     ) => {
-        const iconButtonClassNames = classNames(
-            'wallets-icon-button',
-            `wallets-icon-button__size--${size}`,
-            `wallets-icon-button__color--${color}`,
-            `wallets-icon-button__border-radius--${isRound ? 'round' : 'default'}`,
-            className
-        );
-
         return (
-            <button className={iconButtonClassNames} disabled={disabled} onClick={onClick} ref={ref} {...rest}>
-                <div className='wallets-icon-button__icon'>{icon}</div>
+            <button
+                className={clsx(iconButtonVariants({ color, isRound, size }), className)}
+                disabled={disabled}
+                onClick={onClick}
+                ref={ref}
+                {...rest}
+            >
+                <div className='grid w-800 h-800 place-content-center'>{icon}</div>
             </button>
         );
     }
 );
 
 IconButton.displayName = 'IconButton';
-export default IconButton;

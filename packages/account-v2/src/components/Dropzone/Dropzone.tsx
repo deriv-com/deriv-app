@@ -2,6 +2,7 @@ import React, {
     ComponentProps,
     DetailedHTMLProps,
     InputHTMLAttributes,
+    MouseEventHandler,
     ReactNode,
     RefObject,
     useCallback,
@@ -10,11 +11,10 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
-import { StandaloneXmarkRegularIcon as CloseIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
-import DropzoneFrame from '../../../assets/dropzone/dropzone-frame.svg';
+import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
+import { Button, Text } from '@deriv-com/ui';
+import DropzoneFrame from '../../assets/dropzone/dropzone-frame.svg';
 import { IconButton } from '../IconButton';
-import { WalletText } from '../WalletText';
 import './Dropzone.scss';
 
 type TProps = {
@@ -22,17 +22,16 @@ type TProps = {
     className?: string;
     defaultFile?: File;
     description?: ReactNode;
-    descriptionColor?: ComponentProps<typeof WalletText>['color'];
-    descriptionSize?: ComponentProps<typeof WalletText>['size'];
+    descriptionColor?: ComponentProps<typeof Text>['color'];
+    descriptionSize?: ComponentProps<typeof Text>['size'];
     fileFormats?: NonNullable<Parameters<typeof useDropzone>[0]>['accept'];
     hasFrame?: boolean;
     hoverMessage?: ReactNode;
     icon: ReactNode;
     maxSize?: NonNullable<Parameters<typeof useDropzone>[0]>['maxSize'];
-    noClick?: NonNullable<Parameters<typeof useDropzone>[0]>['noClick'];
     onFileChange?: (file: File) => void;
     title?: ReactNode;
-    titleType?: ComponentProps<typeof WalletText>['weight'];
+    titleType?: ComponentProps<typeof Text>['weight'];
 };
 
 type TFile = {
@@ -67,7 +66,7 @@ const Dropzone: React.FC<TProps> = ({
         accept: fileFormats,
         maxSize,
         multiple: false,
-        noClick: true,
+        noClick: !!buttonText,
         onDragEnter: () => setShowHoverMessage(true),
         onDragLeave: () => setShowHoverMessage(false),
         onDrop: acceptedFiles => {
@@ -95,7 +94,8 @@ const Dropzone: React.FC<TProps> = ({
         }
     }, [file]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const removeFile = useCallback(() => {
+    const removeFile: MouseEventHandler<HTMLButtonElement> = useCallback(event => {
+        event.stopPropagation();
         setFile(null);
     }, []);
 
@@ -113,18 +113,18 @@ const Dropzone: React.FC<TProps> = ({
                 )}
             >
                 <div className='wallets-dropzone__content'>
-                    {showHoverMessage && <WalletText size='sm'>{hoverMessage}</WalletText>}
+                    {showHoverMessage && <Text size='sm'>{hoverMessage}</Text>}
                     {!file && (
                         <div className='wallets-dropzone__placeholder'>
                             <div className='wallets-dropzone__placeholder-icon'>{icon}</div>
                             {title && (
-                                <WalletText align='center' color='primary' size='xs' weight={titleType}>
+                                <Text align='center' color='primary' size='xs' weight={titleType}>
                                     {title}
-                                </WalletText>
+                                </Text>
                             )}
-                            <WalletText align='center' color={descriptionColor} size={descriptionSize}>
+                            <Text align='center' color={descriptionColor} size={descriptionSize}>
                                 {description}
-                            </WalletText>
+                            </Text>
                             {buttonText && (
                                 <div className='wallets-dropzone__placeholder-text'>
                                     <Button onClick={open} type='button' variant='outlined'>
@@ -133,9 +133,9 @@ const Dropzone: React.FC<TProps> = ({
                                 </div>
                             )}
                             {errorMessage && (
-                                <WalletText align='center' color='red' size='2xs'>
+                                <Text align='center' color='red' size='2xs'>
                                     {errorMessage}
-                                </WalletText>
+                                </Text>
                             )}
                         </div>
                     )}
@@ -151,16 +151,18 @@ const Dropzone: React.FC<TProps> = ({
                                 {hasFrame && <DropzoneFrame />}
                                 <IconButton
                                     className='wallets-dropzone__remove-file'
+                                    color='black'
                                     data-testid='dt_remove-button'
-                                    icon={<CloseIcon iconSize='sm' />}
+                                    icon={<StandaloneXmarkBoldIcon fill='#ffffff' iconSize='sm' />}
+                                    isRound
                                     onClick={removeFile}
                                     size='sm'
                                 />
                             </div>
                             {description && (
-                                <WalletText align='center' color={descriptionColor}>
+                                <Text align='center' color={descriptionColor}>
                                     {description}
-                                </WalletText>
+                                </Text>
                             )}
                         </React.Fragment>
                     )}

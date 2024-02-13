@@ -59,13 +59,7 @@ const EnterPassword = ({
                 <Text size='sm'>
                     Enter your {title} password to add a {title} {marketTypeTitle} account.
                 </Text>
-                <PasswordInput
-                    // className='z-10 text-body-sm'
-                    isFullWidth
-                    label={`${title} password`}
-                    onChange={onPasswordChange}
-                    value={password}
-                />
+                <PasswordInput isFullWidth label={`${title} password`} onChange={onPasswordChange} value={password} />
             </div>
             {isDesktop && (
                 <div className='flex items-center justify-end w-full gap-8 pt-24'>

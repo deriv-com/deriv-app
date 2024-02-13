@@ -43,7 +43,6 @@ const Actions = ({ submitDisabled = false }: TActions) => {
                     </Button>
                 )}
                 <Button
-                    // className='bg-solid-coral-700'
                     disabled={submitDisabled}
                     isFullWidth={isMobile}
                     onClick={() => handleSubmit()}

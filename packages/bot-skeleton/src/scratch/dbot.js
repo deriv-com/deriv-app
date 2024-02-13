@@ -554,7 +554,50 @@ class DBot {
                             type: block.type,
                         });
                     } else if (input.connection) {
-                        const order = Blockly.JavaScript.Order;
+                        function initializeOrderValues() {
+                            return {
+                                ATOMIC: 0,
+                                NEW: 1.1,
+                                MEMBER: 1.2,
+                                FUNCTION_CALL: 2,
+                                DECREMENT: 3,
+                                BITWISE_NOT: 4.1,
+                                UNARY_PLUS: 4.2,
+                                UNARY_NEGATION: 4.3,
+                                LOGICAL_NOT: 4.4,
+                                TYPEOF: 4.5,
+                                VOID: 4.6,
+                                DELETE: 4.7,
+                                AWAIT: 4.8,
+                                EXPONENTIATION: 5,
+                                MULTIPLICATION: 5.1,
+                                DIVISION: 5.2,
+                                MODULUS: 5.3,
+                                SUBTRACTION: 6.1,
+                                ADDITION: 6.2,
+                                BITWISE_SHIFT: 7,
+                                INSTANCEOF: 8,
+                                EQUALITY: 9,
+                                BITWISE_AND: 10,
+                                BITWISE_XOR: 11,
+                                BITWISE_OR: 12,
+                                LOGICAL_AND: 13,
+                                LOGICAL_OR: 14,
+                                CONDITIONAL: 15,
+                                ASSIGNMENT: 16,
+                                YIELD: 17,
+                                COMMA: 18,
+                                NONE: 99,
+                            };
+                        }
+
+                        const orderValues = initializeOrderValues();
+                        Object.keys(orderValues).forEach(prop => {
+                            Blockly.JavaScript[`ORDER_${prop}`] = orderValues[prop];
+                        });
+
+
+                        const order = Blockly.JavaScript.ORDER_ATOMIC;
                         const value = Blockly.JavaScript.valueToCode(block, input_name, order);
                         const inputValidatorFn = required_inputs_object[input_name];
 

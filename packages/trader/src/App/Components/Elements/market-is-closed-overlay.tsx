@@ -45,7 +45,7 @@ const MarketIsClosedOverlay = ({
             <Text as='p' className='market-is-closed-overlay__main-heading' color='prominent' weight='bold'>
                 <Localize i18n_default_text='This market is closed' />
             </Text>
-            <React.Suspense>
+            <React.Suspense fallback={<div />}>
                 <MarketCountdownTimer
                     is_main_page
                     setIsTimerLoading={setIsTimerLoading}

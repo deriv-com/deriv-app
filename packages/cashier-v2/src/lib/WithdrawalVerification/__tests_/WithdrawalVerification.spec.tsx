@@ -5,6 +5,7 @@ import WithdrawalVerification from '../WithdrawalVerification';
 import '@testing-library/jest-dom';
 
 jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
     useSettings: jest.fn(() => ({ data: { email: null } })),
     useVerifyEmail: jest.fn(() => ({ mutate: jest.fn() })),
 }));

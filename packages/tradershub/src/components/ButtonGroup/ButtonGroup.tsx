@@ -15,7 +15,7 @@ type TButtonGroupProps = { className?: string };
  */
 
 const ButtonGroup: FC<PropsWithChildren<TButtonGroupProps>> = ({ children, className }) => (
-    <div className={qtMerge('flex flex-col align-center gap-400 lg:flex-row ', className)}> {children}</div>
+    <div className={qtMerge('flex flex-col align-center gap-8 lg:flex-row ', className)}> {children}</div>
 );
 
 export default ButtonGroup;

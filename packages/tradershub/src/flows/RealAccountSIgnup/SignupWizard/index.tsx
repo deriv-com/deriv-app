@@ -35,15 +35,15 @@ const SignupWizard = () => {
                 shouldCloseOnOverlayClick={false}
                 style={CUSTOM_STYLES}
             >
-                <div className='bg-background-primary-base md:max-h-[717px] md:max-w-[1040px] h-screen w-screen md:rounded-800 flex overflow-hidden'>
+                <div className='bg-background-primary-base md:max-h-[717px] md:max-w-[1040px] h-screen w-screen md:rounded-16 flex overflow-hidden'>
                     {!isMobile && (
-                        <div className='min-w-[256px] bg-system-light-secondary-background p-1200'>
-                            <Text as='p' className='font-bold pt-1600 pb-1200 text-300'>
+                        <div className='min-w-[256px] bg-system-light-secondary-background p-24'>
+                            <Text as='p' className='font-bold pt-1600 pb-24 text-300'>
                                 Add a Deriv Account
                             </Text>
                             <DesktopProgressBar activeStep={currentStep} steps={FORM_PROGRESS_STEPS} />
                             <StandaloneXmarkBoldIcon
-                                className='absolute cursor-pointer right-1200 top-1200'
+                                className='absolute cursor-pointer right-24 top-24'
                                 onClick={() => setIsConfirmationDialogOpen(true)}
                             />
                         </div>

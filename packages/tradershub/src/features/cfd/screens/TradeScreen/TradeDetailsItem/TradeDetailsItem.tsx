@@ -22,12 +22,12 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
     return (
         <div
             className={qtMerge(
-                'flex items-center h-1600 justify-between bg-system-light-secondary-background p-[5px] pl-400',
+                'flex items-center h-1600 justify-between bg-system-light-secondary-background p-[5px] pl-8',
                 className
             )}
         >
             {label && <Text size='sm'>{label}</Text>}
-            <div className='flex items-center gap-x-400'>
+            <div className='flex items-center gap-x-8'>
                 {variant === 'info' ? (
                     <Text color='less-prominent' size='sm'>
                         {value}

@@ -80,7 +80,7 @@ const NewTrade = () => {
                 is_stake={is_stake}
                 is_portal={is_portal}
                 is_multiplier={is_multiplier}
-                setSelectedMultiplier={setSelectedMultiplier}
+                // setSelectedMultiplier={setSelectedMultiplier}
             />
             <div
                 className={show_purchase_details && !show_details ? 'trade-param_popup_overlay' : ''}

@@ -1285,6 +1285,22 @@ $FLOATING_HEADER_HEIGHT: 41px;
             margin-bottom: 1.6rem;
         }
     }
+
+    &_tooltip {
+        &-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 3rem;
+        }
+        &-text {
+            text-decoration: underline;
+            color: rgba(0, 0, 0, 0.48);
+            color: var(--core-color-opacity-black-400, rgba(0, 0, 0, 0.48));
+            font-size: 12px;
+            line-height: 18px;
+        }
+    }
 }
 
 .info-icon {

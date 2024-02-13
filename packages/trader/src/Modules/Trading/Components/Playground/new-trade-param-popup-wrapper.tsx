@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import { ButtonToggle } from '@deriv/components';
 import { useSwipeable } from 'react-swipeable';
 import { CSSTransition } from 'react-transition-group';
-import WheelPicker from './Wheel-picker/wheel-picker';
+// import WheelPicker from './Wheel-picker/wheel-picker';
+import Picker from './Wheel-picker-2/wheek-picker';
 
 const NewTradeParamPopupWrapper = ({
     onClick,
@@ -13,26 +14,34 @@ const NewTradeParamPopupWrapper = ({
     is_stake,
     is_multiplier,
     is_portal,
-    setSelectedMultiplier,
-}: {
+}: // setSelectedMultiplier,
+{
     onClick: () => void;
     show_details?: boolean;
     is_risk_management?: boolean;
     is_stake?: boolean;
     is_multiplier?: boolean;
     is_portal?: boolean;
-    setSelectedMultiplier: (index: number) => void;
+    // setSelectedMultiplier: (index: number) => void;
 }) => {
     const [hide_parent, setHideParent] = React.useState(true);
     const [show_take_profit, setShowTakeProfit] = React.useState(true);
     const [show_stop_loss, setShowStopLoss] = React.useState(false);
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
-    const [selected_multiplier, setMultiplier] = React.useState(0);
+    // const [selected_multiplier, setMultiplier] = React.useState(0);
 
-    const multipliers = ['x15', 'x20', 'x50', 'x100', 'x150', 'x200', 'x250', 'x500'];
-    // console.log('test is_multiplier', is_multiplier);
-    // console.log('test is_stake', is_stake);
+    // const multipliers = ['x15', 'x20', 'x50', 'x100', 'x150', 'x200', 'x250', 'x500'];
+    const optionGroups = {
+        multipliers: [
+            { value: 'x15', label: 'x15' },
+            { value: 'x20', label: 'x20' },
+            { value: 'x50', label: 'x50' },
+            { value: 'x150', label: 'x150' },
+            { value: 'x200', label: 'x200' },
+        ],
+    };
+    const [valueGroups, setValueGroups] = React.useState({ multipliers: 'x15' });
 
     React.useEffect(() => {
         return () => clearTimeout(focus_timeout.current);
@@ -84,11 +93,10 @@ const NewTradeParamPopupWrapper = ({
                         'trade-param_popup_container--stake': is_stake,
                         'trade-param_popup_container--is_multiplier': is_multiplier,
                     })}
-                    {...swipe_handlers}
                     onClick={onClickHandler}
                 >
                     <div className='trade-param_popup_top'>
-                        <div className='footer-new_bottom-sheet_separator' />
+                        <div className='footer-new_bottom-sheet_separator' {...swipe_handlers} />
                         {is_risk_management && (
                             <React.Fragment>
                                 <div className='trade-param_popup_title'>Risk management [IN PROGRESS]</div>
@@ -223,7 +231,7 @@ const NewTradeParamPopupWrapper = ({
                                 <p style={{ fontSize: '16px', lineHeight: '24px', textAlign: 'center' }}>
                                     Multiply your potential profit
                                 </p>
-                                <WheelPicker
+                                {/* <WheelPicker
                                     // @ts-expect-error library has no types
                                     animation='flat'
                                     data={multipliers}
@@ -236,7 +244,19 @@ const NewTradeParamPopupWrapper = ({
                                         setMultiplier(index);
                                     }}
                                     scrollerId='scroll-select-subject'
+                                /> */}
+                                <Picker
+                                    optionGroups={optionGroups}
+                                    valueGroups={valueGroups}
+                                    onChange={(name: string, value: string) =>
+                                        setValueGroups({ [name as 'multipliers']: value })
+                                    }
+                                    itemHeight={40}
                                 />
+                                <div className='trade-param_popup_tooltip-container'>
+                                    <div className='trade-param_popup_tooltip-text'>Commission: 0.10 USD</div>
+                                    <div className='trade-param_popup_tooltip-text'>Stop out: 10.00 USD</div>
+                                </div>
                             </React.Fragment>
                         )}
                     </div>

@@ -285,23 +285,31 @@ export default class TicksService {
 
     forget = () => {
         return new Promise((resolve, reject) => {
-            api_base.api
-                .forgetAll('ticks')
-                .then(() => {
-                    resolve();
-                })
-                .catch(reject);
+            if (api_base?.api) {
+                api_base.api
+                    .forgetAll('ticks')
+                    .then(() => {
+                        resolve();
+                    })
+                    .catch(reject);
+            } else {
+                resolve();
+            }
         });
     };
 
     forgetCandleSubscription = () => {
         return new Promise((resolve, reject) => {
-            api_base.api
-                .forgetAll('candles')
-                .then(() => {
-                    resolve();
-                })
-                .catch(reject);
+            if (api_base?.api) {
+                api_base.api
+                    .forgetAll('candles')
+                    .then(() => {
+                        resolve();
+                    })
+                    .catch(reject);
+            } else {
+                resolve();
+            }
         });
     };
 

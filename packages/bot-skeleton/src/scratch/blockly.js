@@ -89,7 +89,7 @@ Blockly.JavaScript.scrub_ = function (t, o, n) {
             t.inputList[s].type == Blockly.INPUT_VALUE && (i = t.inputList[s].connection.targetBlock()) && (i = Blockly.JavaScript.allNestedComments(i)) && (r += Blockly.JavaScript.prefixLines(i, "// "))
     }
     return t = t.nextConnection && t.nextConnection.targetBlock(),
-        r + o + (n ? "" : Blockly.JavaScript.blockToCode(t))
+        r + o + (n ? "" : this.blockToCode(t))
 }
 
 
@@ -103,7 +103,8 @@ Blockly.JavaScript.workspaceToCode = function (workspace) {
     this.init(workspace);
     var blocks = workspace.getTopBlocks(true);
     for (var x = 0, block; block = blocks[x]; x++) {
-        var line = this.blockToCode(block);
+        console.log(block)
+        var line = Blockly.JavaScript.blockToCode(block, true);
         if (goog.isArray(line)) {
             // Value blocks return tuples of code and operator order.
             // Top-level blocks don't care about operator order.
@@ -114,9 +115,11 @@ Blockly.JavaScript.workspaceToCode = function (workspace) {
         }
     }
     code = code.join('\n');  // Blank line between each section.
-    code = this.finish(code);
+    // code = this.finish(code);
     // Final scrubbing of whitespace.
     code = code.replace(/^\s+\n/, '');
+    code = code.replace(/undefined/g, '');
+    
     code = code.replace(/\n\s+$/, '\n');
     code = code.replace(/[ \t]+\n/g, '\n');
     return code;

@@ -571,9 +571,9 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
             duration_unit      : '${duration_type}',
             currency           : '${currency}',
             amount             : ${stake_amount},
-            prediction         : ${prediction_value || 'undefined'},
-            barrierOffset      : ${barrier_offset_value || 'undefined'},
-            secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},
+            ${prediction_value ? `prediction: ${prediction_value},` : ''}
+            ${barrier_offset_value ? `barrierOffset: ${barrier_offset_value},` : ''}
+            ${second_barrier_offset_value ? `secondBarrierOffset: ${second_barrier_offset_value},` : ''}
             basis              : '${block.type === 'trade_definition_tradeoptions' ? 'stake' : 'payout'}',
         });
         BinaryBotPrivateHasCalledTradeOptions = true;

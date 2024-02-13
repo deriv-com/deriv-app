@@ -325,6 +325,7 @@ const ResponseHandlers = (() => {
                 window.setTimeout(() => {
                     reconnectionCounter++;
                     BinarySocket.closeAndOpenNewConnection();
+                    BinarySocket.blockRequest(is_server_down);
                 }, reconnectionDelay);
                 // If site is up, and there was a reconnection attempted before
             } else if (!is_server_down && reconnectionCounter > 1) {

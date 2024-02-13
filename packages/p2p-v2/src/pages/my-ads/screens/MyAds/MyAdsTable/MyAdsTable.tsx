@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
-import { Table } from '@/components';
+import React, { memo, PropsWithChildren } from 'react';
+import { FullPageMobileWrapper, Table } from '@/components';
 import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';
 import { Button, Loader } from '@deriv-com/ui';
@@ -45,12 +45,47 @@ const columns = [
     },
 ];
 
+type TMyAdsDisplayWrapperProps = {
+    isPaused: boolean;
+    onClickToggle: () => void;
+};
+
+const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChildren<TMyAdsDisplayWrapperProps>) => {
+    const { isMobile } = useDevice();
+    if (isMobile) {
+        return (
+            <FullPageMobileWrapper
+                renderFooter={() => (
+                    <Button isFullWidth size='lg' textSize='md'>
+                        Create new ad
+                    </Button>
+                )}
+                renderHeader={() => <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />}
+                shouldShowBackIcon={false}
+            >
+                {children}
+            </FullPageMobileWrapper>
+        );
+    }
+
+    return (
+        <>
+            <div className='flex items-center justify-between my-[1.6rem]'>
+                <Button size='lg' textSize='sm'>
+                    Create new ad
+                </Button>
+                <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />
+            </div>
+            {children}
+        </>
+    );
+};
+
 const MyAdsTable = () => {
     const { data = [], isFetching, isLoading, loadMoreAdverts } = p2p.advertiserAdverts.useGet();
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
     const { mutate } = p2p.advert.useUpdate();
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
-    const { isDesktop } = useDevice();
 
     if (isLoading) return <Loader />;
 
@@ -74,18 +109,10 @@ const MyAdsTable = () => {
     const onClickToggle = () => updateAds({ is_listed: advertiserInfo?.is_listed ? 0 : 1 });
 
     return (
-        <>
-            <div className='p2p-v2-my-ads-table__header'>
-                {isDesktop && (
-                    <Button size='lg' textSize='sm'>
-                        Create new ad
-                    </Button>
-                )}
-                <MyAdsToggle
-                    isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
-                    onClickToggle={onClickToggle}
-                />
-            </div>
+        <MyAdsDisplayWrapper
+            isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
+            onClickToggle={onClickToggle}
+        >
             <div className='p2p-v2-my-ads-table__list'>
                 <Table
                     columns={columns}
@@ -107,7 +134,7 @@ const MyAdsTable = () => {
                     tableClassname=''
                 />
             </div>
-        </>
+        </MyAdsDisplayWrapper>
     );
 };
 

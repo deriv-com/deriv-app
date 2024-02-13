@@ -10,6 +10,7 @@ const MyAdsEmpty = () => {
         <div className='mt-[11.8rem] mx-[1.6rem]'>
             <ActionScreen
                 actionButtons={
+                    //TODO: Add onClick handler
                     <Button size='lg' textSize={isMobile ? 'md' : 'sm'}>
                         Create new ad
                     </Button>

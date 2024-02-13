@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import DerivXPasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
+import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
+import { ActionScreen, SentEmailContent } from '@/components';
+import { TPlatforms } from '@/types';
+import { platformPasswordResetRedirectLink } from '@/utils';
+import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
-import { Button, Text } from '@deriv-com/ui';
-import { SentEmailContent, ActionScreen } from '../../../../components';
 import { Provider } from '@deriv/library';
-import DerivXPasswordIcon from '../../../../public/images/ic-derivx-password-updated.svg';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { TPlatforms } from '../../../../types';
-import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
-import { CFDPlatforms, PlatformDetails } from '../../constants';
+import { Button, Text } from '@deriv-com/ui';
 
 type TradingPlatformChangePasswordScreensProps = {
     isVirtual?: boolean;

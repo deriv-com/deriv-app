@@ -1,8 +1,11 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
+import { personalDetails } from '@/utils';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
 import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
 import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
+import AdditionalInformation from './Sections/AdditionalInformation';
+import Details from './Sections/Details';
 
 /**
  * @name PersonalDetails
@@ -11,18 +14,33 @@ import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWiza
  * @returns {React.ReactNode}
  */
 const PersonalDetails = () => {
-    const { dispatch } = useSignupWizardContext();
+    const { dispatch, helpers, state } = useSignupWizardContext();
 
     const handleSubmit = (values: FormikValues) => {
-        dispatch({ payload: { firstName: values.firstName }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
+        dispatch({ payload: { ...values }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
+        helpers.goToNextStep();
+    };
+
+    const initialValues = {
+        accountOpeningReason: state.accountOpeningReason ?? '',
+        confirmation: false,
+        dateOfBirth: state.dateOfBirth ?? '',
+        firstName: state.firstName ?? '',
+        lastName: state.lastName ?? '',
+        phoneNumber: state.phoneNumber ?? '',
+        placeOfBirth: state.placeOfBirth ?? '',
+        taxIdentificationNumber: state.taxIdentificationNumber ?? '',
+        taxResidence: state.taxResidence ?? '',
     };
     return (
         <WizardScreenWrapper heading='Complete your personal details'>
             <Formik
-                initialValues={{
-                    firstName: '',
-                }}
+                enableReinitialize
+                initialValues={initialValues}
                 onSubmit={handleSubmit}
+                validateOnBlur
+                validateOnChange
+                validationSchema={personalDetails}
             >
                 {() => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
@@ -31,6 +49,8 @@ const PersonalDetails = () => {
                                 Any information you provide is confidential and will be used for verification purposes
                                 only.
                             </p>
+                            <Details />
+                            <AdditionalInformation />
                         </div>
                         <Actions />
                     </Form>

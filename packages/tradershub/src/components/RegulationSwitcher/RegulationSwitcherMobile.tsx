@@ -1,10 +1,10 @@
 import React from 'react';
+import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
+import { useUIContext } from '@/components';
+import { useRegulationSwitcher } from '@/hooks';
+import { RegulationModal } from '@/modals';
 import { Provider } from '@deriv/library';
 import { Tab, Tabs } from '@deriv-com/ui';
-import { useRegulationSwitcher } from '../../hooks/useRegulationSwitcher';
-import { RegulationModal } from '../../modals';
-import InfoIcon from '../../public/images/ic-info-outline.svg';
-import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherMobile = () => {
     const { show } = Provider.useModal();

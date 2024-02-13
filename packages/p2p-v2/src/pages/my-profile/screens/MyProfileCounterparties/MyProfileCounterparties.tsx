@@ -1,8 +1,8 @@
 import React, { PropsWithChildren, useState } from 'react';
+import { FullPageMobileWrapper } from '@/components';
+import { BlockUnblockUserFilterModal } from '@/components/Modals';
+import { useDevice, useQueryString } from '@/hooks';
 import { Text } from '@deriv-com/ui';
-import { FullPageMobileWrapper } from '../../../../components';
-import { BlockUnblockUserFilterModal } from '../../../../components/Modals/BlockUnblockUserFilterModal';
-import { useDevice, useQueryString } from '../../../../hooks';
 import { MyProfileCounterpartiesHeader } from './MyProfileCounterpartiesHeader';
 import { MyProfileCounterpartiesTable } from './MyProfileCounterpartiesTable';
 import './MyProfileCounterparties.scss';

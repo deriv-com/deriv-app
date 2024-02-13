@@ -180,14 +180,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
     [TRADE_TYPES.TURBOS.LONG]: {
-        title: localize('Long/Short'),
+        title: localize('Turbos'),
         trade_types: [CONTRACT_TYPES.TURBOS.LONG],
         basis: ['stake'],
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
     [TRADE_TYPES.TURBOS.SHORT]: {
-        title: localize('Long/Short'),
+        title: localize('Turbos'),
         trade_types: [CONTRACT_TYPES.TURBOS.SHORT],
         basis: ['stake'],
         barrier_count: 1,
@@ -219,6 +219,7 @@ export const getContractCategoriesConfig = () =>
             categories: [
                 TRADE_TYPES.RISE_FALL,
                 TRADE_TYPES.RISE_FALL_EQUAL,
+                TRADE_TYPES.HIGH_LOW,
                 TRADE_TYPES.RUN_HIGH_LOW,
                 TRADE_TYPES.RESET,
                 TRADE_TYPES.ASIAN,
@@ -227,7 +228,7 @@ export const getContractCategoriesConfig = () =>
         },
         'Highs & Lows': {
             name: localize('Highs & Lows'),
-            categories: [TRADE_TYPES.HIGH_LOW, TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
+            categories: [TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
         },
         'Ins & Outs': { name: localize('Ins & Outs'), categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
         'Look Backs': {

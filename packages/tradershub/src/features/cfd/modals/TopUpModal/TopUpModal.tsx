@@ -1,9 +1,10 @@
 import React from 'react';
+import { Modal } from '@/components';
+import { THooks, TPlatforms } from '@/types';
+import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useIsEuRegion, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
-import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
-import { Modal } from '../../../../components/Modal';
-import { THooks, TPlatforms } from '../../../../types';
-import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Button, Text } from '@deriv-com/ui';
 
 type TTopUpModalProps = {
     account: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
@@ -44,9 +45,9 @@ const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
         <Modal className='max-w-[330px] md:max-w-[440px]'>
             <Modal.Header title='Fund top up' />
             <Modal.Content className='flex flex-col items-center justify-center space-y-1200 p-1200 sm:p-1200'>
-                <Text bold>{title} Demo account</Text>
+                <Text weight='bold'>{title} Demo account</Text>
                 <div className='text-center'>
-                    <Text bold size='sm'>
+                    <Text size='sm' weight='bold'>
                         Balance
                     </Text>
                     <HeadingTag className='text-status-light-success'>{balance}</HeadingTag>

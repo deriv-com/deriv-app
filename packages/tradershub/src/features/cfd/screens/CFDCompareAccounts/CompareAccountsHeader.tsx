@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Text } from '@deriv/quill-design';
-import CloseIcon from '../../../../public/images/ic-close-dark.svg';
+import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
+import { Text } from '@deriv-com/ui';
 
 type TCompareAccountsHeader = {
     isDemo?: boolean;
@@ -18,7 +18,7 @@ const CompareAccountsHeader = ({ isDemo, isEuRegion }: TCompareAccountsHeader) =
     return (
         <div className='sticky flex items-center border-solid z-[999] border-b-100 py-50 px-500 top-50 h-2500 bg-system-light-primary-background'>
             <div className='flex justify-center w-full'>
-                <Text bold size='xl'>
+                <Text size='xl' weight='bold'>
                     {headerTitle}
                 </Text>
             </div>

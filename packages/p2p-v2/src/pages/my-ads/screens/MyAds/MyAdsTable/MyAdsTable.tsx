@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Table } from '@/components';
-import MyAdsDeleteModal from '@/components/Modals/MyAdsDeleteModal/MyAdsDeleteModal';
+import { MyAdsDeleteModal } from '@/components/Modals';
 import { AD_ACTION } from '@/constants';
 import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';

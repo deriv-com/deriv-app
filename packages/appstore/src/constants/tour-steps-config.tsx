@@ -124,7 +124,7 @@ export const tour_styles: Styles = {
         whiteSpace: 'pre-wrap',
     },
     buttonNext: {
-        padding: '0.9rem',
+        padding: '0',
         fontSize: '1.5rem',
         fontWeight: 'bold',
     },
@@ -148,7 +148,7 @@ export const tour_styles_dark_mode: Styles = {
         whiteSpace: 'pre-wrap',
     },
     buttonNext: {
-        padding: '0.9rem',
+        padding: '0',
         fontSize: '1.5rem',
         fontWeight: 'bold',
     },

@@ -7,11 +7,6 @@ jest.mock('@deriv/quill-design', () => {
         qtMerge: jest.fn(),
     };
 });
-jest.mock('@deriv-com/ui', () => {
-    return {
-        Text: jest.fn(({ children }) => <span>{children}</span>),
-    };
-});
 
 describe('ActionScreen component', () => {
     it('renders with title', () => {

@@ -25,7 +25,7 @@ const App: React.FC = () => {
                 {/* [TODO]:Mock - Remove Mock values */}
                 <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}} validationSchema={getValidationSchema}>
                     {/* <IDVForm selectedCountry={SELECTED_COUNTRY} /> */}
-                    <SelfieDocumentUpload />
+                    <SelfieDocumentUpload name='selfie' />
                 </Formik>
                 <RouteLinks />
                 {/* [TODO]:Mock - Remove Mock values */}

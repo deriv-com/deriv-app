@@ -1,3 +1,3 @@
-import HelpBase from './flyout-help-base.jsx';
+import HelpBase from './flyout-help-base.tsx';
 
 export default HelpBase;

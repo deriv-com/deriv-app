@@ -439,7 +439,7 @@ module.exports = {
                 '2xs': '8px',
                 xs: '10px',
                 sm: '12px',
-                base: '14px',
+                default: '14px',
                 lg: '16px',
                 xl: '18px',
                 '2xl': '20px',
@@ -498,7 +498,6 @@ module.exports = {
                 xl: { min: '1440px' },
             },
             spacing: {
-                px: '1px',
                 0: '0px',
                 1: '1px',
                 2: '2px',

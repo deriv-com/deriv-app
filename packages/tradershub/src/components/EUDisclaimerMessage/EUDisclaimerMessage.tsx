@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/ui';
 const EUDisclaimerMessage = () => (
     <div className='absolute bottom-0 w-full bg-system-light-secondary-background'>
         <div className='max-w-[1232px] mx-auto px-10 lg:px-0'>
-            <Text className='w-full text-2xs sm:text-base leading-[1.5] py-10'>
+            <Text className='w-full text-2xs sm:text-default leading-[1.5] py-10'>
                 <span className='font-bold'>EU statutory disclaimer</span>: CFDs are complex instruments and come with a
                 high risk of losing money rapidly due to leverage.
                 <span className='font-bold'>

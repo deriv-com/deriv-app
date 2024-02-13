@@ -71,7 +71,7 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                         <div className='flex flex-col content-center gap-16 w-[328px]'>
                             <TextField
                                 autoComplete='current-password'
-                                className='h-40 text-base border-solid rounded-xs border-1 border-system-light-active-background'
+                                className='h-40 border-solid text-default rounded-xs border-1 border-system-light-active-background'
                                 label='Current investor password'
                                 name='currentPassword'
                                 onChange={handleChange}
@@ -79,7 +79,7 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                             />
                             <TextField
                                 autoComplete='new-password'
-                                className='h-40 text-base border-solid rounded-xs border-xs border-system-light-active-background'
+                                className='h-40 border-solid text-default rounded-xs border-xs border-system-light-active-background'
                                 label='New investor password'
                                 name='newPassword'
                                 onChange={handleChange}

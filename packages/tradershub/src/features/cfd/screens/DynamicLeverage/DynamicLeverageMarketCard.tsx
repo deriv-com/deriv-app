@@ -25,7 +25,7 @@ export const DynamicLeverageMarketCard = ({
                 {displayName}
             </Text>
             {!!instruments.length && (
-                <CaptionText align='center' className='text-base' italic>
+                <CaptionText align='center' className='text-default' italic>
                     {`(${instruments.join(', ')})`}
                 </CaptionText>
             )}

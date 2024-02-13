@@ -47,6 +47,9 @@ class PickerColumn extends Component {
             this.onValueSelected(options[0].value);
             selectedIndex = 0;
         }
+        this.setState({
+            selectedIndex,
+        });
         return {
             scrollerTranslate: columnHeight / 2 - itemHeight / 2 - selectedIndex * itemHeight,
             minTranslate: columnHeight / 2 - itemHeight * options.length + itemHeight / 2,

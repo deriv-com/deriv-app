@@ -18,9 +18,16 @@ const NewTrade = () => {
     const [selected_left_type, setSelectedType] = React.useState(true);
     const [show_purchase_details, setShowPurchaseDetails] = React.useState(false);
 
-    const [selected_multiplier, setSelectedMultiplier] = React.useState(0);
-
-    const multipliers = ['x15', 'x20', 'x50', 'x100', 'x150', 'x200', 'x250', 'x500'];
+    const optionGroups = {
+        multipliers: [
+            { value: 'x15', label: 'x15' },
+            { value: 'x20', label: 'x20' },
+            { value: 'x50', label: 'x50' },
+            { value: 'x150', label: 'x150' },
+            { value: 'x200', label: 'x200' },
+        ],
+    };
+    const [valueGroups, setValueGroups] = React.useState({ multipliers: 'x15' });
 
     const onTradeParamClickHandler = (trade_param: string) => {
         setIsRiskManagement(false);
@@ -58,7 +65,7 @@ const NewTrade = () => {
                             key={1}
                             setSelectedType={setSelectedType}
                             selected_left_type={selected_left_type}
-                            selected_multiplier={selected_multiplier}
+                            selected_multiplier={valueGroups.multipliers}
                         />,
                         <div key={2} style={{ marginTop: '-0.5rem' }}>
                             <Icon icon='IcNewChart' className='new-chart-icon' />
@@ -80,7 +87,9 @@ const NewTrade = () => {
                 is_stake={is_stake}
                 is_portal={is_portal}
                 is_multiplier={is_multiplier}
-                // setSelectedMultiplier={setSelectedMultiplier}
+                valueGroups={valueGroups}
+                optionGroups={optionGroups}
+                setValueGroups={setValueGroups}
             />
             <div
                 className={show_purchase_details && !show_details ? 'trade-param_popup_overlay' : ''}
@@ -154,7 +163,7 @@ const NewTrade = () => {
                                                 e.stopPropagation();
                                             }}
                                         >
-                                            <span>{multipliers[selected_multiplier]}</span>
+                                            <span>{valueGroups.multipliers}</span>
                                             <Icon icon='IcNewPencil' height={22} width={14} />
                                         </button>
                                     </div>

@@ -14,34 +14,25 @@ const NewTradeParamPopupWrapper = ({
     is_stake,
     is_multiplier,
     is_portal,
-}: // setSelectedMultiplier,
-{
+    valueGroups,
+    optionGroups,
+    setValueGroups,
+}: {
     onClick: () => void;
     show_details?: boolean;
     is_risk_management?: boolean;
     is_stake?: boolean;
     is_multiplier?: boolean;
     is_portal?: boolean;
-    // setSelectedMultiplier: (index: number) => void;
+    valueGroups: any;
+    optionGroups: any;
+    setValueGroups: any;
 }) => {
     const [hide_parent, setHideParent] = React.useState(true);
     const [show_take_profit, setShowTakeProfit] = React.useState(true);
     const [show_stop_loss, setShowStopLoss] = React.useState(false);
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
-    // const [selected_multiplier, setMultiplier] = React.useState(0);
-
-    // const multipliers = ['x15', 'x20', 'x50', 'x100', 'x150', 'x200', 'x250', 'x500'];
-    const optionGroups = {
-        multipliers: [
-            { value: 'x15', label: 'x15' },
-            { value: 'x20', label: 'x20' },
-            { value: 'x50', label: 'x50' },
-            { value: 'x150', label: 'x150' },
-            { value: 'x200', label: 'x200' },
-        ],
-    };
-    const [valueGroups, setValueGroups] = React.useState({ multipliers: 'x15' });
 
     React.useEffect(() => {
         return () => clearTimeout(focus_timeout.current);
@@ -248,9 +239,7 @@ const NewTradeParamPopupWrapper = ({
                                 <Picker
                                     optionGroups={optionGroups}
                                     valueGroups={valueGroups}
-                                    onChange={(name: string, value: string) =>
-                                        setValueGroups({ [name as 'multipliers']: value })
-                                    }
+                                    onChange={(name: string, value: string) => setValueGroups({ [name]: value })}
                                     itemHeight={40}
                                 />
                                 <div className='trade-param_popup_tooltip-container'>

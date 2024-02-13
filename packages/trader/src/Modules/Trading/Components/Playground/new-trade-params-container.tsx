@@ -10,10 +10,8 @@ const NewTradeParamsContainer = ({
     onClick: (trade_param: string) => void;
     setSelectedType: (selected_left_type: boolean) => void;
     selected_left_type: boolean;
-    selected_multiplier: number;
+    selected_multiplier: string;
 }) => {
-    const multipliers = ['x15', 'x20', 'x50', 'x100', 'x150', 'x200', 'x250', 'x500'];
-
     return (
         <div className='trade-param_section'>
             <div className='trade-param_section_title'>
@@ -47,7 +45,7 @@ const NewTradeParamsContainer = ({
                 onKeyDown={() => onClick('multiplier')}
             >
                 <div className='trade-param_name'>Multiplier</div>
-                <div style={{ fontSize: '16px', lineHeight: '24px' }}>{multipliers[selected_multiplier]}</div>
+                <div style={{ fontSize: '16px', lineHeight: '24px' }}>{selected_multiplier}</div>
             </div>
             <div className='trade-param_container' onClick={() => onClick('stake')} onKeyDown={() => onClick('stake')}>
                 <div className='trade-param_name'>Stake</div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import OrderTable from '../order-table.jsx';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -9,6 +10,12 @@ jest.mock('Stores', () => ({
             active_notification_count: 0,
             inactive_notification_count: 0,
             order_table_type: false,
+        },
+        order_store: {
+            date_from: '',
+            date_to: '',
+            filtered_date_range: '',
+            handleDateChange: jest.fn(),
         },
     }),
 }));
@@ -23,7 +30,11 @@ jest.mock('@deriv/components', () => ({
 
 describe('<Orders/>', () => {
     it('should pass the values into OrderTableContent', () => {
-        render(<OrderTable />);
+        render(
+            <StoreProvider store={mockStore({})}>
+                <OrderTable />
+            </StoreProvider>
+        );
         expect(screen.getByText('Order Table Content')).toBeInTheDocument();
     });
 });

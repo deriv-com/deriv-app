@@ -2,13 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikState, FormikValues } from 'formik';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
-import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/components';
+import { Button, HintBox, Loading, Text } from '@deriv/components';
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
     IDV_ERROR_STATUS,
     isEmptyObject,
-    isMobile,
     removeEmptyPropertiesFromObject,
     TIDVErrorStatus,
     toMoment,
@@ -40,6 +39,7 @@ import {
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
+import { TIdvDocumentSubmitForm } from '../../idv-document-submit/idv-document-submit';
 
 type TRestState = {
     api_error: string;
@@ -57,6 +57,7 @@ type TIdvFailed = {
     residence_list: ResidenceList;
     latest_status: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'];
     selected_country?: ResidenceList[0];
+    handleSelectionNext?: (should_show_manual: boolean) => void;
 };
 
 type TIDVFailureConfig = {
@@ -77,10 +78,11 @@ const IdvFailed = ({
     mismatch_status = IDV_ERROR_STATUS.Failed.code,
     latest_status,
     selected_country,
+    handleSelectionNext,
 }: TIdvFailed) => {
-    const {
-        client: { setIsAlreadyAttempted },
-    } = useStore();
+    const { client, ui } = useStore();
+    const { setIsAlreadyAttempted } = client;
+    const { is_mobile } = ui;
 
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
@@ -120,6 +122,7 @@ const IdvFailed = ({
     );
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+    const shouldSkipIdv = (document_id?: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
     React.useEffect(() => {
         const initializeFormValues = async (required_fields: string[]) => {
@@ -181,6 +184,11 @@ const IdvFailed = ({
         values: TIdvFailedForm,
         { setStatus, setSubmitting, status }: FormikHelpers<TIdvFailedForm> & FormikState<TIdvDocumentSubmitForm>
     ) => {
+        if (shouldSkipIdv(values?.document_type?.id)) {
+            handleSelectionNext?.(true);
+            return;
+        }
+
         delete values.confirmation_checkbox;
         setSubmitting(true);
         setStatus({ ...status, error_msg: null });
@@ -212,7 +220,7 @@ const IdvFailed = ({
                 issuing_country: chosen_country.value,
             };
 
-            if (!submit_data.document_type || submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
+            if (!submit_data.document_type || shouldSkipIdv(submit_data.document_type)) {
                 setSubmitting(false);
                 handleSubmit();
                 return;
@@ -236,6 +244,11 @@ const IdvFailed = ({
         const errors: Record<string, unknown> = {};
         if (is_document_upload_required) {
             const { document_type, document_number, document_additional } = values;
+
+            if (shouldSkipIdv(document_type?.id)) {
+                return errors;
+            }
+
             const needs_additional_document = !!document_type?.additional;
             errors.document_type = isDocumentTypeValid(document_type as FormikValues);
             if (!shouldHideHelperImage(document_type?.id as string)) {
@@ -276,13 +289,19 @@ const IdvFailed = ({
     }
 
     const setScrollOffset = () => {
-        if (isMobile()) {
+        if (is_mobile) {
             if (is_from_external) {
                 return '140px';
             }
             return '180px';
         }
         return '80px';
+    };
+
+    const buttonText = (is_idv_skipping: boolean) => {
+        if (is_idv_skipping) return localize('Next');
+        if (is_document_upload_required) return localize('Verify');
+        return localize('Update profile');
     };
 
     return (
@@ -292,14 +311,15 @@ const IdvFailed = ({
             validate={validateFields}
             className='proof-of-identity__container'
         >
-            {({ isSubmitting, isValid, dirty, status, values, errors }) => (
+            {({ isSubmitting, isValid, dirty, status, values }) => (
                 <Form
                     className={classNames('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
+                        'min-height': shouldSkipIdv(values?.document_type?.id),
                     })}
                 >
                     <FormBody className='form-body' scroll_offset={setScrollOffset()}>
-                        <Text size={isMobile() ? 'xs' : 's'} weight='bold' align='center'>
+                        <Text size={is_mobile ? 'xs' : 's'} weight='bold' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
                         {(status?.error_msg || idv_failure?.failure_message) && (
@@ -307,7 +327,7 @@ const IdvFailed = ({
                                 className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
                                 icon='IcAlertDanger'
                                 message={
-                                    <Text as='p' size={isMobile() ? 'xxs' : 'xs'} data-testid={mismatch_status}>
+                                    <Text as='p' size={is_mobile ? 'xxs' : 'xs'} data-testid={mismatch_status}>
                                         {status?.error_msg ?? idv_failure?.failure_message}
                                     </Text>
                                 }
@@ -315,55 +335,39 @@ const IdvFailed = ({
                             />
                         )}
                         {is_document_upload_required && (
-                            <React.Fragment>
-                                <Text size='xs' align={isMobile() ? 'left' : 'center'}>
+                            <div>
+                                <Text size='xs' align={is_mobile ? 'left' : 'center'}>
                                     <Localize i18n_default_text='Let’s try again. Choose another document and enter the corresponding details.' />
                                 </Text>
                                 <FormSubHeader title={localize('Identity verification')} />
                                 <IDVForm selected_country={chosen_country} class_name='idv-layout idv-resubmit' />
-                                <FormSubHeader title={localize('Details')} />
-                            </React.Fragment>
+                                {!shouldSkipIdv(values?.document_type?.id) && (
+                                    <FormSubHeader title={localize('Details')} />
+                                )}
+                            </div>
                         )}
-                        <PersonalDetailsForm
-                            class_name='account-form__poi-confirm-example_container'
-                            editable_fields={values.confirmation_checkbox ? [] : rest_state?.changeable_fields}
-                            is_rendered_for_idv
-                            side_note={idv_failure?.side_note_image}
-                            inline_note_text={idv_failure?.inline_note_text}
-                            mismatch_status={mismatch_status}
-                        />
-                        <DesktopWrapper>
-                            {!is_from_external && (
-                                <div className='proof-of-identity__actions'>
-                                    <Button
-                                        className='proof-of-identity__submit-button'
-                                        type='submit'
-                                        has_effect
-                                        is_disabled={!dirty || isSubmitting || !isValid}
-                                        text={
-                                            is_document_upload_required
-                                                ? localize('Verify')
-                                                : localize('Update profile')
-                                        }
-                                        large
-                                        primary
-                                    />
-                                </div>
-                            )}
-                        </DesktopWrapper>
-                    </FormBody>
-                    {(is_from_external || isMobile()) && (
-                        <FormFooter>
-                            <Button
-                                type='submit'
-                                has_effect
-                                is_disabled={!dirty || isSubmitting || !isValid}
-                                text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
-                                large
-                                primary
+                        {!shouldSkipIdv(values?.document_type?.id) && (
+                            <PersonalDetailsForm
+                                class_name='account-form__poi-confirm-example_container'
+                                editable_fields={values.confirmation_checkbox ? [] : rest_state?.changeable_fields}
+                                is_rendered_for_idv
+                                side_note={idv_failure?.side_note_image}
+                                inline_note_text={idv_failure?.inline_note_text}
+                                mismatch_status={mismatch_status}
                             />
-                        </FormFooter>
-                    )}
+                        )}
+                    </FormBody>
+                    <FormFooter className='proof-of-identity__footer'>
+                        <Button
+                            className='proof-of-identity__submit-button'
+                            type='submit'
+                            has_effect
+                            is_disabled={!dirty || isSubmitting || !isValid}
+                            text={buttonText(shouldSkipIdv(values?.document_type?.id))}
+                            large
+                            primary
+                        />
+                    </FormFooter>
                 </Form>
             )}
         </Formik>

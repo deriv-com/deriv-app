@@ -517,17 +517,16 @@ export default class UIStore extends BaseStore {
         this.promptFn = cb;
     }
 
+    get is_desktop() {
+        return this.screen_width > MAX_TABLET_WIDTH;
+    }
+
     get is_mobile() {
         return this.screen_width <= MAX_MOBILE_WIDTH;
     }
 
     get is_tablet() {
         return MAX_MOBILE_WIDTH < this.screen_width && this.screen_width <= MAX_TABLET_WIDTH;
-    }
-
-    get is_desktop() {
-        // TODO: remove tablet once there is a design for the specific size.
-        return this.is_tablet || this.screen_width > MAX_TABLET_WIDTH;
     }
 
     get is_account_switcher_disabled() {
@@ -680,6 +679,9 @@ export default class UIStore extends BaseStore {
     }
 
     closeRealAccountSignup() {
+        this.root_store.client.setRealAccountSignupFormData([]);
+        this.root_store.client.setRealAccountSignupFormStep(0);
+
         this.is_real_acc_signup_on = false;
         this.resetRealAccountSignupTarget();
         setTimeout(() => {

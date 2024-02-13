@@ -11,7 +11,7 @@ import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
 import { setLanguage } from 'Components/i18next';
 import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager';
-import Routes from 'Components/routes/routes.jsx';
+import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
@@ -255,7 +255,7 @@ const App = () => {
     }, [action_param, code_param]);
 
     if (is_logging_in || general_store.is_loading) {
-        return <Loading is_fullscreen />;
+        return <Loading className='p2p__loading' is_fullscreen={false} />;
     }
 
     return (

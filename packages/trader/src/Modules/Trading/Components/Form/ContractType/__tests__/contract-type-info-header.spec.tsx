@@ -11,14 +11,29 @@ jest.mock('@deriv/components', () => {
 });
 
 const mocked_props = {
-    onClickGoBack: jest.fn(),
+    onClickBack: jest.fn(),
+    onClose: jest.fn(),
+    should_render_arrow: false,
+    should_render_close: false,
     title: 'Multiplier',
 };
 
 describe('<Header />', () => {
-    it('should render Icon and title', () => {
+    it('should render title', () => {
         render(<Header {...mocked_props} />);
-        expect(screen.getByText(/mockedIcon/i)).toBeInTheDocument();
+
         expect(screen.getByText(/multiplier/i)).toBeInTheDocument();
+    });
+
+    it('should render arrow icon if should_render_arrow === true', () => {
+        render(<Header {...mocked_props} should_render_arrow />);
+
+        expect(screen.getByText(/mockedIcon/i)).toBeInTheDocument();
+    });
+
+    it('should render both arrow and cross icons if should_render_arrow === true and should_render_cross == true', () => {
+        render(<Header {...mocked_props} should_render_arrow should_render_close />);
+
+        expect(screen.getAllByText(/mockedIcon/i)).toHaveLength(2);
     });
 });

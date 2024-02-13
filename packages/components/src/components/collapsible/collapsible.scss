@@ -38,9 +38,22 @@
         align-items: center;
         justify-content: center;
         height: 32px;
+
+        &--handle {
+            align-items: baseline;
+            height: 3.8rem;
+        }
     }
     &__icon {
         transition: transform 0.3s ease-in-out;
+
+        &--handle {
+            width: 4rem;
+            height: 0.4rem;
+            margin-top: 0.8rem;
+            border-radius: 0.2rem;
+            background-color: var(--general-active);
+        }
 
         &--top {
             transform: rotate(180deg);

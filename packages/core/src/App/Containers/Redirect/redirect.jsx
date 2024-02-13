@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
 import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 const Redirect = observer(() => {
     const history = useHistory();
@@ -94,27 +95,28 @@ const Redirect = observer(() => {
             if (redirect_to) {
                 let pathname = '';
                 let hash = '';
+                const main_screen_route = is_next_wallet ? routes.wallets : routes.traders_hub;
                 switch (redirect_to) {
                     case '1':
                         pathname = routes.traders_hub;
                         break;
                     case '10':
-                        pathname = routes.traders_hub;
+                        pathname = main_screen_route;
                         hash = 'real';
                         break;
                     case '11':
-                        pathname = routes.traders_hub;
+                        pathname = main_screen_route;
                         hash = 'demo';
                         break;
                     case '2':
                         pathname = routes.traders_hub;
                         break;
                     case '20':
-                        pathname = routes.traders_hub;
+                        pathname = main_screen_route;
                         hash = 'real';
                         break;
                     case '21':
-                        pathname = routes.traders_hub;
+                        pathname = main_screen_route;
                         hash = 'demo';
                         break;
                     case '3':
@@ -190,7 +192,14 @@ const Redirect = observer(() => {
         case 'trading_platform_investor_password_reset': {
             localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
-            history.push(`${routes.traders_hub}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            if (is_next_wallet) {
+                history.push({
+                    pathname: routes.wallets,
+                    search: url_query_string,
+                });
+            } else {
+                history.push(`${routes.traders_hub}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            }
             redirected_to_route = true;
             break;
         }
@@ -216,5 +225,9 @@ const Redirect = observer(() => {
 
     return null;
 });
+
+Redirect.propTypes = {
+    history: PropTypes.object,
+};
 
 export default withRouter(Redirect);

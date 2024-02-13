@@ -223,3 +223,9 @@
         border-top: 2px solid var(--general-section-5);
     }
 }
+
+.notification-messages {
+    @include desktop {
+        z-index: 9999;
+    }
+}

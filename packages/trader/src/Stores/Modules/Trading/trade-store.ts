@@ -33,8 +33,8 @@ import {
     isHighLow,
     CONTRACT_TYPES,
 } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
-import type { TEvents } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
+import type { TEvents } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -387,6 +387,7 @@ export default class TradeStore extends BaseStore {
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
             is_purchase_enabled: observable,
+            is_synthetics_trading_market_available: computed,
             is_trade_component_mounted: observable,
             is_trade_enabled: observable,
             is_trade_params_expanded: observable,
@@ -551,9 +552,13 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-        when(
-            () => !!this.accumulator_range_list.length,
-            () => this.setDefaultGrowthRate()
+        reaction(
+            () => this.accumulator_range_list.length,
+            () => {
+                if (this.accumulator_range_list.length) {
+                    this.setDefaultGrowthRate();
+                }
+            }
         );
     }
 
@@ -1150,7 +1155,7 @@ export default class TradeStore extends BaseStore {
 
     get is_synthetics_trading_market_available() {
         return !!this.active_symbols?.find(
-            item => item.market === 'synthetic_index' && !isMarketClosed(this.active_symbols, item.symbol)
+            item => item.subgroup === 'synthetics' && !isMarketClosed(this.active_symbols, item.symbol)
         );
     }
 
@@ -1583,7 +1588,10 @@ export default class TradeStore extends BaseStore {
                 this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
         };
-        if (req.subscribe === 1) {
+        if (this.is_market_closed) {
+            delete req.subscribe;
+            WS.getTicksHistory(req).then(passthrough_callback, passthrough_callback);
+        } else if (req.subscribe === 1) {
             const key = JSON.stringify(req);
             const subscriber = WS.subscribeTicksHistory(req, passthrough_callback);
             g_subscribers_map[key] = subscriber;

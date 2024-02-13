@@ -1,10 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus } from '@deriv/shared';
+import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus, getTotalProfit } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
-import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
@@ -14,6 +13,7 @@ import MultiplierCardBody from './multiplier-card-body';
 import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
+import ArrowIndicator from '../../arrow-indicator';
 
 export type TContractCardBodyProps = {
     is_accumulator?: boolean;
@@ -25,7 +25,6 @@ export type TContractCardBodyProps = {
 
 const ContractCardBody = ({
     addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
@@ -46,7 +45,6 @@ const ContractCardBody = ({
     server_time,
     setCurrentFocus,
     should_show_cancellation_warning,
-    status,
     toggleCancellationWarning,
 }: TContractCardBodyProps) => {
     const indicative = getIndicativePrice(contract_info);
@@ -69,13 +67,13 @@ const ContractCardBody = ({
 
     const toggle_card_dialog_props = {
         addToast,
-        connectWithContractUpdate,
         current_focus,
         error_message_alignment,
         getContractById,
         onMouseLeave,
         removeToast,
         setCurrentFocus,
+        totalProfit: is_multiplier && !isNaN(Number(profit)) ? getTotalProfit(contract_info) : Number(profit),
     };
 
     let card_body;
@@ -91,7 +89,6 @@ const ContractCardBody = ({
                 progress_slider={progress_slider_mobile_el}
                 is_mobile={is_mobile}
                 is_sold={is_sold}
-                status={status}
                 should_show_cancellation_warning={should_show_cancellation_warning}
                 toggleCancellationWarning={toggleCancellationWarning}
                 {...toggle_card_dialog_props}
@@ -106,7 +103,6 @@ const ContractCardBody = ({
                 getCardLabels={getCardLabels}
                 indicative={indicative}
                 is_sold={is_sold}
-                status={status}
                 is_positions={is_positions}
                 {...toggle_card_dialog_props}
             />
@@ -119,7 +115,6 @@ const ContractCardBody = ({
                 currency={currency}
                 getCardLabels={getCardLabels}
                 is_sold={is_sold}
-                status={status}
                 progress_slider_mobile_el={progress_slider_mobile_el}
                 {...toggle_card_dialog_props}
             />
@@ -132,7 +127,6 @@ const ContractCardBody = ({
                 getCardLabels={getCardLabels}
                 is_sold={is_sold}
                 progress_slider={progress_slider_mobile_el}
-                status={status}
             />
         );
     } else {
@@ -146,25 +140,18 @@ const ContractCardBody = ({
                         is_won={Number(profit) > 0}
                     >
                         <Money amount={profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        {!is_sold && (
+                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                        )}
                     </ContractCardItem>
                     <ContractCardItem header={is_sold ? PAYOUT : INDICATIVE_PRICE}>
                         <Money currency={currency} amount={Number(sell_price || indicative)} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        {!is_sold && (
+                            <ArrowIndicator
+                                className='dc-contract-card__indicative--movement'
+                                value={Number(sell_price || indicative)}
+                            />
+                        )}
                     </ContractCardItem>
                     <ContractCardItem header={PURCHASE_PRICE}>
                         <Money amount={buy_price} currency={currency} />

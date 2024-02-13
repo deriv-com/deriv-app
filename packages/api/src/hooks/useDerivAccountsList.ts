@@ -35,6 +35,8 @@ const useDerivAccountsList = () => {
                 loginid: `${account.loginid}`,
                 /** The platform of the account */
                 platform: 'deriv' as const,
+                /** To indicate whether the account is MF or not */
+                is_mf: account.loginid?.startsWith('MF'),
             } as const;
         });
     }, [authorize_data.account_list, authorize_data.loginid, getConfig]);

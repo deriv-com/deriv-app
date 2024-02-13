@@ -511,10 +511,6 @@
         width: 16px;
         height: 16px;
 
-        &-complete,
-        &-complete:after {
-            display: none;
-        }
         &:after {
             content: '';
             width: 16px;

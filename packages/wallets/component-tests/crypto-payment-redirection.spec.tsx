@@ -22,9 +22,13 @@ test.describe('Wallets - Crypto withdrawal', () => {
             page,
             state: {
                 accounts: DEFAULT_WALLET_ACCOUNTS,
-                currentToken: 'a1-x0000000000000000000000000004',
+                currentToken: 'a1-x0000000000000000000000000001',
             },
         });
+
+        await page.goto(`${baseURL}/wallets`);
+
+        await page.click('.wallets-accordion:nth-child(2) .wallets-accordion__dropdown');
     });
 
     test('render withdrawal form with all elements', async ({ baseURL, page }) => {
@@ -210,10 +214,10 @@ test.describe('Wallets - Crypto withdrawal', () => {
         const block3Width = await blockFill3.evaluate(node => node.style.width);
         const block4Width = await blockFill4.evaluate(node => node.style.width);
         //
-        await expect(block1Width).toBe('100%');
-        await expect(block2Width).toBe('100%');
-        await expect(block3Width).toBe('100%');
-        await expect(block4Width).toBe('100%');
+        await expect(block1Width).toBe('0%');
+        await expect(block2Width).toBe('0%');
+        await expect(block3Width).toBe('0%');
+        await expect(block4Width).toBe('0%');
     });
 
     test('validates crypto input against current balance and minimum withdrawal amount', async ({ baseURL, page }) => {

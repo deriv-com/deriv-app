@@ -2,7 +2,7 @@ import { useFetch } from '@deriv/api';
 import { WS } from '@deriv/shared';
 import React from 'react';
 
-const usePaymentAgentTransferVisible = async () => {
+const usePaymentAgentTransferVisible = () => {
     const [is_authorized, setIsAuthorized] = React.useState(false);
     const { data, ...rest } = useFetch('get_settings', { options: { enabled: Boolean(is_authorized) } });
 

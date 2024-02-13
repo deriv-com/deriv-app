@@ -345,6 +345,12 @@ Blockly.JavaScript.procedures_callnoreturn = block => {
         (arg, i) => Blockly.JavaScript.valueToCode(block, `ARG${i}`, Blockly.JavaScript.ORDER_COMMA) || 'null'
     );
 
-    const code = `${functionName}(${args.join(', ')});\n`;
+    let code = `${functionName}(${args.join(', ')});\n`;
+    console.log(code, 'procedures_callnoreturn')
+    code = code.replace(/^\s+\n/, '');
+    code = code.replace(/undefined/g, '');
+
+    code = code.replace(/\n\s+$/, '\n');
+    code = code.replace(/[ \t]+\n/g, '\n');
     return code;
 };

@@ -59,6 +59,12 @@ Blockly.JavaScript.procedures_callreturn = block => {
         (arg, i) => Blockly.JavaScript.valueToCode(block, `ARG${i}`, Blockly.JavaScript.ORDER_COMMA) || 'null'
     );
 
-    const code = `${functionName}(${args.join(', ')})`;
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    let code = `${functionName}(${args.join(', ')})`;
+    console.log(code, 'procedures_callreturn')
+    code = code.replace(/^\s+\n/, '');
+    code = code.replace(/undefined/g, '');
+
+    code = code.replace(/\n\s+$/, '\n');
+    code = code.replace(/[ \t]+\n/g, '\n');
+    return [code, Blockly.JavaScript.Order[2]];
 };

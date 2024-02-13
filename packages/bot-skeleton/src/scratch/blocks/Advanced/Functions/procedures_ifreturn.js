@@ -134,9 +134,14 @@ Blockly.JavaScript.procedures_ifreturn = block => {
         branch = 'return;\n';
     }
 
-    const code = `
+    let code = `
     if (${condition}) {
         ${branch}
     }\n`;
+    code = code.replace(/^\s+\n/, '');
+    code = code.replace(/undefined/g, '');
+    code = code.replace(/\n\s+$/, '\n');
+    code = code.replace(/[ \t]+\n/g, '\n');
+    console.log(code, 'procedures_ifreturn')
     return code;
 };

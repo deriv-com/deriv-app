@@ -232,7 +232,7 @@ class DBot {
      */
     runBot() {
         try {
-            const code = this.generateCode();
+            let code = this.generateCode() + Blockly?.JavaScript?.definitions_?.variables
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
 

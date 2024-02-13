@@ -34,17 +34,17 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
     const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
 
     const [available_routes, setAvailableRoutes] = React.useState(routes);
-    const { is_passkey_supported, is_loading } = useIsPasskeySupported();
+    const { is_passkey_supported, is_passkey_support_checking } = useIsPasskeySupported();
 
-    const should_remove_passkey_route = is_desktop || (is_mobile && !is_passkey_supported);
+    const should_remove_passkeys_route = is_desktop || (is_mobile && !is_passkey_supported);
 
     React.useEffect(() => {
-        if (is_loading) return;
-        if (should_remove_passkey_route) {
+        if (is_passkey_support_checking) return;
+        if (should_remove_passkeys_route) {
             const desktop_routes = removeExactRouteFromRoutes(routes, 'passkeys');
             setAvailableRoutes(desktop_routes as TRoute[]);
         }
-    }, [routes, should_remove_passkey_route, is_loading]);
+    }, [routes, should_remove_passkeys_route, is_passkey_support_checking]);
 
     // subroutes of a route is structured as an array of arrays
     const subroutes = flatten(available_routes.map(i => i.subroutes));

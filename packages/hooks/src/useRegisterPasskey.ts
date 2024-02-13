@@ -16,12 +16,19 @@ const useRegisterPasskey = () => {
             const passkeys_register_options_response = await WS.send({ passkeys_register_options: 1 });
             const public_key = passkeys_register_options_response.passkeys_register_options.publicKey;
             if (public_key) {
-                const authenticator_response = await startRegistration(public_key);
+                let authenticator_response;
+                try {
+                    authenticator_response = await startRegistration(public_key);
+                } catch (e) {
+                    setPasskeyRegistrationError(e as TError);
+                }
+
                 const passkeys_register_response = await WS.send({
                     passkeys_register: 1,
                     publicKeyCredential: authenticator_response,
                 });
-                if (passkeys_register_response.passkeys_register.properties.name) {
+
+                if (passkeys_register_response?.passkeys_register?.properties?.name) {
                     setIsPasskeyRegistered(true);
                     invalidate('passkeys_list');
                 }
@@ -30,9 +37,6 @@ const useRegisterPasskey = () => {
             setPasskeyRegistrationError(e as TError);
         }
     };
-
-    // eslint-disable-next-line no-console
-    console.log('passkey_registration_error', passkey_registration_error);
 
     return {
         createPasskey,

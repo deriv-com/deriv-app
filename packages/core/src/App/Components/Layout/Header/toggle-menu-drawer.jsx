@@ -57,7 +57,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
-    const { is_passkey_supported, is_loading } = useIsPasskeySupported();
+    const { is_passkey_supported, is_passkey_support_checking } = useIsPasskeySupported();
 
     const { pathname: route } = useLocation();
 
@@ -78,7 +78,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     React.useEffect(() => {
         const processRoutes = () => {
-            if (is_loading) return;
+            if (is_passkey_support_checking) return;
             let routes_config = getRoutesConfig({});
 
             if (should_remove_passkeys_route) {
@@ -109,7 +109,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_trading_hub_category,
         is_next_wallet_enabled,
         should_remove_passkeys_route,
-        is_loading,
+        is_passkey_support_checking,
     ]);
 
     const toggleDrawer = React.useCallback(() => {

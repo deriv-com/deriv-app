@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react';
 const usePaymentAgentTransferVisible = () => {
     const { client } = useStore();
     const { is_authorize } = client;
-    const [is_authorized, setIsAuthorized] = useState(false);
+    const [is_websocket_authorized, setIsWebSocketAuthorized] = useState(false);
 
     useEffect(() => {
         const checkAuthorize = async () => {
             try {
-                const authorized = await WS.wait('authorize');
-                if (authorized) setIsAuthorized(is_authorize);
+                const check_websocket_authorized = await WS.wait('authorize');
+                if (check_websocket_authorized) setIsWebSocketAuthorized(is_authorize);
             } catch (error) {
                 console.error('Error while authorizing:', error); // eslint-disable-line
             }
@@ -21,7 +21,7 @@ const usePaymentAgentTransferVisible = () => {
         checkAuthorize();
     }, [is_authorize]);
 
-    const { data, ...rest } = useFetch('get_settings', { options: { enabled: Boolean(is_authorized) } });
+    const { data, ...rest } = useFetch('get_settings', { options: { enabled: Boolean(is_websocket_authorized) } });
     const is_payment_agent_transfer_visible = Boolean(data?.get_settings?.is_authenticated_payment_agent);
 
     return {

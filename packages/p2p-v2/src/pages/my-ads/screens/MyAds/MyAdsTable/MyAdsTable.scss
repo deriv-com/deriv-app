@@ -1,0 +1,27 @@
+.p2p-v2-my-ads-table {
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 1.6rem 0;
+
+        @include mobile {
+            justify-content: flex-end;
+            margin-right: 1.6rem;
+        }
+    }
+    &__list {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        & .p2p-v2-table {
+            &__header {
+                grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.9fr;
+            }
+
+            &__content {
+                height: 100%;
+            }
+        }
+    }
+}

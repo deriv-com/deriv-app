@@ -42,7 +42,6 @@ const TradersHubHeader = observer(() => {
         header_extension,
         is_accounts_switcher_on,
         is_app_disabled,
-        is_desktop,
         is_mobile,
         is_route_modal_on,
         account_switcher_disabled_message,
@@ -105,7 +104,7 @@ const TradersHubHeader = observer(() => {
                         <DerivBrandLogo className='traders-hub-header__logo' />
                     </StaticUrl>
                 </div>
-                {is_desktop && (
+                {!is_mobile && (
                     <React.Fragment>
                         <div className='traders-hub-header__divider' />
                         <TradersHubHomeButton />
@@ -113,7 +112,7 @@ const TradersHubHeader = observer(() => {
                 )}
                 <MenuLinks {...{ is_traders_hub_routes: true }} />
             </div>
-            {is_desktop && (
+            {!is_mobile && (
                 <React.Fragment>
                     <div className='traders-hub-header__menu-right'>
                         <div className='traders-hub-header__divider' />

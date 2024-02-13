@@ -1,4 +1,5 @@
 import React, { isValidElement } from 'react';
+import moment from 'moment';
 
 export const reactNodeToString = function (reactNode: React.ReactNode): string {
     let string = '';
@@ -15,3 +16,7 @@ export const reactNodeToString = function (reactNode: React.ReactNode): string {
     }
     return string;
 };
+
+export default function unixToDateString(date: Date) {
+    return moment(date).format('YYYY-MM-DD');
+}

@@ -1,14 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } from '@/components';
+import { optionsAndMultipliersContent } from '@/constants';
+import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Button } from '@deriv-com/ui';
-import { optionsAndMultipliersContent } from '../../../constants/constants';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
-import useRegulationFlags from '../../../hooks/useRegulationFlags';
-import { TradingAppCardLoader } from '../../Loaders';
-import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
-import { useUIContext } from '../../UIProvider';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -70,10 +68,7 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { uiState } = useUIContext();
-    const { accountType, regulation } = uiState;
-
-    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
 
     if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
 
@@ -101,10 +96,7 @@ const OptionsAndMultipliersContent = () => {
     const { data } = useActiveTradingAccount();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 
@@ -114,13 +106,13 @@ const OptionsAndMultipliersContent = () => {
 
     if (!isRegulationAccessible)
         return (
-            <div className='pt-2000'>
+            <div className='pt-40'>
                 <TradingAppCardLoader />
             </div>
         );
 
     return (
-        <div className='grid w-full grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
+        <div className='grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-4'>
             {filteredContent.map(account => {
                 const { description, icon, isExternal, redirect, smallIcon, title } = account;
 

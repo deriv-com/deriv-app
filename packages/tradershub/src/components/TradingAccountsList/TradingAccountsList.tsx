@@ -13,7 +13,7 @@ const TradingAccountsList = () => {
 
     return (
         <div className='lg:w-[500px] lg:h-[350px] rounded-default'>
-            <div className='flex flex-col items-start self-stretch p-8 gap-200'>
+            <div className='flex flex-col items-start self-stretch gap-4 p-8'>
                 {tradingAccountsList
                     ?.filter(
                         account => !account.is_virtual && (isEU ? account.broker === 'MF' : account.broker === 'CR')

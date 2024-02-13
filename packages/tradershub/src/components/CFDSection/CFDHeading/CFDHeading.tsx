@@ -35,12 +35,12 @@ const CFDHeading = () => {
     return (
         <Fragment>
             {!isMobile && (
-                <div className='flex items-center gap-x-200'>
+                <div className='flex items-center gap-x-4'>
                     <Heading.H4 className='font-sans'>CFDs</Heading.H4>
                     <CompareAccountsButton />
                 </div>
             )}
-            <Text className='leading-100' size='sm'>
+            <Text className='leading-18' size='sm'>
                 Trade with leverage and tight spreads for better returns on trades.
                 <StaticLink size='md' staticUrl='/trade-types/cfds/'>
                     Learn more

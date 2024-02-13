@@ -58,11 +58,11 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
             )}
         >
             <div className='flex-grow'>
-                <div className='flex self-stretch gap-8 flex-center'>
+                <div className='flex items-center self-stretch gap-8'>
                     <Text size='sm'>{title}</Text>
                     {!activeAccount?.is_virtual && (
-                        <div className='flex items-center h-24 gap-4 px-4 rounded-md bg-system-light-secondary-background'>
-                            <Text size='xs' weight='bold'>
+                        <div className='flex items-center h-24 gap-4 px-4 rounded-sm bg-system-light-secondary-background'>
+                            <Text as='p' size='2xs' weight='bold'>
                                 {account.landing_company_short?.toUpperCase()}
                             </Text>
                         </div>

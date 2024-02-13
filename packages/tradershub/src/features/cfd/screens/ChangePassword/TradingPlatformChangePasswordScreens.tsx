@@ -79,13 +79,13 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
 
     if (activeScreen === 'emailVerification')
         return (
-            <div className='w-full mt-1600 md:mt-2000'>
+            <div className='w-full mt-32 md:mt-40'>
                 <SentEmailContent platform={platform} />
             </div>
         );
 
     return (
-        <div className='mt-1600 lg:mt-2000'>
+        <div className='mt-32 lg:mt-40'>
             <ActionScreen
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'

@@ -17,13 +17,13 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
     const renderButtons = useCallback(
         () =>
             isDemo ? (
-                <Button className='rounded-xs ' onClick={() => hide()} size='lg'>
+                <Button className='rounded-xs' onClick={() => hide()} size='lg'>
                     Continue
                 </Button>
             ) : (
                 <ButtonGroup>
                     <Button
-                        className='rounded-xs border-system-light-less-prominent border-100'
+                        className='border-2 rounded-xs border-system-light-less-prominent'
                         onClick={() => hide()}
                         size='lg'
                         variant='outlined'

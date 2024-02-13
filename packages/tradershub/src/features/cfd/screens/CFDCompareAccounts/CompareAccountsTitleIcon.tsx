@@ -70,7 +70,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     return (
         <Fragment>
-            <div className={'flex flex-col gap-[5px] pt-20 items-center'}>
+            <div className={'flex flex-col gap-5 pt-20 items-center'}>
                 <PlatformIcon icon={jurisdictionCardIcon} />
                 <div className='flex items-center gap-8'>
                     <Text size='sm' weight='bold'>
@@ -90,7 +90,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
                     )}
                 </div>
             </div>
-            <hr className='mx-auto w-[213px] border-t-[1px] border-solid border-system-light-less-prominent-text' />
+            <hr className='mx-auto w-[213px] border-t-1 border-solid border-system-light-less-prominent-text' />
         </Fragment>
     );
 };

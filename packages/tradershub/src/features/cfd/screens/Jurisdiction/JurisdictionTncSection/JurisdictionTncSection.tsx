@@ -34,7 +34,7 @@ const JurisdictionTncSection = ({
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='text-center space-y-12 mt-1500 sticky bottom-50 bg-system-light-primary-background px-20 pt-[15px] pb-500 w-screen sm:w-auto sm:bg-inherit sm:static sm:p-0 lg:h-2500'>
+        <div className='text-center space-y-12 mt-30 sticky bottom-0 bg-system-light-primary-background px-20 pt-[15px] pb-10 w-screen sm:w-auto sm:bg-inherit sm:static sm:p-0'>
             {selectedJurisdiction && (
                 <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
             )}

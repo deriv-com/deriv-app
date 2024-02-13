@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv-com/ui';
 import EmailVerification from '../../../assets/images/email-verification.svg';
-import { WalletsActionScreen } from '../../../components/WalletsActionScreen';
+import { ActionScreen } from '../../../components/ActionScreen';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -11,7 +11,7 @@ type TProps = {
 const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
     return (
         <div className='wallets-withdrawal-verification-request'>
-            <WalletsActionScreen
+            <ActionScreen
                 description={
                     <div className='wallets-withdrawal-verification-request__description'>
                         <Text align='center'>

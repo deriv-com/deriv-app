@@ -1,18 +1,13 @@
-import React, { ComponentProps, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
-import { Button, Text } from '@deriv-com/ui';
+import React, { ComponentProps, isValidElement, PropsWithChildren, ReactNode } from 'react';
+import { Text } from '@deriv-com/ui';
 // import { WalletButton, WalletButtonGroup } from '../Base';
-import { WalletButtonGroup } from '../WalletButtonGroup';
-import './WalletsActionScreen.scss';
+import './ActionScreen.scss';
 
 type TProps = {
     description: ReactNode;
     descriptionSize?: ComponentProps<typeof Text>['size'];
     icon?: ReactNode;
-    renderButtons?: () =>
-        | ReactElement<ComponentProps<'div'>>
-        | ReactElement<ComponentProps<typeof Button>>
-        | ReactElement<ComponentProps<typeof WalletButtonGroup>>
-        | null;
+    renderButtons?: () => ReactNode;
     title?: ReactNode;
     titleSize?: ComponentProps<typeof Text>['size'];
 };

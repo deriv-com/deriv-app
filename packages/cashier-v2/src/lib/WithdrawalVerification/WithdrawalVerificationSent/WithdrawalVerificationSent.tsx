@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@deriv-com/ui';
 import EmailSent from '../../../assets/images/email-verification.svg';
 // import { WalletButtonGroup } from '../../../components/WalletButtonGroup';
-import { WalletsActionScreen } from '../../../components/WalletsActionScreen';
+import { ActionScreen } from '../../../components/ActionScreen';
 import './WithdrawalVerificationSent.scss';
 
 type TProps = {
@@ -16,7 +16,7 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
 
     return (
         <div className='wallets-withdrawal-verification-sent'>
-            <WalletsActionScreen
+            <ActionScreen
                 description='Please check your email for the verification link to complete the process.'
                 icon={
                     <div
@@ -46,7 +46,7 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
             />
             <div className='wallets-withdrawal-verification-sent__resend'>
                 {showResend && (
-                    <WalletsActionScreen
+                    <ActionScreen
                         description="Check your spam or junk folder. If it's not there, try resending the email."
                         renderButtons={() => (
                             <Button disabled={!!counter} onClick={sendEmail} size='lg'>

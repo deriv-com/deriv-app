@@ -7,7 +7,7 @@ const usePaymentAgentTransferVisible = async () => {
     const { data, ...rest } = useFetch('get_settings', { options: { enabled: Boolean(is_authorized) } });
 
     React.useEffect(() => {
-        const fetchData = async () => {
+        const checkAuthorize = async () => {
             try {
                 const authorized = await WS.wait('authorize');
                 setIsAuthorized(authorized);
@@ -16,7 +16,7 @@ const usePaymentAgentTransferVisible = async () => {
                 console.error('Error', error);
             }
         };
-        fetchData();
+        checkAuthorize();
     }, []);
 
     const is_payment_agent_transfer_visible = Boolean(data?.get_settings?.is_authenticated_payment_agent);

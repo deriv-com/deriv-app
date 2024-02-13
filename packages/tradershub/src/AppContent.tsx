@@ -1,12 +1,11 @@
 import React from 'react';
-import useRegulationFlags from './hooks/useRegulationFlags';
-import { EUDisclaimerMessage, useUIContext } from './components';
-import { Router } from './routes';
+import { EUDisclaimerMessage } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { Router } from '@/routes';
+import SignupWizard from './flows/RealAccountSIgnup/SignupWizard';
 
 const AppContent = () => {
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     return (
         <div className='h-full-mobile lg:h-full-desktop'>
@@ -15,6 +14,7 @@ const AppContent = () => {
                 <Router />
             </div>
             {isEU && <EUDisclaimerMessage />}
+            <SignupWizard />
         </div>
     );
 };

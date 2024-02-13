@@ -1,14 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } from '@/components';
+import { optionsAndMultipliersContent } from '@/constants';
+import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { optionsAndMultipliersContent } from '../../../constants/constants';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
-import useRegulationFlags from '../../../hooks/useRegulationFlags';
-import { TradingAppCardLoader } from '../../Loaders';
-import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
-import { useUIContext } from '../../UIProvider';
+import { Button } from '@deriv-com/ui';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -70,13 +68,7 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { getUIState } = useUIContext();
-
-    const accountType = getUIState('accountType');
-
-    const regulation = getUIState('regulation');
-
-    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
 
     if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
 
@@ -104,10 +96,7 @@ const OptionsAndMultipliersContent = () => {
     const { data } = useActiveTradingAccount();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 

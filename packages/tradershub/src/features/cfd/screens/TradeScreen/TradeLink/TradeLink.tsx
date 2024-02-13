@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api';
-import { Button, Text } from '@deriv/quill-design';
+import { Button } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
 import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper, PlatformUrls } from '../../../constants';
@@ -73,7 +74,7 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
                 >
                     <span className='flex items-center justify-center gap-400'>
                         {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
-                        <Text bold className='text-system-light-primary-background' size='sm'>
+                        <Text className='text-system-light-primary-background' size='sm' weight='bold'>
                             Web terminal
                         </Text>
                     </span>

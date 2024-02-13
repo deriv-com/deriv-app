@@ -295,6 +295,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             should_show_eu_error: false,
             is_options_blocked: false,
             setIsP2PEnabled: jest.fn(),
+            real_account_signup_form_data: [],
+            real_account_signup_form_step: 0,
+            setRealAccountSignupFormData: jest.fn(),
+            setRealAccountSignupFormStep: jest.fn(),
         },
         common: {
             error: common_store_error,

@@ -274,7 +274,7 @@ const App = () => {
     }, [action_param, code_param]);
 
     if (is_logging_in || general_store.is_loading || !isSubscribed) {
-        return <Loading is_fullscreen />;
+        return <Loading className='p2p__loading' is_fullscreen={false} />;
     }
 
     return (

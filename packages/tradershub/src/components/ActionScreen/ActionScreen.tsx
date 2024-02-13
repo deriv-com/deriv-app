@@ -1,7 +1,9 @@
-import React, { ComponentProps, isValidElement, PropsWithChildren, ReactNode } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import React, { ComponentProps, isValidElement, ReactNode } from 'react';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
-type TProps = {
+type TActionScreenProps = {
+    children?: ReactNode;
     className?: string;
     description: ReactNode;
     descriptionSize?: ComponentProps<typeof Text>['size'];
@@ -16,7 +18,8 @@ type TProps = {
  * As its common and repeated in many places,
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
-const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
+const ActionScreen = ({
+    children,
     className,
     description,
     descriptionSize = 'md',
@@ -24,7 +27,7 @@ const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     renderButtons,
     title,
     titleSize = 'md',
-}) => {
+}: TActionScreenProps) => {
     return (
         <div
             className={qtMerge([
@@ -35,7 +38,7 @@ const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
             {icon}
             <div className='flex flex-col items-center justify-center gap-400'>
                 {title && (
-                    <Text bold size={titleSize}>
+                    <Text size={titleSize} weight='bold'>
                         {title}
                     </Text>
                 )}
@@ -48,6 +51,7 @@ const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                 )}
             </div>
             {renderButtons?.()}
+            {children}
         </div>
     );
 };

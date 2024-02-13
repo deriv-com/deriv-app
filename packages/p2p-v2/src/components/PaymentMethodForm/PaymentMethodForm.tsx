@@ -1,17 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TSelectedPaymentMethod } from 'types';
+import { Dropdown, PaymentMethodField, PaymentMethodsFormFooter, PaymentMethodsHeader } from '@/components';
+import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
+import { TFormState } from '@/reducers/types';
 import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Input } from '@deriv-com/ui/dist/components/Input';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Button, Input, Text } from '@deriv-com/ui';
 import CloseCircle from '../../public/ic-close-circle.svg';
-import { TFormState } from '../../reducers/types';
-import { Dropdown } from '../Dropdown';
-import { PaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
-import { PaymentMethodField } from '../PaymentMethodField';
-import { PaymentMethodsFormFooter } from '../PaymentMethodsFormFooter';
-import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {
@@ -93,6 +88,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     {selectedPaymentMethod ? (
                         // TODO: Remember to translate this
                         <Input
+                            defaultValue={selectedPaymentMethod?.display_name}
                             disabled
                             label='Choose your payment method'
                             rightPlaceholder={
@@ -109,7 +105,6 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                     />
                                 )
                             }
-                            value={selectedPaymentMethod?.display_name}
                         />
                     ) : (
                         <>
@@ -131,29 +126,29 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                 value={selectedPaymentMethod?.display_name ?? ''}
                                 variant='comboBox'
                             />
+                            {/* TODO: Remember to translate these */}
                             <Text color='less-prominent' size='xs'>
-                                {/* TODO: Remember to translate these */}
-                                <span className='p2p-v2-payment-method-form__text'>Don’t see your payment method?</span>
-                                <Button
-                                    className='p2p-v2-payment-method-form__button'
-                                    color='primary'
-                                    onClick={() => {
-                                        const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
-                                        if (paymentMethod) {
-                                            onAdd({
-                                                displayName: paymentMethod?.display_name,
-                                                fields: paymentMethod?.fields,
-                                                method: 'other',
-                                            });
-                                        }
-                                    }}
-                                    size='xs'
-                                    textSize='xs'
-                                    variant='ghost'
-                                >
-                                    Add new.
-                                </Button>
+                                Don’t see your payment method?
                             </Text>
+                            <Button
+                                className='p2p-v2-payment-method-form__button'
+                                color='primary'
+                                onClick={() => {
+                                    const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
+                                    if (paymentMethod) {
+                                        onAdd({
+                                            displayName: paymentMethod?.display_name,
+                                            fields: paymentMethod?.fields,
+                                            method: 'other',
+                                        });
+                                    }
+                                }}
+                                size='xs'
+                                textSize='xs'
+                                variant='ghost'
+                            >
+                                Add new.
+                            </Button>
                         </>
                     )}
                 </div>

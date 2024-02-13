@@ -47,6 +47,13 @@ const AppWithoutTranslation = ({ root_store }) => {
             import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
+        const loadExternalScripts = () => {
+            // Load external scripts once the app is fully loaded
+            setTimeout(() => {
+                initHotjar(root_store.client);
+            }, 5000);
+        };
+
         initializeTranslations();
         if (process.env.RUDDERSTACK_KEY) {
             const config = {
@@ -73,7 +80,12 @@ const AppWithoutTranslation = ({ root_store }) => {
         setSharedCFDText(CFD_TEXT);
         root_store.common.setPlatform();
         loadSmartchartsStyles();
-        initHotjar(root_store.client);
+
+        window.addEventListener('load', loadExternalScripts);
+
+        return () => {
+            window.removeEventListener('load', loadExternalScripts);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

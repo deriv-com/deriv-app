@@ -16,6 +16,7 @@ import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import OrderTimeSelection from './order-time-selection';
 import './edit-ad-form.scss';
 
 const EditAdFormWrapper = ({ children }) => {
@@ -37,6 +38,7 @@ const EditAdForm = () => {
         local_currency,
         max_order_amount_display,
         min_order_amount_display,
+        order_expiry_period,
         payment_method_names,
         payment_method_details,
         rate_display,
@@ -146,6 +148,8 @@ const EditAdForm = () => {
                     max_transaction: max_order_amount_display,
                     min_transaction: min_order_amount_display,
                     offer_amount: amount_display,
+                    // set a max of 1 hour if expiry period is more than 1 hour
+                    order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
                     rate_type: setInitialAdRate(),
                     reached_target_date: p2p_settings.reached_target_date,
                     type,
@@ -382,6 +386,9 @@ const EditAdForm = () => {
                                                         onFocus={() => setFieldTouched('description', true)}
                                                     />
                                                 )}
+                                            </Field>
+                                            <Field name='order_completion_time'>
+                                                {({ field }) => <OrderTimeSelection {...field} />}
                                             </Field>
                                             <div className='edit-ad-form__payment-methods--text'>
                                                 <Text color='prominent'>

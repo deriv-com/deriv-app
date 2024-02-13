@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
+import { Modal } from '@/components';
+import { THooks, TMarketTypes, TPlatforms } from '@/types';
+import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '@cfd/constants';
+import { TradeScreen } from '@cfd/screens';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { Modal } from '../../../../components/Modal';
-import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '../../constants';
-import { TradeScreen } from '../../screens/TradeScreen';
+import { Text } from '@deriv-com/ui';
 
 type TTradeModalProps = {
     account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
@@ -22,8 +22,7 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
         setCfdState('marketType', marketType);
         setCfdState('platform', platform);
         if (platform === CFDPlatforms.MT5) setCfdState('accountId', (account as THooks.MT5AccountsList)?.loginid);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [account, marketType, platform, setCfdState]);
 
     const appOrder = ['ios', 'android', 'huawei'];
 
@@ -58,7 +57,7 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
                             })}
                         </div>
                         {isDesktop && (
-                            <div className='border-75 border-system-light-hover-background rounded-200 flex flex-col justify-center items-center w-[150px] gap-[5px] p-400'>
+                            <div className='border-75 border-solid border-system-light-hover-background rounded-200 flex flex-col justify-center items-center w-[150px] gap-[5px] p-400'>
                                 <QRCode size={80} value={PlatformDetails[platform].link} />
                                 <Text align='center' size='xs'>
                                     Scan the QR code to download {PlatformDetails[platform].title}

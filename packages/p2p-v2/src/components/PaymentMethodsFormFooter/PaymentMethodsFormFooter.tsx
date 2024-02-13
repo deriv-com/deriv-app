@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { TFormState } from '../../reducers/types';
+import { TFormState } from '@/reducers/types';
+import { Button } from '@deriv-com/ui';
 import './PaymentMethodsFormFooter.scss';
 
 type TPaymentMethodsFormFooterProps = {
@@ -29,7 +29,7 @@ const PaymentMethodsFormFooter = ({
     isSubmitting,
     isValid,
 }: TPaymentMethodsFormFooterProps) => (
-    <div className='p2p-v2-payment-method-form__buttons'>
+    <div className='p2p-v2-payment-method-form__buttons' role='payment-methods-form-footer'>
         <Button
             className='p2p-v2-payment-method-form__buttons--cancel'
             onClick={e => {

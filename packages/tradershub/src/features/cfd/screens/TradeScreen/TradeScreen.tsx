@@ -1,13 +1,12 @@
 import React, { Fragment, useMemo } from 'react';
+import ImportantIcon from '@/assets/svgs/ic-important.svg';
+import { useRegulationFlags } from '@/hooks';
+import { THooks, TPlatforms } from '@/types';
+import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { useUIContext } from '../../../../components';
-import useRegulationFlags from '../../../../hooks/useRegulationFlags';
-import ImportantIcon from '../../../../public/images/ic-important.svg';
-import { THooks, TPlatforms } from '../../../../types';
-import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
+import { Text } from '@deriv-com/ui';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
 
@@ -25,9 +24,7 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 
 const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
@@ -39,7 +36,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const ctraderPlatform = PlatformDetails.ctrader.platform;
 
     const marketType = getCFDState('marketType');
-    const platform = getCFDState('platform') ?? mt5Platform;
+    const platform = getCFDState('platform');
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -64,7 +61,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const platformIcon =
         platform === mt5Platform
             ? marketTypeDetails[marketType ?? MarketType.ALL]?.iconWithWidth?.(24)
-            : PlatformDetails[platform as keyof typeof PlatformDetails].iconWithWidth(24);
+            : PlatformDetails[platform as keyof typeof PlatformDetails].icon(24);
 
     return (
         <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>

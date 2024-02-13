@@ -1,9 +1,6 @@
 import React from 'react';
-import { useIsDIELEnabled } from '@deriv/api';
-import { Heading, useBreakpoint } from '@deriv/quill-design';
 import {
     CFDSection,
-    ContentSwitcher,
     DemoRealSwitcher,
     OptionsAndMultipliersSection,
     RegulationSwitcherDesktop,
@@ -11,20 +8,23 @@ import {
     TotalAssets,
     TradersHubContent,
     useUIContext,
-} from '../../components';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
+} from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { useIsDIELEnabled } from '@deriv/api';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Tab, Tabs } from '@deriv-com/ui';
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
     const { data: isDIEL } = useIsDIELEnabled();
-    const { getUIState } = useUIContext();
-    const accountType = getUIState('accountType');
-    const regulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const { accountType } = uiState;
     const isReal = accountType === 'real';
     const isDemo = accountType === 'demo';
-    const { hasActiveDerivAccount } = useRegulationFlags(regulation, accountType);
+    const { hasActiveDerivAccount } = useRegulationFlags();
 
     const isSwitcherVisible = isDIEL && isReal;
+    const isTotalAssetsVisible = hasActiveDerivAccount || isDemo;
 
     if (isMobile)
         return (
@@ -37,20 +37,15 @@ const TradersHubRoute = () => {
                     {isSwitcherVisible && <RegulationSwitcherMobile />}
                 </div>
                 <div />
-                <div className='grid place-content-center pb-1200'>
-                    <TotalAssets />
-                </div>
-                <ContentSwitcher>
-                    <ContentSwitcher.HeaderList list={['Options & Multipliers', 'CFDs']} />
-                    <ContentSwitcher.PanelContainer>
-                        <ContentSwitcher.Panel>
-                            <OptionsAndMultipliersSection />
-                        </ContentSwitcher.Panel>
-                        <ContentSwitcher.Panel>
-                            <CFDSection />
-                        </ContentSwitcher.Panel>
-                    </ContentSwitcher.PanelContainer>
-                </ContentSwitcher>
+                <div className='grid place-content-center pb-1200'>{isTotalAssetsVisible && <TotalAssets />}</div>
+                <Tabs className='w-full rounded-300 p-200'>
+                    <Tab className='rounded-200 py-300 px-400' title='Options & Multipliers'>
+                        <OptionsAndMultipliersSection />
+                    </Tab>
+                    <Tab className='rounded-200 py-300 px-400' title='CFDs'>
+                        <CFDSection />
+                    </Tab>
+                </Tabs>
             </div>
         );
 
@@ -62,7 +57,7 @@ const TradersHubRoute = () => {
                     <DemoRealSwitcher />
                 </div>
                 <div>{isSwitcherVisible && <RegulationSwitcherDesktop />}</div>
-                {(hasActiveDerivAccount || isDemo) && <TotalAssets />}
+                {isTotalAssetsVisible && <TotalAssets />}
             </div>
             <TradersHubContent />
         </div>

@@ -1,12 +1,13 @@
 import React from 'react';
+import { getStaticUrl } from '@/helpers';
+import { THooks } from '@/types';
+import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { Link, Text, useBreakpoint } from '@deriv/quill-design';
-import { getStaticUrl } from '../../../../../helpers/urls';
-import { THooks } from '../../../../../types';
-import { companyNamesAndUrls, Jurisdiction, MarketType } from '../../../constants';
+import { Link, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
-type TProps = {
+type TJurisdictionTncSectionProps = {
     isCheckBoxChecked: boolean;
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
     setIsCheckBoxChecked: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,7 +23,11 @@ type TProps = {
  * @returns
  */
 
-const JurisdictionTncSection = ({ isCheckBoxChecked, selectedJurisdiction, setIsCheckBoxChecked }: TProps) => {
+const JurisdictionTncSection = ({
+    isCheckBoxChecked,
+    selectedJurisdiction,
+    setIsCheckBoxChecked,
+}: TJurisdictionTncSectionProps) => {
     const { isMobile } = useBreakpoint();
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') || MarketType.ALL;

@@ -150,6 +150,8 @@ export default class ClientStore extends BaseStore {
     external_url_params = {};
     is_already_attempted = false;
     is_p2p_enabled = false;
+    real_account_signup_form_data = [];
+    real_account_signup_form_step = 0;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -217,6 +219,8 @@ export default class ClientStore extends BaseStore {
             prev_account_type: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
+            real_account_signup_form_data: observable,
+            real_account_signup_form_step: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -391,6 +395,8 @@ export default class ClientStore extends BaseStore {
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
             setIsP2PEnabled: action.bound,
+            setRealAccountSignupFormData: action.bound,
+            setRealAccountSignupFormStep: action.bound,
         });
 
         reaction(
@@ -2632,5 +2638,31 @@ export default class ClientStore extends BaseStore {
 
     setIsP2PEnabled(is_p2p_enabled) {
         this.is_p2p_enabled = is_p2p_enabled;
+    }
+
+    setRealAccountSignupFormData(data) {
+        this.real_account_signup_form_data = data;
+    }
+
+    setRealAccountSignupFormStep(step) {
+        this.real_account_signup_form_step = step;
+    }
+
+    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
+     *
+     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
+     *
+     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
+     * */
+    get is_p2p_enabled() {
+        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
+
+        const is_p2p_supported_currency = Boolean(
+            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
+        );
+
+        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
+
+        return is_p2p_visible;
     }
 }

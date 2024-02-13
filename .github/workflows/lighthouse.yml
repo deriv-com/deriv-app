@@ -18,14 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           fetch-depth: 1
           ref: master
 
       - name: Add Lighthouse progress comment
         id: generate_lighthouse_comment
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{github.event.issue.number}}
@@ -40,7 +40,7 @@ jobs:
           preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
 
       - name: Generate Lighthouse report
-        uses: treosh/lighthouse-ci-action@v9
+        uses: treosh/lighthouse-ci-action@03becbfc543944dd6e7534f7ff768abb8a296826
         id: lighthouse_report
         with:
           temporaryPublicStorage: true
@@ -52,7 +52,7 @@ jobs:
 
       - name: Retrieve Lighthouse score
         id: lighthouse_score
-        uses: actions/github-script@v3
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -78,7 +78,7 @@ jobs:
              core.setOutput("comment", comment);
 
       - name: Post Lighthouse report
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: Lighthouse report
@@ -86,7 +86,7 @@ jobs:
           message: ${{steps.lighthouse_score.outputs.comment}}
 
       - name: Clear Lighthouse progress comment
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{github.event.issue.number}}

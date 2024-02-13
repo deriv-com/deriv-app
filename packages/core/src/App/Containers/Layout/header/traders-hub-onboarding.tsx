@@ -28,7 +28,7 @@ const TradersHubOnboarding = observer(() => {
                 <Popover
                     classNameBubble='account-settings-toggle__tooltip'
                     alignment='bottom'
-                    message={!is_mobile && <Localize i18n_default_text='View onboarding' />}
+                    message={!is_mobile && <Localize i18n_default_text='View tutorial' />}
                     should_disable_pointer_events
                     zIndex='9999'
                 >

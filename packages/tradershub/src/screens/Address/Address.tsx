@@ -64,7 +64,7 @@ const Address = () => {
                                     statement, or government-issued letter with your name and this address.
                                 </Text>
                             </div>
-                            <div className='flex flex-col items-center self-stretch gap-2000 mt-1500'>
+                            <div className='flex flex-col items-center self-stretch gap-800 mt-1500'>
                                 <Input
                                     className='text-body-sm'
                                     error={Boolean(errors.firstLineAddress && touched.firstLineAddress)}

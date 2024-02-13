@@ -114,6 +114,9 @@ const CurrencySelector = observer(
         };
 
         const handleValidate = (values: TCurrencySelectorFormProps) => {
+            const current_step = (getCurrentStep?.() || 1) - 1;
+            onSave(current_step, values);
+
             const { errors } = splitValidationResultTypes(validate(values));
             return errors;
         };

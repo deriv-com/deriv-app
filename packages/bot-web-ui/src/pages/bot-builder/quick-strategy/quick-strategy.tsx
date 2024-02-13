@@ -191,10 +191,9 @@ const QuickStrategy = observer(() => {
             active_tab_ref.current?.querySelector('.active')?.textContent?.toLowerCase() === 'learn more'
                 ? 'learn more'
                 : 'trade parameters';
-        const strategy_type = STRATEGIES[selected_strategy]?.rs_strategy_type;
         rudderStackSendQsCloseEvent({
             strategy_switcher_mode: active_tab,
-            strategy_type,
+            selected_strategy,
             form_values: form_data as TFormValues,
         });
     };

@@ -189,4 +189,13 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('Indicative high spot')).toBeInTheDocument();
         expect(screen.getByText('Indicative low spot')).toBeInTheDocument();
     });
+
+    it('should render another text for both high spot and low spot High Low if the contract was sold', () => {
+        mock_default_props.contract_info.contract_type = CONTRACT_TYPES.LB_HIGH_LOW;
+        mock_default_props.contract_info.is_sold = 1;
+        render(<ContractDetails {...mock_default_props} />);
+
+        expect(screen.getByText('High spot')).toBeInTheDocument();
+        expect(screen.getByText('Low spot')).toBeInTheDocument();
+    });
 });

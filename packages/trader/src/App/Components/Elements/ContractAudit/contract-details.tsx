@@ -60,6 +60,7 @@ const ContractDetails = ({
         entry_tick_time,
         exit_tick_time,
         high_barrier,
+        is_sold,
         low_barrier,
         profit,
         selected_tick,
@@ -100,16 +101,20 @@ const ContractDetails = ({
         ''
     );
 
-    const createLookBacksMarker = (abbreviation?: string) => ({
-        label: abbreviation === INDICATIVE_LOW ? localize('Indicative low spot') : localize('Indicative high spot'),
-        icon: (
-            <div className='lookbacks-marker__wrapper'>
-                <Text color='colored-background' size='xxxs' className='lookbacks-marker__asset'>
-                    {abbreviation}
-                </Text>
-            </div>
-        ),
-    });
+    const createLookBacksMarker = (abbreviation?: string) => {
+        const low_spot_text = is_sold ? localize('Low spot') : localize('Indicative low spot');
+        const high_spot_text = is_sold ? localize('High spot') : localize('Indicative high spot');
+        return {
+            label: abbreviation === INDICATIVE_LOW ? low_spot_text : high_spot_text,
+            icon: (
+                <div className='lookbacks-marker__wrapper'>
+                    <Text color='colored-background' size='xxxs' className='lookbacks-marker__asset'>
+                        {abbreviation}
+                    </Text>
+                </div>
+            ),
+        };
+    };
 
     const lookbacks_marker = createLookBacksMarker(
         contract_type === CONTRACT_TYPES.LB_PUT ? INDICATIVE_HIGH : INDICATIVE_LOW

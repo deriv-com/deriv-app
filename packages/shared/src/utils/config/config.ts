@@ -73,13 +73,13 @@ export const getAppId = () => {
         // eslint-disable-next-line no-console
         console.log('is_statging');
     } else if (/localhost/i.test(window.location.hostname)) {
-        app_id = 36300;
+        app_id = isBot() ? 1013 : 1014;
         //added for testing purpose
         // eslint-disable-next-line no-console
         console.log('is_local');
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = isBot() ? 1020 : 1022;
+        app_id = isBot() ? 1011 : 1012;
         //added for testing purpose
         // eslint-disable-next-line no-console
         console.log('is_test_link');

@@ -1,11 +1,23 @@
 import { useFetch } from '@deriv/api';
-import { useStore } from '@deriv/stores';
+import { WS } from '@deriv/shared';
+import React from 'react';
 
-const usePaymentAgentTransferVisible = () => {
-    const { client } = useStore();
-    const { is_authorize } = client;
+const usePaymentAgentTransferVisible = async () => {
+    const [is_authorized, setIsAuthorized] = React.useState(false);
+    const { data, ...rest } = useFetch('get_settings', { options: { enabled: Boolean(is_authorized) } });
 
-    const { data, ...rest } = useFetch('get_settings', { options: { enabled: is_authorize } });
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const authorized = await WS.wait('authorize');
+                setIsAuthorized(authorized);
+            } catch (error) {
+                /* eslint-disable no-console */
+                console.error('Error', error);
+            }
+        };
+        fetchData();
+    }, []);
 
     const is_payment_agent_transfer_visible = Boolean(data?.get_settings?.is_authenticated_payment_agent);
 

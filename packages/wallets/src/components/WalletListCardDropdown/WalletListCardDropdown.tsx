@@ -21,7 +21,7 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
         (wallet: THooks.WalletAccountsList) => {
             return t(`${wallet?.currency} ${wallet?.wallet_currency_type === 'Demo' ? 'Demo ' : ''}Wallet`);
         },
-        [t, wallets]
+        [t]
     );
 
     useEffect(() => {

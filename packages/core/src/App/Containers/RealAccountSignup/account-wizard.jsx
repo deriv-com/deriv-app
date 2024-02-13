@@ -11,10 +11,9 @@ import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
-import { Analytics } from '@deriv-com/analytics';
-
 import 'Sass/details-form.scss';
-import 'Sass/account-wizard.scss';
+
+import { Analytics } from '@deriv-com/analytics';
 
 const STEP_IDENTIFIERS = ['account_currency', 'personal_details', 'address_details', 'terms_of_use'];
 

@@ -27,7 +27,7 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
             const selectedTextWidth = generateTitleText(selectedWallet).length;
             setDropdownWidth(`${selectedTextWidth * 10 - 20}px`);
         }
-    }, [wallets, loginid]);
+    }, [generateTitleText, wallets, loginid]);
 
     return (
         <div className='wallets-list-card-dropdown'>

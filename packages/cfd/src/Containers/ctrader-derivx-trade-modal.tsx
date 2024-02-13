@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Icon, Money, Text } from '@deriv/components';
+import { Icon, Money, Text, ExpansionPanel } from '@deriv/components';
 import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
 import { TCFDDashboardContainer, TCFDsPlatformType, TTradingPlatformAccounts } from 'Components/props.types';
 import { localize, Localize } from '@deriv/translations';
@@ -65,7 +65,7 @@ const PlatformIconsAndDescriptions = (
     );
 };
 
-const TradeModal = ({
+const CTraderDerivXTradeModal = ({
     mt5_trade_account,
     is_eu_user,
     onPasswordManager,
@@ -76,19 +76,31 @@ const TradeModal = ({
     platform,
     is_mobile,
 }: TTradeModalProps) => {
-    const CTraderDescription = () => {
-        const platform_name = 'cTrader';
-        return (
-            <div className='cfd-trade-modal__login-specs-item'>
-                <Text className='cfd-trade-modal--paragraph'>
-                    <Localize
-                        i18n_default_text='Use your Deriv account email and password to login into the {{ platform }} platform.'
-                        values={{ platform: platform_name }}
-                    />
+    const message = {
+        header: (
+            <Text as='h2' weight='bold' className='cfd-trade-modal__expansion-panel--header'>
+                {localize('See important notes')}
+            </Text>
+        ),
+        content: (
+            <React.Fragment>
+                <Text size='xxs' line_height='xxl' className='cfd-trade-modal__expansion-panel--content'>
+                    {localize('Use your Deriv account email and password to log in to cTrader.')}
                 </Text>
-            </div>
-        );
+                <div className='cfd-trade-modal__expansion-panel--divider' />
+                <Text size='xxs' line_height='xxl' className='cfd-trade-modal__expansion-panel--content'>
+                    {localize(
+                        'Manage up to 5 Deriv cTrader accounts (up to 4 strategy accounts and 1 non-strategy account for payouts and commissions).'
+                    )}
+                </Text>
+                <div className='cfd-trade-modal__expansion-panel--divider' />
+                <Text size='xxs' line_height='xxl' className='cfd-trade-modal__expansion-panel--content'>
+                    {localize('Keep 1 non-strategy account open to manage deposits, withdrawals, and commissions.')}
+                </Text>
+            </React.Fragment>
+        ),
     };
+
     const downloadCenterDescription = () => {
         switch (platform) {
             case 'dxtrade':
@@ -170,7 +182,6 @@ const TradeModal = ({
                 )}
             </div>
             <div className='cfd-trade-modal__login-specs'>
-                {platform !== CFD_PLATFORMS.DXTRADE && <CTraderDescription />}
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <React.Fragment>
                         <div className='cfd-trade-modal__login-specs-item'>
@@ -200,6 +211,27 @@ const TradeModal = ({
                                     }}
                                 />
                             </div>
+                        </div>
+                    </React.Fragment>
+                )}
+
+                {platform === CFD_PLATFORMS.CTRADER && (
+                    <React.Fragment>
+                        <div className='cfd-trade-modal-get-more-accounts'>
+                            <div>
+                                <Icon
+                                    icon={'IcAppstoreGetMoreAccounts'}
+                                    size={24}
+                                    className='cfd-trade-modal-get-more-accounts__icon'
+                                />
+                            </div>
+                            <div className='cfd-trade-modal-get-more-accounts__details'>
+                                <Text size='xxs'>{localize('Get another cTrader account')}</Text>
+                            </div>
+                        </div>
+
+                        <div className='cfd-trade-modal__expansion-panel'>
+                            <ExpansionPanel message={message} />
                         </div>
                     </React.Fragment>
                 )}
@@ -308,4 +340,4 @@ const TradeModal = ({
     );
 };
 
-export default TradeModal;
+export default CTraderDerivXTradeModal;

@@ -417,6 +417,45 @@
         flex-direction: column;
         align-items: flex-end;
     }
+
+    &__expansion-panel {
+        background-color: var(--general-section-5);
+        padding: 1.6rem 2.4rem;
+
+        &--content {
+            padding: 0.8rem 0;
+        }
+
+        &--divider {
+            width: 100%;
+            border-bottom: 2px solid var(--general-hover);
+        }
+    }
+
+    &-get-more-accounts {
+        cursor: pointer;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        border: 2px dashed var(--general-hover);
+        padding: 1rem 1.8rem;
+        margin: 1.6rem 0;
+
+        &__icon {
+            margin-right: 1.5rem;
+        }
+
+        &__details {
+            line-height: 0.9;
+            &--title {
+                color: var(--text-general);
+                font-size: 1.4rem;
+                font-weight: 700;
+                padding-bottom: 0.5rem;
+            }
+        }
+    }
+
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-less-prominent);

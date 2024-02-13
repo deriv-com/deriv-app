@@ -13,13 +13,13 @@ import { useStores } from 'Stores/index';
 import { ContentFlag } from '@deriv/shared';
 import { SpanButton } from '@deriv/components';
 import { useTradersHubTracking } from 'Hooks/index';
+import './tour-guide.scss';
 
 const TourGuide = () => {
     const { traders_hub, ui, client } = useStores();
     const { is_tour_open, toggleIsTourOpen, content_flag, selectAccountType, setIsFirstTimeVisit } = traders_hub;
     const { is_dark_mode_on, should_trigger_tour_guide, setShouldTriggerTourGuide } = ui;
     const { prev_account_type } = client;
-
     const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
     const tour_step_locale = getTourStepLocale();
     const high_risk_tour_step_locale = getTourStepLocale();
@@ -27,7 +27,7 @@ const TourGuide = () => {
 
     tour_step_locale.last = (
         <div
-            style={{ padding: '0.9rem' }}
+            className='tour-guide__last'
             onClick={() => {
                 trackLastStep();
                 toggleIsTourOpen(false);
@@ -35,6 +35,7 @@ const TourGuide = () => {
                 if (should_trigger_tour_guide) {
                     setShouldTriggerTourGuide(false);
                 }
+                setJoyrideIndex(0);
             }}
         >
             <Localize i18n_default_text='OK' />
@@ -43,13 +44,14 @@ const TourGuide = () => {
 
     high_risk_tour_step_locale.last = (
         <div
-            style={{ padding: '0.9rem' }}
+            className='tour-guide__last'
             onClick={() => {
                 trackLastStep();
                 toggleIsTourOpen(false);
                 if (should_trigger_tour_guide) {
                     setShouldTriggerTourGuide(false);
                 }
+                setJoyrideIndex(0);
             }}
         >
             <Localize i18n_default_text='OK' />
@@ -58,9 +60,10 @@ const TourGuide = () => {
 
     tour_step_locale.next = (
         <div
-            style={{ padding: '0.9rem' }}
+            className='tour-guide__next'
             onClick={() => {
                 if (joyride_index === 0) trackStepForward(7);
+                setJoyrideIndex(prev => prev + 1);
             }}
         >
             <Localize i18n_default_text='Next' />
@@ -69,19 +72,34 @@ const TourGuide = () => {
 
     high_risk_tour_step_locale.next = (
         <div
-            style={{ padding: '0.9rem' }}
+            className='tour-guide__next'
             onClick={() => {
                 if (joyride_index === 0) trackStepForward(7);
+                setJoyrideIndex(prev => prev + 1);
             }}
         >
             <Localize i18n_default_text='Next' />
         </div>
     );
 
+    tour_step_locale.back = (
+        <SpanButton
+            has_effect
+            secondary
+            medium
+            className='tour-guide__last'
+            onClick={() => {
+                setJoyrideIndex(prev => prev - 1);
+            }}
+        >
+            <Localize i18n_default_text='Back' />
+        </SpanButton>
+    );
+
     if (tour_step_config.length === joyride_index + 1) {
         tour_step_locale.back = (
             <SpanButton
-                style={{ padding: '0.9rem' }}
+                className='tour-guide__back'
                 has_effect
                 text={localize('Repeat tour')}
                 secondary
@@ -90,6 +108,7 @@ const TourGuide = () => {
                     trackOnboardingRestart();
                     setIsFirstTimeVisit(false);
                     toggleIsTourOpen(true);
+                    setJoyrideIndex(0);
                 }}
             />
         );
@@ -97,7 +116,7 @@ const TourGuide = () => {
 
     high_risk_tour_step_locale.back = (
         <SpanButton
-            style={{ padding: '0.9rem' }}
+            className='tour-guide__back'
             has_effect
             text={localize('Repeat tour')}
             secondary
@@ -106,12 +125,11 @@ const TourGuide = () => {
                 trackOnboardingRestart();
                 setIsFirstTimeVisit(false);
                 toggleIsTourOpen(true);
+                setJoyrideIndex(0);
             }}
         />
     );
-
     const low_risk = content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
-
     if (!is_tour_open && !should_trigger_tour_guide) return null;
     return (
         <Joyride
@@ -126,17 +144,8 @@ const TourGuide = () => {
             floaterProps={{
                 disableAnimation: true,
             }}
-            callback={data => {
-                setJoyrideIndex(data.index);
-                if (data.action === 'prev' && data.index === tour_step_config_high_risk.length) {
-                    toggleIsTourOpen(false);
-                    setTimeout(() => {
-                        toggleIsTourOpen(true);
-                    }, 0);
-                }
-            }}
+            stepIndex={joyride_index}
         />
     );
 };
-
 export default observer(TourGuide);

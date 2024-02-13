@@ -11,11 +11,6 @@ import Journal from '../journal';
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    DataList: jest.fn(() => <div>DataList</div>),
-}));
-
 jest.mock('../journal-components/journal-loader.tsx', () => jest.fn(() => 'JournalLoader'));
 
 window.Blockly = {
@@ -30,6 +25,18 @@ describe('Journal', () => {
     const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
     beforeAll(() => {
+        Object.defineProperties(window.HTMLElement.prototype, {
+            offsetHeight: {
+                get() {
+                    return 100;
+                },
+            },
+            offsetWidth: {
+                get() {
+                    return 100;
+                },
+            },
+        });
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
@@ -65,17 +72,17 @@ describe('Journal', () => {
         });
     });
 
-    test('should renders Journal component with DataList component when filtered messages are exist', () => {
+    test('should renders Journal component when filtered messages are exist', () => {
         mock_store.common.server_time = toMoment();
         mock_DBot_store?.journal.pushMessage('welcome_back', 'success', 'journal__text', { current_currency: 'USD' });
 
         render(<Journal />, { wrapper });
 
         const journal = screen.getByTestId('dt_mock_journal');
-        const data_list = screen.getByText('DataList');
+        const data_list = screen.getByTestId('dt_data_list');
 
-        expect(data_list).toBeInTheDocument();
         expect(journal).toBeInTheDocument();
+        expect(data_list).toBeInTheDocument();
     });
 
     test('should renders Journal component when it has checked filters, unfiltered messages are empty and the stop button is visible', () => {

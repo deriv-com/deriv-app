@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
-import WalletListCardDropdown from '../WalletListCardDropdown';
 import { useWalletAccountsList } from '@deriv/api';
+import { fireEvent, render, screen } from '@testing-library/react';
+import WalletListCardDropdown from '../WalletListCardDropdown';
 
 jest.mock('@deriv/api', () => ({
     useAuthorize: jest.fn(() => ({

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api';
 import { AccountsList } from '../AccountsList';
 import { WalletsCardLoader } from '../SkeletonLoader';
@@ -7,17 +7,9 @@ import { WalletsCard } from '../WalletsCard';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
-    const { data: activeWallet, refetch: refetchActiveWallet } = useActiveWalletAccount();
-    const { isLoading: isAuthorizeLoading } = useAuthorize();
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { isLoading: isAuthorizeLoading, switchAccount } = useAuthorize();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
-
-    const [selectedAccount, setSelectedAccount] = useState<string>('USD');
-
-    useEffect(() => {
-        if (selectedAccount) {
-            refetchActiveWallet();
-        }
-    }, [selectedAccount, refetchActiveWallet]);
 
     return (
         <div className='wallets-desktop-wallets-list'>
@@ -33,7 +25,7 @@ const DesktopWalletsList: React.FC = () => {
                             isActive={activeWallet?.is_active}
                             isDemo={activeWallet.is_virtual}
                             loginid={activeWallet?.loginid}
-                            onAccountSelect={loginid => setSelectedAccount(loginid)}
+                            onAccountSelect={loginid => switchAccount(loginid)}
                         />
                     )}
                 >

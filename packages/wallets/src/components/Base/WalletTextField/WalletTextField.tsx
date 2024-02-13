@@ -7,8 +7,8 @@ import './WalletTextField.scss';
 export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
     disabled?: boolean;
-    dropdownWidth?: string;
     errorMessage?: FormikErrors<unknown> | FormikErrors<unknown>[] | string[] | string;
+    inputWidth?: string;
     isInvalid?: boolean;
     label?: string;
     renderLeftIcon?: () => React.ReactNode;
@@ -23,8 +23,8 @@ const WalletTextField = forwardRef(
         {
             defaultValue = '',
             disabled,
-            dropdownWidth,
             errorMessage,
+            inputWidth,
             isInvalid,
             label,
             maxLength,
@@ -81,7 +81,7 @@ const WalletTextField = forwardRef(
                         onChange={handleChange}
                         placeholder={label}
                         ref={ref}
-                        style={{ width: dropdownWidth }}
+                        style={{ width: inputWidth }}
                         value={value}
                         {...rest}
                     />

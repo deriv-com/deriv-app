@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { useWalletAccountsList } from '@deriv/api';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
-import { useAuthorize, useWalletAccountsList } from '@deriv/api';
 import { WalletCardIcon } from '../WalletCardIcon';
 import './WalletListCardDropdown.scss';
 
@@ -12,9 +12,8 @@ type TProps = {
 };
 
 const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) => {
-    const { switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
-    const [dropdownWidth, setDropdownWidth] = useState('auto');
+    const [inputWidth, setInputWidth] = useState('auto');
     const { t } = useTranslation();
 
     const generateTitleText = useCallback(
@@ -28,7 +27,7 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
         const selectedWallet = wallets?.find(wallet => wallet.loginid === loginid);
         if (selectedWallet) {
             const selectedTextWidth = generateTitleText(selectedWallet).length;
-            setDropdownWidth(`${selectedTextWidth * 10 - 20}px`);
+            setInputWidth(`${selectedTextWidth * 10 - 20}px`);
         }
     }, [generateTitleText, wallets, loginid]);
 
@@ -36,7 +35,7 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
         <div className='wallets-list-card-dropdown'>
             {wallets && (
                 <WalletDropdown
-                    dropdownWidth={dropdownWidth}
+                    inputWidth={inputWidth}
                     list={wallets?.map(wallet => ({
                         listItem: (
                             <div className='wallets-list-card-dropdown__item'>
@@ -70,7 +69,6 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
                     }
                     name='wallets-list-card-dropdown'
                     onSelect={selectedItem => {
-                        switchAccount(selectedItem);
                         onAccountSelect(selectedItem);
                     }}
                     showListHeader

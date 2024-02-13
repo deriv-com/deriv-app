@@ -10,9 +10,9 @@ import './WalletDropdown.scss';
 
 type TProps = {
     disabled?: boolean;
-    dropdownWidth?: string;
     errorMessage?: WalletTextFieldProps['errorMessage'];
     icon?: React.ReactNode;
+    inputWidth?: string;
     isRequired?: boolean;
     label?: WalletTextFieldProps['label'];
     list: {
@@ -34,9 +34,9 @@ type TProps = {
 
 const WalletDropdown: React.FC<TProps> = ({
     disabled,
-    dropdownWidth,
     errorMessage,
     icon = false,
+    inputWidth,
     isRequired = false,
     label,
     list,
@@ -116,8 +116,8 @@ const WalletDropdown: React.FC<TProps> = ({
             >
                 <WalletTextField
                     disabled={disabled}
-                    dropdownWidth={dropdownWidth}
                     errorMessage={hasSelected && !value && errorMessage}
+                    inputWidth={inputWidth}
                     isInvalid={hasSelected && !value && isRequired}
                     label={label}
                     name={name}

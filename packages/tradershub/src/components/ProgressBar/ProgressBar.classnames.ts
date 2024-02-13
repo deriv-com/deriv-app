@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 const progressBarBaseStyles =
-    'z-10 box-border flex h-800 w-800 items-center rounded-pill outline outline-2 transition-all delay-400 duration-400 ease-out ';
+    'z-10 box-border flex h-16 w-16 items-center rounded-pill outline outline-2 transition-all delay-8 duration-8 ease-out ';
 
 export const stepperVariants = cva(progressBarBaseStyles, {
     compoundVariants: [
@@ -29,7 +29,7 @@ export const stepperVariants = cva(progressBarBaseStyles, {
 
 export const desktopStyle = {
     connector:
-        'lg:h-2000 lg:w-100 lg:bg-[length:100%_200%] lg:bg-bottom lg:bg-gradient-to-b lg:aria-[current=true]:bg-top',
+        'lg:h-40 lg:w-100 lg:bg-[length:100%_200%] lg:bg-bottom lg:bg-gradient-to-b lg:aria-[current=true]:bg-top',
     stepper: 'lg:flex lg:w-fit lg:items-end lg:gap-gap-lg',
 };
 

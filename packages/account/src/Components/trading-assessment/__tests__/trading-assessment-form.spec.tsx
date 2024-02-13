@@ -5,6 +5,7 @@ import TradingAssessmentForm from '../trading-assessment-form';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('TradingAssessmentForm', () => {
+    const mockOnSave = jest.fn();
     const mockOnSubmit = jest.fn();
     const displayPreviousPage = jest.fn();
     const mockSetSubSectionIndex = jest.fn();
@@ -23,6 +24,7 @@ describe('TradingAssessmentForm', () => {
             trading_experience_financial_instruments: '',
             trading_frequency_financial_instruments: '',
         },
+        onSave: mockOnSave,
         onSubmit: mockOnSubmit,
         onCancel: displayPreviousPage,
         should_move_to_next: false,

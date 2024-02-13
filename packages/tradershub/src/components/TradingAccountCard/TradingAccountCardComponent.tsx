@@ -9,10 +9,10 @@ type TTradingAccountCardContent = {
 
 export const TradingAccountCardContent = ({ children, title }: TTradingAccountCardContent) => (
     <div className='grow'>
-        <Text as='p' className='leading-200' size='sm' weight='bold'>
+        <Text as='p' className='leading-22' size='sm' weight='bold'>
             {title}
         </Text>
-        <Text className='w-5/6 leading-100 lg:w-full' size='xs'>
+        <Text className='w-5/6 leading-18 lg:w-full' size='xs'>
             {children}
         </Text>
     </div>

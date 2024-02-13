@@ -48,14 +48,14 @@ export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, on
         };
     }, [isOnfidoEnabled]);
 
-    const showMissingPersonalDetails = ['MissingPersonalDetails', 'InvalidPostalCode'].includes(
+    const hasPersonalDetailsValidationError = ['MissingPersonalDetails', 'InvalidPostalCode'].includes(
         serviceTokenError?.error.code ?? ''
     );
     const showErrorMessage = onfidoInitializationError?.message || serviceTokenError?.error?.message;
 
     if (isServiceTokenLoading) {
         return <Loader />;
-    } else if (showMissingPersonalDetails) {
+    } else if (hasPersonalDetailsValidationError) {
         const invalidPostalCode = serviceTokenError?.error.code === 'InvalidPostalCode';
         const missingDetailTitle = invalidPostalCode
             ? 'Your postal code is invalid'

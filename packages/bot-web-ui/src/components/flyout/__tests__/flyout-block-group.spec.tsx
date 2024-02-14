@@ -41,16 +41,8 @@ window.Blockly = {
         domToBlock: mockDomToBlock,
     },
     derivWorkspace: {
-        options: {},
-        getGesture: jest.fn(),
-        getVariableMap: jest.fn(),
         addBlockNode: mockAddBlockNode,
     },
-    VerticalFlyout: jest.fn(() => ({
-        workspace_: {
-            createPotentialVariableMap: jest.fn(),
-        },
-    })),
     bindEventWithChecks_: jest.fn(),
     bindEvent_: jest.fn(),
     svgResize: jest.fn(),

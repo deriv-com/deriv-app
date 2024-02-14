@@ -45,9 +45,6 @@ const mock_help_content_config = {
             type: 'block',
         },
         {
-            type: 'image',
-        },
-        {
             type: 'video',
             url: '/media/set_variable.mp4',
         },
@@ -57,14 +54,19 @@ const mock_help_content_config = {
             type: 'text',
         },
         {
-            type: 'block',
-        },
-        {
             type: 'example',
-            example_id: 'trade_again',
+            example_id: 'test_example_id',
         },
     ],
+    sample: [{}],
 };
+
+const mock_example = [
+    {
+        id: 'test_example_id',
+        childNodes: [{}],
+    },
+];
 
 jest.mock('../../../utils/help-content/help-content.config', () => ({
     ...jest.requireActual('../../../utils/help-content/help-content.config'),
@@ -184,9 +186,30 @@ describe('<HelpBase />', () => {
         if (mock_DBot_store) {
             mock_DBot_store.flyout_help.help_string = mock_help_string;
             mock_DBot_store.flyout_help.block_type = 'trade_again';
+            mock_DBot_store.flyout_help.examples = mock_example;
         }
 
         render(<HelpBase />, { wrapper });
-        expect(mock_DBot_store?.flyout_help.block_type).toBe('trade_again');
+        expect(screen.getByTestId('flyout-block-workspace')).toBeInTheDocument();
+    });
+
+    it('should render null if not example type content', () => {
+        if (mock_DBot_store) {
+            mock_DBot_store.flyout_help.help_string = mock_help_string;
+            mock_DBot_store.flyout_help.block_type = 'trade_again';
+            mock_DBot_store.flyout_help.examples = [];
+        }
+
+        render(<HelpBase />, { wrapper });
+        expect(screen.queryByTestId('flyout-block-workspace')).not.toBeInTheDocument();
+    });
+
+    it('should render null if no type is available ', () => {
+        if (mock_DBot_store) {
+            mock_DBot_store.flyout_help.block_type = 'sample';
+        }
+
+        render(<HelpBase />, { wrapper });
+        expect(screen.queryByTestId('flyout-block-workspace')).not.toBeInTheDocument();
     });
 });

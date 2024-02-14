@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { localize } from '@deriv/translations';
-import { useHasActiveRealAccount } from '@deriv/hooks';
+import { useGrowthbookFeatureFlag, useHasActiveRealAccount } from '@deriv/hooks';
 import { isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
@@ -9,7 +9,6 @@ import { getTradingHubContents } from 'Constants/trading-hub-content';
 import EmptyOnboarding from './empty-onboarding';
 import { useStore, observer } from '@deriv/stores';
 import { useTradersHubTracking } from 'Hooks/index';
-import { Analytics } from '@deriv-com/analytics';
 
 type TOnboardingProps = {
     contents: Record<
@@ -47,6 +46,12 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
 
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
         useTradersHubTracking();
+
+    // Growthbook ab/test experiment with onboarding flow
+    const growthbook_experiment_skip_onboarding_flow = useGrowthbookFeatureFlag({
+        featureFlag: 'skip-onboarding-flow',
+        defaultValue: false,
+    });
 
     const prevStep = () => {
         if (step > 1) {
@@ -130,7 +135,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         return <EmptyOnboarding />;
     }
 
-    if (is_logged_in && is_from_signup_account && is_eu_user) {
+    if ((is_logged_in && is_from_signup_account && is_eu_user) || growthbook_experiment_skip_onboarding_flow) {
         history.push(routes.traders_hub);
     }
 

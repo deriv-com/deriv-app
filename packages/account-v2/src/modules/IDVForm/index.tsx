@@ -28,7 +28,8 @@ type TDropDownList = {
 };
 
 export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
-    const { setFieldValue, values }: FormikProps<TIDVFormValues> = useFormikContext();
+    const formik: FormikProps<TIDVFormValues> = useFormikContext();
+
     const [documentList, setDocumentList] = useState<TDropDownList[]>([]);
 
     const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
@@ -45,6 +46,8 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
         text: '',
         value: '',
     };
+
+    const { setFieldValue, values } = formik;
 
     const bindDocumentData = (item: string) => {
         setFieldValue('document_type', item, true);
@@ -74,6 +77,11 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
             setDocumentList(docList as TDropDownList[]);
         }
     }, [documents_supported]);
+
+    if (!formik) {
+        console.error('Subform must be wrapped with a Formik provider');
+        return null; // or render an error message, redirect, etc.
+    }
 
     return (
         <Fragment>

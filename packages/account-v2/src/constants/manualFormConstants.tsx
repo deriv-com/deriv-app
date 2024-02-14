@@ -13,6 +13,7 @@ export const MANUAL_DOCUMENT_TYPES = Object.freeze({
     NATIONAL_IDENTITY_CARD: 'national_identity_card',
     NIMC_SLIP: 'nimc_slip',
     PASSPORT: 'passport',
+    SELFIE: 'selfie_with_id',
 });
 
 export const MANUAL_FORM_INITIAL_VALUES = Object.freeze({

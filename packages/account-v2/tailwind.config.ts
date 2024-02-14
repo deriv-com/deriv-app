@@ -13,6 +13,7 @@ export default {
                         '2': '#f2f3f4',
                         '5': '#d6dadb',
                         '6': '#d6d6d6',
+                        '14': '#e9ecef',
                     },
                     black: {
                         '0': '#0e0e0e',

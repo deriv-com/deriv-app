@@ -1,5 +1,9 @@
 import * as Yup from 'yup';
-import { MANUAL_DOCUMENT_TYPES_DATA, TManualDocumentTypes } from '../constants/manualFormConstants';
+import {
+    MANUAL_DOCUMENT_TYPES,
+    MANUAL_DOCUMENT_TYPES_DATA,
+    TManualDocumentTypes,
+} from '../constants/manualFormConstants';
 
 export const getTitleForFormInputs = (selectedDocument: TManualDocumentTypes) =>
     MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].inputSectionHeader;
@@ -18,5 +22,17 @@ export const getManualFormValidationSchema = (selectedDocument: TManualDocumentT
     return Yup.object({
         document_expiry: Yup.string().required(fieldsData.documentExpiry.errorMessage),
         document_number: Yup.string().required(fieldsData.documentNumber.errorMessage),
+    });
+};
+
+export const getSelfieValidationSchema = () => {
+    return Yup.object({
+        [MANUAL_DOCUMENT_TYPES.SELFIE]: Yup.mixed().test({
+            message: 'File is required',
+            name: 'file',
+            test: value => {
+                return value && value instanceof File;
+            },
+        }),
     });
 };

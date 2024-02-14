@@ -112,11 +112,11 @@ const Dropzone: React.FC<TProps> = ({
                     { 'wallets-dropzone--active': file }
                 )}
             >
-                <div className='wallets-dropzone__content'>
+                <div className='w-full h-full flex flex-col items-center justify-center gap-400'>
                     {showHoverMessage && <Text size='sm'>{hoverMessage}</Text>}
                     {!file && (
-                        <div className='wallets-dropzone__placeholder'>
-                            <div className='wallets-dropzone__placeholder-icon'>{icon}</div>
+                        <div className='flex flex-col items-center gap-700'>
+                            <div className='flex-shrink-0'>{icon}</div>
                             {title && (
                                 <Text align='center' color='primary' size='xs' weight={titleType}>
                                     {title}
@@ -126,7 +126,7 @@ const Dropzone: React.FC<TProps> = ({
                                 {description}
                             </Text>
                             {buttonText && (
-                                <div className='wallets-dropzone__placeholder-text'>
+                                <div className='flex flex-col items-center gap-1600'>
                                     <Button onClick={open} type='button' variant='outlined'>
                                         {buttonText}
                                     </Button>
@@ -150,7 +150,7 @@ const Dropzone: React.FC<TProps> = ({
                             >
                                 {hasFrame && <DropzoneFrame />}
                                 <IconButton
-                                    className='wallets-dropzone__remove-file'
+                                    className='absolute top-400 right-400 rounded-pill'
                                     color='black'
                                     data-testid='dt_remove-button'
                                     icon={<StandaloneXmarkBoldIcon fill='#ffffff' iconSize='sm' />}

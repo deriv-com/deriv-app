@@ -2,7 +2,6 @@ import React, { ButtonHTMLAttributes, ComponentProps, forwardRef, Ref } from 're
 import clsx from 'clsx';
 import { TGenericSizes } from '../types';
 import { iconButtonVariants } from './icon-button.classnames';
-import './icon-button.scss';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: 'black' | 'primary' | 'transparent' | 'white';

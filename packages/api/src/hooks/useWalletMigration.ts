@@ -1,17 +1,16 @@
 import { useCallback } from 'react';
-import useAuthorize from './useAuthorize';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useMutation from '../useMutation';
 import useQuery from '../useQuery';
+import useAuthorize from './useAuthorize';
 
 /** A custom hook to get the status of wallet_migration API and to start/reset the migration process */
 const useWalletMigration = () => {
+    const { isSuccess } = useAuthorize();
     const invalidate = useInvalidateQuery();
 
     /** Make a request to wallet_migration API and onSuccess it will invalidate the cached data  */
     const { mutate } = useMutation('wallet_migration', { onSuccess: () => invalidate('wallet_migration') });
-
-    const { isSuccess } = useAuthorize();
 
     /** Fetch the wallet_migration API and refetch it every second if the status is in_progress */
     const { data } = useQuery('wallet_migration', {

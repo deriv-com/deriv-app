@@ -492,9 +492,9 @@ module.exports = {
                 disabled: 0.32,
             },
             screens: {
-                lg: { min: '1280px' },
-                md: { max: '1279px' },
                 sm: { max: '600px' },
+                md: { max: '1279px' },
+                lg: { min: '1280px' },
                 xl: { min: '1440px' },
             },
             spacing: {

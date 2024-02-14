@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-// import { WalletButton, WalletsActionScreen } from '../../../../../components';
-import { Button } from '@deriv-com/ui';
+import { ActionScreen, Button } from '@deriv-com/ui';
 import EmailSent from '../../../assets/images/email-verification.svg';
-// import { WalletButtonGroup } from '../../../components/WalletButtonGroup';
-import { ActionScreen } from '../../../components/ActionScreen';
 import './WithdrawalVerificationSent.scss';
 
 type TProps = {
@@ -17,6 +14,20 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
     return (
         <div className='wallets-withdrawal-verification-sent'>
             <ActionScreen
+                actionButtons={
+                    !showResend ? (
+                        <Button
+                            onClick={() => {
+                                sendEmail();
+                                setShowResend(!showResend);
+                            }}
+                            size='lg'
+                            variant='ghost'
+                        >
+                            Didn&apos;t receive the email?
+                        </Button>
+                    ) : undefined
+                }
                 description='Please check your email for the verification link to complete the process.'
                 icon={
                     <div
@@ -26,33 +37,17 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                         <EmailSent />
                     </div>
                 }
-                renderButtons={
-                    !showResend
-                        ? () => (
-                              <Button
-                                  onClick={() => {
-                                      sendEmail();
-                                      setShowResend(!showResend);
-                                  }}
-                                  size='lg'
-                                  variant='ghost'
-                              >
-                                  Didn&apos;t receive the email?
-                              </Button>
-                          )
-                        : undefined
-                }
                 title="We've sent you an email."
             />
             <div className='wallets-withdrawal-verification-sent__resend'>
                 {showResend && (
                     <ActionScreen
-                        description="Check your spam or junk folder. If it's not there, try resending the email."
-                        renderButtons={() => (
+                        actionButtons={
                             <Button disabled={!!counter} onClick={sendEmail} size='lg'>
                                 Resend email{counter ? ` in ${counter}s` : ''}
                             </Button>
-                        )}
+                        }
+                        description="Check your spam or junk folder. If it's not there, try resending the email."
                         title="Didn't receive the email?"
                     />
                 )}

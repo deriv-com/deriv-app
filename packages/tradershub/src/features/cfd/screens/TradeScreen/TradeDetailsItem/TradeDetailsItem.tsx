@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { useHover } from 'usehooks-ts';
+import EditIcon from '@/assets/svgs/ic-edit.svg';
+import { Clipboard, Tooltip } from '@/components';
+import { ChangePassword } from '@cfd/screens';
 import { Provider } from '@deriv/library';
 import { Button, qtMerge, useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
-import { Clipboard, Tooltip } from '../../../../../components';
-import EditIcon from '../../../../../public/images/ic-edit.svg';
-import { ChangePassword } from '../../ChangePassword';
 
 type TTradeDetailsItemProps = {
     className?: string;
@@ -22,12 +22,12 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
     return (
         <div
             className={qtMerge(
-                'flex items-center h-1600 justify-between bg-system-light-secondary-background p-[5px] pl-400',
+                'flex items-center h-1600 justify-between bg-system-light-secondary-background p-[5px] pl-8',
                 className
             )}
         >
             {label && <Text size='sm'>{label}</Text>}
-            <div className='flex items-center gap-x-400'>
+            <div className='flex items-center gap-x-8'>
                 {variant === 'info' ? (
                     <Text color='less-prominent' size='sm'>
                         {value}

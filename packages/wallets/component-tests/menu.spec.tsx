@@ -27,6 +27,6 @@ test.describe('Wallets - Traders Hub', () => {
         await page.goto(`${baseURL}/wallets`);
 
         // eslint-disable-next-line testing-library/prefer-screen-queries
-        await expect(page.getByText(`10,000.00 USD`)).toBeVisible();
+        await expect(page.getByText(`9,988,000.89 USD`)).toBeVisible();
     });
 });

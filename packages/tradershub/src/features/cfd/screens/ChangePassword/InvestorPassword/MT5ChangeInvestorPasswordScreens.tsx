@@ -17,14 +17,14 @@ const MT5ChangeInvestorPasswordScreens = ({ setShowEmailSentScreen }: TMT5Change
     switch (activeScreen) {
         case 'savedScreen':
             return (
-                <div className='mt-1600 md:mt-2000'>
+                <div className='mt-32 md:mt-40'>
                     <MT5ChangeInvestorPasswordSavedScreen setNextScreen={hide} />
                 </div>
             );
         case 'introScreen':
         default:
             return (
-                <div className='mt-1600 md:mt-2000'>
+                <div className='mt-32 md:mt-40'>
                     <MT5ChangeInvestorPasswordInputsScreen
                         sendEmail={() => {
                             setShowEmailSentScreen?.(true);

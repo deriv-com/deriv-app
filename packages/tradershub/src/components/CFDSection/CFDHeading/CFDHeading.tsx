@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
-import { StaticLink, TitleDescriptionLoader, useUIContext } from '@/components';
+import { StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useIsEuRegion } from '@deriv/api';
 import { Button, Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
@@ -8,10 +8,8 @@ import { Text } from '@deriv-com/ui';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => {
     const history = useHistory();
-    const { uiState } = useUIContext();
-    const { accountType, regulation } = uiState;
 
-    const { isEU } = useRegulationFlags(regulation, accountType);
+    const { isEU } = useRegulationFlags();
 
     const title = isEU ? 'Account information' : 'Compare Accounts';
 
@@ -37,18 +35,18 @@ const CFDHeading = () => {
     return (
         <Fragment>
             {!isMobile && (
-                <div className='flex items-center gap-x-200'>
+                <div className='flex items-center gap-x-4'>
                     <Heading.H4 className='font-sans'>CFDs</Heading.H4>
                     <CompareAccountsButton />
                 </div>
             )}
-            <Text className='leading-100' size='sm'>
+            <Text className='leading-18' size='sm'>
                 Trade with leverage and tight spreads for better returns on trades.
                 <StaticLink size='md' staticUrl='/trade-types/cfds/'>
                     Learn more
                 </StaticLink>
             </Text>
-            {isMobile && <CompareAccountsButton className='mt-800' />}
+            {isMobile && <CompareAccountsButton className='mt-16' />}
         </Fragment>
     );
 };

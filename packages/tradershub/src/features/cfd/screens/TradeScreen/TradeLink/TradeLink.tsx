@@ -42,8 +42,8 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
     };
 
     return (
-        <div className='flex items-center justify-between border-solid border-t-75 border-system-light-secondary-background px-800 py-1200'>
-            <div className='flex items-center gap-800'>
+        <div className='flex items-center justify-between border-solid border-t-1 border-system-light-secondary-background px-16 py-24'>
+            <div className='flex items-center gap-16'>
                 {(platform === mt5Platform || app === ctraderPlatform) && (
                     <Fragment>
                         <div className='w-1600 h-1600'>{content.icon}</div>
@@ -56,7 +56,7 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
             </div>
             {(platform === mt5Platform || app === ctraderPlatform) && (
                 <Button
-                    className='border-opacity-black-400 rounded-200 px-800'
+                    className='border-opacity-black-8 rounded-xs px-16'
                     colorStyle='black'
                     onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
                     size='sm'
@@ -67,12 +67,12 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
             )}
             {platform !== mt5Platform && app !== ctraderPlatform && (
                 <Button
-                    className='flex items-center justify-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-400 gap-400'
+                    className='flex items-center justify-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-8 gap-8'
                     colorStyle='white'
                     onClick={onClickWebTerminal}
                     variant='secondary'
                 >
-                    <span className='flex items-center justify-center gap-400'>
+                    <span className='flex items-center justify-center gap-8'>
                         {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
                         <Text className='text-system-light-primary-background' size='sm' weight='bold'>
                             Web terminal

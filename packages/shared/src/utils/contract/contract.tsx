@@ -323,16 +323,16 @@ export const getLocalizedTurbosSubtype = (contract_type = '') => {
 };
 
 export const clickAndKeyEventHandler = (
-    callback: () => void,
+    callback?: () => void,
     e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
 ) => {
     if (e) {
         e.preventDefault();
         if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
-            callback();
+            callback?.();
         }
     } else {
-        callback();
+        callback?.();
     }
 };
 

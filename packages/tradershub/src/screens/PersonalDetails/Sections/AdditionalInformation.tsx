@@ -24,7 +24,7 @@ const AccountOpeningReasonList = [
 ];
 
 const AdditionalInformation = () => {
-    const { handleBlur, handleChange, setFieldValue, values } = useFormikContext<{
+    const { errors, handleBlur, handleChange, setFieldValue, touched, values } = useFormikContext<{
         accountOpeningReason: string;
         dateOfBirth: string;
         phoneNumber: string;
@@ -38,26 +38,30 @@ const AdditionalInformation = () => {
 
     return (
         <div>
-            <Text as='p' className='my-800' weight='bold'>
+            <Text as='p' className='my-16' weight='bold'>
                 Additional information
             </Text>
-            <div className='flex flex-col gap-1400'>
+            <div className='flex flex-col gap-20'>
                 <Input
-                    className='w-full text-body-sm'
+                    className='text-body-sm'
+                    error={Boolean(errors.phoneNumber && touched.phoneNumber)}
+                    isFullWidth
                     label='Phone number*'
+                    message={touched.phoneNumber && errors.phoneNumber}
                     name='phoneNumber'
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    required
                     value={values.phoneNumber}
                 />
                 <Dropdown
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
+                    errorMessage={touched.placeOfBirth && errors.placeOfBirth}
                     label='Place of birth*'
                     list={residenceList.map(residence => ({
                         text: residence.text,
                         value: residence.value ?? '',
                     }))}
+                    listHeight='sm'
                     name='placeOfBirth'
                     onSelect={selectedItem => {
                         setFieldValue('placeOfBirth', selectedItem);
@@ -65,14 +69,15 @@ const AdditionalInformation = () => {
                     value={values.placeOfBirth}
                     variant='comboBox'
                 />
-                <div className='flex items-center justify-between gap-800'>
+                <div className='flex items-center justify-between gap-16'>
                     <Dropdown
                         dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
-                        label='Tax residence*'
+                        label='Tax residence'
                         list={residenceList.map(residence => ({
                             text: residence.text,
                             value: residence.value ?? '',
                         }))}
+                        listHeight='sm'
                         name='taxResidence'
                         onSelect={selectedItem => {
                             setFieldValue('taxResidence', selectedItem);
@@ -82,9 +87,10 @@ const AdditionalInformation = () => {
                     />
                     <StandaloneCircleInfoRegularIcon />
                 </div>
-                <div className='flex items-center justify-between gap-800'>
+                <div className='flex items-center justify-between gap-16'>
                     <Input
-                        className='w-full text-body-sm'
+                        className='text-body-sm'
+                        isFullWidth
                         label='Tax identification number'
                         name='taxIdentificationNumber'
                         onBlur={handleBlur}
@@ -95,8 +101,10 @@ const AdditionalInformation = () => {
                 </div>
                 <Dropdown
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
+                    errorMessage={touched.accountOpeningReason && errors.accountOpeningReason}
                     label='Account opening reason*'
                     list={AccountOpeningReasonList}
+                    listHeight='sm'
                     name='accountOpeningReason'
                     onSelect={selectedItem => {
                         setFieldValue('accountOpeningReason', selectedItem);

@@ -3,7 +3,7 @@ import { useCashierFiatAddress } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
 import { ErrorScreen } from '../../components/ErrorScreen';
 import { isServerError } from '../../utils/utils';
-import './WithdrawalFiat.scss';
+import styles from './WithdrawalFiat.module.scss';
 
 interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     verificationCode?: string;
@@ -29,8 +29,8 @@ const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => 
             {isLoading && <Loader />}
             {iframeUrl && (
                 <iframe
-                    className='wallets-withdrawal-fiat__iframe'
-                    data-testid='dt_wallets_withdrawal_fiat_iframe'
+                    className={styles.iframe}
+                    data-testid='dt_fiat_iframe'
                     key={iframeUrl}
                     src={iframeUrl}
                     style={{ display: isLoading ? 'none' : 'block' }}

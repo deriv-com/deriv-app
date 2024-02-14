@@ -47,7 +47,7 @@ const OptionsAndMultipliersHeading = () => {
     return (
         <div className='flex flex-col items-start justify-between gap-16 lg:flex-row lg:gap-48'>
             <div className='gap-2 lg:flex lg:flex-col'>
-                <div className='md:hidden'>
+                <div className='d-none lg:block'>
                     <Heading.H4>{title}</Heading.H4>
                 </div>
                 {description}

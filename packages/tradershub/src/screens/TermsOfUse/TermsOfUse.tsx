@@ -41,8 +41,8 @@ const TermsOfUse = () => {
             >
                 {({ isValid, values }) => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
-                            <div className='flex flex-col gap-800'>
+                        <div className='flex-1 overflow-y-auto p-24'>
+                            <div className='flex flex-col gap-16'>
                                 <Text size='sm' weight='bold'>
                                     Jurisdiction and choice of law
                                 </Text>

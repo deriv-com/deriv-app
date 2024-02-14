@@ -24,7 +24,7 @@ const AddedDxtradeAccountsList = () => {
     const isVirtual = account?.is_virtual;
 
     const trailing = () => (
-        <div className='flex flex-col gap-y-200'>
+        <div className='flex flex-col gap-y-4'>
             <Button
                 // open transfer modal
                 onClick={() => {

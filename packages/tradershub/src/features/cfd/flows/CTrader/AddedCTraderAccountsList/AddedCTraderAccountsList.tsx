@@ -24,7 +24,7 @@ const AddedCTraderAccountsList = () => {
     const isVirtual = account?.is_virtual;
 
     const trailing = () => (
-        <div className='flex flex-col gap-y-200'>
+        <div className='flex flex-col gap-y-4'>
             <Button
                 // todo: open transfer modal
                 onClick={() => {

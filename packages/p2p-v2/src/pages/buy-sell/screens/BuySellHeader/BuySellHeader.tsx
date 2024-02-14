@@ -1,5 +1,5 @@
 import React from 'react';
-import clsx from 'clsx';
+import { SORT_BY_LIST } from '@/constants';
 import { TSortByValues } from '@/utils';
 import { Tab, Tabs } from '@deriv-com/ui';
 import { SortDropdown } from '../../components';
@@ -12,17 +12,6 @@ type TBuySellHeaderProps = {
     setSortDropdownValue: (value: TSortByValues) => void;
     sortDropdownValue: TSortByValues;
 };
-
-const sortDropdownList = [
-    {
-        text: 'Exchange rate',
-        value: 'rate',
-    },
-    {
-        text: 'User rating',
-        value: 'rating',
-    },
-];
 
 const BuySellHeader = ({
     activeTab,
@@ -43,9 +32,9 @@ const BuySellHeader = ({
                 <Tab title='Buy' />
                 <Tab title='Sell' />
             </Tabs>
-            <div className={clsx('p2p-v2-buy-sell-header__row')}>
+            <div className='p2p-v2-buy-sell-header__row'>
                 <SortDropdown
-                    list={sortDropdownList}
+                    list={SORT_BY_LIST}
                     onSelect={setSortDropdownValue}
                     setIsFilterModalOpen={setIsFilterModalOpen}
                     value={sortDropdownValue}

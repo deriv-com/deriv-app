@@ -29,7 +29,6 @@ const BuySellTable = () => {
     const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
     const { data, isFetching, isLoading, loadMoreAdverts } = p2p.advert.useGetList({
         counterparty_type: activeTab === 'Buy' ? BUY_SELL.BUY : BUY_SELL.SELL,
-        local_currency: 'BWP',
         sort_by: sortDropdownValue,
     });
 

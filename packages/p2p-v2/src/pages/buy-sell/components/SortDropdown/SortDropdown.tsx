@@ -5,7 +5,7 @@ import { Button, Dropdown, useDevice } from '@deriv-com/ui';
 import SortIcon from '../../../../public/ic-cashier-sort.svg';
 
 type TSortDropdownProps = {
-    list: { text: string; value: string }[];
+    list: readonly { text: string; value: string }[];
     onSelect: (value: TSortByValues) => void;
     setIsFilterModalOpen: (value: boolean) => void;
     value: TSortByValues;
@@ -30,7 +30,7 @@ const SortDropdown = ({ list, onSelect, setIsFilterModalOpen, value }: TSortDrop
             dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
             label='Sort by'
             list={list}
-            name='hi'
+            name='Sort by'
             onSelect={(value: string) => onSelect(value as TSortByValues)}
             value={value}
         />

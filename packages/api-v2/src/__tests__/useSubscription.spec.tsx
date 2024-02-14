@@ -2,6 +2,7 @@ import React from 'react';
 import { useWS } from '@deriv/shared';
 import { act, renderHook } from '@testing-library/react-hooks';
 import APIProvider from '../APIProvider';
+import AuthProvider from '../AuthProvider';
 import useSubscription from '../useSubscription';
 
 jest.mock('@deriv/shared');
@@ -31,7 +32,11 @@ describe('useSubscription', () => {
             }),
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
 
         const { result, waitForNextUpdate } = renderHook(() => useSubscription('p2p_order_info'), { wrapper });
 

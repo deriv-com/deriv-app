@@ -2,6 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
+import AuthProvider from '../AuthProvider';
 import useQuery from '../useQuery';
 
 jest.mock('@deriv/shared', () => ({
@@ -20,7 +21,11 @@ jest.mock('@deriv/shared', () => ({
 
 describe('useQuery', () => {
     test('should call ping and get pong in response', async () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
 
         const { result, waitFor } = renderHook(() => useQuery('ping'), { wrapper });
 

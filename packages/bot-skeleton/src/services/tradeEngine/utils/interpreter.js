@@ -231,6 +231,7 @@ const Interpreter = () => {
     }
 
     function run(code) {
+        console.log(code)
         return new Promise((resolve, reject) => {
             const onError = e => {
                 if ($scope.stopped) {

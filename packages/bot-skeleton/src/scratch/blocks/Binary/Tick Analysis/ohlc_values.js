@@ -52,6 +52,6 @@ Blockly.JavaScript.ohlc_values = block => {
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 
-    const code = `Bot.getOhlc({ field: '${ohlcField}', granularity: ${granularity} })`;
+    const code = `Bot.getOhlc({ field: '${ohlcField}', granularity: ${60} })`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

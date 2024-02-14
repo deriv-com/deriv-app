@@ -76,49 +76,86 @@ Blockly.JavaScript.math_on_list = block => {
     let code, list;
 
     if (operation === 'SUM') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+        console.log('1')
+        let codeSanitze = `function ${'mathMean'}(myList) {
                 var final_list = [];
                 return recursiveList(myList, final_list).reduce(function(x, y) {
                     return x + y;
                 },0);
-            }`,
-        ]);
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+            }`
+
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [codeSanitze]);
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['NONE']) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MIN') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+        console.log('2')
+        let codeSanitze = `function ${'mathMean'}(myList) {
                 var final_list = [];
                 return Math.min.apply(null, (recursiveList(myList, final_list) || [0]));
-            }`,
-        ]);
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_COMMA) || '[]';
+            }`
+
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [codeSanitze]);
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['COMMA']) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MAX') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+        console.log('3')
+        let codeSanitze = `function ${'mathMean'}(myList) {
                 var final_list = [];
                 return Math.max.apply(null, (recursiveList(myList, final_list) || [0]));
-            }`,
-        ]);
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_COMMA) || '[]';
+            }`
+
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [codeSanitze]);
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['COMMA']) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'AVERAGE') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+        console.log('4')
+        let codeSanitze = `function ${'mathMean'}(myList) {
                 var final_list = [];
                 return recursiveList(myList, final_list).reduce(function(x, y) {
                     return x + y;
                 }, 0) / myList.length;
-            }`,
-        ]);
+            }`
 
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/g, 'function ');
+        codeSanitze = codeSanitze.replace(/return/g, 'return ');
+        codeSanitze = codeSanitze.replace(/var/g, 'var ');
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [codeSanitze]);
+
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['NONE']) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MEDIAN') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMedian', [
-            `
+        console.log('5')
+        let codeSanitze = `
             Array.prototype.swap = function (x,y) {
                 var b = this[x];
                 this[x] = this[y];
@@ -169,17 +206,26 @@ Blockly.JavaScript.math_on_list = block => {
                 return final_list[(final_list.length - 1) / 2];
             }
 
-            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
+            function ${'mathMean'}(myList) {
                 var final_list = [];
                 return calculateMedian(recursiveList(myList, final_list));
-            }`,
-        ]);
+            }`
 
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['NONE']) || '[]';
+        const functionName = Blockly.JavaScript.provideFunction_('mathMedian', [codeSanitze]);
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MODE') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathModes', [
-            `
+        console.log('6')
+        let codeSanitze = `
             function calculateMathMode(values){
                 var modes = [];
                 var counts = [];
@@ -214,17 +260,26 @@ Blockly.JavaScript.math_on_list = block => {
                 return modes;
             }
 
-            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
+            function ${'mathModes'}(list) {
                 var final_list = [];
                 return calculateMathMode(recursiveList(list, final_list));
-            }`,
-        ]);
+            }`
 
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+        const functionName = Blockly.JavaScript.provideFunction_('mathModes', [codeSanitze]);
+
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['NONE']) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'ANTIMODE') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathAntiMode', [
-            `
+        console.log('7')
+        let codeSanitze = `
             function calculateMathAntiMode(values){
                 var antiMode = [];
                 var counts = [];
@@ -263,17 +318,26 @@ Blockly.JavaScript.math_on_list = block => {
                 return antiMode;
             }
 
-            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
+            function ${'mathAntiMode'}(list) {
                 var final_list = [];
                 return calculateMathAntiMode(recursiveList(list, final_list));
-            }`,
-        ]);
+            }`
 
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+        const functionName = Blockly.JavaScript.provideFunction_('mathAntiMode', [codeSanitze]);
+
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['NONE']) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'STD_DEV') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathStandardDeviation', [
-            `
+        console.log('8')
+        let codeSanitze = `
             function calculateMathStandardDeviation(numbers){
                 var n = numbers.length;
                 if (!n) {
@@ -292,25 +356,42 @@ Blockly.JavaScript.math_on_list = block => {
                 return Math.sqrt(variance);
             }
 
-            function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
+            function ${'mathStandardDeviation'}(list) {
                 var final_list = [];
                 return calculateMathStandardDeviation(recursiveList(list, final_list));
-            }`,
-        ]);
+            }`
 
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+        const functionName = Blockly.JavaScript.provideFunction_('mathStandardDeviation', [codeSanitze]);
+
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['NONE']) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'RANDOM') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathRandomList', [
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
+        console.log('9')
+        let codeSanitze = `function ${'mathRandomList'}(list) {
                 var final_list = [];
                 var final_list = recursiveList(list, final_list);
                 var x = Math.floor(Math.random() * final_list.length);
                 return final_list[x];
-            }`,
-        ]);
+            }`
 
-        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+        const functionName = Blockly.JavaScript.provideFunction_('mathRandomList', [codeSanitze]);
+        list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['NONE']) || '[]';
         code = `${functionName}((${list} || [0]))`;
     }
 

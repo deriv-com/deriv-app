@@ -325,8 +325,10 @@ class DBot {
                 if (!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
                     break;
                 }
-                ${Blockly?.JavaScript?.definitions_?.mathRandomInt}
-            }`;
+            }
+            ${Blockly?.JavaScript?.definitions_?.mathRandomInt}
+            ${Blockly?.JavaScript?.definitions_?.mathMean}
+            ${Blockly?.JavaScript?.definitions_?.listsRepeat}`;
     }
 
     /**

@@ -50,6 +50,6 @@ Blockly.JavaScript.get_ohlc = block => {
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
     const index = Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC) || '1';
 
-    const code = `Bot.getOhlcFromEnd({ index: ${index}, granularity: ${granularity} })`;
+    const code = `Bot.getOhlcFromEnd({ index: ${index}, granularity: ${60} })`;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

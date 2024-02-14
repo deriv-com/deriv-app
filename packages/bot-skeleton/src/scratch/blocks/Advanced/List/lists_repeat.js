@@ -45,21 +45,28 @@ Blockly.Blocks.lists_repeat = {
 };
 
 Blockly.JavaScript.lists_repeat = block => {
-    // eslint-disable-next-line no-underscore-dangle
-    const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [
-        // eslint-disable-next-line no-underscore-dangle
-        `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(value, n) {
+    let codeSanitze = `function ${`listsRepeat`}(value, n) {
             var array = [];
             for (var i = 0; i < n; i++) {
                 array[i] = value;
             }
             return array;
-        }`,
-    ]);
+        }`
+    codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+    codeSanitze = codeSanitze.replace(/undefined/g, '');
 
-    const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_COMMA) || 'null';
-    const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.ORDER_COMMA) || '0';
+    codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+    codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+    codeSanitze = codeSanitze.replace(/\s/g, '');
+    codeSanitze = codeSanitze.replace(/function/, 'function ');
+    codeSanitze = codeSanitze.replace(/return/, 'return ');
+    codeSanitze = codeSanitze.replace(/var/, 'return ');
+    // eslint-disable-next-line no-underscore-dangle
+    const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [codeSanitze]);
+
+    const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.Order['COMMA']) || 'null';
+    const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.Order['COMMA']) || '0';
     const code = `${function_name}(${element}, ${repeat_count})`;
 
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.Order['FUNCTION_CALL']];
 };

@@ -186,10 +186,10 @@ const formatDisplayedTime = (time_unit: number) => (time_unit < 10 ? `0${time_un
 export const formatDurationTime = (time?: number) => {
     if (time && !isNaN(time)) {
         const minutes = Math.floor(time / 60);
-        const formatMinutes = formatDisplayedTime(minutes);
+        const format_minutes = formatDisplayedTime(minutes);
         const seconds = Math.floor(time % 60);
-        const formatSeconds = formatDisplayedTime(seconds);
-        return `${formatMinutes}:${formatSeconds}`;
+        const format_seconds = formatDisplayedTime(seconds);
+        return `${format_minutes}:${format_seconds}`;
     }
 
     return '00:00';

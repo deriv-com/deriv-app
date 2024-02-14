@@ -30,10 +30,4 @@ const getUserBrowser = () => {
     return 'unknown';
 };
 
-export const user_browser = {
-    isOpera: () => getUserBrowser() === 'Opera',
-    isEdge: () => getUserBrowser() === 'Edge',
-    isChrome: () => getUserBrowser() === 'Chrome',
-    isSafari: () => getUserBrowser() === 'Safari',
-    isFirefox: () => getUserBrowser() === 'Firefox',
-};
+export const isSafariBrowser = () => getUserBrowser() === 'Safari';

@@ -346,7 +346,7 @@ const Dropdown = ({
     const handleVisibility = (e?: React.MouseEvent<HTMLDivElement>) => {
         if (e && ['mouseover', 'mouseleave'].includes(e.type)) {
             if (!should_open_on_hover) return;
-            if (e?.type === 'mouseover') setIsListVisible(true);
+            if (e.type === 'mouseover') setIsListVisible(true);
             else setIsListVisible(false);
             return;
         }

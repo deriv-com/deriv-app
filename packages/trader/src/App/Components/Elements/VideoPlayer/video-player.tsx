@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
-import { user_browser, mobileOSDetect } from '@deriv/shared';
+import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
 import debounce from 'lodash.debounce';
 import VideoOverlay from './video-overlay';
 import VideoControls from './video-controls';
@@ -13,8 +13,7 @@ type TVideoPlayerProps = {
 
 const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const should_autoplay =
-        (!user_browser.isSafari() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ??
-        true;
+        (!isSafariBrowser() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ?? true;
 
     const [current_time, setCurrentTime] = React.useState<number>();
     const [has_enlarged_dot, setHasEnlargedDot] = React.useState(false);

@@ -51,7 +51,7 @@ jest.mock('@cloudflare/stream-react', () => ({
 }));
 
 describe('<VideoPlayer />', () => {
-    const originalUserAgent = Object.getOwnPropertyDescriptor(window.navigator, 'userAgent');
+    const original_user_agent = Object.getOwnPropertyDescriptor(window.navigator, 'userAgent');
 
     beforeAll(() => {
         Object.defineProperty(window.navigator, 'userAgent', {
@@ -61,7 +61,7 @@ describe('<VideoPlayer />', () => {
     });
 
     afterAll(() => {
-        Object.defineProperty(window.navigator, 'userAgent', originalUserAgent as PropertyDescriptor);
+        Object.defineProperty(window.navigator, 'userAgent', original_user_agent as PropertyDescriptor);
     });
 
     it('should render the component on desktop', () => {

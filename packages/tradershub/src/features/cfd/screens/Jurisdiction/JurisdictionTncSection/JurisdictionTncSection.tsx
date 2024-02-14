@@ -3,8 +3,7 @@ import { getStaticUrl } from '@/helpers';
 import { THooks } from '@/types';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { Link, useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
 type TJurisdictionTncSectionProps = {
@@ -28,7 +27,7 @@ const JurisdictionTncSection = ({
     selectedJurisdiction,
     setIsCheckBoxChecked,
 }: TJurisdictionTncSectionProps) => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') || MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
@@ -50,15 +49,16 @@ const JurisdictionTncSection = ({
                         type='checkbox'
                     />
                     <label className='cursor-pointer' htmlFor='tnc-checkbox'>
-                        <Text size={isMobile ? 'sm' : 'md'}>
+                        <Text size={!isDesktop ? 'sm' : 'md'}>
                             I confirm and accept {selectedCompany.name}&lsquo;s{' '}
-                            <Link
+                            <a
                                 className='cursor-pointer text-solid-coral-700 text-1 pl-50 sm:text-100'
                                 href={getStaticUrl(selectedCompany.tncUrl)}
+                                rel='noreferrer'
                                 target='_blank'
                             >
                                 Terms and Conditions
-                            </Link>
+                            </a>
                         </Text>
                     </label>
                 </div>

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
-import { useBreakpoint } from '@deriv/quill-design';
 import { InlineMessage, Text } from '@deriv-com/ui';
 import { CURRENCY_TYPES, getCurrencyConfig } from '../../helpers/currencyConfig';
 import CurrencyCard from './CurrencyCard';
@@ -18,7 +17,6 @@ type TCurrencies = {
  * @example <Currencies type={CURRENCY_TYPES.FIAT} />
  */
 const Currencies = ({ type }: TCurrencies) => {
-    const { isMobile } = useBreakpoint();
     const currencies = useMemo(() => getCurrencyConfig(type), [type]);
 
     return (
@@ -32,9 +30,8 @@ const Currencies = ({ type }: TCurrencies) => {
                 </InlineMessage>
             )}
             <div
-                className={clsx('flex flex-wrap', {
-                    'justify-center': currencies.length < 4 && !isMobile,
-                    'justify-start': isMobile,
+                className={clsx('flex flex-wrap justify-start', {
+                    'lg:justify-center': currencies.length < 4,
                 })}
             >
                 {currencies.map(currency => (

@@ -1,8 +1,8 @@
 import React from 'react';
+import { clsx } from 'clsx';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { PlatformDetails } from '@cfd/constants';
 import { useDynamicLeverage } from '@deriv/api';
-import { qtMerge } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
 import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';
 
@@ -14,8 +14,8 @@ const DynamicLeverageScreen = () => {
 
     return (
         <div
-            className={qtMerge(
-                'flex flex-col gap-24 mt-16 mx-24 mb-24 sm:mx-[128px] sm:mb-0 pb-[100px] absolute top-50 [transform:rotateY(180deg)] transition-transform ease-in duration-[0.6s] backface-hidden',
+            className={clsx(
+                'flex flex-col gap-24 mt-16 mx-24 mb-24 sm:mx-[128px] sm:mb-0 pb-[100px] absolute top-0 [transform:rotateY(180deg)] transition-transform ease-in duration-[0.6s] backface-hidden',
                 isDynamicLeverageVisible && '[transform:rotateY(0deg)]'
             )}
         >

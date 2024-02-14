@@ -1,5 +1,6 @@
 import React from 'react';
-import { IconButton, qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
+import { IconButton } from '@deriv/quill-design';
 import { LabelPairedChevronLeftMdRegularIcon, LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
 
 type TPrevNextButtonProps = {
@@ -10,7 +11,7 @@ type TPrevNextButtonProps = {
 
 const CFDCompareAccountsCarouselButton = ({ enabled, isNext = false, onClick }: TPrevNextButtonProps) => (
     <IconButton
-        className={qtMerge(
+        className={clsx(
             'bg-system-light-primary-background z-10 absolute lg:flex items-center justify-center top-1/2 cursor-pointer w-40 h-40 rounded-[50%] border-solid-coral-100 border-solid border-1 disabled:opacity-8 disabled:hidden',
             isNext && 'right-16',
             !isNext && 'left-16'

@@ -1,6 +1,6 @@
 import React from 'react';
+import { clsx } from 'clsx';
 import { useFormikContext } from 'formik';
-import { qtMerge } from '@deriv/quill-design';
 import { StandaloneCircleInfoRegularIcon as CircleInfoIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { getCurrencyConfig } from '../../helpers/currencyConfig';
@@ -22,9 +22,9 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
     const { setFieldValue, values } = useFormikContext<{ currency: string }>();
     const isSelected = values.currency === id;
     return (
-        <div className='relative flex justify-center w-1/2 md:w-1/4 my-8'>
+        <div className='relative flex justify-center w-1/2 my-8 md:w-1/4'>
             <button
-                className={qtMerge(
+                className={clsx(
                     `w-10/12 rounded-default items-center py-1100 hover:cursor-pointer ${
                         isSelected
                             ? 'outline outline-2 outline-status-light-success'

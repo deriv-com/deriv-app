@@ -11,11 +11,10 @@ import {
 } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useIsDIELEnabled } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Tab, Tabs, Text } from '@deriv-com/ui';
+import { Tab, Tabs, Text, useDevice } from '@deriv-com/ui';
 
 const TradersHubRoute = () => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { data: isDIEL } = useIsDIELEnabled();
     const { uiState } = useUIContext();
     const { accountType } = uiState;
@@ -26,7 +25,7 @@ const TradersHubRoute = () => {
     const isSwitcherVisible = isDIEL && isReal;
     const isTotalAssetsVisible = hasActiveDerivAccount || isDemo;
 
-    if (isMobile)
+    if (!isDesktop)
         return (
             <div className='pt-16'>
                 <div className='flex items-end justify-between pb-24'>

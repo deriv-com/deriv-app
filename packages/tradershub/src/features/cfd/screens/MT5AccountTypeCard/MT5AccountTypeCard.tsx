@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { Text } from '@deriv-com/ui';
 
 type TMT5AccountTypeCardProps = {
@@ -13,7 +13,7 @@ type TMT5AccountTypeCardProps = {
 const MT5AccountTypeCard = ({ description, icon, isSelected, onClick, title }: TMT5AccountTypeCardProps) => {
     return (
         <div
-            className={qtMerge(
+            className={clsx(
                 isSelected
                     ? 'rounded-16 border-brand-blue bg-system-light-primary-background cursor-pointer border-solid border-sm'
                     : 'cursor-pointer'
@@ -28,7 +28,7 @@ const MT5AccountTypeCard = ({ description, icon, isSelected, onClick, title }: T
             tabIndex={0}
         >
             <div className='flex w-[264px] h-[250px] items-start'>
-                <div className='flex items-start self-stretch flex-1 border-solid rounded-lg p-24 border-system-light-active-background bg-system-light-primary-background border-sm'>
+                <div className='flex items-start self-stretch flex-1 p-24 border-solid rounded-lg border-system-light-active-background bg-system-light-primary-background border-sm'>
                     <div className='flex flex-col items-center self-stretch justify-center gap-24'>
                         {icon}
                         <div className='flex flex-col items-center self-stretch gap-8'>

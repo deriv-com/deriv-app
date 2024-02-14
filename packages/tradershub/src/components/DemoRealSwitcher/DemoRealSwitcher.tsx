@@ -3,9 +3,8 @@ import { clsx } from 'clsx';
 import { useOnClickOutside } from 'usehooks-ts';
 import { useUIContext } from '@/components';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { Button } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 
 type TAccount = {
     label: string;
@@ -65,28 +64,34 @@ const DemoRealSwitcher = () => {
     };
 
     return (
-        <div className='relative inline-block w-auto' ref={ref}>
+        <div className='relative inline-block w-auto ' ref={ref}>
             <Button
                 className={clsx(
-                    'cursor-pointer w-full py-3 px-8 border-1 border-solid rounded-xs [&>span]:flex [&>span]:items-center [&>span]:text-14',
-                    value === 'demo'
-                        ? 'border-status-light-information text-status-light-information'
-                        : 'border-status-light-success text-status-light-success'
+                    'cursor-pointer w-full py-2 px-6 border-1 border-solid rounded-xs',
+                    value === 'demo' ? 'border-status-light-information' : 'border-status-light-success '
                 )}
-                colorStyle='white'
-                iconPosition='end'
                 onClick={toggleDropdown}
                 size='sm'
-                variant='secondary'
+                variant='outlined'
             >
-                {label}
-                <LabelPairedChevronDownSmRegularIcon
-                    className={clsx(
-                        'transform transition duration-200 ease-in-out ml-8',
-                        value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
-                        isDropdownOpen && '-rotate-180'
-                    )}
-                />
+                <div className='flex items-center'>
+                    <Text
+                        className={clsx(
+                            value === 'demo' ? 'text-status-light-information' : 'text-status-light-success'
+                        )}
+                        size='xs'
+                        weight='bold'
+                    >
+                        {label}
+                    </Text>
+                    <LabelPairedChevronDownSmRegularIcon
+                        className={clsx(
+                            'transform transition duration-200 ease-in-out ml-8',
+                            value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
+                            isDropdownOpen && '-rotate-180'
+                        )}
+                    />
+                </div>
             </Button>
             {isDropdownOpen && (
                 <div className='absolute z-10 items-center w-full top-28 rounded-xs bg-system-light-primary-background shadow-10'>

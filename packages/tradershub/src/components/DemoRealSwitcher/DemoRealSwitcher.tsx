@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { clsx } from 'clsx';
 import { useOnClickOutside } from 'usehooks-ts';
 import { useUIContext } from '@/components';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { Button, qtMerge } from '@deriv/quill-design';
+import { Button } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 
@@ -66,7 +67,7 @@ const DemoRealSwitcher = () => {
     return (
         <div className='relative inline-block w-auto' ref={ref}>
             <Button
-                className={qtMerge(
+                className={clsx(
                     'cursor-pointer w-full py-3 px-8 border-1 border-solid rounded-xs [&>span]:flex [&>span]:items-center [&>span]:text-14',
                     value === 'demo'
                         ? 'border-status-light-information text-status-light-information'
@@ -80,7 +81,7 @@ const DemoRealSwitcher = () => {
             >
                 {label}
                 <LabelPairedChevronDownSmRegularIcon
-                    className={qtMerge(
+                    className={clsx(
                         'transform transition duration-200 ease-in-out ml-8',
                         value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
                         isDropdownOpen && '-rotate-180'
@@ -91,7 +92,7 @@ const DemoRealSwitcher = () => {
                 <div className='absolute z-10 items-center w-full top-28 rounded-xs bg-system-light-primary-background shadow-10'>
                     {accountTypes.map(account => (
                         <div
-                            className={qtMerge(
+                            className={clsx(
                                 'cursor-pointer hover:bg-system-light-hover-background rounded-xs',
                                 account.value === value && 'bg-system-light-active-background'
                             )}

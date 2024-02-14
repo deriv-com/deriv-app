@@ -16,7 +16,7 @@ const GetADerivAccountDialog = () => {
 
     return (
         <Dialog className='lg:w-[440px]'>
-            <Dialog.Header heading='h5' hideCloseButton title="You'll need a Deriv account" />
+            <Dialog.Header hideCloseButton title="You'll need a Deriv account" />
             <Dialog.Content>
                 <Text size='sm'>A Deriv account will allow you to fund (and withdraw from) your CFDs account(s). </Text>
             </Dialog.Content>

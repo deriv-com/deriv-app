@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
+import { clsx } from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useIsEuRegion } from '@deriv/api';
-import { Button, Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
+import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => {
@@ -15,7 +16,7 @@ const CompareAccountsButton = ({ className }: { className?: string }) => {
 
     return (
         <Button
-            className={qtMerge('no-underline', className)}
+            className={clsx('no-underline', className)}
             colorStyle='coral'
             onClick={() => history.push('/traders-hub/compare-accounts')}
             size='sm'

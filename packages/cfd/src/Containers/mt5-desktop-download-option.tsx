@@ -13,7 +13,7 @@ const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: any) => {
             <div className='cfd-trade-modal__download-center-app'>
                 {desktopDownloadOptions.map((option, index) => (
                     <div
-                        key={index}
+                        key={`${option.icon}-${index}`}
                         className={`cfd-trade-modal__download-center-app--option ${
                             index > 0 ? 'cfd-trade-modal__download-center-app--option-hide' : ''
                         }`}
@@ -30,7 +30,7 @@ const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: any) => {
                             rel='noopener noreferrer'
                         >
                             <Text size='xxs' weight='bold' color='prominent'>
-                                {option.button_text || localize('Download')}
+                                {option.button_text}
                             </Text>
                         </a>
                     </div>
@@ -67,7 +67,12 @@ const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: any) => {
                 </div>
 
                 <div className='cfd-trade-modal__download-center-options--qrcode cfd-trade-modal__download-center-options--qrcode-hide'>
-                    <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
+                    <img
+                        alt='mt5 download qr'
+                        src={getUrlBase('/public/images/common/mt5_download.png')}
+                        width={80}
+                        height={80}
+                    />
                     <Text align='center' size='xxs'>
                         {localize('Scan the QR code to download {{ platform }}.', {
                             platform: getPlatformSettings('mt5').name,

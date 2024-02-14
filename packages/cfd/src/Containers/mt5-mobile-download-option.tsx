@@ -11,13 +11,14 @@ const MT5MobileDownloadOption = (mt5_trade_account: any) => {
         <div className='mt5-download-container'>
             {mobileDownloadOptions.map((option, index) => (
                 <div
-                    key={index}
+                    key={`${option.icon}-${index}`}
                     className='mt5-download-container--option'
                     onClick={() => {
                         if (option.href) {
                             window.open(option.href, '_blank');
                         }
                     }}
+                    role='button'
                 >
                     <Icon icon={option.icon} size={16} />
                     <Text as='p' align='left' size='xxs' weight='bold'>

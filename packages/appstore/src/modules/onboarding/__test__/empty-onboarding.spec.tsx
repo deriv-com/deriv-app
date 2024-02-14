@@ -11,6 +11,20 @@ jest.mock('Assets/svgs/trading-platform', () => ({
     default: () => <div>DerivLogo</div>,
 }));
 
+
+jest.mock('@deriv-com/analytics', () => ({
+    Analytics: {
+        getFeatureValue: jest.fn(),
+        getInstances: jest.fn().mockReturnValue({
+            ab: {
+                GrowthBook: {
+                    setRenderer: jest.fn(),
+                },
+            },
+        }),
+    },
+}));
+
 describe('EmptyOnboarding test cases:', () => {
     it('Should render component', () => {
         const { container } = render(<EmptyOnboarding />);

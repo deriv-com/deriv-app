@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Text } from '@deriv/components';
+import { Button, Text, UILoader } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from '../../../Stores/useTraderStores';
@@ -45,7 +45,7 @@ const MarketIsClosedOverlay = ({
             <Text as='p' className='market-is-closed-overlay__main-heading' color='prominent' weight='bold'>
                 <Localize i18n_default_text='This market is closed' />
             </Text>
-            <React.Suspense fallback={<div />}>
+            <React.Suspense fallback={<UILoader />}>
                 <MarketCountdownTimer
                     is_main_page
                     setIsTimerLoading={setIsTimerLoading}

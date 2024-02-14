@@ -4,9 +4,9 @@ import { useDevice } from '@/hooks';
 import { MyAdsTable } from './MyAdsTable';
 
 const MyAds = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     return (
-        <div className={clsx('flex flex-col h-full', { 'h-[calc(100vh-12rem)]': isMobile })}>
+        <div className={clsx('flex flex-col', { 'h-[calc(100vh-12rem)]': isMobile }, { 'h-full': isDesktop })}>
             <MyAdsTable />
         </div>
     );

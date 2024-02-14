@@ -73,7 +73,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='SVG'
@@ -100,7 +100,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='MALTA'
@@ -127,7 +127,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='MALTA'
@@ -154,7 +154,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='MALTA'
@@ -181,7 +181,7 @@ describe('WalletListCard', () => {
 
         render(
             <Router history={history}>
-                <APIProvider>
+                <APIProvider standalone>
                     <AuthProvider>
                         <WalletListCard
                             badge='MALTA'

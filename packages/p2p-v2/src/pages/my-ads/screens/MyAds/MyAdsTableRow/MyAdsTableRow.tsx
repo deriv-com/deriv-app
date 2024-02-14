@@ -1,10 +1,9 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { PopoverDropdown } from '@/components';
+import { PaymentMethodLabel, PopoverDropdown } from '@/components';
 import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
 import { useDevice } from '@/hooks';
-import { generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
-import { formatMoney } from '@/utils/currency';
+import { formatMoney, generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
 import { useExchangeRateSubscription } from '@deriv/api';
 import { Button, Text, Tooltip } from '@deriv-com/ui';
 //TODO: Replace with quill icons once available
@@ -161,13 +160,14 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                         </div>
                     </Text>
                 </div>
-                <div className='p2p-v2-my-ads-table-row__line-methods'>
-                    {payment_method_names?.map(payment_method => (
-                        <div className='p2p-v2-my-ads-table-row__payment-method--label' key={payment_method}>
-                            <Text color={adPauseColor} size='xs'>
-                                {payment_method}
-                            </Text>
-                        </div>
+                <div className='p2p-v2-my-ads-table-row__line-methods gap-2'>
+                    {payment_method_names?.map(paymentMethod => (
+                        <PaymentMethodLabel
+                            color={adPauseColor}
+                            key={paymentMethod}
+                            paymentMethodName={paymentMethod}
+                            size='xs'
+                        />
                     ))}
                 </div>
             </div>
@@ -200,13 +200,14 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                 />
                 {remaining_amount_display}/{amount_display} {account_currency}
             </Text>
-            <div className='p2p-v2-my-ads-table-row__payment-method'>
+            <div className='flex flex-wrap gap-2'>
                 {payment_method_names?.map(paymentMethod => (
-                    <div className='p2p-v2-my-ads-table-row__payment-method--label' key={paymentMethod}>
-                        <Text color={adPauseColor} size='sm'>
-                            {paymentMethod}
-                        </Text>
-                    </div>
+                    <PaymentMethodLabel
+                        color={adPauseColor}
+                        key={paymentMethod}
+                        paymentMethodName={paymentMethod}
+                        size='xs'
+                    />
                 ))}
             </div>
             <div className='p2p-v2-my-ads-table-row__actions'>

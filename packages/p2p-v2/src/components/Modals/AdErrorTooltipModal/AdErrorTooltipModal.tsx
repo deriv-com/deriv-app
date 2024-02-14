@@ -77,7 +77,7 @@ const AdErrorTooltipModal = ({
 
     return (
         <Modal
-            className='p2p-v2-ad-error-tooltip-modal'
+            className='p2p-v2-ad-error-tooltip-modal p2p-v2-modal-styles'
             isOpen={isModalOpen}
             onRequestClose={onRequestClose}
             style={customStyles}

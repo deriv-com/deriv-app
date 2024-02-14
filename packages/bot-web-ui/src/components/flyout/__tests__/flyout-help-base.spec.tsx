@@ -1,4 +1,5 @@
 import React from 'react';
+import { configure } from 'mobx';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
@@ -8,6 +9,8 @@ import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import HelpBase from '../help-contents';
+
+configure({ safeDescriptors: false });
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -118,9 +121,7 @@ describe('<HelpBase />', () => {
     });
 
     it('should render the HelpBase component', () => {
-        const { container } = render(<HelpBase />, {
-            wrapper,
-        });
+        const { container } = render(<HelpBase />, { wrapper });
         expect(container).toBeInTheDocument();
     });
 
@@ -128,9 +129,8 @@ describe('<HelpBase />', () => {
         if (mock_DBot_store) {
             mock_DBot_store.flyout_help.should_previous_disable = true;
         }
-        render(<HelpBase />, {
-            wrapper,
-        });
+
+        render(<HelpBase />, { wrapper });
 
         const previous = screen.getByText('Previous');
         expect(previous).toBeInTheDocument();
@@ -141,9 +141,8 @@ describe('<HelpBase />', () => {
         if (mock_DBot_store) {
             mock_DBot_store.flyout_help.should_next_disable = true;
         }
-        render(<HelpBase />, {
-            wrapper,
-        });
+
+        render(<HelpBase />, { wrapper });
 
         const next = screen.getByText('Next');
         expect(next).toBeInTheDocument();
@@ -155,6 +154,7 @@ describe('<HelpBase />', () => {
             mock_DBot_store.flyout_help.help_string = mock_help_string;
             mock_DBot_store.flyout_help.block_type = 'trade_definition';
         }
+
         render(<HelpBase />, { wrapper });
         expect(screen.getByText(mock_help_string.text[0])).toBeInTheDocument();
     });
@@ -164,6 +164,7 @@ describe('<HelpBase />', () => {
             mock_DBot_store.flyout_help.help_string = mock_help_string;
             mock_DBot_store.flyout_help.block_type = 'variables_set';
         }
+
         render(<HelpBase />, { wrapper });
 
         const add = screen.getByText('Add');
@@ -193,7 +194,7 @@ describe('<HelpBase />', () => {
         expect(screen.getByTestId('flyout-block-workspace')).toBeInTheDocument();
     });
 
-    it('should render null if not example type content', () => {
+    it('should render null if no example type content', () => {
         if (mock_DBot_store) {
             mock_DBot_store.flyout_help.help_string = mock_help_string;
             mock_DBot_store.flyout_help.block_type = 'trade_again';
@@ -211,5 +212,35 @@ describe('<HelpBase />', () => {
 
         render(<HelpBase />, { wrapper });
         expect(screen.queryByTestId('flyout-block-workspace')).not.toBeInTheDocument();
+    });
+
+    it('should render onSequenceClick to be called on the next button', () => {
+        const mockOnSequenceClick = jest.fn();
+        if (mock_DBot_store) {
+            mock_DBot_store.flyout_help.help_string = mock_help_string;
+            mock_DBot_store.flyout_help.block_type = 'trade_definition';
+            mock_DBot_store.flyout_help.onSequenceClick = mockOnSequenceClick;
+        }
+
+        render(<HelpBase />, { wrapper });
+
+        const next = screen.getByText('Next');
+        userEvent.click(next);
+        expect(mockOnSequenceClick).toBeCalled();
+    });
+
+    it('should render onSequenceClick to be called on the previous button', () => {
+        const mockOnSequenceClick = jest.fn();
+        if (mock_DBot_store) {
+            mock_DBot_store.flyout_help.help_string = mock_help_string;
+            mock_DBot_store.flyout_help.block_type = 'trade_definition';
+            mock_DBot_store.flyout_help.onSequenceClick = mockOnSequenceClick;
+        }
+
+        render(<HelpBase />, { wrapper });
+
+        const previous = screen.getByText('Previous');
+        userEvent.click(previous);
+        expect(mockOnSequenceClick).toBeCalled();
     });
 });

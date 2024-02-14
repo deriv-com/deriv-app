@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { useWalletAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletListCardDropdown from '../WalletListCardDropdown';
 

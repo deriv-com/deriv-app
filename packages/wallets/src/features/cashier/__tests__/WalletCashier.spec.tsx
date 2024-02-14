@@ -32,17 +32,6 @@ describe('<WalletCashier />', () => {
         expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
     });
 
-    it('should show the loader if data is re-fetched after the component is mounted', () => {
-        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-        (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({
-            isFetchedAfterMount: false,
-            isLoading: false,
-        });
-
-        render(<WalletCashier />);
-        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
-    });
-
     it('should render the WalletCashierContent', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({

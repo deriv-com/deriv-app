@@ -329,7 +329,7 @@ const ResponseHandlers = (() => {
                     reconnectionCounter++;
                     BinarySocket.closeAndOpenNewConnection();
                     BinarySocket.blockRequest(is_server_down);
-                }, reconnectionDelay * reconnectionDelay);
+                }, reconnectionDelay);
                 // If site is up, and there was a reconnection attempted before
             } else if (!is_server_down && reconnectionCounter > 1) {
                 window.location.reload();

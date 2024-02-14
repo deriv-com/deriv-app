@@ -122,13 +122,13 @@ const LOSS: TConfigItem = {
 const LABEL_MARTINGALE_SIZE: TConfigItem = {
     type: 'label',
     label: localize('Size'),
-    description: localize('The size used to multiply the stake after a losing trade for the next trade'),
+    description: localize('The size used to multiply the stake after a losing trade for the next trade.'),
 };
 
 const LABEL_REVERSE_MARTINGALE_SIZE: TConfigItem = {
     type: 'label',
     label: localize('Size'),
-    description: localize('The size used to multiply the stake after a successful trade for the next trade'),
+    description: localize('The size used to multiply the stake after a successful trade for the next trade.'),
 };
 
 const SIZE: TConfigItem = {

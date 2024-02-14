@@ -1,15 +1,14 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { routes } from '@deriv/shared';
+import { isDisabledLandscapeRoute } from '@deriv/shared';
 import './landscape-blocker.scss';
-
-const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [routes.appstore, routes.traders_hub, routes.onboarding, routes.compare_cfds];
 
 const LandscapeBlocker = () => {
     const location = useLocation();
     const pathname = location?.pathname;
+    const is_hidden_landscape_blocker = isDisabledLandscapeRoute(pathname);
 
-    if (DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => pathname.startsWith(route))) return null;
+    if (is_hidden_landscape_blocker) return null;
 
     return (
         <div id='landscape_blocker' className='landscape-blocker'>

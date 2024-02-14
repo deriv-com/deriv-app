@@ -67,11 +67,11 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
         >
             <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
                 {({ handleChange, handleSubmit, values }) => (
-                    <form className='flex flex-col content-center gap-1200' onSubmit={handleSubmit}>
-                        <div className='flex flex-col content-center gap-800 w-[328px]'>
+                    <form className='flex flex-col content-center gap-24' onSubmit={handleSubmit}>
+                        <div className='flex flex-col content-center gap-16 w-[328px]'>
                             <TextField
                                 autoComplete='current-password'
-                                className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
+                                className='h-40 border-solid text-default rounded-xs border-1 border-system-light-active-background'
                                 label='Current investor password'
                                 name='currentPassword'
                                 onChange={handleChange}
@@ -79,14 +79,14 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                             />
                             <TextField
                                 autoComplete='new-password'
-                                className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
+                                className='h-40 border-solid text-default rounded-xs border-xs border-system-light-active-background'
                                 label='New investor password'
                                 name='newPassword'
                                 onChange={handleChange}
                                 value={values.newPassword}
                             />
                         </div>
-                        <div className='flex flex-col content-center gap-800'>
+                        <div className='flex flex-col content-center gap-16'>
                             <Button
                                 disabled={!validPassword(values.currentPassword) || !validPassword(values.newPassword)}
                                 isLoading={changeInvestorPasswordStatus === 'loading'}

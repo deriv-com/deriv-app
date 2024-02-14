@@ -6,7 +6,7 @@ import { Text } from '@deriv-com/ui';
  */
 const DummyComponent = () => {
     return (
-        <div className='bg-system-light-active-background pb-1200'>
+        <div className='bg-system-light-active-background pb-24'>
             <Text weight='bold'>This is a Dummy Component</Text>
         </div>
     );

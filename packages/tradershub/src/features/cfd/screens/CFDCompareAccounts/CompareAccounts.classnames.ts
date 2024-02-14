@@ -1,7 +1,7 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import { ExcludeAllNull } from '@deriv/quill-design';
 
-export const CompareAccountsPlatformLabelClass = cva('bg-system-light-platform-background p-[9px] rounded-t-700', {
+export const CompareAccountsPlatformLabelClass = cva('bg-system-light-platform-background p-[9px] rounded-t-xl', {
     variants: { background: { CTrader: 'bg-[#ffeabf]', MT5: 'bg-[#e6f5ff]', OtherCFDs: 'bg-[#e8fdf8]' } },
 });
 

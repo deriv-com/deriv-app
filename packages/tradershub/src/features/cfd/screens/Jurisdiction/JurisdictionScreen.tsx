@@ -52,7 +52,7 @@ const JurisdictionScreen = ({
                 isDynamicLeverageVisible && '[transform:rotateY(-180deg)] h-[700px] opacity-50'
             )}
         >
-            <div className='flex flex-col py-1000 items-center gap-800 justify-center w-full h-[82%] sm:flex-row sm:py-50'>
+            <div className='flex py-20 items-center gap-16 justify-center w-full h-[82%] sm:flex-col sm:py-50'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}

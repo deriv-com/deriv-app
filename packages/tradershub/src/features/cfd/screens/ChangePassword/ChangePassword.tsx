@@ -16,8 +16,8 @@ const ChangePassword = () => {
         <Modal>
             <Modal.Header title={`Manage ${title} password`} />
             <Modal.Content>
-                <div className='flex flex-col w-[94px] md:w-auto md:p-800 h-[688px]'>
-                    <div className='flex flex-col content-center my-50 mx-auto pt-1200 w-[452px] h-full md:w-full'>
+                <div className='flex flex-col w-[94px] md:w-auto md:p-16 h-[688px]'>
+                    <div className='flex flex-col content-center mx-auto pt-24 w-[452px] h-full md:w-full'>
                         {isDerivX ? (
                             <TradingPlatformChangePasswordScreens platform={platform} />
                         ) : (

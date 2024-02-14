@@ -1,11 +1,13 @@
 .p2p-v2-user-avatar {
-    align-items: center;
-    background-color: #ff444f;
-    border-radius: 50%;
+    position: relative;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    width: fit-content;
+    height: fit-content;
 
     &__short-nickname {
-        color: #fff;
+        position: absolute;
     }
 }

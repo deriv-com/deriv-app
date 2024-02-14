@@ -1,8 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
+import { RadioGroup } from '@/components';
+import { COUNTERPARTIES_DROPDOWN_LIST } from '@/constants';
 import { customStyles } from '../helpers';
-import { RadioGroup } from '../../RadioGroup';
-import { COUNTERPARTIES_DROPDOWN_LIST } from '../../../utils/constants';
 import './BlockUnblockUserFilterModal.scss';
 
 type TBlockUnblockUserFilterModalProps = {

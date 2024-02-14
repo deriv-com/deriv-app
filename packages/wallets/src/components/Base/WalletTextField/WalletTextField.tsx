@@ -12,7 +12,6 @@ export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMes
     label?: string;
     renderLeftIcon?: () => React.ReactNode;
     renderRightIcon?: () => React.ReactNode;
-    shouldShowWarningMessage?: boolean;
     showMessage?: boolean;
 }
 
@@ -31,7 +30,6 @@ const WalletTextField = forwardRef(
             onChange,
             renderLeftIcon,
             renderRightIcon,
-            shouldShowWarningMessage = false,
             showMessage = false,
             ...rest
         }: WalletTextFieldProps,
@@ -82,15 +80,7 @@ const WalletTextField = forwardRef(
                     )}
                 </div>
                 <div className='wallets-textfield__message-container'>
-                    {showMessage && !isInvalid && (
-                        <HelperMessage
-                            inputValue={value}
-                            maxLength={maxLength}
-                            message={message}
-                            messageVariant={messageVariant}
-                        />
-                    )}
-                    {errorMessage && (isInvalid || (!isInvalid && shouldShowWarningMessage)) && (
+                    {errorMessage ? (
                         <HelperMessage
                             inputValue={value}
                             isError={isInvalid}
@@ -98,6 +88,15 @@ const WalletTextField = forwardRef(
                             message={errorMessage as string}
                             messageVariant={isInvalid ? 'error' : 'warning'}
                         />
+                    ) : (
+                        showMessage && (
+                            <HelperMessage
+                                inputValue={value}
+                                maxLength={maxLength}
+                                message={message}
+                                messageVariant={messageVariant}
+                            />
+                        )
                     )}
                 </div>
             </div>

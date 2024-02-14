@@ -120,14 +120,21 @@ export default class AdvertiserPageStore extends BaseStore {
 
     onMount() {
         if (this.advertiser_details_id) {
-            this.advertiser_info_subscription = subscribeWS(
-                {
-                    p2p_advertiser_info: 1,
-                    id: this.advertiser_details_id,
-                    subscribe: 1,
-                },
-                [this.setAdvertiserInfo]
-            );
+            const { advertiser_id, advertiser_info } = this.root_store.general_store;
+
+            if (this.advertiser_details_id === advertiser_id) {
+                this.setIsLoading(false);
+                this.setCounterpartyAdvertiserInfo(advertiser_info);
+            } else {
+                this.advertiser_info_subscription = subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        id: this.advertiser_details_id,
+                        subscribe: 1,
+                    },
+                    [this.setAdvertiserInfo]
+                );
+            }
         }
     }
 

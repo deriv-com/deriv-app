@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { daysSince } from '@/utils';
 import { p2p, useAuthentication, useSettings } from '@deriv/api';
-import { daysSince } from '../utils';
 
 /**
  * Hook to calculate an advertiser's stats based on their information.

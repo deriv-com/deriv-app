@@ -99,6 +99,4 @@ describe('FlyoutBlockGroup', () => {
         userEvent.click(add_button);
         expect(mockAddBlockNode).toHaveBeenCalledWith(mockBlockNode);
     });
-
-    // Add more tests as needed
 });

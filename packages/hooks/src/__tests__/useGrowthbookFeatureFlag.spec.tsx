@@ -2,19 +2,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import useGrowthbookFeatureFlag from '../useGrowthbookFeatureFlag';
 import { Analytics } from '@deriv-com/analytics';
 
-jest.mock('@deriv-com/analytics', () => ({
-    Analytics: {
-        getFeatureValue: jest.fn(),
-        getInstances: jest.fn().mockReturnValue({
-            ab: {
-                GrowthBook: {
-                    setRenderer: jest.fn(),
-                },
-            },
-        }),
-    },
-}));
-
 describe('useGrowthbookFeatureFlag', () => {
     test('Should call getFeatureValue from the package', async () => {
         const { result } = renderHook(() =>

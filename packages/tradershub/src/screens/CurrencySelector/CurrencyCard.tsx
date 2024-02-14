@@ -22,10 +22,10 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
     const { setFieldValue, values } = useFormikContext<{ currency: string }>();
     const isSelected = values.currency === id;
     return (
-        <div className='relative flex justify-center w-1/2 md:w-1/4 my-400'>
+        <div className='relative flex justify-center w-1/2 md:w-1/4 my-8'>
             <button
                 className={qtMerge(
-                    `w-10/12 rounded-400 items-center py-1100 hover:cursor-pointer ${
+                    `w-10/12 rounded-default items-center py-1100 hover:cursor-pointer ${
                         isSelected
                             ? 'outline outline-2 outline-status-light-success'
                             : 'hover:outline outline-1 hover:outline-system-light-less-prominent'

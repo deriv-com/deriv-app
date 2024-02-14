@@ -31,7 +31,7 @@ const Actions = ({ submitDisabled = false }: TActions) => {
     return (
         <div>
             <hr className='opacity-100' />
-            <ButtonGroup className='justify-end p-1200'>
+            <ButtonGroup className='justify-end p-24'>
                 {canGoToPrevStep && (
                     <Button
                         isFullWidth={isMobile}
@@ -43,7 +43,6 @@ const Actions = ({ submitDisabled = false }: TActions) => {
                     </Button>
                 )}
                 <Button
-                    className='bg-solid-coral-700'
                     disabled={submitDisabled}
                     isFullWidth={isMobile}
                     onClick={() => handleSubmit()}

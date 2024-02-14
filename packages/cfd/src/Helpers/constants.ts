@@ -93,7 +93,7 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
         case MOBILE_PLATFORMS.HAUWEI:
             return 'https://appgallery.huawei.com/#/app/C102015329';
         default:
-            return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
+            return '';
     }
 };
 
@@ -116,7 +116,7 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
-const getCTraderWebTerminalLink = (token?: string) => {
+const getCTraderWebTerminalLink = (category?: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 

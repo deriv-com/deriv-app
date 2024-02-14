@@ -38,10 +38,10 @@ const AdditionalInformation = () => {
 
     return (
         <div>
-            <Text as='p' className='my-800' weight='bold'>
+            <Text as='p' className='my-16' weight='bold'>
                 Additional information
             </Text>
-            <div className='flex flex-col gap-1000'>
+            <div className='flex flex-col gap-20'>
                 <Input
                     className='text-body-sm'
                     error={Boolean(errors.phoneNumber && touched.phoneNumber)}
@@ -69,7 +69,7 @@ const AdditionalInformation = () => {
                     value={values.placeOfBirth}
                     variant='comboBox'
                 />
-                <div className='flex items-center justify-between gap-800'>
+                <div className='flex items-center justify-between gap-16'>
                     <Dropdown
                         dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                         label='Tax residence'
@@ -87,7 +87,7 @@ const AdditionalInformation = () => {
                     />
                     <StandaloneCircleInfoRegularIcon />
                 </div>
-                <div className='flex items-center justify-between gap-800'>
+                <div className='flex items-center justify-between gap-16'>
                     <Input
                         className='text-body-sm'
                         isFullWidth

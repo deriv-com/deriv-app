@@ -102,8 +102,16 @@ const ContractDetails = ({
     );
 
     const createLookBacksMarker = (abbreviation?: string) => {
-        const low_spot_text = is_sold ? localize('Low spot') : localize('Indicative low spot');
-        const high_spot_text = is_sold ? localize('High spot') : localize('Indicative high spot');
+        const low_spot_text = is_sold ? (
+            <Localize i18n_default_text='Low spot' />
+        ) : (
+            <Localize i18n_default_text='Indicative low spot' />
+        );
+        const high_spot_text = is_sold ? (
+            <Localize i18n_default_text='High spot' />
+        ) : (
+            <Localize i18n_default_text='Indicative high spot' />
+        );
         return {
             label: abbreviation === INDICATIVE_LOW ? low_spot_text : high_spot_text,
             icon: (

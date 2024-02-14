@@ -81,10 +81,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const switchAccount = useCallback(
         (newLoginid: string) => {
-            // it shouldn't happen, but if it happens, at least do not break application, just log it
             if (newLoginid === loginid) {
-                // eslint-disable-next-line no-console
-                console.error('switchAccount: same loginid');
                 return;
             }
 

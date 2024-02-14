@@ -6,7 +6,7 @@ import {
     useActiveWalletAccount,
     useAuthentication,
     useCashierValidation,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { WalletsActionScreen } from '../../../../components';
 import getWithdrawalLockedDesc from './WithdrawalLockedContent';
 import './WithdrawalLocked.scss';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePOA, usePOI } from '@deriv/api';
+import { usePOA, usePOI } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import './VerificationFailed.scss';

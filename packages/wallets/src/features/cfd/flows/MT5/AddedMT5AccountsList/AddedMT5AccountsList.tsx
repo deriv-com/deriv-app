@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
+import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
 import { InlineMessage, WalletButton, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';

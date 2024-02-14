@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api-v2';
 import { TSocketRequestPayload } from '@deriv/api/types';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';

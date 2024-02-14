@@ -1,14 +1,14 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletListCard from '../WalletListCard';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useBalance: () => ({
-        ...jest.requireActual('@deriv/api').useBalance(),
+        ...jest.requireActual('@deriv/api-v2').useBalance(),
         isLoading: false,
     }),
 }));
@@ -17,15 +17,17 @@ describe('WalletListCard', () => {
     it('should render the demo wallet list card with the correct details', () => {
         render(
             <APIProvider>
-                <WalletListCard
-                    badge='SVG'
-                    balance='1000.00 USD'
-                    currency='USD'
-                    isActive
-                    isDemo
-                    loginid='CR123456'
-                    title='USD'
-                />
+                <AuthProvider>
+                    <WalletListCard
+                        badge='SVG'
+                        balance='1000.00 USD'
+                        currency='USD'
+                        isActive
+                        isDemo
+                        loginid='CR123456'
+                        title='USD'
+                    />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -42,15 +44,17 @@ describe('WalletListCard', () => {
     it('should render the real wallet list card with the correct details', () => {
         render(
             <APIProvider>
-                <WalletListCard
-                    badge='MALTA'
-                    balance='0.0000021 BTC'
-                    currency='BTC'
-                    isActive
-                    isDemo={false}
-                    loginid='CR123456'
-                    title='BTC'
-                />
+                <AuthProvider>
+                    <WalletListCard
+                        badge='MALTA'
+                        balance='0.0000021 BTC'
+                        currency='BTC'
+                        isActive
+                        isDemo={false}
+                        loginid='CR123456'
+                        title='BTC'
+                    />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -70,15 +74,17 @@ describe('WalletListCard', () => {
         render(
             <Router history={history}>
                 <APIProvider>
-                    <WalletListCard
-                        badge='SVG'
-                        balance='1000.00 USD'
-                        currency='USD'
-                        isActive
-                        isDemo
-                        loginid='CR123456'
-                        title='USD'
-                    />
+                    <AuthProvider>
+                        <WalletListCard
+                            badge='SVG'
+                            balance='1000.00 USD'
+                            currency='USD'
+                            isActive
+                            isDemo
+                            loginid='CR123456'
+                            title='USD'
+                        />
+                    </AuthProvider>
                 </APIProvider>
             </Router>
         );
@@ -95,15 +101,17 @@ describe('WalletListCard', () => {
         render(
             <Router history={history}>
                 <APIProvider>
-                    <WalletListCard
-                        badge='MALTA'
-                        balance='0.0000021 BTC'
-                        currency='BTC'
-                        isActive
-                        isDemo={false}
-                        loginid='CR123456'
-                        title='BTC'
-                    />
+                    <AuthProvider>
+                        <WalletListCard
+                            badge='MALTA'
+                            balance='0.0000021 BTC'
+                            currency='BTC'
+                            isActive
+                            isDemo={false}
+                            loginid='CR123456'
+                            title='BTC'
+                        />
+                    </AuthProvider>
                 </APIProvider>
             </Router>
         );
@@ -120,15 +128,17 @@ describe('WalletListCard', () => {
         render(
             <Router history={history}>
                 <APIProvider>
-                    <WalletListCard
-                        badge='MALTA'
-                        balance='0.0000021 BTC'
-                        currency='BTC'
-                        isActive
-                        isDemo={false}
-                        loginid='CR123456'
-                        title='BTC'
-                    />
+                    <AuthProvider>
+                        <WalletListCard
+                            badge='MALTA'
+                            balance='0.0000021 BTC'
+                            currency='BTC'
+                            isActive
+                            isDemo={false}
+                            loginid='CR123456'
+                            title='BTC'
+                        />
+                    </AuthProvider>
                 </APIProvider>
             </Router>
         );
@@ -145,15 +155,17 @@ describe('WalletListCard', () => {
         render(
             <Router history={history}>
                 <APIProvider>
-                    <WalletListCard
-                        badge='MALTA'
-                        balance='0.0000021 BTC'
-                        currency='BTC'
-                        isActive
-                        isDemo={false}
-                        loginid='CR123456'
-                        title='BTC'
-                    />
+                    <AuthProvider>
+                        <WalletListCard
+                            badge='MALTA'
+                            balance='0.0000021 BTC'
+                            currency='BTC'
+                            isActive
+                            isDemo={false}
+                            loginid='CR123456'
+                            title='BTC'
+                        />
+                    </AuthProvider>
                 </APIProvider>
             </Router>
         );
@@ -170,15 +182,17 @@ describe('WalletListCard', () => {
         render(
             <Router history={history}>
                 <APIProvider>
-                    <WalletListCard
-                        badge='MALTA'
-                        balance='0.0000021 BTC'
-                        currency='BTC'
-                        isActive
-                        isDemo={false}
-                        loginid='CR123456'
-                        title='BTC'
-                    />
+                    <AuthProvider>
+                        <WalletListCard
+                            badge='MALTA'
+                            balance='0.0000021 BTC'
+                            currency='BTC'
+                            isActive
+                            isDemo={false}
+                            loginid='CR123456'
+                            title='BTC'
+                        />
+                    </AuthProvider>
                 </APIProvider>
             </Router>
         );

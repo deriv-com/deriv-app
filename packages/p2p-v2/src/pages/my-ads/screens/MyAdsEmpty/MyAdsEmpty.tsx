@@ -1,7 +1,6 @@
 import React from 'react';
-import { useDevice } from '@/hooks';
 import { DerivLightIcCashierNoAdsIcon } from '@deriv/quill-icons';
-import { ActionScreen, Button, Text } from '@deriv-com/ui';
+import { ActionScreen, Button, Text, useDevice } from '@deriv-com/ui';
 
 const MyAdsEmpty = () => {
     const { isMobile } = useDevice();

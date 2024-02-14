@@ -1,28 +1,31 @@
 import React from 'react';
 import './mt5-mobile-download-option.scss';
-import { Icon, Text } from '@deriv/components';
+import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { getDownloadOptions } from '../Helpers/constants';
 
-const MT5MobileDownloadOption = () => {
+const MT5MobileDownloadOption = (mt5_trade_account: any) => {
+    const mobileDownloadOptions = getDownloadOptions(mt5_trade_account).filter(option => option.device === 'mobile');
+
     return (
         <div className='mt5-download-container'>
-            {/* onClick:  mt5 web terminal (autofill login)  */}
-            <div className='mt5-download-container--option'>
-                <Icon icon='IcDesktop' size={16} />
-                <Text as='p' align='left' size='xxs' weight='bold'>
-                    <Localize i18n_default_text='MetaTrader5 web terminal' />
-                </Text>
-                <Icon icon='IcChevronRight' size={16} />
-            </div>
-
-            {/* onClick: have MT5 app ? mt5 app (autofill login) : download center (Playstore/ App Gallery / Appstore) */}
-            <div className='mt5-download-container--option'>
-                <Icon icon='IcMobile' size={16} />
-                <Text as='p' align='left' size='xxs' weight='bold'>
-                    <Localize i18n_default_text='Trade with MT5 mobile app' />
-                </Text>
-                <Icon icon='IcChevronRight' size={16} />
-            </div>
+            {mobileDownloadOptions.map((option, index) => (
+                <div
+                    key={index}
+                    className='mt5-download-container--option'
+                    onClick={() => {
+                        if (option.href) {
+                            window.open(option.href, '_blank');
+                        }
+                    }}
+                >
+                    <Icon icon={option.icon} size={16} />
+                    <Text as='p' align='left' size='xxs' weight='bold'>
+                        <Localize i18n_default_text={option.text} />
+                    </Text>
+                    <Icon icon='IcChevronRight' size={16} />
+                </div>
+            ))}
 
             <Text as='p' size='xxxs'>
                 <Localize
@@ -35,7 +38,13 @@ const MT5MobileDownloadOption = () => {
             <Text as='p' align='center' size='xxs'>
                 <Localize
                     i18n_default_text='For MT5 login issues, visit our <0>Help Centre</0>.'
-                    components={[<strong key={0} className='underlined' />]}
+                    components={[
+                        <StaticUrl
+                            key={0}
+                            className='help-center-link'
+                            href='/help-centre/dmt5/#log-in-to-my-Deriv-MT5-account'
+                        />,
+                    ]}
                 />
             </Text>
         </div>

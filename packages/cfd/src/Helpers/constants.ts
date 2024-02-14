@@ -111,6 +111,55 @@ const getCTraderWebTerminalLink = (category: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
+function getDownloadOptions(mt5_trade_account: any) {
+    const have_mt5_app = true; // temporarily hardcoding until implementation to check if user have mt5 app installed
+
+    const downloadOptions = [
+        {
+            device: 'mobile',
+            icon: 'IcMobile',
+            text: localize('Trade with MT5 mobile app'),
+            href: have_mt5_app ? 'open mt5 app' : 'open download center',
+        },
+        {
+            device: 'mobile',
+            icon: 'IcDesktop',
+            text: localize('MetaTrader5 web terminal'),
+            href: 'redirect',
+        },
+        {
+            device: 'desktop',
+            icon: 'IcRebrandingMt5Logo',
+            text: 'MetaTrader 5 web',
+            button_text: 'Open',
+            href: mt5_trade_account.webtrader_url,
+        },
+        {
+            device: 'desktop',
+            icon: 'IcWindowsLogo',
+            text: localize('MetaTrader 5 Windows app'),
+            button_text: 'Download',
+            href: mt5_trade_account?.white_label?.download_links?.windows,
+        },
+        {
+            device: 'desktop',
+            icon: 'IcMacosLogo',
+            text: localize('MetaTrader 5 macOS app'),
+            button_text: 'Download',
+            href: getPlatformMt5DownloadLink('macos'),
+        },
+        {
+            device: 'desktop',
+            icon: 'IcLinuxLogo',
+            text: localize('MetaTrader 5 Linux app'),
+            button_text: 'Learn more',
+            href: getPlatformMt5DownloadLink('linux'),
+        },
+    ];
+
+    return downloadOptions;
+}
+
 export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
@@ -126,4 +175,5 @@ export {
     platformsIcons,
     getTitle,
     getTopUpConfig,
+    getDownloadOptions,
 };

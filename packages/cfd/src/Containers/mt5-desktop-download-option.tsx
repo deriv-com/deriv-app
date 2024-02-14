@@ -2,94 +2,41 @@ import React from 'react';
 import './mt5-mobile-download-option.scss';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getDownloadOptions, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
 
 const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: any) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const desktopDownloadOptions = getDownloadOptions(mt5_trade_account).filter(option => option.device === 'desktop');
+
     return (
         <>
             <div className='cfd-trade-modal__download-center-app'>
-                <div className='cfd-trade-modal__download-center-app--option'>
-                    <Icon icon='IcRebrandingMt5Logo' size={32} />
-                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {localize('MetaTrader 5 web')}
-                    </Text>
-                    <a
-                        className='dc-btn cfd-trade-modal__download-center-app--option-link'
-                        type='button'
-                        href={mt5_trade_account.webtrader_url}
-                        target='_blank'
-                        rel='noopener noreferrer'
+                {desktopDownloadOptions.map((option, index) => (
+                    <div
+                        key={index}
+                        className={`cfd-trade-modal__download-center-app--option ${
+                            index > 0 ? 'cfd-trade-modal__download-center-app--option-hide' : ''
+                        }`}
                     >
-                        <Text size='xxs' weight='bold' color='prominent'>
-                            {localize('Open')}
+                        <Icon icon={option.icon} size={32} />
+                        <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
+                            {option.text}
                         </Text>
-                    </a>
-                </div>
-
-                <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
-                    <Icon icon='IcWindowsLogo' size={32} />
-                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {localize('MetaTrader 5 Windows app')}
-                    </Text>
-                    <a
-                        className='dc-btn cfd-trade-modal__download-center-app--option-link'
-                        type='button'
-                        href={mt5_trade_account?.white_label?.download_links?.windows}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Text size='xxs' weight='bold' color='prominent'>
-                            {localize('Download')}
-                        </Text>
-                    </a>
-                </div>
-
-                <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
-                    <Icon icon='IcMacosLogo' size={32} />
-                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {localize('MetaTrader 5 MacOS app')}
-                    </Text>
-                    <a
-                        className='dc-btn cfd-trade-modal__download-center-app--option-link'
-                        type='button'
-                        href={getPlatformMt5DownloadLink('macos')}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Text size='xxs' weight='bold' color='prominent'>
-                            {localize('Download')}
-                        </Text>
-                    </a>
-                </div>
-                <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
-                    <Icon icon='IcLinuxLogo' size={32} />
-                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {localize('MetaTrader 5 Linux app')}
-                    </Text>
-                    <a
-                        className='dc-btn cfd-trade-modal__download-center-app--option-link'
-                        type='button'
-                        href={getPlatformMt5DownloadLink('linux')}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Text size='xxs' weight='bold' color='prominent'>
-                            {localize('Learn more')}
-                        </Text>
-                    </a>
-                </div>
+                        <a
+                            className='dc-btn cfd-trade-modal__download-center-app--option-link'
+                            type='button'
+                            href={option.href}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
+                            <Text size='xxs' weight='bold' color='prominent'>
+                                {option.button_text || localize('Download')}
+                            </Text>
+                        </a>
+                    </div>
+                ))}
             </div>
-            <Text
-                align='center'
-                as='div'
-                className='cfd-trade-modal__download-center-text'
-                size={is_mobile ? 'xxxs' : 'xxs'}
-                weight='bold'
-            >
+            <Text align='center' as='div' className='cfd-trade-modal__download-center-text' size='xxs' weight='bold'>
                 {localize(
                     'Download {{ platform }} on your phone to trade with the {{ platform }} {{ account }} account',
                     {
@@ -132,4 +79,4 @@ const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: any) => {
     );
 };
 
-export default observer(MT5MobileDownloadOption);
+export default MT5MobileDownloadOption;

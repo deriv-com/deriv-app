@@ -186,7 +186,7 @@ const DMT5TradeModal = observer(
                 {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
 
                 {is_mobile ? (
-                    <MT5MobileDownloadOption />
+                    <MT5MobileDownloadOption redirect={mt5_trade_account} />
                 ) : (
                     <MT5DesktopDownloadOption account_title={getAccountTitle()} mt5_trade_account />
                 )}

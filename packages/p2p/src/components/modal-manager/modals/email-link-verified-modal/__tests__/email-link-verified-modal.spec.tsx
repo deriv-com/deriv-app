@@ -18,6 +18,9 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     order_store: {
         order_information: {
+            advertiser_details: {
+                name: 'John Doe',
+            },
             amount_display: 100,
             is_buy_order_for_user: true,
             local_currency: 'USD',
@@ -47,10 +50,10 @@ describe('<EmailLinkVerifiedModal />', () => {
     it('should render EmailLinkVerifiedModal', () => {
         render(<EmailLinkVerifiedModal />);
 
-        expect(screen.getByText("We've verified your order")).toBeInTheDocument();
+        expect(screen.getByText('One last step before we close this order')).toBeInTheDocument();
         expect(
             screen.getByText(
-                "Please ensure you've received 120.00 USD in your account and hit Confirm to complete the transaction."
+                'If you’ve received 120.00 USD from John Doe in your bank account or e-wallet, hit the button below to complete the order.'
             )
         ).toBeInTheDocument();
     });

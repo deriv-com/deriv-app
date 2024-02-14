@@ -5,11 +5,13 @@ import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from 'Utils/format-value';
+import { getIconSize, getTextSize } from 'Utils/responsive';
 
 const EmailLinkVerifiedModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { order_store } = useStores();
-    const { amount_display, is_buy_order_for_user, local_currency, rate } = order_store.order_information || {};
+    const { advertiser_details, amount_display, is_buy_order_for_user, local_currency, rate } =
+        order_store.order_information || {};
     const amount = removeTrailingZeros(
         formatMoney(local_currency, amount_display * Number(roundOffDecimal(rate, setDecimalPlaces(rate, 6))), true)
     );
@@ -19,20 +21,26 @@ const EmailLinkVerifiedModal = () => {
             {order_store.order_information && (
                 <Modal is_open={is_modal_open} renderTitle={() => <></>} toggleModal={hideModal} width='440px'>
                     <Modal.Body className='email-link-verified-modal'>
-                        <Icon icon='IcEmailVerificationLinkValid' size='128' />
-                        <Text className='email-link-verified-modal__text' color='prominent' weight='bold'>
-                            <Localize i18n_default_text="We've verified your order" />
+                        <Icon icon='IcEmailVerificationLinkValid' size={getIconSize(96, 128)} />
+                        <Text
+                            align='center'
+                            className='email-link-verified-modal__text'
+                            color='prominent'
+                            size={getTextSize('xs', 's')}
+                            weight='bold'
+                        >
+                            <Localize i18n_default_text='One last step before we close this order' />
                         </Text>
-                        <Text align='center' color='prominent'>
+                        <Text align='center' color='prominent' size={getTextSize('xs', 's')}>
                             <Localize
-                                i18n_default_text="Please ensure you've received {{amount}} {{local_currency}} in your account and hit Confirm to complete the transaction."
-                                values={{ amount, local_currency }}
+                                i18n_default_text='If you’ve received {{amount}} {{local_currency}} from {{name}} in your bank account or e-wallet, hit the button below to complete the order.'
+                                values={{ amount, local_currency, name: advertiser_details?.name }}
                             />
                         </Text>
                     </Modal.Body>
                     <Modal.Footer className='email-link-verified-modal__footer'>
                         <Button
-                            large
+                            medium
                             primary
                             onClick={() => {
                                 hideModal({ should_hide_all_modals: true });

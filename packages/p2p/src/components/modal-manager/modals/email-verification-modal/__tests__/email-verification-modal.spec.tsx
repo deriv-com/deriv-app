@@ -58,14 +58,15 @@ describe('EmailVerificationModal />', () => {
     it('should render EmailVerificationModal', () => {
         render(<EmailVerificationModal />);
 
-        expect(screen.getByText('Check your email')).toBeInTheDocument();
+        expect(screen.getByText('Has the buyer paid you?')).toBeInTheDocument();
         expect(
-            screen.getByText('Hit the link in the email we sent you to authorise this transaction.')
+            screen.getByText(
+                'Releasing funds before receiving payment may result in losses. Check your email and follow the instructions within 10 minutes to release the funds.'
+            )
         ).toBeInTheDocument();
-        expect(screen.getByText('The link will expire in 10 minutes.')).toBeInTheDocument();
     });
 
-    it('should be able to click on didn`t receive email and setShouldShowReasonsIfNoEmail should be passing true', () => {
+    it('should be able to click on I didn’t receive the email and setShouldShowReasonsIfNoEmail should be passing true', () => {
         const setShouldShowReasonsIfNoEmailMock = jest.spyOn(React, 'useState');
         (setShouldShowReasonsIfNoEmailMock as jest.Mock).mockImplementation(initial_value => [
             initial_value,
@@ -74,7 +75,7 @@ describe('EmailVerificationModal />', () => {
 
         render(<EmailVerificationModal />);
 
-        const didntReceiveEmailText = screen.getByText("Didn't receive the email?");
+        const didntReceiveEmailText = screen.getByText('I didn’t receive the email');
 
         userEvent.click(didntReceiveEmailText);
 

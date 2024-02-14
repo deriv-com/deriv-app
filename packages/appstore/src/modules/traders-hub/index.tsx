@@ -126,7 +126,7 @@ const TradersHub = observer(() => {
     };
 
     return (
-        <>
+        <React.Fragment>
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
                     'traders-hub--mobile--eu-user': is_eu_user,
@@ -176,7 +176,7 @@ const TradersHub = observer(() => {
                     </Text>
                 </div>
             )}
-        </>
+        </React.Fragment>
     );
 });
 

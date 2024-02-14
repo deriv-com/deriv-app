@@ -17,8 +17,8 @@ const Onboarding = observer(() => {
         if (!is_landing_company_loaded) {
             return <OnboardingSkeleton />;
         }
-        toggleIsTourOpen(true);
         history.push(routes.traders_hub);
+        toggleIsTourOpen(true);
         if (is_demo_low_risk) {
             selectAccountType('real');
             setPrevAccountType('demo');

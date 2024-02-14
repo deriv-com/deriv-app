@@ -7,7 +7,7 @@ import { useLocalStorage } from 'usehooks-ts';
 
 const TradersHubOnboarding = observer(() => {
     const { traders_hub, ui } = useStore();
-    const { setIsFirstTimeVisit, toggleIsTourOpen } = traders_hub;
+    const { setIsFirstTimeVisit, toggleIsTourOpen, is_tour_open } = traders_hub;
     const { is_dark_mode_on, is_mobile } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
     const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
@@ -17,7 +17,9 @@ const TradersHubOnboarding = observer(() => {
               setWalletsOnboarding('started');
           }
         : () => {
-              toggleIsTourOpen(true);
+              if (!is_tour_open) {
+                  toggleIsTourOpen(true);
+              }
               setIsFirstTimeVisit(false);
           };
 

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 import moment from 'moment';
-import 'moment/min/locales';
 import { Text } from '@deriv/components';
 import { useIsMounted, WS, convertTimeFormat, isMarketClosed } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -154,7 +153,18 @@ const MarketCountdownTimer = observer(
         let opening_time_banner = null;
         if (opening_time) {
             const formatted_opening_time = convertTimeFormat(opening_time);
-            const target_date = moment(new Date()).locale(current_language.toLowerCase()).add(days_offset, 'days');
+            const target_date = moment(new Date());
+            if (!current_language || current_language === 'EN') {
+                target_date.locale('en').add(days_offset, 'days');
+            } else {
+                import(`moment/locale/${current_language.toLowerCase()}`)
+                    .then(() => {
+                        target_date.locale(current_language.toLocaleLowerCase()).add(days_offset, 'days');
+                    })
+                    .catch(() => {
+                        target_date.locale('en').add(days_offset, 'days');
+                    });
+            }
             const opening_date = target_date.format('DD MMM YYYY');
             const opening_day = target_date.format('dddd');
             opening_time_banner = (

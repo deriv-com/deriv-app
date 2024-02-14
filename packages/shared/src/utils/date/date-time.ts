@@ -13,8 +13,10 @@ type TExtendedMoment = typeof moment & {
 
 // Localize moment instance with specific object
 export const initMoment = (lang: string) => {
-    // @ts-expect-error moment/min/locales is not a module
-    return import('moment/min/locales').then(() => moment.locale(lang));
+    if (!lang || lang === 'EN') return moment.locale('en');
+    return import(`moment/locale/${lang.toLowerCase()}`)
+        .then(() => moment.locale(lang.toLocaleLowerCase()))
+        .catch(() => moment.locale('en'));
 };
 
 /**

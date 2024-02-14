@@ -22,7 +22,7 @@ type StaticLinkProps = {
 const StaticLink = ({ children, className, href, staticUrl }: StaticLinkProps) => {
     return (
         <a
-            className={clsx(['underline text-brand-coral py-0 px-4 underline-offset-2', className])}
+            className={clsx('underline text-brand-coral py-0 px-4 underline-offset-2', className)}
             href={href ?? (staticUrl ? getStaticUrl(staticUrl) : '#')}
             rel='noopener noreferrer'
             target='_blank'

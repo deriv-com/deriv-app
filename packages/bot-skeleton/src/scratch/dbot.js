@@ -234,7 +234,7 @@ class DBot {
         if (api_base.is_stopping) return;
 
         try {
-            let code = this.generateCode() + Blockly?.JavaScript?.definitions_?.variables
+            let code = Blockly?.JavaScript?.definitions_?.variables + this.generateCode()
             api_base.is_stopping = false;
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
@@ -325,6 +325,7 @@ class DBot {
                 if (!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
                     break;
                 }
+                ${Blockly?.JavaScript?.definitions_?.mathRandomInt}
             }`;
     }
 

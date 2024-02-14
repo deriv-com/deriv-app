@@ -80,7 +80,7 @@ Blockly.JavaScript.controls_for = block => {
     const increment = Blockly.JavaScript.valueToCode(block, 'BY', Blockly.JavaScript.ORDER_ASSIGNMENT) || '1';
 
     let branch = Blockly.JavaScript.statementToCode(block, 'DO');
-    branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
+    branch = Blockly.Generator.prototype.addLoopTrap(branch, block.id);
 
     let code = '';
 

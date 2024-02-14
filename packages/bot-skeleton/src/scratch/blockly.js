@@ -119,7 +119,7 @@ Blockly.JavaScript.workspaceToCode = function (workspace) {
     // Final scrubbing of whitespace.
     code = code.replace(/^\s+\n/, '');
     code = code.replace(/undefined/g, '');
-    
+
     code = code.replace(/\n\s+$/, '\n');
     code = code.replace(/[ \t]+\n/g, '\n');
     return code;
@@ -145,4 +145,74 @@ Blockly.JavaScript.allNestedComments = function (e) {
 
 Blockly.JavaScript.prefixLines = function (e, t) {
     return t + e.replace(/(?!\n$)\n/g, "\n" + t)
+}
+
+Blockly.JavaScript.provideFunction_ = function (desiredName, code) {
+    if (!this.definitions_[desiredName]) {
+        const functionName = Blockly.JavaScript.variableDB_.getDistinctName(
+            desiredName,
+            Blockly.Names.DEVELOPER_VARIABLE_TYPE,
+        );
+        this.functionNames_[desiredName] = functionName;
+        if (Array.isArray(code)) {
+            code = code.join('\n');
+        }
+        let codeText = code
+            .trim()
+            .replace(this.FUNCTION_NAME_PLACEHOLDER_REGEXP_, functionName);
+        // Change all '  ' indents into the desired indent.
+        // To avoid an infinite loop of replacements, change all indents to '\0'
+        // character first, then replace them all with the indent.
+        // We are assuming that no provided functions contain a literal null char.
+        let oldCodeText;
+        while (oldCodeText !== codeText) {
+            oldCodeText = codeText;
+            codeText = codeText.replace(/^(( {2})*) {2}/gm, '$1\0');
+        }
+        codeText = codeText.replace(/\0/g, this.INDENT);
+        this.definitions_[desiredName] = codeText;
+    }
+    return this.functionNames_[desiredName];
+}
+
+Blockly.JavaScript.getAdjusted = function (
+    block,
+    atId,
+    delta = 0,
+    negate = false,
+    order = Blockly.JavaScript.Order['NONE'],
+) {
+    if (block.workspace.options.oneBasedIndex) {
+        delta--;
+    }
+    const defaultAtIndex = block.workspace.options.oneBasedIndex ? '1' : '0';
+
+    let orderForInput = order;
+    if (delta > 0) {
+        orderForInput = Blockly.JavaScript.Order['ADDITION'];
+    } else if (delta < 0) {
+        orderForInput = Blockly.JavaScript.Order['SUBTRACTION'];
+    } else if (negate) {
+        orderForInput = Blockly.JavaScript.Order['UNARY_NEGATION'];
+    }
+
+    let at = this.valueToCode(block, atId, orderForInput) || defaultAtIndex;
+
+    // Easy case: no adjustments.
+    if (delta === 0 && !negate) {
+        return at;
+    } 
+    // If the index is dynamic, adjust it in code.
+    if (delta > 0) {
+        at = `${at} + ${delta}`;
+    } else if (delta < 0) {
+        at = `${at} - ${-delta}`;
+    }
+    if (negate) {
+        at = delta ? `-(${at})` : `-${at}`;
+    }
+    if (Math.floor(order) >= Math.floor(orderForInput)) {
+        at = `(${at})`;
+    }
+    return at;
 }

@@ -59,7 +59,7 @@ Blockly.JavaScript.controls_forEach = block => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';
 
     let branch = Blockly.JavaScript.statementToCode(block, 'DO');
-    branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
+    branch = Blockly.Generator.prototype.addLoopTrap(branch, block.id);
 
     let code = '';
 

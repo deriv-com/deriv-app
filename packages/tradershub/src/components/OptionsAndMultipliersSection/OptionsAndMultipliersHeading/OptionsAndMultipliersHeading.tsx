@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { CurrencySwitcher, StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useIsEuRegion } from '@deriv/api';
-import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Heading } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
 
 /**
@@ -10,7 +10,6 @@ import { Text } from '@deriv-com/ui';
  * @returns {React.ElementType} The `OptionsAndMultipliersHeading` component.
  */
 const OptionsAndMultipliersHeading = () => {
-    const { isMobile } = useBreakpoint();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
     const { isEU } = useRegulationFlags();
 
@@ -48,7 +47,9 @@ const OptionsAndMultipliersHeading = () => {
     return (
         <div className='flex flex-col items-start justify-between gap-16 lg:flex-row lg:gap-48'>
             <div className='gap-2 lg:flex lg:flex-col'>
-                {!isMobile && <Heading.H4>{title}</Heading.H4>}
+                <div className='d-none lg:block'>
+                    <Heading.H4>{title}</Heading.H4>
+                </div>
                 {description}
             </div>
             <CurrencySwitcher />

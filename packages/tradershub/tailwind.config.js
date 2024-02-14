@@ -15,6 +15,9 @@ module.exports = {
                 '.backface-visible': {
                     'backface-visibility': 'visible',
                 },
+                '.d-none': {
+                    display: 'none',
+                },
             });
         }),
     ],
@@ -492,9 +495,9 @@ module.exports = {
                 disabled: 0.32,
             },
             screens: {
-                lg: { min: '1280px' },
-                md: { max: '1279px', min: '601px' },
                 sm: { max: '600px' },
+                md: { min: '601px' },
+                lg: { min: '1280px' },
                 xl: { min: '1440px' },
             },
             spacing: {

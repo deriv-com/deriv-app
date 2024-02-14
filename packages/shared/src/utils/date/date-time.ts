@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import moment from 'moment';
-import 'moment/min/locales';
 
 type TExtendedMoment = typeof moment & {
     createFromInputFallback: (config: { _d: Date }) => void;
@@ -13,7 +12,10 @@ type TExtendedMoment = typeof moment & {
 };
 
 // Localize moment instance with specific object
-export const initMoment = (lang: string) => moment.locale(lang);
+export const initMoment = (lang: string) => {
+    // @ts-expect-error moment/min/locales is not a module
+    return import('moment/min/locales').then(() => moment.locale(lang));
+};
 
 /**
  * Convert epoch to moment object

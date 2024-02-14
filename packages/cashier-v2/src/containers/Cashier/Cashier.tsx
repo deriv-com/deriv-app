@@ -15,7 +15,7 @@ const Cashier: React.FC<TRouteTypes.TRouteComponent> = ({ routes }) => {
     const { isLoading } = useAuthorize();
     const history = useHistory();
 
-    const onSelectItemHandler = (id: TRouteTypes.TRoutes) => history.push(id);
+    const onSelectItemHandler = (path: TRouteTypes.TRoutes) => history.push(path);
 
     if (isLoading) return <Loader />;
 

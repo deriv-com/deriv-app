@@ -22,7 +22,7 @@ describe('<WithdrawalFiat />', () => {
         await act(async () => {
             render(<WithdrawalFiat verificationCode={verificationCode} />);
             await waitFor(() => {
-                expect(screen.queryByTestId('dt_wallets_loader')).not.toBeInTheDocument();
+                expect(screen.queryByTestId('dt_derivs-loader')).not.toBeInTheDocument();
             });
             const iframe = screen.getByTestId('dt_wallets_withdrawal_fiat_iframe');
             expect(iframe).toHaveAttribute('src', 'https://example.com');
@@ -38,7 +38,7 @@ describe('<WithdrawalFiat />', () => {
         });
 
         render(<WithdrawalFiat verificationCode={verificationCode} />);
-        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
     it('should render the error screen when server responds with error', () => {

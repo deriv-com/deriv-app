@@ -24,19 +24,7 @@ describe('<WalletCashier />', () => {
     it('should show the loader until the response from API has been received', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({
-            isFetchedAfterMount: false,
             isLoading: true,
-        });
-
-        render(<WalletCashier />);
-        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
-    });
-
-    it('should show the loader if data is re-fetched after the component is mounted', () => {
-        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-        (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({
-            isFetchedAfterMount: false,
-            isLoading: false,
         });
 
         render(<WalletCashier />);
@@ -46,7 +34,6 @@ describe('<WalletCashier />', () => {
     it('should render the WalletCashierContent', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({
-            isFetchedAfterMount: true,
             isLoading: false,
         });
 
@@ -57,7 +44,6 @@ describe('<WalletCashier />', () => {
     it('should contain the wallet header when the content is not scrolled', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({
-            isFetchedAfterMount: true,
             isLoading: false,
         });
 
@@ -69,7 +55,6 @@ describe('<WalletCashier />', () => {
     it('should hide the wallet header when content is scrolled', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({
-            isFetchedAfterMount: true,
             isLoading: false,
         });
 

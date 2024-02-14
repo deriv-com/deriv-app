@@ -2,7 +2,7 @@ import React from 'react';
 import { useWS } from '@deriv/shared';
 import { act, renderHook } from '@testing-library/react-hooks';
 import APIProvider from '../APIProvider';
-import AuthProvider from '../authprovider';
+import AuthProvider from '../AuthProvider';
 import useActiveWalletBalance from '../hooks/useActiveWalletBalance';
 
 jest.mock('@deriv/shared');

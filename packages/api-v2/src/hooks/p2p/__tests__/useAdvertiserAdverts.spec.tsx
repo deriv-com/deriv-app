@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useAdvertiserAdverts from '../entity/advert/p2p-advertiser-adverts/useAdvertiserAdverts';
 import useInfiniteQuery from '../../../useInfiniteQuery';
 import APIProvider from '../../../APIProvider';
-import AuthProvider from '../../../authprovider';
+import AuthProvider from '../../../AuthProvider';
 import React from 'react';
 
 jest.mock('../../../useInfiniteQuery', () => jest.fn());

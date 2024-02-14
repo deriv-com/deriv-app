@@ -1,9 +1,9 @@
 /* eslint-disable sort-keys */
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { DummyComponent } from '../components';
+import { DummyComponent, PageContainer } from '../components';
 import { Cashier } from '../containers';
-import { WithdrawalVerificationModule } from '../lib';
+import { CashierOnboardingModule, WithdrawalVerificationModule } from '../lib';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -25,12 +25,20 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
         routes: [
             {
                 path: cashierPathRoutes.cashierDeposit,
-                component: DummyComponent,
+                component: () => (
+                    <PageContainer>
+                        <CashierOnboardingModule />
+                    </PageContainer>
+                ),
                 title: 'Deposit',
             },
             {
                 path: cashierPathRoutes.cashierWithdrawal,
-                component: WithdrawalVerificationModule,
+                component: () => (
+                    <PageContainer>
+                        <WithdrawalVerificationModule />
+                    </PageContainer>
+                ),
                 title: 'Withdrawal',
             },
             {

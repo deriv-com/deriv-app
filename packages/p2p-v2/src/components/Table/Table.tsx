@@ -1,8 +1,8 @@
 import React, { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
+import { useDevice, useFetchMore } from '@/hooks';
 import { Text } from '@deriv-com/ui';
-import { useFetchMore, useDevice } from '@/hooks';
+import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
 import './Table.scss';
 
 type TProps<T> = {
@@ -45,9 +45,9 @@ const Table = <T,>({
     }, [headerRef?.current]);
 
     const { fetchMoreOnBottomReached } = useFetchMore({
+        isFetching,
         loadMore: loadMoreFunction,
         ref: tableContainerRef,
-        isFetching,
     });
 
     return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionScreen, Button, Text } from '@deriv-com/ui';
 import EmailVerification from '../../../assets/images/email-verification.svg';
-import './WithdrawalVerificationRequest.scss';
+import styles from './WithdrawalVerificationRequest.module.scss';
 
 type TProps = {
     sendEmail: () => void;
@@ -9,7 +9,7 @@ type TProps = {
 
 const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
     return (
-        <div className='wallets-withdrawal-verification-request'>
+        <div className={styles.container}>
             <ActionScreen
                 actionButtons={
                     <Button onClick={sendEmail} size='lg'>
@@ -17,7 +17,7 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                     </Button>
                 }
                 description={
-                    <div className='wallets-withdrawal-verification-request__description'>
+                    <div className={styles.description}>
                         <Text align='center'>
                             Click the button below and we&apos;ll send you an email with a link. Click that link to
                             verify your withdrawal request.
@@ -26,10 +26,7 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                     </div>
                 }
                 icon={
-                    <div
-                        className='wallets-withdrawal-verification-request__icon'
-                        data-testid='dt_withdrawal_verification_request_icon'
-                    >
+                    <div className={styles.icon} data-testid='dt_withdrawal_verification_request_icon'>
                         <EmailVerification />
                     </div>
                 }

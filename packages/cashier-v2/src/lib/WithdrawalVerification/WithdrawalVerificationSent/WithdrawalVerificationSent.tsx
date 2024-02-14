@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ActionScreen, Button } from '@deriv-com/ui';
 import EmailSent from '../../../assets/images/email-verification.svg';
-import './WithdrawalVerificationSent.scss';
+import styles from './WithdrawalVerificationSent.module.scss';
 
 type TProps = {
     counter: number;
@@ -12,7 +12,7 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
     const [showResend, setShowResend] = useState(false);
 
     return (
-        <div className='wallets-withdrawal-verification-sent'>
+        <div>
             <ActionScreen
                 actionButtons={
                     !showResend ? (
@@ -30,16 +30,13 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                 }
                 description='Please check your email for the verification link to complete the process.'
                 icon={
-                    <div
-                        className='wallets-withdrawal-verification-sent__icon'
-                        data-testid='dt_withdrawal_verification_sent_icon'
-                    >
+                    <div className={styles.icon} data-testid='dt_withdrawal_verification_sent_icon'>
                         <EmailSent />
                     </div>
                 }
                 title="We've sent you an email."
             />
-            <div className='wallets-withdrawal-verification-sent__resend'>
+            <div className={styles.resend}>
                 {showResend && (
                     <ActionScreen
                         actionButtons={

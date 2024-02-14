@@ -50,6 +50,7 @@ export const OnfidoView = ({
                         '[display:hidden]': !isOnfidoInitialized,
                         'opacity-600 pointer-events-none': !isOnfidoEnabled,
                     })}
+                    data-testid='dt_onfido-element'
                     id={onfidoElementId}
                 />
             </section>

@@ -101,6 +101,7 @@ export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, on
                 {/* TODO: Dummy div here replace with PoiConfirmWithExample */}
                 <div
                     className='border-75 border-solid border-solid-slate-300 rounded-500 w-[200px] sm:w-[638px] h-[384px]'
+                    data-testid='dt_poi-confirm-with-example'
                     onClick={() => setIsOnfidoEnabled(true)}
                     onKeyDown={() => setIsOnfidoEnabled(true)}
                     tabIndex={0}

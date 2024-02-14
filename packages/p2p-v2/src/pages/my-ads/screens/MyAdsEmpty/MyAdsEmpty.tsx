@@ -17,13 +17,13 @@ const MyAdsEmpty = () => {
                 }
                 description={
                     <Text align='center' size={textSize}>
-                        {'Looking to buy or sell USD? You can post your own ad for others to respond.'}
+                        Looking to buy or sell USD? You can post your own ad for others to respond.
                     </Text>
                 }
                 icon={<DerivLightIcCashierNoAdsIcon height='128px' width='128px' />}
                 title={
                     <Text size={textSize} weight='bold'>
-                        {'You have no ads 😞'}
+                        You have no ads 😞
                     </Text>
                 }
             />

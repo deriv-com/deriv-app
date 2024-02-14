@@ -1,13 +1,12 @@
-import React, { memo, PropsWithChildren, useEffect, useState } from 'react';
-import { FullPageMobileWrapper, Table } from '@/components';
+import React, { memo, useEffect, useState } from 'react';
+import { Table } from '@/components';
 import { MyAdsDeleteModal } from '@/components/Modals';
 import { AD_ACTION } from '@/constants';
-import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';
-import { Button, Loader } from '@deriv-com/ui';
+import { Loader } from '@deriv-com/ui';
 import { MyAdsEmpty } from '../../MyAdsEmpty';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
-import { MyAdsToggle } from '../MyAdsToggle';
+import MyAdsDisplayWrapper from './MyAdsDisplayWrapper';
 import './MyAdsTable.scss';
 
 export type TMyAdsTableRowRendererProps = Required<
@@ -46,42 +45,6 @@ const columns = [
         header: 'Status',
     },
 ];
-
-type TMyAdsDisplayWrapperProps = {
-    isPaused: boolean;
-    onClickToggle: () => void;
-};
-
-const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChildren<TMyAdsDisplayWrapperProps>) => {
-    const { isMobile } = useDevice();
-    if (isMobile) {
-        return (
-            <FullPageMobileWrapper
-                renderFooter={() => (
-                    <Button isFullWidth size='lg' textSize='md'>
-                        Create new ad
-                    </Button>
-                )}
-                renderHeader={() => <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />}
-                shouldShowBackIcon={false}
-            >
-                {children}
-            </FullPageMobileWrapper>
-        );
-    }
-
-    return (
-        <>
-            <div className='flex items-center justify-between my-[1.6rem]'>
-                <Button size='lg' textSize='sm'>
-                    Create new ad
-                </Button>
-                <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />
-            </div>
-            {children}
-        </>
-    );
-};
 
 const MyAdsTable = () => {
     const { data = [], isFetching, isLoading, loadMoreAdverts } = p2p.advertiserAdverts.useGet();

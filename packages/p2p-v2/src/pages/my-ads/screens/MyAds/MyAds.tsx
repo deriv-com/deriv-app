@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { useDevice } from '@/hooks';
+import { useDevice } from '@deriv-com/ui';
 import { MyAdsTable } from './MyAdsTable';
 
 const MyAds = () => {

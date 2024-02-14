@@ -1,4 +1,4 @@
-import { OSDetect, getPlatformFromUrl } from '@deriv/shared';
+import { OSDetect, getPlatformFromUrl, mobileOSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
@@ -93,8 +93,17 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
         case MOBILE_PLATFORMS.HAUWEI:
             return 'https://appgallery.huawei.com/#/app/C102015329';
         default:
-            return '';
+            return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
     }
+};
+
+const getMobileAppInstallerURL = () => {
+    if (mobileOSDetect() === 'iOS') {
+        return getPlatformMt5DownloadLink('ios');
+    } else if (/huawei/i.test(navigator.userAgent)) {
+        return getPlatformMt5DownloadLink('huawei');
+    }
+    return getPlatformMt5DownloadLink('android');
 };
 
 const getDXTradeWebTerminalLink = (category: string, token?: string) => {
@@ -107,32 +116,34 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
-const getCTraderWebTerminalLink = (category: string, token?: string) => {
+const getCTraderWebTerminalLink = (token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
-function getDownloadOptions(mt5_trade_account: any) {
-    const have_mt5_app = true; // temporarily hardcoding until implementation to check if user have mt5 app installed
+function getDownloadOptions({ mt5_trade_account }: any) {
+    const have_mt5_app = false; // temporarily hardcoding until implementation to check if user have mt5 app installed
+
+    const deep_link = `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
     const downloadOptions = [
         {
             device: 'mobile',
-            icon: 'IcMobile',
-            text: localize('Trade with MT5 mobile app'),
-            href: have_mt5_app ? 'open mt5 app' : 'open download center',
+            icon: 'IcDesktop',
+            text: localize('MetaTrader5 web terminal'),
+            href: mt5_trade_account?.webtrader_url,
         },
         {
             device: 'mobile',
-            icon: 'IcDesktop',
-            text: localize('MetaTrader5 web terminal'),
-            href: 'redirect',
+            icon: 'IcMobile',
+            text: localize('Trade with MT5 mobile app'),
+            href: have_mt5_app ? deep_link : getMobileAppInstallerURL(),
         },
         {
             device: 'desktop',
             icon: 'IcRebrandingMt5Logo',
             text: 'MetaTrader 5 web',
             button_text: 'Open',
-            href: mt5_trade_account.webtrader_url,
+            href: mt5_trade_account?.webtrader_url,
         },
         {
             device: 'desktop',

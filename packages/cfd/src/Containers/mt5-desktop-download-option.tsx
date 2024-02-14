@@ -4,9 +4,25 @@ import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getDownloadOptions, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv/shared';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: any) => {
-    const desktopDownloadOptions = getDownloadOptions(mt5_trade_account).filter(option => option.device === 'desktop');
+type TMT5TradeModalProps = {
+    account_title: string;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        white_label?: {
+            download_links?: {
+                windows?: string;
+                ios?: string;
+                android?: string;
+            };
+        };
+    };
+};
+
+const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: TMT5TradeModalProps) => {
+    const desktopDownloadOptions = getDownloadOptions({ mt5_trade_account }).filter(
+        option => option.device === 'desktop'
+    );
 
     return (
         <>

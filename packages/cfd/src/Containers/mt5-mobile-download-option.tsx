@@ -3,16 +3,31 @@ import './mt5-mobile-download-option.scss';
 import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getDownloadOptions } from '../Helpers/constants';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-const MT5MobileDownloadOption = (mt5_trade_account: any) => {
-    const mobileDownloadOptions = getDownloadOptions(mt5_trade_account).filter(option => option.device === 'mobile');
+type TMT5TradeModalProps = {
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        white_label?: {
+            download_links?: {
+                windows?: string;
+                ios?: string;
+                android?: string;
+            };
+        };
+    };
+};
+
+const MT5MobileDownloadOption = ({ mt5_trade_account }: TMT5TradeModalProps) => {
+    const mobileDownloadOptions = getDownloadOptions({ mt5_trade_account }).filter(
+        option => option.device === 'mobile'
+    );
 
     return (
         <div className='mt5-download-container'>
             {mobileDownloadOptions.map((option, index) => (
                 <div
-                    key={`${option.icon}-${index}`}
-                    className='mt5-download-container--option'
+                    key={index}
+                    className={`mt5-download-container--option ${index === 1 ? 'blue' : 'grey'}`}
                     onClick={() => {
                         if (option.href) {
                             window.open(option.href, '_blank');

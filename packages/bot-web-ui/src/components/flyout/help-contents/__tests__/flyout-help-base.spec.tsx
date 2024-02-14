@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import HelpBase from '../help-contents';
+import HelpBase from '../flyout-help-base';
 
 configure({ safeDescriptors: false });
 
@@ -71,8 +71,8 @@ const mock_example = [
     },
 ];
 
-jest.mock('../../../utils/help-content/help-content.config', () => ({
-    ...jest.requireActual('../../../utils/help-content/help-content.config'),
+jest.mock('../../../../utils/help-content/help-content.config', () => ({
+    ...jest.requireActual('../../../../utils/help-content/help-content.config'),
     help_content_config: () => mock_help_content_config,
 }));
 

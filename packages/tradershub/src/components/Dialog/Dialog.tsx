@@ -56,7 +56,7 @@ const Dialog = ({ children, className, shouldPreventCloseOnEscape = false }: TDi
     return (
         <div
             className={qtMerge(
-                'flex flex-col gap-1200 mx-auto w-[auto] lg:w-[auto] p-1200 bg-system-light-primary-background rounded-400',
+                'flex flex-col gap-24 mx-auto w-[auto] lg:w-[auto] p-24 bg-system-light-primary-background rounded-default',
                 className
             )}
         >

@@ -34,12 +34,12 @@ type TTooltipProps = {
 const Tooltip = ({ alignment = 'bottom', children, className, message }: TTooltipProps) => {
     return (
         <div className='relative w-max h-max group z-1'>
-            <div className='border rounded-md border-neutral-600'>{children}</div>
+            <div className='border rounded-md border-neutral-12'>{children}</div>
 
             <div className={qtMerge(TooltipClass({ alignment }), className)}>
                 <div className={qtMerge(TooltipPointerClass({ alignment }), className)} />
 
-                <span className='rounded-md bg-system-light-active-background p-200 '>
+                <span className='rounded-md bg-system-light-active-background p-4 '>
                     <Text size='sm'>{message}</Text>
                 </span>
             </div>

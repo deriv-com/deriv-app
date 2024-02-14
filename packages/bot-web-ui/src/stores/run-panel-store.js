@@ -678,6 +678,7 @@ export default class RunPanelStore {
     unregisterBotListeners = () => {
         observer.unregisterAll('bot.running');
         observer.unregisterAll('bot.stop');
+        observer.unregisterAll('bot.click_stop');
         observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');

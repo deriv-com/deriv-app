@@ -61,20 +61,20 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const platformIcon =
         platform === mt5Platform
             ? marketTypeDetails[marketType ?? MarketType.ALL]?.iconWithWidth?.(24)
-            : PlatformDetails[platform as keyof typeof PlatformDetails].icon(24);
+            : PlatformDetails[platform as keyof typeof PlatformDetails]?.icon?.(24);
 
     return (
         <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>
-            <div className='flex flex-col p-1200 gap-800 border-b-100 border-system-light-secondary-background'>
+            <div className='flex flex-col gap-16 p-24 border-b-100 border-system-light-secondary-background'>
                 <div className='flex items-center justify-between w-full'>
                     <div className='flex items-center'>
-                        <div className='mr-400'>{platformIcon}</div>
+                        <div className='mr-8'>{platformIcon}</div>
                         <div className='flex flex-col'>
                             <div className='flex flex-row items-center gap-300'>
                                 <Text size='sm'>
                                     {platform === mt5Platform
-                                        ? marketTypeDetails[marketType ?? MarketType.ALL].title
-                                        : PlatformDetails[platform as keyof typeof PlatformDetails].title}
+                                        ? marketTypeDetails[marketType ?? MarketType.ALL]?.title
+                                        : PlatformDetails[platform as keyof typeof PlatformDetails]?.title}
                                     {platform === mt5Platform &&
                                         !activeAccount?.is_virtual &&
                                         ` ${details?.landing_company_short?.toUpperCase()}`}
@@ -121,7 +121,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                         />
                     )}
                 </div>
-                <div className='flex items-center gap-400'>
+                <div className='flex items-center gap-8'>
                     <ImportantIcon
                         height={platform === mt5Platform ? 16 : 20}
                         width={platform === mt5Platform ? 16 : 20}

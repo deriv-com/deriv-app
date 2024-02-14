@@ -19,13 +19,13 @@ export const DynamicLeverageMarketCard = ({
     max,
     min,
 }: TDynamicLeverageMarketCardProps) => (
-    <div className='overflow-hidden border-75 border-solid rounded-400 border-system-light-less-prominent-text h-[248px] bg-system-light-hover-background'>
-        <div className='flex flex-col pt-500 h-3500 bg-system-light-secondary-background'>
+    <div className='overflow-hidden border-1 border-solid rounded-default border-system-light-less-prominent-text h-[248px] bg-system-light-hover-background'>
+        <div className='flex flex-col pt-10 h-60 bg-system-light-secondary-background'>
             <Text align='center' size='sm' weight='bold'>
                 {displayName}
             </Text>
             {!!instruments.length && (
-                <CaptionText align='center' className='text-[10px]' italic>
+                <CaptionText align='center' className='text-default' italic>
                     {`(${instruments.join(', ')})`}
                 </CaptionText>
             )}
@@ -33,8 +33,8 @@ export const DynamicLeverageMarketCard = ({
                 {`Up to ${min}:${max}`}
             </CaptionText>
         </div>
-        <div className='pb-500'>
-            <div className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center border-b-50 py-200 bg-system-light-hover-background'>
+        <div className='pb-10'>
+            <div className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center py-4 bg-system-light-hover-background'>
                 <DynamicLeverageTableColumnHeader subtitle='(lots)' title='From' />
                 <DynamicLeverageTableColumnHeader subtitle='(lots)' title='to' />
                 <DynamicLeverageTableColumnHeader subtitle='(1:x)' title='Leverage' />
@@ -42,7 +42,7 @@ export const DynamicLeverageMarketCard = ({
             <div>
                 {data?.map(columns => (
                     <div
-                        className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center border-b-50 py-200 even:bg-system-light-hover-background odd:bg-system-light-secondary-background'
+                        className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center py-4 even:bg-system-light-hover-background odd:bg-system-light-secondary-background'
                         key={`${columns.from}-${columns.to}-${columns.leverage}`}
                     >
                         {Object.entries(columns).map(([columnKey, value]) => (

@@ -19,7 +19,7 @@ const MT5MigrationBackSideContent = observer(() => {
     const { setShowModalFrontSide, setShowMigrationError } = useMT5MigrationModalContext();
     const formik_ref = React.useRef<FormikProps<TCFDPasswordFormValues>>(null);
 
-    const initial_values = {
+    const initial_values: TCFDPasswordFormValues = {
         password: '',
     };
 
@@ -34,7 +34,7 @@ const MT5MigrationBackSideContent = observer(() => {
         toggleMT5MigrationModal();
     };
 
-    const onConfirmMigration = (values: typeof initial_values, actions: FormikHelpers<typeof initial_values>) => {
+    const onConfirmMigration = (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => {
         submitMt5Password(values, actions).then(() => {
             if (!formik_ref.current?.status?.success) {
                 setShowMigrationError(true);
@@ -92,10 +92,10 @@ const MT5MigrationBackSideContent = observer(() => {
                             <React.Fragment>
                                 <div className='mt5-migration-modal__password-header-container'>
                                     <Text as='p' weight='bold' size={header_size} align='center'>
-                                        <Localize i18n_default_text=' Enter your Deriv MT5 password' />
+                                        <Localize i18n_default_text='Enter your Deriv MT5 password' />
                                     </Text>
                                     <Text as='p' size={content_size} align='center'>
-                                        Enter your Deriv MT5 password to upgrade your account(s).
+                                        <Localize i18n_default_text='Enter your Deriv MT5 password to upgrade your account(s).' />
                                     </Text>
                                 </div>
                                 <div className='mt5-migration-modal__password-input-container'>
@@ -117,7 +117,7 @@ const MT5MigrationBackSideContent = observer(() => {
                                 </div>
                                 <div className='mt5-migration-modal__password-forgot-container'>
                                     <Button type='button' large secondary onClick={onForgotPassword}>
-                                        Forgot password?
+                                        <Localize i18n_default_text='Forgot password?' />
                                     </Button>
                                 </div>
                             </React.Fragment>
@@ -127,7 +127,7 @@ const MT5MigrationBackSideContent = observer(() => {
                         <FormSubmitButton
                             is_disabled={!!errors.password || isSubmitting}
                             is_absolute={is_mobile}
-                            label='Upgrade'
+                            label={localize('Upgrade')}
                         />
                     </Modal.Footer>
                 </form>

@@ -1,0 +1,30 @@
+name: Remote Config Backup Download
+description: Download remote config backup
+inputs:
+  REMOTE_CONFIG_URL:
+    description: "Remote config backup URL"
+    required: true
+  GITHUB_TOKEN:
+    description: "Github token"
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Download remote config backup
+      run: |
+        echo "Downloading remote config backup"
+        curl ${{ inputs.REMOTE_CONFIG_URL }} > packages/api/features.json
+        
+      shell: bash
+    - name: commit changes
+      if: github.ref == 'refs/heads/master'
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+      run: |
+        git config --global user.email "web-access@deriv.com"
+        git config --global user.name "deriv-bot"
+        git add packages/api/features.json
+        git commit -m "ci: download remote config backup [skip ci]"  || echo "No changes to commit"
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@${{ github.server_url }}/${{ github.repository }}.git
+        git push
+      shell: bash

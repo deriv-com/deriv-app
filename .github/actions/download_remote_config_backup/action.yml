@@ -14,7 +14,7 @@ runs:
       run: |
         echo "Downloading remote config backup"
         curl ${{ inputs.REMOTE_CONFIG_URL }} > packages/api/features.json
-        
+        echo "Remote Config backup downloaded successfully!"
       shell: bash
     - name: commit changes
       if: github.ref == 'refs/heads/master'

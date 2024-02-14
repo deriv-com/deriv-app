@@ -317,10 +317,13 @@ const ResponseHandlers = (() => {
         if (response.website_status) {
             const is_server_down = checkServerMaintenance(response.website_status);
 
-            // If site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt.
-            // Starts off with 1.024 seconds and grow exponentially.
+            // If the site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt.
+            // Requests excluding - website_status/authorize will be blocked during backoff
+            // The delay starts off at approximately 1.024 seconds and grows exponentially, with a random factor between 0.5 and 2 to spread out the reconnection attempts.
+            // The maximum delay is capped at 10 minutes (600k ms).
             if (is_server_down) {
-                const reconnectionDelay = Math.min(Math.pow(2, reconnectionCounter + 9), 600000);
+                const reconnectionDelay =
+                    Math.min(Math.pow(2, reconnectionCounter + 9), 600000) * (0.5 + Math.random() * 1.5);
 
                 window.setTimeout(() => {
                     reconnectionCounter++;

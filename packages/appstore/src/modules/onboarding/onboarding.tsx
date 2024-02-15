@@ -48,7 +48,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         useTradersHubTracking();
 
     // Growthbook ab/test experiment with onboarding flow
-    const growthbook_experiment_skip_onboarding_flow = useGrowthbookFeatureFlag({
+    const growthbook_ab_test_skip_onboarding_flow = useGrowthbookFeatureFlag({
         featureFlag: 'skip-onboarding-flow',
         defaultValue: false,
     });
@@ -135,7 +135,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         return <EmptyOnboarding />;
     }
 
-    if ((is_logged_in && is_from_signup_account && is_eu_user) || growthbook_experiment_skip_onboarding_flow) {
+    if ((is_logged_in && is_from_signup_account && is_eu_user) || growthbook_ab_test_skip_onboarding_flow) {
         history.push(routes.traders_hub);
     }
 

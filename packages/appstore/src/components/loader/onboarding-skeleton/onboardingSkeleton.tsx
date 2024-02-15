@@ -2,7 +2,7 @@ import React from 'react';
 import CfdAppSkeleton from '../cfd-app-skeleton/cfdAppSkeleton';
 import CFDToggleSkeleton from '../cfd-toggle-skeleton/cfdToggleSkeleton';
 import HeaderSkeleton from '../header-skeleton/headerSkeleton';
-import Mt5TitleLSkeleton from '../mt5-title-skeleton/mt5TitleSkeleton';
+import Mt5TitleSkeleton from '../mt5-title-skeleton/mt5TitleSkeleton';
 import OptionsAndMultipliersSkeleton from '../options-and-multipliers-skeleton/optionsAndMultipliers';
 import TitleSkeleton from '../title-skeleton/titleSkeleton';
 import TotalAssetSkeleton from '../total-asset-skeleton/totalAssetSkeleton';
@@ -35,7 +35,7 @@ const OnboardingSkeleton = () => (
             </div>
             <div className='onboarding-skeleton__content--cfds'>
                 <CfdAppSkeleton />
-                <Mt5TitleLSkeleton />
+                <Mt5TitleSkeleton />
                 <div className='onboarding-skeleton__content--cfds--platforms'>
                     <TradingAppCardSkeletonBox />
                 </div>

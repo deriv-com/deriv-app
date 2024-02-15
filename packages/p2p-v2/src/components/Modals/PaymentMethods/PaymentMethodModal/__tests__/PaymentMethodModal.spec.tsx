@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { render, screen } from '@testing-library/react';
-import PaymentMethodModal from '../PaymentMethodModal';
 import userEvent from '@testing-library/user-event';
+import PaymentMethodModal from '../PaymentMethodModal';
 
 const wrapper = ({ children }: PropsWithChildren<unknown>) => <div id='v2_modal_root'>{children}</div>;
 

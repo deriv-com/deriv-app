@@ -20,6 +20,7 @@ import {
     isHighLow,
     isMobile,
     isMultiplierContract,
+    checkServerMaintenance,
     isTurbosContract,
     LocalStore,
     routes,
@@ -331,7 +332,9 @@ export default class NotificationStore extends BaseStore {
 
         let has_missing_required_field;
 
-        if (website_status?.message?.length) {
+        const is_server_down = checkServerMaintenance(website_status);
+
+        if (website_status?.message?.length || is_server_down) {
             this.addNotificationMessage(this.client_notifications.site_maintenance);
         } else {
             this.removeNotificationByKey({ key: this.client_notifications.site_maintenance });
@@ -1461,6 +1464,7 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Go to my account settings'),
                 },
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
             },
             svg_needs_poa: {
                 key: 'svg_needs_poa',
@@ -1485,6 +1489,7 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Submit proof of identity'),
                 },
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
             },
             svg_poi_expired: {
                 key: 'svg_poi_expired',

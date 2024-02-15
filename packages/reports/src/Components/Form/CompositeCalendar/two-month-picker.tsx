@@ -64,9 +64,8 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
     };
 
     const jumpToCurrentMonth = () => {
-        const current_month = toMoment().endOf('month');
-        setLeftPaneDate(toMoment(current_month).endOf('month').subtract(1, 'month'));
-        setRightPaneDate(current_month);
+        setLeftPaneDate(toMoment().subtract(1, 'month'));
+        setRightPaneDate(toMoment());
     };
 
     const updateSelectedDate = (e: React.MouseEvent<HTMLElement>) => {
@@ -81,8 +80,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
                     calendar_view='date'
                     navigateTo={navigateFrom}
                     isPeriodDisabled={validateFromArrows}
-                    hide_disabled_periods={true}
-                    switchView={() => ({})}
+                    hide_disabled_periods
                 />
                 <Calendar.Body
                     calendar_view='date'
@@ -90,7 +88,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
                     selected_date={value}
                     date_format='YYYY-MM-DD'
                     isPeriodDisabled={shouldDisableDate}
-                    hide_others={true}
+                    hide_others
                     updateSelected={updateSelectedDate}
                 />
             </div>
@@ -101,7 +99,6 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
                     isPeriodDisabled={validateToArrows}
                     navigateTo={navigateTo}
                     hide_disabled_periods
-                    switchView={() => ({})}
                 />
                 <Calendar.Body
                     calendar_view='date'
@@ -112,7 +109,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
                     hide_others
                     updateSelected={updateSelectedDate}
                 />
-                <Calendar.Footer use_icon='IcCalendarForwardToday' has_today_btn={true} onClick={jumpToCurrentMonth} />
+                <Calendar.Footer use_icon='IcCalendarForwardToday' has_today_btn onClick={jumpToCurrentMonth} />
             </div>
         </React.Fragment>
     );

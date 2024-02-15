@@ -30,14 +30,14 @@ const JurisdictionScreen = ({
         () =>
             availableMT5Accounts
                 ?.filter(account => account.market_type === marketType)
-                .map(account => account.shortcode) || [],
+                .map(account => account.shortcode) ?? [],
         [availableMT5Accounts, marketType]
     );
     const addedJurisdictions = useMemo(
         () =>
             mt5AccountsList
                 ?.filter(account => account.market_type === marketType && !account.is_virtual)
-                .map(account => account.landing_company_short) || [],
+                .map(account => account.landing_company_short) ?? [],
         [marketType, mt5AccountsList]
     );
 
@@ -48,16 +48,17 @@ const JurisdictionScreen = ({
     return (
         <div
             className={qtMerge(
-                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-1500 sm:h-[75vh] transition-all ease-in duration-[0.6s]',
-                isDynamicLeverageVisible && '[transform:rotateY(-180deg)] h-[700px] opacity-50'
+                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-30 sm:h-[75vh] transition-all ease-in duration-[0.6s]',
+                isDynamicLeverageVisible &&
+                    '[transform:rotateY(-180deg)] h-[700px] opacity-50 bg-system-light-primary-background'
             )}
         >
-            <div className='flex py-20 items-center gap-16 justify-center w-full h-[82%] sm:flex-col sm:py-50'>
+            <div className='flex lg:flex-row lg:py-20 items-center gap-16 justify-center w-full h-[82%] flex-col py-0'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}
                         isSelected={selectedJurisdiction === jurisdiction}
-                        jurisdiction={jurisdiction || Jurisdiction.BVI}
+                        jurisdiction={jurisdiction ?? Jurisdiction.BVI}
                         key={jurisdiction}
                         onSelect={clickedJurisdiction => {
                             if (clickedJurisdiction === selectedJurisdiction) {

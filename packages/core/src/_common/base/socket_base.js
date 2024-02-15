@@ -40,6 +40,8 @@ const BinarySocketBase = (() => {
 
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
+    const blockRequest = value => deriv_api?.blockRequest(value);
+
     const close = () => {
         binary_socket.close();
     };
@@ -435,6 +437,7 @@ const BinarySocketBase = (() => {
         },
         cache: delegateToObject({}, () => deriv_api.cache),
         storage: delegateToObject({}, () => deriv_api.storage),
+        blockRequest,
         buy,
         buyAndSubscribe,
         sell,

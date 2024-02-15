@@ -430,3 +430,56 @@
         }
     }
 }
+
+.cfd-password-change {
+    &-list {
+        list-style: disc;
+        margin-top: 0.4rem;
+        &-container {
+            padding-left: 1.5rem;
+            font-size: 1.6rem;
+            color: var(--text-general);
+        }
+    }
+    &-modal {
+        &-description {
+            margin-bottom: 1rem;
+            @include mobile {
+                margin: 1rem 1rem 2rem;
+                &--button {
+                    display: flex;
+                    width: 100%;
+                }
+                &--footer {
+                    padding: 1rem 1.6rem;
+                    border-top: 1px solid #e9eced;
+                }
+            }
+        }
+    }
+    &__password-success {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include mobile {
+            padding: 1.4rem 1.6rem 2.4rem;
+        }
+    }
+    &__icon {
+        margin-left: 2.4rem;
+        @include mobile {
+            margin: 0 0 2.4rem 2.4rem;
+        }
+    }
+    &__heading {
+        margin-bottom: 0.8rem;
+    }
+    &__subtext {
+        margin-bottom: 1.6rem;
+    }
+    &__content-center {
+        justify-content: center;
+    }
+}

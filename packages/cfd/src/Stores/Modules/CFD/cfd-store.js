@@ -560,8 +560,8 @@ export default class CFDStore extends BaseStore {
         } else {
             const response = await this.openMT5Account(values);
             if (!response.error) {
-                actions.setStatus({ success: true });
-                actions.setSubmitting(false);
+                actions?.setStatus({ success: true });
+                actions?.setSubmitting(false);
                 this.setError(false);
                 this.setCFDSuccessDialog(true);
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
@@ -575,9 +575,9 @@ export default class CFDStore extends BaseStore {
             } else {
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
                 this.setError(true, response.error);
-                actions.resetForm({});
-                actions.setSubmitting(false);
-                actions.setStatus({ success: false });
+                actions?.resetForm({});
+                actions?.setSubmitting(false);
+                actions?.setStatus({ success: false });
             }
         }
     }

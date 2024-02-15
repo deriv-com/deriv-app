@@ -12,6 +12,8 @@ import {
     PasswordInput,
     PasswordMeter,
     Text,
+    MobileWrapper,
+    DesktopWrapper,
 } from '@deriv/components';
 import {
     getAuthenticationStatusInfo,
@@ -42,6 +44,8 @@ import CFDPasswordModalTitle from './cfd-password-modal-title';
 import { CFD_PLATFORMS, JURISDICTION, CATEGORY } from '../Helpers/cfd-config';
 
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+import CFDPasswordChange from './cfd-password-change';
+import CFDPasswordChangeContent from './cfd-password-change-content';
 
 import '../sass/cfd.scss';
 
@@ -608,6 +612,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
+    const [is_success_password_change, setIsSuccessPasswordChange] = React.useState(false);
+    const [is_success_flag, setIsSuccessFlag] = React.useState(false);
+    const [new_password_value, setNewPasswordValue] = React.useState('');
+
     const getVerificationStatus = () => {
         switch (jurisdiction_selected_shortcode) {
             case JURISDICTION.SVG:
@@ -929,12 +937,70 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
+    const is_mt5_password_format_invalid = (
+        <React.Fragment>
+            <DesktopWrapper>
+                <Modal
+                    className='cfd-password-modal'
+                    has_close_icon
+                    is_open={is_incorrect_mt5_password_format_error && !is_success_password_change}
+                    toggleModal={closeModal}
+                    should_header_stick_body
+                    title={localize('Deriv MT5 latest password requirements')}
+                    width={is_mobile ? '32.8rem' : 'auto'}
+                >
+                    <CFDPasswordChange
+                        error_type={error_type}
+                        error_message={error_message}
+                        form_error={form_error}
+                        should_set_trading_password={should_set_trading_password}
+                        is_success_password_change={is_success_password_change}
+                        setIsSuccessPasswordChange={setIsSuccessPasswordChange}
+                        is_success_flag={is_success_flag}
+                        setIsSuccessFlag={setIsSuccessFlag}
+                        setNewPasswordValue={setNewPasswordValue}
+                        validatePassword={validatePassword}
+                        onForgotPassword={handleForgotPassword}
+                        platform={CFD_PLATFORMS.MT5}
+                        onCancel={closeModal}
+                    />
+                </Modal>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <MobileDialog
+                    has_full_height
+                    portal_element_id='modal_root'
+                    title={localize('Deriv MT5 latest password requirements')}
+                    visible={is_incorrect_mt5_password_format_error && !is_success_password_change}
+                    onClose={closeModal}
+                    wrapper_classname='cfd-password-modal'
+                >
+                    <CFDPasswordChange
+                        error_type={error_type}
+                        error_message={error_message}
+                        form_error={form_error}
+                        should_set_trading_password={should_set_trading_password}
+                        is_success_password_change={is_success_password_change}
+                        setIsSuccessPasswordChange={setIsSuccessPasswordChange}
+                        is_success_flag={is_success_flag}
+                        setIsSuccessFlag={setIsSuccessFlag}
+                        setNewPasswordValue={setNewPasswordValue}
+                        validatePassword={validatePassword}
+                        onForgotPassword={handleForgotPassword}
+                        platform={CFD_PLATFORMS.MT5}
+                        onCancel={closeModal}
+                    />
+                </MobileDialog>
+            </MobileWrapper>
+        </React.Fragment>
+    );
+
     return (
         <React.Fragment>
             {password_modal}
             {password_dialog}
             <SuccessDialog
-                is_open={should_show_success}
+                is_open={should_show_success || is_cfd_success_dialog_enabled}
                 toggleModal={closeModal}
                 onCancel={closeModal}
                 onSubmit={
@@ -970,6 +1036,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 onClose={() => setIsSentEmailModalOpen(false)}
                 onClickSendEmail={handleForgotPassword}
             />
+            {error_type === 'IncorrectMT5PasswordFormat' && is_mt5_password_format_invalid}
+            {is_success_password_change && (
+                <CFDPasswordChangeContent
+                    setIsSuccessFlag={setIsSuccessFlag}
+                    is_success_flag={is_success_flag}
+                    closeModal={closeModal}
+                    password_value={new_password_value}
+                />
+            )}
         </React.Fragment>
     );
 });

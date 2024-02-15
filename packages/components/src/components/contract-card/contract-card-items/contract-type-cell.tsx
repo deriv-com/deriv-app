@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { TGetContractTypeDisplay } from '../../types';
 import IconTradeTypes from '../../icon-trade-types';
-import { isVanillaContract, isSmartTraderContract } from '@deriv/shared';
+import { isVanillaContract, isSmartTraderContract, isLookBacksContract } from '@deriv/shared';
 
 export type TContractTypeCellProps = {
     getContractTypeDisplay: TGetContractTypeDisplay;
@@ -29,6 +29,7 @@ const ContractTypeCell = ({
         <div
             className={classNames('dc-contract-type__type-label', {
                 'dc-contract-type__type-label--smarttrader-contract': isSmartTraderContract(type),
+                'dc-contract-type__type-label--lookbacks-contract': isLookBacksContract(type),
             })}
         >
             <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>

@@ -22,7 +22,7 @@ describe('PaymentMethodModal', () => {
         expect(screen.getByText('Payment Method Modal')).toBeInTheDocument();
         expect(screen.getByText('Payment Method Modal Description')).toBeInTheDocument();
     });
-    it('should handle confirm when the secondary button is clicked', () => {
+    it('should handle onclick when the yes, remove button is clicked', () => {
         const onConfirm = jest.fn();
         render(
             <PaymentMethodModal
@@ -40,7 +40,7 @@ describe('PaymentMethodModal', () => {
         userEvent.click(confirmButton);
         expect(onConfirm).toHaveBeenCalled();
     });
-    it('should handle reject when the primary button is clicked', () => {
+    it('should handle onclick when the yes button is clicked', () => {
         const onReject = jest.fn();
         render(
             <PaymentMethodModal

@@ -97,15 +97,6 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
     }
 };
 
-const getMobileAppInstallerURL = () => {
-    if (mobileOSDetect() === 'iOS') {
-        return getPlatformMt5DownloadLink('ios');
-    } else if (/huawei/i.test(navigator.userAgent)) {
-        return getPlatformMt5DownloadLink('huawei');
-    }
-    return getPlatformMt5DownloadLink('android');
-};
-
 const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     let url = category === CATEGORY.REAL ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
 
@@ -120,10 +111,34 @@ const getCTraderWebTerminalLink = (category?: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
-function getDownloadOptions({ mt5_trade_account }: any) {
-    const have_mt5_app = false; // temporarily hardcoding until implementation to check if user have mt5 app installed
+const getMobileAppInstallerURL = () => {
+    if (mobileOSDetect() === 'iOS') {
+        return getPlatformMt5DownloadLink('ios');
+    } else if (/huawei/i.test(navigator.userAgent)) {
+        return getPlatformMt5DownloadLink('huawei');
+    }
+    return getPlatformMt5DownloadLink('android');
+};
 
+function getDownloadOptions({ mt5_trade_account }: any) {
     const deep_link = `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
+
+    function isSafari() {
+        return /^((?!chrome|android).)*AppleWebKit/i.test(navigator.userAgent) && typeof window.safari !== 'undefined';
+    }
+
+    const mobileURLSet = () => {
+        const timeout = setTimeout(() => {
+            getMobileAppInstallerURL();
+        }, 3000);
+
+        if (!isSafari()) {
+            window.onblur = () => {
+                clearTimeout(timeout);
+            };
+        }
+        return deep_link;
+    };
 
     const downloadOptions = [
         {
@@ -136,7 +151,7 @@ function getDownloadOptions({ mt5_trade_account }: any) {
             device: 'mobile',
             icon: 'IcMobile',
             text: localize('Trade with MT5 mobile app'),
-            deeplink: have_mt5_app ? deep_link : getMobileAppInstallerURL(),
+            href: mobileURLSet,
         },
         {
             device: 'desktop',

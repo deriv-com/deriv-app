@@ -829,11 +829,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
     bottom: 0;
     transition: opacity 0.3s;
     background-color: var(--general-main-1);
-    border-top: 1px solid var(--general-section-1);
-    border-bottom: 1px solid var(--general-section-1);
+    // border-top: 1px solid var(--general-section-1);
+    // border-bottom: 1px solid var(--general-section-1);
     box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.04), 0px -1px 4px 0px rgba(0, 0, 0, 0.08);
-    border-top-right-radius: 1.6rem;
-    border-top-left-radius: 1.6rem;
+    // border-top-right-radius: 1.6rem;
+    // border-top-left-radius: 1.6rem;
 
     &_bottom-sheet {
         min-height: 9.6rem;
@@ -947,14 +947,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
     &_navigation {
         height: 5.6rem;
-        border: 1px solid var(--general-section-1);
+        // border: 1px solid var(--general-section-1);
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0.8rem 1.6rem;
 
         &_icon {
-            width: 6.52rem;
+            width: 11.4rem;
             height: 4rem;
             display: flex;
             justify-content: center;
@@ -974,39 +974,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
         height: 100%;
         background-color: var(--general-section-1);
         padding: 0.8rem;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
         .new-chart-icon {
             width: 100%;
             height: 100%;
-        }
-        .dc-carousel__nav-list {
-            width: 5rem;
-            height: 1.6rem;
-            background-color: var(--general-main-1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0.8rem;
-
-            .dc-carousel__nav-item:not(.dc-carousel__nav-item--active) {
-                background-color: var(--general-section-1) !important;
-            }
-
-            .dc-carousel__nav-item--active {
-                top: 4px;
-            }
-        }
-
-        .dc-carousel__nav--lower {
-            position: fixed;
-            bottom: 15.5rem;
-            height: 2.6rem;
-            background-color: var(--general-section-1);
-        }
-
-        .dc-carousel__card {
-            background-color: var(--general-main-1);
-            border-radius: 0.8rem;
         }
 
         .trade-type {
@@ -1021,38 +996,31 @@ $FLOATING_HEADER_HEIGHT: 41px;
             &_container {
                 background-color: var(--general-main-1);
                 padding: 0.8rem 1.6rem;
-                height: 4rem;
+                height: 6.8rem;
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 border-radius: 0.8rem;
 
-                &_left,
-                &_right {
-                    height: 2.2rem;
+                &_left {
                     display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 0.8rem;
+                    flex-direction: column;
+                    gap: 0.6rem;
+
+                    svg {
+                        margin-right: 0.8rem;
+                    }
                 }
             }
 
             &_name {
+                display: flex;
+                align-items: center;
+                color: var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72));
                 font-size: 1.4rem;
                 font-weight: 700;
                 line-height: 2.2rem;
-            }
-
-            &_dot {
-                display: inline-block;
-                position: relative;
-                bottom: 0.3rem;
-                background-color: var(--core-color-opacity-black-700, rgba(0, 0, 0, 0.8));
-                width: 4px;
-                height: 4px;
-                border-radius: 50%;
-                margin: 0 0.4rem;
             }
 
             &_price {
@@ -1065,32 +1033,26 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .trade-param {
             &_section {
                 background-color: var(--general-main-1);
-                height: calc(100vh - 29.5rem);
                 border-radius: 0.8rem;
                 padding: 1.6rem;
                 display: flex;
                 flex-direction: column;
-                overflow-y: scroll;
-
-                // &::-webkit-scrollbar {
-                //     display: none;
-                // }
+                margin: 0.8rem 0;
 
                 &_title {
-                    height: 4.4rem;
+                    height: 4rem;
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
-                    gap: 4px;
                     justify-content: space-between;
-                    color: var(--core-color-opacity-black-700, rgba(0, 0, 0, 0.8));
+                    color: var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72));
                     font-size: 12px;
                     line-height: 18px;
 
                     .bold {
                         font-weight: 700;
-                        font-size: 16px;
-                        line-height: 24px;
+                        font-size: 14px;
+                        line-height: 22px;
                     }
 
                     &_top,
@@ -1148,6 +1110,25 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 color: var(--core-color-opacity-black-400, rgba(0, 0, 0, 0.48));
                 font-size: 12px;
                 line-height: 18px;
+            }
+            &_result {
+                &-wrapper {
+                }
+                &-top-container {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                    height: 2.2rem;
+                    margin: 0.3rem 0 1.2rem;
+
+                    .text {
+                        color: var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72));
+                        font-size: 14px;
+                        font-weight: 400;
+                        line-height: 22px;
+                    }
+                }
             }
         }
     }

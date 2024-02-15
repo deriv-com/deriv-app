@@ -14,18 +14,17 @@ const NewTradeTypeWidget = () => {
         <div className='trade-type_section' onClick={() => setShowTradeTypeMenu(!show_trade_type_menu)}>
             <div className='trade-type_container'>
                 <div className='trade-type_container_left'>
-                    <Icon icon='IcTradetypeMultup' size={17} color='brand' />
-                    <Icon icon='IcUnderlying1HZ75V' size={20} />
                     <div className='trade-type_name'>
-                        Multipliers
-                        <span className='trade-type_dot' />
-                        <span style={{ color: 'var(--core-color-opacity-black-400, rgba(0, 0, 0, 0.48))' }}>
-                            Volatility 75 (1s) Index
-                        </span>
+                        <Icon icon='IcTradetypeTurboslong' size={18} color='brand' />
+                        <p>Turbos</p>
+                    </div>
+                    <div className='trade-type_name'>
+                        <Icon icon='IcUnderlying1HZ75V' size={20} />
+                        <p>Volatility 75 (1s) Index</p>
                     </div>
                 </div>
                 <div className='trade-type_container_right'>
-                    <Icon icon='IcChevronRight' height={24} width={20} />
+                    <Icon icon='IcChevronRight' height={26} width={24} />
                 </div>
             </div>
         </div>

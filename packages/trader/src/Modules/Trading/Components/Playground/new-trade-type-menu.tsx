@@ -50,7 +50,7 @@ const NewTradeTypeMenu = ({ onGoBackClick }: { onGoBackClick: () => void }) => {
         onSwipedUp: () => setShowDescription(!show_description),
     });
 
-    const item = { text: 'Multipliers', value: 'multiplier' };
+    const item = { text: 'Turbos', value: 'turboslong' };
     const list = [
         {
             label: 'All',
@@ -74,7 +74,7 @@ const NewTradeTypeMenu = ({ onGoBackClick }: { onGoBackClick: () => void }) => {
                 {
                     key: 'Turbos',
                     label: 'Turbos',
-                    contract_types: [{ text: 'Long/Short', value: 'turboslong' }],
+                    contract_types: [{ text: 'Turbos', value: 'turboslong' }],
                 },
                 {
                     key: 'Ups & Downs',
@@ -132,8 +132,8 @@ const NewTradeTypeMenu = ({ onGoBackClick }: { onGoBackClick: () => void }) => {
                             <NewHorizontalCarousel list={filters} />
                         ) : (
                             <div className='trade-type_menu_section_selected'>
-                                <IconTradeCategory category={TRADE_TYPES.MULTIPLIER} />
-                                <div className='trade-type_menu_section_selected_text'>Multipliers</div>
+                                <IconTradeCategory category={TRADE_TYPES.TURBOS.LONG} />
+                                <div className='trade-type_menu_section_selected_text'>Turbos</div>
                             </div>
                         )}
                     </div>
@@ -143,7 +143,7 @@ const NewTradeTypeMenu = ({ onGoBackClick }: { onGoBackClick: () => void }) => {
                                 <div
                                     key={index}
                                     className={classNames('contract-card', {
-                                        'contract-card--selected': text === 'Multipliers',
+                                        'contract-card--selected': text === 'Turbos',
                                     })}
                                     onClick={() => setShowTradeType(!show_trade_type)}
                                 >

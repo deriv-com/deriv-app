@@ -486,6 +486,7 @@ export const icons =
         'IcNetellerDark',
         'IcNetellerLight',
         'IcNewBasket',
+        'IcNewChartWarn',
         'IcNewChart',
         'IcNewClock',
         'IcNewFile',

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { useSwipeable } from 'react-swipeable';
-import { Icon, Carousel } from '@deriv/components';
+import { Icon } from '@deriv/components';
 import NewTradeTypeWidget from './new-trade-type-widget';
 import NewTradeParamsContainer from './new-trade-params-container';
 import NewTradeParamPopupWrapper from './new-trade-param-popup-wrapper';
@@ -54,28 +54,15 @@ const NewTrade = () => {
         <React.Fragment>
             <div className='content_container'>
                 <NewTradeTypeWidget />
-                <Carousel
-                    className='my-slider__wrapper'
-                    initial_index={0}
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    onItemSelect={() => {}}
-                    list={[
-                        <NewTradeParamsContainer
-                            onClick={onTradeParamClickHandler}
-                            key={1}
-                            setSelectedType={setSelectedType}
-                            selected_left_type={selected_left_type}
-                            selected_multiplier={valueGroups.multipliers}
-                        />,
-                        <div key={2} style={{ marginTop: '-0.5rem' }}>
-                            <Icon icon='IcNewChart' className='new-chart-icon' />
-                        </div>,
-                    ]}
-                    nav_position='bottom'
-                    bullet_position='bottom'
-                    show_nav={false}
-                    width={100}
+                <NewTradeParamsContainer
+                    onClick={onTradeParamClickHandler}
+                    setSelectedType={setSelectedType}
+                    selected_left_type={selected_left_type}
+                    selected_multiplier={valueGroups.multipliers}
                 />
+                <div style={{ margin: '0.8rem 0rem' }}>
+                    <Icon icon='IcNewChart' className='new-chart-icon' />
+                </div>
             </div>
             <NewTradeParamPopupWrapper
                 onClick={() => {
@@ -91,7 +78,7 @@ const NewTrade = () => {
                 optionGroups={optionGroups}
                 setValueGroups={setValueGroups}
             />
-            <div
+            {/* <div
                 className={show_purchase_details && !show_details ? 'trade-param_popup_overlay' : ''}
                 onClick={onPurchaseResult}
             >
@@ -246,7 +233,8 @@ const NewTrade = () => {
                     </div>
                     <NewFooterNavigation />
                 </div>
-            </div>
+            </div> */}
+            <NewFooterNavigation />
         </React.Fragment>
     );
 };

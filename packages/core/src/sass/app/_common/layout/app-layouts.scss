@@ -170,9 +170,9 @@
         height: inherit;
     }
     @include mobile {
-        height: calc(100% - 4.8rem - 15.4rem);
+        height: calc(100% - 4.8rem - 5.6rem);
         position: relative;
-        margin: 4.8rem 0 15.4rem;
+        margin: 4.8rem 0 5.6rem;
 
         &--is-scrollable {
             overflow-y: auto;

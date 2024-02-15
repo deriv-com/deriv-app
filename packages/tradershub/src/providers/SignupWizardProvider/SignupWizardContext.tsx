@@ -61,10 +61,10 @@ export const useSignupWizardContext = () => {
  */
 export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
     const [isWizardOpen, setIsWizardOpen] = useState(false);
-    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [currentStep, helpers] = useStep(4);
     const [state, dispatch] = useReducer(valuesReducer, {
-        currency: '',
+        currency: 'USD',
     });
 
     const contextState = useMemo(

@@ -67,7 +67,7 @@ window.Blockly = {
         getDimensions: jest.fn(() => ({ width: 100, height: 100 })),
     },
     utils: {
-        genUid: jest.fn(() => Math.random().toString(36).substring(7)),
+        genUid: jest.fn(() => Date.now()),
     },
 };
 

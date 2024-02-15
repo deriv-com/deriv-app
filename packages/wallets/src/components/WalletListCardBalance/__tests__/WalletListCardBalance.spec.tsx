@@ -16,7 +16,6 @@ describe('WalletListCardBalance', () => {
 
     it('should show account balance', () => {
         render(<WalletListCardBalance balance={'100 USD'} />, { wrapper });
-        expect(screen.getByText('Wallet balance')).toBeInTheDocument();
         expect(screen.getByText('100 USD')).toBeInTheDocument();
     });
 

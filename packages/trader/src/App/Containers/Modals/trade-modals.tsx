@@ -48,7 +48,7 @@ const TradeModals = observer(() => {
     };
 
     const unsupportedContractOnClose = () => {
-        window.open(getStaticUrl('/'), '_blank');
+        window.open(getStaticUrl('/'));
         unsupportedContractOnConfirm();
     };
 

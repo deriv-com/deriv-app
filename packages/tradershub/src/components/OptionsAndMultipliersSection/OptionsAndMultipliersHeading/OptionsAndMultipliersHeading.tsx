@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { CurrencySwitcher, StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useIsEuRegion } from '@deriv/api';
-import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Heading } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
 
 /**
@@ -10,7 +10,6 @@ import { Text } from '@deriv-com/ui';
  * @returns {React.ElementType} The `OptionsAndMultipliersHeading` component.
  */
 const OptionsAndMultipliersHeading = () => {
-    const { isMobile } = useBreakpoint();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
     const { isEU } = useRegulationFlags();
 
@@ -19,7 +18,7 @@ const OptionsAndMultipliersHeading = () => {
     const description = useMemo(() => {
         if (isEU) {
             return (
-                <Text className='space-y-50' size='sm'>
+                <Text className='space-y-0' size='sm'>
                     Get the upside of CFDs without risking more than your initial stake with
                     <StaticLink size='md' staticUrl='/trade-types/multiplier/'>
                         multipliers
@@ -29,7 +28,7 @@ const OptionsAndMultipliersHeading = () => {
             );
         }
         return (
-            <Text className='space-y-50' size='sm'>
+            <Text className='space-y-0' size='sm'>
                 Earn a range of payouts by correctly predicting market price movements with
                 <StaticLink size='md' staticUrl='/trade-types/options/digital-options/up-and-down/'>
                     options
@@ -46,9 +45,11 @@ const OptionsAndMultipliersHeading = () => {
     if (!isRegulationAccessible) return <TitleDescriptionLoader />;
 
     return (
-        <div className='flex flex-col items-start justify-between lg:flex-row gap-800 lg:gap-2400'>
-            <div className='lg:flex lg:flex-col gap-100'>
-                {!isMobile && <Heading.H4>{title}</Heading.H4>}
+        <div className='flex flex-col items-start justify-between gap-16 lg:flex-row lg:gap-48'>
+            <div className='gap-2 lg:flex lg:flex-col'>
+                <div className='d-none lg:block'>
+                    <Heading.H4>{title}</Heading.H4>
+                </div>
                 {description}
             </div>
             <CurrencySwitcher />

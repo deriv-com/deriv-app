@@ -34,7 +34,12 @@ const Button = ({
             >
                 {label}
                 {icon && (
-                    <Icon icon={icon} className='dc-calendar__icon' color={is_disabled ? 'disabled' : undefined} />
+                    <Icon
+                        data_testid={`dt_calendar_icon_${icon}`}
+                        icon={icon}
+                        className='dc-calendar__icon'
+                        color={is_disabled ? 'disabled' : undefined}
+                    />
                 )}
                 {children}
             </span>

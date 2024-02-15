@@ -64,7 +64,7 @@ const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSu
     const IconWithCheckMark = () => (
         <div className='relative'>
             {icon}
-            <CheckMark className='absolute bottom-50 left-[100px]' />
+            <CheckMark className='absolute bottom-0 left-[100px]' />
         </div>
     );
 

@@ -29,7 +29,6 @@ const DefaultHeader = observer(() => {
     const { setTogglePlatformType } = traders_hub;
     const {
         header_extension,
-        is_desktop,
         is_mobile,
         is_app_disabled,
         is_route_modal_on,
@@ -79,7 +78,7 @@ const DefaultHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {is_desktop && (
+                    {!is_mobile && (
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             is_landing_company_loaded={is_landing_company_loaded}

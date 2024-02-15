@@ -20,6 +20,9 @@
     .deriv-input--field:not(:focus) {
         border: 1px solid #d6dadb;
     }
+    .deriv-input__container {
+        width: 100%;
+    }
     .deriv-input,
     .deriv-input--field {
         width: 100%;
@@ -54,8 +57,4 @@
         line-height: 1.5;
         vertical-align: baseline;
     }
-}
-.p2p-v2-textfield__message-container {
-    /* This is to hide the message container if it's empty */
-    height: auto;
 }

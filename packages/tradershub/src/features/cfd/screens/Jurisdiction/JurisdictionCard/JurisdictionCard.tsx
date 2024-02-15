@@ -7,7 +7,7 @@ import { useRegulationFlags } from '@/hooks';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import {
     TClickableDescription,
@@ -91,13 +91,14 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
             return row.clickableDescription.map(description => {
                 if (description.type === 'link') {
                     return (
-                        <a
-                            className='py-0 pl-0 text-sm text-brand-red-light hover:no-underline'
+                        <Button
+                            className='py-0 pl-0 text-sm bg-transparent text-brand-red-light'
                             key={`jurisdiction-card-description-${description.text}`}
                             onClick={descriptionClickHandler(description.tag)}
+                            variant='ghost'
                         >
                             {description.text}
-                        </a>
+                        </Button>
                     );
                 }
                 return description.text;

@@ -1,19 +1,21 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import { useHistory } from 'react-router-dom';
 import Checkmark from '@/assets/svgs/checkmark.svg';
 import { ActionScreen, ButtonGroup } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
-import { CUSTOM_STYLES, getCurrencyConfig } from '@/helpers';
+import { CUSTOM_STYLES } from '@/helpers';
 import { useSignupWizardContext } from '@/providers/SignupWizardProvider';
-import { CurrencyUsdIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const SelectedCurrencyIcon = () => {
     const { state } = useSignupWizardContext();
     return (
         <div className='relative'>
-            <div className='[&>svg]:scale-[2.4]'>{IconToCurrencyMapper.USD?.icon}</div>
-            {/* <Checkmark className='absolute bottom-0 right-0 w-32 h-32' /> */}
+            <div className='[&>svg]:scale-[2.4] w-[96px] h-[96px] flex justify-center items-center'>
+                {IconToCurrencyMapper[state.currency ?? '']?.icon}
+            </div>
+            <Checkmark className='absolute w-32 h-32 bottom-6 right-6' />
         </div>
     );
 };
@@ -22,6 +24,7 @@ const AccountOpeningSuccessModal = () => {
     const { isSuccessModalOpen, setIsSuccessModalOpen } = useSignupWizardContext();
     const { isDesktop } = useDevice();
     const { state } = useSignupWizardContext();
+    const history = useHistory();
 
     return (
         <ReactModal
@@ -57,7 +60,12 @@ const AccountOpeningSuccessModal = () => {
                         >
                             Maybe later
                         </Button>
-                        <Button className='py-18' isFullWidth={!isDesktop} size='md'>
+                        <Button
+                            className='py-18'
+                            isFullWidth={!isDesktop}
+                            onClick={() => history.push('/cashier/deposit')}
+                            size='md'
+                        >
                             Deposit
                         </Button>
                     </ButtonGroup>

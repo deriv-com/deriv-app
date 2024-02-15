@@ -8,11 +8,14 @@ export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMes
     defaultValue?: string;
     disabled?: boolean;
     errorMessage?: FormikErrors<unknown> | FormikErrors<unknown>[] | string[] | string;
+    inputWidth?: string;
     isInvalid?: boolean;
     label?: string;
     renderLeftIcon?: () => React.ReactNode;
     renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
+    showMessageContainer?: boolean;
+    typeVariant?: 'listcard' | 'normal';
 }
 
 const WalletTextField = forwardRef(
@@ -21,6 +24,7 @@ const WalletTextField = forwardRef(
             defaultValue = '',
             disabled,
             errorMessage,
+            inputWidth,
             isInvalid,
             label,
             maxLength,
@@ -31,6 +35,8 @@ const WalletTextField = forwardRef(
             renderLeftIcon,
             renderRightIcon,
             showMessage = false,
+            showMessageContainer = true,
+            typeVariant = 'normal',
             ...rest
         }: WalletTextFieldProps,
         ref: Ref<HTMLInputElement>
@@ -45,26 +51,37 @@ const WalletTextField = forwardRef(
 
         return (
             <div
-                className={classNames('wallets-textfield', {
-                    'wallets-textfield--disabled': disabled,
-                    'wallets-textfield--error': isInvalid,
-                })}
+                className={classNames(
+                    `wallets-textfield ${typeVariant === 'listcard' ? 'wallets-textfield--listcard' : ''}`,
+                    {
+                        'wallets-textfield--disabled': disabled,
+                        'wallets-textfield--error': isInvalid,
+                    }
+                )}
                 data-testid='dt_wallets_textfield'
             >
-                <div className='wallets-textfield__box' data-testid='dt_wallets_textfield_box'>
+                <div
+                    className={`wallets-textfield__box ${
+                        typeVariant === 'listcard' ? 'wallets-textfield__box--listcard' : ''
+                    }`}
+                    data-testid='dt_wallets_textfield_box'
+                >
                     {typeof renderLeftIcon === 'function' && (
                         <div className='wallets-textfield__icon-left' data-testid='dt_wallets_textfield_icon_left'>
                             {renderLeftIcon()}
                         </div>
                     )}
                     <input
-                        className='wallets-textfield__field'
+                        className={`wallets-textfield__field ${
+                            typeVariant === 'listcard' ? 'wallets-textfield__field--listcard' : ''
+                        }`}
                         disabled={disabled}
                         id={name}
                         maxLength={maxLength}
                         onChange={handleChange}
                         placeholder={label}
                         ref={ref}
+                        style={{ width: inputWidth }}
                         value={value}
                         {...rest}
                     />
@@ -74,31 +91,38 @@ const WalletTextField = forwardRef(
                         </label>
                     )}
                     {typeof renderRightIcon === 'function' && (
-                        <div className='wallets-textfield__icon-right' data-testid='dt_wallets_textfield_icon_right'>
+                        <div
+                            className={`wallets-textfield__icon-right ${
+                                typeVariant === 'listcard' ? 'wallets-textfield__icon-right--listcard' : ''
+                            }`}
+                            data-testid='dt_wallets_textfield_icon_right'
+                        >
                             {renderRightIcon()}
                         </div>
                     )}
                 </div>
-                <div className='wallets-textfield__message-container'>
-                    {errorMessage ? (
-                        <HelperMessage
-                            inputValue={value}
-                            isError={isInvalid}
-                            maxLength={maxLength}
-                            message={errorMessage as string}
-                            messageVariant={isInvalid ? 'error' : 'warning'}
-                        />
-                    ) : (
-                        showMessage && (
+                {showMessageContainer && (
+                    <div className='wallets-textfield__message-container'>
+                        {errorMessage ? (
                             <HelperMessage
                                 inputValue={value}
+                                isError={isInvalid}
                                 maxLength={maxLength}
-                                message={message}
-                                messageVariant={messageVariant}
+                                message={errorMessage as string}
+                                messageVariant={isInvalid ? 'error' : 'warning'}
                             />
-                        )
-                    )}
-                </div>
+                        ) : (
+                            showMessage && (
+                                <HelperMessage
+                                    inputValue={value}
+                                    maxLength={maxLength}
+                                    message={message}
+                                    messageVariant={messageVariant}
+                                />
+                            )
+                        )}
+                    </div>
+                )}
             </div>
         );
     }

@@ -4,10 +4,13 @@
         "outDir": "./dist",
         "baseUrl": "./",
         "paths": {
-            "@deriv/*": ["../*/src"]
+            "@deriv/*": ["../*/src"],
         },
-        "plugins": [{ "name": "typescript-plugin-css-modules" }]
-    },
+        "plugins": [{ 
+            "name": "typescript-plugin-css-modules", 
+            "options": {
+                "additionalData": "@import 'src/styles/index.scss';\n"
+                }}]},
     "include": ["src", "../../types/utils.d.ts"],
     "exclude": ["../shared/**/*", "./node_modules/*"]
 }

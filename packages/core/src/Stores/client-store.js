@@ -148,6 +148,8 @@ export default class ClientStore extends BaseStore {
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
+    real_account_signup_form_data = [];
+    real_account_signup_form_step = 0;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -213,6 +215,8 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
+            real_account_signup_form_data: observable,
+            real_account_signup_form_step: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -385,6 +389,8 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
+            setRealAccountSignupFormData: action.bound,
+            setRealAccountSignupFormStep: action.bound,
         });
 
         reaction(
@@ -2616,6 +2622,14 @@ export default class ClientStore extends BaseStore {
 
     setIsAlreadyAttempted(status) {
         this.is_already_attempted = status;
+    }
+
+    setRealAccountSignupFormData(data) {
+        this.real_account_signup_form_data = data;
+    }
+
+    setRealAccountSignupFormStep(step) {
+        this.real_account_signup_form_step = step;
     }
 
     /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.

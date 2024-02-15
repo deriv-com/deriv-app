@@ -74,7 +74,7 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
     };
 
     return (
-        <div className='w-full lg:w-[400px] inline-flex p-1600 flex-col justify-center items-center gap-1200 rounded-400 bg-system-light-primary-background'>
+        <div className='w-full lg:w-[400px] inline-flex p-32 flex-col justify-center items-center gap-24 rounded-default bg-system-light-primary-background'>
             <ActionScreen
                 description={description ?? `Please click on the link in the email to change your ${title} password.`}
                 descriptionSize={descriptionSize}
@@ -86,7 +86,7 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
             {shouldShowResendEmailReasons && (
                 <Fragment>
                     {isInvestorPassword && (
-                        <div className='flex flex-col items-center gap-800'>
+                        <div className='flex flex-col items-center gap-16'>
                             <ActionScreen
                                 description="Check your spam or junk folder. If it's not there, try resending the email."
                                 descriptionSize={descriptionSize}

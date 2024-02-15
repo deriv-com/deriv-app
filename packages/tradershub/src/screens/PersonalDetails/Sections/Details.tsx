@@ -17,19 +17,19 @@ const Details = () => {
 
     return (
         <Fragment>
-            <Text as='p' className='my-800' weight='bold'>
+            <Text as='p' className='my-16' weight='bold'>
                 Details
             </Text>
-            <div className='outline outline-1 outline-system-light-active-background md:mx-800 p-800 rounded-400'>
-                <InlineMessage className='items-start mb-800' variant='warning'>
+            <div className='outline outline-1 outline-system-light-active-background md:mx-16 p-16 rounded-default'>
+                <InlineMessage className='items-start mb-16' variant='warning'>
                     <Text size={isMobile ? 'sm' : 'md'}>
                         To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
                         <span className='font-bold'>date of birth</span> exactly as they appear on your identity
                         document.
                     </Text>
                 </InlineMessage>
-                <div className='flex flex-col-reverse justify-center md:flex-row gap-800'>
-                    <div className='flex flex-col md:w-1/2 gap-1000'>
+                <div className='flex flex-col-reverse justify-center md:flex-row gap-16'>
+                    <div className='flex flex-col md:w-1/2 gap-20'>
                         <Input
                             className='text-body-sm'
                             error={Boolean(errors.firstName && touched.firstName)}
@@ -86,7 +86,7 @@ const Details = () => {
                         </Suspense>
                     </div>
                 </div>
-                <div className='mt-800'>
+                <div className='mt-16'>
                     <DetailsConfirmation />
                 </div>
             </div>

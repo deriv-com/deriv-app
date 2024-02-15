@@ -31,6 +31,7 @@ export default class OrderStore {
             verification_code: observable,
             verification_link_error_message: observable,
             should_navigate_to_buy_sell: observable,
+            should_navigate_to_order_details: observable,
             has_order_payment_method_details: computed,
             order_information: computed,
             nav: computed,
@@ -50,6 +51,7 @@ export default class OrderStore {
             setDateTo: action.bound,
             setForceRerenderOrders: action.bound,
             setShouldNavigateToBuySell: action.bound,
+            setShouldNavigateToOrderDetails: action.bound,
             setApiErrorMessage: action.bound,
             setCancellationBlockDuration: action.bound,
             setCancellationCountPeriod: action.bound,
@@ -99,6 +101,7 @@ export default class OrderStore {
     has_more_items_to_load = false;
     is_invalid_verification_link_modal_open = false;
     should_navigate_to_buy_sell = false;
+    should_navigate_to_order_details = false;
     is_loading = false;
     is_rating_modal_open = false;
     is_recommended = undefined;
@@ -571,6 +574,10 @@ export default class OrderStore {
 
     setShouldNavigateToBuySell(should_navigate_to_buy_sell) {
         this.should_navigate_to_buy_sell = should_navigate_to_buy_sell;
+    }
+
+    setShouldNavigateToOrderDetails(should_navigate_to_order_details) {
+        this.should_navigate_to_order_details = should_navigate_to_order_details;
     }
 
     setErrorCode(error_code) {

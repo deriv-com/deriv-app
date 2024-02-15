@@ -16,15 +16,7 @@ import MT5MobileDownloadOption from './mt5-mobile-download-option';
 import MT5DesktopDownloadOption from './mt5-desktop-download-option';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid & {
-        white_label?: {
-            download_links?: {
-                windows?: string;
-                ios?: string;
-                android?: string;
-            };
-        };
-    };
+    mt5_trade_account: DetailsOfEachMT5Loginid;
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,

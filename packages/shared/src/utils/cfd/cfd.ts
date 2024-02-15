@@ -40,7 +40,7 @@ export const getMT5Title = (account_type: string) => {
 
 type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'vanuatu' | 'seychelles';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -111,7 +111,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
             }
         }
     }
-    return '';
+    return undefined;
 };
 
 /**

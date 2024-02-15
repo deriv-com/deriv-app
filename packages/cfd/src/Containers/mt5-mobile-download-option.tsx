@@ -29,7 +29,7 @@ const MT5MobileDownloadOption = ({ mt5_trade_account }: TMT5MobileDownloadOption
                     <Text as='p' align='left' size='xxs' weight='bold'>
                         <Localize i18n_default_text={option.text} />
                     </Text>
-                    <Icon icon='IcChevronRight' size={16} />
+                    <Icon icon={index === 1 ? 'IcChevronRightLight' : 'IcChevronRight'} size={16} />
                 </div>
             ))}
 

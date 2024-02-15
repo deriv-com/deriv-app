@@ -1,6 +1,5 @@
 import { OSDetect, getPlatformFromUrl, mobileOSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
 
@@ -143,13 +142,13 @@ function getDownloadOptions({ mt5_trade_account }: any) {
     const downloadOptions = [
         {
             device: 'mobile',
-            icon: 'IcDesktop',
+            icon: 'IcDesktopOutline',
             text: localize('MetaTrader5 web terminal'),
             href: `${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`,
         },
         {
             device: 'mobile',
-            icon: 'IcMobile',
+            icon: 'IcMobileOutline',
             text: localize('Trade with MT5 mobile app'),
             href: mobileURLSet(),
         },

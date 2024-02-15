@@ -36,9 +36,9 @@ const CreatePassword = ({
 
     const { title } = PlatformDetails[platform];
     return (
-        <div className='inline-flex flex-col items-center w-full gap-1200 rounded-400 bg-system-light-primary-background lg:w-[360px]'>
+        <div className='inline-flex flex-col items-center w-full gap-24 rounded-default bg-system-light-primary-background lg:w-[360px]'>
             {!isMobile && icon}
-            <div className='flex flex-col items-center justify-center text-center lg:gap-400'>
+            <div className='flex flex-col items-center justify-center text-center lg:gap-8'>
                 <Text weight='bold'>Create a {title} password</Text>
                 <Text size='sm'>You can use this password for all your {title} accounts.</Text>
             </div>

@@ -13,19 +13,19 @@ const InstrumentsIconWithLabel: FC<TInstrumentsIcon> = ({ highlighted, icon, isA
     const InstrumentIcon = InstrumentsIcons[icon];
     return (
         <div
-            className='flex items-center cursor-not-allowed m-100'
+            className='flex items-center m-2 cursor-not-allowed'
             data-testid='dt_instruments_icon_container'
             style={{
                 opacity: highlighted ? '' : '0.2',
             }}
         >
             <InstrumentIcon height={24} width={24} />
-            <div className='ml-[5px]'>
+            <div className='ml-5'>
                 <Text size='sm' weight='bold'>
                     {text}
                 </Text>
             </div>
-            {isAsterisk && <span className='relative text-[16px] top-100 text-brand-red-light'>*</span>}
+            {isAsterisk && <span className='relative text-lg top-2 text-brand-red-light'>*</span>}
         </div>
     );
 };

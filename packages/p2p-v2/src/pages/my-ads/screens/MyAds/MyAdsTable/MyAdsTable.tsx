@@ -1,10 +1,12 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Table } from '@/components';
-import { useDevice } from '@/hooks';
+import { MyAdsDeleteModal } from '@/components/Modals';
+import { AD_ACTION } from '@/constants';
 import { p2p } from '@deriv/api';
-import { Button, Loader } from '@deriv-com/ui';
+import { Loader } from '@deriv-com/ui';
+import { MyAdsEmpty } from '../../MyAdsEmpty';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
-import { MyAdsToggle } from '../MyAdsToggle';
+import MyAdsDisplayWrapper from './MyAdsDisplayWrapper';
 import './MyAdsTable.scss';
 
 export type TMyAdsTableRowRendererProps = Required<
@@ -49,20 +51,37 @@ const MyAdsTable = () => {
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
     const { mutate } = p2p.advert.useUpdate();
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
-    const { isDesktop } = useDevice();
+    const { error, isSuccess, mutate: deleteAd } = p2p.advert.useDelete();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [advertId, setAdvertId] = useState('');
+
+    useEffect(() => {
+        if (isSuccess) {
+            setAdvertId('');
+        }
+        if (error?.error?.message) {
+            setIsModalOpen(true);
+        }
+    }, [error?.error?.message, isSuccess]);
 
     if (isLoading) return <Loader />;
 
+    if (!data.length) return <MyAdsEmpty />;
+
     const onClickIcon = (id: string, action: string) => {
-        //TODO: to implement the onclick actions
+        //TODO: to implement the onclick actions for share and edit.
         switch (action) {
-            case 'activate':
+            case AD_ACTION.ACTIVATE:
                 mutate({ id, is_active: 1 });
                 break;
-            case 'deactivate':
+            case AD_ACTION.DEACTIVATE:
                 mutate({ id, is_active: 0 });
                 break;
-            case 'edit':
+            case AD_ACTION.DELETE: {
+                setAdvertId(id);
+                setIsModalOpen(true);
+                break;
+            }
             default:
                 break;
         }
@@ -70,19 +89,22 @@ const MyAdsTable = () => {
 
     const onClickToggle = () => updateAds({ is_listed: advertiserInfo?.is_listed ? 0 : 1 });
 
+    const onRequestClose = () => {
+        if (isModalOpen) {
+            setIsModalOpen(false);
+        }
+    };
+
+    const onClickDelete = () => {
+        deleteAd({ id: advertId });
+        onRequestClose();
+    };
+
     return (
-        <>
-            <div className='p2p-v2-my-ads-table__header'>
-                {isDesktop && (
-                    <Button size='lg' textSize='sm'>
-                        Create new ad
-                    </Button>
-                )}
-                <MyAdsToggle
-                    isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
-                    onClickToggle={onClickToggle}
-                />
-            </div>
+        <MyAdsDisplayWrapper
+            isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
+            onClickToggle={onClickToggle}
+        >
             <div className='p2p-v2-my-ads-table__list'>
                 <Table
                     columns={columns}
@@ -104,7 +126,16 @@ const MyAdsTable = () => {
                     tableClassname=''
                 />
             </div>
-        </>
+            {(isModalOpen || error?.error?.message) && (
+                <MyAdsDeleteModal
+                    error={error?.error?.message}
+                    id={advertId}
+                    isModalOpen={isModalOpen || !!error?.error?.message}
+                    onClickDelete={onClickDelete}
+                    onRequestClose={onRequestClose}
+                />
+            )}
+        </MyAdsDisplayWrapper>
     );
 };
 

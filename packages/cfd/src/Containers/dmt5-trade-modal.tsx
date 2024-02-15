@@ -12,8 +12,8 @@ import { TTradingPlatformAccounts } from '../Components/props.types';
 import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
 import MigrationBanner from './migration-banner';
-import MT5MobileDownloadOption from './mt5-mobile-download-option';
-import MT5DesktopDownloadOption from './mt5-desktop-download-option';
+import MT5MobileDownloadOption from './mt5-mobile-redirect-option';
+import MT5DesktopDownloadOption from './mt5-desktop-redirect-option';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;

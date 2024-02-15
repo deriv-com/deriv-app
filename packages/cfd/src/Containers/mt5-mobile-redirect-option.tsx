@@ -1,15 +1,15 @@
 import React from 'react';
-import './mt5-mobile-download-option.scss';
+import './mt5-mobile-redirect-option.scss';
 import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getDownloadOptions } from '../Helpers/constants';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-type TMT5MobileDownloadOptionProps = {
+type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
 };
 
-const MT5MobileDownloadOption = ({ mt5_trade_account }: TMT5MobileDownloadOptionProps) => {
+const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
     const mobileDownloadOptions = getDownloadOptions({ mt5_trade_account }).filter(
         option => option.device === 'mobile'
     );
@@ -19,7 +19,7 @@ const MT5MobileDownloadOption = ({ mt5_trade_account }: TMT5MobileDownloadOption
             {mobileDownloadOptions.map((option, index) => (
                 <div
                     key={index}
-                    className={`mt5-download-container--option ${index === 1 ? 'blue' : 'grey'}`}
+                    className={`mt5-download-container--option ${index === 1 ?? 'blue'}`}
                     onClick={() => {
                         window.open(option.href, '_blank');
                     }}
@@ -57,4 +57,4 @@ const MT5MobileDownloadOption = ({ mt5_trade_account }: TMT5MobileDownloadOption
     );
 };
 
-export default MT5MobileDownloadOption;
+export default MT5MobileRedirectOption;

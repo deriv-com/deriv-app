@@ -1,16 +1,16 @@
 import React from 'react';
-import './mt5-mobile-download-option.scss';
+import './mt5-mobile-redirect-option.scss';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getDownloadOptions, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-type TMT5MobileDownloadOptionProps = {
+type TMT5DesktopRedirectOptionProps = {
     account_title: string;
     mt5_trade_account: DetailsOfEachMT5Loginid;
 };
-const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: TMT5MobileDownloadOptionProps) => {
+const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5DesktopRedirectOptionProps) => {
     const desktopDownloadOptions = getDownloadOptions({ mt5_trade_account }).filter(
         option => option.device === 'desktop'
     );
@@ -91,4 +91,4 @@ const MT5MobileDownloadOption = ({ account_title, mt5_trade_account }: TMT5Mobil
     );
 };
 
-export default MT5MobileDownloadOption;
+export default MT5DesktopRedirectOption;

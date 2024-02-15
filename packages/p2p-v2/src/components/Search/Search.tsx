@@ -22,13 +22,12 @@ const Search = ({ name, onSearch, placeholder }: TSearchProps) => {
     const debouncedOnSearch = useCallback(debounce(onSearch, 500), [onSearch]);
 
     return (
-        <form className='p2p-v2-search' onChange={event => debouncedOnSearch((event.target as HTMLInputElement).value)}>
-            <Input
-                label={placeholder}
-                leftPlaceholder={<LabelPairedSearchMdRegularIcon />}
-                name={name}
-                role='searchbox'
-            />
+        <form
+            className='p2p-v2-search'
+            onChange={event => debouncedOnSearch((event.target as HTMLInputElement).value)}
+            role='search'
+        >
+            <Input label={placeholder} leftPlaceholder={<LabelPairedSearchMdRegularIcon />} name={name} type='search' />
         </form>
     );
 };

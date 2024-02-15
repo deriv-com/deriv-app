@@ -56,6 +56,7 @@ const BuySellTable = () => {
                 <Table
                     columns={columns}
                     data={data}
+                    emptyDataMessage='There are no matching ads.'
                     isFetching={isFetching}
                     loadMoreFunction={loadMoreAdverts}
                     renderHeader={headerRenderer}

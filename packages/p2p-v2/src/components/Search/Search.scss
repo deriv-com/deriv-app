@@ -14,7 +14,7 @@
 
             &:not(:placeholder-shown) ~ label,
             &:focus ~ label {
-                transform: translate(-24%, -50%);
+                display: none;
             }
         }
 

@@ -13,8 +13,8 @@ describe('PaymentMethodModal', () => {
                 isModalOpen={true}
                 onConfirm={jest.fn()}
                 onReject={jest.fn()}
-                primaryButtonLabel='Confirm'
-                secondaryButtonLabel='Cancel'
+                primaryButtonLabel='Yes'
+                secondaryButtonLabel='Yes, remove'
                 title='Payment Method Modal'
             />,
             { wrapper }
@@ -30,13 +30,13 @@ describe('PaymentMethodModal', () => {
                 isModalOpen={true}
                 onConfirm={onConfirm}
                 onReject={jest.fn()}
-                primaryButtonLabel='Confirm'
-                secondaryButtonLabel='Cancel'
+                primaryButtonLabel='Yes'
+                secondaryButtonLabel='Yes, remove'
                 title='Payment Method Modal'
             />,
             { wrapper }
         );
-        const confirmButton = screen.getByText('Cancel');
+        const confirmButton = screen.getByText('Yes, remove');
         userEvent.click(confirmButton);
         expect(onConfirm).toHaveBeenCalled();
     });
@@ -48,13 +48,13 @@ describe('PaymentMethodModal', () => {
                 isModalOpen={true}
                 onConfirm={jest.fn()}
                 onReject={onReject}
-                primaryButtonLabel='Confirm'
-                secondaryButtonLabel='Cancel'
+                primaryButtonLabel='Yes'
+                secondaryButtonLabel='Yes, remove'
                 title='Payment Method Modal'
             />,
             { wrapper }
         );
-        const rejectButton = screen.getByText('Confirm');
+        const rejectButton = screen.getByText('Yes');
         userEvent.click(rejectButton);
         expect(onReject).toHaveBeenCalled();
     });

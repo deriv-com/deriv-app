@@ -40,7 +40,7 @@ const AdditionalInformation = () => {
     return (
         <div>
             <div className='flex items-center gap-16'>
-                <Text as='p' className='flex-shrink-0 my-16' weight='bold'>
+                <Text as='p' className='my-16 shrink-0' weight='bold'>
                     Additional information
                 </Text>
                 <Divider className='w-full' color='#F2F3F4' />

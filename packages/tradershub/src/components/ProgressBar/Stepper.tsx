@@ -15,11 +15,11 @@ type TStepperProps = {
 };
 
 const Stepper = ({ isActive, isFilled = false, step, stepCount }: TStepperProps) => (
-    <div aria-current={isActive} className={qtMerge('group relative justify-cente items-center', desktopStyle.stepper)}>
+    <div aria-current={isActive} className={qtMerge('relative items-center', desktopStyle.stepper)}>
         <div className='flex flex-col items-center self-center'>
             {stepCount !== 0 && <StepConnector isActive={isActive} />}
             <span className={stepperVariants({ isActive, isFilled })}>
-                {isFilled && <StandaloneCheckBoldIcon fill={isActive ? '#fff' : '#000'} />}
+                {isFilled && <StandaloneCheckBoldIcon className={isActive ? 'fill-white' : 'fill-black'} />}
             </span>
         </div>
         <Text as='p' size='sm' weight={isActive ? 'bold' : 'normal'}>

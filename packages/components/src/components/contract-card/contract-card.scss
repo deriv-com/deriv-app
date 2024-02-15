@@ -313,7 +313,8 @@
             }
         }
     }
-    &--turbos {
+    &--turbos,
+    &--lookbacks {
         .dc-contract-card {
             &-item {
                 &__body {
@@ -453,6 +454,22 @@
             &-value {
                 font-size: 1.4rem;
                 line-height: 2rem;
+            }
+        }
+        &__payout-limit {
+            padding: 0.8rem 0 0;
+            border-top: 1px solid var(--general-section-1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .dc-contract-card-item__body {
+                align-self: center;
+            }
+        }
+        &__footer {
+            .lookbacks--note {
+                margin-top: 0.4rem;
             }
         }
     }
@@ -625,6 +642,12 @@
             width: 7rem;
             @include mobile {
                 width: 9rem;
+            }
+        }
+        &--lookbacks-contract {
+            width: 5rem;
+            @include mobile {
+                width: initial;
             }
         }
 

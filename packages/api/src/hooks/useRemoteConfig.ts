@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import initData from '../features.json';
+import initData from '../remote_config.json';
 
 const remoteConfigQuery = async function () {
     if (!process.env.REMOTE_CONFIG_URL) {

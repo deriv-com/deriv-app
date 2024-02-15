@@ -18,22 +18,17 @@ describe('WalletListCard', () => {
         render(
             <APIProvider>
                 <WalletListCard
-                    badge='SVG'
                     balance='1000.00 USD'
                     currency='USD'
                     isActive
                     isDemo
                     loginid='CR123456'
-                    title='USD'
+                    onAccountSelect={jest.fn()}
                 />
             </APIProvider>
         );
 
-        const cardGradient = screen.getByTestId('dt_wallet_gradient_background');
-        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
-        expect(screen.getByText('SVG')).toBeInTheDocument();
         expect(screen.getByText('1000.00 USD')).toBeInTheDocument();
-        expect(cardGradient).toHaveClass('wallets-gradient--demo-desktop-card-light');
         expect(screen.queryByRole('button', { name: 'reset-balance' })).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'withdraw' })).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'deposit' })).not.toBeInTheDocument();
@@ -43,22 +38,17 @@ describe('WalletListCard', () => {
         render(
             <APIProvider>
                 <WalletListCard
-                    badge='MALTA'
                     balance='0.0000021 BTC'
                     currency='BTC'
                     isActive
                     isDemo={false}
                     loginid='CR123456'
-                    title='BTC'
+                    onAccountSelect={jest.fn()}
                 />
             </APIProvider>
         );
 
-        const cardGradient = screen.getByTestId('dt_wallet_gradient_background');
-        expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
-        expect(screen.getByText('MALTA')).toBeInTheDocument();
         expect(screen.getByText('0.0000021 BTC')).toBeInTheDocument();
-        expect(cardGradient).toHaveClass('wallets-gradient--BTC-desktop-card-light');
         expect(screen.queryByRole('button', { name: 'reset-balance' })).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'withdraw' })).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'deposit' })).toBeInTheDocument();
@@ -71,13 +61,12 @@ describe('WalletListCard', () => {
             <Router history={history}>
                 <APIProvider>
                     <WalletListCard
-                        badge='SVG'
                         balance='1000.00 USD'
                         currency='USD'
                         isActive
                         isDemo
                         loginid='CR123456'
-                        title='USD'
+                        onAccountSelect={jest.fn()}
                     />
                 </APIProvider>
             </Router>
@@ -96,13 +85,12 @@ describe('WalletListCard', () => {
             <Router history={history}>
                 <APIProvider>
                     <WalletListCard
-                        badge='MALTA'
                         balance='0.0000021 BTC'
                         currency='BTC'
                         isActive
                         isDemo={false}
                         loginid='CR123456'
-                        title='BTC'
+                        onAccountSelect={jest.fn()}
                     />
                 </APIProvider>
             </Router>
@@ -121,13 +109,12 @@ describe('WalletListCard', () => {
             <Router history={history}>
                 <APIProvider>
                     <WalletListCard
-                        badge='MALTA'
                         balance='0.0000021 BTC'
                         currency='BTC'
                         isActive
                         isDemo={false}
                         loginid='CR123456'
-                        title='BTC'
+                        onAccountSelect={jest.fn()}
                     />
                 </APIProvider>
             </Router>
@@ -146,13 +133,12 @@ describe('WalletListCard', () => {
             <Router history={history}>
                 <APIProvider>
                     <WalletListCard
-                        badge='MALTA'
                         balance='0.0000021 BTC'
                         currency='BTC'
                         isActive
                         isDemo={false}
                         loginid='CR123456'
-                        title='BTC'
+                        onAccountSelect={jest.fn()}
                     />
                 </APIProvider>
             </Router>
@@ -171,13 +157,12 @@ describe('WalletListCard', () => {
             <Router history={history}>
                 <APIProvider>
                     <WalletListCard
-                        badge='MALTA'
                         balance='0.0000021 BTC'
                         currency='BTC'
                         isActive
                         isDemo={false}
                         loginid='CR123456'
-                        title='BTC'
+                        onAccountSelect={jest.fn()}
                     />
                 </APIProvider>
             </Router>

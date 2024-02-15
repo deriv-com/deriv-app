@@ -60,6 +60,7 @@ const WalletDatePicker = ({
         <div className='wallets-datepicker' ref={datePickerRef}>
             <Input
                 aria-label={label}
+                autoComplete='off'
                 className='w-full'
                 error={isInvalid}
                 label={label}

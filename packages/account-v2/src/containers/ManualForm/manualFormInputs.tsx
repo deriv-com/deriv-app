@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import { Field, FieldProps } from 'formik';
-import { Input } from '@deriv-com/ui';
+import { Input, Text } from '@deriv-com/ui';
 import { WalletDatePicker } from '../../components/base/WalletDatePicker';
-import { WalletText } from '../../components/base/WalletText';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { useManualForm } from '../../hooks';
 import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
@@ -15,7 +14,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
 
     return (
         <Fragment>
-            <WalletText>{getTitleForFormInputs(selectedDocument)}</WalletText>
+            <Text>{getTitleForFormInputs(selectedDocument)}</Text>
             <div className='gap-1200 flex flex-col lg:grid lg:grid-cols-2'>
                 <Field name='document_number'>
                     {({ field, meta }: FieldProps) => {
@@ -25,6 +24,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                             <Input
                                 {...field}
                                 aria-label={fieldLabel}
+                                autoComplete='off'
                                 className='w-full'
                                 error={hasError}
                                 label={fieldLabel}

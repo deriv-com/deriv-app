@@ -15,13 +15,29 @@ export const getFieldsConfig = (selectedDocument: TManualDocumentTypes) =>
     MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].fields;
 
 export const getUploadConfig = (selectedDocument: TManualDocumentTypes) =>
-    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].upload;
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].uploads;
 
-export const getManualFormValidationSchema = (selectedDocument: TManualDocumentTypes) => {
-    const fieldsData = MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].fields;
+export const getManualFormValidationSchema = (
+    selectedDocument: TManualDocumentTypes,
+    isExpiryDateRequired: boolean
+) => {
+    const fieldsConfig = getFieldsConfig(selectedDocument);
+    const uploadConfig = getUploadConfig(selectedDocument);
+
+    const documentExpiryValidation = {
+        document_expiry: isExpiryDateRequired
+            ? Yup.string().required(fieldsConfig.documentExpiry.errorMessage)
+            : Yup.string().notRequired(),
+    };
+
+    const documentUploadValidation = Object.fromEntries(
+        uploadConfig.map(item => [item.pageType, Yup.string().required(item.error)])
+    );
+
     return Yup.object({
-        document_expiry: Yup.string().required(fieldsData.documentExpiry.errorMessage),
-        document_number: Yup.string().required(fieldsData.documentNumber.errorMessage),
+        document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
+        ...documentExpiryValidation,
+        ...documentUploadValidation,
     });
 };
 

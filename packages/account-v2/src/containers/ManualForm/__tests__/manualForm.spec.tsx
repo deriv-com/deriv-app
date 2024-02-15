@@ -13,6 +13,7 @@ describe('ManualForm', () => {
         selectedDocument?: React.ComponentProps<typeof ManualForm>['selectedDocument'];
     }) => {
         const mockProps: React.ComponentProps<typeof ManualForm> = {
+            onCancel: jest.fn(),
             onSubmit: jest.fn(),
             selectedDocument: selectedDocument ?? 'driving_licence',
         };

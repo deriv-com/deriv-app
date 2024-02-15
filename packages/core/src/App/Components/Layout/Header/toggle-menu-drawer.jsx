@@ -73,8 +73,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
             const location = window.location.pathname;
 
-            const cashier_routes = is_next_cashier_enabled ? routes.cashier_v2 : routes.cashier;
-
             if (is_appstore) {
                 primary_routes = [
                     routes.my_apps,
@@ -84,12 +82,16 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     routes.trade_types,
                     routes.markets,
                 ];
+            } else if (is_next_cashier_enabled) {
+                primary_routes = is_next_wallet_enabled
+                    ? [routes.reports, routes.account]
+                    : [routes.reports, routes.account, routes.cashier_v2];
             } else if (location === routes.traders_hub || is_trading_hub_category) {
-                primary_routes = [routes.account, cashier_routes];
+                primary_routes = [routes.account, routes.cashier];
             } else if (location === routes.wallets || is_next_wallet_enabled) {
                 primary_routes = [routes.reports, routes.account];
             } else {
-                primary_routes = [routes.reports, routes.account, cashier_routes];
+                primary_routes = [routes.reports, routes.account, routes.cashier];
             }
             setPrimaryRoutesConfig(getFilteredRoutesConfig(routes_config, primary_routes));
         };

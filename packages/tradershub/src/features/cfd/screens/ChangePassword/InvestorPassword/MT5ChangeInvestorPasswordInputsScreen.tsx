@@ -89,11 +89,11 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                             <Button
                                 disabled={!validPassword(values.currentPassword) || !validPassword(values.newPassword)}
                                 isLoading={changeInvestorPasswordStatus === 'loading'}
-                                size={!isDesktop ? 'lg' : 'md'}
+                                size={isDesktop ? 'md' : 'lg'}
                             >
                                 Change investor password
                             </Button>
-                            <Button className='border-none' onClick={sendEmail} size={!isDesktop ? 'lg' : 'md'}>
+                            <Button className='border-none' onClick={sendEmail} size={isDesktop ? 'md' : 'lg'}>
                                 Create or reset investor password
                             </Button>
                         </div>

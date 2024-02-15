@@ -1,4 +1,5 @@
 import React from 'react';
+import { StaticLink } from '@/components';
 import { getStaticUrl } from '@/helpers';
 import { THooks } from '@/types';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
@@ -49,16 +50,14 @@ const JurisdictionTncSection = ({
                         type='checkbox'
                     />
                     <label className='cursor-pointer' htmlFor='tnc-checkbox'>
-                        <Text size={!isDesktop ? 'sm' : 'md'}>
+                        <Text size={isDesktop ? 'md' : 'lg'}>
                             I confirm and accept {selectedCompany.name}&lsquo;s{' '}
-                            <a
+                            <StaticLink
                                 className='cursor-pointer text-solid-coral-700 text-1 pl-50 sm:text-100'
                                 href={getStaticUrl(selectedCompany.tncUrl)}
-                                rel='noreferrer'
-                                target='_blank'
                             >
                                 Terms and Conditions
-                            </a>
+                            </StaticLink>
                         </Text>
                     </label>
                 </div>

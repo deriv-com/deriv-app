@@ -3,11 +3,12 @@ import { clsx } from 'clsx';
 import DocumentsIcon from '@/assets/svgs/ic-documents.svg';
 import IdCardIcon from '@/assets/svgs/ic-id-card.svg';
 import SelfieIcon from '@/assets/svgs/ic-selfie.svg';
+import { StaticLink } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { Button, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import {
     TClickableDescription,
@@ -91,14 +92,13 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
             return row.clickableDescription.map(description => {
                 if (description.type === 'link') {
                     return (
-                        <Button
+                        <StaticLink
                             className='py-0 pl-0 text-sm bg-transparent text-brand-red-light'
                             key={`jurisdiction-card-description-${description.text}`}
                             onClick={descriptionClickHandler(description.tag)}
-                            variant='ghost'
                         >
                             {description.text}
-                        </Button>
+                        </StaticLink>
                     );
                 }
                 return description.text;

@@ -35,7 +35,7 @@ const Actions = ({ submitDisabled = false }: TActions) => {
                     <Button
                         isFullWidth={!isDesktop}
                         onClick={goToPrevStep}
-                        size={!isDesktop ? 'lg' : 'md'}
+                        size={isDesktop ? 'md' : 'lg'}
                         variant='outlined'
                     >
                         Back
@@ -45,7 +45,7 @@ const Actions = ({ submitDisabled = false }: TActions) => {
                     disabled={submitDisabled}
                     isFullWidth={!isDesktop}
                     onClick={() => handleSubmit()}
-                    size={!isDesktop ? 'lg' : 'md'}
+                    size={isDesktop ? 'md' : 'lg'}
                     type='submit'
                 >
                     {canGoToNextStep ? 'Next' : 'Add account'}

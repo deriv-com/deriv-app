@@ -6,6 +6,7 @@ type StaticLinkProps = {
     children: ReactNode;
     className?: string;
     href?: AnchorHTMLAttributes<HTMLAnchorElement>['href'];
+    onClick?: AnchorHTMLAttributes<HTMLAnchorElement>['onClick'];
     staticUrl?: AnchorHTMLAttributes<HTMLAnchorElement>['href'];
 };
 
@@ -19,11 +20,12 @@ type StaticLinkProps = {
  *
  * @returns {ElementType} The `StaticLink` component.
  */
-const StaticLink = ({ children, className, href, staticUrl }: StaticLinkProps) => {
+const StaticLink = ({ children, className, href, staticUrl, onClick }: StaticLinkProps) => {
     return (
         <a
             className={clsx('underline text-brand-coral py-0 px-4 underline-offset-2', className)}
             href={href ?? (staticUrl ? getStaticUrl(staticUrl) : '#')}
+            onClick={onClick}
             rel='noopener noreferrer'
             target='_blank'
         >

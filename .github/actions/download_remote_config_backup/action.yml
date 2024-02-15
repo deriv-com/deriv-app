@@ -33,8 +33,24 @@ runs:
         GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}
         GIT_COMMITTER_EMAIL: ${{ steps.import-gpg.outputs.email }}
       run: |
-        git add packages/api/src/remote_config.json
-        git commit -m "ci: download remote config backup [skip ci]"  || echo "No changes to commit"
-        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@${{ github.server_url }}/${{ github.repository }}.git
-        git push
+        branch_name="remote_config_update_branch"
+
+         if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit, Not creating a PR."
+          else
+            echo "Changes detected, creating a PR"
+
+            # Commit the newly downloaded file
+            cd $(git rev-parse --show-toplevel)
+            git add packages/api/src/remote_config.json
+            git commit -m "🤖 Remote Config file update 🤖"
+
+            # Force push to this branch in case a previous run created it.
+            git push --set-upstream origin "$branch_name" -f
+
+            sudo apt install gh
+            gh auth login --with-token <<< ${{ github.token }}
+            gh pr close "$branch_name" || true
+            gh pr create --base "master" --title "Sync Remote Config File 🤖" --head "binary-com:$branch_name" --body "This is an automated Pull Request designed to synchronize our project's Remote Config from It's origin. It checks for the changes in the the remote config url and in case of any change it will update it using this PR."
+          fi
       shell: bash

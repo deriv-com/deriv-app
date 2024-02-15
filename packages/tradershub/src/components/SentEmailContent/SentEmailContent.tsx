@@ -24,7 +24,7 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
     const title = PlatformDetails[platform ?? mt5Platform].title;
     const titleSize = 'md';
     const descriptionSize = 'sm';
-    const emailLinkSize = !isDesktop ? 'lg' : 'md';
+    const emailLinkSize = isDesktop ? 'md' : 'lg';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
         intervalMs: 1000,

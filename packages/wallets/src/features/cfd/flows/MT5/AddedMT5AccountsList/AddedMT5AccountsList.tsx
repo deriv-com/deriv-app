@@ -113,9 +113,14 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 {t('Verification failed.')}{' '}
                                 <a
                                     onClick={() =>
-                                        show(<VerificationFailedModal />, {
-                                            defaultRootId: 'wallets_modal_root',
-                                        })
+                                        show(
+                                            <VerificationFailedModal
+                                                selectedJurisdiction={account.landing_company_short}
+                                            />,
+                                            {
+                                                defaultRootId: 'wallets_modal_root',
+                                            }
+                                        )
                                     }
                                 >
                                     {t('Why?')}

@@ -30,7 +30,14 @@ type TContractDrawerCardProps = {
     toggleContractAuditDrawer: () => void;
 } & Pick<
     TContractCardBodyProps,
-    'contract_info' | 'contract_update' | 'is_accumulator' | 'is_mobile' | 'is_multiplier' | 'is_turbos' | 'is_vanilla'
+    | 'contract_info'
+    | 'contract_update'
+    | 'is_accumulator'
+    | 'is_mobile'
+    | 'is_multiplier'
+    | 'is_turbos'
+    | 'is_vanilla'
+    | 'is_lookbacks'
 > &
     Pick<TContractCardFooterProps, 'is_sell_requested' | 'onClickCancel' | 'onClickSell'> &
     Pick<TSwipeableContractDrawerProps, 'onSwipedDown' | 'onSwipedUp'>;
@@ -49,6 +56,7 @@ const ContractDrawerCard = observer(
         is_smarttrader_contract,
         is_sell_requested,
         is_turbos,
+        is_lookbacks,
         onClickCancel,
         onClickSell,
         onSwipedUp,
@@ -110,6 +118,7 @@ const ContractDrawerCard = observer(
                 is_sold={is_sold}
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
+                is_lookbacks={is_lookbacks}
                 has_progress_slider={has_progress_slider}
                 removeToast={removeToast}
                 server_time={server_time}
@@ -124,6 +133,7 @@ const ContractDrawerCard = observer(
                 contract_info={contract_info}
                 getCardLabels={getCardLabels}
                 is_multiplier={is_multiplier}
+                is_lookbacks={is_lookbacks}
                 is_sell_requested={is_sell_requested}
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}

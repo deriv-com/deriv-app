@@ -289,13 +289,4 @@ describe('Flyout', () => {
         userEvent.click(button_el);
         expect(mockAddBlockNode).not.toHaveBeenCalled();
     });
-
-    // it('should not display flyout content if invalid block type is provided', () => {
-    //     const element = document.createElement('buuttonn');
-    //     mock_DBot_store?.flyout.setContents([element]);
-    //     render(<Flyout />, {
-    //         wrapper,
-    //     });
-    //     // expect(screen.getByRole('button')).not.toBeInTheDocument();
-    // });
 });

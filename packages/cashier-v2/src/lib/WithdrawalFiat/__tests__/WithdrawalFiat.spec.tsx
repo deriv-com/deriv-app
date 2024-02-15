@@ -24,7 +24,7 @@ describe('<WithdrawalFiat />', () => {
             await waitFor(() => {
                 expect(screen.queryByTestId('dt_derivs-loader')).not.toBeInTheDocument();
             });
-            const iframe = screen.getByTestId('dt_fiat_iframe');
+            const iframe = screen.getByTestId('dt_withdrawal_fiat_iframe');
             expect(iframe).toHaveAttribute('src', 'https://example.com');
         });
     });

@@ -3,7 +3,7 @@
     max-width: 58.8rem;
     border: none;
 
-    @include mobile {
+    @include mobile-cashier-v2 {
         width: 100%;
     }
 }

@@ -1,9 +1,3 @@
-import moment from 'moment';
-
-export default function unixToDateString(date: Date) {
-    return moment(date).format('YYYY-MM-DD');
-}
-
 type TServerError = {
     code: string;
     details?: { [key: string]: string };
@@ -13,8 +7,3 @@ type TServerError = {
 
 export const isServerError = (error: unknown): error is TServerError =>
     typeof error === 'object' && error !== null && 'code' in error;
-
-export const defineViewportHeight = () => {
-    const viewportHeight = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--wallets-vh', `${viewportHeight}px`);
-};

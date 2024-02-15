@@ -1,13 +1,13 @@
-import React, { ButtonHTMLAttributes, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useCashierFiatAddress } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
 import { ErrorScreen } from '../../components/ErrorScreen';
-import { isServerError } from '../../utils/utils';
+import { isServerError } from '../../utils';
 import styles from './WithdrawalFiat.module.scss';
 
-interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+type WithdrawalFiatProps = {
     verificationCode?: string;
-}
+};
 
 const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => {
     const { data: iframeUrl, error: withdrawalFiatError, isError, isLoading, mutate } = useCashierFiatAddress();
@@ -30,10 +30,11 @@ const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => 
             {iframeUrl && (
                 <iframe
                     className={styles.iframe}
-                    data-testid='dt_fiat_iframe'
+                    data-testid='dt_withdrawal_fiat_iframe'
                     key={iframeUrl}
                     src={iframeUrl}
                     style={{ display: isLoading ? 'none' : 'block' }}
+                    title='withdrawal_fiat_iframe'
                 />
             )}
         </React.Fragment>

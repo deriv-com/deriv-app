@@ -10,11 +10,13 @@ const WalletsBanner = observer(() => {
     const { traders_hub } = useStore();
     const { is_eu_user } = traders_hub;
 
-    if (is_migrated) return <WalletsBannerReady is_eu={is_eu_user} />;
+    // TODO: Uncomment this when implementing banner ready component
+    // if (is_migrated) return <WalletsBannerReady is_eu={is_eu_user} />;
 
     if (is_eligible || is_failed) return <WalletsBannerUpgrade />;
 
-    if (is_in_progress) return <WalletsBannerUpgrading is_eu={is_eu_user} />;
+    // TODO: Uncomment this when implementing upgrading banner component
+    //if (is_in_progress) return <WalletsBannerUpgrading is_eu={is_eu_user} />;
 
     return null;
 });

@@ -3,6 +3,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import { DummyComponent } from '../components';
 import { Cashier } from '../containers';
+import { WithdrawalVerificationModule } from '../lib';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -29,7 +30,7 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
             },
             {
                 path: cashierPathRoutes.cashierWithdrawal,
-                component: DummyComponent,
+                component: WithdrawalVerificationModule,
                 title: 'Withdrawal',
             },
             {

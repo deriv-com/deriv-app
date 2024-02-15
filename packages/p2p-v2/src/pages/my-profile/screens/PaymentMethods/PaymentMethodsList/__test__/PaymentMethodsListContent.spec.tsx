@@ -81,7 +81,7 @@ jest.mock('@/components/Modals', () => ({
     PaymentMethodErrorModal: jest.fn(({ isModalOpen, onConfirm }: ComponentProps<typeof PaymentMethodErrorModal>) => {
         return isModalOpen ? (
             <div>
-                <>PaymentMethodErrorModal</>
+                <span>PaymentMethodErrorModal</span>
                 <button data-testid='dt_p2p_v2_payment_method_error_ok_button' onClick={onConfirm}>
                     Ok
                 </button>
@@ -91,7 +91,7 @@ jest.mock('@/components/Modals', () => ({
     PaymentMethodModal: jest.fn(({ isModalOpen, onConfirm, onReject }: ComponentProps<typeof PaymentMethodModal>) => {
         return isModalOpen ? (
             <div>
-                <>PaymentMethodModal</>
+                <span>PaymentMethodModal</span>
                 <button data-testid='dt_p2p_v2_payment_method_confirm_button' onClick={onConfirm}>
                     Confirm
                 </button>

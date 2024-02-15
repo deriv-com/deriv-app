@@ -2,6 +2,7 @@ import { OSDetect, getPlatformFromUrl, mobileOSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
@@ -119,8 +120,8 @@ const getMobileAppInstallerURL = () => {
     return getPlatformMt5DownloadLink('android');
 };
 
-function getDownloadOptions({ mt5_trade_account }: any) {
-    const deep_link = `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
+function getDownloadOptions(mt5_trade_account: DetailsOfEachMT5Loginid) {
+    const deep_link = `metatrader5://account?login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`;
 
     function isSafari() {
         return /^((?!chrome|android).)*AppleWebKit/i.test(navigator.userAgent) && typeof window.safari !== 'undefined';
@@ -144,7 +145,7 @@ function getDownloadOptions({ mt5_trade_account }: any) {
             device: 'mobile',
             icon: 'IcDesktopOutline',
             text: localize('MetaTrader5 web terminal'),
-            href: `${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`,
+            href: `${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`,
         },
         {
             device: 'mobile',

@@ -6,14 +6,8 @@ import { getDownloadOptions, getPlatformMt5DownloadLink } from '../Helpers/const
 import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-type TMT5DesktopRedirectOptionProps = {
-    account_title: string;
-    mt5_trade_account: DetailsOfEachMT5Loginid;
-};
-const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5DesktopRedirectOptionProps) => {
-    const desktopDownloadOptions = getDownloadOptions({ mt5_trade_account }).filter(
-        option => option.device === 'desktop'
-    );
+const MT5DesktopRedirectOption = (account_title: string, mt5_trade_account: DetailsOfEachMT5Loginid) => {
+    const desktopDownloadOptions = getDownloadOptions(mt5_trade_account).filter(option => option.device === 'desktop');
 
     return (
         <>

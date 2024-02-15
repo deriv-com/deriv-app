@@ -5,14 +5,8 @@ import { Localize } from '@deriv/translations';
 import { getDownloadOptions } from '../Helpers/constants';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-type TMT5MobileRedirectOptionProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
-};
-
-const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
-    const mobileDownloadOptions = getDownloadOptions({ mt5_trade_account }).filter(
-        option => option.device === 'mobile'
-    );
+const MT5MobileRedirectOption = (mt5_trade_account: DetailsOfEachMT5Loginid) => {
+    const mobileDownloadOptions = getDownloadOptions(mt5_trade_account).filter(option => option.device === 'mobile');
 
     return (
         <div className='mt5-download-container'>

@@ -43,7 +43,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
 
     const titles = {
         created: <Localize i18n_default_text='Success!' />,
-        learn_more: <Localize i18n_default_text='Passwordless login with passkeys' />,
+        learn_more: <Localize i18n_default_text='Effortless login with passkeys' />,
         no_passkey: <Localize i18n_default_text='Experience safer logins' />,
         removed: <Localize i18n_default_text='Passkey successfully removed' />,
         renaming: <Localize i18n_default_text='Edit passkey' />,
@@ -52,7 +52,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     const descriptions = {
         created: (
             <Localize
-                i18n_default_text='Your account is now secured with a passkey.<0/>Manage your passkey through your Deriv account settings.'
+                i18n_default_text='Your account is now secured with a passkey.<0/>Manage your passkey through your<0/>Deriv account settings.'
                 components={[<br key={0} />]}
             />
         ),

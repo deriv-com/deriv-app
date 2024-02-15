@@ -14,8 +14,9 @@ describe('DescriptionContainer', () => {
         const description_2 =
             'Passkeys are an added layer of security that protects your account against unauthorised access and phishing attacks.';
         const description_3 =
-            "Go to 'Account Settings' on Deriv GO to set up your passkey. Each device can only save one passkey; however, iOS users may still see the 'Create passkey' button due to iOS’s ability to save passkeys on other devices.";
-        const description_4 = 'Passkeys are saved in your password manager to help you sign in on other devices.';
+            'Go to ‘Account Settings’ on Deriv to set up your passkey. Each device can only save one passkey; however, iOS users may still see the "Create passkey" button due to iOS’s ability to save passkeys on other devices.';
+        const description_4 =
+            'Passkeys are saved in your Google password manager for Android devices and in iCloud keychain on iOS devices to help you sign in on other devices.';
         const description_5 =
             'Even if you change your email address, you can still continue to log in to Deriv.com with the same passkey.';
 

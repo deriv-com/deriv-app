@@ -36,18 +36,18 @@ const mockCreatePasskey = jest.fn();
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useGetPasskeysList: jest.fn(() => ({
-        data: mock_passkeys_list,
-        isLoading: false,
-        error: '',
+        passkeys_list: mock_passkeys_list,
+        is_passkeys_list_loading: false,
+        passkeys_list_error: '',
     })),
     useIsPasskeySupported: jest.fn(() => ({
         is_passkey_supported: true,
-        is_loading: false,
+        is_passkey_support_checking: false,
     })),
     useRegisterPasskey: jest.fn(() => ({
         createPasskey: mockCreatePasskey,
         is_passkey_registered: false,
-        registration_error: '',
+        passkey_registration_error: '',
     })),
 }));
 
@@ -79,7 +79,7 @@ describe('Passkeys', () => {
         userEvent.click(create_passkey_button);
         expect(mockCreatePasskey).toBeCalledTimes(1);
     });
-    it("renders 'No passkey found' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", () => {
+    it("renders 'Experience safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             data: [],
             isLoading: false,
@@ -91,10 +91,10 @@ describe('Passkeys', () => {
             </RenderWrapper>
         );
 
-        expect(screen.getByText('No passkey found')).toBeInTheDocument();
+        expect(screen.getByText('Experience safer logins')).toBeInTheDocument();
         const learn_more_button = screen.getByRole('button', { name: 'Learn more' });
         userEvent.click(learn_more_button);
-        expect(screen.getByText('Passwordless login with passkeys')).toBeInTheDocument();
+        expect(screen.getByText('Effortless login with passkeys')).toBeInTheDocument();
         expect(screen.getByText('Tips:')).toBeInTheDocument();
         const create_passkey_button = screen.getByRole('button', { name: 'Create passkey' });
         userEvent.click(create_passkey_button);

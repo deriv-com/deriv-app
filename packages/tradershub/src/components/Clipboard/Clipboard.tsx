@@ -21,7 +21,7 @@ type TClipboardProps = {
  */
 const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
     const [, copy] = useCopyToClipboard();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const [isCopied, setIsCopied] = useState(false);
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
@@ -47,7 +47,7 @@ const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
     return (
         <Tooltip
             alignment={tooltip ?? 'bottom'}
-            isVisible={isHovered && !isMobile}
+            isVisible={isHovered && isDesktop}
             message={isCopied ? 'Copied!' : 'Copy'}
         >
             <Button color='white' onClick={onClick} size='sm' variant='ghost'>

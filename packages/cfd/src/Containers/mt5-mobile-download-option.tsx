@@ -29,9 +29,10 @@ const MT5MobileDownloadOption = ({ mt5_trade_account }: TMT5TradeModalProps) => 
                     key={index}
                     className={`mt5-download-container--option ${index === 1 ? 'blue' : 'grey'}`}
                     onClick={() => {
-                        if (option.href) {
-                            window.open(option.href, '_blank');
+                        if (option.deeplink) {
+                            return window.location.replace(option.deeplink);
                         }
+                        window.open(option.href, '_blank');
                     }}
                     role='button'
                 >

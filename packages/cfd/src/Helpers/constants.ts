@@ -130,13 +130,13 @@ function getDownloadOptions({ mt5_trade_account }: any) {
             device: 'mobile',
             icon: 'IcDesktop',
             text: localize('MetaTrader5 web terminal'),
-            href: mt5_trade_account?.webtrader_url,
+            href: `${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`,
         },
         {
             device: 'mobile',
             icon: 'IcMobile',
             text: localize('Trade with MT5 mobile app'),
-            href: have_mt5_app ? deep_link : getMobileAppInstallerURL(),
+            deeplink: have_mt5_app ? deep_link : getMobileAppInstallerURL(),
         },
         {
             device: 'desktop',

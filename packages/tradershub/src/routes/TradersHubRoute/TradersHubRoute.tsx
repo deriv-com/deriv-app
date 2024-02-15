@@ -27,9 +27,9 @@ const TradersHubRoute = () => {
 
     if (!isDesktop)
         return (
-            <div className='pt-16'>
+            <div className='p-16'>
                 <div className='flex items-end justify-between pb-24'>
-                    <div>
+                    <div className='flex flex-col'>
                         <Text className='pb-4' weight='bold'>
                             Trader&apos;s Hub
                         </Text>

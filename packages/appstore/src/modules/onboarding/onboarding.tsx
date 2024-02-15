@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { localize } from '@deriv/translations';
-import { useGrowthbookFeatureFlag, useHasActiveRealAccount } from '@deriv/hooks';
+import { useHasActiveRealAccount } from '@deriv/hooks';
 import { isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';

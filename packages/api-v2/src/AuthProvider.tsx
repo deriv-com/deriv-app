@@ -4,7 +4,6 @@ import { useAPIContext } from './APIProvider';
 import { getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
 import useMutation from './useMutation';
 import { TSocketResponseData } from '../types';
-import { log } from 'console';
 
 // Define the type for the context state
 type AuthContextType = {

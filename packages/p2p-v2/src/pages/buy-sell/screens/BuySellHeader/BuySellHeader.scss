@@ -4,15 +4,44 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: space-between;
 
     @include mobile {
+        padding: 0;
         flex-direction: column;
         justify-content: center;
         border: 1px solid #f2f3f4;
     }
 
+    .deriv-dropdown__items {
+        top: 4.4rem;
+    }
+
+    .deriv-input {
+        padding: 6px 8px;
+
+        &__container {
+            width: 24rem;
+        }
+
+        &__field {
+            font-size: 14px;
+
+            &:not(:placeholder-shown) ~ label {
+                transform: translate(-29%, -50%);
+            }
+        }
+
+        &__helper-message {
+            display: none;
+        }
+    }
+
     &__tabs {
+        @include mobile {
+            padding: 1.6rem;
+        }
+
         & .derivs-primary-tabs {
             height: 4rem;
             width: 18rem;
@@ -23,6 +52,14 @@
         & .derivs-primary-tabs__btn--active {
             border-radius: 0.4rem;
             padding: 0.8rem 0.6rem;
+        }
+    }
+
+    &__row {
+        @include mobile {
+            width: 100%;
+            padding: 1.6rem;
+            border-top: 1px solid #f2f3f4;
         }
     }
 }

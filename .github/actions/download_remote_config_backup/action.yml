@@ -13,17 +13,27 @@ runs:
     - name: Download remote config backup
       run: |
         echo "Downloading remote config backup"
-        curl ${{ inputs.REMOTE_CONFIG_URL }} > packages/api/features.json
+        curl ${{ inputs.REMOTE_CONFIG_URL }} > packages/api/src/remote_config.json
         echo "Remote Config backup downloaded successfully!"
       shell: bash
+    - name: Import GPG key
+      id: import-gpg
+      uses: deriv-com/ghaction-import-gpg@v6
+      with:
+        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        git_user_signingkey: true
+        git_commit_gpgsign: true
     - name: commit changes
       if: github.ref == 'refs/heads/master'
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
+        GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
+        GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}
+        GIT_COMMITTER_EMAIL: ${{ steps.import-gpg.outputs.email }}
       run: |
-        git config --global user.email "web-access@deriv.com"
-        git config --global user.name "deriv-bot"
-        git add packages/api/features.json
+        git add packages/api/src/remote_config.json
         git commit -m "ci: download remote config backup [skip ci]"  || echo "No changes to commit"
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@${{ github.server_url }}/${{ github.repository }}.git
         git push

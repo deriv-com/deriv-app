@@ -472,8 +472,18 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
-            const { p2p_status } = get_account_status;
+            const { authentication, p2p_poa_required, p2p_status, status } = get_account_status;
+            const { document, identity } = authentication;
             this.setIsP2PUser(p2p_status !== 'none' && p2p_status !== 'perm_ban');
+
+            if (status.includes('cashier_locked')) {
+                this.setIsBlocked(true);
+                this.hideModal();
+            } else {
+                this.setP2pPoaRequired(p2p_poa_required);
+                this.setPoaStatus(document.status);
+                this.setPoiStatus(identity.status);
+            }
 
             const hasStatuses = statuses => statuses?.every(status => get_account_status.status.includes(status));
 
@@ -828,25 +838,6 @@ export default class GeneralStore extends BaseStore {
                 this.setIsLoading(false);
                 return;
             }
-        }
-
-        if (!this.is_advertiser) {
-            requestWS({ get_account_status: 1 }).then(account_response => {
-                if (!account_response.error) {
-                    const { get_account_status } = account_response;
-                    const { authentication, p2p_poa_required, status } = get_account_status;
-                    const { document, identity } = authentication;
-
-                    if (status.includes('cashier_locked')) {
-                        this.setIsBlocked(true);
-                        this.hideModal();
-                    } else {
-                        this.setP2pPoaRequired(p2p_poa_required);
-                        this.setPoaStatus(document.status);
-                        this.setPoiStatus(identity.status);
-                    }
-                }
-            });
         }
 
         this.setIsLoading(false);

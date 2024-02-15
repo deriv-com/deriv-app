@@ -135,7 +135,10 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         return <EmptyOnboarding />;
     }
 
-    if ((is_logged_in && is_from_signup_account && is_eu_user) || growthbook_ab_test_skip_onboarding_flow) {
+    if (
+        (is_logged_in && is_from_signup_account && is_eu_user) ||
+        (growthbook_ab_test_skip_onboarding_flow && !is_logged_in)
+    ) {
         history.push(routes.traders_hub);
     }
 

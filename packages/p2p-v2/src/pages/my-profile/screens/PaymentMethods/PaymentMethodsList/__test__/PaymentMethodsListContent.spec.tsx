@@ -70,7 +70,7 @@ const mockUseDeleteResponse: ReturnType<typeof p2p.advertiserPaymentMethods.useD
     isLoading: false,
     isPaused: false,
     isSuccess: true,
-    mutateAsync: () => new Promise(resolve => resolve({})),
+    mutateAsync: () => Promise.resolve({}),
     reset: () => undefined,
     status: 'success',
     variables: undefined,
@@ -81,7 +81,7 @@ jest.mock('@/components/Modals', () => ({
     PaymentMethodErrorModal: jest.fn(({ isModalOpen, onConfirm }: ComponentProps<typeof PaymentMethodErrorModal>) => {
         return isModalOpen ? (
             <div>
-                PaymentMethodErrorModal
+                <>PaymentMethodErrorModal</>
                 <button data-testid='dt_p2p_v2_payment_method_error_ok_button' onClick={onConfirm}>
                     Ok
                 </button>
@@ -91,7 +91,7 @@ jest.mock('@/components/Modals', () => ({
     PaymentMethodModal: jest.fn(({ isModalOpen, onConfirm, onReject }: ComponentProps<typeof PaymentMethodModal>) => {
         return isModalOpen ? (
             <div>
-                PaymentMethodModal
+                <>PaymentMethodModal</>
                 <button data-testid='dt_p2p_v2_payment_method_confirm_button' onClick={onConfirm}>
                     Confirm
                 </button>

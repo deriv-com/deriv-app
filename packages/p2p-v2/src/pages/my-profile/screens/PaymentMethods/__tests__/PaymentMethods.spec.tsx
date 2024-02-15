@@ -77,7 +77,7 @@ jest.mock('@/components', () => ({
     ...jest.requireActual('@/components'),
     PaymentMethodForm: jest.fn(({ onResetFormState }: ComponentProps<typeof PaymentMethodForm>) => (
         <div>
-            PaymentMethodForm
+            <>PaymentMethodForm</>
             <button data-testid='dt_p2p_v2_cancel_button' onClick={onResetFormState}>
                 Cancel
             </button>
@@ -92,7 +92,7 @@ jest.mock('../PaymentMethodsEmpty', () => ({
 jest.mock('../PaymentMethodsList', () => ({
     PaymentMethodsList: jest.fn(({ onAdd, onDelete, onEdit }: ComponentProps<typeof PaymentMethodsList>) => (
         <div>
-            PaymentMethodsList
+            <>PaymentMethodsList</>
             <button onClick={() => onAdd()}>Add</button>
             <button onClick={() => onEdit(data[0])}>Edit</button>
             <button onClick={() => onDelete(data[0])}>Delete</button>

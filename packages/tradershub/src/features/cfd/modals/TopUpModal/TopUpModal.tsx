@@ -1,10 +1,10 @@
 import React from 'react';
+import { Modal } from '@/components';
+import { THooks, TPlatforms } from '@/types';
+import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useIsEuRegion, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
 import { Heading, useBreakpoint } from '@deriv/quill-design';
 import { Button, Text } from '@deriv-com/ui';
-import { Modal } from '../../../../components/Modal';
-import { THooks, TPlatforms } from '../../../../types';
-import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
 
 type TTopUpModalProps = {
     account: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
@@ -44,7 +44,7 @@ const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
     return (
         <Modal className='max-w-[330px] md:max-w-[440px]'>
             <Modal.Header title='Fund top up' />
-            <Modal.Content className='flex flex-col items-center justify-center space-y-1200 p-1200 sm:p-1200'>
+            <Modal.Content className='flex flex-col items-center justify-center space-y-24 p-24 sm:p-24'>
                 <Text weight='bold'>{title} Demo account</Text>
                 <div className='text-center'>
                     <Text size='sm' weight='bold'>
@@ -58,7 +58,7 @@ const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
                 </Text>
                 <div>
                     <Button
-                        className='rounded-200 px-800'
+                        className='rounded-xs px-16'
                         disabled={Number(account?.balance) > 1000}
                         onClick={topUpVirtual}
                     >

@@ -125,6 +125,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                                 'dc-btn--secondary',
                                                 'notification__cta-button'
                                             )}
+                                            onClick={onClick}
                                             to={data.action.route}
                                         >
                                             <Text size='xxs' weight='bold'>

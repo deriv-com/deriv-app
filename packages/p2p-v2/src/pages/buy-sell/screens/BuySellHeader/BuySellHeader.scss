@@ -1,0 +1,28 @@
+.p2p-v2-buy-sell-header {
+    padding: 2.5rem 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+
+    @include mobile {
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid #f2f3f4;
+    }
+
+    &__tabs {
+        & .derivs-primary-tabs {
+            height: 4rem;
+            width: 18rem;
+            border-radius: 0.6rem;
+            padding: 0.5rem;
+        }
+
+        & .derivs-primary-tabs__btn--active {
+            border-radius: 0.4rem;
+            padding: 0.8rem 0.6rem;
+        }
+    }
+}

@@ -18,13 +18,8 @@ const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5Desk
     return (
         <>
             <div className='cfd-trade-modal__download-center-app'>
-                {desktopDownloadOptions.map((option, index) => (
-                    <div
-                        key={`${option.icon}-${index}`}
-                        className={`cfd-trade-modal__download-center-app--option ${
-                            index > 0 ? 'cfd-trade-modal__download-center-app--option-hide' : ''
-                        }`}
-                    >
+                {desktopDownloadOptions.map(option => (
+                    <div key={option.icon} className={`cfd-trade-modal__download-center-app--option`}>
                         <Icon icon={option.icon} size={32} />
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {option.text}

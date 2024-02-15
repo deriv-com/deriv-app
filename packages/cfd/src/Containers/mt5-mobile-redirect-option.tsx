@@ -1,6 +1,6 @@
 import React from 'react';
 import './mt5-mobile-redirect-option.scss';
-import { Icon, StaticUrl, Text } from '@deriv/components';
+import { ButtonLink, Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getDownloadOptions } from '../Helpers/constants';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
@@ -16,21 +16,20 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
 
     return (
         <div className='mt5-download-container'>
-            {mobileDownloadOptions.map((option, index) => (
-                <div
-                    key={index}
-                    className={`mt5-download-container--option ${index === 1 ?? 'blue'}`}
+            {mobileDownloadOptions.map(option => (
+                <ButtonLink
+                    key={option.icon}
+                    className={`mt5-download-container--option ${option.highlight ? 'blue' : ''}`}
                     onClick={() => {
                         window.open(option.href, '_blank');
                     }}
-                    role='button'
                 >
                     <Icon icon={option.icon} size={16} />
                     <Text as='p' align='left' size='xxs' weight='bold'>
                         <Localize i18n_default_text={option.text} />
                     </Text>
-                    <Icon icon={index === 1 ? 'IcChevronRightLight' : 'IcChevronRight'} size={16} />
-                </div>
+                    <Icon icon={option.highlight ? 'IcChevronRightLight' : 'IcChevronRight'} size={16} />
+                </ButtonLink>
             ))}
 
             <Text as='p' size='xxxs'>

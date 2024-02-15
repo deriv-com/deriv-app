@@ -1,0 +1,44 @@
+.effortless-login-modal {
+    &__overlay {
+        &-container {
+            background: var(--general-main-1);
+            height: 100vh;
+            width: 100vw;
+
+            .effortless-login-modal__wrapper {
+                display: block;
+                margin-top: 2rem;
+
+                .dc-icon {
+                    display: block;
+                    margin-inline: auto;
+                }
+
+                .effortless-login-modal {
+                    &__title {
+                        margin-top: 2rem;
+                    }
+
+                    &__overlay-tip {
+                        padding-block: 1.6rem;
+
+                        &:not(:last-child) {
+                            display: flex;
+                            border-bottom: 1px solid var(--border-disabled);
+                            gap: 0.8rem;
+                        }
+
+                        .dc-icon {
+                            margin-inline: unset;
+                        }
+                    }
+                }
+            }
+        }
+
+        &-header {
+            padding: 1.2rem 2.4rem;
+            border-bottom: 1px solid var(--border-disabled);
+        }
+    }
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
+import { useShowEffortlessLoginModal } from '@deriv/hooks';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
@@ -17,6 +18,7 @@ import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import VerificationModal from '../VerificationModal';
+import EffortlessLoginModal from '../EffortlessLoginModal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -101,6 +103,8 @@ const AppModals = observer(() => {
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
     const url_action_param = url_params.get('action');
 
+    const show_effortless_login_modal = useShowEffortlessLoginModal();
+
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
 
     const should_show_mt5_notification_modal =
@@ -175,6 +179,11 @@ const AppModals = observer(() => {
     } else if (should_show_risk_accept_modal) {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
     }
+
+    if (is_logged_in && show_effortless_login_modal) {
+        ComponentToLoad = <EffortlessLoginModal />;
+    }
+
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;
     }

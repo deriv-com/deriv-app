@@ -2018,6 +2018,7 @@ export default class ClientStore extends BaseStore {
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
         LocalStore.set('marked_notifications', JSON.stringify([]));
+        localStorage.setItem('show_effortless_login_modal', true);
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));

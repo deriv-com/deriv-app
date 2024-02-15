@@ -66,7 +66,7 @@ const JurisdictionModal = () => {
                 {!isDynamicLeverageVisible ? (
                     <Modal.Footer>
                         <Button
-                            className='rounded-200'
+                            className='rounded-xs'
                             disabled={
                                 !selectedJurisdiction ||
                                 (selectedJurisdiction !== Jurisdiction.SVG && !isCheckBoxChecked)

@@ -7,7 +7,8 @@ import { THooks } from '@/types';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
-import { Button, Text } from '@deriv-com/ui';
+import { Button } from '@deriv-com/ui';
+import { DemoCurrencySwitcherAccountInfo, RealCurrencySwitcherAccountInfo } from './CurrencySwitcherAccountInfo';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];
@@ -53,25 +54,20 @@ const CurrencySwitcher = () => {
 
     if (!isSuccess) return <CurrencySwitcherLoader />;
 
+    const { icon, text } = IconToCurrencyMapper[iconCurrency];
+
     return (
-        <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background lg:w-auto lg:shrink-0 gap-800'>
-            <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
+        <div className='flex items-center justify-between w-full gap-16 p-16 border-solid rounded-default border-1 border-system-light-active-background lg:w-auto lg:shrink-0'>
+            <div className='flex-none '>{icon}</div>
             <div className='grow'>
-                <Text
-                    as='p'
-                    className={isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'}
-                    size='sm'
-                    weight={isDemo ? 'bold' : 'normal'}
-                >
-                    {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
-                </Text>
-                <Text
-                    className={!isDemo ? 'text-status-light-success' : ''}
-                    size='sm'
-                    weight={isDemo ? 'normal' : 'bold'}
-                >
-                    {isDemo ? 'Demo' : activeAccount?.display_balance}
-                </Text>
+                {isDemo ? (
+                    <DemoCurrencySwitcherAccountInfo displayBalance={activeAccount?.display_balance} />
+                ) : (
+                    <RealCurrencySwitcherAccountInfo
+                        currencyText={text}
+                        displayBalance={activeAccount?.display_balance}
+                    />
+                )}
             </div>
             <div className='flex-none'>
                 <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />

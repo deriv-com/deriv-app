@@ -38,13 +38,14 @@ const AdditionalInformation = () => {
 
     return (
         <div>
-            <Text as='p' className='my-800' weight='bold'>
+            <Text as='p' className='my-16' weight='bold'>
                 Additional information
             </Text>
-            <div className='flex flex-col gap-1400'>
+            <div className='flex flex-col gap-20'>
                 <Input
-                    className='w-full text-body-sm'
+                    className='text-body-sm'
                     error={Boolean(errors.phoneNumber && touched.phoneNumber)}
+                    isFullWidth
                     label='Phone number*'
                     message={touched.phoneNumber && errors.phoneNumber}
                     name='phoneNumber'
@@ -60,6 +61,7 @@ const AdditionalInformation = () => {
                         text: residence.text,
                         value: residence.value ?? '',
                     }))}
+                    listHeight='sm'
                     name='placeOfBirth'
                     onSelect={selectedItem => {
                         setFieldValue('placeOfBirth', selectedItem);
@@ -67,7 +69,7 @@ const AdditionalInformation = () => {
                     value={values.placeOfBirth}
                     variant='comboBox'
                 />
-                <div className='flex items-center justify-between gap-800'>
+                <div className='flex items-center justify-between gap-16'>
                     <Dropdown
                         dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                         label='Tax residence'
@@ -75,6 +77,7 @@ const AdditionalInformation = () => {
                             text: residence.text,
                             value: residence.value ?? '',
                         }))}
+                        listHeight='sm'
                         name='taxResidence'
                         onSelect={selectedItem => {
                             setFieldValue('taxResidence', selectedItem);
@@ -84,9 +87,10 @@ const AdditionalInformation = () => {
                     />
                     <StandaloneCircleInfoRegularIcon />
                 </div>
-                <div className='flex items-center justify-between gap-800'>
+                <div className='flex items-center justify-between gap-16'>
                     <Input
-                        className='w-full text-body-sm'
+                        className='text-body-sm'
+                        isFullWidth
                         label='Tax identification number'
                         name='taxIdentificationNumber'
                         onBlur={handleBlur}
@@ -100,6 +104,7 @@ const AdditionalInformation = () => {
                     errorMessage={touched.accountOpeningReason && errors.accountOpeningReason}
                     label='Account opening reason*'
                     list={AccountOpeningReasonList}
+                    listHeight='sm'
                     name='accountOpeningReason'
                     onSelect={selectedItem => {
                         setFieldValue('accountOpeningReason', selectedItem);

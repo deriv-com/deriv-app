@@ -24,8 +24,8 @@ const InstrumentsLabelHighlighted = ({
     return (
         <div
             className={qtMerge(
-                'flex flex-col rounded-1200 pt-3500 px-[15px] pb-50 lg:pt-2000 lg:px-900 lg:pb-50',
-                isDemo && 'pt-800'
+                'flex flex-col rounded-24 pt-[70px] px-[15px] pb-0 lg:pt-40 lg:px-18 lg:pb-0',
+                isDemo && 'pt-16'
             )}
             data-testid='dt_compare_cfd_account_outline__container'
         >

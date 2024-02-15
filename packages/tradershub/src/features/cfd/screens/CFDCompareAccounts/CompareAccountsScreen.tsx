@@ -27,9 +27,9 @@ const CompareAccountsScreen = () => {
     );
 
     return (
-        <div className='overflow-x-auto overflow-y-scroll lg:w-full lg:h-full m-50 max-h-[800px] pt-50 px-50 pb-[201px]'>
+        <div className='m-0 overflow-x-auto lg:w-full lg:h-full '>
             <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} />
-            <div className='flex justify-center p-1000 lg:my-50 lg:mx-auto max-w-[1232px]'>
+            <div className='flex justify-center lg:my-0 lg:mx-auto max-w-[1232px]'>
                 <CompareAccountsCarousel>
                     {mt5Accounts?.map(item => (
                         <CFDCompareAccountsCard

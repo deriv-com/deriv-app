@@ -29,7 +29,7 @@ const HelpBase = observer(() => {
 
     return (
         <React.Fragment>
-            <div className='flyout__help-header'>
+            <div className='flyout__help-header' data-testid='dt_flyout_help_base'>
                 <button className='dc-btn flyout__button-back' onClick={onBackClick}>
                     <Icon icon='IcArrowLeft' />
                 </button>

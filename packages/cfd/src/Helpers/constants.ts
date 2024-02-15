@@ -151,7 +151,7 @@ function getDownloadOptions({ mt5_trade_account }: any) {
             device: 'mobile',
             icon: 'IcMobile',
             text: localize('Trade with MT5 mobile app'),
-            href: mobileURLSet,
+            href: mobileURLSet(),
         },
         {
             device: 'desktop',

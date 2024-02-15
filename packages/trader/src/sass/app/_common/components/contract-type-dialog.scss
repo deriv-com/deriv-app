@@ -28,6 +28,19 @@
         /* postcss-bem-linter: ignore */
         .dc-vertical-tab {
             max-height: 680px;
+
+            .learn-more {
+                height: 5.2rem;
+                margin: 1.6rem 0.8rem 0.8rem;
+                padding: 1.6rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                background-color: var(--general-section-1);
+                cursor: pointer;
+                border-radius: $BORDER_RADIUS;
+            }
         }
         /* postcss-bem-linter: ignore */
         .dc-vertical-tab__action-bar {
@@ -56,7 +69,7 @@
                 }
                 /* postcss-bem-linter: ignore */
                 &__leading-icon {
-                    top: 0.8rem;
+                    top: 1.2rem;
                 }
                 /* postcss-bem-linter: ignore */
                 &__trailing-icon {
@@ -88,7 +101,7 @@
             height: calc(100% - 2.4rem - 18px);
         }
         .inline-message__information {
-            margin: 1.6rem 0.8rem;
+            margin: 1.6rem 0.8rem -0.8rem;
         }
     }
     &--enter,

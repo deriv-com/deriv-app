@@ -54,7 +54,7 @@ const Address = () => {
             >
                 {({ errors, handleBlur, handleChange, setFieldValue, touched, values }) => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
+                        <div className='flex-1 overflow-y-auto p-24'>
                             <div className='flex flex-col'>
                                 <Text size='sm' weight='bold'>
                                     Only use an address for which you have proof of residence -
@@ -64,7 +64,7 @@ const Address = () => {
                                     statement, or government-issued letter with your name and this address.
                                 </Text>
                             </div>
-                            <div className='flex flex-col items-center self-stretch gap-2000 mt-1500'>
+                            <div className='flex flex-col items-center self-stretch gap-16 mt-1500'>
                                 <Input
                                     className='text-body-sm'
                                     error={Boolean(errors.firstLineAddress && touched.firstLineAddress)}

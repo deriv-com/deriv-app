@@ -13,7 +13,7 @@ const fatcaDeclaration = [
 ];
 
 const FatcaDeclaration = () => {
-    const { setFieldValue, values } = useFormikContext<{
+    const { errors, setFieldValue, touched, values } = useFormikContext<{
         fatcaDeclaration: string;
     }>();
     return (
@@ -35,6 +35,7 @@ const FatcaDeclaration = () => {
             <div>
                 <Dropdown
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
+                    errorMessage={touched.fatcaDeclaration && errors.fatcaDeclaration}
                     label='Please select*'
                     list={[
                         { text: 'Yes', value: 'yes' },

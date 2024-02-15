@@ -23,6 +23,7 @@ type TTermsOfUseFormProps = {
 type TTermsOfUseProps = {
     getCurrentStep: () => number;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
+    onSave: (current_step: number, values: TTermsOfUseFormProps) => void;
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     onSubmit: (
@@ -41,6 +42,7 @@ type TTermsOfUseProps = {
  * @name TermsOfUse
  * @param getCurrentStep - function to get current step
  * @param onCancel - function to cancel account signup
+ * @param onSave - To handle click on save button
  * @param goToPreviousStep - function to go to previous step
  * @param goToNextStep - function to go to next step
  * @param onSubmit - function to submit form
@@ -53,6 +55,7 @@ type TTermsOfUseProps = {
 const TermsOfUse = ({
     getCurrentStep,
     onCancel,
+    onSave,
     goToPreviousStep,
     goToNextStep,
     onSubmit,
@@ -74,12 +77,18 @@ const TermsOfUse = ({
         return localize('Add account');
     };
 
+    const onValuesChange = (values: TTermsOfUseFormProps) => {
+        const current_step = (getCurrentStep?.() || 1) - 1;
+        onSave(current_step, values);
+    };
+
     return (
         <Formik
             initialValues={value}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
+            validate={onValuesChange}
         >
             {({ handleSubmit, values, isSubmitting }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>

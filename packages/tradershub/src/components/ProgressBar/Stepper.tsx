@@ -22,7 +22,7 @@ const Stepper = ({ isActive, isFilled = false, step, stepCount }: TStepperProps)
                 {isFilled && <StandaloneCheckBoldIcon fill={isActive ? '#fff' : '#000'} />}
             </span>
         </div>
-        <Text className='relative top-200' size='sm' weight={isActive ? 'bold' : 'normal'}>
+        <Text className='relative top-4' size='sm' weight={isActive ? 'bold' : 'normal'}>
             {step}
         </Text>
     </div>

@@ -7,7 +7,7 @@ export const DynamicLeverageTitle = () => {
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
 
     return (
-        <div className='flex items-center border-solid border-b-75 -mx-400 pb-600 pr-800 pl-1200 gap-800 h-14 border-system-light-secondary-background '>
+        <div className='flex items-center h-auto gap-16 py-12 pl-24 pr-16 -mx-8 border-solid border-b-1'>
             <StandaloneArrowLeftBoldIcon className='flex items-center cursor-pointer' onClick={toggleDynamicLeverage} />
             <Text weight='bold'>Get more out of Deriv MT5 Financial</Text>
         </div>

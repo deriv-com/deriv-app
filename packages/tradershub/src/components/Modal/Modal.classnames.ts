@@ -2,7 +2,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ExcludeAllNull } from '@deriv/quill-design';
 
 export const ModalFooterClass = cva(
-    'grid gap-400 p-800 border border-solid border-t-100 border-system-light-secondary-background bottom-0 lg:items-center lg:px-1200 lg:py-800',
+    'grid gap-8 p-16 border border-solid border-t-2 border-system-light-secondary-background bottom-0 lg:items-center lg:px-24 lg:py-16 rounded-b-default',
     {
         variants: {
             align: {

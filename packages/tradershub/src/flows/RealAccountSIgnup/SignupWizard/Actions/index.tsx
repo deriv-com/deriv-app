@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 import { ButtonGroup } from '@/components';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { Button, Divider } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
 type TActions = {
@@ -30,8 +30,8 @@ const Actions = ({ submitDisabled = false }: TActions) => {
 
     return (
         <div>
-            <hr className='opacity-100' />
-            <ButtonGroup className='justify-end p-24'>
+            <Divider />
+            <ButtonGroup className='flex-row justify-end p-24'>
                 {canGoToPrevStep && (
                     <Button
                         isFullWidth={isMobile}

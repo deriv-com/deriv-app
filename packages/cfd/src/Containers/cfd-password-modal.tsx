@@ -24,6 +24,7 @@ import {
     routes,
     validLength,
     validPassword,
+    validNewMT5Password,
     WS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -650,8 +651,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const validatePassword = (values: TCFDPasswordFormValues) => {
         const errors: FormikErrors<TCFDPasswordFormValues> = {};
-        const pattern = '^(?=.*[!@#$%^&*()+\\-=[\\]{};\':"|,.<>/?_~])[ -~]{8,16}$';
-        const regex = new RegExp(pattern);
         const max_length = platform === CFD_PLATFORMS.MT5 && should_set_trading_password ? 16 : 25;
         if (
             !validLength(values.password, {
@@ -665,7 +664,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             });
         } else if (!validPassword(values.password)) {
             errors.password = getErrorMessages().password();
-        } else if (platform === CFD_PLATFORMS.MT5 && should_set_trading_password && !regex.test(values.password)) {
+        } else if (
+            platform === CFD_PLATFORMS.MT5 &&
+            should_set_trading_password &&
+            !validNewMT5Password(values.password)
+        ) {
             errors.password = localize(
                 'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
             );
@@ -947,16 +950,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     toggleModal={closeModal}
                     should_header_stick_body
                     title={localize('Deriv MT5 latest password requirements')}
-                    width={is_mobile ? '32.8rem' : 'auto'}
+                    width='auto'
                 >
                     <CFDPasswordChange
                         error_type={error_type}
                         error_message={error_message}
                         form_error={form_error}
                         should_set_trading_password={should_set_trading_password}
-                        is_success_password_change={is_success_password_change}
                         setIsSuccessPasswordChange={setIsSuccessPasswordChange}
-                        is_success_flag={is_success_flag}
                         setIsSuccessFlag={setIsSuccessFlag}
                         setNewPasswordValue={setNewPasswordValue}
                         validatePassword={validatePassword}
@@ -980,9 +981,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         error_message={error_message}
                         form_error={form_error}
                         should_set_trading_password={should_set_trading_password}
-                        is_success_password_change={is_success_password_change}
                         setIsSuccessPasswordChange={setIsSuccessPasswordChange}
-                        is_success_flag={is_success_flag}
                         setIsSuccessFlag={setIsSuccessFlag}
                         setNewPasswordValue={setNewPasswordValue}
                         validatePassword={validatePassword}
@@ -994,6 +993,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             </MobileWrapper>
         </React.Fragment>
     );
+
+    console.log(is_success_flag, 'is_success_flag');
+    console.log(is_success_password_change, 'is_success_password_change');
 
     return (
         <React.Fragment>
@@ -1040,6 +1042,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {is_success_password_change && (
                 <CFDPasswordChangeContent
                     setIsSuccessFlag={setIsSuccessFlag}
+                    setIsSuccessPasswordChange={setIsSuccessPasswordChange}
                     is_success_flag={is_success_flag}
                     closeModal={closeModal}
                     password_value={new_password_value}

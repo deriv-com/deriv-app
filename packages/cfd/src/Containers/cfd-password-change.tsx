@@ -21,9 +21,7 @@ type TCFDPasswordChangeProps = TCFDPasswordFormReusedProps & {
     form_error?: string;
     onCancel: () => void;
     onForgotPassword: () => void;
-    is_success_password_change?: boolean;
     setIsSuccessPasswordChange?: React.Dispatch<React.SetStateAction<boolean>>;
-    is_success_flag?: boolean;
     setIsSuccessFlag?: React.Dispatch<React.SetStateAction<boolean>>;
     setNewPasswordValue?: React.Dispatch<React.SetStateAction<string>>;
     should_set_trading_password: boolean;

@@ -5,13 +5,20 @@ import { Localize } from '@deriv/translations';
 
 type TCFDPasswordChangeContentProps = {
     setIsSuccessFlag: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsSuccessPasswordChange: React.Dispatch<React.SetStateAction<boolean>>;
     is_success_flag: boolean;
     closeModal: () => void;
     password_value: string;
 };
 
 const CFDPasswordChangeContent = observer(
-    ({ setIsSuccessFlag, is_success_flag, closeModal, password_value }: TCFDPasswordChangeContentProps) => {
+    ({
+        setIsSuccessFlag,
+        setIsSuccessPasswordChange,
+        is_success_flag,
+        closeModal,
+        password_value,
+    }: TCFDPasswordChangeContentProps) => {
         const { modules } = useStore();
         const { cfd } = modules;
         const { submitMt5Password, setCFDSuccessDialog } = cfd;
@@ -27,6 +34,7 @@ const CFDPasswordChangeContent = observer(
 
             closeModal();
             setIsOpened(false);
+            setIsSuccessPasswordChange(false);
             setIsSuccessFlag(false);
             setIsSubmitting(false);
             setCFDSuccessDialog(true);
@@ -35,12 +43,13 @@ const CFDPasswordChangeContent = observer(
         React.useEffect(() => {
             if (is_success_flag) {
                 setIsOpened(true);
+                setIsSuccessPasswordChange(false);
             }
 
             return () => {
                 setIsOpened(false);
             };
-        }, [is_success_flag]);
+        }, [is_success_flag, setIsSuccessPasswordChange]);
 
         const password_changed_success_content = (
             <div className='cfd-password-change__password-success'>

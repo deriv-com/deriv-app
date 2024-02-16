@@ -245,21 +245,9 @@ const TradeModal = ({
                             </a>
                         </div>
                     )}
-                    <div className='cfd-trade-modal__download-center-app-ctrader-container'>
-                        <Text
-                            className='cfd-trade-modal__download-center-app-ctrader__banner-text'
-                            align='center'
-                            size='xs'
-                            weight='bold'
-                        >
-                            <Localize i18n_default_text='Download cTrader on your phone to trade with the Deriv cTrader account' />
-                        </Text>
-                    </div>
                 </React.Fragment>
             )}
-            {mobileOSDetect() !== 'iOS' && (
-                <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription()}</div>
-            )}
+            <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription()}</div>
 
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>

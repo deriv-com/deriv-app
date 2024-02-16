@@ -5,7 +5,7 @@ import { termsOfUse } from '@/utils';
 import { Text } from '@deriv-com/ui';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
 import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
-import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
+import { useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
 import FatcaDeclaration from './TermsOfUseSections/FatcaDeclaration';
 import PEPs from './TermsOfUseSections/PEPs';
 
@@ -19,11 +19,10 @@ const Divider = () => <hr className=' bg-system-light-primary-background' />;
  * @returns {React.ReactNode}
  */
 const TermsOfUse = () => {
-    const { dispatch, helpers, setIsSuccessModalOpen, setIsWizardOpen } = useSignupWizardContext();
+    const { helpers, setIsSuccessModalOpen, setIsWizardOpen } = useSignupWizardContext();
 
     // Temporary function to handle form submission till we have the validations in place
     const handleSubmit = () => {
-        dispatch({ type: ACTION_TYPES.RESET });
         setIsWizardOpen(false);
         helpers.setStep(1);
         setIsSuccessModalOpen(true);

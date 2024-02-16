@@ -5,7 +5,7 @@ import Checkmark from '@/assets/svgs/checkmark.svg';
 import { ActionScreen, ButtonGroup } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { CUSTOM_STYLES } from '@/helpers';
-import { useSignupWizardContext } from '@/providers/SignupWizardProvider';
+import { ACTION_TYPES, useSignupWizardContext } from '@/providers/SignupWizardProvider';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const SelectedCurrencyIcon = () => {
@@ -13,7 +13,7 @@ const SelectedCurrencyIcon = () => {
     return (
         <div className='relative'>
             <div className='[&>svg]:scale-[2.4] w-[96px] h-[96px] flex justify-center items-center'>
-                {IconToCurrencyMapper[state.currency ?? '']?.icon}
+                {IconToCurrencyMapper[state.currency ?? 'USD']?.icon}
             </div>
             <Checkmark className='absolute w-32 h-32 bottom-6 right-6' />
         </div>
@@ -21,10 +21,25 @@ const SelectedCurrencyIcon = () => {
 };
 
 const AccountOpeningSuccessModal = () => {
-    const { isSuccessModalOpen, setIsSuccessModalOpen } = useSignupWizardContext();
+    const { isSuccessModalOpen, setIsSuccessModalOpen, dispatch } = useSignupWizardContext();
     const { isDesktop } = useDevice();
     const { state } = useSignupWizardContext();
     const history = useHistory();
+
+    const handleClose = () => {
+        dispatch({
+            type: ACTION_TYPES.RESET,
+        });
+        setIsSuccessModalOpen(false);
+    };
+
+    const handleNavigateToDeposit = () => {
+        setIsSuccessModalOpen(false);
+        dispatch({
+            type: ACTION_TYPES.RESET,
+        });
+        history.push('/cashier/deposit');
+    };
 
     return (
         <ReactModal
@@ -54,18 +69,13 @@ const AccountOpeningSuccessModal = () => {
                             className='py-18'
                             color='black'
                             isFullWidth={!isDesktop}
-                            onClick={() => setIsSuccessModalOpen(false)}
+                            onClick={handleClose}
                             size='md'
                             variant='outlined'
                         >
                             Maybe later
                         </Button>
-                        <Button
-                            className='py-18'
-                            isFullWidth={!isDesktop}
-                            onClick={() => history.push('/cashier/deposit')}
-                            size='md'
-                        >
+                        <Button className='py-18' isFullWidth={!isDesktop} onClick={handleNavigateToDeposit} size='md'>
                             Deposit
                         </Button>
                     </ButtonGroup>

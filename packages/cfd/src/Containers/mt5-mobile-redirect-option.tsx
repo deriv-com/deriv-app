@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { DEEP_LINK, getMobileAppInstallerURL } from '../Helpers/constants';
+import { DEEP_LINK, WEBTRADER_URL, getMobileAppInstallerURL } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
 
 type TMT5MobileRedirectOptionProps = {
@@ -30,7 +30,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
         <div className='mt5-download-container'>
             <a
                 className={classNames('mt5-download-container--option')}
-                href={`${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`}
+                href={WEBTRADER_URL({ mt5_trade_account })}
                 target='_blank'
                 rel='noopener noreferrer'
             >

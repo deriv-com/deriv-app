@@ -1,9 +1,10 @@
 import React from 'react';
-import './mt5-mobile-redirect-option.scss';
+import classNames from 'classnames';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getDownloadOptions } from '../Helpers/constants';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import './mt5-mobile-redirect-option.scss';
 
 type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
@@ -18,7 +19,9 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
             {mobileDownloadOptions.map(option => (
                 <Button
                     key={option.icon}
-                    className={`mt5-download-container--option ${option.highlight ? 'blue' : ''}`}
+                    className={classNames('mt5-download-container--option', {
+                        blue: option.highlight,
+                    })}
                     classNameSpan='mt5-download-container--span'
                     onClick={() => {
                         if (option.href) {

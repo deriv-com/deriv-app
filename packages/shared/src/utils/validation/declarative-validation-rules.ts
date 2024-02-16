@@ -75,7 +75,7 @@ export const isFormattedCardNumber = (target_string: string) =>
     /(^\d{4})\s(\d{2}X{2})\s(X{4})\s(\d{4}$)/.test(target_string);
 export const validFile = (file: File) => file?.type && /(image|application)\/(jpe?g|pdf|png)$/.test(file?.type);
 export const validNewMT5Password = (value: string) =>
-    new RegExp('^(?=.*[!@#$%^&*()+\\-=[\\]{};\':"|,.<>/?_~])[ -~]{8,16}$').test(value);
+    /^(?=.*[!@#$%^&*()+\-=[\]{};':"|,.<>/?_~])[ -~]{8,16}$/.test(value);
 
 let pre_build_dvrs: TInitPreBuildDVRs, form_error_messages: TFormErrorMessagesTypes;
 

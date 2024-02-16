@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Button, Icon, StaticUrl, Text } from '@deriv/components';
+import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { DEEP_LINK, getMobileAppInstallerURL } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
@@ -10,24 +10,20 @@ type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
 };
 const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
-    const isSafari = () => {
-        return typeof window.safari !== 'undefined';
-    };
+    let mobile_url;
+    const isSafari = () => typeof window.safari !== 'undefined';
 
     const mobileURLSet = () => {
-        let deep_link = DEEP_LINK({ mt5_trade_account });
-
-        window.location.replace(deep_link);
+        mobile_url = window.location.replace(DEEP_LINK({ mt5_trade_account }));
 
         const timeout = setTimeout(() => {
-            deep_link = getMobileAppInstallerURL();
+            mobile_url = getMobileAppInstallerURL({ mt5_trade_account });
         }, 3000);
         if (!isSafari()) {
             window.onblur = () => {
                 clearTimeout(timeout);
             };
         }
-        return deep_link;
     };
 
     return (
@@ -46,11 +42,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                     <Icon icon={'IcChevronRight'} size={16} />
                 </div>
             </a>
-            <Button
-                className={classNames('mt5-download-container--option blue')}
-                classNameSpan='mt5-download-container--span'
-                onClick={() => mobileURLSet()}
-            >
+            <a className={classNames('mt5-download-container--option blue')} onClick={mobileURLSet} href={mobile_url}>
                 <div className='full-row'>
                     <Icon icon={'IcMobileOutline'} size={16} />
                     <Text align='left' size='xxs' weight='bold' className='title'>
@@ -58,7 +50,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                     </Text>
                     <Icon icon={'IcChevronRightLight'} size={16} />
                 </div>
-            </Button>
+            </a>
 
             <Text as='p' size='xxxs'>
                 <Localize

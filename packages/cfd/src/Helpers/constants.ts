@@ -114,13 +114,13 @@ const getCTraderWebTerminalLink = (category?: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
-const getMobileAppInstallerURL = () => {
+const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
     if (mobileOSDetect() === 'iOS') {
-        return getPlatformMt5DownloadLink('ios');
+        return mt5_trade_account?.white_label?.download_links?.ios;
     } else if (/huawei/i.test(navigator.userAgent)) {
-        return getPlatformMt5DownloadLink('huawei');
+        return 'https://appgallery.huawei.com/#/app/C102015329';
     }
-    return getPlatformMt5DownloadLink('android');
+    return mt5_trade_account?.white_label?.download_links?.android;
 };
 
 const getDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {

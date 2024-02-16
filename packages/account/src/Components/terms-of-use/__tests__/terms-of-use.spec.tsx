@@ -30,6 +30,7 @@ describe('<TermsOfUse/>', () => {
         goToPreviousStep: jest.fn(),
         onCancel: jest.fn(),
         onSubmit: jest.fn(),
+        onSave: jest.fn(),
         real_account_signup_target: 'svg',
         value: { agreed_tos: false, agreed_tnc: false },
         residence: 'id',

@@ -16,6 +16,7 @@ runs:
         node_modules
         packages/account/node_modules
         packages/api/node_modules
+        packages/api-v2/node_modules
         packages/appstore/node_modules
         packages/bot-skeleton/node_modules
         packages/bot-web-ui/node_modules

@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { useDocumentUpload, useIdentityDocumentVerificationAdd, usePOA, usePOI, useSettings } from '@deriv/api';
+import { useDocumentUpload, useIdentityDocumentVerificationAdd, usePOA, usePOI, useSettings } from '@deriv/api-v2';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';

@@ -17,7 +17,12 @@ const ControlWidgets = observer(() => {
             />
             <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
             <DrawTools portalNodeId='modal_root' />
-            <Views portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+            <Views
+                portalNodeId='modal_root'
+                searchInputClassName='data-hj-whitelist'
+                onChartType={(type: string) => updateChartType(type)}
+                onGranularity={(granularity: number) => updateGranularity(granularity)}
+            />
             <Share portalNodeId='modal_root' />
         </DesktopWrapper>
     );

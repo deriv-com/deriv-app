@@ -12,9 +12,9 @@ describe('useIsPasskeySupported', () => {
 
         const { result, waitForNextUpdate } = renderHook(() => useIsPasskeySupported());
 
-        expect(result.current.is_loading).toBe(true);
+        expect(result.current.is_passkey_support_checking).toBe(true);
         await waitForNextUpdate();
-        expect(result.current.is_loading).toBe(false);
+        expect(result.current.is_passkey_support_checking).toBe(false);
         expect(result.current.is_passkey_supported).toBe(true);
     });
     it('sets state correctly when passkey is not supported', async () => {
@@ -22,9 +22,9 @@ describe('useIsPasskeySupported', () => {
 
         const { result, waitForNextUpdate } = renderHook(() => useIsPasskeySupported());
 
-        expect(result.current.is_loading).toBe(true);
+        expect(result.current.is_passkey_support_checking).toBe(true);
         await waitForNextUpdate();
-        expect(result.current.is_loading).toBe(false);
+        expect(result.current.is_passkey_support_checking).toBe(false);
         expect(result.current.is_passkey_supported).toBe(false);
     });
 });

@@ -21,7 +21,7 @@ describe('useGetPasskeysList', () => {
         const { result } = renderHook(() => useGetPasskeysList());
 
         expect(useQuery).toHaveBeenCalledWith('passkeys_list', { options: { enabled: true } });
-        expect(result.current.data).toEqual([]);
+        expect(result.current.passkeys_list).toEqual([]);
     });
     it('calls useQuery with enabled set to false when isSuccess is false', () => {
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: false });
@@ -30,6 +30,6 @@ describe('useGetPasskeysList', () => {
         const { result } = renderHook(() => useGetPasskeysList());
 
         expect(useQuery).toHaveBeenCalledWith('passkeys_list', { options: { enabled: false } });
-        expect(result.current.data).toEqual(undefined);
+        expect(result.current.passkeys_list).toEqual(undefined);
     });
 });

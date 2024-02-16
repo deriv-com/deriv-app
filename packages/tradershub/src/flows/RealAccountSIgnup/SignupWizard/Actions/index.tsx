@@ -1,8 +1,7 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { ButtonGroup } from '@/components';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button, Divider } from '@deriv-com/ui';
+import { Button, Divider, useDevice } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
 type TActions = {
@@ -26,7 +25,7 @@ const Actions = ({ submitDisabled = false }: TActions) => {
         helpers: { canGoToNextStep, canGoToPrevStep, goToPrevStep },
     } = useSignupWizardContext();
     const { handleSubmit } = useFormikContext();
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
 
     return (
         <div>
@@ -34,9 +33,9 @@ const Actions = ({ submitDisabled = false }: TActions) => {
             <ButtonGroup className='flex-row justify-end p-24'>
                 {canGoToPrevStep && (
                     <Button
-                        isFullWidth={isMobile}
+                        isFullWidth={!isDesktop}
                         onClick={goToPrevStep}
-                        size={isMobile ? 'lg' : 'md'}
+                        size={isDesktop ? 'md' : 'lg'}
                         variant='outlined'
                     >
                         Back
@@ -44,9 +43,9 @@ const Actions = ({ submitDisabled = false }: TActions) => {
                 )}
                 <Button
                     disabled={submitDisabled}
-                    isFullWidth={isMobile}
+                    isFullWidth={!isDesktop}
                     onClick={() => handleSubmit()}
-                    size={isMobile ? 'lg' : 'md'}
+                    size={isDesktop ? 'md' : 'lg'}
                     type='submit'
                 >
                     {canGoToNextStep ? 'Next' : 'Add account'}

@@ -12,7 +12,7 @@ import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import 'Sass/details-form.scss';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 const STEP_IDENTIFIERS = ['account_currency', 'personal_details', 'address_details', 'terms_of_use'];
 
@@ -86,11 +86,18 @@ const AccountWizard = observer(props => {
         sub_section_index: ui.sub_section_index,
     };
 
+    const {
+        real_account_signup_form_data,
+        setRealAccountSignupFormData,
+        real_account_signup_form_step,
+        setRealAccountSignupFormStep,
+    } = client;
+
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
-    const [state_items, setStateItems] = React.useState([]);
+    const [state_items, setStateItems] = React.useState(real_account_signup_form_data ?? []);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
@@ -142,9 +149,11 @@ const AccountWizard = observer(props => {
             }
             return previous_state;
         });
+        if (!state_items?.length) setRealAccountSignupFormData(getItems(get_items_props));
+
         setPreviousData(fetchFromStorage());
         setMounted(true);
-    }, [residence_list, states_list, fetchResidenceList, fetchStatesList, has_residence]);
+    }, [residence_list, states_list, fetchResidenceList, fetchStatesList, has_residence, setRealAccountSignupFormData]);
 
     React.useEffect(() => {
         if (previous_data.length > 0) {
@@ -155,9 +164,10 @@ const AccountWizard = observer(props => {
                 }
             });
             setStateItems(items);
+            setRealAccountSignupFormData(items);
             setPreviousData([]);
         }
-    }, [previous_data]);
+    }, [previous_data, setRealAccountSignupFormData]);
 
     React.useEffect(() => {
         if (residence_list.length) {
@@ -172,11 +182,12 @@ const AccountWizard = observer(props => {
                 if (items.length > 1 && 'phone' in items[1]?.form_value) {
                     items[1].form_value.phone = items[1].form_value.phone || country_code || '';
                     setStateItems(items);
+                    setRealAccountSignupFormData(items);
                 }
             };
             getCountryCode(residence_list).then(setDefaultPhone);
         }
-    }, [residence_list]);
+    }, [residence_list, setRealAccountSignupFormData]);
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
@@ -279,7 +290,7 @@ const AccountWizard = observer(props => {
         delete clone?.agreed_tos;
         delete clone?.confirmation_checkbox;
         delete clone?.crs_confirmation;
-        delete clone?.spain_residence_confirmation;
+        if (modifiedProps?.account_settings?.country_code !== 'es') delete clone?.resident_self_declaration;
 
         // BE does not accept empty strings for TIN
         // so we remove it from the payload if it is empty in case of optional TIN field
@@ -320,6 +331,7 @@ const AccountWizard = observer(props => {
         const cloned_items = Object.assign([], state_items);
         cloned_items[index].form_value = value;
         setStateItems(cloned_items);
+        setRealAccountSignupFormData(cloned_items);
     };
 
     const getCurrent = (key, step_index) => {
@@ -466,6 +478,10 @@ const AccountWizard = observer(props => {
                     'account-wizard--set-currency': !modifiedProps.has_currency,
                     'account-wizard--deriv-crypto': modifiedProps.real_account_signup_target === 'samoa',
                 })}
+                initial_step={real_account_signup_form_step}
+                onStepChange={state => {
+                    setRealAccountSignupFormStep(state?.active_step - 1);
+                }}
             >
                 {wizard_steps}
             </Wizard>

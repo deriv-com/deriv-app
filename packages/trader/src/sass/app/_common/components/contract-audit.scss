@@ -45,6 +45,28 @@ $HEIGHT: calc(100vh - 34em);
         display: flex;
         align-items: flex-start;
         margin-right: 8px;
+
+        .lookbacks-marker {
+            &__wrapper {
+                height: 2.4rem;
+                width: 2.4rem;
+                border-radius: $BORDER_RADIUS;
+                background-color: var(--general-section-1);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            &__asset {
+                height: 1.6rem;
+                width: 1.6rem;
+                border-radius: 50%;
+                background-color: var(--text-status-info-blue);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
     }
     &__item {
         display: flex;
@@ -95,6 +117,39 @@ $HEIGHT: calc(100vh - 34em);
 
             @include mobile {
                 overflow-y: auto;
+            }
+        }
+    }
+    &__selected-tick {
+        align-items: center;
+        background-color: var(--general-section-1);
+        border-radius: 0.4rem;
+        display: flex;
+        flex-shrink: 0;
+        height: 2.4rem;
+        justify-content: center;
+        padding: 0.4rem;
+        width: 2.4rem;
+
+        &--marker {
+            align-items: center;
+            border-radius: 50%;
+            border: 1px solid $color-black;
+            display: flex;
+            height: 1.6rem;
+            justify-content: center;
+            width: 1.6rem;
+
+            &--won {
+                background-color: var(--text-profit-success);
+                border-color: var(--text-profit-success);
+                color: $color-white;
+            }
+
+            &--lost {
+                background-color: var(--text-loss-danger);
+                border-color: var(--text-loss-danger);
+                color: $color-white;
             }
         }
     }

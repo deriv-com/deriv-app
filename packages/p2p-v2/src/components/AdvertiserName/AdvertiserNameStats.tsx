@@ -1,9 +1,9 @@
 import React from 'react';
-import { useAdvertiserStats, useDevice } from '../../hooks';
-import { StarRating } from '../StarRating';
+import { StarRating } from '@/components';
+import { useAdvertiserStats, useDevice } from '@/hooks';
+import { Text } from '@deriv-com/ui';
 import ThumbUpIcon from '../../public/ic-thumb-up.svg';
 import BlockedUserOutlineIcon from '../../public/ic-user-blocked-outline.svg';
-import { Text } from '@deriv-com/ui/dist/components/Text';
 import './AdvertiserNameStats.scss';
 
 /**
@@ -14,16 +14,14 @@ import './AdvertiserNameStats.scss';
  * Use cases are to show this in My Profile and Advertiser page
  */
 const AdvertiserNameStats = () => {
-    const { data: advertiserStats, isLoading } = useAdvertiserStats();
+    const { data: advertiserStats } = useAdvertiserStats();
     const { isMobile } = useDevice();
 
-    // TODO: Use Skeleton loader here
-    if (isLoading || !advertiserStats) return <h1>Loading...</h1>;
-
-    const { blocked_by_count, daysSinceJoined, rating_average, rating_count, recommended_average } = advertiserStats;
+    const { blocked_by_count, daysSinceJoined, rating_average, rating_count, recommended_average } =
+        advertiserStats || {};
 
     return (
-        <div className='p2p-v2-advertiser-name-stats'>
+        <div className='p2p-v2-advertiser-name-stats' data-testid='dt_p2p_v2_advertiser_name_stats'>
             <div>
                 <Text color='less-prominent' size='sm'>
                     Joined {daysSinceJoined}d
@@ -62,7 +60,7 @@ const AdvertiserNameStats = () => {
             <div>
                 <BlockedUserOutlineIcon />
                 <Text color='less-prominent' size='sm'>
-                    {blocked_by_count}
+                    {blocked_by_count || 0}
                 </Text>
             </div>
         </div>

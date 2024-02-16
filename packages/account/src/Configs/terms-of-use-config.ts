@@ -11,7 +11,7 @@ const terms_of_use_config: TSchema = {
         supported_in: ['svg', 'maltainvest'],
         default_value: false,
     },
-    spain_residence_confirmation: {
+    resident_self_declaration: {
         supported_in: ['maltainvest'],
         default_value: false,
     },

@@ -10,12 +10,15 @@ export default {
                 solid: {
                     grey: {
                         '1': '#999999',
+                        '2': '#f2f3f4',
                         '5': '#d6dadb',
                         '6': '#d6d6d6',
+                    },
+                    black: {
+                        '3': '#151717',
                     },
                 },
             },
         },
     },
-    plugins: [],
 } satisfies Config;

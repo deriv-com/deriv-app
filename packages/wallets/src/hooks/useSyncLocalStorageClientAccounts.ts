@@ -12,7 +12,7 @@ const useSyncLocalStorageClientAccounts = () => {
     const { data: settingsData } = useSettings();
     const [, setLocalStorageClientAccounts] = useLocalStorage(
         'client.accounts',
-        useReadLocalStorage('client.accounts')
+        useReadLocalStorage('client.accounts') ?? {}
     );
 
     const addWalletAccountToLocalStorage = useCallback(

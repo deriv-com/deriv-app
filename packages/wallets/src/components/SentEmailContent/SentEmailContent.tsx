@@ -56,7 +56,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
                                 setShouldShowResendEmailReasons(true);
                             }}
                             size={emailLinkSize}
-                            variant='ghost'
+                            variant='contained'
                         >
                             <Trans defaults="Didn't receive the email?" />
                         </WalletButton>
@@ -100,7 +100,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
                             }
                         }}
                     >
-                        {hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
+                        {hasCountdownStarted ? `Resend email in ${count} seconds` : 'Resend email'}
                     </WalletButton>
                 </Fragment>
             )}

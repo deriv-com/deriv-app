@@ -3,11 +3,12 @@ import {
     formatMoney,
     getEndTime,
     isAccumulatorContract,
-    isSmartTraderContract,
     isDesktop,
     isDigitContract,
     isMobile,
     isMultiplierContract,
+    isSmartTraderContract,
+    isTicksContract,
     isUserSold,
     isVanillaContract,
 } from '@deriv/shared';
@@ -24,7 +25,11 @@ const createMarkerConfig = (marker_type, x, y, content_config) =>
     });
 
 export const getSpotCount = (contract_info, spot_count) => {
-    if (isDigitContract(contract_info.contract_type)) return spot_count + 1;
+    if (
+        isDigitContract(contract_info.contract_type) ||
+        (isTicksContract(contract_info.contract_type) && spot_count + 1 === contract_info.selected_tick)
+    )
+        return spot_count + 1;
     if (isAccumulatorContract(contract_info.contract_type) || isSmartTraderContract(contract_info.contract_type))
         return null;
     return spot_count;
@@ -72,14 +77,12 @@ export const createMarkerResetTime = contract_info => {
 export const createMarkerSpotEntry = contract_info => {
     if (!contract_info.entry_tick_time) return false;
 
-    let marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
-    let component_props = {};
     const entry_tick = contract_info.entry_tick_display_value;
-
-    const spot_has_label = isDigitContract(contract_info.contract_type);
+    const spot_has_label = isDigitContract(contract_info.contract_type) || isTicksContract(contract_info.contract_type);
+    const marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
+    let component_props = {};
 
     if (spot_has_label) {
-        marker_type = MARKER_TYPES_CONFIG.SPOT_MIDDLE.type;
         component_props = {
             spot_value: `${entry_tick}`,
             spot_epoch: `${contract_info.entry_tick_time}`,
@@ -93,6 +96,7 @@ export const createMarkerSpotEntry = contract_info => {
 export const createMarkerSpotExit = (contract_info, tick, idx) => {
     if (!contract_info.exit_tick_time) return false;
     const is_user_sold = isUserSold(contract_info);
+    const is_ticks_contract = isTicksContract(contract_info.contract_type);
 
     let spot_count, align_label;
     if (tick) {
@@ -104,10 +108,14 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
 
     const should_show_spot_exit = !is_user_sold || isMultiplierContract(contract_info.contract_type);
 
+    const should_show_spot_exit_2 = is_ticks_contract && idx + 1 !== contract_info.selected_tick;
+
     const should_show_profit_label = isVanillaContract(contract_info.contract_type) && isDesktop();
 
     const marker_spot_type = should_show_spot_exit
-        ? MARKER_TYPES_CONFIG.SPOT_EXIT.type
+        ? should_show_spot_exit_2
+            ? MARKER_TYPES_CONFIG.SPOT_EXIT_2.type
+            : MARKER_TYPES_CONFIG.SPOT_EXIT.type
         : MARKER_TYPES_CONFIG.SPOT_SELL.type;
 
     const component_props = should_show_spot_exit
@@ -116,7 +124,7 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
               spot_epoch: `${contract_info.exit_tick_time}`,
               status: `${+contract_info.profit >= 0 ? 'won' : 'lost'}`,
               align_label: should_show_profit_label ? 'middle' : align_label,
-              spot_count,
+              spot_count: should_show_spot_exit_2 ? contract_info.tick_stream.length : spot_count,
               spot_profit:
                   (should_show_profit_label &&
                       `${formatMoney(contract_info.currency, contract_info.profit, true)} ${contract_info.currency}`) ||
@@ -129,6 +137,7 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
 
 export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
+    const is_ticks_contract = isTicksContract(contract_info.contract_type);
     const spot_count = getSpotCount(contract_info, idx);
     const spot = tick.tick_display_value;
     const spot_epoch = is_accumulator ? '' : `${tick.epoch}`;
@@ -137,11 +146,12 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
         spot_value: `${spot}`,
         spot_epoch,
         align_label: tick.align_label,
-        is_value_hidden: is_accumulator,
+        is_value_hidden: is_accumulator || (is_ticks_contract && idx + 1 !== contract_info.selected_tick),
         spot_count,
+        status: `${is_ticks_contract ? contract_info.status : ''}`,
     });
     marker_config.type = `${marker_config.type}_${idx}`;
 
-    if (isMobile() && spot_count > 1) return null;
+    if (isMobile() && spot_count > 1 && !is_ticks_contract) return null;
     return marker_config;
 };

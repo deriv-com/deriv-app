@@ -1,12 +1,12 @@
 import React, { Fragment, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
-import { Text, useBreakpoint } from '@deriv/quill-design';
-import { Tooltip } from '../../../../components';
-import InfoIcon from '../../../../public/images/ic-info-outline.svg';
-import { THooks, TPlatforms } from '../../../../types';
-import { CFDPlatforms } from '../../constants';
+import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
+import { PlatformIcon, Tooltip } from '@/components';
+import { THooks, TPlatforms } from '@/types';
+import { CFDPlatforms } from '@cfd/constants';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { AccountIcons, MarketTypeShortcode } from './constants';
-import TradingPlatformIcons from './tradingPlatformIcons';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
 
@@ -68,14 +68,12 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
     const labuanJurisdictionMessage =
         'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.';
 
-    const TradingPlatformIcon = TradingPlatformIcons[jurisdictionCardIcon];
-
     return (
         <Fragment>
-            <div className={'flex flex-col gap-[5px] pt-1000 items-center'}>
-                <TradingPlatformIcon height={48} width={48} />
-                <div className='flex items-center gap-400'>
-                    <Text bold size='sm'>
+            <div className={'flex flex-col gap-5 pt-20 items-center'}>
+                <PlatformIcon icon={jurisdictionCardIcon} />
+                <div className='flex items-center gap-8'>
+                    <Text size='sm' weight='bold'>
                         {jurisdictionCardTitle}
                     </Text>
                     {marketTypeShortCode === MarketTypeShortcode.FINANCIAL_LABUAN && (
@@ -92,7 +90,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
                     )}
                 </div>
             </div>
-            <hr className='w-[213px] border-t-[5px] border-solid border-system-light-less-prominent-text' />
+            <hr className='mx-auto w-[213px] border-t-1 border-solid border-system-light-less-prominent-text' />
         </Fragment>
     );
 };

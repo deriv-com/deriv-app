@@ -18,12 +18,13 @@ import './terms-of-use.scss';
 type TTermsOfUseFormProps = {
     agreed_tos: boolean;
     agreed_tnc: boolean;
-    spain_residence_confirmation?: boolean;
+    resident_self_declaration?: boolean;
 };
 
 type TTermsOfUseProps = {
     getCurrentStep: () => number;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
+    onSave: (current_step: number, values: TTermsOfUseFormProps) => void;
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     onSubmit: (
@@ -43,6 +44,7 @@ type TTermsOfUseProps = {
  * @name TermsOfUse
  * @param getCurrentStep - function to get current step
  * @param onCancel - function to cancel account signup
+ * @param onSave - To handle click on save button
  * @param goToPreviousStep - function to go to previous step
  * @param goToNextStep - function to go to next step
  * @param onSubmit - function to submit form
@@ -55,6 +57,7 @@ type TTermsOfUseProps = {
 const TermsOfUse = ({
     getCurrentStep,
     onCancel,
+    onSave,
     goToPreviousStep,
     goToNextStep,
     onSubmit,
@@ -79,12 +82,18 @@ const TermsOfUse = ({
         return localize('Add account');
     };
 
+    const onValuesChange = (values: TTermsOfUseFormProps) => {
+        const current_step = (getCurrentStep?.() || 1) - 1;
+        onSave(current_step, values);
+    };
+
     return (
         <Formik
             initialValues={value}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
+            validate={onValuesChange}
         >
             {({ handleSubmit, values, isSubmitting }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
@@ -133,8 +142,8 @@ const TermsOfUse = ({
                                             <Field
                                                 component={CheckboxField}
                                                 className='terms-of-use__checkbox'
-                                                name='spain_residence_confirmation'
-                                                id='spain_residence_confirmation'
+                                                name='resident_self_declaration'
+                                                id='resident_self_declaration'
                                                 label={
                                                     <Localize i18n_default_text='I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.' />
                                                 }
@@ -150,7 +159,7 @@ const TermsOfUse = ({
                                         isSubmitting ||
                                         !values.agreed_tos ||
                                         !values.agreed_tnc ||
-                                        !(is_spain_residence ? values.spain_residence_confirmation : true)
+                                        !(is_spain_residence ? values.resident_self_declaration : true)
                                     }
                                     label={getSubmitButtonLabel()}
                                     has_cancel

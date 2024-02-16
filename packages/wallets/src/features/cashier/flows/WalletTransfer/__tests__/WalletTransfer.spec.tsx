@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTransferBetweenAccounts } from '@deriv/api';
+import { useTransferBetweenAccounts } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletTransfer from '../WalletTransfer';
 
@@ -29,8 +29,8 @@ jest.mock('../../../screens/TransferNotAvailable', () => ({
     )),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useTransferBetweenAccounts: jest.fn(),
 }));
 

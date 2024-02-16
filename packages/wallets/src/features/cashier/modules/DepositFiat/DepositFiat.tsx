@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useAuthorize, useCashierFiatAddress } from '@deriv/api';
+import { useAuthorize, useCashierFiatAddress } from '@deriv/api-v2';
 import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import './DepositFiat.scss';

@@ -8,7 +8,7 @@ import {
     useMT5AccountsList,
     useSettings,
     useWalletAccountsList,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { WalletButton, WalletError } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks, TPlatforms } from '../../../../types';

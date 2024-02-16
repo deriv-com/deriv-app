@@ -25,13 +25,36 @@ module.exports = {
         'typescript-sort-keys',
     ],
     root: true,
-    ignorePatterns: ['**/node_modules/**', '**/dist/**', '**/*.js', '**/*.config.*'],
+    ignorePatterns: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/*.js',
+        '**/*.config.*',
+        '**/*.classnames.ts',
+        '**/*.mock.*',
+    ],
     rules: {
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/sort-type-constituents': 'error',
-        camelcase: 'error',
+        '@typescript-eslint/naming-convention': [
+            'error',
+            {
+                selector: 'variable',
+                modifiers: ['destructured'],
+                format: ['camelCase', 'snake_case'],
+            },
+            {
+                selector: 'variable',
+                format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+                leadingUnderscore: 'allow',
+            },
+            {
+                selector: 'function',
+                format: ['camelCase', 'PascalCase'],
+            },
+        ],
         'import/first': 'error',
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',

@@ -39,11 +39,10 @@ type TPositionsDrawerCardProps = {
     onMouseLeave?: () => void;
     removeToast: (key: string) => void;
     result?: string;
-    setCurrentFocus: (value: string) => void;
+    setCurrentFocus: (value: string | null) => void;
     server_time?: moment.Moment;
     should_show_transition?: boolean;
     should_show_cancellation_warning: boolean;
-    status?: string;
     toggleCancellationWarning: () => void;
     toggleUnsupportedContractModal: (value: boolean) => void;
 };
@@ -73,7 +72,6 @@ const PositionsDrawerCard = ({
     server_time,
     should_show_transition,
     should_show_cancellation_warning,
-    status,
     toggleCancellationWarning,
     toggleUnsupportedContractModal,
 }: TPositionsDrawerCardProps) => {
@@ -133,7 +131,6 @@ const PositionsDrawerCard = ({
             server_time={server_time as moment.Moment}
             setCurrentFocus={setCurrentFocus}
             should_show_cancellation_warning={should_show_cancellation_warning}
-            status={status}
             toggleCancellationWarning={toggleCancellationWarning}
         />
     );

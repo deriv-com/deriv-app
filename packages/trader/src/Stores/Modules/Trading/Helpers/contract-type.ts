@@ -88,7 +88,7 @@ export const ContractType = (() => {
     let has_only_forward_starting_contracts = false;
 
     const buildContractTypesConfig = (symbol: string): Promise<void> =>
-        WS.storage.contractsFor(symbol).then((r: Required<ContractsForSymbolResponse>) => {
+        WS.contractsFor(symbol).then((r: Required<ContractsForSymbolResponse>) => {
             const has_contracts = getPropertyValue(r, ['contracts_for']);
             has_only_forward_starting_contracts =
                 has_contracts && !r.contracts_for.available.find(contract => contract.start_type !== 'forward');
@@ -561,10 +561,12 @@ export const ContractType = (() => {
             }
 
             // For contracts with a duration of more that 24 hours must set the expiry_time to the market's close time on the expiry date.
-            if (!start_date && ServerTime.get().isBefore(buildMoment(expiry_date), 'day')) {
+            if (!start_date && ServerTime.get()?.isBefore(buildMoment(expiry_date), 'day')) {
                 end_time = market_close_time;
             } else {
-                const start_moment = start_date ? buildMoment(start_date, start_time) : ServerTime.get();
+                const start_moment = start_date
+                    ? buildMoment(start_date, start_time)
+                    : (ServerTime.get() as moment.Moment);
                 const end_moment = buildMoment(expiry_date, expiry_time);
 
                 end_time = end_moment.format('HH:mm');

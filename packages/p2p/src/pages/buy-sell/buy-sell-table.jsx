@@ -28,14 +28,13 @@ const BuySellRowRendererComponent = row_props => {
 const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
-    const { buy_sell_store, my_profile_store } = useStores();
+    const { buy_sell_store } = useStores();
     const {
         client: { currency },
     } = useStore();
 
     React.useEffect(
         () => {
-            my_profile_store.getPaymentMethodsList();
             reaction(
                 () => buy_sell_store.is_buy,
                 () => buy_sell_store.fetchAdvertiserAdverts(),

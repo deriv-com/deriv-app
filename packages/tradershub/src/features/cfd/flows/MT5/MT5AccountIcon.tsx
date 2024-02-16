@@ -1,9 +1,12 @@
 import React from 'react';
-import { getStaticUrl } from '../../../../helpers/urls';
-import { THooks } from '../../../../types';
-import { MarketTypeDetails } from '../../constants';
+import { getStaticUrl } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
+import { THooks } from '@/types';
+import { MarketType, MarketTypeDetails } from '@cfd/constants';
 
 export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList }) => {
+    const { isEU } = useRegulationFlags();
+
     const handleClick = () => {
         window.open(getStaticUrl('/dmt5'));
     };
@@ -13,9 +16,14 @@ export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList })
             handleClick();
         }
     };
+
+    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
+
+    const icon = marketTypeDetails?.icon ?? null;
+
     return (
         <div className='cursor-pointer' onClick={handleClick} onKeyDown={handleKeyDown} role='button' tabIndex={0}>
-            {MarketTypeDetails[account.market_type || 'all'].icon}
+            {icon}
         </div>
     );
 };

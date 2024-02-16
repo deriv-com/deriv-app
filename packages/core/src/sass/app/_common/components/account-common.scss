@@ -453,6 +453,22 @@
             padding-bottom: unset;
         }
     }
+
+    &-management {
+        &__message-content {
+            @include mobile {
+                padding-top: 2.4rem;
+            }
+        }
+        &__container {
+            @include desktop {
+                max-width: 68.2rem;
+            }
+            @include mobile {
+                margin: 0 auto;
+            }
+        }
+    }
 }
 
 .idv-layout {
@@ -678,6 +694,7 @@
                 height: 100%;
                 width: 100%;
                 position: absolute;
+                padding-top: 2.4rem;
             }
         }
 

@@ -2,12 +2,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useLocation, withRouter } from 'react-router';
+import { Analytics } from '@deriv-com/analytics';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
-import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useStore, observer } from '@deriv/stores';
-import { getLanguage } from '@deriv/translations';
+import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
@@ -22,7 +21,7 @@ const AppContents = observer(({ children }) => {
         ui,
     } = useStore();
 
-    const { is_eu_country, is_logged_in, is_logging_in, loginid, user_id } = client;
+    const { is_eu_country, is_logged_in, is_logging_in } = client;
     const {
         is_app_disabled,
         is_cashier_visible,
@@ -41,24 +40,15 @@ const AppContents = observer(({ children }) => {
 
     const location = useLocation();
 
-    const current_page = window.location.hostname + window.location.pathname;
-
     React.useEffect(() => {
-        if (is_logged_in && user_id) {
-            const { tracking } = Analytics?.getInstances();
-            Analytics?.setAttributes({
-                account_type: loginid.substring(0, 2),
-            });
-            tracking?.identifyEvent(user_id, {
-                language: getLanguage().toLowerCase() || 'en',
-            });
-            Analytics?.pageView(current_page);
-        }
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    Analytics?.pageView(current_page);
+    React.useEffect(() => {
+        Analytics.pageView(window.location.href);
+        // react-hooks/exhaustive-deps
+    }, [window.location.href]);
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';

@@ -1,0 +1,20 @@
+name: Remote Config Backup Download
+description: Download remote config backup
+inputs:
+  REMOTE_CONFIG_URL:
+    description: "Remote config backup URL"
+  GPG_PRIVATE_KEY:
+    description: "GPG private key"
+  GPG_PASSPHRASE:
+    description: "GPG passphrase"
+  GITHUB_TOKEN:
+    description: "GitHub token"
+runs:
+  using: composite
+  steps:
+    - name: Download remote config backup
+      run: |
+        echo "Downloading remote config backup"
+        curl ${{ inputs.REMOTE_CONFIG_URL }} > packages/api/src/remote_config.json
+        echo "Remote Config backup downloaded successfully!"
+      shell: bash

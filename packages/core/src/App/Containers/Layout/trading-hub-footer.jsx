@@ -17,11 +17,12 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
 import { routes } from '@deriv/shared';
-import { observer,useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { useRemoteConfig } from '@deriv/api';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -68,7 +69,8 @@ const TradingHubFooter = observer(() => {
     };
 
     const location = window.location.pathname;
-
+    const { data } = useRemoteConfig();
+    const { cs_chat_livechat, cs_chat_whatsapp } = data;
     return (
         <footer
             className={classNames('footer', {
@@ -87,8 +89,8 @@ const TradingHubFooter = observer(() => {
             <FooterIconSeparator />
             <div className='footer__links'>
                 {footer_extensions_right.map(FooterExtensionRenderer)}
-                <WhatsApp />
-                <LiveChat />
+                {cs_chat_whatsapp && <WhatsApp />}
+                {cs_chat_livechat && <LiveChat />}
                 <GoToDeriv />
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimitsFooter />}

@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { clsx } from 'clsx';
 import { useOnClickOutside } from 'usehooks-ts';
+import { useUIContext } from '@/components';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
+import { Button, Text } from '@deriv-com/ui';
 
 type TAccount = {
     label: string;
@@ -19,19 +21,27 @@ const DemoRealSwitcher = () => {
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selected, setSelected] = useState(accountTypes[0]);
-    const { label, value } = selected;
+    const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
+    const activeType = accountTypes.find(account => account.value === activeAccountType);
+    const [selected, setSelected] = useState(activeType);
+    const { label, value } = selected || {};
+    const { setUIState } = useUIContext();
 
     const ref = useRef(null);
     useOnClickOutside(ref, () => setIsDropdownOpen(false));
 
+    const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
+
+    const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
+
     useEffect(() => {
-        const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
-        const activeAccount = accountTypes.find(account => account.value === activeAccountType);
-        if (activeAccount) {
-            setSelected(activeAccount);
+        if (activeType) {
+            setSelected(activeType);
+            setUIState({
+                accountType: activeAccountType,
+            });
         }
-    }, [activeTradingAccount]);
+    }, [activeAccountType, activeType, setUIState]);
 
     useEffect(() => {
         setIsDropdownOpen(false);
@@ -41,12 +51,11 @@ const DemoRealSwitcher = () => {
         setIsDropdownOpen(prevState => !prevState);
     }, []);
 
-    const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
-
-    const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
-
     const selectAccount = (account: TAccount) => {
         setSelected(account);
+        setUIState({
+            accountType: account.value,
+        });
 
         const loginId = account.value === 'demo' ? demoLoginId : firstRealLoginId;
         if (loginId) {
@@ -55,35 +64,41 @@ const DemoRealSwitcher = () => {
     };
 
     return (
-        <div className='relative inline-block w-auto' ref={ref}>
+        <div className='relative inline-block w-auto ' ref={ref}>
             <Button
-                className={qtMerge(
-                    'cursor-pointer w-full py-[3px] px-400 border-75 rounded-200 [&>span]:flex [&>span]:items-center [&>span]:text-[14px]',
-                    value === 'demo'
-                        ? 'border-status-light-information text-status-light-information'
-                        : 'border-status-light-success text-status-light-success'
+                className={clsx(
+                    'cursor-pointer w-full py-2 px-6 border-1 border-solid rounded-xs',
+                    value === 'demo' ? 'border-status-light-information' : 'border-status-light-success '
                 )}
-                colorStyle='white'
-                iconPosition='end'
                 onClick={toggleDropdown}
                 size='sm'
-                variant='secondary'
+                variant='outlined'
             >
-                {label}
-                <LabelPairedChevronDownSmRegularIcon
-                    className={qtMerge(
-                        'transform transition duration-200 ease-in-out ml-400',
-                        value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
-                        isDropdownOpen && '-rotate-180'
-                    )}
-                />
+                <div className='flex items-center'>
+                    <Text
+                        className={clsx(
+                            value === 'demo' ? 'text-status-light-information' : 'text-status-light-success'
+                        )}
+                        size='xs'
+                        weight='bold'
+                    >
+                        {label}
+                    </Text>
+                    <LabelPairedChevronDownSmRegularIcon
+                        className={clsx(
+                            'transform transition duration-200 ease-in-out ml-8',
+                            value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
+                            isDropdownOpen && '-rotate-180'
+                        )}
+                    />
+                </div>
             </Button>
             {isDropdownOpen && (
-                <div className='absolute z-10 w-full top-1400 rounded-200 bg-system-light-primary-background shadow-320'>
+                <div className='absolute z-10 items-center w-full top-28 rounded-xs bg-system-light-primary-background shadow-10'>
                     {accountTypes.map(account => (
                         <div
-                            className={qtMerge(
-                                'cursor-pointer hover:bg-system-light-hover-background rounded-200',
+                            className={clsx(
+                                'cursor-pointer hover:bg-system-light-hover-background rounded-xs',
                                 account.value === value && 'bg-system-light-active-background'
                             )}
                             key={account.value}
@@ -95,7 +110,13 @@ const DemoRealSwitcher = () => {
                             }}
                             role='button'
                         >
-                            <Text bold={account.value === value} className='text-center px-800 py-300' size='sm'>
+                            <Text
+                                align='center'
+                                as='p'
+                                className='px-16 py-6 text-center'
+                                size='sm'
+                                weight={account.value === value ? 'bold' : 'normal'}
+                            >
                                 {account.label}
                             </Text>
                         </div>

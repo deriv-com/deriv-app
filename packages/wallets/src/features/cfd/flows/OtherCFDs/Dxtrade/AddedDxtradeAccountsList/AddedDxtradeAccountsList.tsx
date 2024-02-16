@@ -1,6 +1,7 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useDxtradeAccountsList } from '@deriv/api';
+import { useDxtradeAccountsList } from '@deriv/api-v2';
 import { TradingAccountCard } from '../../../../../../components';
 import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -14,8 +15,9 @@ const AddedDxtradeAccountsList: React.FC = () => {
     const history = useHistory();
     const { data } = useDxtradeAccountsList();
     const { show } = useModal();
+    const { t } = useTranslation();
 
-    const leadingComponent = () => (
+    const leadingComponent = (
         <div
             className='wallets-available-derivx__icon'
             onClick={() => {
@@ -36,14 +38,14 @@ const AddedDxtradeAccountsList: React.FC = () => {
         <div className='wallets-available-derivx__actions'>
             <WalletButton
                 onClick={() => {
-                    history.push(`/wallets/cashier/transfer?to-account=${loginid}`);
+                    history.push(`/wallets/cashier/transfer`, { toAccountLoginId: loginid });
                 }}
                 variant='outlined'
             >
-                Transfer
+                {t('Transfer')}
             </WalletButton>
             <WalletButton onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}>
-                Open
+                {t('Open')}
             </WalletButton>
         </div>
     );
@@ -54,7 +56,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                 <TradingAccountCard
                     key={account?.account_id}
                     leading={leadingComponent}
-                    trailing={() => trailingComponent(account.account_id)}
+                    trailing={trailingComponent(account.account_id)}
                 >
                     <div className='wallets-available-derivx__details'>
                         <WalletText size='sm'>{PlatformDetails.dxtrade.title}</WalletText>

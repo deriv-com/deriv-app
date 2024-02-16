@@ -32,7 +32,7 @@ import {
     toMoment,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
@@ -174,7 +174,7 @@ const MobileRowRenderer = ({
     }
 
     const { contract_info, contract_update, type, is_sell_requested } = row as TPortfolioStore['active_positions'][0];
-    const { currency, status, date_expiry, date_start, tick_count, purchase_time } = contract_info;
+    const { currency, date_expiry, date_start, tick_count, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
     const turbos_duration_unit = tick_count ? 'ticks' : getDurationUnitText(getDurationPeriod(contract_info), true);
     const duration_type = getContractDurationType(
@@ -193,7 +193,6 @@ const MobileRowRenderer = ({
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
                 server_time={server_time}
-                status={status ?? ''}
                 {...props}
             />
         );
@@ -650,7 +649,8 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
             />
         );
     };
-
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Open positions for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <NotificationMessages />

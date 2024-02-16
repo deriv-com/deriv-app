@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import moment from 'moment';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useActiveAccount, useCreateNewRealAccount, useCreateWallet, useSettings } from '@deriv/api';
+import { useActiveAccount, useCreateNewRealAccount, useCreateWallet, useSettings } from '@deriv/api-v2';
 import { getAccountsFromLocalStorage } from '@deriv/utils';
 
 type TNewWalletAccount = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
@@ -12,7 +12,7 @@ const useSyncLocalStorageClientAccounts = () => {
     const { data: settingsData } = useSettings();
     const [, setLocalStorageClientAccounts] = useLocalStorage(
         'client.accounts',
-        useReadLocalStorage('client.accounts')
+        useReadLocalStorage('client.accounts') ?? {}
     );
 
     const addWalletAccountToLocalStorage = useCallback(

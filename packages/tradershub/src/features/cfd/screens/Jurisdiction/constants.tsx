@@ -1,11 +1,11 @@
 import React from 'react';
-import DocumentsIcon from '../../../../public/images/ic-documents.svg';
-import IdCardIcon from '../../../../public/images/ic-id-card.svg';
-import NotApplicableIcon from '../../../../public/images/ic-not-applicable.svg';
-import SelfieIcon from '../../../../public/images/ic-selfie.svg';
-import VerificationFailedStatusIcon from '../../../../public/images/ic-verification-failed-status.svg';
-import VerificationPendingStatusIcon from '../../../../public/images/ic-verification-pending-status.svg';
-import VerificationSuccessStatusIcon from '../../../../public/images/ic-verification-success-status.svg';
+import DocumentsIcon from '@/assets/svgs/ic-documents.svg';
+import IdCardIcon from '@/assets/svgs/ic-id-card.svg';
+import NotApplicableIcon from '@/assets/svgs/ic-not-applicable.svg';
+import SelfieIcon from '@/assets/svgs/ic-selfie.svg';
+import VerificationFailedStatusIcon from '@/assets/svgs/ic-verification-failed-status.svg';
+import VerificationPendingStatusIcon from '@/assets/svgs/ic-verification-pending-status.svg';
+import VerificationSuccessStatusIcon from '@/assets/svgs/ic-verification-success-status.svg';
 
 export const verificationIconsMapper: Record<string, JSX.Element> = {
     documentNumber: <IdCardIcon />,

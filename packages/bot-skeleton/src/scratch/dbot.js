@@ -96,12 +96,12 @@ class DBot {
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
             try {
-                let workspaceScale = 0.8;
+                let workspaceScale = 0.7;
 
                 const { handleFileChange } = DBotStore.instance;
                 if (window_width < 1640) {
                     if (is_mobile) {
-                        workspaceScale = 0.7;
+                        workspaceScale = 0.6;
                     } else {
                         const scratch_div_width = document.getElementById('scratch_div')?.offsetWidth;
                         const zoom_scale = scratch_div_width / window_width / 1.5;
@@ -158,7 +158,7 @@ class DBot {
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);
-                this.workspace.cleanUp();
+                this.workspace.cleanUp(0, is_mobile ? 60 : 56);
                 this.workspace.clearUndo();
 
                 window.dispatchEvent(new Event('resize'));
@@ -226,7 +226,10 @@ class DBot {
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
+        if (api_base.is_stopping) return;
+
         try {
+            api_base.is_stopping = false;
             const code = this.generateCode();
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
@@ -325,6 +328,8 @@ class DBot {
      * that trade will be completed first to reflect correct contract status in UI.
      */
     async stopBot() {
+        if (api_base.is_stopping) return;
+
         api_base.setIsRunning(false);
 
         await this.interpreter.stop();

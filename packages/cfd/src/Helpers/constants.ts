@@ -120,10 +120,10 @@ const getMobileAppInstallerURL = () => {
     return getPlatformMt5DownloadLink('android');
 };
 
-function getDownloadOptions({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) {
-    function isSafari() {
-        return /^((?!chrome|android).)*AppleWebKit/i.test(navigator.userAgent) && typeof window.safari !== 'undefined';
-    }
+const getDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
+    const isSafari = () => {
+        return typeof window.safari !== 'undefined';
+    };
 
     const mobileURLSet = () => {
         let deep_link = `metatrader5://account?login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`;
@@ -184,7 +184,7 @@ function getDownloadOptions({ mt5_trade_account }: { mt5_trade_account: DetailsO
     ];
 
     return downloadOptions;
-}
+};
 
 export {
     REAL_DXTRADE_URL,

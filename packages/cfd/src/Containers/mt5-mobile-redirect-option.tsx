@@ -24,9 +24,10 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                     })}
                     classNameSpan='mt5-download-container--span'
                     onClick={() => {
-                        if (option.href) {
-                            window.location.replace(option.href);
+                        if (option.highlight) {
+                            window.location.replace(option.href as string);
                         }
+                        window.open(option.href as string, '_blank');
                     }}
                 >
                     <div className='center'>

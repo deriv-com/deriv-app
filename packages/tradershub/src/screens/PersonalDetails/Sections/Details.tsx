@@ -1,7 +1,7 @@
 import React, { Fragment, lazy, Suspense } from 'react';
 import { useFormikContext } from 'formik';
 import { useBreakpoint } from '@deriv/quill-design';
-import { InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
+import { Divider, InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
 import DetailsConfirmation from './DetailsConfirmation';
 
 const ExampleImage = lazy(() => import('@/assets/svgs/personal-details-example.svg'));
@@ -17,10 +17,13 @@ const Details = () => {
 
     return (
         <Fragment>
-            <Text as='p' className='my-16' weight='bold'>
-                Details
-            </Text>
-            <div className='outline outline-1 outline-system-light-active-background md:mx-16 p-16 rounded-default'>
+            <div className='flex items-center gap-16'>
+                <Text as='p' className='my-16 shrink-0' weight='bold'>
+                    Details
+                </Text>
+                <Divider className='w-full' color='#F2F3F4' />
+            </div>
+            <div className='p-16 outline outline-1 outline-system-light-active-background md:mx-16 rounded-default'>
                 <InlineMessage className='items-start mb-16' variant='warning'>
                     <Text size={isMobile ? 'sm' : 'md'}>
                         To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
@@ -28,10 +31,11 @@ const Details = () => {
                         document.
                     </Text>
                 </InlineMessage>
-                <div className='flex flex-col-reverse justify-center md:flex-row gap-16'>
-                    <div className='flex flex-col md:w-1/2 gap-20'>
+                <div className='flex flex-col-reverse justify-center gap-16 md:flex-row'>
+                    <div className='flex flex-col gap-20 md:w-1/2'>
                         <Input
-                            className='text-body-sm'
+                            className='text-default'
+                            disabled={values.confirmation}
                             error={Boolean(errors.firstName && touched.firstName)}
                             isFullWidth
                             label='First name*'
@@ -46,7 +50,8 @@ const Details = () => {
                             value={values.firstName}
                         />
                         <Input
-                            className='text-body-sm'
+                            className='text-default'
+                            disabled={values.confirmation}
                             error={Boolean(errors.lastName && touched.lastName)}
                             isFullWidth
                             label='Last name*'
@@ -62,7 +67,8 @@ const Details = () => {
                         />
                         {/** Add date picker when available from deriv/ui */}
                         <Input
-                            className='text-body-sm'
+                            className='text-default'
+                            disabled={values.confirmation}
                             error={Boolean(errors.dateOfBirth && touched.dateOfBirth)}
                             isFullWidth
                             label='Date of birth*'
@@ -74,6 +80,7 @@ const Details = () => {
                             name='dateOfBirth'
                             onBlur={handleBlur}
                             onChange={handleChange}
+                            type='date'
                             value={values.dateOfBirth}
                         />
                     </div>

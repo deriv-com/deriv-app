@@ -2,10 +2,9 @@ import * as Yup from 'yup';
 
 export const personalDetails = Yup.object().shape({
     accountOpeningReason: Yup.string().required('Account opening reason is required'),
-    confirmation: Yup.boolean().oneOf(
-        [true],
-        'You must confirm that the name and date of birth above match your chosen identity document.'
-    ),
+    confirmation: Yup.boolean()
+        .required()
+        .oneOf([true], 'You must confirm that the name and date of birth above match your chosen identity document.'),
     dateOfBirth: Yup.date().typeError('Please enter a valid date').required('Date of birth is required.'),
     firstName: Yup.string()
         .required('First name is required.')

@@ -2,7 +2,8 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api';
 import { LabelPairedChevronDownMdRegularIcon, StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
-import { Dropdown, Input, Text } from '@deriv-com/ui';
+import { Divider, Dropdown, Input, Text } from '@deriv-com/ui';
+import TaxInfoConfirmation from './TaxInfoConfirmation';
 
 const AccountOpeningReasonList = [
     {
@@ -38,12 +39,15 @@ const AdditionalInformation = () => {
 
     return (
         <div>
-            <Text as='p' className='my-16' weight='bold'>
-                Additional information
-            </Text>
+            <div className='flex items-center gap-16'>
+                <Text as='p' className='my-16 shrink-0' weight='bold'>
+                    Additional information
+                </Text>
+                <Divider className='w-full' color='#F2F3F4' />
+            </div>
             <div className='flex flex-col gap-20'>
                 <Input
-                    className='text-body-sm'
+                    className='text-default'
                     error={Boolean(errors.phoneNumber && touched.phoneNumber)}
                     isFullWidth
                     label='Phone number*'
@@ -69,7 +73,7 @@ const AdditionalInformation = () => {
                     value={values.placeOfBirth}
                     variant='comboBox'
                 />
-                <div className='flex items-center justify-between gap-16'>
+                <div className='flex justify-between gap-16'>
                     <Dropdown
                         dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                         label='Tax residence'
@@ -85,11 +89,13 @@ const AdditionalInformation = () => {
                         value={values.taxResidence}
                         variant='comboBox'
                     />
-                    <StandaloneCircleInfoRegularIcon />
+                    <div className='pt-6'>
+                        <StandaloneCircleInfoRegularIcon />
+                    </div>
                 </div>
-                <div className='flex items-center justify-between gap-16'>
+                <div className='flex justify-between gap-16'>
                     <Input
-                        className='text-body-sm'
+                        className='text-sm'
                         isFullWidth
                         label='Tax identification number'
                         name='taxIdentificationNumber'
@@ -97,7 +103,9 @@ const AdditionalInformation = () => {
                         onChange={handleChange}
                         value={values.taxIdentificationNumber}
                     />
-                    <StandaloneCircleInfoRegularIcon />
+                    <div className='pt-6'>
+                        <StandaloneCircleInfoRegularIcon />
+                    </div>
                 </div>
                 <Dropdown
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
@@ -112,6 +120,7 @@ const AdditionalInformation = () => {
                     value={values.accountOpeningReason}
                     variant='comboBox'
                 />
+                {values.taxIdentificationNumber && values.taxResidence && <TaxInfoConfirmation />}
             </div>
         </div>
     );

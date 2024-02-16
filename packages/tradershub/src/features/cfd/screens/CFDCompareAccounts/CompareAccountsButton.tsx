@@ -11,7 +11,7 @@ import {
     useSettings,
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import {
     getAccountVerificationStatus,
     shouldRestrictBviAccountCreation,

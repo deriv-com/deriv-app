@@ -1,6 +1,5 @@
 import React from 'react';
 import { THooks } from '@/types';
-import { CaptionText } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
 
@@ -25,13 +24,13 @@ export const DynamicLeverageMarketCard = ({
                 {displayName}
             </Text>
             {!!instruments.length && (
-                <CaptionText align='center' className='text-default' italic>
+                <Text align='center' className='italic'>
                     {`(${instruments.join(', ')})`}
-                </CaptionText>
+                </Text>
             )}
-            <CaptionText align='center' className='text-status-light-danger'>
+            <Text align='center' className='text-status-light-danger'>
                 {`Up to ${min}:${max}`}
-            </CaptionText>
+            </Text>
         </div>
         <div className='pb-10'>
             <div className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center py-4 bg-system-light-hover-background'>

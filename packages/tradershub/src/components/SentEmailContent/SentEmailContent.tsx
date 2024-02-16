@@ -5,7 +5,7 @@ import { ActionScreen } from '@/components';
 import { platformPasswordResetRedirectLink } from '@/utils';
 import { PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
-import { Button, useBreakpoint } from '@deriv/quill-design';
+import { Button, useDevice } from '@deriv-com/ui';
 import { TPlatforms } from '../../types';
 
 type TSentEmailContentProps = {
@@ -19,12 +19,12 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const mt5Platform = PlatformDetails.mt5.platform;
     const title = PlatformDetails[platform ?? mt5Platform].title;
     const titleSize = 'md';
     const descriptionSize = 'sm';
-    const emailLinkSize = isMobile ? 'lg' : 'md';
+    const emailLinkSize = isDesktop ? 'md' : 'lg';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
         intervalMs: 1000,
@@ -43,12 +43,11 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
         return (
             <Button
                 className='border-none'
-                colorStyle='coral'
                 onClick={() => {
                     setShouldShowResendEmailReasons(true);
                 }}
                 size={emailLinkSize}
-                variant='secondary'
+                variant='outlined'
             >
                 Didn&apos;t receive the email?
             </Button>

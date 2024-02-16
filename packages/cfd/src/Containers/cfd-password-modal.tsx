@@ -614,7 +614,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
     const [is_success_password_change, setIsSuccessPasswordChange] = React.useState(false);
-    const [is_success_flag, setIsSuccessFlag] = React.useState(false);
     const [new_password_value, setNewPasswordValue] = React.useState('');
 
     const getVerificationStatus = () => {
@@ -958,7 +957,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         form_error={form_error}
                         should_set_trading_password={should_set_trading_password}
                         setIsSuccessPasswordChange={setIsSuccessPasswordChange}
-                        setIsSuccessFlag={setIsSuccessFlag}
                         setNewPasswordValue={setNewPasswordValue}
                         validatePassword={validatePassword}
                         onForgotPassword={handleForgotPassword}
@@ -982,7 +980,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         form_error={form_error}
                         should_set_trading_password={should_set_trading_password}
                         setIsSuccessPasswordChange={setIsSuccessPasswordChange}
-                        setIsSuccessFlag={setIsSuccessFlag}
                         setNewPasswordValue={setNewPasswordValue}
                         validatePassword={validatePassword}
                         onForgotPassword={handleForgotPassword}
@@ -1041,9 +1038,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {error_type === 'IncorrectMT5PasswordFormat' && is_mt5_password_format_invalid}
             {is_success_password_change && (
                 <CFDPasswordChangeContent
-                    setIsSuccessFlag={setIsSuccessFlag}
                     setIsSuccessPasswordChange={setIsSuccessPasswordChange}
-                    is_success_flag={is_success_flag}
+                    is_success_password_change={is_success_password_change}
                     closeModal={closeModal}
                     password_value={new_password_value}
                 />

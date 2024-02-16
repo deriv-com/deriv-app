@@ -22,7 +22,6 @@ type TCFDPasswordChangeProps = TCFDPasswordFormReusedProps & {
     onCancel: () => void;
     onForgotPassword: () => void;
     setIsSuccessPasswordChange?: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsSuccessFlag?: React.Dispatch<React.SetStateAction<boolean>>;
     setNewPasswordValue?: React.Dispatch<React.SetStateAction<string>>;
     should_set_trading_password: boolean;
 };
@@ -39,7 +38,6 @@ const CFDPasswordChange = observer(
         onCancel,
         onForgotPassword,
         setIsSuccessPasswordChange,
-        setIsSuccessFlag,
         setNewPasswordValue,
         should_set_trading_password,
     }: TCFDPasswordChangeProps) => {
@@ -93,7 +91,6 @@ const CFDPasswordChange = observer(
             }
             if (!response.error) {
                 setIsSuccessPasswordChange?.(true);
-                setIsSuccessFlag?.(true);
                 setNewPasswordValue?.(values.new_password);
             }
         };

@@ -4,18 +4,16 @@ import { DesktopWrapper, Modal, Button, Icon, Text, MobileDialog, MobileWrapper 
 import { Localize } from '@deriv/translations';
 
 type TCFDPasswordChangeContentProps = {
-    setIsSuccessFlag: React.Dispatch<React.SetStateAction<boolean>>;
     setIsSuccessPasswordChange: React.Dispatch<React.SetStateAction<boolean>>;
-    is_success_flag: boolean;
+    is_success_password_change: boolean;
     closeModal: () => void;
     password_value: string;
 };
 
 const CFDPasswordChangeContent = observer(
     ({
-        setIsSuccessFlag,
         setIsSuccessPasswordChange,
-        is_success_flag,
+        is_success_password_change,
         closeModal,
         password_value,
     }: TCFDPasswordChangeContentProps) => {
@@ -34,21 +32,20 @@ const CFDPasswordChangeContent = observer(
 
             setIsOpened(false);
             setIsSuccessPasswordChange(false);
-            setIsSuccessFlag(false);
             setIsSubmitting(false);
             closeModal();
             setCFDSuccessDialog(true);
         };
 
         React.useEffect(() => {
-            if (is_success_flag) {
+            if (is_success_password_change) {
                 setIsOpened(true);
             }
 
             return () => {
                 setIsOpened(false);
             };
-        }, [is_success_flag]);
+        }, [is_success_password_change]);
 
         const password_changed_success_content = (
             <div className='cfd-password-change__password-success'>

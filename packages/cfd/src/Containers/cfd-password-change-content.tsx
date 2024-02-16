@@ -32,24 +32,23 @@ const CFDPasswordChangeContent = observer(
                 password: password_value,
             });
 
-            closeModal();
             setIsOpened(false);
             setIsSuccessPasswordChange(false);
             setIsSuccessFlag(false);
             setIsSubmitting(false);
+            closeModal();
             setCFDSuccessDialog(true);
         };
 
         React.useEffect(() => {
             if (is_success_flag) {
                 setIsOpened(true);
-                setIsSuccessPasswordChange(false);
             }
 
             return () => {
                 setIsOpened(false);
             };
-        }, [is_success_flag, setIsSuccessPasswordChange]);
+        }, [is_success_flag]);
 
         const password_changed_success_content = (
             <div className='cfd-password-change__password-success'>

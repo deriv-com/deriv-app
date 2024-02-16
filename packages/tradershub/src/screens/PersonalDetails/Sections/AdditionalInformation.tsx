@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormikContext } from 'formik';
+import { ErrorMessage, useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api';
 import { LabelPairedChevronDownMdRegularIcon, StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
 import { Divider, Dropdown, Input, Text } from '@deriv-com/ui';
@@ -76,6 +76,7 @@ const AdditionalInformation = () => {
                 <div className='flex justify-between gap-16'>
                     <Dropdown
                         dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
+                        errorMessage={touched.taxResidence && errors.taxResidence}
                         label='Tax residence'
                         list={residenceList.map(residence => ({
                             text: residence.text,
@@ -96,8 +97,10 @@ const AdditionalInformation = () => {
                 <div className='flex justify-between gap-16'>
                     <Input
                         className='text-sm'
+                        error={Boolean(errors.taxIdentificationNumber && touched.taxIdentificationNumber)}
                         isFullWidth
                         label='Tax identification number'
+                        message={touched.taxIdentificationNumber && errors.taxIdentificationNumber}
                         name='taxIdentificationNumber'
                         onBlur={handleBlur}
                         onChange={handleChange}

@@ -991,7 +991,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </React.Fragment>
     );
 
-    console.log(is_success_flag, 'is_success_flag');
     console.log(is_success_password_change, 'is_success_password_change');
 
     return (

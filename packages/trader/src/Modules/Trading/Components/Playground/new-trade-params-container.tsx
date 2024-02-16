@@ -46,7 +46,11 @@ const NewTradeParamsContainer = ({
                 <div className='trade-param_name'>Multiplier</div>
                 <div style={{ fontSize: '16px', lineHeight: '24px' }}>x15</div>
             </div> */}
-            <div className='trade-param_container'>
+            <div
+                className='trade-param_container'
+                onClick={() => onClick('duration')}
+                onKeyDown={() => onClick('duration')}
+            >
                 <div className='trade-param_name'>Duration</div>
                 <div style={{ fontSize: '16px', lineHeight: '24px' }}>1 minute</div>
             </div>

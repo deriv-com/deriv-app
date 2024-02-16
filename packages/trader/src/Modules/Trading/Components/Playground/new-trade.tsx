@@ -13,6 +13,7 @@ const NewTrade = () => {
     const [is_risk_management, setIsRiskManagement] = React.useState(false);
     const [is_stake, setIsStake] = React.useState(false);
     const [is_multiplier, setIsMultiplier] = React.useState(false);
+    const [is_duration, setIsDuration] = React.useState(false);
 
     const [is_portal, setIsPortal] = React.useState(false);
     const [selected_left_type, setSelectedType] = React.useState(true);
@@ -33,10 +34,12 @@ const NewTrade = () => {
         setIsRiskManagement(false);
         setIsStake(false);
         setIsMultiplier(false);
+        setIsDuration(false);
 
         if (trade_param === 'risk_management') setIsRiskManagement(true);
         if (trade_param === 'stake') setIsStake(true);
         if (trade_param === 'multiplier') setIsMultiplier(true);
+        if (trade_param === 'duration') setIsDuration(true);
 
         setShowDetails(true);
     };
@@ -74,6 +77,7 @@ const NewTrade = () => {
                 is_stake={is_stake}
                 is_portal={is_portal}
                 is_multiplier={is_multiplier}
+                is_duration={is_duration}
                 valueGroups={valueGroups}
                 optionGroups={optionGroups}
                 setValueGroups={setValueGroups}

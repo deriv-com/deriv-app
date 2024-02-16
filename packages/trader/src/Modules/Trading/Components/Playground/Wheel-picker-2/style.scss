@@ -33,12 +33,12 @@
     }
 
     .picker-column {
-        flex: 1 1;
+        // flex: 1 1;
 
         position: relative;
 
         max-height: 100%;
-
+        width: 60px;
         overflow: hidden;
         text-align: center;
 
@@ -89,6 +89,21 @@
         //     transform: scaleY(0.5);
         // }
 
+        // &:before {
+        //     content: 'minutes';
+        //     position: absolute;
+        //     font-size: 2rem;
+        //     top: 10px;
+        //     right: 40px;
+        //     opacity: 0.7;
+        // }
+
+        // &:after {
+        //     bottom: 0;
+        //     top: auto;
+        // }
+    }
+    .picker-highlight.deal-cancellation {
         &:before {
             content: 'minutes';
             position: absolute;
@@ -97,10 +112,16 @@
             right: 40px;
             opacity: 0.7;
         }
+    }
 
-        // &:after {
-        //     bottom: 0;
-        //     top: auto;
-        // }
+    .picker-highlight.duration {
+        &:before {
+            content: 'GMT';
+            position: absolute;
+            font-size: 2rem;
+            top: 10px;
+            right: 40px;
+            opacity: 0.7;
+        }
     }
 }

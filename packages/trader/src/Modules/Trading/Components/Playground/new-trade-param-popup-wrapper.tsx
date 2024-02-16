@@ -15,6 +15,7 @@ const NewTradeParamPopupWrapper = ({
     is_risk_management,
     is_stake,
     is_multiplier,
+    is_duration,
     is_portal,
     valueGroups,
     optionGroups,
@@ -25,6 +26,7 @@ const NewTradeParamPopupWrapper = ({
     is_risk_management?: boolean;
     is_stake?: boolean;
     is_multiplier?: boolean;
+    is_duration?: boolean;
     is_portal?: boolean;
     valueGroups: any;
     optionGroups: any;
@@ -37,7 +39,39 @@ const NewTradeParamPopupWrapper = ({
 
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
-    // const [test_value, setTestValue] = React.useState('5');
+    const optionDurationGroups = {
+        hours: [
+            { value: '01', label: '01' },
+            { value: '02', label: '02' },
+            { value: '03', label: '03' },
+            { value: '04', label: '04' },
+            { value: '05', label: '05' },
+            { value: '06', label: '06' },
+            { value: '07', label: '07' },
+            { value: '08', label: '08' },
+            { value: '09', label: '09' },
+            { value: '10', label: '10' },
+            { value: '11', label: '11' },
+            { value: '12', label: '12' },
+            { value: '13', label: '13' },
+            { value: '14', label: '14' },
+            { value: '15', label: '15' },
+        ],
+        minutes: [
+            { value: '00', label: '00' },
+            { value: '01', label: '01' },
+            { value: '02', label: '02' },
+            { value: '03', label: '03' },
+            { value: '04', label: '04' },
+            { value: '05', label: '05' },
+            { value: '06', label: '06' },
+            { value: '07', label: '07' },
+            { value: '08', label: '08' },
+            { value: '09', label: '09' },
+            { value: '10', label: '10' },
+        ],
+    };
+    const [valueDurationGroups, setValueDurationGroups] = React.useState({ hours: '05', minutes: '05' });
 
     React.useEffect(() => {
         return () => clearTimeout(focus_timeout.current);
@@ -209,6 +243,7 @@ const NewTradeParamPopupWrapper = ({
                                             }
                                             itemHeight={40}
                                             height={190}
+                                            customClassName='deal-cancellation'
                                         />
                                         <div
                                             className='trade-param_popup_tooltip-text'
@@ -243,6 +278,34 @@ const NewTradeParamPopupWrapper = ({
                                     </React.Fragment>
                                 </div>
                             </div>
+                        )}
+                        {is_duration && (
+                            <React.Fragment>
+                                <div {...swipe_handlers}>
+                                    <div className='trade-param_popup_title' style={{ height: '6.4rem' }}>
+                                        Duration <span className='info-icon'>i</span>
+                                    </div>
+                                    <p style={{ fontSize: '16px', lineHeight: '24px', textAlign: 'center' }}>
+                                        Imagine, here will be horizontal carousel
+                                    </p>
+                                </div>
+                                <Picker
+                                    optionGroups={optionDurationGroups}
+                                    valueGroups={valueDurationGroups}
+                                    onChange={(name: string, value: string) =>
+                                        setValueDurationGroups({ ...valueDurationGroups, [name]: value })
+                                    }
+                                    itemHeight={40}
+                                    height={190}
+                                    customClassName='duration'
+                                />
+                                <div
+                                    className='trade-param_popup_tooltip-text'
+                                    style={{ textAlign: 'center', margin: '0 0 1rem 0' }}
+                                >
+                                    Some super important text
+                                </div>
+                            </React.Fragment>
                         )}
                         {is_multiplier && (
                             <React.Fragment>

@@ -225,6 +225,7 @@ export default class Picker extends Component {
         onChange: PropTypes.func.isRequired,
         itemHeight: PropTypes.number,
         height: PropTypes.number,
+        customClassName: PropTypes.string,
     };
 
     static defaultProps = {
@@ -233,7 +234,7 @@ export default class Picker extends Component {
     };
 
     renderInner() {
-        const { optionGroups, valueGroups, itemHeight, height, onChange } = this.props;
+        const { optionGroups, valueGroups, itemHeight, height, onChange, customClassName } = this.props;
         const highlightStyle = {
             height: itemHeight,
             marginTop: -(itemHeight / 2),
@@ -254,7 +255,7 @@ export default class Picker extends Component {
         );
         return (
             <div className='picker-inner'>
-                <div className='picker-highlight' style={highlightStyle}></div>
+                <div className={`picker-highlight ${customClassName}`} style={highlightStyle}></div>
                 {columnNodes}
             </div>
         );

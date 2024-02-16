@@ -1,5 +1,5 @@
 import React from 'react';
-import { ErrorMessage, useFormikContext } from 'formik';
+import { useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api';
 import { LabelPairedChevronDownMdRegularIcon, StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
 import { Divider, Dropdown, Input, Text } from '@deriv-com/ui';

@@ -20,9 +20,15 @@ Blockly.Blocks.procedures_defnoreturn = {
             this.workspace.options.pathToMedia +
             (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
         // Render a v-icon for adding parameters
-        const fieldImageCollapse = new Blockly.FieldImage(dropdown_path, 16, 16, 'v', () => {
-            this.setCollapsed(true);
-        });
+        const fieldImageCollapse = new Blockly.FieldImage(
+            dropdown_path,
+            16,
+            16,
+            'v',
+            () => this.setCollapsed(true),
+            false,
+            true
+        );
         this.appendDummyInput('ADD_ICON').appendField(fieldImage);
         this.appendDummyInput('COLLAPSED_INPUT').appendField(fieldImageCollapse);
 

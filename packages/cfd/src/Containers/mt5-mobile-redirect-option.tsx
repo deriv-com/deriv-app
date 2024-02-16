@@ -1,6 +1,6 @@
 import React from 'react';
 import './mt5-mobile-redirect-option.scss';
-import { ButtonLink, Icon, StaticUrl, Text } from '@deriv/components';
+import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getDownloadOptions } from '../Helpers/constants';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
@@ -16,19 +16,22 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
     return (
         <div className='mt5-download-container'>
             {mobileDownloadOptions.map(option => (
-                <ButtonLink
+                <Button
                     key={option.icon}
                     className={`mt5-download-container--option ${option.highlight ? 'blue' : ''}`}
+                    classNameSpan='mt5-download-container--span'
                     onClick={() => {
-                        window.open(option.href, '_blank');
+                        window.location.replace(option.href);
                     }}
                 >
-                    <Icon icon={option.icon} size={16} />
-                    <Text as='p' align='left' size='xxs' weight='bold'>
-                        <Localize i18n_default_text={option.text} />
-                    </Text>
-                    <Icon icon={option.highlight ? 'IcChevronRightLight' : 'IcChevronRight'} size={16} />
-                </ButtonLink>
+                    <div className='center'>
+                        <Icon icon={option.icon} size={16} />
+                        <Text as='p' align='left' size='xxs' weight='bold' className='title'>
+                            <Localize i18n_default_text={option.text} />
+                        </Text>
+                        <Icon icon={option.highlight ? 'IcChevronRightLight' : 'IcChevronRight'} size={16} />
+                    </div>
+                </Button>
             ))}
 
             <Text as='p' size='xxxs'>

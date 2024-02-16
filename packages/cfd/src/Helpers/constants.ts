@@ -125,14 +125,6 @@ function getDownloadOptions({ mt5_trade_account }: { mt5_trade_account: DetailsO
         return /^((?!chrome|android).)*AppleWebKit/i.test(navigator.userAgent) && typeof window.safari !== 'undefined';
     }
 
-    const getMobileAppInstallerURL = () => {
-        if (mobileOSDetect() === 'iOS') {
-            return getPlatformMt5DownloadLink('ios');
-        } else if (/huawei/i.test(navigator.userAgent)) {
-            return getPlatformMt5DownloadLink('huawei');
-        }
-        return getPlatformMt5DownloadLink('android');
-    };
     const mobileURLSet = () => {
         let deep_link = `metatrader5://account?login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`;
 

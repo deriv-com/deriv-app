@@ -4,17 +4,24 @@
     gap: 1.6rem;
     margin: 2.4rem;
 
+    &--span {
+        width: 100%;
+    }
+
     &--option {
+        width: 100%;
         height: 3.4rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         padding: 0.8rem;
-        gap: 0.8rem;
         border-radius: 0.8rem;
-        background-color: var(--general-dark-1);
-        p {
-            flex: 1;
+        background-color: var(--general-1);
+        .center {
+            gap: 0.8rem;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            p {
+                flex: 1;
+            }
         }
     }
 

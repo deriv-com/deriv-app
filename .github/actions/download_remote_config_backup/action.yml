@@ -4,9 +4,6 @@ inputs:
   REMOTE_CONFIG_URL:
     description: "Remote config backup URL"
     required: true
-  GITHUB_TOKEN:
-    description: "Github token"
-    required: true
   GPG_PRIVATE_KEY:
     description: "GPG private key"
     required: true
@@ -23,6 +20,7 @@ runs:
         echo "Remote Config backup downloaded successfully!"
       shell: bash
     - name: Import GPG key
+      if: github.ref == 'refs/heads/master'
       id: import-gpg
       uses: deriv-com/ghaction-import-gpg@v6
       with:
@@ -33,7 +31,7 @@ runs:
     - name: commit changes
       if: github.ref == 'refs/heads/master'
       env:
-        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ github.token }}
         GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
         GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
         GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}

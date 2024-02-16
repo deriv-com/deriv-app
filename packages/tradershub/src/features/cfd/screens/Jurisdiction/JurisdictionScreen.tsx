@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import { clsx } from 'clsx';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { Jurisdiction } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { qtMerge } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { JurisdictionCard } from './JurisdictionCard';
 import { JurisdictionTncSection } from './JurisdictionTncSection';
@@ -47,7 +47,7 @@ const JurisdictionScreen = ({
 
     return (
         <div
-            className={qtMerge(
+            className={clsx(
                 'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-30 sm:h-[75vh] transition-all ease-in duration-[0.6s]',
                 isDynamicLeverageVisible &&
                     '[transform:rotateY(-180deg)] h-[700px] opacity-50 bg-system-light-primary-background'

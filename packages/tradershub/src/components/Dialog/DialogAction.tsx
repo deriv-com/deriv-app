@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { DialogActionClass, DialogActionProps } from './Dialog.classnames';
 
 /**
@@ -18,7 +18,7 @@ export interface TDialogActions extends DialogActionProps {
  * @returns {JSX.Element} The DialogAction component.
  */
 const DialogAction = ({ align, children, className }: TDialogActions) => (
-    <div className={qtMerge(DialogActionClass({ align }), className)}>{children}</div>
+    <div className={clsx(DialogActionClass({ align }), className)}>{children}</div>
 );
 
 export default DialogAction;

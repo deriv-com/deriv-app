@@ -4,8 +4,7 @@ import { getStaticUrl } from '@/helpers';
 import { THooks } from '@/types';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Checkbox, Text } from '@deriv-com/ui';
+import { Checkbox, Text, useDevice } from '@deriv-com/ui';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
 type TJurisdictionTncSectionProps = {
@@ -29,7 +28,7 @@ const JurisdictionTncSection = ({
     selectedJurisdiction,
     setIsCheckBoxChecked,
 }: TJurisdictionTncSectionProps) => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
@@ -44,12 +43,11 @@ const JurisdictionTncSection = ({
                     <Checkbox
                         checked={isCheckBoxChecked}
                         label={
-                            <Text size={isMobile ? 'sm' : 'md'}>
+                            <Text size={isDesktop ? 'md' : 'sm'}>
                                 I confirm and accept {selectedCompany.name}&lsquo;s{' '}
                                 <StaticLink
                                     className='no-underline cursor-pointer text-solid-coral-700 hover:no-underline'
                                     href={getStaticUrl(selectedCompany.tncUrl)}
-                                    size='lg'
                                 >
                                     Terms and Conditions
                                 </StaticLink>

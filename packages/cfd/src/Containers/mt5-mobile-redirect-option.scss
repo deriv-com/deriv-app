@@ -15,12 +15,12 @@
         border-radius: 0.8rem;
         background-color: var(--general-1);
         text-decoration: none;
-        .center {
+        .full-row {
             gap: 0.8rem;
             width: 100%;
             display: flex;
             justify-content: space-between;
-            p {
+            .title {
                 flex: 1;
             }
         }
@@ -28,7 +28,7 @@
 
     .blue {
         background-color: #0364b9;
-        p {
+        .title {
             color: var(--text-colored-background);
         }
     }

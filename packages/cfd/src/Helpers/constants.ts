@@ -33,6 +33,9 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 
 const { is_staging, is_test_link } = getPlatformFromUrl();
 
+const DEEP_LINK = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) =>
+    `metatrader5://account?login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`;
+
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
@@ -152,6 +155,7 @@ const getDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsO
 };
 
 export {
+    DEEP_LINK,
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
     CTRADER_URL,

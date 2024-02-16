@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getMobileAppInstallerURL } from '../Helpers/constants';
+import { DEEP_LINK, getMobileAppInstallerURL } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
 
 type TMT5MobileRedirectOptionProps = {
@@ -15,7 +15,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
     };
 
     const mobileURLSet = () => {
-        let deep_link = `metatrader5://account?login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`;
+        let deep_link = DEEP_LINK({ mt5_trade_account });
 
         window.location.replace(deep_link);
 
@@ -38,9 +38,9 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                 target='_blank'
                 rel='noopener noreferrer'
             >
-                <div className='center'>
+                <div className='full-row'>
                     <Icon icon={'IcDesktopOutline'} size={16} />
-                    <Text as='p' align='left' size='xxs' weight='bold' className='title'>
+                    <Text align='left' size='xxs' weight='bold' className='title'>
                         <Localize i18n_default_text={'MetaTrader5 web terminal'} />
                     </Text>
                     <Icon icon={'IcChevronRight'} size={16} />
@@ -51,9 +51,9 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                 classNameSpan='mt5-download-container--span'
                 onClick={() => mobileURLSet()}
             >
-                <div className='center'>
+                <div className='full-row'>
                     <Icon icon={'IcMobileOutline'} size={16} />
-                    <Text as='p' align='left' size='xxs' weight='bold' className='title'>
+                    <Text align='left' size='xxs' weight='bold' className='title'>
                         <Localize i18n_default_text={'Trade with MT5 mobile app'} />
                     </Text>
                     <Icon icon={'IcChevronRightLight'} size={16} />

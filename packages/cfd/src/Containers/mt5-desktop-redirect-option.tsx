@@ -24,7 +24,7 @@ const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5Desk
                             {option.text}
                         </Text>
                         <a
-                            className='dc-btn cfd-trade-modal__download-center-app--option-link'
+                            className='cfd-trade-modal__download-center-app--option-link'
                             type='button'
                             href={option.href as string}
                             target='_blank'

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useCtraderAccountsList } from '@deriv/api';
+import { useCtraderAccountsList } from '@deriv/api-v2';
 import { TradingAccountCard } from '../../../../../components';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';

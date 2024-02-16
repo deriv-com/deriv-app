@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-import { useBalance } from '@deriv/api';
+import { useBalance } from '@deriv/api-v2';
 import { THooks } from '../../types';
 import { WalletText } from '../Base';
 import './WalletListCardBalance.scss';

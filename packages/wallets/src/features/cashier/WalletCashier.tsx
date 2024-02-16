@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { Loader } from '../../components';
 import { WalletCashierContent, WalletCashierHeader } from './components';
 import { CashierScrollContext } from './context';
 import './WalletCashier.scss';
 
 const WalletCashier = () => {
-    const { isFetchedAfterMount, isLoading } = useActiveWalletAccount();
+    const { isLoading } = useActiveWalletAccount();
 
     const [onCashierScroll, setOnCashierScroll] = useState<React.UIEventHandler<HTMLDivElement> | null>(null);
 
@@ -21,7 +21,7 @@ const WalletCashier = () => {
         [onCashierScroll]
     );
 
-    if (isLoading || !isFetchedAfterMount) return <Loader />;
+    if (isLoading) return <Loader />;
 
     return (
         <div className='wallets-cashier'>

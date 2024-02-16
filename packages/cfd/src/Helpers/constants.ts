@@ -121,17 +121,24 @@ const getMobileAppInstallerURL = () => {
 };
 
 function getDownloadOptions({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) {
-    const deep_link = `metatrader5://account?login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`;
-
     function isSafari() {
         return /^((?!chrome|android).)*AppleWebKit/i.test(navigator.userAgent) && typeof window.safari !== 'undefined';
     }
 
+    const getMobileAppInstallerURL = () => {
+        if (mobileOSDetect() === 'iOS') {
+            return getPlatformMt5DownloadLink('ios');
+        } else if (/huawei/i.test(navigator.userAgent)) {
+            return getPlatformMt5DownloadLink('huawei');
+        }
+        return getPlatformMt5DownloadLink('android');
+    };
     const mobileURLSet = () => {
-        const timeout = setTimeout(() => {
-            getMobileAppInstallerURL();
-        }, 3000);
+        let deep_link = `metatrader5://account?login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`;
 
+        const timeout = setTimeout(() => {
+            return (deep_link = getMobileAppInstallerURL());
+        }, 3000);
         if (!isSafari()) {
             window.onblur = () => {
                 clearTimeout(timeout);

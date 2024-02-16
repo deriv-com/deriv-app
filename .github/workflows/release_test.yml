@@ -21,6 +21,8 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REMOTE_CONFIG_URL: ${{ env.REMOTE_CONFIG_URL }}
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     - name: Build
       uses: "./.github/actions/build"
       with:

@@ -7,6 +7,12 @@ inputs:
   GITHUB_TOKEN:
     description: "Github token"
     required: true
+  GPG_PRIVATE_KEY:
+    description: "GPG private key"
+    required: true
+  GPG_PASSPHRASE:
+    description: "GPG passphrase"
+    required: true
 runs:
   using: composite
   steps:
@@ -20,8 +26,8 @@ runs:
       id: import-gpg
       uses: deriv-com/ghaction-import-gpg@v6
       with:
-        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        gpg_private_key: ${{ inputs.GPG_PRIVATE_KEY }}
+        passphrase: ${{ inputs.GPG_PASSPHRASE }}
         git_user_signingkey: true
         git_commit_gpgsign: true
     - name: commit changes

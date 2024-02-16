@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import ReactModal from 'react-modal';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { DesktopProgressBar, MobileProgressBar } from '../../../components/ProgressBar';
 import { TSteps } from '../../../components/ProgressBar/Stepper';
 import { CUSTOM_STYLES } from '../../../helpers/signupModalHelpers';
@@ -23,7 +23,6 @@ const FORM_PROGRESS_STEPS: TSteps = ['Account currency', 'Personal details', 'Ad
 const SignupWizard = () => {
     const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
     const { currentStep, isWizardOpen } = useSignupWizardContext();
-    const { isDesktop } = useDevice();
 
     return (
         <Fragment>
@@ -34,27 +33,25 @@ const SignupWizard = () => {
                 shouldCloseOnOverlayClick={false}
                 style={CUSTOM_STYLES}
             >
-                <div className='bg-background-primary-base md:max-h-[717px] md:max-w-[1040px] h-screen w-screen md:rounded-16 flex overflow-hidden'>
-                    {isDesktop && (
-                        <div className='min-w-[256px] bg-system-light-secondary-background p-24'>
-                            <Text as='p' className='pt-32 pb-24 font-bold' size='sm'>
-                                Add a Deriv Account
-                            </Text>
-                            <DesktopProgressBar activeStep={currentStep} steps={FORM_PROGRESS_STEPS} />
-                            <StandaloneXmarkBoldIcon
-                                className='absolute cursor-pointer right-24 top-24'
-                                onClick={() => setIsConfirmationDialogOpen(true)}
-                            />
-                        </div>
-                    )}
+                <div className='bg-system-light-primary-background lg:max-h-[717px] lg:max-w-[1040px] h-screen w-screen lg:rounded-xl flex overflow-hidden'>
+                    <div className='d-none lg:block min-w-[256px] bg-system-light-secondary-background p-24'>
+                        <Text as='p' className='pt-32 pb-24 text-2xl' weight='bold'>
+                            Add a Deriv Account
+                        </Text>
+                        <DesktopProgressBar activeStep={currentStep} steps={FORM_PROGRESS_STEPS} />
+                        <StandaloneXmarkBoldIcon
+                            className='absolute cursor-pointer right-24 top-24'
+                            onClick={() => setIsConfirmationDialogOpen(true)}
+                        />
+                    </div>
                     <div className='flex flex-col justify-between w-full'>
-                        {!isDesktop && (
+                        <div className='lg:d-none'>
                             <MobileProgressBar
                                 activeStep={currentStep}
                                 onClickClose={() => setIsConfirmationDialogOpen(true)}
                                 steps={FORM_PROGRESS_STEPS}
                             />
-                        )}
+                        </div>
                         <WizardScreens />
                     </div>
                 </div>

@@ -20,9 +20,9 @@ type TWizardScreenWrapper = { children: React.ReactNode; heading: ReactNode };
 const WizardScreenWrapper = ({ children, heading }: TWizardScreenWrapper) => {
     const { isDesktop } = useDevice();
     return (
-        <div className='flex flex-col justify-between h-full bg-system-light-primary-background min-h-50'>
+        <div className='flex flex-col justify-between h-full min-h-0 bg-system-light-primary-background'>
             {isDesktop && (
-                <Text as='p' className='pt-48 pl-24 font-bold'>
+                <Text as='p' className='pt-48 pl-24 text-lg font-bold'>
                     {heading}
                 </Text>
             )}

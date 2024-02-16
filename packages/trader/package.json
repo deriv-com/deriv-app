@@ -85,6 +85,7 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
+        "@cloudflare/stream-react": "^1.9.1",
         "@deriv-com/analytics": "1.4.10",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",

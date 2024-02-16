@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { ButtonGroup } from '@/components';
-import { Button, useDevice } from '@deriv-com/ui';
+import { Button, Divider, useDevice } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
 type TActions = {
@@ -29,8 +29,8 @@ const Actions = ({ submitDisabled = false }: TActions) => {
 
     return (
         <div>
-            <hr className='opacity-100' />
-            <ButtonGroup className='justify-end p-24'>
+            <Divider />
+            <ButtonGroup className='flex-row justify-end p-24'>
                 {canGoToPrevStep && (
                     <Button
                         isFullWidth={!isDesktop}

@@ -109,8 +109,6 @@ export default class CommonStore extends BaseStore {
         SocketCache.clear();
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
-        } else {
-            await import(`moment/locale/${key.toLowerCase().replace('_', '-')}`);
         }
         await WS.wait('authorize');
         return new Promise((resolve, reject) => {
@@ -126,6 +124,7 @@ export default class CommonStore extends BaseStore {
                 }
                 window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
                 try {
+                    if (key && key !== 'EN') await import(`moment/locale/${key.toLowerCase().replace('_', '-')}`);
                     await changeLanguage(key, () => {
                         this.changeCurrentLanguage(key);
                         BinarySocket.closeAndOpenNewConnection(key);

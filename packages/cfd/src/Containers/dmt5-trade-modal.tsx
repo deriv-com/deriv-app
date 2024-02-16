@@ -12,8 +12,8 @@ import { TTradingPlatformAccounts } from '../Components/props.types';
 import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
 import MigrationBanner from './migration-banner';
-import MT5MobileDownloadOption from './mt5-mobile-redirect-option';
-import MT5DesktopDownloadOption from './mt5-desktop-redirect-option';
+import MT5MobileRedirectOption from './mt5-mobile-redirect-option';
+import MT5DesktopRedirectOption from './mt5-desktop-redirect-option';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
@@ -178,9 +178,9 @@ const DMT5TradeModal = observer(
                 {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
 
                 {is_mobile ? (
-                    <MT5MobileDownloadOption mt5_trade_account={mt5_trade_account} />
+                    <MT5MobileRedirectOption mt5_trade_account={mt5_trade_account} />
                 ) : (
-                    <MT5DesktopDownloadOption account_title={getAccountTitle()} mt5_trade_account={mt5_trade_account} />
+                    <MT5DesktopRedirectOption account_title={getAccountTitle()} mt5_trade_account={mt5_trade_account} />
                 )}
             </div>
         );

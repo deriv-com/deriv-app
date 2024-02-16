@@ -5,7 +5,7 @@ on:
     - master
 
 jobs:
-  build_test_and_publish:
+  download_remote_config_backup_and_create_pr:
     name: Download Remote Config Backup File and Create PR
     runs-on: Runner_8cores_Deriv-app
     env: 

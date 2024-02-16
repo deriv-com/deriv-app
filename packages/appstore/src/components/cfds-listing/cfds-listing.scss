@@ -584,10 +584,7 @@
                 &-container {
                     display: flex;
                     flex-direction: column;
-                    margin-top: 4rem;
-                    margin-bottom: 6rem;
-                    margin-left: 1.6rem;
-                    margin-right: 1.6rem;
+                    margin: 4rem 1.6rem 6rem;
                     @include mobile {
                         margin-top: 5rem;
                         margin-bottom: 0;

@@ -122,9 +122,9 @@ const TradeModal = ({
 
     const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
         let app_title = '';
-        if (platform_type === 'dxtrade') {
+        if (platform_type === CFD_PLATFORMS.DXTRADE) {
             app_title = localize('Run Deriv X on your browser');
-        } else if (platform_type === 'ctrader') {
+        } else if (platform_type === CFD_PLATFORMS.CTRADER) {
             app_title = localize('Run cTrader on your browser');
         } else {
             return null;

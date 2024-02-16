@@ -2095,8 +2095,7 @@
     }
     &__password-area {
         @include desktop {
-            width: calc(min(33rem, 100vw));
-            padding: 2.4rem;
+            width: calc(min(34rem, 100vw));
         }
         @include mobile {
             width: 100%;
@@ -2109,7 +2108,7 @@
         min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        padding-top: 2rem;
+        padding: 2rem 0;
         margin: 0 auto;
     }
     &__description {

@@ -1,10 +1,11 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
+import { observer, useStore } from '@deriv/stores';
 import { FormSubmitButton, PasswordInput, Text } from '@deriv/components';
-import { getErrorMessages, isDesktop, validLength, validPassword, WS } from '@deriv/shared';
+import { isDesktop, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { CFD_PLATFORMS } from '../Helpers/cfd-config';
+import { validatePassword } from '../Helpers/constants';
 
 export type TCFDPasswordFormValues = { password: string };
 export type TCFDPasswordFormChangeValues = { old_password: string; new_password: string };
@@ -32,26 +33,6 @@ type TOnSubmitPasswordChange = (
     values: TCFDPasswordFormChangeValues,
     actions: FormikHelpers<TCFDPasswordFormChangeValues>
 ) => void;
-
-function validatePassword(password: string): string | undefined {
-    const pattern = '^(?=.*[!@#$%^&*()+\\-=[\\]{};\':"|,.<>/?_~])[ -~]{8,16}$';
-    const regex = new RegExp(pattern);
-    if (
-        !validLength(password, {
-            min: 8,
-            max: 16,
-        })
-    ) {
-        return localize('You should enter {{min_number}}-{{max_number}} characters.', {
-            min_number: 8,
-            max_number: 16,
-        });
-    } else if (!validPassword(password)) {
-        return getErrorMessages().password();
-    } else if (!regex.test(password)) {
-        return localize('Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.');
-    }
-}
 
 const CFDPasswordChange = observer(
     ({

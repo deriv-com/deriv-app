@@ -1,4 +1,11 @@
-import { OSDetect, getPlatformFromUrl } from '@deriv/shared';
+import {
+    OSDetect,
+    getPlatformFromUrl,
+    getErrorMessages,
+    validLength,
+    validPassword,
+    validNewMT5Password,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
@@ -111,6 +118,24 @@ const getCTraderWebTerminalLink = (category: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
+const validatePassword = (password: string): string | undefined => {
+    if (
+        !validLength(password, {
+            min: 8,
+            max: 16,
+        })
+    ) {
+        return localize('You should enter {{min_number}}-{{max_number}} characters.', {
+            min_number: 8,
+            max_number: 16,
+        });
+    } else if (!validPassword(password)) {
+        return getErrorMessages().password();
+    } else if (!validNewMT5Password(password)) {
+        return localize('Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.');
+    }
+};
+
 export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
@@ -126,4 +151,5 @@ export {
     platformsIcons,
     getTitle,
     getTopUpConfig,
+    validatePassword,
 };

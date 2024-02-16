@@ -121,61 +121,26 @@ const getMobileAppInstallerURL = () => {
 };
 
 const getDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
-    const isSafari = () => {
-        return typeof window.safari !== 'undefined';
-    };
-
-    const mobileURLSet = () => {
-        let deep_link = `metatrader5://account?login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`;
-
-        const timeout = setTimeout(() => {
-            return (deep_link = getMobileAppInstallerURL());
-        }, 3000);
-        if (!isSafari()) {
-            window.onblur = () => {
-                clearTimeout(timeout);
-            };
-        }
-        return deep_link;
-    };
-
     const downloadOptions = [
         {
-            device: 'mobile',
-            icon: 'IcDesktopOutline',
-            text: localize('MetaTrader5 web terminal'),
-            href: `${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.login}&server=${mt5_trade_account?.server_info?.environment}`,
-        },
-        {
-            device: 'mobile',
-            icon: 'IcMobileOutline',
-            text: localize('Trade with MT5 mobile app'),
-            href: mobileURLSet(),
-            highlight: true,
-        },
-        {
-            device: 'desktop',
             icon: 'IcRebrandingMt5Logo',
             text: 'MetaTrader 5 web',
             button_text: 'Open',
             href: mt5_trade_account?.webtrader_url,
         },
         {
-            device: 'desktop',
             icon: 'IcWindowsLogo',
             text: localize('MetaTrader 5 Windows app'),
             button_text: 'Download',
             href: mt5_trade_account?.white_label?.download_links?.windows,
         },
         {
-            device: 'desktop',
             icon: 'IcMacosLogo',
             text: localize('MetaTrader 5 macOS app'),
             button_text: 'Download',
             href: getPlatformMt5DownloadLink('macos'),
         },
         {
-            device: 'desktop',
             icon: 'IcLinuxLogo',
             text: localize('MetaTrader 5 Linux app'),
             button_text: 'Learn more',
@@ -202,4 +167,5 @@ export {
     getTitle,
     getTopUpConfig,
     getDownloadOptions,
+    getMobileAppInstallerURL,
 };

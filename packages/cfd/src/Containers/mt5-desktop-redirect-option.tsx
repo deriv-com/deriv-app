@@ -12,15 +12,13 @@ type TMT5DesktopRedirectOptionProps = {
 };
 
 const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5DesktopRedirectOptionProps) => {
-    const desktopDownloadOptions = getDownloadOptions({ mt5_trade_account }).filter(
-        option => option.device === 'desktop'
-    );
+    const desktopDownloadOptions = getDownloadOptions({ mt5_trade_account });
 
     return (
         <Fragment>
             <div className='cfd-trade-modal__download-center-app'>
                 {desktopDownloadOptions.map(option => (
-                    <div key={option.icon} className={`cfd-trade-modal__download-center-app--option`}>
+                    <div key={option.icon} className='cfd-trade-modal__download-center-app--option'>
                         <Icon icon={option.icon} size={32} />
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {option.text}
@@ -28,7 +26,7 @@ const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5Desk
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={option.href}
+                            href={option.href as string}
                             target='_blank'
                             rel='noopener noreferrer'
                         >

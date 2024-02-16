@@ -8,7 +8,6 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
 };
-
 const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
     const mobileDownloadOptions = getDownloadOptions({ mt5_trade_account }).filter(
         option => option.device === 'mobile'

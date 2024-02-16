@@ -15,6 +15,7 @@ type TMT5PlatformsListProps = {
 const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) => {
     const { isFetching } = useAuthorize();
     const { uiState } = useUIContext();
+    const { accountType } = uiState;
     const activeRegulation = uiState.regulation;
     const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts(activeRegulation ?? '');
     const { data: activeTradingAccount } = useActiveTradingAccount();
@@ -49,7 +50,11 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
             )}
             {isFetchedAfterMount &&
                 data?.map(account => {
-                    if (account.is_added)
+                    if (
+                        account.is_added &&
+                        account.is_virtual === activeTradingAccount?.is_virtual &&
+                        account.account_type === accountType
+                    )
                         return <AddedMT5AccountsList account={account} key={`added-mt5-list-${account.loginid}`} />;
 
                     return (

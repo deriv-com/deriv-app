@@ -21,7 +21,9 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                     className={`mt5-download-container--option ${option.highlight ? 'blue' : ''}`}
                     classNameSpan='mt5-download-container--span'
                     onClick={() => {
-                        window.location.replace(option.href);
+                        if (option.href) {
+                            window.location.replace(option.href);
+                        }
                     }}
                 >
                     <div className='center'>

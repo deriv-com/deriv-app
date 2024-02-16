@@ -10,6 +10,7 @@ type TCollapsible = {
     onClick: (state: boolean) => void;
     title?: string;
     handle_button?: boolean;
+    show_collapsible_button?: boolean;
 };
 
 const swipe_config = {
@@ -26,6 +27,7 @@ const Collapsible = ({
     onClick,
     title,
     handle_button,
+    show_collapsible_button = false,
 }: React.PropsWithChildren<TCollapsible>) => {
     const [is_open, expand] = React.useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = React.useState(false);
@@ -48,9 +50,10 @@ const Collapsible = ({
     React.useEffect(
         () =>
             setShouldShowCollapsible(
-                React.Children.toArray(children).some(({ props }: any) => 'data-collapsible' in props)
+                React.Children.toArray(children).some(({ props }: any) => 'data-collapsible' in props) ||
+                    show_collapsible_button
             ),
-        [children]
+        [children, show_collapsible_button]
     );
 
     const swipe_handlers = useSwipeable({

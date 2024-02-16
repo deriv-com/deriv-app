@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const getPasskeysDescriptions = () =>
+const getPasskeysDescription = () =>
     [
         {
             id: 1,
@@ -41,18 +41,56 @@ const getPasskeysDescriptions = () =>
         },
     ] as const;
 
-export const DescriptionContainer = () => {
-    const passkeys_descriptions = getPasskeysDescriptions();
+const getPasskeysTips = () =>
+    [
+        {
+            id: 1,
+            description: <Localize i18n_default_text='Enable screen lock on your device.' />,
+        },
+        {
+            id: 2,
+            description: <Localize i18n_default_text='Sign in to your Google or iCloud account.' />,
+        },
+        {
+            id: 3,
+            description: <Localize i18n_default_text='Enable Bluetooth.' />,
+        },
+    ] as const;
+
+export const EffortlessLoginDescription = () => {
+    const passkeys_descriptions = getPasskeysDescription();
+    const tips = getPasskeysTips();
+
     return (
-        <div className='passkeys-status__description-container'>
-            {passkeys_descriptions.map(({ id, question, description }) => (
-                <div key={`description-${id}`} className='passkeys-status__description-card'>
+        <React.Fragment>
+            <div className='effortless-login-modal__description-container'>
+                {passkeys_descriptions.map(({ id, question, description }) => (
+                    <div key={`description-${id}`} className='effortless-login-modal__description-card'>
+                        <Text weight='bold' size='xs'>
+                            {question}
+                        </Text>
+                        <Text size='xs'>{description}</Text>
+                    </div>
+                ))}
+            </div>
+            <div className='effortless-login-modal__description-tips-wrapper'>
+                <Icon icon='IcBulb' size={24} />
+                <div className='effortless-login-modal__description-tips-container'>
                     <Text weight='bold' size='xs'>
-                        {question}
+                        <Localize i18n_default_text='Tips:' />
                     </Text>
-                    <Text size='xs'>{description}</Text>
+                    <Text size='xxs' line_height='l'>
+                        <Localize i18n_default_text='Before using passkey:' />
+                    </Text>
+                    {tips.map(({ id, description }) => (
+                        <li key={`tip-${id}`}>
+                            <Text size='xxs' line_height='l'>
+                                {description}
+                            </Text>
+                        </li>
+                    ))}
                 </div>
-            ))}
-        </div>
+            </div>
+        </React.Fragment>
     );
 };

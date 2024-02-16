@@ -25,7 +25,6 @@ const getEffortLessLoginTips = () =>
 export const EffortLessLoginTips = ({ onLearnMoreClick }: { onLearnMoreClick?: () => void }) => {
     const tips = getEffortLessLoginTips();
 
-    //TODO: css for styles here is removed, need new
     return (
         <div>
             {tips.map(({ id, icon, description }) => (

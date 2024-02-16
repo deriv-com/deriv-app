@@ -4,11 +4,11 @@ import { DescriptionContainer } from '../description-container';
 
 describe('DescriptionContainer', () => {
     it('renders the descriptions correctly', () => {
-        const question_1 = 'What are Passkeys?';
+        const question_1 = 'What are passkeys?';
         const question_2 = 'Why passkeys?';
         const question_3 = 'How to create a passkey?';
-        const question_4 = 'Where are Passkeys saved?';
-        const question_5 = 'What if I change my Deriv account email?';
+        const question_4 = 'Where are passkeys saved?';
+        const question_5 = 'What happens if my Deriv account email is changed?';
         const description_1 =
             'Passkeys are a security measure that lets you log in the same way you unlock your device: with a fingerprint, a face scan, or a screen lock PIN.';
         const description_2 =

@@ -4,14 +4,21 @@ import useGetPasskeysList from './useGetPasskeysList';
 
 const useShowEffortlessLoginModal = () => {
     const [show_effortless_modal, setShouldShowEffortlessModal] = React.useState(false);
-    const { is_passkey_supported } = useIsPasskeySupported();
-    const { data: passkey_list } = useGetPasskeysList();
+    const { is_passkey_supported, is_passkey_support_checking } = useIsPasskeySupported();
+    const { passkeys_list, is_passkeys_list_loading } = useGetPasskeysList();
     const storedValue = localStorage.getItem('show_effortless_login_modal');
     const show_effortless_login_modal = storedValue ? JSON.parse(storedValue) : false;
 
     React.useEffect(() => {
-        setShouldShowEffortlessModal(is_passkey_supported && !!true && show_effortless_login_modal);
-    }, [is_passkey_supported, passkey_list, show_effortless_login_modal]);
+        if (is_passkeys_list_loading || is_passkey_support_checking) return;
+        setShouldShowEffortlessModal(is_passkey_supported && !passkeys_list?.length && show_effortless_login_modal);
+    }, [
+        is_passkey_supported,
+        passkeys_list,
+        show_effortless_login_modal,
+        is_passkeys_list_loading,
+        is_passkey_support_checking,
+    ]);
 
     return show_effortless_modal;
 };

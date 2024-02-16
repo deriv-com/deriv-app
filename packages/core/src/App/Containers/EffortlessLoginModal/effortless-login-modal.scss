@@ -1,13 +1,57 @@
 .effortless-login-modal {
-    &__overlay {
-        &-container {
-            background: var(--general-main-1);
-            height: 100vh;
-            width: 100vw;
+    &__container {
+        background: var(--general-main-1);
+        height: 100vh;
+        width: 100vw;
 
-            .effortless-login-modal__wrapper {
+        .effortless-login-modal {
+            &__back-button {
+                margin: 1.6rem;
+            }
+
+            &__description {
+                &-card {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.8rem;
+                    border-bottom: 1px solid var(--general-hover);
+                    padding: 1.6rem 0;
+                }
+
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &-tips {
+                    &-wrapper {
+                        display: flex;
+                        padding: 1.6rem;
+                        margin-top: 1.6rem;
+                        border-radius: 2 * $BORDER_RADIUS;
+                        border: 1px solid var(--border-normal);
+                        gap: 0.8rem;
+
+                        svg {
+                            flex-shrink: 0;
+                        }
+
+                        .dc-icon {
+                            margin: initial !important;
+                        }
+                    }
+
+                    &-container {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+                }
+            }
+
+            &__wrapper {
                 display: block;
-                margin-top: 2rem;
+                margin-top: 1.6rem;
 
                 .dc-icon {
                     display: block;
@@ -16,7 +60,7 @@
 
                 .effortless-login-modal {
                     &__title {
-                        margin-top: 2rem;
+                        margin: 2.4rem auto 1.6rem;
                     }
 
                     &__overlay-tip {
@@ -35,10 +79,10 @@
                 }
             }
         }
+    }
 
-        &-header {
-            padding: 1.2rem 2.4rem;
-            border-bottom: 1px solid var(--border-disabled);
-        }
+    &__header {
+        padding: 1.2rem 2.4rem;
+        border-bottom: 1px solid var(--border-disabled);
     }
 }

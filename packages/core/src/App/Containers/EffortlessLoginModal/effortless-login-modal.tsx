@@ -1,16 +1,75 @@
 import React from 'react';
-import { Modal } from '@deriv/components';
+import { useHistory } from 'react-router';
+import ReactDOM from 'react-dom';
+import FormFooter from '@deriv/account/src/Components/form-footer';
+import FormBody from '@deriv/account/src/Components/form-body';
+import { Button, Icon, Text } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+import { EffortLessLoginTips } from './effortless-login-tips';
+import { EffortlessLoginDescription } from './effortless-login-description';
 import './effortless-login-modal.scss';
-import { useShowEffortlessLoginModal } from '@deriv/hooks';
-import EffortlessLoginContent from './effortless-login-content';
 
 const EffortlessLoginModal = () => {
-    const show_effortless_login_modal = useShowEffortlessLoginModal();
+    const [is_learn_more_opened, setIsLearnMoreOpened] = React.useState(false);
+    const portal_element = document.getElementById('modal_root');
+    const history = useHistory();
 
-    return (
-        <Modal portalId='modal_root_absolute' is_open={show_effortless_login_modal} has_close_icon={false}>
-            <EffortlessLoginContent />
-        </Modal>
+    const onClickHandler = (route: string) => {
+        localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
+        history.push(route);
+    };
+
+    if (!portal_element) return null;
+    return ReactDOM.createPortal(
+        <div className={'effortless-login-modal__container'}>
+            {is_learn_more_opened ? (
+                <Icon
+                    data_testid='effortless_login_modal__back-button'
+                    icon='IcBackButton'
+                    onClick={() => setIsLearnMoreOpened(false)}
+                    className='effortless-login-modal__back-button'
+                />
+            ) : (
+                <Text
+                    as='div'
+                    size='xxs'
+                    color='loss-danger'
+                    weight='bold'
+                    line_height='xl'
+                    align='right'
+                    className='effortless-login-modal__header'
+                    onClick={() => onClickHandler(routes.traders_hub)}
+                >
+                    <Localize i18n_default_text='Maybe later' />
+                </Text>
+            )}
+
+            <FormBody scroll_offset='15rem' className='effortless-login-modal__wrapper'>
+                <Icon icon='IcInfoPasskey' size={96} />
+                <Text
+                    as='div'
+                    color='general'
+                    weight='bold'
+                    size='s'
+                    align='center'
+                    className='effortless-login-modal__title'
+                >
+                    Effortless login with passkeys
+                </Text>
+                {is_learn_more_opened ? (
+                    <EffortlessLoginDescription />
+                ) : (
+                    <EffortLessLoginTips onLearnMoreClick={() => setIsLearnMoreOpened(true)} />
+                )}
+            </FormBody>
+            <FormFooter className='effortless-login-modal__footer'>
+                <Button type='button' has_effect large primary onClick={() => onClickHandler(routes.passkeys)}>
+                    <Localize i18n_default_text='Get started' />
+                </Button>
+            </FormFooter>
+        </div>,
+        portal_element
     );
 };
 

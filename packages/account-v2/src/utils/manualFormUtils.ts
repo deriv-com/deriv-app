@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import {
-    MANUAL_DOCUMENT_TYPES,
+    MANUAL_DOCUMENT_SELFIE,
     MANUAL_DOCUMENT_TYPES_DATA,
     TManualDocumentTypes,
 } from '../constants/manualFormConstants';
@@ -43,12 +43,14 @@ export const getManualFormValidationSchema = (
 
 export const getSelfieValidationSchema = () => {
     return Yup.object({
-        [MANUAL_DOCUMENT_TYPES.SELFIE]: Yup.mixed().test({
-            message: 'File is required',
-            name: 'file',
-            test: value => {
-                return value && value instanceof File;
-            },
-        }),
-    });
+        [MANUAL_DOCUMENT_SELFIE]: Yup.mixed<File | null>()
+            .test({
+                message: 'File is required',
+                name: 'file',
+                test: value => {
+                    return !!value && value instanceof File;
+                },
+            })
+            .required(),
+    }).default(() => ({ [MANUAL_DOCUMENT_SELFIE]: null }));
 };

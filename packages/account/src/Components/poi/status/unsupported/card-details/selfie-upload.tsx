@@ -29,8 +29,7 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }: TSelfie
                 validate={values => validateFields(values, undefined, [SELFIE_DOCUMENT])}
                 onSubmit={onConfirm}
             >
-                {({ values, isValid, isSubmitting, touched, initialValues }: Partial<FormikProps<FormikValues>>) => {
-                    console.log('Values: ', values, initialValues);
+                {({ values, isValid, isSubmitting, touched }: Partial<FormikProps<FormikValues>>) => {
                     let is_form_touched, is_form_empty;
                     if (touched) {
                         is_form_touched = Object.keys(touched).length > 0;

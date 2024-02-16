@@ -76,27 +76,31 @@
 
         pointer-events: none;
 
-        &:before,
-        &:after {
-            content: ' ';
-            position: absolute;
-            left: 0;
-            right: auto;
+        // &:before,
+        // &:after {
+        //     content: '';
+        //     position: absolute;
+        //     left: 0;
+        //     right: auto;
 
-            display: block;
-            width: 100%;
-            background-color: #d9d9d9;
-            transform: scaleY(0.5);
-        }
+        //     display: block;
+        //     width: 100%;
+        //     background-color: #d9d9d9;
+        //     transform: scaleY(0.5);
+        // }
 
         &:before {
-            top: 0;
-            bottom: auto;
+            content: 'minutes';
+            position: absolute;
+            font-size: 2rem;
+            top: 10px;
+            right: 40px;
+            opacity: 0.7;
         }
 
-        &:after {
-            bottom: 0;
-            top: auto;
-        }
+        // &:after {
+        //     bottom: 0;
+        //     top: auto;
+        // }
     }
 }

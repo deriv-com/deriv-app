@@ -26,7 +26,7 @@ class PickerColumn extends Component {
             isMoving: false,
             startTouchY: 0,
             startScrollerTranslate: 0,
-            selectedIndex: 0,
+            // selectedIndex: 0,
             ...this.computeTranslate(props),
         };
     }
@@ -47,9 +47,9 @@ class PickerColumn extends Component {
             this.onValueSelected(options[0].value);
             selectedIndex = 0;
         }
-        this.setState({
-            selectedIndex,
-        });
+        // this.setState({
+        //     selectedIndex,
+        // });
         return {
             scrollerTranslate: columnHeight / 2 - itemHeight / 2 - selectedIndex * itemHeight,
             minTranslate: columnHeight / 2 - itemHeight * options.length + itemHeight / 2,
@@ -85,29 +85,29 @@ class PickerColumn extends Component {
             } else if (nextScrollerTranslate > maxTranslate) {
                 nextScrollerTranslate = maxTranslate + Math.pow(nextScrollerTranslate - maxTranslate, 0.8);
             }
-            setTimeout(() => {
-                const { options, itemHeight } = this.props;
-                const { scrollerTranslate, minTranslate, maxTranslate } = this.state;
-                let activeIndex;
-                if (scrollerTranslate > maxTranslate) {
-                    activeIndex = 0;
-                } else if (scrollerTranslate < minTranslate) {
-                    activeIndex = options.length - 1;
-                } else {
-                    const not_round = (scrollerTranslate - maxTranslate) / itemHeight;
+            // setTimeout(() => {
+            //     const { options, itemHeight } = this.props;
+            //     const { scrollerTranslate, minTranslate, maxTranslate } = this.state;
+            //     let activeIndex;
+            //     if (scrollerTranslate > maxTranslate) {
+            //         activeIndex = 0;
+            //     } else if (scrollerTranslate < minTranslate) {
+            //         activeIndex = options.length - 1;
+            //     } else {
+            //         const not_round = (scrollerTranslate - maxTranslate) / itemHeight;
 
-                    activeIndex =
-                        -not_round > 0.5
-                            ? -not_round > 1 && -not_round % 1 > 0.5
-                                ? -Math.floor(not_round)
-                                : -Math.floor(not_round) - 1
-                            : -Math.floor(not_round) - 1;
-                }
-                this.setState({
-                    selectedIndex: activeIndex,
-                });
-                // this.onValueSelected(options[activeIndex].value);
-            }, 0);
+            //         activeIndex =
+            //             -not_round > 0.5
+            //                 ? -not_round > 1 && -not_round % 1 > 0.5
+            //                     ? -Math.floor(not_round)
+            //                     : -Math.floor(not_round) - 1
+            //                 : -Math.floor(not_round) - 1;
+            //     }
+            //     this.setState({
+            //         selectedIndex: activeIndex,
+            //     });
+            // this.onValueSelected(options[activeIndex].value);
+            // }, 0);
 
             return {
                 scrollerTranslate: nextScrollerTranslate,
@@ -133,14 +133,15 @@ class PickerColumn extends Component {
             } else if (scrollerTranslate < minTranslate) {
                 activeIndex = options.length - 1;
             } else {
-                const not_round = (scrollerTranslate - maxTranslate) / itemHeight;
+                // const not_round = (scrollerTranslate - maxTranslate) / itemHeight;
 
-                activeIndex =
-                    -not_round > 0.5
-                        ? -not_round > 1 && -not_round % 1 > 0.5
-                            ? -Math.floor(not_round)
-                            : -Math.floor(not_round) - 1
-                        : -Math.floor(not_round) - 1;
+                // activeIndex =
+                //     -not_round > 0.5
+                //         ? -not_round > 1 && -not_round % 1 > 0.5
+                //             ? -Math.floor(not_round)
+                //             : -Math.floor(not_round) - 1
+                //         : -Math.floor(not_round) - 1;
+                activeIndex = -Math.floor((scrollerTranslate - maxTranslate) / itemHeight);
             }
             this.setState({
                 selectedIndex: activeIndex,
@@ -178,7 +179,8 @@ class PickerColumn extends Component {
                 height: itemHeight + 'px',
                 lineHeight: itemHeight + 'px',
             };
-            const className = `picker-item${index === this.state.selectedIndex ? ' picker-item-selected' : ''}`;
+            const className = `picker-item${option.value === value ? ' picker-item-selected' : ''}`;
+            // const className = `picker-item${index === this.state.selectedIndex ? ' picker-item-selected' : ''}`;
             return (
                 <div key={index} className={className} style={style} onClick={() => this.handleItemClick(option.value)}>
                     {option.label}

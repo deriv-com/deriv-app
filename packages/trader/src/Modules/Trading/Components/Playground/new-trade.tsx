@@ -20,14 +20,14 @@ const NewTrade = () => {
 
     const optionGroups = {
         multipliers: [
-            { value: 'x15', label: 'x15' },
-            { value: 'x20', label: 'x20' },
-            { value: 'x50', label: 'x50' },
-            { value: 'x150', label: 'x150' },
-            { value: 'x200', label: 'x200' },
+            { value: '5', label: '5' },
+            { value: '10', label: '10' },
+            { value: '15', label: '15' },
+            { value: '20', label: '20' },
+            { value: '30', label: '30' },
         ],
     };
-    const [valueGroups, setValueGroups] = React.useState({ multipliers: 'x15' });
+    const [valueGroups, setValueGroups] = React.useState({ multipliers: '5' });
 
     const onTradeParamClickHandler = (trade_param: string) => {
         setIsRiskManagement(false);

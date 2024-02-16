@@ -1,3 +1,4 @@
+import './Wheel-picker-3/index.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
@@ -6,6 +7,7 @@ import { useSwipeable } from 'react-swipeable';
 import { CSSTransition } from 'react-transition-group';
 // import WheelPicker from './Wheel-picker/wheel-picker';
 import Picker from './Wheel-picker-2/wheek-picker';
+// import Picker from './Wheel-picker-3/picker';
 
 const NewTradeParamPopupWrapper = ({
     onClick,
@@ -31,8 +33,11 @@ const NewTradeParamPopupWrapper = ({
     const [hide_parent, setHideParent] = React.useState(true);
     const [show_take_profit, setShowTakeProfit] = React.useState(true);
     const [show_stop_loss, setShowStopLoss] = React.useState(false);
+    const [show_TP_SL, setShowTPSL] = React.useState(true);
+
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+    // const [test_value, setTestValue] = React.useState('5');
 
     React.useEffect(() => {
         return () => clearTimeout(focus_timeout.current);
@@ -89,105 +94,130 @@ const NewTradeParamPopupWrapper = ({
                     <div className='trade-param_popup_top'>
                         <div className='footer-new_bottom-sheet_separator' {...swipe_handlers} />
                         {is_risk_management && (
-                            <div className='trade-param_popup_top' {...swipe_handlers}>
-                                <div className='trade-param_popup_title'>Risk management [IN PROGRESS]</div>
-                                <div className='contract-type-info__button-wrapper trade-param_toggle-button'>
-                                    <ButtonToggle
-                                        buttons_arr={[
-                                            { text: 'TP & SL', value: 'TP & SL' },
-                                            { text: 'Deal cancellation', value: 'Deal cancellation' },
-                                        ]}
-                                        name='description_glossary_filter'
-                                        is_animated
-                                        has_rounded_button
-                                        // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                        onChange={() => {}}
-                                        value='TP & SL'
-                                    />
-                                </div>
-                                <div>
-                                    <div
-                                        className='trade-param_popup_section'
-                                        style={{ marginBottom: `${show_take_profit ? '0.8rem' : '1.6rem'}` }}
-                                    >
-                                        <div>
-                                            Take profit <span className='info-icon'>i</span>
-                                        </div>
-                                        <React.Fragment>
-                                            <input
-                                                className={classNames('dc-toggle-switch')}
-                                                id='take_profit'
-                                                type='checkbox'
-                                                checked={show_take_profit}
-                                                onChange={() => setShowTakeProfit(!show_take_profit)}
-                                            />
-                                            <label
-                                                className={classNames('dc-toggle-switch__label')}
-                                                htmlFor='take_profit'
-                                            >
-                                                <span className={classNames('dc-toggle-switch__button')} />
-                                            </label>
-                                        </React.Fragment>
+                            <div className='trade-param_popup_top'>
+                                <div {...swipe_handlers}>
+                                    <div className='trade-param_popup_title'>Risk management</div>
+                                    <div className='contract-type-info__button-wrapper trade-param_toggle-button'>
+                                        <ButtonToggle
+                                            buttons_arr={[
+                                                { text: 'TP & SL', value: 'TP & SL' },
+                                                { text: 'Deal cancellation', value: 'Deal cancellation' },
+                                            ]}
+                                            name='description_glossary_filter'
+                                            is_animated
+                                            has_rounded_button
+                                            // eslint-disable-next-line @typescript-eslint/no-empty-function
+                                            onChange={() => setShowTPSL(!show_TP_SL)}
+                                            value={show_TP_SL ? 'TP & SL' : 'Deal cancellation'}
+                                        />
                                     </div>
-                                    {show_take_profit && (
-                                        <React.Fragment>
-                                            <input
-                                                type='number'
-                                                min='0'
-                                                inputMode='numeric'
-                                                title='Non-negative integral number'
-                                                className='trade-param_popup_input'
-                                                defaultValue='1.00'
-                                                onFocus={
-                                                    onFocusHandler as unknown as React.FocusEventHandler<HTMLInputElement>
-                                                }
-                                            />
-                                            <div className='trade-param_popup_input_text'>
-                                                Value higher than 0.10 USD
-                                            </div>
-                                        </React.Fragment>
-                                    )}
                                 </div>
-                                <div>
-                                    <div
-                                        className='trade-param_popup_section'
-                                        style={{ marginBottom: `${show_stop_loss ? '0.8rem' : '1.6rem'}` }}
-                                    >
+                                {show_TP_SL ? (
+                                    <React.Fragment>
                                         <div>
-                                            Stop loss <span className='info-icon'>i</span>
-                                        </div>
-                                        <React.Fragment>
-                                            <input
-                                                className={classNames('dc-toggle-switch')}
-                                                id='stop_loss'
-                                                type='checkbox'
-                                                checked={show_stop_loss}
-                                                onChange={() => setShowStopLoss(!show_stop_loss)}
-                                            />
-                                            <label
-                                                className={classNames('dc-toggle-switch__label')}
-                                                htmlFor='stop_loss'
+                                            <div
+                                                className='trade-param_popup_section'
+                                                style={{ marginBottom: `${show_take_profit ? '0.8rem' : '1.6rem'}` }}
                                             >
-                                                <span className={classNames('dc-toggle-switch__button')} />
-                                            </label>
-                                        </React.Fragment>
-                                    </div>
-                                    {show_stop_loss && (
-                                        <React.Fragment>
-                                            <input
-                                                type='number'
-                                                min='0'
-                                                inputMode='numeric'
-                                                title='Non-negative integral number'
-                                                className='trade-param_popup_input'
-                                                defaultValue='1.00'
-                                            />
-                                            <div className='trade-param_popup_input_text'>
-                                                Value higher than 0.10 USD
+                                                <div>
+                                                    Take profit <span className='info-icon'>i</span>
+                                                </div>
+                                                <React.Fragment>
+                                                    <input
+                                                        className={classNames('dc-toggle-switch')}
+                                                        id='take_profit'
+                                                        type='checkbox'
+                                                        checked={show_take_profit}
+                                                        onChange={() => setShowTakeProfit(!show_take_profit)}
+                                                    />
+                                                    <label
+                                                        className={classNames('dc-toggle-switch__label')}
+                                                        htmlFor='take_profit'
+                                                    >
+                                                        <span className={classNames('dc-toggle-switch__button')} />
+                                                    </label>
+                                                </React.Fragment>
                                             </div>
-                                        </React.Fragment>
-                                    )}
-                                </div>
+                                            {show_take_profit && (
+                                                <React.Fragment>
+                                                    <input
+                                                        type='number'
+                                                        min='0'
+                                                        inputMode='numeric'
+                                                        title='Non-negative integral number'
+                                                        className='trade-param_popup_input'
+                                                        defaultValue='1.00'
+                                                        onFocus={
+                                                            onFocusHandler as unknown as React.FocusEventHandler<HTMLInputElement>
+                                                        }
+                                                    />
+                                                    <div className='trade-param_popup_input_text'>
+                                                        Value higher than 0.10 USD
+                                                    </div>
+                                                </React.Fragment>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <div
+                                                className='trade-param_popup_section'
+                                                style={{ marginBottom: `${show_stop_loss ? '0.8rem' : '1.6rem'}` }}
+                                            >
+                                                <div>
+                                                    Stop loss <span className='info-icon'>i</span>
+                                                </div>
+                                                <React.Fragment>
+                                                    <input
+                                                        className={classNames('dc-toggle-switch')}
+                                                        id='stop_loss'
+                                                        type='checkbox'
+                                                        checked={show_stop_loss}
+                                                        onChange={() => setShowStopLoss(!show_stop_loss)}
+                                                    />
+                                                    <label
+                                                        className={classNames('dc-toggle-switch__label')}
+                                                        htmlFor='stop_loss'
+                                                    >
+                                                        <span className={classNames('dc-toggle-switch__button')} />
+                                                    </label>
+                                                </React.Fragment>
+                                            </div>
+                                            {show_stop_loss && (
+                                                <React.Fragment>
+                                                    <input
+                                                        type='number'
+                                                        min='0'
+                                                        inputMode='numeric'
+                                                        title='Non-negative integral number'
+                                                        className='trade-param_popup_input'
+                                                        defaultValue='1.00'
+                                                    />
+                                                    <div className='trade-param_popup_input_text'>
+                                                        Value higher than 0.10 USD
+                                                    </div>
+                                                </React.Fragment>
+                                            )}
+                                        </div>
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment>
+                                        <div className='trade-param_popup_tooltip-text'>What is deal cancellation?</div>
+                                        <Picker
+                                            optionGroups={optionGroups}
+                                            valueGroups={valueGroups}
+                                            onChange={(name: string, value: string) =>
+                                                setValueGroups({ [name]: value })
+                                            }
+                                            itemHeight={40}
+                                            height={190}
+                                        />
+                                        <div
+                                            className='trade-param_popup_tooltip-text'
+                                            style={{ textAlign: 'center', margin: '0 0 1rem 0' }}
+                                        >
+                                            Deal cancellation fee: 0.17 USD
+                                        </div>
+                                    </React.Fragment>
+                                )}
                             </div>
                         )}
                         {is_stake && (
@@ -244,6 +274,17 @@ const NewTradeParamPopupWrapper = ({
                                     onChange={(name: string, value: string) => setValueGroups({ [name]: value })}
                                     itemHeight={40}
                                 />
+                                {/* <Picker
+                                    defaultSelectedValue={test_value}
+                                    selectedValue={test_value}
+                                    // disabled={false}
+                                    onValueChange={(value: string) => setTestValue(value)}
+                                    // onScrollChange={this.onScrollChange}
+                                >
+                                    <Picker.Item value={'5'}>5</Picker.Item>
+                                    <Picker.Item value={'10'}>10</Picker.Item>
+                                    <Picker.Item value={'50'}>50</Picker.Item>
+                                </Picker> */}
                                 <div className='trade-param_popup_tooltip-container'>
                                     <div className='trade-param_popup_tooltip-text'>Commission: 0.10 USD</div>
                                     <div className='trade-param_popup_tooltip-text'>Stop out: 10.00 USD</div>

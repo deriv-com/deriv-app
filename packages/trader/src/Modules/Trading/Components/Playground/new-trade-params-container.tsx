@@ -44,7 +44,7 @@ const NewTradeParamsContainer = ({
                 onKeyDown={() => onClick('multiplier')}
             >
                 <div className='trade-param_name'>Multiplier</div>
-                <div style={{ fontSize: '16px', lineHeight: '24px' }}>{selected_multiplier}</div>
+                <div style={{ fontSize: '16px', lineHeight: '24px' }}>x15</div>
             </div> */}
             <div className='trade-param_container'>
                 <div className='trade-param_name'>Duration</div>

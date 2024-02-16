@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
+import { getPlatformFromUrl } from '@/helpers';
 import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api';
-import { Button } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
-import { getPlatformFromUrl } from '../../../../../helpers/urls';
+import { Button, Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../../types';
 import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper, PlatformUrls } from '../../../constants';
 
@@ -42,7 +41,7 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
     };
 
     return (
-        <div className='flex items-center justify-between border-solid border-t-1 border-system-light-secondary-background px-16 py-24'>
+        <div className='flex items-center justify-between px-16 py-24 border-solid border-t-1 border-system-light-secondary-background'>
             <div className='flex items-center gap-16'>
                 {(platform === mt5Platform || app === ctraderPlatform) && (
                     <Fragment>
@@ -56,21 +55,21 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
             </div>
             {(platform === mt5Platform || app === ctraderPlatform) && (
                 <Button
-                    className='border-opacity-black-8 rounded-xs px-16'
-                    colorStyle='black'
+                    className='px-16 border-opacity-black-8 rounded-xs'
+                    color='black'
                     onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
                     size='sm'
-                    variant='secondary'
+                    variant='outlined'
                 >
                     {content.text}
                 </Button>
             )}
             {platform !== mt5Platform && app !== ctraderPlatform && (
                 <Button
-                    className='flex items-center justify-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-8 gap-8'
-                    colorStyle='white'
+                    className='flex items-center justify-center gap-8 p-8 border-none rounded-md cursor-pointer bg-system-dark-primary-background'
+                    color='white'
                     onClick={onClickWebTerminal}
-                    variant='secondary'
+                    variant='outlined'
                 >
                     <span className='flex items-center justify-center gap-8'>
                         {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}

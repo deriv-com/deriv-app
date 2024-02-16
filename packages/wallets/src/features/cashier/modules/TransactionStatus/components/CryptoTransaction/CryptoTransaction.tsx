@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
-import { useCancelCryptoTransaction } from '@deriv/api';
+import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';

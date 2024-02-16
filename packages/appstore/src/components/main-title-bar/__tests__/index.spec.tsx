@@ -1,12 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
-import { APIProvider /*useFetch*/ } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 import MainTitleBar from '..';
 
-//TODO: Uncomment once useWalletMigration hook is optimized for production release.
-// jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
-// const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -55,11 +53,6 @@ jest.mock('@deriv/api', () => ({
 
 describe('MainTitleBar', () => {
     const mock_store = mockStore({
-        exchange_rates: {
-            data: {
-                date: 1631032849924,
-            },
-        },
         modules: {
             cashier: {
                 account_transfer: { is_transfer_confirm: false },
@@ -71,6 +64,7 @@ describe('MainTitleBar', () => {
         },
         feature_flags: { data: { wallet: false } },
     });
+
     const render_container = (mock_store_override?: ReturnType<typeof mockStore>) => {
         const wrapper = ({ children }: React.PropsWithChildren) => (
             <APIProvider>
@@ -89,36 +83,6 @@ describe('MainTitleBar', () => {
         const { container } = render_container();
         expect(container).toBeInTheDocument();
     });
-
-    //TODO: Uncomment once useWalletMigration hook is optimized for production release.
-    // it('should not render WalletsBanner component if wallet feature flag is disabled', () => {
-    //     render_container();
-    //     expect(screen.queryByText('WalletsBanner')).not.toBeInTheDocument();
-    // });
-
-    //TODO: Uncomment once useWalletMigration hook is optimized for production release.
-    // it('should render WalletsBanner component if wallet feature flag is enabled', () => {
-    //     const mock_store = mockStore({
-    //         client: { accounts: { CR123456: { token: '12345' } }, loginid: 'CR123456' },
-    //         feature_flags: { data: { wallet: true } },
-    //     });
-    //     // @ts-expect-error need to come up with a way to mock the return type of useFetch
-    //     mockUseFetch.mockReturnValue({
-    //         data: {
-    //             authorize: {
-    //                 account_list: [
-    //                     {
-    //                         account_category: 'trading',
-    //                         currency: 'USD',
-    //                         is_virtual: 0,
-    //                     },
-    //                 ],
-    //             },
-    //         },
-    //     });
-    //     render_container(mock_store);
-    //     expect(screen.getByText('WalletsBanner')).toBeInTheDocument();
-    // });
 
     it('should render the correct title text', () => {
         render_container();

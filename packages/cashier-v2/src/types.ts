@@ -14,6 +14,16 @@ export namespace TRouteTypes {
     export type TRouteComponent = React.ComponentProps<IRouteConfig['component']>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace TErrorTypes {
+    export type TServerError = {
+        code: string;
+        details?: { [key: string]: string };
+        fields?: string[];
+        message: string;
+    };
+}
+
 export type TSideNotes = {
     notes: JSX.Element[] | [];
     position?: 'bottom' | 'top';

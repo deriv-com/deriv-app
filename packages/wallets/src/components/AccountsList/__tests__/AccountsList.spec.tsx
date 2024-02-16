@@ -1,5 +1,5 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
@@ -32,7 +32,9 @@ jest.mock(
 
 const wrapper = ({ children }: PropsWithChildren) => (
     <APIProvider>
-        <ModalProvider>{children}</ModalProvider>
+        <AuthProvider>
+            <ModalProvider>{children}</ModalProvider>
+        </AuthProvider>
     </APIProvider>
 );
 

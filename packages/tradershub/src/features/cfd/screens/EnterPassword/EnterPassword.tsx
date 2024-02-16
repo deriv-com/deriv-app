@@ -4,8 +4,7 @@ import { TMarketTypes, TPlatforms } from '@/types';
 import { validPassword } from '@/utils';
 import { MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button, PasswordInput, Text } from '@deriv-com/ui';
+import { Button, PasswordInput, Text, useDevice } from '@deriv-com/ui';
 
 type TEnterPasswordProps = {
     isLoading?: boolean;
@@ -41,7 +40,7 @@ const EnterPassword = ({
     passwordError,
     platform,
 }: TEnterPasswordProps) => {
-    const { isDesktop } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const title = PlatformDetails[platform].title;
     const { isEU } = useRegulationFlags();
 

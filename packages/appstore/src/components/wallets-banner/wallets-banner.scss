@@ -1,33 +1,26 @@
 .wallets-banner {
     &__container {
         position: relative;
-        padding-inline: 4.8rem;
-        margin-bottom: 2.4rem;
+        padding: 2.4rem;
+        margin-block: 2.4rem;
         overflow: hidden;
-
-        // TODO: remove this after the whole flow is finalized
-        background-color: var(--general-main-1);
-
+        background: var(--system-light-7-secondary-background, #f2f3f4);
         border: 1px solid var(--wallets-banner-border-color);
-        box-shadow: var(--wallet-box-shadow);
         border-radius: $BORDER_RADIUS * 4;
 
         @include mobile {
-            padding: 1.4rem 1.6rem;
+            padding: 1.6rem;
             border-radius: $BORDER_RADIUS * 2;
         }
     }
 
     &__image {
         position: absolute;
-        right: 0;
-        bottom: 0;
-        border-top-right-radius: $BORDER_RADIUS * 4;
-        border-bottom-right-radius: $BORDER_RADIUS * 4;
+        top: 0;
+        right: 7.2rem;
 
         @include mobile {
-            border-top-right-radius: $BORDER_RADIUS * 2;
-            border-bottom-right-radius: $BORDER_RADIUS * 2;
+            right: 0;
         }
     }
 
@@ -35,7 +28,7 @@
         height: 18rem;
 
         @include mobile {
-            height: 10.8rem;
+            height: 14.2rem;
         }
 
         &-description {
@@ -45,6 +38,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: baseline;
+            gap: 1.6rem;
 
             @include mobile {
                 width: 70%;
@@ -52,11 +46,11 @@
         }
 
         &-button {
-            margin-top: 0.8rem;
             padding-inline: 6.7rem;
 
             @include mobile {
                 padding-inline: 1.6rem;
+                padding-block: 0.6rem;
             }
         }
     }

@@ -25,7 +25,7 @@ const ModalHeader = ({ className, hideCloseButton = false, title, titleClassName
     return (
         <div
             className={qtMerge(
-                'flex items-center pl-16 pr-24 py-16 lg:px-24 border border-solid border-b-2 border-system-light-secondary-background w-full',
+                'flex items-center pl-16 pr-24 py-16 lg:px-24 border border-solid border-b-2 border-system-light-secondary-background w-full rounded-t-default',
                 title ? 'justify-between' : 'justify-end',
                 className
             )}

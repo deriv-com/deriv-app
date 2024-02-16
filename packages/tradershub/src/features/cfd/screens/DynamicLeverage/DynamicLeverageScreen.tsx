@@ -15,7 +15,7 @@ const DynamicLeverageScreen = () => {
     return (
         <div
             className={qtMerge(
-                'flex flex-col gap-24 mt-16 mx-24 mb-24 sm:mx-[128px] sm:mb-0 pb-[100px] absolute top-50 [transform:rotateY(180deg)] transition-transform ease-in duration-[0.6s] backface-hidden',
+                'flex flex-col gap-24 mt-16 mx-24 mb-24 sm:mx-[128px] sm:mb-0 absolute top-0 [transform:rotateY(180deg)] transition-transform ease-in duration-[0.6s] backface-hidden bg-system-light-primary-background',
                 isDynamicLeverageVisible && '[transform:rotateY(0deg)]'
             )}
         >

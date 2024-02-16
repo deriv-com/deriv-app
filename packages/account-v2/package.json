@@ -15,7 +15,7 @@
         "@deriv/api": "^1.0.0",
         "@deriv/library": "^1.0.0",
         "@deriv/quill-design": "^1.3.2",
-        "@deriv/quill-icons": "^1.17.25",
+        "@deriv/quill-icons": "^1.18.3",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.0.0",
         "formik": "^2.1.4",

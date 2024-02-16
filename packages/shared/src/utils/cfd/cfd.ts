@@ -454,6 +454,8 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 export const mt5_community_url =
     'https://community.deriv.com/t/mt5-new-server-name-and-mobile-app-re-login-guide/70617';
 
+export const mt5_help_centre_url = '/help-centre/dmt5/#log-in-to-my-Deriv-MT5-account';
+
 export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
     let formatted_label = '';
 

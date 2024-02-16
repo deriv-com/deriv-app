@@ -76,7 +76,7 @@ const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5Desk
                     />
                     <Text align='center' size='xxs'>
                         {localize('Scan the QR code to download {{ platform }}.', {
-                            platform: getPlatformSettings('mt5').name,
+                            platform: getPlatformSettings(CFD_PLATFORMS.MT5).name,
                         })}
                     </Text>
                 </div>

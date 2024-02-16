@@ -5,6 +5,7 @@ import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { DEEP_LINK, WEBTRADER_URL, getMobileAppInstallerURL } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
+import { mt5_help_centre_url } from '@deriv/shared';
 
 type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
@@ -63,13 +64,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
             <Text as='p' align='center' size='xxs'>
                 <Localize
                     i18n_default_text='For MT5 login issues, visit our <0>Help Centre</0>.'
-                    components={[
-                        <StaticUrl
-                            key={0}
-                            className='help-center-link'
-                            href='/help-centre/dmt5/#log-in-to-my-Deriv-MT5-account'
-                        />,
-                    ]}
+                    components={[<StaticUrl key={0} className='help-center-link' href={mt5_help_centre_url} />]}
                 />
             </Text>
         </div>

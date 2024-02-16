@@ -16,6 +16,11 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install Dependencies
       uses: "./.github/actions/npm_install_from_cache"
+    - name: Download Remote Config Backup File
+      uses: ./.github/actions/download_remote_config_backup
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REMOTE_CONFIG_URL: ${{ env.REMOTE_CONFIG_URL }}
     - name: Build
       uses: "./.github/actions/build"
       with:

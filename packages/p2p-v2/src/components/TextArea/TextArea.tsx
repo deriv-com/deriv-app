@@ -11,6 +11,7 @@ type TTextAreaProps = HtmlHTMLAttributes<HTMLTextAreaElement> & {
     onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
     placeholder?: string;
     shouldShowCounter?: boolean;
+    testId?: string;
     value?: string;
 };
 const TextArea = ({
@@ -21,6 +22,7 @@ const TextArea = ({
     onChange,
     placeholder,
     shouldShowCounter = false,
+    testId,
     value,
 }: TTextAreaProps) => {
     const [currentValue, setCurrentValue] = useState(value);
@@ -30,6 +32,7 @@ const TextArea = ({
             className={clsx('p2p-v2-textarea', {
                 'p2p-v2-textarea--error': isInvalid,
             })}
+            data-testid={testId}
         >
             <textarea
                 data-has-value={!!currentValue}

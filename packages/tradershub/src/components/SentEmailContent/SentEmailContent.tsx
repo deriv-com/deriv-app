@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
+import ChangePassword from '@/assets/svgs/change-password-email.svg';
+import { ActionScreen } from '@/components';
+import { platformPasswordResetRedirectLink } from '@/utils';
+import { PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { PlatformDetails } from '../../features/cfd/constants';
-import ChangePassword from '../../public/images/change-password-email.svg';
 import { TPlatforms } from '../../types';
-import { platformPasswordResetRedirectLink } from '../../utils/cfd';
-import { ActionScreen } from '../ActionScreen';
 
 type TSentEmailContentProps = {
     description?: string;
@@ -74,7 +74,7 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
     };
 
     return (
-        <div className='w-full lg:w-[400px] inline-flex p-1600 flex-col justify-center items-center gap-1200 rounded-400 bg-system-light-primary-background'>
+        <div className='w-full lg:w-[400px] inline-flex p-32 flex-col justify-center items-center gap-24 rounded-default bg-system-light-primary-background'>
             <ActionScreen
                 description={description ?? `Please click on the link in the email to change your ${title} password.`}
                 descriptionSize={descriptionSize}
@@ -86,7 +86,7 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
             {shouldShowResendEmailReasons && (
                 <Fragment>
                     {isInvestorPassword && (
-                        <div className='flex flex-col items-center gap-800'>
+                        <div className='flex flex-col items-center gap-16'>
                             <ActionScreen
                                 description="Check your spam or junk folder. If it's not there, try resending the email."
                                 descriptionSize={descriptionSize}

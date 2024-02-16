@@ -30,32 +30,29 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
         >
-            {({ errors, initialValues, isValid, setFieldValue, values }) => {
-                console.log('Values: ', { initialValues, errors, values, isValid });
-                return (
-                    <div className='flex flex-col gap-800'>
-                        <Text>Upload your selfie</Text>
-                        <Dropzone
-                            buttonText={isMobile ? 'Tap here to upload' : 'Drop file or click here to upload'}
-                            description='Upload your selfie'
-                            fileFormats='image/*'
-                            hasFrame
-                            icon={<SelfieIcon />}
-                            onFileChange={(file: File) => setFieldValue(MANUAL_DOCUMENT_SELFIE, file)}
-                        />
-                        <Text size={isMobile ? 'sm' : 'xs'}>
-                            Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible
-                            and your face is within the frame.
-                        </Text>
-                        <div className='flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-grey-2 border-solid border-t-100'>
-                            <Button onClick={handleCancel} type='button' variant='outlined'>
-                                Back
-                            </Button>
-                            <Button disabled={!isValid || !values[MANUAL_DOCUMENT_SELFIE]}>Confirm and upload</Button>
-                        </div>
+            {({ isValid, setFieldValue, values }) => (
+                <div className='flex flex-col gap-800'>
+                    <Text>Upload your selfie</Text>
+                    <Dropzone
+                        buttonText={isMobile ? 'Tap here to upload' : 'Drop file or click here to upload'}
+                        description='Upload your selfie'
+                        fileFormats='image/*'
+                        hasFrame
+                        icon={<SelfieIcon />}
+                        onFileChange={(file: File) => setFieldValue(MANUAL_DOCUMENT_SELFIE, file)}
+                    />
+                    <Text size={isMobile ? 'sm' : 'xs'}>
+                        Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and
+                        your face is within the frame.
+                    </Text>
+                    <div className='flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-grey-2 border-solid border-t-100'>
+                        <Button onClick={handleCancel} type='button' variant='outlined'>
+                            Back
+                        </Button>
+                        <Button disabled={!isValid || !values[MANUAL_DOCUMENT_SELFIE]}>Confirm and upload</Button>
                     </div>
-                );
-            }}
+                </div>
+            )}
         </Formik>
     );
 };

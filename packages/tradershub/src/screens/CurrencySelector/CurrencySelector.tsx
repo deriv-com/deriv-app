@@ -17,7 +17,7 @@ const CurrencySelector = () => {
 
     const handleSubmit = (values: FormikValues) => {
         dispatch({ payload: { currency: values.currency }, type: ACTION_TYPES.SET_CURRENCY });
-        helpers.setStep(4);
+        helpers.goToNextStep();
     };
     return (
         <WizardScreenWrapper heading='Select your preferred currency'>

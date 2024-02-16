@@ -52,7 +52,7 @@ runs:
             git push --set-upstream origin "$branch_name" -f
 
             sudo apt install gh
-            gh auth login --with-token <<< ${{ GITHUB_TOKEN }}
+            gh auth login --with-token <<< ${{ env.GITHUB_TOKEN }}
             gh pr close "$branch_name" || true
             gh pr create --base "master" --title "Sync Remote Config File 🤖" --head "binary-com:$branch_name" --body "This is an automated Pull Request designed to synchronize our project's Remote Config from Its origin. It checks for the changes in the remote config URL and in case of any change, it will update it using this PR."
         fi

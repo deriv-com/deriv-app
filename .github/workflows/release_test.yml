@@ -19,6 +19,7 @@ jobs:
     - name: Download Remote Config Backup File
       uses: ./.github/actions/download_remote_config_backup
       with:
+        GITHUB_TOKEN: ${{ github.token }}
         REMOTE_CONFIG_URL: ${{ env.REMOTE_CONFIG_URL }}
         GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

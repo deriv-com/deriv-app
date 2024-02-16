@@ -20,6 +20,7 @@ runs:
         echo "Remote Config backup downloaded successfully!"
       shell: bash
     - name: Import GPG key
+      if: github.ref == 'refs/heads/master'
       id: import-gpg
       uses: deriv-com/ghaction-import-gpg@v6
       with:

@@ -1,6 +1,5 @@
-import { OSDetect, getPlatformFromUrl } from '@deriv/shared';
+import { OSDetect, getPlatformFromUrl, mobileOSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
 
@@ -107,9 +106,85 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
-const getCTraderWebTerminalLink = (category: string, token?: string) => {
+const getCTraderWebTerminalLink = (category?: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
+
+const getMobileAppInstallerURL = () => {
+    if (mobileOSDetect() === 'iOS') {
+        return getPlatformMt5DownloadLink('ios');
+    } else if (/huawei/i.test(navigator.userAgent)) {
+        return getPlatformMt5DownloadLink('huawei');
+    }
+    return getPlatformMt5DownloadLink('android');
+};
+
+function getDownloadOptions({ mt5_trade_account }: any) {
+    const deep_link = `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
+
+    function isSafari() {
+        return /^((?!chrome|android).)*AppleWebKit/i.test(navigator.userAgent) && typeof window.safari !== 'undefined';
+    }
+
+    const mobileURLSet = () => {
+        const timeout = setTimeout(() => {
+            getMobileAppInstallerURL();
+        }, 3000);
+
+        if (!isSafari()) {
+            window.onblur = () => {
+                clearTimeout(timeout);
+            };
+        }
+        return deep_link;
+    };
+
+    const downloadOptions = [
+        {
+            device: 'mobile',
+            icon: 'IcDesktopOutline',
+            text: localize('MetaTrader5 web terminal'),
+            href: `${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`,
+        },
+        {
+            device: 'mobile',
+            icon: 'IcMobileOutline',
+            text: localize('Trade with MT5 mobile app'),
+            href: mobileURLSet(),
+            highlight: true,
+        },
+        {
+            device: 'desktop',
+            icon: 'IcRebrandingMt5Logo',
+            text: 'MetaTrader 5 web',
+            button_text: 'Open',
+            href: mt5_trade_account?.webtrader_url,
+        },
+        {
+            device: 'desktop',
+            icon: 'IcWindowsLogo',
+            text: localize('MetaTrader 5 Windows app'),
+            button_text: 'Download',
+            href: mt5_trade_account?.white_label?.download_links?.windows,
+        },
+        {
+            device: 'desktop',
+            icon: 'IcMacosLogo',
+            text: localize('MetaTrader 5 macOS app'),
+            button_text: 'Download',
+            href: getPlatformMt5DownloadLink('macos'),
+        },
+        {
+            device: 'desktop',
+            icon: 'IcLinuxLogo',
+            text: localize('MetaTrader 5 Linux app'),
+            button_text: 'Learn more',
+            href: getPlatformMt5DownloadLink('linux'),
+        },
+    ];
+
+    return downloadOptions;
+}
 
 export {
     REAL_DXTRADE_URL,
@@ -126,4 +201,5 @@ export {
     platformsIcons,
     getTitle,
     getTopUpConfig,
+    getDownloadOptions,
 };

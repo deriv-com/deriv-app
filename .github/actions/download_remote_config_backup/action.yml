@@ -43,6 +43,10 @@ runs:
         else
             echo "Changes detected, creating a PR"
 
+            # Checkout to remote config branch
+            git fetch origin
+            git checkout "$branch_name" || git checkout -b "$branch_name" origin/"$branch_name"
+            
             # Commit the newly downloaded file
             cd $(git rev-parse --show-toplevel)
             git add packages/api/src/remote_config.json

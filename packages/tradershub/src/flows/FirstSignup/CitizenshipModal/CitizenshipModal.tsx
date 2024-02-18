@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormikContext } from 'formik';
 import { Modal } from '@/components';
 import { useClientCountry, useResidenceList } from '@deriv/api';
@@ -14,26 +14,21 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
     const { data: residenceList, isLoading: residenceListLoading } = useResidenceList();
     const { data: clientCountry, isLoading: clientCountryLoading } = useClientCountry();
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
-    const [rerender, setRerender] = useState(false);
     const { values, setFieldValue } = useFormikContext<TFirstSignupFormValues>();
     const isBrazil = values.country === 'br';
 
     useEffect(() => {
-        if (residenceList?.length && clientCountry) {
-            setRerender(prev => !prev);
+        if (residenceList?.length && clientCountry && values.country === '') {
             setFieldValue('country', clientCountry);
         }
-    }, [clientCountry, setFieldValue, residenceList]);
-
-    console.log('values = ', values);
+    }, [clientCountry, setFieldValue, residenceList, values.country]);
 
     // Add <Loading /> here later when it's created
     if (clientCountryLoading && residenceListLoading) return null;
-    // if (residenceListLoading) return null;
 
     return (
         <Modal className='h-full rounded-default max-w-[328px] md:max-w-[440px]'>
-            <Modal.Content className='flex flex-col max-w-[296x] md:max-w-[392px] p-16 space-y-16 md:space-y-24 md:p-24'>
+            <div className='flex flex-col max-w-[296x] md:max-w-[392px] p-16 space-y-16 md:space-y-24 md:p-24'>
                 <Text weight={'bold'}>Select your country and citizenship:</Text>
                 <Dropdown
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
@@ -60,23 +55,22 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
                     variant='comboBox'
                 />
                 {isBrazil && (
-                    <div className='flex justify-start space-x-8'>
-                        <Checkbox
-                            checked={isCheckBoxChecked}
-                            label={
-                                <Text size='sm'>
-                                    I hereby confirm that my request for opening an account with Deriv to trade OTC
-                                    products issued and offered exclusively outside Brazil was initiated by me. I fully
-                                    understand that Deriv is not regulated by CVM and by approaching Deriv I intend to
-                                    set up a relation with a foreign company.
-                                </Text>
-                            }
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                setIsCheckBoxChecked(event.target.checked)
-                            }
-                            wrapperClassName='w-auto'
-                        />
-                    </div>
+                    <Checkbox
+                        checked={isCheckBoxChecked}
+                        label={
+                            <Text size='sm'>
+                                I hereby confirm that my request for opening an account with Deriv to trade OTC products
+                                issued and offered exclusively outside Brazil was initiated by me. I fully understand
+                                that Deriv is not regulated by CVM and by approaching Deriv I intend to set up a
+                                relation with a foreign company.
+                            </Text>
+                        }
+                        labelClassName='flex-1'
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                            setIsCheckBoxChecked(event.target.checked)
+                        }
+                        wrapperClassName='w-auto'
+                    />
                 )}
                 <Button
                     className='w-full md:self-end md:w-fit'
@@ -85,7 +79,7 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
                 >
                     Next
                 </Button>
-            </Modal.Content>
+            </div>
         </Modal>
     );
 };

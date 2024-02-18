@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
 
 /**

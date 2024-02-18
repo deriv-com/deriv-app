@@ -3,6 +3,18 @@ import { daysSince } from '@/utils';
 import { p2p, useAuthentication, useSettings } from '@deriv/api';
 
 /**
+ * Formats the advertiser duration into the following format:
+ * -1 if duration is not provided, in this case "-" would be displayed in the advertiser stats
+ * otherwise, converts the duration to minutes, and
+ * 1 if the duration is less than 60 seconds
+ */
+const toAdvertiserMinutes = (duration?: number | null) => {
+    if (!duration) return -1;
+    if (duration > 60) return Math.round(duration / 60);
+    return 1;
+};
+
+/**
  * Hook to calculate an advertiser's stats based on their information.
  *
  * @param advertiserId - ID of the advertiser stats to reveal. If not provided, by default it will return the user's own stats.
@@ -21,11 +33,10 @@ const useAdvertiserStats = (advertiserId?: string) => {
             ...data,
 
             /** The average buy time in minutes */
-            averagePayTime: data?.buy_time_avg && data.buy_time_avg > 60 ? Math.round(data.buy_time_avg / 60) : 1,
+            averagePayTime: toAdvertiserMinutes(data?.buy_time_avg),
 
             /** The average release time in minutes */
-            averageReleaseTime:
-                data?.release_time_avg && data.release_time_avg > 60 ? Math.round(data.release_time_avg / 60) : 1,
+            averageReleaseTime: toAdvertiserMinutes(data?.release_time_avg),
 
             /** The percentage of completed orders out of total orders as a buyer within the past 30 days. */
             buyCompletionRate: data?.buy_completion_rate || 0,

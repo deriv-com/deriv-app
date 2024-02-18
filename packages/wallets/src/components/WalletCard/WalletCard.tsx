@@ -1,5 +1,5 @@
 import React from 'react';
-import { useBalance } from '@deriv/api';
+import { useBalance } from '@deriv/api-v2';
 import { WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';

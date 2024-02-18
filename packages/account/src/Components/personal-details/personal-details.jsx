@@ -158,7 +158,6 @@ const PersonalDetails = observer(
                 initialValues={{ ...props.value }}
                 validate={handleValidate}
                 validateOnMount
-                enableReinitialize
                 onSubmit={(values, actions) => {
                     trackEvent({
                         action: 'save',

@@ -17,7 +17,9 @@ const NewTrade = () => {
 
     const [is_portal, setIsPortal] = React.useState(false);
     const [selected_left_type, setSelectedType] = React.useState(true);
-    const [show_purchase_details, setShowPurchaseDetails] = React.useState(false);
+    const [selected_chart_tab, setSelectedChartType] = React.useState(true);
+
+    // const [show_purchase_details, setShowPurchaseDetails] = React.useState(false);
 
     const optionGroups = {
         multipliers: [
@@ -44,14 +46,14 @@ const NewTrade = () => {
         setShowDetails(true);
     };
 
-    const onPurchaseResult = (e: React.MouseEvent<HTMLDivElement>) => {
-        e.stopPropagation();
-        setShowPurchaseDetails(!show_purchase_details);
-    };
-    const swipe_handlers = useSwipeable({
-        onSwipedDown: () => setShowPurchaseDetails(!show_purchase_details),
-        onSwipedUp: () => setShowPurchaseDetails(!show_purchase_details),
-    });
+    // const onPurchaseResult = (e: React.MouseEvent<HTMLDivElement>) => {
+    //     e.stopPropagation();
+    //     setShowPurchaseDetails(!show_purchase_details);
+    // };
+    // const swipe_handlers = useSwipeable({
+    //     onSwipedDown: () => setShowPurchaseDetails(!show_purchase_details),
+    //     onSwipedUp: () => setShowPurchaseDetails(!show_purchase_details),
+    // });
 
     return (
         <React.Fragment>
@@ -63,8 +65,64 @@ const NewTrade = () => {
                     selected_left_type={selected_left_type}
                     selected_multiplier={valueGroups.multipliers}
                 />
-                <div style={{ margin: '0.8rem 0rem' }}>
-                    <Icon icon='IcNewChart' className='new-chart-icon' />
+                <div
+                    style={{ margin: '0.8rem 0rem', backgroundColor: 'var(--general-main-1)', borderRadius: '0.8rem' }}
+                >
+                    <div className='tabs__container'>
+                        <div
+                            className={classNames('tabs__section', {
+                                'tabs__section-selected': selected_chart_tab,
+                            })}
+                            onClick={() => setSelectedChartType(true)}
+                        >
+                            Chart
+                        </div>
+                        <div
+                            className={classNames('tabs__section', {
+                                'tabs__section-selected': !selected_chart_tab,
+                            })}
+                            onClick={() => setSelectedChartType(false)}
+                        >
+                            Learn
+                        </div>
+                    </div>
+                    {selected_chart_tab ? (
+                        <Icon icon='IcNewChart' className='new-chart-icon' />
+                    ) : (
+                        <div className='tabs__section__container'>
+                            <div className='tabs__section__video-mock'>Video Mock</div>
+                            <p className='tabs__section__paragraph'>
+                                Turbo options allow you to predict the direction of the underlying asset’s movements.
+                            </p>
+                            <p className='tabs__section__paragraph'>
+                                You receive a payout at expiry if the spot price never touches or breaches the barrier
+                                during the contract period. If it does, your contract will be terminated early.
+                            </p>
+                            <p className='tabs__section__paragraph'>
+                                If you select “Long”, you’ll earn a payout if the spot price never drops below the
+                                barrier.
+                            </p>
+                            <div className='tabs__section__gif'>GIF</div>
+                            <p className='tabs__section__paragraph'>
+                                If you select “Short”, you’ll earn a payout if the spot price never rises above the
+                                barrier.
+                            </p>
+                            <div className='tabs__section__gif'>GIF</div>
+                            <p className='tabs__section__paragraph'>
+                                Your payout is equal to the payout per point multiplied by the difference between the
+                                final price and the barrier. You will only earn a profit if your payout is higher than
+                                your initial stake.
+                            </p>
+                            <p className='tabs__section__paragraph'>
+                                You may sell the contract up to 15 seconds before expiry. If you do, we’ll pay you the
+                                contract value.
+                            </p>
+                            <p className='tabs__section__paragraph'>
+                                If you choose your duration in number of ticks, you won’t be able to terminate your
+                                contract early.
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
             <NewTradeParamPopupWrapper

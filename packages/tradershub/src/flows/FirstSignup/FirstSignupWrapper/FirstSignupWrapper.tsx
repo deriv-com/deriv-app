@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from 'react';
-import { Form, Formik, FormikValues } from 'formik';
+import React, { useState } from 'react';
+import { Form, Formik } from 'formik';
 import { FirstSignupScreens } from '../FirstSignupScreens';
 
 export type TFirstSignupFormValues = {
@@ -15,10 +15,6 @@ const FirstSignupWrapper = () => {
         // will be added later
     };
 
-    const handlerValidate = (values: FormikValues) => {
-        // will be added later
-    };
-
     const initialValues = {
         country: '',
         citizenship: '',
@@ -26,19 +22,11 @@ const FirstSignupWrapper = () => {
     };
 
     return (
-        <Fragment>
-            <Formik
-                enableReinitialize
-                initialValues={initialValues}
-                onSubmit={handleSubmit}
-                validate={handlerValidate}
-                validateOnChange
-            >
-                <Form>
-                    <FirstSignupScreens setStep={setStep} step={step} />
-                </Form>
-            </Formik>
-        </Fragment>
+        <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit} validateOnChange>
+            <Form>
+                <FirstSignupScreens setStep={setStep} step={step} />
+            </Form>
+        </Formik>
     );
 };
 

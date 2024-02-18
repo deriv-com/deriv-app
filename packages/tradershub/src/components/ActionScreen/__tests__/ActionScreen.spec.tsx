@@ -2,12 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ActionScreen from '../ActionScreen';
 
-jest.mock('@deriv/quill-design', () => {
-    return {
-        qtMerge: jest.fn(),
-    };
-});
-
 describe('ActionScreen component', () => {
     it('renders with title', () => {
         render(<ActionScreen description='Description' title='Title' />);

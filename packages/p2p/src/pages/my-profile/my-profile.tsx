@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { DesktopWrapper, Loading, Text } from '@deriv/components';
-import { isEmptyObject, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import Verification from 'Components/verification';

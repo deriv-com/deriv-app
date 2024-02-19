@@ -28,8 +28,8 @@ jest.mock('../../../../../components', () => ({
     Loader: jest.fn(() => <div>Loading</div>),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
     useAuthorize: jest.fn(() => ({ switchAccount: jest.fn() })),
     useCurrencyConfig: jest.fn(),

@@ -1,5 +1,4 @@
-import React from 'react';
-import { ButtonProps } from '@deriv/quill-design';
+import React, { ComponentProps } from 'react';
 import { Button, Text } from '@deriv-com/ui';
 
 type TTradingAccountCardContent = {
@@ -19,7 +18,7 @@ export const TradingAccountCardContent = ({ children, title }: TTradingAccountCa
 );
 
 type TTradingAccountCardButton = {
-    onSubmit?: ButtonProps['onClick'];
+    onSubmit?: ComponentProps<typeof Button>['onClick'];
 };
 
 export const TradingAccountCardLightButton = ({ onSubmit }: TTradingAccountCardButton) => (

@@ -1,11 +1,11 @@
 import React from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { desktopStyle, mobileStyle } from './ProgressBar.classnames';
 
 const StepConnector = ({ isActive }: { isActive?: boolean }) => (
     <div
         aria-current={isActive}
-        className={qtMerge(
+        className={clsx(
             'via-solid-grey-default to-solid-grey-default from-solid-coral-700 from-50% via-50% transition-all duration-700 ease-out',
             mobileStyle.connector,
             desktopStyle.connector

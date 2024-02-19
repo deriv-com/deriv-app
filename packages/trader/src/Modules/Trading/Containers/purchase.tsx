@@ -46,6 +46,11 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
         is_turbos,
         is_vanilla_fx,
         is_vanilla,
+        onChange,
+        barrier_1,
+        long_barriers,
+        short_barriers,
+        strike_price_choices,
         onHoverPurchase,
         onPurchase: onClickPurchase,
         proposal_info,
@@ -112,6 +117,11 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
                 purchased_states_arr={purchased_states_arr}
                 onHoverPurchase={onHoverPurchase}
                 onClickPurchase={onClickPurchase}
+                onChange={onChange}
+                barrier_1={barrier_1}
+                long_barriers={long_barriers}
+                short_barriers={short_barriers}
+                strike_price_choices={strike_price_choices}
                 setPurchaseState={setPurchaseState}
                 type={type}
             />

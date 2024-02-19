@@ -1,17 +1,17 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { useStore } from '@deriv/stores';
-import { Localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 
 type TBuySellRowActionProps = {
     account_currency?: string;
     className?: string;
-    eligibility_status: string[];
+    eligibility_status?: string[];
     is_buy_advert?: boolean;
     is_eligible?: boolean;
-    onClick: () => void;
+    onClick?: () => void;
 };
 
 const BuySellRowAction = ({
@@ -31,13 +31,13 @@ const BuySellRowAction = ({
     const getEligibilityStatus = () => {
         if (eligibility_status?.length === 1) {
             if (eligibility_status.includes('completion_rate')) {
-                return 'Your completion rate is too low for this ad.';
+                return localize('Your completion rate is too low for this ad.');
             } else if (eligibility_status.includes('join_date')) {
-                return "You've not used Deriv P2P long enough for this ad.";
+                return localize("You've not used Deriv P2P long enough for this ad.");
             }
         }
 
-        return "The advertiser has set conditions for this ad that you don't meet.";
+        return localize("The advertiser has set conditions for this ad that you don't meet.");
     };
 
     const onUnavailableClick = () => {

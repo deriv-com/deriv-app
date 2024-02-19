@@ -21,15 +21,13 @@ const CFDPasswordChangeContent = observer(({ closeModal, password_value }: TCFDP
     const [isSubmitting, setIsSubmitting] = React.useState(false);
 
     const handleSubmit = async () => {
-        closeModal();
         setIsSubmitting(true);
+        setCFDSuccessDialog(false);
         await submitMt5Password({
             password: password_value,
         });
-
-        setIsMt5PasswordChangedModalVisible(false);
         setIsSubmitting(false);
-        closeModal();
+        setIsMt5PasswordChangedModalVisible(false);
         setCFDSuccessDialog(true);
     };
 

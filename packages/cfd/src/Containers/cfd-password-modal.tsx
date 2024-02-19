@@ -643,7 +643,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (is_incorrect_mt5_password_format_error) {
             timeout = setTimeout(() => {
                 setIsMt5PasswordInvalidFormatModalVisible(true);
-            }, 300);
+            }, 400);
         }
 
         return () => clearTimeout(timeout);
@@ -763,8 +763,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_success_modals = !has_cfd_error && is_cfd_success_dialog_enabled && is_password_modal_exited;
 
-    const should_show_success =
-        should_show_success_modals && is_cfd_password_modal_enabled && !is_mt5_migration_modal_enabled;
+    const should_show_success = should_show_success_modals && !is_mt5_migration_modal_enabled;
 
     const should_show_migration_success =
         should_show_success_modals && is_mt5_migration_modal_enabled && !is_populating_mt5_account_list;

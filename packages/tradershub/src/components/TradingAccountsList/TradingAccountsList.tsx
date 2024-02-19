@@ -1,8 +1,8 @@
 import React from 'react';
+import { clsx } from 'clsx';
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { qtMerge } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
 
 const TradingAccountsList = () => {
@@ -22,7 +22,7 @@ const TradingAccountsList = () => {
                         const iconCurrency = account.currency ?? 'USD';
                         return (
                             <button
-                                className={qtMerge(
+                                className={clsx(
                                     'flex items-center self-stretch py-8 px-16 gap-16 rounded-xs cursor-pointer hover:bg-system-light-active-background',
                                     activeAccount?.loginid === account.loginid && 'bg-system-light-active-background'
                                 )}

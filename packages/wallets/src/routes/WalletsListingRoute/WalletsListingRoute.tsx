@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import {
     DesktopWalletsList,
     WalletsAddMoreCarousel,

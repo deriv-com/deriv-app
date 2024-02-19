@@ -21,7 +21,7 @@ const GetADerivAccountDialog = ({ isOpen, onClose }: TGetADerivAccountDialog) =>
 
     return (
         <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
-            <div className='w-[calc(100vw-24px)] md:w-[440px] bg-system-light-primary-background p-1200 rounded-400 flex justify-between flex-col gap-1200'>
+            <div className='w-[440px] bg-system-light-primary-background rounded-default flex justify-between flex-col gap-24'>
                 <Text weight='bold'>You&apos;ll need a Deriv account</Text>
                 <Text size='sm'>A Deriv account will allow you to fund (and withdraw from) your CFDs account(s).</Text>
                 <ButtonGroup className='justify-end '>

@@ -48,6 +48,9 @@ inputs:
   DATADOG_SESSION_SAMPLE_RATE_LOGS:
     description: 'Datadog session sample rate for logs'
     required: false
+  REMOTE_CONFIG_URL:
+    description: 'Remote config backup URL'
+    required: true
 
 runs:
   using: composite
@@ -69,5 +72,6 @@ runs:
       GROWTHBOOK_CLIENT_KEY: ${{ inputs.GROWTHBOOK_CLIENT_KEY }}
       GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
       REF_NAME: ${{ inputs.REF_NAME }}
+      REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
     run: npm run build:all
     shell: bash

@@ -1,13 +1,11 @@
 import React, { Fragment, lazy, Suspense } from 'react';
 import { useFormikContext } from 'formik';
-import { useBreakpoint } from '@deriv/quill-design';
 import { Divider, InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
 import DetailsConfirmation from './DetailsConfirmation';
 
 const ExampleImage = lazy(() => import('@/assets/svgs/personal-details-example.svg'));
 
 const Details = () => {
-    const isMobile = useBreakpoint();
     const { errors, handleBlur, handleChange, touched, values } = useFormikContext<{
         confirmation: boolean;
         dateOfBirth: string;
@@ -23,16 +21,16 @@ const Details = () => {
                 </Text>
                 <Divider className='w-full' color='#F2F3F4' />
             </div>
-            <div className='p-16 outline outline-1 outline-system-light-active-background md:mx-16 rounded-default'>
+            <div className='p-16 mx-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
                 <InlineMessage className='items-start mb-16' variant='warning'>
-                    <Text size={isMobile ? 'sm' : 'md'}>
+                    <Text as='p' className='text-sm lg:text-default'>
                         To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
                         <span className='font-bold'>date of birth</span> exactly as they appear on your identity
                         document.
                     </Text>
                 </InlineMessage>
-                <div className='flex flex-col-reverse justify-center gap-16 md:flex-row'>
-                    <div className='flex flex-col gap-20 md:w-1/2'>
+                <div className='flex flex-col-reverse justify-center gap-16 lg:flex-row'>
+                    <div className='flex flex-col w-full gap-20 lg:w-1/2'>
                         <Input
                             className='text-default'
                             disabled={values.confirmation}
@@ -84,7 +82,7 @@ const Details = () => {
                             value={values.dateOfBirth}
                         />
                     </div>
-                    <div className='relative text-center md:w-1/2'>
+                    <div className='relative text-center lg:w-1/2'>
                         <Text as='p' className='mt-2 mb-4' size='xs' weight='bold'>
                             Example:
                         </Text>

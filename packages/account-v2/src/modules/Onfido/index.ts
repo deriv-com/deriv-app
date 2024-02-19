@@ -1,0 +1,1 @@
+export { OnfidoContainer } from './OnfidoContainer';

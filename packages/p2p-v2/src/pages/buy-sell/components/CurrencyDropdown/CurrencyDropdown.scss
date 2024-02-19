@@ -1,0 +1,44 @@
+.p2p-v2-currency-dropdown {
+    .deriv-dropdown__items {
+        top: 4.4rem;
+    }
+
+    .deriv-input {
+        &__container {
+            width: 9rem;
+        }
+
+        &__field {
+            font-size: 14px;
+
+            &:not(:placeholder-shown) ~ label {
+                transform: translate(-29%, -50%);
+            }
+        }
+    }
+
+    &__full-page-modal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #fff;
+        z-index: 1;
+        height: calc(100vh - 12rem);
+
+        .p2p-v2-mobile-wrapper__body {
+            overflow: scroll;
+        }
+
+        .p2p-v2-search {
+            position: fixed;
+
+            .deriv-input {
+                padding: 2rem 1rem;
+
+                &__label {
+                    left: 3.5rem;
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 
 type TWizardScreenWrapper = { children: React.ReactNode; heading: ReactNode };
 
@@ -19,11 +18,11 @@ type TWizardScreenWrapper = { children: React.ReactNode; heading: ReactNode };
  */
 
 const WizardScreenWrapper = ({ children, heading }: TWizardScreenWrapper) => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     return (
-        <div className='flex flex-col justify-between h-full bg-system-light-primary-background min-h-50'>
-            {!isMobile && (
-                <Text as='p' className='font-bold pt-2400 pl-1200 text-100'>
+        <div className='flex flex-col justify-between h-full min-h-0 bg-system-light-primary-background'>
+            {isDesktop && (
+                <Text as='p' className='pt-48 pl-24 text-lg font-bold'>
                     {heading}
                 </Text>
             )}

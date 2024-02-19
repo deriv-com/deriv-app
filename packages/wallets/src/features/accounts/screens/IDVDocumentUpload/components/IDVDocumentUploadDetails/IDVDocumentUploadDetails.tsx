@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
-import { useSettings } from '@deriv/api';
+import { useSettings } from '@deriv/api-v2';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
 import unixToDateString from '../../../../../../utils/utils';

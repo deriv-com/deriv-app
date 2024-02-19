@@ -13,12 +13,7 @@ const MyAdsTableRowView = ({
 }: TMyAdsTableRowRendererProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const {
-        account_currency,
-        remaining_amount,
-        type,
-        visibility_status = ['advert_inactive', 'advert_max_limit', 'advert_min_limit'],
-    } = rest;
+    const { account_currency, remaining_amount, type, visibility_status = [] } = rest;
 
     return (
         <>

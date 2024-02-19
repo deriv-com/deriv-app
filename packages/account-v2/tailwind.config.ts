@@ -23,6 +23,9 @@ export default {
                     red: {
                         '5': '#eb3e48',
                     },
+                    green: {
+                        '1': '#4bb4b3',
+                    },
                 },
             },
         },

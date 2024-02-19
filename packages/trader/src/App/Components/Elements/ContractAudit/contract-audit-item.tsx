@@ -6,7 +6,7 @@ type TContractAuditItem = {
     additional_info?: React.ReactNode | string;
     icon?: React.ReactNode;
     id: string;
-    label?: string;
+    label?: string | React.ReactNode;
     timestamp?: number;
     value: React.ReactNode;
     value2?: React.ReactNode;

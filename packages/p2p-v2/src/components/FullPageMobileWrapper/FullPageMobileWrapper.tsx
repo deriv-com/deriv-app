@@ -13,7 +13,7 @@ type TFullPageMobileWrapperProps = {
 
 const FullPageMobileWrapper = ({
     children,
-    onBack = () => undefined,
+    onBack,
     renderFooter,
     renderHeader,
     shouldFixedFooter = true,

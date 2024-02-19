@@ -24,7 +24,7 @@ const Actions = ({ submitDisabled = false }: TActions) => {
     const {
         helpers: { canGoToNextStep, canGoToPrevStep, goToPrevStep },
     } = useSignupWizardContext();
-    const { handleSubmit } = useFormikContext();
+    const { isSubmitting } = useFormikContext();
     const { isDesktop } = useDevice();
 
     return (
@@ -36,6 +36,7 @@ const Actions = ({ submitDisabled = false }: TActions) => {
                         isFullWidth={!isDesktop}
                         onClick={goToPrevStep}
                         size={isDesktop ? 'md' : 'lg'}
+                        type='button'
                         variant='outlined'
                     >
                         Back
@@ -44,7 +45,7 @@ const Actions = ({ submitDisabled = false }: TActions) => {
                 <Button
                     disabled={submitDisabled}
                     isFullWidth={!isDesktop}
-                    onClick={() => handleSubmit()}
+                    isLoading={isSubmitting}
                     size={isDesktop ? 'md' : 'lg'}
                     type='submit'
                 >

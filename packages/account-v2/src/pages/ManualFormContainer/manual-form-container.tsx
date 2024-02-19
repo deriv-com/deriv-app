@@ -25,6 +25,8 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
     const [formData, setFormData] = useState<Partial<TManualUploadFormData>>({});
     const [shouldUploadSelfie, setShouldUploadSelfie] = useState(false);
 
+    console.log('formData: ', formData);
+
     if (shouldUploadSelfie) {
         return (
             <SelfieDocumentUpload

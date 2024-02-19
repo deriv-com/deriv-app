@@ -40,7 +40,7 @@ export const ManualForm = ({ formData, onCancel, onSubmit, selectedDocument }: T
                 <Form>
                     <div className='flex flex-col min-h-screen w-full'>
                         <div className='flex flex-col gap-1200'>
-                            <ManualFormInputs selectedDocument={selectedDocument} />
+                            <ManualFormInputs isExpiryDateRequired selectedDocument={selectedDocument} />
                             <ManualFormDocumentUpload selectedDocument={selectedDocument} />
                             <ManualFormFooter />
                         </div>

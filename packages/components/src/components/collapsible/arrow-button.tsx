@@ -15,7 +15,7 @@ type TArrowButton = {
     title?: string;
     position?: 'top' | 'bottom';
     handle_button?: boolean;
-    hide_collapsible_button: boolean;
+    hide_collapsible_button?: boolean;
 };
 
 const IconArrow = ({ className }: { className?: string }) => (
@@ -37,7 +37,7 @@ const ArrowButton = ({
     onClick,
     title,
     handle_button = false,
-    hide_collapsible_button,
+    hide_collapsible_button = false,
 }: TArrowButton) => {
     const [is_open, expand] = React.useState(!is_collapsed);
 

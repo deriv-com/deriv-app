@@ -50,4 +50,10 @@ describe('<ArrowButton/>', () => {
 
         expect(mockedDefaultProps.onClick).toHaveBeenCalled();
     });
+
+    it('should not render handle button if hide_collapsible_button is true', () => {
+        render(<ArrowButton {...mockedDefaultProps} hide_collapsible_button />);
+
+        expect(screen.queryByText(mockedTitle)).not.toBeInTheDocument();
+    });
 });

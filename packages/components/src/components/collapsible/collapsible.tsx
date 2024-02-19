@@ -33,6 +33,7 @@ const Collapsible = ({
     const [should_show_collapsible, setShouldShowCollapsible] = React.useState(false);
 
     const toggleExpand = () => {
+        if (show_collapsible_button) return;
         const new_state = !is_open;
         expand(new_state);
         if (typeof onClick === 'function') {

@@ -8,6 +8,7 @@ type TSwipeableWrapper = {
     onChange?: (prop?: number) => void;
     is_disabled?: boolean;
     is_swipe_disabled?: boolean;
+    should_lift_up_navigation?: boolean;
 } & SwipeableProps;
 
 const SwipeableWrapper = ({
@@ -16,6 +17,7 @@ const SwipeableWrapper = ({
     onChange,
     is_disabled,
     is_swipe_disabled,
+    should_lift_up_navigation = false,
     ...props
 }: React.PropsWithChildren<TSwipeableWrapper>) => {
     const [active_index, setActiveIndex] = React.useState(0);
@@ -68,7 +70,11 @@ const SwipeableWrapper = ({
                 {childrenWithWrapperDiv}
             </div>
             {!is_disabled && (
-                <nav className='dc-swipeable__nav'>
+                <nav
+                    className={classNames('dc-swipeable__nav', {
+                        'dc-swipeable__nav-lift-up': should_lift_up_navigation,
+                    })}
+                >
                     <Icon
                         className='dc-swipeable__nav__item'
                         icon='IcChevronDoubleLeft'

@@ -49,8 +49,8 @@ const JurisdictionScreen = ({
         <div
             className={clsx(
                 `flex flex-col ${
-                    marketType === MarketType.FINANCIAL ? 'w-[1200px] h-[720px]' : 'w-[1040px] h-[650px]'
-                } h-auto w-[85vw] items-center justify-start my-auto mx-30 sm:h-[75vh] transition-all ease-in duration-[0.6s]`,
+                    marketType === MarketType.FINANCIAL ? 'w-[1200px] h-[642px]' : 'w-[1040px] h-[592px]'
+                } h-auto w-[85vw] items-center justify-start my-auto sm:h-[75vh] transition-all ease-in duration-[0.6s]`,
                 isDynamicLeverageVisible &&
                     '[transform:rotateY(-180deg)] h-[700px] opacity-50 bg-system-light-primary-background'
             )}

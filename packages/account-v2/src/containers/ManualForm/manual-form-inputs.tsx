@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
 import { Field, FieldProps } from 'formik';
-import { Input } from '@deriv-com/ui';
-import { WalletDatePicker } from '../../components/base/WalletDatePicker';
-import { WalletText } from '../../components/base/WalletText';
+import { Input, Text } from '@deriv-com/ui';
+import { DatePicker } from '../../components/DatePicker';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { useManualForm } from '../../hooks';
-import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
+import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manual-form-utils';
 
 type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
 
@@ -15,7 +14,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
 
     return (
         <Fragment>
-            <WalletText>{getTitleForFormInputs(selectedDocument)}</WalletText>
+            <Text>{getTitleForFormInputs(selectedDocument)}</Text>
             <div className='gap-1200 flex flex-col lg:grid lg:grid-cols-2'>
                 <Field name='document_number'>
                     {({ field, meta }: FieldProps) => {
@@ -25,6 +24,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                             <Input
                                 {...field}
                                 aria-label={fieldLabel}
+                                autoComplete='off'
                                 className='w-full'
                                 error={hasError}
                                 label={fieldLabel}
@@ -36,17 +36,24 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                 </Field>
                 {isExpiryDateRequired && (
                     <Field name='document_expiry'>
-                        {({ field, form, meta }: FieldProps) => (
-                            <WalletDatePicker
-                                {...field}
-                                errorMessage={meta.error}
-                                isInvalid={(meta.touched && !!meta.error) || !!form.errors.document_expiry}
-                                label={`${fieldsConfig.documentExpiry.label}*`}
-                                onDateChange={(date: string | null) => {
-                                    form.setFieldValue('document_expiry', date);
-                                }}
-                            />
-                        )}
+                        {({ field, form, meta }: FieldProps) => {
+                            const hasError = meta.touched && !!meta.error;
+                            const fieldLabel = `${fieldsConfig.documentExpiry.label}*`;
+                            return (
+                                <DatePicker
+                                    {...field}
+                                    aria-label={fieldLabel}
+                                    autoComplete='off'
+                                    className='w-full'
+                                    errorMessage={meta.error}
+                                    isInvalid={hasError}
+                                    label={fieldLabel}
+                                    onDateChange={(date: string | null) => {
+                                        form.setFieldValue('document_expiry', date);
+                                    }}
+                                />
+                            );
+                        }}
                     </Field>
                 )}
             </div>

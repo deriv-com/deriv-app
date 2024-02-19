@@ -63,7 +63,7 @@ const DocumentSubmission: React.FC = () => {
                         descriptionSize='2xs'
                         fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                         hoverMessage='Upload your file here'
-                        icon={<StandaloneArrowUpFromBracketBoldIcon iconSize='lg' />}
+                        icon={<StandaloneArrowUpFromBracketBoldIcon fill='#C7E5E5' iconSize='lg' />}
                         maxSize={8388608}
                         name='document'
                         title='Drag and drop a file or click to browse your files.'

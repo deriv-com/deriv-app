@@ -1,6 +1,7 @@
+import React from 'react';
 import { ACCOUNT_V2_ROUTES } from '../../constants/routes';
+import { ManualUpload } from '../../modules';
 import { POAFormContainer } from '../../modules/POAForm/POAFormContainer';
-import { OnfidoContainer } from '../../modules/Onfido';
 import DummyRoute from '../components/dummy-route/dummy-route';
 
 export const routes = [
@@ -25,7 +26,8 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.FinancialAssessment,
     },
     {
-        routeComponent: OnfidoContainer,
+        // TODO: Replace this with POI container
+        routeComponent: () => <ManualUpload countryCode='in' />,
         routeName: 'Proof of identity',
         routePath: ACCOUNT_V2_ROUTES.ProofOfIdentity,
     },

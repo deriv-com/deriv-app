@@ -1,9 +1,9 @@
 import React from 'react';
-import IcPoiClearPhoto from '../../assets/manual-form/ic-poi-clear-photo.svg';
-import IcPoiDocExpiry from '../../assets/manual-form/ic-poi-doc-expiry.svg';
-import IcPoiFileFormat from '../../assets/manual-form/ic-poi-file-format.svg';
-import IcPoiFileSize from '../../assets/manual-form/ic-poi-file-size.svg';
-import { WalletText } from '../../components/base/WalletText';
+import { Text } from '@deriv-com/ui';
+import IcPoiClearPhoto from '../../assets/manual-upload/ic-poi-clear-photo.svg';
+import IcPoiDocExpiry from '../../assets/manual-upload/ic-poi-doc-expiry.svg';
+import IcPoiFileFormat from '../../assets/manual-upload/ic-poi-file-format.svg';
+import IcPoiFileSize from '../../assets/manual-upload/ic-poi-file-size.svg';
 
 const FOOTER_ITEMS = [
     { icon: <IcPoiClearPhoto />, text: 'A clear colour photo or scanned image' },
@@ -13,13 +13,13 @@ const FOOTER_ITEMS = [
 ];
 
 export const ManualFormFooter = () => (
-    <div className='grid grid-cols-2 justify-items-center items-center gap-1200 lg:flex lg:justify-evenly'>
+    <div className='grid grid-cols-2 mb-1200 justify-items-center items-center gap-1200 lg:flex lg:justify-evenly'>
         {FOOTER_ITEMS.map(footer => (
             <div className='w-[12.4rem] flex flex-col justify-start items-center' key={footer.text}>
                 <div className='flex justify-center items-center w-3600 h-3600'>{footer.icon}</div>
-                <WalletText align='center' size='2xs'>
+                <Text align='center' size='2xs'>
                     {footer.text}
-                </WalletText>
+                </Text>
             </div>
         ))}
     </div>

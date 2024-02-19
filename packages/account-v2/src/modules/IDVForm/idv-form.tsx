@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
+import { useDevice } from '@deriv-com/ui';
 import { WalletDropdown } from '../../components/base/WalletDropdown';
 import { WalletTextField } from '../../components/base/WalletTextField';
 import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
 import { getIDVNotApplicableOption } from '../../utils/default-options';
-import { getSelectedDocumentConfigData, TDocument } from './utils';
+import { getSelectedDocumentConfigData, TDocument } from '../../utils/idv-form-utils';
 
 type TIDVFormProps = {
     allowIDVSkip?: boolean;
@@ -28,12 +28,13 @@ type TDropDownList = {
 };
 
 export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
-    const { setFieldValue, values }: FormikProps<TIDVFormValues> = useFormikContext();
+    const formik: FormikProps<TIDVFormValues> = useFormikContext();
+
     const [documentList, setDocumentList] = useState<TDropDownList[]>([]);
 
     const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
 
-    const { isMobile } = useBreakpoint();
+    const { isMobile } = useDevice();
 
     const { documents_supported } = selectedCountry;
 
@@ -45,6 +46,24 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
         text: '',
         value: '',
     };
+
+    useEffect(() => {
+        if (documents_supported && Object.keys(documents_supported)?.length) {
+            const docList = Object.keys(documents_supported).map((key: string) => {
+                return {
+                    text: documents_supported[key].display_name,
+                    value: key,
+                };
+            });
+            setDocumentList(docList as TDropDownList[]);
+        }
+    }, [documents_supported]);
+
+    if (!formik) {
+        throw new Error('IDVForm must be used within a Formik component');
+    }
+
+    const { setFieldValue, values } = formik;
 
     const bindDocumentData = (item: string) => {
         setFieldValue('document_type', item, true);
@@ -62,18 +81,6 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
             bindDocumentData(item);
         }
     };
-
-    useEffect(() => {
-        if (documents_supported && Object.keys(documents_supported)?.length) {
-            const docList = Object.keys(documents_supported).map((key: string) => {
-                return {
-                    text: documents_supported[key].display_name,
-                    value: key,
-                };
-            });
-            setDocumentList(docList as TDropDownList[]);
-        }
-    }, [documents_supported]);
 
     return (
         <Fragment>

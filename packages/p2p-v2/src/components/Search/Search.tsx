@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { Input } from '@/components';
 import { LabelPairedSearchMdRegularIcon } from '@deriv/quill-icons';
+import { Input } from '@deriv-com/ui';
 import './Search.scss';
 
 type TSearchProps = {
@@ -22,8 +22,12 @@ const Search = ({ name, onSearch, placeholder }: TSearchProps) => {
     const debouncedOnSearch = useCallback(debounce(onSearch, 500), [onSearch]);
 
     return (
-        <form className='p2p-v2-search' onChange={event => debouncedOnSearch((event.target as HTMLInputElement).value)}>
-            <Input leadingIcon={<LabelPairedSearchMdRegularIcon />} name={name} placeholder={placeholder} />
+        <form
+            className='p2p-v2-search'
+            onChange={event => debouncedOnSearch((event.target as HTMLInputElement).value)}
+            role='search'
+        >
+            <Input label={placeholder} leftPlaceholder={<LabelPairedSearchMdRegularIcon />} name={name} type='search' />
         </form>
     );
 };

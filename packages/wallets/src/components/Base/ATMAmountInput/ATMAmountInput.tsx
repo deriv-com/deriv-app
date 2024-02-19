@@ -75,7 +75,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                         onFocus={onFocusHandler}
                         onPaste={formatOnPaste}
                         ref={inputRef}
-                        type='number'
+                        type='tel'
                         value={formattedValue}
                     />
                 </WalletText>

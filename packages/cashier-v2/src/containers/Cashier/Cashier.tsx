@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useAuthorize } from '@deriv/api';
 import { Loader, PageLayout, VerticalTab, VerticalTabItems } from '@deriv-com/ui';
-import { CashierLayout } from '../../components';
-import type { TRouteTypes, TSideNotes } from '../../types';
+import type { TRouteTypes } from '../../types';
 import styles from './Cashier.module.scss';
 
 const Cashier: React.FC<TRouteTypes.TRouteComponent> = ({ routes }) => {
-    const [sideNotes, setSideNotes] = useState<TSideNotes>({
-        notes: [],
-        position: undefined,
-    });
     const routesWithID = routes?.map(route => ({ ...route, id: route.path })) ?? [];
     const { isLoading } = useAuthorize();
     const history = useHistory();
@@ -35,18 +30,16 @@ const Cashier: React.FC<TRouteTypes.TRouteComponent> = ({ routes }) => {
                     </VerticalTab>
                 }
             >
-                <CashierLayout sideNotes={sideNotes}>
-                    <Switch>
-                        {routes?.map(route => {
-                            const { path, title } = route;
-                            return (
-                                <Route exact key={path} path={path}>
-                                    <route.component path={path} setSideNotes={setSideNotes} title={title} />
-                                </Route>
-                            );
-                        })}
-                    </Switch>
-                </CashierLayout>
+                <Switch>
+                    {routes?.map(route => {
+                        const { path, title } = route;
+                        return (
+                            <Route exact key={path} path={path}>
+                                <route.component path={path} title={title} />
+                            </Route>
+                        );
+                    })}
+                </Switch>
             </PageLayout>
         </div>
     );

@@ -55,7 +55,13 @@ const JurisdictionScreen = ({
                     '[transform:rotateY(-180deg)] h-[700px] opacity-50 bg-system-light-primary-background'
             )}
         >
-            <div className='flex lg:flex-row lg:py-20 items-center gap-16 justify-center w-full h-[82%] flex-col py-0'>
+            <div
+                className={clsx(
+                    `flex flex-col items-center justify-center w-full ${
+                        marketType === MarketType.FINANCIAL ? 'h-514' : 'h-458'
+                    } gap-16 py-0 lg:flex-row lg:py-20`
+                )}
+            >
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}

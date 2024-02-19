@@ -39,6 +39,9 @@ export const useOnLoadTranslation = () => {
         if (!i18n.language) {
             i18n.language = getInitialLanguage();
         }
+        (async () => {
+            await initMoment(i18n.language);
+        })();
         const is_english = i18n.language === 'EN';
         if (is_english) {
             setLoaded(true);
@@ -49,10 +52,6 @@ export const useOnLoadTranslation = () => {
         }
         return () => i18n.store.off('added');
     }, []);
-
-    (async () => {
-        await initMoment(i18n.language);
-    })();
 
     return [is_loaded, setLoaded];
 };

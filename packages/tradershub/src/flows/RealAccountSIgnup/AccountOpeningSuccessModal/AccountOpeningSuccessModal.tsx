@@ -13,6 +13,7 @@ const SelectedCurrencyIcon = () => {
     return (
         <div className='relative'>
             <div className='[&>svg]:scale-[2.4] w-[96px] h-[96px] flex justify-center items-center'>
+                {/* add currency icons to platform icon component */}
                 {IconToCurrencyMapper[state.currency ?? 'USD']?.icon}
             </div>
             <Checkmark className='absolute w-32 h-32 bottom-6 right-6' />

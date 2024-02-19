@@ -17,14 +17,18 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     const { uiState } = useUIContext();
     const { accountType } = uiState;
     const activeRegulation = uiState.regulation;
-    const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts(activeRegulation ?? '');
+    const {
+        areAllAccountsCreated,
+        data: sortedMt5Accounts,
+        isFetchedAfterMount,
+    } = useSortedMT5Accounts(activeRegulation ?? '');
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { isEU } = useRegulationFlags();
     const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
-        return data?.some(MT5Account => MT5Account.is_added);
-    }, [data]);
+        return sortedMt5Accounts?.some(MT5Account => MT5Account.is_added);
+    }, [sortedMt5Accounts]);
 
     // Check if we need to invalidate the query
     useEffect(() => {
@@ -49,7 +53,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
                 </div>
             )}
             {isFetchedAfterMount &&
-                data?.map(MT5Account => {
+                sortedMt5Accounts?.map(MT5Account => {
                     if (
                         MT5Account.is_added &&
                         MT5Account.is_virtual === activeTradingAccount?.is_virtual &&

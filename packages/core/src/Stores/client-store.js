@@ -2302,7 +2302,6 @@ export default class ClientStore extends BaseStore {
     }
 
     onSignup({ citizenship, password, residence }, cb) {
-        console.log(password);
         if (!this.verification_code.signup || !password || !residence || !citizenship) return;
         WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams())
             .then(async response => {

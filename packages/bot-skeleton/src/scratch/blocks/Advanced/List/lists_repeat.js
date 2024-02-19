@@ -51,7 +51,7 @@ Blockly.JavaScript.lists_repeat = block => {
                 array[i] = value;
             }
             return array;
-        }`
+        }`;
     codeSanitze = codeSanitze.replace(/^\s+\n/, '');
     codeSanitze = codeSanitze.replace(/undefined/g, '');
 
@@ -60,13 +60,13 @@ Blockly.JavaScript.lists_repeat = block => {
     codeSanitze = codeSanitze.replace(/\s/g, '');
     codeSanitze = codeSanitze.replace(/function/, 'function ');
     codeSanitze = codeSanitze.replace(/return/, 'return ');
-    codeSanitze = codeSanitze.replace(/var/, 'return ');
+    codeSanitze = codeSanitze.replace(/var/, 'var ');
     // eslint-disable-next-line no-underscore-dangle
     const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [codeSanitze]);
 
-    const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.Order['COMMA']) || 'null';
-    const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.Order['COMMA']) || '0';
+    const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.Order.COMMA) || 'null';
+    const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.Order.COMMA) || '0';
     const code = `${function_name}(${element}, ${repeat_count})`;
 
-    return [code, Blockly.JavaScript.Order['FUNCTION_CALL']];
+    return [code, Blockly.JavaScript.Order.FUNCTION_CALL];
 };

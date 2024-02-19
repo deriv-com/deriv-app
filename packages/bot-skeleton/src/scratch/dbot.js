@@ -234,7 +234,7 @@ class DBot {
         if (api_base.is_stopping) return;
 
         try {
-            let code = Blockly?.JavaScript?.definitions_?.variables + this.generateCode()
+            const code = Blockly?.JavaScript?.definitions_?.variables + this.generateCode();
             api_base.is_stopping = false;
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
@@ -326,9 +326,54 @@ class DBot {
                     break;
                 }
             }
-            ${Blockly?.JavaScript?.definitions_?.mathRandomInt}
-            ${Blockly?.JavaScript?.definitions_?.mathMean}
-            ${Blockly?.JavaScript?.definitions_?.listsRepeat}`;
+            ${
+                Blockly &&
+                Blockly.JavaScript &&
+                Blockly.JavaScript.definitions_ &&
+                Blockly.JavaScript.definitions_.mathMedian
+                    ? Blockly.JavaScript.definitions_.mathMedian
+                    : ''
+            }
+            ${
+                Blockly &&
+                Blockly.JavaScript &&
+                Blockly.JavaScript.definitions_ &&
+                Blockly.JavaScript.definitions_.mathRandomInt
+                    ? Blockly.JavaScript.definitions_.mathRandomInt
+                    : ''
+            }
+            ${
+                Blockly &&
+                Blockly.JavaScript &&
+                Blockly.JavaScript.definitions_ &&
+                Blockly.JavaScript.definitions_.mathMean
+                    ? Blockly.JavaScript.definitions_.mathMean
+                    : ''
+            }
+            ${
+                Blockly &&
+                Blockly.JavaScript &&
+                Blockly.JavaScript.definitions_ &&
+                Blockly.JavaScript.definitions_.subsequenceFromEndFromEnd
+                    ? Blockly.JavaScript.definitions_.subsequenceFromEndFromEnd
+                    : ''
+            }
+            ${
+                Blockly &&
+                Blockly.JavaScript &&
+                Blockly.JavaScript.definitions_ &&
+                Blockly.JavaScript.definitions_.subsequenceFromEndLast
+                    ? Blockly.JavaScript.definitions_.subsequenceFromEndLast
+                    : ''
+            }
+            ${
+                Blockly &&
+                Blockly.JavaScript &&
+                Blockly.JavaScript.definitions_ &&
+                Blockly.JavaScript.definitions_.listsRepeat
+                    ? Blockly.JavaScript.definitions_.listsRepeat
+                    : ''
+            }`;
     }
 
     /**
@@ -599,7 +644,6 @@ class DBot {
                         // Object.keys(orderValues).forEach(prop => {
                         //     Blockly.JavaScript[`ORDER_${prop}`] = orderValues[prop];
                         // });
-
 
                         const order = Blockly.JavaScript.Order;
                         const value = Blockly.JavaScript.valueToCode(block, input_name, order);

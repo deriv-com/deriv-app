@@ -139,19 +139,29 @@ Blockly.JavaScript.lists_getSublist = block => {
         const has_at1 = where1 === 'FROM_END' || where1 === 'FROM_START';
         const has_at2 = where2 === 'FROM_END' || where2 === 'FROM_START';
 
-        // eslint-disable-next-line no-underscore-dangle
-        const function_name = Blockly.JavaScript.provideFunction_(
-            `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
-            [
-                // eslint-disable-next-line no-underscore-dangle
-                `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(
+        let codeSanitze = `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(
                     sequence${has_at1 ? ', at1' : ''}${has_at2 ? ', at2' : ''}
                 ) {
                     var start = ${getIndex('sequence', where1, 'at1')};
                     var end = ${getIndex('sequence', where2, 'at2')} + 1;
 
                     return sequence.slice(start, end);
-                }`,
+                }`;
+        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
+        codeSanitze = codeSanitze.replace(/undefined/g, '');
+
+        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
+        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
+        codeSanitze = codeSanitze.replace(/\s/g, '');
+        codeSanitze = codeSanitze.replace(/function/, 'function ');
+        codeSanitze = codeSanitze.replace(/return/, 'return ');
+        codeSanitze = codeSanitze.replace(/var/, 'var ');
+        // eslint-disable-next-line no-underscore-dangle
+        const function_name = Blockly.JavaScript.provideFunction_(
+            `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
+            [
+                // eslint-disable-next-line no-underscore-dangle
+                codeSanitze,
             ]
         );
 

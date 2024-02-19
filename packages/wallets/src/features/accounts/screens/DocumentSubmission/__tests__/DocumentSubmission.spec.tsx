@@ -46,7 +46,7 @@ describe('DocumentSubmission', () => {
         expect(screen.getByText('Document Submission')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'We accept only these types of documents as proof of address. The document must be recent (issued within last 6 months) and include your name and address:'
+                'We accept only these types of documents as proof of address. The document must be recent (issued within last 12 months) and include your name and address:'
             )
         ).toBeInTheDocument();
         expect(screen.getByText('Utility bill: electricity, water, gas, or landline phone bill.')).toBeInTheDocument();

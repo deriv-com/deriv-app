@@ -17,10 +17,6 @@ export const MANUAL_DOCUMENT_TYPES = Object.freeze({
 
 export const MANUAL_DOCUMENT_SELFIE = 'selfie_with_id';
 
-export const MANUAL_FORM_INITIAL_VALUES = Object.freeze({
-    document_number: '',
-});
-
 const MANUAL_FORM_PAGE_TYPES = Object.freeze({
     BACK: 'back',
     FRONT: 'front',

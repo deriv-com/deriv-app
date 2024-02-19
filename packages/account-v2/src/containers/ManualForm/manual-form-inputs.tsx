@@ -4,7 +4,7 @@ import { Input, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { useManualForm } from '../../hooks';
-import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
+import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manual-form-utils';
 
 type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
 

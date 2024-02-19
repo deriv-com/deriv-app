@@ -1,3 +1,4 @@
+import { FormikValues } from 'formik';
 import * as Yup from 'yup';
 import {
     MANUAL_DOCUMENT_SELFIE,
@@ -27,7 +28,7 @@ export const getManualFormValidationSchema = (
     const documentExpiryValidation = {
         document_expiry: isExpiryDateRequired
             ? Yup.string().required(fieldsConfig.documentExpiry.errorMessage)
-            : Yup.string().notRequired(),
+            : Yup.string(),
     };
 
     const documentUploadValidation = Object.fromEntries(
@@ -35,7 +36,7 @@ export const getManualFormValidationSchema = (
     );
 
     return Yup.object({
-        document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
+        document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage).default('12'),
         ...documentExpiryValidation,
         ...documentUploadValidation,
     });
@@ -53,4 +54,12 @@ export const getSelfieValidationSchema = () => {
             })
             .required(),
     }).default(() => ({ [MANUAL_DOCUMENT_SELFIE]: null }));
+};
+
+export const setInitialValues = (fields: string[]) => {
+    const values: FormikValues = {};
+    fields.forEach((field: string) => {
+        values[field] = '';
+    });
+    return values;
 };

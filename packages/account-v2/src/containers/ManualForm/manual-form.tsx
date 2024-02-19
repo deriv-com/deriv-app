@@ -1,27 +1,40 @@
-import React from 'react';
-import { Form, Formik } from 'formik';
+import React, { useMemo } from 'react';
+import { Form, Formik, FormikValues } from 'formik';
+import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
-import { MANUAL_FORM_INITIAL_VALUES, TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { useManualForm } from '../../hooks';
-import { getManualFormValidationSchema } from '../../utils/manualFormUtils';
-import { ManualFormDocumentUpload } from './manualFormDocumentUpload';
-import { ManualFormFooter } from './manualFormFooter';
-import { ManualFormInputs } from './manualFormInputs';
+import { getManualFormValidationSchema, setInitialValues } from '../../utils/manual-form-utils';
+import { ManualFormDocumentUpload } from './manual-form-document-upload';
+import { ManualFormFooter } from './manual-form-footer';
+import { ManualFormInputs } from './manual-form-inputs';
+
+type TmanualDocumentFormValues = InferType<ReturnType<typeof getManualFormValidationSchema>>;
 
 type TManualFormProps = {
+    formData: FormikValues;
     onCancel: () => void;
-    onSubmit: (values: typeof MANUAL_FORM_INITIAL_VALUES) => void;
+    onSubmit: (values: TmanualDocumentFormValues) => void;
     selectedDocument: TManualDocumentTypes;
 };
 
-export const ManualForm = ({ onCancel, onSubmit, selectedDocument }: TManualFormProps) => {
+export const ManualForm = ({ formData, onCancel, onSubmit, selectedDocument }: TManualFormProps) => {
     const { isExpiryDateRequired } = useManualForm();
+
+    const validationSchema = getManualFormValidationSchema(selectedDocument, isExpiryDateRequired);
+
+    const initialValues = useMemo(() => {
+        const defaultValues = setInitialValues(Object.keys(validationSchema.fields));
+        const formValues = { ...defaultValues, ...formData };
+        delete formValues[MANUAL_DOCUMENT_SELFIE];
+        return formValues;
+    }, [formData, validationSchema.fields]);
 
     return (
         <Formik
-            initialValues={MANUAL_FORM_INITIAL_VALUES}
+            initialValues={initialValues as TmanualDocumentFormValues}
             onSubmit={onSubmit}
-            validationSchema={() => getManualFormValidationSchema(selectedDocument, isExpiryDateRequired)}
+            validationSchema={validationSchema}
         >
             {({ isSubmitting, isValid }) => (
                 <Form>

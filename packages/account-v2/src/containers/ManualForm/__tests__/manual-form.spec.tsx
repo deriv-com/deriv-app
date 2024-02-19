@@ -2,7 +2,7 @@ import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ManualForm } from '../manualForm';
+import { ManualForm } from '../manual-form';
 
 jest.mock('react-calendar/dist/Calendar.css', () => jest.fn());
 jest.mock('../../../hooks', () => ({

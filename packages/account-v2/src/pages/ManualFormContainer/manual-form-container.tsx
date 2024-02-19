@@ -4,7 +4,8 @@ import { InferType } from 'yup';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
-import { getManualFormValidationSchema, getSelfieValidationSchema } from '../../utils/manualFormUtils';
+import { useManualForm } from '../../hooks';
+import { getManualFormValidationSchema, getSelfieValidationSchema } from '../../utils/manual-form-utils';
 
 type TManualUploadContainerProps = {
     selectedDocument: string | null;
@@ -12,9 +13,12 @@ type TManualUploadContainerProps = {
 };
 
 export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }: TManualUploadContainerProps) => {
-    const manualUpload = getManualFormValidationSchema(selectedDocument as TManualDocumentTypes).concat(
-        getSelfieValidationSchema()
-    );
+    const { isExpiryDateRequired } = useManualForm();
+
+    const manualUpload = getManualFormValidationSchema(
+        selectedDocument as TManualDocumentTypes,
+        isExpiryDateRequired
+    ).concat(getSelfieValidationSchema());
 
     type TManualUploadFormData = InferType<typeof manualUpload>;
 

@@ -1,1 +1,1 @@
-export { ManualForm } from './manualForm';
+export { ManualForm } from './manual-form';

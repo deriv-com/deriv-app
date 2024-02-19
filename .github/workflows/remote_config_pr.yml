@@ -1,4 +1,12 @@
 name: Deriv App Remote Config backup file
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  pull-requests: write
+  statuses: write
 on:
   push:
     branches:
@@ -23,14 +31,6 @@ jobs:
       with:
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
 
-    - name: Import GPG key
-      id: import-gpg
-      uses: deriv-com/ghaction-import-gpg@v6
-      with:
-        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-        passphrase: ${{ secrets.GPG_PASSPHRASE }}
-        git_user_signingkey: true
-        git_commit_gpgsign: true
     - name: Commit the file and Create PR
       env:
         GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}

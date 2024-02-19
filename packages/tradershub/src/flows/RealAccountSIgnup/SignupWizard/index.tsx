@@ -1,20 +1,16 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import ReactModal from 'react-modal';
-import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import { ProgressBar } from '../../../components/ProgressBar';
+import { DesktopProgressBar, MobileProgressBar } from '../../../components/ProgressBar';
+import { TSteps } from '../../../components/ProgressBar/Stepper';
 import { CUSTOM_STYLES } from '../../../helpers/signupModalHelpers';
-import { ACTION_TYPES, useSignupWizardContext } from '../../../providers/SignupWizardProvider';
+import { useSignupWizardContext } from '../../../providers/SignupWizardProvider';
+import ExitConfirmationDialog from '../ExitConfirmationDialog';
 import WizardScreens from './WizardScreens';
 import './index.scss';
 
-const FORM_PROGRESS_STEPS = [
-    { isFilled: false, title: 'Account currency' },
-    { isFilled: false, title: 'Personal details' },
-    { isFilled: false, title: 'Address' },
-    { isFilled: false, title: 'Terms of use' },
-];
+const FORM_PROGRESS_STEPS: TSteps = ['Account currency', 'Personal details', 'Address', 'Terms of use'];
 
 /**
  * @name SignupWizard
@@ -25,41 +21,46 @@ const FORM_PROGRESS_STEPS = [
  * );
  */
 const SignupWizard = () => {
-    const { currentStep, dispatch, helpers, isWizardOpen, setIsWizardOpen } = useSignupWizardContext();
-    const { isMobile } = useBreakpoint();
-    useEffect(() => {
-        ReactModal.setAppElement('#v2_modal_root');
-    }, []);
-
-    const handleClose = useCallback(() => {
-        setIsWizardOpen(false);
-        dispatch({ type: ACTION_TYPES.RESET });
-        helpers.setStep(1);
-    }, [dispatch, helpers, setIsWizardOpen]);
+    const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
+    const { currentStep, isWizardOpen } = useSignupWizardContext();
 
     return (
-        <ReactModal isOpen={isWizardOpen} onRequestClose={handleClose} shouldCloseOnOverlayClick style={CUSTOM_STYLES}>
-            <div className='bg-background-primary-base md:max-h-[717px] md:max-w-[1040px] h-screen w-screen md:rounded-800 flex overflow-hidden'>
-                {!isMobile && (
-                    <div className='min-w-[256px] bg-system-light-secondary-background p-1200'>
-                        <Text as='p' className='font-bold pt-1600 pb-1200 text-300'>
+        <Fragment>
+            <ReactModal
+                ariaHideApp={false}
+                isOpen={isWizardOpen}
+                onRequestClose={() => setIsConfirmationDialogOpen(true)}
+                shouldCloseOnOverlayClick={false}
+                style={CUSTOM_STYLES}
+            >
+                <div className='bg-system-light-primary-background lg:max-h-[717px] lg:max-w-[1040px] h-screen w-screen lg:rounded-xl flex overflow-hidden'>
+                    <div className='d-none lg:block min-w-[256px] bg-system-light-secondary-background p-24'>
+                        <Text as='p' className='pt-32 pb-24 text-2xl' weight='bold'>
                             Add a Deriv Account
                         </Text>
-                        <ProgressBar activeStep={currentStep} steps={FORM_PROGRESS_STEPS} />
-                    </div>
-                )}
-                <div className='flex flex-col justify-between w-full'>
-                    {!isMobile && (
+                        <DesktopProgressBar activeStep={currentStep} steps={FORM_PROGRESS_STEPS} />
                         <StandaloneXmarkBoldIcon
-                            className='absolute cursor-pointer right-1200 top-1200'
-                            onClick={handleClose}
+                            className='absolute cursor-pointer right-24 top-24'
+                            onClick={() => setIsConfirmationDialogOpen(true)}
                         />
-                    )}
-                    {isMobile && <ProgressBar activeStep={currentStep} steps={FORM_PROGRESS_STEPS} />}
-                    <WizardScreens />
+                    </div>
+                    <div className='flex flex-col justify-between w-full'>
+                        <div className='lg:d-none'>
+                            <MobileProgressBar
+                                activeStep={currentStep}
+                                onClickClose={() => setIsConfirmationDialogOpen(true)}
+                                steps={FORM_PROGRESS_STEPS}
+                            />
+                        </div>
+                        <WizardScreens />
+                    </div>
                 </div>
-            </div>
-        </ReactModal>
+            </ReactModal>
+            <ExitConfirmationDialog
+                isOpen={isConfirmationDialogOpen}
+                onClose={() => setIsConfirmationDialogOpen(false)}
+            />
+        </Fragment>
     );
 };
 

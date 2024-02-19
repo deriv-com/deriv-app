@@ -9,6 +9,7 @@ type TMyProfileStatsItemProps = {
     onClickLifetime?: (isLifetimeClicked: boolean) => void;
     shouldShowDuration?: boolean;
     shouldShowLifetime?: boolean;
+    testId?: string;
     value: string;
 };
 const MyProfileStatsItem = ({
@@ -17,6 +18,7 @@ const MyProfileStatsItem = ({
     onClickLifetime,
     shouldShowDuration = true,
     shouldShowLifetime,
+    testId,
     value,
 }: TMyProfileStatsItemProps) => {
     const [hasClickedLifetime, setHasClickedLifetime] = useState(false);
@@ -27,7 +29,7 @@ const MyProfileStatsItem = ({
     };
 
     return (
-        <div className='p2p-v2-my-profile-stats__item'>
+        <div className='p2p-v2-my-profile-stats__item' data-testid={testId}>
             <div>
                 <Text size='sm'>{label} </Text>
                 {shouldShowDuration && (

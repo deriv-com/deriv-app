@@ -1,11 +1,11 @@
 import React from 'react';
+import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
+import { ActionScreen, SentEmailContent } from '@/components';
+import { useMT5AccountHandler } from '@/hooks';
+import { MarketType, QueryStatus } from '@cfd/constants';
+import { CreatePassword, EnterPassword } from '@cfd/screens';
 import { useAccountStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { ActionScreen, SentEmailContent } from '../../../../components';
-import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { MarketType, QueryStatus } from '../../constants';
-import { CreatePassword, EnterPassword } from '../../screens';
 import MT5SuccessModal from './MT5SuccessModal';
 
 type TMT5PasswordInputProps = {

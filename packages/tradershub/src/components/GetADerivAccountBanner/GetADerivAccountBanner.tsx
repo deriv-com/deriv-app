@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from '@deriv/quill-design';
+import { Button, Text } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
 
 /**
@@ -12,9 +12,9 @@ import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
 const GetADerivAccountBanner = () => {
     const { setIsWizardOpen } = useSignupWizardContext();
     return (
-        <div className='flex items-center justify-center w-full p-800 gap-800 rounded-200 bg-system-light-secondary-background'>
-            <Text bold>You need a Deriv account to create a CFD account.</Text>
-            <Button className='rounded-200' onClick={() => setIsWizardOpen(true)}>
+        <div className='flex items-center justify-center w-full gap-16 p-16 rounded-xs bg-system-light-secondary-background'>
+            <Text weight='bold'>You need a Deriv account to create a CFD account.</Text>
+            <Button className='rounded-xs' onClick={() => setIsWizardOpen(true)}>
                 Get a Deriv account
             </Button>
         </div>

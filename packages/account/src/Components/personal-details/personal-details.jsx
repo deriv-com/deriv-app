@@ -84,7 +84,8 @@ const PersonalDetails = observer(
                 trackEvent({
                     action: 'close',
                 });
-        }, [trackEvent]);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
 
         //is_rendered_for_idv is used for configuring the components when they are used in idv page
         const is_rendered_for_idv = shouldShowIdentityInformation({
@@ -118,6 +119,9 @@ const PersonalDetails = observer(
         };
 
         const handleValidate = values => {
+            const current_step = getCurrentStep() - 1;
+            onSave(current_step, values);
+
             setNoConfirmationNeeded(values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id);
             let idv_error = {};
             if (is_rendered_for_idv) {
@@ -155,7 +159,6 @@ const PersonalDetails = observer(
                 initialValues={{ ...props.value }}
                 validate={handleValidate}
                 validateOnMount
-                enableReinitialize
                 onSubmit={(values, actions) => {
                     trackEvent({
                         action: 'save',

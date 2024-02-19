@@ -9,9 +9,9 @@ type THeaderProps = {
     disable_month_selector?: boolean;
     disable_year_selector?: boolean;
     hide_disabled_periods?: boolean;
-    isPeriodDisabled: (date: moment.MomentInput, unit: moment.unitOfTime.StartOf) => boolean;
-    navigateTo: (new_date: moment.MomentInput) => void;
-    switchView: (new_view: string) => void;
+    isPeriodDisabled: (date: moment.Moment, unit: moment.unitOfTime.StartOf) => boolean;
+    navigateTo: (new_date: moment.Moment) => void;
+    switchView?: (new_view: string) => void;
 };
 
 const Header = ({
@@ -88,7 +88,7 @@ const Header = ({
                         className='dc-calendar__btn--select'
                         is_hidden={!is_date_view}
                         label={moment_date.format('MMM')}
-                        onClick={() => (disable_month_selector ? undefined : switchView('month'))}
+                        onClick={() => (disable_month_selector ? undefined : switchView?.('month'))}
                     />
                 )}
                 {(is_date_view || is_month_view) && (
@@ -96,14 +96,14 @@ const Header = ({
                         className='dc-calendar__btn--select'
                         is_disabled={is_select_year_disabled}
                         label={moment_date.format('YYYY')}
-                        onClick={() => (is_select_year_disabled ? undefined : switchView('year'))}
+                        onClick={() => (is_select_year_disabled ? undefined : switchView?.('year'))}
                     />
                 )}
                 {(is_year_view || is_decade_view) && (
                     <Button
                         className='dc-calendar__btn--select'
                         is_disabled={is_select_year_disabled}
-                        onClick={is_select_year_disabled ? undefined : () => switchView('years')}
+                        onClick={is_select_year_disabled ? undefined : () => switchView?.('years')}
                     >
                         {is_year_view && `${decade}`}
                         {is_decade_view && `${century}`}

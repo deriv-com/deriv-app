@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Dialog, Modal } from '../../../../components';
+import { Dialog, Modal } from '@/components';
+import { useDevice } from '@deriv-com/ui';
 import DxtradePasswordFooter from './DxtradePasswordFooter';
 import DxtradePasswordInput from './DxtradePasswordInput';
 
 const DxtradePasswordModal = () => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const [password, setPassword] = useState('');
 
-    if (isMobile) {
+    if (!isDesktop) {
         return (
             <Modal>
                 <Modal.Content>

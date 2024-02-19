@@ -1,13 +1,14 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
+import { clsx } from 'clsx';
+import DocumentsIcon from '@/assets/svgs/ic-documents.svg';
+import IdCardIcon from '@/assets/svgs/ic-id-card.svg';
+import SelfieIcon from '@/assets/svgs/ic-selfie.svg';
+import { StaticLink } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { useDynamicLeverageModalState } from '@cfd/components';
+import { MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { Link, qtMerge, Text } from '@deriv/quill-design';
-import { useUIContext } from '../../../../../components';
-import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
-import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
-import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
-import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
-import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
-import { MarketType } from '../../../constants';
+import { Text } from '@deriv-com/ui';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import {
     TClickableDescription,
@@ -61,9 +62,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getCFDState } = Provider.useCFDContext();
-    const { uiState } = useUIContext();
-    const regulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(regulation);
+    const { isEU } = useRegulationFlags();
 
     const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
@@ -93,13 +92,13 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
             return row.clickableDescription.map(description => {
                 if (description.type === 'link') {
                     return (
-                        <Link
-                            className='text-brand-red-light text-50 py-50 pl-50 hover:no-underline'
+                        <StaticLink
+                            className='py-0 pl-0 text-sm bg-transparent text-brand-red-light'
                             key={`jurisdiction-card-description-${description.text}`}
                             onClick={descriptionClickHandler(description.tag)}
                         >
                             {description.text}
-                        </Link>
+                        </StaticLink>
                     );
                 }
                 return description.text;
@@ -115,7 +114,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                         ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
                 })}
             >
-                <Text bold className='leading-[1] text-system-light-primary-background text-50'>
+                <Text className='leading-2 text-system-light-primary-background' size='sm' weight='bold'>
                     {row?.titleIndicators.displayText}
                 </Text>
             </div>
@@ -123,7 +122,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
 
     return (
         <div
-            className={qtMerge(JurisdictionCardClass({ isAdded, isFlipped, isSelected }))}
+            className={clsx(JurisdictionCardClass({ isAdded, isFlipped, isSelected }))}
             onClick={() => {
                 !isAdded && onSelect(jurisdiction);
             }}
@@ -133,10 +132,10 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                 }
             }}
         >
-            <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 backface-hidden px-800 pt-1000 pb-1800 transform-gpu'>
+            <div className='flex flex-col justify-center w-full h-full px-16 pt-20 transition-transform duration-300 backface-hidden pb-36 transform-gpu'>
                 {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
                 <div className='mt-[25px] mb-[15px] text-center'>
-                    <Text bold size='lg'>
+                    <Text size='lg' weight='bold'>
                         {header}
                     </Text>
                 </div>
@@ -155,7 +154,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                                     marketType !== 'all'
                                 ) {
                                     return (
-                                        <div className='flex gap-300'>
+                                        <div className='flex gap-6'>
                                             {!(marketType in verificationDocs)
                                                 ? verificationDocumentsMapper.notApplicable.icon
                                                 : verificationDocs[marketType]
@@ -179,8 +178,8 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                     ))}
                 </div>
                 {isAdded && (
-                    <div className='absolute w-full text-center rounded-b-[13px] rounded-t-50 bottom-50 left-50 p-400 bg-brand-blue'>
-                        <Text bold className='text-system-light-primary-background' size='sm'>
+                    <div className='absolute bottom-0 left-0 w-full p-8 text-center rounded-t-none rounded-b-lg bg-brand-blue'>
+                        <Text className='text-system-light-primary-background' size='sm' weight='bold'>
                             Added
                         </Text>
                     </div>

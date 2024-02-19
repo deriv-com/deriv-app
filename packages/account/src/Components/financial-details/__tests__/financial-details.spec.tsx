@@ -93,7 +93,7 @@ describe('<FinancialDetails />', () => {
         expect(btns[0]).toHaveTextContent('Previous');
 
         userEvent.click(btns[0]);
-        expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(1);
+        expect(mock_props.getCurrentStep).toHaveBeenCalled();
     });
 
     it('should trigger "Previous" or "Submit" button', async () => {

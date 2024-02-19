@@ -1,5 +1,8 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
+import { ScrollToFieldError } from '@/helpers';
+import { personalDetails } from '@/utils';
+import { Text } from '@deriv-com/ui';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
 import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
 import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
@@ -13,33 +16,43 @@ import Details from './Sections/Details';
  * @returns {React.ReactNode}
  */
 const PersonalDetails = () => {
-    const { dispatch, state } = useSignupWizardContext();
+    const { dispatch, helpers, state } = useSignupWizardContext();
 
     const handleSubmit = (values: FormikValues) => {
         dispatch({ payload: { ...values }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
+        helpers.goToNextStep();
     };
 
     const initialValues = {
-        accountOpeningReason: state.accountOpeningReason,
-        dateOfBirth: state.dateOfBirth,
-        firstName: state.firstName,
-        lastName: state.lastName,
-        phoneNumber: state.phoneNumber,
-        placeOfBirth: state.placeOfBirth,
-        taxIdentificationNumber: state.taxIdentificationNumber,
-        taxResidence: state.taxResidence,
+        firstName: state.firstName ?? '',
+        lastName: state.lastName ?? '',
+        dateOfBirth: state.dateOfBirth ?? '',
+        confirmation: false,
+        phoneNumber: state.phoneNumber ?? '',
+        placeOfBirth: state.placeOfBirth ?? '',
+        taxResidence: state.taxResidence ?? '',
+        taxIdentificationNumber: state.taxIdentificationNumber ?? '',
+        accountOpeningReason: state.accountOpeningReason ?? '',
+        taxInfoConfirmation: false,
     };
-
     return (
         <WizardScreenWrapper heading='Complete your personal details'>
-            <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
+            <Formik
+                enableReinitialize
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validateOnBlur
+                validateOnChange
+                validationSchema={personalDetails}
+            >
                 {() => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
-                            <p className='text-75'>
+                        <ScrollToFieldError fieldOrder={Object.keys(initialValues)} />
+                        <div className='flex-1 p-16 overflow-y-auto lg:p-24'>
+                            <Text className='text-sm lg:text-default'>
                                 Any information you provide is confidential and will be used for verification purposes
                                 only.
-                            </p>
+                            </Text>
                             <Details />
                             <AdditionalInformation />
                         </div>

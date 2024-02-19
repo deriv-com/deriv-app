@@ -1,63 +1,88 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Fragment, lazy, Suspense } from 'react';
 import { useFormikContext } from 'formik';
-import { InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
+import { Divider, InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
+import DetailsConfirmation from './DetailsConfirmation';
 
-const ExampleImage = lazy(() => import('../../../public/images/personal-details-example.svg'));
+const ExampleImage = lazy(() => import('@/assets/svgs/personal-details-example.svg'));
 
 const Details = () => {
-    const { handleBlur, handleChange, values } = useFormikContext<{
+    const { errors, handleBlur, handleChange, touched, values } = useFormikContext<{
+        confirmation: boolean;
         dateOfBirth: string;
         firstName: string;
         lastName: string;
     }>();
+
     return (
-        <>
-            <Text as='p' className='my-800' weight='bold'>
-                Details
-            </Text>
-            <div className='outline outline-1 outline-system-light-active-background mx-800 p-800 rounded-400 pb-2000'>
-                <InlineMessage className='items-start mb-800' variant='warning'>
-                    <Text>
+        <Fragment>
+            <div className='flex items-center gap-16'>
+                <Text as='p' className='my-16 shrink-0' weight='bold'>
+                    Details
+                </Text>
+                <Divider className='w-full' color='#F2F3F4' />
+            </div>
+            <div className='p-16 mx-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
+                <InlineMessage className='items-start mb-16' variant='warning'>
+                    <Text as='p' className='text-sm lg:text-default'>
                         To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
                         <span className='font-bold'>date of birth</span> exactly as they appear on your identity
                         document.
                     </Text>
                 </InlineMessage>
-                <div className='flex justify-center gap-800'>
-                    <div className='flex flex-col w-1/2 gap-2000'>
+                <div className='flex flex-col-reverse justify-center gap-16 lg:flex-row'>
+                    <div className='flex flex-col w-full gap-20 lg:w-1/2'>
                         <Input
-                            className='w-full text-body-md'
+                            className='text-default'
+                            disabled={values.confirmation}
+                            error={Boolean(errors.firstName && touched.firstName)}
+                            isFullWidth
                             label='First name*'
-                            message='Your first name as in your identity document.'
+                            message={
+                                errors.firstName && touched.firstName
+                                    ? errors.firstName
+                                    : 'Your first name as in your identity document'
+                            }
                             name='firstName'
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            required
                             value={values.firstName}
                         />
                         <Input
-                            className='w-full text-body-sm'
+                            className='text-default'
+                            disabled={values.confirmation}
+                            error={Boolean(errors.lastName && touched.lastName)}
+                            isFullWidth
                             label='Last name*'
-                            message='Your last name as in your identity document.'
+                            message={
+                                errors.lastName && touched.lastName
+                                    ? errors.lastName
+                                    : 'Your last name as in your identity document'
+                            }
                             name='lastName'
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            required
                             value={values.lastName}
                         />
                         {/** Add date picker when available from deriv/ui */}
                         <Input
-                            className='w-full text-body-sm'
+                            className='text-default'
+                            disabled={values.confirmation}
+                            error={Boolean(errors.dateOfBirth && touched.dateOfBirth)}
+                            isFullWidth
                             label='Date of birth*'
-                            message='Your last name as in your identity document.'
+                            message={
+                                errors.dateOfBirth && touched.dateOfBirth
+                                    ? errors.dateOfBirth
+                                    : 'Your last name as in your identity document'
+                            }
                             name='dateOfBirth'
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            required
+                            type='date'
                             value={values.dateOfBirth}
                         />
                     </div>
-                    <div className='relative w-1/2 text-center'>
+                    <div className='relative text-center lg:w-1/2'>
                         <Text as='p' className='mt-2 mb-4' size='xs' weight='bold'>
                             Example:
                         </Text>
@@ -65,10 +90,12 @@ const Details = () => {
                             <ExampleImage />
                         </Suspense>
                     </div>
-                    {/** Add confirmation checkbox for the confirmation when available in deriv/ui */}
+                </div>
+                <div className='mt-16'>
+                    <DetailsConfirmation />
                 </div>
             </div>
-        </>
+        </Fragment>
     );
 };
 

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useUIContext } from '@/components';
 import { useActiveTradingAccount, useIsEuRegion, useLandingCompany, useTradingAccountsList } from '@deriv/api';
 import { Regulation } from '../constants/constants';
 
@@ -7,7 +8,9 @@ import { Regulation } from '../constants/constants';
  * @param regulation 'EU' | 'Non-EU'
  * @returns  { isDemo: boolean, isEU: boolean, isEUReal: boolean, isNonEU: boolean, isNonEUReal: boolean }
  */
-const useRegulationFlags = (regulation?: string, accountType?: string) => {
+const useRegulationFlags = () => {
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
     const { isEUCountry } = useIsEuRegion();
     const { data: activeTradingAccount, isSuccess: activeTradingAccountSuccess } = useActiveTradingAccount();
     const { data: tradingAccountsList, isSuccess: tradingAccountListSuccess } = useTradingAccountsList();

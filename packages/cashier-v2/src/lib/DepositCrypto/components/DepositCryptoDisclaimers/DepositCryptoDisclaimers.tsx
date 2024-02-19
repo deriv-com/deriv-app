@@ -22,15 +22,15 @@ const DepositCryptoDisclaimers = () => {
     );
 
     const minimumDepositDisclaimer = activeAccount?.currency_config?.is_tUSDT ? (
-        <li>
+        <Text as='li' size='2xs'>
             A minimum deposit value of <strong>{formattedMinimumDepositValue}</strong> {currency} is required.
             Otherwise, a fee is applied.
-        </li>
+        </Text>
     ) : (
-        <li>
+        <Text as='li' size='2xs'>
             A minimum deposit value of <strong>{formattedMinimumDepositValue}</strong> {currency} is required.
             Otherwise, the funds will be lost and cannot be recovered.
-        </li>
+        </Text>
     );
 
     return (
@@ -42,13 +42,17 @@ const DepositCryptoDisclaimers = () => {
                     </Text>
                     <ul className={styles.points}>
                         {activeAccount?.currency_config?.minimum_deposit && minimumDepositDisclaimer}
-                        <li>Do not send other cryptocurrencies to this address.</li>
-                        <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
-                        <li>
+                        <Text as='li' size='2xs'>
+                            Do not send other cryptocurrencies to this address.
+                        </Text>
+                        <Text as='li' size='2xs'>
+                            Make sure to copy your Deriv account address correctly into your crypto wallet.
+                        </Text>
+                        <Text as='li' size='2xs'>
                             In your cryptocurrency wallet, make sure to select{' '}
                             <strong>{currency && cryptoCurrencyToNetworkMapper[currency]} network</strong> when you
                             transfer funds to Deriv.
-                        </li>
+                        </Text>
                     </ul>
                 </div>
             </InlineMessage>

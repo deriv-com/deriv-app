@@ -12,7 +12,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    line-height: 1.4rem;
     gap: 1rem;
 
     @include mobile-cashier-v2 {
@@ -26,8 +25,6 @@
 }
 
 .note {
-    font-size: 1.2rem;
-    line-height: 1.8rem;
     text-align: center;
     display: flex;
     justify-content: center;

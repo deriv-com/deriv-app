@@ -23,7 +23,6 @@ function customFormatShortWeekday(_locale: string | undefined, date: Date) {
 
 // TODO: Move this component to @deriv-com/ui
 const DatePicker = ({
-    defaultValue,
     disabled,
     errorMessage,
     isInvalid,
@@ -36,7 +35,7 @@ const DatePicker = ({
     onDateChange,
     ...props
 }: TDatePickerProps) => {
-    const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date('') : null);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(props.value ? new Date(props.value ?? '') : null);
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
 

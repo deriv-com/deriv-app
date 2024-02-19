@@ -3,14 +3,12 @@ import { Field, FieldProps } from 'formik';
 import { Input, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { useManualForm } from '../../hooks';
 import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manual-form-utils';
 
-type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
+type TManualFormInputsProps = { isExpiryDateRequired: boolean; selectedDocument: TManualDocumentTypes };
 
-export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) => {
+export const ManualFormInputs = ({ isExpiryDateRequired, selectedDocument }: TManualFormInputsProps) => {
     const fieldsConfig = getFieldsConfig(selectedDocument);
-    const { isExpiryDateRequired } = useManualForm();
 
     return (
         <Fragment>

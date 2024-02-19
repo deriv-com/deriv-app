@@ -547,7 +547,7 @@ export default class GeneralStore extends BaseStore {
         clearTimeout(this.service_token_timeout);
         clearTimeout(this.user_blocked_timeout);
 
-        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
+        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key]?.unsubscribe());
 
         if (typeof this.disposeUserBarredReaction === 'function') {
             this.disposeUserBarredReaction();

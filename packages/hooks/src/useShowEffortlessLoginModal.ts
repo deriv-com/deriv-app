@@ -12,6 +12,10 @@ const useShowEffortlessLoginModal = () => {
     React.useEffect(() => {
         if (is_passkeys_list_loading || is_passkey_support_checking) return;
         setShouldShowEffortlessModal(is_passkey_supported && !passkeys_list?.length && show_effortless_login_modal);
+
+        if (!is_passkey_supported || !!passkeys_list?.length) {
+            localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
+        }
     }, [
         is_passkey_supported,
         passkeys_list,

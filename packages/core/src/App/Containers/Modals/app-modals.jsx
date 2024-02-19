@@ -98,6 +98,7 @@ const AppModals = observer(() => {
         is_verification_submitted,
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
+        is_mobile,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -180,7 +181,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
     }
 
-    if (is_logged_in && show_effortless_login_modal) {
+    if (is_logged_in && show_effortless_login_modal && is_mobile) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

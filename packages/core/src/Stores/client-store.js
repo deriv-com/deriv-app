@@ -1623,6 +1623,10 @@ export default class ClientStore extends BaseStore {
             if (!no_cr_account && this.is_low_risk) {
                 this.switchAccount(this.virtual_account_loginid);
             }
+
+            if (localStorage.getItem('show_effortless_login_modal') === null) {
+                localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
+            }
         }
         this.selectCurrency('');
 
@@ -2017,8 +2021,8 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
-        localStorage.setItem('show_effortless_login_modal', true);
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));

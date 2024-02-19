@@ -11,8 +11,11 @@ import TraderProviders from '../../../../../trader-providers';
 const mocked_root_store = {
     modules: {
         trade: {
+            barrier_1: '-5.18',
+            barrier_choices: ['-5.18', '-7.19', '-9.2'],
             contract_type: TRADE_TYPES.TURBOS.LONG,
             currency: 'EUR',
+            onChange: jest.fn(),
             proposal_info: {
                 [CONTRACT_TYPES.TURBOS.LONG]: {
                     obj_contract_basis: { text: 'Payout per point', value: 0.987654321 },

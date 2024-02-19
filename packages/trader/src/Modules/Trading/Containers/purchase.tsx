@@ -48,9 +48,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
         is_vanilla,
         onChange,
         barrier_1,
-        long_barriers,
-        short_barriers,
-        strike_price_choices,
+        barrier_choices,
         onHoverPurchase,
         onPurchase: onClickPurchase,
         proposal_info,
@@ -119,9 +117,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
                 onClickPurchase={onClickPurchase}
                 onChange={onChange}
                 barrier_1={barrier_1}
-                long_barriers={long_barriers}
-                short_barriers={short_barriers}
-                strike_price_choices={strike_price_choices}
+                barrier_choices={barrier_choices}
                 setPurchaseState={setPurchaseState}
                 type={type}
             />

@@ -9,6 +9,8 @@ const cancel_deal_info = 'CancelDealInfo';
 const test_id = 'dt_purchase_test_contract_type_price';
 const localized_basis = getLocalizedBasis();
 const default_mock_props: React.ComponentProps<typeof ContractInfo> = {
+    barrier_1: '-5.18',
+    barrier_choices: ['-5.18', '-7.19', '-9.2'],
     basis: 'stake',
     currency: 'USD',
     growth_rate: 0.03,
@@ -17,6 +19,7 @@ const default_mock_props: React.ComponentProps<typeof ContractInfo> = {
     is_multiplier: false,
     is_turbos: false,
     is_vanilla: false,
+    onChange: jest.fn(),
     should_fade: true,
     proposal_info: {
         id: '129106862',

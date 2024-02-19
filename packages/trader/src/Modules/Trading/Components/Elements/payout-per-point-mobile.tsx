@@ -3,27 +3,17 @@ import { ArrowIndicator, Money, Text, Popover } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset';
 import { observer } from '@deriv/stores';
-import { getContractSubtype, getLocalizedBasis } from '@deriv/shared';
+import { getLocalizedBasis } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { TProposalTypeInfo, TTradeStore } from 'Types';
+import { TProposalTypeInfo } from 'Types';
 
 type TProposalInfo = {
     [key: string]: TProposalTypeInfo;
 };
 
 const PayoutPerPointMobile = observer(() => {
-    const {
-        barrier_1,
-        currency,
-        proposal_info,
-        contract_type,
-        is_vanilla,
-        is_vanilla_fx,
-        onChange,
-        short_barriers,
-        long_barriers,
-        strike_price_choices,
-    } = useTraderStore();
+    const { barrier_1, currency, proposal_info, contract_type, is_vanilla, is_vanilla_fx, onChange, barrier_choices } =
+        useTraderStore();
     const contract_key = contract_type?.toUpperCase();
     // remove assertion and local TProposalInfo type after TS migration for trade package is complete
     const { message, obj_contract_basis } = (proposal_info as TProposalInfo)?.[contract_key] || {};
@@ -40,29 +30,14 @@ const PayoutPerPointMobile = observer(() => {
         <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
     );
     const tooltip_text = is_vanilla ? vanilla_payout_message : turbos_payout_message;
-    let stored_barriers_data: TTradeStore['short_barriers' | 'long_barriers' | 'strike_price_choices'];
-    switch (getContractSubtype(contract_type)) {
-        case 'Short':
-            stored_barriers_data = short_barriers;
-            break;
-        case 'Long':
-            stored_barriers_data = long_barriers;
-            break;
-        case 'Call':
-        case 'Put':
-            stored_barriers_data = strike_price_choices;
-            break;
-        default:
-            stored_barriers_data = {};
-    }
-    const length = stored_barriers_data.barrier_choices.length;
-    const index = stored_barriers_data.barrier_choices.indexOf(barrier_1);
+    const length = barrier_choices.length;
+    const index = barrier_choices.indexOf(barrier_1);
     const clickUp = () => {
         if (index + 1 < length) {
             onChange({
                 target: {
                     name: 'barrier_1',
-                    value: stored_barriers_data.barrier_choices[index + 1],
+                    value: barrier_choices[index + 1],
                 },
             });
         }
@@ -72,7 +47,7 @@ const PayoutPerPointMobile = observer(() => {
             onChange({
                 target: {
                     name: 'barrier_1',
-                    value: stored_barriers_data.barrier_choices[index - 1],
+                    value: barrier_choices[index - 1],
                 },
             });
         }
@@ -80,8 +55,11 @@ const PayoutPerPointMobile = observer(() => {
     if (!payout_per_point) return <Fieldset className='payout-per-point' />;
     return (
         <Fieldset className='payout-per-point'>
-            {/* increasing the barrier value means reducing PPP, hence vise-versa logic */}
-            <button onClick={clickDown} disabled={index - 1 < 0}>
+            {/* for Turbos, increasing the barrier value means reducing PPP, hence vise-versa logic */}
+            <button
+                onClick={is_vanilla ? clickUp : clickDown}
+                disabled={is_vanilla ? index + 1 >= length : index - 1 < 0}
+            >
                 ▲
             </button>
             <div className='payout-per-point__label-wrapper'>
@@ -101,7 +79,10 @@ const PayoutPerPointMobile = observer(() => {
                 <Money amount={payout_per_point} currency={currency} show_currency should_format={false} />
                 <ArrowIndicator className='trade-container__price-info-movement' value={payout_per_point} />
             </Text>
-            <button onClick={clickUp} disabled={index + 1 >= length}>
+            <button
+                onClick={is_vanilla ? clickDown : clickUp}
+                disabled={is_vanilla ? index - 1 < 0 : index + 1 >= length}
+            >
                 ▼
             </button>
         </Fieldset>

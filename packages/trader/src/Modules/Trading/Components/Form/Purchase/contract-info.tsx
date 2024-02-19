@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage, getContractSubtype } from '@deriv/shared';
+import { getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import CancelDealInfo from './cancel-deal-info';
 import ValueMovement from './value-movement';
@@ -10,31 +10,21 @@ import { TProposalTypeInfo, TTradeStore } from 'Types';
 
 type TContractInfo = Pick<
     ReturnType<typeof useTraderStore>,
-    | 'basis'
-    | 'growth_rate'
-    | 'is_accumulator'
-    | 'is_turbos'
-    | 'is_vanilla'
-    | 'is_multiplier'
-    | 'currency'
-    | 'barrier_1'
-    | 'onChange'
-    | 'short_barriers'
-    | 'long_barriers'
-    | 'strike_price_choices'
+    'basis' | 'growth_rate' | 'is_accumulator' | 'is_turbos' | 'is_vanilla' | 'is_multiplier' | 'currency'
 > & {
     is_loading: boolean;
     is_vanilla_fx?: boolean;
     proposal_info: TProposalTypeInfo;
     should_fade: boolean;
     type: string;
+    barrier_1?: TTradeStore['barrier_1'];
+    onChange?: TTradeStore['onChange'];
+    barrier_choices?: TTradeStore['barrier_choices'];
 };
 
 const ContractInfo = ({
     barrier_1,
-    short_barriers,
-    long_barriers,
-    strike_price_choices,
+    barrier_choices,
     basis,
     currency,
     growth_rate,
@@ -99,39 +89,24 @@ const ContractInfo = ({
         return message;
     };
 
-    let stored_barriers_data: TTradeStore['short_barriers' | 'long_barriers' | 'strike_price_choices'];
-    switch (getContractSubtype(type)) {
-        case 'Short':
-            stored_barriers_data = short_barriers;
-            break;
-        case 'Long':
-            stored_barriers_data = long_barriers;
-            break;
-        case 'Call':
-        case 'Put':
-            stored_barriers_data = strike_price_choices;
-            break;
-        default:
-            stored_barriers_data = {};
-    }
-    const length = stored_barriers_data.barrier_choices.length;
-    const index = stored_barriers_data.barrier_choices.indexOf(barrier_1);
+    const length = barrier_choices?.length;
+    const index = barrier_choices?.indexOf(barrier_1 ?? '');
     const clickUp = () => {
-        if (index + 1 < length) {
+        if (Number(index) + 1 < Number(length)) {
             onChange?.({
                 target: {
                     name: 'barrier_1',
-                    value: stored_barriers_data.barrier_choices[index + 1],
+                    value: barrier_choices?.[Number(index) + 1],
                 },
             });
         }
     };
     const clickDown = () => {
-        if (index - 1 >= 0) {
+        if (Number(index) - 1 >= 0) {
             onChange?.({
                 target: {
                     name: 'barrier_1',
-                    value: stored_barriers_data.barrier_choices[index - 1],
+                    value: barrier_choices?.[Number(index) - 1],
                 },
             });
         }
@@ -179,8 +154,11 @@ const ContractInfo = ({
                     !is_accumulator &&
                     obj_contract_basis && (
                         <React.Fragment>
-                            {/* increasing the barrier value means reducing PPP, hence vise-versa logic */}
-                            <button onClick={clickDown} disabled={index - 1 < 0}>
+                            {/* for Turbos, increasing the barrier value means reducing PPP, hence vise-versa logic */}
+                            <button
+                                onClick={is_vanilla ? clickUp : clickDown}
+                                disabled={is_vanilla ? Number(index) + 1 >= Number(length) : Number(index) - 1 < 0}
+                            >
                                 ▲
                             </button>
                             <div className='trade-container__price-info-basis'>{basis_text}</div>
@@ -205,7 +183,10 @@ const ContractInfo = ({
                                     />
                                 </div>
                             </MobileWrapper>
-                            <button onClick={clickUp} disabled={index + 1 >= length}>
+                            <button
+                                onClick={is_vanilla ? clickDown : clickUp}
+                                disabled={is_vanilla ? Number(index) - 1 < 0 : Number(index) + 1 >= Number(length)}
+                            >
                                 ▼
                             </button>
                         </React.Fragment>

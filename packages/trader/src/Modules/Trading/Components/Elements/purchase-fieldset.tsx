@@ -7,10 +7,7 @@ import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button'
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
 
-type TPurchaseFieldset = Pick<
-    TTradeStore,
-    'barrier_1' | 'onChange' | 'short_barriers' | 'long_barriers' | 'strike_price_choices'
-> & {
+type TPurchaseFieldset = Pick<TTradeStore, 'barrier_1' | 'onChange' | 'barrier_choices'> & {
     basis: string;
     buy_info: TTradeStore['purchase_info'];
     currency: string;
@@ -58,9 +55,7 @@ const PurchaseFieldset = ({
     onClickPurchase,
     onChange,
     barrier_1,
-    long_barriers,
-    short_barriers,
-    strike_price_choices,
+    barrier_choices,
     onHoverPurchase,
     purchased_states_arr,
     setPurchaseState,
@@ -134,9 +129,7 @@ const PurchaseFieldset = ({
                             growth_rate={growth_rate}
                             onChange={onChange}
                             barrier_1={barrier_1}
-                            long_barriers={long_barriers}
-                            short_barriers={short_barriers}
-                            strike_price_choices={strike_price_choices}
+                            barrier_choices={barrier_choices}
                         />
                     )}
                     <div

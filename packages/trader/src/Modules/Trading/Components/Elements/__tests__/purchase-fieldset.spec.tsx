@@ -7,6 +7,8 @@ import userEvent from '@testing-library/user-event';
 import PurchaseFieldset from '../purchase-fieldset';
 
 const default_mocked_props: React.ComponentProps<typeof PurchaseFieldset> = {
+    barrier_1: '-5.18',
+    barrier_choices: ['-5.18', '-7.19', '-9.2'],
     basis: '',
     buy_info: {},
     currency: '',
@@ -42,6 +44,7 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseFieldset> = {
     is_proposal_error: false,
     is_vanilla: false,
     is_turbos: false,
+    onChange: jest.fn(),
     onClickPurchase: jest.fn(),
     onHoverPurchase: jest.fn(),
     purchased_states_arr: [true, false],

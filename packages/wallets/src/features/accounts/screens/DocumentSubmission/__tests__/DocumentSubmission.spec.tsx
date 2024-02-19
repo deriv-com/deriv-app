@@ -66,7 +66,7 @@ describe('DocumentSubmission', () => {
         expect(screen.getByText('Common Mistakes')).toBeInTheDocument();
         expect(screen.getByText('Name in document doesn’t match your Deriv profile.')).toBeInTheDocument();
         expect(screen.getByText('Address in document doesn’t match address you entered above.')).toBeInTheDocument();
-        expect(screen.getByText('Document issued more than 6-months ago.')).toBeInTheDocument();
+        expect(screen.getByText('Document issued more than 12-months ago.')).toBeInTheDocument();
         expect(screen.getByText('Blurry document. All information must be clear and visible.')).toBeInTheDocument();
         expect(screen.getByText('Cropped document. All information must be clear and visible.')).toBeInTheDocument();
         expect(screen.getByText('An envelope with your name and address.')).toBeInTheDocument();

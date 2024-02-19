@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
 

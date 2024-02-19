@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import WalletWithdrawal from '../WalletWithdrawal';
 

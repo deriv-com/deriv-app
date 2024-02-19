@@ -6,7 +6,7 @@
     height: fit-content;
     gap: 4px;
 
-    @include mobile {
+    @include mobile-cashier-v2 {
         width: 100%;
     }
 }
@@ -18,7 +18,7 @@
     width: 100%;
     gap: 2px;
 
-    @include mobile {
+    @include mobile-cashier-v2 {
         flex: 1;
     }
 }
@@ -29,7 +29,7 @@
     height: 2.4rem;
     width: 100%;
 
-    @include mobile {
+    @include mobile-cashier-v2 {
         width: 100%;
     }
 }

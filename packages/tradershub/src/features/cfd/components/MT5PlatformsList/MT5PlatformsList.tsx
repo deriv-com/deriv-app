@@ -62,7 +62,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
                     return (
                         <AvailableMT5AccountsList
                             account={MT5Account as unknown as THooks.MT5AccountsList}
-                            key={`available-mt5-list-${MT5Account.market_type}-${MT5Account.shortcode}`}
+                            key={`available-mt5-list-${MT5Account.market_type}-${MT5Account.leverage}`}
                         />
                     );
                 })}

@@ -7,7 +7,7 @@ import {
     useCashierValidation,
     useQuery,
     useSettings,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { WalletsActionScreen } from '../../../../components';
 import getDepositLockedDesc from './DepositLockedContent';
 import './DepositLocked.scss';

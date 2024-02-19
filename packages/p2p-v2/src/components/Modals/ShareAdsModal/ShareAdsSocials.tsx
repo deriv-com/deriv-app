@@ -11,6 +11,7 @@ type TShareMyAdsSocialsProps = {
     customMessage: string;
 };
 
+//TODO: fix the icon classnames once the icons are available in quillicons
 const getShareButtons = (advertUrl: string) => [
     {
         icon: <WhatsappIcon className='h-[34px] w-[34px]' />,
@@ -52,24 +53,22 @@ const getShareButtons = (advertUrl: string) => [
         text: 'Gmail',
     },
 ];
-const ShareMyAdsSocials = ({ advertUrl, customMessage }: TShareMyAdsSocialsProps) => {
-    return (
-        <div className='p2p-v2-share-ads-socials'>
-            {getShareButtons(advertUrl).map(({ ShareButton, href, icon, messagePropName, rel, target, text }) => (
-                <ShareButton
-                    key={text}
-                    url={text === 'Facebook' ? advertUrl : ' '}
-                    {...(messagePropName && { [messagePropName]: customMessage })}
-                    {...(href && { href })}
-                    {...(target && { target: '_blank' })}
-                    {...(rel && { rel: 'noreferrer' })}
-                >
-                    <div className='p2p-v2-share-ads-socials__circle'>{icon}</div>
-                    <Text size='2xs'>{text}</Text>
-                </ShareButton>
-            ))}
-        </div>
-    );
-};
+const ShareMyAdsSocials = ({ advertUrl, customMessage }: TShareMyAdsSocialsProps) => (
+    <div className='flex flex-row justify-around p2p-v2-share-ads-socials'>
+        {getShareButtons(advertUrl).map(({ ShareButton, href, icon, messagePropName, rel, target, text }) => (
+            <ShareButton
+                key={text}
+                url={text === 'Facebook' ? advertUrl : ' '}
+                {...(messagePropName && { [messagePropName]: customMessage })}
+                {...(href && { href })}
+                {...(target && { target: '_blank' })}
+                {...(rel && { rel: 'noreferrer' })}
+            >
+                <div className='flex justify-center items-center p2p-v2-share-ads-socials__circle'>{icon}</div>
+                <Text size='2xs'>{text}</Text>
+            </ShareButton>
+        ))}
+    </div>
+);
 
 export default ShareMyAdsSocials;

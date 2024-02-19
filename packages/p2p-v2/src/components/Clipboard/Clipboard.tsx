@@ -1,3 +1,4 @@
+//TODO: to be replaced with derivcom component
 import React, { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
 import { Tooltip } from '@deriv-com/ui';

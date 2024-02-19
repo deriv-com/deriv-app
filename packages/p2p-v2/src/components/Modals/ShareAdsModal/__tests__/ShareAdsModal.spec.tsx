@@ -103,9 +103,6 @@ describe('ShareAdsModal', () => {
         );
     });
     it('should call html2canvas function when clicking on Download this QR code button', async () => {
-        // mockUseDevice.mockReturnValue({
-        //     isMobile: false,
-        // });
         render(<ShareAdsModal {...mockProps} />);
 
         const downloadButton = screen.getByRole('button', { name: 'Download this QR code' });

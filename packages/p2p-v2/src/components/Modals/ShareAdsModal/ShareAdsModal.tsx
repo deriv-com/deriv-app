@@ -7,6 +7,7 @@ import { BUY_SELL, RATE_TYPE } from '@/constants';
 import { useCopyToClipboard } from '@/hooks';
 import { p2p } from '@deriv/api';
 import { Button, Divider, Text, useDevice } from '@deriv-com/ui';
+//TODO: replace below icons with the one from quill once available
 import CheckmarkCircle from '../../../public/ic-checkmark-circle.svg';
 import ShareIcon from '../../../public/ic-share.svg';
 import ShareLinkIcon from '../../../public/ic-share-link.svg';
@@ -140,6 +141,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
                                     <Text className='p2p-v2-share-ads-modal__copy-link' color='less-prominent'>
                                         {advertUrl}
                                     </Text>
+                                    {/* TODO: clipboard to be replaced */}
                                     <div className='flex items-center justify-center p2p-v2-share-ads-modal__copy-clipboard'>
                                         <Clipboard textCopy={advertUrl} />
                                     </div>

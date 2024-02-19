@@ -1,12 +1,21 @@
 import moment from 'moment';
 import { flow } from 'mobx';
-import { State, getSocketURL, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
+import {
+    State,
+    getSocketURL,
+    getActivePlatform,
+    getPropertyValue,
+    routes,
+    getActionFromUrl,
+    checkServerMaintenance,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
 
 let client_store, common_store, gtm_store;
+let reconnectionCounter = 1;
 
 // TODO: update commented statements to the corresponding functions from app
 const BinarySocketGeneral = (() => {
@@ -68,7 +77,6 @@ const BinarySocketGeneral = (() => {
                     const is_active_tab = sessionStorage.getItem('active_tab') === '1';
                     if (getPropertyValue(response, ['error', 'code']) === 'SelfExclusion' && is_active_tab) {
                         sessionStorage.removeItem('active_tab');
-                        // Dialog.alert({ id: 'authorize_error_alert', message: response.error.message });
                     }
                     client_store.logout();
                 } else if (!/authorize/.test(State.get('skip_response'))) {
@@ -307,21 +315,28 @@ export default BinarySocketGeneral;
 const ResponseHandlers = (() => {
     const websiteStatus = response => {
         if (response.website_status) {
-            const is_available = !BinarySocket.isSiteDown(response.website_status.site_status);
-            if (is_available && BinarySocket.getAvailability().is_down) {
-                window.location.reload();
-                return;
-            }
-            const is_updating = BinarySocket.isSiteUpdating(response.website_status.site_status);
-            if (is_updating && !BinarySocket.getAvailability().is_updating) {
-                // the existing connection is alive for one minute while status is updating
-                // switch to the new connection somewhere between 1-30 seconds from now
-                // to avoid everyone switching to the new connection at the same time
-                const rand_timeout = Math.floor(Math.random() * 30) + 1;
+            const is_server_down = checkServerMaintenance(response.website_status);
+
+            // If the site is down or updating, connect to WebSocket with an exponentially increasing delay on every attempt.
+            // Requests excluding - website_status/authorize will be blocked during backoff
+            // The delay starts off at approximately 1.024 seconds and grows exponentially, with a random factor between 0.5 and 2 to spread out the reconnection attempts.
+            // The maximum delay is capped at 10 minutes (600k ms).
+            if (is_server_down) {
+                const reconnectionDelay =
+                    Math.min(Math.pow(2, reconnectionCounter + 9), 600000) * (0.5 + Math.random() * 1.5);
+
                 window.setTimeout(() => {
+                    reconnectionCounter++;
                     BinarySocket.closeAndOpenNewConnection();
-                }, rand_timeout * 1000);
+                    BinarySocket.blockRequest(is_server_down);
+                }, reconnectionDelay);
+                // If site is up, and there was a reconnection attempted before
+            } else if (!is_server_down && reconnectionCounter > 1) {
+                window.location.reload();
             }
+
+            // @deriv/deriv-api blockRequest(true) affects all API requests except website_status
+            BinarySocket.blockRequest(is_server_down);
             BinarySocket.setAvailability(response.website_status.site_status);
             client_store.setWebsiteStatus(response);
         }

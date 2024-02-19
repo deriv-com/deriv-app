@@ -226,7 +226,10 @@ class DBot {
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
+        if (api_base.is_stopping) return;
+
         try {
+            api_base.is_stopping = false;
             const code = this.generateCode();
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
@@ -325,6 +328,8 @@ class DBot {
      * that trade will be completed first to reflect correct contract status in UI.
      */
     async stopBot() {
+        if (api_base.is_stopping) return;
+
         api_base.setIsRunning(false);
 
         await this.interpreter.stop();

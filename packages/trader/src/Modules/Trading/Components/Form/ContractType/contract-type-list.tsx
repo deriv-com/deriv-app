@@ -7,7 +7,6 @@ import classNames from 'classnames';
 import { TContractType, TContractCategory } from './types';
 
 type TListProps = {
-    handleInfoClick?: (clicked_item: TContractType) => void;
     handleSelect?: (
         clicked_item: TContractType,
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
@@ -17,7 +16,7 @@ type TListProps = {
     value?: string;
 };
 
-const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, value }: TListProps) => (
+const List = ({ handleSelect, list, should_show_info_banner, value }: TListProps) => (
     <React.Fragment>
         {list.map((contract_category, index) => {
             const contract_types = contract_category.contract_types?.filter(contract_type => {
@@ -57,7 +56,6 @@ const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, va
                         <Item
                             contract_types={contract_types}
                             handleSelect={contract_category.is_unavailable ? undefined : handleSelect}
-                            handleInfoClick={contract_category.is_unavailable ? undefined : handleInfoClick}
                             value={value}
                         />
                     </div>

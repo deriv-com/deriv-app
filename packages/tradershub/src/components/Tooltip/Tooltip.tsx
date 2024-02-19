@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { Text } from '@deriv-com/ui';
 import { TooltipClass, TooltipPointerClass } from './Tooltip.classnames';
 
@@ -34,12 +34,12 @@ type TTooltipProps = {
 const Tooltip = ({ alignment = 'bottom', children, className, message }: TTooltipProps) => {
     return (
         <div className='relative w-max h-max group z-1'>
-            <div className='border rounded-md border-neutral-600'>{children}</div>
+            <div className='border rounded-md border-neutral-12'>{children}</div>
 
-            <div className={qtMerge(TooltipClass({ alignment }), className)}>
-                <div className={qtMerge(TooltipPointerClass({ alignment }), className)} />
+            <div className={clsx(TooltipClass({ alignment }), className)}>
+                <div className={clsx(TooltipPointerClass({ alignment }), className)} />
 
-                <span className='rounded-md bg-system-light-active-background p-200 '>
+                <span className='p-4 rounded-md bg-system-light-active-background '>
                     <Text size='sm'>{message}</Text>
                 </span>
             </div>

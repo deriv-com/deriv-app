@@ -1,0 +1,51 @@
+.wallets-upgrade-modal {
+    &__content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.6rem;
+        flex-shrink: 0;
+        padding: 2.4rem;
+
+        @include mobile {
+            padding: 1.6rem;
+        }
+    }
+
+    &__description {
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        @include mobile {
+            width: 65%;
+        }
+    }
+
+    &__image {
+        position: absolute;
+        right: -8rem;
+        bottom: -6rem;
+
+        @include mobile {
+            right: -9rem;
+            bottom: -9.5em;
+        }
+    }
+}
+
+.dc-modal__container_wallets-upgrade-modal {
+    border-radius: 0.8rem;
+    background: var(--system-light-7-secondary-background, #f2f3f4);
+
+    & .dc-modal-body {
+        padding: 0;
+    }
+}
+
+.dc-modal-header--wallets-upgrade-modal {
+    z-index: 10;
+    position: absolute;
+}

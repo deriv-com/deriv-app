@@ -80,6 +80,10 @@ const PayoutPerPointMobile = observer(() => {
     if (!payout_per_point) return <Fieldset className='payout-per-point' />;
     return (
         <Fieldset className='payout-per-point'>
+            {/* increasing the barrier value means reducing PPP, hence vise-versa logic */}
+            <button onClick={clickDown} disabled={index - 1 < 0}>
+                ▲
+            </button>
             <div className='payout-per-point__label-wrapper'>
                 <Text size='xs' color='less-prominent' className='payout-per-point__label'>
                     {is_vanilla_fx ? getLocalizedBasis().payout_per_pip : label}
@@ -94,16 +98,12 @@ const PayoutPerPointMobile = observer(() => {
                 />
             </div>
             <Text size='xs' weight='bold' className='payout-per-point__value'>
-                {/* increasing the barrier value means reducing PPP, hence vise-versa logic */}
-                <button onClick={clickDown} disabled={index - 1 < 0}>
-                    ▲
-                </button>
                 <Money amount={payout_per_point} currency={currency} show_currency should_format={false} />
                 <ArrowIndicator className='trade-container__price-info-movement' value={payout_per_point} />
-                <button onClick={clickUp} disabled={index + 1 >= length}>
-                    ▼
-                </button>
             </Text>
+            <button onClick={clickUp} disabled={index + 1 >= length}>
+                ▼
+            </button>
         </Fieldset>
     );
 });

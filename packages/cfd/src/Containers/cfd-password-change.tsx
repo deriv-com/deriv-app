@@ -21,7 +21,6 @@ type TCFDPasswordChangeProps = TCFDPasswordFormReusedProps & {
     form_error?: string;
     onCancel: () => void;
     onForgotPassword: () => void;
-    setIsSuccessPasswordChange?: React.Dispatch<React.SetStateAction<boolean>>;
     setNewPasswordValue?: React.Dispatch<React.SetStateAction<string>>;
     should_set_trading_password: boolean;
 };
@@ -37,11 +36,12 @@ const CFDPasswordChange = observer(
         form_error,
         onCancel,
         onForgotPassword,
-        setIsSuccessPasswordChange,
         setNewPasswordValue,
         should_set_trading_password,
     }: TCFDPasswordChangeProps) => {
-        const { ui } = useStore();
+        const { ui, modules } = useStore();
+        const { cfd } = modules;
+        const { setIsMt5PasswordChangedModalVisible } = cfd;
         const { is_mobile } = ui;
         const has_cancel_button = (isDesktop() ? !should_set_trading_password : true) || error_type === 'PasswordReset';
 
@@ -92,8 +92,9 @@ const CFDPasswordChange = observer(
             }
 
             if (!response.error) {
-                setIsSuccessPasswordChange?.(true);
+                setIsMt5PasswordChangedModalVisible(true);
                 setNewPasswordValue?.(values.new_password);
+                onCancel();
             }
         };
 

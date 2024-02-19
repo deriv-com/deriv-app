@@ -591,6 +591,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitCFDPassword,
         new_account_response,
         setMigratedMT5Accounts,
+        is_mt5_password_changed_modal_visible,
+        is_mt5_password_invalid_format_modal_visible,
+        setIsMt5PasswordInvalidFormatModalVisible,
     } = useCfdStore();
 
     const history = useHistory();
@@ -634,6 +637,17 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             default:
         }
     };
+
+    React.useEffect(() => {
+        let timeout: NodeJS.Timeout;
+        if (is_incorrect_mt5_password_format_error) {
+            timeout = setTimeout(() => {
+                setIsMt5PasswordInvalidFormatModalVisible(true);
+            }, 300);
+        }
+
+        return () => clearTimeout(timeout);
+    }, [is_incorrect_mt5_password_format_error, setIsMt5PasswordInvalidFormatModalVisible]);
 
     React.useEffect(() => {
         if (is_logged_in) {
@@ -945,7 +959,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 <Modal
                     className='cfd-password-modal'
                     has_close_icon
-                    is_open={is_incorrect_mt5_password_format_error && !is_success_password_change}
+                    is_open={is_mt5_password_invalid_format_modal_visible}
                     toggleModal={closeModal}
                     should_header_stick_body
                     title={localize('Deriv MT5 latest password requirements')}
@@ -956,7 +970,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         error_message={error_message}
                         form_error={form_error}
                         should_set_trading_password={should_set_trading_password}
-                        setIsSuccessPasswordChange={setIsSuccessPasswordChange}
                         setNewPasswordValue={setNewPasswordValue}
                         validatePassword={validatePassword}
                         onForgotPassword={handleForgotPassword}
@@ -979,7 +992,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         error_message={error_message}
                         form_error={form_error}
                         should_set_trading_password={should_set_trading_password}
-                        setIsSuccessPasswordChange={setIsSuccessPasswordChange}
                         setNewPasswordValue={setNewPasswordValue}
                         validatePassword={validatePassword}
                         onForgotPassword={handleForgotPassword}
@@ -991,14 +1003,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </React.Fragment>
     );
 
-    console.log(is_success_password_change, 'is_success_password_change');
-
     return (
         <React.Fragment>
             {password_modal}
             {password_dialog}
             <SuccessDialog
-                is_open={should_show_success || is_cfd_success_dialog_enabled}
+                is_open={should_show_success}
                 toggleModal={closeModal}
                 onCancel={closeModal}
                 onSubmit={
@@ -1034,14 +1044,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 onClose={() => setIsSentEmailModalOpen(false)}
                 onClickSendEmail={handleForgotPassword}
             />
-            {error_type === 'IncorrectMT5PasswordFormat' && is_mt5_password_format_invalid}
-            {is_success_password_change && (
-                <CFDPasswordChangeContent
-                    setIsSuccessPasswordChange={setIsSuccessPasswordChange}
-                    is_success_password_change={is_success_password_change}
-                    closeModal={closeModal}
-                    password_value={new_password_value}
-                />
+            {is_incorrect_mt5_password_format_error && is_mt5_password_format_invalid}
+            {is_mt5_password_changed_modal_visible && (
+                <CFDPasswordChangeContent closeModal={closeModal} password_value={new_password_value} />
             )}
         </React.Fragment>
     );

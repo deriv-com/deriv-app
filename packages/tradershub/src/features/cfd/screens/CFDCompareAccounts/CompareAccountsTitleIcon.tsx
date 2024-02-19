@@ -4,8 +4,7 @@ import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
 import { PlatformIcon, Tooltip } from '@/components';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms } from '@cfd/constants';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { AccountIcons, MarketTypeShortcode } from './constants';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
@@ -59,7 +58,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
-    const { isDesktop } = useBreakpoint();
+    const { isDesktop } = useDevice();
 
     const jurisdictionCardTitle =
         platform === CFDPlatforms.DXTRADE || platform === CFDPlatforms.CTRADER

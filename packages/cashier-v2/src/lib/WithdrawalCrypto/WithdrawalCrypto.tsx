@@ -19,7 +19,7 @@ const WithdrawalCrypto: React.FC = () => {
         <div className={styles.container}>
             <div className={styles['side-pane']} />
             <div className={styles.content}>
-                <Text className={styles.title} weight='bold'>
+                <Text weight='bold'>
                     Withdraw {activeWallet?.currency ? getCurrencyConfig(activeWallet?.currency)?.name : ''} (
                     {activeWallet?.currency}) to your wallet
                 </Text>

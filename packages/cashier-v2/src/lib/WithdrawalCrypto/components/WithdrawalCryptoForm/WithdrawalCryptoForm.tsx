@@ -33,6 +33,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                                     <Input
                                         {...field}
                                         error={Boolean(errors?.cryptoAddress)}
+                                        isFullWidth
                                         label={`Your ${activeWallet?.currency_config?.name} cryptocurrency wallet address`}
                                         message={errors.cryptoAddress}
                                     />

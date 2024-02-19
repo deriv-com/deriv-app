@@ -476,10 +476,7 @@ export default class GeneralStore extends BaseStore {
             const { document, identity } = authentication;
             this.setIsP2PUser(p2p_status !== 'none' && p2p_status !== 'perm_ban');
 
-            if (status.includes('cashier_locked')) {
-                this.setIsBlocked(true);
-                this.hideModal();
-            } else {
+            if (!status.includes('cashier_locked')) {
                 this.setP2pPoaRequired(p2p_poa_required);
                 this.setPoaStatus(document.status);
                 this.setPoiStatus(identity.status);
@@ -838,6 +835,20 @@ export default class GeneralStore extends BaseStore {
                 this.setIsLoading(false);
                 return;
             }
+        }
+
+        if (!this.is_advertiser) {
+            requestWS({ get_account_status: 1 }).then(account_response => {
+                if (!account_response.error) {
+                    const { get_account_status } = account_response;
+                    const { status } = get_account_status;
+
+                    if (status.includes('cashier_locked')) {
+                        this.setIsBlocked(true);
+                        this.hideModal();
+                    }
+                }
+            });
         }
 
         this.setIsLoading(false);

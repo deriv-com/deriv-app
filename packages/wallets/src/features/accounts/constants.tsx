@@ -1,4 +1,4 @@
-import IcOldIssuedDocument from '../../public/images/accounts/ic-12-months-expiry.svg';
+import Ic12MonthsIssuedDocument from '../../public/images/accounts/ic-12-months-expiry.svg';
 import IcBlurryDocument from '../../public/images/accounts/ic-blurry-document.svg';
 import IcCroppedDocument from '../../public/images/accounts/ic-cropped-document.svg';
 import IcDocumentAddressMismatch from '../../public/images/accounts/ic-document-address-mismatch.svg';
@@ -25,7 +25,7 @@ export const getExampleImagesConfig = (): TExampleImageConfig[] => [
     },
     {
         description: i18n.t('Document issued more than 12-months ago.'),
-        image: IcOldIssuedDocument,
+        image: Ic12MonthsIssuedDocument,
     },
     {
         description: i18n.t('Blurry document. All information must be clear and visible.'),

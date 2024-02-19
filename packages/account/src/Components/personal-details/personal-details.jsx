@@ -84,7 +84,8 @@ const PersonalDetails = observer(
                 trackEvent({
                     action: 'close',
                 });
-        }, [trackEvent]);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
 
         //is_rendered_for_idv is used for configuring the components when they are used in idv page
         const is_rendered_for_idv = shouldShowIdentityInformation({

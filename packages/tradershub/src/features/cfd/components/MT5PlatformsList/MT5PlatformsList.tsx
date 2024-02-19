@@ -23,7 +23,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
-        return data?.some(account => account.is_added);
+        return data?.some(MT5Account => MT5Account.is_added);
     }, [data]);
 
     // Check if we need to invalidate the query
@@ -49,18 +49,20 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
                 </div>
             )}
             {isFetchedAfterMount &&
-                data?.map(account => {
+                data?.map(MT5Account => {
                     if (
-                        account.is_added &&
-                        account.is_virtual === activeTradingAccount?.is_virtual &&
-                        account.account_type === accountType
+                        MT5Account.is_added &&
+                        MT5Account.is_virtual === activeTradingAccount?.is_virtual &&
+                        MT5Account.account_type === accountType
                     )
-                        return <AddedMT5AccountsList account={account} key={`added-mt5-list-${account.loginid}`} />;
+                        return (
+                            <AddedMT5AccountsList account={MT5Account} key={`added-mt5-list-${MT5Account.loginid}`} />
+                        );
 
                     return (
                         <AvailableMT5AccountsList
-                            account={account as unknown as THooks.MT5AccountsList}
-                            key={`available-mt5-list-${account.market_type}-${account.shortcode}`}
+                            account={MT5Account as unknown as THooks.MT5AccountsList}
+                            key={`available-mt5-list-${MT5Account.market_type}-${MT5Account.shortcode}`}
                         />
                     );
                 })}

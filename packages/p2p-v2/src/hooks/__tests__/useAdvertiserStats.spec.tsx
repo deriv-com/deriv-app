@@ -1,74 +1,73 @@
 import * as React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, p2p, useAuthentication, useSettings } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useAdvertiserStats from '../useAdvertiserStats';
 
-let mockUseSettings = {
-    data: {
-        currency: 'USD',
-    },
-    isLoading: false,
-    isSuccess: false,
-};
-let mockUseAdvertiserInfo = {
-    data: {
-        currency: 'USD',
-    },
-    isLoading: false,
-    isSuccess: false,
-};
-let mockUseAuthentication = {
-    data: {
-        currency: 'USD',
-    },
-    isLoading: false,
-    isSuccess: false,
-};
+const mockUseSettings = useSettings as jest.MockedFunction<typeof useSettings>;
+const mockUseAuthentication = useAuthentication as jest.MockedFunction<typeof useAuthentication>;
+const mockUseAdvertiserInfo = p2p.advertiser.useGetInfo as jest.MockedFunction<typeof p2p.advertiser.useGetInfo>;
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     p2p: {
         advertiser: {
-            useGetInfo: jest.fn(() => mockUseAdvertiserInfo),
+            useGetInfo: jest.fn().mockReturnValue({
+                data: {
+                    currency: 'USD',
+                },
+                isLoading: false,
+                isSuccess: true,
+            }),
         },
     },
-    useAuthentication: jest.fn(() => mockUseAuthentication),
-    useSettings: jest.fn(() => mockUseSettings),
+    useAuthentication: jest.fn().mockReturnValue({
+        data: {
+            currency: 'USD',
+        },
+        isLoading: false,
+        isSuccess: true,
+    }),
+    useSettings: jest.fn().mockReturnValue({
+        data: {
+            currency: 'USD',
+        },
+        isLoading: false,
+        isSuccess: true,
+    }),
 }));
 
 describe('useAdvertiserStats', () => {
     test('should not return data when useSettings and useAuthentication is still fetching', () => {
+        mockUseAuthentication.mockReturnValueOnce({
+            ...mockUseAuthentication,
+            isSuccess: false,
+        });
+        mockUseSettings.mockReturnValueOnce({
+            ...mockUseSettings,
+            isSuccess: false,
+        });
+        mockUseAdvertiserInfo.mockReturnValueOnce({
+            ...mockUseAdvertiserInfo,
+            isSuccess: false,
+        });
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(result.current.data).toBe(undefined);
-        mockUseAuthentication = {
-            ...mockUseAuthentication,
-            isSuccess: true,
-        };
-        mockUseSettings = {
-            ...mockUseSettings,
-            isSuccess: true,
-        };
-        mockUseAdvertiserInfo = {
-            ...mockUseAdvertiserInfo,
-            isSuccess: true,
-        };
     });
     test('should return the correct information', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-        mockUseSettings.data = {
-            // @ts-expect-error Mock the return values
-            first_name: 'Jane',
-            last_name: 'Doe',
-        };
-        mockUseAdvertiserInfo.data = {
-            // @ts-expect-error Mock the return values
-            buy_orders_count: 10,
-            created_time: 1698034883,
-            partner_count: 1,
-            sell_orders_count: 5,
-        };
+        mockUseSettings.mockReturnValueOnce({
+            data: { first_name: 'Jane', last_name: 'Doe' },
+        });
+        mockUseAdvertiserInfo.mockReturnValueOnce({
+            data: {
+                buy_orders_count: 10,
+                created_time: 1698034883,
+                partner_count: 1,
+                sell_orders_count: 5,
+            },
+        });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(result.current.data.fullName).toBe('Jane Doe');
@@ -80,16 +79,17 @@ describe('useAdvertiserStats', () => {
     test('should return the correct total count and lifetime', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
-        mockUseAdvertiserInfo.data = {
-            // @ts-expect-error Mock the return values
-            buy_orders_amount: 10,
-            buy_orders_count: 10,
-            partner_count: 1,
-            sell_orders_amount: 50,
-            sell_orders_count: 5,
-            total_orders_count: 30,
-            total_turnover: 100,
-        };
+        mockUseAdvertiserInfo.mockReturnValueOnce({
+            data: {
+                buy_orders_amount: 10,
+                buy_orders_count: 10,
+                partner_count: 1,
+                sell_orders_amount: 50,
+                sell_orders_count: 5,
+                total_orders_count: 30,
+                total_turnover: 100,
+            },
+        });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(result.current.data.totalOrders).toBe(15);
@@ -99,16 +99,17 @@ describe('useAdvertiserStats', () => {
     });
     test('should return the correct rates and limits', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-        mockUseAdvertiserInfo.data = {
-            // @ts-expect-error Mock the return values
-            buy_completion_rate: 1.4,
-            daily_buy: 10,
-            daily_buy_limit: 100,
-            daily_sell: 40,
-            daily_sell_limit: 50,
-            sell_completion_rate: 2.4,
-            upgradable_daily_limits: 1,
-        };
+        mockUseAdvertiserInfo.mockReturnValueOnce({
+            data: {
+                buy_completion_rate: 1.4,
+                daily_buy: 10,
+                daily_buy_limit: 100,
+                daily_sell: 40,
+                daily_sell_limit: 50,
+                sell_completion_rate: 2.4,
+                upgradable_daily_limits: 1,
+            },
+        });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(result.current.data.buyCompletionRate).toBe(1.4);
@@ -119,11 +120,12 @@ describe('useAdvertiserStats', () => {
     });
     test('should return the correct buy/release times', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-        mockUseAdvertiserInfo.data = {
-            // @ts-expect-error Mock the return values
-            buy_time_avg: 150,
-            release_time_avg: 40,
-        };
+        mockUseAdvertiserInfo.mockReturnValueOnce({
+            data: {
+                buy_time_avg: 150,
+                release_time_avg: 40,
+            },
+        });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(result.current.data.averagePayTime).toBe(3);
@@ -131,39 +133,43 @@ describe('useAdvertiserStats', () => {
     });
     test('should return the correct verification statuses', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-        mockUseAdvertiserInfo.data = {
-            // @ts-expect-error Mock the return values
-            full_verification: false,
-            is_approved: false,
-        };
-        mockUseAuthentication.data = {
-            // @ts-expect-error Mock the return values
-            document: {
-                status: 'verified',
+        mockUseAdvertiserInfo.mockReturnValueOnce({
+            data: {
+                full_verification: false,
+                is_approved: false,
             },
-            identity: {
-                status: 'pending',
+        });
+        mockUseAuthentication.mockReturnValueOnce({
+            data: {
+                document: {
+                    status: 'verified',
+                },
+                identity: {
+                    status: 'pending',
+                },
             },
-        };
+        });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(result.current.data.isAddressVerified).toBe(true);
         expect(result.current.data.isIdentityVerified).toBe(false);
 
-        mockUseAdvertiserInfo.data = {
-            // @ts-expect-error Mock the return values
-            full_verification: true,
-            is_approved: true,
-        };
-        mockUseAuthentication.data = {
-            // @ts-expect-error Mock the return values
-            document: {
-                status: 'verified',
+        mockUseAdvertiserInfo.mockReturnValueOnce({
+            data: {
+                full_verification: true,
+                is_approved: true,
             },
-            identity: {
-                status: 'pending',
+        });
+        mockUseAuthentication.mockReturnValueOnce({
+            data: {
+                document: {
+                    status: 'verified',
+                },
+                identity: {
+                    status: 'pending',
+                },
             },
-        };
+        });
         const { result: verifiedResult } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(verifiedResult.current.data.isAddressVerified).toBe(true);

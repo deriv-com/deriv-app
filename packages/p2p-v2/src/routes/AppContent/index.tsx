@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 import { CloseHeader } from '@/components';
-import { MyAds, MyProfile } from '@/pages';
+import { BuySell, MyAds, MyProfile } from '@/pages';
 import { useActiveAccount } from '@deriv/api';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import './index.scss';
@@ -10,7 +10,7 @@ import './index.scss';
 const DEFAULT_TAB = 'buy-sell';
 
 export const routesConfiguration = [
-    { Component: <div> Buy sell Page </div>, path: 'buy-sell', title: 'Buy / Sell' },
+    { Component: <BuySell />, path: 'buy-sell', title: 'Buy / Sell' },
     { Component: <div> Orders Page </div>, path: 'orders', title: 'Orders' },
     {
         Component: <MyAds />,
@@ -51,7 +51,7 @@ const AppContent = () => {
     return (
         <>
             <CloseHeader />
-            <div className='p2p-v2-tab__wrapper'>
+            <div className='p2p-v2-tab__wrapper overflow-hidden'>
                 <Tabs
                     activeTab={activeTab}
                     className='p2p-v2-tab__items-wrapper'

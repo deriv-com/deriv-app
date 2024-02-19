@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSettings } from '@deriv/api';
+import { useSettings } from '@deriv/api-v2';
 import { WalletText } from '../../../../../../components/Base';
 import { documentTypes } from '../../constants';
 import { DocumentSelectionCard } from '../DocumentSelectionCard';

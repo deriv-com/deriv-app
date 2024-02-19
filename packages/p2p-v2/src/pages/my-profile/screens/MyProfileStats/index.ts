@@ -1,1 +1,1 @@
-export * from './MyProfileStats';
+export { default as MyProfileStats } from './MyProfileStats';

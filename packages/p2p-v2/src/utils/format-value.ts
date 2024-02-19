@@ -45,11 +45,11 @@ type TReturnGenerateEffectiveRate = {
 /**
  * Calculates the effective rate.
  * @param {Object} params - The parameters to calculate the effective rate.
+ * @param {Number} params.exchangeRate - The exchange rate of the ad.
+ * @param {String} params.localCurrency - The local currency of the ad.
+ * @param {Number} params.marketRate - The market rate of the ad.
  * @param {Number} params.price - The price of the ad.
  * @param {Number} params.rate - The rate of the ad.
- * @param {String} params.localCurrency - The local currency of the ad.
- * @param {Number} params.exchangeRate - The exchange rate of the ad.
- * @param {Number} params.marketRate - The market rate of the ad.
  * @param {String} params.rateType - The rate type of the ad.
  * @returns {Object} The effective rate and the display effective rate.
  */
@@ -73,7 +73,7 @@ export const generateEffectiveRate = ({
             formatMoney(localCurrency, roundOffDecimal(effectiveRate, decimalPlace), true, decimalPlace)
         );
     }
-    return { effectiveRate, displayEffectiveRate };
+    return { displayEffectiveRate, effectiveRate };
 };
 
 /**

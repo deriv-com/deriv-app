@@ -29,7 +29,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
         <TradingAccountCard
             leading={() => <MT5AccountIcon account={account} />}
             trailing={() => (
-                <div className='flex flex-col gap-y-200'>
+                <div className='flex flex-col gap-y-4'>
                     <Button
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
@@ -57,23 +57,25 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                 </div>
             )}
         >
-            <div className='flex-grow user-select-none'>
-                <div className='flex self-stretch flex-center gap-400'>
+            <div className='flex-grow'>
+                <div className='flex items-center self-stretch gap-8'>
                     <Text size='sm'>{title}</Text>
                     {!activeAccount?.is_virtual && (
-                        <div className='flex items-center rounded-md h-1200 py-50 px-200 gap-200 bg-system-light-secondary-background'>
-                            <Text size='xs' weight='bold'>
+                        <div className='flex items-center h-24 gap-4 px-4 rounded-sm bg-system-light-secondary-background'>
+                            <Text as='p' size='2xs' weight='bold'>
                                 {account.landing_company_short?.toUpperCase()}
                             </Text>
                         </div>
                     )}
                 </div>
-                {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
-                    <Text size='sm' weight='bold'>
-                        {account.display_balance}
-                    </Text>
-                )}
-                <Text size='sm'>{account.display_login}</Text>
+                <div className='flex flex-col'>
+                    {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
+                        <Text size='sm' weight='bold'>
+                            {account.display_balance}
+                        </Text>
+                    )}
+                    <Text size='sm'>{account.display_login}</Text>
+                </div>
             </div>
         </TradingAccountCard>
     );

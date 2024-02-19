@@ -1,0 +1,25 @@
+{
+    "name": "@deriv/api-v2",
+    "private": true,
+    "version": "1.0.0",
+    "main": "src/index.ts",
+    "dependencies": {
+        "@deriv/deriv-api": "^1.0.15",
+        "@deriv/shared": "^1.0.0",
+        "@deriv/utils": "^1.0.0",
+        "@tanstack/react-query": "^4.28.0",
+        "@tanstack/react-query-devtools": "^4.28.0",
+        "md5": "^2.2.1",
+        "react": "^17.0.2",
+        "uuid": "^9.0.1"
+    },
+    "devDependencies": {
+        "@deriv/api-types": "^1.0.118",
+        "@testing-library/react": "^12.0.0",
+        "@testing-library/react-hooks": "^7.0.2",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/md5": "^2.3.5",
+        "@types/uuid": "^9.0.6",
+        "typescript": "^4.6.3"
+    }
+}

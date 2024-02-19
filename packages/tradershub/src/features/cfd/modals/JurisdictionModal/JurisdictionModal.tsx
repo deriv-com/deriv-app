@@ -48,7 +48,7 @@ const JurisdictionModal = () => {
 
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
-            <Modal className='bg-background-primary-container'>
+            <Modal className='overflow-y-hidden bg-background-primary-container'>
                 {!isDynamicLeverageVisible ? <Modal.Header title={jurisdictionTitle} /> : null}
                 <Modal.Content>
                     {isDynamicLeverageVisible && <DynamicLeverageTitle />}
@@ -59,7 +59,7 @@ const JurisdictionModal = () => {
                             setIsCheckBoxChecked={setIsCheckBoxChecked}
                             setSelectedJurisdiction={setSelectedJurisdiction}
                         />
-                        <DynamicLeverageScreen />
+                        {isDynamicLeverageVisible && <DynamicLeverageScreen />}
                     </div>
                 </Modal.Content>
                 {!isDynamicLeverageVisible ? (

@@ -34,7 +34,7 @@ const JurisdictionTncSection = ({
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='text-center space-y-12 mt-30 sticky bottom-0 bg-system-light-primary-background px-20 pt-[15px] pb-10 w-screen sm:w-auto sm:bg-inherit sm:static sm:p-0'>
+        <div className='text-center space-y-12 mt-30 sticky bottom-0 bg-system-light-primary-background px-20 pt-[15px] pb-10 sm:w-auto sm:bg-inherit sm:static sm:p-0'>
             {selectedJurisdiction && (
                 <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
             )}
@@ -43,7 +43,7 @@ const JurisdictionTncSection = ({
                     <Checkbox
                         checked={isCheckBoxChecked}
                         label={
-                            <Text size={isDesktop ? 'md' : 'sm'}>
+                            <Text size={isDesktop ? 'sm' : 'xs'}>
                                 I confirm and accept {selectedCompany.name}&lsquo;s{' '}
                                 <StaticLink
                                     className='no-underline cursor-pointer text-solid-coral-700 hover:no-underline'

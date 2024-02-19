@@ -114,7 +114,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                         ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
                 })}
             >
-                <Text className='leading-2 text-system-light-primary-background' size='sm' weight='bold'>
+                <Text className='leading-2 text-system-light-primary-background' size='xs' weight='bold'>
                     {row?.titleIndicators.displayText}
                 </Text>
             </div>
@@ -132,14 +132,14 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                 }
             }}
         >
-            <div className='flex flex-col justify-center w-full h-full px-16 pt-20 transition-transform duration-300 backface-hidden pb-36 transform-gpu'>
+            <div className='flex flex-col justify-between w-full h-full px-16 pt-20 transition-transform duration-300 backface-hidden pb-36 transform-gpu'>
                 {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
-                <div className='mt-[25px] mb-[15px] text-center'>
+                <div className='mt-[20px] text-center'>
                     <Text size='lg' weight='bold'>
                         {header}
                     </Text>
                 </div>
-                <div>
+                <div className='flex flex-col justify-between flex-1'>
                     {rows.map(row => (
                         <JurisdictionCardRow
                             description={parseDescription(row)}

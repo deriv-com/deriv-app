@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { Text } from '@deriv-com/ui';
 
 type TMT5AccountTypeCardProps = {
@@ -12,11 +12,11 @@ type TMT5AccountTypeCardProps = {
 
 const MT5AccountTypeCard = ({ description, icon, isSelected, onClick, title }: TMT5AccountTypeCardProps) => {
     return (
-        <div
-            className={qtMerge(
-                isSelected
-                    ? 'rounded-800 border-brand-blue bg-system-light-primary-background cursor-pointer border-solid border-sm'
-                    : 'cursor-pointer'
+        <button
+            className={clsx(
+                'cursor-pointer',
+                isSelected &&
+                    'rounded-16 border-brand-blue bg-system-light-primary-background border-solid border-1 rounded-lg'
             )}
             onClick={onClick}
             onKeyDown={e => {
@@ -24,25 +24,24 @@ const MT5AccountTypeCard = ({ description, icon, isSelected, onClick, title }: T
                     onClick();
                 }
             }}
-            role='button'
             tabIndex={0}
         >
             <div className='flex w-[264px] h-[250px] items-start'>
-                <div className='flex items-start self-stretch flex-1 border-solid rounded-lg p-1200 border-system-light-active-background bg-system-light-primary-background border-sm'>
-                    <div className='flex flex-col items-center self-stretch justify-center gap-1200'>
+                <div className='flex items-start self-stretch flex-1 p-24 border-solid rounded-lg border-system-light-active-background bg-system-light-primary-background border-1'>
+                    <div className='flex flex-col items-center self-stretch justify-center gap-24'>
                         {icon}
-                        <div className='flex flex-col items-center self-stretch gap-400'>
-                            <div className='flex items-center flex-1 text-center'>
+                        <div className='flex flex-col items-center self-stretch gap-8 text-center'>
+                            <div className='flex items-center flex-1'>
                                 <Text weight='bold'>{title}</Text>
                             </div>
-                            <div className='self-stretch text-center'>
+                            <div className='self-stretch'>
                                 <Text size='sm'>{description}</Text>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </button>
     );
 };
 

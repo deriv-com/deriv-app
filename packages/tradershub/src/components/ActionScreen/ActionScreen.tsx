@@ -1,5 +1,5 @@
 import React, { ComponentProps, isValidElement, ReactNode } from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { Text } from '@deriv-com/ui';
 
 type TActionScreenProps = {
@@ -29,14 +29,9 @@ const ActionScreen = ({
     titleSize = 'md',
 }: TActionScreenProps) => {
     return (
-        <div
-            className={qtMerge([
-                'flex flex-col items-center justify-center gap-1200  w-auto h-auto rounded-200',
-                className,
-            ])}
-        >
+        <div className={clsx('flex flex-col items-center justify-center gap-24 w-auto h-auto rounded-xs', className)}>
             {icon}
-            <div className='flex flex-col items-center justify-center gap-400'>
+            <div className='flex flex-col items-center justify-center gap-8'>
                 {title && (
                     <Text size={titleSize} weight='bold'>
                         {title}

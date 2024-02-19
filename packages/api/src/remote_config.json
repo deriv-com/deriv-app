@@ -1,0 +1,8 @@
+{
+    "cs_chat_livechat": true,
+    "cs_chat_whatsapp": true,
+    "tracking_datadog": true,
+    "marketing_growthbook": false,
+    "tracking_hotjar": true,
+    "tracking_GTM": true
+}

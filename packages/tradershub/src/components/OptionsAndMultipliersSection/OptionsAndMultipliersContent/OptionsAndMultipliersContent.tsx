@@ -5,8 +5,7 @@ import { optionsAndMultipliersContent } from '@/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -92,7 +91,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
  * @returns {React.ElementType} The `OptionsAndMultipliersContent` component.
  */
 const OptionsAndMultipliersContent = () => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { data } = useActiveTradingAccount();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
@@ -106,20 +105,20 @@ const OptionsAndMultipliersContent = () => {
 
     if (!isRegulationAccessible)
         return (
-            <div className='pt-2000'>
+            <div className='pt-40'>
                 <TradingAppCardLoader />
             </div>
         );
 
     return (
-        <div className='grid w-full grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
+        <div className='grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-4'>
             {filteredContent.map(account => {
                 const { description, icon, isExternal, redirect, smallIcon, title } = account;
 
                 const trailingComponent = () => <ShowOpenButton isExternal={isExternal} redirect={redirect} />;
 
                 const leadingComponent = () => (
-                    <LinkTitle icon={data?.loginid || !isMobile ? icon : smallIcon} title={title} />
+                    <LinkTitle icon={data?.loginid || isDesktop ? icon : smallIcon} title={title} />
                 );
 
                 return (

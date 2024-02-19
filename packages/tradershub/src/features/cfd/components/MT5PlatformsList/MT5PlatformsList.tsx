@@ -15,8 +15,7 @@ type TMT5PlatformsListProps = {
 const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) => {
     const { isFetching } = useAuthorize();
     const { uiState } = useUIContext();
-    const { accountType } = uiState;
-    const activeRegulation = uiState.regulation;
+    const { accountType, regulation: activeRegulation } = uiState;
     const {
         areAllAccountsCreated,
         data: sortedMt5Accounts,

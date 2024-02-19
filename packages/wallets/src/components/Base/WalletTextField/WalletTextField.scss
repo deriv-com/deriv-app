@@ -6,6 +6,10 @@
     flex-direction: column;
     gap: 0.2rem;
 
+    &--listcard {
+        min-width: 0;
+    }
+
     &--error {
         .wallets-textfield__box,
         .wallets-textfield__box:hover {
@@ -62,10 +66,20 @@
         &:hover {
             border-color: var(--system-light-3-less-prominent-text, #999);
         }
+
+        &--listcard {
+            border: none;
+            height: 2.4rem;
+            padding: 0;
+        }
     }
 
     &__box:has(&__field:focus) {
         border: 1px solid var(--brand-blue, #85acb0);
+    }
+
+    &__box--listcard:has(&__field:focus) {
+        border: none;
     }
 
     &__box:has(&__field:invalid) {
@@ -80,6 +94,12 @@
         color: var(--system-light-2-general-text, #333);
         transition: border-color 0.2s;
         flex: 1;
+
+        &--listcard {
+            font-size: 1.6rem;
+            background: transparent;
+            padding: 0;
+        }
     }
 
     &__field::placeholder {
@@ -126,6 +146,10 @@
 
         &-right {
             margin-left: 1.6rem;
+
+            &--listcard {
+                margin-left: 0.8rem;
+            }
         }
     }
 

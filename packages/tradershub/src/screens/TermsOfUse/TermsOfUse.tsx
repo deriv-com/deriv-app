@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
+import { ScrollToFieldError } from '@/helpers';
 import { termsOfUse } from '@/utils';
 import { Text } from '@deriv-com/ui';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
@@ -40,8 +41,9 @@ const TermsOfUse = () => {
             >
                 {({ isValid, values }) => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
-                            <div className='flex flex-col gap-800'>
+                        <ScrollToFieldError />
+                        <div className='flex-1 p-16 overflow-y-auto lg:p-24'>
+                            <div className='flex flex-col gap-16'>
                                 <Text size='sm' weight='bold'>
                                     Jurisdiction and choice of law
                                 </Text>

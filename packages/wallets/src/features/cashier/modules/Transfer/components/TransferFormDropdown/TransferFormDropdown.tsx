@@ -24,6 +24,14 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const modal = useModal();
     const isFromAccountDropdown = fieldName === 'fromAccount';
 
+    const fromAccountList = useMemo(() => {
+        if (!activeWallet) return { tradingAccounts: [], walletAccounts: [] };
+        return {
+            ...accounts,
+            walletAccounts: [activeWallet],
+        };
+    }, [accounts, activeWallet]);
+
     const toAccountList = useMemo(() => {
         if (!activeWallet) return { tradingAccounts: [], walletAccounts: [] };
         if (fromAccount?.loginid === activeWallet.loginid) {
@@ -36,7 +44,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     }, [accounts?.tradingAccounts, accounts?.walletAccounts, activeWallet, fromAccount?.loginid]);
 
     const selectedAccount = isFromAccountDropdown ? fromAccount : toAccount;
-    const accountsList = isFromAccountDropdown ? accounts : toAccountList;
+    const accountsList = isFromAccountDropdown ? fromAccountList : toAccountList;
     const label = isFromAccountDropdown ? 'Transfer from' : 'Transfer to';
     const badgeLabel = selectedAccount?.demo_account ? 'virtual' : selectedAccount?.landingCompanyName;
 

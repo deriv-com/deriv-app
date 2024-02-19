@@ -48,12 +48,12 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
                 </Text>
             ),
             button: (
-                <div className='flex gap-400'>
+                <div className='flex gap-8'>
                     <Button onClick={() => hide()} size='lg' variant='outlined'>
                         Cancel
                     </Button>
                     <Button
-                        className='rounded-200'
+                        className='rounded-xs'
                         onClick={() => {
                             handleSendEmail();
                             handleClick('emailVerification');
@@ -69,7 +69,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
         introScreen: {
             bodyText: `Use this password to log in to your ${title} accounts on the desktop, web, and mobile apps.`,
             button: (
-                <Button className='rounded-200' onClick={() => handleClick('confirmationScreen')} size='lg'>
+                <Button className='rounded-xs' onClick={() => handleClick('confirmationScreen')} size='lg'>
                     Change password
                 </Button>
             ),
@@ -79,13 +79,13 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
 
     if (activeScreen === 'emailVerification')
         return (
-            <div className='w-full mt-1600 md:mt-2000'>
+            <div className='w-full mt-32 md:mt-40'>
                 <SentEmailContent platform={platform} />
             </div>
         );
 
     return (
-        <div className='mt-1600 lg:mt-2000'>
+        <div className='mt-32 lg:mt-40'>
             <ActionScreen
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'

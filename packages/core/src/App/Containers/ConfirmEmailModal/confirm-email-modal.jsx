@@ -13,6 +13,7 @@ export const ConfirmEmailModal = ({
     setErrorMessage,
     verification_code,
     is_social_signup,
+    setEmailValue,
 }) => {
     const [email_request, setEmailRequest] = React.useState(null);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
@@ -31,6 +32,7 @@ export const ConfirmEmailModal = ({
         WS.changeEmail(api_request).then(response => {
             if (response.error) {
                 onClose();
+                setEmailValue(changed_email);
                 setErrorMessage(response.error.message);
             } else {
                 setIsSendEmailModalOpen(true);

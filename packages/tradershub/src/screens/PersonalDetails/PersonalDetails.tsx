@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
+import { ScrollToFieldError } from '@/helpers';
 import { personalDetails } from '@/utils';
+import { Text } from '@deriv-com/ui';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
 import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
 import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
@@ -22,15 +24,16 @@ const PersonalDetails = () => {
     };
 
     const initialValues = {
-        accountOpeningReason: state.accountOpeningReason ?? '',
-        confirmation: false,
-        dateOfBirth: state.dateOfBirth ?? '',
         firstName: state.firstName ?? '',
         lastName: state.lastName ?? '',
+        dateOfBirth: state.dateOfBirth ?? '',
+        confirmation: false,
         phoneNumber: state.phoneNumber ?? '',
         placeOfBirth: state.placeOfBirth ?? '',
-        taxIdentificationNumber: state.taxIdentificationNumber ?? '',
         taxResidence: state.taxResidence ?? '',
+        taxIdentificationNumber: state.taxIdentificationNumber ?? '',
+        accountOpeningReason: state.accountOpeningReason ?? '',
+        taxInfoConfirmation: false,
     };
     return (
         <WizardScreenWrapper heading='Complete your personal details'>
@@ -44,11 +47,12 @@ const PersonalDetails = () => {
             >
                 {() => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
-                            <p className='text-75'>
+                        <ScrollToFieldError fieldOrder={Object.keys(initialValues)} />
+                        <div className='flex-1 p-16 overflow-y-auto lg:p-24'>
+                            <Text className='text-sm lg:text-default'>
                                 Any information you provide is confidential and will be used for verification purposes
                                 only.
-                            </p>
+                            </Text>
                             <Details />
                             <AdditionalInformation />
                         </div>

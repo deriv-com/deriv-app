@@ -1,20 +1,13 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
-import { Analytics } from '@deriv-com/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TFormData } from '../types';
-
-type TTradeType = {
-    component?: React.ReactNode;
-    text: string;
-    value: string;
-    group: string;
-    icon: string[];
-};
+import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
+import { setRsDropdownTextToLocalStorage } from '../analytics/utils';
+import { TApiHelpersInstance, TFormData, TTradeType } from '../types';
 
 type TTradeTypeOption = {
     trade_type: TTradeType;
@@ -31,39 +24,37 @@ const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }: TTradeTypeO
 );
 
 const TradeTypeSelect: React.FC = () => {
-    const [trade_types, setTradeTypes] = React.useState([]);
+    const [trade_types, setTradeTypes] = React.useState<TTradeType[]>([]);
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
     const selected = values?.tradetype;
-    const sendTradeTypeToRudderStack = (item: string) => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'choose_trade_type',
-            trade_type: item,
-            form_source: 'ce_bot_quick_strategy_form',
-        });
-    };
 
     React.useEffect(() => {
         const first_time_user_data = !(JSON.parse(localStorage?.getItem('qs-fields') as string) as TFormData);
         if (first_time_user_data) {
-            setFieldValue?.('tradetype', (trade_types?.[0] as TTradeType)?.value);
+            setFieldValue?.('tradetype', trade_types?.[0]?.value);
             validateForm();
-            setValue('tradetype', (trade_types?.[0] as TTradeType)?.value);
+            setValue('tradetype', trade_types?.[0]?.value);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         if (values?.symbol && selected !== '') {
-            const { contracts_for } = ApiHelpers.instance;
+            const { contracts_for } = ApiHelpers.instance as unknown as TApiHelpersInstance;
             const getTradeTypes = async () => {
                 const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values?.symbol);
                 setTradeTypes(trade_types);
-                const has_selected = trade_types?.some((trade_type: TTradeType) => trade_type.value === selected);
+                const has_selected = trade_types?.some(trade_type => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
                     await setFieldValue?.('tradetype', trade_types?.[0].value || '');
                     await validateForm();
                     setValue('tradetype', trade_types?.[0].value);
+                    setRsDropdownTextToLocalStorage(trade_types?.[0]?.text, 'tradetype');
+                } else {
+                    const selected_item = trade_types?.find(trade_types => trade_types?.value === selected);
+                    setRsDropdownTextToLocalStorage(selected_item?.text ?? '', 'tradetype');
                 }
             };
             debounce(async () => {
@@ -75,7 +66,7 @@ const TradeTypeSelect: React.FC = () => {
 
     const trade_type_dropdown_options = React.useMemo(
         () =>
-            trade_types.map((trade_type: TTradeType) => ({
+            trade_types.map(trade_type => ({
                 component: <TradeTypeOption key={trade_type.text} trade_type={trade_type} />,
                 ...trade_type,
             })),
@@ -87,7 +78,7 @@ const TradeTypeSelect: React.FC = () => {
             <Field name='tradetype' key='tradetype' id='tradetype'>
                 {({ field }: FieldProps) => {
                     const selected_trade_type = trade_type_dropdown_options?.find(
-                        (trade_type: TTradeType) => trade_type.value === field.value
+                        trade_type => trade_type.value === field.value
                     );
                     return (
                         <Autocomplete
@@ -100,10 +91,16 @@ const TradeTypeSelect: React.FC = () => {
                             value={selected_trade_type?.text || ''}
                             list_items={trade_type_dropdown_options}
                             onItemSelection={(item: TItem) => {
-                                if ((item as TTradeType)?.value) {
-                                    sendTradeTypeToRudderStack(item.text);
-                                    setFieldValue?.('tradetype', (item as TTradeType)?.value as string);
-                                    setValue('tradetype', (item as TTradeType)?.value as string);
+                                const { value, text } = item as TTradeType;
+                                if (item) {
+                                    setFieldValue?.('tradetype', value);
+                                    setValue('tradetype', value);
+                                    rudderStackSendQsParameterChangeEvent({
+                                        parameter_type: 'tradetype',
+                                        parameter_value: text,
+                                        parameter_field_type: 'dropdown',
+                                    });
+                                    setRsDropdownTextToLocalStorage(text, 'tradetype');
                                 }
                             }}
                             leading_icon={

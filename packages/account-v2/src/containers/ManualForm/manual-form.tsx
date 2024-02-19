@@ -3,7 +3,6 @@ import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
 import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { useManualForm } from '../../hooks';
 import { getManualFormValidationSchema, setInitialValues } from '../../utils/manual-form-utils';
 import { ManualFormDocumentUpload } from './manual-form-document-upload';
 import { ManualFormFooter } from './manual-form-footer';
@@ -13,14 +12,19 @@ type TmanualDocumentFormValues = InferType<ReturnType<typeof getManualFormValida
 
 type TManualFormProps = {
     formData: FormikValues;
+    isExpiryDateRequired: boolean;
     onCancel: () => void;
     onSubmit: (values: TmanualDocumentFormValues) => void;
     selectedDocument: TManualDocumentTypes;
 };
 
-export const ManualForm = ({ formData, onCancel, onSubmit, selectedDocument }: TManualFormProps) => {
-    const { isExpiryDateRequired } = useManualForm();
-
+export const ManualForm = ({
+    formData,
+    isExpiryDateRequired,
+    onCancel,
+    onSubmit,
+    selectedDocument,
+}: TManualFormProps) => {
     const validationSchema = getManualFormValidationSchema(selectedDocument, isExpiryDateRequired);
 
     const initialValues = useMemo(() => {
@@ -40,7 +44,10 @@ export const ManualForm = ({ formData, onCancel, onSubmit, selectedDocument }: T
                 <Form>
                     <div className='flex flex-col min-h-screen w-full'>
                         <div className='flex flex-col gap-1200'>
-                            <ManualFormInputs isExpiryDateRequired selectedDocument={selectedDocument} />
+                            <ManualFormInputs
+                                isExpiryDateRequired={isExpiryDateRequired}
+                                selectedDocument={selectedDocument}
+                            />
                             <ManualFormDocumentUpload selectedDocument={selectedDocument} />
                             <ManualFormFooter />
                         </div>

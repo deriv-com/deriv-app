@@ -1,13 +1,32 @@
-import { useSettings } from '@deriv/api';
+import { useKycAuthStatus } from '@deriv/api';
+import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../constants/manualFormConstants';
 
 /** A custom hook used for manual verification flow */
-const useManualForm = () => {
-    const { data: settings } = useSettings();
-    const countryCode = settings?.citizen ?? settings?.country_code;
-    const isExpiryDateRequired = !!countryCode && countryCode !== 'ng';
+const useManualForm = (countryCode: string, selectedDocument: TManualDocumentTypes) => {
+    const { isLoading, kyc_auth_status, ...rest } = useKycAuthStatus({ country: countryCode });
+    const servicesAvailable = kyc_auth_status?.identity?.available_services;
 
+    if (countryCode === 'ng') {
+        if (selectedDocument === MANUAL_DOCUMENT_TYPES.NIMC_SLIP) {
+            return {
+                isExpiryDateRequired: false,
+                isLoading,
+                poiService: 'manual',
+                ...rest,
+            };
+        }
+        return {
+            isExpiryDateRequired: true,
+            isLoading,
+            poiService: isLoading ? null : servicesAvailable[0],
+            ...rest,
+        };
+    }
     return {
-        isExpiryDateRequired,
+        isExpiryDateRequired: true,
+        isLoading,
+        poiService: 'manual',
+        ...rest,
     };
 };
 

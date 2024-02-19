@@ -1,46 +1,55 @@
-import { useSettings } from '@deriv/api';
+import { useKycAuthStatus } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useManualForm from '../useManualForm';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useSettings: jest.fn(),
+    useKycAuthStatus: jest.fn(),
 }));
 
 describe('useManualForm', () => {
-    it('should return false if citizenship is ng', () => {
-        (useSettings as jest.Mock).mockReturnValue({
-            data: {
-                citizen: 'ng',
-                country_code: 'in',
+    it('should return false for expiry date if citizenship is ng and document is nimc slip', () => {
+        (useKycAuthStatus as jest.Mock).mockReturnValue({
+            isLoading: false,
+            kyc_auth_status: {
+                identity: {
+                    available_services: ['onfido', 'manual'],
+                },
             },
         });
-        const { result } = renderHook(() => useManualForm());
-        const { isExpiryDateRequired } = result.current;
-        expect(isExpiryDateRequired).toBe(false);
+        const { result } = renderHook(() => useManualForm('ng', 'nimc_slip'));
+        const { isExpiryDateRequired, poiService } = result.current;
+        expect(isExpiryDateRequired).toBeFalsy();
+        expect(poiService).toBe('manual');
     });
 
-    it('should return true if citizenship and country code is not ng', () => {
-        (useSettings as jest.Mock).mockReturnValue({
-            data: {
-                citizen: 'au',
-                country_code: 'au',
+    it('should return true for expiry date if citizenship is ng and document is passport', () => {
+        (useKycAuthStatus as jest.Mock).mockReturnValue({
+            isLoading: false,
+            kyc_auth_status: {
+                identity: {
+                    available_services: ['onfido', 'manual'],
+                },
             },
         });
-        const { result } = renderHook(() => useManualForm());
-        const { isExpiryDateRequired } = result.current;
-        expect(isExpiryDateRequired).toBe(true);
+        const { result } = renderHook(() => useManualForm('ng', 'passport'));
+        const { isExpiryDateRequired, poiService } = result.current;
+        expect(isExpiryDateRequired).toBeTruthy();
+        expect(poiService).toBe('onfido');
     });
 
-    it('should return true if citizenship is not ng but country code is ng', () => {
-        (useSettings as jest.Mock).mockReturnValue({
-            data: {
-                citizen: 'in',
-                country_code: 'ng',
+    it('should return manual as POI service if citizenship is in and document is passport', () => {
+        (useKycAuthStatus as jest.Mock).mockReturnValue({
+            isLoading: false,
+            kyc_auth_status: {
+                identity: {
+                    available_services: ['onfido', 'manual'],
+                },
             },
         });
-        const { result } = renderHook(() => useManualForm());
-        const { isExpiryDateRequired } = result.current;
-        expect(isExpiryDateRequired).toBe(true);
+        const { result } = renderHook(() => useManualForm('in', 'passport'));
+        const { isExpiryDateRequired, poiService } = result.current;
+        expect(isExpiryDateRequired).toBeTruthy();
+        expect(poiService).toBe('manual');
     });
 });

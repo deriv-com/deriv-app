@@ -23,5 +23,6 @@ describe('UnsupportedContractModal', () => {
         });
 
         expect(screen.getByText(/You’ve selected a trade type that is currently unsupported/i)).toBeInTheDocument();
+        expect(screen.getByText(/Go to Deriv.com/i)).toBeInTheDocument();
     });
 });

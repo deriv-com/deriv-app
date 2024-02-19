@@ -28,6 +28,6 @@ describe('CloseHeader', () => {
     it('should render the correct header title on mobile', () => {
         mockUseDevice.isMobile = true;
         render(<CloseHeader />);
-        expect(screen.queryByText('Cashier')).toBeInTheDocument();
+        expect(screen.queryByText('Deriv P2P')).toBeInTheDocument();
     });
 });

@@ -124,8 +124,10 @@ const TradeModal = ({
         let app_title = '';
         if (platform_type === CFD_PLATFORMS.DXTRADE) {
             app_title = localize('Run Deriv X on your browser');
-        } else if (platform_type === CFD_PLATFORMS.CTRADER) {
+        } else if (platform_type === 'ctrader' && !is_mobile) {
             app_title = localize('Run cTrader on your browser');
+        } else if (platform_type === 'ctrader' && is_mobile) {
+            return null;
         } else {
             return null;
         }

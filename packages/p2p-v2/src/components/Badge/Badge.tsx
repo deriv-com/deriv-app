@@ -13,9 +13,9 @@ const Badge = ({ label, status, variant }: TBadgeProps) => {
     return (
         <div
             className={clsx('p2p-v2-badge', {
+                'p2p-v2-badge--general': variant === 'general',
                 'p2p-v2-badge--success': variant === 'success',
                 'p2p-v2-badge--warning': variant === 'warning',
-                'p2p-v2-badge--general': variant === 'general',
             })}
         >
             <Text className='p2p-v2-badge__label' color='white' weight='bold'>

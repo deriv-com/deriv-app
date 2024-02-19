@@ -1,0 +1,11 @@
+.actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+
+    @include mobile-cashier-v2 {
+        flex-direction: column;
+    }
+}

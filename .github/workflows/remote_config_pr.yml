@@ -21,11 +21,19 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Import GPG key
+      id: import-gpg
+      uses: deriv-com/ghaction-import-gpg@v6
+      with:
+        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        git_user_signingkey: true
+        git_commit_gpgsign: true
     - name: Checkout to remote_config_update_branch
       run: |
         git fetch origin
         git checkout "${{ env.REMOTE_CONFIG_BRANCH }}" || git checkout -b "${{ env.REMOTE_CONFIG_BRANCH }}" origin/"${{ env.REMOTE_CONFIG_BRANCH }}"
-      
+      shell: bash
     - name: Download Remote Config Backup File
       uses: ./.github/actions/download_remote_config_backup
       with:

@@ -40,16 +40,15 @@ const Info = observer(({ handleSelect, item, selected_value, list, info_banner }
         },
     } = useStore();
     const { RISE_FALL, RISE_FALL_EQUAL, TURBOS, VANILLA } = TRADE_TYPES;
-
-    const getSelectedContractType = (type: string) => {
-        if (type === RISE_FALL_EQUAL) return RISE_FALL;
-        if (type === TURBOS.SHORT) return TURBOS.LONG;
-        if (type === VANILLA.PUT) return VANILLA.CALL;
-
-        return type;
+    const CONTRACT_TYPE_SUBSTITUTE = {
+        [RISE_FALL_EQUAL]: RISE_FALL,
+        [TURBOS.SHORT]: TURBOS.LONG,
+        [VANILLA.PUT]: VANILLA.CALL,
     };
     const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(TABS.DESCRIPTION);
-    const [selected_contract_type, setSelectedContractType] = React.useState(getSelectedContractType(selected_value));
+    const [selected_contract_type, setSelectedContractType] = React.useState(
+        CONTRACT_TYPE_SUBSTITUTE[selected_value] ?? selected_value
+    );
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
             i.value !== RISE_FALL_EQUAL && i.value !== TURBOS.SHORT && i.value !== VANILLA.PUT
@@ -200,7 +199,7 @@ const Info = observer(({ handleSelect, item, selected_value, list, info_banner }
                         handleSelect(
                             {
                                 value:
-                                    selected_contract_type === getSelectedContractType(selected_value)
+                                    selected_contract_type === CONTRACT_TYPE_SUBSTITUTE[selected_value]
                                         ? selected_value
                                         : selected_contract_type,
                             },

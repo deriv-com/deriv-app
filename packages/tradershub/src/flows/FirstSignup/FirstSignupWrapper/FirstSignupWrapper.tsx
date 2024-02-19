@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Formik } from 'formik';
-import { FirstSignupScreens } from '../FirstSignupScreens';
+import ReactModal from 'react-modal';
+import { CUSTOM_STYLES } from '@/helpers';
+import { SignupScreens } from '../SignupScreens';
 
 export type TFirstSignupFormValues = {
     citizenship: string;
@@ -9,11 +11,8 @@ export type TFirstSignupFormValues = {
 };
 
 const FirstSignupWrapper = () => {
+    const [isOpen] = useState(false);
     const [step, setStep] = useState(1);
-
-    const handleSubmit = () => {
-        // will be added later
-    };
 
     const initialValues = {
         country: '',
@@ -21,12 +20,22 @@ const FirstSignupWrapper = () => {
         password: '',
     };
 
+    const handleSubmit = () => {
+        // will be added later
+    };
+
+    useEffect(() => {
+        ReactModal.setAppElement('#v2_modal_root');
+    }, []);
+
     return (
-        <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit} validateOnChange>
-            <Form>
-                <FirstSignupScreens setStep={setStep} step={step} />
-            </Form>
-        </Formik>
+        <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                <Form>
+                    <SignupScreens setStep={setStep} step={step} />
+                </Form>
+            </Formik>
+        </ReactModal>
     );
 };
 

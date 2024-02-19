@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormikContext } from 'formik';
 import { Modal } from '@/components';
+import { isCVMEnabled } from '@/helpers';
 import { useClientCountry, useResidenceList } from '@deriv/api';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Button, Checkbox, Dropdown, Text } from '@deriv-com/ui';
@@ -15,7 +16,7 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
     const { data: clientCountry, isLoading: clientCountryLoading } = useClientCountry();
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
     const { values, setFieldValue } = useFormikContext<TFirstSignupFormValues>();
-    const isBrazil = values.country === 'br';
+    const isCheckboxVisible = isCVMEnabled(values.country);
 
     useEffect(() => {
         if (residenceList?.length && clientCountry && values.country === '') {
@@ -27,9 +28,9 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
     if (clientCountryLoading && residenceListLoading) return null;
 
     return (
-        <Modal className='h-full rounded-default max-w-[328px] md:max-w-[440px]'>
-            <div className='flex flex-col max-w-[296x] md:max-w-[392px] p-16 space-y-16 md:space-y-24 md:p-24'>
-                <Text weight={'bold'}>Select your country and citizenship:</Text>
+        <Modal className='h-full rounded-default max-w-[328px] lg:max-w-[440px]'>
+            <div className='flex flex-col max-w-[296x] lg:max-w-[392px] p-16 space-y-16 lg:space-y-24 lg:p-24'>
+                <Text weight='bold'>Select your country and citizenship:</Text>
                 <Dropdown
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                     errorMessage='Country of residence is where you currently live.'
@@ -54,7 +55,7 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
                     value={values.citizenship}
                     variant='comboBox'
                 />
-                {isBrazil && (
+                {isCheckboxVisible && (
                     <Checkbox
                         checked={isCheckBoxChecked}
                         label={
@@ -73,8 +74,10 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
                     />
                 )}
                 <Button
-                    className='w-full md:self-end md:w-fit'
-                    disabled={Boolean(!values.country || !values.citizenship || (isBrazil && !isCheckBoxChecked))}
+                    className='w-full lg:self-end lg:w-fit'
+                    disabled={Boolean(
+                        !values.country || !values.citizenship || (isCheckboxVisible && !isCheckBoxChecked)
+                    )}
                     onClick={onClickNext}
                 >
                     Next

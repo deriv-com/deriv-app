@@ -5,11 +5,9 @@ import useQuery from '../useQuery';
 const useClientCountry = () => {
     const { data, ...website_status_rest } = useQuery('website_status');
 
-    /** Modify the residence client country. */
+    /** Modify the client country. */
     const modified_client_country = useMemo(() => {
-        if (!data?.website_status?.clients_country) return undefined;
-
-        return data.website_status?.clients_country;
+        return data?.website_status?.clients_country;
     }, [data]);
 
     return {

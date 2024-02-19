@@ -1,9 +1,11 @@
 import React from 'react';
-import { Formik, FormikValues } from 'formik';
+import { Formik, FormikValues, FormikValues } from 'formik';
+import { InferType } from 'yup';
 import { InferType } from 'yup';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import SelfieIcon from '../../assets/manual-upload/selfie-icon.svg';
 import { Dropzone } from '../../components/Dropzone';
+import { MANUAL_DOCUMENT_SELFIE } from '../../constants/manualFormConstants';
 import { MANUAL_DOCUMENT_SELFIE } from '../../constants/manualFormConstants';
 import { getSelfieValidationSchema } from '../../utils/manualFormUtils';
 
@@ -14,8 +16,15 @@ type TSelfieDocumentUpload = {
     handleCancel: () => void;
     handleSubmit: (value: TSelfieFormValue) => void;
 };
+type TSelfieFormValue = InferType<ReturnType<typeof getSelfieValidationSchema>>;
 
-export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: TSelfieDocumentUpload) => {
+type TSelfieDocumentUpload = {
+    formData: FormikValues;
+    handleCancel: () => void;
+    handleSubmit: (value: TSelfieFormValue) => void;
+};
+
+export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: TSelfieDocumentUpload{ formData, handleCancel, handleSubmit }: TSelfieDocumentUpload) => {
     const { isMobile } = useDevice();
 
     const validationSchema = getSelfieValidationSchema();
@@ -24,8 +33,14 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
         [MANUAL_DOCUMENT_SELFIE]: formData[MANUAL_DOCUMENT_SELFIE] ?? validationSchema.getDefault().selfie_with_id,
     });
 
+    const initialVal = validationSchema.cast({
+        [MANUAL_DOCUMENT_SELFIE]: formData[MANUAL_DOCUMENT_SELFIE] ?? validationSchema.getDefault().selfie_with_id,
+    });
+
     return (
         <Formik
+            initialValues={initialVal as TSelfieFormValue}
+            onSubmit={handleSubmit}
             initialValues={initialVal as TSelfieFormValue}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}

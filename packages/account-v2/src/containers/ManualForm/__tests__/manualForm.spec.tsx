@@ -5,6 +5,9 @@ import userEvent from '@testing-library/user-event';
 import { ManualForm } from '../manualForm';
 
 jest.mock('react-calendar/dist/Calendar.css', () => jest.fn());
+jest.mock('../../../hooks', () => ({
+    useManualForm: jest.fn(() => ({ isExpiryDateRequired: true })),
+}));
 
 describe('ManualForm', () => {
     const renderComponent = ({
@@ -63,9 +66,9 @@ describe('ManualForm', () => {
 
     it('should display the error message if the document expiry date is empty', async () => {
         renderComponent({ selectedDocument: 'passport' });
-        userEvent.type(screen.getByRole('textbox', { name: 'Expiry date*' }), '');
-        userEvent.tab();
         await waitFor(() => {
+            userEvent.type(screen.getByRole('textbox', { name: 'Expiry date*' }), '');
+            userEvent.tab();
             expect(screen.getByText(/Expiry date is required./)).toBeInTheDocument();
         });
     });

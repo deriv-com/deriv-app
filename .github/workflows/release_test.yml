@@ -16,6 +16,13 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install Dependencies
       uses: "./.github/actions/npm_install_from_cache"
+    - name: Download Remote Config Backup File
+      uses: ./.github/actions/download_remote_config_backup
+      with:
+        GITHUB_TOKEN: ${{ github.token }}
+        REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     - name: Build
       uses: "./.github/actions/build"
       with:
@@ -34,6 +41,7 @@ jobs:
         GROWTHBOOK_CLIENT_KEY: ${{ vars.GROWTHBOOK_CLIENT_KEY }}
         GROWTHBOOK_DECRYPTION_KEY: ${{ vars.GROWTHBOOK_DECRYPTION_KEY }}
         REF_NAME: ${{ github.ref_name }}
+        REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
     - name: Run tests
       run: npm test
     - name: Publish to Cloudflare Pages Test

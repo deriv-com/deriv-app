@@ -3,7 +3,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import { DummyComponent } from '../components';
 import { Cashier } from '../containers';
-import { WithdrawalVerificationModule } from '../lib';
+import { DepositFiatModule, WithdrawalVerificationModule } from '../lib';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -25,7 +25,7 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
         routes: [
             {
                 path: cashierPathRoutes.cashierDeposit,
-                component: DummyComponent,
+                component: DepositFiatModule,
                 title: 'Deposit',
             },
             {

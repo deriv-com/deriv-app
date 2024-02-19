@@ -13,12 +13,7 @@ type TAppContainerProps = {
  */
 
 const AppContainer = ({ children, className }: TAppContainerProps) => (
-    <div
-        className={clsx(
-            'font-sans md:max-w-[600px] lg:max-w-[1440px] mx-auto lg:py-50 lg:px-0 md:overflow-auto',
-            className
-        )}
-    >
+    <div className={clsx('font-sans max-w-[600px] lg:max-w-[1440px] mx-auto lg:py-50 lg:px-0 ', className)}>
         {children}
     </div>
 );

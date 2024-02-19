@@ -17,6 +17,9 @@ export default {
                     black: {
                         '3': '#151717',
                     },
+                    green: {
+                        '1': '#4bb4b3',
+                    },
                 },
             },
         },

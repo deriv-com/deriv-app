@@ -1,5 +1,5 @@
 import React from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { Text } from '@deriv-com/ui';
 import { TPlatforms } from '../../../../types';
 import {
@@ -20,14 +20,14 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
 
     return (
         <div
-            className={qtMerge(
+            className={clsx(
                 CompareAccountsPlatformLabelClass({
                     background: platformType,
                 } as unknown as TCompareAccountsPlatformLabelClassProps)
             )}
         >
             <Text
-                className={qtMerge(
+                className={clsx(
                     CompareAccountsPlatformLabelTextColorClass({
                         label: platformType,
                     } as unknown as TCompareAccountsPlatformLabelTextClassProps)

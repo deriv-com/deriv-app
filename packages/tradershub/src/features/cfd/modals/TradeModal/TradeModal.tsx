@@ -5,8 +5,7 @@ import { THooks, TMarketTypes, TPlatforms } from '@/types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '@cfd/constants';
 import { TradeScreen } from '@cfd/screens';
 import { Provider } from '@deriv/library';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 
 type TTradeModalProps = {
     account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
@@ -15,7 +14,7 @@ type TTradeModalProps = {
 };
 
 const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
-    const { isDesktop } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { setCfdState } = Provider.useCFDContext();
 
     useEffect(() => {

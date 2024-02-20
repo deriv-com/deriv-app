@@ -1,30 +1,30 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import DepositCryptoTryFiatOnRamp from '../DepositCryptoTryFiatOnRamp';
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: jest.fn(),
-}));
-
 describe('DepositCryptoTryFiatOnRamp', () => {
-    it('should render component correctly', () => {
-        const mockPush = jest.fn();
-        (useHistory as jest.Mock).mockReturnValue({ push: mockPush });
+    const history = createMemoryHistory();
 
-        render(<DepositCryptoTryFiatOnRamp />);
+    it('should render component correctly', () => {
+        render(
+            <Router history={history}>
+                <DepositCryptoTryFiatOnRamp />
+            </Router>
+        );
         expect(screen.getByText(/Looking for a way to buy cryptocurrencies?/)).toBeInTheDocument();
         expect(screen.getByText('Try Fiat onramp')).toBeInTheDocument();
     });
 
     it('should navigate to /cashier-v2/on-ramp when the link is clicked', () => {
-        const mockPush = jest.fn();
-        (useHistory as jest.Mock).mockReturnValue({ push: mockPush });
-
-        render(<DepositCryptoTryFiatOnRamp />);
+        render(
+            <Router history={history}>
+                <DepositCryptoTryFiatOnRamp />
+            </Router>
+        );
 
         fireEvent.click(screen.getByText('Try Fiat onramp'));
-        expect(mockPush).toHaveBeenCalledWith('/cashier-v2/on-ramp');
+        expect(history.location.pathname).toEqual('/cashier-v2/on-ramp');
     });
 });

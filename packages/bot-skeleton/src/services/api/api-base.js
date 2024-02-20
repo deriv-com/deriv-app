@@ -12,6 +12,7 @@ class APIBase {
     subscriptions = [];
     time_interval = null;
     has_activeSymbols = false;
+    is_stopping = false;
 
     async init(force_update = false) {
         if (getLoginId()) {

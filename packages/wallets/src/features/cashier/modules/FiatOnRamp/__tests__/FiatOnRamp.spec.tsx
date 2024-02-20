@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import FiatOnRamp from '../FiatOnRamp';
 
@@ -43,7 +43,9 @@ describe('FiatOnRamp', () => {
     it('should render FiatOnRampDisclaimer on click of the button in the provider card', () => {
         render(
             <APIProvider>
-                <FiatOnRamp />
+                <AuthProvider>
+                    <FiatOnRamp />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -55,7 +57,9 @@ describe('FiatOnRamp', () => {
     it('should handle disclaimer toggle correctly', () => {
         render(
             <APIProvider>
-                <FiatOnRamp />
+                <AuthProvider>
+                    <FiatOnRamp />
+                </AuthProvider>
             </APIProvider>
         );
 

@@ -96,6 +96,7 @@ const AppNotificationMessages = observer(
                       'deriv_go',
                       'document_needs_action',
                       'dp2p',
+                      'flutter_chart',
                       'contract_sold',
                       'has_changed_two_fa',
                       'identity',
@@ -160,7 +161,7 @@ const AppNotificationMessages = observer(
                   )
                 : filtered_excluded_notifications.slice(0, notifications_limit);
 
-        if (!should_show_popups) return null;
+        if (!should_show_popups && !notifications_sublist.some(n => n.key === 'site_maintenance')) return null;
 
         return notifications_sublist.length ? (
             <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>

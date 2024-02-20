@@ -18,13 +18,14 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     const activeRegulation = uiState.regulation;
     const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts(activeRegulation ?? '');
     const { data: activeTradingAccount } = useActiveTradingAccount();
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
     const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
         return data?.some(account => account.is_added);
     }, [data]);
 
+    // Check if we need to invalidate the query
     useEffect(() => {
         if (!isFetching) {
             invalidate('mt5_login_list');
@@ -41,7 +42,11 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
 
     return (
         <CFDPlatformLayout title={PlatformDetails.mt5.title}>
-            {!isFetchedAfterMount && <TradingAppCardLoader />}
+            {!isFetchedAfterMount && (
+                <div className='pt-8 lg:pt-18'>
+                    <TradingAppCardLoader />
+                </div>
+            )}
             {isFetchedAfterMount &&
                 data?.map(account => {
                     if (account.is_added)

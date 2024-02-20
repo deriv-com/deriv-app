@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
+    GetADerivAccountDialog,
     PlatformIcon,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '@/components';
 import { getStaticUrl } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
 import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
@@ -23,18 +25,25 @@ const LeadingIcon = () => (
 const AvailableCTraderAccountsList = () => {
     const { mutate, status } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { hasActiveDerivAccount } = useRegulationFlags();
     const { show } = Provider.useModal();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
 
+    const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
+
     const onSubmit = () => {
-        mutate({
-            payload: {
-                account_type: accountType,
-                market_type: 'all',
-                platform: PlatformDetails.ctrader.platform,
-            },
-        });
+        if (!hasActiveDerivAccount) {
+            setIsDerivedAccountModalOpen(true);
+        } else {
+            mutate({
+                payload: {
+                    account_type: accountType,
+                    market_type: 'all',
+                    platform: PlatformDetails.ctrader.platform,
+                },
+            });
+        }
     };
 
     useEffect(() => {
@@ -44,7 +53,7 @@ const AvailableCTraderAccountsList = () => {
     }, [accountType, show, status]);
 
     return (
-        <div>
+        <Fragment>
             <TradingAccountCard
                 leading={LeadingIcon}
                 trailing={() => <TradingAccountCardLightButton onSubmit={onSubmit} />}
@@ -53,7 +62,11 @@ const AvailableCTraderAccountsList = () => {
                     This account offers CFDs on a feature-rich trading platform.
                 </TradingAccountCardContent>
             </TradingAccountCard>
-        </div>
+            <GetADerivAccountDialog
+                isOpen={isDerivedAccountModalOpen}
+                onClose={() => setIsDerivedAccountModalOpen(false)}
+            />
+        </Fragment>
     );
 };
 

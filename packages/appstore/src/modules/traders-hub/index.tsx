@@ -1,7 +1,6 @@
-/* eslint-disable no-console */
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { isDesktop, routes, ContentFlag } from '@deriv/shared';
+import { isDesktop, routes, ContentFlag, checkServerMaintenance } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
@@ -30,11 +29,14 @@ const TradersHub = observer(() => {
         is_account_setting_loaded,
         is_mt5_allowed,
         has_active_real_account,
+        website_status,
     } = client;
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
-    const can_show_notify = !is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded;
+    const can_show_notify =
+        (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
+        checkServerMaintenance(website_status);
 
     const [scrolled, setScrolled] = React.useState(false);
 

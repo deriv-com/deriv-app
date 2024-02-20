@@ -5,7 +5,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 
 type FlyoutBlockProps = {
     block_node: React.ReactNode;
-    should_hide_display_name: boolean;
+    should_hide_display_name?: boolean;
 };
 
 const FlyoutBlock = observer(({ block_node, should_hide_display_name }: FlyoutBlockProps) => {

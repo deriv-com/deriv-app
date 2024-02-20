@@ -10,13 +10,12 @@ type TFormikContext = {
     values: FormikValues;
 };
 
-const order_time_info_message = 'Orders will expire if they aren’t completed within this time.';
-
 const OrderTimeSelection = ({ ...field }: FormikValues) => {
     const { values, handleChange }: TFormikContext = useFormikContext<TFormikContext>();
     const { showModal } = useModalManagerContext();
     const { ui } = useStore();
     const { is_mobile } = ui;
+    const order_time_info_message = 'Orders will expire if they aren’t completed within this time.';
     const order_completion_time_list = [
         {
             text: localize('1 hour'),

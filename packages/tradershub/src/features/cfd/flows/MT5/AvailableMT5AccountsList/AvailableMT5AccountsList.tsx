@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import {
     GetADerivAccountDialog,
     TradingAccountCard,
@@ -21,11 +21,13 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
     const { setCfdState } = Provider.useCFDContext();
     const { show } = Provider.useModal();
 
+    const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
+
     const trailingButtonClick = () => {
         setCfdState('marketType', account.market_type);
         setCfdState('platform', PlatformDetails.mt5.platform);
         if (!hasActiveDerivAccount) {
-            show(<GetADerivAccountDialog />);
+            setIsDerivedAccountModalOpen(true);
         }
         !activeAccount?.is_virtual && show(<JurisdictionModal />);
         activeAccount?.is_virtual && hasActiveDerivAccount && show(<MT5PasswordModal />);
@@ -34,12 +36,18 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
     const title = marketTypeDetails?.title ?? '';
 
     return (
-        <TradingAccountCard
-            leading={() => <MT5AccountIcon account={account} />}
-            trailing={() => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />}
-        >
-            <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
-        </TradingAccountCard>
+        <Fragment>
+            <TradingAccountCard
+                leading={() => <MT5AccountIcon account={account} />}
+                trailing={() => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />}
+            >
+                <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
+            </TradingAccountCard>
+            <GetADerivAccountDialog
+                isOpen={isDerivedAccountModalOpen}
+                onClose={() => setIsDerivedAccountModalOpen(false)}
+            />
+        </Fragment>
     );
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { StandaloneCheckBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { desktopStyle, stepperVariants } from './ProgressBar.classnames';
@@ -15,14 +15,14 @@ type TStepperProps = {
 };
 
 const Stepper = ({ isActive, isFilled = false, step, stepCount }: TStepperProps) => (
-    <div aria-current={isActive} className={qtMerge('group relative justify-center', desktopStyle.stepper)}>
-        <div className='flex flex-col items-center'>
+    <div aria-current={isActive} className={clsx('relative items-center', desktopStyle.stepper)}>
+        <div className='flex flex-col items-center self-center'>
             {stepCount !== 0 && <StepConnector isActive={isActive} />}
             <span className={stepperVariants({ isActive, isFilled })}>
-                {isFilled && <StandaloneCheckBoldIcon fill={isActive ? '#fff' : '#000'} />}
+                {isFilled && <StandaloneCheckBoldIcon className={isActive ? 'fill-white' : 'fill-black'} />}
             </span>
         </div>
-        <Text className='relative top-200' size='sm' weight={isActive ? 'bold' : 'normal'}>
+        <Text as='p' size='sm' weight={isActive ? 'bold' : 'normal'}>
             {step}
         </Text>
     </div>

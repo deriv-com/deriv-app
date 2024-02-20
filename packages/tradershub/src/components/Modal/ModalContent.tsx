@@ -1,5 +1,5 @@
 import React from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { TModalComponents } from './Modal';
 
 /**
@@ -10,7 +10,7 @@ import { TModalComponents } from './Modal';
  * @returns {JSX.Element} The ModalContent component.
  */
 const ModalContent = ({ children, className }: TModalComponents) => (
-    <div className={qtMerge('flex-grow overflow-y-auto p-50 sm:p-400 lg:flex-none', className)}>{children}</div>
+    <div className={clsx('flex-grow overflow-y-auto p-0 sm:p-8 lg:flex-none', className)}>{children}</div>
 );
 
 export default ModalContent;

@@ -14,7 +14,7 @@ export const ManualFormDocumentUpload = ({ selectedDocument }: TManualFormDocume
             <Text>{getTitleForDocumentUpload(selectedDocument)}</Text>
             <div className='flex flex-col lg:flex-row gap-1200 w-full justify-between'>
                 {uploadConfig.map(upload => (
-                    <div className='w-full' key={upload.pageType}>
+                    <div className='w-full h-[22rem]' key={upload.pageType}>
                         <FormDocumentUploadField
                             buttonText='Drop file or click here to upload'
                             className='h-full'

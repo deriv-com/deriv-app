@@ -2,6 +2,7 @@ import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MANUAL_DOCUMENT_TYPES } from '../../../constants/manualFormConstants';
 import { ManualForm } from '../manual-form';
 
 jest.mock('react-calendar/dist/Calendar.css', () => jest.fn());
@@ -10,33 +11,31 @@ jest.mock('../../../hooks', () => ({
 }));
 
 describe('ManualForm', () => {
-    const renderComponent = ({
-        selectedDocument,
-    }: {
-        selectedDocument?: React.ComponentProps<typeof ManualForm>['selectedDocument'];
-    }) => {
-        const mockProps: React.ComponentProps<typeof ManualForm> = {
-            formData: {},
-            isExpiryDateRequired: false,
-            onCancel: jest.fn(),
-            onSubmit: jest.fn(),
-            selectedDocument: selectedDocument ?? 'driving_licence',
-        };
+    const mockProps: React.ComponentProps<typeof ManualForm> = {
+        formData: {},
+        isExpiryDateRequired: false,
+        onCancel: jest.fn(),
+        onSubmit: jest.fn(),
+        selectedDocument: 'driving_licence',
+    };
+
+    const renderComponent = (props = mockProps) => {
         render(
             <APIProvider>
-                <ManualForm {...mockProps} />
+                <ManualForm {...props} />
             </APIProvider>
         );
     };
 
     it('should render the header texts correctly for the document Driving licence', () => {
-        renderComponent({});
+        renderComponent();
         expect(screen.getByText(/First, enter your Driving licence number and the expiry date./)).toBeInTheDocument();
         expect(screen.getByText(/Next, upload the front and back of your driving licence./)).toBeInTheDocument();
     });
 
     it('should render the header texts correctly for the document Passport', () => {
-        renderComponent({ selectedDocument: 'passport' });
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.PASSPORT };
+        renderComponent(newProps);
         expect(screen.getByText(/First, enter your Passport number and the expiry date./)).toBeInTheDocument();
         expect(
             screen.getByText(/Next, upload the page of your passport that contains your photo./)
@@ -44,13 +43,15 @@ describe('ManualForm', () => {
     });
 
     it('should render the header texts correctly for the document Identity card', () => {
-        renderComponent({ selectedDocument: 'national_identity_card' });
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD };
+        renderComponent(newProps);
         expect(screen.getByText(/First, enter your Identity card number and the expiry date./)).toBeInTheDocument();
         expect(screen.getByText(/Next, upload the front and back of your identity card./)).toBeInTheDocument();
     });
 
     it('should render the header texts correctly for the document NIMC slip', () => {
-        renderComponent({ selectedDocument: 'nimc_slip' });
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.NIMC_SLIP };
+        renderComponent(newProps);
         expect(screen.getByText(/First, enter your NIMC slip number and the expiry date./)).toBeInTheDocument();
         expect(
             screen.getByText(/Next, upload the page of your NIMC slip that contains your photo./)
@@ -58,25 +59,23 @@ describe('ManualForm', () => {
     });
 
     it('should display the error message if the document number is empty', async () => {
-        renderComponent({ selectedDocument: 'passport' });
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.PASSPORT };
+        renderComponent(newProps);
         userEvent.type(screen.getByRole('textbox', { name: 'Passport number*' }), '');
         userEvent.tab();
-        await waitFor(() => {
-            expect(screen.getByText(/Passport number is required./)).toBeInTheDocument();
-        });
+        expect(await screen.findByText(/Passport number is required./)).toBeInTheDocument();
     });
 
     it('should display the error message if the document expiry date is empty', async () => {
-        renderComponent({ selectedDocument: 'passport' });
-        await waitFor(() => {
-            userEvent.type(screen.getByRole('textbox', { name: 'Expiry date*' }), '');
-            userEvent.tab();
-            expect(screen.getByText(/Expiry date is required./)).toBeInTheDocument();
-        });
+        const newProps = { ...mockProps, isExpiryDateRequired: true, selectedDocument: MANUAL_DOCUMENT_TYPES.PASSPORT };
+        renderComponent(newProps);
+        userEvent.type(screen.getByRole('textbox', { name: 'Expiry date*' }), '');
+        userEvent.tab();
+        expect(await screen.findByText(/Expiry date is required./)).toBeInTheDocument();
     });
 
     it('should render the footer items correctly', () => {
-        renderComponent({});
+        renderComponent();
         expect(screen.getByText(/A clear colour photo or scanned image/)).toBeInTheDocument();
         expect(screen.getByText(/JPEG, JPG, PNG, PDF, or GIF/)).toBeInTheDocument();
         expect(screen.getByText(/Less than 8MB/)).toBeInTheDocument();

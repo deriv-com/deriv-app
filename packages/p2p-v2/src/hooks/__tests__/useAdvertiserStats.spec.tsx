@@ -60,6 +60,8 @@ describe('useAdvertiserStats', () => {
         mockUseSettings.mockReturnValueOnce({
             data: { first_name: 'Jane', last_name: 'Doe' },
         });
+
+        jest.useFakeTimers('modern').setSystemTime(new Date('2024-02-20'));
         mockUseAdvertiserInfo.mockReturnValueOnce({
             data: {
                 buy_orders_count: 10,
@@ -74,7 +76,7 @@ describe('useAdvertiserStats', () => {
         expect(result.current.data.tradePartners).toBe(1);
         expect(result.current.data.buyOrdersCount).toBe(10);
         expect(result.current.data.sellOrdersCount).toBe(5);
-        expect(result.current.data.daysSinceJoined).toBe(119);
+        expect(result.current.data.daysSinceJoined).toBe(120);
     });
     test('should return the correct total count and lifetime', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;

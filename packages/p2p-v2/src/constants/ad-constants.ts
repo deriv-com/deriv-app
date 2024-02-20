@@ -1,7 +1,7 @@
-export const COUNTERPARTIES_DROPDOWN_LIST = [
+export const COUNTERPARTIES_DROPDOWN_LIST = Object.freeze([
     { text: 'All', value: 'all' },
     { text: 'Blocked', value: 'blocked' },
-];
+]);
 
 export const RATE_TYPE = Object.freeze({
     FIXED: 'fixed',
@@ -20,3 +20,8 @@ export const ADVERT_TYPE = Object.freeze({
     BUY: 'Buy',
     SELL: 'Sell',
 });
+
+export const SORT_BY_LIST = Object.freeze([
+    { text: 'Exchange rate', value: 'rate' },
+    { text: 'User rating', value: 'rating' },
+]);

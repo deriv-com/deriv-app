@@ -1,8 +1,7 @@
 import React from 'react';
 import { usePOA, usePOI } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
     if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address';
@@ -44,7 +43,7 @@ const VerificationFailed = () => {
                 Click <strong>Resubmit documents</strong> to find out more and submit your documents again.
             </Text>
             <div className='flex justify-end gap-8'>
-                <Button colorStyle='black' onClick={() => hide()} variant='secondary'>
+                <Button color='black' onClick={() => hide()} variant='outlined'>
                     Maybe later
                 </Button>
                 <Button>Resubmit documents</Button>

@@ -10,6 +10,7 @@ import PasskeyModal from './components/passkey-modal';
 import { getErrorContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
 
+//TODO change the ui with new flow with additional step for creation
 const Passkeys = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;

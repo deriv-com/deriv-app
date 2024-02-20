@@ -13,7 +13,7 @@ describe('<MT5MobileRedirectOption/>', () => {
     const mock_props = {
         mt5_trade_account: {
             leverage: 500,
-            login: 'MTR40021028',
+            display_login: '40021028',
             server_info: {
                 environment: 'DerivSVG-Server',
             },
@@ -56,7 +56,7 @@ describe('<MT5MobileRedirectOption/>', () => {
         const link = await findByText('MetaTrader5 web terminal');
         expect(isSafariBrowser()).toBe(false);
         expect(link.closest('a').getAttribute('href')).toBe(
-            `${mock_props.mt5_trade_account.webtrader_url}&login=${mock_props.mt5_trade_account.login}&server=${mock_props.mt5_trade_account.server_info.environment}`
+            `${mock_props.mt5_trade_account.webtrader_url}&login=${mock_props.mt5_trade_account.display_login}&server=${mock_props.mt5_trade_account.server_info.environment}`
         );
     });
 
@@ -101,7 +101,7 @@ describe('<MT5MobileRedirectOption/>', () => {
         renderComponent({ props: mock_props });
         const expectedUrl = DEEP_LINK({ mt5_trade_account: mock_props.mt5_trade_account });
         expect(expectedUrl).toBe(
-            `metatrader5://account?login=${mock_props.mt5_trade_account?.login}&server=${mock_props.mt5_trade_account?.server_info?.environment}`
+            `metatrader5://account?login=${mock_props.mt5_trade_account?.display_login}&server=${mock_props.mt5_trade_account?.server_info?.environment}`
         );
     });
 });

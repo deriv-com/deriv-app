@@ -2321,7 +2321,9 @@ export default class ClientStore extends BaseStore {
             })
             .finally(() => {
                 setTimeout(() => {
-                    const { event, analyticsData } = window.dataLayer.find(el => el.event === 'ce_questionnaire_form');
+                    const { event, analyticsData } = window.dataLayer.find(
+                        el => el.event === 'ce_questionnaire_form'
+                    ) ?? { event: 'unhandled', analyticsData: {} };
                     Analytics.trackEvent(event, analyticsData);
                 }, 10000);
             });

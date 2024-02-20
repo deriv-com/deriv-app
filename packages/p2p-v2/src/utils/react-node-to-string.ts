@@ -1,11 +1,11 @@
-import React, { ReactNode, isValidElement } from 'react';
+import { isValidElement, ReactNode } from 'react';
 
 /**
  * The below function is used to convert a ReactNode to a string.
  * @param {ReactNode} reactNode - The element to be converted to a string
  * @returns {String} The string representation of the element
  */
-const reactNodeToString = function (reactNode: ReactNode): string {
+export const reactNodeToString = function (reactNode: ReactNode): string {
     let string = '';
     if (typeof reactNode === 'string') {
         string = reactNode;
@@ -20,5 +20,3 @@ const reactNodeToString = function (reactNode: ReactNode): string {
     }
     return string;
 };
-
-export default reactNodeToString;

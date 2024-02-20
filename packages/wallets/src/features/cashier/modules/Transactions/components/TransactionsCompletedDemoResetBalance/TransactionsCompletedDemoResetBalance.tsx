@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api-v2';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
@@ -36,7 +36,7 @@ const TransactionsCompletedDemoResetBalance: React.FC = () => {
 
     if (!wallet || isLoading) return <Loader />;
 
-    if (!resetBalanceTransactions) return <TransactionsNoDataState />;
+    if (!resetBalanceTransactions.length) return <TransactionsNoDataState />;
 
     return (
         <TransactionsTable

@@ -10,14 +10,10 @@ import {
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
 } from '@deriv/quill-icons';
+import { PlatformIcon } from '../components';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
-import IcAppstoreBinaryBot from '../public/images/ic-appstore-binary-bot.svg';
-import IcAppstoreDerivBot from '../public/images/ic-appstore-deriv-bot.svg';
-import IcAppstoreDerivGo from '../public/images/ic-appstore-deriv-go.svg';
-import IcAppstoreDerivTrader from '../public/images/ic-appstore-deriv-trader.svg';
-import IcAppstoreSmartTrader from '../public/images/ic-appstore-smart-trader.svg';
 
-type IconToCurrencyMapperType = {
+export type IconToCurrencyMapperType = {
     [key: string]: {
         icon: React.ReactNode;
         text: string;
@@ -27,40 +23,40 @@ type IconToCurrencyMapperType = {
 export const optionsAndMultipliersContent = (isEU: boolean) => [
     {
         description: isEU ? 'Multipliers trading platform.' : 'Options and multipliers trading platform.',
-        icon: <IcAppstoreDerivTrader />,
+        icon: <PlatformIcon icon='DTrader' />,
         redirect: '/',
-        smallIcon: <IcAppstoreDerivTrader height='3.2rem' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='DTrader' width='32px' />,
         title: 'Deriv Trader',
     },
     {
         description: 'Automate your trading, no coding needed.',
-        icon: <IcAppstoreDerivBot />,
+        icon: <PlatformIcon icon='DBot' />,
         redirect: '/bot',
-        smallIcon: <IcAppstoreDerivBot height='3.2rem' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='DBot' width='32px' />,
         title: 'Deriv Bot',
     },
     {
         description: 'Our legacy options trading platform.',
-        icon: <IcAppstoreSmartTrader />,
+        icon: <PlatformIcon icon='SmartTrader' />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
-        smallIcon: <IcAppstoreSmartTrader height='3.2rem' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='SmartTrader' width='32px' />,
         title: 'SmartTrader',
     },
     {
         description: 'Our legacy automated trading platform.',
-        icon: <IcAppstoreBinaryBot />,
+        icon: <PlatformIcon icon='BinaryBot' />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
-        smallIcon: <IcAppstoreBinaryBot height='3.2rem' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='BinaryBot' width='32px' />,
         title: 'Binary Bot',
     },
     {
         description: 'Trade on the go with our mobile app.',
-        icon: <IcAppstoreDerivGo />,
+        icon: <PlatformIcon icon='DerivGo' />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),
-        smallIcon: <IcAppstoreDerivGo height='3.2rem' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='DerivGo' width='32px' />,
         title: 'Deriv GO',
     },
 ];
@@ -119,4 +115,9 @@ export const IconToCurrencyMapper: IconToCurrencyMapperType = {
 export const Regulation = {
     EU: 'EU',
     NonEU: 'Non-EU',
+} as const;
+
+export const BrokerCodes = {
+    CR: 'CR',
+    MF: 'MF',
 } as const;

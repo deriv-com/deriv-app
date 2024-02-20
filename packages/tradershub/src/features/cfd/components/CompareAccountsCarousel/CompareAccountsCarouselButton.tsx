@@ -1,6 +1,7 @@
 import React from 'react';
-import { IconButton, qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { LabelPairedChevronLeftMdRegularIcon, LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
+import { Button } from '@deriv-com/ui';
 
 type TPrevNextButtonProps = {
     enabled: boolean;
@@ -9,19 +10,19 @@ type TPrevNextButtonProps = {
 };
 
 const CFDCompareAccountsCarouselButton = ({ enabled, isNext = false, onClick }: TPrevNextButtonProps) => (
-    <IconButton
-        className={qtMerge(
-            'bg-system-light-primary-background z-10 absolute lg:flex items-center justify-center top-1/2 cursor-pointer w-2000 h-2000 rounded-[50%] border-solid-coral-100 border-solid border-75 disbaled:opacity-400 disabled:hidden',
-            isNext && 'right-800',
-            !isNext && 'left-800'
+    <Button
+        className={clsx(
+            'bg-system-light-primary-background z-10 absolute lg:flex items-center justify-center top-1/2 cursor-pointer w-40 h-40 rounded-[50%] border-solid-coral-100 border-solid border-1 disabled:opacity-8 disabled:hidden',
+            isNext && 'right-16',
+            !isNext && 'left-16'
         )}
-        colorStyle='text-primary'
-        componentType='icon-only'
+        color='white'
         disabled={!enabled}
-        icon={isNext ? LabelPairedChevronRightMdRegularIcon : LabelPairedChevronLeftMdRegularIcon}
-        isRound
         onClick={onClick}
         size='md'
-    />
+        variant='outlined'
+    >
+        {isNext ? <LabelPairedChevronRightMdRegularIcon /> : <LabelPairedChevronLeftMdRegularIcon />}
+    </Button>
 );
 export default CFDCompareAccountsCarouselButton;

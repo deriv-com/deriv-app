@@ -41,10 +41,11 @@ const POISubmissionForMT5 = observer(
 
                 const is_idv_supported =
                     service === service_code.idv ||
-                    (!service && isVerificationServiceSupported(residence_list, account_settings, 'idv'));
+                    isVerificationServiceSupported(residence_list, account_settings, 'idv');
                 const is_onfido_supported =
                     service === service_code.onfido ||
-                    (!service && isVerificationServiceSupported(residence_list, account_settings, 'onfido'));
+                    (account_settings?.citizen !== 'ng' &&
+                        isVerificationServiceSupported(residence_list, account_settings, 'onfido'));
 
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                     setSubmissionService(service_code.idv);

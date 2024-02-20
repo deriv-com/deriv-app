@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { FullPageMobileWrapper, TextArea } from '@/components';
+import { useDevice, useQueryString } from '@/hooks';
 import { p2p } from '@deriv/api';
-import { Button, FullPageMobileWrapper, TextArea } from '../../../../components';
-import { useDevice } from '../../../../hooks';
+import { Button, Loader } from '@deriv-com/ui';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
@@ -20,12 +21,14 @@ const MyProfileAdDetailsTextArea = ({
             <TextArea
                 onChange={e => setContactInfo(e.target.value)}
                 placeholder='My contact details'
+                testId='dt_p2p_v2_profile_ad_details_contact'
                 value={advertiserInfo?.contact_info || ''}
             />
             <TextArea
                 label='This information will be visible to everyone.'
                 onChange={e => setAdvertDescription(e.target.value)}
                 placeholder='Instructions'
+                testId='dt_p2p_v2_profile_ad_details_description'
                 value={advertiserInfo?.default_advert_description || ''}
             />
         </>
@@ -38,6 +41,7 @@ const MyProfileAdDetails = () => {
     const [contactInfo, setContactInfo] = useState('');
     const [advertDescription, setAdvertDescription] = useState('');
     const { isMobile } = useDevice();
+    const { setQueryString } = useQueryString();
 
     const hasUpdated = useMemo(() => {
         return (
@@ -58,13 +62,18 @@ const MyProfileAdDetails = () => {
         });
     };
 
-    if (isLoading) return <h1>Loading...</h1>;
+    if (isLoading) return <Loader />;
 
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                onBack={() =>
+                    setQueryString({
+                        tab: 'default',
+                    })
+                }
                 renderFooter={() => (
-                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails}>
+                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails} size='lg'>
                         Save
                     </Button>
                 )}
@@ -88,7 +97,7 @@ const MyProfileAdDetails = () => {
                 setContactInfo={setContactInfo}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
-            <Button disabled={!hasUpdated} onClick={submitAdDetails}>
+            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg'>
                 Save
             </Button>
         </div>

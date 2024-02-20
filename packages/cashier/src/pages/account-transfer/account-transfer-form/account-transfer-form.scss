@@ -1,4 +1,7 @@
 .account-transfer-form {
+    max-width: 36rem;
+    width: 100%;
+
     @include mobile {
         width: 100%;
     }
@@ -34,7 +37,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 2.4rem;
+            margin-bottom: 1.6rem;
         }
     }
 
@@ -49,7 +52,7 @@
 
     &__drop-down-wrapper {
         @include mobile {
-            margin-top: 1.2rem;
+            margin-top: 1.6rem;
 
             .dc-dropdown__display {
                 min-height: 4rem !important;
@@ -63,7 +66,7 @@
         min-height: 4rem;
         line-height: 1.43;
         text-align: left;
-        margin: 0 auto 5.1rem;
+        margin-bottom: 3.6rem;
 
         @include desktop {
             max-width: 40rem;
@@ -72,7 +75,6 @@
         @include mobile {
             width: 100%;
             min-width: auto;
-            margin-bottom: 2.4rem;
         }
 
         &--disabled {
@@ -80,13 +82,7 @@
         }
 
         &--to-dropdown {
-            @include desktop {
-                margin: 0 auto 3.3rem;
-            }
-
-            @include mobile {
-                margin-bottom: 2.4rem;
-            }
+            margin-bottom: 2.4rem;
         }
 
         & .dc-dropdown__display-text {
@@ -134,11 +130,21 @@
 
     &__wrapper {
         .cashier__form-submit {
-            margin-top: 3rem;
+            margin-block: 2.4rem;
+
+            @include mobile {
+                margin-block: 1.6rem;
+            }
+        }
+
+        .cashier__content-header {
+            @include mobile {
+                padding-top: 2.4rem;
+            }
         }
 
         .account-transfer-form__input {
-            min-width: 40rem;
+            min-width: 36rem;
             height: 6.5rem;
             margin-bottom: 0;
 
@@ -223,10 +229,6 @@
 
         > * {
             width: auto;
-        }
-
-        @include mobile {
-            margin-bottom: 1.6rem;
         }
 
         &__default {

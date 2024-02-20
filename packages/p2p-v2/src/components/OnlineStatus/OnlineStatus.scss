@@ -1,0 +1,18 @@
+.p2p-v2-online-status {
+    &__icon {
+        position: absolute;
+        bottom: -0.05px;
+        right: -0.08px;
+        margin: 0;
+        border-radius: 50%;
+        transform: scale(1.1);
+
+        &--online {
+            background: #4bb4b3;
+        }
+
+        &--offline {
+            background: #999;
+        }
+    }
+}

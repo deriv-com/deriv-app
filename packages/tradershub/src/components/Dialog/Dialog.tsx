@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
+import { clsx } from 'clsx';
 import { useEventListener } from 'usehooks-ts';
 import { Provider } from '@deriv/library';
-import { qtMerge } from '@deriv/quill-design';
 import DialogAction from './DialogAction';
 import DialogContent from './DialogContent';
 import DialogHeader from './DialogHeader';
@@ -55,8 +55,8 @@ const Dialog = ({ children, className, shouldPreventCloseOnEscape = false }: TDi
 
     return (
         <div
-            className={qtMerge(
-                'flex flex-col gap-1200 mx-auto w-[auto] lg:w-[auto] p-1200 bg-system-light-primary-background rounded-400',
+            className={clsx(
+                'flex flex-col gap-24 mx-auto w-[auto] p-24 bg-system-light-primary-background rounded-default',
                 className
             )}
         >

@@ -215,7 +215,12 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_eu);
 
-    const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list);
+    const initialValues = getPersonalDetailsInitialValues(
+        account_settings,
+        residence_list,
+        states_list,
+        is_social_signup
+    );
 
     return (
         <Formik

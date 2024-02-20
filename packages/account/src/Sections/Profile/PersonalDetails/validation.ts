@@ -62,7 +62,8 @@ const getBaseSchema = () =>
 export const getPersonalDetailsInitialValues = (
     account_settings: GetSettings,
     residence_list: ResidenceList,
-    states_list: StatesList
+    states_list: StatesList,
+    is_social_signup: boolean
 ) => {
     const initialValues: GetSettings = {
         first_name: account_settings.first_name,
@@ -90,6 +91,10 @@ export const getPersonalDetailsInitialValues = (
             }
         }
     });
+
+    if (is_social_signup) {
+        initialValues.email = account_settings.email;
+    }
 
     if (account_settings.address_state) {
         initialValues.address_state = states_list.length

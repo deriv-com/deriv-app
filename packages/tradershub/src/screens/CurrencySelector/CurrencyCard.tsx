@@ -1,6 +1,6 @@
 import React from 'react';
+import { clsx } from 'clsx';
 import { useFormikContext } from 'formik';
-import { qtMerge } from '@deriv/quill-design';
 import { StandaloneCircleInfoRegularIcon as CircleInfoIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { getCurrencyConfig } from '../../helpers/currencyConfig';
@@ -22,23 +22,28 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
     const { setFieldValue, values } = useFormikContext<{ currency: string }>();
     const isSelected = values.currency === id;
     return (
-        <div className='relative flex justify-center w-1/2 md:w-1/4 my-400'>
+        <div className='relative flex justify-center w-1/2 my-8 lg:w-1/4'>
             <button
-                className={qtMerge(
-                    `w-10/12 rounded-400 py-1100 hover:cursor-pointer hover:outline outline-1 ${
-                        isSelected ? 'outline outline-2 outline-brand-blue' : ''
+                className={clsx(
+                    `w-10/12 rounded-default items-center py-22 hover:cursor-pointer ${
+                        isSelected
+                            ? 'outline outline-2 outline-status-light-success'
+                            : 'hover:outline outline-1 hover:outline-system-light-less-prominent'
                     }`
                 )}
-                onClick={() => setFieldValue('currency', id)}
+                onClick={() => setFieldValue('currency', isSelected ? '' : id)}
+                type='button'
             >
                 <Icon />
-                {info && <CircleInfoIcon className='absolute top-50 opacity-300' />}
-                <Text className='my-200 bold' size='sm' weight={isSelected ? 'bold' : 'normal'}>
-                    {title}
-                </Text>
-                <Text size='sm' weight={isSelected ? 'bold' : 'normal'}>
-                    ({id})
-                </Text>
+                {info && <CircleInfoIcon className='absolute top-0 opacity-50' />}
+                <div className='flex flex-col items-center gap-4 pt-4'>
+                    <Text as='p' className='my-4' size='sm' weight={isSelected ? 'bold' : 'normal'}>
+                        {title}
+                    </Text>
+                    <Text as='p' size='sm' weight={isSelected ? 'bold' : 'normal'}>
+                        ({id})
+                    </Text>
+                </div>
             </button>
         </div>
     );

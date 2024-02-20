@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
+import { ScrollToFieldError } from '@/helpers';
+import { address } from '@/utils';
 import { useSettings, useStatesList } from '@deriv/api';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown, Input, Text } from '@deriv-com/ui';
@@ -17,7 +19,7 @@ const Address = () => {
     const { data: getSettings } = useSettings();
     const country = getSettings?.country_code ?? '';
     const { data: statesList } = useStatesList(country);
-    const { dispatch, state } = useSignupWizardContext();
+    const { dispatch, helpers, state } = useSignupWizardContext();
 
     const handleSubmit = (values: FormikValues) => {
         dispatch({
@@ -30,22 +32,31 @@ const Address = () => {
             },
             type: ACTION_TYPES.SET_ADDRESS,
         });
+        helpers.goToNextStep();
     };
 
     const initialValues = {
-        firstLineAddress: getSettings?.address_line_1 ?? state.firstLineAddress,
-        secondLineAddress: getSettings?.address_line_2 ?? state.secondLineAddress,
-        stateProvince: getSettings?.address_state ?? state.stateProvince,
-        townCity: getSettings?.address_city ?? state.townCity,
-        zipCode: getSettings?.address_postcode ?? state.zipCode,
+        firstLineAddress: getSettings?.address_line_1 ?? state.firstLineAddress ?? '',
+        secondLineAddress: getSettings?.address_line_2 ?? state.secondLineAddress ?? '',
+        stateProvince: getSettings?.address_state ?? state.stateProvince ?? '',
+        townCity: getSettings?.address_city ?? state.townCity ?? '',
+        zipCode: getSettings?.address_postcode ?? state.zipCode ?? '',
     };
 
     return (
         <WizardScreenWrapper heading='Complete your address details'>
-            <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
-                {({ handleBlur, handleChange, setFieldValue, values }) => (
+            <Formik
+                enableReinitialize
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validateOnBlur
+                validateOnChange
+                validationSchema={address}
+            >
+                {({ errors, handleBlur, handleChange, setFieldValue, touched, values }) => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
+                        <ScrollToFieldError />
+                        <div className='flex-1 p-16 overflow-y-auto lg:p-24'>
                             <div className='flex flex-col'>
                                 <Text size='sm' weight='bold'>
                                     Only use an address for which you have proof of residence -
@@ -55,18 +66,23 @@ const Address = () => {
                                     statement, or government-issued letter with your name and this address.
                                 </Text>
                             </div>
-                            <div className='flex flex-col items-center self-stretch gap-2000 mt-1500'>
+                            <div className='flex flex-col items-center self-stretch gap-16 mt-30'>
                                 <Input
-                                    className='text-body-sm'
+                                    className='text-default'
+                                    error={Boolean(errors.firstLineAddress && touched.firstLineAddress)}
                                     label='First line of address*'
+                                    message={
+                                        errors.firstLineAddress && touched.firstLineAddress
+                                            ? errors.firstLineAddress
+                                            : ''
+                                    }
                                     name='firstLineAddress'
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    required
                                     value={values.firstLineAddress}
                                 />
                                 <Input
-                                    className='text-body-sm'
+                                    className='text-default'
                                     label='Second line of address'
                                     name='secondLineAddress'
                                     onBlur={handleBlur}
@@ -74,12 +90,13 @@ const Address = () => {
                                     value={values.secondLineAddress}
                                 />
                                 <Input
-                                    className='text-body-sm'
+                                    className='text-default'
+                                    error={Boolean(errors.townCity && touched.townCity)}
                                     label='Town/City*'
+                                    message={errors.townCity && touched.townCity ? errors.townCity : ''}
                                     name='townCity'
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    required
                                     value={values.townCity}
                                 />
                                 <div>
@@ -96,7 +113,7 @@ const Address = () => {
                                     />
                                 </div>
                                 <Input
-                                    className='text-body-sm'
+                                    className='text-default'
                                     label='Postal/ZIP Code'
                                     name='zipCode'
                                     onBlur={handleBlur}

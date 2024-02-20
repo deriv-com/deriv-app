@@ -21,12 +21,14 @@ const MyProfileAdDetailsTextArea = ({
             <TextArea
                 onChange={e => setContactInfo(e.target.value)}
                 placeholder='My contact details'
+                testId='dt_p2p_v2_profile_ad_details_contact'
                 value={advertiserInfo?.contact_info || ''}
             />
             <TextArea
                 label='This information will be visible to everyone.'
                 onChange={e => setAdvertDescription(e.target.value)}
                 placeholder='Instructions'
+                testId='dt_p2p_v2_profile_ad_details_description'
                 value={advertiserInfo?.default_advert_description || ''}
             />
         </>

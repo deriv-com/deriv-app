@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useFormikContext } from 'formik';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { ButtonGroup } from '@/components';
+import { Button, Divider, useDevice } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
 type TActions = {
-    canGoNext?: boolean;
+    submitDisabled?: boolean;
 };
 
 /**
@@ -13,51 +13,44 @@ type TActions = {
  * @description The Actions component is used to navigate between steps in the SignupWizard component.
  * Intended to be used as a child component of the Formik component.
  * @param {Object} props - React props object
- * @param {boolean} [props.canGoNext] - A boolean that determines whether the Next button is disabled
+ * @param {boolean} [props.submitDisabled] - A boolean that determines whether the Next button is disabled
  * @example
  * return (
- *     <Actions canGoNext />
+ *     <Actions submitDisabled />
  * );
  */
 
-const Actions = ({ canGoNext = true }: TActions) => {
+const Actions = ({ submitDisabled = false }: TActions) => {
     const {
-        helpers: { canGoToNextStep, canGoToPrevStep, goToNextStep, goToPrevStep },
+        helpers: { canGoToNextStep, canGoToPrevStep, goToPrevStep },
     } = useSignupWizardContext();
-    const { handleSubmit: handleFormikSubmit } = useFormikContext();
-    const { isMobile } = useBreakpoint();
-
-    const handleSubmit = useCallback(() => {
-        handleFormikSubmit?.();
-        goToNextStep();
-    }, [goToNextStep, handleFormikSubmit]);
+    const { handleSubmit } = useFormikContext();
+    const { isDesktop } = useDevice();
 
     return (
         <div>
-            <hr className='opacity-100' />
-            <div className='flex justify-end divide-y-75 p-1200'>
+            <Divider />
+            <ButtonGroup className='flex-row justify-end p-24'>
                 {canGoToPrevStep && (
                     <Button
-                        className='mr-400'
-                        isFullWidth={isMobile}
+                        isFullWidth={!isDesktop}
                         onClick={goToPrevStep}
-                        size={isMobile ? 'lg' : 'md'}
+                        size={isDesktop ? 'md' : 'lg'}
                         variant='outlined'
                     >
                         Back
                     </Button>
                 )}
                 <Button
-                    className='bg-solid-coral-700'
-                    disabled={!canGoNext}
-                    isFullWidth={isMobile}
-                    onClick={handleSubmit}
-                    size={isMobile ? 'lg' : 'md'}
+                    disabled={submitDisabled}
+                    isFullWidth={!isDesktop}
+                    onClick={() => handleSubmit()}
+                    size={isDesktop ? 'md' : 'lg'}
                     type='submit'
                 >
                     {canGoToNextStep ? 'Next' : 'Add account'}
                 </Button>
-            </div>
+            </ButtonGroup>
         </div>
     );
 };

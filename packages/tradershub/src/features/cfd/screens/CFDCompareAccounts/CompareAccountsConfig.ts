@@ -1,4 +1,4 @@
-import InstrumentsIcons from '../../../../public/images/cfd/tradingInstruments';
+import InstrumentsIcons from '@/assets/cfd/tradingInstruments';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms, MarketType } from '../../constants';
 import { Jurisdiction, MarketTypeShortcode } from './constants';

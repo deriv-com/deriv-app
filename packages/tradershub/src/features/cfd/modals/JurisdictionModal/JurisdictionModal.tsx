@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, useUIContext } from '@/components';
+import { Modal } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
@@ -7,8 +7,7 @@ import { MT5PasswordModal } from '@cfd/modals';
 import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen } from '@cfd/screens';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Heading, useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -16,13 +15,11 @@ const JurisdictionModal = () => {
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
     const { show } = Provider.useModal();
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
     const { getCFDState, setCfdState } = Provider.useCFDContext();
 
     const { isLoading } = useAvailableMT5Accounts();
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
 
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
 
@@ -47,7 +44,7 @@ const JurisdictionModal = () => {
     }, [selectedJurisdiction, setCfdState]);
 
     // TODO: Add Loading Placeholder
-    if (isLoading) return <Heading.H1>Loading...</Heading.H1>;
+    if (isLoading) return <Text weight='bold'>Loading...</Text>;
 
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
@@ -68,12 +65,12 @@ const JurisdictionModal = () => {
                 {!isDynamicLeverageVisible ? (
                     <Modal.Footer>
                         <Button
-                            className='rounded-200'
+                            className='rounded-xs'
                             disabled={
                                 !selectedJurisdiction ||
                                 (selectedJurisdiction !== Jurisdiction.SVG && !isCheckBoxChecked)
                             }
-                            isFullWidth={isMobile}
+                            isFullWidth={!isDesktop}
                             onClick={() => show(<JurisdictionFlow />)}
                         >
                             Next

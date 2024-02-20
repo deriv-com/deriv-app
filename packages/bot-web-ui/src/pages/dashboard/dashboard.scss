@@ -22,6 +22,9 @@
         position: sticky;
         // TODO: need to set global variables for translation
         transform: translateX(calc(367px));
+        @include is-RTL {
+            transform: translateX(calc(-367px));
+        }
         transition: all 0.4s;
         margin-top: 1rem;
 
@@ -34,6 +37,14 @@
         }
     }
 
+    .dc-drawer {
+        .dc-drawer__toggle-icon--right {
+            @include is-RTL {
+                transform: rotate(calc(0deg)) !important;
+            }
+        }
+    }
+
     .dc-drawer--open {
         @include desktop {
             transform: translateX(calc(0px)) !important;
@@ -41,6 +52,12 @@
 
         @include mobile {
             transform: translateY(calc(-100% + 3.6rem));
+        }
+
+        .dc-drawer__toggle-icon {
+            @include is-RTL {
+                transform: rotate(calc(180deg)) !important;
+            }
         }
     }
 }

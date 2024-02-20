@@ -7,7 +7,7 @@ const testId = 'dt_collapsible';
 const mockedDefaultProps: React.ComponentProps<typeof Collapsible> = {
     children: <div data-collapsible={true}>Children Component</div>,
     onClick: jest.fn(),
-    hide_collapsible_button: false,
+    switch_off_functionality: false,
 };
 
 describe('<Collapsible/>', () => {
@@ -27,9 +27,9 @@ describe('<Collapsible/>', () => {
         expect(screen.getByTestId(testId)).not.toHaveClass(className);
     });
 
-    it('should render component with specific className if passed children have no data-collapsible = true, but hide_collapsible_button is true', () => {
+    it('should render component with specific className if passed children have no data-collapsible = true, but switch_off_functionality is true', () => {
         render(
-            <Collapsible {...mockedDefaultProps} hide_collapsible_button>
+            <Collapsible {...mockedDefaultProps} switch_off_functionality>
                 <div>Child component</div>
             </Collapsible>
         );

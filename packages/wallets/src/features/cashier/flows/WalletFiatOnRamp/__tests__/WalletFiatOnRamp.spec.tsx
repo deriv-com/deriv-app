@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletFiatOnRamp from '../WalletFiatOnRamp';
 
@@ -8,7 +8,7 @@ jest.mock('../../../modules', () => ({
     FiatOnRampModule: jest.fn(() => <div>MockedFiatOnRampModule</div>),
 }));
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
 }));
 

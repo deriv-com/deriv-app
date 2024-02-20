@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { THooks } from '../../../../types';
-import { usePOA, usePOI } from '@deriv/api';
+import { usePOA, usePOI } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { Verification } from '../../flows/Verification';

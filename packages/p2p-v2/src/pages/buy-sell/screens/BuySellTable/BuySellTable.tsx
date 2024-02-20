@@ -26,8 +26,10 @@ const headerRenderer = (header: string) => <span>{header}</span>;
 const BuySellTable = () => {
     const [activeTab, setActiveTab] = useState<string>('Buy');
     const [sortDropdownValue, setSortDropdownValue] = useState<TSortByValues>('rate');
+    const [searchValue, setSearchValue] = useState<string>('');
     const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
     const { data, isFetching, isLoading, loadMoreAdverts } = p2p.advert.useGetList({
+        advertiser_name: searchValue,
         counterparty_type: activeTab === 'Buy' ? BUY_SELL.BUY : BUY_SELL.SELL,
         sort_by: sortDropdownValue,
     });
@@ -43,6 +45,7 @@ const BuySellTable = () => {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 setIsFilterModalOpen={setIsFilterModalOpen}
+                setSearchValue={setSearchValue}
                 setSortDropdownValue={setSortDropdownValue}
                 sortDropdownValue={sortDropdownValue}
             />
@@ -53,6 +56,7 @@ const BuySellTable = () => {
                 <Table
                     columns={columns}
                     data={data}
+                    emptyDataMessage='There are no matching ads.'
                     isFetching={isFetching}
                     loadMoreFunction={loadMoreAdverts}
                     renderHeader={headerRenderer}

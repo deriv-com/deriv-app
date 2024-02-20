@@ -9,7 +9,7 @@ type TIconTradeTypes = Omit<TIconProps, 'icon'> & {
 };
 
 const IconTradeTypes = ({ type, className, ...props }: TIconTradeTypes) => {
-    switch (type.toUpperCase()) {
+    switch (type?.toUpperCase()) {
         case CONTRACT_TYPES.ACCUMULATOR:
             return <Icon icon='IcTradetypeAccu' className={className} color='brand' {...props} />;
         case CONTRACT_TYPES.ASIAN.DOWN:

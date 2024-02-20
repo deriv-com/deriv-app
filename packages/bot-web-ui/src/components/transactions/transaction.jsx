@@ -147,6 +147,7 @@ const Transaction = observer(({ contract }) => {
             message={contract && <PopoverContent contract={contract} />}
         >
             <div
+                data-testid='dt-transactions-item'
                 className='transactions__item'
                 onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
             >

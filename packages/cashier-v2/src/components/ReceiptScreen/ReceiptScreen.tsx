@@ -9,21 +9,21 @@ type TProps = {
     receipt: {
         amount?: string;
         from: {
-            currency: string;
+            currency?: string;
             info?: React.ReactNode;
         };
-        title?: string;
         to: {
-            currency: string;
+            currency?: string;
             info?: React.ReactNode;
         };
     };
     status?: string;
+    title?: string;
 };
 
-const ReceiptScreen: React.FC<TProps> = ({ actionButtons, receipt, status }) => {
+const ReceiptScreen: React.FC<TProps> = ({ actionButtons, receipt, status, title }) => {
     const { isMobile } = useDevice();
-    const { amount, from, title, to } = receipt;
+    const { amount, from, to } = receipt;
 
     return (
         <div className={styles.container}>

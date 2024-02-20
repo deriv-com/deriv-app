@@ -110,8 +110,10 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
             setWithdrawalReceipt({
                 address,
                 amount: amount?.toFixed(activeAccount?.currency_config?.fractional_digits),
-                currency: activeAccount?.currency,
-                landingCompany: activeAccount?.landing_company_name,
+                fromAccount: {
+                    currency: activeAccount?.currency,
+                    loginid: activeAccount?.loginid,
+                },
             })
         );
     };

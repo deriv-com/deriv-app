@@ -10,10 +10,9 @@ type TWithdrawalCryptoProps = {
 };
 
 const WithdrawalCrypto: React.FC = () => {
-    const { activeAccount, getCurrencyConfig, isWithdrawalSuccess, onClose, withdrawalReceipt } =
-        useWithdrawalCryptoContext();
+    const { activeAccount, getCurrencyConfig, isWithdrawalSuccess } = useWithdrawalCryptoContext();
 
-    if (isWithdrawalSuccess) return <WithdrawalCryptoReceipt onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
+    if (isWithdrawalSuccess) return <WithdrawalCryptoReceipt />;
 
     return (
         <div className={styles.container}>

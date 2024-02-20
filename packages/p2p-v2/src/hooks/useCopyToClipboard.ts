@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useCopyToClipboard as useCopyToClipboardHook } from 'usehooks-ts';
 
 type copyFn = (text: string) => Promise<boolean>;

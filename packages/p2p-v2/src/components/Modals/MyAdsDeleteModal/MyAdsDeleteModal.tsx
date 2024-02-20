@@ -1,5 +1,4 @@
 import React, { memo, useEffect } from 'react';
-import clsx from 'clsx';
 import Modal from 'react-modal';
 import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';
@@ -61,7 +60,7 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
         <>
             {!isLoadingInfo && (
                 <Modal
-                    className={clsx('p2p-v2-modal-styles p-[1.6rem] p2p-v2-my-ads-delete-modal')}
+                    className='p2p-v2-modal-styles p-[1.6rem] p2p-v2-my-ads-delete-modal'
                     isOpen={isModalOpen}
                     onRequestClose={onRequestClose}
                     shouldCloseOnOverlayClick={false}

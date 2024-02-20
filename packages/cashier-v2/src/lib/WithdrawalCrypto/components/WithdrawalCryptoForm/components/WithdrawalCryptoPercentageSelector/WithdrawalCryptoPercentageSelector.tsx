@@ -9,22 +9,22 @@ import styles from './WithdrawalCryptoPercentageSelector.module.scss';
 
 const WithdrawalCryptoPercentageSelector: React.FC = () => {
     const { setValues, values } = useFormikContext<TWithdrawalForm>();
-    const { accountLimits, activeWallet, fractionalDigits, getConvertedFiatAmount, isClientVerified } =
+    const { accountLimits, activeAccount, fractionalDigits, getConvertedFiatAmount, isClientVerified } =
         useWithdrawalCryptoContext();
 
     const getPercentageMessage = (value: string) => {
         const amount = parseFloat(value);
-        if (!activeWallet?.balance || !activeWallet.display_balance) return;
+        if (!activeAccount?.balance || !activeAccount.display_balance) return;
 
-        if (amount <= activeWallet.balance) {
-            const percentage = Math.round((amount * 100) / activeWallet.balance);
-            return `${percentage}% of available balance (${activeWallet.display_balance})`;
+        if (amount <= activeAccount.balance) {
+            const percentage = Math.round((amount * 100) / activeAccount.balance);
+            return `${percentage}% of available balance (${activeAccount.display_balance})`;
         }
     };
 
     const isInvalidInput =
         !validateCryptoInput(
-            activeWallet,
+            activeAccount,
             fractionalDigits,
             isClientVerified,
             accountLimits?.remainder ?? 0,
@@ -35,19 +35,19 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
         <div className={styles['percentage-selector']}>
             <PercentageSelector
                 amount={
-                    activeWallet?.balance &&
+                    activeAccount?.balance &&
                     !Number.isNaN(parseFloat(values.cryptoAmount)) &&
-                    parseFloat(values.cryptoAmount) <= activeWallet.balance
+                    parseFloat(values.cryptoAmount) <= activeAccount.balance
                         ? parseFloat(values.cryptoAmount)
                         : 0
                 }
-                balance={activeWallet?.balance ?? 0}
+                balance={activeAccount?.balance ?? 0}
                 onChangePercentage={percentage => {
-                    if (activeWallet?.balance) {
+                    if (activeAccount?.balance) {
                         const fraction = percentage / 100;
-                        const cryptoAmount = (activeWallet.balance * fraction).toFixed(fractionalDigits.crypto);
+                        const cryptoAmount = (activeAccount.balance * fraction).toFixed(fractionalDigits.crypto);
                         const fiatAmount = !validateCryptoInput(
-                            activeWallet,
+                            activeAccount,
                             fractionalDigits,
                             isClientVerified,
                             accountLimits?.remainder ?? 0,

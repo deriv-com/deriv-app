@@ -8,7 +8,7 @@ import { WithdrawalCryptoPercentageSelector } from './components/WithdrawalCrypt
 import styles from './WithdrawalCryptoForm.module.scss';
 
 const WithdrawalCryptoForm: React.FC = () => {
-    const { activeWallet, fractionalDigits, requestCryptoWithdrawal } = useWithdrawalCryptoContext();
+    const { activeAccount, fractionalDigits, requestCryptoWithdrawal } = useWithdrawalCryptoContext();
 
     return (
         <Formik
@@ -34,7 +34,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                                         {...field}
                                         error={Boolean(errors?.cryptoAddress)}
                                         isFullWidth
-                                        label={`Your ${activeWallet?.currency_config?.name} cryptocurrency wallet address`}
+                                        label={`Your ${activeAccount?.currency_config?.name} cryptocurrency wallet address`}
                                         message={errors.cryptoAddress}
                                     />
                                 )}

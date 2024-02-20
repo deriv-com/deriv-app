@@ -10,7 +10,7 @@ type TWithdrawalCryptoProps = {
 };
 
 const WithdrawalCrypto: React.FC = () => {
-    const { activeWallet, getCurrencyConfig, isWithdrawalSuccess, onClose, withdrawalReceipt } =
+    const { activeAccount, getCurrencyConfig, isWithdrawalSuccess, onClose, withdrawalReceipt } =
         useWithdrawalCryptoContext();
 
     if (isWithdrawalSuccess) return <WithdrawalCryptoReceipt onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
@@ -20,8 +20,8 @@ const WithdrawalCrypto: React.FC = () => {
             <div className={styles['side-pane']} />
             <div className={styles.content}>
                 <Text weight='bold'>
-                    Withdraw {activeWallet?.currency ? getCurrencyConfig(activeWallet?.currency)?.name : ''} (
-                    {activeWallet?.currency}) to your wallet
+                    Withdraw {activeAccount?.currency ? getCurrencyConfig(activeAccount?.currency)?.name : ''} (
+                    {activeAccount?.currency}) to your wallet
                 </Text>
                 <WithdrawalCryptoDisclaimer />
                 <WithdrawalCryptoForm />

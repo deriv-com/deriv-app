@@ -18,7 +18,7 @@ describe('<WithdrawalCryptoPercentageSelector />', () => {
             accountLimits: {
                 remainder: 0,
             },
-            activeWallet: {
+            activeAccount: {
                 balance: 10,
                 currency: 'BTC',
                 display_balance: '10.00000000 BTC',

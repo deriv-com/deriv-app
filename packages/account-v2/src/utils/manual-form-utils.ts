@@ -33,7 +33,7 @@ export const getManualFormValidationSchema = (
         uploadConfig.map(item => [item.pageType, Yup.string().required(item.error).default(null)])
     );
 
-    const baseSchema = Yup.object().shape({
+    const baseSchema = Yup.object({
         document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
         ...documentUploadValidation,
     });

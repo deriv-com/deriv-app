@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
-import { InferType } from 'yup';
+import { InferType, object } from 'yup';
 import { Loader } from '@deriv-com/ui';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { ManualForm } from '../../containers/ManualForm';
@@ -20,12 +20,19 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
         selectedDocument as TManualDocumentTypes
     );
 
-    const manualUpload = getManualFormValidationSchema(
+    const documentUploadSchema = getManualFormValidationSchema(
         selectedDocument as TManualDocumentTypes,
         isExpiryDateRequired
-    ).concat(getSelfieValidationSchema());
+    );
 
-    type TManualUploadFormData = InferType<typeof manualUpload>;
+    const selfieUploadSchema = getSelfieValidationSchema();
+
+    const manualUploadSchema = object({
+        ...documentUploadSchema.fields,
+        ...selfieUploadSchema.fields,
+    });
+
+    type TManualUploadFormData = InferType<typeof manualUploadSchema>;
 
     const [formData, setFormData] = useState<Partial<TManualUploadFormData>>({});
     const [shouldUploadSelfie, setShouldUploadSelfie] = useState(false);

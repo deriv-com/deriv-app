@@ -36,7 +36,7 @@ export const getManualFormValidationSchema = (
     );
 
     return Yup.object({
-        document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage).default('12'),
+        document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
         ...documentExpiryValidation,
         ...documentUploadValidation,
     });

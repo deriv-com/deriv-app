@@ -18,8 +18,12 @@ type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileCha
  */
 const FormDocumentUploadField = ({ name, validationSchema, ...rest }: TFormDocumentUploadField) => (
     <Field name={name} validate={validateField(validationSchema)}>
-        {({ form }: FieldProps<File>) => (
-            <Dropzone {...rest} onFileChange={(file: File) => form.setFieldValue(name, file)} />
+        {({ field, form }: FieldProps<File>) => (
+            <Dropzone
+                {...rest}
+                defaultFile={field.value}
+                onFileChange={(file: File) => form.setFieldValue(name, file)}
+            />
         )}
     </Field>
 );

@@ -7,7 +7,9 @@ export type TSignupWizardContext = {
     currentStep: number;
     dispatch: React.Dispatch<TActions>;
     helpers: Helpers;
+    isSuccessModalOpen: boolean;
     isWizardOpen: boolean;
+    setIsSuccessModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setIsWizardOpen: React.Dispatch<React.SetStateAction<boolean>>;
     state: TState;
 };

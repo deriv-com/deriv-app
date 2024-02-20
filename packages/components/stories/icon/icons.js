@@ -605,6 +605,7 @@ export const icons =
         'IcThumbsUp',
         'IcTourGuideStep2',
         'IcTrade',
+        'IcTradingViewChart',
         'IcTransactions',
         'IcTutorialsTabs',
         'IcUnarchive',
@@ -711,7 +712,6 @@ export const icons =
         'IcDxtradeSyntheticPlatform',
     ],
     'flag': [
-        //change to arabic flag when there's any
         'IcFlagAr',
         'IcFlagDe',
         'IcFlagEn',

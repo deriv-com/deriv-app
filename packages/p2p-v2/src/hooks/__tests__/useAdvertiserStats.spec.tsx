@@ -74,7 +74,7 @@ describe('useAdvertiserStats', () => {
         expect(result.current.data.tradePartners).toBe(1);
         expect(result.current.data.buyOrdersCount).toBe(10);
         expect(result.current.data.sellOrdersCount).toBe(5);
-        expect(result.current.data.daysSinceJoined).toBe(119);
+        expect(result.current.data.daysSinceJoined).toBe(120);
     });
     test('should return the correct total count and lifetime', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;

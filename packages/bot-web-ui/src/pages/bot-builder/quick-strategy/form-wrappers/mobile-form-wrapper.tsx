@@ -5,7 +5,14 @@ import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv/components'
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import {
+    rudderStackSendQsRunStrategyEvent,
+    rudderStackSendQsSelectedTabEvent,
+    rudderStackSendQsStrategyChangeEvent,
+} from '../analytics/rudderstack-quick-strategy';
+import { getQsActiveTabString } from '../analytics/utils';
 import { STRATEGIES } from '../config';
+import { TFormValues } from '../types';
 import FormTabs from './form-tabs';
 import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
@@ -13,11 +20,12 @@ import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
+    active_tab_ref?: React.MutableRefObject<HTMLDivElement | null>;
 };
 
-const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
+const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, active_tab_ref }) => {
     const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { isValid, validateForm } = useFormikContext();
+    const { isValid, validateForm, values } = useFormikContext<TFormValues>();
     const { quick_strategy } = useDBotStore();
     const { selected_strategy, setSelectedStrategy } = quick_strategy;
     const { handleSubmit } = useQsSubmitHandler();
@@ -30,10 +38,23 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
+        rudderStackSendQsStrategyChangeEvent({
+            selected_strategy,
+        });
     };
 
     const handleTabChange = (tab: string) => {
         setActiveTab(tab);
+        rudderStackSendQsSelectedTabEvent({ strategy_switcher_mode: getQsActiveTabString(tab) });
+    };
+
+    const onRun = () => {
+        rudderStackSendQsRunStrategyEvent({
+            form_values: values,
+            selected_strategy,
+            strategy_switcher_mode: getQsActiveTabString(active_tab),
+        });
+        handleSubmit();
     };
 
     const dropdown_list = Object.keys(STRATEGIES).map(key => ({
@@ -70,11 +91,13 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 />
                             </div>
                         </div>
-                        <FormTabs
-                            active_tab={active_tab}
-                            onChange={handleTabChange}
-                            description={strategy?.description}
-                        />
+                        <div ref={active_tab_ref}>
+                            <FormTabs
+                                active_tab={active_tab}
+                                onChange={handleTabChange}
+                                description={strategy?.description}
+                            />
+                        </div>
                         <StrategyTabContent formfields={children} active_tab={active_tab} />
                     </ThemedScrollbars>
                     {active_tab === 'TRADE_PARAMETERS' && (
@@ -83,7 +106,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 primary
                                 data-testid='qs-run-button'
                                 type='submit'
-                                onClick={handleSubmit}
+                                onClick={onRun}
                                 disabled={!isValid}
                             >
                                 {localize('Run')}

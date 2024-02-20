@@ -1,12 +1,13 @@
 /* eslint-disable sort-keys */
-import { TextProps } from '@deriv-com/ui/dist/components/Text';
+import { ComponentProps } from 'react';
+import { Text } from '@deriv-com/ui';
 
 export type TRowItem = {
     options?: {
-        align?: TextProps['align'];
-        color?: TextProps['color'];
+        align?: ComponentProps<typeof Text>['align'];
+        color?: ComponentProps<typeof Text>['color'];
         shouldShowAsterickAtEnd?: boolean;
-        weight?: TextProps['weight'];
+        weight?: ComponentProps<typeof Text>['weight'];
     };
     text: string;
 };
@@ -23,66 +24,56 @@ export const getCFDContents: TRegulatorsContentProps[] = [
     {
         attribute: 'CFDs',
         content: {
-            nonEuRegulator: { text: 'Yes' },
             euRegulator: { text: 'Yes' },
+            nonEuRegulator: { text: 'Yes' },
         },
         id: 'cfds',
     },
     {
         attribute: 'Regulators/external dispute resolution',
         content: {
+            euRegulator: { text: 'Malta Financial Services Authority' },
             nonEuRegulator: [
                 { text: 'Financial Commission' },
                 { text: 'British Virgin Islands Financial Services Commission' },
                 { text: 'Vanuatu Financial Services Commission' },
                 { text: 'Labuan Financial Services Authority' },
             ],
-            euRegulator: { text: 'Malta Financial Services Authority' },
         },
         id: 'regulators',
     },
     {
         attribute: 'Counterparty company',
         content: {
+            euRegulator: { text: 'Deriv Investments (Europe) Limited' },
             nonEuRegulator: [
                 { text: 'Deriv (SVG) LLC' },
                 { text: 'Deriv (BVI) Ltd' },
                 { text: 'Deriv (V) Ltd' },
                 { text: 'Deriv (FX) Ltd' },
             ],
-            euRegulator: { text: 'Deriv Investments (Europe) Limited' },
         },
         id: 'counterparty_company',
     },
     {
         attribute: 'Negative balance protection',
         content: {
-            nonEuRegulator: { text: 'Synthetics only' },
             euRegulator: { text: 'All assets' },
+            nonEuRegulator: { text: 'Synthetics only' },
         },
         id: 'negative_balance_protection',
     },
     {
         attribute: 'Leverage',
         content: {
-            nonEuRegulator: { text: '100-1000' },
             euRegulator: { text: '30' },
+            nonEuRegulator: { text: '100-20' },
         },
         id: 'leverage',
     },
     {
         attribute: 'Assets',
         content: {
-            nonEuRegulator: [
-                { text: 'Synthetics' },
-                { text: 'Baskets' },
-                { text: 'Derived FX' },
-                { text: 'Forex' },
-                { text: 'Stocks' },
-                { text: 'Stock indices' },
-                { text: 'Commodities' },
-                { text: 'Cryptocurrencies' },
-            ],
             euRegulator: [
                 { options: { shouldShowAsterickAtEnd: true }, text: 'Synthetics' },
                 { text: 'Forex' },
@@ -99,14 +90,24 @@ export const getCFDContents: TRegulatorsContentProps[] = [
                     text: '*Volatility 150 Index and Volatility 250 Index',
                 },
             ],
+            nonEuRegulator: [
+                { text: 'Synthetics' },
+                { text: 'Baskets' },
+                { text: 'Derived FX' },
+                { text: 'Forex' },
+                { text: 'Stocks' },
+                { text: 'Stock indices' },
+                { text: 'Commodities' },
+                { text: 'Cryptocurrencies' },
+            ],
         },
         id: 'assets',
     },
     {
         attribute: 'Platform',
         content: {
-            nonEuRegulator: { text: 'Deriv MT5, Deriv X' },
             euRegulator: { text: 'Deriv MT5' },
+            nonEuRegulator: { text: 'Deriv MT5, Deriv X' },
         },
         id: 'platform',
     },
@@ -116,39 +117,30 @@ export const getOptionsContents: TRegulatorsContentProps[] = [
     {
         attribute: 'Options & Multipliers',
         content: {
-            nonEuRegulator: { text: 'Yes' },
             euRegulator: { options: { weight: 'bold' }, text: 'Multipliers only' },
+            nonEuRegulator: { text: 'Yes' },
         },
         id: 'options',
     },
     {
         attribute: 'Regulators/external dispute resolution',
         content: {
-            nonEuRegulator: { text: 'Financial Commission' },
             euRegulator: { text: 'Malta Financial Services Authority' },
+            nonEuRegulator: { text: 'Financial Commission' },
         },
         id: 'regulator_in_options',
     },
     {
         attribute: 'Counterparty company',
         content: {
-            nonEuRegulator: { text: 'Deriv (SVG) LLC' },
             euRegulator: { text: 'Deriv Investments (Europe) Limited' },
+            nonEuRegulator: { text: 'Deriv (SVG) LLC' },
         },
         id: 'counterparty_company_in_options',
     },
     {
         attribute: 'Assets',
         content: {
-            nonEuRegulator: [
-                { text: 'Synthetics' },
-                { text: 'Baskets' },
-                { text: 'Forex' },
-                { text: 'Stocks' },
-                { text: 'Stock indices' },
-                { text: 'Commodities' },
-                { text: 'Cryptocurrencies' },
-            ],
             euRegulator: [
                 {
                     options: { shouldShowAsterickAtEnd: true },
@@ -161,14 +153,23 @@ export const getOptionsContents: TRegulatorsContentProps[] = [
                     text: '*Boom 300 and Crash 300 Index',
                 },
             ],
+            nonEuRegulator: [
+                { text: 'Synthetics' },
+                { text: 'Baskets' },
+                { text: 'Forex' },
+                { text: 'Stocks' },
+                { text: 'Stock indices' },
+                { text: 'Commodities' },
+                { text: 'Cryptocurrencies' },
+            ],
         },
         id: 'assets_in_options',
     },
     {
         attribute: 'Platform',
         content: {
-            nonEuRegulator: { text: 'DTrader, DBot, SmartTrader, and Binary Bot' },
             euRegulator: { text: 'DTrader' },
+            nonEuRegulator: { text: 'DTrader, DBot, SmartTrader, and Binary Bot' },
         },
         id: 'platform_in_options',
     },

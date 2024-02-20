@@ -323,6 +323,15 @@
                 padding: 0 1rem;
             }
         }
+
+        &-padding {
+            padding: 0 2.4rem 2.4rem;
+            max-width: 61.8rem;
+
+            @include mobile {
+                padding: 1.6rem;
+            }
+        }
     }
 
     .dc-vertical-tab__tab--floating {

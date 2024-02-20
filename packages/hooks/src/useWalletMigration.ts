@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useAuthorize, useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
+import { useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
 /** A custom hook to get the status of wallet_migration API and to start/reset the migration process
@@ -17,15 +17,12 @@ const useWalletMigration = () => {
     /** Make a request to wallet_migration API and onSuccess it will invalidate the cached data  */
     const { mutate } = useRequest('wallet_migration', { onSuccess: () => invalidate('wallet_migration') });
 
-    const { isSuccess } = useAuthorize();
-
     /** Fetch the wallet_migration API and refetch it every second if the status is in_progress */
     const { data } = useFetch('wallet_migration', {
         payload: { wallet_migration: 'state' },
         options: {
             refetchInterval: response => (response?.wallet_migration?.state === 'in_progress' ? 500 : false),
-            // delete it later
-            enabled: is_authorize && isSuccess,
+            enabled: is_authorize,
         },
     });
 

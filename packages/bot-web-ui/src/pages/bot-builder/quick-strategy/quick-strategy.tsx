@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Analytics } from '@deriv-com/analytics';
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendQsCloseEvent } from './analytics/rudderstack-quick-strategy';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
 import Form from './form';
-import { TConfigItem, TFormData } from './types';
+import { TConfigItem, TFormData, TFormValues } from './types';
 import './quick-strategy.scss';
 
 type TFormikWrapper = {
@@ -182,22 +182,24 @@ const QuickStrategy = observer(() => {
     const { quick_strategy } = useDBotStore();
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const { is_open, setFormVisibility } = quick_strategy;
+    const { is_open, setFormVisibility, form_data, selected_strategy } = quick_strategy;
 
-    React.useEffect(() => {
-        if (is_open) {
-            Analytics.trackEvent('ce_bot_quick_strategy_form', {
-                action: 'open',
-                form_source: 'ce_bot_quick_strategy_form',
-            });
-        }
-    }, [is_open]);
+    const active_tab_ref = useRef<HTMLDivElement>(null);
+
+    const sendRudderStackQsFormCloseData = () => {
+        const active_tab =
+            active_tab_ref.current?.querySelector('.active')?.textContent?.toLowerCase() === 'learn more'
+                ? 'learn more'
+                : 'trade parameters';
+        rudderStackSendQsCloseEvent({
+            strategy_switcher_mode: active_tab,
+            selected_strategy,
+            form_values: form_data as TFormValues,
+        });
+    };
 
     const handleClose = () => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'close',
-            form_source: 'ce_bot_quick_strategy_form',
-        });
+        sendRudderStackQsFormCloseData();
         setFormVisibility(false);
     };
 
@@ -213,13 +215,13 @@ const QuickStrategy = observer(() => {
                         onClickClose={handleClose}
                         height_offset='8rem'
                     >
-                        <MobileFormWrapper>
+                        <MobileFormWrapper active_tab_ref={active_tab_ref}>
                             <Form />
                         </MobileFormWrapper>
                     </MobileFullPageModal>
                 ) : (
                     <Modal className='modal--strategy' is_open={is_open} width='72rem'>
-                        <DesktopFormWrapper>
+                        <DesktopFormWrapper onClickClose={handleClose} active_tab_ref={active_tab_ref}>
                             <Form />
                         </DesktopFormWrapper>
                     </Modal>

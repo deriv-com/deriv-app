@@ -9,16 +9,19 @@ import './onboarding.scss';
 const Onboarding = observer(() => {
     const history = useHistory();
 
-    const { traders_hub, client } = useStore();
+    const { traders_hub, client, ui } = useStore();
     const { is_landing_company_loaded, is_logged_in, setPrevAccountType } = client;
     const { is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
+    const { is_from_signup_account } = ui;
 
     if (is_logged_in) {
         if (!is_landing_company_loaded) {
             return <OnboardingSkeleton />;
         }
         history.push(routes.traders_hub);
-        toggleIsTourOpen(true);
+        if (!is_from_signup_account) {
+            toggleIsTourOpen(true);
+        }
         if (is_demo_low_risk) {
             selectAccountType('real');
             setPrevAccountType('demo');

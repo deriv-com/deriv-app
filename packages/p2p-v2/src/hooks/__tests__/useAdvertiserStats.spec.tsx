@@ -60,6 +60,8 @@ describe('useAdvertiserStats', () => {
         mockUseSettings.mockReturnValueOnce({
             data: { first_name: 'Jane', last_name: 'Doe' },
         });
+
+        jest.useFakeTimers('modern').setSystemTime(new Date('2024-02-20'));
         mockUseAdvertiserInfo.mockReturnValueOnce({
             data: {
                 buy_orders_count: 10,

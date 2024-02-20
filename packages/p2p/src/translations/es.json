@@ -193,7 +193,7 @@
     "1703154819": "Está editando un anuncio para vender <0>{{ target_amount }} {{ target_currency }}</0>...",
     "1721422292": "Mostrar mi nombre real",
     "1734661732": "Su saldo DP2P es {{ dp2p_balance }}",
-    "1740434340": "Orders will expire if they aren’t completed within this time.",
+    "1740434340": "Los pedidos caducarán si no se completan dentro de este plazo.",
     "1747523625": "Volver",
     "1752096323": "{{field_name}} no debe estar por debajo del límite mín.",
     "1767817594": "Finalización compra <0>30d</0>",

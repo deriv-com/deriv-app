@@ -1,21 +1,29 @@
 .p2p-v2-search {
-    border-radius: 4px;
     width: 100%;
-    font-size: 1.4rem;
-    line-height: 2rem;
 
-    .p2p-v2-input {
-        margin: 0;
-        justify-content: flex-start;
-        position: relative;
-        align-items: center;
-        &__field {
-            padding-left: 4.8rem;
+    .deriv-input {
+        padding: 6px 8px;
+        font-size: 1.4rem;
+
+        &__container {
+            width: 100%;
         }
 
-        @include mobile {
-            justify-content: center;
-            align-items: unset;
+        &__field {
+            margin-left: 0.8rem;
+
+            &:not(:placeholder-shown) ~ label,
+            &:focus ~ label {
+                display: none;
+            }
+        }
+
+        &__helper-message {
+            display: none;
+        }
+
+        &__label {
+            left: 3rem;
         }
     }
 }

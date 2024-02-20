@@ -48,10 +48,10 @@ const NicknameModal = ({ onCancel, onConfirm, should_hide_close_btn = false }: T
                             >
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
                                 <Text as='h5' weight='bold' className='nickname-modal__content--title'>
-                                    <Localize i18n_default_text='Choose your nickname' />
+                                    <Localize i18n_default_text='What’s your nickname?' />
                                 </Text>
-                                <Text as='p' size='xs' className='nickname-modal__content--text'>
-                                    <Localize i18n_default_text='This nickname will be visible to other Deriv P2P users.' />
+                                <Text align='center' as='p' size='xs' className='nickname-modal__content--text'>
+                                    <Localize i18n_default_text='Others will see this on your profile, ads, and chats.' />
                                 </Text>
                                 <div className='nickname-modal__field_wrapper'>
                                     <Field name='nickname'>

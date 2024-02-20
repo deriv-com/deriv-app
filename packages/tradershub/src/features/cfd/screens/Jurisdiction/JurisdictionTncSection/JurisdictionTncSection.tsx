@@ -1,10 +1,10 @@
 import React from 'react';
+import { StaticLink } from '@/components';
 import { getStaticUrl } from '@/helpers';
 import { THooks } from '@/types';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
 import { Provider } from '@deriv/library';
-import { Link, useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Checkbox, Text, useDevice } from '@deriv-com/ui';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
 type TJurisdictionTncSectionProps = {
@@ -28,9 +28,9 @@ const JurisdictionTncSection = ({
     selectedJurisdiction,
     setIsCheckBoxChecked,
 }: TJurisdictionTncSectionProps) => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { getCFDState } = Provider.useCFDContext();
-    const marketType = getCFDState('marketType') || MarketType.ALL;
+    const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
@@ -40,27 +40,24 @@ const JurisdictionTncSection = ({
             )}
             {selectedJurisdiction && selectedJurisdiction !== Jurisdiction.SVG && (
                 <div className='flex justify-center space-x-8'>
-                    <input
+                    <Checkbox
                         checked={isCheckBoxChecked}
-                        className='cursor-pointer'
-                        id='tnc-checkbox'
+                        label={
+                            <Text size={isDesktop ? 'md' : 'sm'}>
+                                I confirm and accept {selectedCompany.name}&lsquo;s{' '}
+                                <StaticLink
+                                    className='no-underline cursor-pointer text-solid-coral-700 hover:no-underline'
+                                    href={getStaticUrl(selectedCompany.tncUrl)}
+                                >
+                                    Terms and Conditions
+                                </StaticLink>
+                            </Text>
+                        }
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             setIsCheckBoxChecked(event.target.checked)
                         }
-                        type='checkbox'
+                        wrapperClassName='w-auto'
                     />
-                    <label className='cursor-pointer' htmlFor='tnc-checkbox'>
-                        <Text size={isMobile ? 'sm' : 'md'}>
-                            I confirm and accept {selectedCompany.name}&lsquo;s{' '}
-                            <Link
-                                className='cursor-pointer text-solid-coral-700 text-1 pl-50 sm:text-100'
-                                href={getStaticUrl(selectedCompany.tncUrl)}
-                                target='_blank'
-                            >
-                                Terms and Conditions
-                            </Link>
-                        </Text>
-                    </label>
                 </div>
             )}
         </div>

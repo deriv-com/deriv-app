@@ -18,6 +18,7 @@ const RegulationSwitcherMobile = () => {
         <div className='flex items-center gap-8'>
             <InfoIcon className='w-16 h-auto' onClick={() => show(<RegulationModal />)} />
             <Tabs
+                TitleFontSize='sm'
                 activeTab={activeRegulation}
                 className='flex rounded-xs p-4 w-[120px] h-40'
                 key={activeRegulation}

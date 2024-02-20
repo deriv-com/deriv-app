@@ -52,13 +52,18 @@ const checkIfInvalidInput = (
 };
 
 const validateCryptoInput = (
-    activeWallet: TWithdrawalCryptoContext['activeWallet'],
+    activeAccount: TWithdrawalCryptoContext['activeAccount'],
     fractionalDigits: TWithdrawalCryptoContext['fractionalDigits'],
     isClientVerified: TWithdrawalCryptoContext['isClientVerified'],
     remainder: number,
     value: string
 ) => {
-    if (!activeWallet?.balance || !activeWallet?.currency || !activeWallet?.currency_config || !fractionalDigits.crypto)
+    if (
+        !activeAccount?.balance ||
+        !activeAccount?.currency ||
+        !activeAccount?.currency_config ||
+        !fractionalDigits.crypto
+    )
         return;
 
     const isInvalidInput = checkIfInvalidInput(fractionalDigits.crypto, value);
@@ -67,17 +72,17 @@ const validateCryptoInput = (
 
     const amount = parseFloat(value);
 
-    if (amount > activeWallet.balance) return helperMessageMapper.insufficientFunds;
+    if (amount > activeAccount.balance) return helperMessageMapper.insufficientFunds;
 
-    const MIN_WITHDRAWAL_AMOUNT = activeWallet.currency_config.minimum_withdrawal;
+    const MIN_WITHDRAWAL_AMOUNT = activeAccount.currency_config.minimum_withdrawal;
 
     const MAX_WITHDRAWAL_AMOUNT =
-        !isClientVerified && remainder < activeWallet.balance ? remainder : activeWallet.balance;
+        !isClientVerified && remainder < activeAccount.balance ? remainder : activeAccount.balance;
 
     if (MIN_WITHDRAWAL_AMOUNT && (amount < MIN_WITHDRAWAL_AMOUNT || amount > MAX_WITHDRAWAL_AMOUNT)) {
         return helperMessageMapper.withdrawalLimitError(
             MIN_WITHDRAWAL_AMOUNT.toFixed(fractionalDigits.crypto),
-            `${MAX_WITHDRAWAL_AMOUNT.toFixed(fractionalDigits.crypto)} ${activeWallet.currency}`
+            `${MAX_WITHDRAWAL_AMOUNT.toFixed(fractionalDigits.crypto)} ${activeAccount.currency}`
         );
     }
 };

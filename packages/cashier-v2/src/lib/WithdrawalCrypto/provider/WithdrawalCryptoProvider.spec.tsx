@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     useAccountLimits,
-    useActiveWalletAccount,
+    useActiveAccount,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
@@ -13,7 +13,7 @@ import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './Withdraw
 
 jest.mock('@deriv/api', () => ({
     useAccountLimits: jest.fn(),
-    useActiveWalletAccount: jest.fn(),
+    useActiveAccount: jest.fn(),
     useCryptoWithdrawal: jest.fn(),
     useCurrencyConfig: jest.fn(),
     useExchangeRateSubscription: jest.fn(),
@@ -22,7 +22,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 const mockUseAccountLimits = useAccountLimits as jest.Mock;
-const mockUseActiveWalletAccount = useActiveWalletAccount as jest.Mock;
+const mockUseActiveWalletAccount = useActiveAccount as jest.Mock;
 const mockUseCryptoWithdrawal = useCryptoWithdrawal as jest.Mock;
 const mockUseCurrencyConfig = useCurrencyConfig as jest.Mock;
 const mockUseExchangeRate = useExchangeRateSubscription as jest.Mock;

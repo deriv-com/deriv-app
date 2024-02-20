@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
     useAccountLimits,
-    useActiveWalletAccount,
+    useActiveAccount,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
@@ -13,7 +13,7 @@ import { TWithdrawalReceipt } from '../types';
 
 export type TWithdrawalCryptoContext = {
     accountLimits: ReturnType<typeof useAccountLimits>['data'];
-    activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
+    activeAccount: ReturnType<typeof useActiveAccount>['data'];
     exchangeRates: Partial<ReturnType<typeof useExchangeRateSubscription>>;
     fractionalDigits: {
         crypto?: number;
@@ -53,25 +53,25 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     verificationCode,
 }) => {
     const { data: accountLimits } = useAccountLimits();
-    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: activeAccount } = useActiveAccount();
     const { data: poaStatus } = usePOA();
     const { data: poiStatus } = usePOI();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
     const { data: exchangeRates, subscribe, unsubscribe } = useExchangeRateSubscription();
-    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
+    const FRACTIONAL_DIGITS_CRYPTO = activeAccount?.currency_config?.fractional_digits;
     const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
 
     useEffect(() => {
-        if (activeWallet?.currency)
+        if (activeAccount?.currency)
             subscribe({
                 base_currency: 'USD',
-                loginid: activeWallet.loginid,
-                target_currency: activeWallet.currency,
+                loginid: activeAccount.loginid,
+                target_currency: activeAccount.currency,
             });
         return () => unsubscribe();
-    }, [activeWallet?.currency, activeWallet?.loginid, subscribe, unsubscribe]);
+    }, [activeAccount?.currency, activeAccount?.loginid, subscribe, unsubscribe]);
 
     const getClientVerificationStatus = () => {
         // eslint-disable-next-line sonarjs/prefer-immediate-return
@@ -83,8 +83,8 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         const value = typeof fiatInput === 'string' ? parseFloat(fiatInput) : fiatInput;
         const convertedValue =
             // eslint-disable-next-line sonarjs/prefer-immediate-return
-            !Number.isNaN(value) && exchangeRates?.rates && activeWallet?.currency
-                ? (value * exchangeRates?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_CRYPTO)
+            !Number.isNaN(value) && exchangeRates?.rates && activeAccount?.currency
+                ? (value * exchangeRates?.rates[activeAccount?.currency]).toFixed(FRACTIONAL_DIGITS_CRYPTO)
                 : '';
         return convertedValue;
     };
@@ -93,8 +93,8 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         const value = typeof cryptoInput === 'string' ? parseFloat(cryptoInput) : cryptoInput;
         const convertedValue =
             // eslint-disable-next-line sonarjs/prefer-immediate-return
-            !Number.isNaN(value) && exchangeRates?.rates && activeWallet?.currency
-                ? (value / exchangeRates?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT)
+            !Number.isNaN(value) && exchangeRates?.rates && activeAccount?.currency
+                ? (value / exchangeRates?.rates[activeAccount?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT)
                 : '';
 
         return convertedValue;
@@ -109,16 +109,16 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         }).then(() =>
             setWithdrawalReceipt({
                 address,
-                amount: amount?.toFixed(activeWallet?.currency_config?.fractional_digits),
-                currency: activeWallet?.currency,
-                landingCompany: activeWallet?.landing_company_name,
+                amount: amount?.toFixed(activeAccount?.currency_config?.fractional_digits),
+                currency: activeAccount?.currency,
+                landingCompany: activeAccount?.landing_company_name,
             })
         );
     };
 
     const value = {
         accountLimits,
-        activeWallet,
+        activeAccount,
         exchangeRates: {
             data: exchangeRates,
             subscribe,

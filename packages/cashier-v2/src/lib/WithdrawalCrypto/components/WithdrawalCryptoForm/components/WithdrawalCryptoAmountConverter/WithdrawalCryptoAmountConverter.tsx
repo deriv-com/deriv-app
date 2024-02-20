@@ -11,7 +11,7 @@ import styles from './WithdrawalCryptoAmountConverter.module.scss';
 const WithdrawalCryptoAmountConverter: React.FC = () => {
     const {
         accountLimits,
-        activeWallet,
+        activeAccount,
         fractionalDigits,
         getConvertedCryptoAmount,
         getConvertedFiatAmount,
@@ -23,7 +23,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
 
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const convertedValue = !validateCryptoInput(
-            activeWallet,
+            activeAccount,
             fractionalDigits,
             isClientVerified,
             accountLimits?.remainder ?? 0,
@@ -57,7 +57,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 name='cryptoAmount'
                 validate={(value: string) =>
                     validateCryptoInput(
-                        activeWallet,
+                        activeAccount,
                         fractionalDigits,
                         isClientVerified,
                         accountLimits?.remainder ?? 0,
@@ -68,8 +68,9 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 {({ field }: FieldProps<string>) => (
                     <Input
                         {...field}
+                        data-testid='dt_withdrawal_crypto_amount_input'
                         error={Boolean(errors.cryptoAmount)}
-                        label={`Amount (${activeWallet?.currency})`}
+                        label={`Amount (${activeAccount?.currency})`}
                         message={errors.cryptoAmount}
                         onChange={onChangeCryptoInput}
                         onFocus={() => setIsCryptoInputActive(true)}
@@ -83,6 +84,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 {({ field }: FieldProps<string>) => (
                     <Input
                         {...field}
+                        data-testid='dt_withdrawal_fiat_amount_input'
                         error={Boolean(errors.fiatAmount)}
                         label='Amount (USD)'
                         message={errors.fiatAmount ?? 'Approximate value'}

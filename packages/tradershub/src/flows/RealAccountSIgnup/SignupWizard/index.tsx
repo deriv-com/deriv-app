@@ -6,6 +6,7 @@ import { DesktopProgressBar, MobileProgressBar } from '../../../components/Progr
 import { TSteps } from '../../../components/ProgressBar/Stepper';
 import { CUSTOM_STYLES } from '../../../helpers/signupModalHelpers';
 import { useSignupWizardContext } from '../../../providers/SignupWizardProvider';
+import AccountOpeningSuccessModal from '../AccountOpeningSuccessModal/AccountOpeningSuccessModal';
 import ExitConfirmationDialog from '../ExitConfirmationDialog';
 import WizardScreens from './WizardScreens';
 import './index.scss';
@@ -60,6 +61,7 @@ const SignupWizard = () => {
                 isOpen={isConfirmationDialogOpen}
                 onClose={() => setIsConfirmationDialogOpen(false)}
             />
+            <AccountOpeningSuccessModal />
         </Fragment>
     );
 };

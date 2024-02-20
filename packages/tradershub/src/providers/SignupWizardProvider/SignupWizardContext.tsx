@@ -60,7 +60,7 @@ export const useSignupWizardContext = () => {
  * @param {React.ReactNode} children - The content to be wrapped.
  */
 export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
-    const [isWizardOpen, setIsWizardOpen] = useState(true);
+    const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [currentStep, helpers] = useStep(4);
     const [state, dispatch] = useReducer(valuesReducer, {

@@ -91,7 +91,7 @@ const CollapsibleTradeParams = ({
             is_collapsed={is_collapsed}
             onClick={onClick}
             handle_button
-            hide_collapsible_button={TRADE_TYPES.EVEN_ODD === contract_type}
+            switch_off_functionality={TRADE_TYPES.EVEN_ODD === contract_type}
         >
             {is_accumulator && is_collapsed && <AccumulatorsStats />}
             <div className='trade-params__contract-type-container'>

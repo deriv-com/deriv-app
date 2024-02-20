@@ -15,7 +15,7 @@ type TArrowButton = {
     title?: string;
     position?: 'top' | 'bottom';
     handle_button?: boolean;
-    hide_collapsible_button?: boolean;
+    show_collapsible_button?: boolean;
 };
 
 const IconArrow = ({ className }: { className?: string }) => (
@@ -37,7 +37,7 @@ const ArrowButton = ({
     onClick,
     title,
     handle_button = false,
-    hide_collapsible_button = false,
+    show_collapsible_button = true,
 }: TArrowButton) => {
     const [is_open, expand] = React.useState(!is_collapsed);
 
@@ -101,7 +101,7 @@ const ArrowButton = ({
             onClick={toggleExpand}
             onKeyDown={toggleExpand}
         >
-            {!hide_collapsible_button && icon_arrow}
+            {show_collapsible_button && icon_arrow}
         </div>
     );
 };

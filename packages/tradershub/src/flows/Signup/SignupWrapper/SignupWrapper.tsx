@@ -4,13 +4,14 @@ import ReactModal from 'react-modal';
 import { CUSTOM_STYLES } from '@/helpers';
 import { SignupScreens } from '../SignupScreens';
 
-export type TFirstSignupFormValues = {
+export type TSignupFormValues = {
     citizenship: string;
     country: string;
     password: string;
 };
 
-const FirstSignupWrapper = () => {
+const SignupWrapper = () => {
+    // setIsOpen will be added later when flow is completed
     const [isOpen] = useState(false);
     const [step, setStep] = useState(1);
 
@@ -29,7 +30,7 @@ const FirstSignupWrapper = () => {
     }, []);
 
     return (
-        <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
+        <ReactModal isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 <Form>
                     <SignupScreens setStep={setStep} step={step} />
@@ -39,4 +40,4 @@ const FirstSignupWrapper = () => {
     );
 };
 
-export default FirstSignupWrapper;
+export default SignupWrapper;

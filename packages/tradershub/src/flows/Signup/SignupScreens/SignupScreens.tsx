@@ -1,5 +1,4 @@
 import React, { Dispatch } from 'react';
-import { Modal } from '@/components';
 import { CitizenshipModal } from '../CitizenshipModal';
 
 type TSignupScreens = {
@@ -13,9 +12,9 @@ const SignupScreens = ({ step, setStep }: TSignupScreens) => {
             return <CitizenshipModal onClickNext={() => setStep(prev => prev + 1)} />;
         case 2:
             return (
-                <Modal className='max-w-[328px] lg:max-w-[440px]'>
-                    <Modal.Content className='p-16 lg:p-24'>Screen 2</Modal.Content>
-                </Modal>
+                <div className='max-w-[328px] lg:max-w-[440px] bg-system-light-primary-background rounded-default p-16 space-y-16 lg:space-y-24 lg:p-24'>
+                    Screen 2
+                </div>
             );
         default:
             return null;

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useFormikContext } from 'formik';
-import { Modal } from '@/components';
 import { isCVMEnabled } from '@/helpers';
 import { useClientCountry, useResidenceList } from '@deriv/api';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Button, Checkbox, Dropdown, Text } from '@deriv-com/ui';
-import { TFirstSignupFormValues } from '../FirstSignupWrapper/FirstSignupWrapper';
+import { TSignupFormValues } from '../SignupWrapper/SignupWrapper';
 
 type TCitizenshipModal = {
     onClickNext: VoidFunction;
@@ -15,7 +14,7 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
     const { data: residenceList, isLoading: residenceListLoading } = useResidenceList();
     const { data: clientCountry, isLoading: clientCountryLoading } = useClientCountry();
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
-    const { values, setFieldValue } = useFormikContext<TFirstSignupFormValues>();
+    const { values, setFieldValue } = useFormikContext<TSignupFormValues>();
     const isCheckboxVisible = isCVMEnabled(values.country);
 
     useEffect(() => {
@@ -28,8 +27,8 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
     if (clientCountryLoading && residenceListLoading) return null;
 
     return (
-        <Modal className='h-full rounded-default max-w-[328px] lg:max-w-[440px]'>
-            <div className='flex flex-col max-w-[296x] lg:max-w-[392px] p-16 space-y-16 lg:space-y-24 lg:p-24'>
+        <div className='h-full rounded-default max-w-[328px] lg:max-w-[440px] bg-system-light-primary-background'>
+            <div className='flex flex-col p-16 space-y-16 lg:space-y-24 lg:p-24'>
                 <Text weight='bold'>Select your country and citizenship:</Text>
                 <Dropdown
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
@@ -83,7 +82,7 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
                     Next
                 </Button>
             </div>
-        </Modal>
+        </div>
     );
 };
 

@@ -33,26 +33,26 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
     return (
         <div className='mt5-download-container'>
             <a
-                className={classNames('mt5-download-container--option')}
+                className='mt5-download-container--option'
                 href={WEBTRADER_URL({ mt5_trade_account })}
                 target='_blank'
                 rel='noopener noreferrer'
             >
                 <div className='full-row'>
-                    <Icon icon={'IcDesktopOutline'} size={16} />
+                    <Icon icon='IcDesktopOutline' size={16} />
                     <Text align='left' size='xxs' weight='bold' className='title'>
                         <Localize i18n_default_text={'MetaTrader5 web terminal'} />
                     </Text>
-                    <Icon icon={'IcChevronRight'} size={16} />
+                    <Icon icon='IcChevronRight' size={16} />
                 </div>
             </a>
-            <a className={classNames('mt5-download-container--option blue')} onClick={mobileURLSet} href={mobile_url}>
+            <a className='mt5-download-container--option blue' onClick={mobileURLSet} href={mobile_url}>
                 <div className='full-row'>
-                    <Icon icon={'IcMobileOutline'} size={16} />
+                    <Icon icon='IcMobileOutline' size={16} />
                     <Text align='left' size='xxs' weight='bold' className='title'>
                         <Localize i18n_default_text={'Trade with MT5 mobile app'} />
                     </Text>
-                    <Icon icon={'IcChevronRightLight'} size={16} />
+                    <Icon icon='IcChevronRightLight' size={16} />
                 </div>
             </a>
 

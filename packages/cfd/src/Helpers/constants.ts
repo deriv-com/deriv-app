@@ -128,7 +128,7 @@ const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: De
     return mt5_trade_account?.white_label?.download_links?.android;
 };
 
-const getDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
+const getDesktopDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
     const downloadOptions = [
         {
             icon: 'IcRebrandingMt5Logo',
@@ -159,6 +159,21 @@ const getDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsO
     return downloadOptions;
 };
 
+const getMobileDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => [
+    {
+        href: mt5_trade_account?.white_label?.download_links?.ios,
+        icon: 'IcInstallationApple',
+    },
+    {
+        href: mt5_trade_account?.white_label?.download_links?.android,
+        icon: 'IcInstallationGoogle',
+    },
+    {
+        href: getPlatformMt5DownloadLink('huawei'),
+        icon: 'IcInstallationHuawei',
+    },
+];
+
 export {
     DEEP_LINK,
     REAL_DXTRADE_URL,
@@ -175,7 +190,8 @@ export {
     platformsIcons,
     getTitle,
     getTopUpConfig,
-    getDownloadOptions,
     getMobileAppInstallerURL,
     WEBTRADER_URL,
+    getDesktopDownloadOptions,
+    getMobileDownloadOptions,
 };

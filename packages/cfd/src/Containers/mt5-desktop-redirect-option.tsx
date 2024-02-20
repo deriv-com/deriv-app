@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import './mt5-mobile-redirect-option.scss';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getDownloadOptions, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getDesktopDownloadOptions, getMobileDownloadOptions, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
@@ -12,7 +12,8 @@ type TMT5DesktopRedirectOptionProps = {
 };
 
 const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5DesktopRedirectOptionProps) => {
-    const desktopDownloadOptions = getDownloadOptions({ mt5_trade_account });
+    const desktopDownloadOptions = getDesktopDownloadOptions({ mt5_trade_account });
+    const mobileDownloadOptions = getMobileDownloadOptions({ mt5_trade_account });
 
     return (
         <Fragment>
@@ -48,23 +49,11 @@ const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5Desk
             </Text>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
-                    <a
-                        href={mt5_trade_account?.white_label?.download_links?.ios}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Icon icon='IcInstallationApple' width={135} height={40} />
-                    </a>
-                    <a
-                        href={mt5_trade_account?.white_label?.download_links?.android}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Icon icon='IcInstallationGoogle' width={135} height={40} />
-                    </a>
-                    <a href={getPlatformMt5DownloadLink('huawei')} target='_blank' rel='noopener noreferrer'>
-                        <Icon icon='IcInstallationHuawei' width={135} height={40} />
-                    </a>
+                    {mobileDownloadOptions.map(({ href, icon }) => (
+                        <a key={icon} href={href} target='_blank' rel='noopener noreferrer'>
+                            <Icon icon={icon} width={135} height={40} />
+                        </a>
+                    ))}
                 </div>
 
                 <div className='cfd-trade-modal__download-center-options--qrcode'>

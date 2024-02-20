@@ -111,7 +111,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
                             {isMobile && (
                                 <div className='flex w-full gap-[1rem] justify-between mt-[1.5rem]'>
                                     <Button
-                                        className='flex items-center gap-[1rem] w-full p2p-v2-share-ads-modal__button'
+                                        className='flex items-center gap-[1rem] w-full p2p-v2-share-ads-modal__container__card__button'
                                         onClick={handleShareLink}
                                         textSize='md'
                                         variant='outlined'
@@ -120,7 +120,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
                                         Share link
                                     </Button>
                                     <Button
-                                        className='flex items-center gap-[1rem] w-full p2p-v2-share-ads-modal__button'
+                                        className='flex items-center gap-[1rem] w-full p2p-v2-share-ads-modal__container__card__button'
                                         onClick={onCopy}
                                         textSize='md'
                                         variant='outlined'

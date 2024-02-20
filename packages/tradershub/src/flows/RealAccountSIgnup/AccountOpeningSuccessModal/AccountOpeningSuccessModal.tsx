@@ -65,9 +65,9 @@ const AccountOpeningSuccessModal = () => {
                 }
                 icon={<SelectedCurrencyIcon />}
                 renderButtons={() => (
-                    <ButtonGroup className='flex-col lg:flex-row sm:w-full'>
+                    <ButtonGroup className='flex-row sm:w-full'>
                         <Button
-                            className='py-18'
+                            // className='py-18'
                             color='black'
                             isFullWidth={!isDesktop}
                             onClick={handleClose}
@@ -76,7 +76,7 @@ const AccountOpeningSuccessModal = () => {
                         >
                             Maybe later
                         </Button>
-                        <Button className='py-18' isFullWidth={!isDesktop} onClick={handleNavigateToDeposit} size='md'>
+                        <Button isFullWidth={!isDesktop} onClick={handleNavigateToDeposit} size='md'>
                             Deposit
                         </Button>
                     </ButtonGroup>

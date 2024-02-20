@@ -91,9 +91,7 @@ const Details = () => {
                         </Suspense>
                     </div>
                 </div>
-                <div className='mt-16'>
-                    <DetailsConfirmation />
-                </div>
+                <div className='mt-16'>{/* <DetailsConfirmation /> */}</div>
             </div>
         </Fragment>
     );

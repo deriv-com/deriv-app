@@ -87,7 +87,7 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
                 label: 'NIMC slip number',
             },
         },
-        inputSectionHeader: 'First, enter your NIMC slip number and the expiry date.',
+        inputSectionHeader: 'First, enter your NIMC slip number.',
         uploads: [
             {
                 error: 'Front side of NIMC slip is required.',

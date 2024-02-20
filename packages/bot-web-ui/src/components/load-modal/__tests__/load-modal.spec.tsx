@@ -54,7 +54,7 @@ describe('LoadModal', () => {
         );
     });
 
-    it('should render properly', () => {
+    it('should render <LoadModal /> properly', () => {
         const { container } = render(<LoadModal />, { wrapper });
         expect(container).toBeInTheDocument();
     });
@@ -62,6 +62,7 @@ describe('LoadModal', () => {
     it('should open full screen modal if opened on mobile', () => {
         mock_store.ui.is_mobile = true;
         render(<LoadModal />, { wrapper });
+
         expect(screen.getByText('Load strategy')).toBeInTheDocument();
         expect(screen.getByText('Local')).toBeInTheDocument();
         expect(screen.getByText('Google Drive')).toBeInTheDocument();

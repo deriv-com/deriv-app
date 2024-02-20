@@ -193,7 +193,7 @@
     "1703154819": "Edytujesz reklamę, aby sprzedać <0>{{ target_amount }} {{ target_currency }}</0>...",
     "1721422292": "Pokaż moje prawdziwe imię",
     "1734661732": "Twoje saldo DP2P wynosi {{ dp2p_balance }}",
-    "1740434340": "Orders will expire if they aren’t completed within this time.",
+    "1740434340": "Zamówienia wygasną, jeśli nie zostaną zrealizowane w tym czasie.",
     "1747523625": "Wróć",
     "1752096323": "Pole {{field_name}} nie powinno być niższe niż Min. limit",
     "1767817594": "Zakończenie zakupu: <0>30 dni</0>",

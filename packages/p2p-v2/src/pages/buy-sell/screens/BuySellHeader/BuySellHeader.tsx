@@ -42,13 +42,15 @@ const BuySellHeader = ({
                 <Tab title='Sell' />
             </Tabs>
             <div className='p2p-v2-buy-sell-header__row'>
-                <CurrencyDropdown selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />
-                <div className='p2p-v2-buy-sell-header__row-search'>
-                    <Search
-                        name='search-nickname'
-                        onSearch={setSearchValue}
-                        placeholder={isMobile ? 'Search' : 'Search by nickname'}
-                    />
+                <div className='flex flex-row-reverse lg:flex-row gap-4'>
+                    <CurrencyDropdown selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />
+                    <div className='p2p-v2-buy-sell-header__row-search'>
+                        <Search
+                            name='search-nickname'
+                            onSearch={setSearchValue}
+                            placeholder={isMobile ? 'Search' : 'Search by nickname'}
+                        />
+                    </div>
                 </div>
                 <SortDropdown
                     list={SORT_BY_LIST}

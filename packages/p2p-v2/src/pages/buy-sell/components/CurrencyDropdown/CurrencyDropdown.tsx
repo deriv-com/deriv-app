@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { FullPageMobileWrapper, Search } from '@/components';
+import { useOnClickOutside } from 'usehooks-ts';
+import { FullPageMobileWrapper } from '@/components';
 import { p2p } from '@deriv/api';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
-import { Dropdown, Text, useDevice } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
+import { CurrencySelector } from './CurrencySelector';
 import './CurrencyDropdown.scss';
 
 type TCurrencyDropdownProps = {
@@ -14,8 +16,12 @@ type TCurrencyDropdownProps = {
 const CurrencyDropdown = ({ selectedCurrency, setSelectedCurrency }: TCurrencyDropdownProps) => {
     const { data } = p2p.settings.useGetSettings();
     const { isMobile } = useDevice();
-    const [showFullPageModal, setShowFullPageModal] = useState<boolean>(false);
-    const [searchedCurrency, setSearchedCurrency] = useState<string>('');
+    const [showCurrencySelector, setShowCurrencySelector] = useState<boolean>(false);
+
+    const currencySelectorRef = useRef<HTMLDivElement>(null);
+    useOnClickOutside(currencySelectorRef, () => {
+        setShowCurrencySelector(false);
+    });
 
     const localCurrencies = useMemo(() => {
         return data?.currency_list
@@ -29,33 +35,17 @@ const CurrencyDropdown = ({ selectedCurrency, setSelectedCurrency }: TCurrencyDr
             : [];
     }, [data?.currency_list, selectedCurrency]);
 
-    const [searchedCurrencies, setSearchedCurrencies] = useState(localCurrencies);
-
-    const searchCurrencies = (value: string) => {
-        if (!value) {
-            setSearchedCurrencies(localCurrencies);
-            return;
-        }
-
-        setSearchedCurrency(value);
-
-        setSearchedCurrencies(
-            localCurrencies.filter(currency => {
-                return (
-                    currency.value.toLowerCase().includes(value.toLocaleLowerCase()) ||
-                    currency.display_name.toLowerCase().includes(value.toLocaleLowerCase())
-                );
-            })
-        );
+    const onSelectItem = (currency: string) => {
+        setShowCurrencySelector(false);
+        setSelectedCurrency(currency);
     };
 
-    if (showFullPageModal && isMobile)
+    if (showCurrencySelector && isMobile)
         return (
             <FullPageMobileWrapper
                 className='p2p-v2-currency-dropdown__full-page-modal'
                 onBack={() => {
-                    setShowFullPageModal(false);
-                    setSearchedCurrencies(localCurrencies);
+                    setShowCurrencySelector(false);
                 }}
                 renderHeader={() => (
                     <Text size='lg' weight='bold'>
@@ -63,57 +53,39 @@ const CurrencyDropdown = ({ selectedCurrency, setSelectedCurrency }: TCurrencyDr
                     </Text>
                 )}
             >
-                <Search
-                    delayTimer={0}
-                    name='search-currency'
-                    onSearch={(value: string) => searchCurrencies(value)}
-                    placeholder='Search'
+                <CurrencySelector
+                    localCurrencies={localCurrencies}
+                    onSelectItem={onSelectItem}
+                    selectedCurrency={selectedCurrency}
                 />
-                <div className='mt-[5.6rem]'>
-                    {searchedCurrencies.length > 0 ? (
-                        searchedCurrencies.map(currency => {
-                            const isSelectedCurrency = currency.value === selectedCurrency;
-
-                            return (
-                                <div
-                                    className='mx-[1.6rem] my-[0.8rem] cursor-pointer'
-                                    key={currency.value}
-                                    onClick={() => {
-                                        setSelectedCurrency(currency.value);
-                                        setShowFullPageModal(false);
-                                        setSearchedCurrencies(localCurrencies);
-                                    }}
-                                >
-                                    <div
-                                        className={clsx('flex justify-between rounded px-[1.6rem] py-[0.8rem]', {
-                                            'bg-[#d6dadb]': isSelectedCurrency,
-                                        })}
-                                    >
-                                        <Text weight={isSelectedCurrency ? 'bold' : '400'}>{currency.text}</Text>
-                                        <Text>{currency.display_name}</Text>
-                                    </div>
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <Text align='center' className='mt-64 flex justify-center' size='md' weight='bold'>
-                            No results for &quot;{searchedCurrency}&quot;.
-                        </Text>
-                    )}
-                </div>
             </FullPageMobileWrapper>
         );
 
     return (
-        <div className='p2p-v2-currency-dropdown' onClick={() => isMobile && setShowFullPageModal(true)}>
-            <Dropdown
-                dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
-                label='Currency'
-                list={localCurrencies || []}
-                name='Currency'
-                onSelect={(value: string) => setSelectedCurrency(value)}
-                value={selectedCurrency}
-            />
+        <div className='p2p-v2-currency-dropdown' ref={currencySelectorRef}>
+            <div
+                className={clsx('p2p-v2-currency-dropdown__dropdown', {
+                    'p2p-v2-currency-dropdown__dropdown--active': showCurrencySelector,
+                })}
+                onClick={() => setShowCurrencySelector(prev => !prev)}
+            >
+                <Text className='p2p-v2-currency-dropdown__dropdown-text' color='less-prominent'>
+                    Currency
+                </Text>
+                <Text size='sm'>{selectedCurrency}</Text>
+                <LabelPairedChevronDownMdRegularIcon
+                    className={clsx('p2p-v2-currency-dropdown__dropdown-icon', {
+                        'p2p-v2-currency-dropdown__dropdown-icon--active': showCurrencySelector,
+                    })}
+                />
+            </div>
+            {showCurrencySelector && (
+                <CurrencySelector
+                    localCurrencies={localCurrencies}
+                    onSelectItem={onSelectItem}
+                    selectedCurrency={selectedCurrency}
+                />
+            )}
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import useSubscription from '../../../../../useSubscription';
 import { TSocketResponseData } from '../../../../../../types';
 import { useLocalStorage } from 'usehooks-ts';
@@ -21,6 +21,14 @@ type TP2PSettings =
           reached_target_date: boolean;
       })
     | undefined;
+
+type TCurrencyListItem = {
+    display_name: string;
+    has_adverts: 0 | 1;
+    is_default: 1 | undefined;
+    text: string;
+    value: string;
+};
 
 const useSettings = () => {
     const { data, ...rest } = useSubscription('p2p_settings');
@@ -45,7 +53,7 @@ const useSettings = () => {
 
             let localCurrency;
 
-            const currency_list = p2p_settings_data.local_currencies.reduce((acc, currency) => {
+            const currency_list = p2p_settings_data.local_currencies.reduce((acc: TCurrencyListItem[], currency) => {
                 const { display_name, has_adverts, is_default, symbol } = currency;
 
                 if (is_default) localCurrency = symbol;

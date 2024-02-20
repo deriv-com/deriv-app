@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import Fieldset from 'App/Components/Form/fieldset';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { Dropdown } from '@deriv/components';
-import { toMoment, isVanillaContract } from '@deriv/shared';
+import { toMoment, isVanillaContract, getContractTypesConfig } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationToggle from './duration-toggle';
@@ -102,6 +103,21 @@ const Duration = ({
             duration_unit: value,
             duration: Number(duration_value),
         });
+
+        if (name === 'advanced_duration_unit') {
+            // console.log('4', value, name);
+            Analytics.trackEvent(
+                'ce_contracts_set_up_form' as keyof TEvents,
+                {
+                    action: 'change_parameter_value',
+                    form_name: 'default',
+                    parameter_type_name: 'duration_type',
+                    parameter_field_type: 'dropdown',
+                    duration_type: value,
+                    trade_type_name: getContractTypesConfig()[contract_type]?.title,
+                } as unknown as TEvents['ce_trade_types_form']
+            );
+        }
     };
 
     const changeDurationValue = ({ target }: { target: { name: string; value: string | number } }) => {
@@ -111,6 +127,20 @@ const Duration = ({
         // e.target.value returns string, we need to convert them to number
         onChangeUiStore({ name: duration_name, value: +value });
         onChange({ target: { name, value: +value } });
+        // is reflecting an actual input but not the displayed value
+        // console.log('5', value, name);
+        Analytics.trackEvent(
+            'ce_contracts_set_up_form' as keyof TEvents,
+            {
+                action: 'change_parameter_value',
+                form_name: 'default',
+                input_type: 'manual',
+                parameter_type_name: 'duration_value',
+                parameter_field_type: 'number',
+                parameter_value: value,
+                trade_type_name: getContractTypesConfig()[contract_type]?.title,
+            } as unknown as TEvents['ce_trade_types_form']
+        );
     };
 
     const onToggleDurationType = ({ target }: { target: { name: string; value: boolean } }) => {

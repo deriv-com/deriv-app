@@ -1,8 +1,16 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import { DatePicker, Tooltip } from '@deriv/components';
-import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
+import {
+    isTimeValid,
+    setTime,
+    toMoment,
+    useIsMounted,
+    hasIntradayDurationUnit,
+    getContractTypesConfig,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv/stores';
@@ -24,6 +32,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
     const { common } = useStore();
     const { server_time } = common;
     const {
+        contract_type,
         duration: current_duration,
         duration_min_max,
         duration_units_list,
@@ -111,12 +120,26 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
         }
 
         if (typeof onChange === 'function' && e.target) {
+            const value = hasRangeSelection() ? e.target.value : toMoment(e.target.value).format('YYYY-MM-DD');
             onChange({
                 target: {
                     name: e.target.name || '',
-                    value: hasRangeSelection() ? e.target.value : toMoment(e.target.value).format('YYYY-MM-DD'),
+                    value,
                 },
             });
+            if (value) {
+                // console.log('1', value);
+                Analytics.trackEvent(
+                    'ce_contracts_set_up_form' as keyof TEvents,
+                    {
+                        action: 'change_parameter_value',
+                        form_name: 'default',
+                        parameter_type_name: 'end_time_day',
+                        parameter_value: value,
+                        trade_type_name: getContractTypesConfig()[contract_type]?.title,
+                    } as unknown as TEvents['ce_trade_types_form']
+                );
+            }
         }
     };
 

@@ -1,6 +1,7 @@
 import React from 'react';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import { Tabs, RelativeDatepicker } from '@deriv/components';
-import { getDurationMinMaxValues } from '@deriv/shared';
+import { getContractTypesConfig, getDurationMinMaxValues, toMoment } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -48,7 +49,13 @@ const DurationMobile = observer(
         t_duration,
         toggleModal,
     }: TDurationMobile) => {
-        const { duration_units_list, duration_min_max, duration_unit, basis: trade_basis } = useTraderStore();
+        const {
+            duration_units_list,
+            duration_min_max,
+            duration_unit,
+            basis: trade_basis,
+            contract_type,
+        } = useTraderStore();
         const duration_values = {
             t_duration,
             s_duration,
@@ -63,6 +70,17 @@ const DurationMobile = observer(
         const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
         const handleRelativeChange = (date: number) => {
             setSelectedDuration('d', date);
+            // console.log('2', toMoment().add(date, 'd').format('YYYY-MM-DD'));
+            Analytics.trackEvent(
+                'ce_contracts_set_up_form' as keyof TEvents,
+                {
+                    action: 'change_parameter_value',
+                    form_name: 'default',
+                    parameter_type_name: 'end_time_day',
+                    parameter_value: toMoment().add(date, 'd').format('YYYY-MM-DD'),
+                    trade_type_name: getContractTypesConfig()[contract_type]?.title,
+                } as unknown as TEvents['ce_trade_types_form']
+            );
         };
         const selected_basis_option = () => {
             if (amount_tab_idx === 0) {

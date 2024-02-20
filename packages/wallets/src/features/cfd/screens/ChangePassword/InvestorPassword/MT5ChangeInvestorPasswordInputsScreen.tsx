@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
+import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
 import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
 import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';

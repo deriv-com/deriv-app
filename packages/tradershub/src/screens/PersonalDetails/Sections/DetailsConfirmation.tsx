@@ -25,6 +25,7 @@ const DetailsConfirmation = () => {
                 <Checkbox
                     disabled={isDisabled}
                     error={Boolean(meta.error && meta.touched)}
+                    id='confirmation'
                     label='I confirm that the name and date of birth above match my chosen identity document.'
                     {...field}
                 />

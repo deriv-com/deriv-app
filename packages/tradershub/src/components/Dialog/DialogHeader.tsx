@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
+import { clsx } from 'clsx';
 import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
 import { Provider } from '@deriv/library';
-import { Heading, qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 /**
  * Type for the DialogHeader component props
@@ -12,18 +13,9 @@ import { Heading, qtMerge } from '@deriv/quill-design';
  */
 type TDialogHeader = {
     className?: string;
-    heading?: keyof typeof HeadingVariants;
     hideCloseButton?: boolean;
     title?: string;
-};
-
-const HeadingVariants = {
-    h1: Heading.H1,
-    h2: Heading.H2,
-    h3: Heading.H3,
-    h4: Heading.H4,
-    h5: Heading.H5,
-    h6: Heading.H6,
+    titleSize?: ComponentProps<typeof Text>['size'];
 };
 
 /**
@@ -31,14 +23,16 @@ const HeadingVariants = {
  * @param {TDialogHeader} props - The properties that define the DialogHeader component.
  * @returns {JSX.Element} The DialogHeader component.
  */
-const DialogHeader = ({ className, heading = 'h3', hideCloseButton = false, title }: TDialogHeader) => {
-    const Heading = HeadingVariants[heading];
-
+const DialogHeader = ({ className, titleSize, hideCloseButton = false, title }: TDialogHeader) => {
     const { hide } = Provider.useModal();
 
     return (
-        <div className={qtMerge('flex items-start', title ? 'justify-between' : 'justify-end', className)}>
-            {title && <Heading className='flex-1'>{title}</Heading>}
+        <div className={clsx('flex items-start', title ? 'justify-between' : 'justify-end', className)}>
+            {title && (
+                <Text className='flex-1' size={titleSize} weight='bold'>
+                    {title}
+                </Text>
+            )}
             {!hideCloseButton && <CloseIcon className='hover:cursor-pointer' onClick={hide} />}
         </div>
     );

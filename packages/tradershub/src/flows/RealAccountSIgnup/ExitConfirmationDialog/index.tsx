@@ -2,16 +2,14 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import { Button, Text } from '@deriv-com/ui';
 import { CUSTOM_STYLES } from '../../../helpers/signupModalHelpers';
-import { ACTION_TYPES, useSignupWizardContext } from '../../../providers/SignupWizardProvider';
+import { useSignupWizardContext } from '../../../providers/SignupWizardProvider';
 
 const ExitConfirmationDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    const { dispatch, helpers, setIsWizardOpen } = useSignupWizardContext();
+    const { reset } = useSignupWizardContext();
 
     const handleClose = () => {
         onClose();
-        setIsWizardOpen(false);
-        dispatch({ type: ACTION_TYPES.RESET });
-        helpers.setStep(1);
+        reset();
     };
 
     return (

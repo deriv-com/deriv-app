@@ -11,7 +11,7 @@ type TNewTradingAccount = NonNullable<ReturnType<typeof useCreateNewRealAccount>
  * @returns { addTradingAccountToLocalStorage: (newAccount: TNewTradingAccount) => void }
  */
 const useSyncLocalStorageClientAccounts = () => {
-    const { data } = useActiveTradingAccount();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
     const { data: settingsData } = useSettings();
     const [, setLocalStorageClientAccounts] = useLocalStorage(
         'client.accounts',
@@ -20,21 +20,21 @@ const useSyncLocalStorageClientAccounts = () => {
 
     const addTradingAccountToLocalStorage = useCallback(
         (newAccount: TNewTradingAccount) => {
-            if (newAccount && data) {
+            if (newAccount && activeTradingAccount) {
                 const dataToStore = {
                     accepted_bch: 0,
-                    account_category: 'trading',
-                    account_type: 'standard',
+                    account_category: activeTradingAccount.account_category,
+                    account_type: activeTradingAccount.account_type,
                     balance: 0,
-                    created_at: data.created_at,
+                    created_at: activeTradingAccount.created_at,
                     currency: newAccount.currency,
                     email: settingsData.email,
-                    excluded_until: data.excluded_until,
-                    is_disabled: Number(data.is_disabled),
-                    is_virtual: Number(data.is_virtual),
+                    excluded_until: activeTradingAccount.excluded_until,
+                    is_disabled: Number(activeTradingAccount.is_disabled),
+                    is_virtual: Number(activeTradingAccount.is_virtual),
                     landing_company_name: newAccount.landing_company_shortcode,
                     landing_company_shortcode: newAccount.landing_company_shortcode,
-                    residence: settingsData.citizen || settingsData.country_code,
+                    residence: settingsData.citizen ?? settingsData.country_code,
                     session_start: new Date().valueOf() / 1000,
                     token: newAccount.oauth_token,
                 };
@@ -43,15 +43,15 @@ const useSyncLocalStorageClientAccounts = () => {
                 const localStorageData = {
                     ...clientAccounts,
                     [newAccount.client_id]: dataToStore,
-                    [data.loginid]: {
-                        ...clientAccounts[data.loginid],
+                    [activeTradingAccount.loginid]: {
+                        ...clientAccounts[activeTradingAccount.loginid],
                         linked_to: [{ loginid: newAccount.client_id, platform: 'dtrade' }],
                     },
                 };
                 setLocalStorageClientAccounts(localStorageData);
             }
         },
-        [data, setLocalStorageClientAccounts, settingsData]
+        [activeTradingAccount, setLocalStorageClientAccounts, settingsData]
     );
 
     return { addTradingAccountToLocalStorage };

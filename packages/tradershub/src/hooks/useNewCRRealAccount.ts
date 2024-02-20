@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { ACTION_TYPES, useSignupWizardContext } from '@/providers/SignupWizardProvider';
+import { useSignupWizardContext } from '@/providers/SignupWizardProvider';
 import { useAuthorize, useCreateNewRealAccount, useSettings } from '@deriv/api';
 import useSyncLocalStorageClientAccounts from './useSyncLocalStorageClientAccounts';
 
@@ -9,7 +9,7 @@ import useSyncLocalStorageClientAccounts from './useSyncLocalStorageClientAccoun
  * @returns {Object} Submit handler function, the new real CR account data and the status of the request.
  */
 const useNewCRRealAccount = () => {
-    const { dispatch, helpers, setIsWizardOpen, state } = useSignupWizardContext();
+    const { setIsWizardOpen, state, setIsSuccessModalOpen } = useSignupWizardContext();
 
     const { data: newTradingAccountData, mutate: createAccount, status, ...rest } = useCreateNewRealAccount();
     const { data: settingsData } = useSettings();
@@ -24,16 +24,14 @@ const useNewCRRealAccount = () => {
 
             addTradingAccountToLocalStorage(newTradingAccountData);
             switchAccount(newTradingAccountData?.client_id);
-            dispatch({ type: ACTION_TYPES.RESET });
-            helpers.setStep(1);
             setIsWizardOpen(false);
+            setIsSuccessModalOpen(true);
         }
         // trigger validation error on status change when validation modal is created
     }, [
         addTradingAccountToLocalStorage,
-        dispatch,
-        helpers,
         newTradingAccountData,
+        setIsSuccessModalOpen,
         setIsWizardOpen,
         status,
         switchAccount,

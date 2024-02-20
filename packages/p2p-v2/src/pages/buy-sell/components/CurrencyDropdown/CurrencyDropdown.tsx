@@ -68,7 +68,6 @@ const CurrencyDropdown = ({ selectedCurrency, setSelectedCurrency }: TCurrencyDr
                     'p2p-v2-currency-dropdown__dropdown--active': showCurrencySelector,
                 })}
                 onClick={() => setShowCurrencySelector(prev => !prev)}
-                role='button'
             >
                 <Text className='p2p-v2-currency-dropdown__dropdown-text' color='less-prominent'>
                     Currency

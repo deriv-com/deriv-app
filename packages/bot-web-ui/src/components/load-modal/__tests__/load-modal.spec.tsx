@@ -68,23 +68,28 @@ describe('LoadModal', () => {
         expect(screen.queryByText('Recent')).not.toBeInTheDocument();
     });
 
+    it('should render LocalFooter if there are recent strategies', () => {
+        mock_store.ui.is_mobile = false;
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
+        mock_DBot_store?.load_modal.setLoadedLocalFile(new File([''], 'test-name', { type: 'text/xml' }));
+        render(<LoadModal />, { wrapper });
+        expect(screen.getByRole('button', { name: 'Open' })).toBeInTheDocument();
+    });
+
+    it('should render RecentFooter if there are recent strategies', () => {
+        mock_store.ui.is_mobile = false;
+        mock_DBot_store?.load_modal.setActiveTabIndex(0);
+        mock_DBot_store?.load_modal.setRecentStrategies(recent_strategies);
+        render(<LoadModal />, { wrapper });
+        expect(screen.getByRole('button', { name: 'Open' })).toBeInTheDocument();
+    });
+
+    // [Important] Close Modal should be at the end
     it('should close preview if close is clicked', () => {
         mock_store.ui.is_mobile = true;
         render(<LoadModal />, { wrapper });
         const close_button = screen.getByTestId('dt_page_overlay_header_close');
         userEvent.click(close_button);
         expect(mock_DBot_store?.dashboard.is_preview_on_popup).toBeFalsy();
-    });
-
-    it('should render LocalFooter if there are recent strategies', () => {
-        mock_DBot_store?.load_modal.setActiveTabIndex(1);
-        mock_DBot_store?.load_modal.setLoadedLocalFile(new File([''], 'test-name', { type: 'text/xml' }));
-        render(<LoadModal />, { wrapper });
-    });
-
-    it('should render RecentFooter if there are recent strategies', () => {
-        mock_DBot_store?.load_modal.setActiveTabIndex(0);
-        mock_DBot_store?.load_modal.setRecentStrategies(recent_strategies);
-        render(<LoadModal />, { wrapper });
     });
 });

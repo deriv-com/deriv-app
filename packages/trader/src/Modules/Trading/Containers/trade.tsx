@@ -78,7 +78,7 @@ const Trade = observer(() => {
     const [subcategory, setSubcategory] = React.useState<string>();
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
 
-    const should_lift_up_navigation =
+    const should_elevate_navigation =
         is_trade_params_expanded &&
         (contract_type === TRADE_TYPES.MATCH_DIFF || contract_type === TRADE_TYPES.OVER_UNDER);
 
@@ -198,7 +198,7 @@ const Trade = observer(() => {
                             }
                             is_swipe_disabled={swipe_index === 1}
                             onChange={onChangeSwipeableIndex}
-                            should_lift_up_navigation={should_lift_up_navigation}
+                            should_elevate_navigation={should_elevate_navigation}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
                             <TradeChart

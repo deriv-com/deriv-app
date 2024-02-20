@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import Collapsible from '../collapsible';
 
 const className = 'dc-collapsible--has-collapsible-btn';
-const testId = 'dt-collapsible';
+const testId = 'dt_collapsible';
 const mockedDefaultProps: React.ComponentProps<typeof Collapsible> = {
     children: <div data-collapsible={true}>Children Component</div>,
     onClick: jest.fn(),
@@ -20,7 +20,7 @@ describe('<Collapsible/>', () => {
     it('should render component without specific className if passed children have no data-collapsible = true', () => {
         render(
             <Collapsible {...mockedDefaultProps}>
-                <div>Children Component</div>
+                <div>Child component</div>
             </Collapsible>
         );
 
@@ -30,7 +30,7 @@ describe('<Collapsible/>', () => {
     it('should render component with specific className if passed children have no data-collapsible = true, but hide_collapsible_button is true', () => {
         render(
             <Collapsible {...mockedDefaultProps} hide_collapsible_button>
-                <div>Children Component</div>
+                <div>Child component</div>
             </Collapsible>
         );
 

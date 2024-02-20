@@ -19,7 +19,7 @@ const Divider = () => <hr className=' bg-system-light-primary-background' />;
  * @returns {React.ReactNode}
  */
 const TermsOfUse = () => {
-    const { mutate } = useNewCRRealAccount();
+    const { mutate, isLoading } = useNewCRRealAccount();
 
     const initialValues = {
         fatcaDeclaration: '',
@@ -67,6 +67,7 @@ const TermsOfUse = () => {
                             </div>
                         </div>
                         <Actions
+                            isSubmitBtnLoading={isLoading}
                             submitDisabled={
                                 !values.pepConfirmation ||
                                 !values.termsAndCondition ||

@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
-import './mt5-mobile-redirect-option.scss';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getDesktopDownloadOptions, getMobileDownloadOptions, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getDesktopDownloadOptions, getMobileDownloadOptions } from '../Helpers/constants';
 import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import './mt5-mobile-redirect-option.scss';
 
 type TMT5DesktopRedirectOptionProps = {
     account_title: string;

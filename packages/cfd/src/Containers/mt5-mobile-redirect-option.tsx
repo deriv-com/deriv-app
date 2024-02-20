@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';

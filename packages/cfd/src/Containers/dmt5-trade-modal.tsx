@@ -1,19 +1,19 @@
 import React from 'react';
-import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Text, Icon, Money, StatusBadge } from '@deriv/components';
+import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { getCFDAccountDisplay, getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import SpecBox from '../Components/specbox';
-import PasswordBox from '../Components/passwordbox';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
-import { TTradingPlatformAccounts } from '../Components/props.types';
-import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import MigrationBanner from './migration-banner';
-import MT5MobileRedirectOption from './mt5-mobile-redirect-option';
 import MT5DesktopRedirectOption from './mt5-desktop-redirect-option';
+import MT5MobileRedirectOption from './mt5-mobile-redirect-option';
+import PasswordBox from '../Components/passwordbox';
+import SpecBox from '../Components/specbox';
+import { TCFDPasswordReset } from './props.types';
+import { TTradingPlatformAccounts } from '../Components/props.types';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;

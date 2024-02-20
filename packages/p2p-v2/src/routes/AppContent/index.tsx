@@ -32,7 +32,7 @@ const AppContent = () => {
     const history = useHistory();
     const { data: activeAccountData, isLoading } = useActiveAccount();
     const [activeTab, setActiveTab] = useState(() => pathToTitleMapper[getCurrentRoute() || DEFAULT_TAB]);
-    const { data, subscribe } = p2p.settings.useGetSettings();
+    const { subscribe } = p2p.settings.useGetSettings();
 
     useEffect(() => {
         if (activeAccountData) subscribe();

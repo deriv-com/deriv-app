@@ -54,6 +54,7 @@ const CurrencySelector = ({ localCurrencies, onSelectItem, selectedCurrency }: T
                                 className='lg:m-0 mx-[1.6rem] my-[0.8rem] cursor-pointer'
                                 key={currency.value}
                                 onClick={() => onSelectItem(currency.value)}
+                                role='button'
                             >
                                 <div
                                     className={clsx(

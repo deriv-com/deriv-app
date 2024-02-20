@@ -633,15 +633,13 @@ export default class TradeStore extends BaseStore {
 
         await this.setActiveSymbols();
         await this.root_store.active_symbols.setActiveSymbols();
-        if (should_set_default_symbol) await this.setDefaultSymbol();
-
-        const r = await WS.storage.contractsFor(this.symbol);
         const { symbol } = getTradeURLParams({ active_symbols: this.active_symbols });
         const hasSymbolChanged = symbol && symbol !== this.symbol;
-        if (hasSymbolChanged) {
-            this.updateSymbol(symbol);
-        }
+        if (hasSymbolChanged) this.symbol = symbol;
+        if (should_set_default_symbol && !symbol) await this.setDefaultSymbol();
         setTradeURLParams({ symbol: hasSymbolChanged ? symbol : this.symbol });
+
+        const r = await WS.storage.contractsFor(this.symbol);
         if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
             const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
             await this.processNewValuesAsync({ symbol: symbol_to_update });

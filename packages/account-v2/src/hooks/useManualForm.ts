@@ -18,7 +18,7 @@ const useManualForm = (countryCode: string, selectedDocument: TManualDocumentTyp
         return {
             isExpiryDateRequired: true,
             isLoading,
-            poiService: isLoading ? null : servicesAvailable[0],
+            poiService: isLoading || !servicesAvailable?.length ? null : servicesAvailable[0],
             ...rest,
         };
     }

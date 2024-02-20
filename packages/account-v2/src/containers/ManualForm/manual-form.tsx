@@ -38,6 +38,7 @@ export const ManualForm = ({
         <Formik
             initialValues={initialValues as TmanualDocumentFormValues}
             onSubmit={onSubmit}
+            validateOnMount
             validationSchema={validationSchema}
         >
             {({ isSubmitting, isValid }) => (

@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import { validPassword } from '../password';
 import { passwordRegex } from '@/constants';
 
 export const personalDetails = Yup.object().shape({

@@ -33,7 +33,11 @@ export const SignupWizardContext = createContext<TSignupWizardContext>({
         /* noop */
     },
     helpers: initialHelpers,
+    isSuccessModalOpen: false,
     isWizardOpen: false,
+    setIsSuccessModalOpen: /* noop */ () => {
+        /* noop */
+    },
     setIsWizardOpen: /* noop */ () => {
         /* noop */
     },
@@ -57,6 +61,7 @@ export const useSignupWizardContext = () => {
  */
 export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
     const [isWizardOpen, setIsWizardOpen] = useState(false);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [currentStep, helpers] = useStep(4);
     const [state, dispatch] = useReducer(valuesReducer, {
         currency: '',
@@ -67,11 +72,13 @@ export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
             currentStep,
             dispatch,
             helpers,
+            isSuccessModalOpen,
             isWizardOpen,
+            setIsSuccessModalOpen,
             setIsWizardOpen,
             state,
         }),
-        [currentStep, helpers, isWizardOpen, state]
+        [currentStep, helpers, isSuccessModalOpen, isWizardOpen, state]
     );
 
     return <SignupWizardContext.Provider value={contextState}>{children}</SignupWizardContext.Provider>;

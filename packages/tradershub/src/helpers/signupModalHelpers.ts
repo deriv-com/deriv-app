@@ -8,6 +8,7 @@ type TCustomStyles = {
  */
 export const CUSTOM_STYLES: TCustomStyles = {
     content: {
+        position: 'absolute',
         background: 'none',
         border: 'none',
         borderRadius: 0,

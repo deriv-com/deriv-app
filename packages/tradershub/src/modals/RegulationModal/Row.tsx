@@ -1,5 +1,5 @@
 import React from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { clsx } from 'clsx';
 import { Text } from '@deriv-com/ui';
 import { TRegulatorsContentProps, TRowItem } from '../../constants/regulators-modal-content';
 
@@ -8,9 +8,9 @@ type TRowProps = TRegulatorsContentProps & {
 };
 
 const Row = ({ attribute, content, id, idx }: TRowProps) => (
-    <tr className={qtMerge('min-h-2000', idx === 0 && 'bg-brand-pink-light')} key={id}>
+    <tr className={clsx('min-h-40', idx === 0 && 'bg-brand-pink-light')} key={id}>
         <td
-            className={`sticky z-10 align-middle border-solid start-50 py-500 px-400 border-system-light-active-background border-x-75 border-b-75 ${
+            className={`sticky z-10 align-middle border-solid start-0 py-10 px-8 border-system-light-active-background border-x-1 border-b-1 ${
                 idx === 0 ? 'bg-brand-pink-light' : 'bg-system-light-primary-background'
             }`}
         >
@@ -20,7 +20,7 @@ const Row = ({ attribute, content, id, idx }: TRowProps) => (
         </td>
         {Object.keys(content).map(rowKey => (
             <td
-                className='flex-col justify-center align-middle border-solid whitespace-nowrap py-500 px-400 border-b-75 border-r-75 border-system-light-active-background'
+                className='flex-col justify-center px-8 py-10 align-middle border-solid whitespace-nowrap border-b-1 border-r-1 border-system-light-active-background'
                 key={rowKey}
             >
                 {Array.isArray(content[rowKey]) ? (

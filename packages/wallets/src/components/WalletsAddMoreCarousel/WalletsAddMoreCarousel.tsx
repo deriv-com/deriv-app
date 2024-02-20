@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
 import { useHover } from 'usehooks-ts';
-import { useAllWalletAccounts, useAuthorize } from '@deriv/api';
+import { useAllWalletAccounts, useAuthorize } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import LeftArrow from '../../public/images/left-arrow.svg';
 import RightArrow from '../../public/images/right-arrow.svg';

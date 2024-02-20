@@ -1,9 +1,11 @@
 import React from 'react';
 import { Divider } from '@deriv-com/ui';
-import DepositCryptoAddress from './components/DepositCryptoAddress/DepositCryptoAddress';
-import DepositCryptoCurrencyDetails from './components/DepositCryptoCurrencyDetails/DepositCryptoCurrencyDetails';
-import DepositCryptoDisclaimers from './components/DepositCryptoDisclaimers/DepositCryptoDisclaimers';
-import DepositCryptoTryFiatOnRamp from './components/DepositCryptoTryFiatOnRamp/DepositCryptoTryFiatOnRamp';
+import {
+    DepositCryptoAddress,
+    DepositCryptoCurrencyDetails,
+    DepositCryptoDisclaimers,
+    DepositCryptoTryFiatOnRamp,
+} from './components';
 import styles from './DepositCrypto.module.scss';
 
 const DepositCrypto = () => {

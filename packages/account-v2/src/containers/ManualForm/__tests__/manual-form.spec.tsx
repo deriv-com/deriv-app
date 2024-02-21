@@ -52,7 +52,7 @@ describe('ManualForm', () => {
     it('should render the header texts correctly for the document NIMC slip', () => {
         const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.NIMC_SLIP };
         renderComponent(newProps);
-        expect(screen.getByText(/First, enter your NIMC slip number and the expiry date./)).toBeInTheDocument();
+        expect(screen.getByText(/First, enter your NIMC slip number./)).toBeInTheDocument();
         expect(
             screen.getByText(/Next, upload the page of your NIMC slip that contains your photo./)
         ).toBeInTheDocument();

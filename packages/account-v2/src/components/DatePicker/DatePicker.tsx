@@ -1,25 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ComponentProps, useEffect, useRef, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import { useOnClickOutside } from 'usehooks-ts';
 import { Input } from '@deriv-com/ui';
-import CalendarIcon from '../../../assets/date-picker/ic-calendar.svg';
-import unixToDateString from '../utils';
-import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
-import customFormatShortWeekday from './utils';
+import CalendarIcon from '../../assets/date-picker/ic-calendar.svg';
+import unixToDateString from '../base/utils';
 import 'react-calendar/dist/Calendar.css';
-import './WalletDatePicker.scss';
+import './DatePicker.scss';
 
-interface TDatePickerProps extends WalletTextFieldProps {
-    isInvalid?: WalletTextFieldProps['isInvalid'];
+interface TDatePickerProps extends ComponentProps<typeof Input> {
+    errorMessage?: string;
+    isInvalid?: boolean;
     maxDate?: Date;
     minDate?: Date;
     mobileAlignment?: 'above' | 'below';
     onDateChange: (formattedDate: string | null) => void;
+    value: string;
+}
+
+function customFormatShortWeekday(_locale: string | undefined, date: Date) {
+    const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    return weekdays[date.getDay()];
 }
 
 // TODO: Move this component to @deriv-com/ui
-const WalletDatePicker = ({
-    defaultValue,
+const DatePicker = ({
     disabled,
     errorMessage,
     isInvalid,
@@ -30,8 +34,9 @@ const WalletDatePicker = ({
     onBlur,
     onChange,
     onDateChange,
+    ...props
 }: TDatePickerProps) => {
-    const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(props.value ? new Date(props.value ?? '') : null);
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
 
@@ -57,10 +62,9 @@ const WalletDatePicker = ({
     }, [selectedDate]);
 
     return (
-        <div className='wallets-datepicker' ref={datePickerRef}>
+        <div className='datepicker' ref={datePickerRef}>
             <Input
-                aria-label={label}
-                className='w-full'
+                {...props}
                 error={isInvalid}
                 label={label}
                 message={isInvalid ? errorMessage?.toString() : ''}
@@ -69,8 +73,8 @@ const WalletDatePicker = ({
                 onClick={toggleCalendar}
                 rightPlaceholder={
                     <button
-                        className='wallets-datepicker__button'
-                        data-testid='wallets_datepicker_button'
+                        className='datepicker__button'
+                        data-testid='dt_datepicker_button'
                         disabled={disabled}
                         onClick={toggleCalendar}
                         type='button'
@@ -83,8 +87,8 @@ const WalletDatePicker = ({
             />
             {isCalendarOpen && (
                 <div
-                    className={`wallets-datepicker__container wallets-datepicker__container--${mobileAlignment}`}
-                    data-testid='wallets_datepicker_container'
+                    className={`datepicker__container datepicker__container--${mobileAlignment}`}
+                    data-testid='dt_datepicker_container'
                 >
                     <Calendar
                         formatShortWeekday={customFormatShortWeekday}
@@ -99,4 +103,4 @@ const WalletDatePicker = ({
     );
 };
 
-export default WalletDatePicker;
+export default DatePicker;

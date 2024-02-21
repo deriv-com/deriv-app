@@ -142,6 +142,5 @@ Blockly.JavaScript.procedures_ifreturn = block => {
     code = code.replace(/undefined/g, '');
     code = code.replace(/\n\s+$/, '\n');
     code = code.replace(/[ \t]+\n/g, '\n');
-    console.log(code, 'procedures_ifreturn')
     return code;
 };

@@ -60,5 +60,5 @@ Blockly.JavaScript.read_ohlc = block => {
     const index = Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC) || '1';
 
     const code = `Bot.getOhlcFromEnd({ field: '${ohlcField}', index: ${index}, granularity: ${60} })`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.Order['ATOMIC']];
 };

@@ -326,53 +326,9 @@ class DBot {
                     break;
                 }
             }
-            ${
-                Blockly &&
-                Blockly.JavaScript &&
-                Blockly.JavaScript.definitions_ &&
-                Blockly.JavaScript.definitions_.mathMedian
-                    ? Blockly.JavaScript.definitions_.mathMedian
-                    : ''
-            }
-            ${
-                Blockly &&
-                Blockly.JavaScript &&
-                Blockly.JavaScript.definitions_ &&
-                Blockly.JavaScript.definitions_.mathRandomInt
-                    ? Blockly.JavaScript.definitions_.mathRandomInt
-                    : ''
-            }
-            ${
-                Blockly &&
-                Blockly.JavaScript &&
-                Blockly.JavaScript.definitions_ &&
-                Blockly.JavaScript.definitions_.mathMean
-                    ? Blockly.JavaScript.definitions_.mathMean
-                    : ''
-            }
-            ${
-                Blockly &&
-                Blockly.JavaScript &&
-                Blockly.JavaScript.definitions_ &&
-                Blockly.JavaScript.definitions_.subsequenceFromEndFromEnd
-                    ? Blockly.JavaScript.definitions_.subsequenceFromEndFromEnd
-                    : ''
-            }
-            ${
-                Blockly &&
-                Blockly.JavaScript &&
-                Blockly.JavaScript.definitions_ &&
-                Blockly.JavaScript.definitions_.subsequenceFromEndLast
-                    ? Blockly.JavaScript.definitions_.subsequenceFromEndLast
-                    : ''
-            }
-            ${
-                Blockly &&
-                Blockly.JavaScript &&
-                Blockly.JavaScript.definitions_ &&
-                Blockly.JavaScript.definitions_.listsRepeat
-                    ? Blockly.JavaScript.definitions_.listsRepeat
-                    : ''
+            ${['mathMedian', 'mathRandomInt', 'mathMean', 'subsequenceFromEndFromEnd', 'subsequenceFromEndLast', 'listsRepeat']
+                .map(func => Blockly?.JavaScript?.definitions_?.[func] || '')
+                .join('')
             }`;
     }
 

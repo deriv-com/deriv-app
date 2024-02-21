@@ -209,7 +209,12 @@ Blockly.JavaScript.text_getSubstring = block => {
             FROM_START: 'FromStart',
             FROM_END: 'FromEnd',
         };
-        let codeSanitze = `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(
+        // eslint-disable-next-line no-underscore-dangle
+        const functionName = Blockly.JavaScript.provideFunction_(
+            `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
+            [
+                // eslint-disable-next-line no-underscore-dangle
+                `function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(
                     sequence
                     ${where1 === 'FROM_END' || where1 === 'FROM_START' ? ', at1' : ''}
                     ${where2 === 'FROM_END' || where2 === 'FROM_START' ? ', at2' : ''}
@@ -218,22 +223,7 @@ Blockly.JavaScript.text_getSubstring = block => {
                     var end   = ${getIndex('sequence', where2, 'at2')} + 1;
                     
                     return sequence.slice(start, end);
-                }`;
-        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
-        codeSanitze = codeSanitze.replace(/undefined/g, '');
-
-        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
-        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
-        codeSanitze = codeSanitze.replace(/\s/g, '');
-        codeSanitze = codeSanitze.replace(/function/, 'function ');
-        codeSanitze = codeSanitze.replace(/return/, 'return ');
-        codeSanitze = codeSanitze.replace(/var/, 'var ');
-        // eslint-disable-next-line no-underscore-dangle
-        const functionName = Blockly.JavaScript.provideFunction_(
-            `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
-            [
-                // eslint-disable-next-line no-underscore-dangle
-                codeSanitze,
+                }`,
             ]
         );
 

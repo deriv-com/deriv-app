@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { sanitizeCodeForLastestBlockly } from '../../../shared';
 
 Blockly.Blocks.lists_getSublist = {
     init() {
@@ -87,7 +88,7 @@ Blockly.Blocks.lists_getSublist = {
 };
 
 Blockly.JavaScript.lists_getSublist = block => {
-    const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_MEMBER) || '[]';
+    const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.Order['MEMBER']) || '[]';
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');
 
@@ -95,11 +96,12 @@ Blockly.JavaScript.lists_getSublist = block => {
 
     if (where1 === 'FIRST' && where2 === 'LAST') {
         code = `${list}.slice(0)`;
+        sanitizeCodeForLastestBlockly(code);
     } else if (list.match(/^\w+$/) || (where1 !== 'FROM_END' && where2 === 'FROM_START')) {
         if (where1 === 'FROM_START') {
             at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
         } else if (where1 === 'FROM_END') {
-            at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.ORDER_SUBTRACTION);
+            at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.Order['SUBTRACTION']);
             at1 = `${list}.length - ${at1}`;
         } else if (where1 === 'FIRST') {
             at1 = '0';
@@ -108,13 +110,14 @@ Blockly.JavaScript.lists_getSublist = block => {
         if (where2 === 'FROM_START') {
             at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 1);
         } else if (where2 === 'FROM_END') {
-            at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.ORDER_SUBTRACTION);
+            at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.Order['SUBTRACTION']);
             at2 = `${list}.length - ${at2}`;
         } else if (where2 === 'LAST') {
             at2 = `${list}.length`;
         }
 
         code = `${list}.slice(${at1}, ${at2})`;
+        sanitizeCodeForLastestBlockly(code);
     } else {
         at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
         at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
@@ -139,34 +142,24 @@ Blockly.JavaScript.lists_getSublist = block => {
         const has_at1 = where1 === 'FROM_END' || where1 === 'FROM_START';
         const has_at2 = where2 === 'FROM_END' || where2 === 'FROM_START';
 
-        let codeSanitze = `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(
+        // eslint-disable-next-line no-underscore-dangle
+        const function_name = Blockly.JavaScript.provideFunction_(
+            `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
+            [
+                // eslint-disable-next-line no-underscore-dangle
+                `function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(
                     sequence${has_at1 ? ', at1' : ''}${has_at2 ? ', at2' : ''}
                 ) {
                     var start = ${getIndex('sequence', where1, 'at1')};
                     var end = ${getIndex('sequence', where2, 'at2')} + 1;
 
                     return sequence.slice(start, end);
-                }`;
-        codeSanitze = codeSanitze.replace(/^\s+\n/, '');
-        codeSanitze = codeSanitze.replace(/undefined/g, '');
-
-        codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
-        codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
-        codeSanitze = codeSanitze.replace(/\s/g, '');
-        codeSanitze = codeSanitze.replace(/function/, 'function ');
-        codeSanitze = codeSanitze.replace(/return/, 'return ');
-        codeSanitze = codeSanitze.replace(/var/, 'var ');
-        // eslint-disable-next-line no-underscore-dangle
-        const function_name = Blockly.JavaScript.provideFunction_(
-            `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
-            [
-                // eslint-disable-next-line no-underscore-dangle
-                codeSanitze,
+                }`,
             ]
         );
 
         code = `${function_name}(${list}${has_at1 ? `, ${at1}` : ''}${has_at2 ? `, ${at2}` : ''})`;
     }
 
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.Order['FUNCTION_CALL']];
 };

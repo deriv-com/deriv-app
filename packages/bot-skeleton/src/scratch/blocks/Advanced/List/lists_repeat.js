@@ -45,24 +45,14 @@ Blockly.Blocks.lists_repeat = {
 };
 
 Blockly.JavaScript.lists_repeat = block => {
-    let codeSanitze = `function ${`listsRepeat`}(value, n) {
+    // eslint-disable-next-line no-underscore-dangle
+    const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [`function ${`listsRepeat`}(value, n) {
             var array = [];
             for (var i = 0; i < n; i++) {
                 array[i] = value;
             }
             return array;
-        }`;
-    codeSanitze = codeSanitze.replace(/^\s+\n/, '');
-    codeSanitze = codeSanitze.replace(/undefined/g, '');
-
-    codeSanitze = codeSanitze.replace(/\n\s+$/, '\n');
-    codeSanitze = codeSanitze.replace(/[ \t]+\n/g, '\n');
-    codeSanitze = codeSanitze.replace(/\s/g, '');
-    codeSanitze = codeSanitze.replace(/function/, 'function ');
-    codeSanitze = codeSanitze.replace(/return/, 'return ');
-    codeSanitze = codeSanitze.replace(/var/, 'var ');
-    // eslint-disable-next-line no-underscore-dangle
-    const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [codeSanitze]);
+        }`]);
 
     const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.Order.COMMA) || 'null';
     const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.Order.COMMA) || '0';

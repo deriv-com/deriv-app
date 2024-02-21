@@ -60,7 +60,6 @@ Blockly.JavaScript.procedures_callreturn = block => {
     );
 
     let code = `${functionName}(${args.join(', ')})`;
-    console.log(code, 'procedures_callreturn')
     code = code.replace(/^\s+\n/, '');
     code = code.replace(/undefined/g, '');
 

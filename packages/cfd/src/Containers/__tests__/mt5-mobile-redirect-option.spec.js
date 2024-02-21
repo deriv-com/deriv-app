@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
 import MT5MobileRedirectOption from '../mt5-mobile-redirect-option';
-import { DEEP_LINK, getMobileAppInstallerURL } from '../../../src/Helpers/constants';
+import { DEEP_LINK, getMobileAppInstallerURL, getPlatformMt5DownloadLink } from '../../../src/Helpers/constants';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -23,7 +23,6 @@ describe('<MT5MobileRedirectOption/>', () => {
                     android: `https://download.mql5.com/cdn/mobile/mt5/android?server=DerivSVG-Demo,DerivSVG-Server,DerivSVG-Server-02,DerivSVG-Server-03`,
                     ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=DerivSVG-Demo,DerivSVG-Server,DerivSVG-Server-02,DerivSVG-Server-03',
                     windows: 'https://download.mql5.com/cdn/web/22698/mt5/derivsvg5setup.exe',
-                    huawei: 'https://appgallery.cloud.huawei.com/marketshare/app/C102015329',
                 },
                 notification: false,
             },
@@ -94,7 +93,7 @@ describe('<MT5MobileRedirectOption/>', () => {
         expect(isSafariBrowser()).toBe(false);
 
         const expectedUrl = getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
-        expect(expectedUrl).toBe(mock_props.mt5_trade_account.white_label.download_links.huawei);
+        expect(expectedUrl).toBe(getPlatformMt5DownloadLink('huawei'));
     });
 
     it('should open MT5 app when user click "Trade with MT5 Mobile App" and has the app installed', () => {

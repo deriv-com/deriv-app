@@ -94,8 +94,8 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                     />
                 </div>
             )}
-            <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit} validateOnMount>
-                {({ isSubmitting, isValid, status }) => (
+            <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
+                {({ dirty, isSubmitting, isValid, status }) => (
                     <Form>
                         <div className='flex flex-col w-full min-h-screen sm:w-auto space-y-800'>
                             {(updateError || status || resubmitting) && (
@@ -119,12 +119,10 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                             </div>
                             <div className='sticky flex justify-end flex-shrink-0 w-full border-solid bottom-50 py-800 px-1200 bg-solid-slate-50 border-t-75 border-solid-grey-2'>
                                 <Button
-                                    className='bg-solid-coral-700'
-                                    disabled={isSubmitting || !isValid}
+                                    disabled={isSubmitting || !isValid || !dirty}
                                     isFullWidth={isMobile}
                                     isLoading={isSettingsUpdating || isDocumentUploading}
                                     size='lg'
-                                    type='submit'
                                 >
                                     Save and Submit
                                 </Button>

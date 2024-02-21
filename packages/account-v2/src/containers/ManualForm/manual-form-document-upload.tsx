@@ -1,8 +1,8 @@
 import React from 'react';
-import { Dropzone } from '../../components/base/Dropzone';
-import { WalletText } from '../../components/base/WalletText';
+import { Text } from '@deriv-com/ui';
+import FormDocumentUploadField from '../../components/FormFields/FormDocumentUploadField';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getTitleForDocumentUpload, getUploadConfig } from '../../utils/manualFormUtils';
+import { getTitleForDocumentUpload, getUploadConfig } from '../../utils/manual-form-utils';
 
 type TManualFormDocumentUploadProps = { selectedDocument: TManualDocumentTypes };
 
@@ -11,16 +11,18 @@ export const ManualFormDocumentUpload = ({ selectedDocument }: TManualFormDocume
 
     return (
         <div className='flex flex-col gap-1200 pt-1200 border-t-solid-grey-2 border-solid border-t-100'>
-            <WalletText>{getTitleForDocumentUpload(selectedDocument)}</WalletText>
+            <Text>{getTitleForDocumentUpload(selectedDocument)}</Text>
             <div className='flex flex-col lg:flex-row gap-1200 w-full justify-between'>
                 {uploadConfig.map(upload => (
-                    <div className='w-full' key={upload.fileUploadText}>
-                        <Dropzone
+                    <div className='w-full h-[22rem]' key={upload.pageType}>
+                        <FormDocumentUploadField
                             buttonText='Drop file or click here to upload'
-                            description={upload.fileUploadText}
+                            className='h-full'
+                            description={upload.text}
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
-                            icon={upload.fileUploadIcon}
+                            icon={upload.icon}
                             maxSize={8388608}
+                            name={upload.pageType}
                         />
                     </div>
                 ))}

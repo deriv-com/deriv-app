@@ -25,6 +25,7 @@ export default {
                     },
                     green: {
                         '1': '#4bb4b3',
+                        '2': '#C7E5E5',
                     },
                 },
             },

@@ -168,11 +168,6 @@ const Transaction = observer(({ contract }: TTransaction) => {
                 data-testid='dt-transactions-item'
                 className='transactions__item'
                 onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                    if (e.key === 'Enter') {
-                        contract && (() => setActiveTransactionId(contract.transaction_ids.buy));
-                    }
-                }}
             >
                 <div className='transactions__cell transactions__trade-type'>
                     <div className='transactions__loader-container'>

@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useOnClickOutside } from 'usehooks-ts';
-import { useUIContext } from '@/components';
+import { DemoRealSwitcherLoader, useUIContext } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
@@ -20,6 +21,7 @@ const DemoRealSwitcher = () => {
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
+    const { isSuccess } = useRegulationFlags();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
     const activeType = accountTypes.find(account => account.value === activeAccountType);
@@ -62,6 +64,8 @@ const DemoRealSwitcher = () => {
             switchAccount(loginId);
         }
     };
+
+    if (!isSuccess) return <DemoRealSwitcherLoader />;
 
     return (
         <div className='relative inline-block w-auto ' ref={ref}>

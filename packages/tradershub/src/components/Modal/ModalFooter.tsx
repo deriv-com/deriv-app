@@ -1,5 +1,5 @@
 import React from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { TModalComponents } from './Modal';
 import { ModalFooterClass, TModalFooterClass } from './Modal.classnames';
 
@@ -20,7 +20,7 @@ type TModalFooter = TModalComponents & TModalFooterClass;
  * @returns {JSX.Element} The ModalFooter component.
  */
 const ModalFooter = ({ align = 'right', children, className }: TModalFooter) => (
-    <div className={clsx(ModalFooterClass({ align }), className)}>{children}</div>
+    <div className={twMerge(ModalFooterClass({ align }), className)}>{children}</div>
 );
 
 export default ModalFooter;

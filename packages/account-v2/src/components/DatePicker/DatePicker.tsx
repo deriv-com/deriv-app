@@ -14,6 +14,7 @@ interface TDatePickerProps extends ComponentProps<typeof Input> {
     minDate?: Date;
     mobileAlignment?: 'above' | 'below';
     onDateChange: (formattedDate: string | null) => void;
+    value: string;
 }
 
 function customFormatShortWeekday(_locale: string | undefined, date: Date) {

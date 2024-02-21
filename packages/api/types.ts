@@ -231,139 +231,71 @@ import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-qu
 /**
  * Proof of Identity (POI) and Proof of Address (POA) authentication status details.
  */
-type KycAuthStatus =
-    | {
-          /**
-           * POA authentication status details.
-           */
-          address: {
-              /**
-               * Current POA status.
-               */
-              status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
-          };
-          /**
-           * POI authentication status details.
-           */
-          identity: {
-              /**
-               * Available services for the next POI attempt.
-               */
-              available_services?: string[];
-              /**
-               * Details on the rejected POI attempt.
-               */
-              last_rejected?: {
-                  /**
-                   * Document type of the rejected POI attempt (IDV only).
-                   */
-                  document_type?: null | string;
-                  /**
-                   * Reason(s) for the rejected POI attempt.
-                   */
-                  rejected_reasons?: string[];
-              };
-              /**
-               * Service used for the current POI status.
-               */
-              service?: 'none' | 'idv' | 'onfido' | 'manual';
-              /**
-               * Current POI status.
-               */
-              status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
-              /**
-               * Supported documents per service.
-               */
-              supported_documents?: {
-                  idv?: {
-                      [k: string]: {
-                          additional?: {
-                              display_name?: string;
-                              format?: string;
-                              [k: string]: unknown;
-                          };
-                          display_name?: string;
-                          format?: string;
-                          [k: string]: unknown;
-                      };
-                  };
-                  onfido?: {
-                      [k: string]: {
-                          display_name?: string;
-                          [k: string]: unknown;
-                      };
-                  };
-                  [k: string]: unknown;
-              };
-          };
-      }
-    | {
-          [k: string]: {
-              /**
-               * POA authentication status details.
-               */
-              address: {
-                  /**
-                   * Current POA status.
-                   */
-                  status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
-              };
-              /**
-               * POI authentication status details.
-               */
-              identity: {
-                  /**
-                   * Available services for the next POI attempt.
-                   */
-                  available_services?: string[];
-                  /**
-                   * Details on the rejected POI attempt.
-                   */
-                  last_rejected?: {
-                      /**
-                       * Document type of the rejected POI attempt (IDV only).
-                       */
-                      document_type?: null | string;
-                      /**
-                       * Reason(s) for the rejected POI attempt.
-                       */
-                      rejected_reasons?: string[];
-                  };
-                  /**
-                   * Service used for the current POI status.
-                   */
-                  service?: 'none' | 'idv' | 'onfido' | 'manual';
-                  /**
-                   * Current POI status.
-                   */
-                  status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
-                  /**
-                   * Supported documents per service.
-                   */
-                  supported_documents?: {
-                      idv?: {
-                          [k: string]: {
-                              additional?: {
-                                  display_name?: string;
-                                  format?: string;
-                                  [k: string]: unknown;
-                              };
-                              display_name?: string;
-                              format?: string;
-                              [k: string]: unknown;
-                          };
-                      };
-                      onfido?: {
-                          [k: string]: {
-                              display_name?: string;
-                              [k: string]: unknown;
-                          };
-                      };
-                      [k: string]: unknown;
-                  };
-              };
-          };
-      };
+type KycAuthStatus = {
+    /**
+     * POA authentication status details.
+     */
+    address: {
+        /**
+         * Current POA status.
+         */
+        status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
+    };
+    /**
+     * POI authentication status details.
+     */
+    identity: {
+        /**
+         * Available services for the next POI attempt.
+         */
+        available_services?: string[];
+        /**
+         * Details on the rejected POI attempt.
+         */
+        last_rejected?: {
+            /**
+             * Document type of the rejected POI attempt (IDV only).
+             */
+            document_type?: null | string;
+            /**
+             * Reason(s) for the rejected POI attempt.
+             */
+            rejected_reasons?: string[];
+        };
+        /**
+         * Service used for the current POI status.
+         */
+        service?: 'none' | 'idv' | 'onfido' | 'manual';
+        /**
+         * Current POI status.
+         */
+        status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
+        /**
+         * Supported documents per service.
+         */
+        supported_documents?: {
+            idv?: {
+                [k: string]: {
+                    additional?: {
+                        display_name?: string;
+                        format?: string;
+                        [k: string]: unknown;
+                    };
+                    display_name?: string;
+                    format?: string;
+                    [k: string]: unknown;
+                };
+            };
+            onfido?: {
+                [k: string]: {
+                    display_name?: string;
+                    [k: string]: unknown;
+                };
+            };
+            [k: string]: unknown;
+        };
+    };
+};
 
 type TPrivateSocketEndpoints = {
     available_accounts: {

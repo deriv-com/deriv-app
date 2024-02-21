@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { useOnClickOutside } from 'usehooks-ts';
 import { useUIContext } from '@/components';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
@@ -66,7 +66,7 @@ const DemoRealSwitcher = () => {
     return (
         <div className='relative inline-block w-auto ' ref={ref}>
             <Button
-                className={clsx(
+                className={twMerge(
                     'cursor-pointer w-full py-2 px-6 border-1 border-solid rounded-xs',
                     value === 'demo' ? 'border-status-light-information' : 'border-status-light-success '
                 )}
@@ -76,7 +76,7 @@ const DemoRealSwitcher = () => {
             >
                 <div className='flex items-center'>
                     <Text
-                        className={clsx(
+                        className={twMerge(
                             value === 'demo' ? 'text-status-light-information' : 'text-status-light-success'
                         )}
                         size='xs'
@@ -85,7 +85,7 @@ const DemoRealSwitcher = () => {
                         {label}
                     </Text>
                     <LabelPairedChevronDownSmRegularIcon
-                        className={clsx(
+                        className={twMerge(
                             'transform transition duration-200 ease-in-out ml-8',
                             value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
                             isDropdownOpen && '-rotate-180'
@@ -97,7 +97,7 @@ const DemoRealSwitcher = () => {
                 <div className='absolute z-10 items-center w-full top-28 rounded-xs bg-system-light-primary-background shadow-10'>
                     {accountTypes.map(account => (
                         <div
-                            className={clsx(
+                            className={twMerge(
                                 'cursor-pointer hover:bg-system-light-hover-background rounded-xs',
                                 account.value === value && 'bg-system-light-active-background'
                             )}

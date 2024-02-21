@@ -30,7 +30,7 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
         >
-            {({ isValid, setFieldValue, values }) => (
+            {({ dirty, isValid, setFieldValue, values }) => (
                 <div className='flex flex-col gap-800'>
                     <Text>Upload your selfie</Text>
                     <Dropzone
@@ -49,7 +49,9 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
                         <Button onClick={handleCancel} type='button' variant='outlined'>
                             Back
                         </Button>
-                        <Button disabled={!isValid || !values[MANUAL_DOCUMENT_SELFIE]}>Confirm and upload</Button>
+                        <Button disabled={!isValid || !values[MANUAL_DOCUMENT_SELFIE] || !dirty}>
+                            Confirm and upload
+                        </Button>
                     </div>
                 </div>
             )}

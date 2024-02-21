@@ -1,5 +1,5 @@
 import React from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount } from '@deriv/api';
 import { THooks, TPlatforms } from '../../../../types';
@@ -13,14 +13,14 @@ type TInstrumentsLabelHighlighted = {
 };
 
 const InstrumentsLabelHighlighted = ({ marketType, platform, shortCode }: TInstrumentsLabelHighlighted) => {
-    const { data: activeTrading } = useActiveTradingAccount();
+    const { data: activeDerivTrading } = useActiveTradingAccount();
     const { isEU: isEuRegion } = useRegulationFlags();
-    const isDemo = activeTrading?.is_virtual;
+    const isDemo = activeDerivTrading?.is_virtual;
     const iconData = [...getHighlightedIconLabel(platform, isEuRegion, marketType, shortCode)];
 
     return (
         <div
-            className={clsx(
+            className={twMerge(
                 'flex flex-col rounded-24 pt-[70px] px-[15px] pb-0 lg:pt-40 lg:px-18 lg:pb-0',
                 isDemo && 'pt-16'
             )}

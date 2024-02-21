@@ -53,8 +53,8 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherA
 };
 
 const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
-    const { data: activeTrading } = useActiveTradingAccount();
-    const isDemo = activeTrading?.is_virtual;
+    const { data: activeDerivTrading } = useActiveTradingAccount();
+    const isDemo = activeDerivTrading?.is_virtual;
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
     const jurisdictionCardIcon = getAccountIcon(platform, marketType);
 

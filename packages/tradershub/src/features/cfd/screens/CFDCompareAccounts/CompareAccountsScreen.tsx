@@ -6,9 +6,9 @@ import { isCTraderAccountAdded, isDxtradeAccountAdded } from './CompareAccountsC
 import CompareAccountsHeader from './CompareAccountsHeader';
 
 const CompareAccountsScreen = () => {
-    const { data: activeTrading } = useActiveTradingAccount();
+    const { data: activeDerivTrading } = useActiveTradingAccount();
 
-    const { is_virtual: isDemo = false } = activeTrading ?? {};
+    const { is_virtual: isDemo = false } = activeDerivTrading ?? {};
 
     const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
     const { data: cfdAccounts } = useCFDAccountsList();

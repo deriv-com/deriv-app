@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { clsx } from 'clsx';
 import { useHistory } from 'react-router-dom';
+import { twMerge } from 'tailwind-merge';
 import { StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { Button, Text, useDevice } from '@deriv-com/ui';
@@ -14,7 +14,7 @@ const CompareAccountsButton = ({ className }: { className?: string }) => {
 
     return (
         <Button
-            className={clsx('no-underline', className)}
+            className={twMerge('no-underline', className)}
             color='primary'
             onClick={() => history.push('/traders-hub/compare-accounts')}
             size='sm'

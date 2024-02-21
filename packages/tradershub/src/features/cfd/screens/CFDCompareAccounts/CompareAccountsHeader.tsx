@@ -7,10 +7,10 @@ import { Text } from '@deriv-com/ui';
 
 const CompareAccountsHeader = () => {
     const history = useHistory();
-    const { data: activeTrading } = useActiveTradingAccount();
+    const { data: activeDerivTrading } = useActiveTradingAccount();
     const { isEU } = useRegulationFlags();
 
-    const isDemo = activeTrading?.is_virtual;
+    const isDemo = activeDerivTrading?.is_virtual;
 
     const accountType = isDemo ? 'Demo' : 'real';
     const demoSuffix = isDemo ? 'demo ' : '';

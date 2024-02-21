@@ -115,7 +115,7 @@ const CFDPasswordChange = observer(
                             <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                                 <div className={'cfd-password-change-modal-description'}>
                                     <Text as='p' size='xs'>
-                                        <Localize i18n_default_text='Following the latest password policy update by MetaQuotes, your password now needs to meet the following criteria:' />
+                                        <Localize i18n_default_text="We've updated our Deriv MT5 password requirements. Your password now needs to meet the following criteria:" />
                                     </Text>
                                     <ol className='cfd-password-change-list-container'>
                                         <li className='cfd-password-change-list'>

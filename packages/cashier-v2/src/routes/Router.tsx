@@ -3,7 +3,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import { DummyComponent, PageContainer } from '../components';
 import { Cashier } from '../containers';
-import { CashierOnboardingModule, WithdrawalVerificationModule } from '../lib';
+import { DepositCryptoModule, WithdrawalVerificationModule } from '../lib';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -27,7 +27,7 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
                 path: cashierPathRoutes.cashierDeposit,
                 component: () => (
                     <PageContainer>
-                        <CashierOnboardingModule />
+                        <DepositCryptoModule />
                     </PageContainer>
                 ),
                 title: 'Deposit',

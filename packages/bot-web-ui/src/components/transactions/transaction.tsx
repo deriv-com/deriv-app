@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
+import { TContract } from 'src/pages/bot-builder/quick-strategy/types';
 import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
@@ -10,7 +10,28 @@ import { localize } from '@deriv/translations';
 import { popover_zindex } from 'Constants/z-indexes';
 import { useDBotStore } from 'Stores/useDBotStore';
 
-const TransactionIconWithText = ({ icon, title, message, className }) => (
+type TTransactionIconWithText = {
+    icon: React.ReactNode;
+    title: string;
+    message?: React.ReactNode;
+    className?: string;
+};
+
+type TPopoverItem = {
+    icon?: React.ReactNode;
+    title: string;
+    children: React.ReactNode;
+};
+
+type TPopoverContent = {
+    contract: TContract;
+};
+
+type TTransaction = {
+    contract: TContract;
+};
+
+const TransactionIconWithText = ({ icon, title, message, className }: TTransactionIconWithText) => (
     <React.Fragment>
         <Popover
             className={classNames(className, 'transactions__icon')}
@@ -50,7 +71,7 @@ const TransactionIconLoader = () => (
     </ContentLoader>
 );
 
-const PopoverItem = ({ icon, title, children }) => (
+const PopoverItem = ({ icon, title, children }: TPopoverItem) => (
     <div className='transactions__popover-item'>
         {icon && <div className='transaction__popover-icon'>{icon}</div>}
         <div className='transactions__popover-details'>
@@ -60,7 +81,7 @@ const PopoverItem = ({ icon, title, children }) => (
     </div>
 );
 
-const PopoverContent = ({ contract }) => (
+const PopoverContent = ({ contract }: TPopoverContent) => (
     <div className='transactions__popover-content'>
         {contract.transaction_ids && (
             <PopoverItem title={localize('Reference IDs')}>
@@ -134,7 +155,7 @@ const PopoverContent = ({ contract }) => (
     </div>
 );
 
-const Transaction = observer(({ contract }) => {
+const Transaction = observer(({ contract }: TTransaction) => {
     const { transactions } = useDBotStore();
     const { active_transaction_id, setActiveTransactionId } = transactions;
 
@@ -212,9 +233,5 @@ const Transaction = observer(({ contract }) => {
         </Popover>
     );
 });
-
-Transaction.propTypes = {
-    contract: PropTypes.object,
-};
 
 export default Transaction;

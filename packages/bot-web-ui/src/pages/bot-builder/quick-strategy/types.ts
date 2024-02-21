@@ -129,3 +129,26 @@ export type TFormValues = Record<string, string | number | boolean> & {
     type?: string;
     duration?: string;
 };
+
+export type TContract = {
+    transaction_ids: {
+        buy?: string;
+        sell?: string;
+    };
+    tick_count?: number;
+    barrier?: string;
+    high_barrier?: string;
+    low_barrier?: string;
+    date_start?: string;
+    entry_tick?: number;
+    entry_tick_time?: string;
+    exit_tick?: number;
+    exit_tick_time?: string;
+    underlying: string;
+    display_name: string;
+    contract_type: string;
+    buy_price: number;
+    currency: string;
+    is_completed: boolean;
+    profit: number;
+};

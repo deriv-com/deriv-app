@@ -1,7 +1,7 @@
 import React from 'react';
 import { DerivLightWalletIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
-import { CurrencyIcon, ReceiptScreen } from '../../../../components';
+import { Clipboard, CurrencyIcon, ReceiptScreen } from '../../../../components';
 import { useWithdrawalCryptoContext } from '../../provider';
 import styles from './WithdrawalCryptoReceipt.module.scss';
 
@@ -47,7 +47,10 @@ const WithdrawalCryptoReceipt: React.FC = () => {
                         <Text weight='bold'>{fromAccount?.currency} Wallet</Text>
                     </div>
                     <div className={styles['account-id']} data-testid='dt_withdrawal_crypto_receipt_address'>
-                        {address}
+                        <Text color='less-prominent' size={isMobile ? 'md' : 'sm'}>
+                            {address}
+                        </Text>
+                        {address && <Clipboard popoverAlignment='bottom' textCopy={address} />}
                     </div>
                 </>
             }

@@ -1,5 +1,5 @@
 //TODO: to be replaced with derivcom component
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
 import { Tooltip } from '@deriv-com/ui';
 import CheckmarkCircle from '../../public/ic-checkmark-circle.svg';
@@ -11,22 +11,26 @@ type TClipboardProps = {
 };
 
 const Clipboard = ({ textCopy }: TClipboardProps) => {
+    const timeoutClipboardRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [, copy] = useCopyToClipboard();
     const [isCopied, setIsCopied] = useState(false);
-    let timeoutClipboard: ReturnType<typeof setTimeout>;
 
     const onClick = (event: { stopPropagation: () => void }) => {
         setIsCopied(true);
         copy(textCopy);
-        timeoutClipboard = setTimeout(() => {
+        timeoutClipboardRef.current = setTimeout(() => {
             setIsCopied(false);
         }, 2000);
         event.stopPropagation();
     };
 
     useEffect(() => {
-        return () => clearTimeout(timeoutClipboard);
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        return () => {
+            if (timeoutClipboardRef.current) {
+                clearTimeout(timeoutClipboardRef.current);
+            }
+        };
+    }, []);
 
     return (
         <Tooltip message={isCopied ? 'Copied!' : 'Copy'} position='right'>

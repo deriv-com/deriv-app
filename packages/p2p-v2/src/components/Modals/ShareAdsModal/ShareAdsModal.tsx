@@ -39,9 +39,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
     const firstCurrency = isBuyAd ? local_currency : account_currency;
     const secondCurrency = isBuyAd ? account_currency : local_currency;
     const adRateType = rate_type === RATE_TYPE.FLOAT ? '%' : ` ${local_currency}`;
-    const customMessage = `Hi! I'd like to exchange ${firstCurrency} for ${secondCurrency} at ${rate_display}${adRateType} on Deriv P2P.nnIf you're interested, check out my ad 👉nn${advertUrl} nnThanks!`;
-
-    const formattedMessage = customMessage.replace(/nn/g, '\n\n');
+    const customMessage = `Hi! I'd like to exchange ${firstCurrency} for ${secondCurrency} at ${rate_display}${adRateType} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n${advertUrl} \n\nThanks!`;
 
     useEffect(() => {
         Modal.setAppElement('#v2_modal_root');
@@ -73,7 +71,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
 
     const handleShareLink = () => {
         navigator.share({
-            text: formattedMessage,
+            text: customMessage,
         });
     };
 
@@ -134,7 +132,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
                         {!isMobile && (
                             <div className='pl-[2.4rem] w-[52%]'>
                                 <Text weight='bold'>Share via</Text>
-                                <ShareMyAdsSocials advertUrl={advertUrl} customMessage={formattedMessage} />
+                                <ShareMyAdsSocials advertUrl={advertUrl} customMessage={customMessage} />
                                 <Divider margin='0 0 2.5rem 0' />
                                 <Text>Or copy this link</Text>
                                 <div className=' flex flex-row items-center p2p-v2-share-ads-modal__copy'>

@@ -1,3 +1,4 @@
+export { Clipboard } from './Clipboard';
 export { CurrencyIcon } from './CurrencyIcon';
 export { DummyComponent } from './DummyComponent';
 export { NewsTicker } from './NewsTicker';

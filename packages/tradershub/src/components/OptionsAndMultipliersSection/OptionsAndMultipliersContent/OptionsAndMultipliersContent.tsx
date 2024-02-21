@@ -4,7 +4,7 @@ import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } f
 import { optionsAndMultipliersContent } from '@/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Button, useDevice } from '@deriv-com/ui';
 
 type OptionsAndMultipliersContentItem = {
@@ -93,7 +93,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 const OptionsAndMultipliersContent = () => {
     const { isDesktop } = useDevice();
     const { data } = useActiveTradingAccount();
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
 
     const { isEU } = useRegulationFlags();
 

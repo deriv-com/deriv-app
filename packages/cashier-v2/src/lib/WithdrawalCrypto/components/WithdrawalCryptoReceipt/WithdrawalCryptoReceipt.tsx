@@ -54,7 +54,7 @@ const WithdrawalCryptoReceipt: React.FC = () => {
     return (
         <ReceiptScreen
             actionButtons={<ActionButtons />}
-            amount={amount}
+            amount={`${amount} ${fromAccount?.currency}`}
             fromElement={<From />}
             status='In review'
             title='Your withdrawal will be processed within 24 hours'

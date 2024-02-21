@@ -10,9 +10,10 @@ import {
     CurrencyUsdcIcon as USDC,
     CurrencyUsdIcon as USD,
     CurrencyUsdtIcon as Tether,
+    IconTypes,
 } from '@deriv/quill-icons';
 
-const iconMapper = {
+const iconMapper: Record<string, IconTypes> = {
     AUD,
     EUR,
     GBP,

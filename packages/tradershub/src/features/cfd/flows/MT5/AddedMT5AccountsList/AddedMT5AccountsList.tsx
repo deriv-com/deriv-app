@@ -10,7 +10,7 @@ import { Button, Text } from '@deriv-com/ui';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
-    const { data: activeAccount } = useActiveTradingAccount();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
     const { isEU } = useRegulationFlags();
 
     const { show } = Provider.useModal();
@@ -21,9 +21,9 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     );
 
     const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
-
-    const title = marketTypeDetails?.title;
     const isVirtual = account.is_virtual;
+    const demoTitle = activeTradingAccount?.is_virtual ? 'Demo' : '';
+    const title = `${marketTypeDetails.title} ${demoTitle}`;
 
     return (
         <TradingAccountCard
@@ -60,7 +60,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
             <div className='flex-grow'>
                 <div className='flex items-center self-stretch gap-8'>
                     <Text size='sm'>{title}</Text>
-                    {!activeAccount?.is_virtual && (
+                    {!activeTradingAccount?.is_virtual && (
                         <div className='flex items-center h-24 gap-4 px-4 rounded-sm bg-system-light-secondary-background'>
                             <Text as='p' size='2xs' weight='bold'>
                                 {account.landing_company_short?.toUpperCase()}

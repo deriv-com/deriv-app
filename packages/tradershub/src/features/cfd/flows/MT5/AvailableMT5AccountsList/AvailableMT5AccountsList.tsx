@@ -32,8 +32,8 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
         !activeAccount?.is_virtual && show(<JurisdictionModal />);
         activeAccount?.is_virtual && hasActiveDerivAccount && show(<MT5PasswordModal />);
     };
-
-    const title = marketTypeDetails?.title ?? '';
+    const demoTitle = activeAccount.is_virtual ? 'Demo' : '';
+    const title = `${marketTypeDetails.title} ${demoTitle}`;
 
     return (
         <Fragment>

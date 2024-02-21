@@ -11,14 +11,14 @@ import { popover_zindex } from 'Constants/z-indexes';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTransactionIconWithText = {
-    icon: React.ReactNode;
+    icon: React.ReactElement;
     title: string;
-    message?: React.ReactNode;
+    message?: string;
     className?: string;
 };
 
 type TPopoverItem = {
-    icon?: React.ReactNode;
+    icon?: React.ReactElement;
     title: string;
     children: React.ReactNode;
 };
@@ -28,7 +28,7 @@ type TPopoverContent = {
 };
 
 type TTransaction = {
-    contract: TContract;
+    contract?: TContract;
 };
 
 const TransactionIconWithText = ({ icon, title, message, className }: TTransactionIconWithText) => (
@@ -122,23 +122,20 @@ const PopoverContent = ({ contract }: TPopoverContent) => (
                 </div>
             </PopoverItem>
         )}
-        {
-            contract.entry_tick && (
-                <PopoverItem title={localize('Entry spot')}>
-                    <div className='transactions__popover-value'>{contract.entry_tick}</div>
-                    {contract.entry_tick_time && (
-                        <div className='transactions__popover-value'>
-                            {convertDateFormat(
-                                contract.entry_tick_time,
-                                'YYYY-M-D HH:mm:ss [GMT]',
-                                'YYYY-MM-DD HH:mm:ss [GMT]'
-                            )}
-                        </div>
-                    )}
-                </PopoverItem>
-            )
-            // TODO: Durations for non-tick contracts, requires helpers from Trader.
-        }
+        {contract.entry_tick && (
+            <PopoverItem title={localize('Entry spot')}>
+                <div className='transactions__popover-value'>{contract.entry_tick}</div>
+                {contract.entry_tick_time && (
+                    <div className='transactions__popover-value'>
+                        {convertDateFormat(
+                            contract.entry_tick_time,
+                            'YYYY-M-D HH:mm:ss [GMT]',
+                            'YYYY-MM-DD HH:mm:ss [GMT]'
+                        )}
+                    </div>
+                )}
+            </PopoverItem>
+        )}
         {(contract.exit_tick && contract.exit_tick_time && (
             <PopoverItem title={localize('Exit spot')}>
                 <div className='transactions__popover-value'>{contract.exit_tick}</div>
@@ -198,14 +195,14 @@ const Transaction = observer(({ contract }: TTransaction) => {
                     <TransactionIconWithText
                         icon={<Icon icon='IcContractEntrySpot' />}
                         title={localize('Entry spot')}
-                        message={(contract && contract.entry_tick) || <TransactionFieldLoader />}
+                        message={contract?.entry_tick || <TransactionFieldLoader />}
                     />
                 </div>
                 <div className='transactions__cell transactions__exit-spot'>
                     <TransactionIconWithText
                         icon={<Icon icon='IcContractExitSpot' />}
                         title={localize('Exit spot')}
-                        message={(contract && contract.exit_tick) || <TransactionFieldLoader />}
+                        message={contract?.exit_tick || <TransactionFieldLoader />}
                     />
                 </div>
                 <div className='transactions__cell transactions__stake'>

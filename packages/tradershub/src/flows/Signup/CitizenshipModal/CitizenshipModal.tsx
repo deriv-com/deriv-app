@@ -66,6 +66,7 @@ const CitizenshipModal = ({ onClickNext }: TCitizenshipModal) => {
                             </Text>
                         }
                         labelClassName='flex-1'
+                        name='cvmCheckbox'
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             setIsCheckBoxChecked(event.target.checked)
                         }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { CurrencySwitcher, StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
-import { useIsEuRegion } from '@deriv/api';
 import { Text, useDevice } from '@deriv-com/ui';
 
 const getDescription = (isEU: boolean) => {
@@ -29,7 +28,7 @@ const getDescription = (isEU: boolean) => {
  */
 const OptionsAndMultipliersHeading = () => {
     const { isDesktop } = useDevice();
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
     const { isEU } = useRegulationFlags();
 
     const title = isEU ? 'Multipliers' : 'Options & multipliers';

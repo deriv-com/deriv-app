@@ -41,13 +41,9 @@ const PaymentMethodsList = ({
                         tab: 'default',
                     })
                 }
-                renderFooter={() => {
-                    return <AddNewButton isMobile={isMobile} onAdd={onAdd} />;
-                }}
+                renderFooter={() => <AddNewButton isMobile={isMobile} onAdd={onAdd} />}
                 // TODO: Remember to translate the title
-                renderHeader={() => {
-                    return <PaymentMethodsHeader title='Payment methods' />;
-                }}
+                renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
             >
                 {!!p2pAdvertiserPaymentMethods?.length && (
                     <PaymentMethodsListContent

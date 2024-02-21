@@ -118,7 +118,7 @@ const PaymentMethodsListContent = ({
                 );
             })}
             {/* TODO: Remember to translate these strings */}
-            {isDeleteError && (
+            {actionType === 'DELETE' && isDeleteError && (
                 <PaymentMethodErrorModal
                     errorMessage={String(deleteError?.error?.message)}
                     isModalOpen={isModalOpen}

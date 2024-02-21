@@ -59,11 +59,11 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
                 formData={formData}
                 isExpiryDateRequired={isExpiryDateRequired}
                 onCancel={() => {
-                    console.log('Called on Cancel');
+                    // TODO: Implement manual cancel
                     setSelectedDocument(null);
                 }}
                 onSubmit={values => {
-                    console.log('Called submit');
+                    // TODO: Implement manual submit
                     setFormData(prev => ({ ...prev, ...values }));
                     setShouldUploadSelfie(true);
                 }}
@@ -76,7 +76,7 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
             country='ng'
             isEnabledByDefault
             onOnfidoSubmit={() => {
-                console.log('Called Onfido submit');
+                // TODO: Implement onfido submit
             }}
             selectedDocument={selectedDocument as TManualDocumentTypes}
         />

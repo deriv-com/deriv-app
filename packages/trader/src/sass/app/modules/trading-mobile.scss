@@ -5,7 +5,6 @@
     }
     /** @define dc-collapsible; weak */
     .dc-collapsible {
-        overscroll-behavior: none;
         &:before {
             content: '';
             position: absolute;
@@ -22,23 +21,23 @@
         }
         &--is-expanded {
             background: transparent;
-            .dc-collapsible__item[data-collapsible='true'] {
-                opacity: 1;
-                max-height: 4.7rem;
-                transition: max-height 0.25s linear, opacity 1s linear;
-            }
+            // .dc-collapsible__item[data-collapsible='true'] {
+            //     opacity: 1;
+            //     max-height: 4.7rem;
+            //     transition: max-height 0.25s linear, opacity 1s linear;
+            // }
 
             &:before {
                 opacity: 0.75;
             }
         }
-        &--is-collapsed {
-            .dc-collapsible__item[data-collapsible='true'] {
-                opacity: 0;
-                max-height: 0rem;
-                transition: max-height 0.25s linear, opacity 1s linear;
-            }
-        }
+        // &--is-collapsed {
+        //     .dc-collapsible__item[data-collapsible='true'] {
+        //         opacity: 0;
+        //         max-height: 0rem;
+        //         transition: max-height 0.25s linear, opacity 1s linear;
+        //     }
+        // }
     }
     /** @define barrier; weak */
     .barrier,

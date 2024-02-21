@@ -23,7 +23,7 @@ const PasswordSettingModal = () => {
                     onChange={onPasswordChange}
                     value={values.password}
                 />
-                <Text size='xs'>
+                <Text align='center' size='xs'>
                     Strong passwords contain at least 8 characters. combine uppercase and lowercase letters, numbers,
                     and symbols.
                 </Text>

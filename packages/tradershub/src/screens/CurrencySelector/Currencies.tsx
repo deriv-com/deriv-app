@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { InlineMessage, Text } from '@deriv-com/ui';
 import { CURRENCY_TYPES, getCurrencyConfig } from '../../helpers/currencyConfig';
 import CurrencyCard from './CurrencyCard';
@@ -29,11 +29,7 @@ const Currencies = ({ type }: TCurrencies) => {
                     Please note that you can only have 1 fiat account.
                 </InlineMessage>
             )}
-            <div
-                className={clsx('flex flex-wrap justify-start', {
-                    'lg:justify-center': currencies.length < 4,
-                })}
-            >
+            <div className={twMerge('flex flex-wrap justify-start', currencies.length < 4 ? 'lg:justify-center' : '')}>
                 {currencies.map(currency => (
                     <CurrencyCard {...currency} key={currency.id} />
                 ))}

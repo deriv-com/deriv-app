@@ -1,5 +1,5 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import DocumentsIcon from '@/assets/svgs/ic-documents.svg';
 import IdCardIcon from '@/assets/svgs/ic-id-card.svg';
 import SelfieIcon from '@/assets/svgs/ic-selfie.svg';
@@ -122,7 +122,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
 
     return (
         <div
-            className={clsx(JurisdictionCardClass({ isAdded, isFlipped, isSelected }))}
+            className={twMerge(JurisdictionCardClass({ isAdded, isFlipped, isSelected }))}
             onClick={() => {
                 !isAdded && onSelect(jurisdiction);
             }}

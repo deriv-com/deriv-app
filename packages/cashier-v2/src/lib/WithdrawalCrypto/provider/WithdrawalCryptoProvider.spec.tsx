@@ -8,8 +8,9 @@ import {
     usePOA,
     usePOI,
 } from '@deriv/api';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, cleanup, renderHook } from '@testing-library/react-hooks';
 import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './WithdrawalCryptoProvider';
+import { waitFor } from '@testing-library/react';
 
 jest.mock('@deriv/api', () => ({
     useAccountLimits: jest.fn(),
@@ -22,7 +23,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 const mockUseAccountLimits = useAccountLimits as jest.Mock;
-const mockUseActiveWalletAccount = useActiveAccount as jest.Mock;
+const mockUseActiveAccount = useActiveAccount as jest.Mock;
 const mockUseCryptoWithdrawal = useCryptoWithdrawal as jest.Mock;
 const mockUseCurrencyConfig = useCurrencyConfig as jest.Mock;
 const mockUseExchangeRate = useExchangeRateSubscription as jest.Mock;
@@ -32,18 +33,47 @@ const mockUsePOI = usePOI as jest.Mock;
 describe('useWithdrawalCryptoContext', () => {
     beforeEach(() => {
         mockUseAccountLimits.mockReturnValue({});
-        mockUseActiveWalletAccount.mockReturnValue({});
-        mockUseCryptoWithdrawal.mockReturnValue({});
+        mockUseActiveAccount.mockReturnValue({
+            data: {
+                currency: 'BTC',
+                loginid: 'CR1234',
+                currency_config: {
+                    fractional_digits: 2,
+                },
+            },
+        });
+        mockUseCryptoWithdrawal.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({}),
+        });
         mockUseCurrencyConfig.mockReturnValue({
             getConfig: () => ({
-                fractionalDigits: 2,
+                USD: { fractionalDigits: 2 },
             }),
         });
         mockUseExchangeRate.mockReturnValue({
             subscribe: jest.fn(),
             unsubscribe: jest.fn(),
+            data: {
+                rates: {
+                    BTC: 1.5,
+                },
+            },
+        });
+
+        mockUsePOA.mockReturnValue({
+            data: {
+                is_verified: false,
+            },
+        });
+
+        mockUsePOI.mockReturnValue({
+            data: {
+                is_verified: true,
+            },
         });
     });
+
+    afterEach(cleanup);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
         <WithdrawalCryptoProvider verificationCode='Abcd1234'>{children}</WithdrawalCryptoProvider>
@@ -109,5 +139,45 @@ describe('useWithdrawalCryptoContext', () => {
         expect(result.current.isClientVerified).toBe(false);
 
         rerender();
+    });
+
+    it('should check if getConvertedCryptoAmount returns expected value', () => {
+        const { result } = renderHook(() => useWithdrawalCryptoContext(), { wrapper });
+        expect(result.current.getConvertedCryptoAmount('1.00')).toBe('1.50');
+    });
+
+    it('should check if getConvertedCryptoAmount returns empty string if no value is passed', () => {
+        const { result } = renderHook(() => useWithdrawalCryptoContext(), { wrapper });
+        expect(result.current.getConvertedCryptoAmount('')).toBe('');
+    });
+
+    it('should check if getConvertedFiatAmount returns expected value', () => {
+        const { result } = renderHook(() => useWithdrawalCryptoContext(), { wrapper });
+        expect(result.current.getConvertedFiatAmount('1.00')).toBe('1');
+    });
+
+    it('should check if getConvertedFiatAmount returns empty string if no value is passed', () => {
+        const { result } = renderHook(() => useWithdrawalCryptoContext(), { wrapper });
+        expect(result.current.getConvertedFiatAmount('')).toBe('');
+    });
+
+    it('should check if receipt was generated with correct data when requesting for withdrawal', async () => {
+        const { result } = renderHook(() => useWithdrawalCryptoContext(), { wrapper });
+
+        result.current.requestCryptoWithdrawal({
+            address: 'SampleAddress',
+            amount: 1234,
+        });
+
+        await waitFor(() => {
+            expect(result.current.withdrawalReceipt).toEqual({
+                address: 'SampleAddress',
+                amount: '1234.00',
+                fromAccount: {
+                    currency: 'BTC',
+                    loginid: 'CR1234',
+                },
+            });
+        });
     });
 });

@@ -65,7 +65,7 @@ describe('<WithdrawalCryptoForm />', () => {
 
         const cryptoAddressInput = screen.getByTestId('dt_withdrawal_crypto_address_input');
         const cryptoAmountInput = screen.getByTestId('dt_withdrawal_crypto_amount_input');
-        const submitButton = screen.getByRole('button');
+        const submitButton = screen.getByText('Withdraw');
 
         await act(async () => {
             await userEvent.type(cryptoAddressInput, 'SampleAddress', { delay: 1 });

@@ -53,6 +53,7 @@ const JurisdictionTncSection = ({
                                 </StaticLink>
                             </Text>
                         }
+                        name='tnc'
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             setIsCheckBoxChecked(event.target.checked)
                         }

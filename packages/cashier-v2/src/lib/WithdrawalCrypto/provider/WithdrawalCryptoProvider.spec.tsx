@@ -46,9 +46,7 @@ describe('useWithdrawalCryptoContext', () => {
     });
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <WithdrawalCryptoProvider onClose={() => jest.fn()} verificationCode='Abcd1234'>
-            {children}
-        </WithdrawalCryptoProvider>
+        <WithdrawalCryptoProvider verificationCode='Abcd1234'>{children}</WithdrawalCryptoProvider>
     );
 
     it('should check whether the client is verified', () => {

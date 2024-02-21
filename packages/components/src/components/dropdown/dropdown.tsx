@@ -198,7 +198,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
                     ref={list_ref}
                 >
                     <ThemedScrollbars
-                        height={list_dimensions[1] || '200px'}
+                        height={list_dimensions[1] && list_dimensions[1] > 200 ? list_dimensions[1] : '200px'}
                         scroll_height={scroll_height}
                         should_scroll_to_selected={should_scroll_to_selected}
                         autohide={should_autohide}

@@ -27,3 +27,5 @@ export const CUSTOM_STYLES: TCustomStyles = {
         zIndex: 9999,
     },
 };
+
+export const isCVMEnabled = (countryCode: string) => countryCode === 'br';

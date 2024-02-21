@@ -13,7 +13,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 type TTransactionIconWithText = {
     icon: React.ReactElement;
     title: string;
-    message?: string;
+    message?: React.ReactNode;
     className?: string;
 };
 

@@ -206,6 +206,12 @@ Blockly.Blocks.trade_definition_multiplier = {
         if (this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
                 runGroupedEvents(false, () => {
+                    const {
+                        workspaces: {
+                            indentWorkspace: { x, y },
+                        },
+                    } = config;
+
                     const duration_block = this.workspace.newBlock('trade_definition_tradeoptions');
                     duration_block.initSvg();
                     duration_block.render();
@@ -233,7 +239,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                     stake_shadow_block.render(true);
 
                     this.dispose();
-                    Blockly.derivWorkspace.cleanUp();
+                    Blockly.derivWorkspace.cleanUp(x, y);
                 });
             });
         }

@@ -193,6 +193,7 @@
     "1703154819": "Bạn đang chỉnh sửa một quảng cáo để bán <0>{{ target_amount }} {{ target_currency }}</0>...",
     "1721422292": "Hiển thị tên thật của tôi",
     "1734661732": "Số dư DP2P của bạn là {{ dp2p_balance }}",
+    "1740434340": "Đơn hàng sẽ hết hạn nếu chúng không được hoàn thành trong thời gian này.",
     "1747523625": "Quay lại",
     "1752096323": "{{field_name}} không được thấp hơn giới hạn tối thiểu",
     "1767817594": "Lệnh mua hoàn thành <0>30 ngày</0>",

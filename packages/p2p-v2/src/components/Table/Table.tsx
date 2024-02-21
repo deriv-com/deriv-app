@@ -1,13 +1,14 @@
 import React, { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
+import { useDevice, useFetchMore } from '@/hooks';
 import { Text } from '@deriv-com/ui';
-import { useFetchMore, useDevice } from '@/hooks';
+import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
 import './Table.scss';
 
 type TProps<T> = {
     columns?: ColumnDef<T>[];
     data: T[];
+    emptyDataMessage: string;
     groupBy?: GroupingState;
     isFetching: boolean;
     loadMoreFunction: () => void;
@@ -19,6 +20,7 @@ type TProps<T> = {
 const Table = <T,>({
     columns = [],
     data,
+    emptyDataMessage,
     isFetching,
     loadMoreFunction,
     renderHeader = () => <div />,
@@ -45,9 +47,9 @@ const Table = <T,>({
     }, [headerRef?.current]);
 
     const { fetchMoreOnBottomReached } = useFetchMore({
+        isFetching,
         loadMore: loadMoreFunction,
         ref: tableContainerRef,
-        isFetching,
     });
 
     return (
@@ -67,11 +69,20 @@ const Table = <T,>({
                 ref={tableContainerRef}
                 style={{ height: isDesktop && columns.length > 0 ? `calc(${height}px - 3.6rem)` : '100%' }}
             >
-                {table.getRowModel().rows.map(row => (
-                    <div className='p2p-v2-table__content-row' key={row.id}>
-                        {rowRender(row.original)}
-                    </div>
-                ))}
+                {data && data.length > 0 ? (
+                    table.getRowModel().rows.map(row => (
+                        <div className='p2p-v2-table__content-row' key={row.id}>
+                            {rowRender(row.original)}
+                        </div>
+                    ))
+                ) : (
+                    <Text
+                        className='w-full flex items-center justify-center border-b-[1px] border-solid border-b-[#f2f3f4] p-[1.6rem]'
+                        size='sm'
+                    >
+                        {emptyDataMessage}
+                    </Text>
+                )}
             </div>
         </div>
     );

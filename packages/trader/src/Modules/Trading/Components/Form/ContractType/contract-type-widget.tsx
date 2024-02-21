@@ -4,7 +4,6 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import ContractType from './contract-type';
-import { TRADE_TYPES } from '@deriv/shared';
 import {
     findContractCategory,
     getContractTypeCategoryIcons,
@@ -34,7 +33,7 @@ const ContractTypeWidget = observer(
             active_symbols: { active_symbols },
             ui: { is_mobile },
         } = useStore();
-        const { symbol, show_description, setShowDescription } = useTraderStore();
+        const { symbol } = useTraderStore();
         const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
         const [is_dialog_open, setDialogVisibility] = React.useState<boolean | null>();
         const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
@@ -73,17 +72,8 @@ const ContractTypeWidget = observer(
                     form_source: 'contract_set_up_form',
                     form_name: 'default',
                 });
-                if (!is_dialog_open) setShowDescription(false);
             }
-        }, [is_dialog_open, setShowDescription]);
-
-        React.useEffect(() => {
-            if (show_description) {
-                onWidgetClick();
-                handleInfoClick({ text: 'Long/Short', value: TRADE_TYPES.TURBOS.LONG });
-            }
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [show_description]);
+        }, [is_dialog_open]);
 
         const handleCategoryClick: React.ComponentProps<typeof ContractType.Dialog>['onCategoryClick'] = ({ key }) => {
             if (key) setSelectedCategory(key);
@@ -93,7 +83,6 @@ const ContractTypeWidget = observer(
             clicked_item: TContractType,
             e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
         ) => {
-            setShowDescription(false);
             const categories = list_with_category();
             const { key } = findContractCategory(categories, clicked_item);
             if ('id' in e.target && e.target.id !== 'info-icon' && clicked_item) {
@@ -341,6 +330,7 @@ const ContractTypeWidget = observer(
                             <ContractType.Info
                                 handleSelect={handleSelect}
                                 item={item || { value }}
+                                selected_value={value}
                                 list={list_with_category()}
                                 info_banner={info_banner}
                             />

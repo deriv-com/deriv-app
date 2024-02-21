@@ -13,9 +13,6 @@ import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
 import { TConfigItem, TFormData, TShouldHave } from './types';
 import { useFormikContext } from 'formik';
-import debounce from 'lodash.debounce';
-import { Analytics } from '@deriv-com/analytics';
-import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
@@ -25,22 +22,6 @@ const QuickStrategyForm = observer(() => {
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
     const { current_duration_min_max } = quick_strategy;
-
-    const sendInitialStakeValueToruddetack = (key: string, value: string | number | boolean) => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'change_parameter_value',
-            parameter_value: value,
-            parameter_type: key,
-        });
-    };
-
-    const debounceChange = React.useCallback(
-        debounce(sendInitialStakeValueToruddetack, DEBOUNCE_INTERVAL_TIME, {
-            trailing: true,
-            leading: false,
-        }),
-        []
-    );
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -53,7 +34,6 @@ const QuickStrategyForm = observer(() => {
         setValue(key, value);
         await setFieldTouched(key, true, true);
         await setFieldValue(key, value);
-        debounceChange(key, value);
     };
 
     const handleEnter = (event: KeyboardEvent) => {

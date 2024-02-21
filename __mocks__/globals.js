@@ -9,6 +9,14 @@ jest.mock('@deriv-com/analytics', () => ({
         pageView: jest.fn(),
         reset: jest.fn(),
         setAttributes: jest.fn(),
+        getFeatureValue: jest.fn(),
+        getInstances: jest.fn().mockReturnValue({
+            ab: {
+                GrowthBook: {
+                    setRenderer: jest.fn(),
+                },
+            },
+        }),
     },
 }));
 

@@ -35,7 +35,7 @@ describe('<WithdrawalCryptoReceipt />', () => {
         mockUseWithdrawalCryptoContext.mockReturnValue({
             withdrawalReceipt: {
                 address: 'SampleAddress',
-                amount: '1.00000000 BTC',
+                amount: '1.00000000',
                 fromAccount: {
                     currency: 'BTC',
                 },

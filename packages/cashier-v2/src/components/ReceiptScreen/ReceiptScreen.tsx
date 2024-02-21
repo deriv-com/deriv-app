@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import ArrowDown from '../../assets/images/back-arrow.svg';
 import styles from './ReceiptScreen.module.scss';
 
@@ -22,8 +22,6 @@ const ReceiptScreen: React.FC<TProps> = ({
     title,
     toElement,
 }) => {
-    const { isMobile } = useDevice();
-
     return (
         <div className={styles.container}>
             <Text align='center' as='span' weight='bold'>

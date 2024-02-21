@@ -2,23 +2,23 @@ import React from 'react';
 import Text from '../../../../components/src/components/text';
 import styles from './PercentageSelector.module.scss';
 
-type TWalletsPercentageSelectorBlock = {
+type TPercentageSelectorBlock = {
     fillPercentage: number;
     label: string;
     onClick: VoidFunction;
 };
 
-const WalletsPercentageSelectorBlock = ({ fillPercentage, label, onClick }: TWalletsPercentageSelectorBlock) => {
+const PercentageSelectorBlock = ({ fillPercentage, label, onClick }: TPercentageSelectorBlock) => {
     return (
         <div className={styles['block-container']}>
             <Text color='prominent' size='xs'>
                 {label}
             </Text>
-            <div className={styles.block} onClick={onClick}>
+            <button className={styles.block} onClick={onClick}>
                 <div className={styles.fill} style={{ width: `${fillPercentage}%` }} />
-            </div>
+            </button>
         </div>
     );
 };
 
-export default WalletsPercentageSelectorBlock;
+export default PercentageSelectorBlock;

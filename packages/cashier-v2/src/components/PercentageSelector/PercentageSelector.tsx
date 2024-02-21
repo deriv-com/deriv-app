@@ -10,13 +10,13 @@ const percentageSelectorOptions = [...Array(percentageBlockCount).keys()].map(in
     percentage: ((index + 1) * 100) / percentageBlockCount,
 }));
 
-type TWalletsPercentageSelector = {
+type TPercentageSelector = {
     amount: number;
     balance: number;
     onChangePercentage: (percentage: number) => void;
 };
 
-const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWalletsPercentageSelector) => {
+const PercentageSelector = ({ amount, balance, onChangePercentage }: TPercentageSelector) => {
     const balancePercentage = useMemo(() => (balance > 0 ? (amount * 100) / balance : 0), [amount, balance]);
 
     const getBlockFillPercentage = useCallback(
@@ -30,10 +30,10 @@ const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWal
 
     return (
         <div className={styles.container}>
-            {percentageSelectorOptions.map((option, index) => (
+            {percentageSelectorOptions.map(option => (
                 <PercentageSelectorBlock
                     fillPercentage={getBlockFillPercentage(option.percentage)}
-                    key={`wallet-percentage-selector__${index}__${option.percentage}`}
+                    key={`percentage-selector__${option.percentage}`}
                     label={option.label}
                     onClick={() => onChangePercentage(option.percentage)}
                 />
@@ -42,4 +42,4 @@ const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWal
     );
 };
 
-export default WalletsPercentageSelector;
+export default PercentageSelector;

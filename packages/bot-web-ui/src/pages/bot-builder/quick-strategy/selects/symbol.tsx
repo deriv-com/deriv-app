@@ -4,8 +4,9 @@ import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useStore } from '@deriv/stores';
-import { Analytics } from '@deriv-com/analytics';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
+import { setRsDropdownTextToLocalStorage } from '../analytics/utils';
 import { TFormData } from '../types';
 
 type TSymbol = {
@@ -62,6 +63,10 @@ const SymbolSelect: React.FC = () => {
         if (!has_symbol) {
             setFieldValue('symbol', symbols?.[0]?.value);
             setValue('symbol', symbols?.[0]?.value);
+            setRsDropdownTextToLocalStorage(symbols?.[0]?.text, 'symbol');
+        } else {
+            const selected_item = symbols?.find(symbol => symbol?.value === values?.symbol);
+            setRsDropdownTextToLocalStorage(selected_item?.text ?? '', 'symbol');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -72,14 +77,6 @@ const SymbolSelect: React.FC = () => {
             setInputValue({ text: selected_symbol.text, value: selected_symbol.value });
         }
     }, [symbols, values.symbol, setInputValue]);
-
-    const sendAssetValueToRudderStack = (item: string) => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'choose_asset',
-            asset_type: item,
-            form_source: 'ce_bot_quick_strategy_form',
-        });
-    };
 
     const handleFocus = () => {
         if (is_desktop && !is_input_started) {
@@ -95,10 +92,15 @@ const SymbolSelect: React.FC = () => {
     const handleItemSelection = (item: TItem) => {
         if (item) {
             const { value, text } = item as TSymbol;
-            sendAssetValueToRudderStack(text);
             setFieldValue('symbol', value);
             setValue('symbol', value);
             setIsInputStarted(false);
+            rudderStackSendQsParameterChangeEvent({
+                parameter_type: 'symbol',
+                parameter_value: text,
+                parameter_field_type: 'dropdown',
+            });
+            setRsDropdownTextToLocalStorage(text, 'symbol');
         }
     };
 

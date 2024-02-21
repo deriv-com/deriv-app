@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useMutation } from '@deriv/api';
+import { useMutation } from '@deriv/api-v2';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import ResetBalance from '../ResetBalance';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useMutation: jest.fn(() => ({
         isSuccess: false,
         mutate: jest.fn(),

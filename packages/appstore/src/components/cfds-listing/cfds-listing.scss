@@ -447,6 +447,10 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
+
+            .dc-btn:hover {
+                text-decoration: underline;
+            }
         }
         &-action {
             text-decoration: underline;

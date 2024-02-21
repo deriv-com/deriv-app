@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
 import { GetMoreMT5Accounts } from '../../screens';

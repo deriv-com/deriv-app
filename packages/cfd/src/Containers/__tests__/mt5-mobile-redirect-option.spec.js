@@ -23,7 +23,7 @@ describe('<MT5MobileRedirectOption/>', () => {
                     android: `https://download.mql5.com/cdn/mobile/mt5/android?server=DerivSVG-Demo,DerivSVG-Server,DerivSVG-Server-02,DerivSVG-Server-03`,
                     ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=DerivSVG-Demo,DerivSVG-Server,DerivSVG-Server-02,DerivSVG-Server-03',
                     windows: 'https://download.mql5.com/cdn/web/22698/mt5/derivsvg5setup.exe',
-                    huawei: 'https://appgallery.cloud.huawei.com/marketshare/app/C102015329',
+                    huawei: 'https://appgallery.huawei.com/#/app/C102015329',
                 },
                 notification: false,
             },

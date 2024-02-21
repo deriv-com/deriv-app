@@ -2,15 +2,24 @@ import React from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { DEEP_LINK, WEBTRADER_URL, getMobileAppInstallerURL } from '../Helpers/constants';
+import { DEEP_LINK, WEBTRADER_URL, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
-import { isSafariBrowser, mt5_help_centre_url } from '@deriv/shared';
+import { isSafariBrowser, mt5_help_centre_url, mobileOSDetect } from '@deriv/shared';
 
 type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
 };
 const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
     let mobile_url;
+
+    const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
+        if (mobileOSDetect() === 'iOS') {
+            return mt5_trade_account?.white_label?.download_links?.ios;
+        } else if (mobileOSDetect() === 'Android') {
+            return mt5_trade_account?.white_label?.download_links?.android;
+        }
+        return getPlatformMt5DownloadLink('huawei');
+    };
 
     const mobileURLSet = () => {
         mobile_url = window.location.replace(DEEP_LINK({ mt5_trade_account }));

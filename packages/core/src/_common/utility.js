@@ -27,15 +27,6 @@ const getStaticHash = () => {
     return static_hash;
 };
 
-class PromiseClass {
-    constructor() {
-        this.promise = new Promise((resolve, reject) => {
-            this.reject = reject;
-            this.resolve = resolve;
-        });
-    }
-}
-
 // TODO: [duplicate_code] - Move this to shared package
 // eu countries to support
 const eu_countries = [
@@ -94,7 +85,6 @@ const getRegion = (landing_company_shortcode, residence) => {
 module.exports = {
     createElement,
     getStaticHash,
-    PromiseClass,
     isEuCountry,
     isOptionsBlocked,
     isSyntheticsUnavailable,

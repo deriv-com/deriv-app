@@ -17,9 +17,21 @@
         }
         &--is-expanded {
             background: transparent;
+            .dc-collapsible__item[data-collapsible='true'] {
+                opacity: 1;
+                max-height: 4rem;
+                transition: max-height 0.25s linear, opacity 1s linear;
+            }
 
             &:before {
                 opacity: 0.75;
+            }
+        }
+        &--is-collapsed {
+            .dc-collapsible__item[data-collapsible='true'] {
+                opacity: 0;
+                max-height: 0rem;
+                transition: max-height 0.25s linear, opacity 1s linear;
             }
         }
     }

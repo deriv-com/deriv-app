@@ -1,4 +1,5 @@
-import React, { memo, useEffect, useRef } from 'react';
+/* eslint-disable camelcase */
+import React, { memo, MouseEvent, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import html2canvas from 'html2canvas';
 import Modal from 'react-modal';
@@ -25,6 +26,7 @@ type TShareAdsModalProps = {
 const websiteUrl = () => `${location.protocol}//${location.hostname}/`;
 
 const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps) => {
+    const timeoutClipboardRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { isMobile } = useDevice();
     const { data: advertInfo, isLoading: isLoadingInfo } = p2p.advert.useGet({ id });
     const [isCopied, copyToClipboard, setIsCopied] = useCopyToClipboard();
@@ -45,9 +47,12 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
         Modal.setAppElement('#v2_modal_root');
     }, []);
 
-    const onCopy = (event: { stopPropagation: () => void }) => {
+    const onCopy = (event: MouseEvent) => {
         copyToClipboard(advertUrl);
         setIsCopied(true);
+        timeoutClipboardRef.current = setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
         event.stopPropagation();
     };
 
@@ -73,17 +78,12 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
     };
 
     useEffect(() => {
-        let timeoutClipboard: ReturnType<typeof setTimeout>;
-        if (isCopied) {
-            timeoutClipboard = setTimeout(() => {
-                setIsCopied(false);
-            }, 2000);
-        }
         return () => {
-            clearTimeout(timeoutClipboard);
+            if (timeoutClipboardRef.current) {
+                clearTimeout(timeoutClipboardRef.current);
+            }
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isCopied]);
+    }, []);
 
     return (
         <>
@@ -109,9 +109,9 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
                                 Download this QR code
                             </Button>
                             {isMobile && (
-                                <div className='flex w-full gap-[1rem] justify-between mt-[1.5rem]'>
+                                <div className='flex w-full gap-4 justify-between mt-6'>
                                     <Button
-                                        className='flex items-center gap-[1rem] w-full p2p-v2-share-ads-modal__container__card__button'
+                                        className='flex items-center gap-4 w-full p2p-v2-share-ads-modal__container__card__button'
                                         onClick={handleShareLink}
                                         textSize='md'
                                         variant='outlined'
@@ -120,7 +120,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
                                         Share link
                                     </Button>
                                     <Button
-                                        className='flex items-center gap-[1rem] w-full p2p-v2-share-ads-modal__container__card__button'
+                                        className='flex items-center gap-4 w-full p2p-v2-share-ads-modal__container__card__button'
                                         onClick={onCopy}
                                         textSize='md'
                                         variant='outlined'

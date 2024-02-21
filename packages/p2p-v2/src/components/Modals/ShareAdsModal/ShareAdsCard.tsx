@@ -1,12 +1,14 @@
+/* eslint-disable camelcase */
 import React, { ForwardedRef, forwardRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { ADVERT_TYPE, BUY_SELL, p2pLogo, RATE_TYPE } from '@/constants';
-import { TAdvertProps } from '@/utils';
+import { p2p } from '@deriv/api';
 import { Text, useDevice } from '@deriv-com/ui';
 import './ShareAdsCard.scss';
 
+type TAdvertProps = ReturnType<typeof p2p.advert.useGet>['data'];
 type TShareMyAdsCardProps = {
-    advert: Partial<TAdvertProps> | undefined;
+    advert?: Partial<TAdvertProps>;
     advertUrl: string;
 };
 

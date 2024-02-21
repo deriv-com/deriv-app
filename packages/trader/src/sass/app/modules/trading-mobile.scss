@@ -1,6 +1,11 @@
 @include mobile {
+    html {
+        /* Disables pull-to-refresh but allows overscroll glow effects. */
+        overscroll-behavior-y: none;
+    }
     /** @define dc-collapsible; weak */
     .dc-collapsible {
+        overscroll-behavior: none;
         &:before {
             content: '';
             position: absolute;

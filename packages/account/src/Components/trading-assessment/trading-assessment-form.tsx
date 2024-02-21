@@ -19,7 +19,7 @@ type TradingAssessmentFormProps = {
     getCurrentStep: () => number;
     onSubmit: (values?: TTradingAssessmentForm, action?: React.ReactNode, should_override?: boolean) => void;
     onCancel: (form_data: TTradingAssessmentForm) => void;
-    onSave: (current_step: number, values: TTradingAssessmentForm) => void;
+    onSave?: (current_step: number, values: TTradingAssessmentForm) => void;
     should_move_to_next: boolean;
     setSubSectionIndex: (index: number) => void;
     is_independent_section: boolean;
@@ -144,7 +144,7 @@ const TradingAssessmentForm = observer(
 
         const handleValidate = (values: TTradingAssessmentForm) => {
             const current_step = (getCurrentStep?.() || 1) - 1;
-            onSave(current_step, values);
+            onSave?.(current_step, values);
 
             const errors: FormikErrors<TTradingAssessmentForm> = {};
 

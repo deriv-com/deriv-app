@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useWalletAccountsList } from '@deriv/api';
+import { useWalletAccountsList } from '@deriv/api-v2';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';

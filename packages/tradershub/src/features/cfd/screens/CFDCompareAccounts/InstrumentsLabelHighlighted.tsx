@@ -1,5 +1,5 @@
 import React from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { twMerge } from 'tailwind-merge';
 import { THooks, TPlatforms } from '../../../../types';
 import { getHighlightedIconLabel } from './CompareAccountsConfig';
 import InstrumentsIconWithLabel from './InstrumentsIconWithLabel';
@@ -23,7 +23,7 @@ const InstrumentsLabelHighlighted = ({
 
     return (
         <div
-            className={qtMerge(
+            className={twMerge(
                 'flex flex-col rounded-24 pt-[70px] px-[15px] pb-0 lg:pt-40 lg:px-18 lg:pb-0',
                 isDemo && 'pt-16'
             )}

@@ -168,6 +168,11 @@ const Transaction = observer(({ contract }: TTransaction) => {
                 data-testid='dt-transactions-item'
                 className='transactions__item'
                 onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                    if (e.key === 'Enter') {
+                        contract && (() => setActiveTransactionId(contract.transaction_ids.buy));
+                    }
+                }}
             >
                 <div className='transactions__cell transactions__trade-type'>
                     <div className='transactions__loader-container'>
@@ -195,14 +200,14 @@ const Transaction = observer(({ contract }: TTransaction) => {
                     <TransactionIconWithText
                         icon={<Icon icon='IcContractEntrySpot' />}
                         title={localize('Entry spot')}
-                        message={contract?.entry_tick || <TransactionFieldLoader />}
+                        message={contract?.entry_tick ?? <TransactionFieldLoader />}
                     />
                 </div>
                 <div className='transactions__cell transactions__exit-spot'>
                     <TransactionIconWithText
                         icon={<Icon icon='IcContractExitSpot' />}
                         title={localize('Exit spot')}
-                        message={contract?.exit_tick || <TransactionFieldLoader />}
+                        message={contract?.exit_tick ?? <TransactionFieldLoader />}
                     />
                 </div>
                 <div className='transactions__cell transactions__stake'>

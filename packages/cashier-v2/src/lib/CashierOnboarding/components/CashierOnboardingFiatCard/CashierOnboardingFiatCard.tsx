@@ -13,6 +13,7 @@ const CashierOnboardingFiatCard: React.FC<TProps> = ({ setIsDeposit }) => {
     const isFiat = Boolean(activeAccount?.currency_config?.is_fiat);
     const onClickHandler = () => {
         if (isFiat) setIsDeposit(true);
+        //TODO: replace alert with currency modal
         // eslint-disable-next-line no-alert
         else alert('Please switch to the fiat account to make a deposit');
     };

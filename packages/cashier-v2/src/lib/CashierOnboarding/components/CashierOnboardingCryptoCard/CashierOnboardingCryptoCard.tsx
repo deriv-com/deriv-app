@@ -13,6 +13,7 @@ const CashierOnboardingCryptoCard: React.FC<TProps> = ({ setIsDeposit }) => {
     const isCrypto = Boolean(activeAccount?.currency_config?.is_crypto);
     const onClickHandler = () => {
         if (isCrypto) setIsDeposit(true);
+        //TODO: replace alert with currency modal
         // eslint-disable-next-line no-alert
         else alert('Please switch to the crypto account to make a deposit');
     };

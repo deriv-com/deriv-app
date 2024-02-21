@@ -22,6 +22,8 @@ const AddedDxtradeAccountsList = () => {
     const { show } = Provider.useModal();
     const account = dxTradeAccounts?.find(account => account.is_virtual === activeTrading?.is_virtual);
     const isVirtual = account?.is_virtual;
+    const demoTitle = activeTrading?.is_virtual ? 'Demo' : '';
+    const title = `${PlatformDetails.dxtrade.title} ${demoTitle}`;
 
     const trailing = () => (
         <div className='flex flex-col gap-y-4'>
@@ -57,7 +59,7 @@ const AddedDxtradeAccountsList = () => {
             <div className='flex flex-col flex-grow'>
                 {account && (
                     <Fragment>
-                        <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
+                        <Text size='sm'>{title}</Text>
                         <Text size='sm' weight='bold'>
                             {account?.display_balance}
                         </Text>

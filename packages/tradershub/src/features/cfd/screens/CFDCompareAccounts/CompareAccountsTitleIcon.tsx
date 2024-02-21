@@ -4,13 +4,13 @@ import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
 import { PlatformIcon, Tooltip } from '@/components';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms } from '@cfd/constants';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Text, useDevice } from '@deriv-com/ui';
 import { AccountIcons, MarketTypeShortcode } from './constants';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
 
 type TCompareAccountsTitleIcon = {
-    isDemo: boolean;
     marketType: TMarketType;
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
@@ -52,7 +52,9 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherA
     }
 };
 
-const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
+const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
+    const { data: activeDerivTrading } = useActiveTradingAccount();
+    const isDemo = activeDerivTrading?.is_virtual;
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
     const jurisdictionCardIcon = getAccountIcon(platform, marketType);
 

@@ -26,8 +26,10 @@ const SignupWrapper = () => {
         setIsOpen(false);
     };
 
+    const customStyles = { ...CUSTOM_STYLES, content: { ...CUSTOM_STYLES.content, overflow: 'unset' } };
+
     return (
-        <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
+        <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={customStyles}>
             <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signup}>
                 <Form>
                     <SignupScreens setStep={setStep} step={step} />

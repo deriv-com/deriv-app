@@ -45,25 +45,31 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
         }
     }, [caret, formattedValue, caretNeedsRepositioning, input]);
 
-    const onChange = useCallback(
-        (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
+    const checkExceedsMaxDigits = useCallback(
+        (newValue: string) => {
+            if (!input) return true;
+
+            // drop the changes if the number of digits is not decreasing and it has exceeded maxDigits
+            const inputDigitsCount = input.value.replace(separatorRegex, '').replace(/^0+/, '').length;
+            const changeDigitsCount = newValue.replace(separatorRegex, '').replace(/^0+/, '').length ?? 0;
+            return maxDigits && changeDigitsCount >= inputDigitsCount && changeDigitsCount > maxDigits;
+        },
+        [input, maxDigits]
+    );
+
+    const handleNewValue = useCallback(
+        (newValue: string) => {
             if (!input) return;
 
             const newCaretPosition = input.value.length - (input.selectionStart ?? 0);
             setCaret(newCaretPosition);
             setCaretNeedsRepositioning(true);
 
-            // drop the changes if the number of digits is not decreasing and it has exceeded maxDigits
-            const inputDigitsCount = input.value.replace(separatorRegex, '').replace(/^0+/, '').length;
-            const changeDigitsCount = e.target?.value?.replace(separatorRegex, '').replace(/^0+/, '').length ?? 0;
-            if (maxDigits && changeDigitsCount >= inputDigitsCount && inputDigitsCount > maxDigits) return;
-
             const hasNoChangeInDigits =
                 input.value.length + 1 === prevFormattedValue.length &&
                 input.value.replaceAll(separatorRegex, '') === prevFormattedValue.replaceAll(separatorRegex, '');
             if (hasNoChangeInDigits) return;
 
-            const newValue = e?.target?.value || '';
             const unformatted = unFormatLocaleString(newValue, locale);
             const shifted = (Number(unformatted) * 10).toFixed(fractionDigits);
             const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
@@ -111,18 +117,34 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
         [input, maxDigits, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
     );
 
+    const onChange = useCallback(
+        (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
+            const newValue = e.target?.value;
+            if (typeof newValue === 'undefined') return;
+            if (checkExceedsMaxDigits(newValue)) return;
+            handleNewValue(newValue);
+        },
+        [handleNewValue]
+    );
+
     const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
         e => {
             isPasting.current = e.type === 'paste';
             if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
                 const pasted = (e.clipboardData || window.clipboardData).getData('Text');
                 const pastedValue = Number(unFormatLocaleString(pasted, locale));
-                if (!isNaN(pastedValue) && isFinite(pastedValue) && pastedValue >= 0)
+                const pastedValueFormatted = `${pastedValue.toLocaleString(locale, {
+                    minimumFractionDigits: fractionDigits,
+                })}`;
+                if (
+                    !isNaN(pastedValue) &&
+                    isFinite(pastedValue) &&
+                    pastedValue >= 0 &&
+                    !checkExceedsMaxDigits(pastedValueFormatted)
+                )
                     onChange({
                         target: {
-                            value: `${pastedValue.toLocaleString(locale, {
-                                minimumFractionDigits: fractionDigits,
-                            })}`,
+                            value: pastedValueFormatted,
                         },
                     });
             }
@@ -133,11 +155,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
     useEffect(() => {
         if (typeof initial === 'number') {
             isPasting.current = true;
-            onChange({
-                target: {
-                    value: `${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
-                },
-            });
+            handleNewValue(`${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`);
         }
     }, [fractionDigits, initial, locale, onChange]);
 

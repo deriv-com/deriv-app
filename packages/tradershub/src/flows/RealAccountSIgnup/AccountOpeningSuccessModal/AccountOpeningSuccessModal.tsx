@@ -5,7 +5,7 @@ import Checkmark from '@/assets/svgs/checkmark.svg';
 import { ActionScreen, ButtonGroup } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { CUSTOM_STYLES } from '@/helpers';
-import { ACTION_TYPES, useSignupWizardContext } from '@/providers/SignupWizardProvider';
+import { useSignupWizardContext } from '@/providers/SignupWizardProvider';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const SelectedCurrencyIcon = () => {
@@ -22,23 +22,13 @@ const SelectedCurrencyIcon = () => {
 };
 
 const AccountOpeningSuccessModal = () => {
-    const { isSuccessModalOpen, setIsSuccessModalOpen, dispatch } = useSignupWizardContext();
+    const { isSuccessModalOpen, reset } = useSignupWizardContext();
     const { isDesktop } = useDevice();
     const { state } = useSignupWizardContext();
     const history = useHistory();
 
-    const handleClose = () => {
-        dispatch({
-            type: ACTION_TYPES.RESET,
-        });
-        setIsSuccessModalOpen(false);
-    };
-
     const handleNavigateToDeposit = () => {
-        setIsSuccessModalOpen(false);
-        dispatch({
-            type: ACTION_TYPES.RESET,
-        });
+        reset();
         history.push('/cashier/deposit');
     };
 
@@ -66,17 +56,10 @@ const AccountOpeningSuccessModal = () => {
                 icon={<SelectedCurrencyIcon />}
                 renderButtons={() => (
                     <ButtonGroup className='flex-col lg:flex-row sm:w-full'>
-                        <Button
-                            className='py-18'
-                            color='black'
-                            isFullWidth={!isDesktop}
-                            onClick={handleClose}
-                            size='md'
-                            variant='outlined'
-                        >
+                        <Button color='black' isFullWidth={!isDesktop} onClick={reset} size='md' variant='outlined'>
                             Maybe later
                         </Button>
-                        <Button className='py-18' isFullWidth={!isDesktop} onClick={handleNavigateToDeposit} size='md'>
+                        <Button isFullWidth={!isDesktop} onClick={handleNavigateToDeposit} size='md'>
                             Deposit
                         </Button>
                     </ButtonGroup>

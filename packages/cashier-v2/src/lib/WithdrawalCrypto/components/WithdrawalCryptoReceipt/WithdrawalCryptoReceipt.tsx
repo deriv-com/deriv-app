@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Text } from '@deriv-com/ui';
-import { ReceiptScreen } from '../../../../components';
+import { DerivLightWalletIcon } from '@deriv/quill-icons';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { CurrencyIcon, ReceiptScreen } from '../../../../components';
 import { useWithdrawalCryptoContext } from '../../provider';
 import styles from './WithdrawalCryptoReceipt.module.scss';
 
@@ -18,30 +19,46 @@ const ActionButtons = () => {
 };
 
 const WithdrawalCryptoReceipt: React.FC = () => {
+    const { isMobile } = useDevice();
     const { withdrawalReceipt } = useWithdrawalCryptoContext();
     const { address, amount, fromAccount } = withdrawalReceipt;
+
+    const From = () => {
+        return (
+            <>
+                <div className={styles['account-info']}>
+                    {fromAccount?.currency && (
+                        <CurrencyIcon currency={fromAccount?.currency} size={isMobile ? 'sm' : 'md'} />
+                    )}
+                    <Text weight='bold'>{fromAccount?.currency}</Text>
+                </div>
+                <div className={styles['account-id']}>{fromAccount?.currency}</div>
+            </>
+        );
+    };
+
+    const To = () => {
+        return (
+            <>
+                <div className={styles['account-info']}>
+                    <DerivLightWalletIcon height={isMobile ? '24px' : '32px'} />
+                    <Text weight='bold'>{fromAccount?.currency} Wallet</Text>
+                </div>
+                <div className={styles['account-id']} data-testid='dt_withdrawal_crypto_receipt_address'>
+                    {address}
+                </div>
+            </>
+        );
+    };
 
     return (
         <ReceiptScreen
             actionButtons={<ActionButtons />}
-            receipt={{
-                amount,
-                from: {
-                    currency: fromAccount?.currency,
-                    info: <Text color='less-prominent'>{fromAccount?.loginid}</Text>,
-                },
-                to: {
-                    currency: 'BTC',
-                    info: (
-                        <div className={styles.address}>
-                            <Text color='less-prominent'>{address}</Text>
-                            <div>clipboard</div>
-                        </div>
-                    ),
-                },
-            }}
+            amount={amount}
+            fromElement={<From />}
             status='In review'
             title='Your withdrawal will be processed within 24 hours'
+            toElement={<To />}
         />
     );
 };

@@ -1,29 +1,28 @@
 import React from 'react';
-import { CurrencyBtcIcon, DerivLightWalletIcon } from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
 import ArrowDown from '../../assets/images/back-arrow.svg';
 import styles from './ReceiptScreen.module.scss';
 
 type TProps = {
     actionButtons?: React.ReactNode;
-    receipt: {
-        amount?: string;
-        from: {
-            currency?: string;
-            info?: React.ReactNode;
-        };
-        to: {
-            currency?: string;
-            info?: React.ReactNode;
-        };
-    };
+    amount?: string;
+    currency?: string;
+    fromElement?: React.ReactNode;
     status?: string;
     title?: string;
+    toElement?: React.ReactNode;
 };
 
-const ReceiptScreen: React.FC<TProps> = ({ actionButtons, receipt, status, title }) => {
+const ReceiptScreen: React.FC<TProps> = ({
+    actionButtons,
+    amount,
+    currency,
+    fromElement,
+    status,
+    title,
+    toElement,
+}) => {
     const { isMobile } = useDevice();
-    const { amount, from, to } = receipt;
 
     return (
         <div className={styles.container}>
@@ -40,25 +39,13 @@ const ReceiptScreen: React.FC<TProps> = ({ actionButtons, receipt, status, title
             )}
             <div className={styles['transaction-details']}>
                 <Text align='center' color='success' size='2xl' weight='bold'>
-                    {amount} {from.currency}
+                    {amount} {currency}
                 </Text>
-                <div className={styles.account}>
-                    <div className={styles['account-currency']}>
-                        <CurrencyBtcIcon iconSize={isMobile ? 'sm' : 'md'} />
-                        <Text weight='bold'>{from.currency}</Text>
-                    </div>
-                    <div className={styles['account-info']}>{from.info}</div>
-                </div>
+                <div className={styles.account}>{fromElement}</div>
                 <div className={styles['arrow-down']}>
                     <ArrowDown />
                 </div>
-                <div className={styles.account}>
-                    <div className={styles['account-currency']}>
-                        <DerivLightWalletIcon height={isMobile ? '24px' : '32px'} width={isMobile ? '24px' : '32px'} />
-                        <Text weight='bold'>{to.currency} Wallet</Text>
-                    </div>
-                    <div className={styles['account-info']}>{to.info}</div>
-                </div>
+                <div className={styles.account}>{toElement}</div>
             </div>
             {actionButtons}
         </div>

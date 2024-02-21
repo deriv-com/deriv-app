@@ -13,7 +13,8 @@ type TCollapsible = {
 };
 
 const swipe_config = {
-    delta: 100,
+    delta: 10,
+    preventScrollOnSwipe: true,
     trackTouch: true,
     trackMouse: true,
 };

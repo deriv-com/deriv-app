@@ -90,7 +90,7 @@ const ArrowButton = ({ is_collapsed = false, position, onClick, title, handle_bu
             className={classNames('dc-collapsible__button', {
                 'dc-collapsible__button--handle': handle_button,
             })}
-            onClick={toggleExpand}
+            // onClick={toggleExpand}
             onKeyDown={toggleExpand}
         >
             {icon_arrow}

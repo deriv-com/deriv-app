@@ -1,11 +1,10 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui';
-import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './provider/WithdrawalCryptoProvider';
 import { WithdrawalCryptoDisclaimer, WithdrawalCryptoForm, WithdrawalCryptoReceipt } from './components';
+import { useWithdrawalCryptoContext, WithdrawalCryptoProvider } from './provider';
 import styles from './WithdrawalCrypto.module.scss';
 
 type TWithdrawalCryptoProps = {
-    onClose: () => void;
     verificationCode: string;
 };
 
@@ -30,9 +29,9 @@ const WithdrawalCrypto: React.FC = () => {
     );
 };
 
-const WithdrawalCryptoModule: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificationCode }) => {
+const WithdrawalCryptoModule: React.FC<TWithdrawalCryptoProps> = ({ verificationCode }) => {
     return (
-        <WithdrawalCryptoProvider onClose={onClose} verificationCode={verificationCode}>
+        <WithdrawalCryptoProvider verificationCode={verificationCode}>
             <WithdrawalCrypto />
         </WithdrawalCryptoProvider>
     );

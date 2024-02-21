@@ -24,13 +24,11 @@ export type TWithdrawalCryptoContext = {
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isClientVerified: boolean | undefined;
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
-    onClose: () => void;
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
     withdrawalReceipt: TWithdrawalReceipt;
 };
 
 type TWithdrawalCryptoContextProps = {
-    onClose: TWithdrawalCryptoContext['onClose'];
     verificationCode: string;
 };
 
@@ -49,7 +47,6 @@ export const useWithdrawalCryptoContext = () => {
 
 const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryptoContextProps>> = ({
     children,
-    onClose,
     verificationCode,
 }) => {
     const { data: accountLimits } = useAccountLimits();
@@ -135,7 +132,6 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         getCurrencyConfig: getConfig,
         isClientVerified: getClientVerificationStatus(),
         isWithdrawalSuccess,
-        onClose,
         requestCryptoWithdrawal,
         withdrawalReceipt,
     };

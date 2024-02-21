@@ -29,7 +29,7 @@ describe('', () => {
             },
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             getCurrencyConfig: jest.fn(() => {
-                name: 'Bitcoin';
+                name: 'Bitcoin'; // NOSONAR
             }),
             isWithdrawalSuccess: false,
         });
@@ -55,7 +55,7 @@ describe('', () => {
             },
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             getCurrencyConfig: jest.fn(() => {
-                name: 'Bitcoin';
+                name: 'Bitcoin'; // NOSONAR
             }),
             isWithdrawalSuccess: true,
         });

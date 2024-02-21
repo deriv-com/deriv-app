@@ -616,7 +616,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
-    const [is_success_password_change, setIsSuccessPasswordChange] = React.useState(false);
     const [new_password_value, setNewPasswordValue] = React.useState('');
 
     const getVerificationStatus = () => {
@@ -982,7 +981,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     has_full_height
                     portal_element_id='modal_root'
                     title={localize('Deriv MT5 latest password requirements')}
-                    visible={is_incorrect_mt5_password_format_error && !is_success_password_change}
+                    visible={is_mt5_password_invalid_format_modal_visible}
                     onClose={closeModal}
                     wrapper_classname='cfd-password-modal'
                 >

@@ -608,7 +608,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         );
     const is_password_error = error_type === 'PasswordError';
     const is_password_reset = error_type === 'PasswordReset';
-    const is_incorrect_mt5_password_format_error = error_type === 'IncorrectMT5PasswordFormat';
+    const is_incorrect_mt5_password_format_error =
+        error_type === 'InvalidTradingPlatformPasswordFormat' || error_type === 'IncorrectMT5PasswordFormat';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =

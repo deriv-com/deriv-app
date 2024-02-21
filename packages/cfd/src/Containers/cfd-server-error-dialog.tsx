@@ -15,7 +15,8 @@ const CFDServerErrorDialog = observer(() => {
         error_type &&
         error_type !== 'PasswordReset' &&
         error_type !== 'PasswordError' &&
-        error_type !== 'IncorrectMT5PasswordFormat';
+        error_type !== 'IncorrectMT5PasswordFormat' &&
+        error_type !== 'InvalidTradingPlatformPasswordFormat';
 
     if (should_show_error) {
         return error_message ? (

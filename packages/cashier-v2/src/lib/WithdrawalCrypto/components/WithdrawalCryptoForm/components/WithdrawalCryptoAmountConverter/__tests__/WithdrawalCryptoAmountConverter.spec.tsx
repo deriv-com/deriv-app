@@ -2,7 +2,7 @@ import React from 'react';
 import { act, cleanup, fireEvent, screen, render } from '@testing-library/react';
 import { Formik } from 'formik';
 import WithdrawalCryptoAmountConverter from '../WithdrawalCryptoAmountConverter';
-import { useWithdrawalCryptoContext, WithdrawalCryptoProvider } from '../../../../../provider';
+import { useWithdrawalCryptoContext } from '../../../../../provider';
 import { validateCryptoInput, validateFiatInput } from '../../../../../utils';
 
 jest.mock('../../../../../utils', () => ({
@@ -54,8 +54,8 @@ describe('<WithdrawalCryptoAmountConverter />', () => {
                 crypto: 8,
                 fiat: 2,
             },
-            getConvertedCryptoAmount: jest.fn(val => val),
-            getConvertedFiatAmount: jest.fn(val => val),
+            getConvertedCryptoAmount: (fiatInput: string | number) => fiatInput as string,
+            getConvertedFiatAmount: (cryptoInput: string | number) => cryptoInput as string,
             isClientVerified: false,
         });
     });

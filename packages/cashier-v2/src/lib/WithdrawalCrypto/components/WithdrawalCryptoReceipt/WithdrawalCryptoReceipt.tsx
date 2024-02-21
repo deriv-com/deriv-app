@@ -23,42 +23,34 @@ const WithdrawalCryptoReceipt: React.FC = () => {
     const { withdrawalReceipt } = useWithdrawalCryptoContext();
     const { address, amount, fromAccount } = withdrawalReceipt;
 
-    const From = () => {
-        return (
-            <>
-                <div className={styles['account-info']}>
-                    {fromAccount?.currency && (
-                        <CurrencyIcon currency={fromAccount?.currency} size={isMobile ? 'sm' : 'md'} />
-                    )}
-                    <Text weight='bold'>{fromAccount?.currency}</Text>
-                </div>
-                <div className={styles['account-id']}>{fromAccount?.currency}</div>
-            </>
-        );
-    };
-
-    const To = () => {
-        return (
-            <>
-                <div className={styles['account-info']}>
-                    <DerivLightWalletIcon height={isMobile ? '24px' : '32px'} />
-                    <Text weight='bold'>{fromAccount?.currency} Wallet</Text>
-                </div>
-                <div className={styles['account-id']} data-testid='dt_withdrawal_crypto_receipt_address'>
-                    {address}
-                </div>
-            </>
-        );
-    };
-
     return (
         <ReceiptScreen
             actionButtons={<ActionButtons />}
             amount={`${amount} ${fromAccount?.currency}`}
-            fromElement={<From />}
+            fromElement={
+                <>
+                    <div className={styles['account-info']}>
+                        {fromAccount?.currency && (
+                            <CurrencyIcon currency={fromAccount?.currency} size={isMobile ? 'sm' : 'md'} />
+                        )}
+                        <Text weight='bold'>{fromAccount?.currency}</Text>
+                    </div>
+                    <div className={styles['account-id']}>{fromAccount?.currency}</div>
+                </>
+            }
             status='In review'
             title='Your withdrawal will be processed within 24 hours'
-            toElement={<To />}
+            toElement={
+                <>
+                    <div className={styles['account-info']}>
+                        <DerivLightWalletIcon height={isMobile ? '24px' : '32px'} />
+                        <Text weight='bold'>{fromAccount?.currency} Wallet</Text>
+                    </div>
+                    <div className={styles['account-id']} data-testid='dt_withdrawal_crypto_receipt_address'>
+                        {address}
+                    </div>
+                </>
+            }
         />
     );
 };

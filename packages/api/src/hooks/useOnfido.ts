@@ -71,6 +71,7 @@ const useOnfido = (country?: string, selectedDocument?: string) => {
 
     const supportedDocuments = useMemo(() => {
         if (countryCode && residenceList.length) {
+            // TODO: Replace these logic with data from useKycAuthStatus hook.
             const onfidoResidence = residenceList.find(residence => residence?.value === countryCode)?.identity
                 ?.services?.onfido;
             if (selectedDocument && onfidoResidence?.documents_supported) {

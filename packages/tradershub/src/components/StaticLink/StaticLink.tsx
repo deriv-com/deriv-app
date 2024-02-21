@@ -1,6 +1,6 @@
 import React, { AnchorHTMLAttributes, ReactNode } from 'react';
-import { clsx } from 'clsx';
-import { getStaticUrl } from '../../helpers/urls';
+import { twMerge } from 'tailwind-merge';
+import { getStaticUrl } from '@/helpers';
 
 type StaticLinkProps = {
     children: ReactNode;
@@ -24,7 +24,7 @@ const StaticLink = ({ children, className, href, staticUrl, onClick }: StaticLin
     const isNewTab = href || staticUrl;
     return (
         <a
-            className={clsx('underline text-brand-coral py-0 px-4 underline-offset-2', className)}
+            className={twMerge('underline text-brand-coral py-0 px-4 underline-offset-2', className)}
             href={link}
             onClick={onClick}
             rel={isNewTab && 'noopener noreferrer'}

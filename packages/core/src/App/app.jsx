@@ -47,11 +47,14 @@ const AppWithoutTranslation = ({ root_store }) => {
             import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
-        const loadExternalScripts = () => {
-            // Load external scripts once the app is fully loaded
-            setTimeout(() => {
-                initHotjar(root_store.client);
-            }, 5000);
+        const loadExternalScripts = async () => {
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+            await delay(3000);
+            window.LiveChatWidget.init();
+
+            await delay(2000);
+            initHotjar(root_store.client);
         };
 
         initializeTranslations();

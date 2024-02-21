@@ -13,6 +13,8 @@ jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
+const setActiveTransactionIdMock = jest.fn();
+
 const mock_contract = {
     transaction_ids: { buy: '12345', sell: '6789' },
     underlying: 'EURUSD',
@@ -60,8 +62,6 @@ describe('Transaction', () => {
     });
 
     it('should render the Transaction component and trigger onClick', () => {
-        const setActiveTransactionIdMock = jest.fn();
-
         render(<Transaction contract={mock_contract} setActiveTransactionId={setActiveTransactionIdMock} />, {
             wrapper,
         });
@@ -75,7 +75,6 @@ describe('Transaction', () => {
     });
 
     it('should render the Transaction component with high low barriers and exit time', () => {
-        const setActiveTransactionIdMock = jest.fn();
         const high_low_barrier = {
             transaction_ids: { buy: '12345', sell: '6789' },
             high_barrier: 2,

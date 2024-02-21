@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Dialog, Modal } from '@/components';
 import { Category, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
+import { useDevice } from '@deriv-com/ui';
 import MT5PasswordFooter from './MT5PasswordFooter';
 import MT5PasswordInput from './MT5PasswordInput';
 
@@ -10,7 +10,7 @@ const MT5PasswordModal = () => {
     const [password, setPassword] = useState('');
     const { data: activeTrading } = useActiveTradingAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeTrading?.is_virtual;
@@ -19,7 +19,7 @@ const MT5PasswordModal = () => {
         PlatformDetails.mt5.title
     } account`;
 
-    if (isMobile) {
+    if (!isDesktop) {
         return (
             <Modal>
                 <Modal.Header title={ModalHeaderTitle} />

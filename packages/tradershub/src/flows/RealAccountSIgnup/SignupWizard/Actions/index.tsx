@@ -1,11 +1,11 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { ButtonGroup } from '@/components';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { Button, Divider, useDevice } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
 type TActions = {
+    isSubmitBtnLoading?: boolean;
     submitDisabled?: boolean;
 };
 
@@ -15,39 +15,41 @@ type TActions = {
  * Intended to be used as a child component of the Formik component.
  * @param {Object} props - React props object
  * @param {boolean} [props.submitDisabled] - A boolean that determines whether the Next button is disabled
+ * @param {boolean} [props.isSubmitBtnLoading] - A boolean that determines whether the Next button is in a loading state
  * @example
  * return (
  *     <Actions submitDisabled />
  * );
  */
 
-const Actions = ({ submitDisabled = false }: TActions) => {
+const Actions = ({ submitDisabled = false, isSubmitBtnLoading = false }: TActions) => {
     const {
         helpers: { canGoToNextStep, canGoToPrevStep, goToPrevStep },
     } = useSignupWizardContext();
-    const { handleSubmit } = useFormikContext();
-    const { isMobile } = useBreakpoint();
+    const { isSubmitting } = useFormikContext();
+    const { isDesktop } = useDevice();
 
     return (
         <div>
-            <hr className='opacity-100' />
-            <ButtonGroup className='justify-end p-1200'>
+            <Divider />
+            <ButtonGroup className='p-24 sm:flex-row md:flex-row md:justify-end'>
                 {canGoToPrevStep && (
                     <Button
-                        isFullWidth={isMobile}
+                        disabled={isSubmitting || isSubmitBtnLoading}
+                        isFullWidth={!isDesktop}
                         onClick={goToPrevStep}
-                        size={isMobile ? 'lg' : 'md'}
+                        size={isDesktop ? 'md' : 'lg'}
+                        type='button'
                         variant='outlined'
                     >
                         Back
                     </Button>
                 )}
                 <Button
-                    className='bg-solid-coral-700'
-                    disabled={submitDisabled}
-                    isFullWidth={isMobile}
-                    onClick={() => handleSubmit()}
-                    size={isMobile ? 'lg' : 'md'}
+                    disabled={submitDisabled || isSubmitBtnLoading}
+                    isFullWidth={!isDesktop}
+                    isLoading={isSubmitting || isSubmitBtnLoading}
+                    size={isDesktop ? 'md' : 'lg'}
                     type='submit'
                 >
                     {canGoToNextStep ? 'Next' : 'Add account'}

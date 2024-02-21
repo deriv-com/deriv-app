@@ -57,7 +57,7 @@ const CurrencySwitcher = () => {
     const { icon, text } = IconToCurrencyMapper[iconCurrency];
 
     return (
-        <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background lg:w-auto lg:shrink-0 gap-800'>
+        <div className='flex items-center justify-between w-full gap-16 p-16 border-solid rounded-default border-1 border-system-light-active-background lg:w-auto lg:shrink-0'>
             <div className='flex-none '>{icon}</div>
             <div className='grow'>
                 {isDemo ? (

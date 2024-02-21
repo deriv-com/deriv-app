@@ -21,6 +21,9 @@ export const CONTRACT_SHADES = {
     VANILLALONGPUT: 'NONE_SINGLE',
     RESETCALL: 'ABOVE',
     RESETPUT: 'BELOW',
+    LBFLOATPUT: 'NONE_SINGLE',
+    LBFLOATCALL: 'NONE_SINGLE',
+    LBHIGHLOW: 'NONE_DOUBLE',
 } as const;
 
 // Default non-shade according to number of barriers

@@ -20,6 +20,7 @@ import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 import MenuLink from './menu-link';
 import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
+import { useRemoteConfig } from '@deriv/api';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
@@ -233,7 +234,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     };
 
     const { pathname: route } = useLocation();
-
+    const { data } = useRemoteConfig();
+    const { cs_chat_livechat, cs_chat_whatsapp } = data;
     const is_trading_hub_category =
         route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
@@ -376,7 +378,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         </MobileDrawer.Item>
                                     </React.Fragment>
                                 )}
-                                {liveChat.isReady && (
+                                {liveChat.isReady && cs_chat_whatsapp && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
                                         <Icon icon='IcWhatsApp' className='drawer-icon' />
                                         <a
@@ -391,7 +393,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 <MobileDrawer.Item className='header__menu-mobile-livechat'>
-                                    <LiveChat />
+                                    {cs_chat_livechat && <LiveChat />}
                                 </MobileDrawer.Item>
                                 {is_logged_in && (
                                     <MobileDrawer.Item

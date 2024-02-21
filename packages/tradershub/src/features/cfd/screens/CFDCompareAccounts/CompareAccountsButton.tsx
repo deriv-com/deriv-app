@@ -11,7 +11,7 @@ import {
     useSettings,
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import {
     getAccountVerificationStatus,
     shouldRestrictBviAccountCreation,
@@ -114,7 +114,7 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
         }
     };
     return (
-        <div className='h-2000 m-1000 w-[calc(100%-40px)]'>
+        <div className='h-40 m-20 w-[calc(100%-40px)]'>
             <Button
                 className='w-full text-center text-system-light-primary-background'
                 data-testid='dt_compare_cfd_account_button'

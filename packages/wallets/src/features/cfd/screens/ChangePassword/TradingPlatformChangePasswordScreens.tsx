@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';

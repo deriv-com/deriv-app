@@ -9,7 +9,6 @@ import { getTradingHubContents } from 'Constants/trading-hub-content';
 import EmptyOnboarding from './empty-onboarding';
 import { useStore, observer } from '@deriv/stores';
 import { useTradersHubTracking } from 'Hooks/index';
-import { Analytics } from '@deriv-com/analytics';
 
 type TOnboardingProps = {
     contents: Record<

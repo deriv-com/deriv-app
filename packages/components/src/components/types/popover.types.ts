@@ -23,7 +23,7 @@ export type TPopoverProps = {
     onClick?: React.MouseEventHandler<HTMLDivElement>;
     should_disable_pointer_events?: boolean;
     should_show_cursor?: boolean;
-    zIndex?: string | number;
+    zIndex?: string;
     data_testid?: string;
     arrow_styles?: React.CSSProperties;
 };

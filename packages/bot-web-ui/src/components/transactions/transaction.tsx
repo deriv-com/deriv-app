@@ -37,7 +37,7 @@ const TransactionIconWithText = ({ icon, title, message, className }: TTransacti
             className={classNames(className, 'transactions__icon')}
             alignment='left'
             message={title}
-            zIndex={popover_zindex.TRANSACTION}
+            zIndex={popover_zindex.TRANSACTION.toString()}
         >
             {icon}
         </Popover>
@@ -158,7 +158,7 @@ const Transaction = observer(({ contract }: TTransaction) => {
 
     return (
         <Popover
-            zIndex={popover_zindex.TRANSACTION}
+            zIndex={popover_zindex.TRANSACTION.toString()}
             alignment='left'
             className='transactions__item-wrapper'
             is_open={contract && active_transaction_id === contract.transaction_ids.buy}

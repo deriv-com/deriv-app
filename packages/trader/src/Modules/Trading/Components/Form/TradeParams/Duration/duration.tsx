@@ -11,6 +11,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import DurationToggle from './duration-toggle';
 import AdvancedDuration from './advanced-duration';
 import SimpleDuration from './simple-duration';
+import debounce from 'lodash.debounce';
 
 type TUIStore = ReturnType<typeof useStore>['ui'];
 type TTradeStore = ReturnType<typeof useTraderStore>;
@@ -111,7 +112,7 @@ const Duration = ({
                 {
                     action: 'change_parameter_value',
                     form_name: 'default',
-                    parameter_type_name: 'duration_type',
+                    parameter_type: 'duration_type',
                     parameter_field_type: 'dropdown',
                     duration_type: value,
                     trade_type_name: getContractTypesConfig()[contract_type]?.title,
@@ -120,27 +121,30 @@ const Duration = ({
         }
     };
 
-    const changeDurationValue = ({ target }: { target: { name: string; value: string | number } }) => {
+    const debouncedChangeDurationValue = debounce((target: { name: string; value: string | number; type?: string }) => {
+        // console.log('5', target.type ? 'manual' : 'plus_minus');
+        Analytics.trackEvent(
+            'ce_contracts_set_up_form' as keyof TEvents,
+            {
+                action: 'change_parameter_value',
+                form_name: 'default',
+                input_type: target.type ? 'manual' : 'plus_minus',
+                parameter_type: 'duration_value',
+                parameter_field_type: 'number',
+                parameter_value: duration,
+                trade_type_name: getContractTypesConfig()[contract_type]?.title,
+            } as unknown as TEvents['ce_trade_types_form']
+        );
+    }, 2000);
+
+    const changeDurationValue = ({ target }: { target: { name: string; value: string | number; type?: string } }) => {
         const { name, value } = target;
         const duration_name = `duration_${is_advanced_duration ? advanced_duration_unit : simple_duration_unit}`;
 
         // e.target.value returns string, we need to convert them to number
         onChangeUiStore({ name: duration_name, value: +value });
         onChange({ target: { name, value: +value } });
-        // is reflecting an actual input but not the displayed value
-        // console.log('5', value, name);
-        Analytics.trackEvent(
-            'ce_contracts_set_up_form' as keyof TEvents,
-            {
-                action: 'change_parameter_value',
-                form_name: 'default',
-                input_type: 'manual',
-                parameter_type_name: 'duration_value',
-                parameter_field_type: 'number',
-                parameter_value: value,
-                trade_type_name: getContractTypesConfig()[contract_type]?.title,
-            } as unknown as TEvents['ce_trade_types_form']
-        );
+        debouncedChangeDurationValue(target);
     };
 
     const onToggleDurationType = ({ target }: { target: { name: string; value: boolean } }) => {

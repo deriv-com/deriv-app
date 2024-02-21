@@ -62,7 +62,8 @@ const TimePicker = observer(
                     {
                         action: 'change_parameter_value',
                         form_name: 'default',
-                        parameter_type_name: 'end_time_hours',
+                        parameter_field_type: 'time_picker',
+                        parameter_type: 'time_picker',
                         parameter_value: value,
                         trade_type_name: getContractTypesConfig()[contract_type]?.title,
                     } as unknown as TEvents['ce_trade_types_form']

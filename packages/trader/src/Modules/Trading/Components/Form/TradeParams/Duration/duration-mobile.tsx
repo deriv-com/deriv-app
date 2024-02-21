@@ -76,7 +76,8 @@ const DurationMobile = observer(
                 {
                     action: 'change_parameter_value',
                     form_name: 'default',
-                    parameter_type_name: 'end_time_day',
+                    parameter_field_type: 'date_picker',
+                    parameter_type: 'date_picker',
                     parameter_value: toMoment().add(date, 'd').format('YYYY-MM-DD'),
                     trade_type_name: getContractTypesConfig()[contract_type]?.title,
                 } as unknown as TEvents['ce_trade_types_form']

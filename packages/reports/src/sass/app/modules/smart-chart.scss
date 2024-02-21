@@ -316,29 +316,6 @@
     }
 }
 
-/** @define smartcharts-mobile; weak */
-.smartcharts-mobile {
-    .cq-modal-dropdown {
-        left: 0px;
-        top: 0px;
-    }
-    .sc-chart-type,
-    .sc-interval {
-        .sc-tooltip__inner {
-            display: none;
-        }
-    }
-    .cq-chart-title .sc-dialog__body {
-        height: 100% !important;
-    }
-    .sc-categorical-display {
-        height: calc(100% - 38px) !important;
-    }
-    .cq-menu-dropdown .title .title-text {
-        display: inline;
-    }
-}
-
 .sc-accumulators-profit-loss {
     &-text {
         width: fit-content;

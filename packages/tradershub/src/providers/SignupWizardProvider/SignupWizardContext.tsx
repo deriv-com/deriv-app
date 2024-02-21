@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useReducer, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useReducer, useState } from 'react';
 import { useStep } from 'usehooks-ts';
 import { Helpers, TSignupWizardContext, TSignupWizardProvider } from './types';
 import { valuesReducer } from './ValuesReducer';
@@ -44,6 +44,9 @@ export const SignupWizardContext = createContext<TSignupWizardContext>({
     state: {
         currency: '',
     },
+    reset: /* noop */ () => {
+        /* noop */
+    },
 });
 
 export const useSignupWizardContext = () => {
@@ -67,7 +70,16 @@ export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
         currency: '',
     });
 
-    const contextState = useMemo(
+    const reset = useCallback(() => {
+        dispatch({
+            type: ACTION_TYPES.RESET,
+        });
+        setIsSuccessModalOpen(false);
+        setIsWizardOpen(false);
+        helpers.setStep(1);
+    }, [helpers]);
+
+    const contextState: TSignupWizardContext = useMemo(
         () => ({
             currentStep,
             dispatch,
@@ -77,8 +89,9 @@ export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
             setIsSuccessModalOpen,
             setIsWizardOpen,
             state,
+            reset,
         }),
-        [currentStep, helpers, isSuccessModalOpen, isWizardOpen, state]
+        [currentStep, helpers, isSuccessModalOpen, isWizardOpen, reset, state]
     );
 
     return <SignupWizardContext.Provider value={contextState}>{children}</SignupWizardContext.Provider>;

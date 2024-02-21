@@ -1,6 +1,6 @@
 import React from 'react';
-import { clsx } from 'clsx';
 import { useFormikContext } from 'formik';
+import { twMerge } from 'tailwind-merge';
 import { StandaloneCircleInfoRegularIcon as CircleInfoIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { getCurrencyConfig } from '../../helpers/currencyConfig';
@@ -24,7 +24,7 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
     return (
         <div className='relative flex justify-center w-1/2 my-8 lg:w-1/4'>
             <button
-                className={clsx(
+                className={twMerge(
                     `w-10/12 rounded-default items-center py-22 hover:cursor-pointer ${
                         isSelected
                             ? 'outline outline-2 outline-status-light-success'

@@ -29,6 +29,8 @@ const AvailableCTraderAccountsList = () => {
     const { show } = Provider.useModal();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
+    const demoTitle = activeTradingAccount?.is_virtual ? 'Demo' : '';
+    const title = `${PlatformDetails.ctrader.title} ${demoTitle}`;
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 
@@ -58,7 +60,7 @@ const AvailableCTraderAccountsList = () => {
                 leading={LeadingIcon}
                 trailing={() => <TradingAccountCardLightButton onSubmit={onSubmit} />}
             >
-                <TradingAccountCardContent title={PlatformDetails.ctrader.title}>
+                <TradingAccountCardContent title={title}>
                     This account offers CFDs on a feature-rich trading platform.
                 </TradingAccountCardContent>
             </TradingAccountCard>

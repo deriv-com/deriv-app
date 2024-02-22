@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { PlatformIcon, TradingAccountCard } from '@/components';
+import { IconComponent, TradingAccountCard } from '@/components';
 import { getStaticUrl } from '@/helpers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
@@ -8,7 +8,7 @@ import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
 
 const LeadingIcon = () => (
-    <PlatformIcon
+    <IconComponent
         icon='CTrader'
         onClick={() => {
             window.open(getStaticUrl('/deriv-ctrader'));

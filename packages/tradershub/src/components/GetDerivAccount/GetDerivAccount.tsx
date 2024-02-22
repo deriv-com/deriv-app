@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRealAccountCreationContext } from '../../providers/RealAccountCreationProvider';
-import { PlatformIcon } from '../PlatformIcon';
+import { IconComponent } from '../IconComponent';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
 
 const TrailingButton = () => {
@@ -8,7 +8,7 @@ const TrailingButton = () => {
     return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
 };
 
-const LeadingIcon = () => <PlatformIcon icon='DerivApps' width={60} />;
+const LeadingIcon = () => <IconComponent icon='DerivApps' width={60} />;
 
 const GetDerivAccount = () => {
     const title = 'Deriv account';

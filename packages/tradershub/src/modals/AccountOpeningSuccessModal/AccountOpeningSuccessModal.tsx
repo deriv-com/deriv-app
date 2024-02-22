@@ -2,8 +2,7 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import { useHistory } from 'react-router-dom';
 import Checkmark from '@/assets/svgs/checkmark.svg';
-import { ActionScreen, ButtonGroup } from '@/components';
-import { IconToCurrencyMapper } from '@/constants';
+import { ActionScreen, ButtonGroup, IconComponent } from '@/components';
 import { CUSTOM_STYLES } from '@/helpers';
 import { useRealAccountCreationContext } from '@/providers';
 import { Button, Text, useDevice } from '@deriv-com/ui';
@@ -12,11 +11,13 @@ const SelectedCurrencyIcon = () => {
     const { state } = useRealAccountCreationContext();
     return (
         <div className='relative'>
-            <div className='[&>svg]:scale-[2.4] w-[96px] h-[96px] flex justify-center items-center'>
-                {/* add currency icons to platform icon component */}
-                {IconToCurrencyMapper[state.currency ?? 'USD']?.icon}
-            </div>
-            <Checkmark className='absolute w-32 h-32 bottom-6 right-6' />
+            <IconComponent
+                className='flex items-center justify-center'
+                height={80}
+                icon={state.currency ?? 'USD'}
+                width={80}
+            />
+            <Checkmark className='absolute w-32 h-32 bottom-0 right-[-4px]' />
         </div>
     );
 };

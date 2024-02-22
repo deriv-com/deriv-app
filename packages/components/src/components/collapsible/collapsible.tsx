@@ -54,8 +54,8 @@ const Collapsible = ({
     );
 
     const swipe_handlers = useSwipeable({
-        onSwipedUp: () => !is_open && should_show_collapsible && expand(true),
-        onSwipedDown: () => is_open && should_show_collapsible && expand(false),
+        onSwipedUp: toggleExpand,
+        onSwipedDown: toggleExpand,
         ...swipe_config,
     });
 

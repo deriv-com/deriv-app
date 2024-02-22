@@ -1,10 +1,9 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
+import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
+import { CURRENCY_TYPES } from '@/helpers';
+import { ACTION_TYPES, useRealAccountCreationContext } from '@/providers';
 import { Divider } from '@deriv-com/ui';
-import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
-import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
-import { CURRENCY_TYPES } from '../../helpers/currencyConfig';
-import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
 import Currencies from './Currencies';
 
 /**
@@ -13,7 +12,7 @@ import Currencies from './Currencies';
  * @returns {React.ReactNode}
  */
 const CurrencySelector = () => {
-    const { dispatch, helpers, state } = useSignupWizardContext();
+    const { dispatch, helpers, state } = useRealAccountCreationContext();
 
     const handleSubmit = (values: FormikValues) => {
         dispatch({ payload: { currency: values.currency }, type: ACTION_TYPES.SET_CURRENCY });
@@ -34,7 +33,7 @@ const CurrencySelector = () => {
                             <Divider className='my-24' />
                             <Currencies type={CURRENCY_TYPES.CRYPTO} />
                         </div>
-                        <Actions submitDisabled={!values.currency} />
+                        <WizardScreenActions submitDisabled={!values.currency} />
                     </Form>
                 )}
             </Formik>

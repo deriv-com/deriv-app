@@ -113,8 +113,8 @@ export default class CryptoFiatConverterStore {
 
     async onChangeConverterToAmount(
         { target }: { target: { value: string } },
-        from_currency: string,
         to_currency: string,
+        from_currency: string,
         converted_amount?: number
     ): Promise<void> {
         const { account_transfer, general_store } = this.root_store.modules.cashier;
@@ -129,7 +129,7 @@ export default class CryptoFiatConverterStore {
                 this.setIsTimerVisible(false);
                 account_transfer.setAccountTransferAmount('');
             } else {
-                const decimals = getDecimalPlaces(to_currency);
+                const decimals = getDecimalPlaces(from_currency);
                 const amount = converted_amount?.toFixed(decimals) || '1';
                 if (+amount || this.converter_to_amount) {
                     this.setConverterFromAmount(amount);

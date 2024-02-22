@@ -13,7 +13,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
     let mobile_url;
 
     const mobileURLSet = () => {
-        mobile_url = window.location.replace(DEEP_LINK({ mt5_trade_account }));
+        mobile_url = window.location.assign(DEEP_LINK({ mt5_trade_account }));
 
         const timeout = setTimeout(() => {
             mobile_url = window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);

@@ -87,7 +87,10 @@ const CFDPasswordChange = observer(
                 if (response.error.code === 'InputValidationFailed')
                     actions.setFieldError(
                         'new_password',
-                        'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
+                        // Localize is employed to convert the customized error message since the backend error lacks clarity.
+                        localize(
+                            'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
+                        )
                     );
             }
 

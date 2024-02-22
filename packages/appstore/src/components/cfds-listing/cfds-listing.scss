@@ -2275,6 +2275,7 @@
         }
     }
     &__icon {
+        // to adjust the icon to the center
         margin: 0 0 2rem 2.4rem;
         @include mobile {
             margin: 0 0 2.4rem 2.4rem;

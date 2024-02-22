@@ -638,6 +638,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         }
     };
 
+    // Usecase: Added this timeout to render the Password Change modal after the password modal is closed.
+    // It is to avoid the flickering of the modal.
     React.useEffect(() => {
         let timeout: NodeJS.Timeout;
         if (is_incorrect_mt5_password_format_error) {

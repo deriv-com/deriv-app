@@ -58,6 +58,7 @@ type TIdvFailed = {
     latest_status: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'];
     selected_country?: ResidenceList[0];
     handleSelectionNext?: (should_show_manual: boolean) => void;
+    report_available?: boolean;
 };
 
 type TIDVFailureConfig = {
@@ -79,6 +80,7 @@ const IdvFailed = ({
     latest_status,
     selected_country,
     handleSelectionNext,
+    report_available,
 }: TIdvFailed) => {
     const { client, ui } = useStore();
     const { setIsAlreadyAttempted } = client;
@@ -98,17 +100,17 @@ const IdvFailed = ({
         changeable_fields: [],
     });
 
-    // Document upload not required for the below error codes
     const is_document_upload_required = React.useMemo(
         () =>
-            ![
+            [
                 IDV_ERROR_STATUS.DobMismatch.code,
                 IDV_ERROR_STATUS.NameMismatch.code,
                 IDV_ERROR_STATUS.NameDobMismatch.code,
-            ].includes(mismatch_status),
+            ].includes(mismatch_status)
+                ? !report_available
+                : true,
         [mismatch_status]
     );
-
     /**
      * If user needs to resubmit IDV document, the country should be the new selected country
      * If user needs to update Personal info, the country should be the country of the latest status

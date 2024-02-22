@@ -174,6 +174,7 @@ const POISubmission = observer(
                                 latest_status={identity_last_attempt}
                                 selected_country={selected_country}
                                 handleSelectionNext={handleSelectionNext}
+                                report_available={!!idv?.report_available}
                             />
                         ) : (
                             <IdvDocumentSubmit

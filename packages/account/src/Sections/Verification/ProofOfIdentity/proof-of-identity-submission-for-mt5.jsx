@@ -49,6 +49,7 @@ const POISubmissionForMT5 = observer(
 
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                     setSubmissionService(service_code.idv);
+
                     if (
                         [
                             identity_status_codes.rejected,
@@ -123,6 +124,7 @@ const POISubmissionForMT5 = observer(
                             is_from_external={is_from_external}
                             handleSubmit={handlePOIComplete}
                             latest_status={identity_last_attempt}
+                            report_available={!!idv?.report_available}
                         />
                     ) : (
                         <IdvDocSubmitOnSignup

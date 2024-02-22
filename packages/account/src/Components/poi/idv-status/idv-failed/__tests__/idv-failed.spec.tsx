@@ -67,7 +67,6 @@ describe('<IdvFailed/>', () => {
 
         await waitFor(() => {
             expect(screen.getByTestId(IDV_ERROR_STATUS.DobMismatch.code)).toBeInTheDocument();
-            expect(screen.queryByText('IDVForm')).not.toBeInTheDocument();
         });
     });
 
@@ -77,7 +76,7 @@ describe('<IdvFailed/>', () => {
 
         await waitFor(() => {
             expect(screen.getByTestId(IDV_ERROR_STATUS.NameDobMismatch.code)).toBeInTheDocument();
-            expect(screen.getByRole('button', { name: /Update profile/i })).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: /Verify/i })).toBeInTheDocument();
         });
     });
 
@@ -99,6 +98,24 @@ describe('<IdvFailed/>', () => {
         await waitFor(() => {
             expect(screen.getByTestId(IDV_ERROR_STATUS.Failed.code)).toBeInTheDocument();
             expect(screen.getByRole('button', { name: /Verify/i })).toBeInTheDocument();
+        });
+    });
+
+    it('should trigger idvform if report is not available', async () => {
+        const new_props = { ...mock_props, mismatch_status: IDV_ERROR_STATUS.Failed.code, report_available: false };
+        renderComponent({ props: new_props });
+        await waitFor(() => {
+            expect(screen.getByTestId(IDV_ERROR_STATUS.Failed.code)).toBeInTheDocument();
+            expect(screen.getByText('IDVForm')).toBeInTheDocument();
+        });
+    });
+
+    it('should not trigger idvform if report is available', async () => {
+        const new_props = { ...mock_props, mismatch_status: IDV_ERROR_STATUS.Failed.code, report_available: true };
+        renderComponent({ props: new_props });
+        await waitFor(() => {
+            expect(screen.getByTestId(IDV_ERROR_STATUS.Failed.code)).toBeInTheDocument();
+            expect(screen.queryByText('IDVForm')).not.toBeInTheDocument();
         });
     });
 });

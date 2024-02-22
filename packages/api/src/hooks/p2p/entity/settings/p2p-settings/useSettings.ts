@@ -8,7 +8,7 @@ type TP2PSettings =
           currency_list: {
               display_name: string;
               has_adverts: 0 | 1;
-              is_default: 1 | undefined;
+              is_default?: 1;
               text: string;
               value: string;
           }[];
@@ -16,7 +16,7 @@ type TP2PSettings =
           is_cross_border_ads_enabled: boolean;
           is_disabled: boolean;
           is_payment_methods_enabled: boolean;
-          localCurrency: string | undefined;
+          localCurrency?: string;
           rate_type: 'float' | 'fixed';
           reached_target_date: boolean;
       })
@@ -25,14 +25,14 @@ type TP2PSettings =
 type TCurrencyListItem = {
     display_name: string;
     has_adverts: 0 | 1;
-    is_default: 1 | undefined;
+    is_default?: 1;
     text: string;
     value: string;
 };
 
 const useSettings = () => {
     const { data, ...rest } = useSubscription('p2p_settings');
-    const [p2pSettings, setP2PSettings] = useLocalStorage<TP2PSettings>('p2p_v2_p2p_settings', {} as TP2PSettings);
+    const [p2pSettings, setP2PSettings] = useLocalStorage<DeepPartial<TP2PSettings>>('p2p_v2_p2p_settings', {});
 
     useEffect(() => {
         if (data) {

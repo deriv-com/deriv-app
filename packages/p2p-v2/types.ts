@@ -24,7 +24,7 @@ export type TSelectedPaymentMethod = Partial<{
 export type TCurrencyListItem = {
     display_name: string;
     has_adverts: 0 | 1;
-    is_default: 1 | undefined;
+    is_default?: 1;
     text: string;
     value: string;
 };

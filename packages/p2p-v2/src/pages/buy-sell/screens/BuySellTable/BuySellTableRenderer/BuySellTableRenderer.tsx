@@ -18,7 +18,7 @@ const columns = [
 const headerRenderer = (header: string) => <span>{header}</span>;
 
 type TBuySellTableRowRendererProps = {
-    data: TBuySellTableRowRenderer[] | undefined;
+    data?: TBuySellTableRowRenderer[];
     isFetching: boolean;
     isLoading: boolean;
     loadMoreAdverts: () => void;

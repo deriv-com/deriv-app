@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { p2p } from '@deriv/api';
 
 declare global {
@@ -27,3 +28,11 @@ type NonUndefinedValues<T> = {
 type TAdvertData = NonNullable<ReturnType<typeof p2p.advert.useGet>['data']>;
 
 export type TAdvertType = NonUndefinedValues<TAdvertData>;
+
+export type TCurrencyListItem = {
+    display_name: string;
+    has_adverts: 0 | 1;
+    is_default?: 1;
+    text: string;
+    value: string;
+};

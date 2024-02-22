@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 
 export const personalDetails = Yup.object().shape({
     accountOpeningReason: Yup.string().required('Account opening reason is required.'),
-    confirmation: Yup.boolean()
+    detailsConfirmation: Yup.boolean()
         .required()
         .oneOf([true], 'You must confirm that the name and date of birth above match your chosen identity document.'),
     dateOfBirth: Yup.date().typeError('Please enter a valid date.').required('Date of birth is required.'),
@@ -17,8 +17,10 @@ export const personalDetails = Yup.object().shape({
         .min(2, 'You should enter 2-50 characters.')
         .max(50, 'You should enter 2-50 characters.'),
     phoneNumber: Yup.string()
-        .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, 'Please enter a valid phone number.')
-        .required('Phone number is required.'),
+        .required('Phone number is required.')
+        .min(9, 'You should enter 9-35 numbers.')
+        .max(35, 'You should enter 9-35 numbers.')
+        .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, 'Please enter a valid phone number.'),
     placeOfBirth: Yup.string().required('Place of birth is required.'),
     taxIdentificationNumber: Yup.string(),
     taxResidence: Yup.string().when('taxIdentificationNumber', {

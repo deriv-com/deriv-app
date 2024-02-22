@@ -24,6 +24,11 @@ jest.mock('@deriv/api', () => ({
         paymentMethods: {
             useGet: jest.fn(() => ({ data: [] })),
         },
+        settings: {
+            useGetSettings: jest.fn(() => ({
+                data: {},
+            })),
+        },
     },
 }));
 

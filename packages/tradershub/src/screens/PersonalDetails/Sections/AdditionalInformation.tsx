@@ -88,7 +88,7 @@ const AdditionalInformation = () => {
                             setFieldValue('taxResidence', selectedItem);
                         }}
                         value={values.taxResidence}
-                        variant='comboBox'
+                        variant='prompt'
                     />
                     <div className='pt-6'>
                         <StandaloneCircleInfoRegularIcon />

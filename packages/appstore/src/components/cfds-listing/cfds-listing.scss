@@ -600,7 +600,8 @@
                 }
             }
 
-            &--windows {
+            &--windows,
+            &--macos {
                 display: flex;
                 gap: 1.6rem;
                 align-items: center;

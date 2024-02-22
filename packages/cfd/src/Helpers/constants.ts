@@ -36,8 +36,9 @@ const { is_staging, is_test_link } = getPlatformFromUrl();
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
+const CTRADER_DESKTOP_MAC_DOWNLOAD = 'https://getctradermac.com/deriv/ctrader-deriv-setup.dmg';
+const CTRADER_DESKTOP_WINDOWS_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 
 const CTRADER_UAT_URL = 'https://ct-uat.deriv.com/';
 const CTRADER_PRODUCTION_URL = 'https://ct.deriv.com/';
@@ -120,7 +121,8 @@ export {
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
     getPlatformMt5DownloadLink,
-    CTRADER_DESKTOP_DOWNLOAD,
+    CTRADER_DESKTOP_MAC_DOWNLOAD,
+    CTRADER_DESKTOP_WINDOWS_DOWNLOAD,
     getDXTradeWebTerminalLink,
     getCTraderWebTerminalLink,
     platformsIcons,

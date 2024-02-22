@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveAccount, useCurrencyConfig } from '@deriv/api';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Withdrawal from '../Withdrawal';
 
@@ -30,11 +30,11 @@ jest.mock('../../../../../components', () => ({
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useActiveWalletAccount: jest.fn(),
+    useActiveAccount: jest.fn(),
     useCurrencyConfig: jest.fn(),
 }));
 
-const mockUseActiveWalletAccount = useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>;
+const mockUseActiveAccount = useActiveAccount as jest.MockedFunction<typeof useActiveAccount>;
 
 const mockUseCurrencyConfig = useCurrencyConfig as jest.MockedFunction<typeof useCurrencyConfig>;
 
@@ -57,7 +57,7 @@ describe('<WalletWithdrawal />', () => {
 
     it('should remove the `verification` param from the window url', () => {
         const replaceStateSpy = jest.spyOn(window.history, 'replaceState');
-        mockUseActiveWalletAccount.mockReturnValue({
+        mockUseActiveAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'USD',
@@ -81,7 +81,7 @@ describe('<WalletWithdrawal />', () => {
             writable: true,
         });
 
-        mockUseActiveWalletAccount.mockReturnValue({
+        mockUseActiveAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'USD',
@@ -99,7 +99,7 @@ describe('<WalletWithdrawal />', () => {
     });
 
     it('should render withdrawal fiat module if withdrawal is for fiat wallet', () => {
-        mockUseActiveWalletAccount.mockReturnValue({
+        mockUseActiveAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'USD',
@@ -118,7 +118,7 @@ describe('<WalletWithdrawal />', () => {
     });
 
     it('should render withdrawal crypto module if withdrawal is for crypto wallet', async () => {
-        mockUseActiveWalletAccount.mockReturnValue({
+        mockUseActiveAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'BTC',
@@ -137,7 +137,7 @@ describe('<WalletWithdrawal />', () => {
     });
 
     it('should render withdrawal email verification module when onClose is triggered on the withdrawal crypto module', () => {
-        mockUseActiveWalletAccount.mockReturnValue({
+        mockUseActiveAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'BTC',
@@ -157,7 +157,7 @@ describe('<WalletWithdrawal />', () => {
     });
 
     it('should show loader if verification code is there but currency config is yet to be loaded', () => {
-        mockUseActiveWalletAccount.mockReturnValue({
+        mockUseActiveAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'BTC',

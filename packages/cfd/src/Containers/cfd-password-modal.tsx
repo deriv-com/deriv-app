@@ -24,7 +24,7 @@ import {
     routes,
     validLength,
     validPassword,
-    validNewMT5Password,
+    validMT5Password,
     WS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -680,7 +680,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         } else if (
             platform === CFD_PLATFORMS.MT5 &&
             should_set_trading_password &&
-            !validNewMT5Password(values.password)
+            !validMT5Password(values.password)
         ) {
             errors.password = localize(
                 'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'

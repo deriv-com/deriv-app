@@ -4,7 +4,7 @@ import {
     getErrorMessages,
     validLength,
     validPassword,
-    validNewMT5Password,
+    validMT5Password,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -131,7 +131,7 @@ const validatePassword = (password: string): string | undefined => {
         });
     } else if (!validPassword(password)) {
         return getErrorMessages().password();
-    } else if (!validNewMT5Password(password)) {
+    } else if (!validMT5Password(password)) {
         return localize('Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.');
     }
 };

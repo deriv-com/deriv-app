@@ -31,7 +31,7 @@ const CFDPasswordChangeContent = observer(({ closeModal, password_value }: TCFDP
         setCFDSuccessDialog(true);
     };
 
-    const password_changed_success_content = (
+    const password_changed_success__body = (
         <div className='cfd-password-change__password-success'>
             <Icon className='cfd-password-change__icon' icon='IcSuccessResetTradingPassword' size={128} />
             <Text as='p' weight='bold' className='cfd-password-change__heading'>
@@ -43,7 +43,7 @@ const CFDPasswordChangeContent = observer(({ closeModal, password_value }: TCFDP
         </div>
     );
 
-    const password_changed_success_content_footer = (
+    const password_changed_success__footer = (
         <div className='cfd-password-change-modal-description--footer'>
             <Button
                 className='cfd-password-change-modal-description--button'
@@ -69,9 +69,9 @@ const CFDPasswordChangeContent = observer(({ closeModal, password_value }: TCFDP
                     should_header_stick_body
                     width='auto'
                 >
-                    <Modal.Body>{password_changed_success_content}</Modal.Body>
+                    <Modal.Body>{password_changed_success__body}</Modal.Body>
                     <Modal.Footer className='cfd-password-change__content-center'>
-                        {password_changed_success_content_footer}
+                        {password_changed_success__footer}
                     </Modal.Footer>
                 </Modal>
             </DesktopWrapper>
@@ -83,9 +83,9 @@ const CFDPasswordChangeContent = observer(({ closeModal, password_value }: TCFDP
                     onClose={closeModal}
                     has_full_height
                     has_close_icon={false}
-                    footer={password_changed_success_content_footer}
+                    footer={password_changed_success__footer}
                 >
-                    {password_changed_success_content}
+                    {password_changed_success__body}
                 </MobileDialog>
             </MobileWrapper>
         </React.Fragment>

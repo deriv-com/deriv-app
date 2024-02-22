@@ -1,7 +1,7 @@
 import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import { validLength, validPassword, validNewMT5Password, getErrorMessages, WS, redirectToLogin } from '@deriv/shared';
+import { validLength, validPassword, validMT5Password, getErrorMessages, WS, redirectToLogin } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
@@ -89,21 +89,21 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
     };
     const validatePassword = (values: { new_password: string }) => {
         const errors: { new_password?: string } = {};
-        const new_max_length = platform === CFD_PLATFORMS.DXTRADE ? 25 : 16;
+        const max_length = platform === CFD_PLATFORMS.DXTRADE ? 25 : 16;
 
         if (
             !validLength(values.new_password, {
                 min: 8,
-                max: new_max_length,
+                max: max_length,
             })
         ) {
             errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
                 min_number: 8,
-                max_number: new_max_length,
+                max_number: max_length,
             });
         } else if (!validPassword(values.new_password)) {
             errors.new_password = getErrorMessages().password();
-        } else if (platform !== CFD_PLATFORMS.DXTRADE && !validNewMT5Password(values.new_password)) {
+        } else if (platform !== CFD_PLATFORMS.DXTRADE && !validMT5Password(values.new_password)) {
             errors.new_password = localize(
                 'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
             );

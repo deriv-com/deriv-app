@@ -9,7 +9,7 @@ import {
     WS,
     getCFDPlatformLabel,
     CFD_PLATFORMS,
-    validNewMT5Password,
+    validMT5Password,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { TPlatforms } from '../../Types';
@@ -52,21 +52,21 @@ const ResetTradingPassword = ({
 
     const validateReset = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
-        const new_max_length = platform === CFD_PLATFORMS.MT5 ? 16 : 25;
+        const max_length = platform === CFD_PLATFORMS.MT5 ? 16 : 25;
 
         if (
             !validLength(values.password, {
                 min: 8,
-                max: new_max_length,
+                max: max_length,
             })
         ) {
             errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
                 min_number: 8,
-                max_number: new_max_length,
+                max_number: max_length,
             });
         } else if (!validPassword(values.password)) {
             errors.password = getErrorMessages().password();
-        } else if (platform === CFD_PLATFORMS.MT5 && !validNewMT5Password(values.password)) {
+        } else if (platform === CFD_PLATFORMS.MT5 && !validMT5Password(values.password)) {
             errors.password = localize(
                 'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
             );

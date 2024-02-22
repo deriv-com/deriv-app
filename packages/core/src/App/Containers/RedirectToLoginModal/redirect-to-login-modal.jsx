@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { connect } from 'Stores/connect';
 import { Dialog, Text } from '@deriv/components';
 import { Localize, getLanguage } from '@deriv/translations';
 import { redirectToLogin } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 
 const ModalHeader = ({ header }) => {
     switch (header) {
@@ -18,7 +18,10 @@ const ModalHeader = ({ header }) => {
     }
 };
 
-const RedirectToLoginModal = ({ is_logged_in, logout, disableApp, enableApp, is_loading }) => {
+const RedirectToLoginModal = observer(() => {
+    const { client, ui } = useStore();
+    const { disableApp, enableApp, is_loading } = ui;
+    const { is_logged_in, logout } = client;
     const [is_visible, setVisible] = React.useState(false);
     const url_params = new URLSearchParams(useLocation().search);
     const header = url_params.get('header');
@@ -48,12 +51,6 @@ const RedirectToLoginModal = ({ is_logged_in, logout, disableApp, enableApp, is_
             </div>
         </Dialog>
     );
-};
+});
 
-export default connect(({ client, ui }) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    is_loading: ui.is_loading,
-    is_logged_in: client.is_logged_in,
-    logout: client.logout,
-}))(RedirectToLoginModal);
+export default RedirectToLoginModal;

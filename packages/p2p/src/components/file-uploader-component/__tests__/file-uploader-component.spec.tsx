@@ -1,57 +1,63 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import FileUploaderComponent from '../file-uploader-component';
 
-describe('<FileUploaderComponent />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <StoreProvider store={mockStore({ ui: { is_mobile: false } })}>{children}</StoreProvider>
+);
 
-    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    compressImageFiles: jest.fn(() => Promise.resolve([{ path: 'hello.pdf' }])),
+    readFiles: jest.fn(),
+}));
+
+jest.mock('@binary-com/binary-document-uploader');
+
+describe('<FileUploaderComponent />', () => {
+    const file: File = new File(['hello'], 'hello.png', { type: 'image/png' });
     const props = {
         accept: 'image/pdf, image/png',
-        filename_limit: 26,
-        hover_message: 'drop here',
+        hover_message: 'hover here',
         max_size: 2097152,
         multiple: false,
-        setDocumentFile: jest.fn(),
-        validation_error_message: null,
+        onDropAccepted: jest.fn(),
+        onDropRejected: jest.fn(),
+        validation_error_message: '',
+        onClickClose: jest.fn(),
         upload_message: 'upload here',
-        value: [],
+        value: [] as File[],
     };
 
     it('should render FileUploaderComponent component in desktop mode', async () => {
-        render(<FileUploaderComponent {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
+        render(<FileUploaderComponent {...props} />, { wrapper });
         expect(screen.getByText('upload here')).toBeInTheDocument();
     });
 
     it('should upload supported file', async () => {
-        const new_props = {
-            ...props,
-            value: [file],
-        };
-        render(<FileUploaderComponent {...new_props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
-        const input: HTMLInputElement = screen.getByTestId('dt_file_upload_input');
+        props.value = [file];
+
+        render(<FileUploaderComponent {...props} />, { wrapper });
+
+        const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
         userEvent.upload(input, file);
+
         await waitFor(() => {
-            expect(input.files?.[0]).toBe(file);
-            expect(input.files).toHaveLength(1);
+            if (input.files) {
+                expect(input.files[0]).toBe(file);
+                expect(input.files).toHaveLength(1);
+            }
         });
-        expect(props.setDocumentFile).toHaveBeenCalledWith({ files: [file], error_message: null });
+
         expect(screen.getByText('hello.png')).toBeInTheDocument();
     });
 
-    it('should show error message when unsupported file is uploaded', async () => {
-        const new_props = { ...props, validation_error_message: 'error' };
-        render(<FileUploaderComponent {...new_props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
+    it('should show validation_error_message when unsupported file is uploaded', async () => {
+        props.validation_error_message = 'error';
+
+        render(<FileUploaderComponent {...props} />, { wrapper });
 
         const unsupported_file = new File(['hello'], 'hello.html', { type: 'html' });
         const input = screen.getByTestId('dt_file_upload_input');
@@ -61,21 +67,29 @@ describe('<FileUploaderComponent />', () => {
             expect(screen.getByText('error')).toBeInTheDocument();
         });
     });
-    it('should handle remove File', async () => {
-        const new_props = { ...props, validation_error_message: 'error' };
-        render(<FileUploaderComponent {...new_props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
 
-        const input: HTMLInputElement = screen.getByTestId('dt_file_upload_input');
+    it('should render validation error message if validation_error_message is passed as a function', () => {
+        props.validation_error_message = () => 'error';
+
+        render(<FileUploaderComponent {...props} />, { wrapper });
+
+        expect(screen.getByText('error')).toBeInTheDocument();
+    });
+
+    it('should return multiple files and single filenames if multiple is true, values > 0 and validation_error_message is empty', async () => {
+        const file_bye: File = new File(['bye'], 'bye.png', { type: 'image/png' });
+        props.multiple = true;
+        props.value = [file, file_bye];
+        props.validation_error_message = '';
+
+        render(<FileUploaderComponent {...props} />, { wrapper });
+
+        const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
         userEvent.upload(input, file);
+
         await waitFor(() => {
-            expect(input.files?.[0]).toBe(file);
-            expect(input.files).toHaveLength(1);
+            expect(screen.getByText('hello.png')).toBeInTheDocument();
+            expect(screen.getByText('bye.png')).toBeInTheDocument();
         });
-        const remove_icon = screen.getByTestId('dt_remove_file_icon');
-        expect(remove_icon).toBeInTheDocument();
-        userEvent.click(remove_icon);
-        expect(props.setDocumentFile).toHaveBeenCalledWith({ files: [], error_message: null });
     });
 });

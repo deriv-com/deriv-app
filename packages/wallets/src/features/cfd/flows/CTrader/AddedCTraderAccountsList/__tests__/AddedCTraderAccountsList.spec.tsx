@@ -1,26 +1,26 @@
 import React, { ReactNode } from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { useCtraderAccountsList } from '@deriv/api';
+import { useCtraderAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 
 type TradingAccountCardProps = {
     children: ReactNode;
-    leading: () => ReactNode;
-    trailing: () => ReactNode;
+    leading: ReactNode;
+    trailing: ReactNode;
 };
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
 }));
 
 jest.mock('../../../../../../components/', () => ({
     TradingAccountCard: ({ children, leading, trailing }: TradingAccountCardProps) => (
         <div>
-            {leading && <div>{leading()}</div>}
+            {leading}
             {children}
-            {trailing && <div>{trailing()}</div>}
+            {trailing}
         </div>
     ),
 }));
@@ -76,8 +76,8 @@ describe('AddedCTraderAccountsList', () => {
             </Router>
         );
 
-        const icon = screen.getByText('CTrader');
-        fireEvent.click(icon);
+        const icon = screen.getAllByText('CTrader');
+        fireEvent.click(icon[0]);
         expect(mockWindowOpen).toHaveBeenCalledWith('https://deriv.com/deriv-ctrader');
     });
 
@@ -91,8 +91,8 @@ describe('AddedCTraderAccountsList', () => {
             </Router>
         );
 
-        const icon = screen.getByText('CTrader');
-        fireEvent.keyDown(icon, { code: 'Enter', key: 'Enter' });
+        const icon = screen.getAllByText('CTrader');
+        fireEvent.keyDown(icon[0], { code: 'Enter', key: 'Enter' });
         expect(mockWindowOpen).toHaveBeenCalledWith('https://deriv.com/deriv-ctrader');
     });
 
@@ -103,8 +103,8 @@ describe('AddedCTraderAccountsList', () => {
             </Router>
         );
 
-        const transferButton = screen.getByText('Transfer');
-        fireEvent.click(transferButton);
+        const transferButton = screen.getAllByText('Transfer');
+        fireEvent.click(transferButton[0]);
         expect(history.location.pathname).toEqual('/wallets/cashier/transfer');
     });
 
@@ -115,8 +115,8 @@ describe('AddedCTraderAccountsList', () => {
             </Router>
         );
 
-        const openButton = screen.getByText('Open');
-        fireEvent.click(openButton);
+        const openButton = screen.getAllByText('Open');
+        fireEvent.click(openButton[0]);
         expect(mockShow).toHaveBeenCalled();
     });
 });

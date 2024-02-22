@@ -1,7 +1,7 @@
 import React, { FC, Fragment, useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useCountdown } from 'usehooks-ts';
-import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import ChangePassword from '../../public/images/change-password-email.svg';
@@ -11,20 +11,20 @@ import { WalletButton } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
 
-type TProps = {
+type SentEmailContentProps = {
     description?: string;
     isInvestorPassword?: boolean;
     platform?: TPlatforms.All;
 };
 
-const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false, platform }) => {
+const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPassword = false, platform }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
     const { isMobile } = useDevice();
     const mt5Platform = PlatformDetails.mt5.platform;
-    const title = PlatformDetails[platform ?? mt5Platform].title;
+    const { title } = PlatformDetails[platform ?? mt5Platform];
     const titleSize = 'md';
     const descriptionSize = 'sm';
     const emailLinkSize = isMobile ? 'lg' : 'md';
@@ -39,6 +39,10 @@ const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false,
 
     const { data: activeWallet } = useActiveWalletAccount();
 
+    const mt5ResetType = isInvestorPassword
+        ? 'trading_platform_investor_password_reset'
+        : 'trading_platform_mt5_password_reset';
+
     return (
         <div className='wallets-sent-email-content'>
             <WalletsActionScreen
@@ -52,7 +56,7 @@ const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false,
                                 setShouldShowResendEmailReasons(true);
                             }}
                             size={emailLinkSize}
-                            variant='ghost'
+                            variant='contained'
                         >
                             <Trans defaults="Didn't receive the email?" />
                         </WalletButton>
@@ -80,7 +84,7 @@ const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false,
                                 verifyEmail({
                                     type:
                                         platform === mt5Platform
-                                            ? 'trading_platform_mt5_password_reset'
+                                            ? mt5ResetType
                                             : 'trading_platform_dxtrade_password_reset',
                                     url_parameters: {
                                         redirect_to: platformPasswordResetRedirectLink(
@@ -96,7 +100,7 @@ const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false,
                             }
                         }}
                     >
-                        {hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
+                        {hasCountdownStarted ? `Resend email in ${count} seconds` : 'Resend email'}
                     </WalletButton>
                 </Fragment>
             )}

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { useCtraderServiceToken } from '@deriv/api';
+import { useTranslation } from 'react-i18next';
+import { useCtraderServiceToken } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import CTraderLabelIcon from '../../../../../public/images/ctrader-label.svg';
@@ -8,6 +9,7 @@ import LinuxIcon from '../../../../../public/images/ic-linux-logo.svg';
 import MacOSIcon from '../../../../../public/images/ic-macos-logo.svg';
 import MT5Icon from '../../../../../public/images/ic-mt5.svg';
 import WindowsIcon from '../../../../../public/images/ic-windows-logo.svg';
+import i18n from '../../../../../translations/i18n';
 import { THooks, TPlatforms } from '../../../../../types';
 import { PlatformDetails } from '../../../constants';
 import './MT5TradeLink.scss';
@@ -27,32 +29,32 @@ const AppToContentMapper: AppToContentMapperType = {
     ctrader: {
         icon: <WindowsIcon />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
-        text: 'Download',
-        title: 'CTrader Windows App',
+        text: i18n.t('Download'),
+        title: i18n.t('CTrader Windows App'),
     },
     linux: {
         icon: <LinuxIcon />,
         link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
-        text: 'Learn more',
-        title: 'MetaTrader 5 Linux app',
+        text: i18n.t('Learn more'),
+        title: i18n.t('MetaTrader 5 Linux app'),
     },
     macos: {
         icon: <MacOSIcon />,
         link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
-        text: 'Download',
-        title: 'MetaTrader 5 MacOS app',
+        text: i18n.t('Download'),
+        title: i18n.t('MetaTrader 5 MacOS app'),
     },
     web: {
         icon: <MT5Icon />,
         link: '',
-        text: 'Open',
-        title: 'MetaTrader 5 web',
+        text: i18n.t('Open'),
+        title: i18n.t('MetaTrader 5 web'),
     },
     windows: {
         icon: <WindowsIcon />,
         link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
-        text: 'Download',
-        title: 'MetaTrader 5 Windows app',
+        text: i18n.t('Download'),
+        title: i18n.t('MetaTrader 5 Windows app'),
     },
 };
 
@@ -71,6 +73,7 @@ type TMT5TradeLinkProps = {
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform, webtraderUrl = '' }) => {
     const content = AppToContentMapper[app];
     const { data: ctraderToken } = useCtraderServiceToken();
+    const { t } = useTranslation();
 
     const mt5Platform = PlatformDetails.mt5.platform;
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
@@ -90,6 +93,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
             default:
                 url = '';
         }
+
         window.open(url);
     };
 
@@ -104,7 +108,9 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                 )}
                 {platform !== mt5Platform && app !== ctraderPlatform && (
                     <WalletText size='sm'>
-                        Run {PlatformDetails[platform ?? dxtradePlatform].title} on your browser
+                        {t('Run {{platform}} on your browser', {
+                            platform: PlatformDetails[platform ?? dxtradePlatform].title,
+                        })}
                     </WalletText>
                 )}
             </div>
@@ -121,7 +127,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                 <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
                     {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
                     <WalletText color='white' size='xs' weight='bold'>
-                        Web terminal
+                        {t('Web terminal')}
                     </WalletText>
                 </button>
             )}

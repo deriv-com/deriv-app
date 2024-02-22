@@ -110,14 +110,6 @@ export const getMarketNamesMap = () => ({
 });
 
 export const getUnsupportedContracts = () => ({
-    RESETCALL: {
-        name: 'Reset Call',
-        position: 'top',
-    },
-    RESETPUT: {
-        name: 'Reset Put',
-        position: 'bottom',
-    },
     TICKHIGH: {
         name: 'High Tick',
         position: 'top',
@@ -125,18 +117,6 @@ export const getUnsupportedContracts = () => ({
     TICKLOW: {
         name: 'Low Tick',
         position: 'bottom',
-    },
-    LBFLOATCALL: {
-        name: 'Close-to-Low',
-        position: 'top',
-    },
-    LBFLOATPUT: {
-        name: 'High-to-Close',
-        position: 'top',
-    },
-    LBHIGHLOW: {
-        name: 'High-to-Low',
-        position: 'top',
     },
     CALLSPREAD: {
         name: 'Spread Up',
@@ -251,6 +231,26 @@ export const getSupportedContracts = is_high_low => ({
     ASIAND: {
         name: 'Asian Down',
         position: 'bottom',
+    },
+    RESETCALL: {
+        name: 'Reset Call',
+        position: 'top',
+    },
+    RESETPUT: {
+        name: 'Reset Put',
+        position: 'bottom',
+    },
+    LBFLOATCALL: {
+        name: 'Close-Low',
+        position: 'top',
+    },
+    LBFLOATPUT: {
+        name: 'High-Close',
+        position: 'top',
+    },
+    LBHIGHLOW: {
+        name: 'High-Low',
+        position: 'top',
     },
 });
 

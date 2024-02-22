@@ -1,17 +1,19 @@
 import { useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api';
-import { displayMoney } from '@deriv/api/src/utils';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import { THooks, TWalletLandingCompanyName } from '../../../../../types';
 import { PlatformDetails } from '../../../constants';
 import { getAccountName, getLandingCompanyNameOfMT5Account, getMarketType } from '../../../helpers';
 
 /** A custom hook that enhances the transfer accounts response by adding additional properties for convenient UI rendering. */
-const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[]) => {
-    const { data: authorizeData, isLoading: isAuthorizeLoading } = useAuthorize();
+const useExtendedTransferAccountProperties = (
+    accounts?: THooks.TransferAccount[],
+    authorizeData?: THooks.Authorize
+) => {
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    const isLoading = isAuthorizeLoading || isCurrencyConfigLoading || isActiveWalletLoading;
+    const isLoading = isCurrencyConfigLoading || isActiveWalletLoading;
 
     const extendedTransferAccounts = useMemo(() => {
         //populating transfer accounts with extra fields

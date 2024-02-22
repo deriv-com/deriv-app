@@ -34,11 +34,11 @@ type TContractDrawerProps = RouteComponentProps & {
         | 'is_multiplier'
         | 'is_sell_requested'
         | 'is_smarttrader_contract'
+        | 'is_lookbacks'
         | 'is_turbos'
         | 'is_vanilla'
         | 'onClickCancel'
         | 'onClickSell'
-        | 'status'
     >;
 
 const ContractDrawer = observer(
@@ -54,9 +54,9 @@ const ContractDrawer = observer(
         is_turbos,
         is_vanilla,
         is_smarttrader_contract,
+        is_lookbacks,
         onClickCancel,
         onClickSell,
-        status,
         toggleHistoryTab,
     }: TContractDrawerProps) => {
         const { common, ui } = useStore();
@@ -111,13 +111,13 @@ const ContractDrawer = observer(
                     is_vanilla={is_vanilla}
                     is_sell_requested={is_sell_requested}
                     is_smarttrader_contract={is_smarttrader_contract}
+                    is_lookbacks={is_lookbacks}
                     is_collapsed={should_show_contract_audit}
                     onClickCancel={onClickCancel}
                     onClickSell={onClickSell}
                     onSwipedUp={() => setShouldShowContractAudit(true)}
                     onSwipedDown={() => setShouldShowContractAudit(false)}
                     server_time={server_time}
-                    status={status}
                     toggleContractAuditDrawer={() => setShouldShowContractAudit(!should_show_contract_audit)}
                 />
                 <DesktopWrapper>{contract_audit}</DesktopWrapper>

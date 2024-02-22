@@ -19,6 +19,8 @@ import {
     isTurbosContract,
     isVanillaContract,
     isSmartTraderContract,
+    isResetContract,
+    isLookBacksContract,
     urlFor,
 } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -44,7 +46,6 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
         onClickSell,
         onMount,
         onUnmount,
-        indicative_status,
         is_chart_loading,
         is_forward_starting,
     } = contract_replay;
@@ -103,6 +104,8 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
     const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
+    const is_reset_contract = isResetContract(contract_info.contract_type);
+    const is_lookbacks = isLookBacksContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -117,9 +120,9 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             is_sell_requested={is_sell_requested}
             is_vanilla={is_vanilla}
             is_smarttrader_contract={is_smarttrader_contract}
+            is_lookbacks={is_lookbacks}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
-            status={indicative_status}
             toggleHistoryTab={toggleHistoryTab}
         />
     );
@@ -133,6 +136,8 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
         window.open(statementws_url, '_blank');
     };
 
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am Contract Details page for DTrader 2.0.</Text>;
     return (
         <FadeWrapper is_visible={is_visible} className='contract-details-wrapper' keyname='contract-details-wrapper'>
             <MobileWrapper>
@@ -178,6 +183,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                 <ReplayChart
                                     is_dark_theme_prop={is_dark_theme}
                                     is_accumulator_contract={is_accumulator}
+                                    is_reset_contract={is_reset_contract}
                                 />
                             </DesktopWrapper>
                             <MobileWrapper>
@@ -201,6 +207,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                     <ReplayChart
                                         is_dark_theme_prop={is_dark_theme}
                                         is_accumulator_contract={is_accumulator}
+                                        is_reset_contract={is_reset_contract}
                                     />
                                 )}
                             </MobileWrapper>

@@ -4,6 +4,7 @@ import { getDurationPeriod, getDurationUnitText, getEndTime, getPlatformRedirect
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';
+import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/reset-contract-chart-elements';
 import { SmartChart } from 'Modules/SmartChart';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 
@@ -11,16 +12,18 @@ const ReplayChart = observer(
     ({
         is_dark_theme_prop,
         is_accumulator_contract,
+        is_reset_contract,
     }: {
         is_dark_theme_prop?: boolean;
         is_accumulator_contract?: boolean;
+        is_reset_contract?: boolean;
     }) => {
         const trade = useTraderStore();
         const { contract_replay, common, ui } = useStore();
         const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
         const { contract_config, is_digit_contract, barriers_array, getContractsArray, markers_array, contract_info } =
             contract_store;
-        const { underlying: symbol, audit_details } = contract_info;
+        const { underlying: symbol, audit_details, barrier_count } = contract_info;
         const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
         const { app_routing_history, current_language, is_socket_opened } = common;
         const { is_chart_layout_default, is_chart_countdown_visible, is_mobile } = ui;
@@ -113,9 +116,17 @@ const ReplayChart = observer(
                 isLive={!has_ended}
                 startWithDataFitMode={true}
             >
-                {markers_array.map(({ content_config, marker_config, react_key }) => (
-                    <ChartMarker key={react_key} marker_config={marker_config} marker_content_props={content_config} />
+                {markers_array.map(({ content_config, marker_config, react_key, type }) => (
+                    <ChartMarker
+                        key={react_key}
+                        marker_config={marker_config}
+                        marker_content_props={content_config}
+                        is_positioned_before={(type === 'SPOT_ENTRY' || type === 'SPOT_EXIT') && barrier_count === 2}
+                    />
                 ))}
+                {is_reset_contract && contract_info?.reset_time && (
+                    <ResetContractChartElements contract_info={contract_info} />
+                )}
             </SmartChart>
         );
     }

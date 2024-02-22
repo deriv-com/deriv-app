@@ -64,7 +64,6 @@ export namespace TDisplayBalance {
     export type ActiveTradingAccount = THooks.ActiveTradingAccount['display_balance'];
 }
 
-export type TWalletLandingCompanyName =
-    | Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'>
-    | 'virtual';
+export type TLandingCompanyName = Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'> | 'virtual';
 export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];
+export type TJurisdiction = THooks.MT5AccountsList['landing_company_short'];

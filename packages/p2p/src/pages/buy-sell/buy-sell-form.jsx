@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import { HintBox, Input, Text } from '@deriv/components';
+import { InlineMessage, Input, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods, useP2PExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
@@ -14,8 +14,10 @@ import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from 'Components/payment-method-card';
 import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
+import { formatTime } from 'Utils/orders';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import PaymentMethodIcon from 'Components/payment-method-icon';
+import { getInlineTextSize } from 'Utils/responsive';
 import './buy-sell-form.scss';
 
 const BuySellForm = props => {
@@ -36,6 +38,7 @@ const BuySellForm = props => {
         max_order_amount_limit_display,
         min_order_amount_limit,
         min_order_amount_limit_display,
+        order_expiry_period,
         payment_method_names,
         price,
         rate,
@@ -43,7 +46,7 @@ const BuySellForm = props => {
     } = advert || {};
 
     const exchange_rate = useP2PExchangeRate(local_currency);
-
+    const order_completion_time = order_expiry_period / 60;
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
     const [current_effective_rate, setCurrentEffectiveRate] = React.useState(0);
 
@@ -168,15 +171,13 @@ const BuySellForm = props => {
     return (
         <React.Fragment>
             {rate_type === ad_type.FLOAT && !should_disable_field && (
-                <div className='buy-sell-form-hintbox'>
-                    <HintBox
-                        icon='IcAlertInfo'
-                        message={
-                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
-                            </Text>
-                        }
-                        is_info
+                <div className='buy-sell-form__inline-message'>
+                    <InlineMessage
+                        message={localize(
+                            "If the market rate changes from the rate shown here, we won't be able to process your order."
+                        )}
+                        size={getInlineTextSize('sm', 'xs')}
+                        type='information'
                     />
                 </div>
             )}
@@ -252,8 +253,17 @@ const BuySellForm = props => {
                                     ))}
                         </div>
                     </div>
+                    <div className='buy-sell-form__field-wrapper'>
+                        <div className='buy-sell-form-field'>
+                            <Text as='p' color='less-prominent' size='xxs'>
+                                <Localize i18n_default_text='Orders must be completed in' />
+                            </Text>
+                            <Text as='p' color='general' size='xs'>
+                                {formatTime(order_completion_time)}
+                            </Text>
+                        </div>
+                    </div>
                     <div className='buy-sell-form-line' />
-
                     {buy_sell_store.is_sell_advert && payment_method_names && (
                         <React.Fragment>
                             <div className='buy-sell-form-payment-method'>

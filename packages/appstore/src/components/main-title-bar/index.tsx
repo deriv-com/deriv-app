@@ -1,22 +1,19 @@
 import React from 'react';
 import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
-// import { useFeatureFlags } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
-// import WalletsBanner from 'Components/wallets-banner';
+import WalletsBanner from 'Components/wallets-banner';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
 import './main-title-bar.scss';
-import TradersHubBanner from 'Components/traders-hub-banner';
 
 const MainTitleBar = () => {
-    const { traders_hub, client, notifications } = useStore();
+    const { traders_hub, client } = useStore();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
-    const { removeAllNotificationMessages, filterNotificationMessages } = notifications;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
@@ -25,23 +22,10 @@ const MainTitleBar = () => {
         setActiveIndex(selected_region === 'Non-EU' ? 0 : 1);
     }, [selected_region]);
 
-    // TODO: Uncomment once useWalletMigration hook is optimized for production release.
-    // const { is_wallet_enabled } = useFeatureFlags();
-
-    // TODO: Remove this when we have BE API ready
-    removeAllNotificationMessages(true);
-
-    React.useEffect(() => {
-        filterNotificationMessages();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <React.Fragment>
-            {/* TODO: Uncomment once useWalletMigration hook is optimized for production release. */}
-            {/* {is_wallet_enabled && <WalletsBanner />} */}
+            <WalletsBanner />
             <DesktopWrapper>
-                <TradersHubBanner />
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -54,7 +38,6 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <TradersHubBanner />
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
                     <Localize i18n_default_text="Trader's Hub" />
                 </Text>

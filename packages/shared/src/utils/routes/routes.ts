@@ -53,6 +53,7 @@ export const routes = {
     // cashier_offramp: '/cashier/off-ramp',
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
+    cashier_p2p_v2: '/cashier/p2p-v2',
 
     // P2P
     p2p_verification: '/cashier/p2p/verification',
@@ -61,6 +62,7 @@ export const routes = {
     p2p_my_ads: '/cashier/p2p/my-ads',
     p2p_my_profile: '/cashier/p2p/my-profile',
     p2p_advertiser_page: '/cashier/p2p/advertiser',
+    p2p_v2_inner: '/cashier/p2p-v2/inner',
 
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),
@@ -82,4 +84,11 @@ export const routes = {
 
     // Traders Hub
     traders_hub_v2: '/traders-hub',
+    compare_accounts: '/traders-hub/compare-accounts',
+
+    // Account V2
+    account_v2: '/account-v2',
+
+    // Cashier V2
+    cashier_v2: '/cashier-v2',
 };

@@ -308,6 +308,15 @@ describe('isAccumulatorContract', () => {
     });
 });
 
+describe('isTicksContract', () => {
+    it('should return true if contract_type includes CONTRACT_TYPES.TICK_HIGH_LOW.HIGH', () => {
+        expect(ContractUtils.isTicksContract(CONTRACT_TYPES.TICK_HIGH_LOW.HIGH)).toEqual(true);
+    });
+    it('should return false if contract_type is not CONTRACT_TYPES.TICK', () => {
+        expect(ContractUtils.isTicksContract(CONTRACT_TYPES.ACCUMULATOR)).toEqual(false);
+    });
+});
+
 describe('isAccumulatorContractOpen', () => {
     it('should return true if contract_type includes CONTRACT_TYPES.ACCUMULATOR, status is open, and current spot has NOT crossed barriers', () => {
         const contract_info = mockContractInfo({
@@ -633,5 +642,122 @@ describe('getLocalizedTurbosSubtype', () => {
     it('should render "Short" for CONTRACT_TYPES.TURBOS.SHORT contract', () => {
         render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.TURBOS.SHORT) as JSX.Element);
         expect(screen.getByText('Short')).toBeInTheDocument();
+    });
+});
+
+describe('getSortedTradeTypes', () => {
+    it('should return an unchanged array if it does not contain turbos or multipliers', () => {
+        const array = [ContractUtils.TRADE_TYPES.RISE_FALL, ContractUtils.TRADE_TYPES.HIGH_LOW];
+        expect(ContractUtils.getSortedTradeTypes(array)).toEqual(array);
+    });
+    it('should return an array with turboslong as the 1st element if multipliers are not present', () => {
+        const sortedArrayWithTurbos = ContractUtils.getSortedTradeTypes([
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+        ]);
+        expect(sortedArrayWithTurbos).toEqual([
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+        ]);
+    });
+    it('should return an array with multipliers as the 1st element if turboslong is not present', () => {
+        const sortedArrayWithMultipliers = ContractUtils.getSortedTradeTypes([
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+        ]);
+        expect(sortedArrayWithMultipliers).toEqual([
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+        ]);
+    });
+    it('should return an array with turboslong as the 1st element and disregard multipliers', () => {
+        const sortedArrayWithTurbosAndMultipliers = ContractUtils.getSortedTradeTypes([
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+        ]);
+        expect(sortedArrayWithTurbosAndMultipliers).toEqual([
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+        ]);
+    });
+    it('should return an empty array if called with empty arguments or an empty array', () => {
+        expect(ContractUtils.getSortedTradeTypes()).toEqual([]);
+        expect(ContractUtils.getSortedTradeTypes([])).toEqual([]);
+    });
+});
+
+describe('isSmartTraderContract', () => {
+    it('should return true if contract_type is RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK|LB', () => {
+        expect(ContractUtils.isSmartTraderContract(CONTRACT_TYPES.EXPIRYRANGEE)).toBe(true);
+        expect(ContractUtils.isSmartTraderContract(CONTRACT_TYPES.TICK_HIGH_LOW.HIGH)).toBe(true);
+        expect(ContractUtils.isSmartTraderContract(CONTRACT_TYPES.LB_PUT)).toBe(true);
+    });
+    it('should return false if contract_type is not RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK|LB', () => {
+        expect(ContractUtils.isSmartTraderContract(CONTRACT_TYPES.VANILLA.CALL)).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isSmartTraderContract('')).toBe(false);
+    });
+});
+
+describe('isResetContract', () => {
+    it('should return true if contract_type is RESET', () => {
+        expect(ContractUtils.isResetContract(CONTRACT_TYPES.RESET.CALL)).toBe(true);
+    });
+    it('should return false if contract_type is not RESET', () => {
+        expect(ContractUtils.isResetContract(CONTRACT_TYPES.ASIAN.DOWN)).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isResetContract('')).toBe(false);
+    });
+});
+
+describe('isAsiansContract', () => {
+    it('should return true if contract_type is ASIAN', () => {
+        expect(ContractUtils.isAsiansContract(CONTRACT_TYPES.ASIAN.DOWN)).toBe(true);
+    });
+    it('should return false if contract_type is not ASIAN', () => {
+        expect(ContractUtils.isAsiansContract(CONTRACT_TYPES.TURBOS.LONG)).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isAsiansContract('')).toBe(false);
+    });
+});
+
+describe('hasTwoBarriers', () => {
+    it('should return true if contract_type is EXPIRY|RANGE|UPORDOWN', () => {
+        expect(ContractUtils.hasTwoBarriers(CONTRACT_TYPES.EXPIRYRANGEE)).toBe(true);
+    });
+    it('should return false if contract_type is not EXPIRY', () => {
+        expect(ContractUtils.hasTwoBarriers(CONTRACT_TYPES.TURBOS.LONG)).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.hasTwoBarriers('')).toBe(false);
+    });
+});
+
+describe('isLookBacksContract', () => {
+    it('should return true if contract_type is LB', () => {
+        expect(ContractUtils.isLookBacksContract(CONTRACT_TYPES.LB_HIGH_LOW)).toBe(true);
+    });
+    it('should return false if contract_type is not LB', () => {
+        expect(ContractUtils.isLookBacksContract(CONTRACT_TYPES.TURBOS.LONG)).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isLookBacksContract('')).toBe(false);
+    });
+});
+
+describe('isTicksContract', () => {
+    it('should return true if contract_type is TICK', () => {
+        expect(ContractUtils.isTicksContract(CONTRACT_TYPES.TICK_HIGH_LOW.HIGH)).toBe(true);
+    });
+    it('should return false if contract_type is not TICK', () => {
+        expect(ContractUtils.isTicksContract(CONTRACT_TYPES.TURBOS.LONG)).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isTicksContract('')).toBe(false);
     });
 });

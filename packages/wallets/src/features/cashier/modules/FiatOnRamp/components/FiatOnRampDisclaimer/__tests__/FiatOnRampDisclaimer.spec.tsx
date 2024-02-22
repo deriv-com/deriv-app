@@ -1,9 +1,9 @@
 import React from 'react';
-import { useMutation } from '@deriv/api';
+import { useMutation } from '@deriv/api-v2';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import FiatOnRampDisclaimer from '../FiatOnRampDisclaimer';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useMutation: jest.fn(),
 }));
 
@@ -43,7 +43,7 @@ describe('FiatOnRampDisclaimer', () => {
         const handleDisclaimer = jest.fn();
 
         render(<FiatOnRampDisclaimer handleDisclaimer={handleDisclaimer} />);
-        expect(screen.getByTestId('dt_wallets-loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
     });
 
     it('should call handleDisclaimer function on "Back" button click', () => {

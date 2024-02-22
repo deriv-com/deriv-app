@@ -6,7 +6,9 @@ import type {
     useAllAccountsList,
     useAllWalletAccounts,
     useAuthentication,
+    useAuthorize,
     useAvailableMT5Accounts,
+    useCreateMT5Account,
     useCreateOtherCFDAccount,
     useCreateWallet,
     useCryptoTransactions,
@@ -25,14 +27,16 @@ import type {
     useTransactions,
     useTransferBetweenAccounts,
     useWalletAccountsList,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
     export type AccountLimits = NonNullable<ReturnType<typeof useAccountLimits>['data']>;
     export type Authentication = NonNullable<ReturnType<typeof useAuthentication>['data']>;
     export type AvailableMT5Accounts = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number];
+    export type Authorize = NonNullable<ReturnType<typeof useAuthorize>['data']>;
     export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
+    export type CreateMT5Account = NonNullable<ReturnType<typeof useCreateMT5Account>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
     export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRateSubscription>['data']>;

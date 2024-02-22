@@ -2,6 +2,13 @@
     min-width: 12rem;
     width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    &--listcard {
+        min-width: 0;
+    }
 
     &--error {
         .wallets-textfield__box,
@@ -17,9 +24,11 @@
             border: 1px solid var(--brand-blue, #ec3f3f);
         }
 
+        .wallets-textfield__field:placeholder-shown ~ .wallets-textfield__label,
         .wallets-textfield__label {
             color: #ec3f3f;
         }
+
         .wallets-textfield__field:focus ~ .wallets-textfield__label {
             color: #ec3f3f;
         }
@@ -57,14 +66,20 @@
         &:hover {
             border-color: var(--system-light-3-less-prominent-text, #999);
         }
+
+        &--listcard {
+            border: none;
+            height: 2.4rem;
+            padding: 0;
+        }
     }
 
     &__box:has(&__field:focus) {
         border: 1px solid var(--brand-blue, #85acb0);
     }
 
-    &__box:has(&__field:valid) {
-        border: 1px solid var(--brand-blue, #85acb0);
+    &__box--listcard:has(&__field:focus) {
+        border: none;
     }
 
     &__box:has(&__field:invalid) {
@@ -79,6 +94,12 @@
         color: var(--system-light-2-general-text, #333);
         transition: border-color 0.2s;
         flex: 1;
+
+        &--listcard {
+            font-size: 1.6rem;
+            background: transparent;
+            padding: 0;
+        }
     }
 
     &__field::placeholder {
@@ -86,20 +107,22 @@
     }
 
     &__field:placeholder-shown ~ &__label {
+        color: var(--system-light-3-less-prominent-text, #999);
         font-size: 1.4rem;
         cursor: text;
-        top: 1.3rem;
+        top: 2rem;
         padding: 0;
     }
 
     label,
     &__field:focus ~ &__label {
         position: absolute;
-        top: -10%;
+        top: 0%;
+        transform: translateY(-50%);
         display: block;
         transition: 0.2s;
         font-size: 1rem;
-        color: var(--system-light-3-less-prominent-text, #999);
+        color: var(--text-general, #333);
         background: var(--system-light-8-primary-background, #fff);
         padding-inline: 0.4rem;
         left: 1.6rem;
@@ -123,12 +146,16 @@
 
         &-right {
             margin-left: 1.6rem;
+
+            &--listcard {
+                margin-left: 0.8rem;
+            }
         }
     }
 
     &__message-container {
-        height: 2rem;
-        padding: 0.2rem 0rem 0rem 1.6rem;
+        min-height: 2rem;
+        padding: 0rem 0rem 0rem 1.6rem;
         width: 100%;
 
         &--maxchar {

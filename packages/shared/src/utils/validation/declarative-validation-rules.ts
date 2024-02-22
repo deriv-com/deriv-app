@@ -4,14 +4,27 @@ import { compareBigUnsignedInt } from '../string';
 import { TFormErrorMessagesTypes } from './form-error-messages-types';
 
 export type TOptions = {
-    min?: number;
-    max?: number | string;
-    type?: string;
-    decimals?: string | number;
-    regex?: RegExp;
     [key: string]: unknown;
+    decimals?: string | number;
     is_required?: boolean;
+    max?: number | string | null;
+    min?: number | string | null;
+    name1?: string;
+    name2?: string;
+    regex?: RegExp;
+    type?: string;
 };
+
+export type TRuleOptions<S extends object = object> = {
+    func?: <T extends string>(
+        value: T,
+        options?: TOptions,
+        store?: S,
+        inputs?: Pick<S, keyof S>
+    ) => boolean | { is_ok: boolean; message: string };
+    condition?: (store: S) => boolean;
+    message?: string;
+} & TOptions;
 
 const validRequired = (value?: string | number /* , options, field */) => {
     if (value === undefined || value === null) {
@@ -47,7 +60,8 @@ export const validPhone = (value: string) => /^\+?([0-9-]+\s)*[0-9-]+$/.test(val
 export const validLetterSymbol = (value: string) => /^[A-Za-z]+([a-zA-Z.' -])*[a-zA-Z.' -]+$/.test(value);
 export const validName = (value: string) => /^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u.test(value);
 export const validLength = (value = '', options: TOptions) =>
-    (options.min ? value.length >= options.min : true) && (options.max ? value.length <= Number(options.max) : true);
+    (options.min ? value.length >= Number(options.min) : true) &&
+    (options.max ? value.length <= Number(options.max) : true);
 export const validPassword = (value: string) => /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}$/.test(value);
 export const validEmail = (value: string) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
 const validBarrier = (value: string) => /^[+-]?\d+\.?\d*$/.test(value);
@@ -56,6 +70,10 @@ const validRegular = (value: string, options: TOptions) => options.regex?.test(v
 const confirmRequired = (value: string) => !!value;
 const checkPOBox = (value: string) => !/p[.\s]+o[.\s]+box/i.test(value);
 const validEmailToken = (value: string) => value.trim().length === 8;
+export const hasInvalidCharacters = (target_string: string) => /[^\dX\s]/.test(target_string);
+export const isFormattedCardNumber = (target_string: string) =>
+    /(^\d{4})\s(\d{2}X{2})\s(X{4})\s(\d{4}$)/.test(target_string);
+export const validFile = (file: File) => file?.type && /(image|application)\/(jpe?g|pdf|png)$/.test(file?.type);
 
 let pre_build_dvrs: TInitPreBuildDVRs, form_error_messages: TFormErrorMessagesTypes;
 

@@ -1,12 +1,13 @@
 .wallets-deposit-crypto {
     position: relative;
+    height: fit-content;
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 2.4rem;
+    padding-bottom: 2.4rem;
 
     @include mobile {
-        height: fit-content;
         flex-direction: column;
         gap: 1.6rem;
     }
@@ -30,8 +31,10 @@
         justify-content: flex-end;
 
         .wallets-transaction-status {
-            margin-top: -2.4rem;
-            margin-right: 2.4rem;
+            @include desktop {
+                margin-top: -2.4rem;
+                margin-right: 2.4rem;
+            }
         }
     }
 }

@@ -1,27 +1,33 @@
 import React from 'react';
-import { Money, Icon, ThemedScrollbars } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { Money, Icon, ThemedScrollbars, Text } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import {
     addComma,
     epochToMoment,
     getCancellationPrice,
     getCurrencyDisplayCode,
     getLocalizedBasis,
+    formatResetDuration,
     hasTwoBarriers,
     isAccumulatorContract,
+    isAsiansContract,
     isEndedBeforeCancellationExpired,
     isMobile,
     isMultiplierContract,
     isSmartTraderContract,
-    isAsiansContract,
+    isLookBacksContract,
+    isTicksContract,
+    isResetContract,
     isTurbosContract,
     isUserCancelled,
     isUserSold,
     isVanillaFxContract,
-    toGMTFormat,
     TContractInfo,
+    CONTRACT_TYPES,
+    toGMTFormat,
 } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem from './contract-audit-item';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
@@ -44,6 +50,7 @@ const ContractDetails = ({
     is_vanilla,
 }: TContractDetails) => {
     const {
+        barrier,
         commission,
         contract_type,
         currency,
@@ -53,11 +60,16 @@ const ContractDetails = ({
         entry_tick_time,
         exit_tick_time,
         high_barrier,
+        is_sold,
         low_barrier,
         profit,
+        selected_tick,
+        status,
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
+        reset_barrier,
+        reset_time,
         underlying,
     } = contract_info;
 
@@ -67,10 +79,54 @@ const ContractDetails = ({
     const show_duration = !isAccumulatorContract(contract_type) || !isNaN(Number(contract_end_time));
     const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
     const ticks_label = Number(tick_count) < 2 ? localize('tick') : localize('ticks');
-    const show_strike_barrier = is_vanilla || isAsiansContract(contract_type);
+    const show_strike_barrier = is_vanilla || isAsiansContract(contract_type) || isResetContract(contract_type);
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${ticks_label}`;
+
+    const INDICATIVE_HIGH = 'H';
+    const INDICATIVE_LOW = 'L';
+
+    const additional_info = isResetContract(contract_type) ? (
+        <Localize
+            i18n_default_text='The reset time is {{ reset_time }}'
+            values={{
+                reset_time:
+                    Number(tick_count) > 0
+                        ? `${Math.floor(Number(tick_count) / 2)} ${ticks_label}`
+                        : formatResetDuration(contract_info),
+            }}
+        />
+    ) : (
+        ''
+    );
+
+    const createLookBacksMarker = (abbreviation?: string) => {
+        const low_spot_text = is_sold ? (
+            <Localize i18n_default_text='Low spot' />
+        ) : (
+            <Localize i18n_default_text='Indicative low spot' />
+        );
+        const high_spot_text = is_sold ? (
+            <Localize i18n_default_text='High spot' />
+        ) : (
+            <Localize i18n_default_text='Indicative high spot' />
+        );
+        return {
+            label: abbreviation === INDICATIVE_LOW ? low_spot_text : high_spot_text,
+            icon: (
+                <div className='lookbacks-marker__wrapper'>
+                    <Text color='colored-background' size='xxxs' className='lookbacks-marker__asset'>
+                        {abbreviation}
+                    </Text>
+                </div>
+            ),
+        };
+    };
+
+    const lookbacks_marker = createLookBacksMarker(
+        contract_type === CONTRACT_TYPES.LB_PUT ? INDICATIVE_HIGH : INDICATIVE_LOW
+    );
 
     const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
         ? getLocalizedBasis().payout_per_pip
@@ -127,15 +183,38 @@ const ContractDetails = ({
                                 icon={<Icon icon='IcContractDuration' size={24} />}
                                 label={localize('Duration')}
                                 value={Number(tick_count) > 0 ? ticks_duration_text : `${duration} ${duration_unit}`}
+                                additional_info={additional_info}
                             />
                         )}
                         {show_strike_barrier && (
-                            <ContractAuditItem
-                                id='dt_bt_label'
-                                icon={<Icon icon='IcContractStrike' size={24} />}
-                                label={getBarrierLabel(contract_info)}
-                                value={getBarrierValue(contract_info) || ' - '}
-                            />
+                            <React.Fragment>
+                                <ContractAuditItem
+                                    id='dt_bt_label'
+                                    icon={<Icon icon='IcContractStrike' size={24} />}
+                                    label={getBarrierLabel(contract_info)}
+                                    value={
+                                        (isResetContract(contract_type)
+                                            ? addComma(entry_spot_display_value)
+                                            : getBarrierValue(contract_info)) || ' - '
+                                    }
+                                />
+                                {reset_time && (
+                                    <React.Fragment>
+                                        <ContractAuditItem
+                                            id='dt_reset_barrier_label'
+                                            icon={<Icon icon='IcContractResetBarrier' size={24} />}
+                                            label={localize('Reset barrier')}
+                                            value={reset_barrier ? addComma(reset_barrier) : ' - '}
+                                        />
+                                        <ContractAuditItem
+                                            id='dt_reset_time_label'
+                                            icon={<Icon icon='IcContractResetTime' size={24} />}
+                                            label={localize('Reset time')}
+                                            value={toGMTFormat(epochToMoment(reset_time))}
+                                        />
+                                    </React.Fragment>
+                                )}
+                            </React.Fragment>
                         )}
                         {show_barrier && (
                             <ContractAuditItem
@@ -182,12 +261,61 @@ const ContractDetails = ({
                         )}
                     </React.Fragment>
                 )}
+                {isTicksContract(contract_type) && (
+                    <ContractAuditItem
+                        id='dt_entry_spot_label'
+                        icon={
+                            <div className='contract-audit__selected-tick'>
+                                <div
+                                    className={classNames(
+                                        'contract-audit__selected-tick--marker',
+                                        `contract-audit__selected-tick--marker--${status}`
+                                    )}
+                                >
+                                    {selected_tick}
+                                </div>
+                            </div>
+                        }
+                        label={localize('Selected tick')}
+                        value={barrier || '----'}
+                    />
+                )}
                 <ContractAuditItem
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}
                     label={localize('Start time')}
                     value={toGMTFormat(epochToMoment(Number(date_start))) || ' - '}
                 />
+                {isLookBacksContract(contract_type) && (
+                    <React.Fragment>
+                        {contract_type === CONTRACT_TYPES.LB_HIGH_LOW ? (
+                            <React.Fragment>
+                                {[high_barrier, low_barrier].map((barrier, index) => {
+                                    const high_low_marker = createLookBacksMarker(
+                                        index === 0 ? INDICATIVE_HIGH : INDICATIVE_LOW
+                                    );
+
+                                    return (
+                                        <ContractAuditItem
+                                            id={`dt_bt_label_${index + 1}`}
+                                            icon={high_low_marker.icon}
+                                            key={barrier}
+                                            label={high_low_marker.label}
+                                            value={barrier}
+                                        />
+                                    );
+                                })}
+                            </React.Fragment>
+                        ) : (
+                            <ContractAuditItem
+                                id='dt_indicative_high_spot'
+                                icon={lookbacks_marker.icon}
+                                label={lookbacks_marker.label}
+                                value={contract_info?.barrier}
+                            />
+                        )}
+                    </React.Fragment>
+                )}
                 {!isDigitType(contract_type) && (
                     <ContractAuditItem
                         id='dt_entry_spot_label'
@@ -195,6 +323,10 @@ const ContractDetails = ({
                         label={localize('Entry spot')}
                         value={entry_spot_display_value ? addComma(entry_spot_display_value) : ' - '}
                         value2={toGMTFormat(epochToMoment(Number(entry_tick_time))) || ' - '}
+                        additional_info={
+                            isTicksContract(contract_type) &&
+                            localize('The entry spot is the first tick for High/Low Ticks.')
+                        }
                     />
                 )}
                 {!isNaN(Number(exit_spot)) && (

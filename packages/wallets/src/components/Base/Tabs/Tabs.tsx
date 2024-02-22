@@ -4,11 +4,12 @@ import './Tabs.scss';
 
 type TabsProps = {
     children: ReactElement<TabTitleProps>[];
+    fontSize?: TabTitleProps['size'];
     preSelectedTab?: number;
     wrapperClassName?: string;
 };
 
-const Tabs: FC<TabsProps> = ({ children, preSelectedTab, wrapperClassName }): JSX.Element => {
+const Tabs: FC<TabsProps> = ({ children, fontSize = 'md', preSelectedTab, wrapperClassName }): JSX.Element => {
     const [selectedTabIndex, setSelectedTabIndex] = useState(preSelectedTab || 0);
 
     return (
@@ -21,6 +22,7 @@ const Tabs: FC<TabsProps> = ({ children, preSelectedTab, wrapperClassName }): JS
                         isActive={index === selectedTabIndex}
                         key={`wallets-tab-${item.props.title}`}
                         setSelectedTab={setSelectedTabIndex}
+                        size={fontSize}
                         title={item.props.title}
                     />
                 ))}

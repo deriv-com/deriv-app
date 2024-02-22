@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useHover } from 'usehooks-ts';
-import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api';
+import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
@@ -34,30 +34,29 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     }, [modal, mutate, transaction.id]);
 
     const onCancelButtonClick = useCallback(() => {
-        if (isMobile)
-            modal.show(
-                <WalletActionModal
-                    actionButtonsOptions={[
-                        {
-                            onClick: modal.hide,
-                            text: "No, don't cancel",
-                        },
-                        {
-                            isPrimary: true,
-                            onClick: cancelTransaction,
-                            text: 'Yes, cancel',
-                        },
-                    ]}
-                    description='Are you sure you want to cancel this transaction?'
-                    hideCloseButton
-                    title='Cancel transaction'
-                />,
-                { defaultRootId: 'wallets_modal_root' }
-            );
-    }, [cancelTransaction, isMobile, modal]);
+        modal.show(
+            <WalletActionModal
+                actionButtonsOptions={[
+                    {
+                        onClick: modal.hide,
+                        text: "No, don't cancel",
+                    },
+                    {
+                        isPrimary: true,
+                        onClick: cancelTransaction,
+                        text: 'Yes, cancel',
+                    },
+                ]}
+                description='Are you sure you want to cancel this transaction?'
+                hideCloseButton
+                title='Cancel transaction'
+            />,
+            { defaultRootId: 'wallets_modal_root' }
+        );
+    }, [cancelTransaction, modal]);
 
-    const onMobileStatusClick = useCallback(
-        () =>
+    const onMobileStatusClick = useCallback(() => {
+        if (isMobile) {
             modal.show(
                 <WalletActionModal
                     actionButtonsOptions={[
@@ -72,9 +71,9 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     title='Transaction details'
                 />,
                 { defaultRootId: 'wallets_modal_root' }
-            ),
-        [modal, transaction.description]
-    );
+            );
+        }
+    }, [isMobile, modal, transaction.description]);
 
     return (
         <div className='wallets-transactions-pending-row'>
@@ -118,9 +117,6 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     className={{ 'wallets-transactions-pending-row__transaction-confirmations': !isMobile }}
                     name='Confirmations'
                     value={transaction.formatted_confirmations.toString()}
-                    valueTextProps={{
-                        align: isMobile ? 'start' : 'center',
-                    }}
                 />
                 {isMobile && (
                     <React.Fragment>
@@ -145,6 +141,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     name='Time'
                     value={moment
                         .unix(transaction.submit_date)
+                        .utc()
                         .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]')}
                     valueTextProps={{
                         color: 'general',
@@ -184,7 +181,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 <WalletText color='general' size='sm'>
                     {transaction.status_name}
                 </WalletText>
-                {!isMobile && transaction.is_valid_to_cancel && (
+                {!isMobile && !!transaction.is_valid_to_cancel && (
                     <button
                         className='wallets-transactions-pending-row__transaction-cancel-button'
                         onClick={onCancelButtonClick}
@@ -194,7 +191,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 )}
             </button>
 
-            {isMobile && transaction.is_valid_to_cancel && (
+            {isMobile && !!transaction.is_valid_to_cancel && (
                 <WalletButton isFullWidth onClick={onCancelButtonClick} size='sm' variant='outlined'>
                     Cancel transaction
                 </WalletButton>

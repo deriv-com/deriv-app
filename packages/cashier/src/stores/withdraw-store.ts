@@ -1,8 +1,7 @@
 import { action, computed, observable, makeObservable } from 'mobx';
-import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, getMinWithdrawal, validNumber } from '@deriv/shared';
 import { CryptoConfig } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import { TWebSocket, TRootStore } from '../types';
@@ -350,14 +349,6 @@ export default class WithdrawStore {
                     'The current allowed withdraw amount is {{format_min_withdraw_amount}} to {{format_max_withdraw_amount}} {{currency}}',
                     { format_min_withdraw_amount, format_max_withdraw_amount, currency }
                 );
-            }
-
-            if (isMobile() && (error_message as string).length > 35) {
-                const error_content = error_message;
-                const openDialog = () => {
-                    this.error.setErrorMessage({ code: 'CryptoWithdrawalReadMore', message: error_content as string });
-                };
-                error_message = ReadMoreWrapper({ error_content, openDialog });
             }
         }
         setConverterFromError(error_message);

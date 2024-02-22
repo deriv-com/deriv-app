@@ -1,9 +1,10 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { useDocumentUpload, useIdentityDocumentVerificationAdd, usePOA, usePOI, useSettings } from '@deriv/api';
+import { useDocumentUpload, useIdentityDocumentVerificationAdd, usePOA, usePOI, useSettings } from '@deriv/api-v2';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
+import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import {
     ManualDocumentUpload,
@@ -81,6 +82,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: settings, update: updateSettings } = useSettings();
     const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
+    const { isMobile } = useDevice();
 
     const selectedMarketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
@@ -124,7 +126,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.firstName ||
                     !formValues.lastName ||
                     !formValues.dateOfBirth ||
-                    !!errors.documentNumber
+                    !formValues.verifiedIdvDetails ||
+                    !!errors.documentNumber ||
+                    !!errors.firstName ||
+                    !!errors.lastName ||
+                    !!errors.dateOfBirth
                 );
             case 'manualScreen':
                 if (formValues.selectedManualDocument === 'driving-license') {
@@ -280,6 +286,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                                 : () => (
                                       <WalletButton
                                           disabled={isNextDisabled(context)}
+                                          isFullWidth={isMobile}
                                           isLoading={isNextLoading(context)}
                                           onClick={() => nextFlowHandler(context)}
                                           size='lg'

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useAvailableMT5Accounts } from '@deriv/api';
+import { useAvailableMT5Accounts } from '@deriv/api-v2';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -29,7 +29,7 @@ const JurisdictionModal = () => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
-    const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
+    const jurisdictionTitle = `Choose a jurisdiction for your ${PlatformDetails.mt5.title} ${title} account`;
 
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === 'svg') {

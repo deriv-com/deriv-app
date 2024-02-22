@@ -6,11 +6,11 @@ import {
     getSymbolDisplayName,
     getCardLabels,
     getContractTypeDisplay,
+    getMarketInformation,
     isCryptoContract,
     isDesktop,
     toMoment,
 } from '@deriv/shared';
-import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components';
 import MarketClosedContractOverlay from './market-closed-contract-overlay';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -37,7 +37,7 @@ type TContractDrawerCardProps = {
     | 'is_multiplier'
     | 'is_turbos'
     | 'is_vanilla'
-    | 'status'
+    | 'is_lookbacks'
 > &
     Pick<TContractCardFooterProps, 'is_sell_requested' | 'onClickCancel' | 'onClickSell'> &
     Pick<TSwipeableContractDrawerProps, 'onSwipedDown' | 'onSwipedUp'>;
@@ -56,13 +56,13 @@ const ContractDrawerCard = observer(
         is_smarttrader_contract,
         is_sell_requested,
         is_turbos,
+        is_lookbacks,
         onClickCancel,
         onClickSell,
         onSwipedUp,
         onSwipedDown,
         result,
         server_time = toMoment(),
-        status,
         toggleContractAuditDrawer,
     }: TContractDrawerCardProps) => {
         const { ui, contract_trade } = useStore();
@@ -118,12 +118,12 @@ const ContractDrawerCard = observer(
                 is_sold={is_sold}
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
+                is_lookbacks={is_lookbacks}
                 has_progress_slider={has_progress_slider}
                 removeToast={removeToast}
                 server_time={server_time}
                 setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
-                status={status ?? ''}
                 toggleCancellationWarning={toggleCancellationWarning}
             />
         );
@@ -133,6 +133,7 @@ const ContractDrawerCard = observer(
                 contract_info={contract_info}
                 getCardLabels={getCardLabels}
                 is_multiplier={is_multiplier}
+                is_lookbacks={is_lookbacks}
                 is_sell_requested={is_sell_requested}
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}

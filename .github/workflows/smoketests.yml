@@ -28,13 +28,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
     - name: Checkout external repository with Cypress tests
-      uses: actions/checkout@v4
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       with:
         repository: deriv-com/e2e-deriv-app
 
     - name: Cypress run
       # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
-      uses: cypress-io/github-action@v6
+      uses: cypress-io/github-action@1b70233146622b69e789ccdd4f9452adc638d25a
       with:
         # Records to Cypress Cloud 
         # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
@@ -74,7 +74,7 @@ jobs:
         
     - name: Leave comment
       if: always()
-      uses: marocchino/sticky-pull-request-comment@v2
+      uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
       with:
         header: Smoke tests status update
         number: ${{ github.event.issue.number }}

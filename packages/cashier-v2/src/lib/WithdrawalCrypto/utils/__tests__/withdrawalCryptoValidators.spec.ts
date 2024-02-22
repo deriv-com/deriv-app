@@ -6,7 +6,7 @@ describe('withdrawalCryptoValidator', () => {
     let mockIsClientVerified = true;
     let mockCryptoAddress = 'jds93e9f8wefun9w8efrn98wefn09inf0';
 
-    const mockActiveWallet = {
+    const mockActiveAccount = {
         balance: 10,
         currency: 'BTC',
         currency_config: {
@@ -28,7 +28,7 @@ describe('withdrawalCryptoValidator', () => {
 
     it('should check if no errors are returned when valid inputs are provided for crypto amount', () => {
         const cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -61,7 +61,7 @@ describe('withdrawalCryptoValidator', () => {
     it('should return "Should be a valid number." error for invalid crypto amount', () => {
         mockValue = 'aad';
         let cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -72,7 +72,7 @@ describe('withdrawalCryptoValidator', () => {
 
         mockValue = '5.';
         cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -83,7 +83,7 @@ describe('withdrawalCryptoValidator', () => {
 
         mockValue = '.';
         cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -94,7 +94,7 @@ describe('withdrawalCryptoValidator', () => {
 
         mockValue = '5.03abcd';
         cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -130,7 +130,7 @@ describe('withdrawalCryptoValidator', () => {
         mockValue = '11.0000000';
 
         let cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -142,7 +142,7 @@ describe('withdrawalCryptoValidator', () => {
         mockIsClientVerified = false;
 
         cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -157,7 +157,7 @@ describe('withdrawalCryptoValidator', () => {
         mockIsClientVerified = true;
 
         const cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -172,7 +172,7 @@ describe('withdrawalCryptoValidator', () => {
         mockIsClientVerified = true;
 
         const cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -187,7 +187,7 @@ describe('withdrawalCryptoValidator', () => {
         mockIsClientVerified = false;
 
         const cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
@@ -202,7 +202,7 @@ describe('withdrawalCryptoValidator', () => {
         mockIsClientVerified = false;
 
         const cryptoAmountMessages = validateCryptoInput(
-            mockActiveWallet,
+            mockActiveAccount,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,

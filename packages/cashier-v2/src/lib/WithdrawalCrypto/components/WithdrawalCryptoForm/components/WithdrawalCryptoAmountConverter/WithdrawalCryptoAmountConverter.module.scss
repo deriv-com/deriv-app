@@ -1,15 +1,3 @@
-.wallets-withdrawal-crypto-amount-converter {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    gap: 2.4rem;
-
-    @include mobile-cashier-v2 {
-        flex-direction: column;
-        gap: 0;
-    }
-}
-
 .container {
     width: 100%;
     display: flex;

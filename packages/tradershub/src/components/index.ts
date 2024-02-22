@@ -13,6 +13,7 @@ export * from './IconComponent';
 export * from './Loaders';
 export * from './Modal';
 export * from './OptionsAndMultipliersSection';
+export * from './ProgressBar';
 export * from './RegulationSwitcher';
 export * from './SentEmailContent';
 export * from './StaticLink';

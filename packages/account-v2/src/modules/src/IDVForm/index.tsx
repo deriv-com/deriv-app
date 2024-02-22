@@ -2,10 +2,10 @@ import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api';
 import { useBreakpoint } from '@deriv/quill-design';
-import { WalletDropdown } from '../../components/base/WalletDropdown';
-import { WalletTextField } from '../../components/base/WalletTextField';
-import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
-import { getIDVNotApplicableOption } from '../../utils/default-options';
+import { WalletDropdown } from '../../../components/base/WalletDropdown';
+import { WalletTextField } from '../../../components/base/WalletTextField';
+import { DOCUMENT_LIST } from '../../../mocks/idv-form.mock';
+import { getIDVNotApplicableOption } from '../../../utils/default-options';
 import { getSelectedDocumentConfigData, TDocument } from './utils';
 
 type TIDVFormProps = {

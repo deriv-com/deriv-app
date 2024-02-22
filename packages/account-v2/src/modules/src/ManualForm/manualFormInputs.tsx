@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { Field, FieldProps } from 'formik';
 import { Input } from '@deriv-com/ui';
-import { WalletDatePicker } from '../../components/base/WalletDatePicker';
-import { WalletText } from '../../components/base/WalletText';
-import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { useManualForm } from '../../hooks';
-import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
+import { WalletDatePicker } from '../../../components/base/WalletDatePicker';
+import { WalletText } from '../../../components/base/WalletText';
+import { TManualDocumentTypes } from '../../../constants/manualFormConstants';
+import { useManualForm } from '../../../hooks';
+import { getFieldsConfig, getTitleForFormInputs } from '../../../utils/manualFormUtils';
 
 type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
 
@@ -16,7 +16,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
     return (
         <Fragment>
             <WalletText>{getTitleForFormInputs(selectedDocument)}</WalletText>
-            <div className='gap-1200 flex flex-col lg:grid lg:grid-cols-2'>
+            <div className='flex flex-col gap-1200 lg:grid lg:grid-cols-2'>
                 <Field name='document_number'>
                     {({ field, meta }: FieldProps) => {
                         const hasError = meta.touched && !!meta.error;

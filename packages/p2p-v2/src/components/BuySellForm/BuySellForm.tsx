@@ -66,7 +66,6 @@ const BuySellForm = ({
         min_order_amount_limit_display,
         order_expiry_period,
         payment_method_names,
-        rate,
         rate_type,
         type,
     } = advert;
@@ -90,14 +89,17 @@ const BuySellForm = ({
     });
     const { isMobile } = useDevice();
 
-    const onSubmit = event => {
+    const onSubmit = () => {
         //TODO: error handling after implementation of exchange rate
-        mutate({
+        const rateValue = rate_type === RATE_TYPE.FIXED ? null : effectiveRate;
+        const payload = {
             advert_id: id,
-            amount: getValues('amount'),
-            rate,
-        });
-        event.preventDefault();
+            amount: Number(getValues('amount')),
+        };
+        if (rateValue) {
+            payload.rate = rateValue;
+        }
+        mutate(payload);
     };
 
     const calculatedRate = removeTrailingZeros(roundOffDecimal(effectiveRate, setDecimalPlaces(effectiveRate, 6)));

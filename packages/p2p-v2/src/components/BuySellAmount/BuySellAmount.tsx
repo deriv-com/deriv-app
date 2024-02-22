@@ -75,6 +75,7 @@ const BuySellAmount = ({
                                         {accountCurrency}
                                     </Text>
                                 }
+                                step='any'
                                 type='number'
                                 value={value}
                             />

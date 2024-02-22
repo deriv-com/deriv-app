@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import {
     GetADerivAccountDialog,
-    PlatformIcon,
+    IconComponent,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
@@ -14,7 +14,7 @@ import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
 
 const LeadingIcon = () => (
-    <PlatformIcon
+    <IconComponent
         icon='CTrader'
         onClick={() => {
             window.open(getStaticUrl('/deriv-ctrader'));

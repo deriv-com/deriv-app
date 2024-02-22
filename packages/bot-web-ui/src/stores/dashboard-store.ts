@@ -51,6 +51,7 @@ export interface IDashboardStore {
     toast_message: string;
     is_chart_modal_visible: boolean;
     is_trading_view_modal_visible: boolean;
+    setPreviewOnPopup: (is_preview_on_popup: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {

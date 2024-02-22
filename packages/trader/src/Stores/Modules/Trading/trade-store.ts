@@ -32,6 +32,7 @@ import {
     hasBarrier,
     isHighLow,
     CONTRACT_TYPES,
+    getContractTypesConfig,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -972,6 +973,32 @@ export default class TradeStore extends BaseStore {
                                     status: 'open',
                                 });
                             }
+                            // console.log('8 purchase contract');
+                            if (
+                                !this.root_store.ui.is_mobile &&
+                                (this.basis_list.length > 1 || this.duration_units_list.length > 1)
+                            ) {
+                                const durationMode =
+                                    this.root_store.ui.is_advanced_duration && this.expiry_type
+                                        ? this.expiry_type
+                                        : this.duration_units_list.find(({ value }) => value === this.duration_unit)
+                                              ?.text ?? '';
+                                Analytics.trackEvent(
+                                    'ce_contracts_set_up_form' as keyof TEvents,
+                                    {
+                                        action: 'run_contract',
+                                        form_name: 'default',
+                                        trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
+                                        ...(this.duration_units_list.length > 1
+                                            ? { switcher_duration_mode_name: durationMode.toLowerCase() }
+                                            : {}),
+                                        ...(this.basis_list.length > 1
+                                            ? { switcher_stakepayout_mode_name: this.basis }
+                                            : {}),
+                                    } as unknown as TEvents['ce_trade_types_form']
+                                );
+                            }
+
                             this.is_purchasing_contract = false;
                             return;
                         }

@@ -13,7 +13,7 @@ import AdvancedDuration from './advanced-duration';
 import SimpleDuration from './simple-duration';
 import debounce from 'lodash.debounce';
 
-const debouncedChangeDurationValue = debounce(
+const debouncedSendDurationMetrics = debounce(
     (
         target: { name: string; value: string | number; type?: string },
         value: string,
@@ -155,7 +155,7 @@ const Duration = ({
         if (value) {
             const validValue = min_value && +value < min_value ? min_value : +value;
             const displayedValue = max_value && +value > max_value ? max_value : validValue;
-            debouncedChangeDurationValue(target, `${displayedValue}`, contract_type, duration_unit === 't');
+            debouncedSendDurationMetrics(target, `${displayedValue}`, contract_type, duration_unit === 't');
         }
     };
 

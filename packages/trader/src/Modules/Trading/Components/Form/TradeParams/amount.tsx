@@ -13,7 +13,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 import debounce from 'lodash.debounce';
 
-const debouncedChangeDurationValue = debounce(
+const debouncedSendAmountMetrics = debounce(
     (
         target: { name: string; value: string | number; type?: string },
         value: string,
@@ -137,7 +137,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
         const { value } = target;
         onChange({ target });
         if (value) {
-            debouncedChangeDurationValue(target, `${value}`, contract_type, basis === 'payout');
+            debouncedSendAmountMetrics(target, `${value}`, contract_type, basis === 'payout');
         }
     };
 

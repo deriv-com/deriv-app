@@ -17,7 +17,7 @@ const MT5MigrationModal = observer(() => {
     } = ui;
 
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
-    const [show_migration_error, setShowMigrationError] = React.useState(false);
+    const [migration_error, setMigrationError] = React.useState('');
 
     const modal_title = (
         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
@@ -35,28 +35,25 @@ const MT5MigrationModal = observer(() => {
         <div>
             <React.Suspense fallback={<UILoader />}>
                 <MT5MigrationModalContext.Provider
-                    value={{ show_modal_front_side, setShowModalFrontSide, setShowMigrationError }}
+                    value={{ show_modal_front_side, setShowModalFrontSide, setMigrationError }}
                 >
                     <Dialog
                         title={localize('Sorry for the interruption')}
                         confirm_button_text={localize('Try again')}
                         onConfirm={() => {
-                            setShowMigrationError(false);
+                            setMigrationError('');
                             closeModal();
                         }}
                         disableApp={disableApp}
                         enableApp={enableApp}
                         has_close_icon
                         className='mt5-migration-modal__error-dialog'
-                        is_visible={show_migration_error}
+                        is_visible={!!migration_error}
                         onClose={() => {
-                            setShowMigrationError(false);
+                            setMigrationError('');
                         }}
                     >
-                        <Localize
-                            i18n_default_text="We're unable to upgrade your <0>MT5 account</0> at this time and we're working to get this fixed as soon as we can.  Please try again."
-                            components={[<strong key={0} />]}
-                        />
+                        <Localize i18n_default_text='{{migration_error}}' values={{ migration_error }} />
                     </Dialog>
                     <DesktopWrapper>
                         <Modal

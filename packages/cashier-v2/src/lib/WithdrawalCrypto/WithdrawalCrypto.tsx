@@ -15,7 +15,6 @@ const WithdrawalCrypto: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles['side-pane']} />
             <div className={styles.content}>
                 <Text weight='bold'>
                     Withdraw {activeAccount?.currency ? getCurrencyConfig(activeAccount?.currency)?.name : ''} (
@@ -24,7 +23,6 @@ const WithdrawalCrypto: React.FC = () => {
                 <WithdrawalCryptoDisclaimer />
                 <WithdrawalCryptoForm />
             </div>
-            <div className={styles['side-pane']} />
         </div>
     );
 };

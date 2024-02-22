@@ -77,7 +77,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                     />
                 )}
             </Field>
-            <div className={clsx(styles.arrow, !isCryptoInputActive && styles['arrow-rtl'])}>
+            <div className={clsx(styles.arrow, { [styles['arrow-rtl']]: !isCryptoInputActive })}>
                 <ArrowBold />
             </div>
             <Field name='fiatAmount' validate={(value: string) => validateFiatInput(fractionalDigits, value)}>

@@ -25,6 +25,8 @@ const WithdrawalCryptoForm: React.FC = () => {
             }
         >
             {({ errors, handleSubmit, isSubmitting, values }) => {
+                const isSubmitButtonDisabled = Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting;
+
                 return (
                     <form autoComplete='off' className={styles.container} onSubmit={handleSubmit}>
                         <div className={styles['crypto-address']}>
@@ -44,12 +46,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                         <WithdrawalCryptoPercentageSelector />
                         <WithdrawalCryptoAmountConverter />
                         <div className={styles.submit}>
-                            <Button
-                                disabled={Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting}
-                                isLoading={isSubmitting}
-                                size='lg'
-                                type='submit'
-                            >
+                            <Button disabled={isSubmitButtonDisabled} isLoading={isSubmitting} size='lg' type='submit'>
                                 Withdraw
                             </Button>
                         </div>

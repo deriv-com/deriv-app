@@ -26,14 +26,3 @@
         gap: 1.6rem;
     }
 }
-
-.side-pane {
-    height: fit-content;
-    display: flex;
-    flex: 1 1 0;
-    justify-content: flex-end;
-
-    @include mobile-cashier-v2 {
-        width: 100%;
-    }
-}

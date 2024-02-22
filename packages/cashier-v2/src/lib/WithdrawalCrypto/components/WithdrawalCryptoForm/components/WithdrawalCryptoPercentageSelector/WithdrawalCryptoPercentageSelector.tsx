@@ -31,38 +31,41 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
             values.cryptoAmount
         ) && !validateFiatInput(fractionalDigits, values.fiatAmount);
 
+    const onChangePercentage = (percentage: number) => {
+        if (activeAccount?.balance) {
+            const fraction = percentage / 100;
+            const cryptoAmount = (activeAccount.balance * fraction).toFixed(fractionalDigits.crypto);
+            const fiatAmount = !validateCryptoInput(
+                activeAccount,
+                fractionalDigits,
+                isClientVerified,
+                accountLimits?.remainder ?? 0,
+                cryptoAmount
+            )
+                ? getConvertedFiatAmount(cryptoAmount)
+                : '';
+
+            return setValues({
+                ...values,
+                cryptoAmount,
+                fiatAmount,
+            });
+        }
+    };
+
+    const percentageAmount =
+        activeAccount?.balance &&
+        !Number.isNaN(parseFloat(values.cryptoAmount)) &&
+        parseFloat(values.cryptoAmount) <= activeAccount.balance
+            ? parseFloat(values.cryptoAmount)
+            : 0;
+
     return (
         <div className={styles['percentage-selector']}>
             <PercentageSelector
-                amount={
-                    activeAccount?.balance &&
-                    !Number.isNaN(parseFloat(values.cryptoAmount)) &&
-                    parseFloat(values.cryptoAmount) <= activeAccount.balance
-                        ? parseFloat(values.cryptoAmount)
-                        : 0
-                }
+                amount={percentageAmount}
                 balance={activeAccount?.balance ?? 0}
-                onChangePercentage={percentage => {
-                    if (activeAccount?.balance) {
-                        const fraction = percentage / 100;
-                        const cryptoAmount = (activeAccount.balance * fraction).toFixed(fractionalDigits.crypto);
-                        const fiatAmount = !validateCryptoInput(
-                            activeAccount,
-                            fractionalDigits,
-                            isClientVerified,
-                            accountLimits?.remainder ?? 0,
-                            cryptoAmount
-                        )
-                            ? getConvertedFiatAmount(cryptoAmount)
-                            : '';
-
-                        return setValues({
-                            ...values,
-                            cryptoAmount,
-                            fiatAmount,
-                        });
-                    }
-                }}
+                onChangePercentage={onChangePercentage}
             />
             <div className={styles['percentage-message']}>
                 <Text color='less-prominent' size='xs'>

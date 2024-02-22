@@ -1,6 +1,5 @@
 import React from 'react';
 import { Badge } from '@/components';
-import { useAdvertiserStats } from '@/hooks';
 import './AdvertiserNameBadges.scss';
 
 /**
@@ -9,9 +8,7 @@ import './AdvertiserNameBadges.scss';
  *
  * Use cases are usually in My Profile page and Advertiser page used under the advertiser's name
  */
-const AdvertiserNameBadges = () => {
-    const { data: advertiserStats } = useAdvertiserStats();
-
+const AdvertiserNameBadges = ({ advertiserStats }) => {
     const { isAddressVerified, isIdentityVerified, totalOrders } = advertiserStats || {};
 
     return (

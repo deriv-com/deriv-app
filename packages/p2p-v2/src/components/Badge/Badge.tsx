@@ -11,6 +11,8 @@ type TBadgeProps = {
 };
 
 const Badge = ({ label, status, tradeCount, variant }: TBadgeProps) => {
+    const isGeneral = variant === 'general' ? 'less-prominent' : 'white';
+
     if (tradeCount) {
         return (
             <div
@@ -33,10 +35,10 @@ const Badge = ({ label, status, tradeCount, variant }: TBadgeProps) => {
                 'p2p-v2-badge--warning': variant === 'warning',
             })}
         >
-            <Text className='p2p-v2-badge__label' color='white' weight='bold'>
+            <Text className='p2p-v2-badge__label' color={isGeneral} weight='bold'>
                 {label}
             </Text>
-            <Text className='p2p-v2-badge__status' color='white'>
+            <Text className='p2p-v2-badge__status' color={isGeneral}>
                 {status}
             </Text>
         </div>

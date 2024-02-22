@@ -1,6 +1,8 @@
 import React from 'react';
-import { StarRating } from '@/components';
-import { useAdvertiserStats, useDevice } from '@/hooks';
+import clsx from 'clsx';
+import { OnlineStatusIcon, OnlineStatusLabel, StarRating } from '@/components';
+import { useDevice } from '@/hooks';
+import { getCurrentRoute } from '@/utils';
 import { Text } from '@deriv-com/ui';
 import ThumbUpIcon from '../../public/ic-thumb-up.svg';
 import BlockedUserOutlineIcon from '../../public/ic-user-blocked-outline.svg';
@@ -13,16 +15,34 @@ import './AdvertiserNameStats.scss';
  *
  * Use cases are to show this in My Profile and Advertiser page
  */
-const AdvertiserNameStats = () => {
-    const { data: advertiserStats } = useAdvertiserStats();
+const AdvertiserNameStats = ({ advertiserStats }) => {
     const { isMobile } = useDevice();
+    const isMyProfile = getCurrentRoute() === 'my-profile';
 
-    const { blocked_by_count, daysSinceJoined, rating_average, rating_count, recommended_average } =
-        advertiserStats || {};
+    const {
+        blocked_by_count,
+        daysSinceJoined,
+        is_online,
+        last_online_time,
+        rating_average,
+        rating_count,
+        recommended_average,
+    } = advertiserStats || {};
 
     return (
-        <div className='p2p-v2-advertiser-name-stats' data-testid='dt_p2p_v2_advertiser_name_stats'>
+        <div
+            className={clsx('p2p-v2-advertiser-name-stats', {
+                'gap-2': !isMyProfile && isMobile,
+            })}
+            data-testid='dt_p2p_v2_advertiser_name_stats'
+        >
             <div>
+                {!isMyProfile && (
+                    <div className='border-r-[1px] border-solid border-r-[#ededed]'>
+                        <OnlineStatusIcon isOnline={is_online} isRelative size='0.8em' />
+                        <OnlineStatusLabel isOnline={is_online} lastOnlineTime={last_online_time} />
+                    </div>
+                )}
                 <Text color='less-prominent' size='sm'>
                     Joined {daysSinceJoined}d
                 </Text>
@@ -43,7 +63,7 @@ const AdvertiserNameStats = () => {
                                     ({rating_average})
                                 </Text>
                             )}
-                            <StarRating ratingValue={rating_average} />
+                            <StarRating isReadonly ratingValue={rating_average} />
                             <Text color='less-prominent' size='sm'>
                                 ({rating_count} ratings)
                             </Text>
@@ -57,12 +77,14 @@ const AdvertiserNameStats = () => {
                     </div>
                 </>
             )}
-            <div>
-                <BlockedUserOutlineIcon />
-                <Text color='less-prominent' size='sm'>
-                    {blocked_by_count || 0}
-                </Text>
-            </div>
+            {isMyProfile && (
+                <div>
+                    <BlockedUserOutlineIcon />
+                    <Text color='less-prominent' size='sm'>
+                        {blocked_by_count || 0}
+                    </Text>
+                </div>
+            )}
         </div>
     );
 };

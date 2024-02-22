@@ -2,7 +2,7 @@ import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import MyProfileDailyLimit from '../MyProfileDailyLimit';
+import ProfileDailyLimit from '../ProfileDailyLimit';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
@@ -37,9 +37,9 @@ jest.mock('@deriv/api', () => ({
     })),
 }));
 
-describe('MyProfileDailyLimit', () => {
+describe('ProfileDailyLimit', () => {
     it('should render the correct limits message', () => {
-        render(<MyProfileDailyLimit />, { wrapper });
+        render(<ProfileDailyLimit />, { wrapper });
         const tokens = ['Want to increase your daily limits to (buy) and (sell)?', '100 USD ', '200 USD '];
 
         expect(
@@ -49,7 +49,7 @@ describe('MyProfileDailyLimit', () => {
         ).toBeInTheDocument();
     });
     it('should render limits modal when requested to increase limits', () => {
-        render(<MyProfileDailyLimit />, { wrapper });
+        render(<ProfileDailyLimit />, { wrapper });
         const increaseLimitsBtn = screen.getByRole('button', {
             name: 'Increase my limits',
         });

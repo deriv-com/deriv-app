@@ -1,18 +1,13 @@
-import React, { memo, useState } from 'react';
-import { Table } from '@/components';
+import React, { useState } from 'react';
+import { TAdvertsTableRowRenderer } from 'types';
+import { AdvertsTableRow, Table } from '@/components';
 import { RadioGroupFilterModal } from '@/components/Modals';
 import { BUY_SELL, SORT_BY_LIST } from '@/constants';
 import { TSortByValues } from '@/utils';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
 import { BuySellHeader } from '../BuySellHeader';
-import { BuySellTableRow } from '../BuySellTableRow';
 import './BuySellTable.scss';
-
-export type TBuySellTableRowRenderer = Partial<NonNullable<ReturnType<typeof p2p.advert.useGetList>['data']>[0]>;
-
-const BuySellRowRenderer = memo((values: TBuySellTableRowRenderer) => <BuySellTableRow {...values} />);
-BuySellRowRenderer.displayName = 'BuySellRowRenderer';
 
 const columns = [
     { header: 'Advertisers' },
@@ -60,7 +55,7 @@ const BuySellTable = () => {
                     isFetching={isFetching}
                     loadMoreFunction={loadMoreAdverts}
                     renderHeader={headerRenderer}
-                    rowRender={(data: unknown) => <BuySellRowRenderer {...(data as TBuySellTableRowRenderer)} />}
+                    rowRender={(data: unknown) => <AdvertsTableRow {...(data as TAdvertsTableRowRenderer)} />}
                     tableClassname=''
                 />
             )}

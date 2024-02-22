@@ -2,7 +2,7 @@ import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import MyProfileBalance from '../MyProfileBalance';
+import ProfileBalance from '../ProfileBalance';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
@@ -42,9 +42,9 @@ jest.mock('@deriv/api', () => ({
     useActiveAccount: jest.fn(() => mockUseActiveAccount),
 }));
 
-describe('MyProfileBalance', () => {
+describe('ProfileBalance', () => {
     it('should render the correct balance', () => {
-        render(<MyProfileBalance />, { wrapper });
+        render(<ProfileBalance />, { wrapper });
         const availableBalanceNode = screen.getByTestId('dt_p2p_v2_available_balance_amount');
         expect(within(availableBalanceNode).getByText('50,000.00 USD')).toBeInTheDocument();
 
@@ -69,7 +69,7 @@ describe('MyProfileBalance', () => {
             },
             isLoading: false,
         };
-        render(<MyProfileBalance />, { wrapper });
+        render(<ProfileBalance />, { wrapper });
         const dailyBuyLimitNode = screen.getByTestId('dt_p2p_v2_profile_balance_daily_buy_limit');
         expect(within(dailyBuyLimitNode).getByText('500 USD')).toBeInTheDocument();
         const availableBuyLimitNode = screen.getByTestId('dt_p2p_v2_profile_balance_available_buy_limit');
@@ -88,7 +88,7 @@ describe('MyProfileBalance', () => {
             },
             isLoading: false,
         };
-        render(<MyProfileBalance />, { wrapper });
+        render(<ProfileBalance />, { wrapper });
         expect(screen.getByTestId('dt_p2p_v2_profile_daily_limit')).toBeInTheDocument();
 
         const openDailyLimitModalBtn = screen.getByRole('button', {
@@ -107,7 +107,7 @@ describe('MyProfileBalance', () => {
             data: {},
             isLoading: false,
         };
-        render(<MyProfileBalance />, { wrapper });
+        render(<ProfileBalance />, { wrapper });
         const availableBalanceNode = screen.getByTestId('dt_p2p_v2_available_balance_amount');
         expect(within(availableBalanceNode).getByText('0.00 USD')).toBeInTheDocument();
         const dailyBuyLimitNode = screen.getByTestId('dt_p2p_v2_profile_balance_daily_buy_limit');

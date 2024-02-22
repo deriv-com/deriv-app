@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop, routes, ContentFlag, checkServerMaintenance } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -11,7 +11,7 @@ import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
 
-// const ModalManager = React.lazy(() => import('Components/modals/modal-manager'));
+const ModalManager = React.lazy(() => import('Components/modals/modal-manager'));
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -165,7 +165,9 @@ const TradersHub = observer(() => {
                         )}
                         {getOrderedPlatformSections()}
                     </MobileWrapper>
-                    {/* <Suspense><ModalManager /></Suspense> */}
+                    <Suspense>
+                        <ModalManager />
+                    </Suspense>
                     {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>

@@ -32,7 +32,7 @@ type TProps = {
     size: 'lg' | 'md' | 'sm' | 'xl';
 };
 
-const CurrencyIcon = ({ currency, size }: TProps) => {
+const CurrencyIcon: React.FC<TProps> = ({ currency, size }) => {
     const Icon = iconMapper[currency];
 
     return <Icon iconSize={size} />;

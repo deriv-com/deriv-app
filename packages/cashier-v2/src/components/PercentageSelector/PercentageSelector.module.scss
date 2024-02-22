@@ -4,7 +4,7 @@
     justify-content: space-between;
     width: 100%;
     height: fit-content;
-    gap: 4px;
+    gap: 0.4rem;
 
     @include mobile-cashier-v2 {
         width: 100%;
@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 2px;
+    gap: 0.2rem;
 
     @include mobile-cashier-v2 {
         flex: 1;

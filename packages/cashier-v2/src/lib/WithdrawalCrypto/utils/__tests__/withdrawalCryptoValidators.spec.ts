@@ -12,7 +12,7 @@ describe('withdrawalCryptoValidator', () => {
         currency_config: {
             minimum_withdrawal: 1,
         },
-    } as THooks.ActiveWalletAccount;
+    } as THooks.ActiveAccount;
 
     const mockFractionalDigits = {
         crypto: 7,

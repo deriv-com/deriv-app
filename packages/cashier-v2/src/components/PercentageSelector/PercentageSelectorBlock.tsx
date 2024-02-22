@@ -1,5 +1,5 @@
 import React from 'react';
-import Text from '../../../../components/src/components/text';
+import { Text } from '@deriv-com/ui';
 import styles from './PercentageSelector.module.scss';
 
 type TPercentageSelectorBlock = {
@@ -8,7 +8,7 @@ type TPercentageSelectorBlock = {
     onClick: VoidFunction;
 };
 
-const PercentageSelectorBlock = ({ fillPercentage, label, onClick }: TPercentageSelectorBlock) => {
+const PercentageSelectorBlock: React.FC<TPercentageSelectorBlock> = ({ fillPercentage, label, onClick }) => {
     return (
         <div className={styles['block-container']}>
             <Text color='prominent' size='xs'>

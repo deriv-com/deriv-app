@@ -16,7 +16,7 @@ type TPercentageSelector = {
     onChangePercentage: (percentage: number) => void;
 };
 
-const PercentageSelector = ({ amount, balance, onChangePercentage }: TPercentageSelector) => {
+const PercentageSelector: React.FC<TPercentageSelector> = ({ amount, balance, onChangePercentage }) => {
     const balancePercentage = useMemo(() => (balance > 0 ? (amount * 100) / balance : 0), [amount, balance]);
 
     const getBlockFillPercentage = useCallback(

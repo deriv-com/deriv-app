@@ -5,9 +5,11 @@
     // }
     /** @define dc-collapsible; weak */
     .dc-collapsible {
-        overflow: auto;
-        overscroll-behavior-y: none;
+        overflow: scroll;
         max-height: 320px;
+        touch-action: none;
+        -webkit-overflow-scrolling: none;
+        overscroll-behavior: none;
         &::-webkit-scrollbar {
             display: none;
         }
@@ -28,10 +30,7 @@
         }
         &--is-expanded {
             background: transparent;
-            max-height: 354px;
-            &::-webkit-scrollbar {
-                display: none;
-            }
+            max-height: 358px;
             // .dc-collapsible__item[data-collapsible='true'] {
             //     opacity: 1;
             //     max-height: 4.7rem;
@@ -42,13 +41,6 @@
                 opacity: 0.75;
             }
         }
-        // &--is-collapsed {
-        //     .dc-collapsible__item[data-collapsible='true'] {
-        //         opacity: 0;
-        //         max-height: 0rem;
-        //         transition: max-height 0.25s linear, opacity 1s linear;
-        //     }
-        // }
     }
     /** @define barrier; weak */
     .barrier,

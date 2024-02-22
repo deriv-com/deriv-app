@@ -47,7 +47,7 @@ const ContractTypeWidget = observer(
                 if (is_mobile) return;
                 if (wrapper_ref && !wrapper_ref.current?.contains(event.target as Node) && is_dialog_open) {
                     setDialogVisibility(false);
-                    setInfoDialogVisibility(false);
+                    setTimeout(() => setInfoDialogVisibility(false), 200);
                     setItem({ ...item, value });
                     setHideBackButton(false);
                 }
@@ -143,7 +143,8 @@ const ContractTypeWidget = observer(
         const onWidgetClick = () => {
             setDialogVisibility(!is_dialog_open);
             setHideBackButton(false);
-            setInfoDialogVisibility(false);
+            setTimeout(() => setInfoDialogVisibility(false), 200);
+
             setItem({ ...item, value });
         };
 

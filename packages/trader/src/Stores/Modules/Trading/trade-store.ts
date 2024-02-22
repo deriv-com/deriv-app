@@ -302,7 +302,6 @@ export default class TradeStore extends BaseStore {
     initial_barriers?: { barrier_1: string; barrier_2: string };
     is_initial_barrier_applied = false;
     is_digits_widget_active = false;
-    isUrlUnavailableModalVisible = false;
 
     should_skip_prepost_lifecycle = false;
 
@@ -395,7 +394,6 @@ export default class TradeStore extends BaseStore {
             is_trade_enabled: observable,
             is_trade_params_expanded: observable,
             is_turbos: computed,
-            isUrlUnavailableModalVisible: observable,
             last_digit: observable,
             long_barriers: observable,
             main_barrier: observable,
@@ -484,7 +482,6 @@ export default class TradeStore extends BaseStore {
             setStakeBoundary: action.bound,
             setTradeStatus: action.bound,
             show_digits_stats: computed,
-            toggleUrlUnavailableModal: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
         });
@@ -633,7 +630,8 @@ export default class TradeStore extends BaseStore {
 
         await this.setActiveSymbols();
         await this.root_store.active_symbols.setActiveSymbols();
-        const { symbol } = getTradeURLParams({ active_symbols: this.active_symbols });
+        const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
+        if (showModal) this.root_store.ui.toggleUrlUnavailableModal(true);
         const hasSymbolChanged = symbol && symbol !== this.symbol;
         if (hasSymbolChanged) this.symbol = symbol;
         if (should_set_default_symbol && !symbol) await this.setDefaultSymbol();
@@ -714,9 +712,7 @@ export default class TradeStore extends BaseStore {
                     contract_types_list: contract_categories.contract_types_list,
                 });
                 contractType = contractTypeParam;
-                if (showModal) {
-                    this.toggleUrlUnavailableModal(true);
-                }
+                if (showModal) this.root_store.ui.toggleUrlUnavailableModal(true);
                 this.processNewValuesAsync({
                     ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
                         has_only_forward_starting_contracts: boolean;
@@ -1768,9 +1764,5 @@ export default class TradeStore extends BaseStore {
 
     setIsDigitsWidgetActive(is_active: boolean) {
         this.is_digits_widget_active = is_active;
-    }
-
-    toggleUrlUnavailableModal(is_visible: boolean) {
-        this.isUrlUnavailableModalVisible = is_visible;
     }
 }

@@ -4,26 +4,18 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from 'App/Components/Elements/Modals/ServicesErrorModal';
 import AccountVerificationPendingModal from 'App/Components/Elements/Modals/AccountVerificationPendingModal';
-import UrlUnavailableModal from 'App/Components/Elements/Modals/UrlUnavailableModal';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const TradeModals = observer(() => {
     const { ui, client, common } = useStore();
-    const {
-        resetPreviousSymbol,
-        clearPurchaseInfo,
-        isUrlUnavailableModalVisible,
-        requestProposal: resetPurchase,
-        toggleUrlUnavailableModal,
-    } = useTraderStore();
+    const { resetPreviousSymbol, clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
     const { is_virtual, is_logged_in } = client;
 
     const { services_error } = common;
     const {
         is_services_error_visible,
         is_mf_verification_pending_modal_visible,
-        is_mobile,
         setHasOnlyForwardingContracts,
         toggleServicesErrorModal,
         toggleUnsupportedContractModal,
@@ -77,12 +69,6 @@ const TradeModals = observer(() => {
             <AccountVerificationPendingModal
                 is_visible={is_mf_verification_pending_modal_visible}
                 onConfirm={() => setIsMFVericationPendingModal(false)}
-            />
-
-            <UrlUnavailableModal
-                isMobile={is_mobile}
-                isVisible={isUrlUnavailableModalVisible}
-                onConfirm={() => toggleUrlUnavailableModal(false)}
             />
         </React.Fragment>
     );

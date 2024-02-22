@@ -83,11 +83,12 @@ describe('getTradeURLParams', () => {
             symbol,
         });
     });
-    it('should return an object without symbol if symbol in the URL is incorrect and when called with active_symbols', () => {
+    it('should return an object with showModal & without symbol if symbol in the URL is incorrect and when called with active_symbols', () => {
         location.search = `?symbol=BLA&chart_type=${areaChartType.text}&interval=${oneTickInterval}`;
         expect(getTradeURLParams({ active_symbols: activeSymbols })).toMatchObject({
             chartType: areaChartType.value,
             granularity: 0,
+            showModal: true,
         });
     });
     it('should return an object with contractType based on the URL query param when contract_types_list is passed', () => {

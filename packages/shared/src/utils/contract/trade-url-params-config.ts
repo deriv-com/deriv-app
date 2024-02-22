@@ -69,20 +69,15 @@ export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {
         }, []);
         const isTradeTypeValid = contractList.includes(trade_type ?? '');
 
-        if (validInterval) {
-            result.granularity = Number(validInterval.value);
-        }
-        if (validChartType) {
-            result.chartType = chartTypeParam;
-        }
-        if (isSymbolValid) {
-            result.symbol = symbol;
-        }
-        if (isTradeTypeValid) {
-            result.contractType = trade_type;
-        } else if (trade_type) {
+        if (validInterval) result.granularity = Number(validInterval.value);
+        if (validChartType) result.chartType = chartTypeParam;
+        if (isSymbolValid) result.symbol = symbol;
+        if (isTradeTypeValid) result.contractType = trade_type;
+        if (
+            (!isSymbolValid && symbol && active_symbols.length) ||
+            (!isTradeTypeValid && trade_type && contractList.length)
+        )
             result.showModal = true;
-        }
     }
     return result;
 };

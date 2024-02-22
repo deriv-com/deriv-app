@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import UrlUnavailableModal from '../url-unavailable-modal';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('<UrlUnavailableModal />', () => {
     let modalRootEl: HTMLDivElement;
@@ -20,14 +21,18 @@ describe('<UrlUnavailableModal />', () => {
     const modalInfo = /This could be because:/i;
     const okButtonName = 'OK';
 
-    const mockProps: React.ComponentProps<typeof UrlUnavailableModal> = {
-        isVisible: true,
-        onConfirm: jest.fn(),
-        isMobile: false,
-    };
+    const store = mockStore({
+        ui: { is_mobile: false, isUrlUnavailableModalVisible: true, toggleUrlUnavailableModal: jest.fn() },
+    });
+    const renderComponent = () =>
+        render(
+            <StoreProvider store={store}>
+                <UrlUnavailableModal />
+            </StoreProvider>
+        );
 
-    it('should render UrlUnavailableModal if is_visible is true', () => {
-        render(<UrlUnavailableModal {...mockProps} />);
+    it('should render UrlUnavailableModal if isUrlUnavailableModalVisible is true', () => {
+        renderComponent();
         expect(screen.getByRole('heading', { name: modalHeading })).toBeInTheDocument();
         expect(screen.getByText(modalInfo)).toBeInTheDocument();
 
@@ -38,14 +43,17 @@ describe('<UrlUnavailableModal />', () => {
         expect(okButton).toBeInTheDocument();
         expect(okButton).toBeEnabled();
     });
-    it('should call onConfirm when OK button is clicked', () => {
-        render(<UrlUnavailableModal {...mockProps} />);
+    it('should call toggleUrlUnavailableModal when OK button is clicked', () => {
+        const toggleUrlUnavailableModal = jest.fn();
+        store.ui.toggleUrlUnavailableModal = toggleUrlUnavailableModal;
+        renderComponent();
         const okButton = screen.getByRole('button', { name: okButtonName });
         userEvent.click(okButton);
-        expect(mockProps.onConfirm).toBeCalledTimes(1);
+        expect(toggleUrlUnavailableModal).toBeCalledTimes(1);
     });
-    it('should not render the component if isVisible is false', () => {
-        render(<UrlUnavailableModal {...mockProps} isVisible={false} />);
+    it('should not render the component if isUrlUnavailableModalVisible is false', () => {
+        store.ui.isUrlUnavailableModalVisible = false;
+        renderComponent();
         expect(screen.queryByRole('heading', { name: modalHeading })).not.toBeInTheDocument();
         expect(screen.queryByText(modalInfo)).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: okButtonName })).not.toBeInTheDocument();

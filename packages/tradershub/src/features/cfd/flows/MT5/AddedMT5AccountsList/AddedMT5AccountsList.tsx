@@ -24,7 +24,6 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     const isVirtual = account.is_virtual;
     const demoTitle = activeTradingAccount?.is_virtual ? 'Demo' : '';
     const title = `${marketTypeDetails.title} ${demoTitle}`;
-
     return (
         <TradingAccountCard
             leading={() => <MT5AccountIcon account={account} />}

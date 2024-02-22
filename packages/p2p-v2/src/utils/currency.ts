@@ -353,3 +353,14 @@ export type TAccount = {
     balance: number;
     currency: string;
 };
+
+/**
+ * Formats a number with commas and appends a currency symbol.
+ *
+ * @param {number} number - The number to format.
+ * @param {string} currency - The currency symbol or code.
+ * @returns {string} The formatted text.
+ */
+export const getFormattedText = (number: number, currency: string) => {
+    return `${addComma(number, getDecimalPlaces(currency), isCryptocurrency(currency))} ${currency}`;
+};

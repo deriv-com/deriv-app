@@ -73,7 +73,7 @@ export const generateEffectiveRate = ({
             formatMoney(localCurrency, roundOffDecimal(effectiveRate, decimalPlace), true, decimalPlace)
         );
     }
-    return { displayEffectiveRate, effectiveRate };
+    return { displayEffectiveRate, effectiveRate: Number(effectiveRate) };
 };
 
 /**

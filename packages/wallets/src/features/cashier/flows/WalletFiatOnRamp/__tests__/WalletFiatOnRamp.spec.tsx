@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import { CashierLocked } from '../../../screens';
 import WalletFiatOnRamp from '../WalletFiatOnRamp';
+
+jest.mock('../../../screens', () => ({
+    CashierLocked: jest.fn(({ children }) => <>{children}</>),
+}));
 
 jest.mock('../../../modules', () => ({
     FiatOnRampModule: jest.fn(() => <div>MockedFiatOnRampModule</div>),
@@ -18,6 +23,8 @@ jest.mock('react-router-dom', () => ({
 
 const mockUseActiveWalletAccount = useActiveWalletAccount as jest.Mock;
 const mockUseHistory = useHistory as jest.Mock;
+
+const wrapper = ({ children }: PropsWithChildren) => <CashierLocked>{children}</CashierLocked>;
 
 describe('WalletFiatOnRamp', () => {
     beforeEach(() => {
@@ -36,7 +43,7 @@ describe('WalletFiatOnRamp', () => {
         const pushMock = jest.fn();
         mockUseHistory.mockReturnValue({ push: pushMock });
 
-        render(<WalletFiatOnRamp />);
+        render(<WalletFiatOnRamp />, { wrapper });
 
         expect(pushMock).toHaveBeenCalledWith('/wallets/cashier/deposit');
     });
@@ -50,7 +57,7 @@ describe('WalletFiatOnRamp', () => {
             },
         });
 
-        render(<WalletFiatOnRamp />);
+        render(<WalletFiatOnRamp />, { wrapper });
 
         expect(screen.getByText(/MockedFiatOnRampModule/)).toBeInTheDocument();
     });

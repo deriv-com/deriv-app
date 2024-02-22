@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { CashierLocked, WithdrawalLocked } from '../../../screens';
 import WalletWithdrawal from '../WalletWithdrawal';
+
+jest.mock('../../../screens', () => ({
+    CashierLocked: jest.fn(({ children }) => <>{children}</>),
+    WithdrawalLocked: jest.fn(({ children }) => <>{children}</>),
+}));
 
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
@@ -38,7 +44,13 @@ const mockUseActiveWalletAccount = useActiveWalletAccount as jest.MockedFunction
 
 const mockUseCurrencyConfig = useCurrencyConfig as jest.MockedFunction<typeof useCurrencyConfig>;
 
-describe('<WalletWithdrawal />', () => {
+const wrapper = ({ children }: PropsWithChildren) => (
+    <CashierLocked>
+        <WithdrawalLocked>{children}</WithdrawalLocked>
+    </CashierLocked>
+);
+
+describe('WalletWithdrawal', () => {
     const originalWindowLocation = window.location;
 
     beforeEach(() => {
@@ -70,7 +82,7 @@ describe('<WalletWithdrawal />', () => {
             isSuccess: true,
         });
 
-        render(<WalletWithdrawal />);
+        render(<WalletWithdrawal />, { wrapper });
 
         expect(replaceStateSpy).toBeCalledWith({}, '', 'http://localhost/redirect');
     });
@@ -94,7 +106,7 @@ describe('<WalletWithdrawal />', () => {
             isSuccess: true,
         });
 
-        render(<WalletWithdrawal />);
+        render(<WalletWithdrawal />, { wrapper });
         expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
     });
 
@@ -112,7 +124,7 @@ describe('<WalletWithdrawal />', () => {
             isSuccess: true,
         });
 
-        render(<WalletWithdrawal />);
+        render(<WalletWithdrawal />, { wrapper });
         expect(screen.getByText('WithdrawalFiatModule')).toBeInTheDocument();
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
@@ -131,7 +143,7 @@ describe('<WalletWithdrawal />', () => {
             isSuccess: true,
         });
 
-        render(<WalletWithdrawal />);
+        render(<WalletWithdrawal />, { wrapper });
         expect(screen.getByText('WithdrawalCryptoModule')).toBeInTheDocument();
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
@@ -150,7 +162,7 @@ describe('<WalletWithdrawal />', () => {
             isSuccess: true,
         });
 
-        render(<WalletWithdrawal />);
+        render(<WalletWithdrawal />, { wrapper });
         const button = screen.getByRole('button');
         fireEvent.click(button);
         expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
@@ -170,7 +182,7 @@ describe('<WalletWithdrawal />', () => {
             isSuccess: false,
         });
 
-        render(<WalletWithdrawal />);
+        render(<WalletWithdrawal />, { wrapper });
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 });

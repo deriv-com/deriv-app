@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
+import { CashierLocked, WithdrawalLocked } from '../../screens';
 
 const WalletWithdrawal = () => {
     const { getConfig, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
@@ -24,20 +25,36 @@ const WalletWithdrawal = () => {
     if (verificationCode) {
         if (isCurrencyConfigSuccess && activeWallet?.currency) {
             if (getConfig(activeWallet?.currency)?.is_fiat) {
-                return <WithdrawalFiatModule verificationCode={verificationCode} />;
+                return (
+                    <CashierLocked>
+                        <WithdrawalLocked>
+                            <WithdrawalFiatModule verificationCode={verificationCode} />
+                        </WithdrawalLocked>
+                    </CashierLocked>
+                );
             }
             return (
-                <WithdrawalCryptoModule
-                    onClose={() => {
-                        setVerificationCode('');
-                    }}
-                    verificationCode={verificationCode}
-                />
+                <CashierLocked>
+                    <WithdrawalLocked>
+                        <WithdrawalCryptoModule
+                            onClose={() => {
+                                setVerificationCode('');
+                            }}
+                            verificationCode={verificationCode}
+                        />
+                    </WithdrawalLocked>
+                </CashierLocked>
             );
         }
         return <Loader />;
     }
-    return <WithdrawalVerificationModule />;
+    return (
+        <CashierLocked>
+            <WithdrawalLocked>
+                <WithdrawalVerificationModule />
+            </WithdrawalLocked>
+        </CashierLocked>
+    );
 };
 
 export default WalletWithdrawal;

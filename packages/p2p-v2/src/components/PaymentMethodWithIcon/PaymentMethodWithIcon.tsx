@@ -18,12 +18,7 @@ const PaymentMethodWithIcon = ({ name, type }: TPaymentMethodWithIconProps) => {
     }
     return (
         <div className='flex items-center gap-[0.8rem]'>
-            <Icon
-                className='p2p-v2-payment-method-card__icon'
-                data-testid='dt_p2p_v2_payment_method_card_header_icon'
-                height={16}
-                width={16}
-            />
+            <Icon data-testid='dt_p2p_v2_payment_method_card_header_icon' height={16} width={16} />
             <Text size='sm'>{name}</Text>
         </div>
     );

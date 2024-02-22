@@ -2,6 +2,7 @@ export * from './AdvertiserName';
 export * from './Badge';
 export * from './BuySellForm';
 export * from './Checklist';
+export * from './Clipboard';
 export * from './CloseHeader';
 export * from './Dropdown';
 export * from './FlyoutMenu';

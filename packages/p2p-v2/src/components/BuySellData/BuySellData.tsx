@@ -4,6 +4,7 @@ import { p2p } from '@deriv/api';
 import { Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodWithIcon } from '../PaymentMethodWithIcon';
 import './BuySellData.scss';
+import { TAdvertiserPaymentMethods } from 'types';
 
 type TBuySellDataProps = {
     accountCurrency: string;
@@ -16,6 +17,8 @@ type TBuySellDataProps = {
     paymentMethods: ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data'];
     rate: string;
 };
+
+type TType = NonNullable<TAdvertiserPaymentMethods>[number]['type'];
 const BuySellData = ({
     accountCurrency,
     expiryPeriod,
@@ -30,7 +33,7 @@ const BuySellData = ({
     const { isMobile } = useDevice();
     const labelSize = isMobile ? 'sm' : 'xs';
     const valueSize = isMobile ? 'md' : 'sm';
-    const paymentMethodTypes = paymentMethods?.reduce((acc, curr) => {
+    const paymentMethodTypes = paymentMethods?.reduce((acc: Record<string, string>, curr) => {
         if (curr.display_name && curr.type) {
             acc[curr.display_name] = curr.type;
         }
@@ -60,7 +63,11 @@ const BuySellData = ({
                 </Text>
                 {paymentMethodNames?.length
                     ? paymentMethodNames.map(method => (
-                          <PaymentMethodWithIcon key={method} name={method} type={paymentMethodTypes?.[method]} />
+                          <PaymentMethodWithIcon
+                              key={method}
+                              name={method}
+                              type={paymentMethodTypes?.[method] as TType}
+                          />
                       ))
                     : '-'}
             </div>

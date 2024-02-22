@@ -114,7 +114,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
 
             return onChangeDecimal({ target: { value: unformatted } });
         },
-        [input, maxDigits, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
+        [input, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
     );
 
     const onChange = useCallback(
@@ -124,7 +124,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             if (checkExceedsMaxDigits(newValue)) return;
             handleNewValue(newValue);
         },
-        [handleNewValue]
+        [checkExceedsMaxDigits, handleNewValue]
     );
 
     const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
@@ -149,7 +149,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
                     });
             }
         },
-        [formattedValue, fractionDigits, locale, onChange]
+        [checkExceedsMaxDigits, formattedValue, fractionDigits, locale, onChange]
     );
 
     useEffect(() => {
@@ -157,7 +157,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             isPasting.current = true;
             handleNewValue(`${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`);
         }
-    }, [fractionDigits, initial, locale, onChange]);
+    }, [fractionDigits, handleNewValue, initial, locale, onChange]);
 
     return { onChange, onPaste, value: formattedValue };
 };

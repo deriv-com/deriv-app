@@ -32,12 +32,15 @@
         }
 
         &-text {
-            font-size: 10px;
             background-color: #fff;
             padding: 0 4px;
             height: fit-content;
-            transform: translate(-10%, -81%);
+            transform: translate(-10%, -133%);
             position: absolute;
+
+            @include mobile {
+                transform: translate(-10%, -109%);
+            }
         }
     }
 

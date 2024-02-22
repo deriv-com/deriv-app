@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { DepositCryptoModule, DepositFiatModule } from '../../modules';
-import { CashierLocked, DepositLocked } from '../../screens';
+import { CashierLocked, DepositCryptoModule, DepositFiatModule, DepositLocked } from '../../modules';
 
 const WalletDeposit = () => {
     const { data } = useActiveWalletAccount();

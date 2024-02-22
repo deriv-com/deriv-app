@@ -1,12 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import { CashierLocked } from '../../../screens';
+import { CashierLocked } from '../../../modules';
 import WalletTransfer from '../WalletTransfer';
-
-jest.mock('../../../screens', () => ({
-    CashierLocked: jest.fn(({ children }) => <>{children}</>),
-}));
 
 jest.mock('../../../../../components', () => ({
     ...jest.requireActual('../../../../../components'),
@@ -15,6 +11,7 @@ jest.mock('../../../../../components', () => ({
 
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
+    CashierLocked: jest.fn(({ children }) => <>{children}</>),
     TransferModule: jest.fn(({ accounts }) => (
         <>
             <div>TransferModule</div>

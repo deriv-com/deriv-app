@@ -1,21 +1,18 @@
 import React, { PropsWithChildren } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import { CashierLocked, DepositLocked } from '../../../screens';
+import { CashierLocked, DepositLocked } from '../../../modules';
 import WalletDeposit from '../WalletDeposit';
-
-jest.mock('../../../screens', () => ({
-    CashierLocked: jest.fn(({ children }) => <>{children}</>),
-    DepositLocked: jest.fn(({ children }) => <>{children}</>),
-}));
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
 }));
 
 jest.mock('../../../modules', () => ({
+    CashierLocked: jest.fn(({ children }) => <>{children}</>),
     DepositCryptoModule: jest.fn(() => <div>MockedDepositCryptoModule</div>),
     DepositFiatModule: jest.fn(() => <div>MockedDepositFiatModule</div>),
+    DepositLocked: jest.fn(({ children }) => <>{children}</>),
 }));
 
 const wrapper = ({ children }: PropsWithChildren) => (

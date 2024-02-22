@@ -1,16 +1,12 @@
 import React, { PropsWithChildren } from 'react';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { CashierLocked, WithdrawalLocked } from '../../../screens';
+import { CashierLocked, WithdrawalLocked } from '../../../modules';
 import WalletWithdrawal from '../WalletWithdrawal';
-
-jest.mock('../../../screens', () => ({
-    CashierLocked: jest.fn(({ children }) => <>{children}</>),
-    WithdrawalLocked: jest.fn(({ children }) => <>{children}</>),
-}));
 
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
+    CashierLocked: jest.fn(({ children }) => <>{children}</>),
     WithdrawalCryptoModule: jest.fn(({ onClose, verificationCode }) => {
         return (
             <>
@@ -26,6 +22,7 @@ jest.mock('../../../modules', () => ({
             <div>verificationCode={verificationCode}</div>
         </>
     )),
+    WithdrawalLocked: jest.fn(({ children }) => <>{children}</>),
     WithdrawalVerificationModule: jest.fn(() => <div>WithdrawalVerificationModule</div>),
 }));
 

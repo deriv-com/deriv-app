@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
-import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
-import { CashierLocked, WithdrawalLocked } from '../../screens';
+import {
+    CashierLocked,
+    WithdrawalCryptoModule,
+    WithdrawalFiatModule,
+    WithdrawalLocked,
+    WithdrawalVerificationModule,
+} from '../../modules';
 
 const WalletWithdrawal = () => {
     const { getConfig, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();

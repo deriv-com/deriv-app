@@ -2,14 +2,11 @@ import React, { PropsWithChildren } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import { CashierLocked } from '../../../screens';
+import { CashierLocked } from '../../../modules';
 import WalletFiatOnRamp from '../WalletFiatOnRamp';
 
-jest.mock('../../../screens', () => ({
-    CashierLocked: jest.fn(({ children }) => <>{children}</>),
-}));
-
 jest.mock('../../../modules', () => ({
+    CashierLocked: jest.fn(({ children }) => <>{children}</>),
     FiatOnRampModule: jest.fn(() => <div>MockedFiatOnRampModule</div>),
 }));
 

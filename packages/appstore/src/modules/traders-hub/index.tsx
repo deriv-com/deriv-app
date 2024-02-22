@@ -4,13 +4,14 @@ import { isDesktop, routes, ContentFlag, checkServerMaintenance } from '@deriv/s
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
-import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
+
+// const ModalManager = React.lazy(() => import('Components/modals/modal-manager'));
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -164,7 +165,7 @@ const TradersHub = observer(() => {
                         )}
                         {getOrderedPlatformSections()}
                     </MobileWrapper>
-                    <ModalManager />
+                    {/* <Suspense><ModalManager /></Suspense> */}
                     {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>

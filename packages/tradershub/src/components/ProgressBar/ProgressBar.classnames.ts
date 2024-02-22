@@ -28,11 +28,10 @@ export const stepperVariants = cva(progressBarBaseStyles, {
 });
 
 export const desktopStyle = {
-    connector:
-        'lg:h-40 lg:w-100 lg:bg-[length:100%_200%] lg:bg-bottom lg:bg-gradient-to-b lg:aria-[current=true]:bg-top',
-    stepper: 'lg:flex lg:w-fit lg:items-end lg:gap-gap-lg',
+    connector: 'lg:h-40 lg:w-1 lg:bg-[length:100%_200%] lg:bg-bottom lg:bg-gradient-to-b lg:aria-[current=true]:bg-top',
+    stepper: 'lg:flex lg:w-fit lg:items-end lg:gap-12',
 };
 
 export const mobileStyle = {
-    connector: 'bg-[length:200%_100%] bg-right bg-gradient-to-r aria-[current=true]:bg-left w-auto h-general-2xs',
+    connector: 'bg-[length:200%_100%] bg-right bg-gradient-to-r aria-[current=true]:bg-left w-auto h-2',
 };

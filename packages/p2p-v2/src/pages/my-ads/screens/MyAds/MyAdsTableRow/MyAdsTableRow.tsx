@@ -1,16 +1,16 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { PopoverDropdown } from '@/components';
+import { PaymentMethodLabel, PopoverDropdown } from '@/components';
 import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
 import { useDevice } from '@/hooks';
-import { generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
-import { formatMoney } from '@/utils/currency';
+import { formatMoney, generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
 import { useExchangeRateSubscription } from '@deriv/api';
 import { Button, Text, Tooltip } from '@deriv-com/ui';
 //TODO: Replace with quill icons once available
 import DeactivateIcon from '../../../../../public/ic-archive.svg';
 import DeleteIcon from '../../../../../public/ic-delete.svg';
 import EditIcon from '../../../../../public/ic-edit.svg';
+import ShareIcon from '../../../../../public/ic-share.svg';
 import ActivateIcon from '../../../../../public/ic-unarchive.svg';
 import { AdStatus, AdType, AlertComponent, ProgressIndicator } from '../../../components';
 import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';
@@ -161,13 +161,14 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                         </div>
                     </Text>
                 </div>
-                <div className='p2p-v2-my-ads-table-row__line-methods'>
-                    {payment_method_names?.map(payment_method => (
-                        <div className='p2p-v2-my-ads-table-row__payment-method--label' key={payment_method}>
-                            <Text color={adPauseColor} size='xs'>
-                                {payment_method}
-                            </Text>
-                        </div>
+                <div className='p2p-v2-my-ads-table-row__line-methods gap-2'>
+                    {payment_method_names?.map(paymentMethod => (
+                        <PaymentMethodLabel
+                            color={adPauseColor}
+                            key={paymentMethod}
+                            paymentMethodName={paymentMethod}
+                            size='xs'
+                        />
                     ))}
                 </div>
             </div>
@@ -200,13 +201,14 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                 />
                 {remaining_amount_display}/{amount_display} {account_currency}
             </Text>
-            <div className='p2p-v2-my-ads-table-row__payment-method'>
+            <div className='flex flex-wrap gap-2'>
                 {payment_method_names?.map(paymentMethod => (
-                    <div className='p2p-v2-my-ads-table-row__payment-method--label' key={paymentMethod}>
-                        <Text color={adPauseColor} size='sm'>
-                            {paymentMethod}
-                        </Text>
-                    </div>
+                    <PaymentMethodLabel
+                        color={adPauseColor}
+                        key={paymentMethod}
+                        paymentMethodName={paymentMethod}
+                        size='xs'
+                    />
                 ))}
             </div>
             <div className='p2p-v2-my-ads-table-row__actions'>
@@ -225,6 +227,11 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                         <Button onClick={() => onClickActionItem('delete')}>
                             <Tooltip message='Delete' position='bottom'>
                                 <DeleteIcon />
+                            </Tooltip>
+                        </Button>
+                        <Button onClick={() => onClickActionItem('share')}>
+                            <Tooltip message='Share' position='bottom'>
+                                <ShareIcon />
                             </Tooltip>
                         </Button>
                     </div>

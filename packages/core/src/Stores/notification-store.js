@@ -20,6 +20,7 @@ import {
     isHighLow,
     isMobile,
     isMultiplierContract,
+    checkServerMaintenance,
     isTurbosContract,
     LocalStore,
     routes,
@@ -50,6 +51,7 @@ export default class NotificationStore extends BaseStore {
     client_notifications = {};
     should_show_popups = true;
     trade_notifications = [];
+    p2p_advertiser_info = {};
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = [];
@@ -72,6 +74,7 @@ export default class NotificationStore extends BaseStore {
             markNotificationMessage: action.bound,
             notification_messages: observable,
             notifications: observable,
+            p2p_advertiser_info: observable,
             p2p_completed_orders: observable,
             p2p_order_props: observable,
             p2p_redirect_to: observable,
@@ -114,7 +117,6 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.has_enabled_two_fa,
                 root_store.client.has_changed_two_fa,
                 this.p2p_order_props.order_id,
-                root_store.client.p2p_advertiser_info,
             ],
             () => {
                 if (
@@ -132,7 +134,7 @@ export default class NotificationStore extends BaseStore {
             }
         );
         reaction(
-            () => this.p2p_completed_orders,
+            () => [this.p2p_completed_orders, this.p2p_advertiser_info],
             () => {
                 this.handleClientNotifications();
             }
@@ -311,11 +313,10 @@ export default class NotificationStore extends BaseStore {
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
             is_proof_of_ownership_enabled,
-            p2p_advertiser_info,
             is_p2p_enabled,
             is_poa_expired,
         } = this.root_store.client;
-        const { upgradable_daily_limits } = p2p_advertiser_info || {};
+        const { upgradable_daily_limits } = this.p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
@@ -331,7 +332,9 @@ export default class NotificationStore extends BaseStore {
 
         let has_missing_required_field;
 
-        if (website_status?.message?.length) {
+        const is_server_down = checkServerMaintenance(website_status);
+
+        if (website_status?.message?.length || is_server_down) {
             this.addNotificationMessage(this.client_notifications.site_maintenance);
         } else {
             this.removeNotificationByKey({ key: this.client_notifications.site_maintenance });
@@ -1461,6 +1464,7 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Go to my account settings'),
                 },
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
             },
             svg_needs_poa: {
                 key: 'svg_needs_poa',
@@ -1485,6 +1489,7 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Submit proof of identity'),
                 },
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
             },
             svg_poi_expired: {
                 key: 'svg_poi_expired',

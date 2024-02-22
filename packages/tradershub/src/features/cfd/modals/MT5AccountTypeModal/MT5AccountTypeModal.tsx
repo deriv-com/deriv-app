@@ -1,9 +1,9 @@
 import React, { ComponentProps, useState } from 'react';
+import { Modal } from '@/components';
+import { JurisdictionModal } from '@cfd/modals';
+import { MT5AccountType } from '@cfd/screens';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Modal } from '../../../../components';
-import { MT5AccountType } from '../../screens';
-import { JurisdictionModal } from '../JurisdictionModal';
+import { Button } from '@deriv-com/ui';
 
 type TMarketTypes = ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 

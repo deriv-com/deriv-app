@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { optionsAndMultipliersContent } from '../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
+import { TRoute } from '../../routes/Router';
 import { WalletButton, WalletLink, WalletText } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
@@ -69,7 +70,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
                     if (isExternal) {
                         window.open(redirect, '_blank');
                     } else {
-                        history.push(redirect);
+                        history.push(redirect as TRoute);
                     }
                 }}
             >

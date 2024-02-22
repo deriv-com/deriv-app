@@ -1,15 +1,12 @@
-@mixin position-center {
-    display: flex;
-    justify-content: center;
-}
-
-@mixin align-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+@import '../../styles/mixins.scss';
 
 .tutorials-wrap {
+    .no-search {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        word-break: break-all;
+    }
     .dc-dialog {
         &__dialog {
             width: 80vw;
@@ -67,9 +64,7 @@
             }
         }
         &__nosearch {
-            @include position-center;
-            width: 100%;
-            word-break: break-all;
+            @extend .no-search;
         }
         &__cards {
             display: flex;
@@ -95,7 +90,7 @@
     }
 
     &__placeholder {
-        @include align-center;
+        @include flex-center;
         background: var(--checkbox-disabled-grey);
         margin-bottom: 0.8rem;
         margin-inline-end: 2.4rem;
@@ -129,7 +124,7 @@
         }
 
         &__button-group {
-            @include align-center;
+            @include flex-center;
             width: 20rem;
             height: 7rem;
             border-radius: 1rem;
@@ -155,9 +150,7 @@
         padding-bottom: 18px;
 
         &__nosearch {
-            @include position-center;
-            width: 100%;
-            word-break: break-all;
+            @extend .no-search;
         }
         &__content {
             width: 85%;
@@ -174,8 +167,7 @@
                     margin-bottom: 2rem;
                 }
                 &-header {
-                    @include position-center;
-                    justify-content: space-between;
+                    @include flex-center(space-between);
                 }
                 &-content {
                     .loss-control {
@@ -260,11 +252,9 @@
             padding: 1.6rem 0.8rem;
 
             &__group {
-                display: flex;
+                @include flex-center;
                 width: 22.5rem;
                 position: relative;
-                justify-content: center;
-                align-items: center;
                 padding: 1.6rem 0;
                 z-index: 1;
 
@@ -321,11 +311,8 @@
                         margin-bottom: 3rem;
                     }
                     &--no-result {
-                        display: flex;
+                        @include flex-center(flex-start);
                         flex-direction: column;
-                        justify-content: flex-start;
-
-                        align-items: center;
                         height: 100vh;
                         margin: unset;
                         svg {
@@ -412,7 +399,7 @@
     &__select {
         height: 4rem;
         margin-bottom: 1.5rem;
-        @include align-center;
+        @include flex-center;
         @include mobile {
             .dc-select-native {
                 position: relative;

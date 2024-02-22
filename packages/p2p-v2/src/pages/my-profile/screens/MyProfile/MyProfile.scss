@@ -1,0 +1,25 @@
+.p2p-v2-my-profile {
+    display: flex;
+    flex-direction: column;
+    padding: 2.4rem 0;
+
+    @include mobile {
+        overflow-y: scroll;
+        height: calc(100vh - 12rem);
+        padding: 0;
+    }
+
+    &__tabs {
+        & .derivs-primary-tabs {
+            width: 70rem;
+            margin: 2.4rem 0;
+            border-radius: 0.6rem;
+            padding: 0.5rem;
+        }
+
+        & .derivs-primary-tabs__btn--active {
+            border-radius: 0.4rem;
+            padding: 0.8rem 0.6rem;
+        }
+    }
+}

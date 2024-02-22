@@ -21,7 +21,7 @@ const UnsupportedContractModal = observer(
             <Dialog
                 title={localize('We’re working on it')}
                 confirm_button_text={localize('Stay on {{website_domain}}', { website_domain: website_name })}
-                cancel_button_text={localize('Go to Binary.com')}
+                cancel_button_text={localize('Go to Deriv.com')}
                 onConfirm={onConfirm}
                 onCancel={onClose}
                 disableApp={disableApp}

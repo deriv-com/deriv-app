@@ -1,14 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { optionsAndMultipliersContent } from '../../../constants/constants';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
-import useRegulationFlags from '../../../hooks/useRegulationFlags';
-import { TradingAppCardLoader } from '../../Loaders';
-import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
-import { useUIContext } from '../../UIProvider';
+import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } from '@/components';
+import { optionsAndMultipliersContent } from '@/constants';
+import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
+import { useActiveTradingAccount } from '@deriv/api';
+import { Button, useDevice } from '@deriv-com/ui';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -70,13 +67,7 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { getUIState } = useUIContext();
-
-    const accountType = getUIState('accountType');
-
-    const regulation = getUIState('regulation');
-
-    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
 
     if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
 
@@ -100,14 +91,11 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
  * @returns {React.ElementType} The `OptionsAndMultipliersContent` component.
  */
 const OptionsAndMultipliersContent = () => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { data } = useActiveTradingAccount();
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
 
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 
@@ -117,20 +105,20 @@ const OptionsAndMultipliersContent = () => {
 
     if (!isRegulationAccessible)
         return (
-            <div className='pt-2000'>
+            <div className='pt-40'>
                 <TradingAppCardLoader />
             </div>
         );
 
     return (
-        <div className='grid w-full grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
+        <div className='grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-4'>
             {filteredContent.map(account => {
                 const { description, icon, isExternal, redirect, smallIcon, title } = account;
 
                 const trailingComponent = () => <ShowOpenButton isExternal={isExternal} redirect={redirect} />;
 
                 const leadingComponent = () => (
-                    <LinkTitle icon={data?.loginid || !isMobile ? icon : smallIcon} title={title} />
+                    <LinkTitle icon={data?.loginid || isDesktop ? icon : smallIcon} title={title} />
                 );
 
                 return (

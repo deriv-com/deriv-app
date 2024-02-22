@@ -4,8 +4,8 @@ import { Checkbox } from '@deriv-com/ui';
 
 const DetailsConfirmation = () => {
     const { errors, values } = useFormikContext<{
-        confirmation: boolean;
         dateOfBirth: string;
+        detailsConfirmation: boolean;
         firstName: string;
         lastName: string;
     }>();
@@ -20,12 +20,12 @@ const DetailsConfirmation = () => {
     );
 
     return (
-        <Field name='confirmation' type='checkbox'>
+        <Field name='detailsConfirmation' type='checkbox'>
             {({ field, meta }: FieldProps) => (
                 <Checkbox
                     disabled={isDisabled}
                     error={Boolean(meta.error && meta.touched)}
-                    id='confirmation'
+                    id='detailsConfirmation'
                     label='I confirm that the name and date of birth above match my chosen identity document.'
                     {...field}
                 />

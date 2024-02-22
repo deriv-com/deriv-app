@@ -3,7 +3,7 @@ import { useRegulationFlags } from '@/hooks';
 import { Provider } from '@deriv/library';
 import {
     GetADerivAccountDialog,
-    PlatformIcon,
+    IconComponent,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
@@ -14,7 +14,7 @@ import { DxtradePasswordModal } from '../../../../modals/DxtradePasswordModal';
 
 const LeadingIcon = () => (
     <div>
-        <PlatformIcon
+        <IconComponent
             icon='DerivX'
             onClick={() => {
                 window.open(getStaticUrl('/derivx'));

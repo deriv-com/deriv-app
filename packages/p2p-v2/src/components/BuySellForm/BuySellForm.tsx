@@ -2,9 +2,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Modal from 'react-modal';
+import { BUY_SELL, RATE_TYPE } from '@/constants';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from '@/utils';
 import { p2p } from '@deriv/api';
-import { Divider, useDevice } from '@deriv-com/ui';
+import { Divider, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { BuySellAmount } from '../BuySellAmount';
 import { BuySellData } from '../BuySellData';
 import { BuySellFormFooter } from '../BuySellFormFooter';
@@ -22,6 +23,7 @@ type TBuySellFormProps = {
     advert: NonUndefinedValues<TAdvertData>;
     advertiserBuyLimit: number;
     advertiserSellLimit: number;
+    balanceAvailable: number;
     displayEffectiveRate: string;
     effectiveRate: number;
     isModalOpen: boolean;
@@ -35,7 +37,7 @@ const getAdvertiserMaxLimit = (
     advertiserSellLimit: number,
     maxOrderAmountLimitDisplay: string
 ) => {
-    if (!isBuy) {
+    if (isBuy) {
         if (advertiserBuyLimit < Number(maxOrderAmountLimitDisplay)) return roundOffDecimal(advertiserBuyLimit);
     } else if (advertiserSellLimit < Number(maxOrderAmountLimitDisplay)) return roundOffDecimal(advertiserSellLimit);
     return maxOrderAmountLimitDisplay;
@@ -45,6 +47,7 @@ const BuySellForm = ({
     advert,
     advertiserBuyLimit,
     advertiserSellLimit,
+    balanceAvailable,
     displayEffectiveRate,
     effectiveRate,
     isModalOpen,
@@ -57,7 +60,6 @@ const BuySellForm = ({
         advertiser_details,
         description,
         id,
-        is_buy,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit,
@@ -65,8 +67,16 @@ const BuySellForm = ({
         order_expiry_period,
         payment_method_names,
         rate,
+        rate_type,
         type,
     } = advert;
+
+    const isBuy = type === BUY_SELL.BUY;
+    const shouldDisableField =
+        !isBuy &&
+        (parseFloat(balanceAvailable.toString()) === 0 ||
+            parseFloat(balanceAvailable.toString()) < min_order_amount_limit);
+
     const {
         control,
         formState: { isValid },
@@ -80,13 +90,14 @@ const BuySellForm = ({
     });
     const { isMobile } = useDevice();
 
-    const onSubmit = () => {
+    const onSubmit = event => {
         //TODO: error handling after implementation of exchange rate
         mutate({
             advert_id: id,
             amount: getValues('amount'),
             rate,
         });
+        event.preventDefault();
     };
 
     const calculatedRate = removeTrailingZeros(roundOffDecimal(effectiveRate, setDecimalPlaces(effectiveRate, 6)));
@@ -105,13 +116,21 @@ const BuySellForm = ({
                 type={type}
             />
             <Divider />
-            {/* TODO: Add inline message component and message for error handling in floating rate */}
-            <form onSubmit={() => handleSubmit(onSubmit)}>
+            {rate_type === RATE_TYPE.FLOAT && !shouldDisableField && (
+                <div className='px-[2.4rem] mt-[2.4rem]'>
+                    <InlineMessage variant='info'>
+                        <Text size={isMobile ? 'xs' : '2xs'}>
+                            {`If the market rate changes from the rate shown here, we won't be able to process your order.`}
+                        </Text>
+                    </InlineMessage>
+                </div>
+            )}
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <BuySellData
                     accountCurrency={account_currency}
                     expiryPeriod={order_expiry_period ?? 3600}
                     instructions={description ?? '-'}
-                    isBuy={is_buy}
+                    isBuy={isBuy}
                     localCurrency={local_currency}
                     name={advertiser_details?.name}
                     paymentMethodNames={payment_method_names}
@@ -125,10 +144,11 @@ const BuySellForm = ({
                     calculatedRate={calculatedRate}
                     control={control}
                     effectiveRate={effectiveRate}
-                    isBuy={is_buy}
+                    isBuy={isBuy}
+                    isDisabled={shouldDisableField}
                     localCurrency={local_currency}
                     maxLimit={getAdvertiserMaxLimit(
-                        is_buy,
+                        isBuy,
                         advertiserBuyLimit,
                         advertiserSellLimit,
                         max_order_amount_limit_display

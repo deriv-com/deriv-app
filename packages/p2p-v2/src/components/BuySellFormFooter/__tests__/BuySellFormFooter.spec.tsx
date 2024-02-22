@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import BuySellFormFooter from '../BuySellFormFooter';
 
@@ -13,6 +14,8 @@ jest.mock('@deriv-com/ui', () => ({
         isMobile: false,
     }),
 }));
+
+const mockUseDevice = useDevice as jest.Mock;
 describe('BuySellFormFooter', () => {
     it('should render the footer as expected', () => {
         render(<BuySellFormFooter {...mockProps} />);
@@ -30,5 +33,13 @@ describe('BuySellFormFooter', () => {
         const confirmButton = screen.getByRole('button', { name: 'Confirm' });
         confirmButton.click();
         expect(mockProps.onSubmit).toHaveBeenCalled();
+    });
+    it('should render as expected in responsive view as well', () => {
+        mockUseDevice.mockReturnValue({
+            isMobile: true,
+        });
+        render(<BuySellFormFooter {...mockProps} />);
+        expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
     });
 });

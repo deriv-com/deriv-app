@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { floatingPointValidator } from '@/utils';
 import { Divider, Input, Text, useDevice } from '@deriv-com/ui';
 import { FormatUtils } from '@deriv-com/utils';
 import './BuySellAmount.scss';
@@ -10,6 +11,7 @@ type TBuySellAmountProps = {
     calculatedRate: string;
     control: ReturnType<typeof useForm>['control'];
     isBuy: boolean;
+    isDisabled: boolean;
     localCurrency: string;
     maxLimit: string;
     minLimit: string;
@@ -20,6 +22,7 @@ const BuySellAmount = ({
     calculatedRate,
     control,
     isBuy,
+    isDisabled,
     localCurrency,
     maxLimit,
     minLimit,
@@ -50,14 +53,22 @@ const BuySellAmount = ({
                         <div className='px-[2.4rem] pr-6 '>
                             <Input
                                 data-lpignore='true'
+                                disabled={isDisabled}
                                 error={!!error?.message}
                                 isFullWidth
                                 label={`${isBuy ? 'Sell' : 'Buy'} amount`}
                                 message={error ? error?.message : `Limit: ${minLimit}-${maxLimit}${accountCurrency}`}
+                                min={0}
+                                name='amount'
                                 onBlur={onBlur}
                                 onChange={event => {
+                                    setInputValue(event.target.value);
                                     onChange(event);
-                                    setInputValue(value);
+                                }}
+                                onKeyDown={event => {
+                                    if (!floatingPointValidator(event.key)) {
+                                        event.preventDefault();
+                                    }
                                 }}
                                 rightPlaceholder={
                                     <Text color='less-prominent' size='sm'>

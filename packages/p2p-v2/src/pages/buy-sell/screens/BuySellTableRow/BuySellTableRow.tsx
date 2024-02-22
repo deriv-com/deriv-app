@@ -145,6 +145,7 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
                     advert={props}
                     advertiserBuyLimit={Number(daily_buy_limit) - Number(daily_buy)}
                     advertiserSellLimit={Number(daily_sell_limit) - Number(daily_sell)}
+                    balanceAvailable={data?.balance_available ?? 0}
                     displayEffectiveRate={displayEffectiveRate}
                     effectiveRate={effectiveRate}
                     isModalOpen={isModalOpen}

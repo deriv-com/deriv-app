@@ -1,10 +1,10 @@
 import React from 'react';
+import { TAdvertiserPaymentMethods } from 'types';
 import { formatTime } from '@/utils';
 import { p2p } from '@deriv/api';
 import { Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodWithIcon } from '../PaymentMethodWithIcon';
 import './BuySellData.scss';
-import { TAdvertiserPaymentMethods } from 'types';
 
 type TBuySellDataProps = {
     accountCurrency: string;

@@ -67,7 +67,7 @@ export const getCFDContents: TRegulatorsContentProps[] = [
         attribute: 'Leverage',
         content: {
             euRegulator: { text: '30' },
-            nonEuRegulator: { text: '100-1000' },
+            nonEuRegulator: { text: '100-20' },
         },
         id: 'leverage',
     },

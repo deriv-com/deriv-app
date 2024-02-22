@@ -30,9 +30,11 @@ export const requestWS = async request => {
     return null;
 };
 
-export const subscribeWS = (request, callbacks) =>
-    ws.p2pSubscribe(request, response => {
+export const subscribeWS = (request, callbacks, enabled = true) => {
+    if (!enabled) return null;
+    return ws.p2pSubscribe(request, response => {
         callbacks.map(callback => callback(response));
     });
+};
 
 export const waitWS = args => ws.wait(args);

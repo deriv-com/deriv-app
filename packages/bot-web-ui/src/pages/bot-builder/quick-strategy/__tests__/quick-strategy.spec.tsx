@@ -228,7 +228,7 @@ describe('<QuickStrategy />', () => {
             wrapper,
         });
 
-        const close_button = screen.getByTestId('page_overlay_header_close');
+        const close_button = screen.getByTestId('dt_page_overlay_header_close');
         await waitFor(() => {
             expect(close_button).toBeInTheDocument();
             userEvent.click(close_button);

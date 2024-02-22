@@ -577,6 +577,8 @@
                     @include typeface(--paragraph-center-bold-black, none);
                     background-color: transparent;
                     border: 1px solid var(--border-normal-2);
+                    border-radius: 0.5rem;
+                    padding: 0.6rem 1.6rem;
                     color: var(--text-less-prominent);
 
                     &:hover {

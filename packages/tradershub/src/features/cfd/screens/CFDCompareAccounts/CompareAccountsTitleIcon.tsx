@@ -1,7 +1,7 @@
 import React, { Fragment, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
-import { PlatformIcon, Tooltip } from '@/components';
+import { IconComponent, Tooltip } from '@/components';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api';
@@ -72,7 +72,7 @@ const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareA
     return (
         <Fragment>
             <div className={'flex flex-col gap-5 pt-20 items-center'}>
-                <PlatformIcon icon={jurisdictionCardIcon} />
+                <IconComponent icon={jurisdictionCardIcon} />
                 <div className='flex items-center gap-8'>
                     <Text size='sm' weight='bold'>
                         {jurisdictionCardTitle}

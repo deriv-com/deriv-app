@@ -2250,7 +2250,7 @@
     }
     &-modal {
         &-description {
-            margin-bottom: 2rem;
+            margin: 1.5rem 0 2rem;
             @include mobile {
                 margin: 1rem 1rem 2rem;
                 &--button {
@@ -2262,6 +2262,12 @@
                     border-top: 1px solid var(--general-hover);
                 }
             }
+        }
+    }
+    &__content {
+        border-top: 1px solid var(--general-hover);
+        &-center {
+            justify-content: center;
         }
     }
     &__password-success {
@@ -2286,8 +2292,5 @@
     }
     &__subtext {
         margin-bottom: 1.6rem;
-    }
-    &__content-center {
-        justify-content: center;
     }
 }

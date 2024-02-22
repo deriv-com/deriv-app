@@ -114,39 +114,12 @@ const CFDPasswordChange = observer(
             >
                 {({ errors, isSubmitting, handleBlur, handleChange, touched, values, isValid }) => {
                     return (
-                        <Form>
+                        <Form className='cfd-password-change__content'>
                             <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
-                                <div className={'cfd-password-change-modal-description'}>
+                                <div className='cfd-password-change-modal-description'>
                                     <Text as='p' size='xs'>
-                                        <Localize i18n_default_text="We've updated our Deriv MT5 password requirements. Your password now needs to meet the following criteria:" />
+                                        <Localize i18n_default_text='To enhance your MT5 account security we have upgraded our password policy.' />
                                     </Text>
-                                    <ol className='cfd-password-change-list-container'>
-                                        <li className='cfd-password-change-list'>
-                                            <Text as='p' size='xs'>
-                                                <Localize i18n_default_text='8 to 16 characters' />
-                                            </Text>
-                                        </li>
-                                        <li className='cfd-password-change-list'>
-                                            <Text as='p' size='xs'>
-                                                <Localize i18n_default_text='A special character such as ( _ @ ? ! / # )' />
-                                            </Text>
-                                        </li>
-                                        <li className='cfd-password-change-list'>
-                                            <Text as='p' size='xs'>
-                                                <Localize i18n_default_text='An uppercase letter' />
-                                            </Text>
-                                        </li>
-                                        <li className='cfd-password-change-list'>
-                                            <Text as='p' size='xs'>
-                                                <Localize i18n_default_text='An lowercase letter' />
-                                            </Text>
-                                        </li>
-                                        <li className='cfd-password-change-list'>
-                                            <Text as='p' size='xs'>
-                                                <Localize i18n_default_text='A number' />
-                                            </Text>
-                                        </li>
-                                    </ol>
                                     <Text as='p' size='xs'>
                                         <Localize i18n_default_text='Please update your password accordingly.' />
                                     </Text>
@@ -174,6 +147,35 @@ const CFDPasswordChange = observer(
                                         onChange={handleChange}
                                         data_testId={`dt_mt5_new_password`}
                                     />
+                                </div>
+                                <div className='cfd-password-change__error-message'>
+                                    <ol className='cfd-password-change-list-container'>
+                                        <li className='cfd-password-change-list'>
+                                            <Text as='p' size='xs'>
+                                                <Localize i18n_default_text='8 to 16 characters' />
+                                            </Text>
+                                        </li>
+                                        <li className='cfd-password-change-list'>
+                                            <Text as='p' size='xs'>
+                                                <Localize i18n_default_text='A special character such as ( _ @ ? ! / # )' />
+                                            </Text>
+                                        </li>
+                                        <li className='cfd-password-change-list'>
+                                            <Text as='p' size='xs'>
+                                                <Localize i18n_default_text='An uppercase letter' />
+                                            </Text>
+                                        </li>
+                                        <li className='cfd-password-change-list'>
+                                            <Text as='p' size='xs'>
+                                                <Localize i18n_default_text='An lowercase letter' />
+                                            </Text>
+                                        </li>
+                                        <li className='cfd-password-change-list'>
+                                            <Text as='p' size='xs'>
+                                                <Localize i18n_default_text='A number' />
+                                            </Text>
+                                        </li>
+                                    </ol>
                                 </div>
                             </div>
                             <FormSubmitButton

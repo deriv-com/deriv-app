@@ -299,6 +299,36 @@
             }
         }
     }
+    &__run-strategy-wrapper {
+        @include desktop {
+            position: absolute;
+        }
+
+        inset-inline-end: 1.6rem;
+        top: 1.6rem;
+        z-index: 2;
+
+        .animation {
+            &__button {
+                background-color: var(--purchase-main-1);
+            }
+
+            &__container {
+                background-color: var(--general-main-1);
+            }
+        }
+    }
+
+    &__sidebar-wrapper {
+        &--active {
+            position: fixed;
+            inset-inline-end: 0;
+        }
+
+        &--hidden {
+            display: none;
+        }
+    }
 }
 
 .bot-builder {

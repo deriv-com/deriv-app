@@ -16,8 +16,6 @@ const DesktopWalletsList: React.FC = () => {
             {(isAuthorizeLoading || isCurrencyConfigLoading) && <WalletsCardLoader />}
             {activeWallet && (
                 <WalletsCard
-                    isDemo={activeWallet?.is_virtual}
-                    isOpen={activeWallet?.is_active}
                     key={`wallets-card-${activeWallet?.loginid}`}
                     renderHeader={() => (
                         <WalletListCard

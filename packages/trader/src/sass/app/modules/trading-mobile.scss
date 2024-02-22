@@ -5,7 +5,7 @@
     // }
     /** @define dc-collapsible; weak */
     .dc-collapsible {
-        touch-action: none;
+        touch-action: pan-x;
 
         &:before {
             content: '';

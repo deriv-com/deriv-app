@@ -1,31 +1,31 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { ButtonGroup } from '@/components';
+import { useRealAccountCreationContext } from '@/providers';
 import { Button, Divider, useDevice } from '@deriv-com/ui';
-import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
-type TActions = {
+type TWizardScreenActions = {
     isSubmitBtnLoading?: boolean;
     submitDisabled?: boolean;
 };
 
 /**
- * @name Actions
- * @description The Actions component is used to navigate between steps in the SignupWizard component.
+ * @name WizardScreenActions
+ * @description The WizardScreenActions component is used to navigate between steps in the RealAccountCreation component.
  * Intended to be used as a child component of the Formik component.
  * @param {Object} props - React props object
  * @param {boolean} [props.submitDisabled] - A boolean that determines whether the Next button is disabled
  * @param {boolean} [props.isSubmitBtnLoading] - A boolean that determines whether the Next button is in a loading state
  * @example
  * return (
- *     <Actions submitDisabled />
+ *     <WizardScreenActions submitDisabled />
  * );
  */
 
-const Actions = ({ submitDisabled = false, isSubmitBtnLoading = false }: TActions) => {
+const WizardScreenActions = ({ submitDisabled = false, isSubmitBtnLoading = false }: TWizardScreenActions) => {
     const {
         helpers: { canGoToNextStep, canGoToPrevStep, goToPrevStep },
-    } = useSignupWizardContext();
+    } = useRealAccountCreationContext();
     const { isSubmitting } = useFormikContext();
     const { isDesktop } = useDevice();
 
@@ -59,4 +59,4 @@ const Actions = ({ submitDisabled = false, isSubmitBtnLoading = false }: TAction
     );
 };
 
-export default Actions;
+export default WizardScreenActions;

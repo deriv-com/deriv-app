@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import { CUSTOM_STYLES } from '@/helpers';
+import { useRealAccountCreationContext } from '@/providers';
 import { Button, Text } from '@deriv-com/ui';
-import { CUSTOM_STYLES } from '../../../helpers/signupModalHelpers';
-import { useSignupWizardContext } from '../../../providers/SignupWizardProvider';
 
 const ExitConfirmationDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    const { reset } = useSignupWizardContext();
+    const { reset } = useRealAccountCreationContext();
 
     const handleClose = () => {
         onClose();

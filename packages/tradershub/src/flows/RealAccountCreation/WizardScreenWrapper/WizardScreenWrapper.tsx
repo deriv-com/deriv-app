@@ -5,7 +5,7 @@ type TWizardScreenWrapper = { children: React.ReactNode; heading: ReactNode };
 
 /**
  * @name WizardScreenWrapper
- * @description The WizardScreenWrapper component is used to wrap the screens in the SignupWizard component.
+ * @description The WizardScreenWrapper component is used to wrap the screens in the RealAccountCreation component.
  * @param {Object} props - React props object
  * @param {React.ReactNode} props.children - The content to be wrapped.
  * @param {React.ReactNode} props.heading - The heading of the screen.

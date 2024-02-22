@@ -1,9 +1,9 @@
 import { useStep } from 'usehooks-ts';
-import { ACTION_TYPES } from './SignupWizardContext';
+import { ACTION_TYPES } from './RealAccountCreationContext';
 
 export type Helpers = ReturnType<typeof useStep>[1];
 
-export type TSignupWizardContext = {
+export type TRealAccountCreationContext = {
     currentStep: number;
     dispatch: React.Dispatch<TActions>;
     helpers: Helpers;
@@ -19,6 +19,7 @@ export type TState = {
     accountOpeningReason?: string;
     currency?: string;
     dateOfBirth?: string;
+    detailsConfirmation?: boolean;
     firstLineAddress?: string;
     firstName?: string;
     lastName?: string;
@@ -27,12 +28,13 @@ export type TState = {
     secondLineAddress?: string;
     stateProvince?: string;
     taxIdentificationNumber?: string;
+    taxInfoConfirmation?: boolean;
     taxResidence?: string;
     townCity?: string;
     zipCode?: string;
 };
 
-export type TSignupWizardProvider = {
+export type TRealAccountCreationProvider = {
     children: React.ReactNode;
 };
 

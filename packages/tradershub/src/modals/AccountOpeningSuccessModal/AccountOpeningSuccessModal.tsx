@@ -4,11 +4,11 @@ import { useHistory } from 'react-router-dom';
 import Checkmark from '@/assets/svgs/checkmark.svg';
 import { ActionScreen, ButtonGroup, IconComponent } from '@/components';
 import { CUSTOM_STYLES } from '@/helpers';
-import { useSignupWizardContext } from '@/providers/SignupWizardProvider';
+import { useRealAccountCreationContext } from '@/providers';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const SelectedCurrencyIcon = () => {
-    const { state } = useSignupWizardContext();
+    const { state } = useRealAccountCreationContext();
     return (
         <div className='relative'>
             <IconComponent
@@ -23,9 +23,9 @@ const SelectedCurrencyIcon = () => {
 };
 
 const AccountOpeningSuccessModal = () => {
-    const { isSuccessModalOpen, reset } = useSignupWizardContext();
+    const { isSuccessModalOpen, reset } = useRealAccountCreationContext();
     const { isDesktop } = useDevice();
-    const { state } = useSignupWizardContext();
+    const { state } = useRealAccountCreationContext();
     const history = useHistory();
 
     const handleNavigateToDeposit = () => {

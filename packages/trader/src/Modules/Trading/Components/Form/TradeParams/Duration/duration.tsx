@@ -13,6 +13,25 @@ import AdvancedDuration from './advanced-duration';
 import SimpleDuration from './simple-duration';
 import debounce from 'lodash.debounce';
 
+const debouncedChangeDurationValue = debounce(
+    (target: { name: string; value: string | number; type?: string }, duration: string, contract_type: string) => {
+        // console.log('5', target.type ? 'manual' : 'plus_minus', duration);
+        Analytics.trackEvent(
+            'ce_contracts_set_up_form' as keyof TEvents,
+            {
+                action: 'change_parameter_value',
+                form_name: 'default',
+                input_type: target.type ? 'manual' : 'plus_minus',
+                parameter_type: 'duration_value',
+                parameter_field_type: 'number',
+                parameter_value: duration,
+                trade_type_name: getContractTypesConfig()[contract_type]?.title,
+            } as unknown as TEvents['ce_trade_types_form']
+        );
+    },
+    2000
+);
+
 type TUIStore = ReturnType<typeof useStore>['ui'];
 type TTradeStore = ReturnType<typeof useTraderStore>;
 export type TDuration = {
@@ -121,22 +140,6 @@ const Duration = ({
         }
     };
 
-    const debouncedChangeDurationValue = debounce((target: { name: string; value: string | number; type?: string }) => {
-        // console.log('5', target.type ? 'manual' : 'plus_minus');
-        Analytics.trackEvent(
-            'ce_contracts_set_up_form' as keyof TEvents,
-            {
-                action: 'change_parameter_value',
-                form_name: 'default',
-                input_type: target.type ? 'manual' : 'plus_minus',
-                parameter_type: 'duration_value',
-                parameter_field_type: 'number',
-                parameter_value: duration,
-                trade_type_name: getContractTypesConfig()[contract_type]?.title,
-            } as unknown as TEvents['ce_trade_types_form']
-        );
-    }, 2000);
-
     const changeDurationValue = ({ target }: { target: { name: string; value: string | number; type?: string } }) => {
         const { name, value } = target;
         const duration_name = `duration_${is_advanced_duration ? advanced_duration_unit : simple_duration_unit}`;
@@ -144,7 +147,9 @@ const Duration = ({
         // e.target.value returns string, we need to convert them to number
         onChangeUiStore({ name: duration_name, value: +value });
         onChange({ target: { name, value: +value } });
-        debouncedChangeDurationValue(target);
+        const validMinValue = min_value && +value < min_value ? min_value : +value;
+        const displayedValue = max_value && +value > max_value ? max_value : validMinValue;
+        debouncedChangeDurationValue(target, `${displayedValue}`, contract_type);
     };
 
     const onToggleDurationType = ({ target }: { target: { name: string; value: boolean } }) => {

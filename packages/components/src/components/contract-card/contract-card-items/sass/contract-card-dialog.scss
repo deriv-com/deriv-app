@@ -113,6 +113,7 @@
     position: absolute;
     width: calc(100% + 0.4rem);
     height: calc(100% + 0.4rem);
+    /*rtl:ignore*/
     right: 0.4rem;
     top: -0.4rem;
     border: 1px solid var(--general-section-1);
@@ -123,6 +124,7 @@
     }
 
     &__icon {
+        /*rtl:ignore*/
         float: right;
         margin: 3px;
     }

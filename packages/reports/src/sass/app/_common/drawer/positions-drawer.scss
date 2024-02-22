@@ -113,7 +113,7 @@ $header-height: 3.6em;
     }
     &__icon-close {
         display: inline-block;
-        margin-left: auto;
+        margin-inline-start: auto;
         cursor: pointer;
         svg {
             @extend %inline-icon;

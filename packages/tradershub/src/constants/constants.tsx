@@ -25,14 +25,14 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         description: isEU ? 'Multipliers trading platform.' : 'Options and multipliers trading platform.',
         icon: <IconComponent icon='DTrader' />,
         redirect: '/',
-        smallIcon: <IconComponent height='32px' icon='DTrader' width='32px' />,
+        smallIcon: <IconComponent height={32} icon='DTrader' width={32} />,
         title: 'Deriv Trader',
     },
     {
         description: 'Automate your trading, no coding needed.',
         icon: <IconComponent icon='DBot' />,
         redirect: '/bot',
-        smallIcon: <IconComponent height='32px' icon='DBot' width='32px' />,
+        smallIcon: <IconComponent height={32} icon='DBot' width={32} />,
         title: 'Deriv Bot',
     },
     {
@@ -40,7 +40,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         icon: <IconComponent icon='SmartTrader' />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
-        smallIcon: <IconComponent height='32px' icon='SmartTrader' width='32px' />,
+        smallIcon: <IconComponent height={32} icon='SmartTrader' width={32} />,
         title: 'SmartTrader',
     },
     {
@@ -48,7 +48,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         icon: <IconComponent icon='BinaryBot' />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
-        smallIcon: <IconComponent height='32px' icon='BinaryBot' width='32px' />,
+        smallIcon: <IconComponent height={32} icon='BinaryBot' width={32} />,
         title: 'Binary Bot',
     },
     {
@@ -56,7 +56,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         icon: <IconComponent icon='DerivGo' />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),
-        smallIcon: <IconComponent height='32px' icon='DerivGo' width='32px' />,
+        smallIcon: <IconComponent height={32} icon='DerivGo' width={32} />,
         title: 'Deriv GO',
     },
 ];

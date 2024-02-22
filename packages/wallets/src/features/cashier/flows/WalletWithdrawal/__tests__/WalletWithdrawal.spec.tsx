@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletWithdrawal from '../WalletWithdrawal';
 
@@ -28,8 +28,8 @@ jest.mock('../../../../../components', () => ({
     Loader: jest.fn(() => <div>Loading</div>),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
     useCurrencyConfig: jest.fn(),
 }));

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Money, Icon, ThemedScrollbars } from '@deriv/components';
+import { Money, Icon, ThemedScrollbars, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
     addComma,
@@ -16,6 +16,7 @@ import {
     isMobile,
     isMultiplierContract,
     isSmartTraderContract,
+    isLookBacksContract,
     isTicksContract,
     isResetContract,
     isTurbosContract,
@@ -23,6 +24,7 @@ import {
     isUserSold,
     isVanillaFxContract,
     TContractInfo,
+    CONTRACT_TYPES,
     toGMTFormat,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
@@ -58,6 +60,7 @@ const ContractDetails = ({
         entry_tick_time,
         exit_tick_time,
         high_barrier,
+        is_sold,
         low_barrier,
         profit,
         selected_tick,
@@ -81,6 +84,9 @@ const ContractDetails = ({
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${ticks_label}`;
 
+    const INDICATIVE_HIGH = 'H';
+    const INDICATIVE_LOW = 'L';
+
     const additional_info = isResetContract(contract_type) ? (
         <Localize
             i18n_default_text='The reset time is {{ reset_time }}'
@@ -93,6 +99,33 @@ const ContractDetails = ({
         />
     ) : (
         ''
+    );
+
+    const createLookBacksMarker = (abbreviation?: string) => {
+        const low_spot_text = is_sold ? (
+            <Localize i18n_default_text='Low spot' />
+        ) : (
+            <Localize i18n_default_text='Indicative low spot' />
+        );
+        const high_spot_text = is_sold ? (
+            <Localize i18n_default_text='High spot' />
+        ) : (
+            <Localize i18n_default_text='Indicative high spot' />
+        );
+        return {
+            label: abbreviation === INDICATIVE_LOW ? low_spot_text : high_spot_text,
+            icon: (
+                <div className='lookbacks-marker__wrapper'>
+                    <Text color='colored-background' size='xxxs' className='lookbacks-marker__asset'>
+                        {abbreviation}
+                    </Text>
+                </div>
+            ),
+        };
+    };
+
+    const lookbacks_marker = createLookBacksMarker(
+        contract_type === CONTRACT_TYPES.LB_PUT ? INDICATIVE_HIGH : INDICATIVE_LOW
     );
 
     const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
@@ -253,6 +286,36 @@ const ContractDetails = ({
                     label={localize('Start time')}
                     value={toGMTFormat(epochToMoment(Number(date_start))) || ' - '}
                 />
+                {isLookBacksContract(contract_type) && (
+                    <React.Fragment>
+                        {contract_type === CONTRACT_TYPES.LB_HIGH_LOW ? (
+                            <React.Fragment>
+                                {[high_barrier, low_barrier].map((barrier, index) => {
+                                    const high_low_marker = createLookBacksMarker(
+                                        index === 0 ? INDICATIVE_HIGH : INDICATIVE_LOW
+                                    );
+
+                                    return (
+                                        <ContractAuditItem
+                                            id={`dt_bt_label_${index + 1}`}
+                                            icon={high_low_marker.icon}
+                                            key={barrier}
+                                            label={high_low_marker.label}
+                                            value={barrier}
+                                        />
+                                    );
+                                })}
+                            </React.Fragment>
+                        ) : (
+                            <ContractAuditItem
+                                id='dt_indicative_high_spot'
+                                icon={lookbacks_marker.icon}
+                                label={lookbacks_marker.label}
+                                value={contract_info?.barrier}
+                            />
+                        )}
+                    </React.Fragment>
+                )}
                 {!isDigitType(contract_type) && (
                     <ContractAuditItem
                         id='dt_entry_spot_label'

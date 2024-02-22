@@ -167,3 +167,9 @@
 # ==============================================================
 
 /packages/api/**/*                                              @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv
+
+# ==============================================================
+#  deriv-app/api-v2
+# ==============================================================
+
+/packages/api-v2/**/*                                           @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv

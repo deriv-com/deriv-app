@@ -49,7 +49,7 @@ const PageOverlay = ({
                         </div>
                         {!is_from_app && (
                             <div
-                                data-testid='page_overlay_header_close'
+                                data-testid='dt_page_overlay_header_close'
                                 className='dc-page-overlay__header-close'
                                 onClick={
                                     (onClickClose as unknown as MouseEventHandler<HTMLDivElement>) ||

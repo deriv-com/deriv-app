@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import * as Yup from 'yup';
-import { usePOI, useResidenceList, useSettings } from '@deriv/api';
+import { usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
 import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { InlineMessage } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';

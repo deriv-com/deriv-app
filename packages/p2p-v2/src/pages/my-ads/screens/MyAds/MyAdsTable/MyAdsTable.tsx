@@ -1,12 +1,13 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Table } from '@/components';
 import { MyAdsDeleteModal } from '@/components/Modals';
+import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
 import { AD_ACTION } from '@/constants';
-import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api';
-import { Button, Loader } from '@deriv-com/ui';
+import { Loader } from '@deriv-com/ui';
+import { MyAdsEmpty } from '../../MyAdsEmpty';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
-import { MyAdsToggle } from '../MyAdsToggle';
+import MyAdsDisplayWrapper from './MyAdsDisplayWrapper';
 import './MyAdsTable.scss';
 
 export type TMyAdsTableRowRendererProps = Required<
@@ -52,9 +53,9 @@ const MyAdsTable = () => {
     const { mutate } = p2p.advert.useUpdate();
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
     const { error, isSuccess, mutate: deleteAd } = p2p.advert.useDelete();
-    const { isDesktop } = useDevice();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [advertId, setAdvertId] = useState('');
+    const [isShareAdsModalOpen, setIsShareAdsModalOpen] = useState(false);
 
     useEffect(() => {
         if (isSuccess) {
@@ -66,6 +67,8 @@ const MyAdsTable = () => {
     }, [error?.error?.message, isSuccess]);
 
     if (isLoading) return <Loader />;
+
+    if (!data.length) return <MyAdsEmpty />;
 
     const onClickIcon = (id: string, action: string) => {
         //TODO: to implement the onclick actions for share and edit.
@@ -79,6 +82,11 @@ const MyAdsTable = () => {
             case AD_ACTION.DELETE: {
                 setAdvertId(id);
                 setIsModalOpen(true);
+                break;
+            }
+            case AD_ACTION.SHARE: {
+                setAdvertId(id);
+                setIsShareAdsModalOpen(true);
                 break;
             }
             default:
@@ -100,18 +108,10 @@ const MyAdsTable = () => {
     };
 
     return (
-        <>
-            <div className='p2p-v2-my-ads-table__header'>
-                {isDesktop && (
-                    <Button size='lg' textSize='sm'>
-                        Create new ad
-                    </Button>
-                )}
-                <MyAdsToggle
-                    isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
-                    onClickToggle={onClickToggle}
-                />
-            </div>
+        <MyAdsDisplayWrapper
+            isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
+            onClickToggle={onClickToggle}
+        >
             <div className='p2p-v2-my-ads-table__list'>
                 <Table
                     columns={columns}
@@ -142,7 +142,17 @@ const MyAdsTable = () => {
                     onRequestClose={onRequestClose}
                 />
             )}
-        </>
+            {isShareAdsModalOpen && (
+                <ShareAdsModal
+                    id={advertId}
+                    isModalOpen={isShareAdsModalOpen}
+                    onRequestClose={() => {
+                        setIsShareAdsModalOpen(false);
+                        setAdvertId('');
+                    }}
+                />
+            )}
+        </MyAdsDisplayWrapper>
     );
 };
 

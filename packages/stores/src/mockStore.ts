@@ -548,6 +548,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_notifications_visible: false,
             filterNotificationMessages: jest.fn(),
             notifications: [],
+            p2p_advertiser_info: undefined,
             p2p_completed_orders: [],
             refreshNotifications: jest.fn(),
             removeAllNotificationMessages: jest.fn(),

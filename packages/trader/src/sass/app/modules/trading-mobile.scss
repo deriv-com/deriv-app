@@ -5,14 +5,7 @@
     // }
     /** @define dc-collapsible; weak */
     .dc-collapsible {
-        overflow: scroll;
-        max-height: 320px;
         touch-action: none;
-        -webkit-overflow-scrolling: none;
-        overscroll-behavior: none;
-        &::-webkit-scrollbar {
-            display: none;
-        }
 
         &:before {
             content: '';
@@ -30,7 +23,6 @@
         }
         &--is-expanded {
             background: transparent;
-            max-height: 358px;
             // .dc-collapsible__item[data-collapsible='true'] {
             //     opacity: 1;
             //     max-height: 4.7rem;

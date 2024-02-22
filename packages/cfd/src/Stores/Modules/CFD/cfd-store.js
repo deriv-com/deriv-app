@@ -369,7 +369,7 @@ export default class CFDStore extends BaseStore {
             const has_error = results.find(result => result.error);
 
             if (!has_error) {
-                actions.setStatus({ success: true });
+                actions.setStatus({ error_message: '' });
                 this.setError(false);
                 this.setCFDSuccessDialog(true);
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
@@ -380,7 +380,7 @@ export default class CFDStore extends BaseStore {
                 WS.transferBetweenAccounts();
                 this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
             } else {
-                actions.setStatus({ success: false });
+                actions.setStatus({ error_message: has_error?.error?.message });
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
                 this.clearCFDError();
                 this.setMT5MigrationError(has_error?.error?.message);
@@ -390,7 +390,7 @@ export default class CFDStore extends BaseStore {
             // At least one request has failed
             // eslint-disable-next-line no-console
             console.warn('One or more MT5 migration requests failed:', error);
-            actions.setStatus({ success: false });
+            actions.setStatus({ error_message: error?.message });
         } finally {
             actions.setSubmitting(false);
         }

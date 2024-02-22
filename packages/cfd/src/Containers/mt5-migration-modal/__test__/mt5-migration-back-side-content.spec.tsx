@@ -92,7 +92,7 @@ describe('MT5MigrationBackSideContent', () => {
         response_migration_context = {
             show_modal_front_side: true,
             setShowModalFrontSide: jest.fn(),
-            setShowMigrationError: jest.fn(),
+            setMigrationError: jest.fn(),
         };
     });
 

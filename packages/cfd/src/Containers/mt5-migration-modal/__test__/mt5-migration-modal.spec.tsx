@@ -39,7 +39,7 @@ describe('MT5MigrationModal', () => {
                 value={{
                     show_modal_front_side: true,
                     setShowModalFrontSide: () => null,
-                    setShowMigrationError: () => null,
+                    setMigrationError: () => null,
                 }}
             >
                 <StoreProvider store={mock_store}>

@@ -5,11 +5,11 @@ import Checkmark from '@/assets/svgs/checkmark.svg';
 import { ActionScreen, ButtonGroup } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { CUSTOM_STYLES } from '@/helpers';
-import { useSignupWizardContext } from '@/providers/SignupWizardProvider';
+import { useRealAccountCreationContext } from '@/providers';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const SelectedCurrencyIcon = () => {
-    const { state } = useSignupWizardContext();
+    const { state } = useRealAccountCreationContext();
     return (
         <div className='relative'>
             <div className='[&>svg]:scale-[2.4] w-[96px] h-[96px] flex justify-center items-center'>
@@ -22,9 +22,9 @@ const SelectedCurrencyIcon = () => {
 };
 
 const AccountOpeningSuccessModal = () => {
-    const { isSuccessModalOpen, reset } = useSignupWizardContext();
+    const { isSuccessModalOpen, reset } = useRealAccountCreationContext();
     const { isDesktop } = useDevice();
-    const { state } = useSignupWizardContext();
+    const { state } = useRealAccountCreationContext();
     const history = useHistory();
 
     const handleNavigateToDeposit = () => {

@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useMemo, useReducer, useState } from 'react';
 import { useStep } from 'usehooks-ts';
-import { Helpers, TSignupWizardContext, TSignupWizardProvider } from './types';
+import { Helpers, TRealAccountCreationContext, TRealAccountCreationProvider } from './types';
 import { valuesReducer } from './ValuesReducer';
 
 export const ACTION_TYPES = {
@@ -27,7 +27,7 @@ const initialHelpers: Helpers = {
     }) as React.Dispatch<React.SetStateAction<number>>,
 };
 
-export const SignupWizardContext = createContext<TSignupWizardContext>({
+export const RealAccountCreationContext = createContext<TRealAccountCreationContext>({
     currentStep: 0,
     dispatch: /* noop */ () => {
         /* noop */
@@ -49,20 +49,22 @@ export const SignupWizardContext = createContext<TSignupWizardContext>({
     },
 });
 
-export const useSignupWizardContext = () => {
-    const context = useContext<TSignupWizardContext>(SignupWizardContext);
+export const useRealAccountCreationContext = () => {
+    const context = useContext<TRealAccountCreationContext>(RealAccountCreationContext);
     if (!context)
-        throw new Error('useSignupWizardContext() must be called within a component wrapped in SignupWizardProvider.');
+        throw new Error(
+            'useRealAccountCreationContext() must be called within a component wrapped in RealAccountCreationProvider.'
+        );
 
     return context;
 };
 
 /**
- * @name SignupWizardProvider
- * @description The SignupWizardProvider component is used to wrap the components that need access to the SignupWizardContext.
+ * @name RealAccountCreationProvider
+ * @description The RealAccountCreationProvider component is used to wrap the components that need access to the RealAccountCreationContext.
  * @param {React.ReactNode} children - The content to be wrapped.
  */
-export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
+export const RealAccountCreationProvider = ({ children }: TRealAccountCreationProvider) => {
     const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [currentStep, helpers] = useStep(4);
@@ -79,7 +81,7 @@ export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
         helpers.setStep(1);
     }, [helpers]);
 
-    const contextState: TSignupWizardContext = useMemo(
+    const contextState: TRealAccountCreationContext = useMemo(
         () => ({
             currentStep,
             dispatch,
@@ -94,5 +96,5 @@ export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
         [currentStep, helpers, isSuccessModalOpen, isWizardOpen, reset, state]
     );
 
-    return <SignupWizardContext.Provider value={contextState}>{children}</SignupWizardContext.Provider>;
+    return <RealAccountCreationContext.Provider value={contextState}>{children}</RealAccountCreationContext.Provider>;
 };

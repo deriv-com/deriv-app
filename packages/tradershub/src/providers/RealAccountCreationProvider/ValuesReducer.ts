@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from './SignupWizardContext';
+import { ACTION_TYPES } from './RealAccountCreationContext';
 import { TActions, TState } from './types';
 
 export function valuesReducer(state: TState, action: TActions) {

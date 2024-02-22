@@ -1,17 +1,17 @@
 import React from 'react';
-import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
-import { Address, CurrencySelector, PersonalDetails, TermsOfUse } from '../../../../screens';
+import { useRealAccountCreationContext } from '@/providers';
+import { Address, CurrencySelector, PersonalDetails, TermsOfUse } from '@/screens';
 
 /**
  * @name WizardScreens
- * @description The WizardScreens component is used to render the screens in the SignupWizard component based on the active step from `SignupWizardContext`.
+ * @description The WizardScreens component is used to render the screens in the RealAccountCreation component based on the active step from `RealAccountCreationContext`.
  * @example
  * return (
  *   <WizardScreens />
  * );
  */
 const WizardScreens = () => {
-    const { currentStep } = useSignupWizardContext();
+    const { currentStep } = useRealAccountCreationContext();
 
     switch (currentStep) {
         case 1:

@@ -1,29 +1,26 @@
 import React, { Fragment, useState } from 'react';
 import ReactModal from 'react-modal';
+import { DesktopProgressBar, MobileProgressBar, TSteps } from '@/components';
+import { CUSTOM_STYLES } from '@/helpers';
+import { AccountOpeningSuccessModal, ExitConfirmationDialog } from '@/modals';
+import { useRealAccountCreationContext } from '@/providers';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import { DesktopProgressBar, MobileProgressBar } from '../../../components/ProgressBar';
-import { TSteps } from '../../../components/ProgressBar/Stepper';
-import { CUSTOM_STYLES } from '../../../helpers/signupModalHelpers';
-import { useSignupWizardContext } from '../../../providers/SignupWizardProvider';
-import AccountOpeningSuccessModal from '../AccountOpeningSuccessModal/AccountOpeningSuccessModal';
-import ExitConfirmationDialog from '../ExitConfirmationDialog';
-import WizardScreens from './WizardScreens';
-import './index.scss';
+import WizardScreens from './WizardScreens/WizardScreens';
 
 const FORM_PROGRESS_STEPS: TSteps = ['Account currency', 'Personal details', 'Address', 'Terms of use'];
 
 /**
- * @name SignupWizard
- * @description The SignupWizard component is used to render the signup wizard modal.
+ * @name RealAccountCreation
+ * @description The RealAccountCreation component is used to render the signup wizard modal.
  * @example
  * return (
- *  <SignupWizard />
+ *  <RealAccountCreation />
  * );
  */
-const SignupWizard = () => {
+const RealAccountCreation = () => {
     const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
-    const { currentStep, isWizardOpen } = useSignupWizardContext();
+    const { currentStep, isWizardOpen } = useRealAccountCreationContext();
 
     return (
         <Fragment>
@@ -66,4 +63,4 @@ const SignupWizard = () => {
     );
 };
 
-export default SignupWizard;
+export default RealAccountCreation;

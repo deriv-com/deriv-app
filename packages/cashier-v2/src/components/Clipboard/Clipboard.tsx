@@ -10,12 +10,11 @@ type TProps = {
     textCopy: string;
 };
 
-let timeoutClipboard: ReturnType<typeof setTimeout>;
-
 const Clipboard: React.FC<TProps> = ({ popoverAlignment, textCopy }) => {
     const [, copy] = useCopyToClipboard();
     const [isCopied, setIsCopied] = useState(false);
     const { isMobile } = useDevice();
+    let timeoutClipboard: ReturnType<typeof setTimeout>;
 
     const onClick = () => {
         setIsCopied(true);

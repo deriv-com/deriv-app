@@ -5,6 +5,7 @@ export namespace TRouteTypes {
     export type TRoutes = typeof cashierPathRoutes[keyof typeof cashierPathRoutes];
     export interface IRouteConfig {
         component: React.ComponentType<Omit<IRouteConfig, 'component'>>;
+        icon?: React.ReactNode;
         path: string;
         routes?: IRouteConfig[];
         title: string;

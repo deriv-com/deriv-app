@@ -69,7 +69,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                 </div>
                 <div className='flex flex-col'>
                     {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
-                        <Text size='sm' weight='bold'>
+                        <Text as='p' size='sm' weight='bold'>
                             {account.display_balance}
                         </Text>
                     )}

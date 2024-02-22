@@ -19,7 +19,7 @@ type TTradeStore = Pick<
 >;
 
 type TAllowEquals = TTradeStore & {
-    onChange: (e: { target: { name: string; value: number } }) => Promise<void>;
+    onChange: (e: { target: { name: string; value: number } }) => Promise<void> | void;
     value: number;
 };
 

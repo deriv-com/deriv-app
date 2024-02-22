@@ -139,7 +139,7 @@ describe('<Amount />', () => {
         expect(screen.queryByText(stake)).not.toBeInTheDocument();
         expect(screen.queryByText(mocked_min_max_stake_info)).not.toBeInTheDocument();
     });
-    it('should render only input without dropdown if it is single currency contract', () => {
+    it('should render only input without dropdown if it is a single currency account', () => {
         default_mock_store.client.is_single_currency = true;
         render(mockAmount(mockStore(default_mock_store)));
 

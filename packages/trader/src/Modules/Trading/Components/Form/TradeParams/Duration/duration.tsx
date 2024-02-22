@@ -16,11 +16,11 @@ import debounce from 'lodash.debounce';
 const debouncedChangeDurationValue = debounce(
     (
         target: { name: string; value: string | number; type?: string },
-        duration: string,
+        value: string,
         contractType: string,
         isTickDuration: boolean
     ) => {
-        // console.log('5', isTickDuration, duration);
+        // console.log('5', target.type ? 'manual' : 'plus_minus', value);
         Analytics.trackEvent(
             'ce_contracts_set_up_form' as keyof TEvents,
             {
@@ -28,7 +28,7 @@ const debouncedChangeDurationValue = debounce(
                 form_name: 'default',
                 parameter_field_type: isTickDuration ? 'tick_bar' : 'number',
                 parameter_type: isTickDuration ? 'tick_value' : 'duration_value',
-                parameter_value: duration,
+                parameter_value: value,
                 trade_type_name: getContractTypesConfig()[contractType]?.title,
                 ...(isTickDuration ? {} : { input_type: target.type ? 'manual' : 'plus_minus' }),
             } as unknown as TEvents['ce_trade_types_form']
@@ -152,14 +152,11 @@ const Duration = ({
         // e.target.value returns string, we need to convert them to number
         onChangeUiStore({ name: duration_name, value: +value });
         onChange({ target: { name, value: +value } });
-        const validValue = min_value && +value < min_value ? min_value : +value;
-        const displayedValue = max_value && +value > max_value ? max_value : validValue;
-        debouncedChangeDurationValue(
-            target,
-            `${+value === 0 ? 0 : displayedValue}`,
-            contract_type,
-            duration_unit === 't'
-        );
+        if (value) {
+            const validValue = min_value && +value < min_value ? min_value : +value;
+            const displayedValue = max_value && +value > max_value ? max_value : validValue;
+            debouncedChangeDurationValue(target, `${displayedValue}`, contract_type, duration_unit === 't');
+        }
     };
 
     const onToggleDurationType = ({ target }: { target: { name: string; value: boolean } }) => {

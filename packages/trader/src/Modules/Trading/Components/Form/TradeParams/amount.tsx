@@ -1,4 +1,5 @@
-import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES } from '@deriv/shared';
+import { Analytics, TEvents } from '@deriv-com/analytics';
+import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES, getContractTypesConfig } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import AllowEquals from './allow-equals';
@@ -10,6 +11,31 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+import debounce from 'lodash.debounce';
+
+const debouncedChangeDurationValue = debounce(
+    (
+        target: { name: string; value: string | number; type?: string },
+        value: string,
+        contractType: string,
+        isPayoutBasis?: boolean
+    ) => {
+        // console.log('6', target.type ? 'manual' : 'plus_minus', isPayoutBasis ? 'payout_value' : 'stake_value', value);
+        Analytics.trackEvent(
+            'ce_contracts_set_up_form' as keyof TEvents,
+            {
+                action: 'change_parameter_value',
+                form_name: 'default',
+                input_type: target.type ? 'manual' : 'plus_minus',
+                parameter_field_type: 'number',
+                parameter_type: isPayoutBasis ? 'payout_value' : 'stake_value',
+                parameter_value: value,
+                trade_type_name: getContractTypesConfig()[contractType]?.title,
+            } as unknown as TEvents['ce_trade_types_form']
+        );
+    },
+    2000
+);
 
 type TInput = {
     amount: string | number;
@@ -107,6 +133,31 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
 
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
 
+    const changeAmount = ({ target }: { target: { name: string; value: string | number; type?: string } }) => {
+        const { value } = target;
+        onChange({ target });
+        if (value) {
+            debouncedChangeDurationValue(target, `${value}`, contract_type, basis === 'payout');
+        }
+    };
+
+    const changeAllowEquals = ({ target }: { target: { name: string; value: number } }) => {
+        const { value } = target;
+        onChange({ target });
+        // console.log('7', value ? 'yes' : 'no');
+        Analytics.trackEvent(
+            'ce_contracts_set_up_form' as keyof TEvents,
+            {
+                action: 'change_parameter_value',
+                form_name: 'default',
+                parameter_field_type: 'checkbox',
+                parameter_type: 'allow_equals_mode',
+                parameter_value: value ? 'yes' : 'no',
+                trade_type_name: getContractTypesConfig()[contract_type]?.title,
+            } as unknown as TEvents['ce_trade_types_form']
+        );
+    };
+
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
@@ -135,7 +186,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                         current_focus={current_focus}
                         error_messages={error_messages}
                         is_single_currency={is_single_currency}
-                        onChange={onChange}
+                        onChange={changeAmount}
                         setCurrentFocus={setCurrentFocus}
                     />
                     <Dropdown
@@ -158,7 +209,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                     error_messages={error_messages}
                     is_single_currency={is_single_currency}
                     is_disabled={has_open_accu_contract}
-                    onChange={onChange}
+                    onChange={changeAmount}
                     setCurrentFocus={setCurrentFocus}
                 />
             )}
@@ -168,7 +219,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                 contract_types_list={contract_types_list}
                 duration_unit={duration_unit}
                 expiry_type={expiry_type}
-                onChange={onChange}
+                onChange={changeAllowEquals}
                 value={Number(is_equal)}
                 has_equals_only={has_equals_only}
             />

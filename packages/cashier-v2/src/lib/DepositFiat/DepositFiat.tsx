@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthorize, useCashierFiatAddress } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
-import { ErrorScreen } from '../../components/ErrorScreen';
+import { ErrorScreen } from '../../components';
 import { isServerError } from '../../utils';
 import styles from './DepositFiat.module.scss';
 

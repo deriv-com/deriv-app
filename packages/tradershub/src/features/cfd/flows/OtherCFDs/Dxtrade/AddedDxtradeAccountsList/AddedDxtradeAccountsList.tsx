@@ -2,13 +2,13 @@ import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
-import { PlatformIcon, TradingAccountCard } from '../../../../../../components';
+import { IconComponent, TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import { CFDPlatforms, PlatformDetails } from '../../../../constants';
 import { TopUpModal, TradeModal } from '../../../../modals';
 
 const LeadingIcon = () => (
-    <PlatformIcon
+    <IconComponent
         icon='DerivX'
         onClick={() => {
             window.open(getStaticUrl('/derivx'));

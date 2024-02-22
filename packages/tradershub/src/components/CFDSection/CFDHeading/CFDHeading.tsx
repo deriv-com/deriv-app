@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
-import { clsx } from 'clsx';
 import { useHistory } from 'react-router-dom';
+import { twMerge } from 'tailwind-merge';
 import { StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
-import { useIsEuRegion } from '@deriv/api';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => {
@@ -15,7 +14,7 @@ const CompareAccountsButton = ({ className }: { className?: string }) => {
 
     return (
         <Button
-            className={clsx('no-underline', className)}
+            className={twMerge('no-underline', className)}
             color='primary'
             onClick={() => history.push('/traders-hub/compare-accounts')}
             size='sm'
@@ -28,7 +27,7 @@ const CompareAccountsButton = ({ className }: { className?: string }) => {
 
 const CFDHeading = () => {
     const { isDesktop } = useDevice();
-    const { isSuccess } = useIsEuRegion();
+    const { isSuccess } = useRegulationFlags();
 
     if (!isSuccess) return <TitleDescriptionLoader />;
 

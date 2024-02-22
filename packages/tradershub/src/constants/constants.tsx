@@ -10,7 +10,7 @@ import {
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
 } from '@deriv/quill-icons';
-import { PlatformIcon } from '../components';
+import { IconComponent } from '../components';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
 
 export type IconToCurrencyMapperType = {
@@ -23,40 +23,40 @@ export type IconToCurrencyMapperType = {
 export const optionsAndMultipliersContent = (isEU: boolean) => [
     {
         description: isEU ? 'Multipliers trading platform.' : 'Options and multipliers trading platform.',
-        icon: <PlatformIcon icon='DTrader' />,
+        icon: <IconComponent icon='DTrader' />,
         redirect: '/',
-        smallIcon: <PlatformIcon height='32px' icon='DTrader' width='32px' />,
+        smallIcon: <IconComponent height='32px' icon='DTrader' width='32px' />,
         title: 'Deriv Trader',
     },
     {
         description: 'Automate your trading, no coding needed.',
-        icon: <PlatformIcon icon='DBot' />,
+        icon: <IconComponent icon='DBot' />,
         redirect: '/bot',
-        smallIcon: <PlatformIcon height='32px' icon='DBot' width='32px' />,
+        smallIcon: <IconComponent height='32px' icon='DBot' width='32px' />,
         title: 'Deriv Bot',
     },
     {
         description: 'Our legacy options trading platform.',
-        icon: <PlatformIcon icon='SmartTrader' />,
+        icon: <IconComponent icon='SmartTrader' />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
-        smallIcon: <PlatformIcon height='32px' icon='SmartTrader' width='32px' />,
+        smallIcon: <IconComponent height='32px' icon='SmartTrader' width='32px' />,
         title: 'SmartTrader',
     },
     {
         description: 'Our legacy automated trading platform.',
-        icon: <PlatformIcon icon='BinaryBot' />,
+        icon: <IconComponent icon='BinaryBot' />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
-        smallIcon: <PlatformIcon height='32px' icon='BinaryBot' width='32px' />,
+        smallIcon: <IconComponent height='32px' icon='BinaryBot' width='32px' />,
         title: 'Binary Bot',
     },
     {
         description: 'Trade on the go with our mobile app.',
-        icon: <PlatformIcon icon='DerivGo' />,
+        icon: <IconComponent icon='DerivGo' />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),
-        smallIcon: <PlatformIcon height='32px' icon='DerivGo' width='32px' />,
+        smallIcon: <IconComponent height='32px' icon='DerivGo' width='32px' />,
         title: 'Deriv GO',
     },
 ];

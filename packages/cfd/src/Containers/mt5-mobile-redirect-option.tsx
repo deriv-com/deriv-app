@@ -16,8 +16,8 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
         mobile_url = window.location.replace(DEEP_LINK({ mt5_trade_account }));
 
         const timeout = setTimeout(() => {
-            mobile_url = window.location.assign(getMobileAppInstallerURL({ mt5_trade_account }) as string);
-        }, 1800);
+            mobile_url = window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);
+        }, 1500);
 
         if (!isSafariBrowser()) {
             window.onblur = () => {

@@ -1,10 +1,17 @@
 @include mobile {
-    html {
-        /* Disables pull-to-refresh but allows overscroll glow effects. */
-        overscroll-behavior-y: none;
-    }
+    // html {
+    //     /* Disables pull-to-refresh but allows overscroll glow effects. */
+    //     overscroll-behavior-y: none;
+    // }
     /** @define dc-collapsible; weak */
     .dc-collapsible {
+        overflow: auto;
+        overscroll-behavior-y: none;
+        max-height: 320px;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
         &:before {
             content: '';
             position: absolute;
@@ -21,6 +28,10 @@
         }
         &--is-expanded {
             background: transparent;
+            max-height: 354px;
+            &::-webkit-scrollbar {
+                display: none;
+            }
             // .dc-collapsible__item[data-collapsible='true'] {
             //     opacity: 1;
             //     max-height: 4.7rem;

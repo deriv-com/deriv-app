@@ -1,8 +1,8 @@
 import { save_types } from '../constants';
 import { config } from '../constants/config';
-import { api_base } from '../services/api/api-base';
-import ApiHelpers from '../services/api/api-helpers';
-import Interpreter from '../services/tradeEngine/utils/interpreter';
+import { api_base } from '@deriv/bot-trade-engine/api/api-base';
+import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
+import Interpreter from '@deriv/bot-trade-engine/tradeEngine/utils/interpreter';
 import { compareXml, observer as globalObserver } from '../utils';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 

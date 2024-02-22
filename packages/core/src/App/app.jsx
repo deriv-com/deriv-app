@@ -84,7 +84,13 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.common.setPlatform();
         loadSmartchartsStyles();
 
-        window.addEventListener('load', loadExternalScripts);
+        // Set maximum timeout before we load livechat in case if page loading is disturbed or takes too long
+        const max_timeout = setTimeout(loadExternalScripts, 30 * 1000); // 30 seconds
+
+        window.addEventListener('load', () => {
+            clearTimeout(max_timeout);
+            loadExternalScripts();
+        });
 
         return () => {
             window.removeEventListener('load', loadExternalScripts);

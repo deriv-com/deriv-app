@@ -3,12 +3,13 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 type TUIState = {
     // Add other UI states here
     accountType?: string;
+    isSignupWizardOpen?: boolean;
     regulation?: string;
 };
 
 type TUIContext = {
-    getUIState: <T extends keyof TUIState>(key: T) => TUIState[T];
-    setUIState: <T extends keyof TUIState>(key: T, value: TUIState[T]) => void;
+    setUIState: (newState: TUIState) => void;
+    uiState: TUIState;
 };
 
 const UIContext = createContext<TUIContext | null>(null);
@@ -26,21 +27,11 @@ export const useUIContext = () => {
 export const UIProvider = ({ children }: { children: React.ReactNode }) => {
     const [uiState, setUIState] = useState<TUIState>({});
 
-    const getUIState = useCallback(
-        <T extends keyof TUIState>(key: T): TUIState[T] => {
-            return uiState[key];
-        },
-        [uiState]
-    );
+    const updateUIState = useCallback((newState: TUIState) => {
+        setUIState(prevState => ({ ...prevState, ...newState }));
+    }, []);
 
-    const updateUIState = useCallback(
-        <T extends keyof TUIState>(key: T, value: TUIState[T]) => {
-            setUIState(prevState => ({ ...prevState, [key]: value }));
-        },
-        [setUIState]
-    );
-
-    const providerValue = useMemo(() => ({ getUIState, setUIState: updateUIState }), [getUIState, updateUIState]);
+    const providerValue = useMemo(() => ({ setUIState: updateUIState, uiState }), [uiState, updateUIState]);
 
     return <UIContext.Provider value={providerValue}>{children}</UIContext.Provider>;
 };

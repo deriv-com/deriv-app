@@ -1,6 +1,6 @@
 import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
-import { createTransformer } from 'mobx-utils';
+import { computedFn } from 'mobx-utils';
 import {
     isAccumulatorContract,
     isEmptyObject,
@@ -24,7 +24,7 @@ import {
     routes,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
@@ -45,7 +45,7 @@ export default class PortfolioStore extends BaseStore {
     main_barrier = null;
     contract_type = '';
 
-    getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
+    getPositionById = computedFn(id => this.positions.find(position => +position.id === +id));
 
     responseQueue = [];
 

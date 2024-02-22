@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
+import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -28,34 +28,6 @@ const AvailableCTraderAccountsList: React.FC = () => {
         });
     };
 
-    const leadingIcon = () => (
-        <div
-            className='wallets-available-ctrader__icon'
-            onClick={() => {
-                window.open(getStaticUrl('/deriv-ctrader'));
-            }}
-            // Fix sonarcloud issue
-            onKeyDown={event => {
-                if (event.key === 'Enter') {
-                    window.open(getStaticUrl('/deriv-ctrader'));
-                }
-            }}
-        >
-            <CTrader />
-        </div>
-    );
-
-    const trailingButton = () => (
-        <WalletButton
-            color='primary-light'
-            onClick={() => {
-                onSubmit();
-            }}
-        >
-            {t('Get')}
-        </WalletButton>
-    );
-
     useEffect(() => {
         if (status === 'success') {
             show(
@@ -78,7 +50,34 @@ const AvailableCTraderAccountsList: React.FC = () => {
 
     return (
         <div className='wallets-available-ctrader'>
-            <TradingAccountCard leading={leadingIcon} trailing={trailingButton}>
+            <TradingAccountCard
+                leading={
+                    <div
+                        className='wallets-available-ctrader__icon'
+                        onClick={() => {
+                            window.open(getStaticUrl('/deriv-ctrader'));
+                        }}
+                        // Fix sonarcloud issue
+                        onKeyDown={event => {
+                            if (event.key === 'Enter') {
+                                window.open(getStaticUrl('/deriv-ctrader'));
+                            }
+                        }}
+                    >
+                        <CTrader />
+                    </div>
+                }
+                trailing={
+                    <WalletButton
+                        color='primary-light'
+                        onClick={() => {
+                            onSubmit();
+                        }}
+                    >
+                        {t('Get')}
+                    </WalletButton>
+                }
+            >
                 <div className='wallets-available-ctrader__details'>
                     <WalletText size='sm' weight='bold'>
                         {PlatformDetails.ctrader.title}

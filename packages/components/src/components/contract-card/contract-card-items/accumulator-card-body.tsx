@@ -14,7 +14,6 @@ import ArrowIndicator from '../../arrow-indicator';
 
 type TAccumulatorCardBody = {
     addToast: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate?: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
     contract_info: TContractInfo;
     contract_update?: ContractUpdate;
     currency: Required<TContractInfo>['currency'];
@@ -26,26 +25,20 @@ type TAccumulatorCardBody = {
     is_sold: boolean;
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
-    setCurrentFocus: (value: string) => void;
+    setCurrentFocus: (value: string | null) => void;
+    totalProfit: number;
     is_positions?: boolean;
 };
 
 const AccumulatorCardBody = ({
-    addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
-    current_focus,
-    error_message_alignment,
     getCardLabels,
-    getContractById,
     indicative,
     is_sold,
-    onMouseLeave,
-    removeToast,
-    setCurrentFocus,
     is_positions,
+    ...toggle_card_dialog_props
 }: TAccumulatorCardBody) => {
     const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
@@ -72,10 +65,12 @@ const AccumulatorCardBody = ({
                     >
                         <Money amount={sell_price || indicative} currency={currency} />
                     </div>
-                    <ArrowIndicator
-                        className='dc-contract-card__indicative--movement'
-                        value={sell_price || indicative}
-                    />
+                    {!is_sold && (
+                        <ArrowIndicator
+                            className='dc-contract-card__indicative--movement'
+                            value={sell_price || indicative}
+                        />
+                    )}
                 </ContractCardItem>
                 <ContractCardItem
                     header={TOTAL_PROFIT_LOSS}
@@ -84,23 +79,16 @@ const AccumulatorCardBody = ({
                     is_won={is_won}
                 >
                     <Money amount={profit} currency={currency} />
-                    <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                    {!is_sold && <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />}
                 </ContractCardItem>
                 <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                     {is_valid_to_sell && (
                         <ToggleCardDialog
-                            addToast={addToast}
-                            connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
-                            current_focus={current_focus}
-                            error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
-                            getContractById={getContractById}
                             is_accumulator
-                            onMouseLeave={onMouseLeave}
-                            removeToast={removeToast}
-                            setCurrentFocus={setCurrentFocus}
+                            {...toggle_card_dialog_props}
                         />
                     )}
                 </ContractCardItem>

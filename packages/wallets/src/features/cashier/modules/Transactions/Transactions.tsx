@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';
@@ -32,11 +33,15 @@ const Transactions = () => {
     const { isLoading } = useCurrencyConfig();
     const { isMobile } = useDevice();
 
-    const queryParams = new URLSearchParams(location.search);
-    const showPending = queryParams.get('showPending');
+    const { location } = useHistory();
+    const initialShowPending = Boolean(
+        location.pathname === '/wallets/cashier/transactions' ? location.state?.showPending : false
+    );
+    const initialTransactionType =
+        (location.pathname === '/wallets/cashier/transactions' ? location.state?.transactionType : undefined) ?? 'all';
 
-    const [isPendingActive, setIsPendingActive] = useState(showPending === 'true');
-    const [filterValue, setFilterValue] = useState('all');
+    const [isPendingActive, setIsPendingActive] = useState(initialShowPending);
+    const [filterValue, setFilterValue] = useState(initialTransactionType);
 
     const filterOptionsList = useMemo(
         () =>

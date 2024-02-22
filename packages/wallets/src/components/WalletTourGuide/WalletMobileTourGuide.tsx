@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from '@deriv/react-joyride';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
@@ -26,7 +26,7 @@ const WalletMobileTourGuide = ({
     isOptionsAndMultipliersLoaded = true,
     isWalletSettled = true,
 }: TProps) => {
-    const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
+    const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
     const { isMobile } = useDevice();
     const { activeTabIndex, setActiveTabIndex } = useTabs();
     const [onboardingStep, setOnboardingStep] = useState(0);

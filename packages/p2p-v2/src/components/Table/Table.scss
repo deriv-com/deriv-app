@@ -1,0 +1,51 @@
+.p2p-v2-table {
+    &__content {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        @include mobile {
+            height: 100%;
+        }
+
+        &-row {
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--general-section-1);
+            }
+        }
+    }
+
+    scrollbar-width: thin; /* For Firefox */
+    &::-webkit-scrollbar {
+        scrollbar-width: thin;
+        width: 5px;
+        height: 5px;
+        background-color: transparent;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        scrollbar-width: thin;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        display: none;
+    }
+
+    &:hover {
+        &::-webkit-scrollbar-thumb {
+            scrollbar-width: thin;
+            display: unset;
+            border-radius: 10px;
+            background-color: var(--state-active);
+        }
+    }
+
+    &__header {
+        display: grid;
+        border-bottom: 2px solid var(--general-section-1);
+        padding: 1.6rem;
+    }
+}

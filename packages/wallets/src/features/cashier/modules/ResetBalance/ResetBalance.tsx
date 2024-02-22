@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useMutation } from '@deriv/api';
+import { useMutation } from '@deriv/api-v2';
 import { WalletButton, WalletsActionScreen } from '../../../../components';
 import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';
 import IcResetDemoBalanceDone from '../../../../public/images/ic-demo-reset-balance-done.svg';

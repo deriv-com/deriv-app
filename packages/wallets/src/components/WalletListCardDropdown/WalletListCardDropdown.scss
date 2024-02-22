@@ -1,0 +1,11 @@
+.wallets-list-card-dropdown {
+    &__item {
+        display: flex;
+        gap: 1.6rem;
+
+        &-content {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

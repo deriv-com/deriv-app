@@ -1,25 +1,27 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
-import useIsP2PEnabled from './useIsP2PEnabled';
+import { useGetAccountStatus } from '@deriv/api';
 import useP2POrderList from './useP2POrderList';
 
 const useP2PCompletedOrdersNotification = () => {
-    const { data: is_p2p_enabled } = useIsP2PEnabled();
-    const { subscribe, data, unsubscribe } = useP2POrderList();
+    const { subscribe, data, unsubscribe, isSubscribed } = useP2POrderList();
+    const { data: getAccountStatusData } = useGetAccountStatus();
+    const { is_p2p_user } = getAccountStatusData || {};
     const { client, notifications } = useStore();
     const { is_authorize } = client;
 
     React.useEffect(() => {
-        if (is_authorize && is_p2p_enabled) {
+        if (is_authorize && is_p2p_user) {
             subscribe({
                 payload: {
                     active: 0,
                 },
             });
-        } else {
-            unsubscribe();
         }
-    }, [is_authorize, is_p2p_enabled, subscribe, unsubscribe]);
+        return () => {
+            isSubscribed && unsubscribe();
+        };
+    }, [isSubscribed, is_authorize, is_p2p_user, subscribe, unsubscribe]);
 
     React.useEffect(() => {
         if (data?.p2p_order_list?.list.length && data?.p2p_order_list?.list !== notifications.p2p_completed_orders) {

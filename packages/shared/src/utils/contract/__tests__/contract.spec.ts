@@ -211,7 +211,7 @@ describe('isTurbosContract', () => {
 
 describe('isOptionsContract', () => {
     it('should return true if contract_type is not ACCUMLATOR or MULTIPLIER', () => {
-        expect(ContractUtils.isOptionsContract(CONTRACT_TYPES.CALL)).toEqual(true);
+        expect(ContractUtils.isOptionsContract(CONTRACT_TYPES.VANILLA.CALL)).toEqual(true);
     });
     it('should return false if contract_type is ACCUMLATOR', () => {
         expect(ContractUtils.isOptionsContract(CONTRACT_TYPES.ACCUMULATOR)).toEqual(false);

@@ -157,7 +157,9 @@ export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contrac
 
 export const isOptionsContract = (contract_type = '') =>
     !!contract_type &&
-    Object.values(CONTRACT_TYPES).includes(contract_type as typeof CONTRACT_TYPES[keyof typeof CONTRACT_TYPES]) &&
+    (Object.values(CONTRACT_TYPES).includes(contract_type as typeof CONTRACT_TYPES[keyof typeof CONTRACT_TYPES]) ||
+        isVanillaContract(contract_type) ||
+        isTurbosContract(contract_type)) &&
     !isAccumulatorContract(contract_type) &&
     !isMultiplierContract(contract_type);
 

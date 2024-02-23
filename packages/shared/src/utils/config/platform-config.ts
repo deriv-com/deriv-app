@@ -52,6 +52,6 @@ export const useOnLoadTranslation = () => {
         return () => i18n.store.off('added');
     }, []);
 
-    initMoment(i18n.language);
+    initMoment();
     return [is_loaded, setLoaded];
 };

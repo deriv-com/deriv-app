@@ -1,16 +1,11 @@
 import React from 'react';
-import { useFormikContext } from 'formik';
+import { FormikValues, useFormikContext } from 'formik';
 import { isEmptyObject } from '@deriv/shared';
 import { useLocalStorageData } from '@deriv/hooks';
 
-type TFormikContext = {
-    values: Record<string, unknown>;
-    setValues: (values: Record<string, unknown>) => void;
-};
-
 const SaveAccountFormDataToStorage = () => {
     const [data, setData] = useLocalStorageData<Record<string, unknown>>('account_form_data');
-    const { setValues, values } = useFormikContext<TFormikContext>();
+    const { setValues, values } = useFormikContext<FormikValues>();
 
     React.useEffect(() => {
         if (!isEmptyObject(data)) {

@@ -6,11 +6,10 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
-import { THooks } from '../../types';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
-const getWalletHeaderButtons = (isDemo: boolean) => {
+const getWalletHeaderButtons = (isDemo?: boolean) => {
     const buttons = [
         {
             icon: <IcCashierAdd />,
@@ -46,17 +45,15 @@ const getWalletHeaderButtons = (isDemo: boolean) => {
     return sortedButtons;
 };
 
-type TProps = {
-    isActive: THooks.WalletAccountsList['is_active'];
-    isDemo: THooks.WalletAccountsList['is_virtual'];
-    loginid: THooks.WalletAccountsList['loginid'];
-};
-
-const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
+const WalletListCardActions = () => {
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
+
+    const isActive = activeWallet?.is_active;
+    const isDemo = activeWallet?.is_virtual;
+    const loginid = activeWallet?.loginid;
 
     if (isMobile)
         return (
@@ -71,9 +68,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                                 icon={button.icon}
                                 isRound
                                 onClick={() => {
-                                    if (activeWallet?.loginid !== loginid) {
-                                        switchAccount(loginid);
-                                    }
+                                    loginid && switchAccount(loginid);
                                     history.push(`/wallets/cashier/${button.name}`);
                                 }}
                                 size='lg'
@@ -93,7 +88,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {
-                        switchAccount(loginid);
+                        loginid && switchAccount(loginid);
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
                     rounded='md'

@@ -1,0 +1,26 @@
+.onfido-custom-container {
+    .onfido-sdk-ui-Modal-inner {
+        border-radius: 8px;
+    }
+
+    .onfido-sdk-ui-Camera-webcamContainer {
+        left: auto;
+        width: -webkit-fill-available;
+    }
+}
+
+.onfido-custom-container-mobile {
+    & .onfido-sdk-ui-PageTitle {
+        &-titleWrapper {
+            margin: 24px 0 0;
+        }
+
+        &-title {
+            font-size: 20px;
+            text-align: center;
+        }
+        &-titleSpan {
+            font-size: 20px;
+        }
+    }
+}

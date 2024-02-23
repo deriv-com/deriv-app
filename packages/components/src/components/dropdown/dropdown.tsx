@@ -44,6 +44,7 @@ type TDropdown = {
     onClick?: () => void;
     placeholder?: string;
     suffix_icon?: string;
+    should_open_on_hover?: boolean;
     should_scroll_to_selected?: boolean;
     should_autohide?: boolean;
     test_id?: string;
@@ -197,7 +198,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
                     ref={list_ref}
                 >
                     <ThemedScrollbars
-                        height={list_dimensions[1] || '200px'}
+                        height={list_dimensions[1] && list_dimensions[1] > 200 ? list_dimensions[1] : '200px'}
                         scroll_height={scroll_height}
                         should_scroll_to_selected={should_scroll_to_selected}
                         autohide={should_autohide}
@@ -275,6 +276,7 @@ const Dropdown = ({
     onClick,
     placeholder,
     suffix_icon,
+    should_open_on_hover = false,
     should_scroll_to_selected,
     should_autohide,
     test_id,
@@ -341,7 +343,14 @@ const Dropdown = ({
         handleVisibility();
     };
 
-    const handleVisibility = () => {
+    const handleVisibility = (e?: React.MouseEvent<HTMLDivElement>) => {
+        if (e && ['mouseover', 'mouseleave'].includes(e.type)) {
+            if (!should_open_on_hover) return;
+            if (e.type === 'mouseover') setIsListVisible(true);
+            else setIsListVisible(false);
+            return;
+        }
+
         if (typeof onClick === 'function') {
             onClick();
 
@@ -447,7 +456,13 @@ const Dropdown = ({
                 data-testid={test_id}
                 value={value || 0}
             />
-            <div ref={wrapper_ref} className={containerClassName()}>
+            <div
+                ref={wrapper_ref}
+                className={containerClassName()}
+                onMouseOver={handleVisibility}
+                onFocus={() => null}
+                onMouseLeave={handleVisibility}
+            >
                 <div
                     className={classNames('dc-dropdown__container', {
                         'dc-dropdown__container--suffix-icon': suffix_icon,

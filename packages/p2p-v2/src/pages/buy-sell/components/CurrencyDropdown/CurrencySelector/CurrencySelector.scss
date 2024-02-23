@@ -1,0 +1,35 @@
+.p2p-v2-currency-selector {
+    position: absolute;
+    top: 7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 2;
+    border-radius: 0.4rem;
+    background: #fff;
+    box-shadow: 0 3.2rem 6.4rem rgba(14, 14, 14, 0.141);
+    overflow-y: auto;
+
+    @include mobile {
+        position: relative;
+        top: 0;
+        align-items: normal;
+    }
+
+    &__list {
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: relative;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        max-height: 45rem;
+        margin: 0.8rem;
+        width: 24rem;
+
+        @include mobile {
+            margin-top: 4.6rem;
+            height: calc(100vh - 22rem);
+            width: unset;
+        }
+    }
+}

@@ -10,6 +10,7 @@ type TCollapsible = {
     onClick: (state: boolean) => void;
     title?: string;
     handle_button?: boolean;
+    should_toggle_on_click?: boolean;
 };
 
 const swipe_config = {
@@ -26,6 +27,7 @@ const Collapsible = ({
     onClick,
     title,
     handle_button,
+    should_toggle_on_click = true,
 }: React.PropsWithChildren<TCollapsible>) => {
     const [is_open, expand] = React.useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = React.useState(false);
@@ -54,8 +56,8 @@ const Collapsible = ({
     );
 
     const swipe_handlers = useSwipeable({
-        onSwipedUp: toggleExpand,
-        onSwipedDown: toggleExpand,
+        onSwipedUp: () => !is_open && should_show_collapsible && toggleExpand(),
+        onSwipedDown: () => is_open && should_show_collapsible && toggleExpand(),
         ...swipe_config,
     });
 
@@ -63,7 +65,7 @@ const Collapsible = ({
         <ArrowButton
             is_collapsed={!is_open}
             position={position}
-            onClick={toggleExpand}
+            onClick={should_toggle_on_click ? toggleExpand : undefined}
             title={title}
             handle_button={handle_button}
         />

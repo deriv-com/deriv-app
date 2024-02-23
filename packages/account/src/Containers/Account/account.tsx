@@ -1,6 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { FadeWrapper, Loading } from '@deriv/components';
+import { useLocalStorageData } from '@deriv/hooks';
 import { matchRoute, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import PageOverlayWrapper from './page-overlay-wrapper';
@@ -35,10 +36,15 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
     // subroutes of a route is structured as an array of arrays
     const subroutes = flatten(routes.map(i => i.subroutes));
     const selected_content = subroutes.find(r => matchRoute(r, location.pathname));
+    const [, , clearData] = useLocalStorageData('account_form_data');
 
     React.useEffect(() => {
         toggleAccountSettings(true);
     }, [toggleAccountSettings]);
+
+    React.useEffect(() => {
+        clearData();
+    }, [location.pathname, clearData]);
 
     routes.forEach(menu_item => {
         if (menu_item?.subroutes?.length) {

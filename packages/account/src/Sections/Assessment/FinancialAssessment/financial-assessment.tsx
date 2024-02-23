@@ -47,6 +47,7 @@ import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { getFormattedOccupationList } from 'Configs/financial-details-config';
 import { TFinancialInformationForm } from 'Types';
+import SaveAccountFormDataToStorage from '../../../Components/forms/save-account-form-data-to-storage';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -422,6 +423,7 @@ const FinancialAssessment = observer(() => {
                             onSubmit={handleSubmit}
                         />
                     )}
+                    <SaveAccountFormDataToStorage />
                     <LeaveConfirm onDirty={is_mobile ? showForm : () => undefined} />
                     {is_form_visible && (
                         <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>

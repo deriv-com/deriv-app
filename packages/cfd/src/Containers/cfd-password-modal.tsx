@@ -645,7 +645,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (is_incorrect_mt5_password_format_error) {
             timeout = setTimeout(() => {
                 setIsMt5PasswordInvalidFormatModalVisible(true);
-            }, 400);
+            }, 500);
         }
 
         return () => clearTimeout(timeout);

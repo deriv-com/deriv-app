@@ -115,7 +115,7 @@ const CFDPasswordChange = observer(
                 {({ errors, isSubmitting, handleBlur, handleChange, touched, values, isValid }) => {
                     return (
                         <Form className='cfd-password-change__content'>
-                            <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
+                            <div className='cfd-password-modal__content cfd-password-change__container dc-modal__container_cfd-password-modal__body'>
                                 <div className='cfd-password-change-modal-description'>
                                     <Text as='p' size='xs'>
                                         <Localize i18n_default_text='To enhance your MT5 account security we have upgraded our password policy.' />
@@ -178,17 +178,19 @@ const CFDPasswordChange = observer(
                                     </ol>
                                 </div>
                             </div>
-                            <FormSubmitButton
-                                is_disabled={!values.old_password || !values.new_password || !isValid}
-                                has_cancel={has_cancel_button}
-                                is_absolute={is_mobile}
-                                cancel_label={localize('Forgot password?')}
-                                onCancel={handleCancel}
-                                is_loading={isSubmitting}
-                                label={localize('Change my password')}
-                                is_center={should_set_trading_password}
-                                form_error={form_error}
-                            />
+                            <div className='cfd-password-change__footer-button'>
+                                <FormSubmitButton
+                                    is_disabled={!values.old_password || !values.new_password || !isValid}
+                                    has_cancel={has_cancel_button}
+                                    is_absolute={is_mobile}
+                                    cancel_label={localize('Forgot password?')}
+                                    onCancel={handleCancel}
+                                    is_loading={isSubmitting}
+                                    label={localize('Change my password')}
+                                    is_center={should_set_trading_password}
+                                    form_error={form_error}
+                                />
+                            </div>
                         </Form>
                     );
                 }}

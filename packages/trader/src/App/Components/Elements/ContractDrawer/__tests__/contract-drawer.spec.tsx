@@ -13,6 +13,7 @@ const mocked_props: React.ComponentProps<typeof ContractDrawer> = {
     is_accumulator: false,
     is_dark_theme: false,
     is_market_closed: false,
+    is_options: false,
     is_multiplier: false,
     is_vanilla: false,
     is_smarttrader_contract: false,

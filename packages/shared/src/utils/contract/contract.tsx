@@ -156,7 +156,10 @@ export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
 export const isOptionsContract = (contract_type = '') =>
-    !!contract_type && !isAccumulatorContract(contract_type) && !isMultiplierContract(contract_type);
+    !!contract_type &&
+    Object.values(CONTRACT_TYPES).includes(contract_type as typeof CONTRACT_TYPES[keyof typeof CONTRACT_TYPES]) &&
+    !isAccumulatorContract(contract_type) &&
+    !isMultiplierContract(contract_type);
 
 export const isVanillaFxContract = (contract_type = '', symbol = '') =>
     isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as typeof VANILLA_FX_SYMBOLS[number]);

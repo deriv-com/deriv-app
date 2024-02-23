@@ -209,6 +209,21 @@ describe('isTurbosContract', () => {
     });
 });
 
+describe('isOptionsContract', () => {
+    it('should return true if contract_type is not ACCUMLATOR or MULTIPLIER', () => {
+        expect(ContractUtils.isOptionsContract(CONTRACT_TYPES.CALL)).toEqual(true);
+    });
+    it('should return false if contract_type is ACCUMLATOR', () => {
+        expect(ContractUtils.isOptionsContract(CONTRACT_TYPES.ACCUMULATOR)).toEqual(false);
+    });
+    it('should return false if contract_type is MULTIPLIER', () => {
+        expect(ContractUtils.isOptionsContract(CONTRACT_TYPES.MULTIPLIER.DOWN)).toEqual(false);
+    });
+    it('should return false if contract_type is invalid contract type', () => {
+        expect(ContractUtils.isOptionsContract('INVALID_CONTRACT_TYPE')).toEqual(false);
+    });
+});
+
 describe('getDigitInfo', () => {
     it('should return an empty object when tick_stream is not in contract_info', () => {
         const contract_info = mockContractInfo({ tick_stream: undefined });

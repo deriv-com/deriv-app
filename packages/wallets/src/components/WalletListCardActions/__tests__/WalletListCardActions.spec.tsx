@@ -6,7 +6,6 @@ import { render, screen } from '@testing-library/react';
 import useDevice from '../../../hooks/useDevice';
 import WalletListCardActions from '../WalletListCardActions';
 
-const mockSwitchAccount = jest.fn();
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: {
@@ -17,9 +16,6 @@ jest.mock('@deriv/api-v2', () => ({
             is_virtual: false,
             loginid: 'CRW123456',
         },
-    })),
-    useAuthorize: jest.fn(() => ({
-        switchAccount: mockSwitchAccount,
     })),
 }));
 
@@ -97,7 +93,6 @@ describe('WalletListCardActions', () => {
 
         render(<WalletListCardActions />, { wrapper });
         screen.getByRole('button', { name: 'deposit' }).click();
-        expect(mockSwitchAccount).toHaveBeenCalledWith('CRW123456');
         expect(history.location.pathname).toBe('/wallets/cashier/deposit');
     });
 
@@ -117,7 +112,6 @@ describe('WalletListCardActions', () => {
             wrapper,
         });
         screen.getByRole('button', { name: 'deposit' }).click();
-        expect(mockSwitchAccount).toHaveBeenCalledWith('CRW123456');
         expect(history.location.pathname).toBe('/wallets/cashier/deposit');
     });
 

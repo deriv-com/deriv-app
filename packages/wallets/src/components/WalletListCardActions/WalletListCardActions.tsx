@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
@@ -46,14 +46,12 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
 };
 
 const WalletListCardActions = () => {
-    const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
 
     const isActive = activeWallet?.is_active;
     const isDemo = activeWallet?.is_virtual;
-    const loginid = activeWallet?.loginid;
 
     if (isMobile)
         return (
@@ -68,7 +66,6 @@ const WalletListCardActions = () => {
                                 icon={button.icon}
                                 isRound
                                 onClick={() => {
-                                    loginid && switchAccount(loginid);
                                     history.push(`/wallets/cashier/${button.name}`);
                                 }}
                                 size='lg'
@@ -88,7 +85,6 @@ const WalletListCardActions = () => {
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {
-                        loginid && switchAccount(loginid);
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
                     rounded='md'

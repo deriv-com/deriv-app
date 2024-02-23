@@ -1,10 +1,10 @@
 import React from 'react';
-import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
+import { useRealAccountCreationContext } from '../../providers/RealAccountCreationProvider';
 import { IconComponent } from '../IconComponent';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
 
 const TrailingButton = () => {
-    const { setIsWizardOpen } = useSignupWizardContext();
+    const { setIsWizardOpen } = useRealAccountCreationContext();
     return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
 };
 

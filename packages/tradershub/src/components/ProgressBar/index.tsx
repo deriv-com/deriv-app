@@ -1,4 +1,5 @@
-import DesktopProgressBar from './DesktopProgressBar';
-import MobileProgressBar from './MobileProgressBar';
+import type { TSteps } from './Stepper';
 
-export { DesktopProgressBar, MobileProgressBar };
+export { default as DesktopProgressBar } from './DesktopProgressBar';
+export { default as MobileProgressBar } from './MobileProgressBar';
+export { TSteps };

@@ -12,10 +12,10 @@ type TCurrencyCard = { id: string; info?: boolean; title: string };
  * @name CurrencyCard
  * @description The CurrencyCard component is used to display the currency card in the currency selector screen.
  * @param {string} id - The id of the currency.
- * @param {boolean} info - The info of the currency.
+ * @param {boolean} info - The flag to display an info for a specific currency.
  * @param {string} title - The title of the currency.
  * @returns {React.ReactNode}
- * @example <CurrencyCard icon={Icon} id={id} info={info} title={title} />
+ * @example <CurrencyCard id={id} info={info} title={title} />
  */
 const CurrencyCard = ({ id, info, title }: TCurrencyCard) => {
     const { setFieldValue, values } = useFormikContext<{ currency: string }>();

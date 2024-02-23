@@ -1,18 +1,20 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CurrencyDropdown from '../CurrencyDropdown';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
-        <div>Click me</div>
-        {children}
+        <AuthProvider>
+            <div>Click me</div>
+            {children}
+        </AuthProvider>
     </APIProvider>
 );
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         settings: {
             useGetSettings: () => ({

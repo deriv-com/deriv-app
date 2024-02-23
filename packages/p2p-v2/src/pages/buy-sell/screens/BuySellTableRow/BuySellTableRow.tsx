@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Badge, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
 import { BUY_SELL } from '@/constants';
 import { generateEffectiveRate } from '@/utils';
-import { p2p, useExchangeRateSubscription } from '@deriv/api';
+import { p2p, useExchangeRateSubscription } from '@deriv/api-v2';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { TBuySellTableRowRenderer } from '../BuySellTable/BuySellTable';

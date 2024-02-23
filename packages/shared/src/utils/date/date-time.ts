@@ -13,7 +13,7 @@ type TExtendedMoment = typeof moment & {
 };
 
 // Localize moment instance with specific object
-export const initMoment = (lang: string) => moment.locale(lang);
+export const initMoment = () => moment.locale('en');
 
 /**
  * Convert epoch to moment object

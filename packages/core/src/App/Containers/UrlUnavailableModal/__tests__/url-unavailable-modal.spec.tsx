@@ -22,7 +22,7 @@ describe('<UrlUnavailableModal />', () => {
     const okButtonName = 'OK';
 
     const store = mockStore({
-        ui: { is_mobile: false, isUrlUnavailableModalVisible: true, toggleUrlUnavailableModal: jest.fn() },
+        ui: { isUrlUnavailableModalVisible: true },
     });
     const renderComponent = () =>
         render(

@@ -1,8 +1,8 @@
 import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletCardIcon } from '../WalletCardIcon';
 import WalletListCardDetails from '../WalletListCardDetails/WalletListCardDetails';
 import './WalletListCard.scss';
-import { useActiveWalletAccount } from '@deriv/api-v2';
 
 const WalletListCard = () => {
     const { data: activeWallet } = useActiveWalletAccount();

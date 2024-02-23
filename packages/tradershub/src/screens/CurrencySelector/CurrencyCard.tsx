@@ -7,7 +7,6 @@ import { Text } from '@deriv-com/ui';
 
 type TCurrencyCard = { id: string; info?: boolean; title: string };
 
-// write docs for the component
 /**
  * @name CurrencyCard
  * @description The CurrencyCard component is used to display the currency card in the currency selector screen.
@@ -43,6 +42,7 @@ const CurrencyCard = ({ id, info, title }: TCurrencyCard) => {
                         ({id})
                     </Text>
                 </div>
+                x``
             </button>
         </div>
     );

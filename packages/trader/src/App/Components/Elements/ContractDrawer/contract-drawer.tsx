@@ -130,10 +130,7 @@ const ContractDrawer = observer(
                 <div
                     id='dt_contract_drawer'
                     className={classNames('contract-drawer', {
-                        'contract-drawer--with-collapsible-btn':
-                            !!getEndTime(contract_info) ||
-                            ((is_multiplier || is_vanilla || is_turbos || is_accumulator || is_smarttrader_contract) &&
-                                isMobile()),
+                        'contract-drawer--with-collapsible-btn': !!getEndTime(contract_info) || is_mobile,
                         'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                         'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                     })}

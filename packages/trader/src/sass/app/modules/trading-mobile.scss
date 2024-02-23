@@ -1,6 +1,8 @@
 @include mobile {
     /** @define dc-collapsible; weak */
     .dc-collapsible {
+        touch-action: pan-x;
+
         &:before {
             content: '';
             position: absolute;

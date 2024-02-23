@@ -83,7 +83,13 @@ const CollapsibleTradeParams = ({
     const isVisible = (component: string) => form_components.includes(component);
 
     return (
-        <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick} handle_button>
+        <Collapsible
+            position='top'
+            is_collapsed={is_collapsed}
+            onClick={onClick}
+            should_toggle_on_click={false}
+            handle_button
+        >
             {is_accumulator && is_collapsed && <AccumulatorsStats />}
             <div className='trade-params__contract-type-container'>
                 <ContractType />

@@ -11,7 +11,7 @@ type TIconArrowWithTitle = {
 type TArrowButton = {
     is_collapsed?: boolean;
     is_open?: boolean;
-    onClick: () => void;
+    onClick?: () => void;
     title?: string;
     position?: 'top' | 'bottom';
     handle_button?: boolean;

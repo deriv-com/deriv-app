@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { TradingAccountCard } from '@/components';
-import { getAccountTitle } from '@/helpers/accountHelpers';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
 import { THooks } from '@/types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '@cfd/constants';
@@ -23,7 +23,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
 
     const isVirtual = account.is_virtual;
     const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
-    const title = getAccountTitle(marketTypeDetails.title, activeTradingAccount?.is_virtual);
+    const title = getCfdsAccountTitle(marketTypeDetails.title, activeTradingAccount?.is_virtual);
 
     return (
         <TradingAccountCard

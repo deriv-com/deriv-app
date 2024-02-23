@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { PlatformIcon, TradingAccountCard } from '@/components';
 import { getStaticUrl } from '@/helpers';
-import { getAccountTitle } from '@/helpers/accountHelpers';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
@@ -23,7 +23,7 @@ const AddedCTraderAccountsList = () => {
     const { show } = Provider.useModal();
     const account = cTraderAccounts?.find(account => account.is_virtual === activeTradingAccount?.is_virtual);
     const isVirtual = account?.is_virtual;
-    const title = getAccountTitle(PlatformDetails.ctrader.title, isVirtual);
+    const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, isVirtual);
 
     const trailing = () => (
         <div className='flex flex-col gap-y-4'>

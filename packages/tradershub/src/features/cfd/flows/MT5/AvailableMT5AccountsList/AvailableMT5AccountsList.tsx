@@ -5,7 +5,7 @@ import {
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '@/components';
-import { getAccountTitle } from '@/helpers/accountHelpers';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
 import { THooks } from '@/types';
 import { MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
@@ -33,7 +33,7 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
         !activeTradingAccount?.is_virtual && show(<JurisdictionModal />);
         activeTradingAccount?.is_virtual && hasActiveDerivAccount && show(<MT5PasswordModal />);
     };
-    const title = getAccountTitle(marketTypeDetails.title, activeTradingAccount?.is_virtual);
+    const title = getCfdsAccountTitle(marketTypeDetails.title, activeTradingAccount?.is_virtual);
 
     return (
         <Fragment>

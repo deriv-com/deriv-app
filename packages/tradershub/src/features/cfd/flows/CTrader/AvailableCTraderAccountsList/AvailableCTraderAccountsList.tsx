@@ -12,6 +12,7 @@ import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
+import { getAccountTitle } from '@/helpers/accountHelpers';
 
 const LeadingIcon = () => (
     <PlatformIcon
@@ -29,8 +30,7 @@ const AvailableCTraderAccountsList = () => {
     const { show } = Provider.useModal();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
-    const demoTitle = activeTradingAccount?.is_virtual ? 'Demo' : '';
-    const title = `${PlatformDetails.ctrader.title} ${demoTitle}`;
+    const title = getAccountTitle(PlatformDetails.ctrader.title, activeTradingAccount?.is_virtual);
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 

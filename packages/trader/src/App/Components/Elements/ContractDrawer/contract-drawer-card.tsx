@@ -24,7 +24,6 @@ type TContractDrawerCardProps = {
     currency?: string;
     is_collapsed: boolean;
     is_market_closed: boolean;
-    is_smarttrader_contract: boolean;
     result?: string;
     server_time?: moment.Moment;
     toggleContractAuditDrawer: () => void;

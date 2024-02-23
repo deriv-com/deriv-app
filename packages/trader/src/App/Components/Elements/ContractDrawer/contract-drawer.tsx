@@ -33,7 +33,6 @@ type TContractDrawerProps = RouteComponentProps & {
         | 'is_market_closed'
         | 'is_multiplier'
         | 'is_sell_requested'
-        | 'is_smarttrader_contract'
         | 'is_lookbacks'
         | 'is_turbos'
         | 'is_vanilla'
@@ -53,7 +52,6 @@ const ContractDrawer = observer(
         is_multiplier,
         is_turbos,
         is_vanilla,
-        is_smarttrader_contract,
         is_lookbacks,
         onClickCancel,
         onClickSell,
@@ -107,7 +105,6 @@ const ContractDrawer = observer(
                     is_turbos={is_turbos}
                     is_vanilla={is_vanilla}
                     is_sell_requested={is_sell_requested}
-                    is_smarttrader_contract={is_smarttrader_contract}
                     is_lookbacks={is_lookbacks}
                     is_collapsed={should_show_contract_audit}
                     onClickCancel={onClickCancel}

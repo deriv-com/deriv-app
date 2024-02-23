@@ -50,7 +50,7 @@ describe('FullPageMobileWrapper', () => {
         expect(screen.queryByText('Footer')).toBeVisible();
         expect(screen.queryByTestId('dt_p2p_v2_mobile_wrapper_button')).not.toBeInTheDocument();
     });
-    it('should hide the cross icon', () => {
+    it('should hide the left arrow icon', () => {
         render(
             <FullPageMobileWrapper renderHeader={Header} shouldShowBackIcon={false}>
                 <Body />

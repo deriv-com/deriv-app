@@ -20,7 +20,6 @@ export type TContractCardBodyProps = {
     is_accumulator?: boolean;
     is_lookbacks?: boolean;
     is_multiplier: boolean;
-    is_options?: boolean;
     is_turbos?: boolean;
     is_vanilla?: boolean;
     server_time: moment.Moment;

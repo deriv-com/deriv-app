@@ -34,8 +34,7 @@ const getRowAction = (row_obj: { [key: string]: unknown }) => {
     const contract_type = extractInfoFromShortcode(row_obj?.shortcode as string)
         ?.category?.toString()
         .toUpperCase();
-    return getSupportedContracts()[contract_type as TSupportedContractType] &&
-        !isForwardStarting(row_obj.shortcode as string, Number(row_obj.purchase_time_unix))
+    return getSupportedContracts()[contract_type as TSupportedContractType]
         ? getContractPath(Number(row_obj.contract_id))
         : {
               component: (

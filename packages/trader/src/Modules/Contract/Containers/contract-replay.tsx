@@ -146,7 +146,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             <UnsupportedContractModal
                 onConfirm={unsupportedContractOnConfirm}
                 onClose={unsupportedContractOnClose}
-                is_visible={is_forward_starting}
+                // is_visible={is_forward_starting}
             />
             <PageOverlay
                 id='dt_contract_replay_container'

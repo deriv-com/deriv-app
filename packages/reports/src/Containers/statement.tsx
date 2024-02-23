@@ -87,22 +87,20 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         const contract_type = extractInfoFromShortcode(row_obj.shortcode)?.category?.toUpperCase();
-        action =
-            getSupportedContracts()[contract_type as TSupportedContractType] &&
-            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
-                ? getContractPath(row_obj.id)
-                : {
-                      message: '',
-                      component: (
-                          <Localize
-                              i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
-                              values={{
-                                  trade_type_name:
-                                      getUnsupportedContracts()[contract_type as TUnsupportedContractType]?.name,
-                              }}
-                          />
-                      ),
-                  };
+        action = getSupportedContracts()[contract_type as TSupportedContractType]
+            ? getContractPath(row_obj.id)
+            : {
+                  message: '',
+                  component: (
+                      <Localize
+                          i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
+                          values={{
+                              trade_type_name:
+                                  getUnsupportedContracts()[contract_type as TUnsupportedContractType]?.name,
+                          }}
+                      />
+                  ),
+              };
     } else if (row_obj.action_type === 'withdrawal') {
         if (row_obj.withdrawal_details && row_obj.longcode) {
             action = {

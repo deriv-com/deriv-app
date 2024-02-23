@@ -5,8 +5,7 @@ import { THooks, TPlatforms } from '@/types';
 import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
 
@@ -23,7 +22,7 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 };
 
 const TradeScreen = ({ account }: TradeScreenProps) => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { isEU } = useRegulationFlags();
 
     const { getCFDState } = Provider.useCFDContext();
@@ -139,7 +138,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
-                        {!isMobile && (
+                        {isDesktop && (
                             <Fragment>
                                 <TradeLink app='windows' platform={mt5Platform} />
                                 <TradeLink app='macos' platform={mt5Platform} />

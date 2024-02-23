@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet, useDerivAccountsList } from '@deriv/api';
+import { useCreateWallet, useDerivAccountsList } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import CheckIcon from '../../public/images/check.svg';

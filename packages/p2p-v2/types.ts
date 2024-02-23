@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { p2p } from '@deriv/api';
 
 declare global {
@@ -19,3 +20,11 @@ export type TSelectedPaymentMethod = Partial<{
     id: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['id'];
     method: NonNullable<TAdvertiserPaymentMethods>[number]['method'];
 }>;
+
+export type TCurrencyListItem = {
+    display_name: string;
+    has_adverts: 0 | 1;
+    is_default?: 1;
+    text: string;
+    value: string;
+};

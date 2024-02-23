@@ -34,7 +34,6 @@ export const sanitizeCodeForLastestBlockly = (code) => {
     code = code?.replace(/function/g, 'function ');
     code = code?.replace(/return/g, 'return ');
     code = code?.replace(/var/g, 'var ');
-    code = code?.replace(/}/g, '}; ');
     return code;
     /* eslint-disable no-param-reassign */
 }

@@ -69,7 +69,6 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
-import { TTemporaryEvents } from 'Modules/Trading/Components/Form/ContractType/types';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -294,14 +293,15 @@ export default class TradeStore extends BaseStore {
 
     // Mobile
     is_trade_params_expanded = true;
-    debouncedSendTradeParamsAnalytics = debounce(
-        (eventType: keyof TEvents, payload: TTemporaryEvents['ce_contracts_set_up_form']) => {
-            const { action, duration_type, parameter_value } = payload;
-            if (action === 'change_parameter_value' && !duration_type && parameter_value === '') return;
-            Analytics.trackEvent(eventType, payload as unknown as TEvents['ce_trade_types_form']);
-        },
-        2000
-    );
+
+    debouncedSendTradeParamsAnalytics = debounce((payload: TEvents['ce_contracts_set_up_form']) => {
+        if (payload.action === 'change_parameter_value') {
+            const { duration_type, parameter_value } = payload;
+            if (!duration_type && parameter_value === '') return;
+        }
+        Analytics.trackEvent('ce_contracts_set_up_form', payload);
+    }, 2000);
+
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
     is_purchasing_contract = false;
@@ -1032,22 +1032,16 @@ export default class TradeStore extends BaseStore {
         })();
     };
 
-    sendTradeParamsAnalytics = (
-        options: Omit<TTemporaryEvents['ce_contracts_set_up_form'], 'form_name' | 'trade_type_name'>,
-        isDebounced?: boolean
-    ) => {
+    sendTradeParamsAnalytics = (options: Partial<TEvents['ce_contracts_set_up_form']>, isDebounced?: boolean) => {
         const payload = {
             form_name: 'default',
             trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
             ...options,
-        };
+        } as TEvents['ce_contracts_set_up_form'];
         if (isDebounced) {
-            this.debouncedSendTradeParamsAnalytics('ce_contracts_set_up_form' as keyof TEvents, payload);
+            this.debouncedSendTradeParamsAnalytics(payload);
         } else {
-            Analytics.trackEvent(
-                'ce_contracts_set_up_form' as keyof TEvents,
-                payload as unknown as TEvents['ce_trade_types_form']
-            );
+            Analytics.trackEvent('ce_contracts_set_up_form', payload);
         }
     };
 

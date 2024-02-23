@@ -59,15 +59,12 @@ export const getAppId = () => {
     // Added platform at the top since this should take precedence over the config_app_id
     if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {
         app_id = platform_app_ids[platform as keyof typeof platform_app_ids];
-    }
-    if (config_app_id) {
+    } else if (config_app_id) {
         app_id = config_app_id;
-    }
-    if (user_app_id.length) {
+    } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id);
         app_id = user_app_id;
-    }
-    if (isStaging()) {
+    } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = set_app_id ?? 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {

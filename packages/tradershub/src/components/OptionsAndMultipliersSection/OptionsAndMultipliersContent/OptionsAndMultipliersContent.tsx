@@ -4,9 +4,8 @@ import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } f
 import { optionsAndMultipliersContent } from '@/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { useActiveTradingAccount } from '@deriv/api';
+import { Button, useDevice } from '@deriv-com/ui';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -92,9 +91,9 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
  * @returns {React.ElementType} The `OptionsAndMultipliersContent` component.
  */
 const OptionsAndMultipliersContent = () => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { data } = useActiveTradingAccount();
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
 
     const { isEU } = useRegulationFlags();
 
@@ -119,7 +118,7 @@ const OptionsAndMultipliersContent = () => {
                 const trailingComponent = () => <ShowOpenButton isExternal={isExternal} redirect={redirect} />;
 
                 const leadingComponent = () => (
-                    <LinkTitle icon={data?.loginid || !isMobile ? icon : smallIcon} title={title} />
+                    <LinkTitle icon={data?.loginid || isDesktop ? icon : smallIcon} title={title} />
                 );
 
                 return (

@@ -76,6 +76,7 @@ const AdditionalInformation = () => {
                 <div className='flex justify-between gap-16'>
                     <Dropdown
                         dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
+                        errorMessage={touched.taxResidence && errors.taxResidence}
                         label='Tax residence'
                         list={residenceList.map(residence => ({
                             text: residence.text,
@@ -87,7 +88,7 @@ const AdditionalInformation = () => {
                             setFieldValue('taxResidence', selectedItem);
                         }}
                         value={values.taxResidence}
-                        variant='comboBox'
+                        variant='prompt'
                     />
                     <div className='pt-6'>
                         <StandaloneCircleInfoRegularIcon />
@@ -96,8 +97,10 @@ const AdditionalInformation = () => {
                 <div className='flex justify-between gap-16'>
                     <Input
                         className='text-sm'
+                        error={Boolean(errors.taxIdentificationNumber && touched.taxIdentificationNumber)}
                         isFullWidth
                         label='Tax identification number'
+                        message={touched.taxIdentificationNumber && errors.taxIdentificationNumber}
                         name='taxIdentificationNumber'
                         onBlur={handleBlur}
                         onChange={handleChange}

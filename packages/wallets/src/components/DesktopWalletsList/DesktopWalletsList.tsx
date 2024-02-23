@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
 import { AccountsList } from '../AccountsList';
 import { WalletsCardLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';
@@ -16,7 +16,6 @@ const DesktopWalletsList: React.FC = () => {
             {(isAuthorizeLoading || isCurrencyConfigLoading) && <WalletsCardLoader />}
             {activeWallet && (
                 <WalletsCard
-                    isDemo={activeWallet?.is_virtual}
                     key={`wallets-card-${activeWallet?.loginid}`}
                     renderHeader={() => (
                         <WalletListCard

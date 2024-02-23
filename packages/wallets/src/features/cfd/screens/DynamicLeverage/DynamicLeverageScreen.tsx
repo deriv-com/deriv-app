@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useDynamicLeverage } from '@deriv/api';
+import { useDynamicLeverage } from '@deriv/api-v2';
 import { WalletText } from '../../../../components';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { PlatformDetails } from '../../constants';

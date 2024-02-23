@@ -54,7 +54,7 @@ Blockly.Blocks.controls_whileUntil = {
 Blockly.JavaScript.controls_whileUntil = block => {
     const branch = Blockly.JavaScript.statementToCode(block, 'DO');
     const until = block.getFieldValue('MODE') === 'UNTIL';
-    const order = until ? Blockly.JavaScript.Order.LOGICAL_NOT : Blockly.JavaScript.Order.NONE;
+    const order = until ? Blockly.JavaScript.ORDER_LOGICAL_NOT : Blockly.JavaScript.ORDER_NONE;
     let argument0 = Blockly.JavaScript.valueToCode(block, 'BOOL', order) || 'false';
 
     if (until) {

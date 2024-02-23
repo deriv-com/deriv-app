@@ -64,7 +64,7 @@ Blockly.JavaScript.lists_sort = block => {
     // eslint-disable-next-line no-underscore-dangle
     const getCompareFunctionName = Blockly.JavaScript.provideFunction_('listsGetSortCompare', [
         // eslint-disable-next-line no-underscore-dangle
-        `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(type, direction) {
+        `function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(type, direction) {
             var compareFuncs = {
                 NUMERIC: function(a, b) {
                     return parseFloat(a) - parseFloat(b);

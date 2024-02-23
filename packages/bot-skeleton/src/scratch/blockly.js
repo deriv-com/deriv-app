@@ -12,4 +12,4 @@ window.Blockly = Blockly;
 require('imports-loader!scratch-blocks/msg/messages');
 require('./blocks');
 require('./hooks');
-require('./blockly-patch.js')
+require('./blockly-patch.js');

@@ -46,8 +46,8 @@ Blockly.Blocks.math_random_int = {
 };
 
 Blockly.JavaScript.math_random_int = block => {
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'FROM', Blockly.JavaScript.Order['COMMA']) || '0';
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.Order['COMMA']) || '0';
+    const argument0 = Blockly.JavaScript.valueToCode(block, 'FROM', Blockly.JavaScript.ORDER_COMMA) || '0';
+    const argument1 = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_COMMA) || '0';
     
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.provideFunction_('mathRandomInt', [`function ${'mathRandomInt'?.replace(/{|}/g, '')
@@ -61,5 +61,5 @@ Blockly.JavaScript.math_random_int = block => {
         }`]);
 
     const code = `${functionName}(${argument0}, ${argument1})`;
-    return [code, Blockly.JavaScript.Order['FUNCTION_CALL']];
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

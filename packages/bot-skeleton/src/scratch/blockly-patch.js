@@ -1,7 +1,7 @@
 /* This is a patch file to make the lastest version work
 of blockly to work since we are moving from version 3 to 10
 */
-import { sanitizeCodeForLastestBlockly } from "./shared";
+import { initializeOrderValues, sanitizeCodeForLastestBlockly } from "./shared";
 /* eslint-disable no-param-reassign */
 Blockly.JavaScript.quote_ = text => {
     return `'${text.replace(/\\/g, '\\\\').replace(/\n/g, '\\\n').replace(/'/g, "\\'")}'`;
@@ -37,13 +37,14 @@ Blockly.JavaScript.valueToCode = function (e, t, o) {
     n = !1;
     var r = Math.floor(o)
         , i = Math.floor(t);
-    if (r <= i && (r != i || 0 != r && 99 != r))
-        for (n = !0,
-            r = 0; r < this.ORDER_OVERRIDES.length; r++)
-            if (this.ORDER_OVERRIDES[r][0] == o && this.ORDER_OVERRIDES[r][1] == t) {
-                n = !1;
-                break
+    if (this.ORDER_OVERRIDES) {
+        for (var r = 0; r < this.ORDER_OVERRIDES.length; r++) {
+            if (this.ORDER_OVERRIDES[r] && this.ORDER_OVERRIDES[r][0] == o && this.ORDER_OVERRIDES[r][1] == t) {
+                n = false;
+                break;
             }
+        }
+    }
     return n && (e = "(" + e + ")"),
         e
 }
@@ -175,7 +176,7 @@ Blockly.JavaScript.getAdjusted = function (
     atId,
     delta = 0,
     negate = false,
-    order = Blockly.JavaScript.Order['NONE'],
+    order = Blockly.JavaScript.ORDER_NONE,
 ) {
     if (block.workspace.options.oneBasedIndex) {
         delta--;
@@ -184,11 +185,11 @@ Blockly.JavaScript.getAdjusted = function (
 
     let orderForInput = order;
     if (delta > 0) {
-        orderForInput = Blockly.JavaScript.Order['ADDITION'];
+        orderForInput = Blockly.JavaScript.ORDER_ADDITION;
     } else if (delta < 0) {
-        orderForInput = Blockly.JavaScript.Order['SUBTRACTION'];
+        orderForInput = Blockly.JavaScript.ORDER_SUBTRACTION;
     } else if (negate) {
-        orderForInput = Blockly.JavaScript.Order['UNARY_NEGATION'];
+        orderForInput = Blockly.JavaScript.ORDER_UNARY_NEGATION;
     }
 
     let at = this.valueToCode(block, atId, orderForInput) || defaultAtIndex;
@@ -211,4 +212,9 @@ Blockly.JavaScript.getAdjusted = function (
     }
     return at;
 }
+
+const orderValues = initializeOrderValues();
+Object.keys(orderValues).forEach(prop => {
+    Blockly.JavaScript[prop] = orderValues[prop];
+});
 /* eslint-disable no-param-reassign */

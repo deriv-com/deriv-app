@@ -54,7 +54,7 @@ Blockly.JavaScript.todatetime = block => {
     // eslint-disable-next-line no-underscore-dangle
     const function_name = Blockly.JavaScript.provideFunction_('timestampToDateString', [
         // eslint-disable-next-line no-underscore-dangle
-        `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(timestamp) {
+        `function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(timestamp) {
             var datetime = new Date(timestamp * 1000);
 
             if (!datetime.getTime()) {

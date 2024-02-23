@@ -93,7 +93,7 @@ Blockly.JavaScript.math_number_property = block => {
         // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_('mathIsPrime', [
             // eslint-disable-next-line no-underscore-dangle
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(n) {
+            `function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(n) {
                 // https://en.wikipedia.org/wiki/Primality_test#Naive_methods
                 if (n == 2 || n == 3) {
                     return true;

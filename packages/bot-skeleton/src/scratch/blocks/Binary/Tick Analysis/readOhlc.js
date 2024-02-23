@@ -55,10 +55,10 @@ Blockly.Blocks.read_ohlc = {
 
 Blockly.JavaScript.read_ohlc = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
-    const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
+    const granularity = selectedGranularity === 'default' ? 60 : selectedGranularity;
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
     const index = Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC) || '1';
 
-    const code = `Bot.getOhlcFromEnd({ field: '${ohlcField}', index: ${index}, granularity: ${60} })`;
-    return [code, Blockly.JavaScript.Order['ATOMIC']];
+    const code = `Bot.getOhlcFromEnd({ field: '${ohlcField}', index: ${index}, granularity: ${granularity} })`;
+    return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

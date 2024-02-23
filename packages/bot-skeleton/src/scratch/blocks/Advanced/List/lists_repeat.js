@@ -54,9 +54,9 @@ Blockly.JavaScript.lists_repeat = block => {
             return array;
         }`]);
 
-    const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.Order.COMMA) || 'null';
-    const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.Order.COMMA) || '0';
+    const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_COMMA) || 'null';
+    const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.ORDER_COMMA) || '0';
     const code = `${function_name}(${element}, ${repeat_count})`;
 
-    return [code, Blockly.JavaScript.Order.FUNCTION_CALL];
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

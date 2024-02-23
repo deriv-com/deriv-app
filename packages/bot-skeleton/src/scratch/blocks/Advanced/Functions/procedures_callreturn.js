@@ -65,5 +65,5 @@ Blockly.JavaScript.procedures_callreturn = block => {
 
     code = code.replace(/\n\s+$/, '\n');
     code = code.replace(/[ \t]+\n/g, '\n');
-    return [code, Blockly.JavaScript.Order[2]];
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

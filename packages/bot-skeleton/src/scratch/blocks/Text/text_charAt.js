@@ -104,7 +104,7 @@ Blockly.JavaScript.text_charAt = block => {
         // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_('textRandomLetter', [
             // eslint-disable-next-line no-underscore-dangle
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(text) {
+            `function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(text) {
                 var x = Math.floor(Math.random() * text.length);
                 return text[x];
             }`,

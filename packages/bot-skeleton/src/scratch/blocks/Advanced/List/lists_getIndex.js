@@ -155,7 +155,7 @@ Blockly.JavaScript.lists_getIndex = block => {
         // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_('listsGetRandomItem', [
             // eslint-disable-next-line no-underscore-dangle
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list, remove) {
+            `function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(list, remove) {
                 var x = Math.floor(Math.random() * list.length);
                 if (remove) {
                     return list.splice(x, 1)[0];

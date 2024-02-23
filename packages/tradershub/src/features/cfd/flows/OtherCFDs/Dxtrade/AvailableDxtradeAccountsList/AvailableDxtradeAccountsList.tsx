@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import { getAccountTitle } from '@/helpers/accountHelpers';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
@@ -34,8 +35,7 @@ const AvailableDxtradeAccountsList = () => {
 
     const TrailingButton = () => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />;
 
-    const demoTitle = activeTradingAccount?.is_virtual ? 'Demo' : '';
-    const title = `${PlatformDetails.dxtrade.title} ${demoTitle}`;
+    const title = getAccountTitle(PlatformDetails.dxtrade.title, activeTradingAccount?.is_virtual);
 
     const trailingButtonClick = () => {
         setCfdState('platform', PlatformDetails.dxtrade.platform);

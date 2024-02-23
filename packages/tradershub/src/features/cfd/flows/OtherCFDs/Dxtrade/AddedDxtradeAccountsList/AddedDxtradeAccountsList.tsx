@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { getAccountTitle } from '@/helpers/accountHelpers';
 import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
@@ -22,8 +23,7 @@ const AddedDxtradeAccountsList = () => {
     const { show } = Provider.useModal();
     const account = dxTradeAccounts?.find(account => account.is_virtual === activeTrading?.is_virtual);
     const isVirtual = account?.is_virtual;
-    const demoTitle = activeTrading?.is_virtual ? 'Demo' : '';
-    const title = `${PlatformDetails.dxtrade.title} ${demoTitle}`;
+    const title = getAccountTitle(PlatformDetails.dxtrade.title, isVirtual);
 
     const trailing = () => (
         <div className='flex flex-col gap-y-4'>

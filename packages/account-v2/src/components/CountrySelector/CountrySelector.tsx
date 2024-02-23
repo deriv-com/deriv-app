@@ -4,7 +4,7 @@ import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown } from '@deriv-com/ui';
 
 type TCountrySelector = {
-    errorMessage?: string;
+    errorMessage?: React.ReactNode;
     label: string;
 };
 

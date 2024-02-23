@@ -1,40 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import BotStopNotification from 'Components/bot-stop-notification';
 import ContractResultOverlay from 'Components/contract-result-overlay';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
+import CircularWrapper from './circular-wrapper';
+import ContractStageText from './contract-stage-text';
 
-const CircularWrapper = ({ className }) => (
-    <div className={classNames('circular-wrapper', className)}>
-        <span className='static-circle' />
-        <span className='dynamic-circle' />
-    </div>
-);
-
-const ContractStageText = ({ contract_stage }) => {
-    switch (contract_stage) {
-        case contract_stages.NOT_RUNNING:
-        default:
-            return <Localize i18n_default_text='Bot is not running' />;
-        case contract_stages.STARTING:
-            return <Localize i18n_default_text='Bot is starting' />;
-        case contract_stages.PURCHASE_SENT:
-            return <Localize i18n_default_text='Buying contract' />;
-        case contract_stages.PURCHASE_RECEIVED:
-            return <Localize i18n_default_text='Contract bought' />;
-        case contract_stages.IS_STOPPING:
-            return <Localize i18n_default_text='Bot is stopping' />;
-        case contract_stages.CONTRACT_CLOSED:
-            return <Localize i18n_default_text='Contract closed' />;
-    }
+type TTradeAnimation = {
+    className?: string;
+    should_show_overlay?: boolean;
 };
 
-const TradeAnimation = observer(({ className }) => {
+const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnimation) => {
     const { run_panel, summary_card } = useDBotStore();
     const { client } = useStore();
     const { is_contract_completed, profit } = summary_card;
@@ -45,7 +26,6 @@ const TradeAnimation = observer(({ className }) => {
         onRunButtonClick,
         onStopBotClick,
         performSelfExclusionCheck,
-        should_show_overlay,
         show_bot_stop_message,
     } = run_panel;
     const { account_status } = client;
@@ -56,6 +36,7 @@ const TradeAnimation = observer(({ className }) => {
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
         performSelfExclusionCheck();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -129,9 +110,5 @@ const TradeAnimation = observer(({ className }) => {
         </div>
     );
 });
-
-TradeAnimation.propTypes = {
-    className: PropTypes.string,
-};
 
 export default TradeAnimation;

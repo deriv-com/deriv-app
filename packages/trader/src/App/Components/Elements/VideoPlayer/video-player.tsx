@@ -154,7 +154,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         if (!video_ref.current?.ended || !is_rewind_to_the_end) {
             setIsAnimated(true);
             animation_ref.current = requestAnimationFrame(repeat);
-            video_ref?.current?.play();
+            video_ref?.current?.play().catch();
             is_ended.current = false;
         }
     }, 500);
@@ -178,15 +178,25 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         should_check_time_ref.current = false;
     };
 
-    const repeat = () => {
+    const sleep = (ms: number) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    };
+
+    const repeat = async () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
         if (should_check_time_ref.current && new_time_ref.current !== video_ref.current.currentTime) {
+            // console.log('check INSIDE');
             video_ref.current.currentTime = new_time_ref.current;
             animation_ref.current = requestAnimationFrame(repeat);
             return;
         }
-        if (should_check_time_ref.current) should_check_time_ref.current = false;
+        if (should_check_time_ref.current) {
+            await sleep(300);
+            should_check_time_ref.current = false;
+        }
         setCurrentTime(video_ref.current.currentTime);
+        // console.log('check video_ref.current.currentTime', video_ref.current.currentTime);
+        // console.log('check new_time_ref.current', new_time_ref.current);
 
         const new_width = parseFloat(
             ((video_ref.current.currentTime / Number(video_ref.current.duration)) * 100).toFixed(3)
@@ -219,7 +229,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             } else {
                 replay_animation_timeout.current = setTimeout(() => {
                     animation_ref.current = requestAnimationFrame(repeat);
-                    video_ref?.current?.play();
+                    video_ref?.current?.play().catch();
                 }, 500);
                 toggle_animation_timeout.current = setTimeout(() => {
                     setIsAnimated(true);

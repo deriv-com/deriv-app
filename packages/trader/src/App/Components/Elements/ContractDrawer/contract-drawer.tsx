@@ -35,6 +35,7 @@ type TContractDrawerProps = RouteComponentProps & {
         | 'is_sell_requested'
         | 'is_smarttrader_contract'
         | 'is_lookbacks'
+        | 'is_options'
         | 'is_turbos'
         | 'is_vanilla'
         | 'onClickCancel'
@@ -53,6 +54,7 @@ const ContractDrawer = observer(
         is_multiplier,
         is_turbos,
         is_vanilla,
+        is_options,
         is_smarttrader_contract,
         is_lookbacks,
         onClickCancel,
@@ -79,9 +81,7 @@ const ContractDrawer = observer(
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info)) ?? ''}
                 duration={getDurationTime(contract_info)}
                 exit_spot={exit_spot}
-                has_result={
-                    !!is_sold || is_multiplier || is_vanilla || is_turbos || is_accumulator || is_smarttrader_contract
-                }
+                has_result={!!is_sold || is_multiplier || is_options || is_accumulator || is_smarttrader_contract}
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}

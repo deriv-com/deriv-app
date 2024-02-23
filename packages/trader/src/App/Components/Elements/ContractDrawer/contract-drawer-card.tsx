@@ -35,6 +35,7 @@ type TContractDrawerCardProps = {
     | 'is_accumulator'
     | 'is_mobile'
     | 'is_multiplier'
+    | 'is_options'
     | 'is_turbos'
     | 'is_vanilla'
     | 'is_lookbacks'

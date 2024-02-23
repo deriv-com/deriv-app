@@ -46,7 +46,7 @@ Blockly.Blocks.lists_repeat = {
 
 Blockly.JavaScript.lists_repeat = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [`function ${`listsRepeat`}(value, n) {
+    const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [`function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(value, n) {
             var array = [];
             for (var i = 0; i < n; i++) {
                 array[i] = value;

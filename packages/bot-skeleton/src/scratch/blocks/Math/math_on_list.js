@@ -211,7 +211,7 @@ Blockly.JavaScript.math_on_list = block => {
                 return modes;
             }
 
-            function ${'mathModes'}(list) {
+            function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(list) {
                 var final_list = [];
                 return calculateMathMode(recursiveList(list, final_list));
             }`]);

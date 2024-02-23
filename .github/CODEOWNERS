@@ -159,7 +159,7 @@
 #  deriv-app/tradershub
 # ==============================================================
 
-/packages/tradershub/**/*                                           @matin-deriv @mahdiyeh-deriv @thisyahlen-deriv 
+/packages/tradershub/**/*                                       @matin-deriv @mahdiyeh-deriv @thisyahlen-deriv 
 
 
 # ==============================================================

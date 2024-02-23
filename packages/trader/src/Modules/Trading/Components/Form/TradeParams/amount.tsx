@@ -1,5 +1,4 @@
-import { Analytics, TEvents } from '@deriv-com/analytics';
-import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES, getContractTypesConfig } from '@deriv/shared';
+import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import AllowEquals from './allow-equals';
@@ -11,31 +10,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import debounce from 'lodash.debounce';
-
-const debouncedSendAmountMetrics = debounce(
-    (
-        target: { name: string; value: string | number; type?: string },
-        value: string,
-        contractType: string,
-        isPayoutBasis?: boolean
-    ) => {
-        // console.log('6', target.type ? 'manual' : 'plus_minus', isPayoutBasis ? 'payout_value' : 'stake_value', value);
-        Analytics.trackEvent(
-            'ce_contracts_set_up_form' as keyof TEvents,
-            {
-                action: 'change_parameter_value',
-                form_name: 'default',
-                input_type: target.type ? 'manual' : 'plus_minus',
-                parameter_field_type: 'number',
-                parameter_type: isPayoutBasis ? 'payout_value' : 'stake_value',
-                parameter_value: value,
-                trade_type_name: getContractTypesConfig()[contractType]?.title,
-            } as unknown as TEvents['ce_trade_types_form']
-        );
-    },
-    2000
-);
 
 type TInput = {
     amount: string | number;
@@ -105,6 +79,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
         is_vanilla,
         has_equals_only,
         has_open_accu_contract,
+        sendTradeParamsAnalytics,
         stake_boundary,
         onChange,
         validation_errors,
@@ -136,26 +111,27 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
     const changeAmount = ({ target }: { target: { name: string; value: string | number; type?: string } }) => {
         const { value } = target;
         onChange({ target });
-        if (value) {
-            debouncedSendAmountMetrics(target, `${value}`, contract_type, basis === 'payout');
-        }
+        sendTradeParamsAnalytics(
+            {
+                action: 'change_parameter_value',
+                input_type: target.type ? 'manual' : 'plus_minus',
+                parameter_field_type: 'number',
+                parameter_type: basis === 'payout' ? 'payout_value' : 'stake_value',
+                parameter_value: `${value}`,
+            },
+            true
+        );
     };
 
     const changeAllowEquals = ({ target }: { target: { name: string; value: number } }) => {
         const { value } = target;
         onChange({ target });
-        // console.log('7', value ? 'yes' : 'no');
-        Analytics.trackEvent(
-            'ce_contracts_set_up_form' as keyof TEvents,
-            {
-                action: 'change_parameter_value',
-                form_name: 'default',
-                parameter_field_type: 'checkbox',
-                parameter_type: 'allow_equals_mode',
-                parameter_value: value ? 'yes' : 'no',
-                trade_type_name: getContractTypesConfig()[contract_type]?.title,
-            } as unknown as TEvents['ce_trade_types_form']
-        );
+        sendTradeParamsAnalytics({
+            action: 'change_parameter_value',
+            parameter_field_type: 'checkbox',
+            parameter_type: 'allow_equals_mode',
+            parameter_value: value ? 'yes' : 'no',
+        });
     };
 
     return (

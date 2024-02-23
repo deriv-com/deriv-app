@@ -1,41 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { Analytics, TEvents } from '@deriv-com/analytics';
 import Fieldset from 'App/Components/Form/fieldset';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { Dropdown } from '@deriv/components';
-import { toMoment, isVanillaContract, getContractTypesConfig } from '@deriv/shared';
+import { toMoment, isVanillaContract } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationToggle from './duration-toggle';
 import AdvancedDuration from './advanced-duration';
 import SimpleDuration from './simple-duration';
-import debounce from 'lodash.debounce';
-
-const debouncedSendDurationMetrics = debounce(
-    (
-        target: { name: string; value: string | number; type?: string },
-        value: string,
-        contractType: string,
-        isTickDuration: boolean
-    ) => {
-        // console.log('5', target.type ? 'manual' : 'plus_minus', value);
-        Analytics.trackEvent(
-            'ce_contracts_set_up_form' as keyof TEvents,
-            {
-                action: 'change_parameter_value',
-                form_name: 'default',
-                parameter_field_type: isTickDuration ? 'tick_bar' : 'number',
-                parameter_type: isTickDuration ? 'tick_value' : 'duration_value',
-                parameter_value: value,
-                trade_type_name: getContractTypesConfig()[contractType]?.title,
-                ...(isTickDuration ? {} : { input_type: target.type ? 'manual' : 'plus_minus' }),
-            } as unknown as TEvents['ce_trade_types_form']
-        );
-    },
-    2000
-);
 
 type TUIStore = ReturnType<typeof useStore>['ui'];
 type TTradeStore = ReturnType<typeof useTraderStore>;
@@ -60,6 +34,7 @@ export type TDuration = {
     onChange: TTradeStore['onChange'];
     onChangeMultiple: TTradeStore['onChangeMultiple'];
     onChangeUiStore: TUIStore['onChangeUiStore'];
+    sendTradeParamsAnalytics: TTradeStore['sendTradeParamsAnalytics'];
     server_time?: moment.MomentInput;
     simple_duration_unit: TUIStore['simple_duration_unit'];
     start_date: TTradeStore['start_date'];
@@ -86,6 +61,7 @@ const Duration = ({
     onChange,
     onChangeMultiple,
     onChangeUiStore,
+    sendTradeParamsAnalytics,
     server_time,
     simple_duration_unit,
     start_date,
@@ -130,18 +106,12 @@ const Duration = ({
         });
 
         if (name === 'advanced_duration_unit') {
-            // console.log('4', value, name);
-            Analytics.trackEvent(
-                'ce_contracts_set_up_form' as keyof TEvents,
-                {
-                    action: 'change_parameter_value',
-                    form_name: 'default',
-                    parameter_type: 'duration_type',
-                    parameter_field_type: 'dropdown',
-                    duration_type: value,
-                    trade_type_name: getContractTypesConfig()[contract_type]?.title,
-                } as unknown as TEvents['ce_trade_types_form']
-            );
+            sendTradeParamsAnalytics({
+                action: 'change_parameter_value',
+                parameter_type: 'duration_type',
+                parameter_field_type: 'dropdown',
+                duration_type: duration_units_list.find(unit => unit.value === value)?.text?.toLowerCase() ?? '',
+            });
         }
     };
 
@@ -152,11 +122,18 @@ const Duration = ({
         // e.target.value returns string, we need to convert them to number
         onChangeUiStore({ name: duration_name, value: +value });
         onChange({ target: { name, value: +value } });
-        if (value) {
-            const validValue = min_value && +value < min_value ? min_value : +value;
-            const displayedValue = max_value && +value > max_value ? max_value : validValue;
-            debouncedSendDurationMetrics(target, `${displayedValue}`, contract_type, duration_unit === 't');
-        }
+        const displayedValue = max_value && +value > max_value ? max_value : +value;
+        const isTickDuration = duration_unit === 't';
+        sendTradeParamsAnalytics(
+            {
+                action: 'change_parameter_value',
+                parameter_field_type: isTickDuration ? 'tick_bar' : 'number',
+                parameter_type: isTickDuration ? 'tick_value' : 'duration_value',
+                parameter_value: `${displayedValue}`,
+                ...(isTickDuration ? {} : { input_type: target.type ? 'manual' : 'plus_minus' }),
+            },
+            true
+        );
     };
 
     const onToggleDurationType = ({ target }: { target: { name: string; value: boolean } }) => {

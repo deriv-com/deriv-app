@@ -1,16 +1,8 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
-import { Analytics, TEvents } from '@deriv-com/analytics';
 import { DatePicker, Tooltip } from '@deriv/components';
-import {
-    isTimeValid,
-    setTime,
-    toMoment,
-    useIsMounted,
-    hasIntradayDurationUnit,
-    getContractTypesConfig,
-} from '@deriv/shared';
+import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv/stores';
@@ -32,12 +24,12 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
     const { common } = useStore();
     const { server_time } = common;
     const {
-        contract_type,
         duration: current_duration,
         duration_min_max,
         duration_units_list,
         expiry_type,
         onChange,
+        sendTradeParamsAnalytics,
         start_date,
         start_time,
         symbol,
@@ -127,20 +119,15 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
                     value,
                 },
             });
-            if (value) {
-                // console.log('1', value);
-                Analytics.trackEvent(
-                    'ce_contracts_set_up_form' as keyof TEvents,
-                    {
-                        action: 'change_parameter_value',
-                        form_name: 'default',
-                        parameter_field_type: 'date_picker',
-                        parameter_type: 'date_picker',
-                        parameter_value: value,
-                        trade_type_name: getContractTypesConfig()[contract_type]?.title,
-                    } as unknown as TEvents['ce_trade_types_form']
-                );
-            }
+            sendTradeParamsAnalytics(
+                {
+                    action: 'change_parameter_value',
+                    parameter_field_type: 'date_picker',
+                    parameter_type: 'date_picker',
+                    parameter_value: `${value}`,
+                },
+                true
+            );
         }
     };
 

@@ -1,12 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Analytics, TEvents } from '@deriv-com/analytics';
 import { Icon, InputField } from '@deriv/components';
 import Dialog from './dialog';
 import { observer, useStore } from '@deriv/stores';
 import moment from 'moment';
-import { getContractTypesConfig } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TTimePickerProps = {
@@ -36,7 +34,7 @@ const TimePicker = observer(
         validation_errors,
     }: TTimePickerProps) => {
         const { ui } = useStore();
-        const { contract_type } = useTraderStore();
+        const { sendTradeParamsAnalytics } = useTraderStore();
         const { current_focus, setCurrentFocus } = ui;
         const [is_open, setIsOpen] = React.useState(false);
         const [wrapper_ref, setWrapperRef] = React.useState<HTMLDivElement | null>(null);
@@ -56,17 +54,14 @@ const TimePicker = observer(
 
             if (value !== selected_time) {
                 onChange({ target: { name, value } });
-                // console.log('3', value);
-                Analytics.trackEvent(
-                    'ce_contracts_set_up_form' as keyof TEvents,
+                sendTradeParamsAnalytics(
                     {
                         action: 'change_parameter_value',
-                        form_name: 'default',
                         parameter_field_type: 'time_picker',
                         parameter_type: 'time_picker',
                         parameter_value: value,
-                        trade_type_name: getContractTypesConfig()[contract_type]?.title,
-                    } as unknown as TEvents['ce_trade_types_form']
+                    },
+                    true
                 );
             }
         };

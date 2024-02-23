@@ -50,7 +50,7 @@ Blockly.JavaScript.math_random_int = block => {
     const argument1 = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_COMMA) || '0';
     
     // eslint-disable-next-line no-underscore-dangle
-    const functionName = Blockly.JavaScript.provideFunction_('mathRandomInt', [`function ${'mathRandomInt'?.replace(/{|}/g, '')
+    const functionName = Blockly.JavaScript.provideFunction_('mathRandomInt', [`function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_?.replace(/{|}/g, '')
         }(a, b) {
             if (a > b) {
                 var c = a;

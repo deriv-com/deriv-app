@@ -76,7 +76,7 @@ Blockly.JavaScript.math_on_list = block => {
     let code, list;
 
     if (operation === 'SUM') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [`function ${'mathMean'}(myList) {
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [`function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(myList) {
                 var final_list = [];
                 return recursiveList(myList, final_list).reduce(function(x, y) {
                     return x + y;
@@ -85,21 +85,21 @@ Blockly.JavaScript.math_on_list = block => {
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MIN') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [`function ${'mathMean'}(myList) {
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [`function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(myList) {
                 var final_list = [];
                 return Math.min.apply(null, (recursiveList(myList, final_list) || [0]));
             }`]);
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_COMMA) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'MAX') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [`function ${'mathMean'}(myList) {
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [`function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(myList) {
                 var final_list = [];
                 return Math.max.apply(null, (recursiveList(myList, final_list) || [0]));
             }`]);
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_COMMA) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'AVERAGE') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [`function ${'mathMean'}(myList) {
+        const functionName = Blockly.JavaScript.provideFunction_('mathMean', [`function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(myList) {
                 var final_list = [];
                 return recursiveList(myList, final_list).reduce(function(x, y) {
                     return x + y;
@@ -258,7 +258,7 @@ Blockly.JavaScript.math_on_list = block => {
                 return antiMode;
             }
 
-            function ${'mathAntiMode'}(list) {
+            function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(list) {
                 var final_list = [];
                 return calculateMathAntiMode(recursiveList(list, final_list));
             }`]);
@@ -285,7 +285,7 @@ Blockly.JavaScript.math_on_list = block => {
                 return Math.sqrt(variance);
             }
 
-            function ${'mathStandardDeviation'}(list) {
+            function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(list) {
                 var final_list = [];
                 return calculateMathStandardDeviation(recursiveList(list, final_list));
             }`]);
@@ -293,7 +293,7 @@ Blockly.JavaScript.math_on_list = block => {
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
         code = `${functionName}((${list} || [0]))`;
     } else if (operation === 'RANDOM') {
-        const functionName = Blockly.JavaScript.provideFunction_('mathRandomList', [`function ${'mathRandomList'}(list) {
+        const functionName = Blockly.JavaScript.provideFunction_('mathRandomList', [`function ${Blockly.JavaScript.javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_}(list) {
                 var final_list = [];
                 var final_list = recursiveList(list, final_list);
                 var x = Math.floor(Math.random() * final_list.length);

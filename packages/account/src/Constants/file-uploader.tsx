@@ -2,7 +2,7 @@ import { Localize } from '@deriv/translations';
 import React from 'react';
 import { TFilesDescription } from '../Types';
 
-export const getFileUploaderDescriptions = (page: string): TFilesDescription => {
+export const getFileUploaderDescriptions = (page: string, is_eu?: boolean): TFilesDescription => {
     const proof_of_income_descriptions = {
         title: <Localize i18n_default_text='The document must be recent and include your name and address:' />,
         descriptions: [
@@ -24,7 +24,10 @@ export const getFileUploaderDescriptions = (page: string): TFilesDescription => 
     };
     const proof_of_address_descriptions = {
         title: (
-            <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
+            <Localize
+                i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last {{expiry_in_months}} months) and include your name and address:'
+                values={{ expiry_in_months: is_eu ? 6 : 12 }}
+            />
         ),
         descriptions: [
             {

@@ -42,7 +42,6 @@ const CurrencyCard = ({ id, info, title }: TCurrencyCard) => {
                         ({id})
                     </Text>
                 </div>
-                x``
             </button>
         </div>
     );

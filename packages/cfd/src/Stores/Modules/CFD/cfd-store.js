@@ -577,6 +577,7 @@ export default class CFDStore extends BaseStore {
                 actions?.setStatus({ success: true });
                 actions?.setSubmitting(false);
                 this.setError(false);
+                this.setIsMt5PasswordChangedModalVisible(false);
                 this.setCFDSuccessDialog(true);
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
 

@@ -11,24 +11,16 @@ type TCFDPasswordChangeContentProps = {
 const CFDPasswordChangeContent = observer(({ closeModal, password_value }: TCFDPasswordChangeContentProps) => {
     const { modules } = useStore();
     const { cfd } = modules;
-    const {
-        submitMt5Password,
-        setCFDSuccessDialog,
-        is_mt5_password_changed_modal_visible,
-        setIsMt5PasswordChangedModalVisible,
-    } = cfd;
+    const { submitMt5Password, is_mt5_password_changed_modal_visible } = cfd;
 
     const [isSubmitting, setIsSubmitting] = React.useState(false);
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
-        setCFDSuccessDialog(false);
         await submitMt5Password({
             password: password_value,
         });
         setIsSubmitting(false);
-        setIsMt5PasswordChangedModalVisible(false);
-        setCFDSuccessDialog(true);
     };
 
     const password_changed_success__body = (

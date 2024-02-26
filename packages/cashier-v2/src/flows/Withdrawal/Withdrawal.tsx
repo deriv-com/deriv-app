@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useActiveAccount, useCurrencyConfig } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
 import { PageContainer } from '../../components';
-import { WithdrawalFiatModule, WithdrawalVerificationModule } from '../../lib';
+import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../lib';
 
 const Withdrawal = () => {
     const { getConfig, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
@@ -32,14 +32,8 @@ const Withdrawal = () => {
                 );
             }
             return (
-                // <WithdrawalCryptoModule
-                //     onClose={() => {
-                //         setVerificationCode('');
-                //     }}
-                //     verificationCode={verificationCode}
-                // />
                 <PageContainer>
-                    <div>WithdrawalCryptoModule</div>
+                    <WithdrawalCryptoModule verificationCode={verificationCode} />
                 </PageContainer>
             );
         }

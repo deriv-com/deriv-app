@@ -35,7 +35,11 @@ const WithdrawalCryptoReceipt: React.FC = () => {
                         )}
                         <Text weight='bold'>{fromAccount?.currency}</Text>
                     </div>
-                    <div className={styles['account-id']}>{fromAccount?.currency}</div>
+                    <Text className={styles['account-id']}>
+                        <Text color='less-prominent' size={isMobile ? 'md' : 'sm'}>
+                            {fromAccount?.loginid}
+                        </Text>
+                    </Text>
                 </>
             }
             status='In review'

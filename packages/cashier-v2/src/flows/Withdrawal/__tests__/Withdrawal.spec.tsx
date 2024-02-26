@@ -106,8 +106,8 @@ describe('<WalletWithdrawal />', () => {
             },
         });
 
-        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         mockUseCurrencyConfig.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             getConfig: jest.fn(() => ({ is_fiat: true })),
             isSuccess: true,
         });
@@ -125,8 +125,8 @@ describe('<WalletWithdrawal />', () => {
             },
         });
 
-        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         mockUseCurrencyConfig.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             getConfig: jest.fn(() => ({ is_fiat: false })),
             isSuccess: true,
         });
@@ -144,8 +144,8 @@ describe('<WalletWithdrawal />', () => {
             },
         });
 
-        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         mockUseCurrencyConfig.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             getConfig: jest.fn(() => ({ is_fiat: false })),
             isSuccess: true,
         });

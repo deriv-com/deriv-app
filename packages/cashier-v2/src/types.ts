@@ -4,9 +4,8 @@ import { cashierPathRoutes } from './routes/Router';
 export namespace TRouteTypes {
     export type TRoutes = typeof cashierPathRoutes[keyof typeof cashierPathRoutes];
     export interface IRouteConfig {
-        component: React.ComponentType<
-            Omit<IRouteConfig, 'component'> & { setSideNotes?: React.Dispatch<React.SetStateAction<TSideNotes>> }
-        >;
+        component: React.ComponentType<Omit<IRouteConfig, 'component'>>;
+        icon?: React.ReactNode;
         path: string;
         routes?: IRouteConfig[];
         title: string;
@@ -23,11 +22,6 @@ export namespace TErrorTypes {
         message: string;
     };
 }
-
-export type TSideNotes = {
-    notes: JSX.Element[] | [];
-    position?: 'bottom' | 'top';
-};
 
 declare module 'react-router-dom' {
     export function useHistory(): {

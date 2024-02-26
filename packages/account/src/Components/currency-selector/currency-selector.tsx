@@ -10,13 +10,12 @@ import {
     ThemedScrollbars,
     Icon,
 } from '@deriv/components';
-import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv/shared';
+import { reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import RadioButton from './radio-button';
 import RadioButtonGroup from './radio-button-group';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
 export const Hr = () => <div className='currency-hr' />;
 

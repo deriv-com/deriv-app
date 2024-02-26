@@ -412,6 +412,21 @@
     margin: 1.2rem 2.4rem;
     align-items: center;
     gap: 0.8rem;
+
+    &__balance {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__list-of-accounts {
+        display: flex;
+        justify-content: space-between;
+        &:first-child {
+            border-top: 2px solid var(--general-section-1);
+        }
+        margin: 1.2rem 1rem;
+    }
+
     &__acc_status {
         display: flex;
         flex-direction: column;
@@ -432,7 +447,7 @@
         }
     }
 
-    &-get-more-accounts {
+    &__get-more-accounts {
         cursor: pointer;
         border-radius: 12px;
         display: flex;
@@ -480,6 +495,10 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+
+        &-balance {
+            justify-content: end;
+        }
     }
     &__password {
         &-box {

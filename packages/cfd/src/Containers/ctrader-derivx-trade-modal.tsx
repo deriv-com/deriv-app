@@ -13,6 +13,7 @@ import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from 
 import { CTRADER_DESKTOP_DOWNLOAD, getTitle, platformsText } from '../Helpers/constants';
 
 import { TCFDPasswordReset } from './props.types';
+import { ctrader } from '@deriv/components/src/components/icon/icons-manifest';
 
 type TTradeModalProps = {
     ctrader_dxtrade_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -56,11 +57,12 @@ const PlatformIconsAndDescriptions = (
                         ]}
                     />
                 </Text>
-                {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
-                    <Text color='less-prominent' size='xxxs' line_height='xxxs'>
-                        {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
-                    </Text>
-                )}
+                {(mt5_trade_account as TTradingPlatformAccounts)?.display_login &&
+                    platform !== CFD_PLATFORMS.CTRADER && (
+                        <Text color='less-prominent' size='xxxs' line_height='xxxs'>
+                            {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
+                        </Text>
+                    )}
             </div>
         </React.Fragment>
     );
@@ -78,12 +80,14 @@ const CTraderDerivXTradeModal = ({
     is_mobile,
 }: TTradeModalProps) => {
     const {
-        traders_hub,
         ui,
-        modules: { cfd },
+        client,
         common,
+        traders_hub,
+        modules: { cfd },
     } = useStore();
 
+    const { ctrader_accounts_list } = client;
     const { setAccountType, toggleMT5TradeModal } = cfd;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal } = ui;
@@ -181,21 +185,24 @@ const CTraderDerivXTradeModal = ({
             <div className='cfd-trade-modal'>
                 {PlatformIconsAndDescriptions(platform, is_demo, ctrader_dxtrade_trade_account)}
                 {ctrader_dxtrade_trade_account?.display_balance && (
-                    <Text
-                        size='xs'
-                        color={platform !== CFD_PLATFORMS.CTRADER ? 'profit-success' : 'prominent'}
-                        className='cfd-trade-modal__desc-balance'
-                        weight='bold'
-                    >
-                        <Money
-                            amount={ctrader_dxtrade_trade_account.display_balance}
-                            currency={ctrader_dxtrade_trade_account.currency}
-                            has_sign={
-                                !!ctrader_dxtrade_trade_account.balance && ctrader_dxtrade_trade_account.balance < 0
-                            }
-                            show_currency
-                        />
-                    </Text>
+                    <div className='cfd-trade-modal__balance'>
+                        {platform === CFD_PLATFORMS.CTRADER && <Text size='xxs'>{localize('Total balance:')}</Text>}
+                        <Text
+                            size='xs'
+                            color={platform !== CFD_PLATFORMS.CTRADER ? 'profit-success' : 'prominent'}
+                            className='cfd-trade-modal__desc-balance'
+                            weight='bold'
+                        >
+                            <Money
+                                amount={ctrader_dxtrade_trade_account.display_balance}
+                                currency={ctrader_dxtrade_trade_account.currency}
+                                has_sign={
+                                    !!ctrader_dxtrade_trade_account.balance && ctrader_dxtrade_trade_account.balance < 0
+                                }
+                                show_currency
+                            />
+                        </Text>
+                    </div>
                 )}
             </div>
             <div className='cfd-trade-modal__login-specs'>
@@ -237,8 +244,23 @@ const CTraderDerivXTradeModal = ({
 
                 {platform === CFD_PLATFORMS.CTRADER && (
                     <React.Fragment>
+                        {ctrader_accounts_list.map(ctrader_account => {
+                            return (
+                                <div key={ctrader_account.login} className='cfd-trade-modal__list-of-accounts'>
+                                    <Text size='xxs'>{ctrader_account.login}</Text>
+                                    <Text size='xxs' weight='bold'>
+                                        <Money
+                                            amount={ctrader_account.balance}
+                                            currency={ctrader_account.currency}
+                                            has_sign={!!ctrader_account.balance && ctrader_account.balance < 0}
+                                            show_currency
+                                        />
+                                    </Text>
+                                </div>
+                            );
+                        })}
                         <div
-                            className='cfd-trade-modal-get-more-accounts'
+                            className='cfd-trade-modal__get-more-accounts'
                             onClick={() => {
                                 toggleMT5TradeModal();
                                 if ((has_no_real_account || no_CR_account) && is_real) {

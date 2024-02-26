@@ -74,6 +74,8 @@ const CollapsibleTradeParams = ({
     }, [previous_symbol]);
 
     const is_collapsed = !is_trade_params_expanded;
+    const is_non_interactive =
+        TRADE_TYPES.EVEN_ODD === contract_type || (TRADE_TYPES.RISE_FALL === contract_type && !has_allow_equals);
 
     const onClick = (e: boolean) => {
         setIsTradeParamsExpanded(e);
@@ -91,7 +93,7 @@ const CollapsibleTradeParams = ({
             is_collapsed={is_collapsed}
             onClick={onClick}
             handle_button
-            is_non_interactive={TRADE_TYPES.EVEN_ODD === contract_type}
+            is_non_interactive={is_non_interactive}
         >
             {is_accumulator && is_collapsed && <AccumulatorsStats />}
             <div className='trade-params__contract-type-container'>

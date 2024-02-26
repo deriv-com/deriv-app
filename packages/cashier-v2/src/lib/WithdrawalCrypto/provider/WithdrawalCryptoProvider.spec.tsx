@@ -8,7 +8,7 @@ import {
     usePOA,
     usePOI,
 } from '@deriv/api';
-import { act, cleanup, renderHook } from '@testing-library/react-hooks';
+import { cleanup, renderHook } from '@testing-library/react-hooks';
 import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './WithdrawalCryptoProvider';
 import { waitFor } from '@testing-library/react';
 

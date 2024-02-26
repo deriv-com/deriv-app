@@ -26,10 +26,10 @@ Blockly.Blocks.procedures_defreturn = {
             16,
             'v',
             event => {
+                this.setCollapsed(true);
                 event.preventDefault();
                 event.stopPropagation();
                 event.stopImmediatePropagation();
-                this.setCollapsed(true);
             },
             false,
             true

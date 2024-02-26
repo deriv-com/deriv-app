@@ -854,7 +854,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. '
                 values={{
                     type: accountTypes(),
-                    platform: getCFDPlatformLabel(platform),
+                    platform: is_eu_user ? '' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
                 components={[<br key={0} />]}

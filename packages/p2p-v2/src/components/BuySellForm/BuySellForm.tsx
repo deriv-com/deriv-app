@@ -12,15 +12,10 @@ import { BuySellFormFooter } from '../BuySellFormFooter';
 import { BuySellFormHeader } from '../BuySellFormHeader';
 import { customStyles } from '../Modals/helpers';
 import './BuySellForm.scss';
-
-type NonUndefinedValues<T> = {
-    [K in keyof T]-?: Exclude<T[K], undefined>;
-};
-
-type TAdvertData = NonNullable<ReturnType<typeof p2p.advert.useGet>['data']>;
+import { TAdvertType } from 'types';
 
 type TBuySellFormProps = {
-    advert: NonUndefinedValues<TAdvertData>;
+    advert: TAdvertType;
     advertiserBuyLimit: number;
     advertiserSellLimit: number;
     balanceAvailable: number;

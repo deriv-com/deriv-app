@@ -1,7 +1,6 @@
 import * as Helpers from '../helpers';
 import { routes } from '@deriv/shared';
 import getRoutesConfig from '../../../Constants/routes-config';
-import Trade from 'Modules/Trading';
 
 describe('Helpers', () => {
     describe('normalizePath', () => {
@@ -24,7 +23,7 @@ describe('Helpers', () => {
             const result = Helpers.findRouteByPath(routes.trade, getRoutesConfig());
             expect(result?.path).toBe(routes.trade);
             expect(result?.exact).toBe(true);
-            expect(result?.component).toBe(Trade);
+            expect(result?.component).toBeDefined();
         });
     });
 

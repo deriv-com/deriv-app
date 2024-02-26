@@ -52,7 +52,7 @@ export const getAppId = () => {
     const current_domain = getCurrentProductionDomain() || '';
     window.localStorage.removeItem('config.platform'); // Remove config stored in localstorage if there's any.
     const platform = window.sessionStorage.getItem('config.platform');
-    const { is_pathname_bot, is_config_route_bot } = isBot();
+    const is_bot = isBot();
     // Added platform at the top since this should take precedence over the config_app_id
     if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {
         app_id = platform_app_ids[platform as keyof typeof platform_app_ids];
@@ -63,16 +63,13 @@ export const getAppId = () => {
         app_id = user_app_id;
     } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id =
-            (is_pathname_bot || is_config_route_bot
-                ? 19112
-                : domain_app_ids[current_domain as keyof typeof domain_app_ids]) || 16303; // it's being used in endpoint chrome extension - please do not remove
+        app_id = is_bot ? 19112 : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 36300;
     } else {
         window.localStorage.removeItem('config.default_app_id');
         //added for testing
-        app_id = is_pathname_bot || is_config_route_bot ? 1060 : 1061;
+        app_id = is_bot ? 1060 : 1061;
     }
 
     return app_id;

@@ -80,6 +80,7 @@ const Collapsible = ({
                 'dc-collapsible--has-collapsible-btn': should_show_collapsible,
                 'dc-collapsible--has-title': title,
             })}
+            data-testid='dt_collapsible'
         >
             {should_show_collapsible && position === 'top' && arrow_button}
             <div className='dc-collapsible__content'>

@@ -92,6 +92,7 @@ const ArrowButton = ({ is_collapsed = false, position, onClick, title, handle_bu
             })}
             onClick={toggleExpand}
             onKeyDown={toggleExpand}
+            data-testid='dt_handle_button'
         >
             {icon_arrow}
         </div>

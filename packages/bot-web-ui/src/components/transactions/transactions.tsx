@@ -9,7 +9,7 @@ import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';
-import Transaction from './transaction.jsx';
+import Transaction from './transaction';
 
 type TTransactions = {
     is_drawer_open: boolean;

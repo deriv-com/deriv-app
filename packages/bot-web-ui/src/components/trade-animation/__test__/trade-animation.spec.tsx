@@ -10,7 +10,6 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import TradeAnimation from '../trade-animation';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     saveRecentWorkspace: jest.fn(),
     unHighlightAllBlocks: jest.fn(),
@@ -28,7 +27,6 @@ window.Blockly = {
         getAllBlocks: jest.fn(() => ({
             find: jest.fn(),
         })),
-        find: jest.fn(),
     },
 };
 
@@ -58,7 +56,7 @@ describe('TradeAnimation', () => {
         );
     });
 
-    it('Should render <TradeAnimation />', () => {
+    it('should render <TradeAnimation />', () => {
         const { container } = render(<TradeAnimation />, { wrapper });
         expect(container).toBeInTheDocument();
     });
@@ -74,13 +72,13 @@ describe('TradeAnimation', () => {
         expect(screen.getByText(/Bot is starting/i)).toBeInTheDocument();
     });
 
-    it('Should update the run panel status correctly', () => {
+    it('should update the run panel status correctly', () => {
         mock_DBot_store?.run_panel.setContractStage(contract_stages.PURCHASE_SENT);
         render(<TradeAnimation />, { wrapper });
         expect(screen.getByText(/Buying contract/i)).toBeInTheDocument();
     });
 
-    it('Should update the run panel status on contract close', () => {
+    it('should update the run panel status on contract close', () => {
         mock_DBot_store?.summary_card.onBotContractEvent({ profit: 0, is_completed: true, is_sold: true });
         mock_DBot_store?.run_panel.setContractStage(contract_stages.CONTRACT_CLOSED);
         render(<TradeAnimation />, { wrapper });

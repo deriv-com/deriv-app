@@ -1,6 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ProposalOpenContract } from '@deriv/api-types';
 import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { useNewRowTransition } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -15,7 +17,15 @@ type TTransactions = {
     is_drawer_open: boolean;
 };
 
-const TransactionItem = ({ row, is_new_row }) => {
+type TTransactionItem = {
+    row: {
+        type: string;
+        data: ProposalOpenContract;
+    };
+    is_new_row: boolean;
+};
+
+const TransactionItem = ({ row, is_new_row }: TTransactionItem) => {
     const { in_prop } = useNewRowTransition(is_new_row);
     switch (row.type) {
         case transaction_elements.CONTRACT: {
@@ -60,7 +70,6 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
             <div className='download__container transaction-details__button-container'>
                 <Download tab='transactions' />
                 <Button
-                    // data-testid='dt-transactions-item'
                     id='download__container__view-detail-button'
                     className='download__container__view-detail-button'
                     is_disabled={!transaction_list?.length}
@@ -107,7 +116,6 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                                 }
                             }}
                             getRowSize={({ index }) => {
-                                // console.log('index', index);
                                 const row = transaction_list?.[index];
                                 switch (row.type) {
                                     case transaction_elements.CONTRACT: {

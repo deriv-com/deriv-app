@@ -30,7 +30,6 @@ const Redirect = observer(() => {
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
     const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
-    const is_next_cashier = localStorage.getObject('FeatureFlagsStore')?.data?.next_cashier;
     const { is_appstore } = React.useContext(PlatformContext);
 
     const redirectToExternalPlatform = url => {
@@ -147,8 +146,6 @@ const Redirect = observer(() => {
                 // as there is general logic within client-store
                 // which removes anything which resembles code=XYZ
                 history.push(`${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}`);
-            } else if (is_next_cashier) {
-                history.push(`${routes.cashier_v2_withdrawal}?verification=${verification_code?.payment_withdraw}`);
             } else {
                 history.push(routes.cashier_withdrawal);
             }

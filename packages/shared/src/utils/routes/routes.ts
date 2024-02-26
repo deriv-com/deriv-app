@@ -91,5 +91,4 @@ export const routes = {
 
     // Cashier V2
     cashier_v2: '/cashier-v2',
-    cashier_v2_withdrawal: '/cashier-v2/withdrawal',
 };

@@ -5,15 +5,14 @@ import Withdrawal from '../Withdrawal';
 
 jest.mock('../../../lib', () => ({
     ...jest.requireActual('../../../lib'),
-    // WithdrawalCryptoModule: jest.fn(({ onClose, verificationCode }) => {
-    //     return (
-    //         <>
-    //             <div>WithdrawalCryptoModule</div>
-    //             <div>verificationCode={verificationCode}</div>
-    //             <button onClick={onClose}>close</button>
-    //         </>
-    //     );
-    // }),
+    WithdrawalCryptoModule: jest.fn(({ verificationCode }) => {
+        return (
+            <>
+                <div>WithdrawalCryptoModule</div>
+                <div>verificationCode={verificationCode}</div>
+            </>
+        );
+    }),
     WithdrawalFiatModule: jest.fn(({ verificationCode }) => (
         <>
             <div>WithdrawalFiatModule</div>
@@ -23,9 +22,9 @@ jest.mock('../../../lib', () => ({
     WithdrawalVerificationModule: jest.fn(() => <div>WithdrawalVerificationModule</div>),
 }));
 
-jest.mock('../../../../../components', () => ({
-    ...jest.requireActual('../../../../../components'),
-    Loader: jest.fn(() => <div>Loading</div>),
+jest.mock('../../../components', () => ({
+    ...jest.requireActual('../../../components'),
+    PageContainer: jest.fn(({ children }) => <>{children}</>),
 }));
 
 jest.mock('@deriv/api', () => ({
@@ -38,7 +37,7 @@ const mockUseActiveAccount = useActiveAccount as jest.MockedFunction<typeof useA
 
 const mockUseCurrencyConfig = useCurrencyConfig as jest.MockedFunction<typeof useCurrencyConfig>;
 
-describe('<WalletWithdrawal />', () => {
+describe('<Withdrawal />', () => {
     const originalWindowLocation = window.location;
 
     beforeEach(() => {
@@ -98,7 +97,7 @@ describe('<WalletWithdrawal />', () => {
         expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
     });
 
-    it('should render withdrawal fiat module if withdrawal is for fiat wallet', () => {
+    it('should render withdrawal fiat module if withdrawal is for fiat account', () => {
         mockUseActiveAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
@@ -117,7 +116,7 @@ describe('<WalletWithdrawal />', () => {
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
 
-    it('should render withdrawal crypto module if withdrawal is for crypto wallet', async () => {
+    it('should render withdrawal crypto module if withdrawal is for crypto account', async () => {
         mockUseActiveAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {

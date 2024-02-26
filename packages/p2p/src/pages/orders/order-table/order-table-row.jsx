@@ -245,6 +245,7 @@ const OrderRow = ({ row: order }) => {
                                         height={15}
                                         width={16}
                                         onClick={() => {
+                                            order_store.setShouldNavigateToOrderDetails(true);
                                             sendbird_store.setShouldShowChatModal(true);
                                             sendbird_store.setShouldShowChatOnOrders(true);
                                         }}

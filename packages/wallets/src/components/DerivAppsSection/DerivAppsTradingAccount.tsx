@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useBalance } from '@deriv/api';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useBalance } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import { WalletButton, WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
@@ -37,7 +37,9 @@ const DerivAppsTradingAccount: React.FC = () => {
             <WalletButton
                 color='white'
                 onClick={() => {
-                    history.push('wallets/cashier/transfer');
+                    history.push('/wallets/cashier/transfer', {
+                        toAccountLoginId: activeLinkedToTradingAccount?.loginid,
+                    });
                 }}
                 variant='outlined'
             >

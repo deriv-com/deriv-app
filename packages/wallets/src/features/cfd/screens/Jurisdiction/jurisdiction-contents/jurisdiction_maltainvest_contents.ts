@@ -23,7 +23,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
                 },
             },
             {
-                key: 'spreadsFrom',
+                key: 'spreads-from',
                 title: 'Spreads from',
                 titleIndicators: {
                     displayText: '0.5 pips',
@@ -75,7 +75,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
                 },
             },
             {
-                key: 'spreadsFrom',
+                key: 'spreads-from',
                 title: 'Spreads from',
                 titleIndicators: {
                     displayText: '0.5 pips',

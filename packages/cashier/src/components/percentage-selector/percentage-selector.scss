@@ -9,9 +9,6 @@
         height: 2.4rem;
         cursor: pointer;
         background-color: var(--general-section-1);
-        @include mobile {
-            width: 95%;
-        }
     }
 
     &__block-container {

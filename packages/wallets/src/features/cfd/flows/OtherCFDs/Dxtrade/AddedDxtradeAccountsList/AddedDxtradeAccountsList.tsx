@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useDxtradeAccountsList } from '@deriv/api';
+import { useDxtradeAccountsList } from '@deriv/api-v2';
 import { TradingAccountCard } from '../../../../../../components';
 import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -38,7 +38,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
         <div className='wallets-available-derivx__actions'>
             <WalletButton
                 onClick={() => {
-                    history.push(`/wallets/cashier/transfer?to-account=${loginid}`);
+                    history.push(`/wallets/cashier/transfer`, { toAccountLoginId: loginid });
                 }}
                 variant='outlined'
             >

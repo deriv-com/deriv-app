@@ -4,8 +4,8 @@ import { defaultRoute, routes } from '../../constants/routesConfig';
 
 const RouteLinks = () => (
     <BrowserRouter>
-        <div className='p-800 border-solid border-200 border-solid-slate-75 grid grid-cols-[1fr_4fr]'>
-            <div className='p-400 flex flex-col bg-solid-slate-75 rounded-200'>
+        <div className='px-200 py-800 gap-300 grid grid-cols-1 sm:grid-cols-[1fr_4fr]'>
+            <div className='flex-col [display:none] sm:flex p-400 bg-solid-slate-75 rounded-200'>
                 {routes.map(route => (
                     <NavLink
                         activeClassName='bg-solid-slate-100 border-solid border-l-200 border-l-solid-red-500 rounded-200 font-bold'

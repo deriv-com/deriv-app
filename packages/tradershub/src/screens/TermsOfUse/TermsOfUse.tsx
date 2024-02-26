@@ -1,16 +1,12 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
+import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
 import { ScrollToFieldError } from '@/helpers';
 import { useNewCRRealAccount } from '@/hooks';
 import { termsOfUse } from '@/utils';
-import { Text } from '@deriv-com/ui';
-import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
-import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
+import { Divider, Text } from '@deriv-com/ui';
 import FatcaDeclaration from './TermsOfUseSections/FatcaDeclaration';
 import PEPs from './TermsOfUseSections/PEPs';
-
-// Replace divider from deriv-com/ui once it is implemented
-const Divider = () => <hr className=' bg-system-light-primary-background' />;
 
 /**
  * @name TermsOfUse
@@ -66,7 +62,7 @@ const TermsOfUse = () => {
                                 <PEPs />
                             </div>
                         </div>
-                        <Actions
+                        <WizardScreenActions
                             isSubmitBtnLoading={isLoading}
                             submitDisabled={
                                 !values.pepConfirmation ||

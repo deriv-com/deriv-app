@@ -112,6 +112,11 @@ export const IconToCurrencyMapper: IconToCurrencyMapperType = {
     },
 };
 
+export const CurrencyTypes = {
+    CRYPTO: 'CRYPTO',
+    FIAT: 'FIAT',
+} as const;
+
 export const Regulation = {
     EU: 'EU',
     NonEU: 'Non-EU',
@@ -121,3 +126,11 @@ export const BrokerCodes = {
     CR: 'CR',
     MF: 'MF',
 } as const;
+
+export const CurrenciesListOrder: {
+    CRYPTO: string[];
+    FIAT: string[];
+} = {
+    FIAT: ['USD', 'EUR', 'GBP', 'AUD'],
+    CRYPTO: ['TUSDT', 'BTC', 'ETH', 'LTC', 'UST', 'eUSDT', 'BUSD', 'DAI', 'EURS', 'IDK', 'PAX', 'TUSD', 'USDC', 'USDK'],
+};

@@ -790,5 +790,8 @@
     }
     .financial-assessment__form {
         width: 70%;
+        @include mobile {
+            width: 100%;
+        }
     }
 }

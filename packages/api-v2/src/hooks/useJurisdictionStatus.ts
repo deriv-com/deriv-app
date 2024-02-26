@@ -35,8 +35,8 @@ const useJurisdictionStatus = () => {
                 }
             };
 
-            const pendingStatuses = ['poa_pending', 'verification_pending'];
-            const isStatusPending = pendingStatuses.includes(mt5_account_status ?? '');
+            const pendingStatus = ['verification_pending'];
+            const isStatusPending = pendingStatus.includes(mt5_account_status ?? '');
 
             const status = {
                 is_failed: false,

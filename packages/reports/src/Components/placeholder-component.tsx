@@ -23,7 +23,7 @@ const PlaceholderComponent = ({
     const EmptyMessageComponent = empty_message_component;
     return (
         <React.Fragment>
-            {is_empty && (
+            {is_empty && EmptyMessageComponent && (
                 <EmptyMessageComponent
                     component_icon={component_icon}
                     has_selected_date={has_selected_date}
@@ -31,7 +31,7 @@ const PlaceholderComponent = ({
                     localized_period_message={localized_period_message}
                 />
             )}
-            {is_loading && <Loading />}
+            {is_loading && <Loading data_testid='dt_loading_component' />}
         </React.Fragment>
     );
 };

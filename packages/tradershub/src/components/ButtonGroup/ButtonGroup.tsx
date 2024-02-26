@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 type TButtonGroupProps = { className?: string };
 
@@ -13,7 +13,7 @@ type TButtonGroupProps = { className?: string };
  */
 
 const ButtonGroup: FC<PropsWithChildren<TButtonGroupProps>> = ({ children, className }) => (
-    <div className={clsx('flex flex-col align-center gap-8 lg:flex-row ', className)}> {children}</div>
+    <div className={twMerge('flex flex-col align-center gap-8 lg:flex-row ', className)}> {children}</div>
 );
 
 export default ButtonGroup;

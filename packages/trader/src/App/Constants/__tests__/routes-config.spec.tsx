@@ -1,4 +1,32 @@
+import React from 'react';
+import { Router } from 'react-router';
+import { createMemoryHistory } from 'history';
+import { mockStore } from '@deriv/stores';
+import { render, screen, waitFor } from '@testing-library/react';
+import BinaryRoutes from 'App/Components/Routes';
+import TraderProviders from '../../../trader-providers';
 import getRoutesConfig from '../routes-config';
+
+jest.mock('Modules/Contract', () => {
+    return {
+        __esModule: true,
+        default: () => <div>Contract Details</div>,
+    };
+});
+
+jest.mock('Modules/Trading', () => {
+    return {
+        __esModule: true,
+        default: () => <div>Trader</div>,
+    };
+});
+
+jest.mock('Modules/Page404', () => {
+    return {
+        __esModule: true,
+        default: () => <div>Error 404</div>,
+    };
+});
 
 describe('Routes Config', () => {
     it('should return default routes config', () => {
@@ -6,24 +34,58 @@ describe('Routes Config', () => {
         expect(routes).toHaveLength(3);
     });
 
-    it('should return routes with contract route', () => {
+    it('should return routes with contract route', async () => {
         const routes = getRoutesConfig();
         expect(routes?.[0]?.path).toBe('/contract/:contract_id');
-        expect(routes?.[0]?.component).toBeDefined();
         expect(routes?.[0]?.getTitle?.()).toBe('Contract Details');
         expect(routes?.[0]?.is_authenticated).toBe(true);
+        const history = createMemoryHistory();
+        history.push('/contract/12');
+        render(
+            <TraderProviders store={mockStore({})}>
+                <Router history={history}>
+                    <BinaryRoutes is_logged_in is_logging_in />
+                </Router>
+            </TraderProviders>
+        );
+        await waitFor(() => {
+            expect(screen.getByText('Contract Details')).toBeInTheDocument();
+        });
     });
 
-    it('should return routes with trade route', () => {
+    it('should return routes with trade route', async () => {
         const routes = getRoutesConfig();
         expect(routes?.[1]?.path).toBe('/');
-        expect(routes?.[1]?.component).toBeDefined();
         expect(routes?.[1]?.getTitle?.()).toBe('Trader');
+        expect(routes?.[1]?.exact).toBe(true);
+        const history = createMemoryHistory();
+        history.push('/');
+        render(
+            <TraderProviders store={mockStore({})}>
+                <Router history={history}>
+                    <BinaryRoutes is_logged_in is_logging_in />
+                </Router>
+            </TraderProviders>
+        );
+        await waitFor(() => {
+            expect(screen.getByText('Trader')).toBeInTheDocument();
+        });
     });
 
-    it('should return routes config with default route including 404', () => {
+    it('should return routes config with default route including 404', async () => {
         const routes = getRoutesConfig();
         expect(routes?.[2]?.getTitle?.()).toBe('Error 404');
-        expect(routes?.[2]?.component).toBeDefined();
+        const history = createMemoryHistory();
+        history.push('/non-existent-path');
+        render(
+            <TraderProviders store={mockStore({})}>
+                <Router history={history}>
+                    <BinaryRoutes is_logged_in is_logging_in />
+                </Router>
+            </TraderProviders>
+        );
+        await waitFor(() => {
+            expect(screen.getByText('Error 404')).toBeInTheDocument();
+        });
     });
 });

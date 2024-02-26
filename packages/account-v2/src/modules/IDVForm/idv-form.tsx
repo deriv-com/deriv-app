@@ -84,7 +84,7 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
 
     return (
         <Fragment>
-            <section className='flex flex-col gap-75'>
+            <section className='flex flex-col gap-1'>
                 <Field name='document_type'>
                     {({ field, meta }: FieldProps) => (
                         <WalletDropdown

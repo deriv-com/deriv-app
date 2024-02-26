@@ -4,7 +4,8 @@
         "outDir": "./dist",
         "baseUrl": "./",
         "paths": {
-            "@deriv/*": ["../*/src"]
+            "@deriv/*": ["../*/src"],
+            "@/*": ["src/*"]
         }
     },
     "include": ["src", "../../types/utils.d.ts"],

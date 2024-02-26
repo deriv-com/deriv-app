@@ -1,9 +1,7 @@
 import type { Config } from 'tailwindcss';
-import QuillTailwindConfig from '@deriv/quill-design/quill-tailwind/tailwind.config.cjs';
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
-    presets: [QuillTailwindConfig],
     theme: {
         extend: {
             borderRadius: {
@@ -112,6 +110,25 @@ export default {
                 md: { min: '601px' },
                 lg: { min: '1280px' },
                 xl: { min: '1440px' },
+            },
+            opacity: {
+                0: '0',
+                4: '0.04',
+                8: '0.08',
+                16: '0.16',
+                24: '0.24',
+                32: '0.32',
+                40: '0.4',
+                48: '0.48',
+                56: '0.56',
+                64: '0.64',
+                72: '0.72',
+                80: '0.8',
+                88: '0.88',
+                96: '0.96',
+                100: '1',
+                overlay: '0.72',
+                disabled: ' 0.32',
             },
             spacing: {
                 0: '0px',

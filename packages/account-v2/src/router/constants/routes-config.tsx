@@ -1,7 +1,4 @@
-import React from 'react';
 import { ACCOUNT_V2_ROUTES } from '../../constants/routes';
-import { SELECTED_COUNTRY } from '../../mocks/idv-form.mock';
-import { IDVForm } from '../../modules';
 import { POAFormContainer } from '../../modules/POAForm/POAFormContainer';
 import DummyRoute from '../components/dummy-route/dummy-route';
 

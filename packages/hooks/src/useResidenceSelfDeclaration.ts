@@ -4,7 +4,7 @@ import { useStore } from '@deriv/stores';
 const useResidenceSelfDeclaration = () => {
     const { client } = useStore();
     const { residence } = client;
-
+    //if residence is spain, we need to set is_residence_self_declaration_required  as true
     return { is_residence_self_declaration_required: residence === 'es' };
 };
 

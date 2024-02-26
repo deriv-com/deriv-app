@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { useResidenceSelfDeclaration } from '@deriv/hooks';
+
 import TermsOfUse from '../terms-of-use';
 import userEvent from '@testing-library/user-event';
 
@@ -9,6 +11,15 @@ jest.mock('@deriv/shared', () => ({
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
 }));
+
+jest.mock('@deriv/hooks', () => {
+    return {
+        ...jest.requireActual('@deriv/hooks'),
+        useResidenceSelfDeclaration: jest.fn(() => ({
+            is_residence_self_declaration_required: true,
+        })),
+    };
+});
 
 describe('<TermsOfUse/>', () => {
     const agree_check = /i agree to the/i;
@@ -89,20 +100,6 @@ describe('<TermsOfUse/>', () => {
         expect(add_btn).toBeInTheDocument();
     });
 
-    it('should not display spain residence confirmation checkbox if residence is indonesia', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
-
-        render(<TermsOfUse {...mock_props} />);
-
-        commonFieldsCheck();
-        expect(
-            screen.queryByText(
-                'I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.'
-            )
-        ).not.toBeInTheDocument();
-    });
-
     it('should render TermsOfUse component with spain residence confirmation checkbox if residence is spain', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
@@ -150,5 +147,20 @@ describe('<TermsOfUse/>', () => {
         userEvent.click(spain_checkbox);
         expect(spain_checkbox).toBeChecked();
         expect(add_btn).toBeEnabled();
+    });
+
+    it('should not display spain residence confirmation checkbox if residence is indonesia', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+
+        (useResidenceSelfDeclaration as jest.Mock).mockReturnValue(false);
+        render(<TermsOfUse {...mock_props} />);
+
+        commonFieldsCheck();
+        expect(
+            screen.queryByText(
+                'I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.'
+            )
+        ).not.toBeInTheDocument();
     });
 });

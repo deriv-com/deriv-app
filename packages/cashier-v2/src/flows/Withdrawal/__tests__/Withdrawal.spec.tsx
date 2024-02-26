@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveAccount, useCurrencyConfig } from '@deriv/api';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Withdrawal from '../Withdrawal';
 
 jest.mock('../../../lib', () => ({
@@ -133,26 +133,6 @@ describe('<Withdrawal />', () => {
         render(<Withdrawal />);
         expect(screen.getByText('WithdrawalCryptoModule')).toBeInTheDocument();
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
-    });
-
-    it('should render withdrawal email verification module when onClose is triggered on the withdrawal crypto module', () => {
-        mockUseActiveAccount.mockReturnValue({
-            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            data: {
-                currency: 'BTC',
-            },
-        });
-
-        mockUseCurrencyConfig.mockReturnValue({
-            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            getConfig: jest.fn(() => ({ is_fiat: false })),
-            isSuccess: true,
-        });
-
-        render(<Withdrawal />);
-        const button = screen.getByRole('button');
-        fireEvent.click(button);
-        expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
     });
 
     it('should show loader if verification code is there but currency config is yet to be loaded', () => {

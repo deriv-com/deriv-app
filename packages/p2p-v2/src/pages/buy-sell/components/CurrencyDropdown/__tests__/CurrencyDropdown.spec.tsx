@@ -1,16 +1,13 @@
 import React from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CurrencyDropdown from '../CurrencyDropdown';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
-    <APIProvider>
-        <AuthProvider>
-            <div>Click me</div>
-            {children}
-        </AuthProvider>
-    </APIProvider>
+    <div>
+        <div>Click me</div>
+        {children}
+    </div>
 );
 
 jest.mock('@deriv/api-v2', () => ({
@@ -47,13 +44,18 @@ jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: mockIsMobile })),
 }));
-
-jest.useFakeTimers();
-
 const mockProps = {
     selectedCurrency: 'IDR',
     setSelectedCurrency: jest.fn(),
 };
+
+beforeEach(() => {
+    jest.useFakeTimers();
+});
+
+afterEach(() => {
+    jest.useRealTimers();
+});
 
 describe('<CurrencyDropdown />', () => {
     it('should call setSelectedCurrency when a currency is selected from the dropdown', () => {

@@ -30,11 +30,6 @@ const RadioButtonGroup = ({
     item_count,
     description,
 }: React.PropsWithChildren<TRadioButtonGroup>) => {
-    const [, setIsCurrencySelected] = useState(false);
-
-    const onCurrencyClicked = () => {
-        setIsCurrencySelected(true);
-    };
     return (
         <div className={className}>
             {is_title_enabled && (
@@ -53,7 +48,6 @@ const RadioButtonGroup = ({
                     'currency-list__items__is-fiat': is_fiat,
                     'currency-list__items__is-crypto': !is_fiat,
                 })}
-                onClick={onCurrencyClicked}
             >
                 {children}
             </div>

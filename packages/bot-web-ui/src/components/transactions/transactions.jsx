@@ -10,7 +10,7 @@ import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';
-import Transaction from './transaction.tsx';
+import Transaction from './transaction';
 
 const TransactionItem = ({ row, is_new_row }) => {
     const { in_prop } = useNewRowTransition(is_new_row);

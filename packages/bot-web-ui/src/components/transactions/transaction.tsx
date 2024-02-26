@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import ContentLoader from 'react-content-loader';
-import { TContract } from 'src/pages/bot-builder/quick-strategy/types';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ProposalOpenContract } from '@deriv/api-types';
 import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
@@ -24,11 +25,11 @@ type TPopoverItem = {
 };
 
 type TPopoverContent = {
-    contract: TContract;
+    contract: ProposalOpenContract;
 };
 
 type TTransaction = {
-    contract?: TContract;
+    contract?: ProposalOpenContract;
 };
 
 const TransactionIconWithText = ({ icon, title, message, className }: TTransactionIconWithText) => (

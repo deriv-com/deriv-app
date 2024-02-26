@@ -141,7 +141,7 @@ describe('WithdrawalLockedContent', () => {
         });
 
         if (result) render(result.description);
-        expect(screen.getByText(/You can only make deposits. Please complete/)).toBeInTheDocument();
+        expect(screen.getByText(/Please complete the/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment' })).toBeInTheDocument();
     });
 

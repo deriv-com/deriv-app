@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api';
 import { Dropdown, Input, useDevice } from '@deriv-com/ui';
@@ -87,58 +87,50 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
     };
 
     return (
-        <Fragment>
-            <section className='flex flex-col gap-75'>
-                <Field name='document_type'>
+        <section className='flex flex-col gap-75'>
+            <Field name='document_type'>
+                {({ field, meta }: FieldProps) => (
+                    <Dropdown
+                        aria-label='Choose the document type'
+                        errorMessage={meta.touched && meta.error}
+                        isRequired
+                        label='Choose the document type'
+                        list={documentList}
+                        onSearch={field.onChange} // [TODO] - To be removed once prop is renamed to onChange
+                        onSelect={values => handleSelect(values as string)} // Need to override the Type Error. Will be fixed when Dropdown component is updated
+                        value={field.value}
+                        variant={isMobile ? 'comboBox' : 'prompt'}
+                    />
+                )}
+            </Field>
+            {values?.document_type !== IDV_NOT_APPLICABLE_OPTION.value && (
+                <Field name='document_number'>
                     {({ field, meta }: FieldProps) => (
-                        <Dropdown
-                            aria-label='Choose the document type'
-                            errorMessage={meta.touched && meta.error}
-                            isRequired
-                            label='Choose the document type'
-                            list={documentList}
-                            onSearch={field.onChange} // [TODO] - To be removed once prop is renamed to onChange
-                            onSelect={handleSelect}
-                            value={field.value}
-                            variant={isMobile ? 'comboBox' : 'prompt'}
+                        <Input
+                            {...field}
+                            aria-label='Enter your document number'
+                            disabled={!values.document_type}
+                            error={meta.touched && Boolean(meta.error)}
+                            label='Enter your document number'
+                            message={meta.error ?? getExampleFormat(selectedDocument?.example_format)}
                         />
                     )}
                 </Field>
-                {values?.document_type !== IDV_NOT_APPLICABLE_OPTION.value && (
-                    <Field name='document_number'>
-                        {({ field, meta }: FieldProps) => (
-                            <Input
-                                {...field}
-                                aria-label='Enter your document number'
-                                disabled={!values.document_type}
-                                error={meta.touched && Boolean(meta.error)}
-                                label='Enter your document number'
-                                message={meta.error ?? getExampleFormat(selectedDocument?.example_format)}
-                            />
-                        )}
-                    </Field>
-                )}
-                {selectedDocument?.additional?.display_name && (
-                    <Field name='document_additional'>
-                        {({ field, meta }: FieldProps) => (
-                            <Input
-                                {...field}
-                                aria-label='Enter additional document number'
-                                disabled={!selectedDocument?.additional}
-                                error={meta.touched && Boolean(meta.error)}
-                                label='Enter additional document number'
-                                message={meta.error ?? getExampleFormat(selectedDocument?.additional?.example_format)}
-                            />
-                        )}
-                    </Field>
-                )}
-            </section>
-            {/* [TODO]:Mock - Remove Display for form values */}
-            <section>
-                <p>Document Type: {values?.document_type}</p>
-                <p>Document Number: {values.document_number}</p>
-                <p>Additional Document number: {values.document_additional ?? '--'} </p>
-            </section>
-        </Fragment>
+            )}
+            {selectedDocument?.additional?.display_name && (
+                <Field name='document_additional'>
+                    {({ field, meta }: FieldProps) => (
+                        <Input
+                            {...field}
+                            aria-label='Enter additional document number'
+                            disabled={!selectedDocument?.additional}
+                            error={meta.touched && Boolean(meta.error)}
+                            label='Enter additional document number'
+                            message={meta.error ?? getExampleFormat(selectedDocument?.additional?.example_format)}
+                        />
+                    )}
+                </Field>
+            )}
+        </section>
     );
 };

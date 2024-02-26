@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { Formik } from 'formik';
-import { InferType } from 'yup';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as utils from '../../../utils/idv-form-utils';
 import { IDVForm } from '../idv-form';
@@ -12,8 +11,6 @@ jest.mock('@deriv-com/ui', () => ({
 }));
 
 type TIDVFormProps = ComponentProps<typeof IDVForm>;
-
-type TIDVFormValues = InferType<ReturnType<typeof utils.getIDVFormValidationSchema>>;
 
 const mockProps: TIDVFormProps = {
     selectedCountry: {
@@ -48,11 +45,6 @@ const mockDocumentConfig = {
     value: '^[0-9]{12}$',
 };
 
-// const mockFormValues: TIDVFormValues = {
-//     document_number: '5436454364243',
-//     document_type: 'document_1',
-// };
-
 describe('IDVForm', () => {
     const renderComponent = (props: TIDVFormProps = mockProps) => {
         return render(
@@ -83,6 +75,7 @@ describe('IDVForm', () => {
 
         userEvent.click(elDocumentType);
         expect(await screen.findByText('Document 1')).toBeInTheDocument();
+
         userEvent.tab();
         await waitFor(() => {
             expect(screen.queryByText('Document 2')).not.toBeInTheDocument();
@@ -128,7 +121,7 @@ describe('IDVForm', () => {
         });
     });
 
-    it('should display option to do it later when allowIDVSkip is set', async () => {
+    it('should display option to do it later when allowIDVSkip is set', () => {
         const newProps = {
             ...mockProps,
             allowDefaultValue: true,
@@ -140,7 +133,7 @@ describe('IDVForm', () => {
         const elDocumentTypeInput = screen.getByLabelText(documentTypeLabel);
         userEvent.click(elDocumentTypeInput);
 
-        expect(await screen.findByText(defaultIDVSkipMessage));
+        expect(screen.getByText(defaultIDVSkipMessage));
     });
 
     it('should skip default option when allowDefaultValue is not set', () => {

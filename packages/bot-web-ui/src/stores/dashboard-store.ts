@@ -45,7 +45,7 @@ export interface IDashboardStore {
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     setStrategySaveType: (param: string) => void;
     setFaqTitle: (param: string) => void;
-    set_faq_title: string;
+    faq_title: string;
     show_toast: boolean;
     show_mobile_tour_dialog: boolean;
     showVideoDialog: (param: { [key: string]: string }) => void;
@@ -87,7 +87,7 @@ export default class DashboardStore implements IDashboardStore {
             setActiveTabTutorial: action.bound,
             setWebSocketState: action.bound,
             setFAQSearchValue: action.bound,
-            set_faq_title: observable,
+            faq_title: observable,
             setFaqTitle: action.bound,
             setFileLoaded: action.bound,
             setInfoPanelVisibility: action.bound,
@@ -226,10 +226,10 @@ export default class DashboardStore implements IDashboardStore {
     filtered_tab_list = [];
     is_chart_modal_visible = false;
     is_trading_view_modal_visible = false;
-    set_faq_title = '';
+    faq_title = '';
 
-    setFaqTitle = (set_faq_title: string) => {
-        this.set_faq_title = set_faq_title;
+    setFaqTitle = (faq_title: string) => {
+        this.faq_title = faq_title;
     };
 
     resetTutorialTabContent = () => {

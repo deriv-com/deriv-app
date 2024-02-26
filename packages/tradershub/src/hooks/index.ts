@@ -1,3 +1,4 @@
+export { default as useAccountSwitcher } from './useAccountSwitcher';
 export { default as useCFDAssets } from './useCFDAssets';
 export { default as useCurrencies } from './useCurrencies';
 export { default as useMT5AccountHandler } from './useMT5AccountHandler';

@@ -8,7 +8,7 @@ import LinuxIcon from '@/assets/svgs/ic-linux-logo.svg';
 import MacOSIcon from '@/assets/svgs/ic-macos-logo.svg';
 import MT5Icon from '@/assets/svgs/ic-mt5.svg';
 import WindowsIcon from '@/assets/svgs/ic-windows-logo.svg';
-import { PlatformIcon } from '@/components';
+import { IconComponent } from '@/components';
 import { TJurisdiction, TMarketTypes, TPlatforms } from '@/types';
 
 type TAppContent = {
@@ -74,41 +74,41 @@ export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
     all: {
         description:
             'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices.',
-        icon: <PlatformIcon icon='SwapFree' />,
-        iconWithWidth: (width: number) => <PlatformIcon icon='SwapFree' width={width} />,
+        icon: <IconComponent icon='SwapFree' />,
+        iconWithWidth: (width: number) => <IconComponent icon='SwapFree' width={width} />,
         title: 'Swap-Free',
     },
     financial: {
         description: isEU
             ? 'This MFSA-regulated account offers CFDs on derived and financial instruments.'
             : 'This account offers CFDs on financial instruments.',
-        icon: <PlatformIcon icon={isEU ? 'CFDs' : 'Financial'} />,
-        iconWithWidth: (width: number) => <PlatformIcon icon={isEU ? 'CFDs' : 'Financial'} width={width} />,
+        icon: <IconComponent icon={isEU ? 'CFDs' : 'Financial'} />,
+        iconWithWidth: (width: number) => <IconComponent icon={isEU ? 'CFDs' : 'Financial'} width={width} />,
         title: isEU ? 'CFDs' : 'Financial',
     },
     synthetic: {
         description: 'This account offers CFDs on derived instruments.',
-        icon: <PlatformIcon icon='Derived' />,
-        iconWithWidth: (width: number) => <PlatformIcon icon='Derived' width={width} />,
+        icon: <IconComponent icon='Derived' />,
+        iconWithWidth: (width: number) => <IconComponent icon='Derived' width={width} />,
         title: 'Derived',
     },
 });
 
 export const PlatformDetails = {
     ctrader: {
-        icon: (width?: number) => <PlatformIcon icon='CTrader' width={width} />,
+        icon: (width?: number) => <IconComponent icon='CTrader' width={width} />,
         link: 'https://onelink.to/hyqpv7',
         platform: 'ctrader' as TPlatforms.OtherAccounts,
         title: 'Deriv cTrader',
     },
     dxtrade: {
-        icon: (width?: number) => <PlatformIcon icon='DerivX' width={width} />,
+        icon: (width?: number) => <IconComponent icon='DerivX' width={width} />,
         link: 'https://onelink.to/grmtyx',
         platform: 'dxtrade' as TPlatforms.OtherAccounts,
         title: 'Deriv X',
     },
     mt5: {
-        icon: (width?: number) => <PlatformIcon icon='Derived' width={width} />,
+        icon: (width?: number) => <IconComponent icon='Derived' width={width} />,
         link: 'https://onelink.to/grmtyx',
         platform: 'mt5' as TPlatforms.MT5,
         title: 'Deriv MT5',

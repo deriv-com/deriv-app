@@ -1,5 +1,5 @@
 import React from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { TotalAssetsLoader } from '@/components';
 import { useTotalAssets } from '@/hooks';
 import { useActiveTradingAccount } from '@deriv/api';
@@ -18,7 +18,7 @@ const TotalAssets = () => {
             {isDesktop && <Text size='sm'>Total assets</Text>}
             <Text
                 as='p'
-                className={clsx(
+                className={twMerge(
                     'underline text-status-light-information decoration-dotted decoration-system-light-less-prominent-text underline-offset-8 flex flex-col items-end text-4xl',
                     !activeTrading?.is_virtual && 'text-status-light-success'
                 )}

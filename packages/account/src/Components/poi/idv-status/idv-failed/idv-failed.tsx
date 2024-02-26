@@ -109,7 +109,7 @@ const IdvFailed = ({
             ].includes(mismatch_status)
                 ? !report_available
                 : true,
-        [mismatch_status]
+        [mismatch_status, report_available]
     );
     /**
      * If user needs to resubmit IDV document, the country should be the new selected country

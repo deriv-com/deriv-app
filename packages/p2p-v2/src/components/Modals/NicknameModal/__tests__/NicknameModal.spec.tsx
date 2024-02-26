@@ -1,8 +1,8 @@
 import React from 'react';
 import { APIProvider, p2p } from '@deriv/api';
-import { render, screen, act } from '@testing-library/react';
-import NicknameModal from '../NicknameModal';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import NicknameModal from '../NicknameModal';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
@@ -11,18 +11,25 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
     </APIProvider>
 );
 
-// const mockUseForm = useForm as jest.MockedFunction<typeof useForm>;
+const mockedMutate = jest.fn();
+const mockedReset = jest.fn();
+const mockedUseAdvertiserCreate = p2p.advertiser.useCreate as jest.MockedFunction<typeof p2p.advertiser.useCreate>;
+
+jest.mock('lodash', () => ({
+    ...jest.requireActual('lodash'),
+    debounce: jest.fn(f => f),
+}));
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     p2p: {
         advertiser: {
-            useCreate: jest.fn().mockReturnValue({
+            useCreate: jest.fn(() => ({
                 error: undefined,
                 isError: false,
                 isSuccess: true,
-                mutate: jest.fn(),
-                reset: jest.fn(),
-            }),
+                mutate: mockedMutate,
+                reset: mockedReset,
+            })),
         },
     },
 }));
@@ -35,7 +42,6 @@ jest.mock('@/hooks', () => ({
     }),
     useSwitchTab: jest.fn().mockReturnValue(jest.fn),
 }));
-const mockUseAdvertiserCreate = p2p.advertiser.useCreate as jest.MockedFunction<typeof p2p.advertiser.useCreate>;
 
 describe('NicknameModal', () => {
     it('should render title and description correctly', () => {
@@ -44,26 +50,54 @@ describe('NicknameModal', () => {
         expect(screen.getByText('This nickname will be visible to other Deriv P2P users.')).toBeVisible();
     });
     it('should allow users to type and submit nickname', async () => {
-        const mockSetIsModalOpen = jest.fn();
-        const mockMutate = jest.fn();
-        mockUseAdvertiserCreate.mockImplementation(() => ({
-            error: undefined,
-            isError: false,
-            isSuccess: true,
-            mutate: mockMutate,
-            reset: jest.fn(),
-        }));
+        render(<NicknameModal isModalOpen setIsModalOpen={jest.fn()} />, { wrapper });
 
-        render(<NicknameModal isModalOpen setIsModalOpen={mockSetIsModalOpen} />, { wrapper });
-
-        const nicknameInput = screen.getByLabelText('Your nickname');
+        const nicknameInput = screen.getByTestId('dt_p2p_v2_nickname_modal_input');
 
         await userEvent.type(nicknameInput, 'Nahida');
 
-        const confirmBtn = screen.getByRole('button', {
-            name: 'Confirm',
+        await waitFor(() => {
+            const confirmBtn = screen.getByRole('button', {
+                name: 'Confirm',
+            });
+            userEvent.click(confirmBtn);
         });
-        await userEvent.click(confirmBtn);
-        expect(mockMutate).toBeCalled();
+
+        expect(mockedMutate).toHaveBeenCalledWith({
+            name: 'Nahida',
+        });
+    });
+    it('should invoke reset when there is an error from creating advertiser', async () => {
+        mockedUseAdvertiserCreate.mockImplementationOnce(() => ({
+            error: undefined,
+            isError: true,
+            isSuccess: false,
+            mutate: mockedMutate,
+            reset: mockedReset,
+        }));
+
+        await act(() => {
+            render(<NicknameModal isModalOpen setIsModalOpen={jest.fn()} />, { wrapper });
+        });
+
+        expect(mockedReset).toBeCalled();
+    });
+    it('should close the modal when Cancel button is clicked', async () => {
+        mockedUseAdvertiserCreate.mockImplementationOnce(() => ({
+            error: undefined,
+            isError: false,
+            isSuccess: true,
+            mutate: mockedMutate,
+            reset: mockedReset,
+        }));
+        const mockIsModalOpen = jest.fn();
+        render(<NicknameModal isModalOpen setIsModalOpen={mockIsModalOpen} />, { wrapper });
+
+        const cancelBtn = screen.getByRole('button', {
+            name: 'Cancel',
+        });
+        userEvent.click(cancelBtn);
+
+        expect(mockIsModalOpen).toBeCalledWith(false);
     });
 });

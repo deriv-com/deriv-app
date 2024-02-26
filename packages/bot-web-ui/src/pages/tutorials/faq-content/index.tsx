@@ -46,13 +46,13 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const { dashboard } = useDBotStore();
-    const { set_faq_title, setFaqTitle } = dashboard;
+    const { faq_title, setFaqTitle } = dashboard;
 
     const handleAccordionOpen = () => {
         faq_list.forEach(data => {
-            if (data.search_id === set_faq_title) {
+            if (data.search_id === faq_title) {
                 document.querySelectorAll('.faq__title').forEach((data, index) => {
-                    if (Number(set_faq_title.split('-')[1]) === index) {
+                    if (Number(faq_title.split('-')[1]) === index) {
                         data.click();
                         setFaqTitle('');
                         handleTabChange(DBOT_TABS.TUTORIAL);

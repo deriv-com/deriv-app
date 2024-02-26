@@ -1,9 +1,16 @@
 /* eslint-disable sort-keys */
 import React from 'react';
 import { Switch } from 'react-router-dom';
+import TransferIcon from '../assets/images/ic-account-transfer.svg';
+import CashierIcon from '../assets/images/ic-cashier.svg';
+import DepositIcon from '../assets/images/ic-cashier-add.svg';
+import WithdrawalIcon from '../assets/images/ic-cashier-minus.svg';
+import OnRampIcon from '../assets/images/ic-cashier-on-ramp.svg';
+import PaymentAgentIcon from '../assets/images/ic-payment-agent.svg';
 import { DummyComponent, PageContainer } from '../components';
 import { Cashier } from '../containers';
-import { CashierOnboardingModule, WithdrawalVerificationModule } from '../lib';
+import { Deposit } from '../flows';
+import { WithdrawalVerificationModule } from '../lib';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -21,15 +28,13 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
     {
         path: cashierPathRoutes.cashier,
         component: Cashier,
+        icon: <CashierIcon />,
         title: 'Cashier',
         routes: [
             {
                 path: cashierPathRoutes.cashierDeposit,
-                component: () => (
-                    <PageContainer>
-                        <CashierOnboardingModule />
-                    </PageContainer>
-                ),
+                component: Deposit,
+                icon: <DepositIcon />,
                 title: 'Deposit',
             },
             {
@@ -39,26 +44,31 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
                         <WithdrawalVerificationModule />
                     </PageContainer>
                 ),
+                icon: <WithdrawalIcon />,
                 title: 'Withdrawal',
             },
             {
                 path: cashierPathRoutes.cashierPaymentAgents,
                 component: DummyComponent,
+                icon: <PaymentAgentIcon />,
                 title: 'Payment agents',
             },
             {
                 path: cashierPathRoutes.cashierAccountTransfer,
                 component: DummyComponent,
+                icon: <TransferIcon />,
                 title: 'Transfer',
             },
             {
                 path: cashierPathRoutes.cashierPaymentAgentTransfer,
                 component: DummyComponent,
+                icon: <TransferIcon />,
                 title: 'Transfer to client',
             },
             {
                 path: cashierPathRoutes.cashierOnRamp,
                 component: DummyComponent,
+                icon: <OnRampIcon />,
                 title: 'Fiat onramp',
             },
         ],

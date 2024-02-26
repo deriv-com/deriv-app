@@ -1,76 +1,27 @@
 import React from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletListCardDetails from '../WalletListCardDetails';
 
+jest.mock('../../WalletListCardActions/WalletListCardActions', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>Mocked WalletListCardActions</div>),
+}));
+
+jest.mock('../../WalletListCardBalance/WalletListCardBalance', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>Mocked WalletListCardBalance</div>),
+}));
+
+jest.mock('../../WalletListCardDropdown/WalletListCardDropdown', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>Mocked WalletListCardDropdown</div>),
+}));
+
 describe('WalletListCardDetails', () => {
-    it('should render with active demo account details correctly', () => {
-        render(
-            <APIProvider>
-                <AuthProvider>
-                    <WalletListCardDetails
-                        balance='10000'
-                        isActive
-                        isDemo
-                        loginid='VRW123456'
-                        onAccountSelect={jest.fn()}
-                    />
-                </AuthProvider>
-            </APIProvider>
-        );
-        expect(screen.getByText('Reset balance')).toBeInTheDocument();
-    });
-
-    it('should render with active real account details correctly', () => {
-        render(
-            <APIProvider>
-                <AuthProvider>
-                    <WalletListCardDetails
-                        balance='10000'
-                        isActive
-                        isDemo={false}
-                        loginid='CRW123456'
-                        onAccountSelect={jest.fn()}
-                    />
-                </AuthProvider>
-            </APIProvider>
-        );
-        expect(screen.getByText('Deposit')).toBeInTheDocument();
-        expect(screen.getByText('Withdraw')).toBeInTheDocument();
-    });
-
-    it('should render with inactive demo account details correctly', () => {
-        render(
-            <APIProvider>
-                <AuthProvider>
-                    <WalletListCardDetails
-                        balance='10000'
-                        isActive={false}
-                        isDemo
-                        loginid='VRW123456'
-                        onAccountSelect={jest.fn()}
-                    />
-                </AuthProvider>
-            </APIProvider>
-        );
-        expect(screen.queryByText('Reset balance')).not.toBeInTheDocument();
-    });
-
-    it('should render with inactive real account details correctly', () => {
-        render(
-            <APIProvider>
-                <AuthProvider>
-                    <WalletListCardDetails
-                        balance='10000'
-                        isActive={false}
-                        isDemo={false}
-                        loginid='CRW123456'
-                        onAccountSelect={jest.fn()}
-                    />
-                </AuthProvider>
-            </APIProvider>
-        );
-        expect(screen.queryByText('Deposit')).not.toBeInTheDocument();
-        expect(screen.queryByText('Withdraw')).not.toBeInTheDocument();
+    it('should render with default components correctly', () => {
+        render(<WalletListCardDetails />);
+        expect(screen.getByText('Mocked WalletListCardActions')).toBeInTheDocument();
+        expect(screen.getByText('Mocked WalletListCardBalance')).toBeInTheDocument();
+        expect(screen.getByText('Mocked WalletListCardDropdown')).toBeInTheDocument();
     });
 });

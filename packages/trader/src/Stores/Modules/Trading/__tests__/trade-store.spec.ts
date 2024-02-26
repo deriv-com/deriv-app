@@ -303,7 +303,7 @@ describe('TradeStore', () => {
         it('should not send "change_parameter_value" analytics when payload has no duration_type or parameter_value', async () => {
             jest.clearAllMocks();
             const spyTrackEvent = jest.spyOn(Analytics, 'trackEvent');
-            const payload_with_empty_value = {
+            const payloadWithEmptyValue = {
                 action,
                 input_type: 'manual',
                 parameter_field_type: 'number',
@@ -311,7 +311,7 @@ describe('TradeStore', () => {
                 parameter_value: '',
             } as Partial<TEvents['ce_contracts_set_up_form']>;
 
-            mockedTradeStore.sendTradeParamsAnalytics(payload_with_empty_value);
+            mockedTradeStore.sendTradeParamsAnalytics(payloadWithEmptyValue);
             await waitFor(() => expect(spyTrackEvent).not.toHaveBeenCalled());
         });
     });

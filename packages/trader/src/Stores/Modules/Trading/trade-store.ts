@@ -295,10 +295,6 @@ export default class TradeStore extends BaseStore {
     is_trade_params_expanded = true;
 
     debouncedSendTradeParamsAnalytics = debounce((payload: TEvents['ce_contracts_set_up_form']) => {
-        if (payload.action === 'change_parameter_value') {
-            const { duration_type, parameter_value } = payload;
-            if (!duration_type && parameter_value === '') return;
-        }
         Analytics.trackEvent('ce_contracts_set_up_form', payload);
     }, 2000);
 
@@ -1038,6 +1034,10 @@ export default class TradeStore extends BaseStore {
             trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
             ...options,
         } as TEvents['ce_contracts_set_up_form'];
+        if (payload.action === 'change_parameter_value') {
+            const { duration_type, parameter_value } = payload;
+            if (!duration_type && parameter_value === '') return;
+        }
         if (isDebounced) {
             this.debouncedSendTradeParamsAnalytics(payload);
         } else {

@@ -71,7 +71,11 @@ describe('<IdvFailed/>', () => {
     });
 
     it('should render IDVfailed component with name & DOB mismatch message', async () => {
-        const new_props = { ...mock_props, mismatch_status: IDV_ERROR_STATUS.NameDobMismatch.code };
+        const new_props = {
+            ...mock_props,
+            mismatch_status: IDV_ERROR_STATUS.NameDobMismatch.code,
+            report_available: true,
+        };
         renderComponent({ props: new_props });
 
         await waitFor(() => {

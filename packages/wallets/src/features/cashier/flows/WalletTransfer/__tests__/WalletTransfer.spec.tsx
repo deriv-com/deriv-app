@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import { CashierLocked } from '../../../modules';
 import WalletTransfer from '../WalletTransfer';
 
 jest.mock('../../../../../components', () => ({
@@ -10,6 +11,7 @@ jest.mock('../../../../../components', () => ({
 
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
+    CashierLocked: jest.fn(({ children }) => <>{children}</>),
     TransferModule: jest.fn(({ accounts }) => (
         <>
             <div>TransferModule</div>
@@ -38,7 +40,9 @@ const mockUseTransferBetweenAccounts = useTransferBetweenAccounts as jest.Mocked
     typeof useTransferBetweenAccounts
 >;
 
-describe('<WalletTransfer />', () => {
+const wrapper = ({ children }: PropsWithChildren) => <CashierLocked>{children}</CashierLocked>;
+
+describe('WalletTransfer', () => {
     it('should show the loader if the API response has not yet arrived', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         mockUseTransferBetweenAccounts.mockReturnValue({
@@ -46,7 +50,7 @@ describe('<WalletTransfer />', () => {
             mutate: jest.fn(),
         });
 
-        render(<WalletTransfer />);
+        render(<WalletTransfer />, { wrapper });
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
@@ -59,7 +63,7 @@ describe('<WalletTransfer />', () => {
             mutate: jest.fn(),
         });
 
-        render(<WalletTransfer />);
+        render(<WalletTransfer />, { wrapper });
         expect(screen.getByText('TransferNotAvailable')).toBeInTheDocument();
         expect(screen.getByText('TransferModule')).toBeInTheDocument();
         expect(screen.getByText('transfer-accounts-data-for-screen')).toBeInTheDocument();

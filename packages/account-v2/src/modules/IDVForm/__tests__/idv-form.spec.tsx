@@ -1,6 +1,9 @@
 import React, { ComponentProps } from 'react';
 import { Formik } from 'formik';
-import { render, screen } from '@testing-library/react';
+import { InferType } from 'yup';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import * as utils from '../../../utils/idv-form-utils';
 import { IDVForm } from '../idv-form';
 
 jest.mock('@deriv-com/ui', () => ({
@@ -10,14 +13,58 @@ jest.mock('@deriv-com/ui', () => ({
 
 type TIDVFormProps = ComponentProps<typeof IDVForm>;
 
+type TIDVFormValues = InferType<ReturnType<typeof utils.getIDVFormValidationSchema>>;
+
+const mockProps: TIDVFormProps = {
+    selectedCountry: {
+        documents_supported: {
+            document_1: {
+                additional: {
+                    display_name: 'Additional Document',
+                    format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
+                },
+                display_name: 'Document 1',
+                format: '^[0-9]{12}$',
+            },
+            document_2: {
+                display_name: 'Document 2',
+                format: '^[a-zA-Z0-9]{10,17}$',
+            },
+        },
+        has_visual_sample: 0,
+        is_country_supported: 1,
+    },
+};
+
+const mockDocumentConfig = {
+    additional: {
+        display_name: 'Additional doc',
+        example_format: 'ABCDE1234F',
+        format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
+    },
+    example_format: '1234567890',
+    id: 'doc_1',
+    text: 'Document 1',
+    value: '^[0-9]{12}$',
+};
+
+// const mockFormValues: TIDVFormValues = {
+//     document_number: '5436454364243',
+//     document_type: 'document_1',
+// };
+
 describe('IDVForm', () => {
-    const renderComponent = (props: TIDVFormProps = { selectedCountry: {} }) => {
+    const renderComponent = (props: TIDVFormProps = mockProps) => {
         return render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <IDVForm {...props} />
             </Formik>
         );
     };
+
+    const documentTypeLabel = 'Choose the document type';
+
+    const defaultIDVSkipMessage = 'I want to do this later';
 
     it('should render IDVForm', () => {
         renderComponent();
@@ -28,5 +75,81 @@ describe('IDVForm', () => {
 
     it('should throw error when IDVform is not wrapped with Formik', () => {
         expect(() => render(<IDVForm selectedCountry={{}} />)).toThrowError();
+    });
+
+    it('Should change the document type value when document type is changed', async () => {
+        renderComponent();
+        const elDocumentType = screen.getByLabelText(documentTypeLabel);
+
+        userEvent.click(elDocumentType);
+        expect(await screen.findByText('Document 1')).toBeInTheDocument();
+        userEvent.tab();
+        await waitFor(() => {
+            expect(screen.queryByText('Document 2')).not.toBeInTheDocument();
+        });
+    });
+
+    it('should render the hint messages for the selected document', async () => {
+        renderComponent();
+        const elDocumentType = screen.getByLabelText(documentTypeLabel);
+
+        jest.spyOn(utils, 'getSelectedDocumentConfigData').mockReturnValue(mockDocumentConfig);
+
+        userEvent.click(elDocumentType);
+
+        const elSelectedOption = await screen.findByText('Document 1');
+
+        userEvent.click(elSelectedOption);
+
+        expect(await screen.findByText('Example: 1234567890')).toBeInTheDocument();
+    });
+
+    it("Should hide document number field when 'I dont have any of these is chosen'", async () => {
+        const newProps = {
+            ...mockProps,
+            allowDefaultValue: true,
+        };
+
+        renderComponent(newProps);
+
+        const elDocumentTypeInput = screen.getByLabelText(documentTypeLabel);
+        const elDocumentNumberInput = screen.getByText('Enter your document number');
+
+        expect(elDocumentTypeInput).toBeVisible();
+        expect(elDocumentNumberInput).toBeVisible();
+
+        userEvent.click(elDocumentTypeInput);
+
+        const elSelectedOption = await screen.findByText("I don't have any of these");
+
+        userEvent.click(elSelectedOption);
+        await waitFor(() => {
+            expect(elDocumentNumberInput).not.toBeVisible();
+        });
+    });
+
+    it('should display option to do it later when allowIDVSkip is set', async () => {
+        const newProps = {
+            ...mockProps,
+            allowDefaultValue: true,
+            allowIDVSkip: true,
+        };
+
+        renderComponent(newProps);
+
+        const elDocumentTypeInput = screen.getByLabelText(documentTypeLabel);
+        userEvent.click(elDocumentTypeInput);
+
+        expect(await screen.findByText(defaultIDVSkipMessage));
+    });
+
+    it('should skip default option when allowDefaultValue is not set', () => {
+        renderComponent();
+
+        const elDocumentTypeInput = screen.getByLabelText(documentTypeLabel);
+        userEvent.click(elDocumentTypeInput);
+
+        expect(screen.queryByText(defaultIDVSkipMessage)).not.toBeInTheDocument();
+        expect(screen.queryByText("I don't have any of these")).not.toBeInTheDocument();
     });
 });

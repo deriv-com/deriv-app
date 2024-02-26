@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api';
+import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown, Input, useDevice } from '@deriv-com/ui';
 import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
 import { getIDVNotApplicableOption } from '../../utils/default-options';
@@ -92,10 +93,12 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
                 {({ field, meta }: FieldProps) => (
                     <Dropdown
                         aria-label='Choose the document type'
+                        dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                         errorMessage={meta.touched && meta.error}
                         isRequired
                         label='Choose the document type'
                         list={documentList}
+                        name={field.name}
                         onSearch={field.onChange} // [TODO] - To be removed once prop is renamed to onChange
                         onSelect={values => handleSelect(values as string)} // Need to override the Type Error. Will be fixed when Dropdown component is updated
                         value={field.value}

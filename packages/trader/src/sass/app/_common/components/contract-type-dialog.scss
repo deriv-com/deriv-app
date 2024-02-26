@@ -43,6 +43,13 @@
                 background-color: var(--general-section-1);
                 cursor: pointer;
                 border-radius: $BORDER_RADIUS;
+                @include rtl {
+                    direction: rtl;
+
+                    .dc-icon {
+                        rotate: 180deg;
+                    }
+                }
             }
         }
         /* postcss-bem-linter: ignore */

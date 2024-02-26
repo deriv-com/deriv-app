@@ -12,6 +12,9 @@ jest.mock('@deriv-com/ui', () => ({
 
 type TIDVFormProps = ComponentProps<typeof IDVForm>;
 
+const documentAName = 'Document 1';
+const documentBName = 'Document 2';
+
 const mockProps: TIDVFormProps = {
     selectedCountry: {
         documents_supported: {
@@ -20,11 +23,11 @@ const mockProps: TIDVFormProps = {
                     display_name: 'Additional Document',
                     format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
                 },
-                display_name: 'Document 1',
+                display_name: documentAName,
                 format: '^[0-9]{12}$',
             },
             document_2: {
-                display_name: 'Document 2',
+                display_name: documentBName,
                 format: '^[a-zA-Z0-9]{10,17}$',
             },
         },
@@ -41,7 +44,7 @@ const mockDocumentConfig = {
     },
     example_format: '1234567890',
     id: 'doc_1',
-    text: 'Document 1',
+    text: documentAName,
     value: '^[0-9]{12}$',
 };
 
@@ -74,11 +77,11 @@ describe('IDVForm', () => {
         const elDocumentType = screen.getByLabelText(documentTypeLabel);
 
         userEvent.click(elDocumentType);
-        expect(await screen.findByText('Document 1')).toBeInTheDocument();
+        expect(await screen.findByText(documentAName)).toBeInTheDocument();
 
         userEvent.tab();
         await waitFor(() => {
-            expect(screen.queryByText('Document 2')).not.toBeInTheDocument();
+            expect(screen.queryByText(documentBName)).not.toBeInTheDocument();
         });
     });
 
@@ -90,7 +93,7 @@ describe('IDVForm', () => {
 
         userEvent.click(elDocumentType);
 
-        const elSelectedOption = await screen.findByText('Document 1');
+        const elSelectedOption = await screen.findByText(documentAName);
 
         userEvent.click(elSelectedOption);
 

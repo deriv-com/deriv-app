@@ -22,8 +22,6 @@ const AccountTransferBullet = ({ children }: React.PropsWithChildren) => (
     </div>
 );
 
-const ALLOWED_TRANSFER_AMOUNTS = { DXTRADE: 50000, INTERNAL: 100000, MT5: 200000 };
-
 const AccountTransferNote = ({
     allowed_transfers_amount,
     currency,
@@ -79,52 +77,12 @@ const AccountTransferNote = ({
     const getPlatformsAllowedNotes = useCallback(() => {
         if (is_dxtrade_transfer) {
             return (
-                <React.Fragment>
-                    <AccountTransferBullet>
-                        <Localize
-                            i18n_default_text='Each day you can transfer up to {{ allowed_dxtrade }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
-                            values={{
-                                allowed_dxtrade: addComma(
-                                    exchange_rate *
-                                        (Number(allowed_transfers_amount?.dxtrade) || ALLOWED_TRANSFER_AMOUNTS.DXTRADE),
-                                    2,
-                                    false
-                                ),
-                                currency: account_currency,
-                            }}
-                        />
-                    </AccountTransferBullet>
-                </React.Fragment>
-            );
-        } else if (is_mt_transfer) {
-            return (
-                <React.Fragment>
-                    <AccountTransferBullet>
-                        <Localize
-                            i18n_default_text='Each day you can transfer up to {{ allowed_mt5 }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
-                            values={{
-                                allowed_mt5: addComma(
-                                    exchange_rate *
-                                        (Number(allowed_transfers_amount?.mt5) || ALLOWED_TRANSFER_AMOUNTS.MT5),
-                                    2,
-                                    false
-                                ),
-                                currency: account_currency,
-                            }}
-                        />
-                    </AccountTransferBullet>
-                </React.Fragment>
-            );
-        }
-        return (
-            <React.Fragment>
                 <AccountTransferBullet>
                     <Localize
-                        i18n_default_text='Each day you can transfer up to {{ allowed_internal }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
+                        i18n_default_text='Each day you can transfer up to {{ allowed_dxtrade }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
                         values={{
-                            allowed_internal: addComma(
-                                exchange_rate *
-                                    (Number(allowed_transfers_amount?.internal) || ALLOWED_TRANSFER_AMOUNTS.INTERNAL),
+                            allowed_dxtrade: addComma(
+                                exchange_rate * Number(allowed_transfers_amount?.dxtrade),
                                 2,
                                 false
                             ),
@@ -132,7 +90,34 @@ const AccountTransferNote = ({
                         }}
                     />
                 </AccountTransferBullet>
-            </React.Fragment>
+            );
+        } else if (is_mt_transfer) {
+            return (
+                <AccountTransferBullet>
+                    <Localize
+                        i18n_default_text='Each day you can transfer up to {{ allowed_mt5 }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
+                        values={{
+                            allowed_mt5: addComma(exchange_rate * Number(allowed_transfers_amount?.mt5), 2, false),
+                            currency: account_currency,
+                        }}
+                    />
+                </AccountTransferBullet>
+            );
+        }
+        return (
+            <AccountTransferBullet>
+                <Localize
+                    i18n_default_text='Each day you can transfer up to {{ allowed_internal }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
+                    values={{
+                        allowed_internal: addComma(
+                            exchange_rate * Number(allowed_transfers_amount?.internal),
+                            2,
+                            false
+                        ),
+                        currency: account_currency,
+                    }}
+                />
+            </AccountTransferBullet>
         );
     }, [
         account_currency,
@@ -144,9 +129,13 @@ const AccountTransferNote = ({
         is_mt_transfer,
     ]);
 
+    const hasAllowedTransferAmount =
+        (allowed_transfers_amount?.dxtrade && allowed_transfers_amount?.internal && allowed_transfers_amount?.mt5) !==
+        undefined;
+
     return (
         <div className='account-transfer-form__notes'>
-            {getPlatformsAllowedNotes()}
+            {hasAllowedTransferAmount && getPlatformsAllowedNotes()}
             <AccountTransferBullet>{getTransferFeeNote()}</AccountTransferBullet>
             <AccountTransferBullet>
                 <Localize i18n_default_text='Transfers may be unavailable when the exchange market is closed or too volatile.' />

@@ -1,24 +1,22 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { twMerge } from 'tailwind-merge';
+import { IconComponent } from '@/components';
 import { StandaloneCircleInfoRegularIcon as CircleInfoIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import { getCurrencyConfig } from '../../helpers/currencyConfig';
 
-type TCurrencyCard = ReturnType<typeof getCurrencyConfig>[number];
+type TCurrencyCard = { id: string; info?: boolean; title: string };
 
-// write docs for the component
 /**
  * @name CurrencyCard
  * @description The CurrencyCard component is used to display the currency card in the currency selector screen.
- * @param {React.ReactNode} icon - The icon of the currency.
  * @param {string} id - The id of the currency.
- * @param {boolean} info - The info of the currency.
+ * @param {boolean} info - The flag to display an info for a specific currency.
  * @param {string} title - The title of the currency.
  * @returns {React.ReactNode}
- * @example <CurrencyCard icon={Icon} id={id} info={info} title={title} />
+ * @example <CurrencyCard id={id} info={info} title={title} />
  */
-const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
+const CurrencyCard = ({ id, info, title }: TCurrencyCard) => {
     const { setFieldValue, values } = useFormikContext<{ currency: string }>();
     const isSelected = values.currency === id;
     return (
@@ -34,7 +32,7 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
                 onClick={() => setFieldValue('currency', isSelected ? '' : id)}
                 type='button'
             >
-                <Icon />
+                <IconComponent icon={id} />
                 {info && <CircleInfoIcon className='absolute top-0 opacity-50' />}
                 <div className='flex flex-col items-center gap-4 pt-4'>
                     <Text as='p' className='my-4' size='sm' weight={isSelected ? 'bold' : 'normal'}>

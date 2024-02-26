@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from 'react';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import {
     GetADerivAccountDialog,
@@ -27,10 +29,13 @@ const AvailableDxtradeAccountsList = () => {
     const { hasActiveDerivAccount } = useRegulationFlags();
     const { show } = Provider.useModal();
     const { setCfdState } = Provider.useCFDContext();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 
     const TrailingButton = () => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />;
+
+    const title = getCfdsAccountTitle(PlatformDetails.dxtrade.title, activeTradingAccount?.is_virtual);
 
     const trailingButtonClick = () => {
         setCfdState('platform', PlatformDetails.dxtrade.platform);
@@ -43,7 +48,7 @@ const AvailableDxtradeAccountsList = () => {
     return (
         <Fragment>
             <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
-                <TradingAccountCardContent title={PlatformDetails.dxtrade.title}>
+                <TradingAccountCardContent title={title}>
                     This account offers CFDs on a highly customisable CFD trading platform.
                 </TradingAccountCardContent>
             </TradingAccountCard>

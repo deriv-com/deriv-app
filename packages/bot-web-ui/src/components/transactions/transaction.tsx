@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ProposalOpenContract } from '@deriv/api-types';
 import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
@@ -10,13 +11,34 @@ import { localize } from '@deriv/translations';
 import { popover_zindex } from 'Constants/z-indexes';
 import { useDBotStore } from 'Stores/useDBotStore';
 
-const TransactionIconWithText = ({ icon, title, message, className }) => (
+type TTransactionIconWithText = {
+    icon: React.ReactElement;
+    title: string;
+    message?: React.ReactNode;
+    className?: string;
+};
+
+type TPopoverItem = {
+    icon?: React.ReactElement;
+    title: string;
+    children: React.ReactNode;
+};
+
+type TPopoverContent = {
+    contract: ProposalOpenContract;
+};
+
+type TTransaction = {
+    contract?: ProposalOpenContract;
+};
+
+const TransactionIconWithText = ({ icon, title, message, className }: TTransactionIconWithText) => (
     <React.Fragment>
         <Popover
             className={classNames(className, 'transactions__icon')}
             alignment='left'
             message={title}
-            zIndex={popover_zindex.TRANSACTION}
+            zIndex={popover_zindex.TRANSACTION.toString()}
         >
             {icon}
         </Popover>
@@ -50,7 +72,7 @@ const TransactionIconLoader = () => (
     </ContentLoader>
 );
 
-const PopoverItem = ({ icon, title, children }) => (
+const PopoverItem = ({ icon, title, children }: TPopoverItem) => (
     <div className='transactions__popover-item'>
         {icon && <div className='transaction__popover-icon'>{icon}</div>}
         <div className='transactions__popover-details'>
@@ -60,7 +82,7 @@ const PopoverItem = ({ icon, title, children }) => (
     </div>
 );
 
-const PopoverContent = ({ contract }) => (
+const PopoverContent = ({ contract }: TPopoverContent) => (
     <div className='transactions__popover-content'>
         {contract.transaction_ids && (
             <PopoverItem title={localize('Reference IDs')}>
@@ -101,23 +123,20 @@ const PopoverContent = ({ contract }) => (
                 </div>
             </PopoverItem>
         )}
-        {
-            contract.entry_tick && (
-                <PopoverItem title={localize('Entry spot')}>
-                    <div className='transactions__popover-value'>{contract.entry_tick}</div>
-                    {contract.entry_tick_time && (
-                        <div className='transactions__popover-value'>
-                            {convertDateFormat(
-                                contract.entry_tick_time,
-                                'YYYY-M-D HH:mm:ss [GMT]',
-                                'YYYY-MM-DD HH:mm:ss [GMT]'
-                            )}
-                        </div>
-                    )}
-                </PopoverItem>
-            )
-            // TODO: Durations for non-tick contracts, requires helpers from Trader.
-        }
+        {contract.entry_tick && (
+            <PopoverItem title={localize('Entry spot')}>
+                <div className='transactions__popover-value'>{contract.entry_tick}</div>
+                {contract.entry_tick_time && (
+                    <div className='transactions__popover-value'>
+                        {convertDateFormat(
+                            contract.entry_tick_time,
+                            'YYYY-M-D HH:mm:ss [GMT]',
+                            'YYYY-MM-DD HH:mm:ss [GMT]'
+                        )}
+                    </div>
+                )}
+            </PopoverItem>
+        )}
         {(contract.exit_tick && contract.exit_tick_time && (
             <PopoverItem title={localize('Exit spot')}>
                 <div className='transactions__popover-value'>{contract.exit_tick}</div>
@@ -134,19 +153,20 @@ const PopoverContent = ({ contract }) => (
     </div>
 );
 
-const Transaction = observer(({ contract }) => {
+const Transaction = observer(({ contract }: TTransaction) => {
     const { transactions } = useDBotStore();
     const { active_transaction_id, setActiveTransactionId } = transactions;
 
     return (
         <Popover
-            zIndex={popover_zindex.TRANSACTION}
+            zIndex={popover_zindex.TRANSACTION.toString()}
             alignment='left'
             className='transactions__item-wrapper'
             is_open={contract && active_transaction_id === contract.transaction_ids.buy}
             message={contract && <PopoverContent contract={contract} />}
         >
             <div
+                data-testid='dt-transactions-item'
                 className='transactions__item'
                 onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
             >
@@ -176,14 +196,14 @@ const Transaction = observer(({ contract }) => {
                     <TransactionIconWithText
                         icon={<Icon icon='IcContractEntrySpot' />}
                         title={localize('Entry spot')}
-                        message={(contract && contract.entry_tick) || <TransactionFieldLoader />}
+                        message={contract?.entry_tick ?? <TransactionFieldLoader />}
                     />
                 </div>
                 <div className='transactions__cell transactions__exit-spot'>
                     <TransactionIconWithText
                         icon={<Icon icon='IcContractExitSpot' />}
                         title={localize('Exit spot')}
-                        message={(contract && contract.exit_tick) || <TransactionFieldLoader />}
+                        message={contract?.exit_tick ?? <TransactionFieldLoader />}
                     />
                 </div>
                 <div className='transactions__cell transactions__stake'>
@@ -211,9 +231,5 @@ const Transaction = observer(({ contract }) => {
         </Popover>
     );
 });
-
-Transaction.propTypes = {
-    contract: PropTypes.object,
-};
 
 export default Transaction;

@@ -12,12 +12,13 @@ import { IDVForm } from './modules';
 import './index.scss';
 
 const App: React.FC = () => {
-    const validationSchema = getIDVFormValidationSchema(DOCUMENT_LIST[0]);
+    const validationSchema = getIDVFormValidationSchema(DOCUMENT_LIST);
 
     return (
         <APIProvider standalone>
             <BreakpointProvider>
                 <div className=' text-solid-slate-500 text-heading-h1'>Account V2</div>
+                {/* [TODO]: Remove the mocked values */}
                 <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}} validationSchema={validationSchema}>
                     <IDVForm selectedCountry={SELECTED_COUNTRY} />
                 </Formik>

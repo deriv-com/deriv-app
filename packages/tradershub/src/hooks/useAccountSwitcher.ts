@@ -23,7 +23,7 @@ const useAccountSwitcher = () => {
     const { setUIState } = useUIContext();
     const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
     const activeType = accountTypes.find(account => account.value === activeAccountType);
-    const [selected, setSelected] = useState(activeType);
+    const [selectedAccount, setSelected] = useState(activeType);
     const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
     const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
 
@@ -36,7 +36,7 @@ const useAccountSwitcher = () => {
         }
     }, [activeAccountType, activeType, setUIState]);
 
-    const selectAccount = useCallback(
+    const setSelectedAccount = useCallback(
         (account: TAccountType) => {
             setSelected(account);
             setUIState({
@@ -53,9 +53,9 @@ const useAccountSwitcher = () => {
 
     return {
         // selected: {label: string, value: string}
-        selected,
+        selectedAccount,
         // selectAccount: (account: TAccount) => void
-        selectAccount,
+        setSelectedAccount,
         // accountTypes: {label: Demo | Real, value: demo | real}[]
         accountTypes,
     };

@@ -7,17 +7,17 @@ import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 
 const DemoRealSwitcher = () => {
-    const { selected, selectAccount, accountTypes } = useAccountSwitcher();
+    const { selectedAccount, setSelectedAccount, accountTypes } = useAccountSwitcher();
     const { isSuccess } = useRegulationFlags();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const { label, value } = selected ?? {};
+    const { label, value } = selectedAccount ?? {};
 
     const ref = useRef(null);
     useOnClickOutside(ref, () => setIsDropdownOpen(false));
 
     useEffect(() => {
         setIsDropdownOpen(false);
-    }, [selected]);
+    }, [selectedAccount]);
 
     const toggleDropdown = useCallback(() => {
         setIsDropdownOpen(prevState => !prevState);
@@ -64,7 +64,7 @@ const DemoRealSwitcher = () => {
                                 account.value === value && 'bg-system-light-active-background'
                             )}
                             key={account.value}
-                            onClick={() => selectAccount(account)}
+                            onClick={() => setSelectedAccount(account)}
                         >
                             <Text
                                 align='center'

@@ -12,7 +12,11 @@ const CloseHeader = () => {
             <Text size={isMobile ? 'md' : 'xl'} weight='bold'>
                 {isMobile ? 'Deriv P2P' : 'Cashier'}
             </Text>
-            <LabelPairedXmarkLgBoldIcon className='p2p-v2-close-header--icon' onClick={() => window.history.back()} />
+            <LabelPairedXmarkLgBoldIcon
+                className='p2p-v2-close-header--icon'
+                data-testid='dt_p2p_v2_close_header_close_icon'
+                onClick={() => window.history.back()}
+            />
         </div>
     );
 };

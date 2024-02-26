@@ -33,7 +33,10 @@ const Withdrawal = () => {
             }
             return (
                 <PageContainer>
-                    <WithdrawalCryptoModule verificationCode={verificationCode} />
+                    <WithdrawalCryptoModule
+                        setVerificationCode={setVerificationCode}
+                        verificationCode={verificationCode}
+                    />
                 </PageContainer>
             );
         }

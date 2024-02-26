@@ -5,7 +5,7 @@ import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@
 const accountTypes = [
     { label: 'Demo', value: 'demo' },
     { label: 'Real', value: 'real' },
-];
+] as const;
 
 type TAccountType = typeof accountTypes[number];
 

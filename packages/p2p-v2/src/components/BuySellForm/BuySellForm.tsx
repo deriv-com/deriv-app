@@ -2,6 +2,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Modal from 'react-modal';
+import { TAdvertType } from 'types';
 import { BUY_SELL, RATE_TYPE } from '@/constants';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from '@/utils';
 import { p2p } from '@deriv/api';
@@ -12,7 +13,6 @@ import { BuySellFormFooter } from '../BuySellFormFooter';
 import { BuySellFormHeader } from '../BuySellFormHeader';
 import { customStyles } from '../Modals/helpers';
 import './BuySellForm.scss';
-import { TAdvertType } from 'types';
 
 type TBuySellFormProps = {
     advert: TAdvertType;

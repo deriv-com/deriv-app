@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
-import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { Jurisdiction, MarketType } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
@@ -47,21 +47,15 @@ const JurisdictionScreen = ({
 
     return (
         <div
-            className={twMerge(
+            className={clsx(
                 `flex flex-col ${
-                    marketType === MarketType.FINANCIAL ? 'w-[1200px] h-[642px]' : 'w-[1040px] h-[592px]'
-                } h-auto w-[85vw] items-center justify-start my-auto sm:h-[75vh] transition-all ease-in duration-[0.6s]`,
+                    marketType === MarketType.FINANCIAL ? 'lg:w-[1200px] lg:h-[642px]' : 'lg:w-[1040px] lg:h-[592px]'
+                } w-[85vw] items-center justify-between my-auto sm:h-[75vh] transition-all ease-in duration-[0.6s]`,
                 isDynamicLeverageVisible &&
                     '[transform:rotateY(-180deg)] h-[700px] opacity-0 bg-system-light-primary-background'
             )}
         >
-            <div
-                className={clsx(
-                    `flex flex-col items-center justify-center w-full ${
-                        marketType === MarketType.FINANCIAL ? 'h-514' : 'h-458'
-                    } gap-16 py-0 lg:flex-row lg:py-20`
-                )}
-            >
+            <div className='flex flex-col items-stretch justify-center w-full gap-16 py-0 lg:flex-row lg:py-20'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}

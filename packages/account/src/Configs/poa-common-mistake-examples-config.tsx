@@ -2,7 +2,8 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import IcDocumentNameMismatch from '../Assets/ic-document-name-mismatch.svg';
 import IcDocumentAddressMismatch from '../Assets/ic-document-address-mismatch.svg';
-import IcOldIssuedDocument from '../Assets/ic-old-issued-document.svg';
+import Ic6MonthsIssuedDocument from '../Assets/ic-6-month-issued-document.svg';
+import Ic12MonthsIssuedDocument from '../Assets/ic-12-months-expiry.svg';
 import IcBlurryDocument from '../Assets/ic-blurry-document.svg';
 import IcCroppedDocument from '../Assets/ic-cropped-document.svg';
 import IcEnvelope from '../Assets/ic-envelop.svg';
@@ -16,7 +17,7 @@ type TExampleImageConfig = {
  * Returns a configuration containing images and descriptions for common POA document upload mistakes
  * @returns Array of objects containing image and description
  */
-export const getExampleImagesConfig = (): Array<TExampleImageConfig> => [
+export const getExampleImagesConfig = (is_eu: boolean): Array<TExampleImageConfig> => [
     {
         image: IcDocumentNameMismatch,
         description: <Localize i18n_default_text='Name in document doesn’t match your Deriv profile.' />,
@@ -28,9 +29,17 @@ export const getExampleImagesConfig = (): Array<TExampleImageConfig> => [
         ref: 'address_mismatch',
     },
     {
-        image: IcOldIssuedDocument,
-        description: <Localize i18n_default_text='Document issued more than 6-months ago.' />,
-        ref: 'old_issued_document',
+        ...(is_eu
+            ? {
+                  image: Ic6MonthsIssuedDocument,
+                  description: <Localize i18n_default_text='Document issued more than 6-months ago.' />,
+                  ref: 'old_6_month_issued_document',
+              }
+            : {
+                  image: Ic12MonthsIssuedDocument,
+                  description: <Localize i18n_default_text='Document issued more than 12-months ago.' />,
+                  ref: 'old_12_month_issued_document',
+              }),
     },
     {
         image: IcBlurryDocument,

@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Table } from '@/components';
 import { MyAdsDeleteModal } from '@/components/Modals';
+import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
 import { AD_ACTION } from '@/constants';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
@@ -54,6 +55,7 @@ const MyAdsTable = () => {
     const { error, isSuccess, mutate: deleteAd } = p2p.advert.useDelete();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [advertId, setAdvertId] = useState('');
+    const [isShareAdsModalOpen, setIsShareAdsModalOpen] = useState(false);
 
     useEffect(() => {
         if (isSuccess) {
@@ -80,6 +82,11 @@ const MyAdsTable = () => {
             case AD_ACTION.DELETE: {
                 setAdvertId(id);
                 setIsModalOpen(true);
+                break;
+            }
+            case AD_ACTION.SHARE: {
+                setAdvertId(id);
+                setIsShareAdsModalOpen(true);
                 break;
             }
             default:
@@ -133,6 +140,16 @@ const MyAdsTable = () => {
                     isModalOpen={isModalOpen || !!error?.error?.message}
                     onClickDelete={onClickDelete}
                     onRequestClose={onRequestClose}
+                />
+            )}
+            {isShareAdsModalOpen && (
+                <ShareAdsModal
+                    id={advertId}
+                    isModalOpen={isShareAdsModalOpen}
+                    onRequestClose={() => {
+                        setIsShareAdsModalOpen(false);
+                        setAdvertId('');
+                    }}
                 />
             )}
         </MyAdsDisplayWrapper>

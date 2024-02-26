@@ -19,7 +19,7 @@ jobs:
     - name: Download Remote Config Backup File
       uses: ./.github/actions/download_remote_config_backup
       with:
-        REMOTE_CONFIG_URL: ${{ env.REMOTE_CONFIG_URL }}
+        REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
     - name: Build
       uses: "./.github/actions/build"
       with:

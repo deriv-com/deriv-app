@@ -1,5 +1,5 @@
 import React from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
@@ -22,7 +22,7 @@ const TradingAccountsList = () => {
                         const iconCurrency = account.currency ?? 'USD';
                         return (
                             <button
-                                className={clsx(
+                                className={twMerge(
                                     'flex items-center self-stretch py-8 px-16 gap-16 rounded-xs cursor-pointer hover:bg-system-light-active-background',
                                     activeAccount?.loginid === account.loginid && 'bg-system-light-active-background'
                                 )}

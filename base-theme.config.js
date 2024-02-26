@@ -1,9 +1,9 @@
 module.exports = {
     theme: {
         screens: {
-            sm: { max: '600px' },
-            md: { min: '601px', max: '1279px' },
-            lg: { min: '1280px' },
+            sm: '600px',
+            md: '601px',
+            lg: '1280px',
         },
         fontSize: {
             '4xs': 'var(--text-size-xxxxs)',

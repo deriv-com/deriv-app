@@ -23,6 +23,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             active_account_landing_company: '',
             trading_platform_available_accounts: [],
             account_limits: {},
+            self_exclusion: {},
+            getSelfExclusion: jest.fn(),
             account_status: {
                 p2p_poa_required: 1,
                 authentication: {

@@ -8,9 +8,6 @@ type TContractStageText = {
 
 const ContractStageText: React.FC<TContractStageText> = ({ contract_stage }) => {
     switch (contract_stage) {
-        case contract_stages.NOT_RUNNING:
-        default:
-            return <Localize i18n_default_text='Bot is not running' />;
         case contract_stages.STARTING:
             return <Localize i18n_default_text='Bot is starting' />;
         case contract_stages.PURCHASE_SENT:
@@ -21,6 +18,9 @@ const ContractStageText: React.FC<TContractStageText> = ({ contract_stage }) => 
             return <Localize i18n_default_text='Bot is stopping' />;
         case contract_stages.CONTRACT_CLOSED:
             return <Localize i18n_default_text='Contract closed' />;
+        case contract_stages.NOT_RUNNING:
+        default:
+            return <Localize i18n_default_text='Bot is not running' />;
     }
 };
 

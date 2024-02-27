@@ -30,7 +30,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     } = run_panel;
     const { account_status } = client;
     const cashier_validation = account_status?.cashier_validation;
-    const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
+    const [should_disable, setShouldDisable] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
 
     // perform self-exclusion checks which will be stored under the self-exclusion-store
@@ -40,19 +40,18 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     }, []);
 
     React.useEffect(() => {
-        if (is_button_disabled) {
+        if (should_disable) {
             setTimeout(() => {
-                updateIsButtonDisabled(false);
+                setShouldDisable(false);
             }, 1000);
         }
-    }, [is_button_disabled]);
+    }, [should_disable]);
 
     const status_classes = ['', '', ''];
-    let progress_status =
-        contract_stage -
-        (contract_stage === contract_stages.PURCHASE_SENT || contract_stage === contract_stages.PURCHASE_RECEIVED
-            ? 2
-            : 3);
+    const is_purchase_sent = contract_stage === (contract_stages.PURCHASE_SENT as unknown);
+    const is_purchase_received = contract_stage === (contract_stages.PURCHASE_RECEIVED as unknown);
+
+    let progress_status = contract_stage - (is_purchase_sent || is_purchase_received ? 2 : 3);
 
     if (progress_status >= 0) {
         if (progress_status < status_classes.length) {
@@ -68,16 +67,25 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         }
     }
 
+    const is_disabled = is_stop_button_disabled || should_disable;
+
+    const button_props = React.useMemo(() => {
+        if (is_stop_button_visible) {
+            return { id: 'db-animation__stop-button', text: localize('Stop'), icon: 'IcBotStop' };
+        }
+        return { id: 'db-animation__run-button', text: localize('Run'), icon: 'IcPlay' };
+    }, [is_stop_button_visible]);
+    const show_overlay = should_show_overlay && is_contract_completed;
     return (
         <div className={classNames('animation__wrapper', className)}>
             <Button
-                is_disabled={(is_stop_button_disabled || is_button_disabled) && !is_unavailable_for_payment_agent}
+                is_disabled={is_disabled && !is_unavailable_for_payment_agent}
                 className='animation__button'
-                id={is_stop_button_visible ? 'db-animation__stop-button' : 'db-animation__run-button'}
-                text={is_stop_button_visible ? localize('Stop') : localize('Run')}
-                icon={<Icon icon={is_stop_button_visible ? 'IcBotStop' : 'IcPlay'} color='active' />}
+                id={button_props.id}
+                text={button_props.text}
+                icon={<Icon icon={button_props.icon} color='active' />}
                 onClick={() => {
-                    updateIsButtonDisabled(true);
+                    setShouldDisable(true);
                     if (is_stop_button_visible) {
                         onStopBotClick();
                         return;
@@ -91,10 +99,10 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
             <div
                 className={classNames('animation__container', className, {
                     'animation--running': contract_stage > 0,
-                    'animation--completed': should_show_overlay && is_contract_completed,
+                    'animation--completed': show_overlay,
                 })}
             >
-                {should_show_overlay && is_contract_completed && <ContractResultOverlay profit={profit} />}
+                {show_overlay && <ContractResultOverlay profit={profit} />}
                 <span className='animation__text'>
                     <ContractStageText contract_stage={contract_stage} />
                 </span>
@@ -103,7 +111,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                         <div className={`animation__progress-bar animation__progress-${contract_stage}`} />
                     </div>
                     {status_classes.map((status_class, i) => (
-                        <CircularWrapper key={i} className={status_class} />
+                        <CircularWrapper key={`status_class-${status_class}-${i}`} className={status_class} />
                     ))}
                 </div>
             </div>

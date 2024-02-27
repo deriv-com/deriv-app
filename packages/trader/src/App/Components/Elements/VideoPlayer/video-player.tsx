@@ -156,7 +156,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             video_ref.current.currentTime = new_time_ref.current;
             animation_ref.current = requestAnimationFrame(repeat);
             // eslint-disable-next-line @typescript-eslint/no-empty-function
-            video_ref?.current?.play().catch(() => {});
+            video_ref.current.play().catch(() => {});
             is_ended.current = false;
         }
     }, 500);

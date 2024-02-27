@@ -6,9 +6,10 @@ import { Dropdown } from '@deriv-com/ui';
 type TCountrySelector = {
     errorMessage?: React.ReactNode;
     label: string;
+    name: string;
 };
 
-const CountrySelector = ({ errorMessage, label }: TCountrySelector) => {
+const CountrySelector = ({ errorMessage, label, name }: TCountrySelector) => {
     const { data: residenceList } = useResidenceList();
 
     return (
@@ -17,7 +18,7 @@ const CountrySelector = ({ errorMessage, label }: TCountrySelector) => {
             errorMessage={errorMessage}
             label={label}
             list={residenceList}
-            name='country'
+            name={name}
             /*eslint-disable @typescript-eslint/no-empty-function */
             onSelect={() => {}}
             variant='prompt'

@@ -11,6 +11,14 @@ jest.mock('@deriv/api', () => ({
 
 const mockUseResidenceList = useResidenceList as jest.MockedFunction<typeof useResidenceList>;
 
+const renderComponents = () => {
+    render(
+        <APIProvider>
+            <CountrySelector label='Country' name='country' />
+        </APIProvider>
+    );
+};
+
 beforeEach(() => {
     mockUseResidenceList.mockReturnValue(
         // @ts-expect-error need a way to mock useQuery data
@@ -34,32 +42,20 @@ beforeEach(() => {
 
 describe('CountrySelector', () => {
     it('should render CountrySelector component', () => {
-        render(
-            <APIProvider>
-                <CountrySelector label='Country' />
-            </APIProvider>
-        );
+        renderComponents();
         const inputField = screen.getByRole('combobox', { name: /Country/i });
         expect(inputField).toBeInTheDocument();
     });
 
     it('should show residence list when user click on country selector', () => {
-        render(
-            <APIProvider>
-                <CountrySelector label='Country' />
-            </APIProvider>
-        );
+        renderComponents();
         const inputField = screen.getByRole('combobox', { name: /Country/i });
         userEvent.click(inputField);
         expect(screen.getByText('Indonesia')).toBeInTheDocument();
     });
 
     it('should change the value of combobox to be Indonesia', () => {
-        render(
-            <APIProvider>
-                <CountrySelector label='Country' />
-            </APIProvider>
-        );
+        renderComponents();
         const inputField = screen.getByRole('combobox', { name: /Country/i });
         userEvent.click(inputField);
         const dropDown = screen.getByText('Indonesia');

@@ -276,14 +276,12 @@ const CTraderDerivXTradeModal = ({
                                 }
                             }}
                         >
-                            <div>
-                                <Icon
-                                    icon={'IcAppstoreGetMoreAccounts'}
-                                    size={24}
-                                    className='cfd-trade-modal-get-more-accounts__icon'
-                                />
-                            </div>
-                            <div className='cfd-trade-modal-get-more-accounts__details'>
+                            <Icon
+                                icon={'IcAppstoreGetMoreAccounts'}
+                                size={24}
+                                className='cfd-trade-modal__get-more-accounts--icon'
+                            />
+                            <div className='cfd-trade-modal__get-more-accounts--details'>
                                 <Text size='xxs'>{localize('Get another cTrader account')}</Text>
                             </div>
                         </div>

@@ -423,8 +423,9 @@
         justify-content: space-between;
         &:first-child {
             border-top: 2px solid var(--general-section-1);
+            padding-top: 1rem;
         }
-        margin: 1.2rem 1rem;
+        margin: 0.8rem 0;
     }
 
     &__acc_status {
@@ -456,11 +457,11 @@
         padding: 1rem 1.8rem;
         margin: 1.6rem 0;
 
-        &__icon {
+        &--icon {
             margin-right: 1.5rem;
         }
 
-        &__details {
+        &--details {
             line-height: 0.9;
             &--title {
                 color: var(--text-general);
@@ -497,7 +498,7 @@
         flex-grow: 1;
 
         &-balance {
-            justify-content: end;
+            margin-left: 1.5rem;
         }
     }
     &__password {
@@ -766,12 +767,12 @@
 .ctrader-transfer-modal {
     &__accounts-list {
         display: flex;
+        margin: 1.6rem;
         justify-content: space-between;
-        margin: 0.8rem 1.6rem;
 
         &:hover {
-            background-color: var(--general-hover);
             cursor: pointer;
+            background-color: var(--general-hover);
         }
     }
 }

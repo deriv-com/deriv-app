@@ -38,7 +38,7 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
     return (
         <ReactModal ariaHideApp={false} isOpen={isOpen} onRequestClose={handleClose} style={CUSTOM_STYLES}>
             <div className='bg-system-light-primary-background lg:max-h-[717px] lg:max-w-[1040px] h-screen w-screen lg:rounded-default flex flex-col overflow-hidden'>
-                <div className='flex items-center justify-between w-full px-16 py-16 border-b border-solid lg:px-24 border-b-system-light-secondary-background'>
+                <div className='flex items-center justify-between w-full p-16 border-b border-solid lg:px-24 border-b-system-light-secondary-background'>
                     <Text as='h3' className='text-lg' weight='bold'>
                         Add or manage account
                     </Text>

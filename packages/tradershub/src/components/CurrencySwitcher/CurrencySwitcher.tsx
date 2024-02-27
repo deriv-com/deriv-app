@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CurrencySwitcherLoader, Modal, TradingAccountsList } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
@@ -49,6 +49,7 @@ const CurrencySwitcher = () => {
     const { show, hide } = Provider.useModal();
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
+    const onManageAccountClose = useCallback(() => setIsManageAccountOpen(false), []);
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
@@ -101,7 +102,7 @@ const CurrencySwitcher = () => {
                     }}
                 />
             )}
-            <AddOrManageAccount isOpen={isManageAccountOpen} onClose={() => setIsManageAccountOpen(false)} />
+            <AddOrManageAccount isOpen={isManageAccountOpen} onClose={onManageAccountClose} />
         </div>
     );
 };

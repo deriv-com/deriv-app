@@ -115,7 +115,9 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
 
     const active_account = accounts?.[loginid ?? ''];
     const wallet_loginid = localStorage.getItem('active_wallet_loginid');
-    const active_wallet = wallet_list?.find(wallet => wallet.loginid === wallet_loginid);
+    const active_wallet =
+        wallet_list?.find(wallet => wallet.loginid === wallet_loginid) ??
+        wallet_list?.find(wallet => wallet.loginid === loginid);
 
     let linked_dtrade_trading_account_loginid = loginid;
 

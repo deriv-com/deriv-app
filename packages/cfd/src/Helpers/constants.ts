@@ -144,7 +144,7 @@ const getDesktopDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: D
         },
         {
             icon: 'IcMacosLogo',
-            text: localize('MetaTrader 5 macOS app'),
+            text: localize('MetaTrader 5 MacOS app'),
             button_text: 'Download',
             href: getPlatformMt5DownloadLink('macos'),
         },

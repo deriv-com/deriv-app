@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useDebounceValue } from 'usehooks-ts';
 import { useDynamicLeverage } from '@deriv/api-v2';
 import { WalletText } from '../../../../components';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
@@ -10,6 +11,7 @@ import './DynamicLeverageScreen.scss';
 const DynamicLeverageScreen = () => {
     const { data: dynamicLeverages } = useDynamicLeverage(PlatformDetails.mt5.platform);
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
+    const [isDynamicLeverageHidden] = useDebounceValue(!isDynamicLeverageVisible, 600);
 
     if (!dynamicLeverages) return null;
 
@@ -17,6 +19,8 @@ const DynamicLeverageScreen = () => {
         <div
             className={classNames('wallets-dynamic-leverage-screen__container', {
                 'wallets-dynamic-leverage-screen__container--flip': isDynamicLeverageVisible,
+                'wallets-dynamic-leverage-screen__container--hidden':
+                    !isDynamicLeverageVisible && isDynamicLeverageHidden,
             })}
         >
             <WalletText>

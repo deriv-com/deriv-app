@@ -1,5 +1,7 @@
 import React from 'react';
 import { unmountComponentAtNode } from 'react-dom';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { BrowserRouter } from 'react-router-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
@@ -67,11 +69,13 @@ describe('BotBuilder', () => {
         });
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    {children}
-                </DBotStoreProvider>
-            </StoreProvider>
+            <BrowserRouter>
+                <StoreProvider store={mock_store}>
+                    <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                        {children}
+                    </DBotStoreProvider>
+                </StoreProvider>
+            </BrowserRouter>
         );
     });
     it('should render BotBuilderTourHandler', () => {

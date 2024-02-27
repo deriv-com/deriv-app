@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, NavLink, Redirect, Route, Switch } from 'react-router-dom';
-import { defaultRoute, routes } from '../../constants/routesConfig';
+import { defaultRoute, routes } from '../../constants/routes-config';
 
 const RouteLinks = () => (
     <BrowserRouter>
-        <div className='px-200 py-800 border-solid border-200 gap-300 border-solid-slate-75 grid grid-cols-1 sm:grid-cols-[1fr_4fr]'>
+        <div className='px-200 py-800 gap-300 grid grid-cols-1 sm:grid-cols-[1fr_4fr]'>
             <div className='flex-col [display:none] sm:flex p-400 bg-solid-slate-75 rounded-200'>
                 {routes.map(route => (
                     <NavLink

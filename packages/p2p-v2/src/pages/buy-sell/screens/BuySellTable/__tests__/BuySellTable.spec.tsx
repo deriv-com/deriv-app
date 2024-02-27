@@ -21,6 +21,11 @@ jest.mock('@deriv/api', () => ({
         advertiser: {
             useGetInfo: jest.fn(() => ({ data: { id: '123' } })),
         },
+        settings: {
+            useGetSettings: jest.fn(() => ({
+                data: {},
+            })),
+        },
     },
 }));
 

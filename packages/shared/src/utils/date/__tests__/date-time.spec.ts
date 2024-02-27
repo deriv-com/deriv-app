@@ -1,5 +1,4 @@
 import moment from 'moment';
-import 'moment/min/locales';
 import * as DateTime from '../date-time';
 
 describe('toMoment', () => {

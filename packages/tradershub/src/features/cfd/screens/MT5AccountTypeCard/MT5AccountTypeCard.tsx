@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { Text } from '@deriv-com/ui';
 
 type TMT5AccountTypeCardProps = {
@@ -13,7 +13,7 @@ type TMT5AccountTypeCardProps = {
 const MT5AccountTypeCard = ({ description, icon, isSelected, onClick, title }: TMT5AccountTypeCardProps) => {
     return (
         <button
-            className={clsx(
+            className={twMerge(
                 'cursor-pointer',
                 isSelected &&
                     'rounded-16 border-brand-blue bg-system-light-primary-background border-solid border-1 rounded-lg'

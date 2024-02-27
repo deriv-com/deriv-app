@@ -4,6 +4,7 @@ import { LabelPairedArrowLeftLgBoldIcon } from '@deriv/quill-icons';
 import './FullPageMobileWrapper.scss';
 
 type TFullPageMobileWrapperProps = {
+    className?: string;
     onBack?: () => void;
     renderFooter?: () => React.ReactNode;
     renderHeader?: () => React.ReactNode;
@@ -13,7 +14,8 @@ type TFullPageMobileWrapperProps = {
 
 const FullPageMobileWrapper = ({
     children,
-    onBack,
+    className = '',
+    onBack = () => undefined,
     renderFooter,
     renderHeader,
     shouldFixedFooter = true,
@@ -21,7 +23,7 @@ const FullPageMobileWrapper = ({
 }: PropsWithChildren<TFullPageMobileWrapperProps>) => {
     return (
         <div
-            className={clsx('p2p-v2-mobile-wrapper', {
+            className={clsx('p2p-v2-mobile-wrapper', className, {
                 'p2p-v2-mobile-wrapper--fixed-footer': shouldFixedFooter,
                 'p2p-v2-mobile-wrapper--no-footer': !renderFooter,
                 'p2p-v2-mobile-wrapper--no-header': !renderHeader,

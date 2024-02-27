@@ -46,7 +46,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient } = useAPIContext();
+    const { customLoginIDKey, queryClient } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -92,7 +92,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
                 setData(res);
                 setIsLoading(false);
 
-                localStorage.setItem('active_loginid', newLoginid);
+                localStorage.setItem(customLoginIDKey ?? 'active_loginid', newLoginid);
             });
         },
         [loginid]

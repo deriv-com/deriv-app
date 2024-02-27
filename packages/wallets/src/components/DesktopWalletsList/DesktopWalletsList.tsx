@@ -1,5 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { AccountsList } from '../AccountsList';
 import { WalletsCardLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';
@@ -8,7 +9,8 @@ import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isLoading: isAuthorizeLoading, switchAccount } = useAuthorize();
+    const { isLoading: isAuthorizeLoading } = useAuthorize();
+    const switchAccount = useWalletAccountSwitcher();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     return (

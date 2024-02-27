@@ -4,6 +4,7 @@ import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAc
 import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from '@deriv/react-joyride';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { useTabs } from '../WalletsPrimaryTabs/WalletsPrimaryTabs';
 import {
     getFiatWalletLoginId,
@@ -32,7 +33,8 @@ const WalletMobileTourGuide = ({
     const [onboardingStep, setOnboardingStep] = useState(0);
     const [run, setRun] = useState(true);
 
-    const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
+    const { isFetching, isLoading, isSuccess } = useAuthorize();
+    const switchAccount = useWalletAccountSwitcher();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAllWalletAccounts();

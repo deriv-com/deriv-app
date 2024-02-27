@@ -96,7 +96,7 @@ describe('AccountSwitcherWalletItem', () => {
 
     it('should not call switchAccount when clicked the already selected', async () => {
         const switchAccount = jest.fn();
-        const store = mockStore({ client: { switchAccount } });
+        const store = mockStore({ client: { switchAccount, loginid: 'CR007' } });
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
         userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(switchAccount).not.toHaveBeenCalled();

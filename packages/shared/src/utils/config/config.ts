@@ -68,7 +68,6 @@ export const getAppId = () => {
         app_id = 36300;
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        //added for testing
         app_id = is_bot ? 19111 : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16929;
     }
 

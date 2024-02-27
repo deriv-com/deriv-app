@@ -3,15 +3,6 @@ const plugin = require('tailwindcss/plugin');
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
-    plugins: [
-        plugin(({ addUtilities }) => {
-            addUtilities({
-                '.d-none': {
-                    display: 'none',
-                },
-            });
-        }),
-    ],
     theme: {
         extend: {
             borderRadius: {

@@ -101,7 +101,7 @@ export const OnfidoContainer = ({
             <div
                 className={twMerge(
                     '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-24 p-16',
-                    transitionEnd && 'd-none',
+                    transitionEnd && 'hidden',
                     isOnfidoEnabled && 'scale-y-0 opacity-50'
                 )}
             >

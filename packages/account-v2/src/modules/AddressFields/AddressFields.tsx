@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAuthorize, useSettings, useStatesList } from '@deriv/api';
-import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import FormDropDownField from '../../components/FormFields/FormDropDownField';
 import FormInputField from '../../components/FormFields/FormInputField';
 import { LANDING_COMPANY } from '../../constants/constants';
@@ -34,7 +33,6 @@ export const AddressFields = () => {
             <FormInputField label='Town/City*' name='addressCity' validationSchema={addressCitySchema} />
             {statesListFetched && statesList.length ? (
                 <FormDropDownField
-                    dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                     label='State/Province'
                     list={statesList}
                     name='addressState'

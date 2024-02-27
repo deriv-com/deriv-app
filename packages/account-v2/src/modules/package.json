@@ -8,7 +8,8 @@
     },
     "scripts": {
         "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\" && tsc -p ./tsconfig.json",
-        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.ts\" \"tsc -w --noEmit --preserveWatchOutput\""
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.ts\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "prepublishOnly": "npm run build"
     },
     "dependencies": {
         "@deriv/quill-design": "^1.3.2",
@@ -22,6 +23,9 @@
         "usehooks-ts": "^2.7.0",
         "yup": "^0.32.11"
     },
+    "files": [
+        "dist"
+    ],
     "peerDependencies": {
         "@deriv-com/ui": "1.5.3",
         "@deriv/api": "^1.0.0",

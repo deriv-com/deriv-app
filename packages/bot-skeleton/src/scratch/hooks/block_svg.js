@@ -162,11 +162,11 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     }
 
     // Allow the block to add or modify menu_options.
-    // if (this.customContextMenu) {
-    //     this.customContextMenu(menu_options);
-    // }
+    if (this.customContextMenu) {
+        this.customContextMenu(menu_options);
+    }
 
-    // Blockly.ContextMenu.show(e, menu_options, this.RTL);
+    Blockly.ContextMenu.show(e, menu_options, this.RTL);
     Blockly.ContextMenu.currentBlock = this;
 };
 

@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../components/ModalProvider';
 import useDevice from '../../../hooks/useDevice';
@@ -8,7 +8,6 @@ import WalletsListingRoute from '../WalletsListingRoute';
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
     useAuthorize: jest.fn(),
-    useCurrencyConfig: jest.fn(),
     useWalletAccountsList: jest.fn(),
 }));
 
@@ -32,7 +31,6 @@ describe('WalletsListingRoute', () => {
         mockSwitchAccount = jest.fn();
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: null });
         (useAuthorize as jest.Mock).mockReturnValue({ switchAccount: mockSwitchAccount });
-        (useCurrencyConfig as jest.Mock).mockReturnValue({ isLoading: false });
         (useWalletAccountsList as jest.Mock).mockReturnValue({ data: [{ loginid: '123' }], isLoading: false });
     });
 

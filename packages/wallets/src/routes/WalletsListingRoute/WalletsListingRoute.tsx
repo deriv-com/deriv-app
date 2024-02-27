@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api-v2';
 import {
     DesktopWalletsList,
     WalletsAddMoreCarousel,
@@ -17,13 +17,17 @@ import './WalletsListingRoute.scss';
 
 const WalletsListingRoute: React.FC = () => {
     const { isMobile } = useDevice();
-    const { data: walletAccounts } = useWalletAccountsList();
+    const { data: walletAccounts, isLoading: isWalletAccountsLoading } = useWalletAccountsList();
+    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const { show } = useModal();
     const resetTradingPlatformActionParams = getActionFromUrl();
 
+    const fiatAccount = walletAccounts?.find(wallet => wallet.account_type === 'doughflow')?.loginid;
     const firstLoginid = walletAccounts?.[0]?.loginid;
+
+    const isLoading = isCurrencyConfigLoading && isWalletAccountsLoading;
 
     const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = useMemo(
         () => ({
@@ -53,10 +57,10 @@ const WalletsListingRoute: React.FC = () => {
     }, [platformMapping, resetTradingPlatformActionParams, show]);
 
     useEffect(() => {
-        if (!activeWallet && firstLoginid) {
-            switchAccount(firstLoginid);
+        if (!isLoading && !activeWallet && firstLoginid) {
+            switchAccount(fiatAccount || firstLoginid);
         }
-    }, [activeWallet, firstLoginid, switchAccount]);
+    }, [activeWallet, firstLoginid, isLoading, switchAccount, fiatAccount]);
 
     return (
         <div className='wallets-listing-route'>

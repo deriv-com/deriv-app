@@ -95,117 +95,109 @@ jest.mock('@deriv/shared', () => {
         min_contract_duration: '1t',
         start_type: 'spot',
     };
+    const riseFallProperties = {
+        ...commonRiseFallProperties,
+        ...commonNonEqualProperties,
+    };
+    const riseFallEqualProperties = {
+        ...commonRiseFallProperties,
+        ...commonEqualProperties,
+    };
     const contractsForResponse = {
         contracts_for: {
             available: [
                 {
-                    ...commonRiseFallProperties,
-                    ...commonNonEqualProperties,
+                    ...riseFallProperties,
                     ...commonRiseProperties,
                     ...commonDailyExpiryProperties,
                     contract_type: 'CALL',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonNonEqualProperties,
+                    ...riseFallProperties,
                     ...commonFallProperties,
                     ...commonDailyExpiryProperties,
                     contract_type: 'PUT',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonNonEqualProperties,
+                    ...riseFallProperties,
                     ...commonRiseProperties,
                     ...commonForwardStartingProperties,
                     contract_type: 'CALL',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonNonEqualProperties,
+                    ...riseFallProperties,
                     ...commonFallProperties,
                     ...commonForwardStartingProperties,
                     contract_type: 'PUT',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonNonEqualProperties,
+                    ...riseFallProperties,
                     ...commonRiseProperties,
                     ...commonIntradayExpiryProperties,
                     contract_type: 'CALL',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonNonEqualProperties,
+                    ...riseFallProperties,
                     ...commonFallProperties,
                     ...commonIntradayExpiryProperties,
                     contract_type: 'PUT',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonNonEqualProperties,
+                    ...riseFallProperties,
                     ...commonRiseProperties,
                     ...commonTickExpiryProperties,
                     contract_type: 'CALL',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonNonEqualProperties,
+                    ...riseFallProperties,
                     ...commonFallProperties,
                     ...commonTickExpiryProperties,
                     contract_type: 'PUT',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonEqualProperties,
+                    ...riseFallEqualProperties,
                     ...commonRiseProperties,
                     ...commonDailyExpiryProperties,
                     contract_type: 'CALLE',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonEqualProperties,
+                    ...riseFallEqualProperties,
                     ...commonFallProperties,
                     ...commonDailyExpiryProperties,
                     contract_type: 'PUTE',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonEqualProperties,
+                    ...riseFallEqualProperties,
                     ...commonRiseProperties,
                     ...commonForwardStartingProperties,
                     contract_type: 'CALLE',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonEqualProperties,
+                    ...riseFallEqualProperties,
                     ...commonFallProperties,
                     ...commonForwardStartingProperties,
                     contract_type: 'PUTE',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonEqualProperties,
+                    ...riseFallEqualProperties,
                     ...commonRiseProperties,
                     ...commonIntradayExpiryProperties,
                     contract_type: 'CALLE',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonEqualProperties,
+                    ...riseFallEqualProperties,
                     ...commonFallProperties,
                     ...commonIntradayExpiryProperties,
                     contract_type: 'PUTE',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonEqualProperties,
+                    ...riseFallEqualProperties,
                     ...commonRiseProperties,
                     ...commonTickExpiryProperties,
                     contract_type: 'CALLE',
                 },
                 {
-                    ...commonRiseFallProperties,
-                    ...commonEqualProperties,
+                    ...riseFallEqualProperties,
                     ...commonFallProperties,
                     ...commonTickExpiryProperties,
                     contract_type: 'PUTE',
@@ -300,7 +292,7 @@ describe('TradeStore', () => {
                 expect(spyDebouncedFunction).toHaveBeenCalled();
             });
         });
-        it('should not send "change_parameter_value" analytics when payload has no duration_type or parameter_value', async () => {
+        it('should not send "change_parameter_value" analytics when isDebounced is true, & payload has no duration_type or parameter_value', async () => {
             jest.clearAllMocks();
             const spyTrackEvent = jest.spyOn(Analytics, 'trackEvent');
             const payloadWithEmptyValue = {
@@ -311,7 +303,7 @@ describe('TradeStore', () => {
                 parameter_value: '',
             } as Partial<TEvents['ce_contracts_set_up_form']>;
 
-            mockedTradeStore.sendTradeParamsAnalytics(payloadWithEmptyValue);
+            mockedTradeStore.sendTradeParamsAnalytics(payloadWithEmptyValue, true);
             await waitFor(() => expect(spyTrackEvent).not.toHaveBeenCalled());
         });
     });

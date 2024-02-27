@@ -11,7 +11,7 @@ const App: React.FC = () => {
     return (
         <APIProvider standalone>
             <BreakpointProvider>
-                <div className=' text-solid-slate-500 text-heading-h1'>Account V2</div>
+                <div className=' text-solid-slate-500 text-heading-h1 text-general'>Account V2</div>
                 <RouteLinks />
             </BreakpointProvider>
         </APIProvider>

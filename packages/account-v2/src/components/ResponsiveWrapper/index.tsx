@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { useBreakpoint } from '@deriv/quill-design';
+import { useDevice } from '@deriv-com/ui';
 
 type TResponsiveWrapperProps = {
     children: {
@@ -9,7 +9,7 @@ type TResponsiveWrapperProps = {
 };
 
 export const ResponsiveWrapper = ({ children }: TResponsiveWrapperProps) => {
-    const { isDesktop, isMobile } = useBreakpoint();
+    const { isDesktop, isMobile } = useDevice();
 
     return (
         <Fragment>

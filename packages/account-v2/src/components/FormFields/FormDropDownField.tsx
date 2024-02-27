@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
-import { useBreakpoint } from '@deriv/quill-design';
+import { useDevice } from '@deriv-com/ui';
 import { validateField } from '../../utils/validation';
 import { WalletDropdown as DropDown } from '../base/WalletDropdown';
 
@@ -21,7 +21,7 @@ type FormDropDownFieldProps = Omit<
  * @returns ReactNode
  */
 const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropDownFieldProps) => {
-    const { isMobile } = useBreakpoint();
+    const { isMobile } = useDevice();
 
     return (
         <Field name={name} validate={validateField(validationSchema)}>

@@ -1,7 +1,7 @@
 import React from 'react';
+import { useAuthorize } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import { DemoMessage } from '../DemoMessage';
-import { useAuthorize } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

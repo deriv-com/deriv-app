@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CurrencySwitcherLoader, Modal, TradingAccountsList } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
+import { AddOrManageAccount } from '@/modals';
 import { THooks } from '@/types';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
@@ -42,9 +43,10 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 };
 
 const CurrencySwitcher = () => {
+    const [isManageAccountOpen, setIsManageAccountOpen] = useState(false);
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
-    const { show } = Provider.useModal();
+    const { show, hide } = Provider.useModal();
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
 
@@ -83,7 +85,14 @@ const CurrencySwitcher = () => {
                                     <TradingAccountsList />
                                 </Modal.Content>
                                 <Modal.Footer className='grid-cols-1'>
-                                    <Button isFullWidth variant='outlined'>
+                                    <Button
+                                        isFullWidth
+                                        onClick={() => {
+                                            setIsManageAccountOpen(true);
+                                            hide();
+                                        }}
+                                        variant='outlined'
+                                    >
                                         Add or manage account
                                     </Button>
                                 </Modal.Footer>
@@ -92,6 +101,7 @@ const CurrencySwitcher = () => {
                     }}
                 />
             )}
+            <AddOrManageAccount isOpen={isManageAccountOpen} onClose={() => setIsManageAccountOpen(false)} />
         </div>
     );
 };

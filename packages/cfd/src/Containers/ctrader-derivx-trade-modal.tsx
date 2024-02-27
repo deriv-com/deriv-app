@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
@@ -11,9 +10,7 @@ import PasswordBox from '../Components/passwordbox';
 import SpecBox from '../Components/specbox';
 import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
 import { CTRADER_DESKTOP_DOWNLOAD, getTitle, platformsText } from '../Helpers/constants';
-
 import { TCFDPasswordReset } from './props.types';
-import { ctrader } from '@deriv/components/src/components/icon/icons-manifest';
 
 type TTradeModalProps = {
     ctrader_dxtrade_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -94,6 +91,10 @@ const CTraderDerivXTradeModal = ({
     const { selected_account_type, no_CR_account, is_real, has_any_real_account, getAccount } = traders_hub;
 
     const has_no_real_account = !has_any_real_account;
+
+    const total_balance =
+        ctrader_accounts_list &&
+        ctrader_accounts_list.reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0);
 
     const message = {
         header: (
@@ -194,7 +195,7 @@ const CTraderDerivXTradeModal = ({
                             weight='bold'
                         >
                             <Money
-                                amount={ctrader_dxtrade_trade_account.display_balance}
+                                amount={total_balance}
                                 currency={ctrader_dxtrade_trade_account.currency}
                                 has_sign={
                                     !!ctrader_dxtrade_trade_account.balance && ctrader_dxtrade_trade_account.balance < 0

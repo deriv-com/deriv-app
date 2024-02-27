@@ -763,6 +763,13 @@
     }
 }
 
+.ctrader-transfer-modal {
+    &__accounts-list {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
 .cfd-password-manager {
     margin: 5.6rem auto 3.2rem;
     width: 100%;

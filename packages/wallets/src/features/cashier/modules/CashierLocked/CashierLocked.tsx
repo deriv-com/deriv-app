@@ -12,6 +12,7 @@ const CashierLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: status } = useAccountStatus();
 
     const currency = activeWallet?.currency || 'USD';
+    const isVirtual = activeWallet?.is_virtual;
 
     const poaNeedsVerification = authentication?.is_poa_needed;
     const poiNeedsVerification = authentication?.is_poa_needed;
@@ -30,7 +31,7 @@ const CashierLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const isCashierLocked = status?.is_cashier_locked;
 
-    if (isCashierLocked) {
+    if (isCashierLocked && !isVirtual) {
         return (
             <div className='wallets-cashier-locked'>
                 <WalletsActionScreen

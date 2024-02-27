@@ -166,7 +166,12 @@ const AccountTransferForm = observer(
 
         const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
-        const { daily_cumulative_amount_transfers } = account_limits;
+        const { daily_cumulative_amount_transfers, daily_transfers } = account_limits;
+        const mt5_remaining_transfers = daily_transfers?.mt5;
+        const ctrader_remaining_transfers = daily_transfers?.ctrader;
+        const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
+        const internal_remaining_transfers = daily_transfers?.internal;
+        const is_cumulative_transfer_enabled = Number(daily_cumulative_amount_transfers?.enabled) > 0;
         const mt5_remaining_cumulative_transfers = daily_cumulative_amount_transfers?.mt5;
         const ctrader_remaining_cumulative_transfers = daily_cumulative_amount_transfers?.ctrader;
         const dxtrade_remaining_cumulative_transfers = daily_cumulative_amount_transfers?.dxtrade;
@@ -361,16 +366,20 @@ const AccountTransferForm = observer(
                             dxtrade: dxtrade_remaining_cumulative_transfers?.allowed,
                             derivez: derivez_remaining_cumulative_transfers?.allowed,
                         }}
+                        allowed_transfers_count={{
+                            internal: internal_remaining_transfers?.allowed,
+                            mt5: mt5_remaining_transfers?.allowed,
+                            ctrader: ctrader_remaining_transfers?.allowed,
+                            dxtrade: dxtrade_remaining_transfers?.allowed,
+                        }}
                         transfer_fee={transfer_fee}
                         currency={selected_from.currency || ''}
                         minimum_fee={minimum_fee}
                         key={0}
-                        is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
+                        is_cumulative_transfers_enabled={is_cumulative_transfer_enabled}
                         is_dxtrade_allowed={is_dxtrade_allowed}
                         is_dxtrade_transfer={is_dxtrade_transfer}
                         is_mt_transfer={is_mt_transfer}
-                        is_ctrader_transfer={is_ctrader_transfer}
-                        is_from_derivgo={is_from_derivgo}
                     />
                 );
                 setSideNotes?.([
@@ -742,17 +751,19 @@ const AccountTransferForm = observer(
                                                         dxtrade: dxtrade_remaining_cumulative_transfers?.allowed,
                                                         derivez: derivez_remaining_cumulative_transfers?.allowed,
                                                     }}
+                                                    allowed_transfers_count={{
+                                                        internal: internal_remaining_transfers?.allowed,
+                                                        mt5: mt5_remaining_transfers?.allowed,
+                                                        ctrader: ctrader_remaining_transfers?.allowed,
+                                                        dxtrade: dxtrade_remaining_transfers?.allowed,
+                                                    }}
                                                     transfer_fee={transfer_fee}
                                                     currency={selected_from.currency || ''}
                                                     minimum_fee={minimum_fee}
-                                                    is_crypto_to_crypto_transfer={
-                                                        selected_from.is_crypto && selected_to.is_crypto
-                                                    }
+                                                    is_cumulative_transfers_enabled={is_cumulative_transfer_enabled}
                                                     is_dxtrade_allowed={is_dxtrade_allowed}
                                                     is_dxtrade_transfer={is_dxtrade_transfer}
-                                                    is_ctrader_transfer={is_ctrader_transfer}
                                                     is_mt_transfer={is_mt_transfer}
-                                                    is_from_derivgo={is_from_derivgo}
                                                 />
                                             </SideNote>
                                         )}

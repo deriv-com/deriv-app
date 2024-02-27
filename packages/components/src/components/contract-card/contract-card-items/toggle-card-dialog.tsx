@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { LegacyRef } from 'react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ContractCardDialog from './contract-card-dialog';
 import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-update-form';
@@ -118,14 +118,22 @@ const ToggleCardDialog = ({
                     message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
                     onBubbleClose={onPopoverClose}
                 >
-                    <div ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
+                    <button
+                        ref={toggle_ref as unknown as LegacyRef<HTMLButtonElement>}
+                        className='dc-contract-card-dialog-toggle'
+                        onClick={toggleDialogWrapper}
+                    >
                         {edit_icon}
-                    </div>
+                    </button>
                 </Popover>
             ) : (
-                <div ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
+                <button
+                    ref={toggle_ref as unknown as LegacyRef<HTMLButtonElement>}
+                    className='dc-contract-card-dialog-toggle'
+                    onClick={toggleDialogWrapper}
+                >
                     {edit_icon}
-                </div>
+                </button>
             )}
             <MobileWrapper>
                 <MobileDialog

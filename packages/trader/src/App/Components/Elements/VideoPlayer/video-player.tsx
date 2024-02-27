@@ -91,10 +91,6 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         if (!is_dragging.current) return;
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
-        if (!video_ref.current.paused) {
-            // console.log('catch video_ref.current.paused');
-            video_ref.current.pause();
-        }
         cancelAnimationFrame(animation_ref.current);
         debouncedRewind.cancel();
 
@@ -116,9 +112,6 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         cancelAnimationFrame(animation_ref.current);
         debouncedRewind.cancel();
-        if (!video_ref.current.paused) {
-            video_ref.current.pause();
-        }
         is_dragging.current = false;
         should_check_time_ref.current = true;
 
@@ -155,15 +148,12 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
     const debouncedRewind = debounce(() => {
         if (!video_ref.current) return;
-
         const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
         if (!video_ref.current?.ended || !is_rewind_to_the_end) {
-            cancelAnimationFrame(animation_ref.current);
-            debouncedRewind.cancel();
-            video_ref.current.currentTime = new_time_ref.current;
             setIsAnimated(true);
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            video_ref?.current?.play().catch(() => {});
             animation_ref.current = requestAnimationFrame(repeat);
-            video_ref?.current?.play().catch();
             is_ended.current = false;
         }
     }, 500);
@@ -187,20 +177,16 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         should_check_time_ref.current = false;
     };
 
-    const repeat = async () => {
-        cancelAnimationFrame(animation_ref.current);
-        debouncedRewind.cancel();
+    const repeat = () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
         if (should_check_time_ref.current && new_time_ref.current !== video_ref.current.currentTime) {
-            // console.log('check INSIDE');
-            video_ref.current.currentTime = new_time_ref.current;
             animation_ref.current = requestAnimationFrame(repeat);
             return;
         }
+
         if (should_check_time_ref.current) should_check_time_ref.current = false;
+
         setCurrentTime(video_ref.current.currentTime);
-        // console.log('check video_ref.current.currentTime', video_ref.current.currentTime);
-        // console.log('check new_time_ref.current', new_time_ref.current);
 
         const new_width = parseFloat(
             ((video_ref.current.currentTime / Number(video_ref.current.duration)) * 100).toFixed(3)
@@ -233,7 +219,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             } else {
                 replay_animation_timeout.current = setTimeout(() => {
                     animation_ref.current = requestAnimationFrame(repeat);
-                    video_ref?.current?.play().catch();
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    video_ref?.current?.play().catch(() => {});
                 }, 500);
                 toggle_animation_timeout.current = setTimeout(() => {
                     setIsAnimated(true);

@@ -41,6 +41,16 @@ module.exports = {
             xl: 'var(--text-lh-xl)',
             '2xl': 'var(--text-lh-xxl)',
         },
+        boxShadow: {
+            none: '0 0 #0000',
+            xs: '0px 1px 2px 0px #0e0e0e0d',
+            sm: '0px 1px 2px 0px #0e0e0e0f, 0px 1px 3px 0px #0e0e0e1a',
+            md: '0px 2px 4px -2px #0e0e0e0f, 0px 4px 8px -2px #0e0e0e1a',
+            lg: '0px 4px 6px -2px #0e0e0e08, 0px 12px 16px -4px #0e0e0e14',
+            xl: '0px 8px 8px -4px #0e0e0e08, 0px 20px 24px -4px #0e0e0e14',
+            '2xl': '0px 24px 48px 0px #0e0e0e2e',
+            '3xl': '0px 32px 64px 0px #0e0e0e24',
+        },
         borderColor: {
             default: 'var(--border-normal)',
             'normal-1': 'var(--border-normal-1)',

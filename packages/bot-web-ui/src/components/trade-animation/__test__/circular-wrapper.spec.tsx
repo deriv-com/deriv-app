@@ -1,11 +1,11 @@
 import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render } from '@testing-library/react';
-import ContractWrapper from '../circular-wrapper';
+import CircularWrapper from '../circular-wrapper';
 
-describe('ContractWrapper', () => {
-    it('should render <ContractWrapper />', () => {
-        const { container } = render(<ContractWrapper />);
+describe('CircularWrapper', () => {
+    it('should render <CircularWrapper />', () => {
+        const { container } = render(<CircularWrapper />);
         expect(container).toBeInTheDocument();
     });
 });

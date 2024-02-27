@@ -14,7 +14,7 @@ const WithdrawalCryptoReceipt: React.FC = () => {
         <ReceiptScreen
             actionButtons={
                 <div className={styles.actions}>
-                    <Button color='white' size='lg' textSize='sm' variant='outlined'>
+                    <Button size='lg' textSize='sm' variant='outlined'>
                         View transaction history
                     </Button>
                     <Button onClick={resetWithdrawalVerification} size='lg' textSize='sm'>
@@ -31,11 +31,11 @@ const WithdrawalCryptoReceipt: React.FC = () => {
                         )}
                         <Text weight='bold'>{fromAccount?.currency}</Text>
                     </div>
-                    <Text className={styles['account-id']}>
+                    <div className={styles['account-id']}>
                         <Text color='less-prominent' size={isMobile ? 'md' : 'sm'}>
                             {fromAccount?.loginid}
                         </Text>
-                    </Text>
+                    </div>
                 </>
             }
             status='In review'

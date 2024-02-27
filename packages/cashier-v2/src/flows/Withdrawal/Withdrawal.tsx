@@ -46,7 +46,11 @@ const Withdrawal = () => {
             </PageContainer>
         );
     }
-    return <WithdrawalVerificationModule />;
+    return (
+        <PageContainer>
+            <WithdrawalVerificationModule />
+        </PageContainer>
+    );
 };
 
 export default Withdrawal;

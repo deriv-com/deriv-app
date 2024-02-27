@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ProposalOpenContract } from '@deriv/api-types';
 import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { useNewRowTransition } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -10,11 +11,22 @@ import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';
-import Transaction from './transaction.jsx';
+import Transaction from './transaction';
 
-const TransactionItem = ({ row, is_new_row }) => {
+type TTransactions = {
+    is_drawer_open: boolean;
+};
+
+type TTransactionItem = {
+    row: {
+        type: string;
+        data: ProposalOpenContract;
+    };
+    is_new_row: boolean;
+};
+
+const TransactionItem = ({ row, is_new_row }: TTransactionItem) => {
     const { in_prop } = useNewRowTransition(is_new_row);
-
     switch (row.type) {
         case transaction_elements.CONTRACT: {
             const { data: contract } = row;
@@ -37,7 +49,7 @@ const TransactionItem = ({ row, is_new_row }) => {
     }
 };
 
-const Transactions = observer(({ is_drawer_open }) => {
+const Transactions = observer(({ is_drawer_open }: TTransactions) => {
     const { ui } = useStore();
     const { run_panel, transactions } = useDBotStore();
     const { contract_stage } = run_panel;
@@ -165,9 +177,5 @@ const Transactions = observer(({ is_drawer_open }) => {
         </div>
     );
 });
-
-Transactions.propTypes = {
-    is_drawer_open: PropTypes.bool,
-};
 
 export default Transactions;

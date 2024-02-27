@@ -29,9 +29,9 @@ const CashierLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const financialAssessmentRequired = cashierValidation?.financial_assessment_required;
     const noResidence = cashierValidation?.no_residence;
 
-    const isCashierLocked = status?.is_cashier_locked;
+    const isCashierLocked = status?.is_cashier_locked && !isVirtual;
 
-    if (isCashierLocked && !isVirtual) {
+    if (isCashierLocked) {
         return (
             <div className='wallets-cashier-locked'>
                 <WalletsActionScreen

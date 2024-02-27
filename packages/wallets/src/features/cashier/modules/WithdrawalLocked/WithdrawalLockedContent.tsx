@@ -95,7 +95,7 @@ const getWithdrawalLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[<WalletLink href='/account/financial-assessment' key={0} variant='bold' />]}
-                        defaults='You can only make deposits. Please complete the <0>financial assessment</0> to unlock withdrawals.'
+                        defaults='Please complete the <0>financial assessment</0> to unlock withdrawals.'
                     />
                 </WalletText>
             ),

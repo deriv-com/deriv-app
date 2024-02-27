@@ -123,11 +123,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                     onClick={walletsCarouselEmblaApi?.scrollTo}
                 />
             </div>
-            <WalletListCardActions
-                isActive={activeWallet?.is_active || false}
-                isDemo={activeWallet?.is_virtual || false}
-                loginid={activeWallet?.loginid || ''}
-            />
+            <WalletListCardActions />
         </div>
     );
 };

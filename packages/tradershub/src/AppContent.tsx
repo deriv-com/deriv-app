@@ -1,23 +1,21 @@
-import React from 'react';
-import SignupWizard from './flows/RealAccountSIgnup/SignupWizard';
-import useRegulationFlags from './hooks/useRegulationFlags';
-import { EUDisclaimerMessage, useUIContext } from './components';
-import { Router } from './routes';
+import React, { Fragment } from 'react';
+import { AppContainer, EUDisclaimerMessage } from '@/components';
+import { RealAccountCreation } from '@/flows';
+import { useRegulationFlags } from '@/hooks';
+import { Router } from '@/routes';
 
 const AppContent = () => {
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     return (
-        <div className='h-full-mobile lg:h-full-desktop'>
-            <div className='font-sans max-w-[1232px] mx-auto lg:py-2500 lg:px-50'>
+        <Fragment>
+            <AppContainer>
                 <div className='z-10' id='v2_modal_show_header_root' />
                 <Router />
-            </div>
-            {isEU && <EUDisclaimerMessage />}
-            <SignupWizard />
-        </div>
+                {isEU && <EUDisclaimerMessage />}
+            </AppContainer>
+            <RealAccountCreation />
+        </Fragment>
     );
 };
 

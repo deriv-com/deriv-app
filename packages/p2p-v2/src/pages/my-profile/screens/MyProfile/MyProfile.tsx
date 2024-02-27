@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Verification } from '@/components';
+import { NicknameModal } from '@/components/Modals';
+import { useAdvertiserStats, useDevice, usePoiPoaStatus, useQueryString } from '@/hooks';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
-import { NicknameModal } from '../../../../components/Modals/NicknameModal';
-import { Verification } from '../../../../components/Verification';
-import { useAdvertiserStats, useDevice, usePoiPoaStatus, useQueryString } from '../../../../hooks';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileContent } from '../MyProfileContent';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';

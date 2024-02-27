@@ -370,4 +370,17 @@ describe('ContractTypeMenu', () => {
         fireEvent.change(input, { target: { value: 'rise' } });
         expect(input.value).toBe('rise');
     });
+
+    it('should render learn_more_banner if it was passed', () => {
+        render(
+            <ContractTypeMenu
+                item={item}
+                categories={categories}
+                is_open={true}
+                learn_more_banner={<div>Learn more</div>}
+            />
+        );
+
+        expect(screen.getByText('Learn more')).toBeInTheDocument();
+    });
 });

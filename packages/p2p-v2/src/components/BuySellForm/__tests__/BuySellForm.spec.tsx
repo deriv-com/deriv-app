@@ -47,8 +47,6 @@ jest.mock('@/utils', () => ({
 }));
 const mockFloatingPointValidator = floatingPointValidator as jest.Mock;
 
-const wrapper = ({ children }: PropsWithChildren<unknown>) => <div id='v2_modal_root'>{children}</div>;
-
 const mockAdvertValues = {
     account_currency: 'USD',
     advertiser_details: {
@@ -97,13 +95,11 @@ describe('BuySellForm', () => {
         document.body.removeChild(element);
     });
     it('should render the form as expected', () => {
-        render(<BuySellForm {...mockProps} />, { wrapper });
+        render(<BuySellForm {...mockProps} />);
         expect(screen.getByText('Buy USD')).toBeInTheDocument();
     });
     it('should render the inline message when rate type is float', () => {
-        render(<BuySellForm {...mockProps} advert={{ ...mockAdvertValues, rate_type: 'float' }} />, {
-            wrapper,
-        });
+        render(<BuySellForm {...mockProps} advert={{ ...mockAdvertValues, rate_type: 'float' }} />);
         expect(
             screen.getByText(
                 `If the market rate changes from the rate shown here, we won't be able to process your order.`
@@ -114,22 +110,22 @@ describe('BuySellForm', () => {
         mockUseDevice.mockReturnValue({
             isMobile: true,
         });
-        render(<BuySellForm {...mockProps} />, { wrapper });
+        render(<BuySellForm {...mockProps} />);
         expect(screen.getByText('Buy USD')).toBeInTheDocument();
     });
     it("should handle onsubmit when form is submitted and it's valid", () => {
-        render(<BuySellForm {...mockProps} />, { wrapper });
+        render(<BuySellForm {...mockProps} />);
         const confirmButton = screen.getByRole('button', { name: 'Confirm' });
         userEvent.click(confirmButton);
         expect(mockMutateFn).toHaveBeenCalled();
     });
     it('should disable the input field when balance is 0', () => {
-        render(<BuySellForm {...mockProps} balanceAvailable={0} />, { wrapper });
+        render(<BuySellForm {...mockProps} balanceAvailable={0} />);
         const inputField = screen.getByPlaceholderText('Buy amount');
         expect(inputField).toBeDisabled();
     });
     it('should check if the floating point validator is called on changing value in input field', () => {
-        render(<BuySellForm {...mockProps} />, { wrapper });
+        render(<BuySellForm {...mockProps} />);
         const inputField = screen.getByPlaceholderText('Buy amount');
         userEvent.type(inputField, '1');
         expect(mockFloatingPointValidator).toHaveBeenCalled();
@@ -140,8 +136,7 @@ describe('BuySellForm', () => {
                 {...mockProps}
                 advert={{ ...mockAdvertValues, max_order_amount_limit_display: '10', type: 'buy' }}
                 advertiserBuyLimit={5}
-            />,
-            { wrapper }
+            />
         );
         expect(screen.getByText('Limit: 1-5.00USD')).toBeInTheDocument();
     });
@@ -151,14 +146,13 @@ describe('BuySellForm', () => {
                 {...mockProps}
                 advert={{ ...mockAdvertValues, max_order_amount_limit_display: '10', type: 'sell' }}
                 advertiserSellLimit={5}
-            />,
-            { wrapper }
+            />
         );
         expect(screen.getByText('Limit: 1-5.00USD')).toBeInTheDocument();
     });
     it('should call onchange when input field value is changed', () => {
         mockFloatingPointValidator.mockReturnValue(true);
-        render(<BuySellForm {...mockProps} />, { wrapper });
+        render(<BuySellForm {...mockProps} />);
         const inputField = screen.getByPlaceholderText('Buy amount');
         userEvent.type(inputField, '1');
         expect(mockOnChange).toHaveBeenCalled();

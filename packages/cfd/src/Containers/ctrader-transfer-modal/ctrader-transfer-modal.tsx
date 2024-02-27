@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { Modal, MobileWrapper, DesktopWrapper, Text, Money, Icon } from '@deriv/components';
+import { Modal, Text, Money, Icon } from '@deriv/components';
 
 const CTraderTransferModal = observer(() => {
     const {
@@ -10,18 +10,18 @@ const CTraderTransferModal = observer(() => {
         traders_hub,
     } = useStore();
 
-    const { toggleAccountTransferModal, setSelectedAccount } = traders_hub;
     const { ctrader_accounts_list } = client;
+    const { toggleAccountTransferModal, setSelectedAccount } = traders_hub;
     const { is_ctrader_transfer_modal_visible, toggleCTraderTransferModal } = cfd;
 
     return (
         <Modal
+            width='408px'
+            should_header_stick_body={false}
+            exit_classname='cfd-modal--custom-exit'
+            toggleModal={toggleCTraderTransferModal}
             is_open={is_ctrader_transfer_modal_visible}
             title={localize('Choose a cTrader account to transfer')}
-            toggleModal={toggleCTraderTransferModal}
-            should_header_stick_body={false}
-            width='408px'
-            exit_classname='cfd-modal--custom-exit'
         >
             <div className='ctrader-transfer-modal'>
                 {ctrader_accounts_list.map(ctrader_account => {

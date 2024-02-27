@@ -1,6 +1,7 @@
 .wallets-withdrawal-verification-request {
     width: 77.2rem;
-    height: 100%;
+    height: fit-content;
+    min-height: 100%;
 
     &__description {
         display: flex;

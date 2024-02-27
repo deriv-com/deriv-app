@@ -1,5 +1,5 @@
 import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, fireEvent } from '@testing-library/react';
 import { useDevice } from '@deriv-com/ui';
 import { useWithdrawalCryptoContext } from '../../../provider';
 import WithdrawalCryptoReceipt from '../WithdrawalCryptoReceipt';
@@ -29,6 +29,8 @@ const mockUseWithdrawalCryptoContext = useWithdrawalCryptoContext as jest.Mocked
 
 const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 
+const mockResetWithdrawalVerification = jest.fn();
+
 describe('<WithdrawalCryptoReceipt />', () => {
     beforeEach(() => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
@@ -40,6 +42,7 @@ describe('<WithdrawalCryptoReceipt />', () => {
                     currency: 'BTC',
                 },
             },
+            resetWithdrawalVerification: mockResetWithdrawalVerification,
         });
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
@@ -73,5 +76,14 @@ describe('<WithdrawalCryptoReceipt />', () => {
         render(<WithdrawalCryptoReceipt />);
 
         expect(screen.getByText('SampleAddress')).toBeInTheDocument();
+    });
+
+    it('should check if the `Make a new withdrawal` resets the verification code', () => {
+        render(<WithdrawalCryptoReceipt />);
+
+        const makeANewWithdrawalBtn = screen.getByText('Make a new withdrawal');
+        fireEvent.click(makeANewWithdrawalBtn);
+
+        expect(mockResetWithdrawalVerification).toBeCalled();
     });
 });

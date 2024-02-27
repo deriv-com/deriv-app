@@ -96,12 +96,12 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                     <CloseCircle
                                         className='p2p-v2-payment-method-form__icon--close'
                                         fill='#999999'
-                                        height={30}
+                                        height={15.7}
                                         onClick={() => {
                                             onAdd();
                                             reset();
                                         }}
-                                        width={20}
+                                        width={15.7}
                                     />
                                 )
                             }
@@ -126,29 +126,29 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                 value={selectedPaymentMethod?.display_name ?? ''}
                                 variant='comboBox'
                             />
+                            {/* TODO: Remember to translate these */}
                             <Text color='less-prominent' size='xs'>
-                                {/* TODO: Remember to translate these */}
-                                <span className='p2p-v2-payment-method-form__text'>Don’t see your payment method?</span>
-                                <Button
-                                    className='p2p-v2-payment-method-form__button'
-                                    color='primary'
-                                    onClick={() => {
-                                        const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
-                                        if (paymentMethod) {
-                                            onAdd({
-                                                displayName: paymentMethod?.display_name,
-                                                fields: paymentMethod?.fields,
-                                                method: 'other',
-                                            });
-                                        }
-                                    }}
-                                    size='xs'
-                                    textSize='xs'
-                                    variant='ghost'
-                                >
-                                    Add new.
-                                </Button>
+                                Don’t see your payment method?
                             </Text>
+                            <Button
+                                className='p2p-v2-payment-method-form__button'
+                                color='primary'
+                                onClick={() => {
+                                    const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
+                                    if (paymentMethod) {
+                                        onAdd({
+                                            displayName: paymentMethod?.display_name,
+                                            fields: paymentMethod?.fields,
+                                            method: 'other',
+                                        });
+                                    }
+                                }}
+                                size='xs'
+                                textSize='xs'
+                                variant='ghost'
+                            >
+                                Add new.
+                            </Button>
                         </>
                     )}
                 </div>

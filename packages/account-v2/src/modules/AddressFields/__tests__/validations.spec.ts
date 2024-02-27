@@ -46,7 +46,9 @@ describe('validations', () => {
         const { addressPostcode } = validations('gb', false);
 
         await expect(addressPostcode.validate('12345')).resolves.toBe('12345');
-        await expect(addressPostcode.validate('$%&')).rejects.toThrow('Letters, numbers, spaces, hyphens only');
+        await expect(addressPostcode.validate('$%&')).rejects.toThrow(
+            'Only letters, numbers, space and hyphen are allowed.'
+        );
         await expect(addressPostcode.validate('a'.repeat(21))).rejects.toThrow(
             'Please enter a postal/ZIP code under 20 characters.'
         );
@@ -59,7 +61,9 @@ describe('validations', () => {
         const { addressPostcode } = validations('id', false);
 
         await expect(addressPostcode.validate('12345')).resolves.toBe('12345');
-        await expect(addressPostcode.validate('$%&')).rejects.toThrow('Letters, numbers, spaces, hyphens only');
+        await expect(addressPostcode.validate('$%&')).rejects.toThrow(
+            'Only letters, numbers, space and hyphen are allowed.'
+        );
         await expect(addressPostcode.validate('a'.repeat(21))).rejects.toThrow(
             'Please enter a postal/ZIP code under 20 characters.'
         );

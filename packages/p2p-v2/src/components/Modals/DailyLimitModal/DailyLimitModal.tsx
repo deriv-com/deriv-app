@@ -84,6 +84,7 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
             isOpen={isModalOpen}
             onRequestClose={onRequestClose}
             style={customStyles}
+            testId='dt_p2p_v2_daily_limit_modal'
         >
             {getModalContent()}
         </Modal>

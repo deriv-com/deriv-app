@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';

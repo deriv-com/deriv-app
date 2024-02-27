@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import CompareAccountsScreen from '../features/cfd/screens/CFDCompareAccounts/CompareAccountsScreen';
+import { CompareAccountsScreen } from '@cfd/screens';
 import { TradersHubRoute } from './TradersHubRoute';
 
 const prefix = '/traders-hub';

@@ -3,7 +3,6 @@ import { FormikHandlers, FormikValues, useFormikContext } from 'formik';
 import { Dropdown, Icon, Popover, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { order_completion_time_list } from 'Constants/order-list';
 import { useStore } from '@deriv/stores';
 
 type TFormikContext = {
@@ -11,13 +10,30 @@ type TFormikContext = {
     values: FormikValues;
 };
 
-const order_time_info_message = 'Orders will expire if they aren’t completed within this time.';
-
 const OrderTimeSelection = ({ ...field }: FormikValues) => {
     const { values, handleChange }: TFormikContext = useFormikContext<TFormikContext>();
     const { showModal } = useModalManagerContext();
     const { ui } = useStore();
     const { is_mobile } = ui;
+    const order_time_info_message = localize('Orders will expire if they aren’t completed within this time.');
+    const order_completion_time_list = [
+        {
+            text: localize('1 hour'),
+            value: '3600',
+        },
+        {
+            text: localize('45 minutes'),
+            value: '2700',
+        },
+        {
+            text: localize('30 minutes'),
+            value: '1800',
+        },
+        {
+            text: localize('15 minutes'),
+            value: '900',
+        },
+    ];
 
     return (
         <div className='order-time-selection'>
@@ -28,7 +44,7 @@ const OrderTimeSelection = ({ ...field }: FormikValues) => {
                 <Popover
                     alignment='top'
                     classNameBubble='order-time-selection__popover'
-                    message={localize(order_time_info_message)}
+                    message={<Localize i18n_default_text={order_time_info_message} />}
                 >
                     <Icon
                         data_testid='dt_order_time_selection_info_icon'

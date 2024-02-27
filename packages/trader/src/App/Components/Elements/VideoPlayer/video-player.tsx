@@ -153,9 +153,10 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
         if (!video_ref.current?.ended || !is_rewind_to_the_end) {
             setIsAnimated(true);
+            video_ref.current.currentTime = new_time_ref.current;
+            animation_ref.current = requestAnimationFrame(repeat);
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             video_ref?.current?.play().catch(() => {});
-            animation_ref.current = requestAnimationFrame(repeat);
             is_ended.current = false;
         }
     }, 500);

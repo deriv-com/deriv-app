@@ -1,8 +1,18 @@
 import type { Config } from 'tailwindcss';
+const plugin = require('tailwindcss/plugin');
 import QuillTailwindConfig from '@deriv/quill-design/quill-tailwind/tailwind.config.cjs';
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.d-none': {
+                    display: 'none',
+                },
+            });
+        }),
+    ],
     presets: [QuillTailwindConfig],
     theme: {
         extend: {
@@ -63,6 +73,24 @@ export default {
                     green: {
                         '1': '#4bb4b3',
                         '2': '#C7E5E5',
+                    },
+                    slate: {
+                        '0': '#ffffff',
+                        '1': '#f6f7f8',
+                        '2': '#ebecef',
+                        '3': '#ced0d6',
+                        '4': '#b1b4bc',
+                        '5': '#9498a2',
+                        '6': '#787d88',
+                        '7': '#5c616d',
+                        '8': '#414652',
+                        '9': '#383d4a',
+                        '10': '#303541',
+                        '11': '#282c38',
+                        '12': '#20242f',
+                        '13': '#181c25',
+                        '14': '#11141b',
+                        '15': '#000000',
                     },
                 },
                 status: {

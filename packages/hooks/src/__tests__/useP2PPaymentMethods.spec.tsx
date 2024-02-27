@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useFetch } from '@deriv/api-v2';
+import { useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PPaymentMethods from '../useP2PPaymentMethods';
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(),
 }));
 

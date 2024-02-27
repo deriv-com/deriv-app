@@ -155,8 +155,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             setIsAnimated(true);
             video_ref.current.currentTime = new_time_ref.current;
             animation_ref.current = requestAnimationFrame(repeat);
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            video_ref.current.play().catch(() => {});
+            video_ref.current.play().catch(() => null);
             is_ended.current = false;
         }
     }, 500);
@@ -220,8 +219,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             } else {
                 replay_animation_timeout.current = setTimeout(() => {
                     animation_ref.current = requestAnimationFrame(repeat);
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    video_ref?.current?.play().catch(() => {});
+                    video_ref?.current?.play().catch(() => null);
                 }, 500);
                 toggle_animation_timeout.current = setTimeout(() => {
                     setIsAnimated(true);

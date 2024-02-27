@@ -29,7 +29,7 @@ Blockly.Blocks.procedures_defreturn = {
                 this.setCollapsed(true);
                 // event.preventDefault();
                 // event.stopPropagation();
-                event.stopImmediatePropagation();
+                // event.stopImmediatePropagation();
             },
             false,
             true

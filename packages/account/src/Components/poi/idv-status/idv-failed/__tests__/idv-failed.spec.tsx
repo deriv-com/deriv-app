@@ -80,7 +80,7 @@ describe('<IdvFailed/>', () => {
 
         await waitFor(() => {
             expect(screen.getByTestId(IDV_ERROR_STATUS.NameDobMismatch.code)).toBeInTheDocument();
-            expect(screen.getByRole('button', { name: /Verify/i })).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: /Update profile/i })).toBeInTheDocument();
         });
     });
 

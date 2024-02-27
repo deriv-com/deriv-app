@@ -10,6 +10,14 @@ type TCurrenciesForm = {
     submitButtonLabel?: string;
 };
 
+/**
+ * @name CurrenciesForm
+ * @description The CurrenciesForm component is used to display the currencies form.
+ * @param {TCurrenciesForm} props - The props of the component.
+ * @param {TCurrencyConfig[]} props.currencies - The currencies to display.
+ * @param {string} props.submitButtonLabel - The label for the submit button.
+ * @returns {React.ReactNode}
+ */
 const CurrenciesForm = ({ currencies, submitButtonLabel }: TCurrenciesForm) => {
     const { isDesktop } = useDevice();
     return (

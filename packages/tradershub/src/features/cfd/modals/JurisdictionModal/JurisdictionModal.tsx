@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import clsx from 'clsx';
 import { Modal } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
@@ -8,6 +9,7 @@ import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen } from 
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text, useDevice } from '@deriv-com/ui';
+import { JurisdictionTncSection } from '../../screens/Jurisdiction/JurisdictionTncSection';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -50,22 +52,34 @@ const JurisdictionModal = () => {
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
             <Modal className='overflow-y-hidden bg-background-primary-container'>
                 {!isDynamicLeverageVisible ? <Modal.Header title={jurisdictionTitle} /> : null}
-                <Modal.Content>
+                <Modal.Content
+                    className={clsx(
+                        `sm:p-0 flex flex-col sm:relative sm:pb-[20rem] ${
+                            marketType === MarketType.FINANCIAL
+                                ? 'lg:w-[1200px] lg:h-[650px]'
+                                : 'lg:w-[1040px] lg:h-[592px]'
+                        } `
+                    )}
+                >
                     {isDynamicLeverageVisible && <DynamicLeverageTitle />}
-                    <div className='relative [perspective:200rem]'>
-                        <JurisdictionScreen
-                            isCheckBoxChecked={isCheckBoxChecked}
-                            selectedJurisdiction={selectedJurisdiction}
-                            setIsCheckBoxChecked={setIsCheckBoxChecked}
-                            setSelectedJurisdiction={setSelectedJurisdiction}
-                        />
-                        {isDynamicLeverageVisible && <DynamicLeverageScreen />}
-                    </div>
+                    <JurisdictionScreen
+                        isCheckBoxChecked={isCheckBoxChecked}
+                        selectedJurisdiction={selectedJurisdiction}
+                        setIsCheckBoxChecked={setIsCheckBoxChecked}
+                        setSelectedJurisdiction={setSelectedJurisdiction}
+                    />
+                    {isDynamicLeverageVisible && <DynamicLeverageScreen />}
+
+                    <JurisdictionTncSection
+                        isCheckBoxChecked={isCheckBoxChecked}
+                        selectedJurisdiction={selectedJurisdiction}
+                        setIsCheckBoxChecked={setIsCheckBoxChecked}
+                    />
                 </Modal.Content>
                 {!isDynamicLeverageVisible ? (
-                    <Modal.Footer>
+                    <Modal.Footer className='bg-white sm:fixed sm:w-full'>
                         <Button
-                            className='rounded-xs'
+                            className='h-40 rounded-xs'
                             disabled={
                                 !selectedJurisdiction ||
                                 (selectedJurisdiction !== Jurisdiction.SVG && !isCheckBoxChecked)

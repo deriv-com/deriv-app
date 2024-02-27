@@ -1,12 +1,11 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 import { useDynamicLeverageModalState } from '@cfd/components';
-import { Jurisdiction, MarketType } from '@cfd/constants';
+import { Jurisdiction } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { THooks } from '../../../../types';
 import { JurisdictionCard } from './JurisdictionCard';
-import { JurisdictionTncSection } from './JurisdictionTncSection';
 
 type TJurisdictionScreenProps = {
     isCheckBoxChecked: boolean;
@@ -16,7 +15,6 @@ type TJurisdictionScreenProps = {
 };
 
 const JurisdictionScreen = ({
-    isCheckBoxChecked,
     selectedJurisdiction,
     setIsCheckBoxChecked,
     setSelectedJurisdiction,
@@ -48,14 +46,12 @@ const JurisdictionScreen = ({
     return (
         <div
             className={clsx(
-                `flex flex-col ${
-                    marketType === MarketType.FINANCIAL ? 'lg:w-[1200px] lg:h-[642px]' : 'lg:w-[1040px] lg:h-[592px]'
-                } w-[85vw] items-center justify-between my-auto sm:h-[75vh] transition-all ease-in duration-[0.6s]`,
+                `flex flex-col w-full p-16 items-center justify-between transition-all ease-in duration-[0.6s]`,
                 isDynamicLeverageVisible &&
                     '[transform:rotateY(-180deg)] h-[700px] opacity-0 bg-system-light-primary-background'
             )}
         >
-            <div className='flex flex-col items-stretch justify-center w-full gap-16 py-0 lg:flex-row lg:py-20'>
+            <div className='flex flex-col items-stretch justify-center w-full gap-16 py-0 lg:flex-row'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}
@@ -72,11 +68,6 @@ const JurisdictionScreen = ({
                     />
                 ))}
             </div>
-            <JurisdictionTncSection
-                isCheckBoxChecked={isCheckBoxChecked}
-                selectedJurisdiction={selectedJurisdiction}
-                setIsCheckBoxChecked={setIsCheckBoxChecked}
-            />
         </div>
     );
 };

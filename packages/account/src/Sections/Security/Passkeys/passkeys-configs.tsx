@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { mobileOSDetect } from '@deriv/shared';
 import { DescriptionContainer } from './components/description-container';
@@ -108,22 +109,25 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     };
 };
 
-export const getErrorContent = (error_message: null | TServerError) => {
-    const is_not_allowed_error = error_message?.name === 'NotAllowedError';
+type TGetModalContent = { error: TServerError | null; is_passkey_registration_started: boolean };
 
-    const try_again_button_text = <Localize i18n_default_text='Try again' />;
-
-    if (is_not_allowed_error) {
+export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
+    if (is_passkey_registration_started) {
         return {
             description: (
-                <Localize i18n_default_text='We encountered an issue while setting up your passkey. The process might have been interrupted or the session timed out. Please try again.' />
+                <Localize i18n_default_text='Make sure the screen lock and Bluetooth on your device are active and you are signed in to your Google or iCloud account.' />
             ),
-            button_text: try_again_button_text,
+            button_text: <Localize i18n_default_text='Continue' />,
+            header: (
+                <Text size='xs' weight='bold'>
+                    <Localize i18n_default_text='Just a reminder' />
+                </Text>
+            ),
         };
     }
 
     return {
-        description: error_message?.message ?? '',
-        button_text: try_again_button_text,
+        description: error?.message ?? '',
+        button_text: <Localize i18n_default_text='Try again' />,
     };
 };

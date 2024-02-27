@@ -111,8 +111,19 @@
     }
 }
 
-.dc-modal__container_passkeys-modal__error {
+.dc-modal__container_passkeys-modal {
     min-width: 32.8rem;
+
+    .dc-modal-header {
+        &__close,
+        &__section {
+            margin: 1.6rem 1.6rem 0;
+            padding: 0;
+            width: initial;
+            height: initial;
+            line-height: initial;
+        }
+    }
 
     .dc-modal-body {
         padding: 1.6rem 1.6rem 0;

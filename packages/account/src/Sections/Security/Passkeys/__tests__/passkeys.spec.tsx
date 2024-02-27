@@ -32,6 +32,7 @@ const mock_passkeys_list = [
 ];
 
 const mockCreatePasskey = jest.fn();
+const mockStartPasskeyRegistration = jest.fn();
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -46,6 +47,7 @@ jest.mock('@deriv/hooks', () => ({
     })),
     useRegisterPasskey: jest.fn(() => ({
         createPasskey: mockCreatePasskey,
+        startPasskeyRegistration: mockStartPasskeyRegistration,
         is_passkey_registered: false,
         passkey_registration_error: '',
     })),
@@ -77,13 +79,12 @@ describe('Passkeys', () => {
 
         const create_passkey_button = screen.getByRole('button', { name: 'Create passkey' });
         userEvent.click(create_passkey_button);
-        expect(mockCreatePasskey).toBeCalledTimes(1);
+        expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
     });
     it("renders 'Experience safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             data: [],
             isLoading: false,
-            error: '',
         });
         render(
             <RenderWrapper>
@@ -98,13 +99,11 @@ describe('Passkeys', () => {
         expect(screen.getByText('Tips:')).toBeInTheDocument();
         const create_passkey_button = screen.getByRole('button', { name: 'Create passkey' });
         userEvent.click(create_passkey_button);
-        expect(mockCreatePasskey).toBeCalledTimes(1);
+        expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
     });
     it('renders success screen when new passkeys created', () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
-            createPasskey: mockCreatePasskey,
             is_passkey_registered: true,
-            registration_error: '',
         });
         render(
             <RenderWrapper>

@@ -2,34 +2,37 @@ import React from 'react';
 import { Button, Modal } from '@deriv/components';
 
 type TPasskeyModal = {
-    title?: React.ReactElement;
-    //TODO remove string from types
+    header?: React.ReactElement;
     description?: React.ReactElement | string;
     button_text: React.ReactElement;
     onButtonClick: () => void;
     is_modal_open: boolean;
     className?: string;
     transition_timeout?: number;
+    has_close_icon?: boolean;
+    toggleModal?: () => void;
 };
 
 const PasskeyModal = ({
     is_modal_open,
-    title,
+    header,
     description,
     button_text,
     onButtonClick,
     className,
     transition_timeout,
+    has_close_icon,
+    toggleModal,
 }: TPasskeyModal) => {
     return (
         <React.Fragment>
             <Modal
                 portalId='modal_root_absolute'
                 transition_timeout={transition_timeout}
-                title={title}
+                header={header}
                 is_open={is_modal_open}
-                // toggleModal={() => {}}
-                has_close_icon={false}
+                toggleModal={toggleModal}
+                has_close_icon={has_close_icon}
                 className={className}
             >
                 <Modal.Body>{description}</Modal.Body>

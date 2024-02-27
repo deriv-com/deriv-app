@@ -1,3 +1,4 @@
+export { AccountIcon } from './AccountIcon';
 export { Breadcrumb } from './Breadcrumb';
 export { CashierBreadcrumb } from './CashierBreadcrumb';
 export { Clipboard } from './Clipboard';

@@ -30,7 +30,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     } = run_panel;
     const { account_status } = client;
     const cashier_validation = account_status?.cashier_validation;
-    const [should_disable, setShouldDisable] = React.useState(false);
+    const [shouldDisable, setShouldDisable] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
 
     // perform self-exclusion checks which will be stored under the self-exclusion-store
@@ -40,12 +40,12 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     }, []);
 
     React.useEffect(() => {
-        if (should_disable) {
+        if (shouldDisable) {
             setTimeout(() => {
                 setShouldDisable(false);
             }, 1000);
         }
-    }, [should_disable]);
+    }, [shouldDisable]);
 
     const status_classes = ['', '', ''];
     const is_purchase_sent = contract_stage === (contract_stages.PURCHASE_SENT as unknown);
@@ -67,7 +67,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         }
     }
 
-    const is_disabled = is_stop_button_disabled || should_disable;
+    const is_disabled = is_stop_button_disabled || shouldDisable;
 
     const button_props = React.useMemo(() => {
         if (is_stop_button_visible) {

@@ -91,6 +91,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         if (!is_dragging.current) return;
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
+
         cancelAnimationFrame(animation_ref.current);
         debouncedRewind.cancel();
 
@@ -148,6 +149,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
     const debouncedRewind = debounce(() => {
         if (!video_ref.current) return;
+
         const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
         if (!video_ref.current?.ended || !is_rewind_to_the_end) {
             setIsAnimated(true);
@@ -183,9 +185,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             animation_ref.current = requestAnimationFrame(repeat);
             return;
         }
-
         if (should_check_time_ref.current) should_check_time_ref.current = false;
-
         setCurrentTime(video_ref.current.currentTime);
 
         const new_width = parseFloat(

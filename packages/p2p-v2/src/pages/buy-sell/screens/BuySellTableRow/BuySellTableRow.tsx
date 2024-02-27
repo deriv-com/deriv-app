@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Badge, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
+import { Badge, BuySellForm, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
 import { BUY_SELL } from '@/constants';
 import { generateEffectiveRate } from '@/utils';
 import { p2p, useExchangeRateSubscription } from '@deriv/api';
@@ -13,9 +13,12 @@ import './BuySellTableRow.scss';
 const BASE_CURRENCY = 'USD';
 
 const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: exchangeRateValue, subscribe } = useExchangeRateSubscription();
     const { isMobile } = useDevice();
+
     const { data } = p2p.advertiser.useGetInfo() || {};
+    const { data: paymentMethods } = p2p.paymentMethods.useGet();
     const {
         account_currency,
         advertiser_details,
@@ -29,6 +32,8 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
         rate,
         rate_type,
     } = props;
+
+    const { daily_buy = 0, daily_buy_limit = 0, daily_sell = 0, daily_sell_limit = 0 } = data || {};
 
     useEffect(() => {
         if (local_currency) {
@@ -44,7 +49,7 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
 
     const { completed_orders_count, id, is_online, name, rating_average, rating_count } = advertiser_details || {};
 
-    const { displayEffectiveRate } = generateEffectiveRate({
+    const { displayEffectiveRate, effectiveRate } = generateEffectiveRate({
         exchange_rate: exchangeRate,
         local_currency,
         market_rate: effective_rate,
@@ -63,12 +68,12 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
                 <div className='flex flex-row gap-4 items-center'>
                     <UserAvatar isOnline={is_online} nickname={name || ''} showOnlineStatus size={25} textSize='xs' />
                     <div className='flex flex-col'>
-                        <div className='flex flex-row items-center gap-2'>
-                            <Text
-                                className={clsx({ 'mb-[-1rem]': hasRating })}
-                                size='sm'
-                                weight={isMobile ? 'bold' : 400}
-                            >
+                        <div
+                            className={clsx('flex flex-row items-center gap-2', {
+                                'mb-[-0.5rem]': hasRating,
+                            })}
+                        >
+                            <Text size='sm' weight={isMobile ? 'bold' : 400}>
                                 {name}
                             </Text>
                             <Badge tradeCount={completed_orders_count} />
@@ -103,7 +108,7 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
                             {isMobile && 'Limits:'} {min_order_amount_limit_display}-{max_order_amount_limit_display}{' '}
                             {account_currency}
                         </Text>
-                        <Text color='success' size='sm' weight='bold'>
+                        <Text className='text-wrap w-[90%]' color='success' size='sm' weight='bold'>
                             {displayEffectiveRate} {local_currency}
                         </Text>
                     </Container>
@@ -125,10 +130,28 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
             {!isMyAdvert && (
                 <div className='h-full flex flex-col justify-center relative'>
                     {isMobile && <LabelPairedChevronRightMdRegularIcon className='absolute top-0 right-4' />}
-                    <Button className='lg:w-[7.5rem]' size={isMobile ? 'md' : 'sm'} textSize={isMobile ? 'md' : 'xs'}>
+                    <Button
+                        className='lg:w-[7.5rem]'
+                        onClick={() => setIsModalOpen(true)}
+                        size={isMobile ? 'md' : 'sm'}
+                        textSize={isMobile ? 'md' : 'xs'}
+                    >
                         {isBuyAdvert ? 'Buy' : 'Sell'} {account_currency}
                     </Button>
                 </div>
+            )}
+            {isModalOpen && (
+                <BuySellForm
+                    advert={props}
+                    advertiserBuyLimit={Number(daily_buy_limit) - Number(daily_buy)}
+                    advertiserSellLimit={Number(daily_sell_limit) - Number(daily_sell)}
+                    balanceAvailable={data?.balance_available ?? 0}
+                    displayEffectiveRate={displayEffectiveRate}
+                    effectiveRate={effectiveRate}
+                    isModalOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    paymentMethods={paymentMethods}
+                />
             )}
         </div>
     );

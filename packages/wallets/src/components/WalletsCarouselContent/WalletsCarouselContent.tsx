@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
@@ -122,11 +122,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                     onClick={walletsCarouselEmblaApi?.scrollTo}
                 />
             </div>
-            <WalletListCardActions
-                isActive={activeWallet?.is_active || false}
-                isDemo={activeWallet?.is_virtual || false}
-                loginid={activeWallet?.loginid || ''}
-            />
+            <WalletListCardActions />
         </div>
     );
 };

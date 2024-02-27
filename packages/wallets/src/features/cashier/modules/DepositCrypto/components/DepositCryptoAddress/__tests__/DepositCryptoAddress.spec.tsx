@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHover } from 'usehooks-ts';
-import { useAuthorize, useDepositCryptoAddress } from '@deriv/api';
+import { useAuthorize, useDepositCryptoAddress } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import useDevice from '../../../../../../../hooks/useDevice';
 import DepositCryptoAddress from '../DepositCryptoAddress';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useAuthorize: jest.fn(),
     useDepositCryptoAddress: jest.fn(),
 }));

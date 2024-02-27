@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useAuthentication } from '@deriv/api';
+import { useAuthentication } from '@deriv/api-v2';
 import VerificationFailedIcon from '../../../../../public/images/ic-verification-failed-status.svg';
 import VerificationPendingIcon from '../../../../../public/images/ic-verification-pending-status.svg';
 import VerificationSuccessIcon from '../../../../../public/images/ic-verification-success-status.svg';

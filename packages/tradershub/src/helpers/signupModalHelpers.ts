@@ -8,6 +8,7 @@ type TCustomStyles = {
  */
 export const CUSTOM_STYLES: TCustomStyles = {
     content: {
+        position: 'absolute',
         background: 'none',
         border: 'none',
         borderRadius: 0,
@@ -26,3 +27,5 @@ export const CUSTOM_STYLES: TCustomStyles = {
         zIndex: 9999,
     },
 };
+
+export const isCVMEnabled = (countryCode: string) => countryCode === 'br';

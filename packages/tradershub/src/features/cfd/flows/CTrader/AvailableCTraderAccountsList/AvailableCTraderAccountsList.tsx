@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import {
     GetADerivAccountDialog,
-    PlatformIcon,
+    IconComponent,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '@/components';
 import { getStaticUrl } from '@/helpers';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
 import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
@@ -14,7 +15,7 @@ import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
 
 const LeadingIcon = () => (
-    <PlatformIcon
+    <IconComponent
         icon='CTrader'
         onClick={() => {
             window.open(getStaticUrl('/deriv-ctrader'));
@@ -29,6 +30,7 @@ const AvailableCTraderAccountsList = () => {
     const { show } = Provider.useModal();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
+    const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, activeTradingAccount?.is_virtual);
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 
@@ -58,7 +60,7 @@ const AvailableCTraderAccountsList = () => {
                 leading={LeadingIcon}
                 trailing={() => <TradingAccountCardLightButton onSubmit={onSubmit} />}
             >
-                <TradingAccountCardContent title={PlatformDetails.ctrader.title}>
+                <TradingAccountCardContent title={title}>
                     This account offers CFDs on a feature-rich trading platform.
                 </TradingAccountCardContent>
             </TradingAccountCard>

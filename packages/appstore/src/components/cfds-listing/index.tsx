@@ -47,7 +47,7 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { setAccountType } = cfd;
+    const { setAccountType, toggleCTraderTransferModal } = cfd;
     const {
         is_landing_company_loaded,
         real_account_creation_unlock_date,
@@ -298,8 +298,7 @@ const CFDsListing = observer(() => {
                                   onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                       const button_name = e?.currentTarget?.name;
                                       if (button_name === 'transfer-btn') {
-                                          toggleAccountTransferModal();
-                                          setSelectedAccount(existing_account);
+                                          toggleCTraderTransferModal();
                                       } else if (button_name === 'topup-btn') {
                                           showTopUpModal(existing_account);
                                           setAppstorePlatform(account.platform);

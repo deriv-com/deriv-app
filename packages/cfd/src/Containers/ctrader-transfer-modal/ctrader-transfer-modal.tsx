@@ -20,7 +20,7 @@ const CTraderTransferModal = observer(() => {
             title={localize('Choose a cTrader account to transfer')}
             toggleModal={toggleCTraderTransferModal}
             should_header_stick_body={false}
-            width='600px'
+            width='408px'
             exit_classname='cfd-modal--custom-exit'
         >
             <div className='ctrader-transfer-modal'>
@@ -35,8 +35,8 @@ const CTraderTransferModal = observer(() => {
                                 setSelectedAccount(ctrader_account);
                             }}
                         >
-                            <Text>{ctrader_account.login}</Text>
-                            <Text>
+                            <Text size='xxs'>{ctrader_account.login}</Text>
+                            <Text size='xxs' weight='bold'>
                                 <Money
                                     amount={ctrader_account.balance}
                                     currency={ctrader_account.currency}

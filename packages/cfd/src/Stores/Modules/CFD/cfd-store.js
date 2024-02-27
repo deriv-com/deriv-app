@@ -13,7 +13,7 @@ import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     is_cfd_personal_details_modal_visible = false;
-    is_ctrader_transfer_modal_visible = true;
+    is_ctrader_transfer_modal_visible = false;
     is_jurisdiction_modal_visible = false;
     jurisdiction_selected_shortcode = '';
     is_compare_accounts_visible = false;

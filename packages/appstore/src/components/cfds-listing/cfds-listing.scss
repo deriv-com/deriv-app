@@ -767,6 +767,12 @@
     &__accounts-list {
         display: flex;
         justify-content: space-between;
+        margin: 0.8rem 1.6rem;
+
+        &:hover {
+            background-color: var(--general-hover);
+            cursor: pointer;
+        }
     }
 }
 

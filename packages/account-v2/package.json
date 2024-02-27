@@ -27,6 +27,7 @@
         "react-modal": "^3.16.1",
         "react-router-dom": "^5.2.0",
         "react-transition-group": "4.4.2",
+        "tailwind-merge": "^1.14.0",
         "usehooks-ts": "^2.7.0",
         "yup": "^0.32.11"
     },

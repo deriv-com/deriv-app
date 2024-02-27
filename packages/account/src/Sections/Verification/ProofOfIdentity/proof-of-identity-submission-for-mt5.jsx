@@ -57,7 +57,9 @@ const POISubmissionForMT5 = observer(
                             identity_status_codes.expired,
                         ].includes(status)
                     ) {
-                        setIdvMismatchStatus(formatIDVError(last_rejected, status));
+                        setIdvMismatchStatus(
+                            formatIDVError(last_rejected, status, undefined, 'report_available' in idv)
+                        );
                     }
                 } else if (onfido_submissions_left && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);

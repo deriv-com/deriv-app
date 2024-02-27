@@ -106,11 +106,13 @@ const IdvFailed = ({
                 IDV_ERROR_STATUS.DobMismatch.code,
                 IDV_ERROR_STATUS.NameMismatch.code,
                 IDV_ERROR_STATUS.NameDobMismatch.code,
+                IDV_ERROR_STATUS.ReportNotAvailable.code,
             ].includes(mismatch_status)
                 ? !report_available
                 : true,
         [mismatch_status, report_available]
     );
+
     /**
      * If user needs to resubmit IDV document, the country should be the new selected country
      * If user needs to update Personal info, the country should be the country of the latest status

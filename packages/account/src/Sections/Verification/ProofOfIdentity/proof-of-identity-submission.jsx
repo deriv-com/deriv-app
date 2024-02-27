@@ -81,7 +81,7 @@ const POISubmission = observer(
 
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
 
-        const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk);
+        const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk, 'report_available' in idv);
 
         const setIdentityService = React.useCallback(
             identity_last_attempt => {

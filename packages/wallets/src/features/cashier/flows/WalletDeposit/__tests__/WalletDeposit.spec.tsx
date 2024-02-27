@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import { CashierLocked, DepositLocked } from '../../../modules';
 import WalletDeposit from '../WalletDeposit';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -8,11 +9,19 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 jest.mock('../../../modules', () => ({
+    CashierLocked: jest.fn(({ children }) => <>{children}</>),
     DepositCryptoModule: jest.fn(() => <div>MockedDepositCryptoModule</div>),
     DepositFiatModule: jest.fn(() => <div>MockedDepositFiatModule</div>),
+    DepositLocked: jest.fn(({ children }) => <>{children}</>),
 }));
 
-describe('WalletDeposit component', () => {
+const wrapper = ({ children }: PropsWithChildren) => (
+    <CashierLocked>
+        <DepositLocked>{children}</DepositLocked>
+    </CashierLocked>
+);
+
+describe('WalletDeposit', () => {
     it('should render crypto module when wallet is crypto', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({
             data: {
@@ -22,7 +31,7 @@ describe('WalletDeposit component', () => {
             },
         });
 
-        render(<WalletDeposit />);
+        render(<WalletDeposit />, { wrapper });
 
         expect(screen.getByText(/MockedDepositCryptoModule/)).toBeInTheDocument();
         expect(screen.queryByText(/MockedDepositFiatModule/)).not.toBeInTheDocument();
@@ -37,7 +46,7 @@ describe('WalletDeposit component', () => {
             },
         });
 
-        render(<WalletDeposit />);
+        render(<WalletDeposit />, { wrapper });
 
         expect(screen.getByText(/MockedDepositFiatModule/)).toBeInTheDocument();
         expect(screen.queryByText(/MockedDepositCryptoModule/)).not.toBeInTheDocument();

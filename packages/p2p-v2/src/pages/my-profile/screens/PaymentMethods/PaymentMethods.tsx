@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useCallback, useReducer } from 'react';
 import { TSelectedPaymentMethod } from 'types';
 import { PaymentMethodForm } from '@/components';
 import { advertiserPaymentMethodsReducer } from '@/reducers';
@@ -40,9 +40,10 @@ const PaymentMethods = () => {
             type: 'DELETE',
         });
     };
-    const handleResetFormState = () => {
+
+    const handleResetFormState = useCallback(() => {
         dispatch({ type: 'RESET' });
-    };
+    }, []);
 
     if (isLoading) {
         return <Loader className='m-auto' isFullScreen={false} />;

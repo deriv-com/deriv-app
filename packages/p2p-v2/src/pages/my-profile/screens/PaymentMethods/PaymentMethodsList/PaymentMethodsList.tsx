@@ -45,15 +45,17 @@ const PaymentMethodsList = ({
                 // TODO: Remember to translate the title
                 renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
             >
-                <PaymentMethodsListContent
-                    formState={formState}
-                    isMobile={isMobile}
-                    onAdd={onAdd}
-                    onDelete={onDelete}
-                    onEdit={onEdit}
-                    onResetFormState={onResetFormState}
-                    p2pAdvertiserPaymentMethods={p2pAdvertiserPaymentMethods}
-                />
+                {!!p2pAdvertiserPaymentMethods?.length && (
+                    <PaymentMethodsListContent
+                        formState={formState}
+                        isMobile={isMobile}
+                        onAdd={onAdd}
+                        onDelete={onDelete}
+                        onEdit={onEdit}
+                        onResetFormState={onResetFormState}
+                        p2pAdvertiserPaymentMethods={p2pAdvertiserPaymentMethods}
+                    />
+                )}
             </FullPageMobileWrapper>
         );
     }

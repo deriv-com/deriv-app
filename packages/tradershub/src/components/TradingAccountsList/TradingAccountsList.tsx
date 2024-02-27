@@ -1,5 +1,6 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
+import { IconComponent } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
@@ -29,7 +30,7 @@ const TradingAccountsList = () => {
                                 key={`trading-accounts-list-${account.loginid}`}
                                 onClick={() => switchAccount(account.loginid)}
                             >
-                                {IconToCurrencyMapper[iconCurrency].icon}
+                                <IconComponent height={35} icon={iconCurrency} width={35} />
                                 <div className='flex flex-col items-start flex-1'>
                                     <Text size='sm'>{IconToCurrencyMapper[iconCurrency].text}</Text>
                                     <Text size='sm'>{account.loginid}</Text>

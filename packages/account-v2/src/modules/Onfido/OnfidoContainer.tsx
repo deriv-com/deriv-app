@@ -7,6 +7,7 @@ import { Button, Loader, Text } from '@deriv-com/ui';
 import IcAccountMissingDetails from '../../assets/proof-of-identity/ic-account-missing-details.svg';
 import { ErrorMessage } from '../../components/ErrorMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
+import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { OnfidoView } from '../../containers/Onfido/OnfidoView';
 
 // TODO: Remove optional and default props when POI is ready
@@ -14,9 +15,15 @@ type TOnfidoContainer = {
     country?: string;
     isEnabledByDefault?: boolean;
     onOnfidoSubmit?: () => void;
+    selectedDocument?: TManualDocumentTypes;
 };
 
-export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, onOnfidoSubmit }: TOnfidoContainer) => {
+export const OnfidoContainer = ({
+    country,
+    isEnabledByDefault = false,
+    onOnfidoSubmit,
+    selectedDocument,
+}: TOnfidoContainer) => {
     const [isOnfidoEnabled, setIsOnfidoEnabled] = useState(isEnabledByDefault);
     const [transitionEnd, setTransitionEnd] = useState(false);
     const history = useHistory();
@@ -27,7 +34,7 @@ export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, on
         isServiceTokenLoading,
         onfidoInitializationError,
         serviceTokenError,
-    } = useOnfido(country);
+    } = useOnfido(country, selectedDocument);
 
     useEffect(() => {
         if (hasSubmitted) {

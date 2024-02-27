@@ -1,7 +1,7 @@
 import React from 'react';
 import { TSortByValues } from '@/utils';
 import { useDevice } from '@deriv-com/ui';
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import BuySellHeader from '../BuySellHeader';
 
@@ -17,8 +17,11 @@ const mockProps = {
             value: 'rating',
         },
     ],
+    selectedCurrency: 'IDR',
     setActiveTab: jest.fn(),
     setIsFilterModalOpen: jest.fn(),
+    setSearchValue: jest.fn(),
+    setSelectedCurrency: jest.fn(),
     setSortDropdownValue: jest.fn(),
     sortDropdownValue: 'rate' as TSortByValues,
 };
@@ -30,7 +33,22 @@ jest.mock('@deriv-com/ui', () => ({
     }),
 }));
 
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    p2p: {
+        settings: {
+            useGetSettings: () => ({
+                data: {},
+            }),
+        },
+    },
+}));
+
+jest.mock('../../../components/CurrencyDropdown/CurrencyDropdown', () => jest.fn(() => <div>CurrencyDropdown</div>));
+
 const mockUseDevice = useDevice as jest.Mock;
+
+jest.useFakeTimers();
 
 describe('<BuySellHeader />', () => {
     it('should render the BuySellHeader', () => {
@@ -40,6 +58,7 @@ describe('<BuySellHeader />', () => {
 
         expect(within(buySellHeader).getByRole('button', { name: 'Buy' })).toBeInTheDocument();
         expect(within(buySellHeader).getByRole('button', { name: 'Sell' })).toBeInTheDocument();
+        expect(screen.getByRole('searchbox')).toBeInTheDocument();
         expect(screen.getByRole('combobox', { name: 'Sort by' })).toBeInTheDocument();
     });
 
@@ -59,6 +78,22 @@ describe('<BuySellHeader />', () => {
 
         userEvent.click(buyTab);
         expect(mockProps.setActiveTab).toHaveBeenCalledWith('Buy');
+    });
+
+    it('should call setSearchValue when a value is entered in the search input', () => {
+        render(<BuySellHeader {...mockProps} />);
+
+        const searchInput = screen.getByRole('searchbox');
+
+        act(() => {
+            userEvent.type(searchInput, 'John Doe');
+        });
+
+        act(() => {
+            jest.runAllTimers();
+        });
+
+        expect(mockProps.setSearchValue).toHaveBeenCalledWith('John Doe');
     });
 
     it('should call setSortDropdownValue when a value is selected from the dropdown', () => {

@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { validateField } from '../../utils/validation';
-import { Dropzone } from '../base/Dropzone';
+import { Dropzone } from '../Dropzone';
 
 type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileChange'> & {
     name: string;
@@ -18,8 +18,12 @@ type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileCha
  */
 const FormDocumentUploadField = ({ name, validationSchema, ...rest }: TFormDocumentUploadField) => (
     <Field name={name} validate={validateField(validationSchema)}>
-        {({ form }: FieldProps<File>) => (
-            <Dropzone {...rest} onFileChange={(file: File) => form.setFieldValue(name, file)} />
+        {({ field, form }: FieldProps<File>) => (
+            <Dropzone
+                {...rest}
+                defaultFile={field.value}
+                onFileChange={(file: File) => form.setFieldValue(name, file)}
+            />
         )}
     </Field>
 );

@@ -23,6 +23,7 @@ import type {
     P2PAdvertiserInformationResponse,
     P2POrderListResponse,
     WebsiteStatus,
+    GetSelfExclusion,
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -415,6 +416,8 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
+    self_exclusion: Partial<GetSelfExclusion>;
+    getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;

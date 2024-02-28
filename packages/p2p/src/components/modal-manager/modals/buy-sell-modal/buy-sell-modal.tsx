@@ -10,7 +10,6 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import AddPaymentMethodForm from 'Components/add-payment-method-form';
 import BuySellForm from 'Pages/buy-sell/buy-sell-form.jsx';
 import BuySellFormReceiveAmount from 'Pages/buy-sell/buy-sell-form-receive-amount.jsx';
-import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import BuySellModalFooter from './buy-sell-modal-footer';
 import BuySellModalTitle from './buy-sell-modal-title';
@@ -19,7 +18,7 @@ import BuySellModalError from './buy-sell-modal-error';
 const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
-    const { is_buy_advert, selected_ad_state } = buy_sell_store;
+    const { is_buy_advert, selected_ad_state, submitForm } = buy_sell_store;
     const { account_currency } = selected_ad_state;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
@@ -30,13 +29,8 @@ const BuySellModal = () => {
     const [error_message, setErrorMessage] = React.useState('');
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
-    const submitForm = React.useRef<(() => void) | null>(null);
 
     const show_low_balance_message = !is_buy_advert && is_account_balance_low;
-
-    const is_fixed_rate = buy_sell_store?.advert?.rate_type === ad_type.FIXED;
-
-    const setSubmitForm = (submitFormFn: () => void) => (submitForm.current = submitFormFn);
 
     const onCancel = () => {
         if (should_show_add_payment_method_form) {
@@ -119,7 +113,7 @@ const BuySellModal = () => {
                 const rate_has_changed = previous_advert?.rate !== new_advert.rate;
                 // check to see if user is not switching between different adverts, it should not trigger rate change modal
                 const is_the_same_advert = previous_advert?.id === new_advert.id;
-                if (rate_has_changed && is_the_same_advert && is_fixed_rate) {
+                if (rate_has_changed && is_the_same_advert) {
                     showModal({ key: 'MarketRateChangeErrorModal', props: {} });
                     buy_sell_store.setFormErrorCode('');
                 }
@@ -161,13 +155,12 @@ const BuySellModal = () => {
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
-                                    setSubmitForm={setSubmitForm}
                                 />
                                 <BuySellFormReceiveAmount />
                                 <BuySellModalFooter
                                     is_submit_disabled={!!is_submit_disabled}
                                     onCancel={onCancel}
-                                    onSubmit={submitForm.current}
+                                    onSubmit={submitForm}
                                 />
                             </React.Fragment>
                         )}
@@ -207,7 +200,6 @@ const BuySellModal = () => {
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
-                                    setSubmitForm={setSubmitForm}
                                 />
                             )}
                         </Modal.Body>
@@ -217,7 +209,7 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={!!is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm.current}
+                                onSubmit={submitForm}
                             />
                         </Modal.Footer>
                     )}

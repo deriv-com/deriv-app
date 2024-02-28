@@ -6,7 +6,7 @@ type TErrorMessage = {
 };
 
 export const ErrorMessage = ({ message }: TErrorMessage) => (
-    <div className='grid justify-center w-full justify-items-center mt-[80px] gap-20'>
+    <div className='grid justify-center w-full justify-items-center mt-80 gap-20'>
         <Text align='center' size='3xl' weight='bold'>
             Oops, something went wrong.
         </Text>

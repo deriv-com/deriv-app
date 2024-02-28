@@ -9,7 +9,7 @@ type TIconWithMessage = {
 };
 
 export const IconWithMessage = ({ actionButton, children, icon, title }: TIconWithMessage) => (
-    <div className='grid justify-center w-full justify-items-center mt-[80px] gap-20'>
+    <div className='grid justify-center w-full justify-items-center mt-80 gap-20'>
         {icon}
         <div className='grid justify-center gap-10'>
             <Text align='center' size='md' weight='bold'>

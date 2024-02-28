@@ -5,11 +5,14 @@ import {
     validLength,
     validPassword,
     validMT5Password,
+    mobileOSDetect
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+
+type MT5TradeAccount = DetailsOfEachMT5Loginid & { display_login?: string };
 
 const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
@@ -39,6 +42,12 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 };
 
 const { is_staging, is_test_link } = getPlatformFromUrl();
+
+const DEEP_LINK = ({ mt5_trade_account }: { mt5_trade_account: MT5TradeAccount }) =>
+    `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
+
+const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: MT5TradeAccount }) =>
+    `${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
@@ -114,7 +123,7 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
-const getCTraderWebTerminalLink = (category: string, token?: string) => {
+const getCTraderWebTerminalLink = (category?: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
@@ -136,7 +145,63 @@ const validatePassword = (password: string): string | undefined => {
     }
 };
 
+const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
+    if (mobileOSDetect() === 'iOS') {
+        return mt5_trade_account?.white_label?.download_links?.ios;
+    } else if (mobileOSDetect() === 'huawei') {
+        return getPlatformMt5DownloadLink('huawei');
+    }
+    return mt5_trade_account?.white_label?.download_links?.android;
+};
+
+const getDesktopDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
+    const downloadOptions = [
+        {
+            icon: 'IcRebrandingMt5Logo',
+            text: 'MetaTrader 5 web',
+            button_text: 'Open',
+            href: mt5_trade_account?.webtrader_url,
+        },
+        {
+            icon: 'IcWindowsLogo',
+            text: localize('MetaTrader 5 Windows app'),
+            button_text: 'Download',
+            href: mt5_trade_account?.white_label?.download_links?.windows,
+        },
+        {
+            icon: 'IcMacosLogo',
+            text: localize('MetaTrader 5 MacOS app'),
+            button_text: 'Download',
+            href: getPlatformMt5DownloadLink('macos'),
+        },
+        {
+            icon: 'IcLinuxLogo',
+            text: localize('MetaTrader 5 Linux app'),
+            button_text: 'Learn more',
+            href: getPlatformMt5DownloadLink('linux'),
+        },
+    ];
+
+    return downloadOptions;
+};
+
+const getMobileDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => [
+    {
+        href: mt5_trade_account?.white_label?.download_links?.ios,
+        icon: 'IcInstallationApple',
+    },
+    {
+        href: mt5_trade_account?.white_label?.download_links?.android,
+        icon: 'IcInstallationGoogle',
+    },
+    {
+        href: getPlatformMt5DownloadLink('huawei'),
+        icon: 'IcInstallationHuawei',
+    },
+];
+
 export {
+    DEEP_LINK,
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
     CTRADER_URL,
@@ -152,4 +217,8 @@ export {
     getTitle,
     getTopUpConfig,
     validatePassword,
+    getMobileAppInstallerURL,
+    WEBTRADER_URL,
+    getDesktopDownloadOptions,
+    getMobileDownloadOptions,
 };

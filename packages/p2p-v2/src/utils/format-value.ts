@@ -73,7 +73,7 @@ export const generateEffectiveRate = ({
             formatMoney(localCurrency, roundOffDecimal(effectiveRate, decimalPlace), true, decimalPlace)
         );
     }
-    return { displayEffectiveRate, effectiveRate };
+    return { displayEffectiveRate, effectiveRate: Number(effectiveRate) };
 };
 
 /**
@@ -114,3 +114,13 @@ export const formatInput = (input: string, unit: string): string => {
 
     return `${input}${unit ? ` ${unit.trim()}` : ''}`;
 };
+
+/**
+ * Validates floating-point integers in input box and checks if the string contains only
+ * digits and at most one decimal point.
+ *
+ * @param {String} value - The value to validate as a floating-point integer.
+ * @returns {boolean} A boolean indicating if the value is a valid floating-point integer.
+ */
+export const floatingPointValidator = (value: string): boolean =>
+    ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', '.'].includes(value) || /^\d*\.?\d+$/.test(value);

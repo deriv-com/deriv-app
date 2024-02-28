@@ -1,5 +1,5 @@
 import React, { ComponentProps } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
 import { Provider } from '@deriv/library';
 import { Text } from '@deriv-com/ui';
@@ -27,7 +27,7 @@ const DialogHeader = ({ className, titleSize, hideCloseButton = false, title }: 
     const { hide } = Provider.useModal();
 
     return (
-        <div className={clsx('flex items-start', title ? 'justify-between' : 'justify-end', className)}>
+        <div className={twMerge('flex items-start', title ? 'justify-between' : 'justify-end', className)}>
             {title && (
                 <Text className='flex-1' size={titleSize} weight='bold'>
                     {title}

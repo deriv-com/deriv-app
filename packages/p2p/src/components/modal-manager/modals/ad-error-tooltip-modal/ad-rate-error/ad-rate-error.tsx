@@ -12,7 +12,7 @@ const AdRateError = () => {
     const { p2p_settings } = useP2PSettings();
 
     if (p2p_settings?.rate_type === ad_type.FLOAT) {
-        return p2p_settings.reached_target_date ? (
+        return p2p_settings.reached_target_date || !p2p_settings.fixed_rate_adverts_end_date ? (
             <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to reactivate them.' />
         ) : (
             <Localize

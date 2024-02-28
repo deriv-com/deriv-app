@@ -27,11 +27,7 @@ const App = () => {
     const location = useLocation();
 
     const { buy_sell_store, general_store, order_store } = useStores();
-    const {
-        p2p_settings,
-        rest: { isSubscribed },
-        subscribe,
-    } = useP2PSettings();
+    const { p2p_settings, subscribe } = useP2PSettings();
 
     const lang = getLanguage();
 
@@ -275,7 +271,7 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in || general_store.is_loading || !isSubscribed) {
+    if (is_logging_in || general_store.is_loading) {
         return <Loading className='p2p__loading' is_fullscreen={false} />;
     }
 

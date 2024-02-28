@@ -56,6 +56,8 @@ const P2PSettingsProvider = ({ children }: TP2PSettingsProvider) => {
                 is_disabled: Boolean(p2p_settings_data?.disabled),
                 /** Indicates if the payment methods feature is enabled. */
                 is_payment_methods_enabled: Boolean(p2p_settings_data?.payment_methods_enabled),
+                /** Time allowed for order payment, in minutes after order creation. */
+                order_payment_period_string: (p2p_settings_data?.order_payment_period * 60).toString(),
                 /** Indicates if the current rate type is floating or fixed rates */
                 rate_type: (p2p_settings_data?.float_rate_adverts === 'enabled' ? 'float' : 'fixed') as
                     | 'float'

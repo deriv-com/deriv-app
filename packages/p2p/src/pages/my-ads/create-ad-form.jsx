@@ -41,7 +41,12 @@ const CreateAdForm = () => {
 
     const { buy_sell_store, general_store, my_ads_store, my_profile_store } = useStores();
     const {
-        p2p_settings: { adverts_archive_period, float_rate_offset_limit_string, rate_type },
+        p2p_settings: {
+            adverts_archive_period,
+            float_rate_offset_limit_string,
+            order_payment_period_string,
+            rate_type,
+        },
     } = useP2PSettings();
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
@@ -123,7 +128,7 @@ const CreateAdForm = () => {
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    order_completion_time: general_store.order_payment_period,
+                    order_completion_time: order_payment_period_string,
                     payment_info: my_ads_store.payment_info,
                     rate_type_string: rate_type,
                     rate_type: rate_type === ad_type.FLOAT ? '-0.01' : '',

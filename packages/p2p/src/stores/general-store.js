@@ -48,7 +48,6 @@ export default class GeneralStore extends BaseStore {
     is_restricted = false;
     nickname = null;
     nickname_error = '';
-    order_payment_period = null;
     order_table_type = order_list.ACTIVE;
     orders = [];
     parameters = null;
@@ -114,7 +113,6 @@ export default class GeneralStore extends BaseStore {
             is_restricted: observable,
             nickname: observable,
             nickname_error: observable,
-            order_payment_period: observable,
             order_table_type: observable,
             orders: observable,
             parameters: observable,
@@ -168,10 +166,8 @@ export default class GeneralStore extends BaseStore {
             setIsRestricted: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
-            setOrderPaymentPeriod: action.bound,
             setOrderTableType: action.bound,
             setP2pPoaRequired: action.bound,
-            setP2PSettings: action.bound,
             setParameters: action.bound,
             setPoaStatus: action.bound,
             setPoiStatus: action.bound,
@@ -516,7 +512,6 @@ export default class GeneralStore extends BaseStore {
                     },
                     [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
                 ),
-                p2p_settings_subscription: subscribeWS({ p2p_settings: 1 }, [this.setP2PSettings]),
             };
 
             if (this.ws_subscriptions) {
@@ -682,19 +677,6 @@ export default class GeneralStore extends BaseStore {
         const { order_store } = this.root_store;
         order_store.setIsLoading(true);
         this.order_table_type = order_table_type;
-    }
-
-    setOrderPaymentPeriod(order_payment_period) {
-        this.order_payment_period = (order_payment_period * 60).toString();
-    }
-
-    setP2PSettings(response) {
-        if (response?.error) {
-            this.ws_subscriptions.p2p_settings_subscription.unsubscribe();
-        } else {
-            const { p2p_settings } = response;
-            this.setOrderPaymentPeriod(p2p_settings.order_payment_period);
-        }
     }
 
     setParameters(parameters) {

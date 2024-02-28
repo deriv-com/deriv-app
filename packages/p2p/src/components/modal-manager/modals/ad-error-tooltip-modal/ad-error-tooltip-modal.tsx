@@ -27,7 +27,7 @@ const AdErrorTooltipModal = ({
         ui: { is_mobile },
     } = useStore();
     const { hideModal, is_modal_open } = useModalManagerContext();
-    const { daily_buy_limit, daily_sell_limit } = general_store.advertiser_info;
+    const { advertiser_buy_limit, advertiser_sell_limit } = general_store;
 
     const { p2p_settings } = useP2PSettings();
 
@@ -74,8 +74,7 @@ const AdErrorTooltipModal = ({
                     />
                 );
             case api_error_codes.AD_EXCEEDS_DAILY_LIMIT: {
-                const remaining_limit =
-                    advert_type === buy_sell.BUY ? localize(daily_buy_limit) : localize(daily_sell_limit);
+                const remaining_limit = advert_type === buy_sell.BUY ? advertiser_buy_limit : advertiser_sell_limit;
                 return (
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than your remaining daily limit ({{remaining_limit}} {{currency}}).'

@@ -17,6 +17,7 @@ export type TP2PSettings =
               text: string;
               value: string;
           }[];
+          order_payment_period_string: string;
       })
     | undefined;
 

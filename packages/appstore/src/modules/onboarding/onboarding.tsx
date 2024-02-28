@@ -123,10 +123,10 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const footer_description = is_eu_user ? eu_footer_text : footer_text;
 
     useEffect(() => {
-        if (is_logged_in && is_landing_company_loaded) {
+        if (is_logged_in && is_landing_company_loaded && !skip_onboarding_flow) {
             trackOnboardingOpen();
         }
-    }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen]);
+    }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen, skip_onboarding_flow]);
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;

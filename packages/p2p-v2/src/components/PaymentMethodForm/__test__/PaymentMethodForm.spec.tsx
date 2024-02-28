@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react';
-import { useForm } from 'react-hook-form';
 import { APIProvider, p2p } from '@deriv/api';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PaymentMethodForm from '../PaymentMethodForm';
 

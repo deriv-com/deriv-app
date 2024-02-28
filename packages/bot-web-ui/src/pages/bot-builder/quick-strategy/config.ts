@@ -66,7 +66,7 @@ const PURCHASE_TYPE: TConfigItem = {
 const LABEL_STAKE: TConfigItem = {
     type: 'label',
     label: localize('Initial stake'),
-    description: localize('The amount that you pay to enter a trade.'),
+    description: localize('The amount that you stake for the first trade. Note that this is the minimum stake amount.'),
 };
 
 const STAKE: TConfigItem = {
@@ -119,12 +119,16 @@ const LOSS: TConfigItem = {
     validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION],
 };
 
-const LABEL_SIZE: TConfigItem = {
+const LABEL_MARTINGALE_SIZE: TConfigItem = {
     type: 'label',
     label: localize('Size'),
-    description: localize(
-        'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 1.'
-    ),
+    description: localize('The size used to multiply the stake after a losing trade for the next trade.'),
+};
+
+const LABEL_REVERSE_MARTINGALE_SIZE: TConfigItem = {
+    type: 'label',
+    label: localize('Size'),
+    description: localize('The size used to multiply the stake after a successful trade for the next trade.'),
 };
 
 const SIZE: TConfigItem = {
@@ -146,7 +150,17 @@ const SIZE: TConfigItem = {
 const LABEL_DALEMBERT_UNIT: TConfigItem = {
     type: 'label',
     label: localize('Unit'),
-    description: localize("The amount that you may add to your stake if you're losing a trade."),
+    description: localize(
+        'Number of unit(s) to be added to the next trade after a losing trade. One unit is equivalent to the amount of initial stake.'
+    ),
+};
+
+const LABEL_REVERSE_DALEMBERT_UNIT: TConfigItem = {
+    type: 'label',
+    label: localize('Unit'),
+    description: localize(
+        'Number of unit(s) to be added to the next trade after a successful trade. One unit is equivalent to the amount of initial stake.'
+    ),
 };
 
 const UNIT: TConfigItem = {
@@ -192,6 +206,7 @@ export const STRATEGIES: TStrategies = {
     MARTINGALE: {
         name: 'martingale_max-stake',
         label: localize('Martingale'),
+        rs_strategy_type: 'martingale',
         description: MARTINGALE,
         fields: [
             [
@@ -209,12 +224,13 @@ export const STRATEGIES: TStrategies = {
                 DURATION_TYPE,
                 DURATION,
             ],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_MARTINGALE_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
     D_ALEMBERT: {
         name: 'dalembert_max-stake',
         label: localize('D’Alembert'),
+        rs_strategy_type: `d'alembert`,
         description: D_ALEMBERT,
         fields: [
             [
@@ -238,6 +254,7 @@ export const STRATEGIES: TStrategies = {
     OSCARS_GRIND: {
         name: 'oscars_grind_max-stake',
         label: localize('Oscar’s Grind'),
+        rs_strategy_type: `oscar's-grind`,
         description: OSCARS_GRIND,
         fields: [
             [
@@ -261,6 +278,7 @@ export const STRATEGIES: TStrategies = {
     REVERSE_MARTINGALE: {
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
+        rs_strategy_type: 'reverse martingale',
         description: REVERSE_MARTINGALE,
         fields: [
             [
@@ -278,12 +296,22 @@ export const STRATEGIES: TStrategies = {
                 DURATION_TYPE,
                 DURATION,
             ],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_REVERSE_MARTINGALE_SIZE,
+                SIZE,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+            ],
         ],
     },
     REVERSE_D_ALEMBERT: {
         name: 'reverse_dalembert',
         label: localize('Reverse D’Alembert'),
+        rs_strategy_type: `reverse d'alembert`,
         description: REVERSE_D_ALEMBERT,
         fields: [
             [
@@ -301,12 +329,13 @@ export const STRATEGIES: TStrategies = {
                 DURATION_TYPE,
                 DURATION,
             ],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_DALEMBERT_UNIT, UNIT, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_REVERSE_DALEMBERT_UNIT, UNIT, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
     STRATEGY_1_3_2_6: {
         name: '1_3_2_6',
         label: localize('1-3-2-6'),
+        rs_strategy_type: '1-3-2-6',
         description: STRATEGY_1_3_2_6,
         fields: [
             [

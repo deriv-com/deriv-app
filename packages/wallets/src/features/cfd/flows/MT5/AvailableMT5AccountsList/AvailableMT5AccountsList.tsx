@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../helpers/urls';
@@ -37,29 +37,21 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { description, title } = MarketTypeDetails[account.market_type || 'all'];
     const { t } = useTranslation();
 
+    const onButtonClick = useCallback(() => {
+        activeWallet?.is_virtual
+            ? show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />)
+            : show(<JurisdictionModal />);
+        setModalState('marketType', account.market_type);
+    }, [activeWallet?.is_virtual, show, account.market_type, account.platform, setModalState]);
+
     return (
         <TradingAccountCard
-            leading={() => <MT5AccountIcon account={account} />}
-            trailing={() => (
-                <WalletButton
-                    color='primary-light'
-                    onClick={() => {
-                        setModalState('marketType', account.market_type);
-                        show(
-                            activeWallet?.is_virtual ? (
-                                <MT5PasswordModal
-                                    marketType={account?.market_type || 'synthetic'}
-                                    platform={account.platform}
-                                />
-                            ) : (
-                                <JurisdictionModal />
-                            )
-                        );
-                    }}
-                >
-                    {t('Get')}
+            leading={<MT5AccountIcon account={account} />}
+            trailing={
+                <WalletButton color='primary-light' onClick={onButtonClick}>
+                    {t(' Get')}
                 </WalletButton>
-            )}
+            }
         >
             <div className='wallets-available-mt5__details'>
                 <p className='wallets-available-mt5__details-title'>{title}</p>

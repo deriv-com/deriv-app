@@ -1,4 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
+import { THooks, TPlatforms } from '@/types';
+import { DummyComponent } from '@cfd/components';
+import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
+import { CTraderSuccessModal, DxtradePasswordModal, MT5PasswordModal } from '@cfd/modals';
 import {
     useActiveTradingAccount,
     useAuthentication,
@@ -7,12 +11,7 @@ import {
     useSettings,
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
-import { THooks, TPlatforms } from '../../../../types';
-import { DummyComponent } from '../../components/DummyComponent';
-import { Category, CFDPlatforms, MarketType } from '../../constants';
-import { DxtradePasswordModal } from '../../modals';
-import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
+import { Button } from '@deriv-com/ui';
 import {
     getAccountVerificationStatus,
     shouldRestrictBviAccountCreation,
@@ -94,15 +93,14 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
 
     const onClickAdd = () => {
         if (platform === CFDPlatforms.MT5) {
-            // Going to remove Placeholder once the MT5PasswordModal
-            // and Verification flow is implemented
+            // Going to remove Placeholder once Verification flow is implemented
             if (isAccountStatusVerified) show(<DummyComponent />);
 
-            // if (isAccountStatusVerified) {
-            //     show(<MT5PasswordModal)
-            // } else {
-            //     show(<Verifaication />);
-            // }
+            if (isAccountStatusVerified) {
+                show(<MT5PasswordModal />);
+            } else {
+                // show(<Verifaication />);
+            }
         } else if (platform === CFDPlatforms.DXTRADE) {
             show(<DxtradePasswordModal />);
         } else {
@@ -116,9 +114,9 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
         }
     };
     return (
-        <div className='h-2000 m-1000 w-[calc(100%-40px)]'>
+        <div className='h-40 m-20 w-[calc(100%-40px)]'>
             <Button
-                className='text-system-light-primary-background'
+                className='w-full text-center text-system-light-primary-background'
                 data-testid='dt_compare_cfd_account_button'
                 disabled={isAccountAdded}
                 onClick={onClickAdd}

@@ -28,7 +28,8 @@ test.describe('Wallets - Crypto withdrawal', () => {
 
         await page.goto(`${baseURL}/wallets`);
 
-        await page.click('.wallets-accordion:nth-child(2) .wallets-accordion__dropdown');
+        await page.click('.wallets-textfield__field--listcard');
+        await page.click('#downshift-0-item-1');
     });
 
     test('render withdrawal form with all elements', async ({ baseURL, page }) => {
@@ -238,7 +239,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
 
         await expect(
             page.locator('.wallets-withdrawal-crypto-amount-converter .wallets-textfield:first-child')
-        ).toHaveClass('wallets-textfield wallets-textfield--error');
+        ).toHaveClass('wallets-textfield  wallets-textfield--error');
         await expect(
             page.locator(
                 '.wallets-withdrawal-crypto-amount-converter .wallets-textfield:first-child .wallets-textfield__message-container--msg'
@@ -255,7 +256,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
 
         await expect(
             page.locator('.wallets-withdrawal-crypto-amount-converter .wallets-textfield:first-child')
-        ).toHaveClass('wallets-textfield wallets-textfield--error');
+        ).toHaveClass('wallets-textfield  wallets-textfield--error');
         await expect(
             page.locator(
                 '.wallets-withdrawal-crypto-amount-converter .wallets-textfield:first-child .wallets-textfield__message-container--msg'

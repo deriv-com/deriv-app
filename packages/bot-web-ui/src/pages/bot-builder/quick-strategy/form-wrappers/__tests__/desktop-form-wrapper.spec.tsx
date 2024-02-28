@@ -37,6 +37,8 @@ window.Blockly = {
     },
 };
 
+const onClickClose = jest.fn();
+
 describe('<DesktopFormWrapper />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
     const mock_onSubmit = jest.fn();
@@ -60,7 +62,7 @@ describe('<DesktopFormWrapper />', () => {
 
     it('renders the DesktopFormWrapper component', () => {
         const { container } = render(
-            <DesktopFormWrapper>
+            <DesktopFormWrapper onClickClose={onClickClose}>
                 <div>test</div>
             </DesktopFormWrapper>,
             {
@@ -73,7 +75,7 @@ describe('<DesktopFormWrapper />', () => {
 
     it('should close the form', () => {
         render(
-            <DesktopFormWrapper>
+            <DesktopFormWrapper onClickClose={onClickClose}>
                 <div>test</div>
             </DesktopFormWrapper>,
             {
@@ -84,13 +86,13 @@ describe('<DesktopFormWrapper />', () => {
 
         const close_button = screen.getByTestId('qs-desktop-close-button');
         userEvent.click(close_button);
-        expect(mock_DBot_store?.quick_strategy.is_open).toBeFalsy();
+        expect(onClickClose).toBeCalled();
     });
 
     it('should change the selected strategy', () => {
         mock_DBot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
         render(
-            <DesktopFormWrapper>
+            <DesktopFormWrapper onClickClose={onClickClose}>
                 <div>test</div>
             </DesktopFormWrapper>,
             {
@@ -106,7 +108,7 @@ describe('<DesktopFormWrapper />', () => {
 
     it('should submit the form on edit', async () => {
         render(
-            <DesktopFormWrapper>
+            <DesktopFormWrapper onClickClose={onClickClose}>
                 <div>test</div>
             </DesktopFormWrapper>,
             {
@@ -121,7 +123,7 @@ describe('<DesktopFormWrapper />', () => {
 
     it('should submit the form', async () => {
         render(
-            <DesktopFormWrapper>
+            <DesktopFormWrapper onClickClose={onClickClose}>
                 <div>
                     <textarea />
                 </div>

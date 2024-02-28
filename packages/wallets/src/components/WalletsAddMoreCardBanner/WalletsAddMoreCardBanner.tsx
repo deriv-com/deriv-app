@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet, useDerivAccountsList } from '@deriv/api';
+import { useCreateWallet, useDerivAccountsList } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import CheckIcon from '../../public/images/check.svg';
@@ -34,7 +34,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 <WalletButton color='black' onClick={() => modal.hide()} variant='outlined'>
                     Maybe later
                 </WalletButton>
-                <WalletButton onClick={() => history.push('wallets/cashier/deposit')}>Deposit now</WalletButton>
+                <WalletButton onClick={() => history.push('/wallets/cashier/deposit')}>Deposit now</WalletButton>
             </div>
         ),
         [history] // eslint-disable-line react-hooks/exhaustive-deps
@@ -60,7 +60,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                         displayBalance={data?.display_balance ?? `0.00 ${data?.currency}`}
                         landingCompany={data?.landing_company_shortcode}
                         onPrimaryButtonClick={() => {
-                            history.push('wallets/cashier/deposit');
+                            history.push('/wallets/cashier/deposit');
                             modal.hide();
                         }}
                         onSecondaryButtonClick={() => modal.hide()}

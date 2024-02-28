@@ -176,6 +176,12 @@ export const Modals = {
                 /* webpackChunkName: "order-details-confirm-modal" */ 'Components/modal-manager/modals/order-details-confirm-modal'
             )
     ),
+    OrderTimeTooltipModal: React.lazy(
+        () =>
+            import(
+                /* webpackChunkName: "order-time-tooltip-modal" */ 'Components/modal-manager/modals/order-time-tooltip-modal'
+            )
+    ),
     QuickAddModal: React.lazy(
         () => import(/* webpackChunkName: "quick-add-modal" */ 'Components/modal-manager/modals/quick-add-modal')
     ),

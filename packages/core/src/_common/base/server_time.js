@@ -1,10 +1,10 @@
 const moment = require('moment');
 const BinarySocket = require('./socket_base');
-const PromiseClass = require('../utility').PromiseClass;
+const PromiseUtils = require('@deriv-com/utils').PromiseUtils;
 
 const ServerTime = (() => {
     let clock_started = false;
-    const pending = new PromiseClass();
+    const pending = PromiseUtils.createPromise();
     let server_time, performance_request_time, get_time_interval, update_time_interval, onTimeUpdated;
 
     const init = fncTimeUpdated => {

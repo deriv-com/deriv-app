@@ -406,13 +406,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
     padding: 0 0.8rem;
     display: flex;
     flex-direction: column;
-    height: 212px;
+    height: 218px;
     position: relative;
     z-index: 2;
 
     .trade-container--accumulators &,
     .trade-container--turbos & {
-        height: 24.8rem;
+        height: 25.4rem;
     }
     &__content-loader {
         position: absolute;
@@ -486,9 +486,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
     .smartcharts-mobile {
         .sc-categorical-display {
             height: calc(100% - 8px) !important;
-        }
-        .ciq-chart {
-            padding: 0 0.8rem;
         }
     }
     .cq-context {

@@ -106,6 +106,9 @@ const AddressDetails = observer(
         };
 
         const handleValidate = (values: TAddressDetailFormProps) => {
+            const current_step = (getCurrentStep?.() || 1) - 1;
+            onSave(current_step, values);
+
             const { errors } = splitValidationResultTypes(validate(values));
             return errors;
         };

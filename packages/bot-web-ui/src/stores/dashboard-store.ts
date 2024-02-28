@@ -44,12 +44,16 @@ export interface IDashboardStore {
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     setStrategySaveType: (param: string) => void;
+    setFaqTitle: (param: string) => void;
+    faq_title: string;
     show_toast: boolean;
     show_mobile_tour_dialog: boolean;
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;
     toast_message: string;
     is_chart_modal_visible: boolean;
+    is_trading_view_modal_visible: boolean;
+    setPreviewOnPopup: (is_preview_on_popup: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -84,6 +88,8 @@ export default class DashboardStore implements IDashboardStore {
             setActiveTabTutorial: action.bound,
             setWebSocketState: action.bound,
             setFAQSearchValue: action.bound,
+            faq_title: observable,
+            setFaqTitle: action.bound,
             setFileLoaded: action.bound,
             setInfoPanelVisibility: action.bound,
             setIsFileSupported: action.bound,
@@ -106,6 +112,7 @@ export default class DashboardStore implements IDashboardStore {
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
             is_chart_modal_visible: observable,
+            is_trading_view_modal_visible: observable,
         });
         this.root_store = root_store;
         this.core = core;
@@ -219,6 +226,12 @@ export default class DashboardStore implements IDashboardStore {
     quick_strategy_tab_content = quick_strategy_content;
     filtered_tab_list = [];
     is_chart_modal_visible = false;
+    is_trading_view_modal_visible = false;
+    faq_title = '';
+
+    setFaqTitle = (faq_title: string) => {
+        this.faq_title = faq_title;
+    };
 
     resetTutorialTabContent = () => {
         this.guide_tab_content = user_guide_content;
@@ -289,6 +302,10 @@ export default class DashboardStore implements IDashboardStore {
 
     setChartModalVisibility = () => {
         this.is_chart_modal_visible = !this.is_chart_modal_visible;
+    };
+
+    setTradingViewModalVisibility = () => {
+        this.is_trading_view_modal_visible = !this.is_trading_view_modal_visible;
     };
 
     setIsFileSupported = (is_file_supported: boolean) => {

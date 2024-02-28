@@ -40,7 +40,7 @@ export const getMT5Title = (account_type: string) => {
 
 type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -452,7 +452,9 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 };
 
 export const mt5_community_url =
-    'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';
+    'https://community.deriv.com/t/mt5-new-server-name-and-mobile-app-re-login-guide/70617';
+
+export const mt5_help_centre_url = '/help-centre/dmt5/#log-in-to-my-Deriv-MT5-account';
 
 export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
     let formatted_label = '';

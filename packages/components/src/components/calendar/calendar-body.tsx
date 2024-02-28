@@ -6,16 +6,17 @@ type TBodyProps = CommonPropTypes & {
     calendar_view: string;
     date_format: string;
     disabled_days?: number[];
-    start_date: string;
+    start_date?: string;
     events?: Array<{
         dates: string[];
         descrip: string;
     }>;
     has_range_selection?: boolean;
-    hovered_date: string | null;
+    hide_others?: boolean;
+    hovered_date?: string | null;
     onMouseLeave?: React.MouseEventHandler<HTMLSpanElement>;
     onMouseOver?: React.MouseEventHandler<HTMLSpanElement>;
-    should_show_today: boolean;
+    should_show_today?: boolean;
 };
 
 const Body = (props: TBodyProps) => {

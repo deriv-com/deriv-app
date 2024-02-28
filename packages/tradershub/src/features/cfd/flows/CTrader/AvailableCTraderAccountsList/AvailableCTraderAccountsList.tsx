@@ -6,19 +6,21 @@ import {
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '@/components';
-import { getStaticUrl } from '@/helpers';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
 import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
+import { URLUtils } from '@deriv-com/utils';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
     <IconComponent
         icon='CTrader'
         onClick={() => {
-            window.open(getStaticUrl('/deriv-ctrader'));
+            window.open(getDerivStaticURL('/deriv-ctrader'));
         }}
     />
 );

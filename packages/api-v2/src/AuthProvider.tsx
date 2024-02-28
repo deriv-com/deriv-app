@@ -27,9 +27,9 @@ type AuthProviderProps = {
     loginIDKey?: string;
 };
 
-async function waitForLoginAndToken(loginid?: string): Promise<any> {
+async function waitForLoginAndToken(loginIDKey?: string): Promise<any> {
     const checkLogin = (resolve: (value: any) => void, reject: (reason?: any) => void) => {
-        const loginId = getActiveLoginIDFromLocalStorage(loginid);
+        const loginId = getActiveLoginIDFromLocalStorage(loginIDKey);
         const token = getToken(loginId as string);
         if (loginId && token) {
             resolve({
@@ -62,7 +62,7 @@ const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { standalone, queryClient } = useAPIContext();
+    const { setReconnect, standalone, queryClient } = useAPIContext();
 
     const activeLoginId = localStorage.getItem(loginIDKey ?? 'active_loginid') ?? undefined;
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginId));
@@ -77,7 +77,7 @@ const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
         setIsLoading(true);
         setIsSuccess(false);
 
-        waitForLoginAndToken(activeLoginId).then(({ token }) => {
+        waitForLoginAndToken(loginIDKey).then(({ token }) => {
             setIsLoading(true);
             setIsFetching(true);
             mutateAsync({ payload: { authorize: token || '' } })
@@ -127,6 +127,10 @@ const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
         },
         [environment, standalone]
     );
+
+    useEffect(() => {
+        setReconnect(true);
+    }, [environment, setReconnect]);
 
     const refetch = useCallback(() => {
         switchAccount(loginid as string);

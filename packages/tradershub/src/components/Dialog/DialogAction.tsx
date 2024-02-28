@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { DialogActionClass, DialogActionProps } from './Dialog.classnames';
 
 /**
@@ -18,7 +18,7 @@ export interface TDialogActions extends DialogActionProps {
  * @returns {JSX.Element} The DialogAction component.
  */
 const DialogAction = ({ align, children, className }: TDialogActions) => (
-    <div className={clsx(DialogActionClass({ align }), className)}>{children}</div>
+    <div className={twMerge(DialogActionClass({ align }), className)}>{children}</div>
 );
 
 export default DialogAction;

@@ -29,7 +29,7 @@ export const getManualUploadDocumentList = (isNimcRequired: boolean): TDocumentT
             description: 'Upload the front and back of your identity card.',
             icon: IcPoiIdentityCard,
             title: 'Identity card',
-            value: 'document_id',
+            value: 'national_identity_card',
         },
     ];
 

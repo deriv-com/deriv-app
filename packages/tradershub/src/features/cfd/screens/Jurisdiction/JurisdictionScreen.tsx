@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
-import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { Jurisdiction } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
@@ -45,7 +45,7 @@ const JurisdictionScreen = ({
 
     return (
         <div
-            className={clsx(
+            className={twMerge(
                 `flex flex-col w-full p-16 items-center justify-between transition-all ease-in duration-[0.6s] sm:p-40`,
                 isDynamicLeverageVisible &&
                     '[transform:rotateY(-180deg)] h-[700px] opacity-0 bg-system-light-primary-background'

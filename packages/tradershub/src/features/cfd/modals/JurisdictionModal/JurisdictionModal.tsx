@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { Modal } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
@@ -53,7 +53,7 @@ const JurisdictionModal = () => {
             <Modal className='overflow-y-hidden bg-background-primary-container'>
                 {!isDynamicLeverageVisible ? <Modal.Header title={jurisdictionTitle} /> : null}
                 <Modal.Content
-                    className={clsx(
+                    className={twMerge(
                         `sm:p-0 flex flex-col sm:relative sm:pb-[20rem] ${
                             marketType === MarketType.FINANCIAL
                                 ? 'lg:w-[1200px] lg:h-[650px]'

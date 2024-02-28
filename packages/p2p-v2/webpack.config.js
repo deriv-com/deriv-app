@@ -185,7 +185,7 @@ module.exports = function (env) {
         resolve: {
             alias: {
                 '@': path.resolve(__dirname, 'src'),
-                '@deriv/api': path.resolve(__dirname, '../node_modules/@deriv/api'),
+                '@deriv/api': path.resolve(__dirname, './node_modules/@deriv/api'),
             },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },

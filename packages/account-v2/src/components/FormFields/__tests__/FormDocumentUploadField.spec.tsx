@@ -20,8 +20,7 @@ describe('FormDocumentUploadField', () => {
 
     it('renders without errors', () => {
         render(
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            <Formik initialValues={{ document: null }} onSubmit={() => {}} validationSchema={validationSchema}>
+            <Formik initialValues={{ document: null }} onSubmit={jest.fn()} validationSchema={validationSchema}>
                 <FormDocumentUploadField
                     icon={null}
                     name='document'

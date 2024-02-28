@@ -7,8 +7,7 @@ import FormInputField from '../FormInputField';
 describe('FormInputField', () => {
     it('should render the Input field', () => {
         render(
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            <Formik initialValues={{}} onSubmit={() => {}}>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <Form>
                     <FormInputField label='testField' name='testField' />
                 </Form>
@@ -23,8 +22,7 @@ describe('FormInputField', () => {
     it('should update the field value when user types', () => {
         let formValues = { testField: '' };
         render(
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            <Formik initialValues={{ testField: '' }} onSubmit={() => {}}>
+            <Formik initialValues={{ testField: '' }} onSubmit={jest.fn()}>
                 {({ values }) => {
                     formValues = values;
                     return (

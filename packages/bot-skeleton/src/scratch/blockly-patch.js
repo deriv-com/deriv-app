@@ -1,5 +1,5 @@
 /* eslint-disable */
-/* This is a patch file to make the lastest version work
+/* This is a patch file to make the lastest version
 of blockly to work since we are moving from version 3 to 10
 */
 import { initializeOrderValues, sanitizeCodeForLastestBlockly } from './shared';

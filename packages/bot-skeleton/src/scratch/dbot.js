@@ -234,7 +234,7 @@ class DBot {
         if (api_base.is_stopping) return;
 
         try {
-            const code = Blockly?.JavaScript?.definitions_?.variables + this.generateCode();
+            const code = this.generateCode();
             api_base.is_stopping = false;
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
@@ -261,6 +261,7 @@ class DBot {
      */
     generateCode(limitations = {}) {
         return `
+            ${Blockly?.JavaScript?.definitions_?.variables}
             var BinaryBotPrivateInit;
             var BinaryBotPrivateStart;
             var BinaryBotPrivateBeforePurchase; 
@@ -326,10 +327,16 @@ class DBot {
                     break;
                 }
             }
-            ${['mathMedian', 'mathRandomInt', 'mathMean', 'subsequenceFromEndFromEnd', 'subsequenceFromEndLast', 'listsRepeat']
+            ${[
+                'mathMedian',
+                'mathRandomInt',
+                'mathMean',
+                'subsequenceFromEndFromEnd',
+                'subsequenceFromEndLast',
+                'listsRepeat',
+            ]
                 .map(func => Blockly?.JavaScript?.definitions_?.[func] || '')
-                .join('')
-            }`;
+                .join('')}`;
     }
 
     /**

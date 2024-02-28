@@ -23,20 +23,19 @@ export const getContractTypeOptions = (contract_type, trade_type) => {
     return contract_options;
 };
 
-export const sanitizeCodeForLastestBlockly = (code) => {
+export const sanitizeCodeForLastestBlockly = code => {
     /* eslint-disable no-param-reassign */
-    code = code?.replace(/^\s+\n/, '');
-    code = code?.replace(/undefined/g, '');
+    code = code?.replace(/^\s+\n/, ''); // Remove leading whitespace and newline characters.
+    code = code?.replace(/undefined/g, ''); // Remove occurrences of the string "undefined".
 
-    code = code?.replace(/\n\s+$/, '\n');
-    code = code?.replace(/[ \t]+\n/g, '\n');
-    code = code?.replace(/\s/g, '');
-    code = code?.replace(/function/g, 'function ');
-    code = code?.replace(/return/g, 'return ');
-    code = code?.replace(/var/g, 'var ');
+    code = code?.replace(/\n\s+$/, '\n'); // Remove trailing whitespace after newlines.
+    code = code?.replace(/[ \t]+\n/g, '\n'); // Remove extra spaces or tabs before newlines.
+    code = code?.replace(/\s+/g, ' '); // Replace consecutive whitespaces with a single space.
+    code = code?.replace(/function\s+[A-Za-z_][A-Za-z0-9_]*\(.*\)/g, '\n$&'); // Insert a newline before function definition.
+    code = code?.replace(/\b(function|return|var)\b/g, '$1 '); // Add space after keywords "function", "return", and "var".
     return code;
     /* eslint-disable no-param-reassign */
-}
+};
 
 export function initializeOrderValues() {
     return {

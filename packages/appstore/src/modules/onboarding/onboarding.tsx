@@ -126,7 +126,9 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         if (is_logged_in && is_landing_company_loaded && !skip_onboarding_flow) {
             trackOnboardingOpen();
         }
-    }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen, skip_onboarding_flow]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen]);
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;

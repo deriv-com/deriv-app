@@ -3780,7 +3780,7 @@
     "-565990678": "Ihr Vertrag läuft an diesem Datum (in GMT) aus, basierend auf der von Ihnen gewählten Endzeit.",
     "-1545819495": "Ihr Handel wird automatisch zum nächstgelegenen verfügbaren Anlagepreis geschlossen, wenn Ihr Verlust einen bestimmten Prozentsatz Ihres Einsatzes erreicht, Ihr Verlust jedoch niemals Ihren Einsatz übersteigt. Dieser Prozentsatz hängt vom ausgewählten Basiswert und dem Multiplier ab.",
     "-468501352": "Wenn Sie diese Funktion auswählen, wird Ihr Handel automatisch zum nächstgelegenen verfügbaren Anlagepreis geschlossen, wenn Ihr Gewinn den Take-Profit-Betrag erreicht oder übersteigt. Je nach Marktpreis beim Abschluss kann Ihr Gewinn höher sein als der von Ihnen eingegebene Betrag.",
-    "-1789190266": "Wir verwenden den Next-Tick-Execution-Mechanismus, bei dem es sich um den nächsten Anlagepreis handelt, wenn die Handelseröffnung von unseren Servern für Major Pairs verarbeitet wird.",
+    "-1789190266": "Wir verwenden den Next-Tick-Execution-Mechanismus, d.h. den nächsten Asset-Kurs, wenn die Handelseröffnung von unseren Servern für die wichtigsten Paare verarbeitet wird.",
     "-1476381873": "Der aktuelle Vermögenspreis zum Zeitpunkt des Handelsabschlusses, der von unseren Servern verarbeitet wird.",
     "-148680560": "Spotpreis des letzten Ticks bei Erreichen des Verfalls.",
     "-1123926839": "Die Kontrakte laufen genau um 14:00:00 GMT an dem von Ihnen gewählten Verfallsdatum aus.",

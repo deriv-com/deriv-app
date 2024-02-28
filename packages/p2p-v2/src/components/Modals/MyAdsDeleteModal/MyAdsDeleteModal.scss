@@ -1,4 +1,5 @@
 .p2p-v2-my-ads-delete-modal {
+    @include p2p-v2-modal-styles;
     width: 44rem;
     @include mobile {
         width: 32.8rem;

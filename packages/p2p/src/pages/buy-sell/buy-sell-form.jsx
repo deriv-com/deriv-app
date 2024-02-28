@@ -168,8 +168,6 @@ const BuySellForm = props => {
         buy_sell_store.setSubmitForm(submitForm);
     }, [submitForm]);
 
-    // console.log(submitForm);
-
     return (
         <React.Fragment>
             {rate_type === ad_type.FLOAT && !should_disable_field && (

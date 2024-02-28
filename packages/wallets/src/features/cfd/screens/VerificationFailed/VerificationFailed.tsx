@@ -1,7 +1,9 @@
-import React from 'react';
-import { usePOA, usePOI } from '@deriv/api';
+import React, { FC } from 'react';
+import { THooks } from '../../../../types';
+import { usePOA, usePOI } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
+import { Verification } from '../../flows/Verification';
 import './VerificationFailed.scss';
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
@@ -10,8 +12,12 @@ const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
     return 'proof of address';
 };
 
-const VerificationFailed = () => {
-    const { hide } = useModal();
+type TVerificationFailedProps = {
+    selectedJurisdiction: THooks.MT5AccountsList['landing_company_short'];
+};
+
+const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction }) => {
+    const { hide, show } = useModal();
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
 
@@ -45,7 +51,12 @@ const VerificationFailed = () => {
                 <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
                     Maybe later
                 </WalletButton>
-                <WalletButton size='lg'>Resubmit documents</WalletButton>
+                <WalletButton
+                    onClick={() => show(<Verification selectedJurisdiction={selectedJurisdiction} />)}
+                    size='lg'
+                >
+                    Resubmit documents
+                </WalletButton>
             </div>
         </div>
     );

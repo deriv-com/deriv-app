@@ -45,7 +45,8 @@ const ProofOfAddressForm = observer(
         className,
     }: Partial<TProofOfAddressForm>) => {
         const { client, notifications, ui } = useStore();
-        const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list } = client;
+        const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list, is_eu } =
+            client;
         const {
             addNotificationMessageByKey: addNotificationByKey,
             removeNotificationMessage,
@@ -72,7 +73,7 @@ const ProofOfAddressForm = observer(
 
         const [should_scroll_to_top, setShouldScrollToTop] = React.useState(false);
 
-        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa'), []);
+        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa', is_eu), []);
 
         const { upload } = useFileUploader();
 

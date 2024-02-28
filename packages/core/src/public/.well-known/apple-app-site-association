@@ -24,7 +24,6 @@
                 "paths": [
                     "/cashier/p2p",
                     "/cashier/p2p/advertiser",
-                    "/redirect",
                     "/redirect/p2p"
                 ]
             },

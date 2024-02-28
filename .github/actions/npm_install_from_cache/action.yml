@@ -16,6 +16,7 @@ runs:
         node_modules
         packages/account/node_modules
         packages/api/node_modules
+        packages/api-v2/node_modules
         packages/appstore/node_modules
         packages/bot-skeleton/node_modules
         packages/bot-web-ui/node_modules
@@ -34,7 +35,8 @@ runs:
         packages/utils/node_modules
         packages/analytics/node_modules
         packages/wallets/node_modules
-      key: ${{ runner.os }}-build-master-cache-${{ hashFiles('./package-lock.json') }} 
+        packages/account-v2/node_modules
+      key: ${{ runner.os }}-build-master-cache-${{ hashFiles('./package-lock.json', './packages/*/package.json') }} 
   - name: Install npm packages
     if: steps.cache-nodemodules.outputs.cache-hit != 'true'
     run: npm run bootstrap

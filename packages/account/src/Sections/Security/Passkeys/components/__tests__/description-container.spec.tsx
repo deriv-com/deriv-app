@@ -18,7 +18,7 @@ describe('DescriptionContainer', () => {
         const description_4 =
             'Passkeys are saved in your Google password manager for Android devices and in iCloud keychain on iOS devices to help you sign in on other devices.';
         const description_5 =
-            'Even if you change your email address, you can still continue to log in to Deriv.com with the same passkey.';
+            'Even if you change your email address, you can still continue to log in to your Deriv account with the same passkey.';
 
         render(<DescriptionContainer />);
 

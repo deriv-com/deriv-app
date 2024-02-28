@@ -26,7 +26,9 @@ describe('PasskeysStatusContainer', () => {
 
                 const content = getStatusContent(status);
                 expect(screen.getByText(content.title.props.i18n_default_text)).toBeInTheDocument();
-                expect(screen.getByText(content.primary_button_text.props.i18n_default_text)).toBeInTheDocument();
+                expect(
+                    screen.getByRole('button', { name: content.primary_button_text.props.i18n_default_text })
+                ).toBeInTheDocument();
 
                 if (content.secondary_button_text) {
                     expect(

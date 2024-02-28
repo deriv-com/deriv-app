@@ -5,8 +5,8 @@ import { mockLocalStorageBeforeEachTest, restoreLocalStorageAfterEachTest } from
 import useWalletAccountSwitcher from '../useWalletAccountSwitcher';
 
 const mockSwitchAccount = jest.fn();
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useAuthorize: () => ({
         data: {
             email: 'test@gmail.com',

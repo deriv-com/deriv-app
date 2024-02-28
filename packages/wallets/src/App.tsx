@@ -8,7 +8,7 @@ import './translations/i18n';
 
 const App: React.FC = () => (
     <APIProvider standalone>
-        <AuthProvider customLoginIDKey='active_wallet_loginid'>
+        <AuthProvider loginIDKey='active_wallet_loginid'>
             <ModalProvider>
                 <AppContent />
             </ModalProvider>

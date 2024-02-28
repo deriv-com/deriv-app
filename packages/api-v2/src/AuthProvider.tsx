@@ -7,7 +7,7 @@ import { TSocketResponseData } from '../types';
 
 // Define the type for the context state
 type AuthContextType = {
-    customLoginIDKey?: string;
+    loginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
     switchAccount: (loginid: string) => void;
     switchEnvironment: (loginid: string | null | undefined) => void;
@@ -24,7 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
     children: React.ReactNode;
-    customLoginIDKey?: string;
+    loginIDKey?: string;
 };
 
 async function waitForLoginAndToken(loginid?: string): Promise<any> {
@@ -57,14 +57,14 @@ const getEnvironment = (loginid: string | null | undefined) => {
     return 'demo';
 };
 
-const AuthProvider = ({ customLoginIDKey, children }: AuthProviderProps) => {
+const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
 
     const { standalone, queryClient } = useAPIContext();
 
-    const activeLoginId = localStorage.getItem(customLoginIDKey ?? 'active_loginid') ?? undefined;
+    const activeLoginId = localStorage.getItem(loginIDKey ?? 'active_loginid') ?? undefined;
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginId));
 
     const [isLoading, setIsLoading] = useState(true);
@@ -111,7 +111,7 @@ const AuthProvider = ({ customLoginIDKey, children }: AuthProviderProps) => {
                 setData(res);
                 setIsLoading(false);
 
-                localStorage.setItem(customLoginIDKey ?? 'active_loginid', newLoginid);
+                localStorage.setItem(loginIDKey ?? 'active_loginid', newLoginid);
             });
         },
         [loginid]

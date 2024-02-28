@@ -46,7 +46,7 @@ const JurisdictionScreen = ({
     return (
         <div
             className={clsx(
-                `flex flex-col w-full p-16 items-center justify-between transition-all ease-in duration-[0.6s]`,
+                `flex flex-col w-full p-16 items-center justify-between transition-all ease-in duration-[0.6s] sm:p-40`,
                 isDynamicLeverageVisible &&
                     '[transform:rotateY(-180deg)] h-[700px] opacity-0 bg-system-light-primary-background'
             )}

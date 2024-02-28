@@ -20,12 +20,12 @@ const MT5AccountTypeModal = () => {
             </Modal.Content>
             <Modal.Footer>
                 <Button
+                    className='h-40 rounded-xs'
                     disabled={!selectedMarketType}
                     onClick={() => {
                         setCfdState('marketType', selectedMarketType);
                         show(<JurisdictionModal />);
                     }}
-                    size='md'
                 >
                     Next
                 </Button>

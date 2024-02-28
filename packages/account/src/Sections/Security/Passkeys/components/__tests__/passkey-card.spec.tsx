@@ -4,7 +4,7 @@ import PasskeyCard from '../passkey-card';
 
 describe('PasskeyCard', () => {
     it('renders the passkey card correctly', () => {
-        const mock_card = {
+        const mock_card: React.ComponentProps<typeof PasskeyCard> = {
             id: 1,
             name: 'Test Passkey',
             last_used: 1633024800,

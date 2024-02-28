@@ -23,27 +23,23 @@ const PasskeyModal = ({
     transition_timeout,
     has_close_icon,
     toggleModal,
-}: TPasskeyModal) => {
-    return (
-        <React.Fragment>
-            <Modal
-                portalId='modal_root_absolute'
-                transition_timeout={transition_timeout}
-                header={header}
-                is_open={is_modal_open}
-                toggleModal={toggleModal}
-                has_close_icon={has_close_icon}
-                className={className}
-            >
-                <Modal.Body>{description}</Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={onButtonClick} large primary>
-                        {button_text}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </React.Fragment>
-    );
-};
+}: TPasskeyModal) => (
+    <Modal
+        portalId='modal_root_absolute'
+        transition_timeout={transition_timeout}
+        header={header}
+        is_open={is_modal_open}
+        toggleModal={toggleModal}
+        has_close_icon={has_close_icon}
+        className={className}
+    >
+        <Modal.Body>{description}</Modal.Body>
+        <Modal.Footer>
+            <Button onClick={onButtonClick} large primary>
+                {button_text}
+            </Button>
+        </Modal.Footer>
+    </Modal>
+);
 
 export default PasskeyModal;

@@ -14,19 +14,17 @@ const PasskeysFooterButtons = ({
     onPrimaryButtonClick,
     secondary_button_text,
     onSecondaryButtonClick,
-}: TPasskeysFooterButtons) => {
-    return (
-        <FormFooter className='passkeys-status__footer'>
-            {secondary_button_text && (
-                <Button type='button' has_effect secondary onClick={onSecondaryButtonClick} large>
-                    {secondary_button_text}
-                </Button>
-            )}
-            <Button type='button' has_effect primary onClick={onPrimaryButtonClick}>
-                {primary_button_text}
+}: TPasskeysFooterButtons) => (
+    <FormFooter className='passkeys-status__footer'>
+        {secondary_button_text && (
+            <Button type='button' has_effect secondary onClick={onSecondaryButtonClick} large>
+                {secondary_button_text}
             </Button>
-        </FormFooter>
-    );
-};
+        )}
+        <Button type='button' has_effect primary onClick={onPrimaryButtonClick}>
+            {primary_button_text}
+        </Button>
+    </FormFooter>
+);
 
 export default PasskeysFooterButtons;

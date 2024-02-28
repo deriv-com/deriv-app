@@ -3,7 +3,7 @@ import { Icon, Text } from '@deriv/components';
 import { getLongDate } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-//TODO need to check api types and grab from there after BE implementation
+//TODO need to check api types and grab from there after API implementation
 type TPasskeyCard = {
     id?: number;
     name: string;

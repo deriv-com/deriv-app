@@ -6,11 +6,12 @@ import { APIProvider } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
+import PasskeysList from '../components/passkeys-list';
 
 const passkey_name_1 = 'Test Passkey 1';
 const passkey_name_2 = 'Test Passkey 2';
 
-const mock_passkeys_list = [
+const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_list'] = [
     {
         id: 1,
         name: passkey_name_1,

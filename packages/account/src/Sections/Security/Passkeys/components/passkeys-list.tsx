@@ -10,22 +10,20 @@ type TPasskeysList = {
     onSecondaryButtonClick: () => void;
 };
 
-const PasskeysList = ({ passkeys_list, onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysList) => {
-    return (
-        <React.Fragment>
-            <FormBody scroll_offset='16rem'>
-                {passkeys_list.map(passkey => (
-                    <PasskeyCard {...passkey} key={passkey.passkey_id} />
-                ))}
-            </FormBody>
-            <PasskeysFooterButtons
-                onSecondaryButtonClick={onSecondaryButtonClick}
-                onPrimaryButtonClick={onPrimaryButtonClick}
-                primary_button_text={<Localize i18n_default_text='Create passkey' />}
-                secondary_button_text={<Localize i18n_default_text='Learn more' />}
-            />
-        </React.Fragment>
-    );
-};
+const PasskeysList = ({ passkeys_list, onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysList) => (
+    <React.Fragment>
+        <FormBody scroll_offset='16rem'>
+            {passkeys_list.map(passkey => (
+                <PasskeyCard {...passkey} key={passkey.passkey_id} />
+            ))}
+        </FormBody>
+        <PasskeysFooterButtons
+            onSecondaryButtonClick={onSecondaryButtonClick}
+            onPrimaryButtonClick={onPrimaryButtonClick}
+            primary_button_text={<Localize i18n_default_text='Create passkey' />}
+            secondary_button_text={<Localize i18n_default_text='Learn more' />}
+        />
+    </React.Fragment>
+);
 
 export default PasskeysList;

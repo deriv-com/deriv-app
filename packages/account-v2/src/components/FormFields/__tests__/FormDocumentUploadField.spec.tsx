@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import * as Yup from 'yup';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FormDocumentUploadField from '../FormDocumentUploadField';
@@ -14,13 +13,9 @@ afterAll(() => {
 });
 
 describe('FormDocumentUploadField', () => {
-    const validationSchema = Yup.object().shape({
-        document: Yup.mixed().required('Document is required'),
-    });
-
     it('renders without errors', () => {
         render(
-            <Formik initialValues={{ document: null }} onSubmit={jest.fn()} validationSchema={validationSchema}>
+            <Formik initialValues={{ document: null }} onSubmit={jest.fn()}>
                 <FormDocumentUploadField
                     icon={null}
                     name='document'
@@ -36,7 +31,7 @@ describe('FormDocumentUploadField', () => {
         const onSubmit = jest.fn();
         let formValues = { document: null };
         render(
-            <Formik initialValues={{ document: null }} onSubmit={onSubmit} validationSchema={validationSchema}>
+            <Formik initialValues={{ document: null }} onSubmit={onSubmit}>
                 {({ values }) => {
                     formValues = values;
                     return (

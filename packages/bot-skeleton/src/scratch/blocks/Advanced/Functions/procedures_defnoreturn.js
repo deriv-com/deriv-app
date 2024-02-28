@@ -344,5 +344,5 @@ Blockly.JavaScript.procedures_defnoreturn = block => {
     // Add % so as not to collide with helper functions in definitions list.
     // eslint-disable-next-line no-underscore-dangle
     Blockly.JavaScript.definitions_[`%${functionName}`] = code;
-    return code;
+    return null;
 };

@@ -7,8 +7,10 @@ import { TSocketResponseData } from '../types';
 
 // Define the type for the context state
 type AuthContextType = {
+    customLoginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
     switchAccount: (loginid: string) => void;
+    switchEnvironment: (loginid: string | null | undefined) => void;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -22,6 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
     children: React.ReactNode;
+    customLoginIDKey: string;
 };
 
 async function waitForLoginAndToken(): Promise<any> {
@@ -41,12 +44,28 @@ async function waitForLoginAndToken(): Promise<any> {
     return new Promise<any>(checkLogin);
 }
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+/**
+ * Determines the WS environment based on the login ID and custom server URL.
+ * @param {string | null | undefined} loginid - The login ID (can be a string, null, or undefined).
+ * @returns {string} Returns the WS environment: 'custom', 'real', or 'demo'.
+ */
+const getEnvironment = (loginid: string | null | undefined) => {
+    const customServerURL = window.localStorage.getItem('config.server_url');
+    if (customServerURL) return 'custom';
+
+    if (loginid && !/^(VRT|VRW)/.test(loginid)) return 'real';
+    return 'demo';
+};
+
+const AuthProvider = ({ customLoginIDKey, children }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { customLoginIDKey, queryClient } = useAPIContext();
+    const { standalone, queryClient } = useAPIContext();
+
+    const activeLoginId = localStorage.getItem(customLoginIDKey ?? 'active_loginid');
+    const [environment, setEnvironment] = useState(getEnvironment(activeLoginId));
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -98,6 +117,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         [loginid]
     );
 
+    const switchEnvironment = useCallback(
+        (loginid: string | null | undefined) => {
+            if (!standalone) return;
+            const currentEnvironment = getEnvironment(loginid);
+            if (currentEnvironment !== 'custom' && currentEnvironment !== environment) {
+                setEnvironment(currentEnvironment);
+            }
+        },
+        [environment, standalone]
+    );
+
     const refetch = useCallback(() => {
         switchAccount(loginid as string);
     }, [loginid]);
@@ -106,6 +136,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         return {
             data,
             switchAccount,
+            switchEnvironment,
             refetch,
             isLoading,
             isError,
@@ -113,7 +144,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             isSuccess: isSuccess && !isLoading,
             error: isError,
         };
-    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess]);
+    }, [data, switchAccount, switchEnvironment, refetch, isLoading, isError, isFetching, isSuccess]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
@@ -25,10 +25,9 @@ type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
 type TUnsubscribeFunction = (id: string) => void;
 
 type APIContextData = {
-    customLoginIDKey?: string;
     derivAPI: DerivAPIBasic | null;
-    switchEnvironment: (loginid: string | null | undefined) => void;
     send: TSendFunction;
+    standalone: boolean;
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
     queryClient: QueryClient;
@@ -131,31 +130,14 @@ const initializeDerivAPI = (onWSClose: () => void): DerivAPIBasic => {
 
 const queryClient = getSharedQueryClientContext();
 
-/**
- * Determines the WS environment based on the login ID and custom server URL.
- * @param {string | null | undefined} loginid - The login ID (can be a string, null, or undefined).
- * @returns {string} Returns the WS environment: 'custom', 'real', or 'demo'.
- */
-const getEnvironment = (loginid: string | null | undefined) => {
-    const customServerURL = window.localStorage.getItem('config.server_url');
-    if (customServerURL) return 'custom';
-
-    if (loginid && !/^(VRT|VRW)/.test(loginid)) return 'real';
-    return 'demo';
-};
-
 type TAPIProviderProps = {
-    /** Custom loginid key to get current active account */
-    customLoginIDKey?: string;
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
 };
 
-const APIProvider = ({ children, customLoginIDKey, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
+const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
     const [reconnect, setReconnect] = useState(false);
-    const activeLoginId = localStorage.getItem(customLoginIDKey ?? 'active_loginid');
-    const [environment, setEnvironment] = useState(getEnvironment(activeLoginId));
     const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
     const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();
 
@@ -199,17 +181,6 @@ const APIProvider = ({ children, customLoginIDKey, standalone = false }: PropsWi
         };
     }, []);
 
-    const switchEnvironment = useCallback(
-        (loginid: string | null | undefined) => {
-            if (!standalone) return;
-            const currentEnvironment = getEnvironment(loginid);
-            if (currentEnvironment !== 'custom' && currentEnvironment !== environment) {
-                setEnvironment(currentEnvironment);
-            }
-        },
-        [environment, standalone]
-    );
-
     useEffect(() => {
         let interval_id: NodeJS.Timer;
 
@@ -230,15 +201,14 @@ const APIProvider = ({ children, customLoginIDKey, standalone = false }: PropsWi
         }
 
         return () => clearTimeout(reconnectTimerId);
-    }, [environment, reconnect, standalone]);
+    }, [reconnect, standalone]);
 
     return (
         <APIContext.Provider
             value={{
-                customLoginIDKey,
                 derivAPI: standalone ? standaloneDerivAPI.current : WS,
-                switchEnvironment,
                 send,
+                standalone,
                 subscribe,
                 unsubscribe,
                 queryClient,

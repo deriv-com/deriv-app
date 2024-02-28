@@ -231,7 +231,8 @@ const Interpreter = () => {
     }
 
     function run(code) {
-        console.log(code)
+        //kept this here for testing purpose
+        console.log(code); // eslint-disable-line no-console
         return new Promise((resolve, reject) => {
             const onError = e => {
                 if ($scope.stopped) {

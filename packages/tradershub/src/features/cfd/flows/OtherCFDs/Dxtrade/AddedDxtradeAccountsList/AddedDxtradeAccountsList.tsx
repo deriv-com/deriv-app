@@ -1,18 +1,20 @@
 import React, { Fragment } from 'react';
+import { IconComponent, TradingAccountCard } from '@/components';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
+import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
+import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
-import { IconComponent, TradingAccountCard } from '../../../../../../components';
-import { getStaticUrl } from '../../../../../../helpers/urls';
-import { CFDPlatforms, PlatformDetails } from '../../../../constants';
-import { TopUpModal, TradeModal } from '../../../../modals';
+import { URLUtils } from '@deriv-com/utils';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
     <IconComponent
         icon='DerivX'
         onClick={() => {
-            window.open(getStaticUrl('/derivx'));
+            window.open(getDerivStaticURL('/derivx'));
         }}
     />
 );

@@ -98,21 +98,27 @@ const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
     }, []);
 
     const switchAccount = useCallback(
-        (newLoginid: string) => {
-            if (newLoginid === loginid) {
-                return;
-            }
-
+        async (newLoginId: string) => {
+            if (newLoginId === loginid) return;
             queryClient.cancelQueries();
 
             setIsLoading(true);
-            mutateAsync({ payload: { authorize: getToken(newLoginid) || '' } }).then(res => {
-                setLoginid(newLoginid);
-                setData(res);
-                setIsLoading(false);
 
-                localStorage.setItem(loginIDKey ?? 'active_loginid', newLoginid);
-            });
+            const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
+            setLoginid(newLoginId);
+            setData(authorizeResponse);
+
+            const accountList = authorizeResponse.authorize?.account_list;
+            const linkedDtradeAccount = accountList
+                ?.find(account => account.loginid === newLoginId)
+                ?.linked_to?.find(linkedAccount => linkedAccount.platform === 'dtrade');
+
+            setIsLoading(false);
+
+            // set loginId for the current app
+            localStorage.setItem(loginIDKey ?? 'active_loginid', newLoginId);
+            // set loginId for the default app
+            if (linkedDtradeAccount?.loginid) localStorage.setItem('active_loginid', linkedDtradeAccount.loginid);
         },
         [loginid]
     );

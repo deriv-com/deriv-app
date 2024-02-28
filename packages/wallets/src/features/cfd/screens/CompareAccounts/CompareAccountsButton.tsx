@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import {
     useActiveWalletAccount,
     useAuthentication,
+    useAuthorize,
     useCreateOtherCFDAccount,
     useMT5AccountsList,
     useSettings,
@@ -10,7 +11,6 @@ import {
 } from '@deriv/api-v2';
 import { WalletButton, WalletError } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import useWalletAccountSwitcher from '../../../../hooks/useWalletAccountSwitcher';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
 import { Verification } from '../../flows/Verification';
@@ -35,7 +35,7 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
     const history = useHistory();
     const { show } = useModal();
 
-    const switchAccount = useWalletAccountSwitcher();
+    const { switchAccount } = useAuthorize();
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();
     const {

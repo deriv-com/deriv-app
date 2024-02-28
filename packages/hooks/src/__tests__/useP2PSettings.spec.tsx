@@ -4,13 +4,14 @@ import { P2PSettingsProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PSettings from '../useP2PSettings';
 
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <P2PSettingsProvider>{children}</P2PSettingsProvider>
+    </APIProvider>
+);
+
 describe('useP2PSettings', () => {
     it('should return an empty object if data is not available', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <P2PSettingsProvider>{children}</P2PSettingsProvider>
-            </APIProvider>
-        );
         const { result } = renderHook(() => useP2PSettings(), { wrapper });
         expect(result.current.p2p_settings).toEqual({});
     });
@@ -66,11 +67,6 @@ describe('useP2PSettings', () => {
 
         window.localStorage.setItem('p2p_settings', JSON.stringify(mockData));
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <P2PSettingsProvider>{children}</P2PSettingsProvider>
-            </APIProvider>
-        );
         const { result } = renderHook(() => useP2PSettings(), { wrapper });
         const p2p_settings = result.current.p2p_settings;
 

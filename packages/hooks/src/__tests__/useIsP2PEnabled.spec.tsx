@@ -1,4 +1,3 @@
-import { useFetch } from '@deriv/api';
 import { mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import { withMockAPIProvider } from '../mocks';

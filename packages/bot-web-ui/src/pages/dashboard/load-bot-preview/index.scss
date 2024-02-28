@@ -442,7 +442,7 @@
             padding: 0.8rem;
 
             .dc-icon {
-                margin-right: 0.8rem;
+                margin-inline-end: 0.8rem;
             }
         }
 
@@ -452,9 +452,9 @@
             padding: 0.8rem;
             justify-content: flex-end;
             &__action-item {
-                margin-right: 1.6rem;
+                margin-inline-end: 1.6rem;
                 &:last-child {
-                    margin-right: 0;
+                    margin-inline: 0;
                 }
             }
 

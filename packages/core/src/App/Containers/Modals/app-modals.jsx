@@ -15,8 +15,18 @@ import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
-import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
-import VerificationModal from '../VerificationModal';
+
+const TradingAssessmentExistingUser = React.lazy(() =>
+    moduleLoader(() =>
+        import(
+            /* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user.jsx'
+        )
+    )
+);
+
+const VerificationModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "verification-modal" */ '../VerificationModal'))
+);
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))

@@ -31,4 +31,5 @@ runs:
         packages/utils/node_modules
         packages/analytics/node_modules
         packages/wallets/node_modules
+        packages/account-v2/node_modules
       key: ${{ runner.os }}-build-master-cache-${{ hashFiles('./package-lock.json') }}

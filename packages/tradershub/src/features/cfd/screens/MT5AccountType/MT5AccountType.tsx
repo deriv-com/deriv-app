@@ -17,7 +17,7 @@ const MT5AccountType = ({ onMarketTypeSelect, selectedMarketType }: TMT5AccountT
     });
 
     return (
-        <div className='flex items-center flex-shrink-0 bg-system-light-primary-background rounded-xl h-[70vh] w-[80vw] justify-center p-1200 flex-1 gap-1200'>
+        <div className='flex items-center flex-shrink-0 bg-system-light-primary-background rounded-xl h-[70vh] w-[80vw] justify-center p-24 flex-1 gap-24'>
             {sortedMarketTypeEntries.map(([key, value]) => (
                 <MT5AccountTypeCard
                     description={value.description}

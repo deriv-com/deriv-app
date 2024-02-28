@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import {
     GetADerivAccountDialog,
-    PlatformIcon,
+    IconComponent,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
@@ -14,7 +16,7 @@ import { DxtradePasswordModal } from '../../../../modals/DxtradePasswordModal';
 
 const LeadingIcon = () => (
     <div>
-        <PlatformIcon
+        <IconComponent
             icon='DerivX'
             onClick={() => {
                 window.open(getStaticUrl('/derivx'));
@@ -27,23 +29,34 @@ const AvailableDxtradeAccountsList = () => {
     const { hasActiveDerivAccount } = useRegulationFlags();
     const { show } = Provider.useModal();
     const { setCfdState } = Provider.useCFDContext();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
+
+    const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 
     const TrailingButton = () => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />;
+
+    const title = getCfdsAccountTitle(PlatformDetails.dxtrade.title, activeTradingAccount?.is_virtual);
 
     const trailingButtonClick = () => {
         setCfdState('platform', PlatformDetails.dxtrade.platform);
         if (!hasActiveDerivAccount) {
-            show(<GetADerivAccountDialog />);
+            setIsDerivedAccountModalOpen(true);
         } else {
             show(<DxtradePasswordModal />);
         }
     };
     return (
-        <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
-            <TradingAccountCardContent title={PlatformDetails.dxtrade.title}>
-                This account offers CFDs on a highly customisable CFD trading platform.
-            </TradingAccountCardContent>
-        </TradingAccountCard>
+        <Fragment>
+            <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
+                <TradingAccountCardContent title={title}>
+                    This account offers CFDs on a highly customisable CFD trading platform.
+                </TradingAccountCardContent>
+            </TradingAccountCard>
+            <GetADerivAccountDialog
+                isOpen={isDerivedAccountModalOpen}
+                onClose={() => setIsDerivedAccountModalOpen(false)}
+            />
+        </Fragment>
     );
 };
 

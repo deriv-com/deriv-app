@@ -2,9 +2,9 @@ import React from 'react';
 import { Text } from '@deriv-com/ui';
 
 const EUDisclaimerMessage = () => (
-    <div className='absolute w-full bottom-50 bg-system-light-secondary-background'>
-        <div className='max-w-[1232px] mx-auto px-500 lg:px-50'>
-            <Text className='w-full text-[10px] sm:text-75 leading-[1.5] py-500'>
+    <div className='absolute bottom-0 w-full bg-system-light-secondary-background'>
+        <div className='max-w-[1232px] mx-auto px-10 lg:px-0'>
+            <Text className='w-full text-2xs sm:text-default leading-[1.5] py-10'>
                 <span className='font-bold'>EU statutory disclaimer</span>: CFDs are complex instruments and come with a
                 high risk of losing money rapidly due to leverage.
                 <span className='font-bold'>

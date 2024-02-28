@@ -1,8 +1,7 @@
 import React from 'react';
 import { usePOA, usePOI } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
     if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address';
@@ -25,7 +24,7 @@ const VerificationFailed = () => {
     const isPOAFailed = poaStatus?.is_rejected || poaStatus?.is_expired || poaStatus?.is_suspected;
 
     return (
-        <div className='flex flex-col w-[320px] p-800 gap-800 h-auto bg-system-light-primary-background rounded-400 lg:p-1200 lg:gap-1200 lg:w-[440px]'>
+        <div className='flex flex-col w-[320px] p-16 gap-16 h-auto bg-system-light-primary-background rounded-default lg:p-24 lg:gap-24 lg:w-[440px]'>
             <Text size='sm' weight='bold'>
                 Why did my verification fail?
             </Text>
@@ -43,8 +42,8 @@ const VerificationFailed = () => {
             <Text size='sm'>
                 Click <strong>Resubmit documents</strong> to find out more and submit your documents again.
             </Text>
-            <div className='flex justify-end gap-400'>
-                <Button colorStyle='black' onClick={() => hide()} variant='secondary'>
+            <div className='flex justify-end gap-8'>
+                <Button color='black' onClick={() => hide()} variant='outlined'>
                     Maybe later
                 </Button>
                 <Button>Resubmit documents</Button>

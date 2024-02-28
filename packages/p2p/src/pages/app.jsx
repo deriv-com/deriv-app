@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { Loading } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
+import { useP2PCompletedOrdersNotification, useP2PSettings } from '@deriv/hooks';
 import { isEmptyObject, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -38,6 +38,8 @@ const App = () => {
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
+
+    useP2PCompletedOrdersNotification();
 
     React.useEffect(() => {
         init();

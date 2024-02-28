@@ -1,7 +1,6 @@
 import React from 'react';
-import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneChevronRightRegularIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { Card } from '../../components/Card';
 import { getManualUploadDocumentList } from '../../constants/manual-document';
 
@@ -11,7 +10,7 @@ type TDocumentSelection = {
 };
 
 export const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelection) => {
-    const { isMobile } = useBreakpoint();
+    const { isMobile } = useDevice();
 
     const documentList = getManualUploadDocumentList(countryCode === 'ng');
 
@@ -27,7 +26,7 @@ export const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelec
                     onClick={() => handleOnClick(value)}
                 >
                     <Icon />
-                    <div className='flex flex-col flex-grow ml-1200 gap-400'>
+                    <div className='flex flex-col flex-grow ml-24 gap-8'>
                         <Text as='p' color='prominent' size={isMobile ? 'xs' : 'sm'} weight='bold'>
                             {title}
                         </Text>

@@ -24,12 +24,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
     children: React.ReactNode;
-    customLoginIDKey: string;
+    customLoginIDKey?: string;
 };
 
-async function waitForLoginAndToken(): Promise<any> {
+async function waitForLoginAndToken(loginid?: string): Promise<any> {
     const checkLogin = (resolve: (value: any) => void, reject: (reason?: any) => void) => {
-        const loginId = getActiveLoginIDFromLocalStorage();
+        const loginId = getActiveLoginIDFromLocalStorage(loginid);
         const token = getToken(loginId as string);
         if (loginId && token) {
             resolve({
@@ -64,7 +64,7 @@ const AuthProvider = ({ customLoginIDKey, children }: AuthProviderProps) => {
 
     const { standalone, queryClient } = useAPIContext();
 
-    const activeLoginId = localStorage.getItem(customLoginIDKey ?? 'active_loginid');
+    const activeLoginId = localStorage.getItem(customLoginIDKey ?? 'active_loginid') ?? undefined;
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginId));
 
     const [isLoading, setIsLoading] = useState(true);
@@ -77,7 +77,7 @@ const AuthProvider = ({ customLoginIDKey, children }: AuthProviderProps) => {
         setIsLoading(true);
         setIsSuccess(false);
 
-        waitForLoginAndToken().then(({ token }) => {
+        waitForLoginAndToken(activeLoginId).then(({ token }) => {
             setIsLoading(true);
             setIsFetching(true);
             mutateAsync({ payload: { authorize: token || '' } })

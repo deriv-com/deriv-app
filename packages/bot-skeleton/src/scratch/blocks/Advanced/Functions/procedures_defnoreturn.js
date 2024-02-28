@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { plusIconLight } from '../../images';
+import { sanitizeCodeForLastestBlockly } from '../../../shared';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
@@ -330,19 +331,16 @@ Blockly.JavaScript.procedures_defnoreturn = block => {
     );
 
     // eslint-disable-next-line no-underscore-dangle
-    let code = Blockly.JavaScript.scrub_(
-        block,
-        `
+    const code = sanitizeCodeForLastestBlockly(
+        Blockly.JavaScript.scrub_(
+            block,
+            `
     function ${functionName}(${args.join(', ')}) {
         ${branch}
         ${returnValue}
     }\n`
+        )
     );
-
-    code = code.replace(/^\s+\n/, '');
-    code = code.replace(/undefined/g, '');
-    code = code.replace(/\n\s+$/, '\n');
-    code = code.replace(/[ \t]+\n/g, '\n');
     // Add % so as not to collide with helper functions in definitions list.
     // eslint-disable-next-line no-underscore-dangle
     Blockly.JavaScript.definitions_[`%${functionName}`] = code;

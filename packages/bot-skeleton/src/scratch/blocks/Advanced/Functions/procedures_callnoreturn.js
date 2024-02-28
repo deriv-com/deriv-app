@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { sanitizeCodeForLastestBlockly } from '../../../shared';
 
 Blockly.Blocks.procedures_callnoreturn = {
     init() {
@@ -345,12 +346,6 @@ Blockly.JavaScript.procedures_callnoreturn = block => {
         (arg, i) => Blockly.JavaScript.valueToCode(block, `ARG${i}`, Blockly.JavaScript.ORDER_COMMA) || 'null'
     );
 
-    let code = `${functionName}(${args.join(', ')});\n`;
-    console.log(code, 'procedures_callnoreturn')
-    code = code.replace(/^\s+\n/, '');
-    code = code.replace(/undefined/g, '');
-
-    code = code.replace(/\n\s+$/, '\n');
-    code = code.replace(/[ \t]+\n/g, '\n');
+    const code = sanitizeCodeForLastestBlockly(`${functionName}(${args.join(', ')});\n`);
     return code;
 };

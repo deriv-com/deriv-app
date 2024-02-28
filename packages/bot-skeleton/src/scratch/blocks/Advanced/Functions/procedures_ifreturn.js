@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { sanitizeCodeForLastestBlockly } from '../../../shared';
 
 /**
  * Block for conditionally returning a value from a procedure.
@@ -134,13 +135,6 @@ Blockly.JavaScript.procedures_ifreturn = block => {
         branch = 'return;\n';
     }
 
-    let code = `
-    if (${condition}) {
-        ${branch}
-    }\n`;
-    code = code.replace(/^\s+\n/, '');
-    code = code.replace(/undefined/g, '');
-    code = code.replace(/\n\s+$/, '\n');
-    code = code.replace(/[ \t]+\n/g, '\n');
+    const code = sanitizeCodeForLastestBlockly(`if (${condition}) {${branch}}\n`);
     return code;
 };

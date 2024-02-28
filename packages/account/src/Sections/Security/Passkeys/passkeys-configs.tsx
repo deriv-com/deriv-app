@@ -65,8 +65,8 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
         ),
         no_passkey: (
             <Localize
-                i18n_default_text="Enhanced security is just a tap away.<0/>Hit 'Learn more' to explore passkeys or 'Create passkey' to get started."
-                components={[<br key={0} />]}
+                i18n_default_text='Enhanced security is just a tap away.<0/>Hit <1>Learn more</1> to explore passkeys or <1>Create passkey</1> to get started.'
+                components={[<br key={0} />, <strong key={1} />]}
             />
         ),
         removed: getPasskeysRemovedDescription(),

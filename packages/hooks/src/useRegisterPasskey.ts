@@ -44,7 +44,9 @@ const useRegisterPasskey = () => {
                 }
             }
         } catch (e) {
-            setPasskeyRegistrationError(e as TError);
+            if ((e as TError).name !== 'NotAllowedError') {
+                setPasskeyRegistrationError(e as TError);
+            }
         } finally {
             setPublicKey(null);
             setIsPasskeyRegistrationStarted(false);

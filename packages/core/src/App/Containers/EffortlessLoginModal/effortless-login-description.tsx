@@ -36,7 +36,7 @@ const getPasskeysDescription = () =>
             id: 5,
             question: <Localize i18n_default_text='What happens if my Deriv account email is changed?' />,
             description: (
-                <Localize i18n_default_text='Even if you change your email address, you can still continue to log in to Deriv.com with the same passkey.' />
+                <Localize i18n_default_text='Even if you change your email address, you can still continue to log in to your Deriv account with the same passkey.' />
             ),
         },
     ] as const;

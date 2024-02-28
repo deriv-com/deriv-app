@@ -96,6 +96,10 @@
             padding-bottom: 1.6rem;
             border-bottom: 1px solid var(--general-hover);
 
+            & > .dc-icon:first-child {
+                margin-top: 0.4rem;
+            }
+
             & > .dc-icon:last-child {
                 margin-left: auto;
             }

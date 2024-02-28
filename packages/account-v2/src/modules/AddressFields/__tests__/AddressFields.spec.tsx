@@ -37,9 +37,17 @@ beforeEach(() => {
 
 const mockSubmit = jest.fn();
 
+const addressFieldValues = {
+    addressCity: '',
+    addressLine1: '',
+    addressLine2: '',
+    addressPostcode: '',
+    addressState: '',
+};
+
 const renderAddressFields = () =>
     render(
-        <Formik initialValues={undefined} onSubmit={mockSubmit}>
+        <Formik initialValues={addressFieldValues} onSubmit={mockSubmit}>
             <AddressFields />
         </Formik>
     );

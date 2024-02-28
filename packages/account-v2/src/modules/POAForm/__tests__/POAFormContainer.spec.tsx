@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { POAFormContainer } from '../POAFormContainer';
-import { APIProvider, useActiveAccount, useAuthorize } from '@deriv/api';
-import { usePOAInfo } from '../../../hooks/usePOAInfo';
-import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../../constants/routes';
-import userEvent from '@testing-library/user-event';
 import * as routerDOM from 'react-router-dom';
+import { useActiveAccount, useAuthorize } from '@deriv/api';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../../constants/routes';
+import { usePOAInfo } from '../../../hooks/usePOAInfo';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../../utils/platform';
+import { POAFormContainer } from '../POAFormContainer';
 
 jest.mock('@deriv/quill-design', () => ({
     useBreakpoint: jest.fn(() => ({ isMobile: false })),

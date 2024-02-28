@@ -71,7 +71,7 @@ const validateAdditionalDocumentNumber = (
 };
 
 export const getIDVFormValidationSchema = (list: TDocument[]) => {
-    return Yup.object().shape({
+    return Yup.object({
         document_additional: Yup.string().test({
             name: 'test-additional-document-number',
             test: (value, context) => {

@@ -13,9 +13,13 @@ const separatorRegex = /[,.]/g; // locale-agnostic
 const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initial?: number, options?: TOptions) => {
     const input = inputRef.current;
 
+    // helper values for pasting
     const isPasting = useRef(false);
+    const isRewriting = useRef(false);
+    const clipboardContent = useRef('');
+
     const { onChange: onChangeDecimal, value } = useInputDecimalFormatter(undefined, options);
-    const { fractionDigits = 2, locale, maxDigits = 14 } = options || {};
+    const { fractionDigits = 2, locale, maxDigits = 14 } = options ?? {};
 
     const formattedValue = useMemo(
         () => `${Number(value).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
@@ -75,13 +79,6 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
             const unformattedFraction = unformatted.split('.')?.[1]?.length || fractionDigits;
 
-            // If the user is pasting, we don't need to shift the decimal point,
-            // We just need to format the value.
-            if (isPasting.current) {
-                isPasting.current = false;
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
-
             // The new value has one more decimal places than the fraction digits,
             // so we need to shift the decimal point to the left.
             if (unformattedFraction - 1 === fractionDigits) {
@@ -114,25 +111,19 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
 
             return onChangeDecimal({ target: { value: unformatted } });
         },
-        [input, maxDigits, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
+        [input, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
     );
 
     const onChange = useCallback(
         (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target?.value;
             if (typeof newValue === 'undefined') return;
-            if (checkExceedsMaxDigits(newValue)) return;
-            handleNewValue(newValue);
-        },
-        [handleNewValue]
-    );
 
-    const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
-        e => {
-            isPasting.current = e.type === 'paste';
-            if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
-                const pasted = (e.clipboardData || window.clipboardData).getData('Text');
-                const pastedValue = Number(unFormatLocaleString(pasted, locale));
+            if (isPasting.current) {
+                isPasting.current = false;
+                if (!isRewriting.current) return;
+
+                const pastedValue = Number(unFormatLocaleString(clipboardContent.current, locale));
                 const pastedValueFormatted = `${pastedValue.toLocaleString(locale, {
                     minimumFractionDigits: fractionDigits,
                 })}`;
@@ -142,22 +133,41 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
                     pastedValue >= 0 &&
                     !checkExceedsMaxDigits(pastedValueFormatted)
                 )
-                    onChange({
-                        target: {
-                            value: pastedValueFormatted,
-                        },
-                    });
+                    return onChangeDecimal({ target: { value: unFormatLocaleString(pastedValueFormatted, locale) } });
+            } else {
+                if (checkExceedsMaxDigits(newValue)) return;
+                handleNewValue(newValue);
             }
         },
-        [formattedValue, fractionDigits, locale, onChange]
+        [checkExceedsMaxDigits, fractionDigits, handleNewValue, locale, onChangeDecimal]
+    );
+
+    const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
+        e => {
+            isPasting.current = e.type === 'paste';
+            const pastedText = (e.clipboardData || window.clipboardData).getData('Text');
+            isRewriting.current =
+                Number(unFormatLocaleString(formattedValue, locale)) === 0 || pastedText === e.currentTarget.value;
+
+            if (isPasting.current && isRewriting.current) {
+                clipboardContent.current = pastedText;
+            }
+        },
+        [formattedValue, locale]
     );
 
     useEffect(() => {
         if (typeof initial === 'number') {
-            isPasting.current = true;
-            handleNewValue(`${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`);
+            return onChangeDecimal({
+                target: {
+                    value: unFormatLocaleString(
+                        `${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
+                        locale
+                    ),
+                },
+            });
         }
-    }, [fractionDigits, initial, locale, onChange]);
+    }, [fractionDigits, initial, locale, onChangeDecimal]);
 
     return { onChange, onPaste, value: formattedValue };
 };

@@ -1,20 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
 import './WalletListCardDropdown.scss';
 
-type TProps = {
-    loginid: THooks.WalletAccountsList['loginid'];
-    onAccountSelect: (loginid: string) => void;
-};
-
-const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) => {
+const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
-    const [inputWidth, setInputWidth] = useState('auto');
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { switchAccount } = useAuthorize();
     const { t } = useTranslation();
+
+    const [inputWidth, setInputWidth] = useState('auto');
+    const loginid = activeWallet?.loginid;
 
     const generateTitleText = useCallback(
         (wallet: THooks.WalletAccountsList) => {
@@ -69,7 +68,7 @@ const WalletListCardDropdown: React.FC<TProps> = ({ loginid, onAccountSelect }) 
                     }
                     name='wallets-list-card-dropdown'
                     onSelect={selectedItem => {
-                        onAccountSelect(selectedItem);
+                        switchAccount(selectedItem);
                     }}
                     showListHeader
                     showMessageContainer={false}

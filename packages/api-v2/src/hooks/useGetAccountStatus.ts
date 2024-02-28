@@ -9,12 +9,14 @@ const useGetAccountStatus = () => {
     const modified_account_status = useMemo(() => {
         if (!get_account_status_data?.get_account_status) return;
 
+        const { prompt_client_to_authenticate, p2p_status } = get_account_status_data.get_account_status;
+
         return {
             ...get_account_status_data.get_account_status,
             /** Indicates whether the client should be prompted to authenticate their account. */
-            should_prompt_client_to_authenticate: Boolean(
-                get_account_status_data.get_account_status.prompt_client_to_authenticate
-            ),
+            should_prompt_client_to_authenticate: Boolean(prompt_client_to_authenticate),
+            /** Indicates whether the client is a P2P user. */
+            is_p2p_user: Boolean(p2p_status !== 'none' && p2p_status !== 'perm_ban'),
         };
     }, [get_account_status_data?.get_account_status]);
 

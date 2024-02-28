@@ -109,7 +109,9 @@ let dxtrade_accounts_from: TAccount[] = [];
 let dxtrade_accounts_to: TAccount[] = [];
 let mt_accounts_from: TAccount[] = [];
 let mt_accounts_to: TAccount[] = [];
-let remaining_transfers_amount: number | undefined, remaining_transfers_count: number | undefined;
+let platform_type: string,
+    remaining_transfers_amount: number | undefined,
+    remaining_transfers_count: number | undefined;
 let has_reached_maximum_daily_transfers = false;
 
 const AccountTransferForm = observer(
@@ -418,42 +420,41 @@ const AccountTransferForm = observer(
         ]);
 
         React.useEffect(() => {
-            const getRemainingTransfersAmount = (transferType: string | undefined) => {
-                if (transferType === undefined) {
+            const getRemainingTransfersAmount = (transfer_type: string | undefined) => {
+                if (transfer_type === undefined) {
                     return undefined;
                 }
 
-                const cumulativeTransfers = daily_cumulative_amount_transfers?.[transferType];
+                const cumulativeTransfers = daily_cumulative_amount_transfers?.[transfer_type];
 
                 return Number(cumulativeTransfers?.available ?? 0);
             };
 
-            const getRemainingTransfersCount = (transferType: string | undefined) => {
-                if (transferType === undefined) {
+            const getRemainingTransfersCount = (transfer_type: string | undefined) => {
+                if (transfer_type === undefined) {
                     return undefined;
                 }
-                const transfers = daily_transfers?.[transferType];
+                const transfers = daily_transfers?.[transfer_type];
 
                 return Number(transfers?.available ?? 0);
             };
 
-            let platformType: string;
-
             if (is_mt_transfer) {
-                platformType = 'mt5';
+                platform_type = 'mt5';
             } else if (is_ctrader_transfer) {
-                platformType = 'ctrader';
+                platform_type = 'ctrader';
             } else if (is_dxtrade_transfer) {
-                platformType = 'dxtrade';
+                platform_type = 'dxtrade';
             } else {
-                platformType = 'internal';
+                platform_type = 'internal';
             }
 
-            remaining_transfers_amount = getRemainingTransfersAmount(platformType);
-            remaining_transfers_count = getRemainingTransfersCount(platformType);
+            remaining_transfers_amount = getRemainingTransfersAmount(platform_type);
+            remaining_transfers_count = getRemainingTransfersCount(platform_type);
 
             has_reached_maximum_daily_transfers =
-                (is_cumulative_transfer_enabled && remaining_transfers_amount === 0) || remaining_transfers_count === 0;
+                (is_cumulative_transfer_enabled && remaining_transfers_amount === 0) ||
+                (!is_cumulative_transfer_enabled && remaining_transfers_count === 0);
         }, [account_limits, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
 
         const is_mt5_restricted =

@@ -30,7 +30,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@deriv-com/utils": "^0.0.8",
+        "@deriv-com/utils": "latest",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "^1.0.118",
         "@deriv/components": "^1.0.0",

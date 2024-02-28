@@ -124,11 +124,9 @@ const AppWrapper = observer(() => {
             const el_id = TAB_IDS[tab_index];
             if (el_id) {
                 const el_tab = document.getElementById(el_id);
-                el_tab?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                    inline: 'center',
-                });
+                setTimeout(() => {
+                    el_tab?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                }, 10);
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -179,7 +177,7 @@ const AppWrapper = observer(() => {
                             id='id-tutorials'
                         >
                             <div className='tutorials-wrapper'>
-                                <Tutorial />
+                                <Tutorial handleTabChange={handleTabChange} />
                             </div>
                         </div>
                     </Tabs>

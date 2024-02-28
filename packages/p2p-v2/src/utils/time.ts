@@ -33,3 +33,28 @@ export const daysSince = (date: string) => {
     const diff = toMoment().startOf('day').diff(toMoment(date).startOf('day'), 'days');
     return !date ? '' : diff;
 };
+
+/**
+ * The below function is used to format the display the time given in minutes to hours and minutes
+ * e.g. 90 minutes will be displayed as 1 hour 30 minutes
+ * @param {number} minutes
+ * @returns {string} formatted time string e.g. 1 hour 30 minutes
+ */
+export const formatTime = (minutes: number) => {
+    if (!minutes) return '';
+    const timeInMinutes = minutes / 60;
+    const hours = Math.floor(timeInMinutes / 60);
+    const remainingMinutes = timeInMinutes % 60;
+    const hoursText = hours === 1 ? 'hour' : 'hours';
+    const minutesText = remainingMinutes === 1 ? 'minute' : 'minutes';
+
+    if (hours === 0) {
+        return `${remainingMinutes} ${minutesText}`;
+    }
+
+    if (remainingMinutes === 0) {
+        return `${hours} ${hoursText}`;
+    }
+
+    return `${hours} ${hoursText} ${remainingMinutes} ${minutesText}`;
+};

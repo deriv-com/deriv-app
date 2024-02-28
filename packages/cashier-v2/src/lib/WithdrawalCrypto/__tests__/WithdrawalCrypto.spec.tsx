@@ -38,12 +38,12 @@ describe('', () => {
     afterEach(cleanup);
 
     it('should render the WithdrawalCryptoDisclaimer on successful withdrawal', () => {
-        render(<WithdrawalCryptoModule verificationCode='Abcd1234' />);
+        render(<WithdrawalCryptoModule setVerificationCode={jest.fn()} verificationCode='Abcd1234' />);
         expect(screen.getByText('WithdrawalCryptoDisclaimer')).toBeInTheDocument();
     });
 
     it('should render the WithdrawalCryptoForm on successful withdrawal', () => {
-        render(<WithdrawalCryptoModule verificationCode='Abcd1234' />);
+        render(<WithdrawalCryptoModule setVerificationCode={jest.fn()} verificationCode='Abcd1234' />);
         expect(screen.getByText('WithdrawalCryptoForm')).toBeInTheDocument();
     });
 
@@ -60,7 +60,7 @@ describe('', () => {
             isWithdrawalSuccess: true,
         });
 
-        render(<WithdrawalCryptoModule verificationCode='Abcd1234' />);
+        render(<WithdrawalCryptoModule setVerificationCode={jest.fn()} verificationCode='Abcd1234' />);
         expect(screen.getByText('WithdrawalCryptoReceipt')).toBeInTheDocument();
     });
 });

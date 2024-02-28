@@ -33,6 +33,8 @@ import {
     isHighLow,
     CONTRACT_TYPES,
     getContractTypesConfig,
+    setTradeURLParams,
+    getTradeURLParams,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -477,6 +479,7 @@ export default class TradeStore extends BaseStore {
             sendTradeParamsAnalytics: action.bound,
             setActiveSymbols: action.bound,
             setBarrierChoices: action.bound,
+            setChartModeFromURL: action.bound,
             setChartStatus: action.bound,
             setContractTypes: action.bound,
             setDefaultSymbol: action.bound,
@@ -515,6 +518,9 @@ export default class TradeStore extends BaseStore {
                 }
                 this.setDefaultGrowthRate();
                 this.resetAccumulatorData();
+                if (this.active_symbols.length) {
+                    setTradeURLParams({ symbol: this.symbol });
+                }
                 this.root_store.notifications.removeTradeNotifications();
             }
         );
@@ -549,6 +555,9 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
+                if (!isEmptyObject(this.contract_types_list)) {
+                    setTradeURLParams({ contractType: this.contract_type });
+                }
                 this.root_store.notifications.removeTradeNotifications();
             }
         );
@@ -631,7 +640,12 @@ export default class TradeStore extends BaseStore {
 
         await this.setActiveSymbols();
         await this.root_store.active_symbols.setActiveSymbols();
-        if (should_set_default_symbol) await this.setDefaultSymbol();
+        const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
+        if (showModal && should_show_loading) this.root_store.ui.toggleUrlUnavailableModal(true);
+        const hasSymbolChanged = symbol && symbol !== this.symbol;
+        if (hasSymbolChanged) this.symbol = symbol;
+        if (should_set_default_symbol && !symbol) await this.setDefaultSymbol();
+        setTradeURLParams({ symbol: hasSymbolChanged ? symbol : this.symbol });
 
         const r = await WS.storage.contractsFor(this.symbol);
         if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
@@ -699,21 +713,33 @@ export default class TradeStore extends BaseStore {
     }
 
     async setContractTypes() {
+        let contractType: string | undefined = '';
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
                 const contract_categories = ContractType.getContractCategories();
+                const { contractType: contractTypeParam, showModal } = getTradeURLParams({
+                    contract_types_list: contract_categories.contract_types_list,
+                });
+                contractType = contractTypeParam;
+                if (showModal) this.root_store.ui.toggleUrlUnavailableModal(true);
                 this.processNewValuesAsync({
                     ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
                         has_only_forward_starting_contracts: boolean;
                     }),
-                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                    ...ContractType.getContractType(
+                        contract_categories.contract_types_list,
+                        contractType ?? this.contract_type
+                    ),
                 });
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
-        this.root_store.common.setSelectedContractType(this.contract_type);
-        this.root_store.portfolio.setContractType(this.contract_type);
+        this.root_store.common.setSelectedContractType(contractType ?? this.contract_type);
+        this.root_store.portfolio.setContractType(contractType ?? this.contract_type);
+        setTradeURLParams({
+            contractType: contractType ?? this.contract_type,
+        });
     }
 
     async prepareTradeStore(should_set_default_symbol = true) {
@@ -1113,7 +1139,6 @@ export default class TradeStore extends BaseStore {
             updateChartType(prev_chart_type);
             savePreviousChartMode('', null);
         }
-
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {
             // TODO: fix this in input-field.jsx
             if (typeof obj_new_values.duration === 'string') {
@@ -1530,11 +1555,27 @@ export default class TradeStore extends BaseStore {
         this.onLogout(this.logoutListener);
         this.onClientInit(this.clientInitListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
+        this.setChartModeFromURL();
         this.setChartStatus(true);
         runInAction(async () => {
             this.is_trade_component_mounted = true;
             await this.prepareTradeStore();
             this.root_store.notifications.setShouldShowPopups(true);
+        });
+    }
+
+    setChartModeFromURL() {
+        const { chartType: chartTypeParam, granularity: granularityParam } = getTradeURLParams();
+        const { chart_type, granularity, updateChartType, updateGranularity } = this.root_store.contract_trade;
+        if (!isNaN(Number(granularityParam)) && granularityParam !== granularity) {
+            updateGranularity(Number(granularityParam));
+        }
+        if (chartTypeParam && chartTypeParam !== chart_type) {
+            updateChartType(chartTypeParam);
+        }
+        setTradeURLParams({
+            chartType: chartTypeParam ?? chart_type,
+            granularity: granularityParam ?? Number(granularity),
         });
     }
 

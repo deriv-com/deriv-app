@@ -40,7 +40,7 @@ const AccountTransferNote = ({
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
     const account_currency = currency_config?.display_code;
-    const exchange_rate = account_currency != null ? exchange_rates?.USD?.[account_currency] || 0 : 0;
+    const exchange_rate = account_currency != null ? exchange_rates?.USD?.[account_currency] || 1 : 1;
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
     const platform_name_mt5 = getPlatformSettings('mt5').name;
     const platform_name_ctrader = getPlatformSettings('ctrader').name;

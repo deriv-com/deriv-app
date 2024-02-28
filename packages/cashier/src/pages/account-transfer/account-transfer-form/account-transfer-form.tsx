@@ -109,7 +109,7 @@ let dxtrade_accounts_from: TAccount[] = [];
 let dxtrade_accounts_to: TAccount[] = [];
 let mt_accounts_from: TAccount[] = [];
 let mt_accounts_to: TAccount[] = [];
-let remaining_transfers: number | undefined;
+let remaining_transfers_amount: number | undefined, remaining_transfers_count: number | undefined;
 let has_reached_maximum_daily_transfers = false;
 
 const AccountTransferForm = observer(
@@ -410,22 +410,50 @@ const AccountTransferForm = observer(
             ctrader_remaining_cumulative_transfers?.allowed,
             dxtrade_remaining_cumulative_transfers?.allowed,
             derivez_remaining_cumulative_transfers?.allowed,
+            internal_remaining_transfers?.allowed,
+            mt5_remaining_transfers?.allowed,
+            ctrader_remaining_transfers?.allowed,
+            dxtrade_remaining_transfers?.allowed,
+            is_cumulative_transfer_enabled,
         ]);
 
         React.useEffect(() => {
-            const getRemainingTransfers = () => {
-                if (is_mt_transfer) {
-                    return mt5_remaining_cumulative_transfers?.available;
-                } else if (is_ctrader_transfer) {
-                    return ctrader_remaining_cumulative_transfers?.available;
-                } else if (is_dxtrade_transfer) {
-                    return dxtrade_remaining_cumulative_transfers?.available;
+            const getRemainingTransfersAmount = (transferType: string | undefined) => {
+                if (transferType === undefined) {
+                    return undefined;
                 }
-                return internal_remaining_cumulative_transfers?.available;
+
+                const cumulativeTransfers = daily_cumulative_amount_transfers?.[transferType];
+
+                return Number(cumulativeTransfers?.available ?? 0);
             };
 
-            remaining_transfers = Number(getRemainingTransfers() ?? 0);
-            has_reached_maximum_daily_transfers = !remaining_transfers && getRemainingTransfers() !== undefined;
+            const getRemainingTransfersCount = (transferType: string | undefined) => {
+                if (transferType === undefined) {
+                    return undefined;
+                }
+                const transfers = daily_transfers?.[transferType];
+
+                return Number(transfers?.available ?? 0);
+            };
+
+            let platformType: string;
+
+            if (is_mt_transfer) {
+                platformType = 'mt5';
+            } else if (is_ctrader_transfer) {
+                platformType = 'ctrader';
+            } else if (is_dxtrade_transfer) {
+                platformType = 'dxtrade';
+            } else {
+                platformType = 'internal';
+            }
+
+            remaining_transfers_amount = getRemainingTransfersAmount(platformType);
+            remaining_transfers_count = getRemainingTransfersCount(platformType);
+
+            has_reached_maximum_daily_transfers =
+                (is_cumulative_transfer_enabled && remaining_transfers_amount === 0) || remaining_transfers_count === 0;
         }, [account_limits, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
 
         const is_mt5_restricted =

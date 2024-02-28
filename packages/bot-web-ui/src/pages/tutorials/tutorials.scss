@@ -279,12 +279,18 @@
                     background-color: transparent;
                     font-size: 1.4rem;
                     padding: 0 3rem;
-                    border: solid 0.1rem var(--checkbox-disabled-grey);
+                    border: solid 0.1rem var(--border-normal);
                     color: var(--text-general);
 
-                    ::placeholder {
-                        margin-left: 3.2rem;
+                    &::placeholder {
+                        opacity: 0.4;
                     }
+
+                    &:focus {
+                        border-color: var(--text-general);
+                        background-color: var(--general-main-1);
+                    }
+
                     @include mobile {
                         width: 100%;
                         margin-left: 17px;

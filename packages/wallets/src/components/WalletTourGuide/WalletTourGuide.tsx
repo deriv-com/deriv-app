@@ -19,8 +19,7 @@ const WalletTourGuide = () => {
     const [addMoreWalletsTransformValue, setAddMoreWalletsTransformValue] = useState('');
     const { isMobile } = useDevice();
 
-    const { isFetching, isLoading, isSuccess } = useAuthorize();
-    const { switchAccount } = useAuthorize();
+    const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAllWalletAccounts();

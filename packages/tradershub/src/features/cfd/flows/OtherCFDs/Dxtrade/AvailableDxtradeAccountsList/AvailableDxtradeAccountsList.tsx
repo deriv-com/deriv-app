@@ -3,6 +3,7 @@ import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
+import { URLUtils } from '@deriv-com/utils';
 import {
     GetADerivAccountDialog,
     IconComponent,
@@ -10,16 +11,17 @@ import {
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '../../../../../../components';
-import { getStaticUrl } from '../../../../../../helpers/urls';
 import { PlatformDetails } from '../../../../constants';
 import { DxtradePasswordModal } from '../../../../modals/DxtradePasswordModal';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
     <div>
         <IconComponent
             icon='DerivX'
             onClick={() => {
-                window.open(getStaticUrl('/derivx'));
+                window.open(getDerivStaticURL('/derivx'));
             }}
         />
     </div>

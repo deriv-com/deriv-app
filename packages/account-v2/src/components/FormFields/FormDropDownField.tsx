@@ -2,12 +2,13 @@ import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { useBreakpoint } from '@deriv/quill-design';
+import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
+import { Dropdown } from '@deriv-com/ui';
 import { validateField } from '../../utils/validation';
-import { WalletDropdown as DropDown } from '../base/WalletDropdown';
 
 type FormDropDownFieldProps = Omit<
-    ComponentProps<typeof DropDown>,
-    'errorMessage' | 'isRequired' | 'onSelect' | 'variant'
+    ComponentProps<typeof Dropdown>,
+    'dropdownIcon' | 'errorMessage' | 'isRequired' | 'onSelect' | 'variant'
 > & {
     name: string;
     validationSchema?: Yup.AnySchema;
@@ -26,12 +27,13 @@ const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropDownFiel
     return (
         <Field name={name} validate={validateField(validationSchema)}>
             {({ field, form, meta: { error, touched } }: FieldProps<string>) => (
-                <DropDown
+                <Dropdown
                     {...field}
                     {...rest}
+                    dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                     errorMessage={error}
                     isRequired={touched && !!error}
-                    onSelect={(value: string) => form.setFieldValue(name, value)}
+                    onSelect={value => form.setFieldValue(name, value)}
                     variant={isMobile ? 'prompt' : 'comboBox'}
                 />
             )}

@@ -10,8 +10,11 @@ import {
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
 } from '@deriv/quill-icons';
+import { URLUtils } from '@deriv-com/utils';
 import { IconComponent } from '../components';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
+import { getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
+
+const { getDerivStaticURL } = URLUtils;
 
 export type IconToCurrencyMapperType = {
     [key: string]: {
@@ -55,7 +58,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         description: 'Trade on the go with our mobile app.',
         icon: <IconComponent icon='DerivGo' />,
         isExternal: true,
-        redirect: getStaticUrl('/deriv-go'),
+        redirect: getDerivStaticURL('/deriv-go'),
         smallIcon: <IconComponent height={32} icon='DerivGo' width={32} />,
         title: 'Deriv GO',
     },

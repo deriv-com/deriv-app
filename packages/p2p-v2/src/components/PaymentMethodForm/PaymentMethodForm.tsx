@@ -96,12 +96,12 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                     <CloseCircle
                                         className='p2p-v2-payment-method-form__icon--close'
                                         fill='#999999'
-                                        height={30}
+                                        height={15.7}
                                         onClick={() => {
                                             onAdd();
                                             reset();
                                         }}
-                                        width={20}
+                                        width={15.7}
                                     />
                                 )
                             }

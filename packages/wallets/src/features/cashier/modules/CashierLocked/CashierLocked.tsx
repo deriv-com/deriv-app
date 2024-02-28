@@ -12,6 +12,7 @@ const CashierLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: status } = useAccountStatus();
 
     const currency = activeWallet?.currency || 'USD';
+    const isVirtual = activeWallet?.is_virtual;
 
     const poaNeedsVerification = authentication?.is_poa_needed;
     const poiNeedsVerification = authentication?.is_poa_needed;
@@ -28,7 +29,7 @@ const CashierLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const financialAssessmentRequired = cashierValidation?.financial_assessment_required;
     const noResidence = cashierValidation?.no_residence;
 
-    const isCashierLocked = status?.is_cashier_locked;
+    const isCashierLocked = status?.is_cashier_locked && !isVirtual;
 
     if (isCashierLocked) {
         return (

@@ -60,7 +60,7 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
         <>
             {!isLoadingInfo && (
                 <Modal
-                    className='p2p-v2-modal-styles p-[1.6rem] p2p-v2-my-ads-delete-modal'
+                    className='p-[1.6rem] p2p-v2-my-ads-delete-modal'
                     isOpen={isModalOpen}
                     onRequestClose={onRequestClose}
                     shouldCloseOnOverlayClick={false}

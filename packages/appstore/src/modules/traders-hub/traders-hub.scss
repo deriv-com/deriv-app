@@ -21,6 +21,18 @@
         }
     }
 
+    &--eu-user {
+        @include mobile {
+            min-height: 650px;
+        }
+
+        &-without-mt5 {
+            @include mobile {
+                min-height: 540px;
+            }
+        }
+    }
+
     &__button-toggle {
         margin-top: 3rem;
         border-radius: $BORDER_RADIUS;
@@ -30,12 +42,6 @@
 
     &--mobile {
         overflow: scroll !important;
-
-        &--eu-user {
-            @include mobile {
-                height: calc(550px) !important;
-            }
-        }
 
         &::-webkit-scrollbar {
             display: none;

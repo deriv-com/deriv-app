@@ -16,6 +16,7 @@
 }
 
 .arrow-icon {
+    transition: all 0.2s ease;
     rotate: 90deg;
 
     @include mobile-cashier-v2 {

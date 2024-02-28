@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import { useHistory } from 'react-router';
 import { Button, Text } from '@deriv-com/ui';
 import { cashierPathRoutes } from '../../../../routes/Router';
+import { useTransfer } from '../../provider';
 import { TransferAmountConverter, TransferFormAccountSelection } from './components';
 import styles from './TransferForm.module.scss';
 

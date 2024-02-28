@@ -1,11 +1,14 @@
 import React from 'react';
 import { PageContainer } from '../../components';
+import TransferProvider from './provider/TransferProvider';
 import { TransferForm } from './components';
 
 const Transfer = () => {
     return (
         <PageContainer>
-            <TransferForm />
+            <TransferProvider>
+                <TransferForm />
+            </TransferProvider>
         </PageContainer>
     );
 };

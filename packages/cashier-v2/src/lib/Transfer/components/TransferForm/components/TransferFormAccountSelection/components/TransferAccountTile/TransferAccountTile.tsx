@@ -15,7 +15,7 @@ const TransferAccountTile = () => {
                     </Text>
                 </div>
             </div>
-            <Text size='sm'>10,000 USD</Text>
+            <Text size='sm'>10,000.00 USD</Text>
         </div>
     );
 };

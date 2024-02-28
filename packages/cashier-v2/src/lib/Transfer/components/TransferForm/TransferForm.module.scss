@@ -1,4 +1,5 @@
 .container {
+    width: 36rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,4 +12,11 @@
     @include mobile-cashier-v2 {
         margin: 0;
     }
+}
+
+.button-group {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
 }

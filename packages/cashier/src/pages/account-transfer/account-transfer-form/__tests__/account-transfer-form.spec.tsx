@@ -1,5 +1,5 @@
 import React from 'react';
-import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
@@ -210,7 +210,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should not allow to do transfer if accounts from and to are same', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.modules.cashier.account_transfer.accounts_list[0].is_mt = true;
         mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
         mockRootStore.modules.cashier.account_transfer.selected_from.balance = 200;
@@ -252,7 +251,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about mt5 remained transfers when daily cumulative amount transfers is disabled', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_cumulative_amount_transfers: {
                 enabled: 0,
@@ -274,8 +272,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about dxtrade remained transfers when daily cumulative amount transfers is disabled', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-
         mockRootStore.client.account_limits = {
             daily_cumulative_amount_transfers: {
                 enabled: 0,
@@ -299,7 +295,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about internal remained transfers when daily cumulative amount transfers is disabled', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_cumulative_amount_transfers: {
                 enabled: 0,
@@ -319,7 +314,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should not show hint about internal remained transfers when daily cumulative amount transfers is enabled', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_cumulative_amount_transfers: {
                 enabled: 1,

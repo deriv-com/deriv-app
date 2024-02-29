@@ -16,5 +16,8 @@ runs:
       key: ${{ runner.os }}-build-master-cache-${{ hashFiles('./package-lock.json') }} 
   - name: Install npm packages
     if: steps.cache-nodemodules.outputs.cache-hit != 'true'
-    run: npm run bootstrap
+    run: npm ci
+    shell: bash
+  - name: Bootstrap 
+    run: npm run bootstrap:ci
     shell: bash

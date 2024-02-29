@@ -1,6 +1,8 @@
 import type {
     AccountLimitsRequest,
     AccountLimitsResponse,
+    AccountListRequest,
+    AccountListResponse,
     AccountStatusRequest,
     AccountStatusResponse,
     ActiveSymbolsRequest,
@@ -2068,6 +2070,10 @@ type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;
+    };
+    account_list: {
+        request: AccountListRequest;
+        response: AccountListResponse;
     };
     api_token: {
         request: APITokenRequest;

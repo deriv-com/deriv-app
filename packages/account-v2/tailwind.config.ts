@@ -1,7 +1,23 @@
 import type { Config } from 'tailwindcss';
+const plugin = require('tailwindcss/plugin');
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.backface-hidden': {
+                    'backface-visibility': 'hidden',
+                },
+                '.backface-visible': {
+                    'backface-visibility': 'visible',
+                },
+                '.d-none': {
+                    display: 'none',
+                },
+            });
+        }),
+    ],
     theme: {
         extend: {
             borderRadius: {

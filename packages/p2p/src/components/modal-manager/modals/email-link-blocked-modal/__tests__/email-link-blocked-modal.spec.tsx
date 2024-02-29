@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useStores } from 'Stores/index';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import EmailLinkedBlockedModal from '../email-link-blocked-modal';
 
@@ -8,6 +9,17 @@ const mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
     hideModal: jest.fn(),
     is_modal_open: true,
 };
+
+const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
+    order_store: {
+        setIsVerifyingEmail: jest.fn(),
+    },
+};
+
+jest.mock('Stores', () => ({
+    ...jest.requireActual('Stores'),
+    useStores: jest.fn(() => mock_store),
+}));
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
@@ -43,5 +55,6 @@ describe('<EmailLinkedBlockedModal />', () => {
         expect(close_icon).toBeInTheDocument();
         userEvent.click(close_icon);
         expect(mock_modal_manager.hideModal).toBeCalledTimes(1);
+        expect(mock_store.order_store.setIsVerifyingEmail).toBeCalledTimes(1);
     });
 });

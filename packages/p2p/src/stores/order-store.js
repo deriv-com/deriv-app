@@ -23,6 +23,7 @@ export default class OrderStore {
             is_loading: observable,
             is_rating_modal_open: observable,
             is_recommended: observable,
+            is_verifying_email: observable,
             orders: observable,
             order_id: observable,
             order_payment_method_details: observable,
@@ -62,6 +63,7 @@ export default class OrderStore {
             setIsLoading: action.bound,
             setIsRatingModalOpen: action.bound,
             setIsRecommended: action.bound,
+            setIsVerifyingEmail: action.bound,
             setOrderPaymentMethodDetails: action.bound,
             setOrderDetails: action.bound,
             setOrderId: action.bound,
@@ -105,6 +107,7 @@ export default class OrderStore {
     is_loading = false;
     is_rating_modal_open = false;
     is_recommended = undefined;
+    is_verifying_email = false;
     orders = [];
     order_id = null;
     order_payment_method_details = null;
@@ -512,6 +515,7 @@ export default class OrderStore {
                 dry_run: 1,
             }).then(response => {
                 general_store.hideModal();
+                this.setIsVerifyingEmail(true);
                 if (response) {
                     if (!response.error) {
                         clearTimeout(wait);
@@ -606,6 +610,10 @@ export default class OrderStore {
 
     setIsRecommended(is_recommended) {
         this.is_recommended = is_recommended;
+    }
+
+    setIsVerifyingEmail(is_verifying_email) {
+        this.is_verifying_email = is_verifying_email;
     }
 
     setOrders(orders) {

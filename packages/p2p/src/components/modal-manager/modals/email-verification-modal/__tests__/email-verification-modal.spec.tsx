@@ -60,10 +60,12 @@ describe('EmailVerificationModal />', () => {
 
         expect(screen.getByText('Has the buyer paid you?')).toBeInTheDocument();
         expect(
-            screen.getByText(
-                'Releasing funds before receiving payment may result in losses. Check your email and follow the instructions within 10 minutes to release the funds.'
+            screen.queryByText(
+                /Releasing funds before receiving payment may result in losses. Check your email and follow the instructions/
             )
         ).toBeInTheDocument();
+        expect(screen.queryByText('within 10 minutes', { selector: 'strong' })).toBeInTheDocument();
+        expect(screen.queryByText(/to release the funds./)).toBeInTheDocument();
     });
 
     it('should be able to click on I didn’t receive the email and setShouldShowReasonsIfNoEmail should be passing true', () => {

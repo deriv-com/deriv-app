@@ -26,7 +26,10 @@ const EmailVerificationModal = () => {
                 </Text>
                 <Text align='center' color='prominent'>
                     {/* TODO: Uncomment when time is available in BE response */}
-                    <Localize i18n_default_text='Releasing funds before receiving payment may result in losses. Check your email and follow the instructions within 10 minutes to release the funds.' />
+                    <Localize
+                        i18n_default_text='Releasing funds before receiving payment may result in losses. Check your email and follow the instructions <0>within 10 minutes</0> to release the funds.'
+                        components={[<strong key={0} />]}
+                    />
                 </Text>
                 <Text
                     className='email-verification-modal__receive_email_text'

@@ -10,7 +10,6 @@ type AuthContextType = {
     loginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
     switchAccount: (loginid: string) => void;
-    switchEnvironment: (loginid: string | null | undefined) => void;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -123,17 +122,6 @@ const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
         [loginid]
     );
 
-    const switchEnvironment = useCallback(
-        (loginid: string | null | undefined) => {
-            if (!standalone) return;
-            const currentEnvironment = getEnvironment(loginid);
-            if (currentEnvironment !== 'custom' && currentEnvironment !== environment) {
-                setEnvironment(currentEnvironment);
-            }
-        },
-        [environment, standalone]
-    );
-
     useEffect(() => {
         setReconnect(true);
     }, [environment, setReconnect]);
@@ -146,7 +134,6 @@ const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
         return {
             data,
             switchAccount,
-            switchEnvironment,
             refetch,
             isLoading,
             isError,
@@ -154,7 +141,7 @@ const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
             isSuccess: isSuccess && !isLoading,
             error: isError,
         };
-    }, [data, switchAccount, switchEnvironment, refetch, isLoading, isError, isFetching, isSuccess]);
+    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

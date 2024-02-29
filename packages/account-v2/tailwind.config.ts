@@ -1,7 +1,17 @@
 import type { Config } from 'tailwindcss';
+const plugin = require('tailwindcss/plugin');
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.d-none': {
+                    display: 'none',
+                },
+            });
+        }),
+    ],
     theme: {
         extend: {
             borderRadius: {
@@ -186,6 +196,26 @@ export default {
                 56: '56px',
                 58: '58px',
                 60: '60px',
+                62: '62px',
+                64: '64px',
+                66: '66px',
+                68: '68px',
+                70: '70px',
+                72: '72px',
+                74: '74px',
+                76: '76px',
+                78: '78px',
+                80: '80px',
+                82: '82px',
+                84: '84px',
+                86: '86px',
+                88: '88px',
+                90: '90px',
+                92: '92px',
+                94: '94px',
+                96: '96px',
+                98: '98px',
+                100: '100px',
             },
         },
     },

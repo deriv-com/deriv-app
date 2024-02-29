@@ -94,6 +94,6 @@ export const setTradeURLParams = ({ contractType, symbol, chartType, granularity
     contractType && searchParams.set(TRADE_URL_PARAMS.TRADE_TYPE, contractType);
     if (searchParams.toString()) {
         const newQuery = `${window.location.pathname}?${searchParams.toString()}`;
-        window.history.pushState(null, '', newQuery);
+        window.history.replaceState({}, document.title, newQuery);
     }
 };

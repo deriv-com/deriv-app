@@ -4,7 +4,10 @@ import * as Yup from 'yup';
 import { Input } from '@deriv-com/ui';
 import { validateField } from '../../utils/validation';
 
-type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'errorMessage' | 'isInvalid' | 'showMessage'> & {
+type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'isFullWidth' | 'label' | 'message' | 'name'> & {
+    isFullWidth?: boolean;
+    label: string;
+    message?: string;
     name: string;
     validationSchema?: Yup.AnySchema;
 };
@@ -17,7 +20,7 @@ type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'errorMessage' | '
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
+export const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
     <Field name={name} validate={validateField(validationSchema)}>
         {({ field, meta: { error, touched } }: FieldProps<string>) => (
             <Input
@@ -26,10 +29,8 @@ const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps
                 aria-label={rest.label}
                 autoComplete='off'
                 error={Boolean(error && touched)}
-                message={touched && error}
+                message={error ?? rest.message}
             />
         )}
     </Field>
 );
-
-export default FormInputField;

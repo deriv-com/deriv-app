@@ -6,12 +6,6 @@ export default {
     plugins: [
         plugin(({ addUtilities }) => {
             addUtilities({
-                '.backface-hidden': {
-                    'backface-visibility': 'hidden',
-                },
-                '.backface-visible': {
-                    'backface-visibility': 'visible',
-                },
                 '.d-none': {
                     display: 'none',
                 },

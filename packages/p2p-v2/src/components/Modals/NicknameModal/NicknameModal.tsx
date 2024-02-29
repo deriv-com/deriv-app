@@ -65,6 +65,7 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
                     name='nickname'
                     render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                         <Input
+                            data-testid='dt_p2p_v2_nickname_modal_input'
                             error={!!error?.message || isError}
                             label='Your nickname'
                             message={createError?.error?.message || error?.message}

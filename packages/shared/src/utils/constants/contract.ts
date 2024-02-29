@@ -41,7 +41,7 @@ type TContractConfig = {
 
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 
-type TTextValueStrings = {
+export type TTextValueStrings = {
     text: string;
     value: string;
 };

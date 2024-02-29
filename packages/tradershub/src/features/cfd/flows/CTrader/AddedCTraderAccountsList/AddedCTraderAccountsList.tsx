@@ -1,18 +1,20 @@
 import React, { Fragment } from 'react';
 import { IconComponent, TradingAccountCard } from '@/components';
-import { getStaticUrl } from '@/helpers';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
     <IconComponent
         icon='CTrader'
         onClick={() => {
-            window.open(getStaticUrl('/deriv-ctrader'));
+            window.open(getDerivStaticURL('/deriv-ctrader'));
         }}
     />
 );

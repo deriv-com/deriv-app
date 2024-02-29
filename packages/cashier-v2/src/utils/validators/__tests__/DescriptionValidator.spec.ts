@@ -2,8 +2,6 @@ import { descriptionValidator } from '../validators';
 import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/object';
 
-// if (value && !/^[0-9A-Za-z .,'-]{0,250}$/.test(value.replace(/\n/g, ' '))) {
-
 describe('descriptionValidator', () => {
     const context = {
         createError: ({ message }: { message: string }) => message,

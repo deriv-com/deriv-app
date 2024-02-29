@@ -1,5 +1,5 @@
 import { ACCOUNT_V2_ROUTES } from '../../constants/routes';
-import { POAFormContainer } from '../../modules/POAForm/POAFormContainer';
+import { POAFormContainer } from '../../modules/src/POAForm/POAFormContainer';
 import DummyRoute from '../components/dummy-route/dummy-route';
 
 export const routes = [

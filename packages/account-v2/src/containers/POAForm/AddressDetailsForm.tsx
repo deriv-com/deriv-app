@@ -8,7 +8,7 @@ import { Button, InlineMessage, Text } from '@deriv-com/ui';
 import IcPOALock from '../../assets/verification-status/ic-poa-lock.svg';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
-import { AddressFields } from '../../modules/AddressFields';
+import { AddressFields } from '../../modules/src/AddressFields';
 import DocumentSubmission from './DocumentSubmission';
 
 type TAddressDetails = {

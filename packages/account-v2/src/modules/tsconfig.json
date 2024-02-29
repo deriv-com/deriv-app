@@ -2,14 +2,14 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "declaration": true,
-        "noEmit": false,
-        "emitDeclarationOnly": true,
         "isolatedModules": true,
         "outDir": "./dist/types",
         "baseUrl": "./",
-        // "rootDir": "./src",
         "paths": {
             "@deriv/*": ["../*/src"]
         }
     },
+    "include": ["src", "../../types/utils.d.ts"],
+    "exclude": ["../shared/**/*", "./node_modules/*", "build", "./dist/types", "@deriv/*"],
 }
+

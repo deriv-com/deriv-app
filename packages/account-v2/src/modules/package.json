@@ -1,14 +1,13 @@
 {
-    "name": "@deriv/account-v2-lib",
-    "version": "1.0.0",
+    "name": "account-v2-lib",
+    "version": "1.0.1",
     "main": "dist/js/index.js",
     "types": "dist/types/index.d.ts",
     "engines": {
         "node": "18.x"
     },
     "scripts": {
-        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\" && tsc -p ./tsconfig.json",
-        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.ts\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\"",
         "prepublishOnly": "npm run build"
     },
     "dependencies": {
@@ -49,6 +48,7 @@
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
         "autoprefixer": "^10.4.16",
+        "copy-webpack-plugin": "^12.0.2",
         "eslint-plugin-local-rules": "2.0.0",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",

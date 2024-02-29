@@ -1,6 +1,7 @@
 import path from 'path';
+import CopyPlugin from 'copy-webpack-plugin';
 import { TBuildEnv } from '../../build/types/build-types';
-import { babelLoader, buildLoaders, sourceMapLoader, styleLoader, svgLoader } from '../../build/build-loaders';
+import { babelLoader, sourceMapLoader, styleLoader, svgLoader } from '../../build/build-loaders';
 
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
@@ -96,4 +97,14 @@ export default (env: TBuildEnv) => ({
         },
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, './src', 'index.d.ts'),
+                    to: path.resolve(__dirname, './dist/types', 'index.d.ts'),
+                },
+            ],
+        }),
+    ],
 });

@@ -7,9 +7,9 @@ import { APIProvider } from '@deriv/api';
 import { BreakpointProvider } from '@deriv/quill-design';
 import { DocumentSelection } from './containers/DocumentSelection';
 import { DOCUMENT_LIST, INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
-import { IDVForm } from './modules/IDVForm';
-import { getIDVFormValidationSchema } from './modules/IDVForm/utils';
-import { ManualForm } from './modules/ManualForm';
+import { IDVForm } from './modules/src/IDVForm';
+import { getIDVFormValidationSchema } from './modules/src/IDVForm/utils';
+import { ManualForm } from './modules/src/ManualForm';
 import RouteLinks from './router/components/route-links/route-links';
 import './index.scss';
 

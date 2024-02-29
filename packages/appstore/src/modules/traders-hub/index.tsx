@@ -177,6 +177,7 @@ const TradersHub = observer(() => {
                             components={[<strong key={0} />]}
                         />
                     </Text>
+                    <div className='disclaimer__bottom-plug' />
                 </div>
             )}
         </>

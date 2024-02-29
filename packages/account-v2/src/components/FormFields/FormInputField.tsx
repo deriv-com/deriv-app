@@ -23,6 +23,7 @@ const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps
             <Input
                 {...field}
                 {...rest}
+                aria-label={rest.label}
                 autoComplete='off'
                 error={Boolean(error && touched)}
                 message={touched && error}

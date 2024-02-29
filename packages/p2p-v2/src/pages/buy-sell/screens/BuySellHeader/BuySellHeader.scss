@@ -15,7 +15,6 @@
 
     .deriv-input {
         padding: 6px 8px;
-        width: 24rem;
 
         @include mobile {
             height: 3.2rem;
@@ -24,8 +23,8 @@
             line-height: 1rem;
         }
 
-        &__container {
-            width: 24rem;
+        &__helper-message {
+            display: none;
         }
     }
 
@@ -56,6 +55,23 @@
             width: 100%;
             padding: 1.6rem;
             border-top: 1px solid #f2f3f4;
+        }
+
+        &-search {
+            .p2p-v2-search {
+                @include mobile {
+                    width: 13rem;
+                }
+                .deriv-input {
+                    &__container {
+                        width: 24rem;
+
+                        @include mobile {
+                            width: 13rem;
+                        }
+                    }
+                }
+            }
         }
     }
 }

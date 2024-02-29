@@ -1,10 +1,10 @@
-import React, { ComponentProps } from 'react';
-import { Field, FieldProps } from 'formik';
+import React from 'react';
+import { Field } from 'formik';
 import * as Yup from 'yup';
+import { ActionScreen } from '@deriv-com/ui';
 import { validateField } from '../../utils/validation';
-import { Dropzone } from '../Dropzone';
 
-type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileChange'> & {
+type TFormDocumentUploadField = {
     name: string;
     validationSchema?: Yup.AnySchema;
 };
@@ -16,15 +16,9 @@ type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileCha
  * @param [props] - Other props to pass to Dropzone
  * @returns ReactNode
  */
-const FormDocumentUploadField = ({ name, validationSchema, ...rest }: TFormDocumentUploadField) => (
+const FormDocumentUploadField = ({ name, validationSchema }: TFormDocumentUploadField) => (
     <Field name={name} validate={validateField(validationSchema)}>
-        {({ field, form }: FieldProps<File>) => (
-            <Dropzone
-                {...rest}
-                defaultFile={field.value}
-                onFileChange={(file: File) => form.setFieldValue(name, file)}
-            />
-        )}
+        {() => <ActionScreen title='Should update new dropzone once its completed' />}
     </Field>
 );
 

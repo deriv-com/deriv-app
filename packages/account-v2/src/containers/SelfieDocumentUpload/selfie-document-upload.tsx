@@ -1,9 +1,7 @@
 import React from 'react';
 import { Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
-import { Button, Text, useDevice } from '@deriv-com/ui';
-import SelfieIcon from '../../assets/manual-upload/selfie-icon.svg';
-import { Dropzone } from '../../components/Dropzone';
+import { ActionScreen, Button, Text, useDevice } from '@deriv-com/ui';
 import { MANUAL_DOCUMENT_SELFIE } from '../../constants/manualFormConstants';
 import { getSelfieValidationSchema } from '../../utils/manual-form-utils';
 
@@ -30,17 +28,10 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
         >
-            {({ dirty, isValid, setFieldValue, values }) => (
+            {({ dirty, isValid, values }) => (
                 <div className='flex flex-col gap-800'>
                     <Text>Upload your selfie</Text>
-                    <Dropzone
-                        buttonText={isMobile ? 'Tap here to upload' : 'Drop file or click here to upload'}
-                        description='Upload your selfie'
-                        fileFormats='image/*'
-                        hasFrame
-                        icon={<SelfieIcon />}
-                        onFileChange={(file: File) => setFieldValue(MANUAL_DOCUMENT_SELFIE, file)}
-                    />
+                    <ActionScreen title='Should update new dropzone once its completed' />
                     <Text size={isMobile ? 'sm' : 'xs'}>
                         Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and
                         your face is within the frame.

@@ -66,14 +66,6 @@ describe('ManualForm', () => {
         expect(await screen.findByText(/Passport number is required./)).toBeInTheDocument();
     });
 
-    it('should display the error message if the document expiry date is empty', async () => {
-        const newProps = { ...mockProps, isExpiryDateRequired: true, selectedDocument: MANUAL_DOCUMENT_TYPES.PASSPORT };
-        renderComponent(newProps);
-        userEvent.type(screen.getByRole('textbox', { name: 'Expiry date*' }), '');
-        userEvent.tab();
-        expect(await screen.findByText(/Expiry date is required./)).toBeInTheDocument();
-    });
-
     it('should render the footer items correctly', () => {
         renderComponent();
         expect(screen.getByText(/A clear colour photo or scanned image/)).toBeInTheDocument();

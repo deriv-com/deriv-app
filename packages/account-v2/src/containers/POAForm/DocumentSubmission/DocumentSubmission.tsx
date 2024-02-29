@@ -1,9 +1,6 @@
 import React from 'react';
-import * as Yup from 'yup';
 import { useBreakpoint } from '@deriv/quill-design';
-import { StandaloneArrowUpFromBracketBoldIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
-import FormDocumentUploadField from '../../../components/FormFields/FormDocumentUploadField';
+import { ActionScreen, Text } from '@deriv-com/ui';
 import CommonMistakesExamples from '../CommonMistakeExample/CommonMistakeExample';
 import { getExampleImagesConfig } from '../CommonMistakeExample/CommonMistakeExampleConfig';
 
@@ -12,8 +9,6 @@ const listItems = [
     'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.',
     'Home rental agreement: valid and current agreement.',
 ];
-
-const documentValidation = Yup.mixed().required('Please upload a file');
 
 const DocumentSubmission: React.FC = () => {
     const { isMobile } = useBreakpoint();
@@ -56,20 +51,7 @@ const DocumentSubmission: React.FC = () => {
                     <Text size='sm' weight='bold'>
                         Upload File
                     </Text>
-                    <FormDocumentUploadField
-                        className='w-full'
-                        description='Remember, selfies, pictures of houses, or non-related images will be rejected.'
-                        descriptionColor='primary'
-                        descriptionSize='2xs'
-                        fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
-                        hoverMessage='Upload your file here'
-                        icon={<StandaloneArrowUpFromBracketBoldIcon className='fill-solid-green-2' iconSize='lg' />}
-                        maxSize={8388608}
-                        name='document'
-                        title='Drag and drop a file or click to browse your files.'
-                        titleType='bold'
-                        validationSchema={documentValidation}
-                    />
+                    <ActionScreen title='Should update new dropzone once its completed' />
                     <div className='flex items-start self-stretch justify-between'>
                         <Text size={isMobile ? '2xs' : 'xs'}>
                             Supported formats : JPEG, JPG, PNG, PDF, and GIF only

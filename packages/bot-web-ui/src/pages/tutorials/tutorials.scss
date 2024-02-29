@@ -276,7 +276,7 @@
                     height: 3.2rem;
                     border-radius: 0.4rem;
                     outline: none;
-                    background-color: transparent;
+                    background-color: var(--general-main-1);
                     font-size: 1.4rem;
                     padding: 0 3rem;
                     border: solid 0.1rem var(--border-normal);
@@ -288,7 +288,6 @@
 
                     &:focus {
                         border-color: var(--text-general);
-                        background-color: var(--general-main-1);
                     }
 
                     @include mobile {

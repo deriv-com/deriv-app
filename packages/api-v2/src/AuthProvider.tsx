@@ -83,7 +83,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { setReconnect, queryClient } = useAPIContext();
+    const { queryClient } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -149,10 +149,6 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
         },
         [loginIDKey, loginid, mutateAsync, queryClient]
     );
-
-    useEffect(() => {
-        setReconnect(true);
-    }, [setReconnect]);
 
     const refetch = useCallback(() => {
         switchAccount(loginid as string);

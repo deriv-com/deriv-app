@@ -27,7 +27,6 @@ type TUnsubscribeFunction = (id: string) => void;
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
     send: TSendFunction;
-    setReconnect: (value: React.SetStateAction<boolean>) => void;
     standalone: boolean;
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
@@ -209,7 +208,6 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
             value={{
                 derivAPI: standalone ? standaloneDerivAPI.current : WS,
                 send,
-                setReconnect,
                 standalone,
                 subscribe,
                 unsubscribe,

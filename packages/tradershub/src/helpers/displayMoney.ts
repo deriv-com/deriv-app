@@ -3,6 +3,13 @@ import { useAuthorize } from '@deriv/api';
 type TCurrency = NonNullable<ReturnType<typeof useAuthorize>['data']['currency']>;
 type TPreferredLanguage = ReturnType<typeof useAuthorize>['data']['preferred_language'];
 
+/**
+ * @description Display money in a human-readable format
+ * @param amount - The amount to be formatted
+ * @param currency - The currency to be displayed
+ * @param options - Additional options for formatting
+ * @returns The formatted money
+ */
 export const displayMoney = (
     amount: number,
     currency: TCurrency,

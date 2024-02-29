@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import BuySellForm from '../BuySellForm';
 
 const mockMutateFn = jest.fn();
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     p2p: {
         order: {
             useCreate: jest.fn(() => ({

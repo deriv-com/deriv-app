@@ -32,40 +32,33 @@ const DerivAppsGetAccount: React.FC = () => {
 
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
-    const openSuccessModal = useCallback(() => {
-        show(
-            <ModalStepWrapper
-                renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
-                shouldHideDerivAppHeader
-                shouldHideHeader={isDesktop}
-            >
-                <CFDSuccess
-                    description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
-                    displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
-                    renderButton={() => <DerivAppsSuccessFooter />}
-                    title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
-                />
-            </ModalStepWrapper>,
-            {
-                defaultRootId: 'wallets_modal_root',
-            }
-        );
-    }, [
-        activeLinkedToTradingAccount?.display_balance,
-        activeWallet?.wallet_currency_type,
-        isDesktop,
-        landingCompanyName,
-        show,
-    ]);
-
     useEffect(() => {
+        const openSuccessModal = () => {
+            show(
+                <ModalStepWrapper
+                    renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
+                    shouldHideDerivAppHeader
+                    shouldHideHeader={isDesktop}
+                >
+                    <CFDSuccess
+                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
+                        displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
+                        renderButton={() => <DerivAppsSuccessFooter />}
+                        title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
+                    />
+                </ModalStepWrapper>,
+                {
+                    defaultRootId: 'wallets_modal_root',
+                }
+            );
+        };
         if (newTradingAccountData && isAccountCreationSuccess) {
             addTradingAccountToLocalStorage(newTradingAccountData);
         }
         if (isAccountCreationSuccess) {
             openSuccessModal();
         }
-    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess, newTradingAccountData, openSuccessModal]);
+    }, [addTradingAccountToLocalStorage, newTradingAccountData, isAccountCreationSuccess]);
 
     const createTradingAccount = () => {
         createNewRealAccount({

@@ -66,7 +66,7 @@ const PURCHASE_TYPE: TConfigItem = {
 const LABEL_STAKE: TConfigItem = {
     type: 'label',
     label: localize('Initial stake'),
-    description: localize('The amount that you pay to enter a trade.'),
+    description: localize('The amount that you stake for the first trade. Note that this is the minimum stake amount.'),
 };
 
 const STAKE: TConfigItem = {
@@ -122,17 +122,13 @@ const LOSS: TConfigItem = {
 const LABEL_MARTINGALE_SIZE: TConfigItem = {
     type: 'label',
     label: localize('Size'),
-    description: localize(
-        'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 1.'
-    ),
+    description: localize('The size used to multiply the stake after a losing trade for the next trade.'),
 };
 
 const LABEL_REVERSE_MARTINGALE_SIZE: TConfigItem = {
     type: 'label',
     label: localize('Size'),
-    description: localize(
-        'The multiplier amount used to increase your stake after a successful trade. Value must be higher than 1.'
-    ),
+    description: localize('The size used to multiply the stake after a successful trade for the next trade.'),
 };
 
 const SIZE: TConfigItem = {
@@ -154,13 +150,17 @@ const SIZE: TConfigItem = {
 const LABEL_DALEMBERT_UNIT: TConfigItem = {
     type: 'label',
     label: localize('Unit'),
-    description: localize("The amount that you may add to your stake if you're losing a trade."),
+    description: localize(
+        'Number of unit(s) to be added to the next trade after a losing trade. One unit is equivalent to the amount of initial stake.'
+    ),
 };
 
 const LABEL_REVERSE_DALEMBERT_UNIT: TConfigItem = {
     type: 'label',
     label: localize('Unit'),
-    description: localize('The amount that you may add to your stake after a successful trade.'),
+    description: localize(
+        'Number of unit(s) to be added to the next trade after a successful trade. One unit is equivalent to the amount of initial stake.'
+    ),
 };
 
 const UNIT: TConfigItem = {

@@ -1,12 +1,16 @@
 import React from 'react';
-import { APIProvider, useGetAccountStatus } from '@deriv/api';
+import { APIProvider, AuthProvider, useGetAccountStatus } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import usePoiPoaStatus from '../usePoiPoaStatus';
 
 const mockUseGetAccountStatus = useGetAccountStatus as jest.MockedFunction<typeof useGetAccountStatus>;
-const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useGetAccountStatus: jest.fn().mockReturnValue({
         data: {
             authentication: {

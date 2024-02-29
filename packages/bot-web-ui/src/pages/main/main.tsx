@@ -124,11 +124,9 @@ const AppWrapper = observer(() => {
             const el_id = TAB_IDS[tab_index];
             if (el_id) {
                 const el_tab = document.getElementById(el_id);
-                el_tab?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                    inline: 'center',
-                });
+                setTimeout(() => {
+                    el_tab?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                }, 10);
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -179,14 +177,14 @@ const AppWrapper = observer(() => {
                             id='id-tutorials'
                         >
                             <div className='tutorials-wrapper'>
-                                <Tutorial />
+                                <Tutorial handleTabChange={handleTabChange} />
                             </div>
                         </div>
                     </Tabs>
                 </div>
             </div>
             <DesktopWrapper>
-                <div className={'main__run-strategy-wrapper'}>
+                <div className='main__run-strategy-wrapper'>
                     <RunStrategy />
                     <RunPanel />
                 </div>
@@ -196,8 +194,8 @@ const AppWrapper = observer(() => {
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}
-                className={'dc-dialog__wrapper--fixed'}
-                confirm_button_text={ok_button_text || localize('OK')}
+                className='dc-dialog__wrapper--fixed'
+                confirm_button_text={ok_button_text || localize('Ok')}
                 has_close_icon
                 is_mobile_full_width={false}
                 is_visible={is_dialog_open}

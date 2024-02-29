@@ -1,10 +1,10 @@
 import React, { memo, useEffect } from 'react';
-import clsx from 'clsx';
 import Modal from 'react-modal';
 import { useDevice } from '@/hooks';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
+import './MyAdsDeleteModal.scss';
 
 type TMyAdsDeleteModalProps = {
     error?: string;
@@ -60,29 +60,17 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
         <>
             {!isLoadingInfo && (
                 <Modal
-                    className={clsx('p2p-v2-modal-styles w-[44rem] p-[1.6rem]', {
-                        'w-[32.8rem]': isMobile,
-                    })}
+                    className='p-[1.6rem] p2p-v2-my-ads-delete-modal'
                     isOpen={isModalOpen}
                     onRequestClose={onRequestClose}
                     shouldCloseOnOverlayClick={false}
                     style={customStyles}
                     testId='dt_p2p_v2_ads_delete_modal'
                 >
-                    <Text
-                        as='div'
-                        className={clsx('mx-[0.8rem] pb-[1.2rem]', { 'mx-0': isMobile })}
-                        color='general'
-                        weight='bold'
-                    >
+                    <Text as='div' className='p2p-v2-my-ads-delete-modal__header' color='general' weight='bold'>
                         Do you want to delete this ad?
                     </Text>
-                    <Text
-                        as='div'
-                        className={clsx('my-[2.4rem] mx-[0.8rem]', { 'my-0 mx-0': isMobile })}
-                        color='prominent'
-                        size='sm'
-                    >
+                    <Text as='div' className='p2p-v2-my-ads-delete-modal__body' color='prominent' size='sm'>
                         {getModalText()}
                     </Text>
                     {getModalFooter()}

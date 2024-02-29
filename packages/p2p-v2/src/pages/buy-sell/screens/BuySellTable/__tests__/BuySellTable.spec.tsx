@@ -1,9 +1,13 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import BuySellTable from '../BuySellTable';
 
-const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
 
 let mockAdvertiserListData = {
     data: [],
@@ -12,14 +16,22 @@ let mockAdvertiserListData = {
     loadMoreAdverts: jest.fn(),
 };
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advert: {
             useGetList: jest.fn(() => mockAdvertiserListData),
         },
         advertiser: {
             useGetInfo: jest.fn(() => ({ data: { id: '123' } })),
+        },
+        paymentMethods: {
+            useGet: jest.fn(() => ({ data: [] })),
+        },
+        settings: {
+            useGetSettings: jest.fn(() => ({
+                data: {},
+            })),
         },
     },
 }));

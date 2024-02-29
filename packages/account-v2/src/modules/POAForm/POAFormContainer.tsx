@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import IcPOAError from '../../assets/verification-status/ic-poa-error.svg';
 import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
@@ -14,7 +14,7 @@ import { usePOAInfo } from '../../hooks/usePOAInfo';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
 
 export const POAFormContainer = () => {
-    const { data: activeAccount } = useActiveAccount();
+    const { data: activeAccount } = useActiveTradingAccount();
     const { data: poaInfo, isLoading } = usePOAInfo();
     const [resubmitting, setResubmitting] = useState(false);
     const history = useHistory();

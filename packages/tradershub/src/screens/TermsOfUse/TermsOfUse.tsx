@@ -1,16 +1,12 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
+import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
 import { ScrollToFieldError } from '@/helpers';
+import { useNewCRRealAccount } from '@/hooks';
 import { termsOfUse } from '@/utils';
-import { Text } from '@deriv-com/ui';
-import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
-import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
-import { useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
+import { Divider, Text } from '@deriv-com/ui';
 import FatcaDeclaration from './TermsOfUseSections/FatcaDeclaration';
 import PEPs from './TermsOfUseSections/PEPs';
-
-// Replace divider from deriv-com/ui once it is implemented
-const Divider = () => <hr className=' bg-system-light-primary-background' />;
 
 /**
  * @name TermsOfUse
@@ -19,26 +15,23 @@ const Divider = () => <hr className=' bg-system-light-primary-background' />;
  * @returns {React.ReactNode}
  */
 const TermsOfUse = () => {
-    const { helpers, setIsSuccessModalOpen, setIsWizardOpen } = useSignupWizardContext();
+    const { mutate, isLoading } = useNewCRRealAccount();
 
-    // Temporary function to handle form submission till we have the validations in place
-    const handleSubmit = () => {
-        setIsWizardOpen(false);
-        helpers.setStep(1);
-        setIsSuccessModalOpen(true);
+    const initialValues = {
+        fatcaDeclaration: '',
+        pepConfirmation: false,
+        termsAndCondition: false,
+    };
+
+    const handleSubmit = (values: FormikValues, actions: FormikHelpers<typeof initialValues>) => {
+        actions.setSubmitting(true);
+        mutate();
+        actions.setSubmitting(false);
     };
 
     return (
         <WizardScreenWrapper heading='Terms of Use'>
-            <Formik
-                initialValues={{
-                    fatcaDeclaration: '',
-                    pepConfirmation: false,
-                    termsAndCondition: false,
-                }}
-                onSubmit={handleSubmit}
-                validationSchema={termsOfUse}
-            >
+            <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={termsOfUse}>
                 {({ isValid, values }) => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
                         <ScrollToFieldError />
@@ -69,7 +62,8 @@ const TermsOfUse = () => {
                                 <PEPs />
                             </div>
                         </div>
-                        <Actions
+                        <WizardScreenActions
+                            isSubmitBtnLoading={isLoading}
                             submitDisabled={
                                 !values.pepConfirmation ||
                                 !values.termsAndCondition ||

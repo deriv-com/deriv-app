@@ -1,21 +1,9 @@
 import moment from 'moment';
 import { WS } from '@deriv/shared';
-
-class PromiseClass {
-    promise: Promise<unknown>;
-    reject?: (reason?: unknown) => void;
-    resolve?: (value?: unknown) => void;
-
-    constructor() {
-        this.promise = new Promise((resolve, reject) => {
-            this.reject = reject;
-            this.resolve = resolve;
-        });
-    }
-}
+import { PromiseUtils } from '@deriv-com/utils';
 
 let clock_started = false;
-const pending = new PromiseClass();
+const pending = PromiseUtils.createPromise();
 let server_time: moment.Moment,
     performance_request_time: number,
     get_time_interval: ReturnType<typeof setInterval>,

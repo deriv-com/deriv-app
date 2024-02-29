@@ -5,7 +5,7 @@ import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals
 import { PAYMENT_METHOD_CATEGORIES } from '@/constants';
 import { TFormState } from '@/reducers/types';
 import { sortPaymentMethods } from '@/utils';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 import AddNewButton from './AddNewButton';
 

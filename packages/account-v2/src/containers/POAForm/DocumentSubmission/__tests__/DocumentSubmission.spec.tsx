@@ -17,8 +17,9 @@ jest.mock('../../CommonMistakeExample/CommonMistakeExample', () => {
     return CommonMistakeExamples;
 });
 
-jest.mock('@deriv/quill-design', () => ({
-    useBreakpoint: jest.fn(() => ({ isMobile: false })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
 describe('DocumentSubmission', () => {

@@ -1,12 +1,13 @@
 import React from 'react';
 import { APIProvider, useSettings } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AddressDetailsForm } from '../AddressDetailsForm';
 
-jest.mock('@deriv/quill-design', () => ({
-    useBreakpoint: jest.fn(() => ({ isMobile: false })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
 jest.mock('../DocumentSubmission', () => {
@@ -108,7 +109,7 @@ describe('AddressDetailsForm', () => {
     });
 
     it('should show Proof of address on Mobile', () => {
-        (useBreakpoint as jest.Mock).mockImplementation(() => ({ isMobile: true }));
+        (useDevice as jest.Mock).mockImplementation(() => ({ isMobile: true }));
 
         render(
             <APIProvider>

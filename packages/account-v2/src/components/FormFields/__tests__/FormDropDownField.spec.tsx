@@ -1,12 +1,13 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import { useBreakpoint } from '@deriv/quill-design';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FormDropDownField from '../FormDropDownField';
 
-jest.mock('@deriv/quill-design', () => ({
-    useBreakpoint: jest.fn(() => ({ isMobile: false })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
 describe('FormDropDownField', () => {
@@ -50,7 +51,7 @@ describe('FormDropDownField', () => {
     });
 
     it('should not allow values in input when isMobile flag is true', () => {
-        (useBreakpoint as jest.Mock).mockReturnValue({ isMobile: true });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <Formik initialValues={{ testField: '' }} onSubmit={jest.fn()}>
                 <Form>

@@ -109,9 +109,7 @@ let dxtrade_accounts_from: TAccount[] = [];
 let dxtrade_accounts_to: TAccount[] = [];
 let mt_accounts_from: TAccount[] = [];
 let mt_accounts_to: TAccount[] = [];
-let platform_type: string,
-    remaining_transfers_amount: number | undefined,
-    remaining_transfers_count: number | undefined;
+let platform_type: string, remaining_transfers_amount: number, remaining_transfers_count: number;
 let has_reached_maximum_daily_transfers = false;
 
 const AccountTransferForm = observer(
@@ -165,6 +163,7 @@ const AccountTransferForm = observer(
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
+        const [transfer_to_hint, setTransferToHint] = React.useState<JSX.Element>();
 
         const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
@@ -422,7 +421,7 @@ const AccountTransferForm = observer(
         React.useEffect(() => {
             const getRemainingTransfersAmount = (transfer_type: string | undefined) => {
                 if (transfer_type === undefined) {
-                    return undefined;
+                    return 0;
                 }
 
                 const cumulativeTransfers = daily_cumulative_amount_transfers?.[transfer_type];
@@ -432,7 +431,7 @@ const AccountTransferForm = observer(
 
             const getRemainingTransfersCount = (transfer_type: string | undefined) => {
                 if (transfer_type === undefined) {
-                    return undefined;
+                    return 0;
                 }
                 const transfers = daily_transfers?.[transfer_type];
 
@@ -455,7 +454,22 @@ const AccountTransferForm = observer(
             has_reached_maximum_daily_transfers =
                 (is_cumulative_transfer_enabled && remaining_transfers_amount === 0) ||
                 (!is_cumulative_transfer_enabled && remaining_transfers_count === 0);
-        }, [account_limits, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
+
+            let hint_text;
+            if (is_migration_status_present) {
+                hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
+            } else {
+                const transfer_text = remaining_transfers_count > 1 ? 'transfers' : 'transfer';
+                hint_text = (
+                    <Localize
+                        i18n_default_text='You have {{remaining_transfers_count}} {{transfer_text}} remaining for today.'
+                        values={{ remaining_transfers_count, transfer_text }}
+                    />
+                );
+            }
+            setTransferToHint(hint_text);
+            resetConverter();
+        }, [account_limits, is_migration_status_present, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
 
         const is_mt5_restricted =
             selected_from?.is_mt &&
@@ -587,7 +601,10 @@ const AccountTransferForm = observer(
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'
                                                 classNameLabel='cashier__drop-down-label'
-                                                cclassNameHint='account-transfer-form__hint'
+                                                cclassNameHint={classNames('account-transfer-form__hint', {
+                                                    'account-transfer-form__hint__disabled':
+                                                        has_reached_maximum_daily_transfers,
+                                                })}
                                                 test_id='dt_account_transfer_form_to_dropdown'
                                                 is_large
                                                 label={localize('To')}
@@ -601,6 +618,7 @@ const AccountTransferForm = observer(
                                                     setFieldValue('amount', '');
                                                     setTimeout(() => setFieldError('amount', ''));
                                                 }}
+                                                hint={!is_cumulative_transfer_enabled && transfer_to_hint}
                                                 error={getMt5Error() ?? selected_to.error}
                                             />
                                         </div>
@@ -622,7 +640,9 @@ const AccountTransferForm = observer(
                                                             }
                                                         )}
                                                         classNameHint={classNames('account-transfer-form__hint', {
-                                                            'account-transfer-form__hint__disabled': is_mt5_restricted,
+                                                            'account-transfer-form__hint__disabled':
+                                                                is_mt5_restricted ||
+                                                                has_reached_maximum_daily_transfers,
                                                         })}
                                                         data-testid='dt_account_transfer_form_input'
                                                         name='amount'
@@ -754,6 +774,7 @@ const AccountTransferForm = observer(
                                                     type='submit'
                                                     is_disabled={
                                                         isSubmitting ||
+                                                        has_reached_maximum_daily_transfers ||
                                                         !!selected_from.error ||
                                                         !!selected_to.error ||
                                                         (selected_from.balance && !Number(selected_from.balance)) ||

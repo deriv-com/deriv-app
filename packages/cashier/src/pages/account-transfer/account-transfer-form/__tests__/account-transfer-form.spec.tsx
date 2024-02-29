@@ -251,6 +251,109 @@ describe('<AccountTransferForm />', () => {
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
     });
 
+    it('should show proper hint about mt5 remained transfers when daily cumulative amount transfers is disabled', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        mockRootStore.client.account_limits = {
+            daily_cumulative_amount_transfers: {
+                enabled: 0,
+            },
+            daily_transfers: {
+                dxtrade: {},
+                internal: {},
+                mt5: {
+                    available: 1,
+                },
+            },
+        };
+        mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
+        mockRootStore.modules.cashier.account_transfer.selected_to.is_mt = true;
+
+        renderAccountTransferForm();
+
+        expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
+    });
+
+    it('should show proper hint about dxtrade remained transfers when daily cumulative amount transfers is disabled', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+
+        mockRootStore.client.account_limits = {
+            daily_cumulative_amount_transfers: {
+                enabled: 0,
+            },
+            daily_transfers: {
+                dxtrade: {
+                    available: 1,
+                },
+                internal: {},
+                mt5: {},
+            },
+        };
+        mockRootStore.modules.cashier.account_transfer.selected_from.is_dxtrade = true;
+        mockRootStore.modules.cashier.account_transfer.selected_from.currency = 'USD';
+        mockRootStore.modules.cashier.account_transfer.selected_to.is_dxtrade = true;
+        mockRootStore.modules.cashier.account_transfer.selected_to.currency = 'USD';
+
+        renderAccountTransferForm();
+
+        expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
+    });
+
+    it('should show proper hint about internal remained transfers when daily cumulative amount transfers is disabled', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        mockRootStore.client.account_limits = {
+            daily_cumulative_amount_transfers: {
+                enabled: 0,
+            },
+            daily_transfers: {
+                dxtrade: {},
+                internal: {
+                    available: 1,
+                },
+                mt5: {},
+            },
+        };
+
+        renderAccountTransferForm();
+
+        expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
+    });
+
+    it('should not show hint about internal remained transfers when daily cumulative amount transfers is enabled', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        mockRootStore.client.account_limits = {
+            daily_cumulative_amount_transfers: {
+                enabled: 1,
+            },
+            daily_transfers: {
+                dxtrade: {},
+                internal: {
+                    available: 1,
+                },
+                mt5: {},
+            },
+        };
+
+        renderAccountTransferForm();
+
+        expect(screen.queryByText('You have 1 transfer remaining for today.')).not.toBeInTheDocument();
+    });
+
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account with position', () => {
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_with_position';
+        renderAccountTransferForm();
+
+        expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
+        expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
+    });
+
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account without position', () => {
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_without_position';
+        renderAccountTransferForm();
+
+        expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
+        expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
+    });
+
     describe('<Dropdown />', () => {
         const accountsList = [
             {

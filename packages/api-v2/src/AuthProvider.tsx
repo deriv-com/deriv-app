@@ -28,12 +28,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
     children: React.ReactNode;
-    cookieTimeout?: number
+    cookieTimeout?: number;
     loginIDKey?: string;
 };
 
-async function waitForLoginAndToken(loginIDKey?: string, cookieTimeout = 10000): Promise<any> {
-  // Default timeout of 10 seconds
+function waitForLoginAndTokenWithTimeout(loginIDKey?: string, cookieTimeout = 10000) {
+    // Default timeout of 10 seconds
     let timeoutHandle: NodeJS.Timeout | undefined,
         cookieTimeoutHandle: NodeJS.Timeout | undefined, // Handle for the cookieTimeout
         rejectFunction: (reason?: string) => void; // To be used for rejecting the promise in case of a timeout or cookieTimeout expiry
@@ -78,28 +78,12 @@ async function waitForLoginAndToken(loginIDKey?: string, cookieTimeout = 10000):
     };
 }
 
-/**
- * Determines the WS environment based on the login ID and custom server URL.
- * @param {string | null | undefined} loginid - The login ID (can be a string, null, or undefined).
- * @returns {string} Returns the WS environment: 'custom', 'real', or 'demo'.
- */
-const getEnvironment = (loginid: string | null | undefined) => {
-    const customServerURL = window.localStorage.getItem('config.server_url');
-    if (customServerURL) return 'custom';
-
-    if (loginid && !/^(VRT|VRW)/.test(loginid)) return 'real';
-    return 'demo';
-};
-
 const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { setReconnect, standalone, queryClient } = useAPIContext();
-
-    const activeLoginId = localStorage.getItem(loginIDKey ?? 'active_loginid') ?? undefined;
-    const [environment, setEnvironment] = useState(getEnvironment(activeLoginId));
+    const { setReconnect, queryClient } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -138,7 +122,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
             });
 
         return cleanup;
-    }, []);
+    }, [cookieTimeout, loginIDKey, mutateAsync]);
 
     const switchAccount = useCallback(
         async (newLoginId: string) => {
@@ -163,16 +147,16 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
             // set loginId for the default app
             if (linkedDtradeAccount?.loginid) localStorage.setItem('active_loginid', linkedDtradeAccount.loginid);
         },
-        [loginid]
+        [loginIDKey, loginid, mutateAsync, queryClient]
     );
 
     useEffect(() => {
         setReconnect(true);
-    }, [environment, setReconnect]);
+    }, [setReconnect]);
 
     const refetch = useCallback(() => {
         switchAccount(loginid as string);
-    }, [loginid]);
+    }, [loginid, switchAccount]);
 
     const value = useMemo(() => {
         return {

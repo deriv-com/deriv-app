@@ -22,7 +22,7 @@ const mockUsePaymentAgentTransfer = usePaymentAgentTransfer as jest.MockedFuncti
 
 describe('<PaymentAgentTransfer />', () => {
     it('should show Loader when isLoading equals to true', () => {
-        // @ts-expect-error - since this is a mock, we only need partial properties of the useActiveAccount hook
+        // @ts-expect-error - since this is a mock, we only need partial properties of the UsePaymentAgentTransfer hook
         mockUsePaymentAgentTransfer.mockReturnValueOnce({ isLoading: true });
 
         render(<PaymentAgentTransfer />);
@@ -37,7 +37,7 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should show PaymentAgentTransferConfirm component when isTryTransferSuccessful equals to true', () => {
-        // @ts-expect-error - since this is a mock, we only need partial properties of the useActiveAccount hook
+        // @ts-expect-error - since this is a mock, we only need partial properties of the usePaymentAgentTransfer hook
         mockUsePaymentAgentTransfer.mockReturnValueOnce({ isTryTransferSuccessful: true });
         render(<PaymentAgentTransfer />);
 
@@ -45,7 +45,7 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should show PaymentAgentTransferReceipt component when isTryTransferSuccessful equals to true', () => {
-        // @ts-expect-error - since this is a mock, we only need partial properties of the useActiveAccount hook
+        // @ts-expect-error - since this is a mock, we only need partial properties of the UsePaymentAgentTransfer hook
         mockUsePaymentAgentTransfer.mockReturnValueOnce({ isTransferSuccessful: true });
         render(<PaymentAgentTransfer />);
 

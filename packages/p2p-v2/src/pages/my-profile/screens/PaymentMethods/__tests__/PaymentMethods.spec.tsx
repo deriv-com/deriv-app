@@ -64,8 +64,8 @@ jest.mock('@deriv-com/ui', () => ({
     Loader: () => <div>Loader</div>,
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiserPaymentMethods: {
             useGet: jest.fn(() => ({})),

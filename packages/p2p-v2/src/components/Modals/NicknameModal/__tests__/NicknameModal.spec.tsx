@@ -21,8 +21,8 @@ jest.mock('lodash', () => ({
     ...jest.requireActual('lodash'),
     debounce: jest.fn(f => f),
 }));
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiser: {
             useCreate: jest.fn(() => ({

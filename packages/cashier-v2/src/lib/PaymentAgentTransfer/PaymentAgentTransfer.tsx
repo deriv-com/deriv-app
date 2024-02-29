@@ -1,10 +1,7 @@
 import React from 'react';
-import * as Yup from 'yup';
 import { Loader } from '@deriv-com/ui';
 import { PaymentAgentTransferConfirm, PaymentAgentTransferForm, PaymentAgentTransferReceipt } from './components';
 import { usePaymentAgentTransfer } from './hooks';
-
-export const descriptionValidator = () => Yup.string().required();
 
 const PaymentAgentTransfer = () => {
     const {

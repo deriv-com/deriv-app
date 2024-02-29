@@ -15,7 +15,7 @@ describe('FormInputField', () => {
         );
 
         // Assert that the input field is rendered
-        const inputField = screen.getByTestId('dt_wallets_textfield_box');
+        const inputField = screen.getByLabelText('testField');
         expect(inputField).toBeInTheDocument();
     });
 

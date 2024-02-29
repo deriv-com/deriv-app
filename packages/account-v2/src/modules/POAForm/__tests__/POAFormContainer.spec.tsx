@@ -1,6 +1,6 @@
 import React from 'react';
 import * as routerDOM from 'react-router-dom';
-import { useActiveAccount, useAuthorize } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize } from '@deriv/api';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../../constants/routes';
@@ -31,7 +31,7 @@ jest.mock('../../../hooks/usePOAInfo');
 
 beforeEach(() => {
     (useAuthorize as jest.Mock).mockReturnValue({ data: {} });
-    (useActiveAccount as jest.Mock).mockReturnValue({ data: { is_virtual: false } });
+    (useActiveTradingAccount as jest.Mock).mockReturnValue({ data: { is_virtual: false } });
     (usePOAInfo as jest.Mock).mockReturnValue({
         data: {
             documentNotRequired: false,
@@ -63,7 +63,7 @@ describe('POAFormPOAFormContainer', () => {
     });
 
     it('displays the demo message when the active account is virtual', () => {
-        (useActiveAccount as jest.Mock).mockReturnValue({
+        (useActiveTradingAccount as jest.Mock).mockReturnValue({
             data: {
                 is_virtual: true,
             },

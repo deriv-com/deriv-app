@@ -49,7 +49,7 @@ describe('FormDropDownField', () => {
         expect(formValues.testField).toEqual('sum1');
     });
 
-    it('should make input readonly when isMobile flag is true', () => {
+    it('should not allow values in input when isMobile flag is true', () => {
         (useBreakpoint as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <Formik initialValues={{ testField: '' }} onSubmit={jest.fn()}>
@@ -60,6 +60,7 @@ describe('FormDropDownField', () => {
         );
 
         const dropdownField = screen.getByRole('combobox');
-        expect(dropdownField).toHaveAttribute('readonly');
+        userEvent.type(dropdownField, 'su');
+        expect(dropdownField).toHaveValue('');
     });
 });

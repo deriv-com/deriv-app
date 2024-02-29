@@ -50,7 +50,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
         return <Loader />;
     }
 
-    if (!isCurrencyConfigLoading && withdrawalLimitReached) {
+    if (withdrawalLimitReached) {
         return (
             <div className='wallets-withdrawal-locked'>
                 <WalletsActionScreen

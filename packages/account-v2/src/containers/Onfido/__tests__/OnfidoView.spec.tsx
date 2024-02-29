@@ -9,10 +9,6 @@ const defaultProps = {
     showStatusMessage: false,
 };
 
-jest.mock('@deriv/quill-design', () => ({
-    qtMerge: jest.fn((...args) => args.join(' ')),
-}));
-
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),

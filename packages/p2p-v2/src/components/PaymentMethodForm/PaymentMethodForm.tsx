@@ -4,7 +4,7 @@ import { TSelectedPaymentMethod } from 'types';
 import { Dropdown, PaymentMethodField, PaymentMethodsFormFooter, PaymentMethodsHeader } from '@/components';
 import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
 import { TFormState } from '@/reducers/types';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Button, Input, Text } from '@deriv-com/ui';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import './PaymentMethodForm.scss';

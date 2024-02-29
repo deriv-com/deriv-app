@@ -92,7 +92,6 @@ const CollapsibleTradeParams = ({
             position='top'
             is_collapsed={is_collapsed}
             onClick={onClick}
-            should_toggle_on_click={false}
             handle_button
             is_non_interactive={is_non_interactive}
         >

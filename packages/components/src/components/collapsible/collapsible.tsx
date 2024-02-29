@@ -10,7 +10,6 @@ type TCollapsible = {
     onClick: (state: boolean) => void;
     title?: string;
     handle_button?: boolean;
-    should_toggle_on_click?: boolean;
     is_non_interactive?: boolean;
 };
 
@@ -28,7 +27,6 @@ const Collapsible = ({
     onClick,
     title,
     handle_button,
-    should_toggle_on_click = true,
     is_non_interactive = false,
 }: React.PropsWithChildren<TCollapsible>) => {
     const [is_open, expand] = React.useState(!is_collapsed);
@@ -69,7 +67,7 @@ const Collapsible = ({
         <ArrowButton
             is_collapsed={!is_open}
             position={position}
-            onClick={should_toggle_on_click ? toggleExpand : undefined}
+            onClick={toggleExpand}
             title={title}
             handle_button={handle_button}
             show_collapsible_button={!is_non_interactive}

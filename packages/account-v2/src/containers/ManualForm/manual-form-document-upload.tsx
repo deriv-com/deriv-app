@@ -10,9 +10,9 @@ export const ManualFormDocumentUpload = ({ selectedDocument }: TManualFormDocume
     const uploadConfig = getUploadConfig(selectedDocument);
 
     return (
-        <div className='flex flex-col gap-1200 pt-1200 border-t-solid-grey-2 border-solid border-t-100'>
+        <div className='flex flex-col gap-24 pt-24 border-t-solid-grey-2 border-solid border-t-2'>
             <Text>{getTitleForDocumentUpload(selectedDocument)}</Text>
-            <div className='flex flex-col lg:flex-row gap-1200 w-full justify-between'>
+            <div className='flex flex-col lg:flex-row gap-24 w-full justify-between'>
                 {uploadConfig.map(upload => (
                     <div className='w-full h-[22rem]' key={upload.pageType}>
                         <FormDocumentUploadField

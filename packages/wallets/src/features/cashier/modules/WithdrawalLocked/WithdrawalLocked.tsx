@@ -34,7 +34,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const noWithdrawalOrTradingStatus = cashierValidation?.no_withdrawal_or_trading_status;
     const withdrawalLockedStatus = cashierValidation?.withdrawal_locked_status;
 
-    const isWithdrawalLocked = !status?.is_withdrawal_locked;
+    const isWithdrawalLocked = status?.is_withdrawal_locked;
 
     const remainder = accountLimits?.remainder;
     const minimumWithdrawal = activeWallet?.currency_config?.is_crypto
@@ -48,7 +48,9 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     if (isCurrencyConfigLoading) {
         return <Loader />;
-    } else if (!isCurrencyConfigLoading && withdrawalLimitReached) {
+    }
+
+    if (!isCurrencyConfigLoading && withdrawalLimitReached) {
         return (
             <div className='wallets-withdrawal-locked'>
                 <WalletsActionScreen
@@ -70,7 +72,9 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
                 />
             </div>
         );
-    } else if (isWithdrawalLocked) {
+    }
+
+    if (isWithdrawalLocked) {
         return (
             <div className='wallets-withdrawal-locked'>
                 <WalletsActionScreen

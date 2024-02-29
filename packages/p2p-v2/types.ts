@@ -14,8 +14,12 @@ declare global {
 
 export type TAdvertiserPaymentMethods = ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data'];
 
+type TPaymentMethodDisplayName = NonNullable<
+    ReturnType<typeof p2p.paymentMethods.useGet>['data']
+>[number]['display_name'];
 export type TSelectedPaymentMethod = Partial<{
-    displayName: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['display_name'];
+    displayName: TPaymentMethodDisplayName;
+    display_name: TPaymentMethodDisplayName;
     fields: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['fields'];
     id: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['id'];
     method: NonNullable<TAdvertiserPaymentMethods>[number]['method'];

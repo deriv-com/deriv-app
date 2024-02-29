@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { Field, FieldProps } from 'formik';
 import { Input, Text } from '@deriv-com/ui';
-import { DatePicker } from '../../components/DatePicker';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manual-form-utils';
 
@@ -34,21 +33,19 @@ export const ManualFormInputs = ({ isExpiryDateRequired, selectedDocument }: TMa
                 </Field>
                 {isExpiryDateRequired && (
                     <Field name='document_expiry'>
-                        {({ field, form, meta }: FieldProps) => {
+                        {({ field, meta }: FieldProps) => {
                             const hasError = meta.touched && !!meta.error;
                             const fieldLabel = `${fieldsConfig.documentExpiry.label}*`;
                             return (
-                                <DatePicker
+                                <Input
                                     {...field}
                                     aria-label={fieldLabel}
                                     autoComplete='off'
                                     className='w-full'
-                                    errorMessage={meta.error}
-                                    isInvalid={hasError}
+                                    error={hasError}
                                     label={fieldLabel}
-                                    onDateChange={(date: string | null) => {
-                                        form.setFieldValue('document_expiry', date);
-                                    }}
+                                    message={hasError ? meta.error : ''}
+                                    type='date'
                                 />
                             );
                         }}

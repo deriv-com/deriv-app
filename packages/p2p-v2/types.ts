@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 
 declare global {
     interface WindowEventMap {

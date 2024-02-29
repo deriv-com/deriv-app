@@ -201,7 +201,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     );
 
     useEffect(() => {
-        let interval_id: NodeJS.Timer;
+        let interval_id: ReturnType<typeof setInterval>;
 
         if (standalone) {
             interval_id = setInterval(() => standaloneDerivAPI.current?.send({ ping: 1 }), 10000);

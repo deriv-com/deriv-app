@@ -8,7 +8,7 @@ import {
     usePOA,
     usePOI,
 } from '@deriv/api';
-import { act, cleanup, renderHook } from '@testing-library/react-hooks';
+import { cleanup, renderHook } from '@testing-library/react-hooks';
 import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './WithdrawalCryptoProvider';
 import { waitFor } from '@testing-library/react';
 
@@ -76,7 +76,9 @@ describe('useWithdrawalCryptoContext', () => {
     afterEach(cleanup);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <WithdrawalCryptoProvider verificationCode='Abcd1234'>{children}</WithdrawalCryptoProvider>
+        <WithdrawalCryptoProvider setVerificationCode={jest.fn} verificationCode='Abcd1234'>
+            {children}
+        </WithdrawalCryptoProvider>
     );
 
     it('should check whether the client is verified', () => {

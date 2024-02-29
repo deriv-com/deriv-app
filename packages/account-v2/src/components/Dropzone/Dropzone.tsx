@@ -153,7 +153,7 @@ const Dropzone: React.FC<TProps> = ({
                                     className='absolute top-400 right-400 rounded-pill'
                                     color='black'
                                     data-testid='dt_remove-button-icon'
-                                    icon={<StandaloneXmarkBoldIcon fill='#ffffff' iconSize='sm' />}
+                                    icon={<StandaloneXmarkBoldIcon className='fill-solid-slate-50' iconSize='sm' />}
                                     isRound
                                     onClick={removeFile}
                                     size='sm'

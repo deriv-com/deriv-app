@@ -1,6 +1,4 @@
-import React from 'react';
 import { ACCOUNT_V2_ROUTES } from '../../constants/routes';
-import { ManualUpload } from '../../modules';
 import { POAFormContainer } from '../../modules/POAForm/POAFormContainer';
 import DummyRoute from '../components/dummy-route/dummy-route';
 
@@ -27,7 +25,7 @@ export const routes = [
     },
     {
         // TODO: Replace this with POI container
-        routeComponent: () => <ManualUpload countryCode='ng' />,
+        routeComponent: DummyRoute,
         routeName: 'Proof of identity',
         routePath: ACCOUNT_V2_ROUTES.ProofOfIdentity,
     },

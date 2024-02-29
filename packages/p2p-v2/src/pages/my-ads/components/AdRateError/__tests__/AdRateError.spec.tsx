@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AdRateError from '../AdRateError';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useAuthorize: () => ({
         data: {
             local_currencies: ['USD'],

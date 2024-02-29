@@ -18,29 +18,64 @@ type AuthContextType = {
     error: unknown;
 };
 
+type LoginToken = {
+    loginId: string;
+    token: string;
+};
+
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
     children: React.ReactNode;
+    cookieTimeout?: number
     loginIDKey?: string;
 };
 
-async function waitForLoginAndToken(loginIDKey?: string): Promise<any> {
-    const checkLogin = (resolve: (value: any) => void, reject: (reason?: any) => void) => {
+async function waitForLoginAndToken(loginIDKey?: string, cookieTimeout = 10000): Promise<any> {
+  // Default timeout of 10 seconds
+    let timeoutHandle: NodeJS.Timeout | undefined,
+        cookieTimeoutHandle: NodeJS.Timeout | undefined, // Handle for the cookieTimeout
+        rejectFunction: (reason?: string) => void; // To be used for rejecting the promise in case of a timeout or cookieTimeout expiry
+
+    const checkLogin = (
+        resolve: (value: { loginId: string; token: string }) => void,
+        reject: (reason?: string) => void
+    ) => {
         const loginId = getActiveLoginIDFromLocalStorage(loginIDKey);
         const token = getToken(loginId as string);
         if (loginId && token) {
-            resolve({
-                loginId,
-                token,
-            });
+            clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
+            clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
+            resolve({ loginId, token });
         } else {
-            setTimeout(checkLogin, 100, resolve, reject);
+            timeoutHandle = setTimeout(checkLogin, 100, resolve, reject);
         }
     };
 
-    return new Promise<any>(checkLogin);
+    // Function to clear the timeouts and reject the promise if called
+    const cleanup = () => {
+        clearTimeout(timeoutHandle);
+        clearTimeout(cookieTimeoutHandle);
+        rejectFunction('Operation cancelled');
+    };
+
+    const promise = new Promise<LoginToken>((resolve, reject) => {
+        rejectFunction = reject; // Assign reject function to be accessible outside promise scope for cleanup
+
+        // Set up the cookieTimeout to reject the promise if not resolved in time
+        cookieTimeoutHandle = setTimeout(() => {
+            cleanup(); // Cleanup and reject the promise
+            reject(new Error('Waiting for login or token timed out'));
+        }, cookieTimeout);
+
+        checkLogin(resolve, reject);
+    });
+
+    return {
+        promise,
+        cleanup,
+    };
 }
 
 /**
@@ -56,7 +91,7 @@ const getEnvironment = (loginid: string | null | undefined) => {
     return 'demo';
 };
 
-const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
+const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
@@ -76,24 +111,33 @@ const AuthProvider = ({ loginIDKey, children }: AuthProviderProps) => {
         setIsLoading(true);
         setIsSuccess(false);
 
-        waitForLoginAndToken(loginIDKey).then(({ token }) => {
-            setIsLoading(true);
-            setIsFetching(true);
-            mutateAsync({ payload: { authorize: token || '' } })
-                .then(res => {
-                    setData(res);
-                    setIsLoading(false);
-                    setIsSuccess(true);
-                })
-                .catch(() => {
-                    setIsLoading(false);
-                    setIsError(true);
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                    setIsFetching(false);
-                });
-        });
+        const { promise, cleanup } = waitForLoginAndTokenWithTimeout(loginIDKey, cookieTimeout);
+
+        promise
+            .then(async ({ token }) => {
+                setIsLoading(true);
+                setIsFetching(true);
+                await mutateAsync({ payload: { authorize: token || '' } })
+                    .then(res => {
+                        setData(res);
+                        setIsLoading(false);
+                        setIsSuccess(true);
+                    })
+                    .catch(() => {
+                        setIsLoading(false);
+                        setIsError(true);
+                    })
+                    .finally(() => {
+                        setIsLoading(false);
+                        setIsFetching(false);
+                    });
+            })
+            .catch(() => {
+                setIsLoading(false);
+                setIsError(true);
+            });
+
+        return cleanup;
     }, []);
 
     const switchAccount = useCallback(

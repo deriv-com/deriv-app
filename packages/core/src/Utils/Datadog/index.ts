@@ -6,12 +6,12 @@ const isProduction = process.env.NODE_ENV === 'production';
 const isStaging = process.env.NODE_ENV === 'staging';
 
 function getAcct1Value(url: string) {
-    const start = url.indexOf('acct1=') + 6; // 6 is the length of 'acct1='
-    const end = url.indexOf('&', start); // Find the end of the parameter value
+    const start = url.indexOf('acct1=') + 6;
+    const end = url.indexOf('&', start);
     if (end === -1) {
-        return url.substring(start); // If there's no '&' after acct1, get the substring from start to the end
+        return url.substring(start);
     }
-    return url.substring(start, end); // Get the substring between 'acct1=' and the '&'
+    return url.substring(start, end);
 }
 
 let dataDogSessionSampleRate = 0;
@@ -54,15 +54,15 @@ if (isProduction || isStaging) {
         beforeSend: event => {
             if (event.type === 'resource') {
                 event.resource.url = event.resource.url.replace(
-                    /^https:\/\/api.telegram.org.*$/,
+                    /^https:\/\/api\.telegram\.org[a-zA-Z0-9/?=]*$/,
                     'telegram token=REDACTED'
                 );
 
-                if (event.resource.url.match(/^https:\/\/eu.deriv.com\/ctrader-login.*$/)) {
+                if (event.resource.url.match(/^https:\/\/eu\.deriv\.com\/ctrader-login[a-zA-Z0-9/?=]*$/)) {
                     const url = event.resource.url;
                     const accnt = getAcct1Value(url);
                     event.resource.url = event.resource.url.replace(
-                        /^https:\/\/eu.deriv.com\/ctrader-login.*$/,
+                        /^https:\/\/eu\.deriv\.com\/ctrader-login[a-zA-Z0-9/?=]$/,
                         `https://eu.deriv.com/ctrader-login?acct1=${accnt}&token1=redacted`
                     );
                 }

@@ -71,7 +71,7 @@ const MyProfile = () => {
                     <MyProfileCounterparties />
                 </Tab>
             </Tabs>
-            <NicknameModal isModalOpen={isNicknameModalOpen} setIsModalOpen={setIsNicknameModalOpen} />
+            <NicknameModal isModalOpen setIsModalOpen={setIsNicknameModalOpen} />
         </div>
     );
 };

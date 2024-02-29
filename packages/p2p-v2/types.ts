@@ -21,6 +21,14 @@ export type TSelectedPaymentMethod = Partial<{
     method: NonNullable<TAdvertiserPaymentMethods>[number]['method'];
 }>;
 
+type NonUndefinedValues<T> = {
+    [K in keyof T]-?: Exclude<T[K], undefined>;
+};
+
+type TAdvertData = NonNullable<ReturnType<typeof p2p.advert.useGet>['data']>;
+
+export type TAdvertType = NonUndefinedValues<TAdvertData>;
+
 export type TCurrencyListItem = {
     display_name: string;
     has_adverts: 0 | 1;

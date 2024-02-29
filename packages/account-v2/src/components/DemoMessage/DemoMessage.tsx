@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuthorize } from '@deriv/api';
+import { DerivLightIcPoaLockIcon as IcPOALock } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
-import IcPOALock from '../../assets/verification-status/ic-poa-lock.svg';
 import { IconWithMessage } from '../IconWithMessage';
 
 export const DemoMessage = () => {

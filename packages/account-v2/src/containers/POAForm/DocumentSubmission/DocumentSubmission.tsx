@@ -23,13 +23,13 @@ const DocumentSubmission: React.FC = () => {
                 <Text weight='bold'>Document Submission</Text>
                 <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 sm:flex-shrink-0' />
             </div>
-            <div className='self-stretch border-none space-y-16 py-16 px-24 p-0 sm:border-solid sm:border-1 border-solid-grey-5 rounded-8'>
+            <div className='self-stretch p-0 px-24 py-16 space-y-16 border-none sm:border-solid sm:border-1 border-solid-grey-5 rounded-8'>
                 <div className='flex flex-col items-start self-stretch gap-16'>
                     <Text size='sm' weight='bold'>
                         We accept only these types of documents as proof of address. The document must be recent (issued
                         within last 6 months) and include your name and address:
                     </Text>
-                    <ul className='list-disc pl-20'>
+                    <ul className='pl-20 list-disc'>
                         {listItems.map(item => (
                             <li key={`list-item-${item}`}>
                                 <Text size='sm'>{item}</Text>
@@ -45,7 +45,7 @@ const DocumentSubmission: React.FC = () => {
                         {getExampleImagesConfig().map(config => (
                             <CommonMistakesExamples
                                 description={config.description}
-                                image={<config.image />}
+                                image={config.image}
                                 key={`common-mistake-${config.description}`}
                             />
                         ))}

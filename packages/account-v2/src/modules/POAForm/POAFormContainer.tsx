@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Loader, Text } from '@deriv-com/ui';
-import IcPOAError from '../../assets/verification-status/ic-poa-error.svg';
-import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
-import IcPOAVerified from '../../assets/verification-status/ic-poa-verified.svg';
+import {
+    DerivLightDeclinedPoaIcon as IcPOAError,
+    DerivLightWaitingPoaIcon as IcPOAUpload,
+    DerivLightApprovedPoaIcon as IcPOAVerified,
+} from '@deriv/quill-icons';
 import { DemoMessage } from '../../components/DemoMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { AUTH_STATUS_CODES } from '../../constants/constants';

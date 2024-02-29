@@ -62,7 +62,7 @@ if (isProduction || isStaging) {
                     const url = event.resource.url;
                     const accnt = getAcct1Value(url);
                     event.resource.url = event.resource.url.replace(
-                        /^https:\/\/eu\.deriv\.com\/ctrader-login[a-zA-Z0-9/?=]$/,
+                        /^https:\/\/eu\.deriv\.com\/ctrader-login[a-zA-Z0-9/?=]*$/,
                         `https://eu.deriv.com/ctrader-login?acct1=${accnt}&token1=redacted`
                     );
                 }

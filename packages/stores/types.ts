@@ -696,6 +696,7 @@ type TUiStore = {
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
     is_unsupported_contract_modal_visible: boolean;
+    isUrlUnavailableModalVisible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
     openRealAccountSignup: (
@@ -749,6 +750,7 @@ type TUiStore = {
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
+    toggleUrlUnavailableModal: (value: boolean) => void;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;

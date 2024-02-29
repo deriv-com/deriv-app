@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
-import { APIProvider } from '@deriv/api';
 import MainTitleBar from '..';
 
 jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
@@ -67,11 +66,9 @@ describe('MainTitleBar', () => {
 
     const render_container = (mock_store_override?: ReturnType<typeof mockStore>) => {
         const wrapper = ({ children }: React.PropsWithChildren) => (
-            <APIProvider>
-                <StoreProvider store={mock_store_override ?? mock_store}>
-                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-                </StoreProvider>
-            </APIProvider>
+            <StoreProvider store={mock_store_override ?? mock_store}>
+                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+            </StoreProvider>
         );
 
         return render(<MainTitleBar />, {

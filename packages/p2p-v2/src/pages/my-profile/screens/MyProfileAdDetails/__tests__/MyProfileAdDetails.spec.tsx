@@ -1,13 +1,15 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MyProfileAdDetails from '../MyProfileAdDetails';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
-        <div id='v2_modal_root' />
-        {children}
+        <AuthProvider>
+            <div id='v2_modal_root' />
+            {children}
+        </AuthProvider>
     </APIProvider>
 );
 
@@ -41,8 +43,8 @@ jest.mock('@/hooks/useQueryString', () => ({
     })),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiser: {
             useGetInfo: jest.fn(() => mockUseAdvertiserInfo),

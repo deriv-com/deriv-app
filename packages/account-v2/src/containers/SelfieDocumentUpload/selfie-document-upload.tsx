@@ -31,7 +31,7 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
             validationSchema={validationSchema}
         >
             {({ dirty, isValid, setFieldValue, values }) => (
-                <div className='flex flex-col gap-800'>
+                <div className='flex flex-col gap-16'>
                     <Text>Upload your selfie</Text>
                     <Dropzone
                         buttonText={isMobile ? 'Tap here to upload' : 'Drop file or click here to upload'}
@@ -45,7 +45,7 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
                         Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and
                         your face is within the frame.
                     </Text>
-                    <div className='flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-grey-2 border-solid border-t-100'>
+                    <div className='flex justify-end gap-16 bg-vp px-8 py-16 border-t-solid-grey-2 border-solid border-t-2'>
                         <Button onClick={handleCancel} type='button' variant='outlined'>
                             Back
                         </Button>

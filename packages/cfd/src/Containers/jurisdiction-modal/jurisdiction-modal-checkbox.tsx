@@ -40,6 +40,7 @@ const JurisdictionCheckBox = observer(
                             key={0}
                             className='link--no-bold'
                             href={DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].tnc_url}
+                            is_document
                         />,
                     ]}
                 />

@@ -12,7 +12,7 @@ export const ManualFormInputs = ({ isExpiryDateRequired, selectedDocument }: TMa
     return (
         <Fragment>
             <Text>{getTitleForFormInputs(selectedDocument)}</Text>
-            <div className='gap-1200 flex flex-col lg:grid lg:grid-cols-2'>
+            <div className='gap-24 flex flex-col lg:grid lg:grid-cols-2'>
                 <Field name='document_number'>
                     {({ field, meta }: FieldProps) => {
                         const hasError = meta.touched && !!meta.error;

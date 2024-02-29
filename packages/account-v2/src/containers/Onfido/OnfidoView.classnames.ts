@@ -9,7 +9,7 @@ export const onfidoCustomClassVariant = cva('onfido-custom-container', {
 });
 
 export const onfidoInfoMessageVariant = cva(
-    'absolute p-400 top-200 min-h-1700 text-center z-[1] w-full [transition:transform_0.35s_linear_4.65s] origin-top',
+    'absolute p-8 top-4 min-h-34 text-center z-[1] w-full [transition:transform_0.35s_linear_4.65s] origin-top',
     {
         variants: {
             showStatusMessage: {

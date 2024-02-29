@@ -29,6 +29,7 @@ import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-typ
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize } from '@deriv/translations';
+import { TRADE_TYPES } from '@deriv/shared';
 
 type TCollapsibleTradeParams = Pick<
     ReturnType<typeof useTraderStore>,
@@ -44,6 +45,7 @@ type TCollapsibleTradeParams = Pick<
     | 'take_profit'
     | 'setIsTradeParamsExpanded'
     | 'last_digit'
+    | 'contract_type'
 > & {
     has_allow_equals: boolean;
     is_allow_equal: boolean;
@@ -64,6 +66,7 @@ const CollapsibleTradeParams = ({
     take_profit,
     setIsTradeParamsExpanded,
     last_digit,
+    contract_type,
 }: TCollapsibleTradeParams) => {
     React.useEffect(() => {
         if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
@@ -71,6 +74,8 @@ const CollapsibleTradeParams = ({
     }, [previous_symbol]);
 
     const is_collapsed = !is_trade_params_expanded;
+    const is_non_interactive =
+        TRADE_TYPES.EVEN_ODD === contract_type || (TRADE_TYPES.RISE_FALL === contract_type && !has_allow_equals);
 
     const onClick = (e: boolean) => {
         setIsTradeParamsExpanded(e);
@@ -89,6 +94,7 @@ const CollapsibleTradeParams = ({
             onClick={onClick}
             should_toggle_on_click={false}
             handle_button
+            is_non_interactive={is_non_interactive}
         >
             {is_accumulator && is_collapsed && <AccumulatorsStats />}
             <div className='trade-params__contract-type-container'>
@@ -219,6 +225,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         take_profit,
         is_allow_equal,
         last_digit,
+        contract_type,
     };
 
     const has_callputequal_duration = hasDurationForCallPutEqual(

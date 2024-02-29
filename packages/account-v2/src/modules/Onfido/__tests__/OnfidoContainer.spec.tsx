@@ -4,10 +4,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { OnfidoContainer } from '../OnfidoContainer';
 
-jest.mock('@deriv/quill-design', () => ({
-    qtMerge: jest.fn((...args) => args.join(' ')),
-}));
-
 const mockPush = jest.fn();
 
 jest.mock('react-router-dom', () => ({

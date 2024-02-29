@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
 import ReactModal from 'react-modal';
 import { CUSTOM_STYLES } from '@/helpers';
+import { signup } from '@/utils';
 import { SignupScreens } from '../SignupScreens';
 
 export type TSignupFormValues = {
@@ -11,8 +12,7 @@ export type TSignupFormValues = {
 };
 
 const SignupWrapper = () => {
-    // setIsOpen will be added later when flow is completed
-    const [isOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [step, setStep] = useState(1);
 
     const initialValues = {
@@ -22,16 +22,15 @@ const SignupWrapper = () => {
     };
 
     const handleSubmit = () => {
-        // will be added later
+        // logic will be added later
+        setIsOpen(false);
     };
 
-    useEffect(() => {
-        ReactModal.setAppElement('#v2_modal_root');
-    }, []);
+    const customStyles = { ...CUSTOM_STYLES, content: { ...CUSTOM_STYLES.content, overflow: 'unset' } };
 
     return (
-        <ReactModal isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={customStyles}>
+            <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signup}>
                 <Form>
                     <SignupScreens setStep={setStep} step={step} />
                 </Form>

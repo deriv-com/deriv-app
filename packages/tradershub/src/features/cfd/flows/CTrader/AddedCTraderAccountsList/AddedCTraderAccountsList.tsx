@@ -1,27 +1,31 @@
 import React, { Fragment } from 'react';
 import { IconComponent, TradingAccountCard } from '@/components';
-import { getStaticUrl } from '@/helpers';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
     <IconComponent
         icon='CTrader'
         onClick={() => {
-            window.open(getStaticUrl('/deriv-ctrader'));
+            window.open(getDerivStaticURL('/deriv-ctrader'));
         }}
     />
 );
 
 const AddedCTraderAccountsList = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
-    const { data: activeTrading } = useActiveTradingAccount();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
     const { show } = Provider.useModal();
-    const account = cTraderAccounts?.find(account => account.is_virtual === activeTrading?.is_virtual);
+    const account = cTraderAccounts?.find(account => account.is_virtual === activeTradingAccount?.is_virtual);
     const isVirtual = account?.is_virtual;
+    const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, isVirtual);
 
     const trailing = () => (
         <div className='flex flex-col gap-y-4'>
@@ -58,7 +62,7 @@ const AddedCTraderAccountsList = () => {
                 <div className='flex flex-col flex-grow'>
                     {account && (
                         <Fragment>
-                            <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
+                            <Text size='sm'>{title}</Text>
                             <Text size='sm' weight='bold'>
                                 {account?.formatted_balance}
                             </Text>

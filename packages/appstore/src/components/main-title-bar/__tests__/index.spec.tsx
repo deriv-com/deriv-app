@@ -5,51 +5,6 @@ import MainTitleBar from '..';
 
 jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn((name: string) => {
-        if (name === 'authorize') {
-            return {
-                data: {
-                    authorize: {
-                        account_list: [
-                            {
-                                account_category: 'wallet',
-                                currency: 'USD',
-                                is_virtual: 0,
-                            },
-                        ],
-                    },
-                },
-            };
-        } else if (name === 'balance') {
-            return {
-                data: {
-                    balance: {
-                        accounts: {
-                            CRW909900: {
-                                balance: 1000,
-                            },
-                        },
-                    },
-                },
-            };
-        } else if (name === 'website_status') {
-            return {
-                data: {
-                    website_status: {
-                        currencies_config: {
-                            USD: { type: 'fiat' },
-                        },
-                    },
-                },
-            };
-        }
-
-        return undefined;
-    }),
-}));
-
 describe('MainTitleBar', () => {
     const mock_store = mockStore({
         modules: {

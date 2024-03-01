@@ -43,7 +43,7 @@ export const ManualForm = ({
             {({ dirty, isSubmitting, isValid }) => (
                 <Form>
                     <div className='flex flex-col min-h-screen w-full'>
-                        <div className='flex flex-col gap-1200'>
+                        <div className='flex flex-col gap-24'>
                             <ManualFormInputs
                                 isExpiryDateRequired={isExpiryDateRequired}
                                 selectedDocument={selectedDocument}
@@ -51,7 +51,7 @@ export const ManualForm = ({
                             <ManualFormDocumentUpload selectedDocument={selectedDocument} />
                             <ManualFormFooter />
                         </div>
-                        <div className='sticky bottom-50 flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-grey-2 bg-solid-slate-50 border-solid border-t-100'>
+                        <div className='sticky bottom-0 flex justify-end gap-16 px-8 py-16 border-t-solid-grey-2 bg-solid-slate-0 border-solid border-t-2'>
                             <Button
                                 disabled={isSubmitting}
                                 onClick={onCancel}

@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter, NavLink, Redirect, Route, Switch } from 'react-router-dom';
-import { defaultRoute, routes } from '../../constants/routesConfig';
+import { defaultRoute, routes } from '../../constants/routes-config';
 
 const RouteLinks = () => (
     <BrowserRouter>
-        <div className='px-200 py-800 gap-300 grid grid-cols-1 sm:grid-cols-[1fr_4fr]'>
-            <div className='flex-col [display:none] sm:flex p-400 bg-solid-slate-75 rounded-200'>
+        <div className='px-4 py-16 gap-6 grid grid-cols-[2fr_4fr] max-w-[800px] mx-auto lg:py-50 lg:px-24'>
+            <div className='p-8 d-none lg:flex lg:flex-col bg-solid-slate-1 rounded-xs'>
                 {routes.map(route => (
                     <NavLink
-                        activeClassName='bg-solid-slate-100 border-solid border-l-200 border-l-solid-red-500 rounded-200 font-bold'
-                        className='text-body-md p-400'
+                        activeClassName='bg-solid-slate-2 border-solid border-l-4 border-l-solid-red-5 rounded-xs font-bold'
+                        className='p-10 text-default'
                         key={route.routePath}
                         to={route.routePath}
                     >
@@ -17,7 +17,7 @@ const RouteLinks = () => (
                     </NavLink>
                 ))}
             </div>
-            <div className='p-400'>
+            <div className='p-8'>
                 <Switch>
                     {routes.map(route => {
                         const Component = route.routeComponent;

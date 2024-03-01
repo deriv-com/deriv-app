@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FlowProvider } from '../../../../../components';
 import useDevice from '../../../../../hooks/useDevice';
-import { DocumentSubmission } from '../DocumentSubmission';
+import DocumentSubmission from '../DocumentSubmission';
 
 jest.mock('../../../../../hooks/useDevice', () => ({
     __esModule: true,

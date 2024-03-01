@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { useResidenceSelfDeclaration } from '@deriv/hooks';
 
 import TermsOfUse from '../terms-of-use';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -100,6 +100,29 @@ describe('<TermsOfUse/>', () => {
         expect(add_btn).toBeInTheDocument();
     });
 
+    it('should render FATCA declaration for accounts', () => {
+        render(<TermsOfUse {...mock_props} />);
+
+        const fatca_declaration = screen.getByText(/fatca declaration/i);
+        expect(fatca_declaration).toBeInTheDocument();
+
+        const fatca_declaration_points = screen.getAllByRole('listitem');
+        expect(fatca_declaration_points).toHaveLength(6);
+    });
+
+    it('should allow users to accept or reject FATCA declaration ', () => {
+        render(<TermsOfUse {...mock_props} />);
+        const el_fatca_form = screen.getByText('Please select*');
+
+        userEvent.click(el_fatca_form);
+
+        const el_fatca_accept = screen.getByText('Yes');
+        const el_fatca_reject = screen.getByText('No');
+
+        expect(el_fatca_accept).toBeInTheDocument();
+        expect(el_fatca_reject).toBeInTheDocument();
+    });
+
     it('should render TermsOfUse component with spain residence confirmation checkbox if residence is spain', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
@@ -119,6 +142,7 @@ describe('<TermsOfUse/>', () => {
 
     it('should enable add account button only if spain residence confirmation checkbox is checked for spain clients', () => {
         mock_props.residence = 'es';
+        mock_props.value = { ...mock_props.value, fatca_declaration: '1' };
 
         render(<TermsOfUse {...mock_props} />);
         const pep_checkbox = screen.getByRole('checkbox', {

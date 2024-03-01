@@ -1,9 +1,10 @@
 import React from 'react';
+import { Text } from '@deriv-com/ui';
 
 const DummyRoute = ({ path }: { path: string }) => (
-    <div className='text-body-lg'>
+    <Text align='center' as='p' size='lg'>
         Component for path <span className='font-bold'>{path}</span>
-    </div>
+    </Text>
 );
 
 export default DummyRoute;

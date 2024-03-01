@@ -11,7 +11,6 @@ export const buildWebpackConfig = (options: TBuildOptions): Configuration => ({
     },
     externals: [
         {
-            '@deriv/api': true,
             classnames: true,
             react: true,
             'react-dom': true,

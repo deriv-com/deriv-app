@@ -2,10 +2,10 @@ import React from 'react';
 import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
 import { ActionScreen, SentEmailContent } from '@/components';
 import { useMT5AccountHandler } from '@/hooks';
+import { useCFDContext, useModal } from '@/providers';
 import { MarketType, QueryStatus } from '@cfd/constants';
 import { CreatePassword, EnterPassword } from '@cfd/screens';
 import { useAccountStatus } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import MT5SuccessModal from './MT5SuccessModal';
 
 type TMT5PasswordInputProps = {
@@ -15,8 +15,8 @@ type TMT5PasswordInputProps = {
 
 const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
-    const { show } = Provider.useModal();
-    const { getCFDState } = Provider.useCFDContext();
+    const { show } = useModal();
+    const { getCFDState } = useCFDContext();
 
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const platform = getCFDState('platform');

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ProfileContent, Verification } from '@/components';
 import { NicknameModal } from '@/components/Modals';
-import { useAdvertiserStats, useDevice, usePoiPoaStatus, useQueryString } from '@/hooks';
-import { Loader, Tab, Tabs } from '@deriv-com/ui';
+import { useAdvertiserStats, usePoiPoaStatus, useQueryString } from '@/hooks';
+import { Loader, Tab, Tabs, useDevice } from '@deriv-com/ui';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import { MyProfileStats } from '../MyProfileStats';
@@ -21,6 +21,8 @@ const MyProfile = () => {
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState<boolean | undefined>(false);
 
     const currentTab = queryString.get('tab');
+
+    // console.log(isP2PPoaRequired, isPoiVerified, isPoaVerified, !!failureReason);
 
     useEffect(() => {
         const isPoaPoiVerified = (!isP2PPoaRequired || isPoaVerified) && isPoiVerified;
@@ -70,7 +72,7 @@ const MyProfile = () => {
                     <MyProfileCounterparties />
                 </Tab>
             </Tabs>
-            <NicknameModal isModalOpen setIsModalOpen={setIsNicknameModalOpen} />
+            <NicknameModal isModalOpen={isNicknameModalOpen} setIsModalOpen={setIsNicknameModalOpen} />
         </div>
     );
 };

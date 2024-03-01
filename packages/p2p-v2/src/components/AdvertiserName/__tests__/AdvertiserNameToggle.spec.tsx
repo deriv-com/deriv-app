@@ -9,19 +9,14 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
         <AuthProvider>{children}</AuthProvider>
     </APIProvider>
 );
-let mockUseAdvertiserStats = {
-    data: {
+const mockProps = {
+    advertiserInfo: {
         fullName: 'Jane Doe',
         show_name: 0,
     },
-    isLoading: true,
+    onToggle: jest.fn(),
 };
 const mockUseAdvertiserUpdateMutate = jest.fn();
-
-jest.mock('../../../hooks', () => ({
-    ...jest.requireActual('../../../hooks'),
-    useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
-}));
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
@@ -36,19 +31,11 @@ jest.mock('@deriv/api-v2', () => ({
 
 describe('AdvertiserNameToggle', () => {
     it('should render full name in toggle', () => {
-        mockUseAdvertiserStats = {
-            ...mockUseAdvertiserStats,
-            isLoading: true,
-        };
-        render(<AdvertiserNameToggle />, { wrapper });
+        render(<AdvertiserNameToggle {...mockProps} />, { wrapper });
         expect(screen.getByText('Jane Doe')).toBeInTheDocument();
     });
     it('should switch full name settings', () => {
-        mockUseAdvertiserStats = {
-            ...mockUseAdvertiserStats,
-            isLoading: true,
-        };
-        render(<AdvertiserNameToggle />, { wrapper });
+        render(<AdvertiserNameToggle {...mockProps} />, { wrapper });
         const labelBtn = screen.getByRole('checkbox');
         userEvent.click(labelBtn);
 

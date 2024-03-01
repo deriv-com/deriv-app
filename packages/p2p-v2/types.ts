@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { useAdvertiserStats } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 
 declare global {
@@ -13,6 +14,8 @@ declare global {
 }
 
 export type TAdvertiserPaymentMethods = ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data'];
+
+export type TAdvertiserStats = ReturnType<typeof useAdvertiserStats>['data'];
 
 export type TSelectedPaymentMethod = Partial<{
     displayName: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['display_name'];

@@ -1,10 +1,11 @@
 import React, { memo, useEffect, useState } from 'react';
+import { TAdvertiserStats } from 'types';
 import { p2p } from '@deriv/api-v2';
 import { Text, ToggleSwitch } from '@deriv-com/ui';
 import './AdvertiserNameToggle.scss';
 
 type TAdvertiserNameToggle = {
-    advertiserInfo: any;
+    advertiserInfo: TAdvertiserStats;
     onToggle?: (shouldShowRealName: boolean) => void;
 };
 const AdvertiserNameToggle = memo(({ advertiserInfo, onToggle }: TAdvertiserNameToggle) => {

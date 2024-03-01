@@ -1,9 +1,10 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import clsx from 'clsx';
+import { TAdvertiserStats } from 'types';
 import { OnlineStatusIcon, OnlineStatusLabel, StarRating } from '@/components';
-import { useDevice } from '@/hooks';
 import { getCurrentRoute } from '@/utils';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import ThumbUpIcon from '../../public/ic-thumb-up.svg';
 import BlockedUserOutlineIcon from '../../public/ic-user-blocked-outline.svg';
 import './AdvertiserNameStats.scss';
@@ -15,7 +16,7 @@ import './AdvertiserNameStats.scss';
  *
  * Use cases are to show this in My Profile and Advertiser page
  */
-const AdvertiserNameStats = ({ advertiserStats }) => {
+const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
     const { isMobile } = useDevice();
     const isMyProfile = getCurrentRoute() === 'my-profile';
 

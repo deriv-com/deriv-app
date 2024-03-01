@@ -1,4 +1,5 @@
 import React from 'react';
+import { TAdvertiserStats } from 'types';
 import { UserAvatar } from '@/components';
 import { getCurrentRoute } from '@/utils';
 import { useSettings } from '@deriv/api-v2';
@@ -9,7 +10,7 @@ import AdvertiserNameStats from './AdvertiserNameStats';
 import AdvertiserNameToggle from './AdvertiserNameToggle';
 import './AdvertiserName.scss';
 
-const AdvertiserName = ({ advertiserStats }) => {
+const AdvertiserName = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
     const {
         data: { email },
     } = useSettings();

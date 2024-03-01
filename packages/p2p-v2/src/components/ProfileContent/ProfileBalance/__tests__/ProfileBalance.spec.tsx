@@ -13,8 +13,8 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
     </APIProvider>
 );
 
-let mockUseAdvertiserStats = {
-    data: {
+let mockAdvertiserStatsProp = {
+    advertiserStats: {
         balance_available: 50000,
         daily_buy_limit: 500,
         daily_sell_limit: 500,
@@ -25,7 +25,6 @@ let mockUseAdvertiserStats = {
         name: 'Jane',
         show_name: 0,
     },
-    isLoading: false,
 };
 const mockUseActiveAccount = {
     data: {
@@ -34,11 +33,6 @@ const mockUseActiveAccount = {
     isLoading: false,
 };
 
-jest.mock('@/hooks', () => ({
-    ...jest.requireActual('@/hooks'),
-    useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
-}));
-
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveAccount: jest.fn(() => mockUseActiveAccount),
@@ -46,7 +40,7 @@ jest.mock('@deriv/api-v2', () => ({
 
 describe('ProfileBalance', () => {
     it('should render the correct balance', () => {
-        render(<ProfileBalance />, { wrapper });
+        render(<ProfileBalance {...mockAdvertiserStatsProp} />, { wrapper });
         const availableBalanceNode = screen.getByTestId('dt_p2p_v2_available_balance_amount');
         expect(within(availableBalanceNode).getByText('50,000.00 USD')).toBeInTheDocument();
 
@@ -61,17 +55,16 @@ describe('ProfileBalance', () => {
     });
 
     it('should render the correct limits', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                ...mockUseAdvertiserStats.data,
+        mockAdvertiserStatsProp = {
+            advertiserStats: {
+                ...mockAdvertiserStatsProp.advertiserStats,
                 daily_buy_limit: 500,
                 daily_sell_limit: 2000,
                 dailyAvailableBuyLimit: 100,
                 dailyAvailableSellLimit: 600,
             },
-            isLoading: false,
         };
-        render(<ProfileBalance />, { wrapper });
+        render(<ProfileBalance {...mockAdvertiserStatsProp} />, { wrapper });
         const dailyBuyLimitNode = screen.getByTestId('dt_p2p_v2_profile_balance_daily_buy_limit');
         expect(within(dailyBuyLimitNode).getByText('500 USD')).toBeInTheDocument();
         const availableBuyLimitNode = screen.getByTestId('dt_p2p_v2_profile_balance_available_buy_limit');
@@ -83,14 +76,13 @@ describe('ProfileBalance', () => {
         expect(within(dailyAvailableSellLimit).getByText('600.00 USD')).toBeInTheDocument();
     });
     it('should render eligibility for daily limit upgrade', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                ...mockUseAdvertiserStats.data,
+        mockAdvertiserStatsProp = {
+            advertiserStats: {
+                ...mockAdvertiserStatsProp.advertiserStats,
                 isEligibleForLimitUpgrade: true,
             },
-            isLoading: false,
         };
-        render(<ProfileBalance />, { wrapper });
+        render(<ProfileBalance {...mockAdvertiserStatsProp} />, { wrapper });
         expect(screen.getByTestId('dt_p2p_v2_profile_daily_limit')).toBeInTheDocument();
 
         const openDailyLimitModalBtn = screen.getByRole('button', {
@@ -104,12 +96,12 @@ describe('ProfileBalance', () => {
         expect(screen.queryByTestId('dt_p2p_v2_daily_limit_modal')).not.toBeInTheDocument();
     });
     it('should render the correct default values', () => {
-        mockUseAdvertiserStats = {
+        mockAdvertiserStatsProp = {
             // @ts-expect-error To clear the mocked values and assert the default values
-            data: {},
+            advertiserStats: {},
             isLoading: false,
         };
-        render(<ProfileBalance />, { wrapper });
+        render(<ProfileBalance {...mockAdvertiserStatsProp} />, { wrapper });
         const availableBalanceNode = screen.getByTestId('dt_p2p_v2_available_balance_amount');
         expect(within(availableBalanceNode).getByText('0.00 USD')).toBeInTheDocument();
         const dailyBuyLimitNode = screen.getByTestId('dt_p2p_v2_profile_balance_daily_buy_limit');

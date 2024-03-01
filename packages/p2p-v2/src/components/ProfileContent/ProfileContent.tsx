@@ -1,7 +1,8 @@
 import React from 'react';
 import { AdvertiserName, AdvertiserNameToggle } from '@/components';
-import { useAdvertiserStats, useDevice } from '@/hooks';
+import { useAdvertiserStats } from '@/hooks';
 import { getCurrentRoute } from '@/utils';
+import { useDevice } from '@deriv-com/ui';
 import { ProfileBalance } from './ProfileBalance';
 import { ProfileStats } from './ProfileStats';
 import './ProfileContent.scss';

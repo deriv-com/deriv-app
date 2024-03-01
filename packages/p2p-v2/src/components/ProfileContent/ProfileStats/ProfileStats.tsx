@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
+import { TAdvertiserStats } from 'types';
 import { Text, useDevice } from '@deriv-com/ui';
 import './ProfileStats.scss';
 
-const ProfileStats = ({ advertiserStats }) => {
+const ProfileStats = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
     const { isMobile } = useDevice();
 
     const advertiserStatsList = useMemo(() => {

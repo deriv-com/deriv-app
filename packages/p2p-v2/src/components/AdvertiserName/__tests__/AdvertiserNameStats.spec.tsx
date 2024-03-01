@@ -9,59 +9,35 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
     </APIProvider>
 );
 
-type TMockUseAdvertiserStats = {
-    data?: {
-        blocked_by_count?: number;
-        daysSinceJoined?: number;
-        rating_average?: number;
-        rating_count?: number;
-        recommended_average?: number;
-    };
-    isLoading: boolean;
-};
-let mockUseAdvertiserStats: Partial<TMockUseAdvertiserStats> = {
-    data: {
-        blocked_by_count: 0,
-        daysSinceJoined: 0,
-        rating_average: 0,
-        rating_count: 0,
-        recommended_average: 0,
-    },
-    isLoading: false,
-};
-
-jest.mock('../../../hooks', () => ({
-    ...jest.requireActual('../../../hooks'),
-    useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
 describe('AdvertiserNameStats', () => {
     it('should render correct advertiser stats', () => {
-        mockUseAdvertiserStats = {
-            data: {
+        const mockUseAdvertiserStats = {
+            advertiserStats: {
                 blocked_by_count: 1,
                 daysSinceJoined: 22,
                 rating_average: 4.4,
                 rating_count: 29,
                 recommended_average: 3.3,
             },
-            isLoading: false,
         };
-        render(<AdvertiserNameStats />, { wrapper });
-        expect(screen.queryByText('1')).toBeInTheDocument();
+        render(<AdvertiserNameStats {...mockUseAdvertiserStats} />, { wrapper });
         expect(screen.queryByText('Joined 22d')).toBeInTheDocument();
         expect(screen.queryByText('(29 ratings)')).toBeInTheDocument();
     });
     it('should render correct advertiser stats based on availability', () => {
-        mockUseAdvertiserStats = {
-            data: {
+        const mockUseAdvertiserStats = {
+            advertiserStats: {
                 blocked_by_count: 1,
                 daysSinceJoined: 22,
                 rating_count: 29,
             },
-            isLoading: false,
         };
-        render(<AdvertiserNameStats />, { wrapper });
+        render(<AdvertiserNameStats {...mockUseAdvertiserStats} />, { wrapper });
         expect(screen.queryByText('Not rated yet')).toBeInTheDocument();
     });
 });

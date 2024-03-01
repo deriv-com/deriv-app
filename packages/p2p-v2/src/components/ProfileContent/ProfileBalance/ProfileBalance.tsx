@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { TAdvertiserStats } from 'types';
 import { AvailableP2PBalanceModal } from '@/components/Modals';
 import { useDevice } from '@/hooks';
 import { numberToCurrencyText } from '@/utils';
@@ -8,7 +9,7 @@ import { Text } from '@deriv-com/ui';
 import { ProfileDailyLimit } from '../ProfileDailyLimit';
 import './ProfileBalance.scss';
 
-const ProfileBalance = ({ advertiserStats }) => {
+const ProfileBalance = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
     const { data: activeAccount } = useActiveAccount();
     const { isDesktop } = useDevice();
     const [shouldShowAvailableBalanceModal, setShouldShowAvailableBalanceModal] = useState(false);

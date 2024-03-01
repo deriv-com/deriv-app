@@ -10,8 +10,11 @@ import {
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
 } from '@deriv/quill-icons';
+import { URLUtils } from '@deriv-com/utils';
 import { IconComponent } from '../components';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
+import { getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
+
+const { getDerivStaticURL } = URLUtils;
 
 export type IconToCurrencyMapperType = {
     [key: string]: {
@@ -55,7 +58,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         description: 'Trade on the go with our mobile app.',
         icon: <IconComponent icon='DerivGo' />,
         isExternal: true,
-        redirect: getStaticUrl('/deriv-go'),
+        redirect: getDerivStaticURL('/deriv-go'),
         smallIcon: <IconComponent height={32} icon='DerivGo' width={32} />,
         title: 'Deriv GO',
     },
@@ -112,6 +115,11 @@ export const IconToCurrencyMapper: IconToCurrencyMapperType = {
     },
 };
 
+export const CurrencyTypes = {
+    CRYPTO: 'CRYPTO',
+    FIAT: 'FIAT',
+} as const;
+
 export const Regulation = {
     EU: 'EU',
     NonEU: 'Non-EU',
@@ -121,3 +129,11 @@ export const BrokerCodes = {
     CR: 'CR',
     MF: 'MF',
 } as const;
+
+export const CurrenciesListOrder: {
+    CRYPTO: string[];
+    FIAT: string[];
+} = {
+    FIAT: ['USD', 'EUR', 'GBP', 'AUD'],
+    CRYPTO: ['TUSDT', 'BTC', 'ETH', 'LTC', 'UST', 'eUSDT', 'BUSD', 'DAI', 'EURS', 'IDK', 'PAX', 'TUSD', 'USDC', 'USDK'],
+};

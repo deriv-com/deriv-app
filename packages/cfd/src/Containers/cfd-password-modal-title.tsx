@@ -9,9 +9,8 @@ import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 type TCFDPasswordModalTitleProps = { platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS] };
 
 const CFDPasswordModalTitle = observer(({ platform }: TCFDPasswordModalTitleProps) => {
-    const { traders_hub, ui } = useStore();
+    const { traders_hub } = useStore();
     const { show_eu_related_content } = traders_hub;
-    const { is_mt5_migration_modal_enabled } = ui;
     const { account_title, account_type, jurisdiction_selected_shortcode } = useCfdStore();
 
     const accountTitle = (category: typeof CATEGORY[keyof typeof CATEGORY]) => {
@@ -32,19 +31,6 @@ const CFDPasswordModalTitle = observer(({ platform }: TCFDPasswordModalTitleProp
         }
         return 'CFDs';
     };
-
-    if (is_mt5_migration_modal_enabled) {
-        return (
-            <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                <Localize
-                    i18n_default_text='Enter your {{platform}} password to move your account(s).'
-                    values={{
-                        platform: getCFDPlatformLabel(platform),
-                    }}
-                />
-            </Text>
-        );
-    }
 
     return (
         <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>

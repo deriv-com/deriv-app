@@ -4,7 +4,7 @@ import { PaymentMethodLabel, PopoverDropdown } from '@/components';
 import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
 import { useDevice } from '@/hooks';
 import { formatMoney, generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
-import { useExchangeRateSubscription } from '@deriv/api';
+import { useExchangeRateSubscription } from '@deriv/api-v2';
 import { Button, Text, Tooltip } from '@deriv-com/ui';
 //TODO: Replace with quill icons once available
 import DeactivateIcon from '../../../../../public/ic-archive.svg';

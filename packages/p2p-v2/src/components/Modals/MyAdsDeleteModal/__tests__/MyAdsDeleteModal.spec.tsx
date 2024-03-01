@@ -20,7 +20,7 @@ const mockUseGet = {
     isLoading: false,
 };
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     p2p: {
         advert: {
             useGet: jest.fn(() => mockUseGet),

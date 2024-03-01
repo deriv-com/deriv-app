@@ -294,6 +294,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             updateMt5LoginList: jest.fn(),
             should_show_eu_error: false,
             is_options_blocked: false,
+            real_account_signup_form_data: [],
+            real_account_signup_form_step: 0,
+            setRealAccountSignupFormData: jest.fn(),
+            setRealAccountSignupFormStep: jest.fn(),
         },
         common: {
             error: common_store_error,
@@ -544,6 +548,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_notifications_visible: false,
             filterNotificationMessages: jest.fn(),
             notifications: [],
+            p2p_advertiser_info: undefined,
             p2p_completed_orders: [],
             refreshNotifications: jest.fn(),
             removeAllNotificationMessages: jest.fn(),

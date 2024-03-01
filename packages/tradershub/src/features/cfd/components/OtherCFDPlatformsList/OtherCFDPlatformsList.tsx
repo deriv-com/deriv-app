@@ -1,18 +1,21 @@
 import React, { useEffect } from 'react';
+import { TradingAppCardLoader, useUIContext } from '@/components';
+import { THooks } from '@/types';
+import { CFDPlatformLayout } from '@cfd/components';
+import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '@cfd/flows';
 import { useActiveTradingAccount, useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api';
-import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
-import { THooks } from '../../../../types';
-import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '../../flows/OtherCFDs/Dxtrade';
-import { CFDPlatformLayout } from '../CFDPlatformLayout';
 
 const OtherCFDPlatformsList = () => {
+    const { uiState } = useUIContext();
+    const { accountType } = uiState;
     const { isFetching } = useAuthorize();
     const { data: dxTradeAccounts, isFetchedAfterMount } = useDxtradeAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const invalidate = useInvalidateQuery();
 
     const hasDxtradeAccount = dxTradeAccounts?.some(
-        (account: THooks.DxtradeAccountsList) => account.is_virtual === activeTradingAccount?.is_virtual
+        (account: THooks.DxtradeAccountsList) =>
+            account.is_virtual === activeTradingAccount?.is_virtual && account.account_type === accountType
     );
 
     useEffect(() => {

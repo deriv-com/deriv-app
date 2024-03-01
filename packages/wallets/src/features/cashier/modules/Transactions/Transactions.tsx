@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';
@@ -11,10 +11,6 @@ import './Transactions.scss';
 type TTransactionsPendingFilter = React.ComponentProps<typeof TransactionsPending>['filter'];
 type TTransactionCompletedFilter = React.ComponentProps<typeof TransactionsCompleted>['filter'];
 type TFilterValue = TTransactionCompletedFilter | TTransactionsPendingFilter;
-type THistoryState = {
-    showPending?: boolean;
-    transactionType?: string;
-};
 
 const filtersMapper: Record<string, Record<string, TFilterValue>> = {
     completed: {
@@ -38,10 +34,14 @@ const Transactions = () => {
     const { isMobile } = useDevice();
 
     const { location } = useHistory();
-    const state: THistoryState = location.state;
+    const initialShowPending = Boolean(
+        location.pathname === '/wallets/cashier/transactions' ? location.state?.showPending : false
+    );
+    const initialTransactionType =
+        (location.pathname === '/wallets/cashier/transactions' ? location.state?.transactionType : undefined) ?? 'all';
 
-    const [isPendingActive, setIsPendingActive] = useState(Boolean(state?.showPending));
-    const [filterValue, setFilterValue] = useState(state?.transactionType ?? 'all');
+    const [isPendingActive, setIsPendingActive] = useState(initialShowPending);
+    const [filterValue, setFilterValue] = useState(initialTransactionType);
 
     const filterOptionsList = useMemo(
         () =>

@@ -11,7 +11,7 @@ jobs:
     environment: Preview
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Setup Node
       uses: "./.github/actions/setup_node"
     - name: Install dependencies
@@ -23,6 +23,8 @@ jobs:
       uses: "./.github/actions/build"
     - name: Check TypeScript for @deriv/api
       run: npx tsc --project packages/api/tsconfig.json -noEmit
+    - name: Check TypeScript for @deriv/api-v2
+      run: npx tsc --project packages/api-v2/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/hooks
       run: npx tsc --project packages/hooks/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/utils

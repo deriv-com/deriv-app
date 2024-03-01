@@ -1,38 +1,58 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
+import { useRegulationFlags } from '@/hooks';
+import { Provider } from '@deriv/library';
 import {
+    GetADerivAccountDialog,
+    IconComponent,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
-} from '../../../../../../components/TradingAccountCard';
+} from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
-import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 import { PlatformDetails } from '../../../../constants';
+import { DxtradePasswordModal } from '../../../../modals/DxtradePasswordModal';
 
 const LeadingIcon = () => (
-    <div
-        className='cursor-pointer'
-        onClick={() => {
-            window.open(getStaticUrl('/derivx'));
-        }}
-        onKeyDown={e => {
-            if (e.key === 'Enter') {
+    <div>
+        <IconComponent
+            icon='DerivX'
+            onClick={() => {
                 window.open(getStaticUrl('/derivx'));
-            }
-        }}
-        role='button'
-    >
-        <DerivX />
+            }}
+        />
     </div>
 );
 
-const TrailingButton = () => <TradingAccountCardLightButton />;
+const AvailableDxtradeAccountsList = () => {
+    const { hasActiveDerivAccount } = useRegulationFlags();
+    const { show } = Provider.useModal();
+    const { setCfdState } = Provider.useCFDContext();
 
-const AvailableDxtradeAccountsList = () => (
-    <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
-        <TradingAccountCardContent title={PlatformDetails.dxtrade.title}>
-            This account offers CFDs on a highly customisable CFD trading platform.
-        </TradingAccountCardContent>
-    </TradingAccountCard>
-);
+    const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
+
+    const TrailingButton = () => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />;
+
+    const trailingButtonClick = () => {
+        setCfdState('platform', PlatformDetails.dxtrade.platform);
+        if (!hasActiveDerivAccount) {
+            setIsDerivedAccountModalOpen(true);
+        } else {
+            show(<DxtradePasswordModal />);
+        }
+    };
+    return (
+        <Fragment>
+            <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
+                <TradingAccountCardContent title={PlatformDetails.dxtrade.title}>
+                    This account offers CFDs on a highly customisable CFD trading platform.
+                </TradingAccountCardContent>
+            </TradingAccountCard>
+            <GetADerivAccountDialog
+                isOpen={isDerivedAccountModalOpen}
+                onClose={() => setIsDerivedAccountModalOpen(false)}
+            />
+        </Fragment>
+    );
+};
 
 export default AvailableDxtradeAccountsList;

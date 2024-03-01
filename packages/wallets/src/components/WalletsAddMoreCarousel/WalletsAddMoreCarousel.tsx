@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
 import { useHover } from 'usehooks-ts';
-import { useAllWalletAccounts, useAuthorize } from '@deriv/api';
+import { useAllWalletAccounts, useAuthorize } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import LeftArrow from '../../public/images/left-arrow.svg';
 import RightArrow from '../../public/images/right-arrow.svg';
@@ -64,7 +64,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                                 currency={wallet.currency}
                                 is_added={wallet.is_added}
                                 is_crypto={wallet.is_crypto}
-                                key={`wallets_add_more_${wallet.currency}-${wallet.landing_company_name}`}
+                                key={`wallets_add_more_${wallet.currency}-${wallet.landing_company_name}-${wallet.is_added}`}
                                 landing_company_name={wallet.landing_company_name}
                             />
                         ))}

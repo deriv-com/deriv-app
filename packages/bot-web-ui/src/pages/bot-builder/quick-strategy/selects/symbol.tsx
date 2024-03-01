@@ -1,18 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Analytics } from '@deriv-com/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
+import { setRsDropdownTextToLocalStorage } from '../analytics/utils';
 import { TFormData } from '../types';
 
 type TSymbol = {
     component?: React.ReactNode;
     text: string;
     value: string;
-    group: string;
+    group?: string;
 };
 
 type TMarketOption = {
@@ -34,7 +35,7 @@ const SymbolSelect: React.FC = () => {
         ui: { is_mobile, is_desktop },
     } = useStore();
     const { setValue } = quick_strategy;
-    const [active_symbols, setActiveSymbols] = React.useState([]);
+    const [active_symbols, setActiveSymbols] = React.useState<TSymbol[]>([]);
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });
     const [last_selected_symbol, setLastSelectedSymbol] = useState({ text: '', value: '' });
@@ -50,17 +51,22 @@ const SymbolSelect: React.FC = () => {
     );
 
     useEffect(() => {
-        const { active_symbols } = ApiHelpers.instance;
+        const { active_symbols } = ApiHelpers.instance as unknown as {
+            active_symbols: {
+                getSymbolsForBot: () => TSymbol[];
+            };
+        };
         const symbols = active_symbols.getSymbolsForBot();
-
         setActiveSymbols(symbols);
 
-        if (values?.symbol) {
-            const has_symbol = !!symbols.find((symbol: { [key: string]: string }) => symbol.value === values.symbol);
-            if (!has_symbol) {
-                setFieldValue('symbol', symbols?.[0]?.value);
-                setValue('symbol', symbols?.[0]?.value);
-            }
+        const has_symbol = !!symbols?.find(symbol => symbol?.value === values?.symbol);
+        if (!has_symbol) {
+            setFieldValue('symbol', symbols?.[0]?.value);
+            setValue('symbol', symbols?.[0]?.value);
+            setRsDropdownTextToLocalStorage(symbols?.[0]?.text, 'symbol');
+        } else {
+            const selected_item = symbols?.find(symbol => symbol?.value === values?.symbol);
+            setRsDropdownTextToLocalStorage(selected_item?.text ?? '', 'symbol');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -71,14 +77,6 @@ const SymbolSelect: React.FC = () => {
             setInputValue({ text: selected_symbol.text, value: selected_symbol.value });
         }
     }, [symbols, values.symbol, setInputValue]);
-
-    const sendAssetValueToRudderStack = (item: string) => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'choose_asset',
-            asset_type: item,
-            form_source: 'ce_bot_quick_strategy_form',
-        });
-    };
 
     const handleFocus = () => {
         if (is_desktop && !is_input_started) {
@@ -93,11 +91,16 @@ const SymbolSelect: React.FC = () => {
 
     const handleItemSelection = (item: TItem) => {
         if (item) {
-            const { value } = item as TSymbol;
-            sendAssetValueToRudderStack(item.text);
+            const { value, text } = item as TSymbol;
             setFieldValue('symbol', value);
             setValue('symbol', value);
             setIsInputStarted(false);
+            rudderStackSendQsParameterChangeEvent({
+                parameter_type: 'symbol',
+                parameter_value: text,
+                parameter_field_type: 'dropdown',
+            });
+            setRsDropdownTextToLocalStorage(text, 'symbol');
         }
     };
 

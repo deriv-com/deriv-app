@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
-import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
+import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api-v2';
 import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';

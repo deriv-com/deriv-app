@@ -1,0 +1,17 @@
+@import '../SkeletonLoader.scss';
+
+.wallets-card-loader {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+
+    &__item {
+        height: 12rem;
+        border-radius: 1.6rem;
+        width: 100%;
+
+        &-expanded {
+            height: 100vh;
+        }
+    }
+}

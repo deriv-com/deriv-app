@@ -5,22 +5,17 @@
     padding-right: 2.4rem;
     gap: 0.4rem;
 
-    & span {
+    & button {
+        padding-left: 0;
+        background: none;
         font-size: 14px;
-        color: #999999;
+        border: none;
+        font-style: italic;
+        cursor: pointer;
 
-        & button {
-            padding-left: 0;
+        &:hover {
             background: none;
-            font-size: 14px;
-            border: none;
-            font-style: italic;
-            cursor: pointer;
-
-            &:hover {
-                background: none;
-                text-decoration: none;
-            }
+            text-decoration: none;
         }
     }
 
@@ -30,11 +25,6 @@
 
     &--active {
         color: #ff444f;
-    }
-
-    & strong {
-        line-height: 1.5;
-        color: #333333;
     }
 
     &:nth-child(4n) {

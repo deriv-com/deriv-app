@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { getStaticUrl } from '@/helpers';
-import { Checkbox, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
+import PEPConfirmation from './PEPConfirmation';
 
 const PEPs = () => (
     <Fragment>
@@ -11,22 +11,7 @@ const PEPs = () => (
             A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates
             and family members of a PEP are also considered to be PEPs.
         </Text>
-        <Checkbox label='I am not a PEP and never have been a PEP.' />
-        <Checkbox
-            label={
-                <Text size='sm'>
-                    I agree to the{' '}
-                    <a
-                        className='font-bold text-brand-coral hover:underline'
-                        href={getStaticUrl('/terms-and-conditions')}
-                        rel='noopener noreferrer'
-                        target='_blank'
-                    >
-                        terms and conditions.
-                    </a>
-                </Text>
-            }
-        />
+        <PEPConfirmation />
     </Fragment>
 );
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useModal } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
 import { DummyComponent } from '@cfd/components';
 import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
@@ -10,8 +11,7 @@ import {
     useMT5AccountsList,
     useSettings,
 } from '@deriv/api';
-import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import {
     getAccountVerificationStatus,
     shouldRestrictBviAccountCreation,
@@ -32,7 +32,7 @@ type TCompareAccountButton = {
 @params {string} marketType - The market type of the account. //Removed for now as it is needed by Verification flow
  */
 const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompareAccountButton) => {
-    const { show } = Provider.useModal();
+    const { show } = useModal();
 
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();
@@ -114,7 +114,7 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
         }
     };
     return (
-        <div className='h-2000 m-1000 w-[calc(100%-40px)]'>
+        <div className='h-40 m-20 w-[calc(100%-40px)]'>
             <Button
                 className='w-full text-center text-system-light-primary-background'
                 data-testid='dt_compare_cfd_account_button'

@@ -7,18 +7,18 @@ import Row from './Row';
 const RegulationModal = () => (
     <Modal className='w-full md:max-w-[743px]'>
         <Modal.Header title='Non-EU and EU regulations' />
-        <Modal.Content className='p-800 md:p-1200'>
+        <Modal.Content className='p-16 md:p-24'>
             <div className='overflow-x-scroll'>
                 <table className='border-separate table-auto min-w-[457px] md:min-w-[695px] bg-system-light-primary-background'>
                     <thead>
                         <tr className=''>
-                            <th className='sticky z-10 border-solid border-r-75 border-b-75 border-system-light-active-background start-50 min-h-2000 bg-system-light-primary-background' />
-                            <th className='border-solid p-500 min-h-2000 border-r-75 border-y-75 border-system-light-active-background'>
+                            <th className='sticky z-10 border-solid border-r-1 border-b-1 border-system-light-active-background start-50 min-h-40 bg-system-light-primary-background' />
+                            <th className='border-solid p-10 min-h-40 border-r-1 border-y-1 border-system-light-active-background'>
                                 <Text size='sm' weight='bold'>
                                     Non-EU regulation
                                 </Text>
                             </th>
-                            <th className='border-solid p-500 min-h-2000 border-r-75 border-y-75 border-system-light-active-background'>
+                            <th className='border-solid p-10 min-h-40 border-r-1 border-y-1 border-system-light-active-background'>
                                 <Text size='sm' weight='bold'>
                                     EU regulation
                                 </Text>

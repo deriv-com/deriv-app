@@ -145,10 +145,11 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
-    p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
+    real_account_signup_form_data = [];
+    real_account_signup_form_step = 0;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -212,9 +213,10 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
-            p2p_advertiser_info: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
+            real_account_signup_form_data: observable,
+            real_account_signup_form_step: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -385,9 +387,10 @@ export default class ClientStore extends BaseStore {
             updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-            setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
+            setRealAccountSignupFormData: action.bound,
+            setRealAccountSignupFormStep: action.bound,
         });
 
         reaction(
@@ -1651,8 +1654,6 @@ export default class ClientStore extends BaseStore {
                 await this.fetchStatesList();
             }
             if (!this.is_virtual) await this.getLimits();
-
-            await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1693,10 +1694,6 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = response.landing_company;
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
-    }
-
-    setP2pAdvertiserInfo(response) {
-        this.p2p_advertiser_info = response.p2p_advertiser_info;
     }
 
     setStandpoint(landing_companies) {
@@ -2143,7 +2140,9 @@ export default class ClientStore extends BaseStore {
             const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
 
             if (
-                (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
+                (redirect_url?.endsWith('/') ||
+                    redirect_url?.endsWith(routes.bot) ||
+                    /chart_type|interval|symbol|trade_type/.test(redirect_url)) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())
             ) {
                 window.history.replaceState({}, document.title, target_url);
@@ -2315,7 +2314,9 @@ export default class ClientStore extends BaseStore {
             })
             .finally(() => {
                 setTimeout(() => {
-                    const { event, analyticsData } = window.dataLayer.find(el => el.event === 'ce_questionnaire_form');
+                    const { event, analyticsData } = window.dataLayer.find(
+                        el => el.event === 'ce_questionnaire_form'
+                    ) ?? { event: 'unhandled', analyticsData: {} };
                     Analytics.trackEvent(event, analyticsData);
                 }, 10000);
             });
@@ -2625,6 +2626,14 @@ export default class ClientStore extends BaseStore {
 
     setIsAlreadyAttempted(status) {
         this.is_already_attempted = status;
+    }
+
+    setRealAccountSignupFormData(data) {
+        this.real_account_signup_form_data = data;
+    }
+
+    setRealAccountSignupFormStep(step) {
+        this.real_account_signup_form_step = step;
     }
 
     /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.

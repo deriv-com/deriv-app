@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
+import { twMerge } from 'tailwind-merge';
 import { StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
-import { useIsEuRegion } from '@deriv/api';
-import { Button, Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => {
     const history = useHistory();
@@ -15,11 +14,11 @@ const CompareAccountsButton = ({ className }: { className?: string }) => {
 
     return (
         <Button
-            className={qtMerge('no-underline', className)}
-            colorStyle='coral'
+            className={twMerge('no-underline', className)}
+            color='primary'
             onClick={() => history.push('/traders-hub/compare-accounts')}
             size='sm'
-            variant='tertiary'
+            variant='ghost'
         >
             {title}
         </Button>
@@ -27,26 +26,26 @@ const CompareAccountsButton = ({ className }: { className?: string }) => {
 };
 
 const CFDHeading = () => {
-    const { isMobile } = useBreakpoint();
-    const { isSuccess } = useIsEuRegion();
+    const { isDesktop } = useDevice();
+    const { isSuccess } = useRegulationFlags();
 
     if (!isSuccess) return <TitleDescriptionLoader />;
 
     return (
         <Fragment>
-            {!isMobile && (
-                <div className='flex items-center gap-x-200'>
-                    <Heading.H4 className='font-sans'>CFDs</Heading.H4>
+            {isDesktop && (
+                <div className='flex items-center gap-x-4'>
+                    <Text size='lg' weight='bold'>
+                        CFDs
+                    </Text>
                     <CompareAccountsButton />
                 </div>
             )}
-            <Text className='leading-100' size='sm'>
+            <Text className='leading-18' size='sm'>
                 Trade with leverage and tight spreads for better returns on trades.
-                <StaticLink size='md' staticUrl='/trade-types/cfds/'>
-                    Learn more
-                </StaticLink>
+                <StaticLink staticUrl='/trade-types/cfds/'>Learn more</StaticLink>
             </Text>
-            {isMobile && <CompareAccountsButton className='mt-800' />}
+            {!isDesktop && <CompareAccountsButton className='mt-16' />}
         </Fragment>
     );
 };

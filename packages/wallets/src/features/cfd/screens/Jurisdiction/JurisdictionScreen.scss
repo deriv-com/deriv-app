@@ -1,22 +1,31 @@
 .wallets-jurisdiction-screen {
-    align-items: center;
-    border-radius: 1.6rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    margin: auto 3rem;
-    height: 75vh;
-    width: 85vw;
-    transition: all 0.6s ease;
+    padding: 2.4rem;
+    border-radius: 1.6rem;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: all 600ms ease;
 
     @include mobile {
         height: auto;
+        margin: 0;
+        padding: 0 2.4rem;
     }
 
     &--flip {
+        position: absolute;
         transform: rotateY(-180deg);
-        opacity: 0;
-        height: 70rem;
+    }
+
+    &--hidden {
+        position: absolute;
+        height: 0;
+        overflow: hidden;
     }
 
     &__button {
@@ -47,7 +56,6 @@
         gap: 1.6rem;
         justify-content: center;
         width: 100%;
-        height: 82%;
 
         @include mobile {
             flex-direction: column;

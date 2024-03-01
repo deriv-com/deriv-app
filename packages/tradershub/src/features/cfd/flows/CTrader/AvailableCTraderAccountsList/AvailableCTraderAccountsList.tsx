@@ -1,23 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
     GetADerivAccountDialog,
-    PlatformIcon,
+    IconComponent,
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '@/components';
-import { getStaticUrl } from '@/helpers';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
+import { useModal } from '@/providers';
 import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { URLUtils } from '@deriv-com/utils';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
-    <PlatformIcon
+    <IconComponent
         icon='CTrader'
         onClick={() => {
-            window.open(getStaticUrl('/deriv-ctrader'));
+            window.open(getDerivStaticURL('/deriv-ctrader'));
         }}
     />
 );
@@ -26,13 +29,16 @@ const AvailableCTraderAccountsList = () => {
     const { mutate, status } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { hasActiveDerivAccount } = useRegulationFlags();
-    const { show } = Provider.useModal();
+    const { show } = useModal();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
+    const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, activeTradingAccount?.is_virtual);
+
+    const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 
     const onSubmit = () => {
         if (!hasActiveDerivAccount) {
-            show(<GetADerivAccountDialog />);
+            setIsDerivedAccountModalOpen(true);
         } else {
             mutate({
                 payload: {
@@ -51,16 +57,20 @@ const AvailableCTraderAccountsList = () => {
     }, [accountType, show, status]);
 
     return (
-        <div>
+        <Fragment>
             <TradingAccountCard
                 leading={LeadingIcon}
                 trailing={() => <TradingAccountCardLightButton onSubmit={onSubmit} />}
             >
-                <TradingAccountCardContent title={PlatformDetails.ctrader.title}>
+                <TradingAccountCardContent title={title}>
                     This account offers CFDs on a feature-rich trading platform.
                 </TradingAccountCardContent>
             </TradingAccountCard>
-        </div>
+            <GetADerivAccountDialog
+                isOpen={isDerivedAccountModalOpen}
+                onClose={() => setIsDerivedAccountModalOpen(false)}
+            />
+        </Fragment>
     );
 };
 

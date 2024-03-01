@@ -4,8 +4,7 @@ import { TMarketTypes, TPlatforms } from '@/types';
 import { validPassword } from '@/utils';
 import { MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button, PasswordInput, Text } from '@deriv-com/ui';
+import { Button, PasswordInput, Text, useDevice } from '@deriv-com/ui';
 
 type TEnterPasswordProps = {
     isLoading?: boolean;
@@ -41,7 +40,7 @@ const EnterPassword = ({
     passwordError,
     platform,
 }: TEnterPasswordProps) => {
-    const { isDesktop } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const title = PlatformDetails[platform].title;
     const { isEU } = useRegulationFlags();
 
@@ -53,22 +52,16 @@ const EnterPassword = ({
         platform === PlatformDetails.dxtrade.platform ? accountType : marketTypeDetails[marketType]?.title;
 
     return (
-        <div className='flex lg:inline-flex lg:w-[400px] flex-col justify-center items-start rounded-400 border-sm bg-system-light-primary-background'>
+        <div className='flex lg:inline-flex lg:w-[400px] flex-col justify-center items-start rounded-default border-sm bg-system-light-primary-background'>
             <Text weight='bold'>Enter your {title} password</Text>
-            <div className='flex flex-col gap-800 lg:gap-400 lg:pt-1200'>
+            <div className='flex flex-col gap-16 lg:gap-8 lg:pt-24'>
                 <Text size='sm'>
                     Enter your {title} password to add a {title} {marketTypeTitle} account.
                 </Text>
-                <PasswordInput
-                    className='z-10 text-body-sm'
-                    isFullWidth
-                    label={`${title} password`}
-                    onChange={onPasswordChange}
-                    value={password}
-                />
+                <PasswordInput isFullWidth label={`${title} password`} onChange={onPasswordChange} value={password} />
             </div>
             {isDesktop && (
-                <div className='flex items-center justify-end w-full gap-400 pt-1200'>
+                <div className='flex items-center justify-end w-full gap-8 pt-24'>
                     <Button onClick={onSecondaryClick} size='lg' variant='outlined'>
                         Forgot password?
                     </Button>

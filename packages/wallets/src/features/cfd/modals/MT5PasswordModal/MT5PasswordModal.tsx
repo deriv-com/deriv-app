@@ -8,7 +8,7 @@ import {
     useMT5AccountsList,
     useSettings,
     useTradingPlatformPasswordChange,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';

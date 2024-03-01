@@ -1,0 +1,9 @@
+.p2p-v2-buy-sell-form {
+    @include p2p-v2-modal-styles;
+    width: 44rem;
+    @include mobile {
+        width: 100vw;
+        height: 100vh;
+        box-shadow: none;
+    }
+}

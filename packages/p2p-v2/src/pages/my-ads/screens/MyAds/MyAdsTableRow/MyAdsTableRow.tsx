@@ -1,18 +1,18 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { useExchangeRateSubscription } from '@deriv/api';
-import { Button, Text, Tooltip } from '@deriv-com/ui';
+import { PaymentMethodLabel, PopoverDropdown } from '@/components';
+import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
 import { useDevice } from '@/hooks';
-import { generateEffectiveRate } from '@/utils/format-value';
+import { formatMoney, generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
+import { useExchangeRateSubscription } from '@deriv/api-v2';
+import { Button, Text, Tooltip } from '@deriv-com/ui';
 //TODO: Replace with quill icons once available
 import DeactivateIcon from '../../../../../public/ic-archive.svg';
-import ActivateIcon from '../../../../../public/ic-unarchive.svg';
-import EditIcon from '../../../../../public/ic-edit.svg';
 import DeleteIcon from '../../../../../public/ic-delete.svg';
-import { PopoverDropdown } from '@/components';
-import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
-import { formatMoney } from '@/utils/currency';
-import { AdStatus, AdType, ProgressIndicator } from '../../../components';
+import EditIcon from '../../../../../public/ic-edit.svg';
+import ShareIcon from '../../../../../public/ic-share.svg';
+import ActivateIcon from '../../../../../public/ic-unarchive.svg';
+import { AdStatus, AdType, AlertComponent, ProgressIndicator } from '../../../components';
 import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';
 import './MyAdsTableRow.scss';
 
@@ -26,7 +26,14 @@ const list = [
     { label: 'Deactivate', value: 'deactivate' },
 ];
 
-const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTableRowRendererProps) => {
+type TProps = {
+    setIsModalOpen: (value: boolean) => void;
+};
+
+type TMyAdsTableProps = Omit<TMyAdsTableRowRendererProps, 'balanceAvailable' | 'dailyBuyLimit' | 'dailySellLimit'> &
+    TProps;
+
+const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
     const { isMobile } = useDevice();
     const { data: exchangeRateValue, subscribe } = useExchangeRateSubscription();
 
@@ -37,9 +44,12 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
         effective_rate,
         id,
         is_active,
+        isBarred,
+        isListed,
         local_currency,
         max_order_amount_display,
         min_order_amount_display,
+        onClickIcon,
         payment_method_names,
         price_display,
         rate_display,
@@ -47,6 +57,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
         remaining_amount,
         remaining_amount_display,
         type,
+        visibility_status = [],
     } = rest;
 
     useEffect(() => {
@@ -57,6 +68,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
     }, [local_currency, subscribe]);
 
     const [isActionsVisible, setIsActionsVisible] = useState(false);
+    const [showAlertIcon, setShowAlertIcon] = useState(false);
     const isAdvertListed = isListed && !isBarred;
     const adPauseColor = isAdvertListed ? 'general' : 'less-prominent';
     const amountDealt = amount - remaining_amount;
@@ -65,6 +77,13 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
     const isAdActive = !!is_active && !isBarred;
 
     const exchangeRate = exchangeRateValue?.rates?.[local_currency];
+    //TODO: get the floating rate configs after completion of floating rate hook.
+    // check for rate type and if it is different from the current rate type then enable the action point.
+    const enableActionPoint = false;
+
+    useEffect(() => {
+        setShowAlertIcon(enableActionPoint || shouldShowTooltipIcon(visibility_status) || !isListed);
+    }, [enableActionPoint, isListed, shouldShowTooltipIcon]);
 
     const { displayEffectiveRate } = generateEffectiveRate({
         price: Number(price_display),
@@ -99,6 +118,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                     </Text>
                     <div className='p2p-v2-my-ads-table-row__line__type-and-status__wrapper'>
                         <AdStatus isActive={isAdActive} />
+                        {showAlertIcon && <AlertComponent setIsModalOpen={setIsModalOpen} />}
                         <PopoverDropdown
                             dataTestId='dt_p2p_v2_actions_menu'
                             dropdownList={list}
@@ -141,13 +161,14 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                         </div>
                     </Text>
                 </div>
-                <div className='p2p-v2-my-ads-table-row__line-methods'>
-                    {payment_method_names?.map(payment_method => (
-                        <div className='p2p-v2-my-ads-table-row__payment-method--label' key={payment_method}>
-                            <Text color={adPauseColor} size='xs'>
-                                {payment_method}
-                            </Text>
-                        </div>
+                <div className='p2p-v2-my-ads-table-row__line-methods gap-2'>
+                    {payment_method_names?.map(paymentMethod => (
+                        <PaymentMethodLabel
+                            color={adPauseColor}
+                            key={paymentMethod}
+                            paymentMethodName={paymentMethod}
+                            size='xs'
+                        />
                     ))}
                 </div>
             </div>
@@ -180,49 +201,44 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                 />
                 {remaining_amount_display}/{amount_display} {account_currency}
             </Text>
-            <div className='p2p-v2-my-ads-table-row__payment-method'>
+            <div className='flex flex-wrap gap-2'>
                 {payment_method_names?.map(paymentMethod => (
-                    <div className='p2p-v2-my-ads-table-row__payment-method--label' key={paymentMethod}>
-                        <Text color={adPauseColor} size='sm'>
-                            {paymentMethod}
-                        </Text>
-                    </div>
+                    <PaymentMethodLabel
+                        color={adPauseColor}
+                        key={paymentMethod}
+                        paymentMethodName={paymentMethod}
+                        size='xs'
+                    />
                 ))}
             </div>
             <div className='p2p-v2-my-ads-table-row__actions'>
                 {isActionsVisible ? (
                     <div className='p2p-v2-my-ads-table-row__actions-popovers'>
                         <Button onClick={() => onClickActionItem(is_active ? 'deactivate' : 'activate')}>
-                            <Tooltip
-                                className='p2p-v2-my-ads-table-row__actions-popovers__item'
-                                message={is_active ? 'Deactivate' : 'Activate'}
-                                position='bottom'
-                            >
+                            <Tooltip message={is_active ? 'Deactivate' : 'Activate'} position='bottom'>
                                 {is_active ? <DeactivateIcon /> : <ActivateIcon />}
                             </Tooltip>
                         </Button>
                         <Button onClick={() => onClickActionItem('edit')}>
-                            <Tooltip
-                                className='p2p-v2-my-ads-table-row__actions-popovers__item'
-                                message='Edit'
-                                position='bottom'
-                            >
+                            <Tooltip message='Edit' position='bottom'>
                                 <EditIcon />
                             </Tooltip>
                         </Button>
                         <Button onClick={() => onClickActionItem('delete')}>
-                            <Tooltip
-                                className='p2p-v2-my-ads-table-row__actions-popovers__item'
-                                message='Delete'
-                                position='bottom'
-                            >
+                            <Tooltip message='Delete' position='bottom'>
                                 <DeleteIcon />
+                            </Tooltip>
+                        </Button>
+                        <Button onClick={() => onClickActionItem('share')}>
+                            <Tooltip message='Share' position='bottom'>
+                                <ShareIcon />
                             </Tooltip>
                         </Button>
                     </div>
                 ) : (
                     <AdStatus isActive={isAdActive} />
                 )}
+                {showAlertIcon && <AlertComponent setIsModalOpen={setIsModalOpen} />}
             </div>
         </div>
     );

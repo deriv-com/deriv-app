@@ -95,10 +95,12 @@ class APIMiddleware {
 
     sendWillBeCalled({ args: [request] }) {
         const req_type = this.getRequestType(request);
+        let measure;
         if (req_type === 'buy') {
             performance.mark('first_proposal_or_run_end');
             if (performance.getEntriesByName('bot-start', 'mark').length) {
-                performance.measure('run_proposal_or_direct_buy', 'bot-start', 'first_proposal_or_run_end');
+                measure = performance.measure('run_proposal_or_direct_buy', 'bot-start', 'first_proposal_or_run_end');
+                console.table('measure', measure.duration);
                 performance.clearMarks('bot-start');
             }
         }

@@ -1,1 +1,1 @@
-export { IconButton } from './icon-button';
+export { IconButton } from './IconButton';

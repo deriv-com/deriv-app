@@ -4,7 +4,7 @@ import {
     MANUAL_DOCUMENT_SELFIE,
     MANUAL_DOCUMENT_TYPES_DATA,
     TManualDocumentTypes,
-} from '../constants/manualFormConstants';
+} from '../constants/ManualFormConstants';
 
 export const getTitleForFormInputs = (selectedDocument: TManualDocumentTypes) =>
     MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].inputSectionHeader;

@@ -20,7 +20,7 @@ type FormDropDownFieldProps = Omit<
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropDownFieldProps) => {
+export const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropDownFieldProps) => {
     const { isMobile } = useDevice();
 
     return (
@@ -39,5 +39,3 @@ const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropDownFiel
         </Field>
     );
 };
-
-export default FormDropDownField;

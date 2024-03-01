@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SelfieDocumentUpload } from '../selfie-document-upload';
+import { SelfieDocumentUpload } from '../SelfieDocumentUpload';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

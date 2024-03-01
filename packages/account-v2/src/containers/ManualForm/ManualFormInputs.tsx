@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Field, FieldProps } from 'formik';
 import { Input, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
-import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manual-form-utils';
+import { TManualDocumentTypes } from '../../constants/ManualFormConstants';
+import { getFieldsConfig, getTitleForFormInputs } from '../../utils/ManualFormUtils';
 
 type TManualFormInputsProps = { isExpiryDateRequired: boolean; selectedDocument: TManualDocumentTypes };
 

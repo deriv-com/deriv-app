@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes, ComponentProps, forwardRef, Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { TGenericSizes } from '../types';
-import { iconButtonVariants } from './icon-button.classnames';
+import { iconButtonVariants } from './IconButtonClassnames';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: 'black' | 'primary' | 'transparent' | 'white';

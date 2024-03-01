@@ -2,12 +2,12 @@
 import React, { useState } from 'react';
 import { InferType, object } from 'yup';
 import { Loader } from '@deriv-com/ui';
-import { TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { TManualDocumentTypes } from '../../constants/ManualFormConstants';
 import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
 import { useManualForm } from '../../hooks';
 import { OnfidoContainer } from '../../modules/Onfido';
-import { getManualFormValidationSchema, getSelfieValidationSchema } from '../../utils/manual-form-utils';
+import { getManualFormValidationSchema, getSelfieValidationSchema } from '../../utils/ManualFormUtils';
 
 type TManualUploadContainerProps = {
     selectedDocument: string | null;

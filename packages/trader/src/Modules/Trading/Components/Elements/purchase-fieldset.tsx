@@ -6,6 +6,7 @@ import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
+import { useStore } from '@deriv/stores';
 
 type TPurchaseFieldset = {
     basis: string;
@@ -59,6 +60,8 @@ const PurchaseFieldset = ({
     type,
 }: TPurchaseFieldset) => {
     const [should_fade, setShouldFade] = React.useState(false);
+    const { ui } = useStore();
+    const { is_mobile } = ui;
 
     React.useEffect(() => {
         setShouldFade(true);
@@ -66,11 +69,7 @@ const PurchaseFieldset = ({
 
     const purchase_button = (
         <React.Fragment>
-            {is_multiplier && has_cancellation && (
-                <MobileWrapper>
-                    <CancelDealInfo proposal_info={info} />
-                </MobileWrapper>
-            )}
+            {is_multiplier && has_cancellation && is_mobile && <CancelDealInfo proposal_info={info} />}
             <PurchaseButton
                 buy_info={buy_info}
                 currency={currency}
@@ -104,84 +103,88 @@ const PurchaseFieldset = ({
                 'purchase-container__option--turbos': is_turbos,
             })}
         >
-            <DesktopWrapper>
-                <div
-                    className={classNames('trade-container__fieldset-wrapper', {
-                        'trade-container__fieldset-wrapper--disabled': is_proposal_error || is_disabled,
-                    })}
-                >
-                    {(has_cancellation || !is_multiplier) && !is_accumulator && (
-                        <ContractInfo
-                            basis={basis}
-                            currency={currency}
-                            is_loading={is_loading}
-                            is_multiplier={is_multiplier}
-                            is_turbos={is_turbos}
-                            is_vanilla={is_vanilla}
-                            is_vanilla_fx={is_vanilla_fx}
-                            proposal_info={info}
-                            should_fade={should_fade}
-                            type={type}
-                            is_accumulator={is_accumulator}
-                            growth_rate={growth_rate}
-                        />
-                    )}
+            {!is_mobile && (
+                <React.Fragment>
                     <div
-                        className={classNames('btn-purchase__shadow-wrapper', {
-                            'btn-purchase__shadow-wrapper--disabled': is_proposal_error || is_disabled,
+                        className={classNames('trade-container__fieldset-wrapper', {
+                            'trade-container__fieldset-wrapper--disabled': is_proposal_error || is_disabled,
                         })}
-                        onMouseEnter={() => {
-                            if (!is_disabled) {
-                                onHoverPurchase(true, type);
-                            }
-                        }}
-                        onMouseLeave={() => {
-                            if (!is_disabled) {
-                                onHoverPurchase(false, type);
-                            }
-                        }}
-                        onClick={() => {
-                            if (!is_disabled) {
-                                onHoverPurchase(false, type);
-                            }
-                        }}
                     >
-                        <div className='btn-purchase__box-shadow' />
-                        {is_proposal_error && !is_market_closed ? (
-                            <Popover
-                                has_error
-                                alignment='left'
-                                message={info.message}
-                                is_open={is_proposal_error && !is_market_closed}
-                                relative_render
-                                margin={6}
-                            >
-                                {purchase_button}
-                            </Popover>
-                        ) : (
-                            <React.Fragment>
-                                {is_multiplier ? (
-                                    <Popover
-                                        alignment='left'
-                                        is_bubble_hover_enabled
-                                        margin={8}
-                                        message={info.message}
-                                        relative_render
-                                    >
-                                        {purchase_button}
-                                    </Popover>
-                                ) : (
-                                    purchase_button
-                                )}
-                            </React.Fragment>
+                        {(has_cancellation || !is_multiplier) && !is_accumulator && (
+                            <ContractInfo
+                                basis={basis}
+                                currency={currency}
+                                is_loading={is_loading}
+                                is_multiplier={is_multiplier}
+                                is_turbos={is_turbos}
+                                is_vanilla={is_vanilla}
+                                is_vanilla_fx={is_vanilla_fx}
+                                proposal_info={info}
+                                should_fade={should_fade}
+                                type={type}
+                                is_accumulator={is_accumulator}
+                                growth_rate={growth_rate}
+                            />
                         )}
+                        <div
+                            className={classNames('btn-purchase__shadow-wrapper', {
+                                'btn-purchase__shadow-wrapper--disabled': is_proposal_error || is_disabled,
+                            })}
+                            onMouseEnter={() => {
+                                if (!is_disabled) {
+                                    onHoverPurchase(true, type);
+                                }
+                            }}
+                            onMouseLeave={() => {
+                                if (!is_disabled) {
+                                    onHoverPurchase(false, type);
+                                }
+                            }}
+                            onClick={() => {
+                                if (!is_disabled) {
+                                    onHoverPurchase(false, type);
+                                }
+                            }}
+                        >
+                            <div className='btn-purchase__box-shadow' />
+                            {is_proposal_error && !is_market_closed ? (
+                                <Popover
+                                    has_error
+                                    alignment='left'
+                                    message={info.message}
+                                    is_open={is_proposal_error && !is_market_closed}
+                                    relative_render
+                                    margin={6}
+                                >
+                                    {purchase_button}
+                                </Popover>
+                            ) : (
+                                <React.Fragment>
+                                    {is_multiplier ? (
+                                        <Popover
+                                            alignment='left'
+                                            is_bubble_hover_enabled
+                                            margin={8}
+                                            message={info.message}
+                                            relative_render
+                                        >
+                                            {purchase_button}
+                                        </Popover>
+                                    ) : (
+                                        purchase_button
+                                    )}
+                                </React.Fragment>
+                            )}
+                        </div>
                     </div>
-                </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                {is_proposal_error && <div className='btn-purchase__error'>{info.message}</div>}
-                {purchase_button}
-            </MobileWrapper>
+                </React.Fragment>
+            )}
+            {is_mobile && (
+                <React.Fragment>
+                    {is_proposal_error && <div className='btn-purchase__error'>{info.message}</div>}
+                    {purchase_button}
+                </React.Fragment>
+            )}
         </Fieldset>
     );
 };

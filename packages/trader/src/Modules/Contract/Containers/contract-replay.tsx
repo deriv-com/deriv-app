@@ -12,7 +12,6 @@ import {
 import {
     getContractTypeFeatureFlag,
     isAccumulatorContract,
-    isDesktop,
     isEmptyObject,
     isHighLow,
     isMultiplierContract,
@@ -155,7 +154,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             >
                 <Div100vhContainer
                     className='trade-container__replay'
-                    is_disabled={isDesktop()}
+                    is_disabled={!is_mobile}
                     height_offset='80px' // * 80px = header + contract details header heights in mobile
                 >
                     <DesktopWrapper>{contract_drawer_el}</DesktopWrapper>

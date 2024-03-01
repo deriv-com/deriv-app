@@ -4,7 +4,7 @@ import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
+import { CookieStorage, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 
@@ -26,6 +26,7 @@ const AppContents = observer(({ children }) => {
         is_app_disabled,
         is_cashier_visible,
         is_cfd_page,
+        is_mobile,
         is_positions_drawer_on,
         is_route_modal_on,
         notifyAppInstall,
@@ -105,7 +106,7 @@ const AppContents = observer(({ children }) => {
             className={classNames('app-contents', {
                 'app-contents--show-positions-drawer': is_positions_drawer_on,
                 'app-contents--is-disabled': is_app_disabled,
-                'app-contents--is-mobile': isMobile(),
+                'app-contents--is-mobile': is_mobile,
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-dashboard': is_appstore,

@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv/components';
-import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
+import { routes, isDesktop, isTabletDrawer, getActivePlatform } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
+import { useStore } from '@deriv/stores';
 
 const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>
@@ -45,13 +46,15 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
 
 const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, setTogglePlatformType }) => {
     const history = useHistory();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
 
     const TradersHubRedirect = () => {
         return (
             <div className='platform-dropdown__cta'>
                 <BinaryLink
                     onClick={() => {
-                        if (isMobile()) {
+                        if (isTabletDrawer()) {
                             history.push(routes.traders_hub);
                             setTogglePlatformType('cfd');
                         }
@@ -85,7 +88,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
 
     const platform_dropdown = (
         <div className='platform-dropdown'>
-            <Div100vhContainer className='platform-dropdown__list' height_offset='15rem' is_disabled={isDesktop()}>
+            <Div100vhContainer className='platform-dropdown__list' height_offset='15rem' is_disabled={!is_mobile}>
                 {platform_config.map(platform => {
                     return (
                         <div key={platform.name} onClick={closeDrawer} ref={ref}>
@@ -98,7 +101,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
         </div>
     );
 
-    if (isMobile()) {
+    if (isTabletDrawer()) {
         return ReactDOM.createPortal(platform_dropdown, document.getElementById('mobile_platform_switcher'));
     }
 

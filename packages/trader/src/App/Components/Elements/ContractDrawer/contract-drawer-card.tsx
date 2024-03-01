@@ -184,8 +184,7 @@ const ContractDrawerCard = observer(
 
         return (
             <React.Fragment>
-                <DesktopWrapper>{contract_card}</DesktopWrapper>
-                <MobileWrapper>
+                {is_mobile ? (
                     <SwipeableContractDrawer
                         onSwipedUp={has_swipeable_drawer ? onSwipedUp : undefined}
                         onSwipedDown={has_swipeable_drawer ? onSwipedDown : undefined}
@@ -195,7 +194,9 @@ const ContractDrawerCard = observer(
                         )}
                         {contract_card}
                     </SwipeableContractDrawer>
-                </MobileWrapper>
+                ) : (
+                    contract_card
+                )}
             </React.Fragment>
         );
     }

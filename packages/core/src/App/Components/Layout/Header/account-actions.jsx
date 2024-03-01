@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
-import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
+import { Button, Icon, Popover } from '@deriv/components';
 import { routes, formatMoney, PlatformContext, moduleLoader } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
@@ -8,6 +8,7 @@ import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
 import { BinaryLink } from '../../Routes';
 import 'Sass/app/_common/components/account-switcher.scss';
+import { useStore } from '@deriv/stores';
 
 const AccountInfo = React.lazy(() =>
     moduleLoader(() =>
@@ -39,92 +40,98 @@ const AccountActions = React.memo(
         toggleNotifications,
     }) => {
         const { is_appstore } = React.useContext(PlatformContext);
+        const { ui } = useStore();
+        const { is_mobile } = ui;
 
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <MobileWrapper>
-                        <ToggleNotifications
-                            count={notifications_count}
-                            is_visible={is_notifications_visible}
-                            toggleDialog={toggleNotifications}
-                        />
-                        <React.Suspense fallback={<div />}>
-                            <AccountInfo
-                                acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                account_type={account_type}
-                                balance={
-                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
-                                }
-                                is_disabled={is_acc_switcher_disabled}
-                                disableApp={disableApp}
-                                enableApp={enableApp}
-                                is_eu={is_eu}
-                                is_virtual={is_virtual}
-                                is_mobile
-                                currency={currency}
-                                country_standpoint={country_standpoint}
-                                is_dialog_on={is_acc_switcher_on}
-                                toggleDialog={toggleAccountsDialog}
+                    {is_mobile && (
+                        <React.Fragment>
+                            <ToggleNotifications
+                                count={notifications_count}
+                                is_visible={is_notifications_visible}
+                                toggleDialog={toggleNotifications}
                             />
-                        </React.Suspense>
-                    </MobileWrapper>
-                    <DesktopWrapper>
-                        <ToggleNotifications
-                            count={notifications_count}
-                            is_visible={is_notifications_visible}
-                            toggleDialog={toggleNotifications}
-                            tooltip_message={<Localize i18n_default_text='View notifications' />}
-                            should_disable_pointer_events
-                        />
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={9999}
-                        >
-                            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' />
-                            </BinaryLink>
-                        </Popover>
-                        <React.Suspense fallback={<div />}>
-                            <AccountInfo
-                                acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                account_type={account_type}
-                                balance={
-                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
-                                }
-                                is_disabled={is_acc_switcher_disabled}
-                                is_eu={is_eu}
-                                is_virtual={is_virtual}
-                                currency={currency}
-                                country_standpoint={country_standpoint}
-                                is_dialog_on={is_acc_switcher_on}
-                                toggleDialog={toggleAccountsDialog}
+                            <React.Suspense fallback={<div />}>
+                                <AccountInfo
+                                    acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                    account_type={account_type}
+                                    balance={
+                                        typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
+                                    }
+                                    is_disabled={is_acc_switcher_disabled}
+                                    disableApp={disableApp}
+                                    enableApp={enableApp}
+                                    is_eu={is_eu}
+                                    is_virtual={is_virtual}
+                                    is_mobile
+                                    currency={currency}
+                                    country_standpoint={country_standpoint}
+                                    is_dialog_on={is_acc_switcher_on}
+                                    toggleDialog={toggleAccountsDialog}
+                                />
+                            </React.Suspense>
+                        </React.Fragment>
+                    )}
+                    {!is_mobile && (
+                        <React.Fragment>
+                            <ToggleNotifications
+                                count={notifications_count}
+                                is_visible={is_notifications_visible}
+                                toggleDialog={toggleNotifications}
+                                tooltip_message={<Localize i18n_default_text='View notifications' />}
+                                should_disable_pointer_events
                             />
-                        </React.Suspense>
-                        {!is_virtual && !currency && (
-                            <div className='set-currency'>
+                            <Popover
+                                classNameBubble='account-settings-toggle__tooltip'
+                                alignment='bottom'
+                                message={<Localize i18n_default_text='Manage account settings' />}
+                                should_disable_pointer_events
+                                zIndex={9999}
+                            >
+                                <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+                                    <Icon icon='IcUserOutline' />
+                                </BinaryLink>
+                            </Popover>
+                            <React.Suspense fallback={<div />}>
+                                <AccountInfo
+                                    acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                    account_type={account_type}
+                                    balance={
+                                        typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
+                                    }
+                                    is_disabled={is_acc_switcher_disabled}
+                                    is_eu={is_eu}
+                                    is_virtual={is_virtual}
+                                    currency={currency}
+                                    country_standpoint={country_standpoint}
+                                    is_dialog_on={is_acc_switcher_on}
+                                    toggleDialog={toggleAccountsDialog}
+                                />
+                            </React.Suspense>
+                            {!is_virtual && !currency && (
+                                <div className='set-currency'>
+                                    <Button
+                                        onClick={() => openRealAccountSignup('set_currency')}
+                                        has_effect
+                                        type='button'
+                                        text={localize('Set currency')}
+                                        primary
+                                    />
+                                </div>
+                            )}
+                            {currency && (
                                 <Button
-                                    onClick={() => openRealAccountSignup('set_currency')}
+                                    className='acc-info__button'
                                     has_effect
-                                    type='button'
-                                    text={localize('Set currency')}
+                                    text={localize('Deposit')}
+                                    onClick={onClickDeposit}
                                     primary
                                 />
-                            </div>
-                        )}
-                        {currency && (
-                            <Button
-                                className='acc-info__button'
-                                has_effect
-                                text={localize('Deposit')}
-                                onClick={onClickDeposit}
-                                primary
-                            />
-                        )}
-                    </DesktopWrapper>
+                            )}
+                        </React.Fragment>
+                    )}
                 </React.Fragment>
             );
         }

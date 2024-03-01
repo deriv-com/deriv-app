@@ -90,30 +90,32 @@ const AccountInfo = ({
                     )}
                 </div>
             </AccountInfoWrapper>
-            <MobileWrapper>
+            {is_mobile && (
                 <AccountSwitcherMobile
                     is_visible={is_dialog_on}
                     disableApp={disableApp}
                     enableApp={enableApp}
                     toggle={toggleDialog}
                 />
-            </MobileWrapper>
-            <DesktopWrapper>
-                <CSSTransition
-                    in={is_dialog_on}
-                    timeout={200}
-                    classNames={{
-                        enter: 'acc-switcher__wrapper--enter',
-                        enterDone: 'acc-switcher__wrapper--enter-done',
-                        exit: 'acc-switcher__wrapper--exit',
-                    }}
-                    unmountOnExit
-                >
-                    <div className='acc-switcher__wrapper'>
-                        <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
-                    </div>
-                </CSSTransition>
-            </DesktopWrapper>
+            )}
+            {!is_mobile && (
+                <React.Fragment>
+                    <CSSTransition
+                        in={is_dialog_on}
+                        timeout={200}
+                        classNames={{
+                            enter: 'acc-switcher__wrapper--enter',
+                            enterDone: 'acc-switcher__wrapper--enter-done',
+                            exit: 'acc-switcher__wrapper--exit',
+                        }}
+                        unmountOnExit
+                    >
+                        <div className='acc-switcher__wrapper'>
+                            <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
+                        </div>
+                    </CSSTransition>
+                </React.Fragment>
+            )}
         </div>
     );
 };

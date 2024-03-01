@@ -159,9 +159,7 @@ const Trade = observer(() => {
             })}
             id='trade_container'
         >
-            <DesktopWrapper>
-                <PositionsDrawer />
-            </DesktopWrapper>
+            {!is_mobile && <PositionsDrawer />}
             {/* Div100vhContainer is workaround for browsers on devices
                     with toolbars covering screen height,
                     using css vh is not returning correct screen height */}
@@ -175,7 +173,7 @@ const Trade = observer(() => {
                 <React.Suspense
                     fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || !!is_chart_loading} />}
                 >
-                    <DesktopWrapper>
+                    {!is_mobile && (
                         <div
                             className={classNames('chart-container__wrapper', {
                                 'vanilla-trade-chart': is_vanilla,
@@ -184,31 +182,33 @@ const Trade = observer(() => {
                             <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                             <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />
                         </div>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                        <SwipeableWrapper
-                            className={classNames({ 'vanilla-trade-chart': is_vanilla })}
-                            is_disabled={
-                                !show_digits_stats ||
-                                !is_trade_enabled ||
-                                !form_components.length ||
-                                is_chart_loading ||
-                                should_show_active_symbols_loading
-                            }
-                            is_swipe_disabled={swipe_index === 1}
-                            onChange={onChangeSwipeableIndex}
-                            should_elevate_navigation={should_elevate_navigation}
-                        >
-                            {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
-                            <TradeChart
-                                bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
-                                has_barrier={has_barrier}
-                                is_accumulator={is_accumulator}
-                                topWidgets={topWidgets}
-                            />
-                        </SwipeableWrapper>
-                    </MobileWrapper>
+                    )}
+                    {is_mobile && (
+                        <React.Fragment>
+                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                            <SwipeableWrapper
+                                className={classNames({ 'vanilla-trade-chart': is_vanilla })}
+                                is_disabled={
+                                    !show_digits_stats ||
+                                    !is_trade_enabled ||
+                                    !form_components.length ||
+                                    is_chart_loading ||
+                                    should_show_active_symbols_loading
+                                }
+                                is_swipe_disabled={swipe_index === 1}
+                                onChange={onChangeSwipeableIndex}
+                                should_elevate_navigation={should_elevate_navigation}
+                            >
+                                {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
+                                <TradeChart
+                                    bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+                                    has_barrier={has_barrier}
+                                    is_accumulator={is_accumulator}
+                                    topWidgets={topWidgets}
+                                />
+                            </SwipeableWrapper>
+                        </React.Fragment>
+                    )}
                 </React.Suspense>
             </Div100vhContainer>
             <div className={form_wrapper_class}>

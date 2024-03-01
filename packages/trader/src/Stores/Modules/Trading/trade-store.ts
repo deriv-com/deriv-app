@@ -34,6 +34,7 @@ import {
     CONTRACT_TYPES,
     setTradeURLParams,
     getTradeURLParams,
+    isTabletDrawer,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -916,7 +917,7 @@ export default class TradeStore extends BaseStore {
                             });
 
                             // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
-                            if (isMobile() && this.root_store.common?.services_error?.type === 'buy') {
+                            if (isTabletDrawer() && this.root_store.common?.services_error?.type === 'buy') {
                                 setTimeout(() => {
                                     this.clearPurchaseInfo();
                                     this.requestProposal();
@@ -976,7 +977,7 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            if (isDesktop()) {
+                            if (!isTabletDrawer()) {
                                 this.root_store.ui.openPositionsDrawer();
                             }
                             this.proposal_info = {};

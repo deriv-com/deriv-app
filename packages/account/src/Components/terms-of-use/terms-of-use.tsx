@@ -14,10 +14,12 @@ import { localize, Localize } from '@deriv/translations';
 import CheckboxField from './checkbox-field';
 import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages';
 import './terms-of-use.scss';
+import FatcaDeclaration from './fatca-declaration';
 
 type TTermsOfUseFormProps = {
     agreed_tos: boolean;
     agreed_tnc: boolean;
+    fatca_declaration: '0' | '1';
 };
 
 type TTermsOfUseProps = {
@@ -35,6 +37,7 @@ type TTermsOfUseProps = {
     value: TTermsOfUseFormProps;
     real_account_signup_target: TBrokerCodes;
     form_error?: string;
+    is_multi_account: boolean;
 };
 
 /**
@@ -103,7 +106,14 @@ const TermsOfUse = ({
                                     <div className={className('details-form__elements', 'terms-of-use')}>
                                         <BrokerSpecificMessage target={real_account_signup_target} />
                                         <Hr />
+                                        <Field
+                                            component={FatcaDeclaration}
+                                            name='fatca_declaration'
+                                            is_disabled={props.is_multi_account}
+                                        />
+                                        <Hr />
                                         <SharedMessage />
+                                        <Hr />
                                         <Field
                                             component={CheckboxField}
                                             className='terms-of-use__checkbox'
@@ -112,10 +122,12 @@ const TermsOfUse = ({
                                             label={localize(
                                                 'I am not a PEP, and I have not been a PEP in the last 12 months.'
                                             )}
+                                            label_font_size={isDesktop() ? 'xs' : 'xxs'}
                                         />
                                         <Hr />
                                         <Field
                                             component={CheckboxField}
+                                            label_font_size={isDesktop() ? 'xs' : 'xxs'}
                                             className='terms-of-use__checkbox'
                                             name='agreed_tnc'
                                             id='agreed_tnc'
@@ -137,7 +149,12 @@ const TermsOfUse = ({
                             </Div100vhContainer>
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        !values.agreed_tos ||
+                                        !values.agreed_tnc ||
+                                        !values.fatca_declaration
+                                    }
                                     label={getSubmitButtonLabel()}
                                     has_cancel
                                     is_absolute={isMobile()}

@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
+import { useCFDContext, useModal } from '@/providers';
 import { useActiveTradingAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import { URLUtils } from '@deriv-com/utils';
 import {
     GetADerivAccountDialog,
@@ -29,8 +29,8 @@ const LeadingIcon = () => (
 
 const AvailableDxtradeAccountsList = () => {
     const { hasActiveDerivAccount } = useRegulationFlags();
-    const { show } = Provider.useModal();
-    const { setCfdState } = Provider.useCFDContext();
+    const { show } = useModal();
+    const { setCfdState } = useCFDContext();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);

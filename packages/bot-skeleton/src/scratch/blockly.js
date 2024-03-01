@@ -4,13 +4,7 @@ const {
     Blockly,
 } = require('imports-loader?this=>window!exports-loader?goog&Blockly!scratch-blocks/blockly_compressed_vertical');
 
-Blockly.JavaScript = new Blockly.Generator('code');
-Blockly.JavaScript.init();
-
-Blockly.JavaScript.quote_ = text => {
-    return `'${text.replace(/\\/g, '\\\\').replace(/\n/g, '\\\n').replace(/'/g, "\\'")}'`;
-};
-// Blockly.JavaScript.definitions_ = {}
+Blockly.JavaScript = require('blockly/javascript');
 
 window.goog = goog;
 window.Blockly = Blockly;

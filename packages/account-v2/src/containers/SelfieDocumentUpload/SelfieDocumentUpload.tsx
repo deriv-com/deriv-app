@@ -5,7 +5,7 @@ import { Button, Text, useDevice } from '@deriv-com/ui';
 import SelfieIcon from '../../assets/manual-upload/selfie-icon.svg';
 import { Dropzone } from '../../components/Dropzone';
 import { MANUAL_DOCUMENT_SELFIE } from '../../constants/manualFormConstants';
-import { getSelfieValidationSchema } from '../../utils/ManualFormUtils';
+import { getSelfieValidationSchema } from '../../utils/manualFormUtils';
 
 type TSelfieFormValue = InferType<ReturnType<typeof getSelfieValidationSchema>>;
 

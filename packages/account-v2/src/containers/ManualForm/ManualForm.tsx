@@ -3,7 +3,7 @@ import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
 import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getManualFormValidationSchema, setInitialValues } from '../../utils/ManualFormUtils';
+import { getManualFormValidationSchema, setInitialValues } from '../../utils/manualFormUtils';
 import { ManualFormDocumentUpload } from './ManualFormDocumentUpload';
 import { ManualFormFooter } from './ManualFormFooter';
 import { ManualFormInputs } from './ManualFormInputs';

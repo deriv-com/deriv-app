@@ -1,3 +1,4 @@
+import { useCFDContext } from '@/providers';
 import {
     useAccountStatus,
     useActiveTradingAccount,
@@ -6,7 +7,6 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import { Category, CFDPlatforms, MarketType } from '../features/cfd/constants';
 import { Jurisdiction } from '../features/cfd/screens/CFDCompareAccounts/constants';
 
@@ -25,7 +25,7 @@ const useMT5AccountHandler = () => {
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
 
-    const { getCFDState } = Provider.useCFDContext();
+    const { getCFDState } = useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction');
 

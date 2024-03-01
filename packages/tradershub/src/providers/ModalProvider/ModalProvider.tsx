@@ -14,7 +14,7 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
-import { useBreakpoint } from '@deriv/quill-design';
+import { useDevice } from '@deriv-com/ui';
 
 type TModalState = {
     // Add your modal states here
@@ -44,7 +44,7 @@ export const useModal = () => {
 
     if (!context)
         throw new Error(
-            'useModal() must be called within a component wrapped in ModalProvider. Please import Provider from @deriv/library'
+            'useModal() must be called within a component wrapped in ModalProvider. Please import Provider from ModalProvider.'
         );
 
     return context;
@@ -55,7 +55,7 @@ export const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
     const [content, setContent] = useState<ReactNode | null>();
     const [modalOptions, setModalOptions] = useState<TModalOptions>({});
     const [modalState, setModalState] = useState<Map<keyof TModalState, TModalState[keyof TModalState]>>(new Map());
-    const { isDesktop } = useBreakpoint();
+    const { isDesktop } = useDevice();
 
     const rootRef = useRef<HTMLElement>(document.getElementById('v2_modal_root'));
     const rootHeaderRef = useRef<HTMLElement | null>(document.getElementById('v2_modal_show_header_root'));

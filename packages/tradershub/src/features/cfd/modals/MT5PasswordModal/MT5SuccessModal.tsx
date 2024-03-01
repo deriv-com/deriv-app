@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRegulationFlags } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import {
     Category,
     companyNamesAndUrls,
@@ -10,7 +11,6 @@ import {
 } from '@cfd/constants';
 import { CFDSuccess } from '@cfd/screens';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 
 const MT5SuccessModal = () => {
@@ -19,7 +19,7 @@ const MT5SuccessModal = () => {
     const { data: activeTrading } = useActiveTradingAccount();
     const isDemo = activeTrading?.is_virtual;
 
-    const { getCFDState } = Provider.useCFDContext();
+    const { getCFDState } = useCFDContext();
     const platform = getCFDState('platform');
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;

@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
-import { TMarketTypes, TPlatforms, THooks } from '../../types';
+import { THooks, TMarketTypes, TPlatforms } from '@/types';
 
 type TCFDState = {
     // Add your CFD states here
@@ -20,7 +20,7 @@ export const useCFDContext = () => {
     const context = useContext(CFDContext);
 
     if (!context) {
-        throw new Error('useCFDContext must be used within a CFDProvider. Please import Provider from @deriv/library');
+        throw new Error('useCFDContext must be used within a CFDProvider. Please import Provider from CFDProvider.');
     }
 
     return context;

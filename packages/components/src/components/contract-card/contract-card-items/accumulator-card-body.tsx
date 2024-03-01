@@ -21,7 +21,7 @@ type TAccumulatorCardBody = {
     error_message_alignment?: string;
     getCardLabels: TGetCardLables;
     getContractById: React.ComponentProps<typeof ToggleCardDialog>['getContractById'];
-    indicative?: number | null;
+    indicative?: number;
     is_sold: boolean;
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;

@@ -112,7 +112,7 @@ export const getFinalPrice = (contract_info: TContractInfo) => contract_info.sel
 export const getIndicativePrice = (contract_info: TContractInfo) =>
     getFinalPrice(contract_info) && isEnded(contract_info)
         ? getFinalPrice(contract_info)
-        : Number(contract_info.bid_price) || null;
+        : Number(contract_info.bid_price);
 
 export const getCancellationPrice = (contract_info: TContractInfo) => {
     const { cancellation: { ask_price: cancellation_price = 0 } = {} } = contract_info;

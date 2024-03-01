@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes, ComponentProps, forwardRef, Ref } from 'react';
-import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { TGenericSizes } from '../types';
 import { iconButtonVariants } from './icon-button.classnames';
 
@@ -18,13 +18,13 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     ) => {
         return (
             <button
-                className={clsx(iconButtonVariants({ color, isRound, size }), className)}
+                className={twMerge(iconButtonVariants({ color, isRound, size }), className)}
                 disabled={disabled}
                 onClick={onClick}
                 ref={ref}
                 {...rest}
             >
-                <div className='grid w-800 h-800 place-content-center'>{icon}</div>
+                <div className='grid w-16 h-16 place-content-center'>{icon}</div>
             </button>
         );
     }

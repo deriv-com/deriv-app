@@ -4,7 +4,7 @@ import { Control, Controller, FieldValues, useForm } from 'react-hook-form';
 import { TAdvertType } from 'types';
 import { BUY_SELL, RATE_TYPE } from '@/constants';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from '@/utils';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Divider, InlineMessage, Text, TextArea, useDevice } from '@deriv-com/ui';
 import { BuySellAmount } from '../BuySellAmount';
 import { BuySellData } from '../BuySellData';

@@ -7,11 +7,11 @@ import {
 } from '@/components';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
+import { useCFDContext, useModal } from '@/providers';
 import { THooks } from '@/types';
 import { MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { JurisdictionModal, MT5PasswordModal } from '@cfd/modals';
 import { useActiveTradingAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
@@ -19,8 +19,8 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
     const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
     const description = marketTypeDetails?.description ?? '';
     const { data: activeTradingAccount } = useActiveTradingAccount();
-    const { setCfdState } = Provider.useCFDContext();
-    const { show } = Provider.useModal();
+    const { setCfdState } = useCFDContext();
+    const { show } = useModal();
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 

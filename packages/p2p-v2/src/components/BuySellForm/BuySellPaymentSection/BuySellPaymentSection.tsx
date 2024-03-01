@@ -1,12 +1,12 @@
 import React from 'react';
-import { TAdvertiserPaymentMethods } from 'types';
+import { TPaymentMethod } from 'types';
 import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodCard } from '../../PaymentMethodCard';
 
 type TBuySellPaymentSectionProps = {
-    availablePaymentMethods: TAdvertiserPaymentMethods;
-    onSelectPaymentMethodCard?: (paymentMethodId: string) => void;
-    selectedPaymentMethodIds: string[];
+    availablePaymentMethods: (TPaymentMethod & { isAvailable?: boolean })[];
+    onSelectPaymentMethodCard?: (paymentMethodId: number) => void;
+    selectedPaymentMethodIds: number[];
 };
 
 const BuySellPaymentSection = ({
@@ -15,7 +15,6 @@ const BuySellPaymentSection = ({
     selectedPaymentMethodIds,
 }: TBuySellPaymentSectionProps) => {
     const { isMobile } = useDevice();
-
     //TODO: below section to be modified to handle payment method addition after handling of modal provider
     // const [formState, dispatch] = useReducer(advertiserPaymentMethodsReducer, {});
 

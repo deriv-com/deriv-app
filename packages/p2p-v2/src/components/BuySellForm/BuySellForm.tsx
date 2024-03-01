@@ -1,9 +1,15 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import { Control, Controller, FieldValues, useForm } from 'react-hook-form';
-import { TAdvertType } from 'types';
-import { BUY_SELL, RATE_TYPE } from '@/constants';
-import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from '@/utils';
+import { TAdvertiserPaymentMethods, TAdvertType } from 'types';
+import { BUY_SELL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
+import {
+    getPaymentMethodObjects,
+    getTextFieldError,
+    removeTrailingZeros,
+    roundOffDecimal,
+    setDecimalPlaces,
+} from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import { Divider, InlineMessage, Text, TextArea, useDevice } from '@deriv-com/ui';
 import { BuySellAmount } from './BuySellAmount';
@@ -12,10 +18,13 @@ import BuySellFormDisplayWrapper from './BuySellFormDisplayWrapper';
 import { BuySellPaymentSection } from './BuySellPaymentSection';
 import './BuySellForm.scss';
 
+type TPayload = Omit<Parameters<ReturnType<typeof p2p.order.useCreate>['mutate']>[0], 'payment_method_ids'> & {
+    payment_method_ids?: number[];
+};
 type TBuySellFormProps = {
     advert: TAdvertType;
     advertiserBuyLimit: number;
-    advertiserPaymentMethods: ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data'];
+    advertiserPaymentMethods: TAdvertiserPaymentMethods;
     advertiserSellLimit: number;
     balanceAvailable: number;
     displayEffectiveRate: string;
@@ -50,7 +59,7 @@ const BuySellForm = ({
     paymentMethods,
 }: TBuySellFormProps) => {
     const { mutate } = p2p.order.useCreate();
-    const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([]);
+    const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<number[]>([]);
 
     const {
         account_currency,
@@ -67,39 +76,9 @@ const BuySellForm = ({
         type,
     } = advert;
 
-    const avertiserPaymentMethodObjects =
-        advertiserPaymentMethods?.reduce(
-            (
-                acc: Record<
-                    string,
-                    NonNullable<ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data']>[number]
-                >,
-                curr
-            ) => {
-                if (curr.display_name) {
-                    acc[curr.display_name] = curr;
-                }
-                return acc;
-            },
-            {}
-        ) ?? {};
+    const avertiserPaymentMethodObjects = getPaymentMethodObjects(advertiserPaymentMethods);
 
-    const paymentMethodObjects =
-        paymentMethods?.reduce(
-            (
-                acc: Record<
-                    string,
-                    NonNullable<ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data']>[number]
-                >,
-                curr
-            ) => {
-                if (curr.display_name) {
-                    acc[curr.display_name] = curr;
-                }
-                return acc;
-            },
-            {}
-        ) ?? {};
+    const paymentMethodObjects = getPaymentMethodObjects(paymentMethods);
 
     const availablePaymentMethods = payment_method_names?.map(paymentMethod => {
         const isAvailable = advertiserPaymentMethods?.some(method => method.display_name === paymentMethod);
@@ -111,6 +90,7 @@ const BuySellForm = ({
 
     const { isMobile } = useDevice();
     const isBuy = type === BUY_SELL.BUY;
+
     const shouldDisableField =
         !isBuy &&
         (parseFloat(balanceAvailable.toString()) === 0 ||
@@ -133,7 +113,7 @@ const BuySellForm = ({
     const onSubmit = () => {
         //TODO: error handling after implementation of exchange rate
         const rateValue = rate_type === RATE_TYPE.FIXED ? null : effectiveRate;
-        const payload = {
+        const payload: TPayload = {
             advert_id: id,
             amount: Number(getValues('amount')),
         };
@@ -141,8 +121,12 @@ const BuySellForm = ({
             payload.rate = rateValue;
         }
 
-        if (isBuy) {
+        if (isBuy && selectedPaymentMethods.length) {
             payload.payment_method_ids = selectedPaymentMethods;
+        }
+
+        if (isBuy && !selectedPaymentMethods.length) {
+            payload.payment_info = getValues('bank_details');
         }
 
         mutate(payload);
@@ -151,7 +135,7 @@ const BuySellForm = ({
     const calculatedRate = removeTrailingZeros(roundOffDecimal(effectiveRate, setDecimalPlaces(effectiveRate, 6)));
     const initialAmount = removeTrailingZeros((min_order_amount_limit * Number(calculatedRate)).toString());
 
-    const onSelectPaymentMethodCard = (paymentMethodId: string) => {
+    const onSelectPaymentMethodCard = (paymentMethodId: number) => {
         if (selectedPaymentMethods.includes(paymentMethodId)) {
             setSelectedPaymentMethods(selectedPaymentMethods.filter(method => method !== paymentMethodId));
         } else {
@@ -190,7 +174,7 @@ const BuySellForm = ({
                     rate={displayEffectiveRate}
                 />
                 <Divider />
-                {isBuy && payment_method_names?.length && (
+                {isBuy && payment_method_names?.length > 0 && (
                     <BuySellPaymentSection
                         availablePaymentMethods={availablePaymentMethods}
                         onSelectPaymentMethodCard={onSelectPaymentMethodCard}
@@ -235,6 +219,10 @@ const BuySellForm = ({
                             );
                         }}
                         rules={{
+                            pattern: {
+                                message: getTextFieldError('Bank details'),
+                                value: VALID_SYMBOLS_PATTERN,
+                            },
                             required: 'Bank details is required',
                         }}
                     />
@@ -261,6 +249,10 @@ const BuySellForm = ({
                                 </div>
                             )}
                             rules={{
+                                pattern: {
+                                    message: getTextFieldError('Contact details'),
+                                    value: VALID_SYMBOLS_PATTERN,
+                                },
                                 required: 'Contact details is required',
                             }}
                         />

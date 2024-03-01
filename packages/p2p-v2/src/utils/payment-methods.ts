@@ -1,4 +1,4 @@
-import { TAdvertiserPaymentMethods } from 'types';
+import { TAccumulatedPaymentMethods, TAdvertiserPaymentMethods, TPaymentMethods } from 'types';
 
 /**
  * **/
@@ -20,3 +20,11 @@ const getPaymentMethodOrder = (method: string) => (!(method in paymentMethodOrde
 export const sortPaymentMethods = (paymentMethodsList: TAdvertiserPaymentMethods) => {
     return paymentMethodsList?.sort((i, j) => getPaymentMethodOrder(i.method) - getPaymentMethodOrder(j.method));
 };
+
+export const getPaymentMethodObjects = (paymentMethodsList: TAdvertiserPaymentMethods | TPaymentMethods) =>
+    paymentMethodsList?.reduce((acc: TAccumulatedPaymentMethods, curr) => {
+        if (curr.display_name) {
+            acc[curr.display_name] = curr;
+        }
+        return acc;
+    }, {}) ?? {};

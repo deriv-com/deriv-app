@@ -1,22 +1,21 @@
 import React, { HTMLAttributes } from 'react';
 import clsx from 'clsx';
-import { TAdvertiserPaymentMethods } from 'types';
+import { TPaymentMethod } from 'types';
 import { LabelPairedPlusLgBoldIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 import { PaymentMethodCardBody } from './PaymentMethodCardBody';
 import { PaymentMethodCardHeader } from './PaymentMethodCardHeader';
 import './PaymentMethodCard.scss';
 
-type TPaymentMethod = NonNullable<TAdvertiserPaymentMethods>[number];
 type TPaymentMethodCardProps = HTMLAttributes<HTMLDivElement> & {
     isEditable?: boolean;
     medium?: boolean;
     onClickAdd?: (paymentMethod: TPaymentMethod) => void;
     onDeletePaymentMethod?: () => void;
     onEditPaymentMethod?: () => void;
-    onSelectPaymentMethodCard?: (paymentMethodId: string) => void;
+    onSelectPaymentMethodCard?: (paymentMethodId: number) => void;
     paymentMethod: TPaymentMethod & { isAvailable?: boolean };
-    selectedPaymentMethodIds?: string[];
+    selectedPaymentMethodIds?: number[];
     shouldShowPaymentMethodDisplayName?: boolean;
 };
 
@@ -44,7 +43,7 @@ const PaymentMethodCard = ({
     // TODO: Add logic to display the "add" icon here when working on the sell modal under the sell tab
 
     const toAdd = !!(isAvailable ?? isAvailable === undefined);
-    const isSelected = !!paymentMethod.id && selectedPaymentMethodIds.includes(paymentMethod.id);
+    const isSelected = !!paymentMethod.id && selectedPaymentMethodIds.includes(Number(paymentMethod.id));
 
     return (
         <div
@@ -72,7 +71,7 @@ const PaymentMethodCard = ({
                         isSelected={isSelected}
                         onDeletePaymentMethod={onDeletePaymentMethod}
                         onEditPaymentMethod={onEditPaymentMethod}
-                        onSelectPaymentMethod={() => onSelectPaymentMethodCard(paymentMethod.id ?? display_name)}
+                        onSelectPaymentMethod={() => onSelectPaymentMethodCard(Number(paymentMethod.id))}
                         type={type}
                     />
                     <PaymentMethodCardBody

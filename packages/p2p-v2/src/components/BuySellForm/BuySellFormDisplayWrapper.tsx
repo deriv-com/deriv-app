@@ -38,6 +38,7 @@ const BuySellFormDisplayWrapper = ({
 
     return (
         <Modal
+            ariaHideApp={false}
             className={clsx('p2p-v2-buy-sell-form', { 'p2p-v2-buy-sell-form--is-buy': isBuy })}
             isOpen={isModalOpen}
             onRequestClose={onRequestClose}

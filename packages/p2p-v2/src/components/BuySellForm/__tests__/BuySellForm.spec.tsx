@@ -71,6 +71,12 @@ const mockAdvertValues = {
 const mockProps = {
     advert: mockAdvertValues,
     advertiserBuyLimit: 1000,
+    advertiserPaymentMethods: [
+        {
+            display_name: 'alipay',
+            id: '1',
+        },
+    ],
     advertiserSellLimit: 1000,
     balanceAvailable: 10,
     displayEffectiveRate: '1',
@@ -115,6 +121,9 @@ describe('BuySellForm', () => {
         expect(screen.getByText('Buy USD')).toBeInTheDocument();
     });
     it("should handle onsubmit when form is submitted and it's valid", () => {
+        mockUseDevice.mockReturnValue({
+            isMobile: false,
+        });
         render(<BuySellForm {...mockProps} />);
         const confirmButton = screen.getByRole('button', { name: 'Confirm' });
         userEvent.click(confirmButton);
@@ -157,5 +166,31 @@ describe('BuySellForm', () => {
         const inputField = screen.getByPlaceholderText('Buy amount');
         userEvent.type(inputField, '1');
         expect(mockOnChange).toHaveBeenCalled();
+    });
+    it('should render the bank details text area when sell order and no payment methods are there', () => {
+        render(<BuySellForm {...mockProps} advert={{ ...mockAdvertValues, payment_method_names: [], type: 'buy' }} />);
+        expect(screen.getByText('Your bank details')).toBeInTheDocument();
+    });
+    it('should render the contact details text area when sell order and payment methods are there', () => {
+        render(
+            <BuySellForm
+                {...mockProps}
+                advert={{ ...mockAdvertValues, payment_method_names: ['alipay'], type: 'buy' }}
+            />
+        );
+        expect(screen.getByText('Your contact details')).toBeInTheDocument();
+    });
+    it('should send the payment_method_ids when payment methods are selected and sell order', () => {
+        render(
+            <BuySellForm
+                {...mockProps}
+                advert={{ ...mockAdvertValues, payment_method_names: ['alipay'], type: 'buy' }}
+            />
+        );
+        const checkbox = screen.getByRole('checkbox');
+        userEvent.click(checkbox);
+        const confirmButton = screen.getByRole('button', { name: 'Confirm' });
+        userEvent.click(confirmButton);
+        expect(mockMutateFn).toHaveBeenCalledWith(expect.objectContaining({ payment_method_ids: [1] }));
     });
 });

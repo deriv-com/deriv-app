@@ -6,6 +6,8 @@ const path = require('path');
 //TODO: Uncomment this line when type script migrations on all packages done
 //const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const is_release =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
@@ -106,7 +108,8 @@ module.exports = function (env) {
                 {
                     test: /\.(sc|sa|c)ss$/,
                     use: [
-                        'style-loader',
+                        // 'style-loader',
+                        MiniCssExtractPlugin.loader,
                         {
                             loader: 'css-loader',
                         },
@@ -186,5 +189,11 @@ module.exports = function (env) {
         ],
         //TODO: Uncomment this line when type script migrations on all packages done
         // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
+        // plugins: [new CleanWebpackPlugin(), new MiniCssExtractPlugin()],
+        plugins: [new MiniCssExtractPlugin({
+            filename: 'appstore/css/[name].[contenthash].css',
+            chunkFilename: 'appstore/css/[name].[contenthash].css',
+          })],
+        // plugins: [new MiniCssExtractPlugin()],
     };
 };

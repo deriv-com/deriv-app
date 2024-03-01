@@ -14,6 +14,10 @@ const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 
+// const { PurgecssPlugin } = require("purgecss-webpack-plugin");
+// const { PurgeCSSPlugin } = require("purgecss-webpack-plugin");
+// const glob = require("glob-all");
+
 const {
     copyConfig,
     cssConfig,
@@ -122,6 +126,12 @@ const MINIMIZERS = !IS_RELEASE
           new CssMinimizerPlugin(),
       ];
 
+// const PATHS = {
+//     dist: path.join(__dirname, 'dist'),
+//     src: path.join(__dirname, 'src'),
+//     html: path.join(__dirname, 'src/index.html'),
+// };
+
 const plugins = ({ base, is_test_env }) => {
     return [
         new Dotenv({}),
@@ -157,6 +167,12 @@ const plugins = ({ base, is_test_env }) => {
                   new GenerateSW(generateSWConfig(IS_RELEASE)),
                   // ...(!IS_RELEASE ? [new BundleAnalyzerPlugin({ analyzerMode: 'static' })] : []),
               ]),
+        // new PurgeCSSPlugin({
+        //     paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
+        // }),
+        // new PurgeCSSPlugin({
+        //     paths: [PATHS.html, ...glob.sync(`${PATHS.src}/**/*`, { nodir: true })],
+        // }),
     ];
 };
 

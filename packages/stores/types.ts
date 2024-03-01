@@ -15,7 +15,6 @@ import type {
     LogOutResponse,
     Portfolio1,
     ProposalOpenContract,
-    ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
@@ -607,7 +606,7 @@ type TClientStore = {
     setRealAccountSignupFormStep: (step: number) => void;
 };
 
-// TODO: This is a temporary type. It should be replaced with the actual type from @deriv/api-types
+// TODO: This is a temporary type. It should be replaced with the actual type from deriv/api-types
 type TResidenceList = {
     account_opening_signup_declaration_required?: boolean;
     disabled?: string;

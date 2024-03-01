@@ -22,8 +22,9 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
     setNextScreen,
 }: TMT5ChangeInvestorPasswordInputsScreen) => {
     const { isDesktop } = useDevice();
-    const { getCFDState } = useCFDContext();
-    const mt5AccountId = getCFDState('accountId') ?? '';
+    const { cfdState } = useCFDContext();
+    const { accountId } = cfdState;
+    const mt5AccountId = accountId ?? '';
 
     const {
         error: changeInvestorPasswordError,

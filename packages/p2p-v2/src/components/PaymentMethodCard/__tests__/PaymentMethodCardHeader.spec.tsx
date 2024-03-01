@@ -43,6 +43,7 @@ describe('PaymentMethodCardHeader', () => {
                 isSelectable
                 onDeletePaymentMethod={() => undefined}
                 onEditPaymentMethod={() => undefined}
+                onSelectPaymentMethod={() => undefined}
                 type='bank'
             />
         );

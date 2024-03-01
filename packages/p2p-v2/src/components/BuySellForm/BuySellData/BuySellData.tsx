@@ -3,7 +3,7 @@ import { TAdvertiserPaymentMethods } from 'types';
 import { formatTime } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
-import { PaymentMethodWithIcon } from '../PaymentMethodWithIcon';
+import { PaymentMethodWithIcon } from '../../PaymentMethodWithIcon';
 import './BuySellData.scss';
 
 type TBuySellDataProps = {

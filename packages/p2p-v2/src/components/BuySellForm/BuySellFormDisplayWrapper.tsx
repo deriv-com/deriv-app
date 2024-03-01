@@ -1,9 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { Modal, useDevice } from '@deriv-com/ui';
-import { BuySellFormFooter } from '../BuySellFormFooter';
-import { BuySellFormHeader } from '../BuySellFormHeader';
 import { FullPageMobileWrapper } from '../FullPageMobileWrapper';
+import { BuySellFormFooter } from './BuySellFormFooter';
+import { BuySellFormHeader } from './BuySellFormHeader';
 
 type TBuySellFormDisplayWrapperProps = {
     accountCurrency: string;

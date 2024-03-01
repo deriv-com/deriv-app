@@ -63,7 +63,7 @@ const PaymentMethodCardHeader = ({
             )}
             {/*TODO: wire up logic for the selectable payment method cards here*/}
             {isSelectable && (
-                <div>
+                <div data-testid='p2p_v2_payment_method_card_header_checkbox'>
                     <Checkbox checked={isSelected} name='payment-method-checkbox' onChange={onSelectPaymentMethod} />
                 </div>
             )}

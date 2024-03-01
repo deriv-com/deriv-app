@@ -1,7 +1,7 @@
 import React from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
 import { Divider, Text, useDevice } from '@deriv-com/ui';
-import { PaymentMethodCard } from '../PaymentMethodCard';
+import { PaymentMethodCard } from '../../PaymentMethodCard';
 
 type TBuySellPaymentSectionProps = {
     availablePaymentMethods: TAdvertiserPaymentMethods;

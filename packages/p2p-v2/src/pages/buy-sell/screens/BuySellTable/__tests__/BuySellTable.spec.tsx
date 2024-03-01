@@ -1,6 +1,6 @@
 import React from 'react';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import BuySellTable from '../BuySellTable';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -24,6 +24,9 @@ jest.mock('@deriv/api-v2', () => ({
         },
         advertiser: {
             useGetInfo: jest.fn(() => ({ data: { id: '123' } })),
+        },
+        advertiserPaymentMethods: {
+            useGet: jest.fn(() => ({ data: [] })),
         },
         paymentMethods: {
             useGet: jest.fn(() => ({ data: [] })),
@@ -49,7 +52,7 @@ describe('<BuySellTable.spec />', () => {
         expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
-    it('should render the Table component if data is not empty', () => {
+    it('should render the Table component if data is not empty', async () => {
         mockAdvertiserListData = {
             data: [
                 // @ts-expect-error caused by typing of never[]
@@ -81,11 +84,13 @@ describe('<BuySellTable.spec />', () => {
 
         render(<BuySellTable />, { wrapper });
 
-        expect(screen.getByText('John Doe')).toBeInTheDocument();
-        expect(screen.getByText('250+')).toBeInTheDocument();
-        expect(screen.getByText('10-100 USD')).toBeInTheDocument();
-        expect(screen.getByText('100.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('Bank transfer')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Buy USD' })).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('John Doe')).toBeInTheDocument();
+            expect(screen.getByText('250+')).toBeInTheDocument();
+            expect(screen.getByText('10-100 USD')).toBeInTheDocument();
+            expect(screen.getByText('100.00 USD')).toBeInTheDocument();
+            expect(screen.getByText('Bank transfer')).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: 'Buy USD' })).toBeInTheDocument();
+        });
     });
 });

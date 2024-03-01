@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import { floatingPointValidator } from '@/utils';
 import { useDevice } from '@deriv-com/ui';
@@ -24,6 +24,7 @@ jest.mock('@deriv-com/ui', () => ({
 
 const mockUseDevice = useDevice as jest.Mock;
 const mockOnChange = jest.fn();
+const mockHandleSubmit = jest.fn();
 jest.mock('react-hook-form', () => ({
     ...jest.requireActual('react-hook-form'),
     Controller: ({ control, defaultValue, name, render }) =>
@@ -37,7 +38,7 @@ jest.mock('react-hook-form', () => ({
         getValues: jest.fn(() => ({
             amount: 1,
         })),
-        handleSubmit: jest.fn(),
+        handleSubmit: mockHandleSubmit,
     }),
 }));
 
@@ -117,7 +118,7 @@ describe('BuySellForm', () => {
         render(<BuySellForm {...mockProps} />);
         const confirmButton = screen.getByRole('button', { name: 'Confirm' });
         userEvent.click(confirmButton);
-        expect(mockMutateFn).toHaveBeenCalled();
+        expect(mockHandleSubmit).toHaveBeenCalled();
     });
     it('should disable the input field when balance is 0', () => {
         render(<BuySellForm {...mockProps} balanceAvailable={0} />);

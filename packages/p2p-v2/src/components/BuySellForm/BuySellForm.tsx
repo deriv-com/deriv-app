@@ -6,10 +6,10 @@ import { BUY_SELL, RATE_TYPE } from '@/constants';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import { Divider, InlineMessage, Text, TextArea, useDevice } from '@deriv-com/ui';
-import { BuySellAmount } from '../BuySellAmount';
-import { BuySellData } from '../BuySellData';
-import { BuySellPaymentSection } from '../BuySellPaymentSection';
+import { BuySellAmount } from './BuySellAmount';
+import { BuySellData } from './BuySellData';
 import BuySellFormDisplayWrapper from './BuySellFormDisplayWrapper';
+import { BuySellPaymentSection } from './BuySellPaymentSection';
 import './BuySellForm.scss';
 
 type TBuySellFormProps = {
@@ -145,8 +145,7 @@ const BuySellForm = ({
             payload.payment_method_ids = selectedPaymentMethods;
         }
 
-        console.log('here', payload);
-        // mutate(payload);
+        mutate(payload);
     };
 
     const calculatedRate = removeTrailingZeros(roundOffDecimal(effectiveRate, setDecimalPlaces(effectiveRate, 6)));

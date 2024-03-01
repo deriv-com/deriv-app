@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuthorize } from '@deriv/api';
-import { DerivLightIcPoaLockIcon as IcPOALock } from '@deriv/quill-icons';
+import { DerivLightIcPoaLockIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
 import { IconWithMessage } from '../IconWithMessage';
 
@@ -10,7 +10,7 @@ export const DemoMessage = () => {
     return (
         <IconWithMessage
             actionButton={<Button>{hasRealAccount ? 'Switch to real account' : 'Add a real account'}</Button>}
-            icon={<IcPOALock width={128} />}
+            icon={<DerivLightIcPoaLockIcon width={128} />}
             title='This feature is not available for demo accounts.'
         />
     );

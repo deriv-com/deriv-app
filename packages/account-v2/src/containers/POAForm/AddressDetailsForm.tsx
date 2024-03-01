@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { useDocumentUpload, useInvalidateQuery, useSettings } from '@deriv/api';
-import { StandaloneXmarkBoldIcon, DerivLightIcPoaLockIcon as IcPOALock } from '@deriv/quill-icons';
+import { StandaloneXmarkBoldIcon, DerivLightIcPoaLockIcon } from '@deriv/quill-icons';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
@@ -69,7 +69,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
     };
 
     if (fetchError) {
-        return <IconWithMessage icon={<IcPOALock width={128} />} title={fetchError.error.message} />;
+        return <IconWithMessage icon={<DerivLightIcPoaLockIcon width={128} />} title={fetchError.error.message} />;
     }
 
     const updateError = settingsUpdateError?.error.message ?? documentUploadError?.error.message;

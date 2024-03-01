@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { observer, useStore } from '@deriv/stores';
-import { FormSubmitButton, PasswordInput, Text } from '@deriv/components';
-import { isDesktop, WS } from '@deriv/shared';
+import { FormSubmitButton, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { isDesktop, WS, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import { validatePassword } from '../Helpers/constants';
@@ -125,28 +125,40 @@ const CFDPasswordChange = observer(
                                     </Text>
                                 </div>
                                 <div className='input-element'>
-                                    <PasswordInput
-                                        autoComplete='old-password'
-                                        label={localize('Current password')}
-                                        error={touched.old_password && errors.old_password}
-                                        name='old_password'
-                                        value={values.old_password}
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        data_testId={`dt_mt5_old_password`}
-                                    />
+                                    <PasswordMeter
+                                        input={values.old_password}
+                                        has_error={!!(touched.old_password && errors.old_password)}
+                                        custom_feedback_messages={getErrorMessages().password_warnings}
+                                    >
+                                        <PasswordInput
+                                            autoComplete='old-password'
+                                            label={localize('Current password')}
+                                            error={touched.old_password && errors.old_password}
+                                            name='old_password'
+                                            value={values.old_password}
+                                            onBlur={handleBlur}
+                                            onChange={handleChange}
+                                            data_testId={`dt_mt5_old_password`}
+                                        />
+                                    </PasswordMeter>
                                 </div>
                                 <div className='input-element'>
-                                    <PasswordInput
-                                        autoComplete='new-password'
-                                        label={localize('New password')}
-                                        error={touched.new_password && errors.new_password}
-                                        name='new_password'
-                                        value={values.new_password}
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        data_testId={`dt_mt5_new_password`}
-                                    />
+                                    <PasswordMeter
+                                        input={values.new_password}
+                                        has_error={!!(touched.new_password && errors.new_password)}
+                                        custom_feedback_messages={getErrorMessages().password_warnings}
+                                    >
+                                        <PasswordInput
+                                            autoComplete='new-password'
+                                            label={localize('New password')}
+                                            error={touched.new_password && errors.new_password}
+                                            name='new_password'
+                                            value={values.new_password}
+                                            onBlur={handleBlur}
+                                            onChange={handleChange}
+                                            data_testId={`dt_mt5_new_password`}
+                                        />
+                                    </PasswordMeter>
                                 </div>
                                 <div className='cfd-password-change__error-message'>
                                     <ol className='cfd-password-change-list-container'>

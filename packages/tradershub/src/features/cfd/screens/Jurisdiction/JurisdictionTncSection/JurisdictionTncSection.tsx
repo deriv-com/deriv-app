@@ -1,10 +1,10 @@
 import React from 'react';
 import { StaticLink } from '@/components';
-import { getStaticUrl } from '@/helpers';
+import { useCFDContext } from '@/providers';
 import { THooks } from '@/types';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
-import { Provider } from '@deriv/library';
 import { Checkbox, Text, useDevice } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
 type TJurisdictionTncSectionProps = {
@@ -28,8 +28,9 @@ const JurisdictionTncSection = ({
     selectedJurisdiction,
     setIsCheckBoxChecked,
 }: TJurisdictionTncSectionProps) => {
+    const { getDerivStaticURL } = URLUtils;
     const { isDesktop } = useDevice();
-    const { getCFDState } = Provider.useCFDContext();
+    const { getCFDState } = useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
@@ -47,7 +48,7 @@ const JurisdictionTncSection = ({
                                 I confirm and accept {selectedCompany.name}&lsquo;s{' '}
                                 <StaticLink
                                     className='no-underline cursor-pointer text-solid-coral-700 hover:no-underline'
-                                    href={getStaticUrl(selectedCompany.tncUrl)}
+                                    href={getDerivStaticURL(selectedCompany.tncUrl)}
                                 >
                                     Terms and Conditions
                                 </StaticLink>

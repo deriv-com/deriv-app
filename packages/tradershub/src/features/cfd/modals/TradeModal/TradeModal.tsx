@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { Modal } from '@/components';
+import { useCFDContext } from '@/providers';
 import { THooks, TMarketTypes, TPlatforms } from '@/types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '@cfd/constants';
 import { TradeScreen } from '@cfd/screens';
-import { Provider } from '@deriv/library';
 import { Text, useDevice } from '@deriv-com/ui';
 
 type TTradeModalProps = {
@@ -15,7 +15,7 @@ type TTradeModalProps = {
 
 const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
     const { isDesktop } = useDevice();
-    const { setCfdState } = Provider.useCFDContext();
+    const { setCfdState } = useCFDContext();
 
     useEffect(() => {
         setCfdState('marketType', marketType);

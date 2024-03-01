@@ -21,10 +21,6 @@ export const derivUrls = Object.freeze({
     SMARTTRADER_STAGING: `https://staging-smarttrader.${domainUrl}`,
 });
 
-export const whatsappUrl = 'https://wa.me/35699578341';
-
-let defaultLanguage: string;
-
 export const normalizePath = (path: string) => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./()#])/g, '') : '');
 
 export const getlangFromUrl = () => {
@@ -85,24 +81,4 @@ export const isStaging = (domain = window.location.hostname) => {
     const { isStagingDerivApp } = getPlatformFromUrl(domain);
 
     return isStagingDerivApp;
-};
-
-export const getStaticUrl = (path = '', isDocument = false, isEuUrl = false) => {
-    const host = isEuUrl ? derivUrls.DERIV_COM_PRODUCTION_EU : derivUrls.DERIV_COM_PRODUCTION;
-    let lang = defaultLanguage?.toLowerCase();
-
-    if (lang && lang !== 'en') {
-        lang = `/${lang}`;
-    } else {
-        lang = '';
-    }
-
-    if (isDocument) return `${host}/${normalizePath(path)}`;
-
-    // Deriv.com supports languages separated by '-' not '_'
-    if (host === derivUrls.DERIV_COM_PRODUCTION && lang.includes('_')) {
-        lang = lang.replace('_', '-');
-    }
-
-    return `${host}${lang}/${normalizePath(path)}`;
 };

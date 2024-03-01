@@ -4,7 +4,7 @@ import { TSelectedPaymentMethod } from 'types';
 import { Dropdown, PaymentMethodField, PaymentMethodsFormFooter, PaymentMethodsHeader } from '@/components';
 import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
 import { TFormState } from '@/reducers/types';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Button, Input, Text } from '@deriv-com/ui';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import './PaymentMethodForm.scss';
@@ -96,12 +96,12 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                     <CloseCircle
                                         className='p2p-v2-payment-method-form__icon--close'
                                         fill='#999999'
-                                        height={30}
+                                        height={15.7}
                                         onClick={() => {
                                             onAdd();
                                             reset();
                                         }}
-                                        width={20}
+                                        width={15.7}
                                     />
                                 )
                             }

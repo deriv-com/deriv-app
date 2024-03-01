@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useCFDContext } from '@/providers';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { Jurisdiction } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import { THooks } from '../../../../types';
 import { JurisdictionCard } from './JurisdictionCard';
 
@@ -19,7 +19,7 @@ const JurisdictionScreen = ({
     setIsCheckBoxChecked,
     setSelectedJurisdiction,
 }: TJurisdictionScreenProps) => {
-    const { getCFDState } = Provider.useCFDContext();
+    const { getCFDState } = useCFDContext();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: mt5AccountsList } = useMT5AccountsList();
     const marketType = getCFDState('marketType');

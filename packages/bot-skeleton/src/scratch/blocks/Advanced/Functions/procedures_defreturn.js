@@ -32,11 +32,8 @@ Blockly.Blocks.procedures_defreturn = {
 
         this.appendDummyInput('ADD_ICON').appendField(fieldImage);
         this.moveInputBefore('ADD_ICON', 'RETURN');
-        const is_desktop = this.workspace.scale !== 0.6;
-        if (is_desktop) {
-            this.appendDummyInput('COLLAPSED_INPUT').appendField(fieldImageCollapse);
-            this.moveInputBefore('COLLAPSED_INPUT', 'RETURN');
-        }
+        this.appendDummyInput('COLLAPSED_INPUT').appendField(fieldImageCollapse);
+        this.moveInputBefore('COLLAPSED_INPUT', 'RETURN');
 
         this.setStatements(true);
     },

@@ -30,10 +30,7 @@ Blockly.Blocks.procedures_defnoreturn = {
             true
         );
         this.appendDummyInput('ADD_ICON').appendField(fieldImage);
-        const is_desktop = this.workspace.scale !== 0.6;
-        if (is_desktop) {
-            this.appendDummyInput('COLLAPSED_INPUT').appendField(fieldImageCollapse);
-        }
+        this.appendDummyInput('COLLAPSED_INPUT').appendField(fieldImageCollapse);
 
         this.setStatements(true);
     },

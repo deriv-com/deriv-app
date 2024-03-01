@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { InferType, object } from 'yup';
 import { Loader } from '@deriv-com/ui';
-import { TManualDocumentTypes } from '../../constants/ManualFormConstants';
+import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
 import { useManualForm } from '../../hooks';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui';
 import { FormDocumentUploadField } from '../../components/FormFields/FormDocumentUploadField';
-import { TManualDocumentTypes } from '../../constants/ManualFormConstants';
+import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { getTitleForDocumentUpload, getUploadConfig } from '../../utils/ManualFormUtils';
 
 type TManualFormDocumentUploadProps = { selectedDocument: TManualDocumentTypes };

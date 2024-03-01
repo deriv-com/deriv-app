@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import { Icon, Toast } from '@deriv/components';
 
-type TBotSnackbar = {
+type TBotNotification = {
     className?: string;
     is_open: boolean;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
-    handleClose: () => void;
+    handleClose?: () => void;
     type?: 'error' | 'info' | 'notification';
     timeout?: number;
     message: JSX.Element;
 };
 
-const BotSnackbar = ({ message, timeout = 6000, is_open, onClick, handleClose, type, className }: TBotSnackbar) => {
+const BotNotification = ({
+    message,
+    timeout = 6000,
+    is_open,
+    onClick,
+    handleClose,
+    type,
+    className,
+}: TBotNotification) => {
     const [notification_timer, setNotificationTimer] = useState(timeout);
 
     React.useEffect(() => {
@@ -28,19 +36,19 @@ const BotSnackbar = ({ message, timeout = 6000, is_open, onClick, handleClose, t
             onMouseLeave={() => {
                 setNotificationTimer(timeout);
             }}
-            className={className ?? 'bot-snackbar'}
-            data-testid='bot-snackbar-notification-container'
+            className={className ?? 'bot-notification'}
+            data-testid='bot-notification-container'
         >
             <Toast is_open={is_open} type={type} timeout={notification_timer} onClick={onClick} onClose={handleClose}>
                 <div>{message}</div>
                 <Icon
                     icon='IcCross'
-                    className={'notification-close'}
-                    data_testid={'bot-snackbar-notification-close'}
+                    className={'bot-notification__close-icon'}
+                    data_testid={'bot-notification-close'}
                     onClick={handleClose}
                 />
             </Toast>
         </div>
     );
 };
-export default BotSnackbar;
+export default BotNotification;

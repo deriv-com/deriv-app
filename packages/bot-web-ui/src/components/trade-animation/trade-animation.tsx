@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
-import BotStopNotification from 'Components/bot-stop-notification';
+import { Localize, localize } from '@deriv/translations';
+import BotNotification from 'Components/bot-notification';
 import ContractResultOverlay from 'Components/contract-result-overlay';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -27,6 +27,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         onStopBotClick,
         performSelfExclusionCheck,
         show_bot_stop_message,
+        setShowBotStopMessage,
     } = run_panel;
     const { account_status } = client;
     const cashier_validation = account_status?.cashier_validation;
@@ -95,7 +96,24 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}
             />
-            {show_bot_stop_message && <BotStopNotification />}
+            <BotNotification
+                is_open={show_bot_stop_message}
+                message={
+                    <Localize
+                        i18n_default_text='You’ve just stopped the bot. Any open contracts can be viewed on the <0>Reports</0> page.'
+                        components={[
+                            <a
+                                key={0}
+                                style={{ color: 'var(--general-main-1)' }}
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href={'/reports'}
+                            />,
+                        ]}
+                    />
+                }
+                handleClose={() => setShowBotStopMessage(false)}
+            />
             <div
                 className={classNames('animation__container', className, {
                     'animation--running': contract_stage > 0,

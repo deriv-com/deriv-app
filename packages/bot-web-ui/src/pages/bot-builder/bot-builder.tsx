@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv-com/analytics'; //BotTAction will add ones that PR gets merged
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import BotSnackbar from 'Components/bot-snackbar';
+import { Analytics } from '@deriv-com/analytics'; //BotTAction will add ones that PR gets merged
+import BotNotification from 'Components/bot-notification';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import LoadModal from '../../components/load-modal';
 import { useDBotStore } from '../../stores/useDBotStore';
@@ -19,7 +19,7 @@ const BotBuilder = observer(() => {
     const { is_open } = quick_strategy;
     const { is_running } = run_panel;
     const is_blockly_listener_registered = React.useRef(false);
-    const [show_snackbar, setShowSnackbar] = React.useState(false);
+    const [show_workspace_change_message, setShowWorkspaceChange] = React.useState(false);
     const { is_mobile } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
@@ -53,7 +53,7 @@ const BotBuilder = observer(() => {
             is_blockly_listener_registered.current = true;
             workspace.addChangeListener(handleBlockChangeOnBotRun);
         } else {
-            setShowSnackbar(false);
+            setShowWorkspaceChange(false);
             removeBlockChangeListener();
         }
 
@@ -68,7 +68,7 @@ const BotBuilder = observer(() => {
     const handleBlockChangeOnBotRun = (e: Event) => {
         const { is_reset_button_clicked, setResetButtonState } = toolbar;
         if (e.type !== 'ui' && !is_reset_button_clicked) {
-            setShowSnackbar(true);
+            setShowWorkspaceChange(true);
             removeBlockChangeListener();
         } else if (is_reset_button_clicked) {
             setResetButtonState(false);
@@ -83,10 +83,10 @@ const BotBuilder = observer(() => {
 
     return (
         <>
-            <BotSnackbar
-                is_open={show_snackbar}
+            <BotNotification
+                is_open={show_workspace_change_message}
                 message={<Localize i18n_default_text='Changes you make will not affect your running bot.' />}
-                handleClose={() => setShowSnackbar(false)}
+                handleClose={() => setShowWorkspaceChange(false)}
             />
             <div
                 className={classNames('bot-builder', {

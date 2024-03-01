@@ -13,9 +13,7 @@ type TItem = {
 const Item = ({ contract_types, handleSelect, value }: TItem) => (
     <React.Fragment>
         {contract_types.map(type => {
-            const tradeType = Array.isArray(type.value)
-                ? { text: type.text, value: type.value[0] }
-                : (type as TContractType);
+            const tradeType = { ...type, value: Array.isArray(type.value) ? type.value[0] : type.value };
             return (
                 <div
                     id={`dt_contract_${tradeType.value}_item`}

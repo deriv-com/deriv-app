@@ -8,6 +8,7 @@ import { getNameDOBValidationSchema } from './utils/personal-details-utils';
 import { PersonalDetailsFormWithExample } from './containers';
 import './index.scss';
 
+// [TODO]: Remove schema once PersonalDetailsFormWithExample is merged
 const schema = getNameDOBValidationSchema();
 
 const App: React.FC = () => {

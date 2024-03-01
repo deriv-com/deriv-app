@@ -1,5 +1,6 @@
 import React from 'react';
 import { TPaymentMethod } from 'types';
+import { sortPaymentMethodsWithAvailability } from '@/utils';
 import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodCard } from '../../PaymentMethodCard';
 
@@ -15,6 +16,7 @@ const BuySellPaymentSection = ({
     selectedPaymentMethodIds,
 }: TBuySellPaymentSectionProps) => {
     const { isMobile } = useDevice();
+    const sortedList = sortPaymentMethodsWithAvailability(availablePaymentMethods);
     //TODO: below section to be modified to handle payment method addition after handling of modal provider
     // const [formState, dispatch] = useReducer(advertiserPaymentMethodsReducer, {});
 
@@ -51,12 +53,12 @@ const BuySellPaymentSection = ({
                     Receive payment to
                 </Text>
                 <Text size={isMobile ? 'md' : 'sm'}>
-                    {availablePaymentMethods && availablePaymentMethods.length > 0
+                    {sortedList && sortedList.length > 0
                         ? 'You may choose up to 3.'
                         : `To place an order, add one of the advertiser's preferred payment methods:`}
                 </Text>
                 <div className='flex gap-[0.8rem] flex-wrap'>
-                    {availablePaymentMethods?.map(paymentMethod => (
+                    {sortedList?.map(paymentMethod => (
                         <PaymentMethodCard
                             key={paymentMethod?.id}
                             medium

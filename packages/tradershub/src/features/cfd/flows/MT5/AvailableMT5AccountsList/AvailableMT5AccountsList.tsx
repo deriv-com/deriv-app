@@ -25,8 +25,7 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 
     const trailingButtonClick = () => {
-        setCfdState('marketType', account.market_type);
-        setCfdState('platform', PlatformDetails.mt5.platform);
+        setCfdState({ marketType: account.market_type, platform: PlatformDetails.mt5.platform });
         if (!hasActiveDerivAccount) {
             setIsDerivedAccountModalOpen(true);
         }

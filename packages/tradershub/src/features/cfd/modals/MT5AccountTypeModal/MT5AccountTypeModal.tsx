@@ -22,7 +22,7 @@ const MT5AccountTypeModal = () => {
                 <Button
                     disabled={!selectedMarketType}
                     onClick={() => {
-                        setCfdState('marketType', selectedMarketType);
+                        setCfdState({ marketType: selectedMarketType });
                         show(<JurisdictionModal />);
                     }}
                     size='md'

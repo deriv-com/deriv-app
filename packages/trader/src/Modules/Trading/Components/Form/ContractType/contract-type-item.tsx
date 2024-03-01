@@ -20,9 +20,7 @@ const Item = ({ contract_types, handleSelect, value }: TItem) => (
                     data-testid='dt_contract_item'
                     key={tradeType.value}
                     className={classNames('contract-type-item', {
-                        'contract-type-item--selected': Array.isArray(type.value)
-                            ? type.value.includes(value ?? '')
-                            : value === tradeType.value,
+                        'contract-type-item--selected': type.value.includes(value ?? ''),
                     })}
                     onClick={e => handleSelect?.(tradeType, e)}
                 >

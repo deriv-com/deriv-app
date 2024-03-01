@@ -10,9 +10,10 @@ jest.mock('@deriv/quill-design', () => ({
     useBreakpoint: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('../../../components/FormFields/FormDropDownField', () => {
-    return jest.fn(() => <div data-testid='dt_dropdown' />);
-});
+jest.mock('../../../components/FormFields/', () => ({
+    ...jest.requireActual('../../../components/FormFields'),
+    FormDropDownField: jest.fn(() => <div data-testid='dt_dropdown' />),
+}));
 
 beforeEach(() => {
     (useAuthorize as jest.Mock).mockReturnValue({

@@ -1,13 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { getExampleImagesConfig } from '../../CommonMistakeExample/CommonMistakeExampleConfig';
-import DocumentSubmission from '../DocumentSubmission';
+import { DocumentSubmission } from '../DocumentSubmission';
 
-jest.mock('../../../../components/FormFields/FormDocumentUploadField', () => {
-    const FormDocumentUploadField = () => <div>FormDocumentUploadField</div>;
-    FormDocumentUploadField.displayName = 'FormDocumentUploadField';
-    return FormDocumentUploadField;
-});
+jest.mock('../../../../components/FormFields', () => ({
+    ...jest.requireActual('../../../../components/FormFields'),
+    FormDocumentUploadField: () => <div>FormDocumentUploadField</div>,
+}));
 
 jest.mock('../../CommonMistakeExample/CommonMistakeExample', () => {
     const CommonMistakeExamples = ({ description }: { description: string }) => (

@@ -13,6 +13,7 @@ const schema = getNameDOBValidationSchema();
 const App: React.FC = () => {
     return (
         <APIProvider standalone>
+            {/* [TODO]: Remove Formik once code is merged */}
             <Formik initialValues={schema.getDefault()} onSubmit={() => {}} validationSchema={schema}>
                 <PersonalDetailsFormWithExample />
             </Formik>

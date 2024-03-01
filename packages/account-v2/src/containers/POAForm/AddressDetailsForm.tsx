@@ -95,16 +95,16 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
             <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
                 {({ dirty, isSubmitting, isValid, status }) => (
                     <Form>
-                        <div className='flex flex-col w-full min-h-screen space-y-16 sm:w-auto'>
+                        <div className='flex flex-col w-full min-h-screen space-y-16 lg:w-auto'>
                             {(updateError || status || resubmitting) && (
                                 <InlineMessage type='filled' variant='error'>
                                     {updateError ?? status?.message ?? resubmitMessage}
                                 </InlineMessage>
                             )}
                             <div className='m-0 space-y-12 overflow-y-auto'>
-                                <div className='flex h-24 gap-8 self-stretch sm:self-auto justify-center items-center sm:gap-[11px]'>
+                                <div className='flex h-24 gap-8 self-stretch lg:self-auto justify-center items-center lg:gap-[11px]'>
                                     <Text weight='bold'>Address</Text>
-                                    <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 sm:flex-shrink-0' />
+                                    <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 lg:flex-shrink-0' />
                                 </div>
                                 <InlineMessage type='filled' variant='warning'>
                                     <Text size='sm'>

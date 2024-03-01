@@ -1,4 +1,4 @@
-import { getIDVFormValidationSchema, getSelectedDocumentConfigData } from '../IDVFormUtils';
+import { getIDVFormValidationSchema, getSelectedDocumentConfigData } from '../idvFormUtils';
 
 const DOCUMENT_LIST = [
     {

@@ -4,8 +4,8 @@ import { useResidenceList } from '@deriv/api';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown, Input, useDevice } from '@deriv-com/ui';
 import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
-import { getIDVNotApplicableOption } from '../../utils/DefaultOptions';
-import { getExampleFormat, getSelectedDocumentConfigData, TDocument } from '../../utils/IDVFormUtils';
+import { getIDVNotApplicableOption } from '../../utils/defaultOptions';
+import { getExampleFormat, getSelectedDocumentConfigData, TDocument } from '../../utils/idvFormUtils';
 
 type TIDVFormProps = {
     allowDefaultValue?: boolean;

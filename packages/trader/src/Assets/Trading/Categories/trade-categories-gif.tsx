@@ -3,18 +3,15 @@ import ImageAsianUpDown from 'Assets/SvgComponents/trade_explanations/img-asian.
 import ImageCloseToLow from 'Assets/SvgComponents/trade_explanations/img-close-to-low.svg';
 import ImageEndsInOut from 'Assets/SvgComponents/trade_explanations/img-ends-in-out.svg';
 import ImageEvenOdd from 'Assets/SvgComponents/trade_explanations/img-even-odd.svg';
-import ImageHighLow from 'Assets/SvgComponents/trade_explanations/img-high-low.svg';
 import ImageHighToClose from 'Assets/SvgComponents/trade_explanations/img-high-to-close.svg';
 import ImageHighToLow from 'Assets/SvgComponents/trade_explanations/img-high-to-low.svg';
 import ImageMatchDiff from 'Assets/SvgComponents/trade_explanations/img-match-diff.svg';
 import ImageMultiplier from 'Assets/SvgComponents/trade_explanations/img-multiplier.svg';
 import ImageOverUnder from 'Assets/SvgComponents/trade_explanations/img-over-under.svg';
 import ImageReset from 'Assets/SvgComponents/trade_explanations/img-reset.svg';
-import ImageRiseFall from 'Assets/SvgComponents/trade_explanations/img-rise-fall.svg';
 import ImageRunHighLow from 'Assets/SvgComponents/trade_explanations/img-run-high-low.svg';
 import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg';
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
-import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
 import { TRADE_TYPES } from '@deriv/shared';
 
@@ -36,7 +33,7 @@ const TradeCategoriesGIF = ({
         case TRADE_TYPES.EVEN_ODD:
             return <ImageEvenOdd />;
         case TRADE_TYPES.HIGH_LOW:
-            return <ImageHighLow />;
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.LB_CALL:
             return <ImageCloseToLow />;
         case TRADE_TYPES.LB_PUT:
@@ -45,7 +42,7 @@ const TradeCategoriesGIF = ({
             return <ImageHighToLow />;
         case TRADE_TYPES.RISE_FALL:
         case TRADE_TYPES.RISE_FALL_EQUAL:
-            return <ImageRiseFall />;
+            return <ContractTypeDescriptionVideo selected_contract_type='rise_fall' />;
         case TRADE_TYPES.MATCH_DIFF:
             return <ImageMatchDiff />;
         case TRADE_TYPES.MULTIPLIER:
@@ -61,7 +58,7 @@ const TradeCategoriesGIF = ({
         case TRADE_TYPES.TICK_HIGH_LOW:
             return <ImageTickHighLow />;
         case TRADE_TYPES.TOUCH:
-            return <ImageTouch />;
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.TURBOS.LONG:
         case TRADE_TYPES.TURBOS.SHORT:
             return <ContractTypeDescriptionVideo selected_contract_type='turbos' />;

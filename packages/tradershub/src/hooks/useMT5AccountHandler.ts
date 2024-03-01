@@ -25,9 +25,9 @@ const useMT5AccountHandler = () => {
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
 
-    const { getCFDState } = useCFDContext();
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
-    const selectedJurisdiction = getCFDState('selectedJurisdiction');
+    const { cfdState } = useCFDContext();
+    const { marketType: marketTypeState, selectedJurisdiction } = cfdState;
+    const marketType = marketTypeState ?? MarketType.ALL;
 
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
     const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;

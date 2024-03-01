@@ -4,12 +4,13 @@ import { PaymentMethodLabel, PopoverDropdown } from '@/components';
 import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
 import { useDevice } from '@/hooks';
 import { formatMoney, generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
-import { useExchangeRateSubscription } from '@deriv/api';
+import { useExchangeRateSubscription } from '@deriv/api-v2';
 import { Button, Text, Tooltip } from '@deriv-com/ui';
 //TODO: Replace with quill icons once available
 import DeactivateIcon from '../../../../../public/ic-archive.svg';
 import DeleteIcon from '../../../../../public/ic-delete.svg';
 import EditIcon from '../../../../../public/ic-edit.svg';
+import ShareIcon from '../../../../../public/ic-share.svg';
 import ActivateIcon from '../../../../../public/ic-unarchive.svg';
 import { AdStatus, AdType, AlertComponent, ProgressIndicator } from '../../../components';
 import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';
@@ -226,6 +227,11 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                         <Button onClick={() => onClickActionItem('delete')}>
                             <Tooltip message='Delete' position='bottom'>
                                 <DeleteIcon />
+                            </Tooltip>
+                        </Button>
+                        <Button onClick={() => onClickActionItem('share')}>
+                            <Tooltip message='Share' position='bottom'>
+                                <ShareIcon />
                             </Tooltip>
                         </Button>
                     </div>

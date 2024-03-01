@@ -1,16 +1,16 @@
 import React, { ComponentProps, useState } from 'react';
 import { Modal } from '@/components';
+import { useCFDContext, useModal } from '@/providers';
 import { JurisdictionModal } from '@cfd/modals';
 import { MT5AccountType } from '@cfd/screens';
-import { Provider } from '@deriv/library';
 import { Button } from '@deriv-com/ui';
 
 type TMarketTypes = ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
 const MT5AccountTypeModal = () => {
     const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
-    const { setCfdState } = Provider.useCFDContext();
-    const { show } = Provider.useModal();
+    const { setCfdState } = useCFDContext();
+    const { show } = useModal();
 
     return (
         <Modal>
@@ -22,7 +22,7 @@ const MT5AccountTypeModal = () => {
                 <Button
                     disabled={!selectedMarketType}
                     onClick={() => {
-                        setCfdState('marketType', selectedMarketType);
+                        setCfdState({ marketType: selectedMarketType });
                         show(<JurisdictionModal />);
                     }}
                     size='md'

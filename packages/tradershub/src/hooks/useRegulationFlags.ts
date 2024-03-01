@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { useUIContext } from '@/components';
+import { Regulation } from '@/constants';
+import { useUIContext } from '@/providers';
 import { useActiveTradingAccount, useIsEuRegion, useLandingCompany, useTradingAccountsList } from '@deriv/api';
-import { Regulation } from '../constants/constants';
 
 /**
  * @description A custom hook that returns regulation flags based on the regulation passed in

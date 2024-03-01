@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BUY_SELL } from '@/constants';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Tab, Tabs } from '@deriv-com/ui';
 import { AdvertsTableRenderer } from './AdvertsTableRenderer';
 import './AdvertiserAdvertsTable.scss';

@@ -113,48 +113,51 @@ const BuySellForm = ({
                 type={type}
             />
             <Divider />
-            {rate_type === RATE_TYPE.FLOAT && !shouldDisableField && (
-                <div className='px-[2.4rem] mt-[2.4rem]'>
-                    <InlineMessage variant='info'>
-                        <Text size={isMobile ? 'xs' : '2xs'}>
-                            {`If the market rate changes from the rate shown here, we won't be able to process your order.`}
-                        </Text>
-                    </InlineMessage>
-                </div>
-            )}
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <BuySellData
-                    accountCurrency={account_currency}
-                    expiryPeriod={order_expiry_period ?? 3600}
-                    instructions={description ?? '-'}
-                    isBuy={isBuy}
-                    localCurrency={local_currency}
-                    name={advertiser_details?.name}
-                    paymentMethodNames={payment_method_names}
-                    paymentMethods={paymentMethods}
-                    rate={displayEffectiveRate}
-                />
-                <Divider />
-                <BuySellAmount
-                    accountCurrency={account_currency}
-                    amount={initialAmount}
-                    calculatedRate={calculatedRate}
-                    control={control}
-                    effectiveRate={effectiveRate}
-                    isBuy={isBuy}
-                    isDisabled={shouldDisableField}
-                    localCurrency={local_currency}
-                    maxLimit={getAdvertiserMaxLimit(
-                        isBuy,
-                        advertiserBuyLimit,
-                        advertiserSellLimit,
-                        max_order_amount_limit_display
-                    )}
-                    minLimit={min_order_amount_limit_display}
-                />
-                <Divider />
-                <BuySellFormFooter isDisabled={!isValid} onClickCancel={onRequestClose} onSubmit={onSubmit} />
-            </form>
+            <div className='p2p-v2-buy-sell-form__body'>
+                {rate_type === RATE_TYPE.FLOAT && !shouldDisableField && (
+                    <div className='px-[2.4rem] mt-[2.4rem]'>
+                        <InlineMessage variant='info'>
+                            <Text size={isMobile ? 'xs' : '2xs'}>
+                                If the market rate changes from the rate shown here, we won‘t be able to process your
+                                order.
+                            </Text>
+                        </InlineMessage>
+                    </div>
+                )}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <BuySellData
+                        accountCurrency={account_currency}
+                        expiryPeriod={order_expiry_period ?? 3600}
+                        instructions={description ?? '-'}
+                        isBuy={isBuy}
+                        localCurrency={local_currency}
+                        name={advertiser_details?.name}
+                        paymentMethodNames={payment_method_names}
+                        paymentMethods={paymentMethods}
+                        rate={displayEffectiveRate}
+                    />
+                    <Divider />
+                    <BuySellAmount
+                        accountCurrency={account_currency}
+                        amount={initialAmount}
+                        calculatedRate={calculatedRate}
+                        control={control}
+                        effectiveRate={effectiveRate}
+                        isBuy={isBuy}
+                        isDisabled={shouldDisableField}
+                        localCurrency={local_currency}
+                        maxLimit={getAdvertiserMaxLimit(
+                            isBuy,
+                            advertiserBuyLimit,
+                            advertiserSellLimit,
+                            max_order_amount_limit_display
+                        )}
+                        minLimit={min_order_amount_limit_display}
+                    />
+                    <Divider />
+                    <BuySellFormFooter isDisabled={!isValid} onClickCancel={onRequestClose} onSubmit={onSubmit} />
+                </form>
+            </div>
         </Modal>
     );
 };

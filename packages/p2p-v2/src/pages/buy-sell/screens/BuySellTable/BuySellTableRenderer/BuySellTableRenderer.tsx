@@ -1,12 +1,8 @@
 import React, { memo } from 'react';
-import { Table } from '@/components';
+import { TAdvertsTableRowRenderer } from 'types';
+import { AdvertsTableRow, Table } from '@/components';
 import { DerivLightIcCashierNoAdsIcon } from '@deriv/quill-icons';
 import { ActionScreen, Loader, Text } from '@deriv-com/ui';
-import { BuySellTableRow } from '../../BuySellTableRow';
-import { TBuySellTableRowRenderer } from '../BuySellTable';
-
-const BuySellRowRenderer = memo((values: TBuySellTableRowRenderer) => <BuySellTableRow {...values} />);
-BuySellRowRenderer.displayName = 'BuySellRowRenderer';
 
 const columns = [
     { header: 'Advertisers' },
@@ -18,7 +14,7 @@ const columns = [
 const headerRenderer = (header: string) => <span>{header}</span>;
 
 type TBuySellTableRowRendererProps = {
-    data?: TBuySellTableRowRenderer[];
+    data?: TAdvertsTableRowRenderer[];
     isFetching: boolean;
     isLoading: boolean;
     loadMoreAdverts: () => void;
@@ -55,7 +51,7 @@ const BuySellTableRenderer = ({
             isFetching={isFetching}
             loadMoreFunction={loadMoreAdverts}
             renderHeader={headerRenderer}
-            rowRender={(data: unknown) => <BuySellRowRenderer {...(data as TBuySellTableRowRenderer)} />}
+            rowRender={(data: unknown) => <AdvertsTableRow {...(data as TAdvertsTableRowRenderer)} />}
             tableClassname=''
         />
     );

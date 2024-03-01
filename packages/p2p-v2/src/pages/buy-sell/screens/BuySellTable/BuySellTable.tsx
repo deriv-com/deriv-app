@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RadioGroupFilterModal } from '@/components/Modals';
 import { BUY_SELL, SORT_BY_LIST } from '@/constants';
 import { TSortByValues } from '@/utils';
@@ -27,6 +27,10 @@ const BuySellTable = () => {
         setSortDropdownValue(value as TSortByValues);
         setIsFilterModalOpen(false);
     };
+
+    useEffect(() => {
+        if (p2pSettingsData?.localCurrency) setSelectedCurrency(p2pSettingsData.localCurrency);
+    }, [p2pSettingsData?.localCurrency]);
 
     return (
         <div className='p2p-v2-buy-sell-table h-full w-full relative flex flex-col'>

@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
-import React, { Fragment, memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { TAdvertsTableRowRenderer } from 'types';
-import { Badge, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
+import { Badge, BuySellForm, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
 import { BUY_SELL } from '@/constants';
 import { generateEffectiveRate, getCurrentRoute } from '@/utils';
-import { p2p, useExchangeRateSubscription } from '@deriv/api';
+import { p2p, useExchangeRateSubscription } from '@deriv/api-v2';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import './AdvertsTableRow.scss';
@@ -14,11 +14,16 @@ import './AdvertsTableRow.scss';
 const BASE_CURRENCY = 'USD';
 
 const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: exchangeRateValue, subscribe } = useExchangeRateSubscription();
     const { isDesktop, isMobile } = useDevice();
     const history = useHistory();
     const isBuySellPage = getCurrentRoute() === 'buy-sell';
+
+    const { data: paymentMethods } = p2p.paymentMethods.useGet();
     const { data } = p2p.advertiser.useGetInfo() || {};
+    const { daily_buy = 0, daily_buy_limit = 0, daily_sell = 0, daily_sell_limit = 0 } = data || {};
+
     const {
         account_currency,
         advertiser_details,
@@ -47,7 +52,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
 
     const { completed_orders_count, id, is_online, name, rating_average, rating_count } = advertiser_details || {};
 
-    const { displayEffectiveRate } = generateEffectiveRate({
+    const { displayEffectiveRate, effectiveRate } = generateEffectiveRate({
         exchangeRate,
         localCurrency: local_currency,
         marketRate: Number(effective_rate),
@@ -162,10 +167,28 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                     {isMobile && isBuySellPage && (
                         <LabelPairedChevronRightMdRegularIcon className='absolute top-0 right-4' />
                     )}
-                    <Button className='lg:w-[7.5rem]' size={isMobile ? 'md' : 'sm'} textSize={isMobile ? 'md' : 'xs'}>
+                    <Button
+                        className='lg:w-[7.5rem]'
+                        onClick={() => setIsModalOpen(true)}
+                        size={isMobile ? 'md' : 'sm'}
+                        textSize={isMobile ? 'md' : 'xs'}
+                    >
                         {isBuyAdvert ? 'Buy' : 'Sell'} {account_currency}
                     </Button>
                 </div>
+            )}
+            {isModalOpen && (
+                <BuySellForm
+                    advert={props}
+                    advertiserBuyLimit={Number(daily_buy_limit) - Number(daily_buy)}
+                    advertiserSellLimit={Number(daily_sell_limit) - Number(daily_sell)}
+                    balanceAvailable={data?.balance_available ?? 0}
+                    displayEffectiveRate={displayEffectiveRate}
+                    effectiveRate={effectiveRate}
+                    isModalOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    paymentMethods={paymentMethods}
+                />
             )}
         </div>
     );

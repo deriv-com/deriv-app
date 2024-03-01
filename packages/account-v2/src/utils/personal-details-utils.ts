@@ -13,12 +13,12 @@ export const getPersonalDetailsBaseValidationSchema = () => {
             .required('First name is required.')
             .min(2, characterLengthMessage)
             .max(50, characterLengthMessage)
-            .matches(/^[a-zA-Z\s\-.'']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.'),
+            .matches(/^[a-zA-Z\s\-.']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.'),
         lastName: Yup.string()
             .required('Last Name is required.')
             .min(2, characterLengthMessage)
             .max(50, characterLengthMessage)
-            .matches(/^[a-zA-Z\s\-.'']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.'),
+            .matches(/^[a-zA-Z\s\-.']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.'),
         nameDOBConfirmation: Yup.boolean().required(),
         phoneNumber: Yup.string()
             .required('Phone number is required.')

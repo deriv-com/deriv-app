@@ -8,7 +8,7 @@ import IcPOALock from '../../assets/verification-status/ic-poa-lock.svg';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
 import { AddressFields } from '../../modules/AddressFields';
-import DocumentSubmission from './DocumentSubmission';
+import { DocumentSubmission } from './DocumentSubmission';
 
 type TAddressDetails = {
     addressCity: string;

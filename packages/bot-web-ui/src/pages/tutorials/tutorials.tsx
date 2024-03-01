@@ -1,7 +1,7 @@
 import React from 'react';
-import { Analytics } from '@deriv-com/analytics';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import { useDBotStore } from 'Stores/useDBotStore';
 import NoSearchResult from './common/no-search-result-found';
 import QuickStrategyGuides from './quick-strategy-content/quick-strategy-guides';
@@ -10,7 +10,11 @@ import GuideContent from './guide-content';
 import TutorialsTabDesktop from './tutorials-tab-desktop';
 import TutorialsTabMobile from './tutorials-tab-mobile';
 
-const TutorialsTab = observer(() => {
+type TTutorialsTab = {
+    handleTabChange: (active_number: number) => void;
+};
+
+const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const { dashboard } = useDBotStore();
@@ -64,7 +68,7 @@ const TutorialsTab = observer(() => {
         },
         {
             label: localize('FAQ'),
-            content: <FAQContent faq_list={faq_tab_content} />,
+            content: <FAQContent faq_list={faq_tab_content} handleTabChange={handleTabChange} />,
         },
         {
             label: localize('Quick strategy guides'),

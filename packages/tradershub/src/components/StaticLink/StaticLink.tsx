@@ -1,6 +1,6 @@
 import React, { AnchorHTMLAttributes, ReactNode } from 'react';
-import { clsx } from 'clsx';
-import { getStaticUrl } from '../../helpers/urls';
+import { twMerge } from 'tailwind-merge';
+import { URLUtils } from '@deriv-com/utils';
 
 type StaticLinkProps = {
     children: ReactNode;
@@ -17,17 +17,19 @@ type StaticLinkProps = {
  * @param {string} [props.className] - Optional additional CSS classes to apply.
  * @param {AnchorHTMLAttributes<HTMLAnchorElement>['href']} [props.href] - The URL that the link points to.
  * @param {AnchorHTMLAttributes<HTMLAnchorElement>['href']} [props.staticUrl] - A static URL that the link points to.
- *
  * @returns {ElementType} The `StaticLink` component.
  */
 const StaticLink = ({ children, className, href, staticUrl, onClick }: StaticLinkProps) => {
+    const { getDerivStaticURL } = URLUtils;
+    const link = href ?? (staticUrl && getDerivStaticURL(staticUrl));
+    const isNewTab = href || staticUrl;
     return (
         <a
-            className={clsx('underline text-brand-coral py-0 px-4 underline-offset-2', className)}
-            href={href ?? (staticUrl ? getStaticUrl(staticUrl) : '#')}
+            className={twMerge('underline text-brand-coral py-0 px-4 underline-offset-2', className)}
+            href={link}
             onClick={onClick}
-            rel='noopener noreferrer'
-            target='_blank'
+            rel={isNewTab && 'noopener noreferrer'}
+            target={isNewTab && '_blank'}
         >
             {children}
         </a>

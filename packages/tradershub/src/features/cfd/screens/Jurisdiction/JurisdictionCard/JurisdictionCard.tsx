@@ -1,13 +1,13 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import DocumentsIcon from '@/assets/svgs/ic-documents.svg';
 import IdCardIcon from '@/assets/svgs/ic-id-card.svg';
 import SelfieIcon from '@/assets/svgs/ic-selfie.svg';
 import { StaticLink } from '@/components';
 import { useRegulationFlags } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { MarketType } from '@cfd/constants';
-import { Provider } from '@deriv/library';
 import { Text } from '@deriv-com/ui';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import {
@@ -61,8 +61,10 @@ const verificationDocumentsMapper: TVerificationDocumentsMapper = {
 const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, onSelect }: TJurisdictionCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
-    const { getCFDState } = Provider.useCFDContext();
+    const { cfdState } = useCFDContext();
     const { isEU } = useRegulationFlags();
+
+    const { marketType: marketTypeState } = cfdState;
 
     const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
@@ -84,7 +86,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
 
     const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = jurisdictionContents;
 
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const marketType = marketTypeState ?? MarketType.ALL;
     const rows = contents[marketType] ?? [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {
@@ -122,7 +124,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
 
     return (
         <div
-            className={clsx(JurisdictionCardClass({ isAdded, isFlipped, isSelected }))}
+            className={twMerge(JurisdictionCardClass({ isAdded, isFlipped, isSelected }))}
             onClick={() => {
                 !isAdded && onSelect(jurisdiction);
             }}

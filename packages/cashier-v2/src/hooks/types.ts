@@ -21,7 +21,7 @@ export namespace THooks {
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type TransferAccount = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
-    >[number];
+    >;
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace

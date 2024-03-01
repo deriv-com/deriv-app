@@ -226,6 +226,7 @@ class DBot {
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
+        console.log(api_base.is_stopping, 'api_base.is_stopping')
         if (api_base.is_stopping) return;
 
         try {

@@ -2,7 +2,7 @@ import { Map } from 'immutable';
 import { historyToTicks, getLast } from 'binary-utils';
 import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
 import { observer as globalObserver } from '../../utils/observer';
-import { api_base } from './api-base';
+import { api_base } from '@deriv/bot-trade-engine/api/api-base';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,

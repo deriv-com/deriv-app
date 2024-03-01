@@ -94,7 +94,7 @@ const PositionsModalCard = observer(
             tick_count,
             underlying,
         } = contract_info;
-        const { BUY_PRICE, CONTRACT_VALUE, ENTRY_SPOT, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
+        const { STAKE, CONTRACT_VALUE, ENTRY_SPOT, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
         const is_multiplier = isMultiplierContract(contract_type);
         const is_accumulator = isAccumulatorContract(contract_type);
         const is_turbos = isTurbosContract(contract_type);
@@ -124,7 +124,7 @@ const PositionsModalCard = observer(
                     <div className={classNames('positions-modal-card__grid-profit-payout')}>
                         <div className='positions-modal-card__purchase-price'>
                             <Text size='xxxs' className='positions-modal-card__purchase-label'>
-                                {BUY_PRICE}
+                                {STAKE}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
                                 <Money amount={buy_price} currency={currency} />

@@ -27,7 +27,7 @@ describe('VanillaOptionsCardBody', () => {
         expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().ENTRY_SPOT)).toBeInTheDocument();
         expect(screen.getByText('1,100.00')).toBeInTheDocument();
-        expect(screen.getByText(getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().STAKE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STRIKE)).toBeInTheDocument();
         expect(screen.getByText('1,200.00')).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe('VanillaOptionsCardBody', () => {
         // Test that the correct elements are present in the component
         expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().ENTRY_SPOT)).toBeInTheDocument();
-        expect(screen.getByText(getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().STAKE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STRIKE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
     });

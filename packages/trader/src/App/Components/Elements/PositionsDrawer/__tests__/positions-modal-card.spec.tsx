@@ -91,12 +91,10 @@ jest.mock('@deriv/components', () => ({
 
 describe('<PositionsModalCard />', () => {
     const {
-        BUY_PRICE,
         CONTRACT_VALUE,
         ENTRY_SPOT,
-        INDICATIVE_PRICE,
         POTENTIAL_PAYOUT: PAYOUT_LIMIT,
-        POTENTIAL_PROFIT_LOSS,
+        STAKE,
         STRIKE,
         TAKE_PROFIT,
         TOTAL_PROFIT_LOSS,
@@ -134,7 +132,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText(currency_badge)).toBeInTheDocument();
-        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(STAKE)).toBeInTheDocument();
         expect(screen.getByText(/7.00/i)).toBeInTheDocument();
         expect(screen.getByText(CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(/10.00/i)).toBeInTheDocument();
@@ -166,7 +164,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText(currency_badge)).toBeInTheDocument();
-        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(STAKE)).toBeInTheDocument();
         expect(screen.getByText(/7.00/i)).toBeInTheDocument();
         expect(screen.getByText(CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(/8.00/i)).toBeInTheDocument();
@@ -195,7 +193,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText('Long')).toBeInTheDocument();
         expect(screen.getByText(usd)).toBeInTheDocument();
-        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(STAKE)).toBeInTheDocument();
         expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(/7.00/i)).toBeInTheDocument();
@@ -220,10 +218,10 @@ describe('<PositionsModalCard />', () => {
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText(usd)).toBeInTheDocument();
-        expect(screen.getByText(POTENTIAL_PROFIT_LOSS)).toBeInTheDocument();
-        expect(screen.getByText(INDICATIVE_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(/7.00/i)).toBeInTheDocument();
-        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(STAKE)).toBeInTheDocument();
         expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(PAYOUT_LIMIT)).toBeInTheDocument();
     });
@@ -242,10 +240,10 @@ describe('<PositionsModalCard />', () => {
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText(usd)).toBeInTheDocument();
-        expect(screen.getByText(POTENTIAL_PROFIT_LOSS)).toBeInTheDocument();
-        expect(screen.getByText(INDICATIVE_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(/7.00/i)).toBeInTheDocument();
-        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(STAKE)).toBeInTheDocument();
         expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(PAYOUT_LIMIT)).toBeInTheDocument();
     });
@@ -265,10 +263,9 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText(usd)).toBeInTheDocument();
         expect(screen.getByText('Stake:')).toBeInTheDocument();
-        expect(screen.getByText(/Current stake:/i)).toBeInTheDocument();
+        expect(screen.getByText(/Contract value:/i)).toBeInTheDocument();
         expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Deal cancel. fee:/i)).toBeInTheDocument();
-        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
         expect(screen.getByText(TAKE_PROFIT)).toBeInTheDocument();
         expect(screen.getByText(/Stop loss:/i)).toBeInTheDocument();
         expect(screen.getByText(TOTAL_PROFIT_LOSS)).toBeInTheDocument();

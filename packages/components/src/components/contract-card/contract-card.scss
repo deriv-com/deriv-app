@@ -393,7 +393,7 @@
     }
     &-item {
         &__header {
-            max-width: calc(100% - 2.4rem);
+            max-width: calc(100% - 2rem);
             line-height: 1.4;
             @include mobile {
                 max-width: unset;

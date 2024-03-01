@@ -1,11 +1,10 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
+import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
 import { ScrollToFieldError } from '@/helpers';
+import { ACTION_TYPES, useRealAccountCreationContext } from '@/providers';
 import { personalDetails } from '@/utils';
 import { Text } from '@deriv-com/ui';
-import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
-import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
-import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
 import AdditionalInformation from './Sections/AdditionalInformation';
 import Details from './Sections/Details';
 
@@ -16,7 +15,7 @@ import Details from './Sections/Details';
  * @returns {React.ReactNode}
  */
 const PersonalDetails = () => {
-    const { dispatch, helpers, state } = useSignupWizardContext();
+    const { dispatch, helpers, state } = useRealAccountCreationContext();
 
     const handleSubmit = (values: FormikValues) => {
         dispatch({ payload: { ...values }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
@@ -27,13 +26,13 @@ const PersonalDetails = () => {
         firstName: state.firstName ?? '',
         lastName: state.lastName ?? '',
         dateOfBirth: state.dateOfBirth ?? '',
-        confirmation: false,
+        detailsConfirmation: state.detailsConfirmation ?? false,
         phoneNumber: state.phoneNumber ?? '',
         placeOfBirth: state.placeOfBirth ?? '',
         taxResidence: state.taxResidence ?? '',
         taxIdentificationNumber: state.taxIdentificationNumber ?? '',
         accountOpeningReason: state.accountOpeningReason ?? '',
-        taxInfoConfirmation: false,
+        taxInfoConfirmation: state.taxInfoConfirmation ?? false,
     };
     return (
         <WizardScreenWrapper heading='Complete your personal details'>
@@ -56,7 +55,7 @@ const PersonalDetails = () => {
                             <Details />
                             <AdditionalInformation />
                         </div>
-                        <Actions />
+                        <WizardScreenActions />
                     </Form>
                 )}
             </Formik>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserAvatar } from '@/components';
 import { getCurrentRoute } from '@/utils';
-import { useSettings } from '@deriv/api';
+import { useSettings } from '@deriv/api-v2';
 import { LabelPairedEllipsisVerticalLgRegularIcon } from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
 import AdvertiserNameBadges from './AdvertiserNameBadges';

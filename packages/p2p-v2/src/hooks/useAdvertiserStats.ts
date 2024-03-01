@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { daysSince } from '@/utils';
-import { p2p, useAuthentication, useSettings } from '@deriv/api';
+import { p2p, useAuthentication, useSettings } from '@deriv/api-v2';
 
 /**
  * Formats the advertiser duration into the following format:

@@ -1,4 +1,5 @@
-import { p2p } from '@deriv/api';
+/* eslint-disable camelcase */
+import { p2p } from '@deriv/api-v2';
 
 declare global {
     interface WindowEventMap {
@@ -21,3 +22,19 @@ export type TSelectedPaymentMethod = Partial<{
 }>;
 
 export type TAdvertsTableRowRenderer = Partial<NonNullable<ReturnType<typeof p2p.advert.useGetList>['data']>[0]>;
+
+type NonUndefinedValues<T> = {
+    [K in keyof T]-?: Exclude<T[K], undefined>;
+};
+
+type TAdvertData = NonNullable<ReturnType<typeof p2p.advert.useGet>['data']>;
+
+export type TAdvertType = NonUndefinedValues<TAdvertData>;
+
+export type TCurrencyListItem = {
+    display_name: string;
+    has_adverts: 0 | 1;
+    is_default?: 1;
+    text: string;
+    value: string;
+};

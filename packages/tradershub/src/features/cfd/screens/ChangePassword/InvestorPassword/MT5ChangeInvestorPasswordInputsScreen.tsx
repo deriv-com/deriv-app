@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Formik } from 'formik';
+import { useCFDContext } from '@/providers';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import { Button, Input, Text, useDevice } from '@deriv-com/ui';
 import { ActionScreen } from '../../../../../components';
 import { validPassword } from '../../../../../utils/password';
@@ -22,7 +22,7 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
     setNextScreen,
 }: TMT5ChangeInvestorPasswordInputsScreen) => {
     const { isDesktop } = useDevice();
-    const { getCFDState } = Provider.useCFDContext();
+    const { getCFDState } = useCFDContext();
     const mt5AccountId = getCFDState('accountId') ?? '';
 
     const {

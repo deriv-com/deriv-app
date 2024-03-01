@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { AvailableP2PBalanceModal } from '@/components/Modals';
 import { useDevice } from '@/hooks';
 import { numberToCurrencyText } from '@/utils';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveAccount } from '@deriv/api-v2';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { ProfileDailyLimit } from '../ProfileDailyLimit';

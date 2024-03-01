@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { Modal } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
@@ -8,10 +7,15 @@ import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { MT5PasswordModal } from '@cfd/modals';
 import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen } from '@cfd/screens';
 import { useAvailableMT5Accounts } from '@deriv/api';
-import { Button, Text, useDevice } from '@deriv-com/ui';
+import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
 import { JurisdictionTncSection } from '../../screens/Jurisdiction/JurisdictionTncSection';
 
-const JurisdictionModal = () => {
+type TJurisdictionModal = {
+    isOpen: boolean;
+    onClose: () => void;
+};
+
+const JurisdictionModal = ({ isOpen, onClose }: TJurisdictionModal) => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
@@ -50,11 +54,20 @@ const JurisdictionModal = () => {
 
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
-            <Modal className='bg-background-primary-container bg-system-light-primary-background'>
-                {!isDynamicLeverageVisible ? <Modal.Header title={jurisdictionTitle} /> : null}
-                <Modal.Content
+            <Modal
+                ariaHideApp={false}
+                className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '
+                isOpen={isOpen}
+                onRequestClose={onClose}
+            >
+                {!isDynamicLeverageVisible ? (
+                    <Modal.Header onRequestClose={onClose}>
+                        <Text weight='bold'>{jurisdictionTitle}</Text>
+                    </Modal.Header>
+                ) : null}
+                <Modal.Body
                     className={twMerge(
-                        `sm:p-0 flex flex-col sm:relative sm:pb-[20rem] ${
+                        `p-0 flex flex-col relative min-h-0 overflow-auto ${
                             marketType === MarketType.FINANCIAL
                                 ? 'lg:w-[1200px] lg:h-[650px]'
                                 : 'lg:w-[1040px] lg:h-[592px]'
@@ -75,9 +88,9 @@ const JurisdictionModal = () => {
                         selectedJurisdiction={selectedJurisdiction}
                         setIsCheckBoxChecked={setIsCheckBoxChecked}
                     />
-                </Modal.Content>
+                </Modal.Body>
                 {!isDynamicLeverageVisible ? (
-                    <Modal.Footer className='bg-white sm:fixed sm:w-full'>
+                    <Modal.Footer className='bg-white sm:w-full lg:rounded-default'>
                         <Button
                             className='h-40 rounded-xs'
                             disabled={
@@ -96,4 +109,4 @@ const JurisdictionModal = () => {
     );
 };
 
-export default JurisdictionModal;
+export default memo(JurisdictionModal);

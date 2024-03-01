@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import {
     GetADerivAccountDialog,
     TradingAccountCard,
@@ -21,6 +21,7 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { setCfdState } = useCFDContext();
     const { show } = useModal();
+    const [isJurisdictionModalOpen, setIsJurisdictionModalOpen] = useState(false);
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 
@@ -30,10 +31,14 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
         if (!hasActiveDerivAccount) {
             setIsDerivedAccountModalOpen(true);
         }
-        !activeTradingAccount?.is_virtual && show(<JurisdictionModal />);
+        !activeTradingAccount?.is_virtual && setIsJurisdictionModalOpen(true);
         activeTradingAccount?.is_virtual && hasActiveDerivAccount && show(<MT5PasswordModal />);
     };
     const title = getCfdsAccountTitle(marketTypeDetails.title, activeTradingAccount?.is_virtual);
+
+    const handleOnClose = useCallback(() => {
+        setIsJurisdictionModalOpen(false);
+    }, [setIsJurisdictionModalOpen]);
 
     return (
         <Fragment>
@@ -47,6 +52,7 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
                 isOpen={isDerivedAccountModalOpen}
                 onClose={() => setIsDerivedAccountModalOpen(false)}
             />
+            <JurisdictionModal isOpen={isJurisdictionModalOpen} onClose={handleOnClose} />
         </Fragment>
     );
 };

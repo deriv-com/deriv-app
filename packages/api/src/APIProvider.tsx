@@ -30,6 +30,7 @@ type APIContextData = {
     send: TSendFunction;
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
+    queryClient: QueryClient;
 };
 
 const APIContext = createContext<APIContextData | null>(null);
@@ -200,7 +201,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     );
 
     useEffect(() => {
-        let interval_id: NodeJS.Timer;
+        let interval_id: ReturnType<typeof setInterval>;
 
         if (standalone) {
             interval_id = setInterval(() => standaloneDerivAPI.current?.send({ ping: 1 }), 10000);
@@ -229,6 +230,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
                 send,
                 subscribe,
                 unsubscribe,
+                queryClient,
             }}
         >
             <QueryClientProvider client={queryClient}>

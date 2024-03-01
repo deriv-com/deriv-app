@@ -1,82 +1,68 @@
 import React from 'react';
-import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import {
-    ContentSwitcher,
+    CFDSection,
     DemoRealSwitcher,
     OptionsAndMultipliersSection,
-    StaticLink,
+    RegulationSwitcherDesktop,
+    RegulationSwitcherMobile,
     TotalAssets,
-} from '../../components';
-import { CTraderList } from '../../features/cfd/components/CTraderList';
-import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
+    TradersHubContent,
+    useUIContext,
+} from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { useIsDIELEnabled } from '@deriv/api';
+import { Tab, Tabs, Text, useDevice } from '@deriv-com/ui';
 
 const TradersHubRoute = () => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
+    const { data: isDIEL } = useIsDIELEnabled();
+    const { uiState } = useUIContext();
+    const { accountType } = uiState;
+    const isReal = accountType === 'real';
+    const isDemo = accountType === 'demo';
+    const { hasActiveDerivAccount } = useRegulationFlags();
 
-    if (isMobile)
+    const isSwitcherVisible = isDIEL && isReal;
+    const isTotalAssetsVisible = hasActiveDerivAccount || isDemo;
+
+    if (!isDesktop)
         return (
-            <div className='p-800'>
-                <div className='pb-1200'>
-                    <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
-                    <DemoRealSwitcher />
+            <div className='p-16'>
+                <div className='flex items-end justify-between pb-24'>
+                    <div className='flex flex-col'>
+                        <Text className='pb-4' weight='bold'>
+                            Trader&apos;s Hub
+                        </Text>
+                        <DemoRealSwitcher />
+                    </div>
+                    {isSwitcherVisible && <RegulationSwitcherMobile />}
                 </div>
-                <div className='grid place-content-center pb-1200'>
-                    <TotalAssets />
-                </div>
-                <ContentSwitcher>
-                    <ContentSwitcher.HeaderList list={['Options & Multiplier', 'CFDs']} />
-                    <ContentSwitcher.PanelContainer>
+                <div />
+                <div className='grid pb-24 place-content-center'>{isTotalAssetsVisible && <TotalAssets />}</div>
+                <Tabs className='w-full p-4 rounded-sm'>
+                    <Tab className='px-8 py-6 rounded-xs' title='Options & Multipliers'>
                         <OptionsAndMultipliersSection />
-                    </ContentSwitcher.PanelContainer>
-                </ContentSwitcher>
+                    </Tab>
+                    <Tab className='px-8 py-6 rounded-xs' title='CFDs'>
+                        <CFDSection />
+                    </Tab>
+                </Tabs>
             </div>
         );
 
     return (
-        <div className='flex flex-col gap-1200'>
-            <div className='flex items-center justify-between align-start gap-100'>
-                <div className='flex flex-row gap-600'>
-                    <Heading.H3>Trader&apos;s Hub</Heading.H3>
+        <div className='space-y-24'>
+            <div className='grid justify-between grid-cols-3 gap-2 align-start'>
+                <div className='flex items-center gap-12'>
+                    <Text className='font-sans text-3xl ' weight='bold'>
+                        Trader&apos;s Hub
+                    </Text>
                     <DemoRealSwitcher />
                 </div>
-                <TotalAssets />
+                <div>{isSwitcherVisible && <RegulationSwitcherDesktop />}</div>
+                {isTotalAssetsVisible && <TotalAssets />}
             </div>
-            <OptionsAndMultipliersSection />
-
-            <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100'>
-                <div className='pb-1200'>
-                    <div className='flex items-center gap-200'>
-                        <Heading.H4>CFDs</Heading.H4>
-                        <Button className='no-underline' colorStyle='coral' size='sm' variant='tertiary'>
-                            Compare Accounts
-                        </Button>
-                    </div>
-                    <Text size='sm'>
-                        Trade with leverage and tight spreads for better returns on trades.
-                        <StaticLink size='md' staticUrl='/trade-types/cfds/'>
-                            Learn more
-                        </StaticLink>
-                    </Text>
-                </div>
-                <div className='flex flex-col gap-y-1200'>
-                    <div>
-                        <Text bold className='pb-800' size='md'>
-                            Deriv MT5
-                        </Text>
-                        <div className='grid grid-cols-1 sm:grid-cols-3 gap-1200'>
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                        </div>
-                    </div>
-                    <div className='grid grid-cols-1 sm:grid-cols-3 gap-1200'>
-                        <CTraderList />
-                    </div>
-                    <div className='grid grid-cols-1 sm:grid-cols-3 gap-1200'>
-                        <OtherCFDPlatformsList />
-                    </div>
-                </div>
-            </div>
+            <TradersHubContent />
         </div>
     );
 };

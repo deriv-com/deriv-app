@@ -1,23 +1,22 @@
 import React from 'react';
+import { UIProvider } from '@/components';
+import { CFDProvider, ModalProvider, RealAccountCreationProvider } from '@/providers';
 import { APIProvider } from '@deriv/api';
-import { Provider } from '@deriv/library';
-import { BreakpointProvider } from '@deriv/quill-design';
 import AppContent from './AppContent';
-import { ContentSwitcher } from './components';
 import './index.scss';
 
 const App = () => (
-    <APIProvider standalone>
-        <BreakpointProvider>
-            <Provider.ModalProvider>
-                <Provider.CFDProvider>
-                    <ContentSwitcher>
+    <UIProvider>
+        <APIProvider standalone>
+            <CFDProvider>
+                <ModalProvider>
+                    <RealAccountCreationProvider>
                         <AppContent />
-                    </ContentSwitcher>
-                </Provider.CFDProvider>
-            </Provider.ModalProvider>
-        </BreakpointProvider>
-    </APIProvider>
+                    </RealAccountCreationProvider>
+                </ModalProvider>
+            </CFDProvider>
+        </APIProvider>
+    </UIProvider>
 );
 
 export default App;

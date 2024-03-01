@@ -96,7 +96,6 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     form_error?: string;
     has_mt5_account: boolean;
     is_bvi: boolean;
-    is_mt5_migration_modal_enabled: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
     onCancel: () => void;
@@ -399,7 +398,6 @@ const CFDPasswordForm = observer(
         platform,
         should_set_trading_password,
         submitPassword,
-        is_mt5_migration_modal_enabled,
         validatePassword,
     }: TCFDPasswordFormProps) => {
         const { ui } = useStore();
@@ -409,10 +407,6 @@ const CFDPasswordForm = observer(
             if (error_type === 'PasswordReset') {
                 return localize('Try later');
             }
-            if (is_mt5_migration_modal_enabled) {
-                return localize('Move account(s)');
-            }
-
             return localize('Add account');
         }, [error_type]);
 
@@ -586,6 +580,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitCFDPassword,
         new_account_response,
         setMigratedMT5Accounts,
+        is_sent_email_modal_enabled,
+        setSentEmailModalStatus,
     } = useCfdStore();
 
     const history = useHistory();
@@ -600,7 +596,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         );
     const is_password_error = error_type === 'PasswordError';
     const is_password_reset = error_type === 'PasswordReset';
-    const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =
         getAuthenticationStatusInfo(account_status);
@@ -707,7 +702,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 redirect_to,
             },
         });
-        setIsSentEmailModalOpen(true);
+        setSentEmailModalStatus(true);
     };
 
     const submitPassword: TOnSubmitPassword = (values, actions) => {
@@ -737,7 +732,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const should_show_migration_success =
         should_show_success_modals && is_mt5_migration_modal_enabled && !is_populating_mt5_account_list;
 
-    const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
+    const should_show_sent_email_modal = is_sent_email_modal_enabled && is_password_modal_exited;
 
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
@@ -875,7 +870,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             platform={platform}
             is_dxtrade_allowed={is_dxtrade_allowed}
             onCancel={closeModal}
-            is_mt5_migration_modal_enabled={is_mt5_migration_modal_enabled}
         />
     );
 
@@ -959,7 +953,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             <SentEmailModal
                 is_open={should_show_sent_email_modal}
                 identifier_title='trading_password'
-                onClose={() => setIsSentEmailModalOpen(false)}
+                onClose={() => setSentEmailModalStatus(false)}
                 onClickSendEmail={handleForgotPassword}
             />
         </React.Fragment>

@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
-import { useCancelCryptoTransaction } from '@deriv/api';
-import { WalletText } from '../../../../../../components/Base';
+import { useCancelCryptoTransaction } from '@deriv/api-v2';
+import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
+import useDevice from '../../../../../../hooks/useDevice';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
@@ -16,6 +17,7 @@ type TCryptoTransaction = {
 
 const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: currency, transaction }) => {
     const { hide, show } = useModal();
+    const { isMobile } = useDevice();
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -23,6 +25,30 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
         mutate({ payload: { id: transaction.id } });
         hide();
     }, [hide, mutate, transaction.id]);
+
+    const onCancelTransactionButtonClick = useCallback(() => {
+        show(
+            <WalletActionModal
+                actionButtonsOptions={[
+                    {
+                        onClick: hide,
+                        text: "No, don't cancel",
+                    },
+                    {
+                        isPrimary: true,
+                        onClick: cancelTransaction,
+                        text: 'Yes, cancel',
+                    },
+                ]}
+                description='Are you sure you want to cancel this transaction?'
+                hideCloseButton={true}
+                title='Cancel transaction'
+            />,
+            {
+                defaultRootId: 'wallets_modal_root',
+            }
+        );
+    }, [cancelTransaction, hide, show]);
 
     return (
         <div className='wallets-crypto-transaction'>
@@ -42,29 +68,11 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     <WalletText lineHeight='2xs' size='2xs'>
                         {transaction.status_name}
                     </WalletText>
-                    {!!transaction.is_valid_to_cancel && (
+                    {!!transaction.is_valid_to_cancel && !isMobile && (
                         <button
                             className='wallets-crypto-transaction__cancel-button'
-                            onClick={() =>
-                                show(
-                                    <WalletActionModal
-                                        actionButtonsOptions={[
-                                            {
-                                                onClick: hide,
-                                                text: "No, don't cancel",
-                                            },
-                                            {
-                                                isPrimary: true,
-                                                onClick: cancelTransaction,
-                                                text: 'Yes, cancel',
-                                            },
-                                        ]}
-                                        description='Are you sure you want to cancel this transaction?'
-                                        hideCloseButton={true}
-                                        title='Cancel transaction'
-                                    />
-                                )
-                            }
+                            data-testid='dt-wallets-crypto-transactions-cancel-button'
+                            onClick={onCancelTransactionButtonClick}
                         >
                             <IcCrossLight />
                         </button>
@@ -109,6 +117,18 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                             {transaction.formatted_confirmations}
                         </span>
                     </WalletText>
+                </div>
+            )}
+            {!!transaction.is_valid_to_cancel && isMobile && (
+                <div className='wallets-crypto-transaction__cancel-button-container'>
+                    <WalletButton
+                        data-testid='dt-wallets-crypto-transactions-cancel-button'
+                        onClick={onCancelTransactionButtonClick}
+                        size='sm'
+                        variant='outlined'
+                    >
+                        Cancel transaction
+                    </WalletButton>
                 </div>
             )}
         </div>

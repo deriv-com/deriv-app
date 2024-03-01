@@ -1,30 +1,22 @@
 import React from 'react';
-import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Text, Icon, Money, StatusBadge } from '@deriv/components';
-import {
-    getCFDAccountDisplay,
-    getCFDAccountKey,
-    getCFDPlatformLabel,
-    getPlatformSettings,
-    getUrlBase,
-    MT5_ACCOUNT_STATUS,
-} from '@deriv/shared';
+import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
+import { getCFDAccountDisplay, getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { getPlatformMt5DownloadLink, getBrokerName } from '../Helpers/constants';
-import SpecBox from '../Components/specbox';
-import PasswordBox from '../Components/passwordbox';
+import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import MigrationBanner from './migration-banner';
+import MT5DesktopRedirectOption from './mt5-desktop-redirect-option';
+import MT5MobileRedirectOption from './mt5-mobile-redirect-option';
+import PasswordBox from '../Components/passwordbox';
+import SpecBox from '../Components/specbox';
+import { TCFDPasswordReset } from './props.types';
 import { TTradingPlatformAccounts } from '../Components/props.types';
 
-import { TCFDPasswordReset } from './props.types';
-import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
-
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid & {
-        webtrader_url?: string;
-    };
+    mt5_trade_account: DetailsOfEachMT5Loginid;
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -48,7 +40,7 @@ const DMT5TradeModal = observer(
         const {
             account_status: { authentication },
         } = client;
-
+        const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
         const getCompanyShortcode = () => {
             if (
                 (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -87,7 +79,6 @@ const DMT5TradeModal = observer(
                 poa_status: authentication?.document?.status,
             }
         );
-
         const has_migration_status = [
             MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
@@ -136,7 +127,7 @@ const DMT5TradeModal = observer(
                 <div className='cfd-trade-modal__login-specs'>
                     <div className='cfd-trade-modal__login-specs-item'>
                         <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                        <SpecBox is_bold is_broker value={getBrokerName()} />
+                        <SpecBox is_bold is_broker value={mt5_trade_account?.landing_company} />
                     </div>
                     <div className='cfd-trade-modal__login-specs-item'>
                         <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
@@ -184,113 +175,13 @@ const DMT5TradeModal = observer(
                         </div>
                     </div>
                 </div>
-                <div className='cfd-trade-modal__download-center-app'>
-                    <div className='cfd-trade-modal__download-center-app--option'>
-                        <Icon icon='IcRebrandingMt5Logo' size={32} />
-                        <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                            {localize('MetaTrader 5 web')}
-                        </Text>
-                        <a
-                            className='dc-btn cfd-trade-modal__download-center-app--option-link'
-                            type='button'
-                            href={mt5_trade_account.webtrader_url}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <Text size='xxs' weight='bold' color='prominent'>
-                                {localize('Open')}
-                            </Text>
-                        </a>
-                    </div>
-                    <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
-                        <Icon icon='IcWindowsLogo' size={32} />
-                        <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                            {localize('MetaTrader 5 Windows app')}
-                        </Text>
-                        <a
-                            className='dc-btn cfd-trade-modal__download-center-app--option-link'
-                            type='button'
-                            href={getPlatformMt5DownloadLink('windows')}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <Text size='xxs' weight='bold' color='prominent'>
-                                {localize('Download')}
-                            </Text>
-                        </a>
-                    </div>
-                    <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
-                        <Icon icon='IcMacosLogo' size={32} />
-                        <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                            {localize('MetaTrader 5 MacOS app')}
-                        </Text>
-                        <a
-                            className='dc-btn cfd-trade-modal__download-center-app--option-link'
-                            type='button'
-                            href={getPlatformMt5DownloadLink('macos')}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <Text size='xxs' weight='bold' color='prominent'>
-                                {localize('Download')}
-                            </Text>
-                        </a>
-                    </div>
-                    <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
-                        <Icon icon='IcLinuxLogo' size={32} />
-                        <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                            {localize('MetaTrader 5 Linux app')}
-                        </Text>
-                        <a
-                            className='dc-btn cfd-trade-modal__download-center-app--option-link'
-                            type='button'
-                            href={getPlatformMt5DownloadLink('linux')}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <Text size='xxs' weight='bold' color='prominent'>
-                                {localize('Learn more')}
-                            </Text>
-                        </a>
-                    </div>
-                </div>
-                <Text
-                    align='center'
-                    as='div'
-                    className='cfd-trade-modal__download-center-text'
-                    size={is_mobile ? 'xxxs' : 'xxs'}
-                    weight='bold'
-                >
-                    {localize(
-                        'Download {{ platform }} on your phone to trade with the {{ platform }} {{ account }} account',
-                        {
-                            platform: getCFDPlatformLabel(CFD_PLATFORMS.MT5),
-                            account: getAccountTitle(),
-                        }
-                    )}
-                </Text>
-                <div className='cfd-trade-modal__download-center-options'>
-                    <div className='cfd-trade-modal__download-center-options--mobile-links'>
-                        <a href={getPlatformMt5DownloadLink('ios')} target='_blank' rel='noopener noreferrer'>
-                            <Icon icon='IcInstallationApple' width={135} height={40} />
-                        </a>
-                        <a href={getPlatformMt5DownloadLink('android')} target='_blank' rel='noopener noreferrer'>
-                            <Icon icon='IcInstallationGoogle' width={135} height={40} />
-                        </a>
-                        <a href={getPlatformMt5DownloadLink('huawei')} target='_blank' rel='noopener noreferrer'>
-                            <Icon icon='IcInstallationHuawei' width={135} height={40} />
-                        </a>
-                    </div>
+                {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
 
-                    <div className='cfd-trade-modal__download-center-options--qrcode cfd-trade-modal__download-center-options--qrcode-hide'>
-                        <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
-                        <Text align='center' size='xxs'>
-                            {localize('Scan the QR code to download {{ platform }}.', {
-                                platform: getPlatformSettings('mt5').name,
-                            })}
-                        </Text>
-                    </div>
-                </div>
+                {is_mobile ? (
+                    <MT5MobileRedirectOption mt5_trade_account={mt5_trade_account} />
+                ) : (
+                    <MT5DesktopRedirectOption account_title={getAccountTitle()} mt5_trade_account={mt5_trade_account} />
+                )}
             </div>
         );
     }

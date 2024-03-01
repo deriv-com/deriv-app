@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { isDesktop, isMobile } from '@deriv/shared';
 import TermsOfUse from '../terms-of-use';
 
@@ -84,5 +85,28 @@ describe('<TermsOfUse/>', () => {
 
         const add_btn = screen.getByRole('button', { name: /add account/i });
         expect(add_btn).toBeInTheDocument();
+    });
+
+    it('should render FATCA declaration for accounts', () => {
+        render(<TermsOfUse {...mock_props} />);
+
+        const fatca_declaration = screen.getByText(/fatca declaration/i);
+        expect(fatca_declaration).toBeInTheDocument();
+
+        const fatca_declaration_points = screen.getAllByRole('listitem');
+        expect(fatca_declaration_points).toHaveLength(6);
+    });
+
+    it('should allow users to accept or reject FATCA declaration ', () => {
+        render(<TermsOfUse {...mock_props} />);
+        const el_fatca_form = screen.getByText('Please select*');
+
+        userEvent.click(el_fatca_form);
+
+        const el_fatca_accept = screen.getByText('Yes');
+        const el_fatca_reject = screen.getByText('No');
+
+        expect(el_fatca_accept).toBeInTheDocument();
+        expect(el_fatca_reject).toBeInTheDocument();
     });
 });

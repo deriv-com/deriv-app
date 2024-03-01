@@ -41,7 +41,7 @@ type TContractConfig = {
 
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 
-type TTextValueStrings = {
+export type TTextValueStrings = {
     text: string;
     value: string;
 };
@@ -180,14 +180,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
     [TRADE_TYPES.TURBOS.LONG]: {
-        title: localize('Long/Short'),
+        title: localize('Turbos'),
         trade_types: [CONTRACT_TYPES.TURBOS.LONG],
         basis: ['stake'],
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
     [TRADE_TYPES.TURBOS.SHORT]: {
-        title: localize('Long/Short'),
+        title: localize('Turbos'),
         trade_types: [CONTRACT_TYPES.TURBOS.SHORT],
         basis: ['stake'],
         barrier_count: 1,
@@ -219,6 +219,7 @@ export const getContractCategoriesConfig = () =>
             categories: [
                 TRADE_TYPES.RISE_FALL,
                 TRADE_TYPES.RISE_FALL_EQUAL,
+                TRADE_TYPES.HIGH_LOW,
                 TRADE_TYPES.RUN_HIGH_LOW,
                 TRADE_TYPES.RESET,
                 TRADE_TYPES.ASIAN,
@@ -227,7 +228,7 @@ export const getContractCategoriesConfig = () =>
         },
         'Highs & Lows': {
             name: localize('Highs & Lows'),
-            categories: [TRADE_TYPES.HIGH_LOW, TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
+            categories: [TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
         },
         'Ins & Outs': { name: localize('Ins & Outs'), categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
         'Look Backs': {
@@ -287,6 +288,7 @@ export const getCardLabels = () =>
         INDICATIVE_PRICE: localize('Indicative price:'),
         INITIAL_STAKE: localize('Initial stake:'),
         LOST: localize('Lost'),
+        MULTIPLIER: localize('Multiplier:'),
         PAYOUT: localize('Sell price:'),
         PURCHASE_PRICE: localize('Buy price:'),
         POTENTIAL_PAYOUT: localize('Payout limit:'),
@@ -400,26 +402,6 @@ export const getMarketNamesMap = () =>
 
 export const getUnsupportedContracts = () =>
     ({
-        TICKHIGH: {
-            name: localize('High Tick'),
-            position: 'top',
-        },
-        TICKLOW: {
-            name: localize('Low Tick'),
-            position: 'bottom',
-        },
-        LBFLOATCALL: {
-            name: localize('Close-to-Low'),
-            position: 'top',
-        },
-        LBFLOATPUT: {
-            name: localize('High-to-Close'),
-            position: 'top',
-        },
-        LBHIGHLOW: {
-            name: localize('High-to-Low'),
-            position: 'top',
-        },
         CALLSPREAD: {
             name: localize('Spread Up'),
             position: 'top',
@@ -549,13 +531,33 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
             name: localize('Asian Down'),
             position: 'bottom',
         },
-        RESETCALL: {
+        [CONTRACT_TYPES.TICK_HIGH_LOW.HIGH]: {
+            name: localize('High Tick'),
+            position: 'top',
+        },
+        [CONTRACT_TYPES.TICK_HIGH_LOW.LOW]: {
+            name: localize('Low Tick'),
+            position: 'bottom',
+        },
+        [CONTRACT_TYPES.RESET.CALL]: {
             name: localize('Reset Call'),
             position: 'top',
         },
-        RESETPUT: {
+        [CONTRACT_TYPES.RESET.PUT]: {
             name: localize('Reset Put'),
             position: 'bottom',
+        },
+        [CONTRACT_TYPES.LB_CALL]: {
+            name: localize('Close-Low'),
+            position: 'top',
+        },
+        [CONTRACT_TYPES.LB_PUT]: {
+            name: localize('High-Close'),
+            position: 'top',
+        },
+        [CONTRACT_TYPES.LB_HIGH_LOW]: {
+            name: localize('High-Low'),
+            position: 'top',
         },
         // To add a feature flag for a new trade_type, please add 'feature_flag' to its config here:
         // SHARKFIN: {
@@ -566,7 +568,7 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         // and also to DTRADER_FLAGS in FeatureFlagsStore, e.g.: sharkfin: false,
     } as const);
 
-export const TRADE_FEATURE_FLAGS = ['sharkfin'];
+export const TRADE_FEATURE_FLAGS = ['sharkfin', 'dtrader_v2'];
 
 export const getCleanedUpCategories = (categories: TTradeTypesCategories) => {
     const categories_copy: TTradeTypesCategories = cloneObject(categories);

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { useOnfido } from '@deriv/api';
+import { useOnfido } from '@deriv/api-v2';
 import { useFlow } from '../../../../components/FlowProvider';
 import { WalletsActionScreen } from '../../../../components/WalletsActionScreen';
 import POISubmittedIcon from '../../../../public/images/accounts/ic-poi-submitted.svg';

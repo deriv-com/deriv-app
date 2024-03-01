@@ -44,6 +44,9 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const has_active_real_account = useHasActiveRealAccount();
     const steps_list = Object.keys(contents).filter(key => is_mt5_allowed || key !== 'step3');
 
+    const url_params = new URLSearchParams(window.location.search);
+    const skip_onboarding_flow = url_params.get('skip-onboarding-flow') === 'true';
+
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
         useTradersHubTracking();
 
@@ -120,16 +123,18 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const footer_description = is_eu_user ? eu_footer_text : footer_text;
 
     useEffect(() => {
-        if (is_logged_in && is_landing_company_loaded) {
+        if (is_logged_in && is_landing_company_loaded && !skip_onboarding_flow) {
             trackOnboardingOpen();
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen]);
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
     }
 
-    if (is_logged_in && is_from_signup_account && is_eu_user) {
+    if ((is_logged_in && is_from_signup_account && is_eu_user) || skip_onboarding_flow) {
         history.push(routes.traders_hub);
     }
 

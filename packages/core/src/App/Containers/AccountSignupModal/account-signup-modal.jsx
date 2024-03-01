@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
 import { getLocation, SessionStore, shuffleArray } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv/stores';
@@ -18,6 +18,7 @@ import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import validateSignupFields from './validate-signup-fields.jsx';
 
 import 'Sass/app/modules/account-signup.scss';
+import { useGrowthbookFeatureFlag } from '@deriv/hooks';
 
 const AccountSignup = ({
     enableApp,
@@ -40,6 +41,12 @@ const AccountSignup = ({
     const [ab_questionnaire, setABQuestionnaire] = React.useState();
     const [modded_state, setModdedState] = React.useState({});
     const language = getLanguage();
+
+    // Growthbook ab/test experiment with onboarding flow
+    const growthbook_ab_test_skip_onboarding_flow = useGrowthbookFeatureFlag({
+        featureFlag: 'skip-onboarding-flow',
+        defaultValue: false,
+    });
 
     const checkResidenceIsBrazil = selected_country =>
         selected_country && residence_list[indexOfSelection(selected_country)]?.value?.toLowerCase() === 'br';
@@ -65,18 +72,18 @@ const AccountSignup = ({
         });
         // need to modify data from ab testing platform to reach translation and tracking needs
         const fetchQuestionnarieData = () => {
-            let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive');
+            let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive') || 'inactive';
             const default_ab_value = ab_value;
             ab_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;
             if (ab_value?.show_answers_in_random_order) {
                 ab_value = [
-                    { ...default_ab_value.default },
+                    { ...default_ab_value?.default },
                     {
                         ...ab_value,
-                        answers: shuffleArray(ab_value.answers),
+                        answers: shuffleArray(ab_value?.answers),
                     },
                 ];
-            } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value.default }, { ...ab_value }];
+            } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value?.default }, { ...ab_value }];
             return ab_value;
         };
         setABQuestionnaire(fetchQuestionnarieData());
@@ -126,6 +133,13 @@ const AccountSignup = ({
                 error_message: error,
             });
         } else {
+            // ======== Growthbook ab/test experiment with onboarding flow ========
+            const searchParams = new URLSearchParams(window.location.search);
+            searchParams.set('skip-onboarding-flow', growthbook_ab_test_skip_onboarding_flow);
+
+            window.history.pushState(null, '', `${window.location.pathname}?${searchParams.toString()}`);
+            // ====================================================================
+
             isModalVisible(false);
             setIsFromSignupAccount(true);
             SessionStore.remove('signup_query_param');

@@ -2,7 +2,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { StandaloneArrowUpFromBracketBoldIcon } from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
-import FormDocumentUploadField from '../../../components/FormFields/FormDocumentUploadField';
+import { FormDocumentUploadField } from '../../../components/FormFields';
 import CommonMistakesExamples from '../CommonMistakeExample/CommonMistakeExample';
 import { getExampleImagesConfig } from '../CommonMistakeExample/CommonMistakeExampleConfig';
 
@@ -14,7 +14,7 @@ const listItems = [
 
 const documentValidation = Yup.mixed().required('Please upload a file');
 
-const DocumentSubmission: React.FC = () => {
+export const DocumentSubmission: React.FC = () => {
     const { isMobile } = useDevice();
 
     return (
@@ -80,5 +80,3 @@ const DocumentSubmission: React.FC = () => {
         </div>
     );
 };
-
-export default DocumentSubmission;

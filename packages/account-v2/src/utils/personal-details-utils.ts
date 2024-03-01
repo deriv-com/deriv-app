@@ -46,10 +46,12 @@ export const getPersonalDetailsBaseValidationSchema = () => {
 };
 
 export const getNameDOBValidationSchema = () => {
-    return getPersonalDetailsBaseValidationSchema().pick([
-        'dateOfBirth',
-        'firstName',
-        'lastName',
-        'nameDOBConfirmation',
-    ]);
+    return getPersonalDetailsBaseValidationSchema()
+        .pick(['dateOfBirth', 'firstName', 'lastName', 'nameDOBConfirmation'])
+        .default(() => ({
+            dateOfBirth: '',
+            firstName: '',
+            lastName: '',
+            nameDOBConfirmation: false,
+        }));
 };

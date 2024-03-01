@@ -73,7 +73,7 @@ export const PersonalDetailsFormWithExample = () => {
                     <Text as='p' className='mt-2 mb-4' size='xs' weight='bold'>
                         Example:
                     </Text>
-                    <Suspense fallback={<Loader />}>
+                    <Suspense fallback={<Loader isFullScreen={false} />}>
                         <ExampleImage />
                     </Suspense>
                 </div>

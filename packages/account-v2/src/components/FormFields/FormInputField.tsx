@@ -1,5 +1,5 @@
 import React, { ComponentProps } from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '@deriv-com/ui';
 import { validateField } from '../../utils/validation';
@@ -20,17 +20,25 @@ type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'isFullWidth' | 'l
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-export const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
-    <Field name={name} validate={validateField(validationSchema)}>
-        {({ field, meta: { error, touched } }: FieldProps<string>) => (
-            <Input
-                {...field}
-                {...rest}
-                aria-label={rest.label}
-                autoComplete='off'
-                error={Boolean(error && touched)}
-                message={error ?? rest.message}
-            />
-        )}
-    </Field>
-);
+export const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => {
+    const formik = useFormikContext();
+
+    if (!formik) {
+        throw new Error('FormInputField must be used within a Formik component');
+    }
+
+    return (
+        <Field name={name} validate={validateField(validationSchema)}>
+            {({ field, meta: { error, touched } }: FieldProps<string>) => (
+                <Input
+                    {...field}
+                    {...rest}
+                    aria-label={rest.label}
+                    autoComplete='off'
+                    error={Boolean(error && touched)}
+                    message={error && touched ? error : rest.message}
+                />
+            )}
+        </Field>
+    );
+};

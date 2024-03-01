@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
-import { useRegulationFlags } from '@/hooks';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
@@ -10,22 +11,19 @@ import { useAvailableMT5Accounts } from '@deriv/api';
 import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
 import { JurisdictionTncSection } from '../../screens/Jurisdiction/JurisdictionTncSection';
 
-type TJurisdictionModal = {
-    isOpen: boolean;
-    onClose: () => void;
-};
-
-const JurisdictionModal = ({ isOpen, onClose }: TJurisdictionModal) => {
+const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
-
+    const query = useQueryParams();
+    const history = useHistory();
     const { show } = useModal();
     const { isEU } = useRegulationFlags();
     const { getCFDState, setCfdState } = useCFDContext();
 
     const { isLoading } = useAvailableMT5Accounts();
     const { isDesktop } = useDevice();
+    const isOpen = query.get('modal') === 'JurisdictionModal';
 
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
 
@@ -36,6 +34,15 @@ const JurisdictionModal = ({ isOpen, onClose }: TJurisdictionModal) => {
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
     const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
+
+    useEffect(() => {
+        if (!selectedJurisdiction) {
+            history.push({
+                pathname: history.location.pathname,
+                search: '',
+            });
+        }
+    }, [history, selectedJurisdiction]);
 
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === Jurisdiction.SVG) {
@@ -52,16 +59,23 @@ const JurisdictionModal = ({ isOpen, onClose }: TJurisdictionModal) => {
     // TODO: Add Loading Placeholder
     if (isLoading) return <Text weight='bold'>Loading...</Text>;
 
+    const handleClose = () => {
+        history.push({
+            pathname: history.location.pathname,
+            search: '',
+        });
+    };
+
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
             <Modal
                 ariaHideApp={false}
                 className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '
                 isOpen={isOpen}
-                onRequestClose={onClose}
+                onRequestClose={handleClose}
             >
                 {!isDynamicLeverageVisible ? (
-                    <Modal.Header onRequestClose={onClose}>
+                    <Modal.Header onRequestClose={handleClose}>
                         <Text weight='bold'>{jurisdictionTitle}</Text>
                     </Modal.Header>
                 ) : null}
@@ -92,7 +106,7 @@ const JurisdictionModal = ({ isOpen, onClose }: TJurisdictionModal) => {
                 {!isDynamicLeverageVisible ? (
                     <Modal.Footer className='bg-white sm:w-full lg:rounded-default'>
                         <Button
-                            className='h-40 rounded-xs'
+                            className='rounded-xs'
                             disabled={
                                 !selectedJurisdiction ||
                                 (selectedJurisdiction !== Jurisdiction.SVG && !isCheckBoxChecked)

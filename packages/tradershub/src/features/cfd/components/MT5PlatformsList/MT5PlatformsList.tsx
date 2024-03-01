@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { Fragment, useEffect, useMemo } from 'react';
 import { TradingAppCardLoader, useUIContext } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { THooks } from '@/types';

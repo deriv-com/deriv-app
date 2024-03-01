@@ -1,7 +1,7 @@
-import React, { ComponentProps, useCallback, useState } from 'react';
+import React, { ComponentProps, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Modal } from '@/components';
 import { useCFDContext } from '@/providers';
-import { JurisdictionModal } from '@cfd/modals';
 import { MT5AccountType } from '@cfd/screens';
 import { Button } from '@deriv-com/ui';
 
@@ -10,11 +10,11 @@ type TMarketTypes = ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 const MT5AccountTypeModal = () => {
     const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
     const { setCfdState } = useCFDContext();
-    const [isJurisdictionModalOpen, setIsJurisdictionModalOpen] = useState(false);
+    const history = useHistory();
 
-    const handleOnClose = useCallback(() => {
-        setIsJurisdictionModalOpen(false);
-    }, [setIsJurisdictionModalOpen]);
+    const queryParams = new URLSearchParams({
+        modal: 'JurisdictionModal',
+    });
 
     return (
         <>
@@ -28,18 +28,20 @@ const MT5AccountTypeModal = () => {
                 </Modal.Content>
                 <Modal.Footer>
                     <Button
-                        className='h-40 rounded-xs'
+                        className='rounded-xs'
                         disabled={!selectedMarketType}
                         onClick={() => {
                             setCfdState('marketType', selectedMarketType);
-                            setIsJurisdictionModalOpen(true);
+                            history.push({
+                                pathname: history.location.pathname,
+                                search: queryParams.toString(),
+                            });
                         }}
                     >
                         Next
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <JurisdictionModal isOpen={isJurisdictionModalOpen} onClose={handleOnClose} />
         </>
     );
 };

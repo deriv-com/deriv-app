@@ -1,12 +1,14 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, p2p } from '@deriv/api';
+import { APIProvider, AuthProvider, p2p } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PaymentMethodForm from '../PaymentMethodForm';
 
 const wrapper = ({ children }: PropsWithChildren<unknown>) => (
     <APIProvider>
-        <div id='v2_modal_root'>{children}</div>
+        <AuthProvider>
+            <div id='v2_modal_root'>{children}</div>
+        </AuthProvider>
     </APIProvider>
 );
 
@@ -18,7 +20,7 @@ const mockPaymentMethods = [
                 display_name: 'Account Number',
                 required: 1,
                 type: 'text',
-                value: 'Account Number',
+                value: '00112233445566778899',
             },
             bank_name: {
                 display_name: 'Bank Transfer',
@@ -27,7 +29,7 @@ const mockPaymentMethods = [
                 value: 'Bank Name',
             },
         },
-        id: 'bank',
+        id: 'bank_transfer',
         is_enabled: 0,
         method: 'bank_transfer',
         type: 'bank',
@@ -53,9 +55,9 @@ const mockPaymentMethods = [
     },
 ] as const;
 
-jest.mock('@deriv/api', () => {
+jest.mock('@deriv/api-v2', () => {
     return {
-        ...jest.requireActual('@deriv/api'),
+        ...jest.requireActual('@deriv/api-v2'),
         p2p: {
             advertiserPaymentMethods: {
                 useCreate: jest.fn(() => ({
@@ -98,27 +100,12 @@ describe('PaymentMethodForm', () => {
         expect(screen.getByText('Payment method')).toBeInTheDocument();
     });
     it('should render the component correctly when a selected payment method is provided', () => {
+        const otherPaymentMethod = mockPaymentMethods.find(method => method.type === 'other');
         render(
             <PaymentMethodForm
                 formState={{
                     actionType: 'EDIT',
-                    selectedPaymentMethod: {
-                        display_name: 'Other',
-                        fields: {
-                            account: {
-                                display_name: 'Account 1',
-                                required: 0,
-                                type: 'text',
-                                value: 'Account 1',
-                            },
-                        },
-                        id: 'other',
-                        is_enabled: 1,
-                        method: 'other',
-                        type: 'other',
-                        used_by_adverts: null,
-                        used_by_orders: null,
-                    },
+                    selectedPaymentMethod: otherPaymentMethod,
                     title: 'title',
                 }}
                 onAdd={jest.fn()}
@@ -126,7 +113,7 @@ describe('PaymentMethodForm', () => {
             />,
             { wrapper }
         );
-        expect(screen.getByText('Account 1')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('Account 1')).toBeInTheDocument();
     });
     it('should render the component correctly when a selected payment method is passed in with an undefined display name and an undefined value', () => {
         // This test covers the scenario where the display name and value "could be" undefined due to the types returned from the api-types package
@@ -165,10 +152,12 @@ describe('PaymentMethodForm', () => {
     });
     it('should handle the onclick event when the back arrow is clicked and the form is not dirty', () => {
         const onResetFormState = jest.fn();
+        const bankPaymentMethod = mockPaymentMethods.find(method => method.type === 'bank');
         render(
             <PaymentMethodForm
                 formState={{
                     actionType: 'ADD',
+                    selectedPaymentMethod: bankPaymentMethod,
                     title: 'title',
                 }}
                 onAdd={jest.fn()}
@@ -176,32 +165,19 @@ describe('PaymentMethodForm', () => {
             />,
             { wrapper }
         );
+        const inputField = screen.getByDisplayValue('00112233445566778899');
+        expect(inputField).toBeInTheDocument();
         const backArrow = screen.getByTestId('dt_p2p_v2_payment_methods_header_left_arrow_icon');
         userEvent.click(backArrow);
         expect(onResetFormState).toHaveBeenCalled();
     });
-    it('should display the close icon when a payment method is selected', () => {
+    it('should render the close icon when a payment method is selected', () => {
+        const otherPaymentMethod = mockPaymentMethods.find(method => method.type === 'other');
         render(
             <PaymentMethodForm
                 formState={{
                     actionType: 'ADD',
-                    selectedPaymentMethod: {
-                        display_name: 'Other',
-                        fields: {
-                            account: {
-                                display_name: 'Account 1',
-                                required: 0,
-                                type: 'text',
-                                value: 'Account 1',
-                            },
-                        },
-                        id: 'other',
-                        is_enabled: 1,
-                        method: 'other',
-                        type: 'other',
-                        used_by_adverts: null,
-                        used_by_orders: null,
-                    },
+                    selectedPaymentMethod: otherPaymentMethod,
                     title: 'title',
                 }}
                 onAdd={jest.fn()}
@@ -213,27 +189,12 @@ describe('PaymentMethodForm', () => {
     });
     it('should handle the onclick event when the close icon is clicked', () => {
         const onAdd = jest.fn();
+        const otherPaymentMethod = mockPaymentMethods.find(method => method.type === 'other');
         render(
             <PaymentMethodForm
                 formState={{
                     actionType: 'ADD',
-                    selectedPaymentMethod: {
-                        display_name: 'Other',
-                        fields: {
-                            account: {
-                                display_name: 'Account 1',
-                                required: 0,
-                                type: 'text',
-                                value: 'Account 1',
-                            },
-                        },
-                        id: 'other',
-                        is_enabled: 1,
-                        method: 'other',
-                        type: 'other',
-                        used_by_adverts: null,
-                        used_by_orders: null,
-                    },
+                    selectedPaymentMethod: otherPaymentMethod,
                     title: 'title',
                 }}
                 onAdd={onAdd}
@@ -262,7 +223,12 @@ describe('PaymentMethodForm', () => {
         userEvent.click(dropdown);
         const dropdownItem = screen.getByText('Bank Transfer');
         userEvent.click(dropdownItem);
-        expect(onAdd).toHaveBeenCalled();
+        const otherPaymentMethod = mockPaymentMethods.find(method => method.type === 'bank');
+        expect(onAdd).toHaveBeenCalledWith({
+            displayName: otherPaymentMethod?.display_name,
+            fields: otherPaymentMethod?.fields,
+            method: otherPaymentMethod?.method,
+        });
     });
     it('should handle onclick when the add new button is clicked', () => {
         const onAdd = jest.fn();
@@ -277,7 +243,7 @@ describe('PaymentMethodForm', () => {
             />,
             { wrapper }
         );
-        const addNewButton = screen.getByText('Add new.');
+        const addNewButton = screen.getByRole('button', { name: 'Add new.' });
         userEvent.click(addNewButton);
         const otherPaymentMethod = mockPaymentMethods.find(method => method.type === 'other');
         expect(onAdd).toHaveBeenCalledWith({
@@ -286,8 +252,8 @@ describe('PaymentMethodForm', () => {
             method: otherPaymentMethod?.method,
         });
     });
-    it('should reset the form when a payment method is successfully created', () => {
-        (mockUseCreate as jest.Mock).mockReturnValue({
+    it('should reset the form when usecreate returns issuccess set to true', () => {
+        (mockUseCreate as jest.Mock).mockReturnValueOnce({
             create: jest.fn(),
             isSuccess: true,
         });
@@ -305,21 +271,16 @@ describe('PaymentMethodForm', () => {
         );
         expect(onResetFormState).toHaveBeenCalled();
     });
-    it('should reset the form when a payment method is successfully updated', () => {
-        (mockUseCreate as jest.Mock).mockReturnValue({
-            create: jest.fn(),
-        });
-        (mockUseUpdate as jest.Mock).mockReturnValue({
+    it('should reset the form when useupdate returns issuccess set to true', () => {
+        (mockUseUpdate as jest.Mock).mockReturnValueOnce({
             isSuccess: true,
             update: jest.fn(),
         });
         const onResetFormState = jest.fn();
-        const otherPaymentMethod = mockPaymentMethods.find(method => method.type === 'other');
         render(
             <PaymentMethodForm
                 formState={{
                     actionType: 'EDIT',
-                    selectedPaymentMethod: otherPaymentMethod,
                     title: 'title',
                 }}
                 onAdd={jest.fn()}
@@ -330,11 +291,11 @@ describe('PaymentMethodForm', () => {
         expect(onResetFormState).toHaveBeenCalled();
     });
     it('should show the error modal when a payment method is not created successfully and close it when the ok button is clicked', () => {
-        (mockUseCreate as jest.Mock).mockReturnValue({
+        (mockUseCreate as jest.Mock).mockReturnValueOnce({
             create: jest.fn(),
             error: {
                 error: {
-                    message: 'Error',
+                    message: 'Error creating payment method',
                 },
             },
             isSuccess: false,
@@ -351,20 +312,17 @@ describe('PaymentMethodForm', () => {
             />,
             { wrapper }
         );
-        expect(screen.getByText('Error')).toBeInTheDocument();
-        const okButton = screen.getByText('Ok');
+        expect(screen.getByText('Error creating payment method')).toBeInTheDocument();
+        const okButton = screen.getByRole('button', { name: 'Ok' });
         expect(okButton).toBeInTheDocument();
         userEvent.click(okButton);
         expect(onResetFormState).toHaveBeenCalled();
     });
     it('should show the error modal when a payment method is not updated successfully and close it when the ok button is clicked', () => {
-        (mockUseCreate as jest.Mock).mockReturnValue({
-            create: jest.fn(),
-        });
-        (mockUseUpdate as jest.Mock).mockReturnValue({
+        (mockUseUpdate as jest.Mock).mockReturnValueOnce({
             error: {
                 error: {
-                    message: 'Error',
+                    message: 'Error updating payment method',
                 },
             },
             isSuccess: false,
@@ -384,8 +342,8 @@ describe('PaymentMethodForm', () => {
             />,
             { wrapper }
         );
-        expect(screen.getByText('Error')).toBeInTheDocument();
-        const okButton = screen.getByText('Ok');
+        expect(screen.getByText('Error updating payment method')).toBeInTheDocument();
+        const okButton = screen.getByRole('button', { name: 'Ok' });
         expect(okButton).toBeInTheDocument();
         userEvent.click(okButton);
         expect(onResetFormState).toHaveBeenCalled();
@@ -416,8 +374,9 @@ describe('PaymentMethodForm', () => {
             await userEvent.click(inputField);
             await userEvent.type(inputField, 'Account 2');
             await userEvent.tab();
-            const submitButton = screen.getByText('Add');
+            const submitButton = screen.getByRole('button', { name: 'Add' });
             expect(submitButton).toBeInTheDocument();
+            expect(submitButton).toBeEnabled();
             await userEvent.click(submitButton);
         });
         expect(create).toHaveBeenCalled();
@@ -450,6 +409,7 @@ describe('PaymentMethodForm', () => {
             await userEvent.tab();
             const submitButton = screen.getByText('Save changes');
             expect(submitButton).toBeInTheDocument();
+            expect(submitButton).toBeEnabled();
             await userEvent.click(submitButton);
         });
         expect(update).toHaveBeenCalled();
@@ -479,7 +439,7 @@ describe('PaymentMethodForm', () => {
         expect(backArrow).toBeInTheDocument();
         userEvent.click(backArrow);
         expect(screen.getByText('Cancel adding this payment method?')).toBeInTheDocument();
-        const dontCancelButton = screen.getByText('Go back');
+        const dontCancelButton = screen.getByRole('button', { name: 'Go back' });
         expect(dontCancelButton).toBeInTheDocument();
         userEvent.click(dontCancelButton);
         expect(screen.queryByText('Cancel adding this payment method?')).not.toBeInTheDocument();
@@ -509,7 +469,7 @@ describe('PaymentMethodForm', () => {
         expect(backArrow).toBeInTheDocument();
         userEvent.click(backArrow);
         expect(screen.getByText('Cancel your edits?')).toBeInTheDocument();
-        const dontCancelButton = screen.getByText("Don't cancel");
+        const dontCancelButton = screen.getByRole('button', { name: "Don't cancel" });
         expect(dontCancelButton).toBeInTheDocument();
         userEvent.click(dontCancelButton);
         expect(screen.queryByText('Cancel your edits?')).not.toBeInTheDocument();

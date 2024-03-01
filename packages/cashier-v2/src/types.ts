@@ -1,8 +1,9 @@
+import { FormatUtils } from '@deriv-com/utils';
 import { cashierPathRoutes } from './routes/Router';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace TRouteTypes {
-    export type TRoutes = typeof cashierPathRoutes[keyof typeof cashierPathRoutes];
+    export type TRoutes = typeof cashierPathRoutes[keyof typeof cashierPathRoutes] | '/reports/statement';
     export interface IRouteConfig {
         component: React.ComponentType<Omit<IRouteConfig, 'component'>>;
         icon?: React.ReactNode;
@@ -36,3 +37,5 @@ declare module 'react-router-dom' {
 
     export function useRouteMatch(path: TRouteTypes.TRoutes): boolean;
 }
+
+export type TCurrency = NonNullable<NonNullable<Parameters<typeof FormatUtils['formatMoney']>['1']>['currency']>;

@@ -44,13 +44,13 @@ describe('getIndicativePrice', () => {
         });
         expect(ContractUtils.getIndicativePrice(contract_info)).toEqual(12345);
     });
-    it("should return null if it doesn't have final price, bid_price and contract is not ended", () => {
+    it("should return zero if it doesn't have final price, bid_price and contract is not ended", () => {
         const contract_info = mockContractInfo({
             status: 'open',
             sell_price: 0,
             bid_price: 0,
         });
-        expect(ContractUtils.getIndicativePrice(contract_info)).toEqual(null);
+        expect(ContractUtils.getIndicativePrice(contract_info)).toEqual(0);
     });
     it("should return bid_price if it doesn't have final price, has bid_price and contract is not ended", () => {
         const contract_info = mockContractInfo({

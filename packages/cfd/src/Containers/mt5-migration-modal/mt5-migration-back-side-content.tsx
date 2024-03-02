@@ -30,7 +30,7 @@ const MT5MigrationBackSideContent = observer(() => {
         setAppstorePlatform(CFD_PLATFORMS.MT5);
         setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
         setMT5MigrationModalEnabled(true);
-        toggleMT5MigrationModal();
+        toggleMT5MigrationModal(false);
     };
 
     const onConfirmMigration = (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => {

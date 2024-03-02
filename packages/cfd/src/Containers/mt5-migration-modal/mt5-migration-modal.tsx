@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text, Dialog } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -32,13 +32,14 @@ const MT5MigrationModal = observer(() => {
     React.useEffect(() => {
         if (is_mt5_migration_modal_enabled) {
             setShowModalFrontSide(false);
+        } else {
+            setShowModalFrontSide(true);
         }
     }, [is_mt5_migration_modal_enabled, setShowModalFrontSide, is_mt5_migration_modal_open]);
 
     const closeModal = () => {
         setMT5MigrationModalEnabled(false);
-        setShowModalFrontSide(true);
-        toggleMT5MigrationModal();
+        toggleMT5MigrationModal(false);
     };
 
     return (
@@ -53,6 +54,7 @@ const MT5MigrationModal = observer(() => {
                         onConfirm={() => {
                             setMigrationError('');
                             closeModal();
+                            toggleMT5MigrationModal(true);
                         }}
                         disableApp={disableApp}
                         enableApp={enableApp}
@@ -61,8 +63,7 @@ const MT5MigrationModal = observer(() => {
                         is_visible={!!migration_error}
                         onClose={() => {
                             setMigrationError('');
-                            // setMT5MigrationModalEnabled(false); // new
-                            // setShowModalFrontSide(true); //new
+                            closeModal();
                         }}
                     >
                         <Localize i18n_default_text='{{migration_error}}' values={{ migration_error }} />
@@ -89,10 +90,7 @@ const MT5MigrationModal = observer(() => {
                             header_classname='mt5-migration-modal__mobile-header'
                             portal_id='deriv_app'
                             header={modal_title}
-                            onClickClose={() => {
-                                toggleMT5MigrationModal();
-                                setShowModalFrontSide(true);
-                            }}
+                            onClickClose={closeModal}
                             has_return_icon={!show_modal_front_side}
                             onReturn={() => setShowModalFrontSide(true)}
                         >

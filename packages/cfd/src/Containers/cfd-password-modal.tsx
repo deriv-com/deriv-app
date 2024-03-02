@@ -895,7 +895,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             is_bvi={is_bvi}
             closeModal={closeModal}
             error_type={error_type}
-            error_message={error_message}
+            error_message={error_type !== 'InvalidTradingPlatformPasswordFormat' ? error_message : ''}
             has_mt5_account={has_mt5_account}
             form_error={form_error}
             should_set_trading_password={should_set_trading_password}

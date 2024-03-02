@@ -175,6 +175,9 @@ const ResetTradingPassword = ({
                                             }}
                                         />
                                     </Text>
+                                    <Text as='p' size='xs' className='reset-trading-password__details'>
+                                        {localize('You can use this password for all your Deriv MT5 accounts.')}
+                                    </Text>
                                     <fieldset className='reset-trading-password__input-field'>
                                         <PasswordMeter
                                             input={values.password}
@@ -201,7 +204,7 @@ const ResetTradingPassword = ({
                                         </PasswordMeter>
                                     </fieldset>
                                     <Text as='p' size='xs' className='reset-trading-password__hint'>
-                                        <Localize i18n_default_text='Your password must contain at least 8 characters that include uppercase and lowercase letters, numbers and special characters such as (#, @, !)' />
+                                        <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
                                     </Text>
                                     <FormSubmitButton
                                         is_disabled={!values.password || !!errors.password || isSubmitting}

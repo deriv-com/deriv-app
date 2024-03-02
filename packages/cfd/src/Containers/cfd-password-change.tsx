@@ -41,8 +41,8 @@ const CFDPasswordChange = observer(
     }: TCFDPasswordChangeProps) => {
         const { ui, modules } = useStore();
         const { cfd } = modules;
-        const { setIsMt5PasswordChangedModalVisible } = cfd;
-        const { is_mobile } = ui;
+        const { setIsMt5PasswordChangedModalVisible, setIsFromMt5MigrationModal } = cfd;
+        const { is_mobile, is_mt5_migration_modal_enabled } = ui;
         const has_cancel_button = (isDesktop() ? !should_set_trading_password : true) || error_type === 'PasswordReset';
 
         const handleCancel = () => {
@@ -95,6 +95,7 @@ const CFDPasswordChange = observer(
             }
 
             if (!response.error) {
+                if (is_mt5_migration_modal_enabled) setIsFromMt5MigrationModal(true);
                 setIsMt5PasswordChangedModalVisible(true);
                 setNewPasswordValue?.(values.new_password);
                 onCancel();

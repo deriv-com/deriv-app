@@ -6,7 +6,10 @@ import MT5MigrationModalContent from './mt5-migration-modal-content';
 import { MT5MigrationModalContext } from './mt5-migration-modal-context';
 
 const MT5MigrationModal = observer(() => {
-    const { ui } = useStore();
+    const {
+        ui,
+        modules: { cfd },
+    } = useStore();
     const {
         disableApp,
         enableApp,
@@ -16,9 +19,8 @@ const MT5MigrationModal = observer(() => {
         setMT5MigrationModalEnabled,
         is_mt5_migration_modal_enabled,
     } = ui;
-
+    const { mt5_migration_error, setMT5MigrationError } = cfd;
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
-    const [migration_error, setMigrationError] = React.useState('');
     const modal_title = (
         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
             {show_modal_front_side ? (
@@ -28,7 +30,7 @@ const MT5MigrationModal = observer(() => {
             )}
         </Text>
     );
-    //new
+
     React.useEffect(() => {
         if (is_mt5_migration_modal_enabled) {
             setShowModalFrontSide(false);
@@ -45,28 +47,26 @@ const MT5MigrationModal = observer(() => {
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>
-                <MT5MigrationModalContext.Provider
-                    value={{ show_modal_front_side, setShowModalFrontSide, setMigrationError }}
-                >
+                <MT5MigrationModalContext.Provider value={{ show_modal_front_side, setShowModalFrontSide }}>
                     <Dialog
                         title={localize('Sorry for the interruption')}
                         confirm_button_text={localize('Try again')}
                         onConfirm={() => {
-                            setMigrationError('');
-                            closeModal();
+                            setMT5MigrationError('');
+                            setMT5MigrationModalEnabled(false);
                             toggleMT5MigrationModal(true);
                         }}
                         disableApp={disableApp}
                         enableApp={enableApp}
                         has_close_icon
                         className='mt5-migration-modal__error-dialog'
-                        is_visible={!!migration_error}
+                        is_visible={!!mt5_migration_error}
                         onClose={() => {
-                            setMigrationError('');
+                            setMT5MigrationError('');
                             closeModal();
                         }}
                     >
-                        <Localize i18n_default_text='{{migration_error}}' values={{ migration_error }} />
+                        <Localize i18n_default_text='{{mt5_migration_error}}' values={{ mt5_migration_error }} />
                     </Dialog>
                     <DesktopWrapper>
                         <Modal
@@ -74,7 +74,7 @@ const MT5MigrationModal = observer(() => {
                             disableApp={disableApp}
                             enableApp={enableApp}
                             exit_classname='cfd-modal--custom-exit'
-                            is_open={is_mt5_migration_modal_open}
+                            is_open={is_mt5_migration_modal_open && !mt5_migration_error}
                             title={modal_title}
                             toggleModal={closeModal}
                             width='58.8rem'

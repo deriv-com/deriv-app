@@ -219,15 +219,6 @@ const AppWrapper = observer(() => {
                                 ? 'You’ve successfully deleted a bot.'
                                 : 'You’ve successfully imported a bot.'
                         }
-                        components={[
-                            <a
-                                key={0}
-                                style={{ color: 'var(--general-main-1)' }}
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href={'/reports'}
-                            />,
-                        ]}
                     />
                 }
                 handleClose={() => setOpenSettings(toast_message, false)}

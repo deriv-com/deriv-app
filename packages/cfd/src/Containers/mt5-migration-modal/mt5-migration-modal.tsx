@@ -19,7 +19,7 @@ const MT5MigrationModal = observer(() => {
         setMT5MigrationModalEnabled,
         is_mt5_migration_modal_enabled,
     } = ui;
-    const { mt5_migration_error, setMT5MigrationError } = cfd;
+    const { mt5_migration_error, setMT5MigrationError, setIsFromMt5MigrationModal } = cfd;
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
     const modal_title = (
         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
@@ -41,6 +41,7 @@ const MT5MigrationModal = observer(() => {
 
     const closeModal = () => {
         setMT5MigrationModalEnabled(false);
+        setIsFromMt5MigrationModal(false);
         toggleMT5MigrationModal(false);
     };
 

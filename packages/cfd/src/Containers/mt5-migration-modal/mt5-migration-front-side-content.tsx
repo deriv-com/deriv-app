@@ -8,9 +8,14 @@ import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 
 const MT5MigrationFrontSideContent = observer(() => {
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_mobile, setMT5MigrationModalEnabled } = ui;
     const content_size = is_mobile ? 'xxs' : 'xs';
     const { setShowModalFrontSide } = useMT5MigrationModalContext();
+
+    const onConfirm = () => {
+        setShowModalFrontSide(false);
+        setMT5MigrationModalEnabled(true);
+    };
 
     return (
         <React.Fragment>
@@ -50,7 +55,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                 </div>
             </div>
             <Modal.Footer has_separator>
-                <Button type='button' has_effect large primary onClick={() => setShowModalFrontSide(false)}>
+                <Button type='button' has_effect large primary onClick={onConfirm}>
                     <Localize i18n_default_text='Next' />
                 </Button>
             </Modal.Footer>

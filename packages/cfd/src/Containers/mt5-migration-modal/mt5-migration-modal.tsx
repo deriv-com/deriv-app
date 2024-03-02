@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text, Dialog } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -14,20 +14,30 @@ const MT5MigrationModal = observer(() => {
         is_mobile,
         toggleMT5MigrationModal,
         setMT5MigrationModalEnabled,
+        is_mt5_migration_modal_enabled,
     } = ui;
 
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
     const [migration_error, setMigrationError] = React.useState('');
-
     const modal_title = (
         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
-            <Localize i18n_default_text='Upgrade your MT5 account' />
+            {show_modal_front_side ? (
+                <Localize i18n_default_text='Upgrade your MT5 account' />
+            ) : (
+                <Localize i18n_default_text='Enter your Deriv MT5 password' />
+            )}
         </Text>
     );
+    //new
+    React.useEffect(() => {
+        if (is_mt5_migration_modal_enabled) {
+            setShowModalFrontSide(false);
+        }
+    }, [is_mt5_migration_modal_enabled, setShowModalFrontSide, is_mt5_migration_modal_open]);
 
     const closeModal = () => {
-        setShowModalFrontSide(true);
         setMT5MigrationModalEnabled(false);
+        setShowModalFrontSide(true);
         toggleMT5MigrationModal();
     };
 
@@ -51,6 +61,8 @@ const MT5MigrationModal = observer(() => {
                         is_visible={!!migration_error}
                         onClose={() => {
                             setMigrationError('');
+                            // setMT5MigrationModalEnabled(false); // new
+                            // setShowModalFrontSide(true); //new
                         }}
                     >
                         <Localize i18n_default_text='{{migration_error}}' values={{ migration_error }} />

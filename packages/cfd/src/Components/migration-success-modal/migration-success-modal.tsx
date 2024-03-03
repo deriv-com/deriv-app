@@ -17,7 +17,7 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
     const { ui, client } = useStore();
     const { mt5_login_list } = client;
     const { is_mobile } = ui;
-    const { migrated_mt5_accounts } = useCfdStore();
+    const { migrated_mt5_accounts, setIsFromMt5MigrationModal } = useCfdStore();
 
     const has_migrated_mt5_accounts = !!migrated_mt5_accounts.length;
     const eligible_account_to_migrate = getFormattedJurisdictionCode(
@@ -36,6 +36,7 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
     );
 
     const directToCashier = () => {
+        setIsFromMt5MigrationModal(false);
         closeModal();
         if (!has_open_positions) {
             history.push(routes.cashier_acc_transfer);

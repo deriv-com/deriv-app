@@ -87,10 +87,7 @@ const MT5MigrationBackSideContent = observer(() => {
                         ) : (
                             <React.Fragment>
                                 <div className='mt5-migration-modal__password-header-container'>
-                                    {/* <Text as='p' weight='bold' size={header_size} align='center'>
-                                        <Localize i18n_default_text='Enter your Deriv MT5 password' />
-                                    </Text> */}
-                                    <Text as='p' size={content_size}>
+                                    <Text as='p' size={content_size} align=''>
                                         <Localize i18n_default_text='Enter your Deriv MT5 password to upgrade your account(s).' />
                                     </Text>
                                 </div>
@@ -113,7 +110,7 @@ const MT5MigrationBackSideContent = observer(() => {
                                 </div>
                                 <div className='mt5-migration-modal__password-hint'>
                                     <InlineMessage type='information' size='sm'>
-                                        <Text as='p' size={content_size}>
+                                        <Text as='p' size='xxs'>
                                             <Localize i18n_default_text="We've introduced additional password requirements to increase your account security. Your password should:" />
                                         </Text>
                                         <ul className='mt5-migration-modal__password-hint-items'>
@@ -129,7 +126,7 @@ const MT5MigrationBackSideContent = observer(() => {
                                                 </Text>
                                             </li>
                                         </ul>
-                                        <Text as='p' size={content_size}>
+                                        <Text as='p' size='xxs'>
                                             <Localize i18n_default_text="If your current password doesn't match these requirements, you'll need to create a new one in the next step." />
                                         </Text>
                                     </InlineMessage>

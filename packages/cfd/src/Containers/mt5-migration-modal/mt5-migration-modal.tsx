@@ -78,7 +78,7 @@ const MT5MigrationModal = observer(() => {
                             is_open={is_mt5_migration_modal_open && !mt5_migration_error}
                             title={modal_title}
                             toggleModal={closeModal}
-                            width='58.8rem'
+                            width={show_modal_front_side ? '58.8rem' : '43.2rem'}
                             has_return_icon={!show_modal_front_side}
                             onReturn={() => setShowModalFrontSide(true)}
                         >

@@ -19,7 +19,8 @@
         "deploy:production": "echo \"No deploy:production specified\"",
         "test:eslint": "eslint \"./src/**/*.?(ts|tsx|js|jsx)\"",
         "storybook": "start-storybook -p 6006",
-        "storybook:build": "build-storybook --output-dir .out"
+        "storybook:build": "build-storybook --output-dir .out",
+        "postbuild": "purgecss --css dist/appstore/css/*.css --content dist/appstore/js/*.js --output dist/appstore/css"
     },
     "author": "Deriv",
     "license": "Apache-2.0",

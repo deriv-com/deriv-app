@@ -82,57 +82,51 @@ const MT5MigrationBackSideContent = observer(() => {
             {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='mt5-migration-modal__container'>
-                        {isSubmitting ? (
-                            <Loading className='mt5-migration-modal__loading' />
-                        ) : (
-                            <React.Fragment>
-                                <div className='mt5-migration-modal__password-header-container'>
-                                    <Text as='p' size={content_size} align=''>
-                                        <Localize i18n_default_text='Enter your Deriv MT5 password to upgrade your account(s).' />
-                                    </Text>
-                                </div>
-                                <div className='mt5-migration-modal__password-input-container'>
-                                    <PasswordMeter
-                                        input={values.password}
-                                        has_error={touched.password && errors.password}
-                                        custom_feedback_messages={getErrorMessages().password_warnings}
-                                    >
-                                        <PasswordInput
-                                            autoComplete='off'
-                                            label={localize('Deriv MT5 password')}
-                                            error={touched.password && errors.password}
-                                            name='password'
-                                            value={values.password}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                        />
-                                    </PasswordMeter>
-                                </div>
-                                <div className='mt5-migration-modal__password-hint'>
-                                    <InlineMessage type='information' size='sm'>
-                                        <Text as='p' size='xxs'>
-                                            <Localize i18n_default_text="We've introduced additional password requirements to increase your account security. Your password should:" />
+                        <div className='mt5-migration-modal__password-header-container'>
+                            <Text as='p' size={content_size} align=''>
+                                <Localize i18n_default_text='Enter your Deriv MT5 password to upgrade your account(s).' />
+                            </Text>
+                        </div>
+                        <div className='mt5-migration-modal__password-input-container'>
+                            <PasswordMeter
+                                input={values.password}
+                                has_error={touched.password && errors.password}
+                                custom_feedback_messages={getErrorMessages().password_warnings}
+                            >
+                                <PasswordInput
+                                    autoComplete='off'
+                                    label={localize('Deriv MT5 password')}
+                                    error={touched.password && errors.password}
+                                    name='password'
+                                    value={values.password}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                />
+                            </PasswordMeter>
+                        </div>
+                        <div className='mt5-migration-modal__password-hint'>
+                            <InlineMessage type='information' size='sm'>
+                                <Text as='p' size='xxs'>
+                                    <Localize i18n_default_text="We've introduced additional password requirements to increase your account security. Your password should:" />
+                                </Text>
+                                <ul className='mt5-migration-modal__password-hint-items'>
+                                    <li>
+                                        <Text as='p' size='xxs' weight='bold'>
+                                            <Localize i18n_default_text='Be between 8 to 16 characters.' />
                                         </Text>
-                                        <ul className='mt5-migration-modal__password-hint-items'>
-                                            <li>
-                                                <Text as='p' size='xxs' weight='bold'>
-                                                    <Localize i18n_default_text='Be between 8 to 16 characters.' />
-                                                </Text>
-                                            </li>
+                                    </li>
 
-                                            <li>
-                                                <Text as='p' size='xxs' weight='bold'>
-                                                    <Localize i18n_default_text='Contain at least one special character.' />
-                                                </Text>
-                                            </li>
-                                        </ul>
-                                        <Text as='p' size='xxs'>
-                                            <Localize i18n_default_text="If your current password doesn't match these requirements, you'll need to create a new one in the next step." />
+                                    <li>
+                                        <Text as='p' size='xxs' weight='bold'>
+                                            <Localize i18n_default_text='Contain at least one special character.' />
                                         </Text>
-                                    </InlineMessage>
-                                </div>
-                            </React.Fragment>
-                        )}
+                                    </li>
+                                </ul>
+                                <Text as='p' size='xxs'>
+                                    <Localize i18n_default_text="If your current password doesn't match these requirements, you'll need to create a new one in the next step." />
+                                </Text>
+                            </InlineMessage>
+                        </div>
                     </div>
                     <Modal.Footer>
                         <FormSubmitButton
@@ -142,6 +136,7 @@ const MT5MigrationBackSideContent = observer(() => {
                             has_cancel
                             onCancel={onForgotPassword}
                             cancel_label={localize('Forgot password?')}
+                            is_loading={isSubmitting}
                         />
                     </Modal.Footer>
                 </form>

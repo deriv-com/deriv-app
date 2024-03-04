@@ -382,8 +382,6 @@ export default class CFDStore extends BaseStore {
             if (!has_error) {
                 actions?.setStatus({ error_message: '' });
                 this.setError(false);
-                // this.root_store.ui.toggleMT5MigrationModal();
-
                 this.setCFDSuccessDialog(true);
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
 

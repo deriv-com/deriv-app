@@ -19,8 +19,7 @@
         "deploy:production": "echo \"No deploy:production specified\"",
         "test:eslint": "eslint \"./src/**/*.?(ts|tsx|js|jsx)\"",
         "storybook": "start-storybook -p 6006",
-        "storybook:build": "build-storybook --output-dir .out",
-        "postbuild": "purgecss --css dist/appstore/css/*.css --content dist/appstore/js/*.js --output dist/appstore/css"
+        "storybook:build": "build-storybook --output-dir .out"
     },
     "author": "Deriv",
     "license": "Apache-2.0",
@@ -47,7 +46,6 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
-        "@fullhuman/postcss-purgecss": "^5.0.0",
         "@deriv/publisher": "^0.0.1-beta4",
         "@storybook/addon-docs": "^6.5.10",
         "@storybook/addon-essentials": "^6.5.10",
@@ -72,7 +70,6 @@
         "lint-staged": "^10.4.0",
         "mini-css-extract-plugin": "^1.3.4",
         "sass": "^1.62.1",
-        "postcss": "^8.4.24",
         "postcss-loader": "^6.2.1",
         "postcss-preset-env": "^7.4.3",
         "postcss-scss": "^4.0.6",

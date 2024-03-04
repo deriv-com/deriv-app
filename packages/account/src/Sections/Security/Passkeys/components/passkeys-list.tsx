@@ -6,8 +6,8 @@ import PasskeysFooterButtons from 'Sections/Security/Passkeys/components/passkey
 
 type TPasskeysList = {
     passkeys_list: React.ComponentProps<typeof PasskeyCard>[];
-    onPrimaryButtonClick: () => void;
-    onSecondaryButtonClick: () => void;
+    onPrimaryButtonClick: React.MouseEventHandler<HTMLButtonElement>;
+    onSecondaryButtonClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 const PasskeysList = ({ passkeys_list, onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysList) => (

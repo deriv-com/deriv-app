@@ -20,17 +20,12 @@ describe('DescriptionContainer', () => {
         const description_5 =
             'Even if you change your email address, you can still continue to log in to your Deriv account with the same passkey.';
 
+        const questions = [question_1, question_2, question_3, question_4, question_5];
+        const descriptions = [description_1, description_2, description_3, description_4, description_5];
+
         render(<DescriptionContainer />);
 
-        expect(screen.getByText(question_1)).toBeInTheDocument();
-        expect(screen.getByText(question_2)).toBeInTheDocument();
-        expect(screen.getByText(question_3)).toBeInTheDocument();
-        expect(screen.getByText(question_4)).toBeInTheDocument();
-        expect(screen.getByText(question_5)).toBeInTheDocument();
-        expect(screen.getByText(description_1)).toBeInTheDocument();
-        expect(screen.getByText(description_2)).toBeInTheDocument();
-        expect(screen.getByText(description_3)).toBeInTheDocument();
-        expect(screen.getByText(description_4)).toBeInTheDocument();
-        expect(screen.getByText(description_5)).toBeInTheDocument();
+        questions.forEach(question => expect(screen.getByText(question)).toBeInTheDocument());
+        descriptions.forEach(description => expect(screen.getByText(description)).toBeInTheDocument());
     });
 });

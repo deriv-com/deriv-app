@@ -78,13 +78,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const history = useHistory();
     const { is_next_wallet_enabled } = useFeatureFlags();
 
-    const should_remove_passkeys_route = !is_mobile || !is_passkey_supported;
-
     React.useEffect(() => {
         const processRoutes = () => {
             if (is_passkey_support_checking) return;
             let routes_config = getRoutesConfig({});
 
+            const should_remove_passkeys_route = !is_mobile || !is_passkey_supported;
             if (should_remove_passkeys_route) {
                 routes_config = removeExactRouteFromRoutes(routes_config, 'passkeys');
             }
@@ -112,8 +111,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         should_allow_authentication,
         is_trading_hub_category,
         is_next_wallet_enabled,
-        should_remove_passkeys_route,
         is_passkey_support_checking,
+        is_mobile,
+        is_passkey_supported,
     ]);
 
     const toggleDrawer = React.useCallback(() => {

@@ -5,7 +5,7 @@ type TPasskeyModal = {
     header?: React.ReactElement;
     description?: React.ReactElement | string;
     button_text: React.ReactElement;
-    onButtonClick: () => void;
+    onButtonClick: React.MouseEventHandler<HTMLButtonElement>;
     is_modal_open: boolean;
     className?: string;
     transition_timeout?: number;

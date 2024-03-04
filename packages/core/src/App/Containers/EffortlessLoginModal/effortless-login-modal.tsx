@@ -47,15 +47,8 @@ const EffortlessLoginModal = () => {
 
             <FormBody scroll_offset='15rem' className='effortless-login-modal__wrapper'>
                 <Icon icon='IcInfoPasskey' size={96} />
-                <Text
-                    as='div'
-                    color='general'
-                    weight='bold'
-                    size='s'
-                    align='center'
-                    className='effortless-login-modal__title'
-                >
-                    Effortless login with passkeys
+                <Text as='div' color='general' weight='bold' align='center' className='effortless-login-modal__title'>
+                    <Localize i18n_default_text='Effortless login with passkeys' />
                 </Text>
                 {is_learn_more_opened ? (
                     <EffortlessLoginDescription />

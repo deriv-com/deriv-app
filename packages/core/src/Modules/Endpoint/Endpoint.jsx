@@ -100,7 +100,6 @@ const Endpoint = () => {
                         is_disabled={
                             !!(
                                 (!touched.server && !touched.app_id && !touched.is_debug_service_worker_enabled) ||
-                                (!touched.server && !touched.app_id && !touched.is_debug_service_worker_enabled) ||
                                 !values.server ||
                                 !values.app_id ||
                                 errors.server ||

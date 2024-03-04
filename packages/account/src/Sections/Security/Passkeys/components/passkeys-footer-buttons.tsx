@@ -4,9 +4,9 @@ import FormFooter from '../../../../Components/form-footer';
 
 type TPasskeysFooterButtons = {
     primary_button_text: React.ReactElement;
-    onPrimaryButtonClick: () => void;
+    onPrimaryButtonClick: React.MouseEventHandler<HTMLButtonElement>;
     secondary_button_text?: React.ReactElement;
-    onSecondaryButtonClick?: () => void;
+    onSecondaryButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 const PasskeysFooterButtons = ({

@@ -30,8 +30,9 @@ const JurisdictionTncSection = ({
 }: TJurisdictionTncSectionProps) => {
     const { getDerivStaticURL } = URLUtils;
     const { isDesktop } = useDevice();
-    const { getCFDState } = useCFDContext();
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const { cfdState } = useCFDContext();
+    const { marketType: marketTypeState } = cfdState;
+    const marketType = marketTypeState ?? MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (

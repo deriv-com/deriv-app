@@ -1,1 +1,1 @@
-export { ManualUpload } from './manual-upload';
+export { ManualUpload } from './ManualUpload';

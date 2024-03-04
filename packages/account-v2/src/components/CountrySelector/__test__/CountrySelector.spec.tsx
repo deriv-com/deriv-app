@@ -2,7 +2,7 @@ import React from 'react';
 import { APIProvider, useResidenceList } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CountrySelector from '../CountrySelector';
+import { CountrySelector } from '../CountrySelector';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

@@ -4,7 +4,7 @@ import { TAdvertiserStats } from 'types';
 import { Text, useDevice } from '@deriv-com/ui';
 import './ProfileStats.scss';
 
-const ProfileStats = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
+const ProfileStats = ({ advertiserStats }: { advertiserStats: Partial<TAdvertiserStats> }) => {
     const { isMobile } = useDevice();
 
     const advertiserStatsList = useMemo(() => {

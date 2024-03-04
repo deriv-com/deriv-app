@@ -1,5 +1,6 @@
 import React from 'react';
-import { TradingAppCardLoader, useUIContext } from '@/components';
+import { TradingAppCardLoader } from '@/components';
+import { useUIContext } from '@/providers';
 import { THooks } from '@/types';
 import { CFDPlatformLayout } from '@cfd/components';
 import { PlatformDetails } from '@cfd/constants';

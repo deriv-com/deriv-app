@@ -1,7 +1,7 @@
 import React from 'react';
-import { Provider } from '@deriv/library';
+import { ButtonGroup, Modal, SentEmailContent } from '@/components';
+import { useCFDContext, useModal } from '@/providers';
 import { Button } from '@deriv-com/ui';
-import { ButtonGroup, Modal, SentEmailContent } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import DxtradeCreateAccountButton from '../DxtradePasswordModal/DxtradeCreateAccountButton';
 import MT5CreateAccountButton from '../MT5PasswordModal/MT5CreateAccountButton';
@@ -11,9 +11,9 @@ type TAddAccountButtonsGroupProps = {
 };
 
 const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
-    const { show } = Provider.useModal();
-    const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform');
+    const { show } = useModal();
+    const { cfdState } = useCFDContext();
+    const { platform } = cfdState;
 
     return (
         <ButtonGroup className='w-full'>

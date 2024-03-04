@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import { Field } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import { StandaloneArrowDownBoldIcon } from '@deriv/quill-icons';
 import { Input, Text, useDevice } from '@deriv-com/ui';
+import { getTransferValidationSchema } from '../../../../utils';
 import styles from './TransferAmountConverter.module.scss';
 
 const TransferAmountConverter = ({ fromAccount, toAccount }) => {
     const { isMobile } = useDevice();
     const [isFromInputActive, setIsFromInputActive] = useState(true);
+    const { errors, handleChange } = useFormikContext();
 
     return (
         <div className={styles.container}>
             <Field name='fromAmount'>
-                {({ field }) => (
+                {({ field }: FieldProps) => (
                     <Input
+                        {...field}
+                        error={Boolean(errors.cryptoAmount)}
                         isFullWidth={fromAccount.currency !== toAccount.currency}
                         label={`Amount (${fromAccount.currency})`}
-                        message={
-                            <Text color='less-prominent' size={isMobile ? 'sm' : 'xs'}>
-                                Approximate Values
-                            </Text>
-                        }
+                        message={errors.fromAmount}
+                        onChange={handleChange}
                         onFocus={() => {
                             setIsFromInputActive(true);
                         }}
+                        type='text'
                     />
                 )}
             </Field>
@@ -36,15 +38,14 @@ const TransferAmountConverter = ({ fromAccount, toAccount }) => {
                         />
                     </div>
                     <Field name='toAmount'>
-                        {({ field }) => (
+                        {({ field }: FieldProps) => (
                             <Input
+                                {...field}
+                                error={Boolean(errors.cryptoAmount)}
                                 isFullWidth
                                 label={`Amount (${toAccount.currency})`}
-                                message={
-                                    <Text color='less-prominent' size={isMobile ? 'sm' : 'xs'}>
-                                        Approximate Values
-                                    </Text>
-                                }
+                                message={errors.toAmount ?? 'Approximate Values'}
+                                onChange={handleChange}
                                 onFocus={() => {
                                     setIsFromInputActive(false);
                                 }}

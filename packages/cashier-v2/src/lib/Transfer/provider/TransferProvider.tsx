@@ -2,16 +2,19 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv/api';
 import { THooks } from '../../../hooks/types';
 import { useExtendedTransferAccounts } from '../hooks';
+import { getTransferValidationSchema } from '../utils';
 
-type TTransferAccount = ReturnType<typeof useExtendedTransferAccounts>['accounts'][number];
+type TExtendedTransferAccount = ReturnType<typeof useExtendedTransferAccounts>;
 
-type TFromAccount = ReturnType<typeof useExtendedTransferAccounts>['activeAccount'] | TTransferAccount;
+type TFromAccount =
+    | ReturnType<typeof useExtendedTransferAccounts>['activeAccount']
+    | TExtendedTransferAccount['accounts'][number];
 
 export type TTransferContext = {
     accounts?: ReturnType<typeof useExtendedTransferAccounts>['accounts'];
     fromAccount?: TFromAccount;
     isLoading?: boolean;
-    setFromAccount: React.Dispatch<React.SetStateAction<TTransferAccount>>;
+    setFromAccount: React.Dispatch<React.SetStateAction<TExtendedTransferAccount['accounts'][number]>>;
     toAccount?: ReturnType<typeof useExtendedTransferAccounts>['accounts'][number];
 };
 
@@ -27,13 +30,13 @@ export const useTransfer = () => {
     return context;
 };
 
-type TProps = {
+type TTransferProviderProps = {
     accounts: THooks.TransferAccount;
 };
 
 const getInitialToAccount = (
-    accounts: ReturnType<typeof useExtendedTransferAccounts>['accounts'],
-    activeAccount: ReturnType<typeof useExtendedTransferAccounts>['activeAccount']
+    accounts: TExtendedTransferAccount['accounts'],
+    activeAccount: TExtendedTransferAccount['activeAccount']
 ) => {
     if (!accounts || !activeAccount) return;
 
@@ -42,18 +45,34 @@ const getInitialToAccount = (
     return accounts[1];
 };
 
-const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts, children }) => {
+const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>> = ({ accounts, children }) => {
     const {
         accounts: transferAccounts,
         activeAccount,
         isLoading: isExtendedTransferAccountsLoading,
     } = useExtendedTransferAccounts(accounts);
     const { data: exchangeRates, isLoading: isExchangeRateLoading } = useExchangeRateSubscription();
-    const [fromAccount, setFromAccount] = useState<TTransferContext['fromAccount']>(activeAccount);
-    const [toAccount, setToAccount] = useState<TTransferContext['toAccount']>(
+    const [fromAccount, setFromAccount] = useState<
+        TExtendedTransferAccount['accounts'][number] | TExtendedTransferAccount['activeAccount']
+    >(activeAccount);
+    const [toAccount, setToAccount] = useState<TExtendedTransferAccount['accounts'][number]>(
         getInitialToAccount(transferAccounts, activeAccount)
     );
-
+    const validationSchema = getTransferValidationSchema({
+        fromAccount: {
+            balance: parseFloat(fromAccount?.balance ?? '0'),
+            currency: fromAccount?.currency,
+            fractionalDigits: fromAccount?.currencyConfig?.fractional_digits,
+            limits: {
+                max: 1000,
+                min: 1,
+            },
+        },
+        toAccount: {
+            currency: toAccount?.currency,
+            fractionalDigits: toAccount?.currencyConfig?.fractional_digits,
+        },
+    });
     const isLoading = isExtendedTransferAccountsLoading || isExchangeRateLoading;
 
     // console.log('=> rerender');
@@ -68,6 +87,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts,
                 setFromAccount,
                 setToAccount,
                 toAccount,
+                validationSchema,
             }}
         >
             {children}

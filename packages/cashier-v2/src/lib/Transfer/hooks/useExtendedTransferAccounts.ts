@@ -6,71 +6,66 @@ type TGetCurrencyConfig = ReturnType<typeof useCurrencyConfig>['getConfig'];
 
 const sortedMT5Accounts = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
     return [
-        ...accounts.filter(account => {
-            if (account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'synthetic')
-                return {
-                    ...account,
-                    currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-                };
-        }),
-        ...accounts.filter(account => {
-            if (account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'financial')
-                return {
-                    ...account,
-                    currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-                };
-        }),
-        ...accounts.filter(account => {
-            if (account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'all')
-                return {
-                    ...account,
-                    currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-                };
-        }),
+        ...accounts
+            .filter(account => account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'synthetic')
+            .map(account => ({
+                ...account,
+                currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
+            })),
+        ...accounts
+            .filter(account => {
+                account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'financial';
+            })
+            .map(account => ({
+                ...account,
+                currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
+            })),
+        ...accounts
+            .filter(account => account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'all')
+            .map(account => ({
+                ...account,
+                currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
+            })),
     ];
 };
 
 const derivCTrader = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
-    return accounts.filter(account => {
-        if (account.account_type === 'ctrader')
-            return {
-                ...account,
-                currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-            };
-    });
+    return accounts
+        .filter(account => account.account_type === 'ctrader')
+        .map(account => ({
+            ...account,
+            currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
+        }));
 };
 
-const derivXAccount = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
-    return accounts.filter(account => {
-        if (account.account_type === 'dxtrade')
-            return {
-                ...account,
-                currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-            };
-    });
-};
+const derivXAccount = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) =>
+    accounts
+        .filter(account => account.account_type === 'dxtrade')
+        .map(account => ({
+            ...account,
+            currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
+        }));
 
 const fiatDerivAccounts = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
-    return accounts.filter(account => {
-        const config = getConfig(account.currency);
-
-        if (account.account_type === 'binary' && config?.is_fiat)
-            return {
-                ...account,
-                currencyConfig: account?.currency ? config : undefined,
-            };
-    });
+    return accounts
+        .filter(
+            account => account.account_type === 'binary' && account.currency && getConfig(account.currency)?.is_fiat
+        )
+        .map(account => ({
+            ...account,
+            currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
+        }));
 };
 
 const sortedCryptoDerivAccounts = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
     return accounts
-        .filter(account => {
-            if (account.account_type === 'binary' && account.currency && getConfig(account.currency)?.is_crypto)
-                return {
-                    ...account,
-                    currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-                };
-        })
+        .filter(
+            account => account.account_type === 'binary' && account.currency && getConfig(account.currency)?.is_crypto
+        )
+        .map(account => ({
+            ...account,
+            currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
+        }))
         .sort((prev, next) => {
             if (prev.currency && next.currency) return prev.currency.localeCompare(next.currency);
         });
@@ -100,9 +95,14 @@ const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccount) =>
 
     const transferableActiveAccount =
         !!extendedTransferableAccounts || !isLoading
-            ? extendedTransferableAccounts?.find(
-                  (account: typeof extendedTransferableAccounts[number]) => account.loginid === activeAccount?.loginid
-              )
+            ? extendedTransferableAccounts?.find((account: typeof extendedTransferableAccounts[number]) => {
+                  if (account.loginid === activeAccount?.loginid) {
+                      return {
+                          ...activeAccount,
+                          currencyConfig: activeAccount?.currency ? getConfig(activeAccount.currency) : undefined,
+                      };
+                  }
+              })
             : undefined;
 
     return {

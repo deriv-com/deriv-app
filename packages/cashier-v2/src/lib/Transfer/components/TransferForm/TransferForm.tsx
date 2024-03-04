@@ -9,18 +9,19 @@ import styles from './TransferForm.module.scss';
 
 const TransferForm = () => {
     const history = useHistory();
-    const { accounts, fromAccount, isLoading, setFromAccount, toAccount } = useTransfer();
+    const { accounts, fromAccount, isLoading, setFromAccount, toAccount, validationSchema } = useTransfer();
 
     if (isLoading) return <Loader />;
 
     return (
         <Formik
             initialValues={{
-                cryptoAmount: '',
-                fiatAmount: '',
+                fromAmount: '',
+                toAmount: '',
             }}
+            validationSchema={validationSchema}
         >
-            {() => {
+            {({ errors, handleChange }) => {
                 return (
                     <div className={styles.container}>
                         <Text className={styles.title} weight='bold'>

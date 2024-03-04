@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
+import { Regulation } from '@/constants';
+import { useUIContext } from '@/providers';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { useUIContext } from '../components';
-import { Regulation } from '../constants/constants';
 import useRegulationFlags from './useRegulationFlags';
 
 /**

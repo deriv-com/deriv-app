@@ -18,11 +18,11 @@ import ArrowIndicator from '../../arrow-indicator';
 
 export type TContractCardBodyProps = {
     is_accumulator?: boolean;
+    is_lookbacks?: boolean;
     is_multiplier: boolean;
-    server_time: moment.Moment;
     is_turbos?: boolean;
     is_vanilla?: boolean;
-    is_lookbacks?: boolean;
+    server_time: moment.Moment;
 } & TGeneralContractCardBodyProps;
 
 const ContractCardBody = ({

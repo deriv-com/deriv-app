@@ -16,7 +16,7 @@ type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileCha
  * @param [props] - Other props to pass to Dropzone
  * @returns ReactNode
  */
-const FormDocumentUploadField = ({ name, validationSchema, ...rest }: TFormDocumentUploadField) => (
+export const FormDocumentUploadField = ({ name, validationSchema, ...rest }: TFormDocumentUploadField) => (
     <Field name={name} validate={validateField(validationSchema)}>
         {({ field, form }: FieldProps<File>) => (
             <Dropzone
@@ -27,5 +27,3 @@ const FormDocumentUploadField = ({ name, validationSchema, ...rest }: TFormDocum
         )}
     </Field>
 );
-
-export default FormDocumentUploadField;

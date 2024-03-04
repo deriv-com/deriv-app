@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { TradingAppCardLoader, useUIContext } from '@/components';
+import { TradingAppCardLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
+import { useUIContext } from '@/providers';
 import { THooks } from '@/types';
 import { CFDPlatformLayout } from '@cfd/components';
 import { PlatformDetails } from '@cfd/constants';

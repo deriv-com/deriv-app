@@ -7,9 +7,9 @@ import {
     RegulationSwitcherMobile,
     TotalAssets,
     TradersHubContent,
-    useUIContext,
 } from '@/components';
 import { useRegulationFlags } from '@/hooks';
+import { useUIContext } from '@/providers';
 import { useIsDIELEnabled } from '@deriv/api';
 import { Tab, Tabs, Text, useDevice } from '@deriv-com/ui';
 

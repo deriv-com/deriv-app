@@ -16,10 +16,11 @@ type TMT5PasswordInputProps = {
 const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { show } = useModal();
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
 
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
-    const platform = getCFDState('platform');
+    const { platform, marketType: marketTypeState } = cfdState;
+
+    const marketType = marketTypeState ?? MarketType.ALL;
 
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
     const {

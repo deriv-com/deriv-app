@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRemoteConfig } from '@deriv/api';
 import { api_base, ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -18,6 +19,7 @@ import './app.scss';
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
     const RootStore = useStore();
+    const { data: remote_config_data } = useRemoteConfig();
     const {
         common,
         client,
@@ -71,6 +73,12 @@ const AppContent = observer(() => {
         showDigitalOptionsMaltainvestError(client, common);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client.is_options_blocked, client.account_settings.country_code, client.clients_country]);
+
+    React.useEffect(() => {
+        if (window.setIsDataDogLoggingEnabled) {
+            window.setIsDataDogLoggingEnabled(remote_config_data.tracking_datadog);
+        }
+    }, [remote_config_data]);
 
     const init = () => {
         GTM.init(combinedStore);

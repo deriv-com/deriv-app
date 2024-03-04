@@ -631,7 +631,7 @@ export default class TradeStore extends BaseStore {
         await this.setActiveSymbols();
         await this.root_store.active_symbols.setActiveSymbols();
         const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
-        if (showModal && !this.root_store.client.is_switching && !this.root_store.client.is_logging_in) {
+        if (showModal && should_show_loading && !this.root_store.client.is_logging_in) {
             this.root_store.ui.toggleUrlUnavailableModal(true);
         }
         const hasSymbolChanged = symbol && symbol !== this.symbol;

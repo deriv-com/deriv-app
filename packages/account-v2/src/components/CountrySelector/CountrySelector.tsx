@@ -9,7 +9,7 @@ type TCountrySelector = {
     name: string;
 };
 
-const CountrySelector = ({ errorMessage, label, name }: TCountrySelector) => {
+export const CountrySelector = ({ errorMessage, label, name }: TCountrySelector) => {
     const { data: residenceList } = useResidenceList();
 
     return (
@@ -25,5 +25,3 @@ const CountrySelector = ({ errorMessage, label, name }: TCountrySelector) => {
         />
     );
 };
-
-export default CountrySelector;

@@ -3,7 +3,7 @@ import { Field, FieldProps } from 'formik';
 import { Input, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manual-form-utils';
+import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
 
 type TManualFormInputsProps = { isExpiryDateRequired: boolean; selectedDocument: TManualDocumentTypes };
 

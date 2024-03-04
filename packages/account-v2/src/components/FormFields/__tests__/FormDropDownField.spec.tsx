@@ -3,7 +3,7 @@ import { Form, Formik } from 'formik';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import FormDropDownField from '../FormDropDownField';
+import { FormDropDownField } from '../FormDropDownField';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

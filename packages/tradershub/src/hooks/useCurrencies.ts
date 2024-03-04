@@ -19,17 +19,17 @@ const useCurrencies = () => {
     const { data: authorizeData, isLoading: isAuthorizeLoading } = useAuthorize();
     const { data: websiteStatusData, isLoading: isWesiteStatusLoading, ...rest } = useQuery('website_status');
     const { data: landingCompanyData, isLoading: isLandingCompanyLoading } = useLandingCompany();
-    const { isHighRisk: isCR } = useRegulationFlags();
+    const { isNonEU } = useRegulationFlags();
 
     // Get the legal allowed currencies based on the landing company
     const legalAllowedCurrencies = useMemo(() => {
         if (!landingCompanyData) return [];
-        if (isCR) {
+        if (isNonEU) {
             return landingCompanyData.gaming_company?.legal_allowed_currencies;
         }
 
         return landingCompanyData.financial_company?.legal_allowed_currencies;
-    }, [isCR, landingCompanyData]);
+    }, [isNonEU, landingCompanyData]);
 
     // Check if the currency is already added to the account list to disable the currency
     const isAdded = useCallback(

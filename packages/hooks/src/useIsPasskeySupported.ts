@@ -7,7 +7,7 @@ const useIsPasskeySupported = () => {
     const [is_passkey_support_checking, setIsPasskeySupportChecking] = React.useState(true);
     const is_passkeys_enabled = useGrowthbookFeatureFlag({
         featureFlag: 'web_passkeys',
-        defaultValue: 'unintialised',
+        defaultValue: 'uninitialized',
     });
 
     React.useEffect(() => {
@@ -22,7 +22,7 @@ const useIsPasskeySupported = () => {
                 setIsPasskeySupportChecking(false);
             }
         };
-        if (is_passkeys_enabled !== 'unintialised') checkPasskeySupport();
+        if (is_passkeys_enabled !== 'uninitialized') checkPasskeySupport();
     }, [is_passkeys_enabled]);
 
     return { is_passkey_supported, is_passkey_support_checking };

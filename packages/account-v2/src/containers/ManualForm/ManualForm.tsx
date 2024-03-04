@@ -3,10 +3,10 @@ import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
 import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getManualFormValidationSchema, setInitialValues } from '../../utils/manual-form-utils';
-import { ManualFormDocumentUpload } from './manual-form-document-upload';
-import { ManualFormFooter } from './manual-form-footer';
-import { ManualFormInputs } from './manual-form-inputs';
+import { getManualFormValidationSchema, setInitialValues } from '../../utils/manualFormUtils';
+import { ManualFormDocumentUpload } from './ManualFormDocumentUpload';
+import { ManualFormFooter } from './ManualFormFooter';
+import { ManualFormInputs } from './ManualFormInputs';
 
 type TmanualDocumentFormValues = InferType<ReturnType<typeof getManualFormValidationSchema>>;
 

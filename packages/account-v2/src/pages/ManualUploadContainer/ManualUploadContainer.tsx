@@ -7,7 +7,7 @@ import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
 import { useManualForm } from '../../hooks';
 import { OnfidoContainer } from '../../modules/Onfido';
-import { getManualFormValidationSchema, getSelfieValidationSchema } from '../../utils/manual-form-utils';
+import { getManualFormValidationSchema, getSelfieValidationSchema } from '../../utils/manualFormUtils';
 
 type TManualUploadContainerProps = {
     selectedDocument: string | null;

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
 import { DocumentSelection } from '../../containers/DocumentSelection';
-import { ManualUploadContainer } from '../../pages/ManualFormContainer/manual-form-container';
+import { ManualUploadContainer } from '../../pages/ManualUploadContainer/ManualUploadContainer';
 
 type TManualUploadProps = { countryCode: string };
 

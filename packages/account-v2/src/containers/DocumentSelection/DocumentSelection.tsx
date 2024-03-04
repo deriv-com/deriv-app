@@ -2,7 +2,7 @@ import React from 'react';
 import { StandaloneChevronRightRegularIcon } from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
 import { Card } from '../../components/Card';
-import { getManualUploadDocumentList } from '../../constants/manual-document';
+import { getManualUploadDocumentList } from '../../constants/manualDocument';
 
 type TDocumentSelection = {
     countryCode: string;

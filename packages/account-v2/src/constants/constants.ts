@@ -1,4 +1,4 @@
-export const LandingCompany = {
+export const landingCompany = {
     BVI: 'bvi',
     LABUAN: 'labuan',
     MALTAINVEST: 'maltainvest',
@@ -6,7 +6,7 @@ export const LandingCompany = {
     VANUATU: 'vanuatu',
 } as const;
 
-export const AuthStatusCodes = {
+export const authStatusCodes = {
     EXPIRED: 'expired',
     NONE: 'none',
     PENDING: 'pending',

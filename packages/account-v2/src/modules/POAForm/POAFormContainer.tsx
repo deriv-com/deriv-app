@@ -7,7 +7,7 @@ import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
 import IcPOAVerified from '../../assets/verification-status/ic-poa-verified.svg';
 import { DemoMessage } from '../../components/DemoMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
-import { AuthStatusCodes } from '../../constants/constants';
+import { authStatusCodes } from '../../constants/constants';
 import { accountV2Routes, p2pRoute } from '../../constants/routes';
 import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
 import { usePOAInfo } from '../../hooks/usePOAInfo';
@@ -105,9 +105,9 @@ export const POAFormContainer = () => {
     }
 
     switch (documentStatus) {
-        case AuthStatusCodes.NONE:
+        case authStatusCodes.NONE:
             return <AddressDetailsForm />;
-        case AuthStatusCodes.PENDING:
+        case authStatusCodes.PENDING:
             return (
                 <IconWithMessage
                     actionButton={redirectionButton}
@@ -124,7 +124,7 @@ export const POAFormContainer = () => {
                     ) : null}
                 </IconWithMessage>
             );
-        case AuthStatusCodes.VERIFIED:
+        case authStatusCodes.VERIFIED:
             return (
                 <IconWithMessage
                     actionButton={redirectionButton}
@@ -138,7 +138,7 @@ export const POAFormContainer = () => {
                     ) : null}
                 </IconWithMessage>
             );
-        case AuthStatusCodes.EXPIRED:
+        case authStatusCodes.EXPIRED:
             return (
                 <IconWithMessage
                     actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}
@@ -151,8 +151,8 @@ export const POAFormContainer = () => {
                     </Text>
                 </IconWithMessage>
             );
-        case AuthStatusCodes.REJECTED:
-        case AuthStatusCodes.SUSPECTED:
+        case authStatusCodes.REJECTED:
+        case authStatusCodes.SUSPECTED:
             return (
                 <IconWithMessage
                     actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}

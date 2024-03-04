@@ -17,7 +17,7 @@ type TAdvertsTableRenderer = {
 
 const AdvertsTableRenderer = ({ data, isFetching, isLoading, loadMoreAdverts }: TAdvertsTableRenderer) => {
     if (isLoading) {
-        <Loader className='relative mt-40 top-0' />;
+        return <Loader className='relative mt-40 top-0' />;
     }
 
     if (!data) {

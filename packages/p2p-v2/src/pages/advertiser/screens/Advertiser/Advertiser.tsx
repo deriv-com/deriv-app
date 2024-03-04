@@ -11,7 +11,7 @@ const Advertiser = () => {
     const history = useHistory();
     const location = useLocation();
     const urlParams = new URLSearchParams(location.search);
-    const advertiserId = urlParams.get('id') || undefined;
+    const advertiserId = urlParams.get('id') ?? undefined;
 
     return (
         <div className='p2p-v2-advertiser lg:pl-8'>

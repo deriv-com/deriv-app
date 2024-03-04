@@ -22,8 +22,6 @@ const MyProfile = () => {
 
     const currentTab = queryString.get('tab');
 
-    // console.log(isP2PPoaRequired, isPoiVerified, isPoaVerified, !!failureReason);
-
     useEffect(() => {
         const isPoaPoiVerified = (!isP2PPoaRequired || isPoaVerified) && isPoiVerified;
         if (isPoaPoiVerified && !!failureReason) setIsNicknameModalOpen(true);

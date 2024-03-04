@@ -16,7 +16,7 @@ function getAcct1Value(url: string) {
  * @example initDatadog(true);
  * @returns {void}
  * **/
-export default function initDatadog(tracking_datadog: boolean) {
+const initDatadog = (tracking_datadog: boolean) => {
     if (!tracking_datadog) {
         return;
     }
@@ -81,4 +81,6 @@ export default function initDatadog(tracking_datadog: boolean) {
             },
         });
     }
-}
+};
+
+export default initDatadog;

@@ -8,7 +8,7 @@ import {
     useMT5AccountsList,
     useSortedMT5Accounts,
     useTransferBetweenAccounts,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace THooks {

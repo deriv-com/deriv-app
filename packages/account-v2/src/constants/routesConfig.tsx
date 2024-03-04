@@ -1,3 +1,4 @@
+import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
 import { DummyRoute } from '../router/components/DummyRoute';
 import { ACCOUNT_V2_ROUTES } from './routes';
@@ -24,8 +25,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.FinancialAssessment,
     },
     {
-        // TODO: Replace this with POI container
-        routeComponent: DummyRoute,
+        routeComponent: POICountrySelector,
         routeName: 'Proof of identity',
         routePath: ACCOUNT_V2_ROUTES.ProofOfIdentity,
     },

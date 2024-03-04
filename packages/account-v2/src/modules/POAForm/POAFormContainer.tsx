@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Loader, Text } from '@deriv-com/ui';
-import IcPOAError from '../../assets/verification-status/ic-poa-error.svg';
-import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
-import IcPOAVerified from '../../assets/verification-status/ic-poa-verified.svg';
+import { DerivLightDeclinedPoaIcon, DerivLightWaitingPoaIcon, DerivLightApprovedPoaIcon } from '@deriv/quill-icons';
 import { DemoMessage } from '../../components/DemoMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { AUTH_STATUS_CODES } from '../../constants/constants';
@@ -74,7 +72,10 @@ export const POAFormContainer = () => {
 
     if (documentNotRequired)
         return (
-            <IconWithMessage icon={<IcPOAVerified width={128} />} title='Proof of address verification not required'>
+            <IconWithMessage
+                icon={<DerivLightApprovedPoaIcon width={128} />}
+                title='Proof of address verification not required'
+            >
                 <Text align='center' size='sm'>
                     Your account does not need address verification at this time. We will inform you if address
                     verification is required in the future.
@@ -86,7 +87,7 @@ export const POAFormContainer = () => {
         return (
             <IconWithMessage
                 actionButton={redirectionButton}
-                icon={<IcPOAVerified width={128} />}
+                icon={<DerivLightApprovedPoaIcon width={128} />}
                 title='Your documents were submitted successfully'
             >
                 <Text align='center' size='sm'>
@@ -111,7 +112,7 @@ export const POAFormContainer = () => {
             return (
                 <IconWithMessage
                     actionButton={redirectionButton}
-                    icon={<IcPOAVerified width={128} />}
+                    icon={<DerivLightApprovedPoaIcon width={128} />}
                     title='Your proof of address was submitted successfully'
                 >
                     <Text align='center' size='sm'>
@@ -128,7 +129,7 @@ export const POAFormContainer = () => {
             return (
                 <IconWithMessage
                     actionButton={redirectionButton}
-                    icon={<IcPOAVerified width={128} />}
+                    icon={<DerivLightApprovedPoaIcon width={128} />}
                     title='Your proof of address is verified'
                 >
                     {isPOINeeded ? (
@@ -142,7 +143,7 @@ export const POAFormContainer = () => {
             return (
                 <IconWithMessage
                     actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}
-                    icon={<IcPOAUpload width={128} />}
+                    icon={<DerivLightWaitingPoaIcon width={128} />}
                     title='New proof of address is needed'
                 >
                     <Text align='center' size='sm'>
@@ -156,7 +157,7 @@ export const POAFormContainer = () => {
             return (
                 <IconWithMessage
                     actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}
-                    icon={<IcPOAError width={128} />}
+                    icon={<DerivLightDeclinedPoaIcon width={128} />}
                     title='We could not verify your proof of address'
                 >
                     <Text align='center' size='sm'>

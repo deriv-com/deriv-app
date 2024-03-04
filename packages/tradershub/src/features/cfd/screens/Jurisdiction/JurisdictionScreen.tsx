@@ -8,7 +8,6 @@ import { THooks } from '../../../../types';
 import { JurisdictionCard } from './JurisdictionCard';
 
 type TJurisdictionScreenProps = {
-    isCheckBoxChecked: boolean;
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
     setIsCheckBoxChecked: Dispatch<SetStateAction<boolean>>;
     setSelectedJurisdiction: Dispatch<SetStateAction<string>>;

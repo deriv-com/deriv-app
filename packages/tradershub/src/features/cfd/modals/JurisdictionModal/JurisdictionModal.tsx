@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
@@ -15,15 +14,13 @@ const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
-    const query = useQueryParams();
-    const history = useHistory();
+    const { isOpen, closeModal } = useQueryParams();
     const { show } = useModal();
     const { isEU } = useRegulationFlags();
     const { getCFDState, setCfdState } = useCFDContext();
 
     const { isLoading } = useAvailableMT5Accounts();
     const { isDesktop } = useDevice();
-    const isOpen = query.get('modal') === 'JurisdictionModal';
 
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
 
@@ -35,21 +32,12 @@ const JurisdictionModal = () => {
 
     const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
 
-    useEffect(() => {
-        if (!selectedJurisdiction) {
-            history.push({
-                pathname: history.location.pathname,
-                search: '',
-            });
-        }
-    }, [history, selectedJurisdiction]);
-
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === Jurisdiction.SVG) {
             return <MT5PasswordModal />;
         }
 
-        return <DummyComponent />; // Verification flow
+        return <DummyComponent />; // Verification flowå
     };
 
     useEffect(() => {
@@ -59,23 +47,18 @@ const JurisdictionModal = () => {
     // TODO: Add Loading Placeholder
     if (isLoading) return <Text weight='bold'>Loading...</Text>;
 
-    const handleClose = () => {
-        history.push({
-            pathname: history.location.pathname,
-            search: '',
-        });
-    };
+    const isModalOpen = isOpen('JurisdictionModal');
 
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
             <Modal
                 ariaHideApp={false}
                 className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '
-                isOpen={isOpen}
-                onRequestClose={handleClose}
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
             >
                 {!isDynamicLeverageVisible ? (
-                    <Modal.Header onRequestClose={handleClose}>
+                    <Modal.Header onRequestClose={closeModal}>
                         <Text weight='bold'>{jurisdictionTitle}</Text>
                     </Modal.Header>
                 ) : null}
@@ -90,7 +73,6 @@ const JurisdictionModal = () => {
                 >
                     {isDynamicLeverageVisible && <DynamicLeverageTitle />}
                     <JurisdictionScreen
-                        isCheckBoxChecked={isCheckBoxChecked}
                         selectedJurisdiction={selectedJurisdiction}
                         setIsCheckBoxChecked={setIsCheckBoxChecked}
                         setSelectedJurisdiction={setSelectedJurisdiction}

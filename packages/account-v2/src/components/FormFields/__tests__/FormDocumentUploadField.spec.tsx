@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import FormDocumentUploadField from '../FormDocumentUploadField';
+import { FormDocumentUploadField } from '../FormDocumentUploadField';
 
 beforeAll(() => {
     global.URL.createObjectURL = jest.fn();

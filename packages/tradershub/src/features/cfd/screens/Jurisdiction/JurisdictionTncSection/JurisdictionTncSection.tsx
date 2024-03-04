@@ -1,8 +1,8 @@
 import React from 'react';
 import { StaticLink } from '@/components';
+import { useCFDContext } from '@/providers';
 import { THooks } from '@/types';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
-import { Provider } from '@deriv/library';
 import { Checkbox, Text, useDevice } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
@@ -30,8 +30,9 @@ const JurisdictionTncSection = ({
 }: TJurisdictionTncSectionProps) => {
     const { getDerivStaticURL } = URLUtils;
     const { isDesktop } = useDevice();
-    const { getCFDState } = Provider.useCFDContext();
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const { cfdState } = useCFDContext();
+    const { marketType: marketTypeState } = cfdState;
+    const marketType = marketTypeState ?? MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (

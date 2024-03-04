@@ -12,16 +12,13 @@ function getAcct1Value(url: string) {
  * This function is used to initialize datadog for tracking user interactions, resources, long tasks, and frustrations.
  * It also masks user input and redacts sensitive data from the URL.
  *
- * @param {boolean} tracking_datadog - The parameter to enable or disable datadog tracking.
+ * @param {boolean} is_datadog_enabled - The parameter to enable or disable datadog tracking.
  * @example initDatadog(true);
  * @returns {void}
  * **/
-const initDatadog = (tracking_datadog: boolean) => {
-    if (!tracking_datadog) {
-        return;
-    }
-    const DATADOG_APP_ID = process.env.DATADOG_APPLICATION_ID ?? '';
-    const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
+const initDatadog = (is_datadog_enabled: boolean) => {
+    const DATADOG_APP_ID = is_datadog_enabled ? process.env.DATADOG_APPLICATION_ID ?? '' : '';
+    const DATADOG_CLIENT_TOKEN = is_datadog_enabled ? process.env.DATADOG_CLIENT_TOKEN ?? '' : '';
     const isProduction = process.env.NODE_ENV === 'production';
     const isStaging = process.env.NODE_ENV === 'staging';
 

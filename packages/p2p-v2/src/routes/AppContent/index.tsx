@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 import { CloseHeader } from '@/components';
 import { BuySell, MyAds, MyProfile } from '@/pages';
-import { p2p, useActiveAccount } from '@deriv/api';
+import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import './index.scss';
 

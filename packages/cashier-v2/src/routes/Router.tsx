@@ -9,7 +9,7 @@ import OnRampIcon from '../assets/images/ic-cashier-on-ramp.svg';
 import PaymentAgentIcon from '../assets/images/ic-payment-agent.svg';
 import { DummyComponent } from '../components';
 import { Cashier } from '../containers';
-import { Deposit, Withdrawal } from '../flows';
+import { Deposit, PaymentAgentTransfer, Withdrawal } from '../flows';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -56,7 +56,7 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
             },
             {
                 path: cashierPathRoutes.cashierPaymentAgentTransfer,
-                component: DummyComponent,
+                component: PaymentAgentTransfer,
                 icon: <TransferIcon />,
                 title: 'Transfer to client',
             },

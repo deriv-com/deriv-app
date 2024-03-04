@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Modal } from '@/components';
 import { useRegulationFlags } from '@/hooks';
+import { useCFDContext, useModal } from '@/providers';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { MT5PasswordModal } from '@cfd/modals';
 import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen } from '@cfd/screens';
 import { useAvailableMT5Accounts } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const JurisdictionModal = () => {
@@ -14,14 +14,16 @@ const JurisdictionModal = () => {
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
-    const { show } = Provider.useModal();
+    const { show } = useModal();
     const { isEU } = useRegulationFlags();
-    const { getCFDState, setCfdState } = Provider.useCFDContext();
+    const { cfdState, setCfdState } = useCFDContext();
 
     const { isLoading } = useAvailableMT5Accounts();
     const { isDesktop } = useDevice();
 
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const { marketType: marketTypeState } = cfdState;
+
+    const marketType = marketTypeState ?? MarketType.ALL;
 
     const { title } = MarketTypeDetails(isEU)[marketType];
 
@@ -40,7 +42,7 @@ const JurisdictionModal = () => {
     };
 
     useEffect(() => {
-        setCfdState('selectedJurisdiction', selectedJurisdiction);
+        setCfdState({ selectedJurisdiction });
     }, [selectedJurisdiction, setCfdState]);
 
     // TODO: Add Loading Placeholder
@@ -48,7 +50,7 @@ const JurisdictionModal = () => {
 
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
-            <Modal className='bg-background-primary-container'>
+            <Modal className='bg-background-primary-container bg-system-light-primary-background'>
                 {!isDynamicLeverageVisible ? <Modal.Header title={jurisdictionTitle} /> : null}
                 <Modal.Content>
                     {isDynamicLeverageVisible && <DynamicLeverageTitle />}

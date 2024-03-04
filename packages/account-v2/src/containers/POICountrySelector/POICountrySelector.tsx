@@ -1,6 +1,6 @@
 import React from 'react';
 import { InlineMessage, Text } from '@deriv-com/ui';
-import CountrySelector from '../../components/CountrySelector/CountrySelector';
+import { CountrySelector } from '../../components/CountrySelector';
 
 export const POICountrySelector = () => (
     <div className='flex flex-col gap-10'>

@@ -1,43 +1,40 @@
 import React from 'react';
-import { useHover } from 'usehooks-ts';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { ModalProvider } from '../../../../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../../../../hooks/useDevice';
 import TransactionsPendingRowField from '../TransactionsPendingRowField';
 
-jest.mock('usehooks-ts', () => ({
-    useHover: jest.fn(),
-}));
-
-const mockShow = jest.fn();
-jest.mock('../../../../../../../../../components/ModalProvider', () => ({
-    ...jest.requireActual('../../../../../../../../../components/ModalProvider'),
-    useModal: () => ({
-        hide: jest.fn(),
-        show: mockShow,
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: jest.fn(() => '?modal-open=true'),
     }),
 }));
 
 jest.mock('../../../../../../../../../hooks/useDevice', () => jest.fn());
 
+const mockWindowOpen = jest.fn();
+window.open = mockWindowOpen;
+
 describe('TransactionsPendingRowField', () => {
+    let $root: HTMLDivElement, $modalContainer: HTMLDivElement;
+
     beforeEach(() => {
         jest.clearAllMocks();
+        $root = document.createElement('div');
+        $root.id = 'root';
+        $modalContainer = document.createElement('div');
+        $modalContainer.id = 'wallets_modal_root';
+        document.body.appendChild($root);
+        document.body.appendChild($modalContainer);
     });
 
-    test('should render component with basic props', () => {
-        const props = {
-            name: 'Test Name',
-            value: 'Test Value',
-        };
-
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-        render(<TransactionsPendingRowField {...props} />);
-
-        expect(screen.getByText('Test Name')).toBeInTheDocument();
-        expect(screen.getByText('Test Value')).toBeInTheDocument();
+    afterEach(() => {
+        document.body.removeChild($root);
+        document.body.removeChild($modalContainer);
     });
 
-    test('should render component with hint and shows tooltip on hover', () => {
+    test('should render component with default props', () => {
         const props = {
             hint: {
                 link: 'https://example.com',
@@ -48,20 +45,19 @@ describe('TransactionsPendingRowField', () => {
             value: 'Test Value',
         };
 
-        (useHover as jest.Mock).mockReturnValue(true);
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-
-        render(<TransactionsPendingRowField {...props} />);
+        render(
+            <ModalProvider>
+                <TransactionsPendingRowField {...props} />
+            </ModalProvider>
+        );
 
         expect(screen.getByText('Test Name')).toBeInTheDocument();
         expect(screen.getByText('Test Value')).toBeInTheDocument();
-
-        fireEvent.mouseOver(screen.getByText('Test Value'));
-
-        expect(screen.getByText('Hint Text')).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'Test Value' })).toHaveAttribute('href', 'https://example.com');
     });
 
-    test('should call onValueClick when value is clicked on mobile/responsive', async () => {
+    test('should show modal when value is clicked on mobile/responsive', async () => {
         const props = {
             hint: {
                 link: 'https://example.com',
@@ -71,17 +67,20 @@ describe('TransactionsPendingRowField', () => {
             name: 'Test Name',
             value: 'Test Value',
         };
-
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
-        render(<TransactionsPendingRowField {...props} />);
-
+        render(
+            <ModalProvider>
+                <TransactionsPendingRowField {...props} />
+            </ModalProvider>,
+            { container: $root }
+        );
         fireEvent.click(screen.getByText('Test Value'));
 
-        expect(mockShow).toHaveBeenCalled();
+        expect(screen.getByText('Transaction details')).toBeInTheDocument();
     });
 
-    test('should call window.open when value is clicked on desktop', async () => {
+    test('should open window with hint link when View button in modal is clicked', async () => {
         const props = {
             hint: {
                 link: 'https://example.com',
@@ -91,14 +90,19 @@ describe('TransactionsPendingRowField', () => {
             name: 'Test Name',
             value: 'Test Value',
         };
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
-        const mockWindowOpen = jest.fn();
-        window.open = mockWindowOpen;
+        render(
+            <ModalProvider>
+                <TransactionsPendingRowField {...props} />
+            </ModalProvider>,
+            { container: $root }
+        );
+        fireEvent.click(screen.getByText('Test Value'));
 
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        expect(screen.getByText('Transaction details')).toBeInTheDocument();
+        fireEvent.click(screen.getByText('View'));
 
-        render(<TransactionsPendingRowField {...props} />);
-
-        expect(screen.getByRole('link', { name: 'Test Value' })).toHaveAttribute('href', 'https://example.com');
+        expect(mockWindowOpen).toHaveBeenCalledWith('https://example.com');
     });
 });

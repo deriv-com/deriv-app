@@ -135,8 +135,8 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
             }}
         >
             <div className='flex flex-col justify-between w-full h-full px-16 pt-20 transition-transform duration-300 backface-hidden pb-36 transform-gpu'>
-                {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
-                <div className='mt-[20px] text-center'>
+                {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader ?? ''} />}
+                <div className='mt-20 text-center'>
                     <Text size='lg' weight='bold'>
                         {header}
                     </Text>

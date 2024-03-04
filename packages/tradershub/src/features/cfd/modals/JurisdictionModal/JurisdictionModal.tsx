@@ -1,7 +1,8 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
+import { THooks } from '@/types';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { MT5PasswordModal } from '@cfd/modals';
@@ -10,8 +11,17 @@ import { useAvailableMT5Accounts } from '@deriv/api';
 import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
 import { JurisdictionTncSection } from '../../screens/Jurisdiction/JurisdictionTncSection';
 
+type TJurisdictionFlowProps = { selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'] };
+
+const JurisdictionFlow = ({ selectedJurisdiction }: TJurisdictionFlowProps) => {
+    if (selectedJurisdiction === Jurisdiction.SVG) {
+        return <MT5PasswordModal />;
+    }
+
+    return <DummyComponent />; // Verification flow
+};
+
 const JurisdictionModal = () => {
-    const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
     const { isOpen, closeModal } = useQueryParams();
@@ -22,7 +32,7 @@ const JurisdictionModal = () => {
     const { isLoading } = useAvailableMT5Accounts();
     const { isDesktop } = useDevice();
 
-    const { marketType: marketTypeState } = cfdState;
+    const { marketType: marketTypeState, selectedJurisdiction } = cfdState;
 
     const marketType = marketTypeState ?? MarketType.ALL;
 
@@ -34,25 +44,22 @@ const JurisdictionModal = () => {
 
     const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
 
-    const JurisdictionFlow = () => {
-        if (selectedJurisdiction === Jurisdiction.SVG) {
-            return <MT5PasswordModal />;
-        }
-
-        return <DummyComponent />; // Verification flowå
-    };
+    const value = useMemo(
+        () => ({ isDynamicLeverageVisible, toggleDynamicLeverage }),
+        [isDynamicLeverageVisible, toggleDynamicLeverage]
+    );
 
     useEffect(() => {
         setCfdState({ selectedJurisdiction });
     }, [selectedJurisdiction, setCfdState]);
 
-    // TODO: Add Loading Placeholder
+    // Do this later: Add Loading Placeholder
     if (isLoading) return <Text weight='bold'>Loading...</Text>;
 
     const isModalOpen = isOpen('JurisdictionModal');
 
     return (
-        <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
+        <DynamicLeverageContext.Provider value={value}>
             <Modal
                 ariaHideApp={false}
                 className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '
@@ -66,29 +73,19 @@ const JurisdictionModal = () => {
                 ) : null}
                 <Modal.Body
                     className={twMerge(
-                        `p-0 flex flex-col relative min-h-0 overflow-auto ${
-                            marketType === MarketType.FINANCIAL
-                                ? 'lg:w-[1200px] lg:h-[650px]'
-                                : 'lg:w-[1040px] lg:h-[592px]'
-                        } `
+                        'p-0 flex flex-col relative min-h-0 overflow-auto lg:w-auto lg:h-auto lg:p-8 lg:min-w-[1100px]'
                     )}
                 >
                     {isDynamicLeverageVisible && <DynamicLeverageTitle />}
-                    <JurisdictionScreen
-                        selectedJurisdiction={selectedJurisdiction}
-                        setIsCheckBoxChecked={setIsCheckBoxChecked}
-                        setSelectedJurisdiction={setSelectedJurisdiction}
-                    />
+                    <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} />
                     {isDynamicLeverageVisible && <DynamicLeverageScreen />}
-
                     <JurisdictionTncSection
                         isCheckBoxChecked={isCheckBoxChecked}
-                        selectedJurisdiction={selectedJurisdiction}
                         setIsCheckBoxChecked={setIsCheckBoxChecked}
                     />
                 </Modal.Body>
                 {!isDynamicLeverageVisible ? (
-                    <Modal.Footer className='bg-white sm:w-full lg:rounded-default'>
+                    <Modal.Footer className='lg:rounded-default'>
                         <Button
                             className='rounded-xs'
                             disabled={
@@ -96,7 +93,7 @@ const JurisdictionModal = () => {
                                 (selectedJurisdiction !== Jurisdiction.SVG && !isCheckBoxChecked)
                             }
                             isFullWidth={!isDesktop}
-                            onClick={() => show(<JurisdictionFlow />)}
+                            onClick={() => show(<JurisdictionFlow selectedJurisdiction={selectedJurisdiction} />)}
                         >
                             Next
                         </Button>

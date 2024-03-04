@@ -4,24 +4,17 @@ import { useCFDContext } from '@/providers';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { Jurisdiction } from '@cfd/constants';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
-import { THooks } from '../../../../types';
 import { JurisdictionCard } from './JurisdictionCard';
 
 type TJurisdictionScreenProps = {
-    selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
     setIsCheckBoxChecked: Dispatch<SetStateAction<boolean>>;
-    setSelectedJurisdiction: Dispatch<SetStateAction<string>>;
 };
 
-const JurisdictionScreen = ({
-    selectedJurisdiction,
-    setIsCheckBoxChecked,
-    setSelectedJurisdiction,
-}: TJurisdictionScreenProps) => {
-    const { cfdState } = useCFDContext();
+const JurisdictionScreen = ({ setIsCheckBoxChecked }: TJurisdictionScreenProps) => {
+    const { cfdState, setCfdState } = useCFDContext();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: mt5AccountsList } = useMT5AccountsList();
-    const { marketType } = cfdState;
+    const { marketType, selectedJurisdiction } = cfdState;
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const jurisdictions = useMemo(
         () =>
@@ -45,7 +38,7 @@ const JurisdictionScreen = ({
     return (
         <div
             className={twMerge(
-                `flex flex-col w-full p-16 items-center justify-between transition-all ease-in duration-[0.6s] sm:p-40`,
+                `flex flex-col w-full lg:p-16 items-center justify-between transition-all ease-in duration-[0.6s] p-40`,
                 isDynamicLeverageVisible &&
                     '[transform:rotateY(-180deg)] h-[700px] opacity-0 bg-system-light-primary-background'
             )}
@@ -59,9 +52,9 @@ const JurisdictionScreen = ({
                         key={jurisdiction}
                         onSelect={clickedJurisdiction => {
                             if (clickedJurisdiction === selectedJurisdiction) {
-                                setSelectedJurisdiction('');
+                                setCfdState({ selectedJurisdiction: '' });
                             } else {
-                                setSelectedJurisdiction(clickedJurisdiction);
+                                setCfdState({ selectedJurisdiction: clickedJurisdiction });
                             }
                         }}
                     />

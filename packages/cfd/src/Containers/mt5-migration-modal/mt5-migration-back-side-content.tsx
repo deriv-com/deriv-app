@@ -83,7 +83,7 @@ const MT5MigrationBackSideContent = observer(() => {
                 <form onSubmit={handleSubmit}>
                     <div className='mt5-migration-modal__container'>
                         <div className='mt5-migration-modal__password-header-container'>
-                            <Text as='p' size={content_size} align=''>
+                            <Text as='p' size={content_size}>
                                 <Localize i18n_default_text='Enter your Deriv MT5 password to upgrade your account(s).' />
                             </Text>
                         </div>

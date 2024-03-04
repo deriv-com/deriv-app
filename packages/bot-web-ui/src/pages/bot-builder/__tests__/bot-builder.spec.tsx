@@ -129,7 +129,7 @@ describe('BotBuilder', () => {
         mock_DBot_store?.run_panel.setIsRunning(true);
         mock_DBot_store?.toolbar.setResetButtonState(false);
         render(<BotBuilder />, { wrapper });
-        const notification_close_button = screen.getByTestId('bot-notification-close');
+        const notification_close_button = screen.getByTestId('dt_bot_notification_close');
         userEvent.click(notification_close_button);
         const el = screen.queryByText(/Changes you make will not affect your running bot./i);
         await waitFor(() => expect(el).not.toBeInTheDocument());

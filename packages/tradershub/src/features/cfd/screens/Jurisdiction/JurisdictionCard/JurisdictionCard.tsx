@@ -95,7 +95,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                 if (description.type === 'link') {
                     return (
                         <StaticLink
-                            className='py-0 pl-0 text-sm bg-transparent text-brand-red-light'
+                            className='py-0 pl-0 text-sm no-underline bg-transparent text-brand-red-light'
                             key={`jurisdiction-card-description-${description.text}`}
                             onClick={descriptionClickHandler(description.tag)}
                         >

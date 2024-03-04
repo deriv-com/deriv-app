@@ -13,9 +13,7 @@ const sortedMT5Accounts = (accounts: THooks.TransferAccount, getConfig: TGetCurr
                 currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
             })),
         ...accounts
-            .filter(account => {
-                account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'financial';
-            })
+            .filter(account => account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'financial')
             .map(account => ({
                 ...account,
                 currencyConfig: account?.currency ? getConfig(account.currency) : undefined,

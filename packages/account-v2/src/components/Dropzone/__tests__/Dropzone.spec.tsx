@@ -5,7 +5,7 @@ import Dropzone from '../Dropzone';
 
 describe('Dropzone', () => {
     const textPlainText = 'text/plain';
-    const dropZoneInputTestId = 'dt_dropzone-input';
+    const dropZoneInputTestId = 'dt-dropzone-input';
 
     beforeAll(() => {
         global.URL.createObjectURL = jest.fn();

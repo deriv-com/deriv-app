@@ -14,7 +14,7 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-const onfidoElementTestId = 'dt_onfido-element';
+const onfidoElementTestId = 'dt-onfido-element';
 
 describe('OnfidoView', () => {
     it('should render without errors', () => {

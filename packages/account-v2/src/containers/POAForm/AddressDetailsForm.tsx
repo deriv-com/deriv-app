@@ -6,7 +6,7 @@ import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import IcPOALock from '../../assets/verification-status/ic-poa-lock.svg';
 import { IconWithMessage } from '../../components/IconWithMessage';
-import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
+import { accountV2DefaultRoute } from '../../constants/routes';
 import { AddressFields } from '../../modules/AddressFields';
 import { DocumentSubmission } from './DocumentSubmission';
 
@@ -59,14 +59,20 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
         }
     };
 
-    const { address_city, address_line_1, address_line_2, address_postcode, address_state } = settings;
+    const {
+        address_city: addressCity,
+        address_line_1: addressLine1,
+        address_line_2: addressLine2,
+        address_postcode: addressPostcode,
+        address_state: addressState,
+    } = settings;
 
     const initialValues: TAddressDetails = {
-        addressCity: address_city ?? '',
-        addressLine1: address_line_1 ?? '',
-        addressLine2: address_line_2 ?? '',
-        addressPostcode: address_postcode ?? '',
-        addressState: address_state ?? '',
+        addressCity: addressCity ?? '',
+        addressLine1: addressLine1 ?? '',
+        addressLine2: addressLine2 ?? '',
+        addressPostcode: addressPostcode ?? '',
+        addressState: addressState ?? '',
     };
 
     if (fetchError) {
@@ -88,7 +94,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                     <StandaloneXmarkBoldIcon
                         iconSize='md'
                         onClick={() => {
-                            history.push(ACCOUNT_V2_DEFAULT_ROUTE);
+                            history.push(accountV2DefaultRoute);
                         }}
                     />
                 </div>

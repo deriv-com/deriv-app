@@ -17,7 +17,7 @@ describe('useManualForm', () => {
                 },
             },
         });
-        const { result } = renderHook(() => useManualForm('ng', 'nimc_slip'));
+        const { result } = renderHook(() => useManualForm('ng', 'nimcSlip'));
         const { isExpiryDateRequired, poiService } = result.current;
         expect(isExpiryDateRequired).toBeFalsy();
         expect(poiService).toBe('manual');

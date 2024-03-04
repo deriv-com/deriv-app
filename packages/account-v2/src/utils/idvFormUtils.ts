@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/object';
 
-export const getExampleFormat = (example_format?: string) => (example_format ? `Example: ${example_format}` : '');
+export const getExampleFormat = (exampleFormat?: string) => (exampleFormat ? `Example: ${exampleFormat}` : '');
 
 export type TDocument = {
     additional?: {
@@ -26,13 +26,13 @@ const validateDocumentNumber = (
     if (!documentNumber && documentConfig?.text) {
         let documentName = '';
         switch (documentConfig.id) {
-            case 'drivers_license':
+            case 'driversLicense':
                 documentName = 'Driver License Reference number';
                 break;
             case 'ssnit':
                 documentName = 'SSNIT number';
                 break;
-            case 'national_id_no_photo':
+            case 'nationalIdNoPhoto':
                 documentName = 'NIN';
                 break;
             default:
@@ -72,21 +72,21 @@ const validateAdditionalDocumentNumber = (
 
 export const getIDVFormValidationSchema = (list: TDocument[]) => {
     return Yup.object({
-        document_additional: Yup.string().test({
-            name: 'test-additional-document-number',
+        documentAdditional: Yup.string().test({
+            name: 'testAdditionalDocumentNumber',
             test: (value, context) => {
                 const documentConfig = getSelectedDocumentConfigData(context.parent.document_type, list);
                 return validateAdditionalDocumentNumber(documentConfig, value, context);
             },
         }),
-        document_number: Yup.string().test({
-            name: 'test-document-number',
+        documentNumber: Yup.string().test({
+            name: 'testDocumentNumber',
             test: (value, context) => {
                 const documentConfig = getSelectedDocumentConfigData(context.parent.document_type, list);
                 return validateDocumentNumber(documentConfig, value as string, context);
             },
         }),
-        document_type: Yup.string().required('Please select a document type.'),
+        documentType: Yup.string().required('Please select a document type.'),
     });
 };
 

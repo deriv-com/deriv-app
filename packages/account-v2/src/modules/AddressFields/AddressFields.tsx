@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuthorize, useSettings, useStatesList } from '@deriv/api';
 import { FormDropDownField, FormInputField } from '../../components/FormFields';
-import { LANDING_COMPANY } from '../../constants/constants';
+import { LandingCompany } from '../../constants/constants';
 import { addressDetailValidations } from './validations';
 
 export const AddressFields = () => {
@@ -12,7 +12,7 @@ export const AddressFields = () => {
         activeAccount;
 
     const isSvg =
-        landingCompanyName === LANDING_COMPANY.SVG || !!upgradableLandingCompanies?.includes(LANDING_COMPANY.SVG);
+        landingCompanyName === LandingCompany.SVG || !!upgradableLandingCompanies?.includes(LandingCompany.SVG);
     const { data: statesList, isFetched: statesListFetched } = useStatesList(settings.country_code ?? '', {
         enabled: !!settings.country_code,
     });

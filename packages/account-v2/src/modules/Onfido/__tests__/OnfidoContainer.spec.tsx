@@ -116,8 +116,8 @@ describe('OnfidoContainer', () => {
         });
         render(<OnfidoContainer />);
 
-        userEvent.click(screen.getByTestId('dt_poi-confirm-with-example'));
-        const onfidoView = screen.getByTestId('dt_onfido-element');
+        userEvent.click(screen.getByTestId('dt-poi-confirm-with-example'));
+        const onfidoView = screen.getByTestId('dt-onfido-element');
         expect(onfidoView).not.toHaveClass('opacity-600 pointer-events-none');
     });
 });

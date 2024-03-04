@@ -7,8 +7,8 @@ import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
 import IcPOAVerified from '../../assets/verification-status/ic-poa-verified.svg';
 import { DemoMessage } from '../../components/DemoMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
-import { AUTH_STATUS_CODES } from '../../constants/constants';
-import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../constants/routes';
+import { AuthStatusCodes } from '../../constants/constants';
+import { accountV2Routes, p2pRoute } from '../../constants/routes';
 import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
 import { usePOAInfo } from '../../hooks/usePOAInfo';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
@@ -29,7 +29,7 @@ export const POAFormContainer = () => {
         isNavigationFromP2P() ? (
             <Button
                 onClick={() => {
-                    history.push(P2P_ROUTE);
+                    history.push(p2pRoute);
                     window.sessionStorage.removeItem('config.platform');
                 }}
             >
@@ -41,7 +41,7 @@ export const POAFormContainer = () => {
         isPOINeeded ? (
             <Button
                 onClick={() => {
-                    history.push(ACCOUNT_V2_ROUTES.ProofOfIdentity);
+                    history.push(accountV2Routes.ProofOfIdentity);
                 }}
             >
                 Proof of identity
@@ -105,9 +105,9 @@ export const POAFormContainer = () => {
     }
 
     switch (documentStatus) {
-        case AUTH_STATUS_CODES.NONE:
+        case AuthStatusCodes.NONE:
             return <AddressDetailsForm />;
-        case AUTH_STATUS_CODES.PENDING:
+        case AuthStatusCodes.PENDING:
             return (
                 <IconWithMessage
                     actionButton={redirectionButton}
@@ -124,7 +124,7 @@ export const POAFormContainer = () => {
                     ) : null}
                 </IconWithMessage>
             );
-        case AUTH_STATUS_CODES.VERIFIED:
+        case AuthStatusCodes.VERIFIED:
             return (
                 <IconWithMessage
                     actionButton={redirectionButton}
@@ -138,7 +138,7 @@ export const POAFormContainer = () => {
                     ) : null}
                 </IconWithMessage>
             );
-        case AUTH_STATUS_CODES.EXPIRED:
+        case AuthStatusCodes.EXPIRED:
             return (
                 <IconWithMessage
                     actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}
@@ -151,8 +151,8 @@ export const POAFormContainer = () => {
                     </Text>
                 </IconWithMessage>
             );
-        case AUTH_STATUS_CODES.REJECTED:
-        case AUTH_STATUS_CODES.SUSPECTED:
+        case AuthStatusCodes.REJECTED:
+        case AuthStatusCodes.SUSPECTED:
             return (
                 <IconWithMessage
                     actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}

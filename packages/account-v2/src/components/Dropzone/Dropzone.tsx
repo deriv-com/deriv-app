@@ -103,7 +103,7 @@ const Dropzone: React.FC<TProps> = ({
         <div {...getRootProps()} className={className} ref={rootRef as RefObject<HTMLDivElement>}>
             <input
                 {...(getInputProps() as DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>)}
-                data-testid='dt_dropzone-input'
+                data-testid='dt-dropzone-input'
             />
             <div
                 className={classNames(

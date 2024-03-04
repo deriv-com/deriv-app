@@ -1,22 +1,18 @@
 import { FormikValues } from 'formik';
 import * as Yup from 'yup';
-import {
-    MANUAL_DOCUMENT_SELFIE,
-    MANUAL_DOCUMENT_TYPES_DATA,
-    TManualDocumentTypes,
-} from '../constants/manualFormConstants';
+import { manualDocumentSelfie, manualDocumentTypesData, TManualDocumentTypes } from '../constants/manualFormConstants';
 
 export const getTitleForFormInputs = (selectedDocument: TManualDocumentTypes) =>
-    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].inputSectionHeader;
+    manualDocumentTypesData[selectedDocument].inputSectionHeader;
 
 export const getTitleForDocumentUpload = (selectedDocument: TManualDocumentTypes) =>
-    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].uploadSectionHeader;
+    manualDocumentTypesData[selectedDocument].uploadSectionHeader;
 
 export const getFieldsConfig = (selectedDocument: TManualDocumentTypes) =>
-    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].fields;
+    manualDocumentTypesData[selectedDocument].fields;
 
 export const getUploadConfig = (selectedDocument: TManualDocumentTypes) =>
-    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].uploads;
+    manualDocumentTypesData[selectedDocument].uploads;
 
 export const getManualFormValidationSchema = (
     selectedDocument: TManualDocumentTypes,
@@ -26,15 +22,15 @@ export const getManualFormValidationSchema = (
     const uploadConfig = getUploadConfig(selectedDocument);
 
     const documentExpiryValidation = Yup.object({
-        document_expiry: Yup.string().required(fieldsConfig.documentExpiry.errorMessage),
-    }).default(() => ({ document_expiry: '' }));
+        documentExpiry: Yup.string().required(fieldsConfig.documentExpiry.errorMessage),
+    }).default(() => ({ documentExpiry: '' }));
 
     const documentUploadValidation = Object.fromEntries(
         uploadConfig.map(item => [item.pageType, Yup.string().required(item.error).default(null)])
     );
 
     const baseSchema = Yup.object({
-        document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
+        documentNumber: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
         ...documentUploadValidation,
     });
 
@@ -43,7 +39,7 @@ export const getManualFormValidationSchema = (
 
 export const getSelfieValidationSchema = () => {
     return Yup.object({
-        [MANUAL_DOCUMENT_SELFIE]: Yup.mixed<File | null>()
+        [manualDocumentSelfie]: Yup.mixed<File | null>()
             .test({
                 message: 'File is required',
                 name: 'file',
@@ -52,7 +48,7 @@ export const getSelfieValidationSchema = () => {
                 },
             })
             .required(),
-    }).default(() => ({ [MANUAL_DOCUMENT_SELFIE]: null }));
+    }).default(() => ({ [manualDocumentSelfie]: null }));
 };
 
 export const setInitialValues = (fields: string[]) => {

@@ -9,7 +9,7 @@ jest.mock('../../../../components/FormFields', () => ({
 
 jest.mock('../../CommonMistakeExample', () => ({
     CommonMistakesExamples: ({ description }: { description: string }) => (
-        <div data-testid='dt_common-mistake-example'>{description}</div>
+        <div data-testid='dt-common-mistake-example'>{description}</div>
     ),
 }));
 
@@ -48,7 +48,7 @@ describe('DocumentSubmission', () => {
     it('renders the Common Mistake', () => {
         expect(screen.getByText('Common Mistakes')).toBeInTheDocument();
         const commonMistakeExamples = getExampleImagesConfig();
-        const examples = screen.getAllByTestId('dt_common-mistake-example');
+        const examples = screen.getAllByTestId('dt-common-mistake-example');
         commonMistakeExamples.forEach((example, index) => {
             expect(examples[index]).toHaveTextContent(example.description);
         });

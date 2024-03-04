@@ -1,88 +1,88 @@
 import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
 import { DummyRoute } from '../router/components/DummyRoute';
-import { ACCOUNT_V2_ROUTES } from './routes';
+import { accountV2Routes } from './routes';
 
 export const routes = [
     {
         routeComponent: DummyRoute,
         routeName: 'Personal details',
-        routePath: ACCOUNT_V2_ROUTES.PersonalDetails,
+        routePath: accountV2Routes.PersonalDetails,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Languages',
-        routePath: ACCOUNT_V2_ROUTES.Languages,
+        routePath: accountV2Routes.Languages,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Trading assessment',
-        routePath: ACCOUNT_V2_ROUTES.TradingAssessment,
+        routePath: accountV2Routes.TradingAssessment,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Financial assessment',
-        routePath: ACCOUNT_V2_ROUTES.FinancialAssessment,
+        routePath: accountV2Routes.FinancialAssessment,
     },
     {
         routeComponent: POICountrySelector,
         routeName: 'Proof of identity',
-        routePath: ACCOUNT_V2_ROUTES.ProofOfIdentity,
+        routePath: accountV2Routes.ProofOfIdentity,
     },
     {
         routeComponent: POAFormContainer,
         routeName: 'Proof of address',
-        routePath: ACCOUNT_V2_ROUTES.ProofOfAddress,
+        routePath: accountV2Routes.ProofOfAddress,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Proof of ownership',
-        routePath: ACCOUNT_V2_ROUTES.ProofOfOwnership,
+        routePath: accountV2Routes.ProofOfOwnership,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Proof of income',
-        routePath: ACCOUNT_V2_ROUTES.ProofOfIncome,
+        routePath: accountV2Routes.ProofOfIncome,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Email and passwords',
-        routePath: ACCOUNT_V2_ROUTES.EmailAndPassword,
+        routePath: accountV2Routes.EmailAndPassword,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Self exclusion',
-        routePath: ACCOUNT_V2_ROUTES.SelfExclusion,
+        routePath: accountV2Routes.SelfExclusion,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Account limits',
-        routePath: ACCOUNT_V2_ROUTES.AccountLimits,
+        routePath: accountV2Routes.AccountLimits,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Login history',
-        routePath: ACCOUNT_V2_ROUTES.LoginHistory,
+        routePath: accountV2Routes.LoginHistory,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'API token',
-        routePath: ACCOUNT_V2_ROUTES.ApiToken,
+        routePath: accountV2Routes.ApiToken,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Connected apps',
-        routePath: ACCOUNT_V2_ROUTES.ConnectedApps,
+        routePath: accountV2Routes.ConnectedApps,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Two-factor authentication',
-        routePath: ACCOUNT_V2_ROUTES.TwoFactorAuthentication,
+        routePath: accountV2Routes.TwoFactorAuthentication,
     },
     {
         routeComponent: DummyRoute,
         routeName: 'Close your account',
-        routePath: ACCOUNT_V2_ROUTES.CloseAccount,
+        routePath: accountV2Routes.CloseAccount,
     },
 ];
 

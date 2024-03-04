@@ -70,7 +70,7 @@ describe('BotNotification', () => {
         render(<BotNotification message={test_message} handleClose={mockHandleClose} is_open={true} />, {
             wrapper,
         });
-        const cls_btn = screen.getByTestId('bot-notification-close');
+        const cls_btn = screen.getByTestId('dt_bot_notification_close');
         expect(cls_btn).toBeInTheDocument();
     });
 
@@ -78,7 +78,7 @@ describe('BotNotification', () => {
         render(<BotNotification message={test_message} handleClose={mockHandleClose} is_open={true} />, {
             wrapper,
         });
-        const cls_btn = screen.getByTestId('bot-notification-close');
+        const cls_btn = screen.getByTestId('dt_bot_notification_close');
         await userEvent.click(cls_btn);
         expect(mockHandleClose).toBeCalled();
     });
@@ -87,12 +87,12 @@ describe('BotNotification', () => {
         render(<BotNotification message={test_message} handleClose={mockHandleClose} is_open={true} timeout={4000} />, {
             wrapper,
         });
-        const element = screen.getByTestId('bot-notification-container');
+        const element = screen.getByTestId('dt_bot_notification_container');
         act(() => {
             fireEvent.mouseLeave(element);
             jest.advanceTimersByTime(4100);
         });
-        const cls_btn = screen.queryByTestId('bot-snackbar-notification-close');
+        const cls_btn = screen.queryByTestId('dt_bot_snackbar_notification_close');
         expect(cls_btn).not.toBeInTheDocument();
     });
 });

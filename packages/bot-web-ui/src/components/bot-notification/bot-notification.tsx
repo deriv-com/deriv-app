@@ -30,21 +30,30 @@ const BotNotification = ({
 
     return (
         <div
+            tabIndex={0}
             onMouseOver={() => {
                 setNotificationTimer(0);
             }}
             onMouseLeave={() => {
                 setNotificationTimer(timeout);
             }}
+            onFocus={() => {
+                setNotificationTimer(0);
+            }}
+            onKeyDown={(e: React.KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    setNotificationTimer(0);
+                }
+            }}
             className={className ?? 'bot-notification'}
-            data-testid='bot-notification-container'
+            data-testid='dt_bot_notification_container'
         >
             <Toast is_open={is_open} type={type} timeout={notification_timer} onClick={onClick} onClose={handleClose}>
                 <div>{message}</div>
                 <Icon
                     icon='IcCross'
                     className={'bot-notification__close-icon'}
-                    data_testid={'bot-notification-close'}
+                    data_testid={'dt_bot_notification_close'}
                     onClick={handleClose}
                 />
             </Toast>

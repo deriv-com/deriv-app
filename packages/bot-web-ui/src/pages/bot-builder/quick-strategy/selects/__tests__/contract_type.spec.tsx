@@ -123,7 +123,7 @@ describe('<ContractType /> Responsive', () => {
         render(<ContractType name='type' />, {
             wrapper,
         });
-        const tabs = screen.getByTestId('dt-qs-contract-types');
+        const tabs = screen.getByTestId('dt_qs_contract_types');
         userEvent.click(tabs);
         await waitFor(() => {
             const option_element = screen.getByText('RISE');
@@ -182,7 +182,7 @@ describe('<ContractType /> Desktop', () => {
         render(<ContractType name='type' />, {
             wrapper,
         });
-        const autocomplete_element = screen.getByTestId('qs_autocomplete_contract_type');
+        const autocomplete_element = screen.getByTestId('dt_qs_autocomplete_contract_type');
         userEvent.click(autocomplete_element);
         await waitFor(() => {
             const option_element = screen.getByText('RISE');

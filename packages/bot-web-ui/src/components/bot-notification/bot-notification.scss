@@ -1,7 +1,7 @@
 .bot-notification {
     position: fixed;
     z-index: var(--zindex-snackbar);
-    left: 3.5rem;
+    inset-inline-start: 3.5rem;
     bottom: 7rem;
 
     .dc-toast {
@@ -10,7 +10,7 @@
             background: var(--icon-black-plus);
             color: var(--general-main-1);
             height: 4.8rem;
-            text-align: left;
+            text-align: start;
             padding: 0.8rem 1.6rem;
             border-radius: 0.8rem;
             font-size: 1.4rem;

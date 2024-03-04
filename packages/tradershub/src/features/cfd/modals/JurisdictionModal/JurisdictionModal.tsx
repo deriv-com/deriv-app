@@ -17,12 +17,14 @@ const JurisdictionModal = () => {
     const { isOpen, closeModal } = useQueryParams();
     const { show } = useModal();
     const { isEU } = useRegulationFlags();
-    const { getCFDState, setCfdState } = useCFDContext();
+    const { cfdState, setCfdState } = useCFDContext();
 
     const { isLoading } = useAvailableMT5Accounts();
     const { isDesktop } = useDevice();
 
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const { marketType: marketTypeState } = cfdState;
+
+    const marketType = marketTypeState ?? MarketType.ALL;
 
     const { title } = MarketTypeDetails(isEU)[marketType];
 
@@ -41,7 +43,7 @@ const JurisdictionModal = () => {
     };
 
     useEffect(() => {
-        setCfdState('selectedJurisdiction', selectedJurisdiction);
+        setCfdState({ selectedJurisdiction });
     }, [selectedJurisdiction, setCfdState]);
 
     // TODO: Add Loading Placeholder

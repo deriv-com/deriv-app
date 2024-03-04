@@ -31,7 +31,9 @@ const MT5AccountTypeModal = () => {
                         className='rounded-xs'
                         disabled={!selectedMarketType}
                         onClick={() => {
-                            setCfdState('marketType', selectedMarketType);
+                            setCfdState({
+                                marketType: selectedMarketType,
+                            });
                             history.push({
                                 pathname: history.location.pathname,
                                 search: queryParams.toString(),

@@ -61,8 +61,10 @@ const verificationDocumentsMapper: TVerificationDocumentsMapper = {
 const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, onSelect }: TJurisdictionCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
     const { isEU } = useRegulationFlags();
+
+    const { marketType: marketTypeState } = cfdState;
 
     const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
@@ -84,7 +86,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
 
     const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = jurisdictionContents;
 
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const marketType = marketTypeState ?? MarketType.ALL;
     const rows = contents[marketType] ?? [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {

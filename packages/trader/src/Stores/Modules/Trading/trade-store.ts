@@ -631,7 +631,7 @@ export default class TradeStore extends BaseStore {
         await this.setActiveSymbols();
         await this.root_store.active_symbols.setActiveSymbols();
         const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
-        if (showModal && should_show_loading && !this.root_store.client.is_logging_in) {
+        if (showModal && !this.root_store.client.is_switching && !this.root_store.client.is_logging_in) {
             this.root_store.ui.toggleUrlUnavailableModal(true);
         }
         const hasSymbolChanged = symbol && symbol !== this.symbol;
@@ -714,7 +714,9 @@ export default class TradeStore extends BaseStore {
                     contract_types_list: contract_categories.contract_types_list,
                 });
                 contractType = contractTypeParam;
-                if (showModal) this.root_store.ui.toggleUrlUnavailableModal(true);
+                if (showModal && !this.root_store.client.is_switching && !this.root_store.client.is_logging_in) {
+                    this.root_store.ui.toggleUrlUnavailableModal(true);
+                }
                 this.processNewValuesAsync({
                     ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
                         has_only_forward_starting_contracts: boolean;

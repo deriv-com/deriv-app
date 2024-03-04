@@ -5,7 +5,7 @@ import {
     validLength,
     validPassword,
     validMT5Password,
-    mobileOSDetect
+    mobileOSDetect,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';

@@ -23,7 +23,7 @@ const MT5AccountTypeModal = () => {
                     className='h-40 rounded-xs'
                     disabled={!selectedMarketType}
                     onClick={() => {
-                        setCfdState('marketType', selectedMarketType);
+                        setCfdState({ marketType: selectedMarketType });
                         show(<JurisdictionModal />);
                     }}
                 >

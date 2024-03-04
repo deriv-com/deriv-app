@@ -19,10 +19,10 @@ const JurisdictionScreen = ({
     setIsCheckBoxChecked,
     setSelectedJurisdiction,
 }: TJurisdictionScreenProps) => {
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: mt5AccountsList } = useMT5AccountsList();
-    const marketType = getCFDState('marketType');
+    const { marketType } = cfdState;
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const jurisdictions = useMemo(
         () =>

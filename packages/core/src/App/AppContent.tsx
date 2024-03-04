@@ -13,10 +13,17 @@ import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.
 import Routes from './Containers/Routes/routes.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import Devtools from './Devtools';
+import { useRemoteConfig } from '@deriv/api';
+import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
+    const { data } = useRemoteConfig();
+
+    React.useEffect(() => {
+        initDatadog(data.tracking_datadog);
+    }, [data]);
 
     return (
         <PlatformContainer>

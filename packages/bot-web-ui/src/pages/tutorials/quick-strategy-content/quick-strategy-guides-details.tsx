@@ -96,6 +96,9 @@ const QuickStrategyGuidesDetail = observer(
                                 <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                             </Text>
                         </div>
+                        <Text color='prominent' line_height='s' size={text_size} weight='bold' as='div'>
+                            <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
+                        </Text>
                         <StrategyTabContent tutorial_selected_strategy={tutorial_selected_strategy} />
                     </>
                 )}

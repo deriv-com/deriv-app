@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Icon, Money, Text, ExpansionPanel } from '@deriv/components';
+import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv/components';
 import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
 import { TCFDDashboardContainer, TCFDsPlatformType, TTradingPlatformAccounts } from 'Components/props.types';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
@@ -92,9 +92,9 @@ const CTraderDerivXTradeModal = ({
 
     const has_no_real_account = !has_any_real_account;
 
-    const total_balance =
-        ctrader_accounts_list &&
-        ctrader_accounts_list.reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0);
+    const total_balance = ctrader_accounts_list
+        ? ctrader_accounts_list.reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0)
+        : 0;
 
     const message = {
         header: (
@@ -165,19 +165,17 @@ const CTraderDerivXTradeModal = ({
         }
 
         return (
-            <React.Fragment>
-                <div className='cfd-trade-modal__download-center-app--option'>
-                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {app_title}
-                    </Text>
-                    <PlatformsDesktopDownload
-                        platform={platform}
-                        is_demo={is_demo}
-                        dxtrade_tokens={dxtrade_tokens}
-                        ctrader_tokens={ctrader_tokens}
-                    />
-                </div>
-            </React.Fragment>
+            <div className='cfd-trade-modal__download-center-app--option'>
+                <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
+                    {app_title}
+                </Text>
+                <PlatformsDesktopDownload
+                    platform={platform}
+                    is_demo={is_demo}
+                    dxtrade_tokens={dxtrade_tokens}
+                    ctrader_tokens={ctrader_tokens}
+                />
+            </div>
         );
     };
 
@@ -233,7 +231,7 @@ const CTraderDerivXTradeModal = ({
                                             getTitle(ctrader_dxtrade_trade_account.market_type, is_eu_user),
                                             ctrader_dxtrade_trade_account.account_type,
                                             account_type,
-                                            (ctrader_dxtrade_trade_account as DetailsOfEachMT5Loginid)?.server
+                                            ctrader_dxtrade_trade_account?.server
                                         );
                                         toggleModal();
                                     }}
@@ -260,30 +258,32 @@ const CTraderDerivXTradeModal = ({
                                 </div>
                             );
                         })}
-                        <div
-                            className='cfd-trade-modal__get-more-accounts'
-                            onClick={() => {
-                                toggleMT5TradeModal();
-                                if ((has_no_real_account || no_CR_account) && is_real) {
-                                    openDerivRealAccountNeededModal();
-                                } else {
-                                    setAccountType({
-                                        category: selected_account_type,
-                                        type: 'all',
-                                    });
-                                    setAppstorePlatform(CFD_PLATFORMS.CTRADER);
-                                    getAccount();
-                                }
-                            }}
-                        >
-                            <Icon
-                                icon={'IcAppstoreGetMoreAccounts'}
-                                size={24}
-                                className='cfd-trade-modal__get-more-accounts--icon'
-                            />
-                            <div className='cfd-trade-modal__get-more-accounts--details'>
-                                <Text size='xxs'>{localize('Get another cTrader account')}</Text>
-                            </div>
+                        <div className='cfd-trade-modal__get-more-accounts'>
+                            <Button
+                                onClick={() => {
+                                    toggleMT5TradeModal();
+                                    if ((has_no_real_account || no_CR_account) && is_real) {
+                                        openDerivRealAccountNeededModal();
+                                    } else {
+                                        setAccountType({
+                                            category: selected_account_type,
+                                            type: 'all',
+                                        });
+                                        setAppstorePlatform(CFD_PLATFORMS.CTRADER);
+                                        getAccount();
+                                    }
+                                }}
+                                transparent
+                            >
+                                <Icon
+                                    icon={'IcAppstoreGetMoreAccounts'}
+                                    size={24}
+                                    className='cfd-trade-modal__get-more-accounts--icon'
+                                />
+                                <div className='cfd-trade-modal__get-more-accounts--details'>
+                                    <Text size='xxs'>{localize('Get another cTrader account')}</Text>
+                                </div>
+                            </Button>
                         </div>
 
                         <div className='cfd-trade-modal__expansion-panel'>

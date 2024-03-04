@@ -26,7 +26,7 @@ const CTraderTransferModal = observer(() => {
             <div className='ctrader-transfer-modal'>
                 {ctrader_accounts_list.map(ctrader_account => {
                     return (
-                        <div
+                        <button
                             key={ctrader_account.name}
                             className='ctrader-transfer-modal__accounts-list'
                             onClick={() => {
@@ -45,7 +45,7 @@ const CTraderTransferModal = observer(() => {
                                 />
                                 <Icon icon='IcChevronRight' />
                             </Text>
-                        </div>
+                        </button>
                     );
                 })}
             </div>

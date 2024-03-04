@@ -422,7 +422,7 @@
         display: flex;
         justify-content: space-between;
         &:first-child {
-            border-top: 2px solid var(--general-section-1);
+            border-top: 0.2rem solid var(--general-section-1);
             padding-top: 1rem;
         }
         margin: 0.8rem 0;
@@ -445,7 +445,7 @@
 
         &--divider {
             width: 100%;
-            border-bottom: 2px solid var(--general-hover);
+            border-bottom: 0.2rem solid var(--general-hover);
         }
     }
 
@@ -768,10 +768,13 @@
 
 .ctrader-transfer-modal {
     &__accounts-list {
+        width: 100%;
         display: flex;
         padding: 0.5rem;
-        margin: 1.6rem;
+        margin: 1.6rem 0;
         justify-content: space-between;
+        border: none;
+        background: none;
 
         &:hover {
             cursor: pointer;

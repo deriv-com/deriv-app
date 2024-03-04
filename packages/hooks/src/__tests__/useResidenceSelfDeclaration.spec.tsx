@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useResidenceSelfDeclaration from '../useResidenceSelfDeclaration';
 
 describe('useResidenceSelfDeclaration', () => {
-    test('should return true if client residence is spain', async () => {
+    test("should return true if client's residence require self-declaration", async () => {
         const mock = mockStore({
             client: {
                 residence: 'es',
@@ -28,7 +28,7 @@ describe('useResidenceSelfDeclaration', () => {
         expect(result.current.is_residence_self_declaration_required).toBe(true);
     });
 
-    test('should return false if client residence is not spain', async () => {
+    test("should return false if client's residence does not require self-declaration", async () => {
         const mock = mockStore({
             client: {
                 residence: 'id',

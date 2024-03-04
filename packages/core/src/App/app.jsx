@@ -45,11 +45,14 @@ const AppWithoutTranslation = ({ root_store }) => {
             import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
-        const loadExternalScripts = () => {
-            // Load external scripts once the app is fully loaded
-            setTimeout(() => {
-                initHotjar(root_store.client);
-            }, 5000);
+        const loadExternalScripts = async () => {
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+            await delay(3000);
+            window.LiveChatWidget.init();
+
+            await delay(2000);
+            initHotjar(root_store.client);
         };
 
         initializeTranslations();
@@ -61,7 +64,13 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.common.setPlatform();
         loadSmartchartsStyles();
 
-        window.addEventListener('load', loadExternalScripts);
+        // Set maximum timeout before we load livechat in case if page loading is disturbed or takes too long
+        const max_timeout = setTimeout(loadExternalScripts, 15 * 1000); // 15 seconds
+
+        window.addEventListener('load', () => {
+            clearTimeout(max_timeout);
+            loadExternalScripts();
+        });
 
         return () => {
             window.removeEventListener('load', loadExternalScripts);

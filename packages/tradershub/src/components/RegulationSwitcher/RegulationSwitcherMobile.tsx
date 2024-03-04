@@ -1,9 +1,8 @@
 import React from 'react';
 import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
-import { useUIContext } from '@/components';
 import { useRegulationSwitcher } from '@/hooks';
 import { RegulationModal } from '@/modals';
-import { useModal } from '@/providers';
+import { useModal, useUIContext } from '@/providers';
 import { Tab, Tabs } from '@deriv-com/ui';
 
 const RegulationSwitcherMobile = () => {

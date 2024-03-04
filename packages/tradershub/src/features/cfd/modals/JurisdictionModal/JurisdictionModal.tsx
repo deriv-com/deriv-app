@@ -6,10 +6,9 @@ import { THooks } from '@/types';
 import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { MT5PasswordModal } from '@cfd/modals';
-import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen } from '@cfd/screens';
+import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen, JurisdictionTncSection } from '@cfd/screens';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
-import { JurisdictionTncSection } from '../../screens/Jurisdiction/JurisdictionTncSection';
 
 type TJurisdictionFlowProps = { selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'] };
 

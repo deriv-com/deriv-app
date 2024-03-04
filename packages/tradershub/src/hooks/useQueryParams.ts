@@ -29,6 +29,7 @@ const useQueryParams = () => {
             history.push({
                 pathname: history.location.pathname,
                 search: queryParams.toString(),
+                state: { modal: modalId },
             });
         },
         [queryParams, history]

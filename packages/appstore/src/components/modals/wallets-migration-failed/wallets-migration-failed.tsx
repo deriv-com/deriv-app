@@ -15,7 +15,7 @@ const WalletsMigrationFailed = observer(() => {
         setWalletsMigrationFailedPopup(false);
     };
 
-    const handLiveChatButtonClick = () => {
+    const handleLivechatButtonClick = () => {
         window.LC_API?.open_chat_window();
         setWalletsMigrationFailedPopup(false);
     };
@@ -50,7 +50,7 @@ const WalletsMigrationFailed = observer(() => {
                     </Text>
                 </Modal.Body>
                 <Modal.Footer className='wallets-migration-failed__footer'>
-                    <Button secondary large onClick={handLiveChatButtonClick}>
+                    <Button secondary large onClick={handleLivechatButtonClick}>
                         <Localize i18n_default_text='Go to live chat' />
                     </Button>
                     <Button primary large onClick={handleClose} classNameSpan='wallets-migration-failed__text'>

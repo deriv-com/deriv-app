@@ -105,6 +105,12 @@
 
 /packages/cashier/**/*                                          @farrah-deriv @nijil-deriv @wojciech-deriv
 
+# ==============================================================
+#  deriv-app/cashier-v2
+# ==============================================================
+
+/packages/cashier-v2/**/*                                          @farrah-deriv @nijil-deriv @wojciech-deriv @heorhi-deriv
+
 
 # ==============================================================
 #  deriv-app/cfd

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import IcPOAError from '../../assets/verification-status/ic-poa-error.svg';
 import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';

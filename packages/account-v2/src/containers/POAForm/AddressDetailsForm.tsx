@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { useDocumentUpload, useInvalidateQuery, useSettings } from '@deriv/api';
+import { useDocumentUpload, useInvalidateQuery, useSettings } from '@deriv/api-v2';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import IcPOALock from '../../assets/verification-status/ic-poa-lock.svg';

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router';
-import { Button, Text } from '@deriv-com/ui';
+import { Button, Loader, Text } from '@deriv-com/ui';
 import { cashierPathRoutes } from '../../../../routes/Router';
 import { useTransfer } from '../../provider';
 import { TransferAmountConverter, TransferFormAccountSelection } from './components';
@@ -9,6 +9,9 @@ import styles from './TransferForm.module.scss';
 
 const TransferForm = () => {
     const history = useHistory();
+    const { accounts, fromAccount, isLoading, setFromAccount, toAccount } = useTransfer();
+
+    if (isLoading) return <Loader />;
 
     return (
         <Formik
@@ -24,7 +27,7 @@ const TransferForm = () => {
                             Transfer between your accounts in Deriv
                         </Text>
                         <TransferFormAccountSelection />
-                        <TransferAmountConverter />
+                        <TransferAmountConverter fromAccount={fromAccount} toAccount={toAccount} />
                         <div className={styles['button-group']}>
                             <Button
                                 onClick={() => {

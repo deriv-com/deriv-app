@@ -1,7 +1,19 @@
-import React, { createContext, useContext, useState } from 'react';
-import { useActiveAccount, useAllAccountsList, useExchangeRateSubscription } from '@deriv/api';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv/api';
+import { THooks } from '../../../hooks/types';
+import { useExtendedTransferAccounts } from '../hooks';
 
-// export type TTransferContext = {};
+type TTransferAccount = ReturnType<typeof useExtendedTransferAccounts>['accounts'][number];
+
+type TFromAccount = ReturnType<typeof useExtendedTransferAccounts>['activeAccount'] | TTransferAccount;
+
+export type TTransferContext = {
+    accounts?: ReturnType<typeof useExtendedTransferAccounts>['accounts'];
+    fromAccount?: TFromAccount;
+    isLoading?: boolean;
+    setFromAccount: React.Dispatch<React.SetStateAction<TTransferAccount>>;
+    toAccount?: ReturnType<typeof useExtendedTransferAccounts>['accounts'][number];
+};
 
 const TransferContext = createContext<TTransferContext | null>(null);
 
@@ -11,17 +23,53 @@ export const useTransfer = () => {
     if (!context) {
         throw new Error('useTransfer() must be called within a component wrapped in TransferProvider.');
     }
+
+    return context;
 };
 
-const TransferProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const { data: accounts } = useAllAccountsList();
-    const { data: activeAccount } = useActiveAccount();
-    const { data: exchangeRates } = useExchangeRateSubscription();
+type TProps = {
+    accounts: THooks.TransferAccount;
+};
+
+const getInitialToAccount = (
+    accounts: ReturnType<typeof useExtendedTransferAccounts>['accounts'],
+    activeAccount: ReturnType<typeof useExtendedTransferAccounts>['activeAccount']
+) => {
+    if (!accounts || !activeAccount) return;
+
+    if (activeAccount.loginid !== accounts[0].loginid) return accounts[0];
+
+    return accounts[1];
+};
+
+const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts, children }) => {
+    const {
+        accounts: transferAccounts,
+        activeAccount,
+        isLoading: isExtendedTransferAccountsLoading,
+    } = useExtendedTransferAccounts(accounts);
+    const { data: exchangeRates, isLoading: isExchangeRateLoading } = useExchangeRateSubscription();
     const [fromAccount, setFromAccount] = useState<TTransferContext['fromAccount']>(activeAccount);
-    const [toAccount, setToAccount] = useState<TTransferContext['toAccount']>();
+    const [toAccount, setToAccount] = useState<TTransferContext['toAccount']>(
+        getInitialToAccount(transferAccounts, activeAccount)
+    );
+
+    const isLoading = isExtendedTransferAccountsLoading || isExchangeRateLoading;
+
+    // console.log('=> rerender');
 
     return (
-        <TransferContext.Provider value={{ accounts, fromAccount, setFromAccount, setToAccount, toAccount }}>
+        <TransferContext.Provider
+            value={{
+                activeAccount,
+                accounts: transferAccounts,
+                fromAccount,
+                isLoading,
+                setFromAccount,
+                setToAccount,
+                toAccount,
+            }}
+        >
             {children}
         </TransferContext.Provider>
     );

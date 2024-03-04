@@ -69,7 +69,7 @@ describe('APIMiddleware', () => {
         };
 
         const spyDatalogsInfo = jest.spyOn(datadogLogs.logger, 'info');
-
+        api_middleware.setIsDataDogLoggingEnabled(true);
         api_middleware.log([datadog_logs], false);
 
         expect(spyDatalogsInfo).toHaveBeenCalledWith(datadog_logs.name, { ...measure_object });

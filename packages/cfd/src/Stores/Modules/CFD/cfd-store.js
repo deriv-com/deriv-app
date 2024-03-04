@@ -377,6 +377,7 @@ export default class CFDStore extends BaseStore {
         try {
             const results = await Promise.all(promises);
             const has_error = results.find(result => result.error);
+            const error_code = has_error?.error?.code;
             if (this.is_mt5_password_changed_modal_visible) this.setIsMt5PasswordChangedModalVisible(false);
             if (!has_error) {
                 actions?.setStatus({ error_message: '' });
@@ -391,9 +392,10 @@ export default class CFDStore extends BaseStore {
 
                 WS.transferBetweenAccounts();
                 this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
-            } else if (has_error?.error?.code === 'IncorrectMT5PasswordFormat') {
+            } else if (['IncorrectMT5PasswordFormat', 'InvalidTradingPlatformPasswordFormat'].includes(error_code)) {
                 this.setError(true, has_error?.error);
                 this.setMigratedMT5Accounts([]);
+                this.setMT5MigrationError('');
             } else {
                 this.setMT5MigrationError(has_error?.error?.message);
                 actions?.setStatus({ error_message: has_error?.error?.message });
@@ -407,6 +409,7 @@ export default class CFDStore extends BaseStore {
             // eslint-disable-next-line no-console
             console.warn('One or more MT5 migration requests failed:', error);
             actions?.setStatus({ error_message: error?.message });
+            this.setMT5MigrationError(error);
             this.setMigratedMT5Accounts([]);
         } finally {
             actions?.setSubmitting(false);

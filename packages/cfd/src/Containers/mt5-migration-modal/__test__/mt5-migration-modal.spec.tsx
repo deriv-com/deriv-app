@@ -25,6 +25,11 @@ const mock_store = mockStore({
     ui: {
         is_mt5_migration_modal_open: true,
     },
+    modules: {
+        cfd: {
+            setIsFromMt5MigrationModal: jest.fn(),
+        },
+    },
 });
 
 const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
@@ -79,5 +84,6 @@ describe('MT5MigrationModal', () => {
         userEvent.click(close_button);
         expect(mock_store.ui.setMT5MigrationModalEnabled).toBeCalled();
         expect(mock_store.ui.toggleMT5MigrationModal).toBeCalled();
+        expect(mock_store.modules.cfd.setIsFromMt5MigrationModal).toBeCalled();
     });
 });

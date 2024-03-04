@@ -9,10 +9,10 @@ function getAcct1Value(url: string) {
     return url.substring(start, end); // Get the substring between 'acct1=' and the '&'
 }
 /**
- * @name initDatadog
- * @param {boolean} tracking_datadog
- * @description This function is used to initialize datadog for tracking user interactions, resources, long tasks, and frustrations when the tracking_datadog parameter is set to true.
+ * This function is used to initialize datadog for tracking user interactions, resources, long tasks, and frustrations.
  * It also masks user input and redacts sensitive data from the URL.
+ *
+ * @param {boolean} tracking_datadog - The parameter to enable or disable datadog tracking.
  * @example initDatadog(true);
  * @returns {void}
  * **/

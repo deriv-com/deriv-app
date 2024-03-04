@@ -3,7 +3,7 @@ import Calendar, { CalendarProps } from 'react-calendar';
 import { useOnClickOutside } from 'usehooks-ts';
 import { Input } from '@deriv-com/ui';
 import CalendarIcon from '../../assets/date-picker/ic-calendar.svg';
-import unixToDateString from '../base/utils';
+import unixToDateString from './utils';
 import 'react-calendar/dist/Calendar.css';
 import './DatePicker.scss';
 

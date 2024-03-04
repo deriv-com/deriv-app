@@ -1,6 +1,5 @@
 import React from 'react';
-import { UIProvider } from '@/components';
-import { CFDProvider, ModalProvider, RealAccountCreationProvider } from '@/providers';
+import { CFDProvider, ModalProvider, RealAccountCreationProvider, UIProvider } from '@/providers';
 import { APIProvider } from '@deriv/api';
 import AppContent from './AppContent';
 import './index.scss';

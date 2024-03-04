@@ -10,9 +10,9 @@ jest.mock('@deriv/quill-design', () => ({
     useBreakpoint: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('../../../components/FormFields/FormDropDownField', () => {
-    return jest.fn(() => <div data-testid='dt_dropdown' />);
-});
+jest.mock('../../../components/FormFields/FormDropDownField', () => ({
+    FormDropDownField: jest.fn(() => <div data-testid='dt_dropdown' />),
+}));
 
 beforeEach(() => {
     (useAuthorize as jest.Mock).mockReturnValue({
@@ -59,29 +59,29 @@ describe('AddressFields', () => {
             isFetched: true,
         });
         renderAddressFields();
-        const address1 = screen.getByLabelText('First line of address*');
+        const address1 = screen.getByPlaceholderText('First line of address*');
         expect(address1).toBeInTheDocument();
-        const address2 = screen.getByLabelText('Second line of address');
+        const address2 = screen.getByPlaceholderText('Second line of address');
         expect(address2).toBeInTheDocument();
-        const city = screen.getByLabelText('Town/City*');
+        const city = screen.getByPlaceholderText('Town/City*');
         expect(city).toBeInTheDocument();
-        const state = screen.getByLabelText('State/Province');
+        const state = screen.getByPlaceholderText('State/Province');
         expect(state).toBeInTheDocument();
-        const zipCode = screen.getByLabelText('Postal/ZIP Code');
+        const zipCode = screen.getByPlaceholderText('Postal/ZIP Code');
         expect(zipCode).toBeInTheDocument();
     });
 
     it('should render FormDropdown component if states list fetched and has values', () => {
         renderAddressFields();
-        const address1 = screen.getByLabelText('First line of address*');
+        const address1 = screen.getByPlaceholderText('First line of address*');
         expect(address1).toBeInTheDocument();
-        const address2 = screen.getByLabelText('Second line of address');
+        const address2 = screen.getByPlaceholderText('Second line of address');
         expect(address2).toBeInTheDocument();
-        const city = screen.getByLabelText('Town/City*');
+        const city = screen.getByPlaceholderText('Town/City*');
         expect(city).toBeInTheDocument();
         const state = screen.getByTestId('dt_dropdown');
         expect(state).toBeInTheDocument();
-        const zipCode = screen.getByLabelText('Postal/ZIP Code');
+        const zipCode = screen.getByPlaceholderText('Postal/ZIP Code');
         expect(zipCode).toBeInTheDocument();
     });
 });

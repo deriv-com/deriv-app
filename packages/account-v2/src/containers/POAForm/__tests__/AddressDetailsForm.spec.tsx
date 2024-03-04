@@ -10,11 +10,9 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('../DocumentSubmission', () => {
-    const DocumentSubmission = () => <div>DocumentSubmission</div>;
-    DocumentSubmission.displayName = 'DocumentSubmission';
-    return DocumentSubmission;
-});
+jest.mock('../DocumentSubmission', () => ({
+    DocumentSubmission: () => <div>DocumentSubmission</div>,
+}));
 
 const updateSettings = jest.fn();
 const mockUploadDocument = jest.fn();

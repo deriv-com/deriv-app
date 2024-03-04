@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAuthorize, useSettings, useStatesList } from '@deriv/api';
-import FormDropDownField from '../../components/FormFields/FormDropDownField';
-import FormInputField from '../../components/FormFields/FormInputField';
+import { FormDropDownField, FormInputField } from '../../components/FormFields';
 import { LANDING_COMPANY } from '../../constants/constants';
 import { addressDetailValidations } from './validations';
 

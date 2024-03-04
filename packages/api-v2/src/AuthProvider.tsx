@@ -89,7 +89,29 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
+
     const [data, setData] = useState<TSocketResponseData<'authorize'> | null>();
+
+    useEffect(() => {
+        if (!data) return;
+
+        const accountList = data.authorize?.account_list;
+        if (!accountList) return;
+
+        const activeLoginID = getActiveLoginIDFromLocalStorage(loginIDKey) ?? accountList[0].loginid;
+        if (!activeLoginID) return;
+
+        const linkedDtradeAccount = accountList
+            ?.find(account => account.loginid === activeLoginID)
+            ?.linked_to?.find(linkedAccount => linkedAccount.platform === 'dtrade');
+
+        setIsLoading(false);
+
+        // set loginId for the current app
+        localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
+        // set loginId for the default app
+        if (linkedDtradeAccount?.loginid) localStorage.setItem('active_loginid', linkedDtradeAccount.loginid);
+    }, [data, loginIDKey]);
 
     useEffect(() => {
         setIsLoading(true);

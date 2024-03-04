@@ -60,3 +60,15 @@ $desktop-width: 1024px;
         @content;
     }
 }
+
+@mixin new-desktop {
+    @media (min-width: 1280px) {
+        @content;
+    }
+}
+
+@mixin new-mobile {
+    @media (max-width: 600px) {
+        @content;
+    }
+}

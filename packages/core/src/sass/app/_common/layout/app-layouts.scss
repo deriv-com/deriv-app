@@ -134,11 +134,11 @@
         }
     }
 
-    @include desktop {
+    @include new-desktop {
         display: none;
     }
 
-    @include mobile {
+    @include new-mobile {
         @media screen and (max-aspect-ratio: 13/9) {
             display: none;
         }

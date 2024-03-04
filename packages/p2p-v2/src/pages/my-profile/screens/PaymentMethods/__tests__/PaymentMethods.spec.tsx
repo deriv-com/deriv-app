@@ -1,6 +1,6 @@
 import React, { ComponentProps, useReducer } from 'react';
 import { PaymentMethodForm } from '@/components';
-import { APIProvider, p2p } from '@deriv/api';
+import { APIProvider, AuthProvider, p2p } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PaymentMethods from '../PaymentMethods';
@@ -64,8 +64,8 @@ jest.mock('@deriv-com/ui', () => ({
     Loader: () => <div>Loader</div>,
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiserPaymentMethods: {
             useGet: jest.fn(() => ({})),
@@ -107,7 +107,9 @@ const mockUseReducer = useReducer as jest.MockedFunction<typeof useReducer>;
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
-        <div id='v2_modal_root'>{children}</div>
+        <AuthProvider>
+            <div id='v2_modal_root'>{children}</div>
+        </AuthProvider>
     </APIProvider>
 );
 

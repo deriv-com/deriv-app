@@ -11,6 +11,7 @@ type TMT5MobileRedirectOptionProps = {
 };
 const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
     let mobile_url;
+    const is_new_iphone = /Version\/17/.test(navigator.userAgent);
 
     const mobileURLSet = () => {
         mobile_url = window.location.replace(DEEP_LINK({ mt5_trade_account }));
@@ -19,7 +20,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
             mobile_url = window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);
         }, 1500);
 
-        if (!isSafariBrowser()) {
+        if (!isSafariBrowser() || (isSafariBrowser() && is_new_iphone)) {
             window.onblur = () => {
                 clearTimeout(timeout);
             };
@@ -61,10 +62,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
             </Text>
 
             <Text as='p' align='center' size='xxs'>
-                <Localize
-                    i18n_default_text='For MT5 login issues, visit our <0>Help Centre</0>.'
-                    components={[<StaticUrl key={0} className='help-center-link' href={mt5_help_centre_url} />]}
-                />
+                {navigator.userAgent}
             </Text>
         </div>
     );

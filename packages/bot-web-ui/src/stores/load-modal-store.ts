@@ -520,6 +520,9 @@ export default class LoadModalStore implements ILoadModalStore {
                     scrollbars: true,
                 });
                 load_options.workspace = this.local_workspace;
+                if (load_options.workspace) {
+                    (load_options.workspace as any).RTL = isDbotRTL();
+                }
             } else {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;

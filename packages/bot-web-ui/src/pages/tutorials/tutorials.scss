@@ -28,7 +28,7 @@
             &--end {
                 position: absolute;
                 top: 0;
-                right: 1rem;
+                inset-inline-end: 1rem;
                 z-index: 90;
             }
         }
@@ -403,7 +403,7 @@
         @include mobile {
             .dc-select-native {
                 position: relative;
-                margin-right: 17px;
+                margin-inline-end: 17px;
                 transition: all 0.3s;
             }
             &--show-search {

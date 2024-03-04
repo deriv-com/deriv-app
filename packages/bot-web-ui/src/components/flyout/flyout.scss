@@ -13,7 +13,7 @@
     $button-padding: 5px 20px;
 
     position: absolute;
-    left: 250px;
+    inset-inline-start: 250px;
     top: 0;
     background-color: var(--general-main-2);
     height: calc(100vh - 232px);

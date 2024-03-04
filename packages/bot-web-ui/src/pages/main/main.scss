@@ -377,6 +377,14 @@
     }
 }
 
+#react-joyride-step-4 {
+    .__floater__arrow {
+        span {
+            inset-inline-end: 0;
+        }
+    }
+}
+
 .onboard {
     &__header {
         display: flex;
@@ -446,7 +454,7 @@
     }
 
     &__left {
-        text-align: left;
+        text-align: start;
 
         &__step-three {
             margin-bottom: 0.8rem;
@@ -586,7 +594,7 @@
             border-radius: 0.4rem;
             outline: none;
             cursor: pointer;
-            margin-right: 0.8rem;
+            margin-inline-end: 0.8rem;
 
             &.default {
                 background: transparent;
@@ -619,7 +627,7 @@
                 width: 50%;
                 margin-bottom: unset;
                 @include flex-center(flex-start);
-                margin-left: 1rem;
+                margin-inline-start: 1rem;
 
                 .progress-bar-circle {
                     opacity: 0.16;

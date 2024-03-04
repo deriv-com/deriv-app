@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { getContractTypeName } from '@deriv/bot-skeleton';
+import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
 import { observer } from '@deriv/stores';
@@ -14,7 +15,7 @@ const TransactionIconWithText = ({ icon, title, message, className }) => (
     <React.Fragment>
         <Popover
             className={classNames(className, 'transactions__icon')}
-            alignment='left'
+            alignment={isDbotRTL() ? 'right' : 'left'}
             message={title}
             zIndex={popover_zindex.TRANSACTION}
         >
@@ -141,7 +142,7 @@ const Transaction = observer(({ contract }) => {
     return (
         <Popover
             zIndex={popover_zindex.TRANSACTION}
-            alignment='left'
+            alignment={isDbotRTL() ? 'right' : 'left'}
             className='transactions__item-wrapper'
             is_open={contract && active_transaction_id === contract.transaction_ids.buy}
             message={contract && <PopoverContent contract={contract} />}

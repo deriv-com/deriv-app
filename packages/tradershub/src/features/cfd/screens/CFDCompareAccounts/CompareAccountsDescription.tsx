@@ -18,55 +18,51 @@ const CompareAccountsDescription = ({ marketType, shortCode }: TCompareAccountsD
     const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
 
     return (
-        <div className='max-h-[300px] flex flex-col items-center pt-16 gap-5'>
-            <Text as='p' size='xl' weight='bold'>
+        <div className='max-h-[310px] flex flex-col items-center pt-16 gap-5 px-16 lg:px-0'>
+            <Text as='p' className='text-default lg:text-xl' weight='bold'>
                 {'Up to'} {jurisdictionData.leverage}
             </Text>
-            <Text as='p' size='sm'>
+            <Text as='p' className='text-xs lg:text-sm'>
                 {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
             </Text>
             {!isEuRegion && (
-                <div className='m-9'>
-                    <Text as='p' size='xl' weight='bold'>
+                <Fragment>
+                    <Text align='center' as='p' className='text-default lg:text-xl' weight='bold'>
                         {jurisdictionData.spread}
                     </Text>
-                    <Text as='p' size='sm'>
+                    <Text align='center' as='p' className='text-xs lg:text-sm'>
                         {jurisdictionData.spread_description}
                     </Text>
-                </div>
+                </Fragment>
             )}
             {!isDemo && (
-                <Fragment>
-                    <div className='m-9'>
-                        <Text as='p' size='sm' weight='bold'>
-                            {jurisdictionData.counterparty_company}
-                        </Text>
-                        <Text as='p' size='sm'>
-                            {jurisdictionData.counterparty_company_description}
-                        </Text>
-                    </div>
-                    <div className='m-9'>
-                        <Text as='p' size='sm' weight='bold'>
-                            {jurisdictionData.jurisdiction}
-                        </Text>
-                        <Text as='p' size='sm'>
-                            {jurisdictionData.jurisdiction_description}
-                        </Text>
-                    </div>
-                    <div className='m-9'>
-                        <Text as='p' size='sm' weight='bold'>
-                            {jurisdictionData.regulator}
-                        </Text>
+                <div className='flex flex-col items-center gap-5 lg:gap-7'>
+                    <Text as='p' size='sm' weight='bold'>
+                        {jurisdictionData.counterparty_company}
+                    </Text>
+                    <Text as='p' className='text-xs lg:text-sm'>
+                        {jurisdictionData.counterparty_company_description}
+                    </Text>
+                    <Text align='center' as='p' className='text-default lg:text-lg' weight='bold'>
+                        {jurisdictionData.jurisdiction}
+                    </Text>
+                    <Text as='p' size='xs'>
+                        {jurisdictionData.jurisdiction_description}
+                    </Text>
+                    <Text align='center' as='p' className='text-default lg:text-lg' weight='bold'>
+                        {jurisdictionData.regulator}
+                    </Text>
+                    <div>
                         {jurisdictionData.regulator_license && (
-                            <Text as='p' size='sm'>
+                            <Text align='center' as='p' className='text-xs lg:text-sm'>
                                 {jurisdictionData.regulator_license}
                             </Text>
                         )}
-                        <Text as='p' size='sm'>
+                        <Text align='center' as='p' className='text-xs lg:text-sm'>
                             {jurisdictionData.regulator_description}
                         </Text>
                     </div>
-                </Fragment>
+                </div>
             )}
         </div>
     );

@@ -3,6 +3,7 @@ import useActiveWalletAccount from './useActiveWalletAccount';
 import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 import useLandingCompany from './useLandingCompany';
 import useMT5AccountsList from './useMT5AccountsList';
+import useActiveTradingAccount from './useActiveTradingAccount';
 
 // Remove the hardcoded values and use the values from the API once it's ready
 export const MARKET_TYPE = {
@@ -69,7 +70,11 @@ const ctraderAccount = {
 /** A custom hook that gets compare accounts values. */
 const useCFDCompareAccounts = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { is_virtual: isDemo } = activeWallet || {};
+    const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { is_virtual: isDemoWallet } = activeWallet ?? {};
+    const { is_virtual: isDemoTrading } = activeTradingAccount ?? {};
+
+    const isDemo = isDemoWallet || isDemoTrading;
 
     const { data: allAvailableMt5Accounts } = useAvailableMT5Accounts();
     const { data: addedAccounts, ...rest } = useMT5AccountsList();

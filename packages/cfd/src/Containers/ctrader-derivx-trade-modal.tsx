@@ -281,7 +281,9 @@ const CTraderDerivXTradeModal = ({
                                     className='cfd-trade-modal__get-more-accounts--icon'
                                 />
                                 <div className='cfd-trade-modal__get-more-accounts--details'>
-                                    <Text size='xxs'>{localize('Get another cTrader account')}</Text>
+                                    <Text size='xxs' line-height='xxs'>
+                                        {localize('Get another cTrader account')}
+                                    </Text>
                                 </div>
                             </Button>
                         </div>

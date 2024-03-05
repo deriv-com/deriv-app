@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useModal } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
 import { DummyComponent } from '@cfd/components';
 import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
@@ -10,7 +11,6 @@ import {
     useMT5AccountsList,
     useSettings,
 } from '@deriv/api';
-import { Provider } from '@deriv/library';
 import { Button } from '@deriv-com/ui';
 import {
     getAccountVerificationStatus,
@@ -32,7 +32,7 @@ type TCompareAccountButton = {
 @params {string} marketType - The market type of the account. //Removed for now as it is needed by Verification flow
  */
 const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompareAccountButton) => {
-    const { show } = Provider.useModal();
+    const { show } = useModal();
 
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();

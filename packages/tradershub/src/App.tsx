@@ -1,21 +1,19 @@
 import React from 'react';
-import { UIProvider } from '@/components';
+import { CFDProvider, ModalProvider, RealAccountCreationProvider, UIProvider } from '@/providers';
 import { APIProvider } from '@deriv/api';
-import { Provider } from '@deriv/library';
-import { SignupWizardProvider } from './providers/SignupWizardProvider';
 import AppContent from './AppContent';
 import './index.scss';
 
 const App = () => (
     <UIProvider>
         <APIProvider standalone>
-            <Provider.CFDProvider>
-                <Provider.ModalProvider>
-                    <SignupWizardProvider>
+            <CFDProvider>
+                <ModalProvider>
+                    <RealAccountCreationProvider>
                         <AppContent />
-                    </SignupWizardProvider>
-                </Provider.ModalProvider>
-            </Provider.CFDProvider>
+                    </RealAccountCreationProvider>
+                </ModalProvider>
+            </CFDProvider>
         </APIProvider>
     </UIProvider>
 );

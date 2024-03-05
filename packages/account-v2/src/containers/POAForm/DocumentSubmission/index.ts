@@ -1,1 +1,1 @@
-export { default } from './DocumentSubmission';
+export { DocumentSubmission } from './DocumentSubmission';

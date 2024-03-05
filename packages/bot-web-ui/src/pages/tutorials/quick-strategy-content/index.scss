@@ -21,7 +21,7 @@
         grid-template-columns: 10fr 1fr;
         align-items: center;
         padding: 1.6rem;
-        border: 2px solid var(--system-light-5-active-background, #d6dadb);
+        border: 2px solid var(--border-normal);
         border-radius: 8px;
         cursor: pointer;
 
@@ -37,7 +37,7 @@
             ul {
                 list-style: disc;
                 margin-left: 1.6rem;
-                color: var(--text-prominent);
+                color: var(--text-general);
             }
 
             li:not(:last-child) {
@@ -48,6 +48,7 @@
                 position: relative;
                 top: 0.15rem;
                 margin-left: 0.3rem;
+                color: var(--text-general);
             }
         }
 

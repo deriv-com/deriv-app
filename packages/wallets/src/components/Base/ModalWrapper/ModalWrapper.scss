@@ -1,6 +1,8 @@
 .wallets-modal-wrapper {
     position: relative;
     animation: popup 0.4s;
+    display: flex;
+    justify-content: center;
 
     @include mobile {
         animation: popup 0.2s;

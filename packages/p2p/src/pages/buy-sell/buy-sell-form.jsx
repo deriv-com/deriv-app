@@ -108,7 +108,7 @@ const BuySellForm = props => {
         const receive_amount = input_amount * calculated_rate;
         buy_sell_store.setReceiveAmount(receive_amount);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [input_amount, effective_rate]);
+    }, [input_amount, calculated_rate]);
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {

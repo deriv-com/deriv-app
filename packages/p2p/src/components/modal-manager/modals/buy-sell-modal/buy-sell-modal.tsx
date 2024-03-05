@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { reaction } from 'mobx';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useInvalidateQuery } from '@deriv/api';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, ThemedScrollbars } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
@@ -23,6 +24,7 @@ const BuySellModal = () => {
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
 
+    const invalidate = useInvalidateQuery();
     const history = useHistory();
     const location = useLocation();
     const scroll_ref = React.useRef<HTMLDivElement & SVGSVGElement>(null);
@@ -116,6 +118,7 @@ const BuySellModal = () => {
                 if (rate_has_changed && is_the_same_advert) {
                     showModal({ key: 'MarketRateChangeErrorModal', props: {} });
                     buy_sell_store.setFormErrorCode('');
+                    invalidate('p2p_advert_list');
                 }
             },
             { fireImmediately: true }

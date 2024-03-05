@@ -13,8 +13,8 @@ type TExtendedMoment = typeof moment & {
 
 // Localize moment instance with specific object
 export const initMoment = (lang: string) => {
-    const ignored = ['EN', 'BN'];
-    if (!lang || ignored.includes(lang)) return moment;
+    const ignored_language = ['EN', 'BN'];
+    if (!lang || ignored_language.includes(lang)) return moment;
     return import(`moment/locale/${lang.toLowerCase().replace('_', '-')}`)
         .then(() => moment.locale(lang.toLocaleLowerCase().replace('_', '-')))
         .catch(() => moment);

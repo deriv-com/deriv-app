@@ -35,7 +35,6 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                 if (!has_selected) {
                     setFieldValue?.(name, categories?.[0]?.value);
                     setValue(name, categories?.[0]?.value);
-                    validateForm();
                     setRsDropdownTextToLocalStorage(categories?.[0]?.text, name);
                 } else {
                     const curzrent_selected = categories?.find(contract => contract.value === selected);

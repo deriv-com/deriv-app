@@ -39,14 +39,8 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
 
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { quick_strategy } = useDBotStore();
-    const {
-        selected_strategy,
-        form_data,
-        onSubmit,
-        setValue,
-        current_duration_min_max,
-        initializeLossThresholdWarningData,
-    } = quick_strategy;
+    const { selected_strategy, form_data, setValue, current_duration_min_max, initializeLossThresholdWarningData } =
+        quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
 
@@ -159,8 +153,9 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        onSubmit(form_data); // true to load and run the bot
+        getErrors(form_data);
         localStorage?.setItem('qs-fields', JSON.stringify(form_data));
+        return form_data;
     };
 
     return (
@@ -169,9 +164,10 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             validationSchema={dynamic_schema}
             onSubmit={handleSubmit}
             validate={values => getErrors(values)}
-            validateOnBlur
-            validateOnChange
-            validateOnMount
+            // validateOnBlur={false}
+            validateOnChange={false}
+            // validateOnChange
+            // validateOnMount
         >
             {children}
         </Formik>

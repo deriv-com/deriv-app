@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, memo, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { twMerge } from 'tailwind-merge';
 import { CUSTOM_STYLES } from '@/helpers';
@@ -26,7 +26,7 @@ const TabTypes = {
  * @returns {React.ReactNode}
  */
 const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
-    const { data: currencies, isLoading } = useCurrencies();
+    const { data: currencies, isLoading, addedAllCryptoCurrencies } = useCurrencies();
     const [activeTab, setActiveTab] = useState<'CRYPTO' | 'FIAT'>(TabTypes[0]);
 
     const { isEU } = useRegulationFlags();
@@ -36,11 +36,6 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
             setActiveTab(TabTypes[1]);
         }
     }, [isEU]);
-
-    const addedAllCryptoCurrencies = useMemo(
-        () => currencies?.CRYPTO.every(currency => currency.isAdded) ?? false,
-        [currencies]
-    );
 
     if (isLoading) return null;
 

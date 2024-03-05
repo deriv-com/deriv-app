@@ -141,7 +141,10 @@ const TradingAppCard = ({
             >
                 <TradingPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
             </div>
-            <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
+            <div
+                className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
+                id={`trading-app-card-${is_account_being_created ? name : sub_title ?? name}`}
+            >
                 <div className='trading-app-card__details'>
                     <div>
                         <Text className='title' size='xs' line_height='s' color='prominent'>

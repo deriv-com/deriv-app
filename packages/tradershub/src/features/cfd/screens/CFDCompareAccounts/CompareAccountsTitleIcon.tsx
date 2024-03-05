@@ -5,7 +5,7 @@ import { IconComponent, Tooltip } from '@/components';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { AccountIcons, MarketTypeShortcode } from './constants';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
@@ -71,8 +71,8 @@ const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareA
 
     return (
         <Fragment>
-            <div className={'flex flex-col gap-5 pt-20 items-center'}>
-                <IconComponent icon={jurisdictionCardIcon} />
+            <div className='flex flex-col items-center gap-5 pt-20 pb-5'>
+                <IconComponent className='w-40 h-40 lg:w-48 lg:h-48' icon={jurisdictionCardIcon} />
                 <div className='flex items-center gap-8'>
                     <Text size='sm' weight='bold'>
                         {jurisdictionCardTitle}
@@ -91,7 +91,7 @@ const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareA
                     )}
                 </div>
             </div>
-            <hr className='mx-auto w-[213px] border-t-1 border-solid border-system-light-less-prominent-text' />
+            <Divider className='w-4/5 mx-auto' />
         </Fragment>
     );
 };

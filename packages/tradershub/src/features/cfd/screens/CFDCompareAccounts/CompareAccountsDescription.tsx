@@ -18,15 +18,13 @@ const CompareAccountsDescription = ({ marketType, shortCode }: TCompareAccountsD
     const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
 
     return (
-        <div className='max-h-[300px]'>
-            <div className='text-center m-9'>
-                <Text as='p' size='xl' weight='bold'>
-                    {'Up to'} {jurisdictionData.leverage}
-                </Text>
-                <Text as='p' size='sm'>
-                    {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
-                </Text>
-            </div>
+        <div className='max-h-[300px] flex flex-col items-center pt-16 gap-5'>
+            <Text as='p' size='xl' weight='bold'>
+                {'Up to'} {jurisdictionData.leverage}
+            </Text>
+            <Text as='p' size='sm'>
+                {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
+            </Text>
             {!isEuRegion && (
                 <div className='m-9'>
                     <Text as='p' size='xl' weight='bold'>

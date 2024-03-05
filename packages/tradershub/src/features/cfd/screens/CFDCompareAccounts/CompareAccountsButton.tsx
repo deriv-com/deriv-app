@@ -117,6 +117,7 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
         <div className='h-40 m-20 w-[calc(100%-40px)]'>
             <Button
                 className='w-full text-center text-system-light-primary-background'
+                color='primary-light'
                 data-testid='dt_compare_cfd_account_button'
                 disabled={isAccountAdded}
                 onClick={onClickAdd}

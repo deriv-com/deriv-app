@@ -25,7 +25,7 @@ type TCurrencyCard = {
  * @returns {React.ReactNode}
  * @example <CurrencyCard id={id} info={info} title={title} />
  */
-const CurrencyCard = ({ id, info, title, wrapperClassName, className, isDisabled }: TCurrencyCard) => {
+const CurrencyCard = ({ id, info, title, wrapperClassName = '', className = '', isDisabled }: TCurrencyCard) => {
     const { setFieldValue, values } = useFormikContext<{ currency: string }>();
     const isSelected = values.currency === id;
     return (

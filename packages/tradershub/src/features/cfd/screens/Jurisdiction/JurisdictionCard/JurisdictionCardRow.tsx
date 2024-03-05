@@ -9,14 +9,14 @@ type TJurisdictionCardRowProps = {
 
 const JurisdictionCardRow = ({ description, renderTag, title }: TJurisdictionCardRowProps) => {
     return (
-        <div className='w-full py-20 space-y-8 border-solid border-b-sm border-system-light-secondary-background last:border-b-none lg:py-14 first:mt-16'>
+        <div className='w-full py-20 border-b border-solid space-y-14 border-system-light-secondary-background last:border-none lg:py-14 first:mt-16'>
             <div className='flex items-center justify-between'>
                 <Text size='sm' weight='bold'>
                     {title}
                 </Text>
                 {renderTag && <div>{renderTag()}</div>}
             </div>
-            {description && <Text size='sm'>{description}</Text>}
+            {description && <Text size='xs'>{description}</Text>}
         </div>
     );
 };

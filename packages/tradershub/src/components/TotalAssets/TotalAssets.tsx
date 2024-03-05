@@ -2,7 +2,7 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { TotalAssetsLoader } from '@/components';
 import { useTotalAssets } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 
 const TotalAssets = () => {

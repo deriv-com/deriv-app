@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys */
-import { useMutation } from '@deriv/api';
+import { useMutation } from '@deriv/api-v2';
 
 /** A custom hook to request paymentagent transfer */
 export const usePaymentAgentTransferRequest = () => {

@@ -1,4 +1,4 @@
-import { useCFDAccountsList } from '@deriv/api';
+import { useCFDAccountsList } from '@deriv/api-v2';
 
 /**
  * @description This hook is used to get the total demo and real CFD balance

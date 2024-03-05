@@ -10,7 +10,7 @@ import {
     useCreateOtherCFDAccount,
     useMT5AccountsList,
     useSettings,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { Button } from '@deriv-com/ui';
 import {
     getAccountVerificationStatus,

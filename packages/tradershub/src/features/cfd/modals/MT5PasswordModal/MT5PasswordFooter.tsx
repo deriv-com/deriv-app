@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMT5AccountHandler } from '@/hooks';
 import { PlatformDetails } from '@cfd/constants';
-import { useMT5AccountsList } from '@deriv/api';
+import { useMT5AccountsList } from '@deriv/api-v2';
 import AddAccountButtonsGroup from '../ButtonGroups/AddAccountButtonsGroup';
 import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 import MT5CreateAccountButton from './MT5CreateAccountButton';

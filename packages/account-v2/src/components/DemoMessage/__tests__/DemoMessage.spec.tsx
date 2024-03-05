@@ -1,10 +1,10 @@
 import React from 'react';
-import { useAuthorize } from '@deriv/api';
+import { useAuthorize } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { DemoMessage } from '../DemoMessage';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useAuthorize: jest.fn(() => ({
         data: {
             account_list: [

@@ -7,10 +7,10 @@ describe('PasskeysFooterButtons', () => {
     const next = 'Next';
     const back = 'Back';
 
-    it('calls the correct functions when the buttons are clicked', () => {
-        const mockOnButtonClick = jest.fn();
-        const mockOnBackButtonClick = jest.fn();
+    const mockOnButtonClick = jest.fn();
+    const mockOnBackButtonClick = jest.fn();
 
+    it('calls the correct functions when the buttons are clicked', () => {
         render(
             <PasskeysFooterButtons
                 primary_button_text={<span>{next}</span>}
@@ -28,8 +28,6 @@ describe('PasskeysFooterButtons', () => {
     });
 
     it('does not render the back button if back_button_text is not provided', () => {
-        const mockOnButtonClick = jest.fn();
-
         render(
             <PasskeysFooterButtons primary_button_text={<span>{next}</span>} onPrimaryButtonClick={mockOnButtonClick} />
         );

@@ -12,7 +12,7 @@ describe('PasskeysStatusContainer', () => {
         jest.clearAllMocks();
     });
 
-    //TODO add more checks for renaming and verifying flows
+    // TODO: add more checks for renaming and verifying flows
     it('renders correctly for each status code', () => {
         Object.values(PASSKEY_STATUS_CODES).forEach(status => {
             if (status) {

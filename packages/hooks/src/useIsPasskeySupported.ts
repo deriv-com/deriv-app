@@ -1,6 +1,7 @@
 import React from 'react';
 import { platformAuthenticatorIsAvailable } from '@simplewebauthn/browser';
 import useGrowthbookFeatureFlag from './useGrowthbookFeatureFlag';
+import { isProduction } from '@deriv/shared';
 
 const useIsPasskeySupported = () => {
     const [is_passkey_supported, setIsPasskeySupported] = React.useState(false);
@@ -16,8 +17,10 @@ const useIsPasskeySupported = () => {
                 const result = await platformAuthenticatorIsAvailable();
                 setIsPasskeySupported(result && !!is_passkeys_enabled);
             } catch (error) {
-                /* eslint-disable no-console */
-                console.error('Error checking passkey support:', error);
+                if (!isProduction()) {
+                    /* eslint-disable no-console */
+                    console.error('Error checking passkey support:', error);
+                }
             } finally {
                 setIsPasskeySupportChecking(false);
             }

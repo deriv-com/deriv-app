@@ -2,31 +2,12 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PasskeysList from '../passkeys-list';
+import { mock_passkeys_list } from '../../__tests__/passkeys.spec';
 
 describe('PasskeysList', () => {
     it('renders the passkeys and calls the correct function when the button is clicked', () => {
         const mockOnPrimaryButtonClick = jest.fn();
         const mockOnSecondaryButtonClick = jest.fn();
-        const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_list'] = [
-            {
-                id: 1,
-                name: 'Test Passkey 1',
-                last_used: 1633024800000,
-                created_at: 1633024800000,
-                stored_on: 'Device',
-                icon: 'IcPasskey',
-                passkey_id: 'mock-id-1',
-            },
-            {
-                id: 2,
-                name: 'Test Passkey 2',
-                last_used: 1633024800000,
-                created_at: 1633024800000,
-                stored_on: 'Device',
-                icon: 'IcPasskey',
-                passkey_id: 'mock-id-2',
-            },
-        ];
 
         render(
             <PasskeysList

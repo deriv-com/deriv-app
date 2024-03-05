@@ -252,7 +252,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     return (
         <React.Fragment>
             <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
-                <Icon icon={'IcHamburger'} width='16px' height='16px' className='header__mobile-drawer-icon' />
+                <Icon icon='IcHamburger' width='16px' height='16px' className='header__mobile-drawer-icon' />
             </a>
             <MobileDrawer
                 alignment='left'

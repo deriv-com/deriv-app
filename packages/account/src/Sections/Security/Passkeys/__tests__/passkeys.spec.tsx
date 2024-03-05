@@ -11,7 +11,7 @@ import PasskeysList from '../components/passkeys-list';
 const passkey_name_1 = 'Test Passkey 1';
 const passkey_name_2 = 'Test Passkey 2';
 
-const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_list'] = [
+export const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_list'] = [
     {
         id: 1,
         name: passkey_name_1,
@@ -24,8 +24,8 @@ const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_li
     {
         id: 2,
         name: passkey_name_2,
-        last_used: 1633024800000,
-        created_at: 1633024800000,
+        last_used: 1633124800000,
+        created_at: 1634024800000,
         stored_on: '',
         icon: 'Test Icon 2',
         passkey_id: 'mock-id-2',

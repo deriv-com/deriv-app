@@ -2177,11 +2177,7 @@ type PasskeysRegisterOptionsResponse = {
                 name: string;
                 id: string;
             };
-            user: {
-                id: string;
-                name: string;
-                displayName: string;
-            };
+            user: Record<'id' | 'name' | 'displayName', string>;
             pubKeyCredParams: PublicKeyCredentialParameters[];
             timeout: number;
             attestation: AttestationConveyancePreference;

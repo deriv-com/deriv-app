@@ -33,13 +33,12 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
     }
 
     if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
-        //TODO implement renaming flow
-        //TODO add 'Save changes' action for onPrimaryButtonClick
+        // TODO: implement renaming flow & add 'Save changes' action for onPrimaryButtonClick
         onSecondaryButtonClick = () => setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
     }
 
     if (passkey_status === PASSKEY_STATUS_CODES.VERIFYING) {
-        //TODO implement verifying flow and onPrimaryButtonClick action (send email)
+        // TODO: implement verifying flow and onPrimaryButtonClick action (send email)
     }
 
     const is_learn_more_opened = passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE;

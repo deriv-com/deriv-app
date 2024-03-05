@@ -51,9 +51,6 @@ export const toMoment = (value?: moment.MomentInput): moment.Moment => {
 
 export const toLocalFormat = (time: moment.MomentInput) => moment.utc(time).local().format('YYYY-MM-DD HH:mm:ss Z');
 export const getLongDate = (time: number): string => {
-    if (time === undefined || time === null) {
-        return 'Invalid Date';
-    }
     moment.locale(getLanguage().toLowerCase());
     //need to divide to 1000 as timestamp coming from BE is in ms
     return moment.unix(time / 1000).format('MMMM Do, YYYY');

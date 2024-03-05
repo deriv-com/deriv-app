@@ -5,22 +5,22 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { routes } from '../routes';
 
-export type TRoute = {
-    component?: React.ElementType | null | ((routes?: TRoute[]) => JSX.Element) | typeof Redirect;
-    default?: boolean;
-    exact?: boolean;
-    getTitle?: () => string;
-    icon_component?: string;
-    id?: string;
-    is_authenticated?: boolean;
-    is_invisible?: boolean;
-    path?: string;
-    to?: string;
-    icon?: string;
-    is_disabled?: boolean;
-    subroutes?: TRoute[];
-    routes?: TRoute[];
-};
+export type TRoute = Partial<{
+    component: React.ElementType | null | ((routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    default: boolean;
+    exact: boolean;
+    getTitle: () => string;
+    icon_component: string;
+    id: string;
+    is_authenticated: boolean;
+    is_invisible: boolean;
+    path: string;
+    to: string;
+    icon: string;
+    is_disabled: boolean;
+    subroutes: TRoute[];
+    routes: TRoute[];
+}>;
 
 type TGetSelectedRoute = {
     routes: TRoute[];

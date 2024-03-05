@@ -3,7 +3,7 @@ import { Icon, Text } from '@deriv/components';
 import { getLongDate } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-//TODO need to check api types and grab from there after API implementation
+// TODO: remove here types and grab from API after implementation
 type TPasskeyCard = {
     id?: number;
     name: string;
@@ -15,8 +15,7 @@ type TPasskeyCard = {
 };
 
 const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {
-    //TODO: add revoke and rename flow as the next step
-    // const [is_menu_open, setIsMenuOpen] = React.useState(false);
+    // TODO: add revoke and rename flow as the next step. 'IcContextMenu' is supposed to be used here
 
     return (
         <div className='passkeys-card__wrapper'>
@@ -40,8 +39,6 @@ const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {
                 </div>
                 {icon && <Icon icon={icon} size={24} className='passkeys-card__passkey-type-icon' />}
             </div>
-            {/*revoke and rename flow will be implemented in the next step*/}
-            {/*<Icon icon='IcContextMenu' size={24} />*/}
         </div>
     );
 };

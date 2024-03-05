@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
@@ -7,7 +7,6 @@ import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { MT5PasswordModal } from '@cfd/modals';
 import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen, JurisdictionTncSection } from '@cfd/screens';
-import { useAvailableMT5Accounts } from '@deriv/api';
 import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
 
 type TJurisdictionFlowProps = { selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'] };
@@ -28,7 +27,6 @@ const JurisdictionModal = () => {
     const { isEU } = useRegulationFlags();
     const { cfdState, setCfdState } = useCFDContext();
 
-    const { isLoading } = useAvailableMT5Accounts();
     const { isDesktop } = useDevice();
 
     const { marketType: marketTypeState, selectedJurisdiction } = cfdState;
@@ -43,11 +41,6 @@ const JurisdictionModal = () => {
 
     const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
 
-    const value = useMemo(
-        () => ({ isDynamicLeverageVisible, toggleDynamicLeverage }),
-        [isDynamicLeverageVisible, toggleDynamicLeverage]
-    );
-
     useEffect(() => {
         setCfdState({ selectedJurisdiction });
     }, [selectedJurisdiction, setCfdState]);
@@ -55,7 +48,7 @@ const JurisdictionModal = () => {
     const isModalOpen = isOpen('JurisdictionModal');
 
     return (
-        <DynamicLeverageContext.Provider value={value}>
+        <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
             <Modal
                 ariaHideApp={false}
                 className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '
@@ -75,7 +68,7 @@ const JurisdictionModal = () => {
                         isDynamicLeverageVisible && 'lg:min-h-[700px]'
                     )}
                 >
-                    {!isDynamicLeverageVisible && <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} />}
+                    <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} />
                     {isDynamicLeverageVisible && <DynamicLeverageScreen />}
                     {!isDynamicLeverageVisible && (
                         <JurisdictionTncSection

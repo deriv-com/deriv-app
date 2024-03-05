@@ -69,19 +69,23 @@ const JurisdictionModal = () => {
                     <Modal.Header onRequestClose={closeModal}>
                         <Text weight='bold'>{jurisdictionTitle}</Text>
                     </Modal.Header>
-                ) : null}
+                ) : (
+                    <DynamicLeverageTitle />
+                )}
                 <Modal.Body
                     className={twMerge(
-                        'p-0 flex flex-col relative min-h-0 overflow-auto lg:w-auto lg:h-auto lg:p-8 lg:min-w-[1100px]'
+                        'p-0 flex flex-col relative min-h-0 overflow-auto w-screen h-screen lg:w-auto lg:h-auto lg:p-8 lg:min-w-[1100px]'
                     )}
                 >
-                    {isDynamicLeverageVisible && <DynamicLeverageTitle />}
-                    <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} />
+                    {/* <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} /> */}
+                    {!isDynamicLeverageVisible && <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} />}
                     {isDynamicLeverageVisible && <DynamicLeverageScreen />}
-                    <JurisdictionTncSection
-                        isCheckBoxChecked={isCheckBoxChecked}
-                        setIsCheckBoxChecked={setIsCheckBoxChecked}
-                    />
+                    {!isDynamicLeverageVisible && (
+                        <JurisdictionTncSection
+                            isCheckBoxChecked={isCheckBoxChecked}
+                            setIsCheckBoxChecked={setIsCheckBoxChecked}
+                        />
+                    )}
                 </Modal.Body>
                 {!isDynamicLeverageVisible ? (
                     <Modal.Footer className='lg:rounded-default'>

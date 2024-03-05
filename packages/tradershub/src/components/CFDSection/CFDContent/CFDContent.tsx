@@ -1,6 +1,5 @@
 import React from 'react';
 import { TradingAppCardLoader } from '@/components';
-import { JurisdictionModal } from '@/features/cfd/modals';
 import { useRegulationFlags } from '@/hooks';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from '@cfd/components';
 
@@ -21,7 +20,6 @@ const CFDContent = () => {
             <MT5PlatformsList />
             {!isEU && <CTraderList />}
             {!isEU && <OtherCFDPlatformsList />}
-            <JurisdictionModal />
         </div>
     );
 };

@@ -8,6 +8,7 @@ import {
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
     useFeatureFlags,
+    useP2PSettings,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -35,6 +36,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = ui;
     const {
         account_status,
+        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -66,6 +68,17 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const timeout = React.useRef();
     const history = useHistory();
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const {
+        subscribe,
+        rest: { isSubscribed },
+        p2p_settings,
+    } = useP2PSettings();
+
+    React.useEffect(() => {
+        if (is_authorize && !isSubscribed) {
+            subscribe();
+        }
+    }, [is_authorize, p2p_settings, subscribe, isSubscribed]);
 
     React.useEffect(() => {
         const processRoutes = () => {

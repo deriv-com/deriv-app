@@ -5,6 +5,7 @@ import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import useModalManager from '../useModalManager';
 import useQueryString from '../useQueryString';
+import useDevice from '../useDevice';
 
 const mockReplace = jest.fn();
 
@@ -23,6 +24,14 @@ jest.mock('@/hooks/useQueryString', () => ({
         deleteQueryString: jest.fn(),
         queryString: new Map(),
         setQueryString: jest.fn(),
+    })),
+}));
+
+const mockedUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
+jest.mock('@/hooks/useDevice', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        isMobile: false,
     })),
 }));
 
@@ -277,5 +286,45 @@ describe('useModalManager', () => {
         expect(result.current.isModalOpenFor('ModalA')).toBe(false);
         expect(result.current.isModalOpenFor('ModalB')).toBe(false);
         expect(result.current.isModalOpenFor('ModalC')).toBe(true);
+    });
+    it('should should stack the modals in mobile', () => {
+        const history = createMemoryHistory();
+        const wrapper = ({ children }: { children: JSX.Element }) => {
+            return <Router history={history}>{children}</Router>;
+        };
+
+        const originalLocation = window.location;
+        windowLocationSpy.mockImplementationOnce(() => ({
+            ...originalLocation,
+            href: 'http://localhost?modal=ModalA+ModalB+ModalC',
+            search: '?modal=Modal+ModalB+ModalC',
+        }));
+        mockedUseDevice.mockImplementation(() => ({
+            isMobile: true,
+        }));
+        mockedUseQueryString.mockImplementationOnce(() => ({
+            queryString: new Map(
+                Object.entries({
+                    modal: 'ModalA+ModalB+ModalC',
+                })
+            ),
+            setQueryString: jest.fn(),
+            deleteQueryString: jest.fn(),
+        }));
+
+        const { result } = renderHook(() => useModalManager(), { wrapper });
+
+        expect(result.current.isModalOpenFor('ModalA')).toBe(true);
+        expect(result.current.isModalOpenFor('ModalB')).toBe(true);
+        expect(result.current.isModalOpenFor('ModalC')).toBe(true);
+
+        act(() => {
+            result.current.showModal('ModalD');
+        });
+
+        expect(result.current.isModalOpenFor('ModalA')).toBe(true);
+        expect(result.current.isModalOpenFor('ModalB')).toBe(true);
+        expect(result.current.isModalOpenFor('ModalC')).toBe(true);
+        expect(result.current.isModalOpenFor('ModalD')).toBe(true);
     });
 });

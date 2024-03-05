@@ -1,9 +1,14 @@
 import { useEffect } from 'react';
 import { useMap } from 'usehooks-ts';
 import useQueryString from './useQueryString';
+import useDevice from './useDevice';
 
 type TUseModalManagerConfig = {
     shouldReinitializeModals?: boolean;
+};
+
+type TShowModalOptions = {
+    shouldStackModals?: boolean;
 };
 
 /**
@@ -25,6 +30,7 @@ type TUseModalManagerConfig = {
  */
 export default function useModalManager(config?: TUseModalManagerConfig) {
     const { deleteQueryString, queryString, setQueryString } = useQueryString();
+    const { isMobile } = useDevice();
 
     const [isModalOpenScopes, actions] = useMap();
 
@@ -38,7 +44,7 @@ export default function useModalManager(config?: TUseModalManagerConfig) {
                 const modalKeys = modalHash.split('+');
                 const currentModal = modalKeys.slice(-1)[0];
                 modalKeys.forEach(modalKey => {
-                    actions.set(modalKey, false);
+                    actions.set(modalKey, isMobile);
                 });
                 actions.set(currentModal, true);
             }
@@ -78,15 +84,15 @@ export default function useModalManager(config?: TUseModalManagerConfig) {
      * - ModalC is shown next, URL becomes /...?modal=ModalA+ModalB+ModalC (current modal is ModalC, previous modal is ModalB)
      * - ModalC is closed, URL becomes becomes /...?modal=modalA+ModalB (current modal is ModalB, previous modal is ModalA)
      */
-    const showModal = (modalId: string) => {
+    const showModal = (modalId: string, options?: TShowModalOptions) => {
         const modalHash = queryString.get('modal');
 
         if (modalHash) {
             const modalIds = modalHash.split('+');
             const currentModalId = modalIds.slice(-1)[0];
-            // set the previous modal open state to false
+            // set the previous modal open state to false if shouldStackModals is false, otherwise set it to true (default true for mobile)
             // set the new modal open state to true
-            actions.set(currentModalId, false);
+            actions.set(currentModalId, options?.shouldStackModals || isMobile);
             actions.set(modalId, true);
             // push the state of the new modal to the hash
             modalIds.push(modalId);

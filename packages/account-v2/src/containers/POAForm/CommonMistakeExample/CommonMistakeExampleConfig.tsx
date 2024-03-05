@@ -1,9 +1,12 @@
-import IcBlurryDocument from '../../../assets/common-mistake-examples/ic-blurry-document.svg';
-import IcCroppedDocument from '../../../assets/common-mistake-examples/ic-cropped-document.svg';
-import IcDocumentAddressMismatch from '../../../assets/common-mistake-examples/ic-document-address-mismatch.svg';
-import IcDocumentNameMismatch from '../../../assets/common-mistake-examples/ic-document-name-mismatch.svg';
-import IcEnvelope from '../../../assets/common-mistake-examples/ic-envelop.svg';
-import IcOldIssuedDocument from '../../../assets/common-mistake-examples/ic-old-issued-document.svg';
+import React from 'react';
+import {
+    DerivLightIcBlurryDocumentIcon,
+    DerivLightIcCroppedDocumentIcon,
+    DerivLightIcDocumentAddressMismatchIcon,
+    DerivLightIcDocumentNameMismatchIcon,
+    DerivLightIcEnvelopIcon,
+    DerivLightIcOldIssuedDocumentIcon,
+} from '@deriv/quill-icons';
 
 /**
  * Returns a configuration containing images and descriptions for common POA document upload mistakes
@@ -12,26 +15,26 @@ import IcOldIssuedDocument from '../../../assets/common-mistake-examples/ic-old-
 export const getExampleImagesConfig = () => [
     {
         description: 'Name in document doesn’t match your Deriv profile.',
-        image: IcDocumentNameMismatch,
+        image: <DerivLightIcDocumentNameMismatchIcon />,
     },
     {
         description: 'Address in document doesn’t match address you entered above.',
-        image: IcDocumentAddressMismatch,
+        image: <DerivLightIcDocumentAddressMismatchIcon />,
     },
     {
         description: 'Document issued more than 6-months ago.',
-        image: IcOldIssuedDocument,
+        image: <DerivLightIcOldIssuedDocumentIcon />,
     },
     {
         description: 'Blurry document. All information must be clear and visible.',
-        image: IcBlurryDocument,
+        image: <DerivLightIcBlurryDocumentIcon />,
     },
     {
         description: 'Cropped document. All information must be clear and visible.',
-        image: IcCroppedDocument,
+        image: <DerivLightIcCroppedDocumentIcon />,
     },
     {
         description: 'An envelope with your name and address.',
-        image: IcEnvelope,
+        image: <DerivLightIcEnvelopIcon />,
     },
 ];

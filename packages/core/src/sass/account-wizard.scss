@@ -785,4 +785,13 @@
             max-width: unset !important;
         }
     }
+    .details-form__elements {
+        width: 100%;
+    }
+    .financial-assessment__form {
+        width: 70%;
+        @include mobile {
+            width: 100%;
+        }
+    }
 }

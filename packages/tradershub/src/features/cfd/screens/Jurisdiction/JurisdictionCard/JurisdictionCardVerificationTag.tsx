@@ -3,7 +3,7 @@ import VerificationFailedIcon from '@/assets/svgs/ic-verification-failed-status.
 import VerificationPendingIcon from '@/assets/svgs/ic-verification-pending-status.svg';
 import VerificationSuccessIcon from '@/assets/svgs/ic-verification-success-status.svg';
 import { THooks } from '@/types';
-import { useAuthentication } from '@deriv/api';
+import { useAuthentication } from '@deriv/api-v2';
 
 type TJurisdictionCardVerificationTagProps = {
     category: 'poa' | 'poi' | null;

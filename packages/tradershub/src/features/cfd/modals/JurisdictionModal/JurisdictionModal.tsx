@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
@@ -41,6 +41,11 @@ const JurisdictionModal = () => {
 
     const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
 
+    const value = useMemo(
+        () => ({ isDynamicLeverageVisible, toggleDynamicLeverage }),
+        [isDynamicLeverageVisible, toggleDynamicLeverage]
+    );
+
     useEffect(() => {
         setCfdState({ selectedJurisdiction });
     }, [selectedJurisdiction, setCfdState]);
@@ -48,7 +53,7 @@ const JurisdictionModal = () => {
     const isModalOpen = isOpen('JurisdictionModal');
 
     return (
-        <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
+        <DynamicLeverageContext.Provider value={value}>
             <Modal
                 ariaHideApp={false}
                 className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '

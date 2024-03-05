@@ -6,7 +6,7 @@ import { RealAccountCreation } from '@/flows';
  * @description The place to import and export all modals
  * @returns  {React.ReactElement}
  */
-export const Modals = () => {
+const Modals = () => {
     return (
         <Fragment>
             <JurisdictionModal />

@@ -26,10 +26,6 @@ $header-height: 3.6em;
     background-color: var(--general-section-1);
     color: var(--text-prominent);
 
-    @include rtl {
-        transform: translateX(100%);
-    }
-
     &__bg {
         position: absolute;
         z-index: 2;

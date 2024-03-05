@@ -54,6 +54,7 @@
 /** @define trade-container; weak */
 .trade-container {
     background: var(--general-main-1);
+    direction: ltr;
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;

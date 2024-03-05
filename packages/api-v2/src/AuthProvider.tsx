@@ -92,26 +92,28 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
 
     const [data, setData] = useState<TSocketResponseData<'authorize'> | null>();
 
-    useEffect(() => {
-        if (!data) return;
+    const processAuthorizeResponse = useCallback(
+        (authorizeResponse: TSocketResponseData<'authorize'>) => {
+            setData(authorizeResponse);
 
-        const accountList = data.authorize?.account_list;
-        if (!accountList) return;
+            const activeLoginID = authorizeResponse.authorize?.loginid;
+            if (!activeLoginID) return;
 
-        const activeLoginID = getActiveLoginIDFromLocalStorage(loginIDKey) ?? accountList[0].loginid;
-        if (!activeLoginID) return;
+            const accountList = authorizeResponse.authorize?.account_list;
+            if (!accountList) return;
 
-        const linkedDtradeAccount = accountList
-            ?.find(account => account.loginid === activeLoginID)
-            ?.linked_to?.find(linkedAccount => linkedAccount.platform === 'dtrade');
+            const activeAccount = accountList.find(acc => acc.loginid === activeLoginID);
+            if (!activeAccount) return;
 
-        setIsLoading(false);
+            const linkedDtradeAccount = accountList
+                ?.find(account => account.loginid === activeLoginID)
+                ?.linked_to?.find(linkedAccount => linkedAccount.platform === 'dtrade');
 
-        // set loginId for the current app
-        localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
-        // set loginId for the default app
-        if (linkedDtradeAccount?.loginid) localStorage.setItem('active_loginid', linkedDtradeAccount.loginid);
-    }, [data, loginIDKey]);
+            localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID); // set loginId for the current app
+            if (linkedDtradeAccount?.loginid) localStorage.setItem('active_loginid', linkedDtradeAccount.loginid); // set loginId for the default app
+        },
+        [loginIDKey]
+    );
 
     useEffect(() => {
         setIsLoading(true);
@@ -125,7 +127,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
                 setIsFetching(true);
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
-                        setData(res);
+                        processAuthorizeResponse(res);
                         setIsLoading(false);
                         setIsSuccess(true);
                     })
@@ -144,7 +146,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
             });
 
         return cleanup;
-    }, [cookieTimeout, loginIDKey, mutateAsync]);
+    }, [cookieTimeout, loginIDKey, mutateAsync, processAuthorizeResponse]);
 
     const switchAccount = useCallback(
         async (newLoginId: string) => {
@@ -155,21 +157,11 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
 
             const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
             setLoginid(newLoginId);
-            setData(authorizeResponse);
-
-            const accountList = authorizeResponse.authorize?.account_list;
-            const linkedDtradeAccount = accountList
-                ?.find(account => account.loginid === newLoginId)
-                ?.linked_to?.find(linkedAccount => linkedAccount.platform === 'dtrade');
+            processAuthorizeResponse(authorizeResponse);
 
             setIsLoading(false);
-
-            // set loginId for the current app
-            localStorage.setItem(loginIDKey ?? 'active_loginid', newLoginId);
-            // set loginId for the default app
-            if (linkedDtradeAccount?.loginid) localStorage.setItem('active_loginid', linkedDtradeAccount.loginid);
         },
-        [loginIDKey, loginid, mutateAsync, queryClient]
+        [loginid, mutateAsync, processAuthorizeResponse, queryClient]
     );
 
     const refetch = useCallback(() => {

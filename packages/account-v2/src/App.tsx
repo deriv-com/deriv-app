@@ -1,19 +1,17 @@
-// TODO - Remove this once the IDV form is moved out
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
-import { APIProvider } from '@deriv/api';
-import { BreakpointProvider } from '@deriv/quill-design';
-import RouteLinks from './router/components/route-links/route-links';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { AppOverlay } from './components/AppOverlay';
+import { RouteLinks } from './router/components/RouteLinks';
 import './index.scss';
 
 const App: React.FC = () => {
     return (
         <APIProvider standalone>
-            <BreakpointProvider>
-                <div className=' text-solid-slate-500 text-heading-h1'>Account V2</div>
-                <RouteLinks />
-            </BreakpointProvider>
+            <AuthProvider>
+                <AppOverlay title='Settings'>
+                    <RouteLinks />
+                </AppOverlay>
+            </AuthProvider>
         </APIProvider>
     );
 };

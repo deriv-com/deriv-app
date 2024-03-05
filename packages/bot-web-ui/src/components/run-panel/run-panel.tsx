@@ -1,10 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import Journal from 'Components/journal';
 import SelfExclusion from 'Components/self-exclusion';
 import Summary from 'Components/summary';
@@ -161,7 +159,7 @@ const MobileDrawerFooter = () => {
     return (
         <div className='controls__section'>
             <div className='controls__buttons'>
-                <TradeAnimation className='controls__animation' should_show_overlay info_direction={'right'} />
+                <TradeAnimation className='controls__animation' should_show_overlay />
             </div>
         </div>
     );

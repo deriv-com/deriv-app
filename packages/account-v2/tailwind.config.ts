@@ -1,9 +1,17 @@
 import type { Config } from 'tailwindcss';
-import QuillTailwindConfig from '@deriv/quill-design/quill-tailwind/tailwind.config.cjs';
+const plugin = require('tailwindcss/plugin');
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
-    presets: [QuillTailwindConfig],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.d-none': {
+                    display: 'none',
+                },
+            });
+        }),
+    ],
     theme: {
         extend: {
             borderRadius: {
@@ -58,11 +66,30 @@ export default {
                         '8': '#323738',
                     },
                     red: {
+                        '0': '#ff444f',
                         '5': '#eb3e48',
                     },
                     green: {
                         '1': '#4bb4b3',
                         '2': '#C7E5E5',
+                    },
+                    slate: {
+                        '0': '#ffffff',
+                        '1': '#f6f7f8',
+                        '2': '#ebecef',
+                        '3': '#ced0d6',
+                        '4': '#b1b4bc',
+                        '5': '#9498a2',
+                        '6': '#787d88',
+                        '7': '#5c616d',
+                        '8': '#414652',
+                        '9': '#383d4a',
+                        '10': '#303541',
+                        '11': '#282c38',
+                        '12': '#20242f',
+                        '13': '#181c25',
+                        '14': '#11141b',
+                        '15': '#000000',
                     },
                 },
                 status: {
@@ -113,6 +140,25 @@ export default {
                 lg: { min: '1280px' },
                 xl: { min: '1440px' },
             },
+            opacity: {
+                0: '0',
+                4: '0.04',
+                8: '0.08',
+                16: '0.16',
+                24: '0.24',
+                32: '0.32',
+                40: '0.4',
+                48: '0.48',
+                56: '0.56',
+                64: '0.64',
+                72: '0.72',
+                80: '0.8',
+                88: '0.88',
+                96: '0.96',
+                100: '1',
+                overlay: '0.72',
+                disabled: ' 0.32',
+            },
             spacing: {
                 0: '0px',
                 1: '1px',
@@ -151,6 +197,26 @@ export default {
                 56: '56px',
                 58: '58px',
                 60: '60px',
+                62: '62px',
+                64: '64px',
+                66: '66px',
+                68: '68px',
+                70: '70px',
+                72: '72px',
+                74: '74px',
+                76: '76px',
+                78: '78px',
+                80: '80px',
+                82: '82px',
+                84: '84px',
+                86: '86px',
+                88: '88px',
+                90: '90px',
+                92: '92px',
+                94: '94px',
+                96: '96px',
+                98: '98px',
+                100: '100px',
             },
         },
     },

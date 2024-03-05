@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 import { TradingAccountCard } from '@/components';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
+import { useModal } from '@/providers';
 import { THooks } from '@/types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
-import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
@@ -14,7 +14,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { isEU } = useRegulationFlags();
 
-    const { show } = Provider.useModal();
+    const { show } = useModal();
     const { getVerificationStatus } = useJurisdictionStatus();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),

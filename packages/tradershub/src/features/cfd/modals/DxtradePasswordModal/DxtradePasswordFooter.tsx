@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDxtradeAccountsList } from '@deriv/api';
+import { useDxtradeAccountsList } from '@deriv/api-v2';
 import useDxtradeAccountHandler from '../../../../hooks/useDxtradeAccountHandler';
 import { PlatformDetails } from '../../constants';
 import AddAccountButtonsGroup from '../ButtonGroups/AddAccountButtonsGroup';

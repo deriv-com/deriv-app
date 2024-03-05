@@ -7,12 +7,12 @@ import {
     useExchangeRateSubscription,
     usePOA,
     usePOI,
-} from '@deriv/api';
-import { act, cleanup, renderHook } from '@testing-library/react-hooks';
+} from '@deriv/api-v2';
+import { cleanup, renderHook } from '@testing-library/react-hooks';
 import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './WithdrawalCryptoProvider';
 import { waitFor } from '@testing-library/react';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useAccountLimits: jest.fn(),
     useActiveAccount: jest.fn(),
     useCryptoWithdrawal: jest.fn(),
@@ -76,7 +76,9 @@ describe('useWithdrawalCryptoContext', () => {
     afterEach(cleanup);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <WithdrawalCryptoProvider verificationCode='Abcd1234'>{children}</WithdrawalCryptoProvider>
+        <WithdrawalCryptoProvider setVerificationCode={jest.fn} verificationCode='Abcd1234'>
+            {children}
+        </WithdrawalCryptoProvider>
     );
 
     it('should check whether the client is verified', () => {

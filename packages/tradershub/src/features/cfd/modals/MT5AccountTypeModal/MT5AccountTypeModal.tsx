@@ -1,16 +1,16 @@
 import React, { ComponentProps, useState } from 'react';
 import { Modal } from '@/components';
-import { JurisdictionModal } from '@cfd/modals';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { MT5AccountType } from '@cfd/screens';
-import { Provider } from '@deriv/library';
 import { Button } from '@deriv-com/ui';
 
 type TMarketTypes = ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
 const MT5AccountTypeModal = () => {
     const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
-    const { setCfdState } = Provider.useCFDContext();
-    const { show } = Provider.useModal();
+    const { setCfdState } = useCFDContext();
+    const { openModal } = useQueryParams();
 
     return (
         <Modal>
@@ -20,12 +20,14 @@ const MT5AccountTypeModal = () => {
             </Modal.Content>
             <Modal.Footer>
                 <Button
+                    className='rounded-xs'
                     disabled={!selectedMarketType}
                     onClick={() => {
-                        setCfdState('marketType', selectedMarketType);
-                        show(<JurisdictionModal />);
+                        setCfdState({
+                            marketType: selectedMarketType,
+                        });
+                        openModal('JurisdictionModal');
                     }}
-                    size='md'
                 >
                     Next
                 </Button>

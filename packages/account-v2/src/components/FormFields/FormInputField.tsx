@@ -1,10 +1,10 @@
 import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
+import { Input } from '@deriv-com/ui';
 import { validateField } from '../../utils/validation';
-import { WalletTextField as TextField } from '../base/WalletTextField';
 
-type FormInputFieldProps = Omit<ComponentProps<typeof TextField>, 'errorMessage' | 'isInvalid' | 'showMessage'> & {
+type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'errorMessage' | 'isInvalid' | 'showMessage'> & {
     name: string;
     validationSchema?: Yup.AnySchema;
 };
@@ -17,20 +17,17 @@ type FormInputFieldProps = Omit<ComponentProps<typeof TextField>, 'errorMessage'
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
+export const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
     <Field name={name} validate={validateField(validationSchema)}>
         {({ field, meta: { error, touched } }: FieldProps<string>) => (
-            <TextField
+            <Input
                 {...field}
                 {...rest}
+                aria-label={rest.label}
                 autoComplete='off'
-                errorMessage={touched && error}
-                isInvalid={touched && !!error}
-                showMessage
-                type='text'
+                error={Boolean(error && touched)}
+                message={touched && error}
             />
         )}
     </Field>
 );
-
-export default FormInputField;

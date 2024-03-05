@@ -7,7 +7,7 @@ import {
     useExchangeRateSubscription,
     usePOA,
     usePOI,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { THooks } from '../../../hooks/types';
 import { TWithdrawalReceipt } from '../types';
 
@@ -23,12 +23,15 @@ export type TWithdrawalCryptoContext = {
     getConvertedFiatAmount: (cryptoInput: number | string) => string;
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isClientVerified: boolean | undefined;
+    isWithdrawalError: ReturnType<typeof useCryptoWithdrawal>['isError'];
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
+    resetWithdrawalVerification: () => void;
     withdrawalReceipt: TWithdrawalReceipt;
 };
 
 type TWithdrawalCryptoContextProps = {
+    setVerificationCode: React.Dispatch<React.SetStateAction<string>>;
     verificationCode: string;
 };
 
@@ -47,13 +50,14 @@ export const useWithdrawalCryptoContext = () => {
 
 const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryptoContextProps>> = ({
     children,
+    setVerificationCode,
     verificationCode,
 }) => {
     const { data: accountLimits } = useAccountLimits();
     const { data: activeAccount } = useActiveAccount();
     const { data: poaStatus } = usePOA();
     const { data: poiStatus } = usePOI();
-    const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
+    const { isError: isWithdrawalError, isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
     const { data: exchangeRates, subscribe, unsubscribe } = useExchangeRateSubscription();
@@ -115,6 +119,10 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         );
     };
 
+    const resetWithdrawalVerification = () => {
+        setVerificationCode('');
+    };
+
     const value = {
         accountLimits,
         activeAccount,
@@ -131,8 +139,10 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         getConvertedFiatAmount,
         getCurrencyConfig: getConfig,
         isClientVerified: getClientVerificationStatus(),
+        isWithdrawalError,
         isWithdrawalSuccess,
         requestCryptoWithdrawal,
+        resetWithdrawalVerification,
         withdrawalReceipt,
     };
 

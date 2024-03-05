@@ -3,7 +3,7 @@ import { Form, Formik, FormikValues } from 'formik';
 import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
 import { ScrollToFieldError } from '@/helpers';
 import { address } from '@/utils';
-import { useSettings, useStatesList } from '@deriv/api';
+import { useSettings, useStatesList } from '@deriv/api-v2';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown, Input, Text, useDevice } from '@deriv-com/ui';
 import {

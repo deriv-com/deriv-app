@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import { DerivLightDeclinedPoaIcon, DerivLightWaitingPoaIcon, DerivLightApprovedPoaIcon } from '@deriv/quill-icons';
 import { DemoMessage } from '../../components/DemoMessage';

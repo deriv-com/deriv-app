@@ -4,7 +4,7 @@ import { useUIContext } from '@/providers';
 import { THooks } from '@/types';
 import { CFDPlatformLayout } from '@cfd/components';
 import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '@cfd/flows';
-import { useActiveTradingAccount, useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api-v2';
 
 const OtherCFDPlatformsList = () => {
     const { uiState } = useUIContext();

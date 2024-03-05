@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useModal } from '@/providers';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Button } from '@deriv-com/ui';
 import { ButtonGroup } from '../../../../components';
 

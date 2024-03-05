@@ -3,10 +3,12 @@ import { Form, Formik } from 'formik';
 import { twMerge } from 'tailwind-merge';
 import { TCurrencyConfig } from '@/hooks/useCurrencies';
 import CurrencyCard from '@/screens/CurrencySelector/CurrencyCard';
-import { Button, useDevice } from '@deriv-com/ui';
+import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 
 type TCurrenciesForm = {
+    addedAllCryptoCurrencies?: boolean;
     currencies: TCurrencyConfig[];
+    isSubmitButtonDisabled?: boolean;
     submitButtonLabel?: string;
 };
 
@@ -18,8 +20,14 @@ type TCurrenciesForm = {
  * @param {string} props.submitButtonLabel - The label for the submit button.
  * @returns {React.ReactNode}
  */
-const CurrenciesForm = ({ currencies, submitButtonLabel }: TCurrenciesForm) => {
+const CurrenciesForm = ({
+    currencies,
+    submitButtonLabel,
+    isSubmitButtonDisabled = false,
+    addedAllCryptoCurrencies = false,
+}: TCurrenciesForm) => {
     const { isDesktop } = useDevice();
+
     return (
         <Formik
             initialValues={{
@@ -37,6 +45,13 @@ const CurrenciesForm = ({ currencies, submitButtonLabel }: TCurrenciesForm) => {
                             currencies?.length < 4 ? 'lg:justify-center' : ''
                         )}
                     >
+                        {addedAllCryptoCurrencies && (
+                            <InlineMessage className='bg-opacity-16 bg-status-light-warning'>
+                                <Text align='center' as='p' className='w-full' size='xs'>
+                                    You already have an account for each of the cryptocurrencies available on Deriv.
+                                </Text>
+                            </InlineMessage>
+                        )}
                         {currencies.map(currency => (
                             <CurrencyCard
                                 className='flex flex-col justify-center'
@@ -48,7 +63,7 @@ const CurrenciesForm = ({ currencies, submitButtonLabel }: TCurrenciesForm) => {
                         ))}
                     </div>
                     <div className='flex items-center justify-end w-full px-16 pt-24 border-t border-solid border-t-system-light-secondary-background lg:px-0'>
-                        <Button isFullWidth={!isDesktop} type='submit'>
+                        <Button disabled={isSubmitButtonDisabled} isFullWidth={!isDesktop} type='submit'>
                             {submitButtonLabel ?? 'Add account'}
                         </Button>
                     </div>

@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect, useState } from 'react';
+import React, { Fragment, memo, useEffect, useMemo, useState } from 'react';
 import ReactModal from 'react-modal';
 import { twMerge } from 'tailwind-merge';
 import { CUSTOM_STYLES } from '@/helpers';
@@ -36,6 +36,11 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
             setActiveTab(TabTypes[1]);
         }
     }, [isEU]);
+
+    const addedAllCryptoCurrencies = useMemo(
+        () => currencies?.CRYPTO.every(currency => currency.isAdded) ?? false,
+        [currencies]
+    );
 
     if (isLoading) return null;
 
@@ -81,7 +86,11 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
                                 You can open an account for each cryptocurrency.
                             </Text>
                         </div>
-                        <CurrenciesForm currencies={currencies?.CRYPTO ?? []} />
+                        <CurrenciesForm
+                            addedAllCryptoCurrencies={addedAllCryptoCurrencies}
+                            currencies={currencies?.CRYPTO ?? []}
+                            isSubmitButtonDisabled={addedAllCryptoCurrencies}
+                        />
                     </Fragment>
                 )}
                 {activeTab === TabTypes[1] && (

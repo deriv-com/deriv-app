@@ -47,7 +47,7 @@ const MT5TradeModal = observer(
             }
             return (
                 <CTraderDerivXTradeModal
-                    ctrader_dxtrade_trade_account={mt5_trade_account}
+                    ctrader_derivx_trade_account={mt5_trade_account}
                     is_eu_user={is_eu_user}
                     onPasswordManager={onPasswordManager}
                     toggleModal={toggleModal}

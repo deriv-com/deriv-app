@@ -13,7 +13,7 @@ import { CTRADER_DESKTOP_DOWNLOAD, getTitle, platformsText } from '../Helpers/co
 import { TCFDPasswordReset } from './props.types';
 
 type TTradeModalProps = {
-    ctrader_dxtrade_trade_account: Required<DetailsOfEachMT5Loginid>;
+    ctrader_derivx_trade_account: Required<DetailsOfEachMT5Loginid>;
     is_eu_user: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -66,7 +66,7 @@ const PlatformIconsAndDescriptions = (
 };
 
 const CTraderDerivXTradeModal = ({
-    ctrader_dxtrade_trade_account,
+    ctrader_derivx_trade_account,
     is_eu_user,
     onPasswordManager,
     toggleModal,
@@ -89,8 +89,6 @@ const CTraderDerivXTradeModal = ({
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal } = ui;
     const { selected_account_type, no_CR_account, is_real, has_any_real_account, getAccount } = traders_hub;
-
-    const has_no_real_account = !has_any_real_account;
 
     const total_balance = ctrader_accounts_list
         ? ctrader_accounts_list.reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0)
@@ -182,8 +180,8 @@ const CTraderDerivXTradeModal = ({
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
-                {PlatformIconsAndDescriptions(platform, is_demo, ctrader_dxtrade_trade_account)}
-                {ctrader_dxtrade_trade_account?.display_balance && (
+                {PlatformIconsAndDescriptions(platform, is_demo, ctrader_derivx_trade_account)}
+                {ctrader_derivx_trade_account?.display_balance && (
                     <div className='cfd-trade-modal__balance'>
                         {platform === CFD_PLATFORMS.CTRADER && <Text size='xxs'>{localize('Total balance:')}</Text>}
                         <Text
@@ -194,9 +192,9 @@ const CTraderDerivXTradeModal = ({
                         >
                             <Money
                                 amount={total_balance}
-                                currency={ctrader_dxtrade_trade_account.currency}
+                                currency={ctrader_derivx_trade_account.currency}
                                 has_sign={
-                                    !!ctrader_dxtrade_trade_account.balance && ctrader_dxtrade_trade_account.balance < 0
+                                    !!ctrader_derivx_trade_account.balance && ctrader_derivx_trade_account.balance < 0
                                 }
                                 show_currency
                             />
@@ -211,7 +209,7 @@ const CTraderDerivXTradeModal = ({
                             <Text className='cfd-trade-modal--paragraph'>{localize('Username')}</Text>
                             <SpecBox
                                 is_bold
-                                value={(ctrader_dxtrade_trade_account as TTradingPlatformAccounts)?.login}
+                                value={(ctrader_derivx_trade_account as TTradingPlatformAccounts)?.login}
                             />
                         </div>
                         <div className='cfd-trade-modal__login-specs-item'>
@@ -221,17 +219,17 @@ const CTraderDerivXTradeModal = ({
                                     platform='dxtrade'
                                     onClick={() => {
                                         const account_type = getCFDAccountKey({
-                                            market_type: ctrader_dxtrade_trade_account.market_type,
-                                            sub_account_type: ctrader_dxtrade_trade_account.sub_account_type,
+                                            market_type: ctrader_derivx_trade_account.market_type,
+                                            sub_account_type: ctrader_derivx_trade_account.sub_account_type,
                                             platform: CFD_PLATFORMS.MT5,
-                                            shortcode: ctrader_dxtrade_trade_account.landing_company_short,
+                                            shortcode: ctrader_derivx_trade_account.landing_company_short,
                                         });
                                         onPasswordManager(
-                                            ctrader_dxtrade_trade_account?.login,
-                                            getTitle(ctrader_dxtrade_trade_account.market_type, is_eu_user),
-                                            ctrader_dxtrade_trade_account.account_type,
+                                            ctrader_derivx_trade_account?.login,
+                                            getTitle(ctrader_derivx_trade_account.market_type, is_eu_user),
+                                            ctrader_derivx_trade_account.account_type,
                                             account_type,
-                                            ctrader_dxtrade_trade_account?.server
+                                            ctrader_derivx_trade_account?.server
                                         );
                                         toggleModal();
                                     }}
@@ -262,7 +260,7 @@ const CTraderDerivXTradeModal = ({
                             <Button
                                 onClick={() => {
                                     toggleMT5TradeModal();
-                                    if ((has_no_real_account || no_CR_account) && is_real) {
+                                    if ((!has_any_real_account || no_CR_account) && is_real) {
                                         openDerivRealAccountNeededModal();
                                     } else {
                                         setAccountType({

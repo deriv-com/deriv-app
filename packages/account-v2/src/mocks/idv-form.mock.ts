@@ -1,4 +1,4 @@
-import { useResidenceList } from '@deriv/api';
+import { useResidenceList } from '@deriv/api-v2';
 
 export const mockDocumentList = [
     {

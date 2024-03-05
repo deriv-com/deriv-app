@@ -1,6 +1,6 @@
 import React from 'react';
 import * as routerDOM from 'react-router-dom';
-import { useActiveTradingAccount, useAuthorize } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { accountV2Routes, p2pRoute } from '../../../constants/routes';
@@ -26,7 +26,7 @@ jest.mock('react-router-dom', () => ({
     })),
 }));
 
-jest.mock('@deriv/api');
+jest.mock('@deriv/api-v2');
 jest.mock('../../../hooks/usePOAInfo');
 
 beforeEach(() => {

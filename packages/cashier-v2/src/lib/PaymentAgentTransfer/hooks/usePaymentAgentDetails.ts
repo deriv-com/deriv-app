@@ -1,4 +1,4 @@
-import { useQuery } from '@deriv/api';
+import { useQuery } from '@deriv/api-v2';
 
 /** A custom hook to get paymentagent details */
 export const usePaymentAgentDetails = () => {

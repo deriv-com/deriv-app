@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAuthentication, useMT5AccountsList } from '@deriv/api';
+import { useAuthentication, useMT5AccountsList } from '@deriv/api-v2';
 
 export const usePOAInfo = () => {
     const { data: authenticationData, ...rest } = useAuthentication();

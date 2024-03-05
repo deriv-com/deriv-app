@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { URLUtils } from '@deriv-com/utils';
 import {
     GetADerivAccountDialog,

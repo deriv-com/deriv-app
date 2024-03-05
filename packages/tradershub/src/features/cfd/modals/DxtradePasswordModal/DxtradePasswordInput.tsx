@@ -2,7 +2,7 @@ import React from 'react';
 import DxtradePasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
 import { ActionScreen, SentEmailContent } from '@/components';
 import { useCFDContext, useModal } from '@/providers';
-import { useAccountStatus } from '@deriv/api';
+import { useAccountStatus } from '@deriv/api-v2';
 import useDxtradeAccountHandler from '../../../../hooks/useDxtradeAccountHandler';
 import { MarketType, QueryStatus } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';

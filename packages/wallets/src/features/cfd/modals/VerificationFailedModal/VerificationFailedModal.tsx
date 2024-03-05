@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { THooks } from '../../../../types';
 import { ModalWrapper } from '../../../../components/Base';
+import { THooks } from '../../../../types';
 import { VerificationFailed } from '../../screens';
 
 type TVerificationFailedModalProps = {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, Modal } from '@/components';
 import { Category, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import MT5PasswordFooter from './MT5PasswordFooter';
 import MT5PasswordInput from './MT5PasswordInput';

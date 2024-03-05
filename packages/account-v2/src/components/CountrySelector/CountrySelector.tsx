@@ -1,5 +1,5 @@
 import React from 'react';
-import { useResidenceList } from '@deriv/api';
+import { useResidenceList } from '@deriv/api-v2';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown } from '@deriv-com/ui';
 

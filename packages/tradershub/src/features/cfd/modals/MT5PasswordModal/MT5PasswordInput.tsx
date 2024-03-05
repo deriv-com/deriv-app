@@ -5,7 +5,7 @@ import { useMT5AccountHandler } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
 import { MarketType, QueryStatus } from '@cfd/constants';
 import { CreatePassword, EnterPassword } from '@cfd/screens';
-import { useAccountStatus } from '@deriv/api';
+import { useAccountStatus } from '@deriv/api-v2';
 import MT5SuccessModal from './MT5SuccessModal';
 
 type TMT5PasswordInputProps = {

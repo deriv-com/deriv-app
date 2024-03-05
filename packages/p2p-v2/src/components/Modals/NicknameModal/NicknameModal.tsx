@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import { Controller, useForm } from 'react-hook-form';
 import Modal from 'react-modal';
 import { useDevice, useSwitchTab } from '@/hooks';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { DerivLightIcCashierUserIcon } from '@deriv/quill-icons';
 import { Button, Input, Text } from '@deriv-com/ui';
 import { customStyles } from '../helpers';

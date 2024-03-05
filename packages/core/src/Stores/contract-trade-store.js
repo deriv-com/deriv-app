@@ -14,6 +14,7 @@ import {
     isTurbosContract,
     isVanillaContract,
     LocalStore,
+    setTradeURLParams,
     switch_to_tick_chart,
     TRADE_TYPES,
 } from '@deriv/shared';
@@ -202,6 +203,7 @@ export default class ContractTradeStore extends BaseStore {
     updateChartType(type) {
         LocalStore.set('contract_trade.chart_style', type);
         this.chart_type = type;
+        setTradeURLParams({ chartType: this.chart_type });
     }
 
     updateGranularity(granularity) {
@@ -216,6 +218,7 @@ export default class ContractTradeStore extends BaseStore {
         if (this.granularity === 0) {
             this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
         }
+        setTradeURLParams({ granularity: this.granularity });
     }
 
     savePreviousChartMode(chart_type, granularity) {

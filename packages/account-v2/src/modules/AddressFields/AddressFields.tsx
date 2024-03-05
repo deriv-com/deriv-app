@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAuthorize, useSettings, useStatesList } from '@deriv/api';
-import FormDropDownField from '../../components/FormFields/FormDropDownField';
-import FormInputField from '../../components/FormFields/FormInputField';
+import { FormDropDownField, FormInputField } from '../../components/FormFields';
 import { LANDING_COMPANY } from '../../constants/constants';
 import { addressDetailValidations } from './validations';
 
@@ -27,7 +26,7 @@ export const AddressFields = () => {
     } = addressDetailValidations(settings.country_code ?? '', isSvg);
 
     return (
-        <div className='pt-8 space-y-12'>
+        <div className='grid pt-8 space-y-12 grid-col-1'>
             <FormInputField label='First line of address*' name='addressLine1' validationSchema={addressLine1Schema} />
             <FormInputField label='Second line of address' name='addressLine2' validationSchema={addressLine2Schema} />
             <FormInputField label='Town/City*' name='addressCity' validationSchema={addressCitySchema} />

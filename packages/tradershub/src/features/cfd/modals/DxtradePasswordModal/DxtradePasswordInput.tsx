@@ -16,10 +16,10 @@ type TDxtradePasswordInputProps = {
 const DxtradePasswordInput = ({ password, setPassword }: TDxtradePasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { show } = useModal();
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
 
     const marketType = MarketType.ALL;
-    const platform = getCFDState('platform');
+    const { platform } = cfdState;
 
     const isDxtradePasswordNotSet = accountStatus?.is_dxtrade_password_not_set;
     const { createDxtradeAccountError, createDxtradeAccountLoading, createOtherCFDAccountSuccess, handleSubmit } =

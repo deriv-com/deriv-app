@@ -12,8 +12,8 @@ type TAddAccountButtonsGroupProps = {
 
 const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     const { show } = useModal();
-    const { getCFDState } = useCFDContext();
-    const platform = getCFDState('platform');
+    const { cfdState } = useCFDContext();
+    const { platform } = cfdState;
 
     return (
         <ButtonGroup className='w-full'>

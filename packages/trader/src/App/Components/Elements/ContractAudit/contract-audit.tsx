@@ -17,7 +17,6 @@ type TContractAudit = Partial<
     duration: string | number;
     duration_unit: string;
     exit_spot: string | undefined;
-    has_result: boolean;
     is_dark_theme: boolean;
     is_open: boolean;
     toggleHistoryTab: (state_change?: boolean) => void;
@@ -29,7 +28,6 @@ type TResponse = {
 
 const ContractAudit = ({
     contract_update_history,
-    has_result,
     is_accumulator,
     is_multiplier,
     is_turbos,
@@ -55,8 +53,6 @@ const ContractAudit = ({
             });
         }
     };
-
-    if (!has_result) return null;
 
     if (!is_multiplier && !is_accumulator && !is_turbos) {
         return (

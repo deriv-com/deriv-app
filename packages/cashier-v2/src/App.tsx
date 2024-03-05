@@ -1,11 +1,13 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import AppContent from './AppContent';
 
 const App: React.FC = () => {
     return (
         <APIProvider standalone>
-            <AppContent />
+            <AuthProvider>
+                <AppContent />
+            </AuthProvider>
         </APIProvider>
     );
 };

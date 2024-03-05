@@ -52,9 +52,6 @@ const JurisdictionModal = () => {
         setCfdState({ selectedJurisdiction });
     }, [selectedJurisdiction, setCfdState]);
 
-    // Do this later: Add Loading Placeholder
-    if (isLoading) return <Text weight='bold'>Loading...</Text>;
-
     const isModalOpen = isOpen('JurisdictionModal');
 
     return (
@@ -74,10 +71,10 @@ const JurisdictionModal = () => {
                 )}
                 <Modal.Body
                     className={twMerge(
-                        'p-0 flex flex-col relative min-h-0 overflow-auto w-screen h-screen lg:w-auto lg:h-auto lg:p-8 lg:min-w-[1100px]'
+                        'p-0 flex flex-col relative min-h-0 overflow-auto w-screen h-screen lg:w-auto lg:h-auto lg:p-8 lg:min-w-[1100px]',
+                        isDynamicLeverageVisible && 'lg:min-h-[700px]'
                     )}
                 >
-                    {/* <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} /> */}
                     {!isDynamicLeverageVisible && <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} />}
                     {isDynamicLeverageVisible && <DynamicLeverageScreen />}
                     {!isDynamicLeverageVisible && (

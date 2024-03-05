@@ -29,7 +29,7 @@ const JurisdictionTncSection = ({ isCheckBoxChecked, setIsCheckBoxChecked }: TJu
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='text-center space-y-12 bg-system-light-primary-background pt-15 lg:pb-10 w-full p-10 lg:p-0 fixed bottom-[67px] lg:unset lg:min-h-90'>
+        <div className='text-center space-y-12 bg-system-light-primary-background pt-15 lg:pb-10 w-full p-10 lg:p-0 fixed bottom-[72px] lg:unset lg:min-h-90'>
             {selectedJurisdiction && (
                 <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
             )}

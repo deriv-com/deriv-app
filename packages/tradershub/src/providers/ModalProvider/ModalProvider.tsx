@@ -44,7 +44,7 @@ export const useModal = () => {
 
     if (!context)
         throw new Error(
-            'useModal() must be called within a component wrapped in ModalProvider. Please import Provider from @deriv/library'
+            'useModal() must be called within a component wrapped in ModalProvider. Please import Provider from ModalProvider.'
         );
 
     return context;

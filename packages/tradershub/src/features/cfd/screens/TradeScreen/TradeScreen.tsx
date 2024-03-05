@@ -25,7 +25,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isDesktop } = useDevice();
     const { isEU } = useRegulationFlags();
 
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeAccount } = useActiveTradingAccount();
@@ -34,8 +34,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
     const ctraderPlatform = PlatformDetails.ctrader.platform;
 
-    const marketType = getCFDState('marketType');
-    const platform = getCFDState('platform');
+    const { marketType, platform } = cfdState;
 
     const platformToAccountsListMapper = useMemo(
         () => ({

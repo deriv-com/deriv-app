@@ -41,6 +41,7 @@ const CurrenciesForm = ({ currencies, submitButtonLabel }: TCurrenciesForm) => {
                             <CurrencyCard
                                 className='flex flex-col justify-center'
                                 id={currency?.id}
+                                isDisabled={currency?.isAdded}
                                 key={currency?.id}
                                 title={currency?.name ?? ''}
                             />

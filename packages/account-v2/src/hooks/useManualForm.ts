@@ -1,4 +1,4 @@
-import { useKycAuthStatus } from '@deriv/api';
+import { useKycAuthStatus } from '@deriv/api-v2';
 import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../constants/manualFormConstants';
 
 /** A custom hook used for manual verification flow */

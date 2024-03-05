@@ -152,7 +152,10 @@ const ReviewMessageForMT5 = ({
 }: TReviewMsgForMT5) => {
     if (is_selected_mt5_verified) {
         return (
-            <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
+            <Localize
+                i18n_default_text='To start trading, <0/>transfer funds from your Deriv account into this account.'
+                components={[<br key={0} />]}
+            />
         );
     } else if (
         jurisdiction_selected_shortcode === JURISDICTION.BVI ||
@@ -831,10 +834,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const mt5_platform_label = jurisdiction_selected_shortcode !== JURISDICTION.MALTA_INVEST ? 'Deriv MT5' : '';
 
         const accountTypes = () => {
-            if (platform === 'dxtrade' && type_label === 'Derived') {
-                return 'Synthetic';
-            } else if (platform === 'ctrader') {
-                return 'CFDs';
+            if (platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER) {
+                return '';
             }
             return type_label;
         };
@@ -853,19 +854,24 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             return (
                 <React.Fragment>
                     <Localize
-                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{deriv_keyword}} {{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
+                        i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} {{jurisdiction_selected_shortcode}} account. '
                         values={{
-                            deriv_keyword: is_eu_user ? 'Deriv' : '',
                             type: accountTypes(),
                             platform:
                                 platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
                             category: category_label,
                             jurisdiction_selected_shortcode: platform === CFD_PLATFORMS.MT5 ? jurisdiction_label : '',
                         }}
-                        components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
+                        components={[<br key={0} />]}
                     />
                     {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
-                        <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
+                        <Localize
+                            i18n_default_text='To start trading, <0 />transfer funds <1 />from your Deriv account into this account.'
+                            components={[
+                                platform === CFD_PLATFORMS.CTRADER && <br key={0} />,
+                                platform === CFD_PLATFORMS.DXTRADE && <br key={1} />,
+                            ]}
+                        />
                     ) : (
                         <ReviewMessageForMT5
                             is_selected_mt5_verified={is_selected_mt5_verified}
@@ -879,13 +885,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
+                i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. '
                 values={{
                     type: accountTypes(),
-                    platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                    platform: is_eu_user ? '' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
-                components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
+                components={[<br key={0} />]}
             />
         );
     };

@@ -1,19 +1,21 @@
 import React, { ComponentProps } from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
 import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
-import { APIProvider, p2p } from '@deriv/api';
+import { APIProvider, AuthProvider, p2p } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PaymentMethodsListContent from '../PaymentMethodsListContent';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
-        <div id='v2_modal_root'>{children}</div>
+        <AuthProvider>
+            <div id='v2_modal_root'>{children}</div>
+        </AuthProvider>
     </APIProvider>
 );
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiserPaymentMethods: {
             useDelete: jest.fn(),

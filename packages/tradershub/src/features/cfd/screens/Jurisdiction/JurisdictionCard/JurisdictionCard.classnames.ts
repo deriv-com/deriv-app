@@ -1,7 +1,7 @@
 import { cva, VariantProps } from 'class-variance-authority';
 
 export const JurisdictionCardClass = cva(
-    'items-center rounded-xl border-1 border-solid cursor-pointer flex flex-col justify-center w-full lg:w-1/4 relative h-full transition-shadow transition-transform duration-300 [transform-style:preserve-3d] transform-gpu',
+    'items-stretch rounded-xl border-1 border-solid cursor-pointer flex flex-col justify-center w-full lg:w-[276px] relative h-auto transition-shadow transition-transform duration-300 [transform-style:preserve-3d] transform-gpu',
     {
         compoundVariants: [
             {

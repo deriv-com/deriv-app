@@ -6,7 +6,6 @@ import { WalletResetBalance } from '../../flows/WalletResetBalance';
 import { WalletTransactions } from '../../flows/WalletTransactions';
 import { WalletTransfer } from '../../flows/WalletTransfer';
 import { WalletWithdrawal } from '../../flows/WalletWithdrawal';
-import { DepositLocked, WithdrawalLocked } from '../../screens';
 
 const WalletCashierContent = () => {
     const history = useHistory();
@@ -25,12 +24,7 @@ const WalletCashierContent = () => {
         }
     }, [isTransfer, isDeposit, isTransactions, isWithdraw, isResetBalance, isFiatOnRamp, history]);
 
-    if (isDeposit)
-        return (
-            <DepositLocked>
-                <WalletDeposit />
-            </DepositLocked>
-        );
+    if (isDeposit) return <WalletDeposit />;
 
     if (isFiatOnRamp) return <WalletFiatOnRamp />;
 
@@ -41,11 +35,7 @@ const WalletCashierContent = () => {
     if (isTransactions) return <WalletTransactions />;
 
     if (isWithdraw) {
-        return (
-            <WithdrawalLocked>
-                <WalletWithdrawal />
-            </WithdrawalLocked>
-        );
+        return <WalletWithdrawal />;
     }
 
     return <></>;

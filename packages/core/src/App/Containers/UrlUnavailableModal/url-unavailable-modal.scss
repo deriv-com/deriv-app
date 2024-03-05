@@ -1,0 +1,40 @@
+.dc-modal__container_url-unavailable-modal {
+    .dc-modal {
+        &-header__title,
+        &-footer {
+            padding: 2.4rem;
+        }
+        &-body {
+            padding: 0 2.4rem;
+
+            ul {
+                margin: 1rem 0;
+
+                li:before {
+                    content: '•';
+                    padding: 0.8rem;
+                }
+            }
+            a {
+                font-weight: unset;
+            }
+        }
+
+        @include mobile {
+            &-header__title {
+                font-size: 1.4rem;
+                padding: 1.6rem;
+            }
+            &-body {
+                padding: 0 1.6rem;
+
+                ul li:before {
+                    padding: 0.6rem;
+                }
+            }
+            &-footer {
+                padding: 1.6rem;
+            }
+        }
+    }
+}

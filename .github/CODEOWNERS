@@ -44,9 +44,9 @@
 #  maryia-deriv
 #  matin-deriv
 #  nijil-deriv
-#  prince-deriv
 #  sandeep-deriv
 #  yashim-deriv
+#  wojciech-deriv
 
 ######################################################################################################
 #
@@ -94,9 +94,9 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-skeleton/**/*                                     @prince-deriv @sandeep-deriv @vinu-deriv
-/packages/bot-web-ui/**/*                                       @prince-deriv @sandeep-deriv @vinu-deriv
-/packages/indicators/**/*                                       @prince-deriv @sandeep-deriv @vinu-deriv
+/packages/bot-skeleton/**/*                                     @sandeep-deriv @vinu-deriv
+/packages/bot-web-ui/**/*                                       @sandeep-deriv @vinu-deriv
+/packages/indicators/**/*                                       @sandeep-deriv @vinu-deriv
 
 
 # ==============================================================
@@ -153,6 +153,13 @@
 # ==============================================================
 
 /packages/trader/**/*                                           @matin-deriv @maryia-deriv
+
+
+# ==============================================================
+#  deriv-app/tradershub
+# ==============================================================
+
+/packages/tradershub/**/*                                       @matin-deriv @mahdiyeh-deriv @thisyahlen-deriv 
 
 
 # ==============================================================

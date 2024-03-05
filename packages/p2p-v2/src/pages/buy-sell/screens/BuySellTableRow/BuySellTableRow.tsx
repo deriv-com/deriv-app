@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Badge, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
+import { Badge, BuySellForm, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
 import { BUY_SELL } from '@/constants';
 import { generateEffectiveRate } from '@/utils';
-import { p2p, useExchangeRateSubscription } from '@deriv/api';
+import { p2p, useExchangeRateSubscription } from '@deriv/api-v2';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { TBuySellTableRowRenderer } from '../BuySellTable/BuySellTable';
@@ -13,9 +13,12 @@ import './BuySellTableRow.scss';
 const BASE_CURRENCY = 'USD';
 
 const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: exchangeRateValue, subscribe } = useExchangeRateSubscription();
     const { isMobile } = useDevice();
+
     const { data } = p2p.advertiser.useGetInfo() || {};
+    const { data: paymentMethods } = p2p.paymentMethods.useGet();
     const {
         account_currency,
         advertiser_details,
@@ -29,6 +32,8 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
         rate,
         rate_type,
     } = props;
+
+    const { daily_buy = 0, daily_buy_limit = 0, daily_sell = 0, daily_sell_limit = 0 } = data || {};
 
     useEffect(() => {
         if (local_currency) {
@@ -44,7 +49,7 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
 
     const { completed_orders_count, id, is_online, name, rating_average, rating_count } = advertiser_details || {};
 
-    const { displayEffectiveRate } = generateEffectiveRate({
+    const { displayEffectiveRate, effectiveRate } = generateEffectiveRate({
         exchange_rate: exchangeRate,
         local_currency,
         market_rate: effective_rate,
@@ -125,10 +130,28 @@ const BuySellTableRow = (props: TBuySellTableRowRenderer) => {
             {!isMyAdvert && (
                 <div className='h-full flex flex-col justify-center relative'>
                     {isMobile && <LabelPairedChevronRightMdRegularIcon className='absolute top-0 right-4' />}
-                    <Button className='lg:w-[7.5rem]' size={isMobile ? 'md' : 'sm'} textSize={isMobile ? 'md' : 'xs'}>
+                    <Button
+                        className='lg:w-[7.5rem]'
+                        onClick={() => setIsModalOpen(true)}
+                        size={isMobile ? 'md' : 'sm'}
+                        textSize={isMobile ? 'md' : 'xs'}
+                    >
                         {isBuyAdvert ? 'Buy' : 'Sell'} {account_currency}
                     </Button>
                 </div>
+            )}
+            {isModalOpen && (
+                <BuySellForm
+                    advert={props}
+                    advertiserBuyLimit={Number(daily_buy_limit) - Number(daily_buy)}
+                    advertiserSellLimit={Number(daily_sell_limit) - Number(daily_sell)}
+                    balanceAvailable={data?.balance_available ?? 0}
+                    displayEffectiveRate={displayEffectiveRate}
+                    effectiveRate={effectiveRate}
+                    isModalOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    paymentMethods={paymentMethods}
+                />
             )}
         </div>
     );

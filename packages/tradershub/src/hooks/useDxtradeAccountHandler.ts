@@ -1,4 +1,4 @@
-import { useAccountStatus, useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
+import { useAccountStatus, useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { MarketType, PlatformDetails } from '../features/cfd/constants';
 
 const useDxtradeAccountHandler = () => {

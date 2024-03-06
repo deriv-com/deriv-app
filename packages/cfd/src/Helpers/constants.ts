@@ -1,4 +1,12 @@
-import { OSDetect, getPlatformFromUrl, mobileOSDetect } from '@deriv/shared';
+import {
+    OSDetect,
+    getPlatformFromUrl,
+    getErrorMessages,
+    validLength,
+    validPassword,
+    validMT5Password,
+    mobileOSDetect,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
@@ -119,6 +127,24 @@ const getCTraderWebTerminalLink = (category?: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
+const validatePassword = (password: string): string | undefined => {
+    if (
+        !validLength(password, {
+            min: 8,
+            max: 16,
+        })
+    ) {
+        return localize('You should enter {{min_number}}-{{max_number}} characters.', {
+            min_number: 8,
+            max_number: 16,
+        });
+    } else if (!validPassword(password)) {
+        return getErrorMessages().password();
+    } else if (!validMT5Password(password)) {
+        return localize('Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.');
+    }
+};
+
 const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
     if (mobileOSDetect() === 'iOS') {
         return mt5_trade_account?.white_label?.download_links?.ios;
@@ -190,6 +216,7 @@ export {
     platformsIcons,
     getTitle,
     getTopUpConfig,
+    validatePassword,
     getMobileAppInstallerURL,
     WEBTRADER_URL,
     getDesktopDownloadOptions,

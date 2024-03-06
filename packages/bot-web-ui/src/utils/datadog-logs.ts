@@ -2,8 +2,7 @@ import { datadogLogs } from '@datadog/browser-logs';
 import { formatDate, formatTime } from '@deriv/shared';
 
 /**
- * This function is used to initialize datadog for logging user interactions, resources, long tasks, and frustrations.
- * It also masks user input and redacts sensitive data from the URL.
+ * Initializes Datadog Logs for production or staging environments, conditionally based on environment variables.
  *
  * @param {boolean} is_datadog_enabled - The parameter to enable or disable datadog tracking.
  * @example initDatadogLogs(true);

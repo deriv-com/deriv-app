@@ -6,7 +6,7 @@ const useResidenceSelfDeclaration = () => {
     const { residence, residence_list } = client;
     const is_residence_self_declaration_required = !!residence_list?.find(
         residence_item => residence_item?.value === residence
-    )?.account_opening_signup_declaration_required;
+    )?.account_opening_self_declaration_required;
 
     return { is_residence_self_declaration_required };
 };

@@ -542,7 +542,7 @@ type TClientStore = {
         upload_file?: string;
         poi_state?: string;
     };
-    residence_list: TResidenceList; // TODO: replace this with ResidenceList from @deriv/api-types once account_opening_signup_declaration_required is available
+    residence_list: TResidenceList; // TODO: replace this with ResidenceList from @deriv/api-types once account_opening_self_declaration_required is available
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
     should_show_eu_content: boolean;
@@ -608,7 +608,7 @@ type TClientStore = {
 
 // TODO: This is a temporary type. It should be replaced with the actual type from deriv/api-types
 type TResidenceList = {
-    account_opening_signup_declaration_required?: boolean;
+    account_opening_self_declaration_required?: boolean;
     disabled?: string;
     identity?: {
         services?: {

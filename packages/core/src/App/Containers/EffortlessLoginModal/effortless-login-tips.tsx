@@ -36,7 +36,7 @@ export const EffortLessLoginTips = ({ onLearnMoreClick }: { onLearnMoreClick?: (
                 </div>
             ))}
 
-            <Text as='div' size='xs' className='effortless-login-modal__overlay-tip'>
+            <Text as='p' size='xs' className='effortless-login-modal__overlay-tip'>
                 <Localize
                     i18n_default_text='Learn more about passkeys <0> here</0>.'
                     components={[<Text key={0} color='loss-danger' size='xs' onClick={onLearnMoreClick} />]}

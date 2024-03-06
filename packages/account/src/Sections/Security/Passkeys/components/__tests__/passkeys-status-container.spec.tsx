@@ -15,49 +15,51 @@ describe('PasskeysStatusContainer', () => {
     // TODO: add more checks for renaming and verifying flows
     it('renders correctly for each status code', () => {
         Object.values(PASSKEY_STATUS_CODES).forEach(status => {
+            const { unmount, container } = render(
+                <PasskeysStatusContainer
+                    createPasskey={createPasskeyMock}
+                    passkey_status={status}
+                    setPasskeyStatus={setPasskeyStatusMock}
+                />
+            );
             if (status) {
-                const { unmount } = render(
-                    <PasskeysStatusContainer
-                        createPasskey={createPasskeyMock}
-                        passkey_status={status}
-                        setPasskeyStatus={setPasskeyStatusMock}
-                    />
-                );
-
                 const content = getStatusContent(status);
                 expect(screen.getByText(content.title.props.i18n_default_text)).toBeInTheDocument();
-                expect(
-                    screen.getByRole('button', { name: content.primary_button_text.props.i18n_default_text })
-                ).toBeInTheDocument();
+                const primary_button = screen.getByRole('button', {
+                    name: content.primary_button_text.props.i18n_default_text,
+                });
+                const secondary_button = screen.getByRole('button', {
+                    name: content?.secondary_button_text?.props.i18n_default_text,
+                });
 
-                if (content.secondary_button_text) {
-                    expect(
-                        screen.getByRole('button', { name: content.secondary_button_text.props.i18n_default_text })
-                    ).toBeInTheDocument();
-                }
+                expect(primary_button).toBeInTheDocument();
+                expect(secondary_button).toBeInTheDocument();
 
                 if (status === PASSKEY_STATUS_CODES.LEARN_MORE || status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
-                    userEvent.click(
-                        screen.getByRole('button', { name: content.primary_button_text.props.i18n_default_text })
-                    );
+                    userEvent.click(primary_button);
+                    userEvent.click(secondary_button);
                     expect(createPasskeyMock).toHaveBeenCalled();
+                    expect(setPasskeyStatusMock).toHaveBeenCalled();
+                }
+
+                if (status === PASSKEY_STATUS_CODES.CREATED || status === PASSKEY_STATUS_CODES.REMOVED) {
+                    userEvent.click(primary_button);
+                    expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
                 }
 
                 if (status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
-                    userEvent.click(
-                        screen.getByRole('button', { name: content.secondary_button_text?.props.i18n_default_text })
-                    );
+                    userEvent.click(secondary_button);
                     expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.LEARN_MORE);
                 }
 
                 if (status === PASSKEY_STATUS_CODES.RENAMING) {
-                    userEvent.click(
-                        screen.getByRole('button', { name: content.secondary_button_text?.props.i18n_default_text })
-                    );
+                    userEvent.click(secondary_button);
                     expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
                 }
 
                 unmount();
+            } else {
+                expect(container).toBeEmptyDOMElement();
             }
         });
     });

@@ -69,7 +69,9 @@ export const EffortlessLoginDescription = () => {
                         <Text weight='bold' size='xs'>
                             {question}
                         </Text>
-                        <Text size='xs'>{description}</Text>
+                        <Text as='p' size='xs'>
+                            {description}
+                        </Text>
                     </div>
                 ))}
             </div>

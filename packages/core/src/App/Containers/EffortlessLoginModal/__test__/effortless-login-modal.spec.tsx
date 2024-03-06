@@ -117,4 +117,19 @@ describe('EffortlessLoginModal', () => {
         expect(history.location.pathname).toBe(routes.passkeys);
         expect(localStorage.setItem).toHaveBeenCalled();
     });
+
+    it('should not render EffortlessLoginModal if there is no portal', () => {
+        modal_root_el.setAttribute('id', '');
+
+        render(<EffortlessLoginModal />);
+
+        expect(screen.queryByText(title)).not.toBeInTheDocument();
+        expect(screen.queryByText(learn_more)).not.toBeInTheDocument();
+        tips.forEach(tip => {
+            expect(screen.queryByText(tip)).not.toBeInTheDocument();
+        });
+        descriptions.forEach(description => {
+            expect(screen.queryByText(description)).not.toBeInTheDocument();
+        });
+    });
 });

@@ -1,3 +1,8 @@
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
 .passkeys {
     width: 100%;
     margin-inline: auto;
@@ -5,8 +10,7 @@
     &-status {
         &__wrapper {
             height: 100%;
-            display: flex;
-            flex-direction: column;
+            @include flex-column;
             justify-content: center;
             align-items: center;
             margin-block: 1.6rem;
@@ -35,16 +39,14 @@
             }
 
             &-card {
-                display: flex;
-                flex-direction: column;
+                @include flex-column;
                 gap: 0.8rem;
                 border-bottom: 1px solid var(--general-hover);
                 padding: 1.6rem 0;
             }
 
             &-container {
-                display: flex;
-                flex-direction: column;
+                @include flex-column;
             }
 
             &-tips {
@@ -66,8 +68,7 @@
                 }
 
                 &-container {
-                    display: flex;
-                    flex-direction: column;
+                    @include flex-column;
                     align-items: flex-start;
                 }
             }

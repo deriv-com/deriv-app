@@ -46,6 +46,8 @@ describe('useRegisterPasskey', () => {
 
         (WS.send as jest.Mock).mockResolvedValue({ passkeys_register: { properties: { name: 'test passkey name' } } });
 
+        expect(result.current.is_passkey_registration_started).toBe(true);
+
         await act(async () => {
             await result.current.createPasskey();
         });
@@ -59,6 +61,28 @@ describe('useRegisterPasskey', () => {
         expect(result.current.is_passkey_registered).toBe(true);
     });
 
+    it('should start passkey registration and cancel', async () => {
+        const { result } = renderHook(() => useRegisterPasskey(), { wrapper });
+
+        expect(result.current.is_passkey_registered).toBe(false);
+
+        await act(async () => {
+            await result.current.startPasskeyRegistration();
+        });
+
+        expect(WS.send).toHaveBeenCalledWith({ passkeys_register_options: 1 });
+
+        (WS.send as jest.Mock).mockResolvedValue({ passkeys_register: { properties: { name: 'test passkey name' } } });
+
+        expect(result.current.is_passkey_registration_started).toBe(true);
+
+        await act(async () => {
+            result.current.cancelPasskeyRegistration();
+        });
+
+        expect(result.current.is_passkey_registration_started).toBe(false);
+    });
+
     it('should handle passkey registration error', async () => {
         (WS.send as jest.Mock).mockRejectedValue(ws_error);
 
@@ -69,6 +93,12 @@ describe('useRegisterPasskey', () => {
         });
 
         expect(result.current.passkey_registration_error).toBe(ws_error);
+
+        await act(async () => {
+            result.current.clearPasskeyRegistrationError();
+        });
+
+        expect(result.current.passkey_registration_error).toBe(null);
     });
 
     it('should handle passkey creation error', async () => {
@@ -89,6 +119,12 @@ describe('useRegisterPasskey', () => {
         });
 
         expect(result.current.passkey_registration_error).toBe(ws_error);
+
+        await act(async () => {
+            result.current.clearPasskeyRegistrationError();
+        });
+
+        expect(result.current.passkey_registration_error).toBe(null);
     });
 
     it('should handle passkey creation authenticator error', async () => {
@@ -109,5 +145,11 @@ describe('useRegisterPasskey', () => {
         });
 
         expect(result.current.passkey_registration_error).toBe(authenticator_error);
+
+        await act(async () => {
+            result.current.clearPasskeyRegistrationError();
+        });
+
+        expect(result.current.passkey_registration_error).toBe(null);
     });
 });

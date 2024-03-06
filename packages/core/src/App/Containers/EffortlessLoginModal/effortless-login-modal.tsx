@@ -22,7 +22,7 @@ const EffortlessLoginModal = () => {
 
     if (!portal_element) return null;
     return ReactDOM.createPortal(
-        <div className={'effortless-login-modal__container'}>
+        <div className={'effortless-login-modal'}>
             {is_learn_more_opened ? (
                 <Icon
                     data_testid='effortless_login_modal__back-button'
@@ -56,7 +56,7 @@ const EffortlessLoginModal = () => {
                     <EffortLessLoginTips onLearnMoreClick={() => setIsLearnMoreOpened(true)} />
                 )}
             </FormBody>
-            <FormFooter className='effortless-login-modal__footer'>
+            <FormFooter>
                 <Button type='button' has_effect large primary onClick={() => onClickHandler(routes.passkeys)}>
                     <Localize i18n_default_text='Get started' />
                 </Button>

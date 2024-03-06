@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
-import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
+import { useGetPasskeysList, useIsPasskeySupported, useRegisterPasskey } from '@deriv/hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
 import PasskeysList from '../components/passkeys-list';
@@ -32,31 +32,32 @@ export const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['pass
     },
 ];
 
-const mockCreatePasskey = jest.fn();
-const mockStartPasskeyRegistration = jest.fn();
-
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useGetPasskeysList: jest.fn(() => ({
-        passkeys_list: mock_passkeys_list,
-        is_passkeys_list_loading: false,
-        passkeys_list_error: '',
-    })),
-    useIsPasskeySupported: jest.fn(() => ({
-        is_passkey_supported: true,
-        is_passkey_support_checking: false,
-    })),
-    useRegisterPasskey: jest.fn(() => ({
-        createPasskey: mockCreatePasskey,
-        startPasskeyRegistration: mockStartPasskeyRegistration,
-        is_passkey_registered: false,
-        passkey_registration_error: '',
-    })),
+    useGetPasskeysList: jest.fn(() => ({})),
+    useIsPasskeySupported: jest.fn(() => ({})),
+    useRegisterPasskey: jest.fn(() => ({})),
+}));
+
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Loading: () => <div>MockLoading</div>,
 }));
 
 describe('Passkeys', () => {
     const mock_store = mockStore({ ui: { is_mobile: true } });
+    const create_passkey = 'Create passkey';
 
+    let modal_root_el: HTMLElement;
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -69,7 +70,23 @@ describe('Passkeys', () => {
         </MemoryRouter>
     );
 
-    it('renders existed passkeys correctly and triggers new passkey creation', () => {
+    const mockCreatePasskey = jest.fn();
+    const mockStartPasskeyRegistration = jest.fn();
+    const mockClearPasskeyRegistrationError = jest.fn();
+    const mockReloadPasskeysList = jest.fn();
+    const mockCancelPasskeyRegistration = jest.fn();
+
+    it('renders existed passkeys correctly and triggers new passkey creation', async () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            passkeys_list: mock_passkeys_list,
+        });
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_supported: true,
+        });
+        (useRegisterPasskey as jest.Mock).mockReturnValue({
+            startPasskeyRegistration: mockStartPasskeyRegistration,
+        });
+
         render(
             <RenderWrapper>
                 <Passkeys />
@@ -78,15 +95,21 @@ describe('Passkeys', () => {
         expect(screen.getByText(passkey_name_1)).toBeInTheDocument();
         expect(screen.getByText(passkey_name_2)).toBeInTheDocument();
 
-        const create_passkey_button = screen.getByRole('button', { name: 'Create passkey' });
+        const create_passkey_button = screen.getByRole('button', { name: create_passkey });
         userEvent.click(create_passkey_button);
         expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
     });
     it("renders 'Experience safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
-            data: [],
-            isLoading: false,
+            passkeys_list: [],
         });
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_supported: true,
+        });
+        (useRegisterPasskey as jest.Mock).mockReturnValue({
+            startPasskeyRegistration: mockStartPasskeyRegistration,
+        });
+
         render(
             <RenderWrapper>
                 <Passkeys />
@@ -98,14 +121,18 @@ describe('Passkeys', () => {
         userEvent.click(learn_more_button);
         expect(screen.getByText('Effortless login with passkeys')).toBeInTheDocument();
         expect(screen.getByText('Tips:')).toBeInTheDocument();
-        const create_passkey_button = screen.getByRole('button', { name: 'Create passkey' });
+        const create_passkey_button = screen.getByRole('button', { name: create_passkey });
         userEvent.click(create_passkey_button);
         expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
     });
     it('renders success screen when new passkeys created', () => {
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_supported: true,
+        });
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             is_passkey_registered: true,
         });
+
         render(
             <RenderWrapper>
                 <Passkeys />
@@ -115,6 +142,13 @@ describe('Passkeys', () => {
         expect(screen.getByText('Success!')).toBeInTheDocument();
     });
     it("doesn't render existed passkeys for desktop", () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            passkeys_list: mock_passkeys_list,
+        });
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_supported: true,
+        });
+
         mock_store.ui.is_mobile = false;
         render(
             <RenderWrapper>
@@ -124,5 +158,105 @@ describe('Passkeys', () => {
 
         expect(screen.queryByText(passkey_name_1)).not.toBeInTheDocument();
         expect(screen.queryByText(passkey_name_2)).not.toBeInTheDocument();
+
+        mock_store.ui.is_mobile = true;
+    });
+    it('renders loader if passkeys support is checking', () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            is_passkeys_list_loading: false,
+        });
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_support_checking: true,
+        });
+
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        expect(screen.getByText('MockLoading')).toBeInTheDocument();
+    });
+    it('renders loader if passkeys list is loading', () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            is_passkeys_list_loading: true,
+        });
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_support_checking: false,
+        });
+
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        expect(screen.getByText('MockLoading')).toBeInTheDocument();
+    });
+    it('renders passkeys creation modal and triggers new passkey creation', async () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            is_passkeys_list_loading: false,
+        });
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_supported: true,
+        });
+        (useRegisterPasskey as jest.Mock).mockReturnValue({
+            createPasskey: mockCreatePasskey,
+            is_passkey_registration_started: true,
+        });
+
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        const continue_button = screen.getByRole('button', { name: /continue/i });
+        userEvent.click(continue_button);
+        expect(mockCreatePasskey).toBeCalledTimes(1);
+    });
+    it('renders passkeys registration error modal and triggers closing', async () => {
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_supported: true,
+        });
+        (useRegisterPasskey as jest.Mock).mockReturnValue({
+            passkey_registration_error: { message: 'registration test error' },
+            clearPasskeyRegistrationError: mockClearPasskeyRegistrationError,
+        });
+
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        const try_again_button = screen.getByRole('button', { name: /try again/i });
+        expect(screen.getByText('registration test error')).toBeInTheDocument();
+        userEvent.click(try_again_button);
+        expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
+    });
+    it('renders passkeys list error modal and triggers closing', async () => {
+        (useIsPasskeySupported as jest.Mock).mockReturnValue({
+            is_passkey_supported: true,
+        });
+        (useRegisterPasskey as jest.Mock).mockReturnValue({
+            passkey_registration_error: null,
+        });
+
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            passkeys_list_error: { message: 'list test error' },
+            reloadPasskeysList: mockReloadPasskeysList,
+        });
+
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        const try_again_button = screen.getByRole('button', { name: /try again/i });
+        expect(screen.getByText('list test error')).toBeInTheDocument();
+        userEvent.click(try_again_button);
+        expect(mockReloadPasskeysList).toBeCalledTimes(1);
     });
 });

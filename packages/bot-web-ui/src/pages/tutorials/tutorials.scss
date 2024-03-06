@@ -75,7 +75,7 @@
                 flex-direction: row;
                 width: auto;
                 span {
-                    text-align: left;
+                    text-align: start;
                     width: 100%;
                 }
             }
@@ -100,7 +100,7 @@
         &__description {
             width: 28rem;
             @include mobile {
-                text-align: left;
+                text-align: start;
                 width: calc(100% - 14.8rem);
             }
         }
@@ -214,12 +214,12 @@
 
     .dc-dialog__content {
         &__header {
-            text-align: left;
+            text-align: start;
             margin-bottom: 2.4rem;
         }
 
         &__description {
-            text-align: left;
+            text-align: start;
 
             &__text {
                 margin-bottom: 1.6rem;
@@ -267,7 +267,7 @@
                 .close-icon {
                     cursor: pointer;
                     position: absolute;
-                    right: 1.5rem;
+                    inset-inline-end: 1.5rem;
                     z-index: 1;
                 }
 
@@ -350,7 +350,7 @@
 
                         li {
                             white-space: unset;
-                            text-align: left;
+                            text-align: start;
                             line-height: normal;
                         }
 

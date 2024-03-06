@@ -23,7 +23,7 @@ const JurisdictionFlow = ({ selectedJurisdiction }: TJurisdictionFlowProps) => {
 const JurisdictionModal = () => {
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
-    const { isOpen, closeModal } = useQueryParams();
+    const { isModalOpen, closeModal } = useQueryParams();
     const { show } = useModal();
     const { isEU } = useRegulationFlags();
     const { cfdState, setCfdState } = useCFDContext();
@@ -55,14 +55,12 @@ const JurisdictionModal = () => {
     // Do this later: Add Loading Placeholder
     if (isLoading) return <Text weight='bold'>Loading...</Text>;
 
-    const isModalOpen = isOpen('JurisdictionModal');
-
     return (
         <DynamicLeverageContext.Provider value={value}>
             <Modal
                 ariaHideApp={false}
                 className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '
-                isOpen={isModalOpen}
+                isOpen={isModalOpen('JurisdictionModal')}
                 onRequestClose={closeModal}
             >
                 {!isDynamicLeverageVisible ? (

@@ -2,15 +2,10 @@ import React, { Fragment, memo, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { twMerge } from 'tailwind-merge';
 import { CUSTOM_STYLES } from '@/helpers';
-import { useCurrencies, useRegulationFlags } from '@/hooks';
+import { useCurrencies, useQueryParams, useRegulationFlags } from '@/hooks';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Tab, Tabs, Text } from '@deriv-com/ui';
 import CurrenciesForm from './CurrenciesForm';
-
-type TAddOrManageAccount = {
-    isOpen: boolean;
-    onClose: VoidFunction;
-};
 
 const TabTypes = {
     0: 'CRYPTO',
@@ -25,9 +20,11 @@ const TabTypes = {
  * @param {VoidFunction} props.onClose - The onClose prop is a function that closes the modal.
  * @returns {React.ReactNode}
  */
-const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
+const AddOrManageAccount = () => {
     const { data: currencies, isLoading } = useCurrencies();
     const [activeTab, setActiveTab] = useState<'CRYPTO' | 'FIAT'>(TabTypes[0]);
+
+    const { isModalOpen, closeModal } = useQueryParams();
 
     const { isEU } = useRegulationFlags();
 
@@ -41,11 +38,16 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
 
     const handleClose = () => {
         setActiveTab(TabTypes[0]);
-        onClose();
+        closeModal();
     };
 
     return (
-        <ReactModal ariaHideApp={false} isOpen={isOpen} onRequestClose={handleClose} style={CUSTOM_STYLES}>
+        <ReactModal
+            ariaHideApp={false}
+            isOpen={isModalOpen('AddOrManageAccount')}
+            onRequestClose={handleClose}
+            style={CUSTOM_STYLES}
+        >
             <div
                 className={twMerge(
                     `bg-system-light-primary-background lg:max-h-[717px] lg:max-w-[1040px] h-screen w-screen lg:rounded-default flex flex-col overflow-hidden ${

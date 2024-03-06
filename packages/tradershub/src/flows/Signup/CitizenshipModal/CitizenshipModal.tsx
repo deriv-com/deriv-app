@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormikContext } from 'formik';
 import { isCVMEnabled } from '@/helpers';
-import { useClientCountry, useResidenceList } from '@deriv/api';
+import { useClientCountry, useResidenceList } from '@deriv/api-v2';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Button, Checkbox, Dropdown, Text } from '@deriv-com/ui';
 import { TSignupFormValues } from '../SignupWrapper/SignupWrapper';

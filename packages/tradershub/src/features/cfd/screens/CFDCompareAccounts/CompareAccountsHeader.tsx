@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 
 const CompareAccountsHeader = () => {

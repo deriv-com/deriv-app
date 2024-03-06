@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
-import { useOnfido } from '@deriv/api';
+import { useOnfido } from '@deriv/api-v2';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import IcAccountMissingDetails from '../../assets/proof-of-identity/ic-account-missing-details.svg';
 import { ErrorMessage } from '../../components/ErrorMessage';

@@ -148,8 +148,8 @@ describe('onChangeContractTypeList', () => {
     });
 
     it('should return the 1st contract_type from contract_types_list if Multipliers are not present in it', () => {
-        trade_store.contract_types_list = { ...vanillas_contract_data, ...accumulators_contract_data };
-        expect(onChangeContractTypeList(trade_store)).toMatchObject({ contract_type: TRADE_TYPES.VANILLA.CALL });
+        trade_store.contract_types_list = { ...accumulators_contract_data, ...vanillas_contract_data };
+        expect(onChangeContractTypeList(trade_store)).toMatchObject({ contract_type: TRADE_TYPES.ACCUMULATOR });
     });
     it('should return Multipliers contract_type if Multipliers are present in contract_types_list', () => {
         trade_store.contract_types_list = {

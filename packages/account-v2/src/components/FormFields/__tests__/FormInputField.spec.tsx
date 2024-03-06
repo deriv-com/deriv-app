@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import FormInputField from '../FormInputField';
+import { FormInputField } from '../FormInputField';
 
 describe('FormInputField', () => {
     it('should render the Input field', () => {

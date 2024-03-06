@@ -143,7 +143,7 @@ const TradingAppCard = ({
             </div>
             <div
                 className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
-                id={`trading-app-card-${is_account_being_created ? name : sub_title ?? name}`}
+                data-testid={`trading-app-card-${is_account_being_created ? name : sub_title ?? name}`}
             >
                 <div className='trading-app-card__details'>
                     <div>

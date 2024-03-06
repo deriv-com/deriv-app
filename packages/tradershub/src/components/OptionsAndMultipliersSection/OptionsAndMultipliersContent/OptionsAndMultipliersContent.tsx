@@ -4,7 +4,7 @@ import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } f
 import { optionsAndMultipliersContent } from '@/constants';
 import { getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Button, useDevice } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 

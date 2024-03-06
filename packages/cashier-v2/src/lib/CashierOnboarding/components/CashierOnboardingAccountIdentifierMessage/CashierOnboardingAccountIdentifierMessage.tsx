@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveAccount } from '@deriv/api-v2';
 import { InlineMessage, Text } from '@deriv-com/ui';
 
 const CashierOnboardingAccountIdentifierMessage: React.FC = () => {

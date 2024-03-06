@@ -1,15 +1,13 @@
 import React from 'react';
 import { StaticLink } from '@/components';
-import { THooks } from '@/types';
+import { useCFDContext } from '@/providers';
 import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
-import { Provider } from '@deriv/library';
-import { Checkbox, Text, useDevice } from '@deriv-com/ui';
+import { Checkbox, Text } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
 type TJurisdictionTncSectionProps = {
     isCheckBoxChecked: boolean;
-    selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
     setIsCheckBoxChecked: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -23,19 +21,15 @@ type TJurisdictionTncSectionProps = {
  * @returns
  */
 
-const JurisdictionTncSection = ({
-    isCheckBoxChecked,
-    selectedJurisdiction,
-    setIsCheckBoxChecked,
-}: TJurisdictionTncSectionProps) => {
+const JurisdictionTncSection = ({ isCheckBoxChecked, setIsCheckBoxChecked }: TJurisdictionTncSectionProps) => {
     const { getDerivStaticURL } = URLUtils;
-    const { isDesktop } = useDevice();
-    const { getCFDState } = Provider.useCFDContext();
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const { cfdState } = useCFDContext();
+    const { marketType: marketTypeState, selectedJurisdiction } = cfdState;
+    const marketType = marketTypeState ?? MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='text-center space-y-12 mt-30 sticky bottom-0 bg-system-light-primary-background px-20 pt-[15px] pb-10 w-screen sm:w-auto sm:bg-inherit sm:static sm:p-0'>
+        <div className='text-center space-y-12 bg-system-light-primary-background pt-15 lg:pb-10 w-full p-10 lg:p-0 fixed bottom-[67px] lg:unset lg:min-h-90'>
             {selectedJurisdiction && (
                 <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
             )}
@@ -44,7 +38,7 @@ const JurisdictionTncSection = ({
                     <Checkbox
                         checked={isCheckBoxChecked}
                         label={
-                            <Text size={isDesktop ? 'md' : 'sm'}>
+                            <Text className='text-sm lg:text-default'>
                                 I confirm and accept {selectedCompany.name}&lsquo;s{' '}
                                 <StaticLink
                                     className='no-underline cursor-pointer text-solid-coral-700 hover:no-underline'

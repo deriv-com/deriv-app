@@ -39,6 +39,7 @@ import {
     getStatusValidations,
     hasMissingRequiredField,
     maintenance_notifications,
+    poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 
@@ -244,6 +245,11 @@ export default class NotificationStore extends BaseStore {
     filterNotificationMessages() {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
+        if (window.location.pathname === routes.proof_of_identity) {
+            this.notification_messages = this.notification_messages.filter(
+                notif => !poi_notifications.includes(notif.key)
+            );
+        }
         if (window.location.pathname === routes.personal_details) {
             this.notification_messages = this.notification_messages.filter(
                 notification =>

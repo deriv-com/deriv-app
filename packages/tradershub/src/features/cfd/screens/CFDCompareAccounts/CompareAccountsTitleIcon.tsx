@@ -1,6 +1,7 @@
 import React, { Fragment, useRef } from 'react';
 import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
 import { IconComponent } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api-v2';
@@ -17,12 +18,8 @@ type TCompareAccountsTitleIcon = {
 
 type TMarketWithShortCode = `${TMarketType}_${string}`;
 
-const getAccountIcon = (
-    platform: TPlatforms.All,
-    marketType: TMarketType,
-    shortCode: THooks.AvailableMT5Accounts['shortcode']
-) => {
-    if (shortCode === 'maltainvest') {
+const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType, isEU: boolean) => {
+    if (isEU) {
         return AccountIcons.default;
     }
     if (platform === CFDPlatforms.DXTRADE || platform === CFDPlatforms.CTRADER) {
@@ -62,7 +59,8 @@ const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareA
     const { data: activeDerivTrading } = useActiveTradingAccount();
     const isDemo = activeDerivTrading?.is_virtual;
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
-    const jurisdictionCardIcon = getAccountIcon(platform, marketType, shortCode);
+    const { isEU } = useRegulationFlags();
+    const jurisdictionCardIcon = getAccountIcon(platform, marketType, isEU);
 
     const hoverRef = useRef(null);
     const { isDesktop } = useDevice();

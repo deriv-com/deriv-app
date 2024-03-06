@@ -1,4 +1,4 @@
-import { useAccountLimits, useActiveAccount, useCryptoWithdrawal } from '@deriv/api';
+import { useAccountLimits, useActiveAccount, useCryptoWithdrawal } from '@deriv/api-v2';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace THooks {

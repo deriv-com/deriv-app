@@ -21,11 +21,27 @@
         align-items: flex-start;
         aspect-ratio: 1.667;
 
+        &__carousel-content {
+            padding: 1.6rem;
+            width: 24rem;
+            height: 14.6rem;
+
+            &--active {
+                width: 28.8rem;
+                height: 17.6rem;
+            }
+        }
+
         &__top {
             display: flex;
             flex-direction: row;
             width: 100%;
             justify-content: space-between;
+
+            &__carousel-content {
+                justify-content: flex-start;
+                width: unset;
+            }
         }
 
         &__bottom {

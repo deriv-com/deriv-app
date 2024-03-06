@@ -58,3 +58,49 @@ export const formatTime = (minutes: number) => {
 
     return `${hours} ${hoursText} ${remainingMinutes} ${minutesText}`;
 };
+
+/**
+ * Gets the formatted date string in the format "DD MMM YYYY HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
+ * or "MMM DD YYYY HH:mm:ss" for local time. e.g.: "Jan 01 1970 21:01:11" or without seconds if
+ * hasSeconds is false. e.g.: "01 Jan 1970 21:01" or "Jan 01 1970 21:01".
+ *
+ * @param {Date} dateObj - The date object to format.
+ * @param {boolean} isLocal - Whether to use local time or UTC time.
+ * @param {boolean} hasSeconds - Whether to include seconds in the time.
+ * @returns {String} The formatted date string.
+ */
+export const getFormattedDateString = (
+    dateObj: Date,
+    isLocal = false,
+    hasSeconds = false,
+    onlyDate = false
+): string => {
+    const dateString = isLocal ? dateObj.toString().split(' ') : dateObj.toUTCString().split(' ');
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    const [_, day, month, year, time] = dateString;
+    const times = time.split(':');
+
+    // Return time in the format "HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
+    if (!hasSeconds) {
+        times.pop();
+    }
+
+    if (onlyDate) {
+        return `${month} ${day} ${year}`;
+    }
+
+    const timeWithoutSec = times.join(':');
+
+    // Return in the format "DD MMM YYYY HH:mm". e.g.: "01 Jan 1970 21:01"
+    return `${day} ${month} ${year}, ${timeWithoutSec}`;
+};
+
+/**
+ * Converts the epoch time to milliseconds.
+ * @param {Number} epoch - The epoch time to convert.
+ * @returns {Number} The epoch time in milliseconds.
+ */
+export const convertToMillis = (epoch: number): number => {
+    const milliseconds = epoch * 1000;
+    return milliseconds;
+};

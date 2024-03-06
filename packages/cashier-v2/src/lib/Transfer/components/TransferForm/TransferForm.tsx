@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import { cashierPathRoutes } from '../../../../routes/Router';
 import { useTransfer } from '../../provider';
+import TransferPercentageSelector from './components/TransferPercentageSelector/TransferPercentageSelector';
 import { TransferAmountConverter, TransferFormAccountSelection } from './components';
 import styles from './TransferForm.module.scss';
 
@@ -32,6 +33,7 @@ const TransferForm = () => {
                             Transfer between your accounts in Deriv
                         </Text>
                         <TransferFormAccountSelection setValidationSchema={setValidationSchema} />
+                        <TransferPercentageSelector />
                         <TransferAmountConverter errors={errors} setValues={setValues} values={values} />
                         <div className={styles['button-group']}>
                             <Button

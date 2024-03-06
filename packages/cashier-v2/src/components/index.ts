@@ -7,5 +7,6 @@ export { DummyComponent } from './DummyComponent';
 export { ErrorScreen } from './ErrorScreen';
 export { NewsTicker } from './NewsTicker';
 export { PageContainer } from './PageContainer';
+export { PercentageSelector } from './PercentageSelector';
 export { ReceiptScreen } from './ReceiptScreen';
 export { TransferConfirmScreen } from './TransferConfirmScreen';

@@ -15,51 +15,63 @@ const CompareAccountsDescription = ({ marketType, shortCode }: TCompareAccountsD
     const { isEU: isEuRegion } = useRegulationFlags();
     const isDemo = activeTrading?.is_virtual;
     const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
-    const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
+    const {
+        leverage,
+        counterpartyCompany,
+        counterpartyCompanyDescription,
+        jurisdiction,
+        jurisdictionDescription,
+        leverageDescription,
+        regulator,
+        regulatorDescription,
+        regulatorLicense,
+        spread,
+        spreadDescription,
+    } = getJurisdictionDescription(marketTypeShortCode ?? '');
 
     return (
-        <div className='max-h-[310px] flex flex-col items-center pt-16 gap-5 px-16 lg:px-0'>
+        <div className='flex flex-col items-center gap-5 px-16 pt-16 lg:px-0'>
             <Text as='p' className='text-default lg:text-xl' weight='bold'>
-                {'Up to'} {jurisdictionData.leverage}
+                {'Up to'} {leverage}
             </Text>
             <Text as='p' className='text-xs lg:text-sm'>
-                {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
+                {!isEuRegion ? leverageDescription : 'Leverage'}
             </Text>
             {!isEuRegion && (
                 <Fragment>
                     <Text align='center' as='p' className='text-default lg:text-xl' weight='bold'>
-                        {jurisdictionData.spread}
+                        {spread}
                     </Text>
                     <Text align='center' as='p' className='text-xs lg:text-sm'>
-                        {jurisdictionData.spread_description}
+                        {spreadDescription}
                     </Text>
                 </Fragment>
             )}
             {!isDemo && (
-                <div className='flex flex-col items-center gap-5 lg:gap-7'>
+                <div className='flex flex-col items-center gap-5 lg:gap-7 lg:px-6'>
                     <Text as='p' size='sm' weight='bold'>
-                        {jurisdictionData.counterparty_company}
+                        {counterpartyCompany}
                     </Text>
                     <Text as='p' className='text-xs lg:text-sm'>
-                        {jurisdictionData.counterparty_company_description}
+                        {counterpartyCompanyDescription}
                     </Text>
-                    <Text align='center' as='p' className='text-default lg:text-lg' weight='bold'>
-                        {jurisdictionData.jurisdiction}
+                    <Text align='center' as='p' className='text-default lg:text-default' weight='bold'>
+                        {jurisdiction}
                     </Text>
                     <Text as='p' size='xs'>
-                        {jurisdictionData.jurisdiction_description}
+                        {jurisdictionDescription}
                     </Text>
-                    <Text align='center' as='p' className='text-default lg:text-lg' weight='bold'>
-                        {jurisdictionData.regulator}
+                    <Text align='center' as='p' className='text-default lg:text-default' weight='bold'>
+                        {regulator}
                     </Text>
                     <div>
-                        {jurisdictionData.regulator_license && (
+                        {regulatorLicense && (
                             <Text align='center' as='p' className='text-xs lg:text-sm'>
-                                {jurisdictionData.regulator_license}
+                                {regulatorLicense}
                             </Text>
                         )}
                         <Text align='center' as='p' className='text-xs lg:text-sm'>
-                            {jurisdictionData.regulator_description}
+                            {regulatorDescription}
                         </Text>
                     </div>
                 </div>

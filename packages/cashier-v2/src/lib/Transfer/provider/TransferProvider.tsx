@@ -1,14 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useExchangeRateSubscription } from '@deriv/api-v2';
 import { THooks } from '../../../hooks/types';
 import { useExtendedTransferAccounts } from '../hooks';
-import { getTransferValidationSchema } from '../utils';
-
-type TExtendedTransferAccount = ReturnType<typeof useExtendedTransferAccounts>;
 
 type TActiveAccount = ReturnType<typeof useExtendedTransferAccounts>['activeAccount'];
-
-type TFromAccount = TActiveAccount | TExtendedTransferAccount['accounts'][number];
 
 export type TTransferContext = {
     accounts?: ReturnType<typeof useExtendedTransferAccounts>['accounts'];
@@ -45,34 +40,14 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
 
     const isLoading = isExtendedTransferAccountsLoading;
 
-    // const validationSchema = !isLoading
-    //     ? getTransferValidationSchema({
-    //           fromAccount: {
-    //               balance: parseFloat(fromAccount?.balance ?? '0'),
-    //               currency: fromAccount?.currency,
-    //               fractionalDigits: fromAccount?.currencyConfig?.fractional_digits,
-    //               limits: {
-    //                   max: 1000,
-    //                   min: 1,
-    //               },
-    //           },
-    //           toAccount: {
-    //               currency: toAccount?.currency,
-    //               fractionalDigits: toAccount?.currencyConfig?.fractional_digits,
-    //           },
-    //       })
-    //     : undefined;
-
-    // console.log('=> Provider - fromAccount', fromAccount, ', toAccount', toAccount);
-
     return (
         <TransferContext.Provider
             value={{
                 accounts: transferAccounts,
                 activeAccount,
                 isLoading,
-                transferReceipt,
                 setTransferReceipt,
+                transferReceipt,
             }}
         >
             {children}

@@ -26,6 +26,7 @@ type TGetTransferValidationSchema = {
 export const getTransferValidationSchema = ({ fromAccount, toAccount }: TGetTransferValidationSchema) => {
     return Yup.object().shape({
         fromAmount: Yup.string()
+            .required('This field is required.')
             .test({
                 name: 'test-valid-number',
                 test: (value = '', context) => numberValidator(value, context),

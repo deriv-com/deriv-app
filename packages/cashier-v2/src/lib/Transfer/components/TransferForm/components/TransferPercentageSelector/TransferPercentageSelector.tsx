@@ -34,12 +34,15 @@ const TransferPercentageSelector = () => {
                     setPercentage(per);
                 }}
             />
+
             <Text align='center' color='less-prominent' size='xs'>
-                {percentage}% of available balance (
-                {displayMoney(values.fromAccount.balance, values.fromAccount.currency, {
-                    fractional_digits: values.fromAccount.currencyConfig.fractional_digits,
-                })}
-                )
+                {values.fromAmount > values.fromAccount.balance
+                    ? `${percentage}% of available balance (
+                    ${displayMoney(values.fromAccount.balance, values.fromAccount.currency, {
+                        fractional_digits: values.fromAccount.currencyConfig.fractional_digits,
+                    })}
+                    )`
+                    : ' '}
             </Text>
         </div>
     );

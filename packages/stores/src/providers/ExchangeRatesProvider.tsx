@@ -22,28 +22,34 @@ const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
     const [exchangeRates, setExchangeRates] = React.useState<TRate>({});
     const isMounted = React.useRef(false);
     const subscriptions = React.useRef<Record<string, DerivAPIBasicSubscribe>>();
+    const subscriptionsId = React.useRef<Record<string, string>>();
     const exchangeRatesSubscriptions = React.useRef<string[]>([]);
 
-    const subscribeToCurrencyRate = React.useCallback(async (payload: TPayload) => {
-        const id = JSON.stringify(payload);
-        const matchingSubscription = subscriptions.current?.[id];
-        if (matchingSubscription) return { id, subscription: matchingSubscription };
+    const subscribeToCurrencyRate = React.useCallback(
+        async (payload: TPayload) => {
+            const id = JSON.stringify(payload);
+            const matchingSubscription = subscriptions.current?.[id];
+            if (matchingSubscription) return { id, subscription: matchingSubscription };
 
-        const subscription = WS?.subscribe({
-            exchange_rates: 1,
-            subscribe: 1,
-            ...(payload ?? {}),
-        });
+            const subscription = WS?.subscribe({
+                exchange_rates: 1,
+                subscribe: 1,
+                ...(payload ?? {}),
+            });
 
-        subscriptions.current = { ...(subscriptions.current ?? {}), ...{ [id]: subscription } };
-        return { id, subscription };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+            subscriptions.current = { ...(subscriptions.current ?? {}), ...{ [id]: subscription } };
+            return { id, subscription };
+        },
+        [WS]
+    );
 
-    const unsubscribeFromCurrencyById: TUnsubscribeFunction = id => {
-        const matchingSubscription = subscriptions.current?.[id];
-        if (matchingSubscription) matchingSubscription.unsubscribe();
-    };
+    const unsubscribeFromCurrencyById: TUnsubscribeFunction = React.useCallback(
+        id => {
+            const matchingSubscription = subscriptions.current?.[id];
+            if (matchingSubscription) WS?.forget(subscriptionsId.current?.[id]);
+        },
+        [WS]
+    );
 
     const handleSubscription = React.useCallback(
         async (base_currency: string, target_currency: string) => {
@@ -59,7 +65,11 @@ const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
                 exchangeRatesSubscriptions.current.push(id);
                 subscription.subscribe((response: ExchangeRatesResponse) => {
                     const rates = response.exchange_rates?.rates;
+                    const subscriptionId = String(response.subscription?.id);
+
                     if (rates && isMounted.current) {
+                        subscriptionsId.current = { ...(subscriptionsId.current ?? {}), ...{ [id]: subscriptionId } };
+
                         setExchangeRates(prev => {
                             const currentData = { ...(prev ?? {}) };
                             if (currentData) {
@@ -75,25 +85,26 @@ const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
         [exchangeRates, subscribeToCurrencyRate]
     );
 
-    const unsubscribe = React.useCallback((payload: TPayload) => {
-        if (payload) {
-            const id = JSON.stringify(payload);
-            exchangeRatesSubscriptions.current = exchangeRatesSubscriptions.current.filter(s => s !== id);
-            unsubscribeFromCurrencyById(id);
-            if (isMounted.current)
-                setExchangeRates(prev => {
-                    const currData = { ...(prev ?? {}) };
-                    delete currData[payload.base_currency];
-                    return currData;
-                });
-            return;
-        }
-        exchangeRatesSubscriptions.current.forEach(s => unsubscribeFromCurrencyById(s));
-    }, []);
+    const unsubscribe = React.useCallback(
+        (payload: TPayload) => {
+            if (payload) {
+                const id = JSON.stringify(payload);
+                exchangeRatesSubscriptions.current = exchangeRatesSubscriptions.current.filter(s => s !== id);
+                unsubscribeFromCurrencyById(id);
+                if (isMounted.current)
+                    setExchangeRates(prev => {
+                        const currData = { ...(prev ?? {}) };
+                        delete currData[payload.base_currency];
+                        return currData;
+                    });
+            }
+        },
+        [unsubscribeFromCurrencyById]
+    );
 
     const unsubscribeAll = React.useCallback(() => {
         exchangeRatesSubscriptions.current.forEach(s => unsubscribeFromCurrencyById(s));
-    }, []);
+    }, [unsubscribeFromCurrencyById]);
 
     const getExchangeRate = React.useCallback(
         (base: string, target: string) => {
@@ -107,16 +118,19 @@ const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
 
     React.useEffect(() => {
         isMounted.current = true;
-        const currentSubscriptions = subscriptions.current;
 
         return () => {
             isMounted.current = false;
-            if (currentSubscriptions) {
+            const currentSubscriptions = subscriptions.current;
+            const currentSubscriptionsIds = subscriptionsId?.current;
+
+            if (currentSubscriptions && currentSubscriptionsIds) {
                 Object.keys(currentSubscriptions).forEach(key => {
-                    currentSubscriptions[key].unsubscribe();
+                    WS?.forget(currentSubscriptionsIds?.[key]);
                 });
             }
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const value = React.useMemo(

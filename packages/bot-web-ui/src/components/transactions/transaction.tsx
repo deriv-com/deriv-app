@@ -161,7 +161,7 @@ const Transaction = observer(({ contract }: TTransaction) => {
     return (
         <Popover
             zIndex={popover_zindex.TRANSACTION.toString()}
-            alignment='left'
+            alignment={isDbotRTL() ? 'right' : 'left'}
             className='transactions__item-wrapper'
             is_open={contract && active_transaction_id === contract.transaction_ids.buy}
             message={contract && <PopoverContent contract={contract} />}

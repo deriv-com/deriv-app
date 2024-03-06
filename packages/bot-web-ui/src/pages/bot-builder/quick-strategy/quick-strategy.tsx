@@ -164,10 +164,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             validationSchema={dynamic_schema}
             onSubmit={handleSubmit}
             validate={values => getErrors(values)}
-            // validateOnBlur={false}
             validateOnChange={false}
-            // validateOnChange
-            // validateOnMount
         >
             {children}
         </Formik>

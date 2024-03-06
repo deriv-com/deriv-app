@@ -33,7 +33,7 @@ const QuickStrategyForm = observer(() => {
     const onChange = async (key: string, value: string | number | boolean) => {
         setValue(key, value);
         await setFieldTouched(key, true, true);
-        await setFieldValue(key, value);
+        await setFieldValue(key, value, true);
     };
 
     const handleEnter = (event: KeyboardEvent) => {

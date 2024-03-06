@@ -7,6 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
+import { localize } from '@deriv/translations';
 
 type TQSInput = {
     name: string;
@@ -139,6 +140,11 @@ const QSInput: React.FC<TQSInput> = observer(
                                         {...field}
                                         disabled={disabled}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e)}
+                                        placeholder={
+                                            field.name === 'profit' || field.name === 'loss'
+                                                ? localize('Enter amount')
+                                                : ''
+                                        }
                                     />
                                 </Popover>
                             </div>

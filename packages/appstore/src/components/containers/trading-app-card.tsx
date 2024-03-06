@@ -131,6 +131,7 @@ const TradingAppCard = ({
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION ||
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
     const is_disabled = !!(mt5_acc_auth_status && !migration_status) && !is_eu_user;
+    const platform_name = is_account_being_created ? name : sub_title ?? name;
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -143,7 +144,9 @@ const TradingAppCard = ({
             </div>
             <div
                 className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
-                data-testid={`trading-app-card-${is_account_being_created ? name : sub_title ?? name}`}
+                data-testid={`trading-app-card-${platform_name.replaceAll(' ', '-').toLowerCase()}${
+                    selected_mt5_jurisdiction?.jurisdiction ? `-${selected_mt5_jurisdiction.jurisdiction}` : ''
+                }`}
             >
                 <div className='trading-app-card__details'>
                     <div>

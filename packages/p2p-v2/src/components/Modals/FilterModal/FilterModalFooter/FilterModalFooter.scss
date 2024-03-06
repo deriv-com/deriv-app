@@ -1,0 +1,15 @@
+.p2p-v2-filter-modal-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.5rem 2.4rem;
+    border-top: 2px solid #f2f3f4;
+
+    @include mobile {
+        position: relative;
+        padding: 0;
+        border: none;
+    }
+}

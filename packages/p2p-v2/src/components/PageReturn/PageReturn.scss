@@ -1,15 +1,16 @@
 .p2p-v2-page-return {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: space-between;
     margin: 2.4rem 0;
-    font-size: 16px;
-    font-weight: 700;
     width: 100%;
 
     @include mobile {
         margin: 0;
         padding: 1.6rem;
+    }
+
+    &--border {
+        border-bottom: 3px solid #f2f3f4;
     }
 
     &__button {

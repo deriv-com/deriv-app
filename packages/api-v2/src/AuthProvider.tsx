@@ -95,6 +95,8 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
 
         const { promise, cleanup } = waitForLoginAndTokenWithTimeout(cookieTimeout);
 
+        let isMounted = true;
+
         promise
             .then(async ({ token }) => {
                 setIsLoading(true);
@@ -115,11 +117,16 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
                     });
             })
             .catch(() => {
-                setIsLoading(false);
-                setIsError(true);
+                if (isMounted) {
+                    setIsLoading(false);
+                    setIsError(true);
+                }
             });
 
-        return cleanup;
+        return () => {
+            isMounted = false;
+            cleanup();
+        };
     }, []);
 
     const switchAccount = useCallback(

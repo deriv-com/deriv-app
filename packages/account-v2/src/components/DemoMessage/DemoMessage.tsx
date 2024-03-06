@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuthorize } from '@deriv/api';
+import { useAuthorize } from '@deriv/api-v2';
 import { DerivLightIcPoaLockIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
 import { IconWithMessage } from '../IconWithMessage';

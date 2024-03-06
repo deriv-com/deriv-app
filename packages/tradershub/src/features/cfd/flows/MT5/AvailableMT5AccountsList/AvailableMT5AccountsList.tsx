@@ -11,7 +11,7 @@ import { useCFDContext, useModal } from '@/providers';
 import { THooks } from '@/types';
 import { MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { MT5PasswordModal } from '@cfd/modals';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {

@@ -65,23 +65,34 @@
         }
 
         &-status {
-            width: 10.3rem;
             display: flex;
             flex-grow: 1;
             justify-content: flex-end;
             align-items: center;
             align-self: center;
-            justify-self: flex-end;
-
-            // unset default button style
-            border: unset;
-            padding: unset;
-            background-color: unset;
-            text-align: unset;
 
             @include mobile {
                 align-self: flex-start;
                 order: -1;
+            }
+
+            &-button {
+                width: 10.3rem;
+                display: flex;
+                flex-grow: 1;
+                justify-content: flex-end;
+                align-items: center;
+
+                // unset default button style
+                border: unset;
+                padding: unset;
+                background-color: unset;
+                text-align: unset;
+
+                @include mobile {
+                    align-self: flex-start;
+                    order: -1;
+                }
             }
 
             &-dot {

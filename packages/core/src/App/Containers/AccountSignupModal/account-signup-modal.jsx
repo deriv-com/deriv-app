@@ -19,6 +19,7 @@ import validateSignupFields from './validate-signup-fields.jsx';
 
 import 'Sass/app/modules/account-signup.scss';
 import { useGrowthbookFeatureFlag } from '@deriv/hooks';
+import { useHistory, useLocation } from 'react-router';
 
 const AccountSignup = ({
     enableApp,
@@ -41,6 +42,9 @@ const AccountSignup = ({
     const [ab_questionnaire, setABQuestionnaire] = React.useState();
     const [modded_state, setModdedState] = React.useState({});
     const language = getLanguage();
+
+    const history = useHistory();
+    const { search } = useLocation();
 
     // Growthbook ab/test experiment with onboarding flow
     const growthbook_ab_test_skip_onboarding_flow = useGrowthbookFeatureFlag({
@@ -134,10 +138,13 @@ const AccountSignup = ({
             });
         } else {
             // ======== Growthbook ab/test experiment with onboarding flow ========
-            const searchParams = new URLSearchParams(window.location.search);
+            const searchParams = new URLSearchParams(search);
             searchParams.set('skip-onboarding-flow', growthbook_ab_test_skip_onboarding_flow);
 
-            window.history.pushState(null, '', `${window.location.pathname}?${searchParams.toString()}`);
+            history.push({
+                pathname: history.location.pathname,
+                search: `?${searchParams.toString()}`
+            });
             // ====================================================================
 
             isModalVisible(false);

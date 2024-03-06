@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { localize } from '@deriv/translations';
+import { Redirect, useHistory } from 'react-router-dom';
+
+import { Button, Icon, ProgressBarTracker, Text } from '@deriv/components';
 import { useHasActiveRealAccount } from '@deriv/hooks';
-import { isDesktop, routes, ContentFlag } from '@deriv/shared';
-import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
+import { ContentFlag, isDesktop, routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
-import EmptyOnboarding from './empty-onboarding';
-import { useStore, observer } from '@deriv/stores';
 import { useTradersHubTracking } from 'Hooks/index';
+
+import EmptyOnboarding from './empty-onboarding';
 
 type TOnboardingProps = {
     contents: Record<
@@ -135,7 +138,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     }
 
     if ((is_logged_in && is_from_signup_account && is_eu_user) || skip_onboarding_flow) {
-        history.push(routes.traders_hub);
+        return <Redirect to={routes.traders_hub} />;
     }
 
     return (

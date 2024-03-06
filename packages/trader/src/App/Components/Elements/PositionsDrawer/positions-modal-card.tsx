@@ -135,7 +135,14 @@ const PositionsModalCard = observer(
                                 {CONTRACT_VALUE}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                                <Money amount={is_sold ? sell_price : bid_price} currency={currency} />
+                                <div
+                                    className={classNames({
+                                        'dc-contract-card--loss': Number(profit) < 0,
+                                        'dc-contract-card--profit': Number(profit) > 0,
+                                    })}
+                                >
+                                    <Money amount={is_sold ? sell_price : bid_price} currency={currency} />
+                                </div>
                             </Text>
                         </div>
                     </div>
@@ -284,8 +291,8 @@ const PositionsModalCard = observer(
                             onClick={togglePositions}
                             className={classNames('positions-modal-card', 'dc-contract-card', {
                                 'positions-modal-card--multiplier': is_multiplier,
-                                'dc-contract-card--green': profit_loss > 0 && !is_multiplier,
-                                'dc-contract-card--red': profit_loss < 0 && !is_multiplier,
+                                'dc-contract-card--green': profit_loss > 0,
+                                'dc-contract-card--red': profit_loss < 0,
                             })}
                             to={getContractPath(id)}
                         >

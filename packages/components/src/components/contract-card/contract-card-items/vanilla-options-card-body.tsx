@@ -83,7 +83,14 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
 
                     <div className='dc-contract-card-items-wrapper-group'>
                         <ContractCardItem header={CONTRACT_VALUE}>
-                            <Money amount={contract_value} currency={currency} />
+                            <div
+                                className={classNames({
+                                    'dc-contract-card--profit': Number(profit) > 0,
+                                    'dc-contract-card--loss': Number(profit) < 0,
+                                })}
+                            >
+                                <Money amount={contract_value} currency={currency} />
+                            </div>
                         </ContractCardItem>
 
                         <ContractCardItem header={STRIKE}>{barrier && addComma(barrier)}</ContractCardItem>

@@ -31,6 +31,7 @@ const BuySellModal = () => {
     const [error_message, setErrorMessage] = React.useState('');
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
+    const [has_rate_changed, setHasRateChanged] = React.useState(false);
 
     const show_low_balance_message = !is_buy_advert && is_account_balance_low;
 
@@ -117,6 +118,7 @@ const BuySellModal = () => {
                 const is_the_same_advert = previous_advert?.id === new_advert.id;
                 if (rate_has_changed && is_the_same_advert) {
                     showModal({ key: 'MarketRateChangeErrorModal', props: {} });
+                    setHasRateChanged(true);
                     buy_sell_store.setFormErrorCode('');
                     invalidate('p2p_advert_list');
                 }
@@ -154,10 +156,12 @@ const BuySellModal = () => {
                             <React.Fragment>
                                 <BuySellForm
                                     advert={selected_ad_state}
+                                    has_rate_changed={has_rate_changed}
                                     handleClose={onCancel}
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
+                                    setHasRateChanged={setHasRateChanged}
                                 />
                                 <BuySellFormReceiveAmount />
                                 <BuySellModalFooter
@@ -199,10 +203,12 @@ const BuySellModal = () => {
                             ) : (
                                 <BuySellForm
                                     advert={selected_ad_state}
+                                    has_rate_changed={has_rate_changed}
                                     handleClose={onCancel}
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
+                                    setHasRateChanged={setHasRateChanged}
                                 />
                             )}
                         </Modal.Body>

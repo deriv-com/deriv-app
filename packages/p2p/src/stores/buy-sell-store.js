@@ -206,7 +206,7 @@ export default class BuySellStore extends BaseStore {
 
     handleResponse = async order => {
         const { sendbird_store, order_store, general_store } = this.root_store;
-        const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
+        const { setErrorMessage, setHasRateChanged, handleConfirm, handleClose } = this.form_props;
         const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
 
         if (error) {
@@ -217,6 +217,7 @@ export default class BuySellStore extends BaseStore {
                     key: 'MarketRateChangeErrorModal',
                     props: { message },
                 });
+                setHasRateChanged(true);
             } else {
                 setErrorMessage(message);
                 this.setFormErrorCode(code);

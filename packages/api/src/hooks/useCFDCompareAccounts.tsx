@@ -70,11 +70,7 @@ const ctraderAccount = {
 /** A custom hook that gets compare accounts values. */
 const useCFDCompareAccounts = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: activeTradingAccount } = useActiveTradingAccount();
-    const { is_virtual: isDemoWallet } = activeWallet ?? {};
-    const { is_virtual: isDemoTrading } = activeTradingAccount ?? {};
-
-    const isDemo = isDemoWallet || isDemoTrading;
+    const { is_virtual: isDemo } = activeWallet || {};
 
     const { data: allAvailableMt5Accounts } = useAvailableMT5Accounts();
     const { data: addedAccounts, ...rest } = useMT5AccountsList();

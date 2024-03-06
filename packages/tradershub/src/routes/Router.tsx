@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { AppContainer } from '@/components';
 import { CompareAccountsScreen } from '@cfd/screens';
 import { TradersHubRoute } from './TradersHubRoute';
 
@@ -19,12 +18,8 @@ declare module 'react-router-dom' {
 const Router = () => {
     return (
         <Switch>
-            <AppContainer className='max-w-[800px] lg:max-w-[1440px] lg:py-0'>
-                <Route component={CompareAccountsScreen} path={`${prefix}/compare-accounts`} />
-            </AppContainer>
-            <AppContainer>
-                <Route component={TradersHubRoute} path={prefix} />
-            </AppContainer>
+            <Route component={CompareAccountsScreen} path={`${prefix}/compare-accounts`} />
+            <Route component={TradersHubRoute} path={prefix} />
         </Switch>
     );
 };

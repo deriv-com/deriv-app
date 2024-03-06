@@ -1,11 +1,10 @@
 import React, { Fragment, useRef } from 'react';
-import { useHover } from 'usehooks-ts';
 import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
-import { IconComponent, Tooltip } from '@/components';
+import { IconComponent } from '@/components';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api-v2';
-import { Divider, Text, useDevice } from '@deriv-com/ui';
+import { Divider, Text, Tooltip, useDevice } from '@deriv-com/ui';
 import { AccountIcons, MarketTypeShortcode } from './constants';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
@@ -18,7 +17,14 @@ type TCompareAccountsTitleIcon = {
 
 type TMarketWithShortCode = `${TMarketType}_${string}`;
 
-const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType) => {
+const getAccountIcon = (
+    platform: TPlatforms.All,
+    marketType: TMarketType,
+    shortCode: THooks.AvailableMT5Accounts['shortcode']
+) => {
+    if (shortCode === 'maltainvest') {
+        return AccountIcons.default;
+    }
     if (platform === CFDPlatforms.DXTRADE || platform === CFDPlatforms.CTRADER) {
         return AccountIcons[platform];
     }
@@ -56,10 +62,9 @@ const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareA
     const { data: activeDerivTrading } = useActiveTradingAccount();
     const isDemo = activeDerivTrading?.is_virtual;
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
-    const jurisdictionCardIcon = getAccountIcon(platform, marketType);
+    const jurisdictionCardIcon = getAccountIcon(platform, marketType, shortCode);
 
     const hoverRef = useRef(null);
-    const isHovered = useHover(hoverRef);
     const { isDesktop } = useDevice();
 
     const jurisdictionCardTitle =
@@ -79,10 +84,10 @@ const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareA
                     </Text>
                     {marketTypeShortCode === MarketTypeShortcode.FINANCIAL_LABUAN && (
                         <Tooltip
-                            alignment='bottom'
-                            className='-translate-x-[80%]'
-                            isVisible={isHovered && isDesktop}
+                            className='lg:-translate-x-[70%] -translate-x-[85%] text-sm lg:max-w-[200px] max-w-[150px]'
                             message={labuanJurisdictionMessage}
+                            position='bottom'
+                            triggerAction={isDesktop ? 'hover' : 'click'}
                         >
                             <div ref={hoverRef}>
                                 <InfoIcon />

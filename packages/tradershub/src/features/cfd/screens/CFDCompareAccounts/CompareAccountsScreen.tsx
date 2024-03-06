@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useRegulationFlags } from '@/hooks';
 import { useActiveTradingAccount, useCFDAccountsList, useCFDCompareAccounts } from '@deriv/api-v2';
 import { CompareAccountsCarousel } from '../../components';
 import CFDCompareAccountsCard from './CompareAccountsCard';
@@ -7,10 +8,15 @@ import CompareAccountsHeader from './CompareAccountsHeader';
 
 const CompareAccountsScreen = () => {
     const { data: activeDerivTrading } = useActiveTradingAccount();
+    const { isEU } = useRegulationFlags();
 
     const { is_virtual: isDemo = false } = activeDerivTrading ?? {};
 
-    const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
+    const {
+        data: compareAccounts,
+        hasCTraderAccountAvailable,
+        hasDxtradeAccountAvailable,
+    } = useCFDCompareAccounts(isEU);
     const { data: cfdAccounts } = useCFDAccountsList();
 
     const { ctraderAccount, dxtradeAccount, mt5Accounts } = compareAccounts;
@@ -40,7 +46,7 @@ const CompareAccountsScreen = () => {
                         />
                     ))}
                     {/* Renders cTrader data */}
-                    {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
+                    {!isEU && mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
                         <CFDCompareAccountsCard
                             isAccountAdded={isCtraderAdded}
                             marketType={ctraderAccount.market_type}
@@ -49,7 +55,7 @@ const CompareAccountsScreen = () => {
                         />
                     )}
                     {/* Renders Deriv X data */}
-                    {mt5Accounts?.length && hasDxtradeAccountAvailable && dxtradeAccount && (
+                    {!isEU && mt5Accounts?.length && hasDxtradeAccountAvailable && dxtradeAccount && (
                         <CFDCompareAccountsCard
                             isAccountAdded={isDxtradeAdded}
                             marketType={dxtradeAccount.market_type}

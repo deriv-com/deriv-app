@@ -6,11 +6,15 @@ import { Button, Modal, Text } from '@deriv-com/ui';
 const AccountSelector = () => {
     const { isModalOpen, openModal, closeModal } = useQueryParams();
     return (
-        <Modal isOpen={isModalOpen('AccountSelector')}>
+        <Modal
+            ariaHideApp={false}
+            className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '
+            isOpen={isModalOpen('AccountSelector')}
+        >
             <Modal.Header onRequestClose={closeModal}>
                 <Text weight='bold'>Select an account</Text>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='p-0 overflow-auto'>
                 <TradingAccountsList />
             </Modal.Body>
             <Modal.Footer className='grid-cols-1'>

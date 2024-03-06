@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import { Modal } from '@/components';
 import { useCFDContext } from '@/providers';
 import { THooks, TMarketTypes, TPlatforms } from '@/types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '@cfd/constants';
 import { TradeScreen } from '@cfd/screens';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Modal, Text, useDevice } from '@deriv-com/ui';
 
 type TTradeModalProps = {
     account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
@@ -28,12 +27,14 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
     const appOrder = ['ios', 'android', 'huawei'];
 
     return (
-        <Modal>
-            <Modal.Header title='Trade' />
-            <Modal.Content>
+        <Modal className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background ' isOpen={true}>
+            <Modal.Header>
+                <Text weight='bold'>Trade</Text>
+            </Modal.Header>
+            <Modal.Body className='w-auto h-auto'>
                 <TradeScreen account={account} />
-            </Modal.Content>
-            <Modal.Footer align='center'>
+            </Modal.Body>
+            <Modal.Footer>
                 <div className='pt-0 min-h-[190px] flex justify-center items-center flex-col h-fit w-full gap-16'>
                     <Text align='center' size='xs' weight='bold'>
                         Download {PlatformDetails[platform].title} on your phone to trade with the{' '}

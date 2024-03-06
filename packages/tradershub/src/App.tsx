@@ -2,6 +2,7 @@ import React from 'react';
 import { CFDProvider, ModalProvider, RealAccountCreationProvider, UIProvider } from '@/providers';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import AppContent from './AppContent';
+import { Modals } from './modals';
 import './index.scss';
 
 const App = () => (
@@ -12,6 +13,7 @@ const App = () => (
                     <ModalProvider>
                         <RealAccountCreationProvider>
                             <AppContent />
+                            <Modals />
                         </RealAccountCreationProvider>
                     </ModalProvider>
                 </CFDProvider>

@@ -14,7 +14,6 @@ const AppContent = () => {
                 <Router />
                 {isEU && <EUDisclaimerMessage />}
             </AppContainer>
-            <Modals />
         </Fragment>
     );
 };

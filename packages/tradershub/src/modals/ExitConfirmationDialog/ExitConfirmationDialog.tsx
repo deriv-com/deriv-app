@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import { CUSTOM_STYLES } from '@/helpers';
+import { useQueryParams } from '@/hooks';
 import { useRealAccountCreationContext } from '@/providers';
 import { Button, Text } from '@deriv-com/ui';
 
 const ExitConfirmationDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const { reset } = useRealAccountCreationContext();
+    const { closeModal } = useQueryParams();
 
     const handleClose = () => {
         onClose();
+        closeModal();
         reset();
     };
 

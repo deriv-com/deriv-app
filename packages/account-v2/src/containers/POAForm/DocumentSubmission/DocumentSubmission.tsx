@@ -3,8 +3,7 @@ import * as Yup from 'yup';
 import { StandaloneArrowUpFromBracketBoldIcon } from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
 import { FormDocumentUploadField } from '../../../components/FormFields';
-import { CommonMistakesExamples } from '../CommonMistakeExample';
-import { getExampleImagesConfig } from '../CommonMistakeExample/CommonMistakeExampleConfig';
+import { CommonMistakesExamples, getExampleImagesConfig } from '../CommonMistakeExample';
 
 const listItems = [
     'Utility bill: electricity, water, gas, or landline phone bill.',

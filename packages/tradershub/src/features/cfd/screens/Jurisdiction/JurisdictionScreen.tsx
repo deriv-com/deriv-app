@@ -3,28 +3,18 @@ import { twMerge } from 'tailwind-merge';
 import { useCFDContext } from '@/providers';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { Jurisdiction } from '@cfd/constants';
-import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
-import { THooks } from '../../../../types';
+import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api-v2';
 import { JurisdictionCard } from './JurisdictionCard';
-import { JurisdictionTncSection } from './JurisdictionTncSection';
 
 type TJurisdictionScreenProps = {
-    isCheckBoxChecked: boolean;
-    selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
     setIsCheckBoxChecked: Dispatch<SetStateAction<boolean>>;
-    setSelectedJurisdiction: Dispatch<SetStateAction<string>>;
 };
 
-const JurisdictionScreen = ({
-    isCheckBoxChecked,
-    selectedJurisdiction,
-    setIsCheckBoxChecked,
-    setSelectedJurisdiction,
-}: TJurisdictionScreenProps) => {
-    const { getCFDState } = useCFDContext();
+const JurisdictionScreen = ({ setIsCheckBoxChecked }: TJurisdictionScreenProps) => {
+    const { cfdState, setCfdState } = useCFDContext();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: mt5AccountsList } = useMT5AccountsList();
-    const marketType = getCFDState('marketType');
+    const { marketType, selectedJurisdiction } = cfdState;
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const jurisdictions = useMemo(
         () =>
@@ -48,12 +38,12 @@ const JurisdictionScreen = ({
     return (
         <div
             className={twMerge(
-                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-30 sm:h-[75vh] transition-all ease-in duration-[0.6s]',
+                `flex flex-col w-full lg:p-16 items-center justify-between transition-all ease-in duration-[0.6s] p-40`,
                 isDynamicLeverageVisible &&
                     '[transform:rotateY(-180deg)] h-[700px] opacity-0 bg-system-light-primary-background'
             )}
         >
-            <div className='flex lg:flex-row lg:py-20 items-center gap-16 justify-center w-full h-[82%] flex-col py-0'>
+            <div className='flex flex-col items-stretch justify-center w-full gap-16 py-0 lg:flex-row'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}
@@ -62,19 +52,14 @@ const JurisdictionScreen = ({
                         key={jurisdiction}
                         onSelect={clickedJurisdiction => {
                             if (clickedJurisdiction === selectedJurisdiction) {
-                                setSelectedJurisdiction('');
+                                setCfdState({ selectedJurisdiction: '' });
                             } else {
-                                setSelectedJurisdiction(clickedJurisdiction);
+                                setCfdState({ selectedJurisdiction: clickedJurisdiction });
                             }
                         }}
                     />
                 ))}
             </div>
-            <JurisdictionTncSection
-                isCheckBoxChecked={isCheckBoxChecked}
-                selectedJurisdiction={selectedJurisdiction}
-                setIsCheckBoxChecked={setIsCheckBoxChecked}
-            />
         </div>
     );
 };

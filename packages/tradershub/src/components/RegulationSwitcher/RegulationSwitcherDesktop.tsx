@@ -1,8 +1,7 @@
 import React from 'react';
-import { useUIContext } from '@/components';
 import { useRegulationSwitcher } from '@/hooks';
 import { RegulationModal } from '@/modals';
-import { useModal } from '@/providers';
+import { useModal, useUIContext } from '@/providers';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import { Tab, Tabs, Text } from '@deriv-com/ui';
 

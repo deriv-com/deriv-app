@@ -2140,7 +2140,9 @@ export default class ClientStore extends BaseStore {
             const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
 
             if (
-                (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
+                (redirect_url?.endsWith('/') ||
+                    redirect_url?.endsWith(routes.bot) ||
+                    /chart_type|interval|symbol|trade_type/.test(redirect_url)) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())
             ) {
                 window.history.replaceState({}, document.title, target_url);

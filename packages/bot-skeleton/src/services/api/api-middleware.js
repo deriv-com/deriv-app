@@ -1,34 +1,4 @@
 import { datadogLogs } from '@datadog/browser-logs';
-import { formatDate, formatTime } from '@deriv/shared';
-
-const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
-const isProduction = process.env.NODE_ENV === 'production';
-const isStaging = process.env.NODE_ENV === 'staging';
-let dataDogSessionSampleRate = 0;
-
-dataDogSessionSampleRate = +process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
-let dataDogVersion = '';
-let dataDogEnv = '';
-
-if (isProduction) {
-    dataDogVersion = `deriv-app-${process.env.REF_NAME}`;
-    dataDogEnv = 'production';
-} else if (isStaging) {
-    dataDogVersion = `deriv-app-staging-v${formatDate(new Date(), 'YYYYMMDD')}-${formatTime(Date.now(), 'HH:mm')}`;
-    dataDogEnv = 'staging';
-}
-
-if (DATADOG_CLIENT_TOKEN_LOGS) {
-    datadogLogs.init({
-        clientToken: DATADOG_CLIENT_TOKEN_LOGS,
-        site: 'datadoghq.com',
-        forwardErrorsToLogs: false,
-        service: 'Dbot',
-        sessionSampleRate: dataDogSessionSampleRate,
-        version: dataDogVersion,
-        env: dataDogEnv,
-    });
-}
 
 export const REQUESTS = [
     'active_symbols',
@@ -58,8 +28,8 @@ class APIMiddleware {
         return req_type;
     };
 
-    log(measures = [], is_bot_running) {
-        if (this.is_datadog_logging_enabled && measures && measures.length) {
+    log = (measures = [], is_bot_running) => {
+        if (window.is_datadog_logging_enabled && measures && measures.length) {
             measures.forEach(measure => {
                 datadogLogs.logger.info(measure.name, {
                     name: measure.name,
@@ -70,7 +40,7 @@ class APIMiddleware {
                 });
             });
         }
-    }
+    };
 
     defineMeasure = res_type => {
         if (res_type) {
@@ -113,15 +83,8 @@ class APIMiddleware {
         performance.clearMeasures();
     };
 
-    setIsDataDogLoggingEnabled = is_datadog_logging_enabled => {
-        this.is_datadog_logging_enabled = is_datadog_logging_enabled;
-    };
-
     addGlobalMethod() {
-        if (window) {
-            window.sendRequestsStatistic = this.sendRequestsStatistic;
-            window.setIsDataDogLoggingEnabled = this.setIsDataDogLoggingEnabled;
-        }
+        if (window) window.sendRequestsStatistic = this.sendRequestsStatistic;
     }
 }
 

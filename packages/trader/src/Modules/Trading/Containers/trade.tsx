@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { TickSpotData } from '@deriv/api-types';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, TRADE_TYPES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import ChartLoader from 'App/Components/Elements/chart-loader';
@@ -39,6 +39,7 @@ const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }: TBottomWidget
 const Trade = observer(() => {
     const { client, common, ui } = useStore();
     const {
+        contract_type,
         form_components,
         getFirstOpenMarket,
         has_barrier,
@@ -48,6 +49,7 @@ const Trade = observer(() => {
         is_synthetics_available,
         is_synthetics_trading_market_available,
         is_trade_enabled,
+        is_trade_params_expanded,
         is_turbos,
         is_vanilla,
         onMount,
@@ -75,6 +77,10 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState<string>();
     const [subcategory, setSubcategory] = React.useState<string>();
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
+
+    const should_elevate_navigation =
+        is_trade_params_expanded &&
+        (contract_type === TRADE_TYPES.MATCH_DIFF || contract_type === TRADE_TYPES.OVER_UNDER);
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
@@ -192,6 +198,7 @@ const Trade = observer(() => {
                             }
                             is_swipe_disabled={swipe_index === 1}
                             onChange={onChangeSwipeableIndex}
+                            should_elevate_navigation={should_elevate_navigation}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
                             <TradeChart

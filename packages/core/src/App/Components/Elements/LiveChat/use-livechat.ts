@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-import { liveChatInitialization } from './live-chat-initializer';
+import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { deriv_urls, getActionFromUrl } from '@deriv/shared';
 import { useIsMounted } from 'usehooks-ts';
@@ -13,43 +11,10 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     const should_disable_livechat = url_params.get('code') && reset_password;
 
     const [isReady, setIsReady] = useState(false);
-    const [reload, setReload] = useState(false);
-    const history = useHistory();
     const isMounted = useIsMounted();
-    const widget = window.LiveChatWidget;
-
-    const liveChatDeletion = () =>
-        new Promise<void>(resolve => {
-            if (window.LiveChatWidget) {
-                window.LiveChatWidget.on('ready', () => {
-                    try {
-                        if (window.LiveChatWidget?.get('customer_data').status !== 'chatting') {
-                            window.LiveChatWidget?.call('destroy');
-                            resolve();
-                        }
-                    } catch (e) {
-                        resolve();
-                    }
-                });
-            } else {
-                resolve();
-            }
-        });
-
-    const onHistoryChange = useCallback(() => {
-        liveChatDeletion().then(() => {
-            liveChatInitialization().then(() => {
-                if (isMounted()) {
-                    setReload(true);
-                    setIsReady(true);
-                }
-            });
-        });
-    }, [isMounted]);
 
     const liveChatSetup = (is_logged_in: boolean) => {
-        if (window.LiveChatWidget) {
-            window.LiveChatWidget.init();
+        if (window.LiveChatWidget && !should_disable_livechat) {
             window.LiveChatWidget?.on('ready', () => {
                 let client_first_name = '';
                 let client_last_name = '';
@@ -118,24 +83,16 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     };
 
     useEffect(() => {
-        if (isReady && !widget) {
-            onHistoryChange();
-        }
-    }, [widget, isReady, onHistoryChange]);
-
-    useEffect(() => {
-        history.listen(onHistoryChange);
         window.LiveChatWidget?.on('ready', () => {
-            if (isMounted()) setIsReady(true);
+            if (isMounted() && !should_disable_livechat) setIsReady(true);
         });
-    }, [history, isMounted, onHistoryChange]);
+    }, [isMounted]);
 
     useEffect(() => {
-        if (reload || !should_disable_livechat) {
+        if (!should_disable_livechat) {
             liveChatSetup(has_cookie_account);
-            setReload(false);
         }
-    }, [reload, has_cookie_account, should_disable_livechat]);
+    }, [has_cookie_account, should_disable_livechat]);
 
     useEffect(() => {
         if (should_disable_livechat) return;

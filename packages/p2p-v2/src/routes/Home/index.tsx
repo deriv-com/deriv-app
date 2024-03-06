@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveAccount } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 
 const Home: React.FC<{ path: string }> = ({ path }) => {

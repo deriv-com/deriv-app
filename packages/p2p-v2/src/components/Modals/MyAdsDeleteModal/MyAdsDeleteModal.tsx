@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import Modal from 'react-modal';
 import { useDevice } from '@/hooks';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
 import './MyAdsDeleteModal.scss';
@@ -60,7 +60,7 @@ const MyAdsDeleteModal = ({ error, id, isModalOpen, onClickDelete, onRequestClos
         <>
             {!isLoadingInfo && (
                 <Modal
-                    className='p2p-v2-modal-styles p-[1.6rem] p2p-v2-my-ads-delete-modal'
+                    className='p-[1.6rem] p2p-v2-my-ads-delete-modal'
                     isOpen={isModalOpen}
                     onRequestClose={onRequestClose}
                     shouldCloseOnOverlayClick={false}

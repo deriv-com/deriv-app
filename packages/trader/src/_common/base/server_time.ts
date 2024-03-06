@@ -1,9 +1,9 @@
 import { TCoreStores } from '@deriv/stores/types';
-import { PromiseClass } from '../utility';
+import { PromiseUtils } from '@deriv-com/utils';
 
 const ServerTime = (() => {
     let clock_started = false;
-    const pending = new PromiseClass();
+    const pending = PromiseUtils.createPromise();
     let common_store: TCoreStores['common'];
 
     const init = (store: TCoreStores['common']) => {

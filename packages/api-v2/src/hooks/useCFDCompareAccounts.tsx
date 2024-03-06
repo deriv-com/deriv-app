@@ -70,9 +70,9 @@ const ctraderAccount = {
 /** A custom hook that gets compare accounts values. */
 const useCFDCompareAccounts = (isEU?: boolean) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { data: activeDerivTradingAccount } = useActiveTradingAccount();
     const { is_virtual: isDemoWallet } = activeWallet ?? {};
-    const { is_virtual: isDemoTrading } = activeTradingAccount ?? {};
+    const { is_virtual: isDemoTrading } = activeDerivTradingAccount ?? {};
 
     const isDemo = isDemoWallet || isDemoTrading;
 

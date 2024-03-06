@@ -14,7 +14,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, validLength, validPassword, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
+import { isMobile, getCFDPlatformLabel } from '@deriv/shared';
 import { FormikErrors } from 'formik';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
@@ -31,6 +31,7 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
+import { validatePassword } from '../Helpers/constants';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -158,28 +159,17 @@ const CFDPasswordManagerTabContent = ({
 
     // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
     const container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
-    const validatePassword = (values: TFormValues) => {
+    const validateNewPasswordPolicy = (values: TFormValues) => {
         const errors: FormikErrors<TFormValues> = {};
 
-        if (
-            !validLength(values.new_password, {
-                min: 8,
-                max: 25,
-            })
-        ) {
-            errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
-                min_number: 8,
-                max_number: 25,
-            });
-        } else if (!validPassword(values.new_password)) {
-            errors.new_password = getErrorMessages().password();
-        } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
-            errors.new_password = localize('Your password cannot be the same as your email address.');
-        }
-
-        if (!values.old_password && values.old_password !== undefined) {
+        if (!values.old_password) {
             errors.old_password = localize('This field is required');
         }
+        if (!values.new_password) {
+            errors.new_password = localize('This field is required');
+        }
+
+        if (validatePassword(values.new_password)) errors.new_password = validatePassword(values.new_password);
 
         return errors;
     };
@@ -258,7 +248,7 @@ const CFDPasswordManagerTabContent = ({
                             is_submit_success_investor={is_submit_success_investor}
                             toggleModal={toggleModal}
                             error_message_investor={error_message_investor}
-                            validatePassword={validatePassword}
+                            validatePassword={validateNewPasswordPolicy}
                             onSubmit={onSubmit}
                             setPasswordType={setPasswordType}
                             multi_step_ref={multi_step_ref}
@@ -271,7 +261,7 @@ const CFDPasswordManagerTabContent = ({
                             is_submit_success_investor={is_submit_success_investor}
                             toggleModal={toggleModal}
                             error_message_investor={error_message_investor}
-                            validatePassword={validatePassword}
+                            validatePassword={validateNewPasswordPolicy}
                             onSubmit={onSubmit}
                             setPasswordType={setPasswordType}
                             multi_step_ref={multi_step_ref}

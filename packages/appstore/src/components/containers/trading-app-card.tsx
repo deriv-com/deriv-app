@@ -59,14 +59,7 @@ const TradingAppCard = ({
         client,
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
-    const {
-        is_eu_user,
-        is_demo_low_risk,
-        content_flag,
-        is_real,
-        is_account_disabled_modal_visible,
-        setAccountDisabledModalVisibility,
-    } = traders_hub;
+    const { is_eu_user, is_demo_low_risk, content_flag, is_real, setAccountDisabledModalVisibility } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
     const {

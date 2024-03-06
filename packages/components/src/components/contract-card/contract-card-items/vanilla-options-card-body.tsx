@@ -47,9 +47,6 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                         >
                             <Money amount={contract_value} currency={currency} />
                         </div>
-                        {!is_sold && (
-                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
-                        )}
                     </ContractCardItem>
 
                     <ContractCardItem header={ENTRY_SPOT}>

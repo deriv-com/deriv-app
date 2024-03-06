@@ -36,7 +36,6 @@ describe('MT5MigrationModalContent', () => {
         response = {
             show_modal_front_side: true,
             setShowModalFrontSide: () => null,
-            setMigrationError: () => null,
         };
     });
 

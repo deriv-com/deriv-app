@@ -570,7 +570,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateMT5Status,
     } = client;
     const { show_eu_related_content, is_eu_user, toggleAccountTransferModal } = traders_hub;
-    const { is_mobile, is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled } = ui;
+    const { is_mobile, is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
 
     const {
         account_type,
@@ -766,7 +766,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const should_show_success = should_show_success_modals && !is_mt5_migration_modal_enabled;
 
     const should_show_migration_success =
-        should_show_success_modals && is_mt5_migration_modal_enabled && !is_populating_mt5_account_list;
+        should_show_success_modals &&
+        is_mt5_migration_modal_enabled &&
+        !is_populating_mt5_account_list &&
+        !is_mt5_migration_modal_open;
 
     const should_show_sent_email_modal = is_sent_email_modal_enabled && is_password_modal_exited;
 

@@ -1023,6 +1023,7 @@ type TTradersHubStore = {
         login: string;
         account_id: string;
     };
+    is_account_disabled_modal_visible: boolean;
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     is_onboarding_visited: boolean;
@@ -1066,6 +1067,7 @@ type TTradersHubStore = {
     available_cfd_accounts: TAvailableCFDAccounts[];
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
+    setAccountDisabledModalVisibility: (is_visible: boolean) => void;
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_tour_open: boolean;
     is_demo_low_risk: boolean;

@@ -27,6 +27,7 @@ import './trading-app-card.scss';
 
 type TWalletsProps = {
     wallet_account?: ReturnType<typeof useActiveWallet>;
+    server_disabled?: boolean;
 };
 
 const TradingAppCard = ({
@@ -46,6 +47,7 @@ const TradingAppCard = ({
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
     market_type,
+    server_disabled,
     wallet_account,
     is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
@@ -57,7 +59,14 @@ const TradingAppCard = ({
         client,
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
+    const {
+        is_eu_user,
+        is_demo_low_risk,
+        content_flag,
+        is_real,
+        is_account_disabled_modal_visible,
+        setAccountDisabledModalVisibility,
+    } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
     const {
@@ -132,6 +141,37 @@ const TradingAppCard = ({
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
     const is_disabled = !!(mt5_acc_auth_status && !migration_status) && !is_eu_user;
 
+    const renderStatusBadge = () => {
+        if (mt5_acc_auth_status) {
+            return (
+                <StatusBadge
+                    className='trading-app-card__acc_status_badge'
+                    account_status={mt5_acc_auth_status}
+                    icon={badge_icon}
+                    text={badge_text}
+                    onClick={() => handleStatusBadgeClick(mt5_acc_auth_status)}
+                />
+            );
+        }
+
+        if (server_disabled) {
+            const text = 'Disabled';
+            return (
+                <StatusBadge
+                    account_status={MT5_ACCOUNT_STATUS.DISABLED}
+                    className='trading-app-card__acc_status_badge'
+                    icon='IcAlertDanger'
+                    text={text}
+                    onClick={() => setAccountDisabledModalVisibility(true)}
+                />
+            );
+        }
+
+        // Add more conditions here as needed
+
+        return null;
+    };
+
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
             <div
@@ -182,15 +222,9 @@ const TradingAppCard = ({
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {app_desc}
                     </Text>
-                    {mt5_acc_auth_status && (
-                        <StatusBadge
-                            className='trading-app-card__acc_status_badge'
-                            account_status={mt5_acc_auth_status}
-                            icon={badge_icon}
-                            text={badge_text}
-                            onClick={() => handleStatusBadgeClick(mt5_acc_auth_status)}
-                        />
-                    )}
+
+                    {renderStatusBadge()}
+
                     <OpenPositionsSVGModal
                         market_type={market_type}
                         status={mt5_acc_auth_status ?? ''}
@@ -207,7 +241,7 @@ const TradingAppCard = ({
                         new_tab={new_tab}
                         is_buttons_disabled={
                             //For MF, we enable the button even if account is not authenticated. Rest of jurisdictions, disable the button for pending, failed and needs verification
-                            is_disabled
+                            is_disabled || server_disabled
                         }
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}

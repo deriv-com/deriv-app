@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetTradingPasswordModal } from '@deriv/account';
+import { Loading } from '@deriv/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
-import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
 import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
@@ -21,6 +21,10 @@ import AccountTransferModal from 'Components/account-transfer-modal';
 import RealWalletsUpgrade from './real-wallets-upgrade';
 import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletsUpgradeModal from './wallets-upgrade-modal';
+
+const MT5AccountTypeModal = React.lazy(
+    () => import(/* webpackChunkName: "account-type-modal" */ './account-type-modal')
+);
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -42,8 +46,13 @@ const ModalManager = () => {
         getRealSwapfreeAccountsExistingData,
     } = modules.cfd;
     const { enableApp, disableApp, is_reset_trading_password_modal_visible, setResetTradingPasswordModalOpen } = ui;
-    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal, is_real_wallets_upgrade_on } =
-        traders_hub;
+    const {
+        is_account_type_modal_visible,
+        is_demo,
+        is_account_transfer_modal_open,
+        toggleAccountTransferModal,
+        is_real_wallets_upgrade_on,
+    } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -140,7 +149,11 @@ const ModalManager = () => {
                 is_loading={is_populating_mt5_account_list}
                 verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
             />
-            <MT5AccountTypeModal />
+            {is_account_type_modal_visible && (
+                <React.Suspense fallback={<Loading />}>
+                    <MT5AccountTypeModal />
+                </React.Suspense>
+            )}
             <MT5MigrationModal />
             <RegulatorsCompareModal />
             <AccountTransferModal

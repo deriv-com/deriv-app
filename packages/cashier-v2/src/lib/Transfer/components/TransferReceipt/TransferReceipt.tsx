@@ -1,7 +1,8 @@
 import React from 'react';
+import { ReceiptScreen } from '../../../../components';
 
 const TransferReceipt = () => {
-    return <div>Receipt</div>;
+    return <ReceiptScreen />;
 };
 
 export default TransferReceipt;

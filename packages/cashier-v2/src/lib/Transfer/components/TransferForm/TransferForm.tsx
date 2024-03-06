@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router';
 import { Button, Loader, Text } from '@deriv-com/ui';
@@ -9,26 +9,33 @@ import styles from './TransferForm.module.scss';
 
 const TransferForm = () => {
     const history = useHistory();
-    const { accounts, fromAccount, isLoading, setFromAccount, toAccount, validationSchema } = useTransfer();
+    const { accounts, isLoading } = useTransfer();
+
+    // console.log('=> form - accounts=', accounts);
+    // console.log('=> form - isLoading=', isLoading);
 
     if (isLoading) return <Loader />;
+
+    // console.log('=> form - fromAccount', fromAccount, ', toAccount', toAccount);
 
     return (
         <Formik
             initialValues={{
+                fromAccount: {},
                 fromAmount: '',
+                toAccount: {},
                 toAmount: '',
             }}
-            validationSchema={validationSchema}
+            // validationSchema={validationSchema}
         >
-            {({ errors, handleChange }) => {
+            {({ errors, values }) => {
                 return (
                     <div className={styles.container}>
                         <Text className={styles.title} weight='bold'>
                             Transfer between your accounts in Deriv
                         </Text>
                         <TransferFormAccountSelection />
-                        <TransferAmountConverter fromAccount={fromAccount} toAccount={toAccount} />
+                        <TransferAmountConverter errors={errors} values={values} />
                         <div className={styles['button-group']}>
                             <Button
                                 onClick={() => {

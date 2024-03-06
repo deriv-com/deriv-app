@@ -1,4 +1,4 @@
-import { useActiveAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { getMarketType } from '../../../helpers';
 import { THooks } from '../../../hooks/types';
 
@@ -76,10 +76,20 @@ const sortedCryptoDerivAccounts = (accounts: THooks.TransferAccount, getConfig: 
     - sorts the crypto accounts alphabetically
 */
 const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccount) => {
+    // console.log('=> hook - accounts', accounts);
     const { data: activeAccount, isLoading: isActiveAccountLoading } = useActiveAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     const isLoading = !accounts || isActiveAccountLoading || isCurrencyConfigLoading;
+
+    // console.log(
+    //     '=> hook - conditions !accounts=',
+    //     !accounts,
+    //     ', isActiveAccountLoading=',
+    //     isActiveAccountLoading,
+    //     ', isCurrencyConfigLoading=',
+    //     isCurrencyConfigLoading
+    // );
 
     const extendedTransferableAccounts = !isLoading
         ? [
@@ -102,11 +112,19 @@ const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccount) =>
                   }
               })
             : undefined;
+    // console.log(
+    //     '=> hook - isLoading=',
+    //     isLoading,
+    //     ', extendedTransferableAccounts',
+    //     extendedTransferableAccounts,
+    //     ', transferableActiveAccount',
+    //     transferableActiveAccount
+    // );
 
     return {
         accounts: extendedTransferableAccounts,
         activeAccount: transferableActiveAccount,
-        isLoading,
+        isLoading: isLoading || !extendedTransferableAccounts.length || !transferableActiveAccount,
     };
 };
 

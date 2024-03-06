@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { getAccountsFromLocalStorage } from '@/utils';
-import { useActiveTradingAccount, useCreateNewRealAccount, useSettings } from '@deriv/api';
+import { useActiveTradingAccount, useCreateNewRealAccount, useSettings } from '@deriv/api-v2';
 
 type TNewTradingAccount = NonNullable<ReturnType<typeof useCreateNewRealAccount>['data']>;
 

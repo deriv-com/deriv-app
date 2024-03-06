@@ -7,7 +7,7 @@ import { CFDPlatformLayout } from '@cfd/components';
 import { PlatformDetails } from '@cfd/constants';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '@cfd/flows';
 import { GetMoreMT5Accounts } from '@cfd/screens';
-import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api-v2';
 
 type TMT5PlatformsListProps = {
     onMT5PlatformListLoaded?: (value: boolean) => void;

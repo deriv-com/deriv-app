@@ -2,7 +2,6 @@ import React from 'react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ContractCardDialog from './contract-card-dialog';
 import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-update-form';
-import PopoverMessageCheckbox from '../../popover-message-checkbox';
 import Icon from '../../icon';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileDialog from '../../mobile-dialog';
@@ -44,9 +43,8 @@ const ToggleCardDialog = ({
     const [is_visible, setIsVisible] = React.useState(false);
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
-    const [should_hide_selected, setShouldHideSelected] = React.useState(!should_show_cancellation_warning);
 
-    const toggle_ref = React.useRef<HTMLDivElement>(null);
+    const toggle_ref = React.useRef<HTMLButtonElement>(null);
     const dialog_ref = React.useRef<HTMLDivElement>(null);
     const contract = getContractById(Number(contract_id));
 
@@ -77,13 +75,7 @@ const ToggleCardDialog = ({
     };
 
     const onPopoverClose = () => {
-        if (should_hide_selected) {
-            toggleCancellationWarning?.();
-        }
-    };
-
-    const onPopoverCheckboxChange = () => {
-        setShouldHideSelected(!should_hide_selected);
+        toggleCancellationWarning?.();
     };
 
     const toggleDialog = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
@@ -113,36 +105,28 @@ const ToggleCardDialog = ({
         />
     );
 
-    const toggle_wrapper =
-        should_show_cancellation_warning && isDesktop() ? (
-            <Popover
-                alignment='right'
-                classNameBubble='dc-contract-card-dialog__popover'
-                is_bubble_hover_enabled
-                margin={2}
-                zIndex='2'
-                message={
-                    <PopoverMessageCheckbox
-                        defaultChecked={should_hide_selected}
-                        checkboxLabel={getCardLabels().DONT_SHOW_THIS_AGAIN}
-                        message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
-                        name='should_show_cancellation_warning'
-                        onChange={onPopoverCheckboxChange}
-                    />
-                }
-                onBubbleClose={onPopoverClose}
-            >
-                <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
-            </Popover>
-        ) : (
-            <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
-        );
-
     return (
         <div onClick={handleClick}>
-            <div ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
-                {is_valid_to_cancel ? toggle_wrapper : edit_icon}
-            </div>
+            {is_valid_to_cancel && should_show_cancellation_warning && isDesktop() ? (
+                <Popover
+                    alignment='right'
+                    classNameBubble='dc-contract-card-dialog__popover-bubble'
+                    className='dc-contract-card-dialog__popover'
+                    is_bubble_hover_enabled
+                    margin={2}
+                    zIndex='2'
+                    message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
+                    onBubbleClose={onPopoverClose}
+                >
+                    <button ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
+                        {edit_icon}
+                    </button>
+                </Popover>
+            ) : (
+                <button ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
+                    {edit_icon}
+                </button>
+            )}
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='modal_root'

@@ -10,7 +10,7 @@ import {
 } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { useUIContext } from '@/providers';
-import { useIsDIELEnabled } from '@deriv/api';
+import { useIsDIELEnabled } from '@deriv/api-v2';
 import { Tab, Tabs, Text, useDevice } from '@deriv-com/ui';
 
 const TradersHubRoute = () => {

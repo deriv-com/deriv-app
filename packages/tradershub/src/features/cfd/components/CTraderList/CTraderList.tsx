@@ -5,7 +5,7 @@ import { THooks } from '@/types';
 import { CFDPlatformLayout } from '@cfd/components';
 import { PlatformDetails } from '@cfd/constants';
 import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '@cfd/flows';
-import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api-v2';
 
 const CTraderList = () => {
     const { uiState } = useUIContext();

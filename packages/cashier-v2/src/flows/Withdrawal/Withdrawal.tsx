@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { PageContainer } from '../../components';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../lib';

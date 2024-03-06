@@ -22,8 +22,8 @@ describe('<RadioButtonGroup/>', () => {
         expect(screen.queryByText('samplelable')).not.toBeInTheDocument();
     });
 
-    it('should show limited_fiat msg if is_fiat and has_fiat are true', () => {
-        render(<RadioButtonGroup {...props} has_fiat />);
+    it('should show limited_fiat msg if description is changed', () => {
+        render(<RadioButtonGroup {...props} description={fiat_limit_msg} />);
         expect(screen.getByText(fiat_limit_msg)).toBeInTheDocument();
     });
 

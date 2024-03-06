@@ -17,7 +17,7 @@ type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'errorMessage' | '
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
+export const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
     <Field name={name} validate={validateField(validationSchema)}>
         {({ field, meta: { error, touched } }: FieldProps<string>) => (
             <Input
@@ -31,5 +31,3 @@ const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps
         )}
     </Field>
 );
-
-export default FormInputField;

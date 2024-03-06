@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { APIProvider } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
+import WalletsAuthProvider from '../../AuthProvider';
 import { mockLocalStorageBeforeEachTest, restoreLocalStorageAfterEachTest } from '../../utils/tests';
 import useWalletAccountSwitcher from '../useWalletAccountSwitcher';
 
@@ -71,7 +72,7 @@ jest.mock('@deriv/api-v2', () => ({
 
 const wrapper = ({ children }: PropsWithChildren) => (
     <APIProvider>
-        <AuthProvider loginIDKey='active_wallet_loginid'>{children}</AuthProvider>
+        <WalletsAuthProvider>{children}</WalletsAuthProvider>
     </APIProvider>
 );
 

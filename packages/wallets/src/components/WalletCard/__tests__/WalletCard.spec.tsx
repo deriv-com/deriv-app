@@ -1,6 +1,7 @@
 import React, { ComponentProps } from 'react';
-import { APIProvider, AuthProvider, useBalance } from '@deriv/api-v2';
+import { APIProvider, useBalance } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../AuthProvider';
 import WalletCard from '../WalletCard';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -36,9 +37,9 @@ describe('WalletCard', () => {
     it('should render the correct wallet card and gradient background for USD wallet', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCard {...mockProps} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
@@ -54,9 +55,9 @@ describe('WalletCard', () => {
         };
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCard {...mockProps} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
@@ -73,9 +74,9 @@ describe('WalletCard', () => {
         };
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCard {...mockProps} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         const gradient = screen.getByTestId('dt_wallet_gradient_background');
@@ -85,9 +86,9 @@ describe('WalletCard', () => {
     it('should show balance loader when balance is loading', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCard {...mockProps} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         const balanceLoader = screen.getByTestId('dt_wallet_card_balance_loader');
@@ -101,9 +102,9 @@ describe('WalletCard', () => {
         }));
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCard {...mockProps} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('100 USD')).toBeInTheDocument();
@@ -112,9 +113,9 @@ describe('WalletCard', () => {
     it('should show the landing company name when provided', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCard {...mockProps} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('SVG')).toBeInTheDocument();
@@ -127,9 +128,9 @@ describe('WalletCard', () => {
         };
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCard {...mockProps} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         const icon = screen.getByTestId('dt_wallet_card_icon');

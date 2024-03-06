@@ -34,6 +34,8 @@ export default class CFDStore extends BaseStore {
     is_cfd_success_dialog_enabled = false;
     is_mt5_financial_stp_modal_open = false;
     is_cfd_password_modal_enabled = false;
+    is_mt5_password_invalid_format_modal_visible = false;
+    is_mt5_password_changed_modal_visible = false;
     mt5_migration_error = '';
     current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
@@ -82,6 +84,8 @@ export default class CFDStore extends BaseStore {
             dxtrade_tokens: observable,
             ctrader_tokens: observable,
             migrated_mt5_accounts: observable,
+            is_mt5_password_invalid_format_modal_visible: observable,
+            is_mt5_password_changed_modal_visible: observable,
             account_title: computed,
             current_list: computed,
             has_created_account_for_selected_jurisdiction: computed,
@@ -131,6 +135,8 @@ export default class CFDStore extends BaseStore {
             setCTraderToken: action.bound,
             loadDxtradeTokens: action.bound,
             loadCTraderTokens: action.bound,
+            setIsMt5PasswordInvalidFormatModalVisible: action.bound,
+            setIsMt5PasswordChangedModalVisible: action.bound,
         });
 
         // reaction(
@@ -511,6 +517,14 @@ export default class CFDStore extends BaseStore {
         };
     }
 
+    setIsMt5PasswordInvalidFormatModalVisible(visible) {
+        this.is_mt5_password_invalid_format_modal_visible = visible;
+    }
+
+    setIsMt5PasswordChangedModalVisible(visible) {
+        this.is_mt5_password_changed_modal_visible = visible;
+    }
+
     setMT5TradeAccount(mt5_trade_account) {
         this.mt5_trade_account = mt5_trade_account;
     }
@@ -570,9 +584,10 @@ export default class CFDStore extends BaseStore {
         } else {
             const response = await this.openMT5Account(values);
             if (!response.error) {
-                actions.setStatus({ success: true });
-                actions.setSubmitting(false);
+                actions?.setStatus({ success: true });
+                actions?.setSubmitting(false);
                 this.setError(false);
+                this.setIsMt5PasswordChangedModalVisible(false);
                 this.setCFDSuccessDialog(true);
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
 
@@ -585,9 +600,9 @@ export default class CFDStore extends BaseStore {
             } else {
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
                 this.setError(true, response.error);
-                actions.resetForm({});
-                actions.setSubmitting(false);
-                actions.setStatus({ success: false });
+                actions?.resetForm({});
+                actions?.setSubmitting(false);
+                actions?.setStatus({ success: false });
             }
         }
     }

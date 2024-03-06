@@ -96,4 +96,8 @@ export type TCFDStore = {
         set_password?: number;
         platform?: string;
     }) => void;
+    is_mt5_password_invalid_format_modal_visible: boolean;
+    setIsMt5PasswordInvalidFormatModalVisible: (value: boolean) => void;
+    is_mt5_password_changed_modal_visible: boolean;
+    setIsMt5PasswordChangedModalVisible: (value: boolean) => void;
 };

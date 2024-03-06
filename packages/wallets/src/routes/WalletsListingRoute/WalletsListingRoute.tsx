@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import {
     DesktopWalletsList,
     WalletsAddMoreCarousel,
@@ -12,13 +12,14 @@ import { CFD_PLATFORMS } from '../../features/cfd/constants';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import { getActionFromUrl } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { TPlatforms } from '../../types';
 import './WalletsListingRoute.scss';
 
 const WalletsListingRoute: React.FC = () => {
     const { isMobile } = useDevice();
     const { data: walletAccounts } = useWalletAccountsList();
-    const { switchAccount } = useAuthorize();
+    const switchWalletAccount = useWalletAccountSwitcher();
     const { data: activeWallet } = useActiveWalletAccount();
     const { show } = useModal();
     const resetTradingPlatformActionParams = getActionFromUrl();
@@ -56,12 +57,12 @@ const WalletsListingRoute: React.FC = () => {
         if (!activeWallet) {
             const activeLinkedAccount = walletAccounts?.find(wallet => wallet.is_linked_account_active);
             if (activeLinkedAccount) {
-                switchAccount(activeLinkedAccount.loginid);
+                switchWalletAccount(activeLinkedAccount.loginid);
             } else if (firstLoginid) {
-                switchAccount(firstLoginid);
+                switchWalletAccount(firstLoginid);
             }
         }
-    }, [activeWallet, firstLoginid, switchAccount, walletAccounts]);
+    }, [activeWallet, firstLoginid, switchWalletAccount, walletAccounts]);
 
     return (
         <div className='wallets-listing-route'>

@@ -9,7 +9,7 @@ import { TSocketResponseData } from '../types';
 type AuthContextType = {
     loginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
-    switchAccount: (loginid: string) => void;
+    switchAccount: (loginid: string) => Promise<void>;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -105,12 +105,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
             const activeAccount = accountList.find(acc => acc.loginid === activeLoginID);
             if (!activeAccount) return;
 
-            const linkedDtradeAccount = accountList
-                ?.find(account => account.loginid === activeLoginID)
-                ?.linked_to?.find(linkedAccount => linkedAccount.platform === 'dtrade');
-
-            localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID); // set loginId for the current app
-            if (linkedDtradeAccount?.loginid) localStorage.setItem('active_loginid', linkedDtradeAccount.loginid); // set loginId for the default app
+            localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
         },
         [loginIDKey]
     );

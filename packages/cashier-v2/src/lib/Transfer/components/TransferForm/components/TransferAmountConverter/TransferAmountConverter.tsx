@@ -8,26 +8,17 @@ import styles from './TransferAmountConverter.module.scss';
 
 const getConvertedAmount = (amount: number | string, source, target, exchangeRates) => {
     const value = typeof amount === 'string' ? parseFloat(amount) : amount;
-    // console.log('=> getConvertedAmount - value', value);
-    // console.log(
-    //     '=> getConvertedAmount - rates',
-    //     exchangeRates,
-    //     ', to',
-    //     target.currency,
-    //     exchangeRates[target.currency],
-    //     ', from',
-    //     source.currency,
-    //     exchangeRates[source.currency]
-    // );
 
-    const fromRate = source.currency !== 'USD' ? exchangeRates[source.currency] : 1; // base_currency for the API call is USD
-    const toRate = exchangeRates[target.currency];
+    if (!value) return '';
+
+    // base_currency for the API call is USD
+    const fromRate = source.currency !== 'USD' ? exchangeRates[source.currency] : 1;
+    const toRate = target.currency !== 'USD' ? exchangeRates[target.currency] : 1;
 
     const convertedValue =
         // eslint-disable-next-line sonarjs/prefer-immediate-return
         !Number.isNaN(value) ? ((value * toRate) / fromRate).toFixed(target.currencyConfig.fractional_digits) : '';
 
-    // console.log('=> getConvertedAmount - convertedValue', convertedValue);
     return convertedValue;
 };
 
@@ -48,7 +39,7 @@ const TransferAmountConverter = ({ errors, setValues, values }) => {
         setValues((currentValues: typeof values) => ({
             ...currentValues,
             fromAmount: e.target.value,
-            toAmount: !errors.fromAccount && isFromInputActive ? convertedValue : '',
+            toAmount: !errors.fromAmount && isFromInputActive ? convertedValue : '',
         }));
     };
 
@@ -59,9 +50,10 @@ const TransferAmountConverter = ({ errors, setValues, values }) => {
             values.fromAccount,
             exchangeRates?.rates
         );
+
         setValues((currentValues: typeof values) => ({
             ...currentValues,
-            fromAmount: !errors.toAccount && !isFromInputActive ? convertedValue : '',
+            fromAmount: !errors.toAmount && !isFromInputActive ? convertedValue : '',
             toAmount: e.target.value,
         }));
     };

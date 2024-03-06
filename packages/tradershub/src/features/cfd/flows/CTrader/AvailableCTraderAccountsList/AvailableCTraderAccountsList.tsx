@@ -8,10 +8,10 @@ import {
 } from '@/components';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
+import { useModal } from '@/providers';
 import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
-import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { URLUtils } from '@deriv-com/utils';
 
 const { getDerivStaticURL } = URLUtils;
@@ -29,7 +29,7 @@ const AvailableCTraderAccountsList = () => {
     const { mutate, status } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { hasActiveDerivAccount } = useRegulationFlags();
-    const { show } = Provider.useModal();
+    const { show } = useModal();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
     const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, activeTradingAccount?.is_virtual);

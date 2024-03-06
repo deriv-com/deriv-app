@@ -255,13 +255,13 @@
                 @include flex-center;
                 width: 22.5rem;
                 position: relative;
-                padding: 1.6rem 0;
+                padding: 1.6rem 0.8rem;
                 z-index: 1;
 
                 .search-icon {
                     cursor: pointer;
                     position: absolute;
-                    left: 1.5rem;
+                    left: 1.8rem;
                     z-index: 1;
                 }
                 .close-icon {
@@ -272,19 +272,24 @@
                 }
 
                 &__search-input {
-                    width: 21rem;
+                    width: 100%;
                     height: 3.2rem;
-                    border-radius: 0.4rem;
+                    border-radius: 8px;
                     outline: none;
-                    background-color: transparent;
+                    background-color: var(--general-main-1);
                     font-size: 1.4rem;
-                    padding: 0 3rem;
-                    border: solid 0.1rem var(--checkbox-disabled-grey);
+                    padding: 0 3.6rem;
+                    border: solid 1px var(--border-normal);
                     color: var(--text-general);
 
-                    ::placeholder {
-                        margin-left: 3.2rem;
+                    &::placeholder {
+                        opacity: 0.4;
                     }
+
+                    &:focus {
+                        border-color: var(--text-general);
+                    }
+
                     @include mobile {
                         width: 100%;
                         margin-left: 17px;

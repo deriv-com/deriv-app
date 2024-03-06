@@ -1,12 +1,17 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
-import RouteLinks from './router/components/route-links/route-links';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { AppOverlay } from './components/AppOverlay';
+import { RouteLinks } from './router/components/RouteLinks';
 import './index.scss';
 
 const App: React.FC = () => {
     return (
         <APIProvider standalone>
-            <RouteLinks />
+            <AuthProvider>
+                <AppOverlay title='Settings'>
+                    <RouteLinks />
+                </AppOverlay>
+            </AuthProvider>
         </APIProvider>
     );
 };

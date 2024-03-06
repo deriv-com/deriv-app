@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useCFDContext, useModal } from '@/providers';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { URLUtils } from '@deriv-com/utils';
 import {
     GetADerivAccountDialog,
@@ -29,8 +29,8 @@ const LeadingIcon = () => (
 
 const AvailableDxtradeAccountsList = () => {
     const { hasActiveDerivAccount } = useRegulationFlags();
-    const { show } = Provider.useModal();
-    const { setCfdState } = Provider.useCFDContext();
+    const { show } = useModal();
+    const { setCfdState } = useCFDContext();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
@@ -40,7 +40,7 @@ const AvailableDxtradeAccountsList = () => {
     const title = getCfdsAccountTitle(PlatformDetails.dxtrade.title, activeTradingAccount?.is_virtual);
 
     const trailingButtonClick = () => {
-        setCfdState('platform', PlatformDetails.dxtrade.platform);
+        setCfdState({ platform: PlatformDetails.dxtrade.platform });
         if (!hasActiveDerivAccount) {
             setIsDerivedAccountModalOpen(true);
         } else {

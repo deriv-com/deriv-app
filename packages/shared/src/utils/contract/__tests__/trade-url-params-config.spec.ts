@@ -123,36 +123,36 @@ describe('setTradeURLParams', () => {
     });
 
     it('should set interval query param into URL based on the received granularity value', async () => {
-        const spyHistoryPushState = jest.spyOn(window.history, 'pushState');
+        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setTradeURLParams({
             granularity: 0,
         });
-        expect(spyHistoryPushState).toBeCalledWith(null, '', `/?interval=${oneTickInterval}`);
+        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?interval=${oneTickInterval}`);
     });
     it('should set chart_type query param into URL based on the received chart_type value', async () => {
-        const spyHistoryPushState = jest.spyOn(window.history, 'pushState');
+        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setTradeURLParams({
             chartType: areaChartType.value,
         });
-        expect(spyHistoryPushState).toBeCalledWith(null, '', `/?chart_type=${areaChartType.text}`);
+        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?chart_type=${areaChartType.text}`);
     });
     it('should set symbol query param into URL based on the received symbol value', async () => {
-        const spyHistoryPushState = jest.spyOn(window.history, 'pushState');
+        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setTradeURLParams({
             symbol,
         });
-        expect(spyHistoryPushState).toBeCalledWith(null, '', `/?symbol=${symbol}`);
+        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?symbol=${symbol}`);
     });
     it('should set trade_type query param into URL based on the received contract_type value', async () => {
-        const spyHistoryPushState = jest.spyOn(window.history, 'pushState');
+        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setTradeURLParams({
             contractType: TRADE_TYPES.ACCUMULATOR,
         });
-        expect(spyHistoryPushState).toBeCalledWith(null, '', `/?trade_type=${TRADE_TYPES.ACCUMULATOR}`);
+        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?trade_type=${TRADE_TYPES.ACCUMULATOR}`);
     });
     it('should not set any query params into URL when called with empty object', async () => {
-        const spyHistoryPushState = jest.spyOn(window.history, 'pushState');
+        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setTradeURLParams({});
-        expect(spyHistoryPushState).not.toBeCalled();
+        expect(spyHistoryReplaceState).not.toBeCalled();
     });
 });

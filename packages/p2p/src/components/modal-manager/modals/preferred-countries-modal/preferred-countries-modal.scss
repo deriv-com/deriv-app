@@ -1,0 +1,25 @@
+.preferred-countries-modal {
+    &__search-field {
+        margin-bottom: 0;
+
+        input {
+            margin-left: 2.5rem;
+        }
+    }
+
+    &__checkbox {
+        padding: 1.6rem 1rem;
+    }
+}
+
+.dc-modal__container_preferred-countries-modal {
+    .dc-modal-body {
+        padding: 0;
+    }
+
+    .dc-modal-footer {
+        > button {
+            flex: 1;
+        }
+    }
+}

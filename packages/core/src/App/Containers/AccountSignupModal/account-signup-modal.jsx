@@ -143,7 +143,7 @@ const AccountSignup = ({
 
             history.push({
                 pathname: history.location.pathname,
-                search: `?${searchParams.toString()}`
+                search: `?${searchParams.toString()}`,
             });
             // ====================================================================
 

@@ -1,12 +1,12 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider } from '@deriv/api-v2';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import { mockLocalStorageBeforeEachTest, restoreLocalStorageAfterEachTest } from '../../utils/tests';
 import useWalletAccountSwitcher from '../useWalletAccountSwitcher';
 
 const mockSwitchAccount = jest.fn();
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useAuthorize: () => ({
         data: {
             email: 'test@gmail.com',
@@ -69,7 +69,11 @@ jest.mock('@deriv/api', () => ({
     }),
 }));
 
-const wrapper = ({ children }: PropsWithChildren) => <APIProvider>{children}</APIProvider>;
+const wrapper = ({ children }: PropsWithChildren) => (
+    <APIProvider>
+        <AuthProvider loginIDKey='active_wallet_loginid'>{children}</AuthProvider>
+    </APIProvider>
+);
 
 describe('useWalletAccountSwitcher', () => {
     beforeEach(() => {
@@ -80,27 +84,27 @@ describe('useWalletAccountSwitcher', () => {
         restoreLocalStorageAfterEachTest();
     });
 
-    it('should be able to switch to another wallet account', () => {
+    it('should be able to switch to another wallet account', async () => {
         const { result } = renderHook(() => useWalletAccountSwitcher(), { wrapper });
         const switchWalletAccount = result.current;
 
-        switchWalletAccount('CRW34567');
+        await switchWalletAccount('CRW34567');
         expect(mockSwitchAccount).toBeCalledWith('CRW34567');
     });
 
-    it('should not set active_loginid if wallet does not have linked dtrade account', () => {
+    it('should not set active_loginid if wallet does not have linked dtrade account', async () => {
         const { result } = renderHook(() => useWalletAccountSwitcher(), { wrapper });
         const switchWalletAccount = result.current;
 
-        switchWalletAccount('CRW34567');
+        await switchWalletAccount('CRW34567');
         expect(global.localStorage.getItem('active_loginid')).toBe(undefined);
     });
 
-    it('should set active_loginid if wallet has linked dtrade account', () => {
+    it('should set active_loginid if wallet has linked dtrade account', async () => {
         const { result } = renderHook(() => useWalletAccountSwitcher(), { wrapper });
         const switchWalletAccount = result.current;
 
-        switchWalletAccount('CRW34569');
+        await switchWalletAccount('CRW34569');
         expect(global.localStorage.getItem('active_loginid')).toBe('CR34567');
     });
 });

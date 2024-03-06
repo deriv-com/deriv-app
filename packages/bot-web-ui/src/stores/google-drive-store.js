@@ -1,6 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { config, importExternal } from '@deriv/bot-skeleton';
 import { getLanguage, localize } from '@deriv/translations';
+import { IMPORT_NOTIFICATION_TYPE } from 'Components/bot-notification/notification-settings';
 import { button_status } from 'Constants/button-status';
 
 export default class GoogleDriveStore {
@@ -213,7 +214,7 @@ export default class GoogleDriveStore {
                     });
 
                     resolve({ xml_doc: response.body, file_name });
-                    setOpenSettings('import');
+                    setOpenSettings(IMPORT_NOTIFICATION_TYPE.BOT_IMPORT);
                 }
             };
 

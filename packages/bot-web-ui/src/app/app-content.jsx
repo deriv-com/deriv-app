@@ -2,6 +2,7 @@ import React from 'react';
 import { api_base, ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import BotNotification from 'Components/bot-notification/bot-notification';
 import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -126,6 +127,7 @@ const AppContent = observer(() => {
                 <BotStopped />
                 <RoutePromptDialog />
                 <TransactionDetailsModal />
+                <BotNotification />
             </div>
         </>
     );

@@ -3,6 +3,7 @@ import { action, computed, makeObservable, observable, reaction, runInAction } f
 import { error_types, message_types, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
 import { isSafari, mobileOSDetect } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { botNotification, notification_message } from 'Components/bot-notification/notification-settings';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
@@ -148,6 +149,7 @@ export default class RunPanelStore {
 
     setShowBotStopMessage(value) {
         this.show_bot_stop_message = value;
+        if (value) botNotification(notification_message.bot_stop);
     }
 
     async performSelfExclusionCheck() {

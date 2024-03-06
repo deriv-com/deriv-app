@@ -8,7 +8,6 @@ import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
-import BotNotification from 'Components/bot-notification';
 import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -31,9 +30,6 @@ const AppWrapper = observer(() => {
         setWebSocketState,
         setActiveTour,
         setTourDialogVisibility,
-        setOpenSettings,
-        toast_message,
-        show_toast,
     } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
@@ -210,19 +206,6 @@ const AppWrapper = observer(() => {
             >
                 {message}
             </Dialog>
-            <BotNotification
-                is_open={show_toast}
-                message={
-                    <Localize
-                        i18n_default_text={
-                            toast_message === 'delete'
-                                ? 'You’ve successfully deleted a bot.'
-                                : 'You’ve successfully imported a bot.'
-                        }
-                    />
-                }
-                handleClose={() => setOpenSettings(toast_message, false)}
-            />
         </React.Fragment>
     );
 });

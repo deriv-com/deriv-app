@@ -1,45 +1,60 @@
-.bot-notification {
-    position: fixed;
-    z-index: var(--zindex-snackbar);
-    inset-inline-start: 3.5rem;
-    bottom: 7rem;
+.Toastify {
+    &__toast {
+        background: var(--icon-black-plus);
+        color: var(--general-main-1);
+        min-height: 4.8rem;
+        height: 4.8rem;
+        width: fit-content;
+        text-align: start;
+        padding: 0.8rem 1.6rem;
+        border-radius: 0.8rem;
+        font-size: 1.4rem;
+        font-family: inherit;
 
-    .dc-toast {
-        width: 100%;
-        &__message {
-            background: var(--icon-black-plus);
-            color: var(--general-main-1);
-            height: 4.8rem;
-            text-align: start;
-            padding: 0.8rem 1.6rem;
-            border-radius: 0.8rem;
-            font-size: 1.4rem;
+        @include mobile {
+            height: 4.4rem;
+            min-height: 4.4rem;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.8rem, 1rem;
+        }
+
+        &-container {
+            padding: 0;
+            width: auto;
+            inset-inline-start: 3.5rem;
+            bottom: 6rem;
 
             @include mobile {
-                height: 4.4rem;
-                font-size: 1.2rem;
+                inset-inline-start: 0;
+                bottom: 9rem;
+                padding: 0.8rem;
             }
         }
-        &__message-content {
-            display: flex;
 
-            @include mobile {
-                align-items: center;
-            }
+        &-body {
+            padding: 0;
         }
     }
 
-    @include mobile {
-        top: unset;
-        left: 0;
-        right: 0;
-        bottom: 10.5rem;
-    }
-
-    &__close-icon {
-        cursor: pointer;
-        filter: invert(1);
+    &__close-button {
+        padding: 0.5rem 0;
         margin-left: 1rem;
-        margin-top: 0.1rem;
+        opacity: 0.8;
+
+        @include mobile {
+            margin-left: 0.8rem;
+        }
+
+        svg {
+            fill: var(--general-main-1);
+            height: 2.2rem;
+            width: unset;
+
+            @include mobile {
+                height: 1.6rem;
+            }
+        }
     }
 }

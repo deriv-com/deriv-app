@@ -165,7 +165,7 @@ const OrderDetails = observer(() => {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [completion_time]);
+    }, [completion_time, p2p_settings.review_period]);
 
     useRegisterModalProps({
         key: 'RatingModal',

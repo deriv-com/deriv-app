@@ -20,7 +20,7 @@ const WithdrawalSideNotes = observer(() => {
 
     return (
         <>
-            {currency_config?.is_crypto && <DepositCryptoSideNotes />}
+            {currency_config.is_crypto && <DepositCryptoSideNotes />}
             <SideNote title={localize('Note')}>
                 <li>
                     {localize(
@@ -50,14 +50,14 @@ const WithdrawalPageContent = observer(() => {
     const { is_withdraw_confirmed } = withdraw;
     const currency_config = useCurrentCurrencyConfig();
 
-    if (!currency_config?.is_crypto && (verification_code || iframe_url))
+    if (!!currency_config && !currency_config?.is_crypto && (verification_code || iframe_url))
         return (
             <PageContainer hide_breadcrumb>
                 <WithdrawalFiat />
             </PageContainer>
         );
 
-    if (verification_code && currency_config?.is_crypto && !is_withdraw_confirmed)
+    if (!!currency_config && verification_code && currency_config?.is_crypto && !is_withdraw_confirmed)
         return (
             <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
                 <WithdrawalCryptoForm />

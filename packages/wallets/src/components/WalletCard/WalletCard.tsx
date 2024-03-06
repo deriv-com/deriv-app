@@ -39,14 +39,14 @@ const WalletCard: React.FC<TProps> = ({
             >
                 <div
                     className={classNames('wallets-card__details', {
-                        'wallets-card__details--carousel-content': isCarouselContent,
-                        'wallets-card__details--carousel-content-active': isCarouselContent && isActive,
+                        'wallets-card__details__carousel-content': isCarouselContent,
+                        'wallets-card__details__carousel-content--active': isCarouselContent && isActive,
                     })}
                     data-testid='dt_wallet_card_details'
                 >
                     <div
                         className={classNames('wallets-card__details__top', {
-                            'wallets-card__details__top--carousel-content': isCarouselContent,
+                            'wallets-card__details__top__carousel-content': isCarouselContent,
                         })}
                     >
                         <WalletCardIcon size={iconSize} type={isDemo ? 'Demo' : currency} />

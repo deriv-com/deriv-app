@@ -21,13 +21,13 @@
         align-items: flex-start;
         aspect-ratio: 1.667;
 
-        &--carousel-content {
+        &__carousel-content {
             padding: 1.6rem;
             width: 24rem;
             height: 14.6rem;
             transition: all 0.4s ease;
 
-            &-active {
+            &--active {
                 width: 28.8rem;
                 height: 17.6rem;
                 transition: all 0.4s ease;
@@ -40,7 +40,7 @@
             width: 100%;
             justify-content: space-between;
 
-            &--carousel-content {
+            &__carousel-content {
                 justify-content: flex-start;
                 width: unset;
             }

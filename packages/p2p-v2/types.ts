@@ -19,12 +19,9 @@ export type TAccumulatedPaymentMethods = Record<
     NonNullable<TAdvertiserPaymentMethods | TPaymentMethods>[number]
 >;
 export type TPaymentMethod = NonNullable<TAdvertiserPaymentMethods>[number] | NonNullable<TPaymentMethods>[number];
-type TPaymentMethodDisplayName = NonNullable<
-    ReturnType<typeof p2p.paymentMethods.useGet>['data']
->[number]['display_name'];
+
 export type TSelectedPaymentMethod = Partial<{
-    displayName: TPaymentMethodDisplayName;
-    display_name: TPaymentMethodDisplayName;
+    displayName: string;
     fields: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['fields'];
     id: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['id'];
     method: NonNullable<TAdvertiserPaymentMethods>[number]['method'];

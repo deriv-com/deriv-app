@@ -22,18 +22,10 @@ type TPaymentMethodCardProps = HTMLAttributes<HTMLDivElement> & {
 const PaymentMethodCard = ({
     isEditable = false,
     medium = false,
-    onClickAdd = () => {
-        //Do nothing
-    },
-    onDeletePaymentMethod = () => {
-        //Do nothing
-    },
-    onEditPaymentMethod = () => {
-        //Do nothing
-    },
-    onSelectPaymentMethodCard = () => {
-        //Do nothing
-    },
+    onClickAdd,
+    onDeletePaymentMethod,
+    onEditPaymentMethod,
+    onSelectPaymentMethodCard,
     paymentMethod,
     selectedPaymentMethodIds = [],
     shouldShowPaymentMethodDisplayName,
@@ -57,7 +49,7 @@ const PaymentMethodCard = ({
                 <div className='flex flex-col items-center justify-center w-full h-full'>
                     <Button
                         className='flex items-center justify-center w-[3.2rem] h-[3.2rem] mb-[0.8rem] rounded-full bg-[#ff444f]'
-                        onClick={() => onClickAdd(paymentMethod)}
+                        onClick={() => onClickAdd?.(paymentMethod)}
                     >
                         <LabelPairedPlusLgBoldIcon fill='white' />
                     </Button>
@@ -71,7 +63,7 @@ const PaymentMethodCard = ({
                         isSelected={isSelected}
                         onDeletePaymentMethod={onDeletePaymentMethod}
                         onEditPaymentMethod={onEditPaymentMethod}
-                        onSelectPaymentMethod={() => onSelectPaymentMethodCard(Number(paymentMethod.id))}
+                        onSelectPaymentMethod={() => onSelectPaymentMethodCard?.(Number(paymentMethod.id))}
                         type={type}
                     />
                     <PaymentMethodCardBody

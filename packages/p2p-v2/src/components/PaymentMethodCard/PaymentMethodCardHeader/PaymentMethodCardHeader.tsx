@@ -13,8 +13,8 @@ type TPaymentMethodCardHeaderProps = {
     isSelectable?: boolean;
     isSelected?: boolean;
     medium?: boolean;
-    onDeletePaymentMethod: () => void;
-    onEditPaymentMethod: () => void;
+    onDeletePaymentMethod?: () => void;
+    onEditPaymentMethod?: () => void;
     onSelectPaymentMethod?: () => void;
     small?: boolean;
     type: NonNullable<TAdvertiserPaymentMethods>[number]['type'];
@@ -39,11 +39,11 @@ const PaymentMethodCardHeader = ({
     }
     // TODO: Remember to translate these
     const flyoutMenuItems = [
-        <Button color='black' key={0} onClick={onEditPaymentMethod} size='xs' textSize='xs' variant='ghost'>
+        <Button color='black' key={0} onClick={() => onEditPaymentMethod?.()} size='xs' textSize='xs' variant='ghost'>
             Edit
         </Button>,
 
-        <Button color='black' key={1} onClick={onDeletePaymentMethod} size='xs' textSize='xs' variant='ghost'>
+        <Button color='black' key={1} onClick={() => onDeletePaymentMethod?.()} size='xs' textSize='xs' variant='ghost'>
             Delete
         </Button>,
     ];

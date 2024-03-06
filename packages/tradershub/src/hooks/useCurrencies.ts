@@ -75,7 +75,7 @@ const useCurrencies = () => {
     }, [websiteStatusData?.website_status?.currencies_config, isAdded, legalAllowedCurrencies]);
 
     // Check if all the crypto currencies are already added to the account list
-    const addedAllCryptoCurrencies = useMemo(
+    const allCryptoCurrenciesAreAdded = useMemo(
         () => currencyConfig?.CRYPTO.every(currency => currency.isAdded) ?? false,
         [currencyConfig?.CRYPTO]
     );
@@ -84,7 +84,7 @@ const useCurrencies = () => {
         ...rest,
         data: currencyConfig,
         isLoading: isAuthorizeLoading || isWesiteStatusLoading || isLandingCompanyLoading,
-        addedAllCryptoCurrencies,
+        allCryptoCurrenciesAreAdded,
     };
 };
 

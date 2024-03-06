@@ -6,7 +6,7 @@ import CurrencyCard from '@/screens/CurrencySelector/CurrencyCard';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 
 type TCurrenciesForm = {
-    addedAllCryptoCurrencies?: boolean;
+    allCryptoCurrenciesAreAdded?: boolean;
     currencies: TCurrencyConfig[];
     isSubmitButtonDisabled?: boolean;
     submitButtonLabel?: string;
@@ -24,7 +24,7 @@ const CurrenciesForm = ({
     currencies,
     submitButtonLabel,
     isSubmitButtonDisabled = false,
-    addedAllCryptoCurrencies = false,
+    allCryptoCurrenciesAreAdded = false,
 }: TCurrenciesForm) => {
     const { isDesktop } = useDevice();
 
@@ -45,7 +45,7 @@ const CurrenciesForm = ({
                             currencies?.length < 4 ? 'lg:justify-center' : ''
                         )}
                     >
-                        {addedAllCryptoCurrencies && (
+                        {allCryptoCurrenciesAreAdded && (
                             <InlineMessage className='mx-16 bg-opacity-16 bg-status-light-warning lg:mx-0'>
                                 <Text align='center' as='p' className='w-full text-sm'>
                                     You already have an account for each of the cryptocurrencies available on Deriv.

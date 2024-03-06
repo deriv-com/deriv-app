@@ -26,7 +26,7 @@ const TabTypes = {
  * @returns {React.ReactNode}
  */
 const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
-    const { data: currencies, isLoading, addedAllCryptoCurrencies } = useCurrencies();
+    const { data: currencies, isLoading, allCryptoCurrenciesAreAdded } = useCurrencies();
     const [activeTab, setActiveTab] = useState<'CRYPTO' | 'FIAT'>(TabTypes[0]);
 
     const { isEU } = useRegulationFlags();
@@ -82,9 +82,9 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
                             </Text>
                         </div>
                         <CurrenciesForm
-                            addedAllCryptoCurrencies={addedAllCryptoCurrencies}
+                            allCryptoCurrenciesAreAdded={allCryptoCurrenciesAreAdded}
                             currencies={currencies?.CRYPTO ?? []}
-                            isSubmitButtonDisabled={addedAllCryptoCurrencies}
+                            isSubmitButtonDisabled={allCryptoCurrenciesAreAdded}
                         />
                     </Fragment>
                 )}

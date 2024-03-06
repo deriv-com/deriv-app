@@ -1,6 +1,6 @@
 import React from 'react';
 import { useModal } from '@/providers';
-import { usePOA, usePOI } from '@deriv/api';
+import { usePOA, usePOI } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {

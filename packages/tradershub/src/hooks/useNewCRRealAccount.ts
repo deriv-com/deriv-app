@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useRealAccountCreationContext } from '@/providers/RealAccountCreationProvider';
-import { useAuthorize, useCreateNewRealAccount, useSettings } from '@deriv/api';
+import { useAuthorize, useCreateNewRealAccount, useSettings } from '@deriv/api-v2';
 import useSyncLocalStorageClientAccounts from './useSyncLocalStorageClientAccounts';
 
 /**

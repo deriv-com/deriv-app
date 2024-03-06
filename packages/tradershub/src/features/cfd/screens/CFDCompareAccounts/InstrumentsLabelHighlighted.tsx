@@ -1,7 +1,7 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { THooks, TPlatforms } from '../../../../types';
 import { getHighlightedIconLabel } from './CompareAccountsConfig';
 import InstrumentsIconWithLabel from './InstrumentsIconWithLabel';

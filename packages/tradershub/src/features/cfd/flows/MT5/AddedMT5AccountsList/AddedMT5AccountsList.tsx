@@ -6,7 +6,7 @@ import { useModal } from '@/providers';
 import { THooks } from '@/types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
-import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
+import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 

@@ -6,7 +6,13 @@ type TBuySellFormFooterProps = {
     onClickCancel: () => void;
     onSubmit?: () => void;
 };
-const BuySellFormFooter = ({ isDisabled, onClickCancel, onSubmit = () => undefined }: TBuySellFormFooterProps) => {
+const BuySellFormFooter = ({
+    isDisabled,
+    onClickCancel,
+    onSubmit = () => {
+        //do nothing
+    },
+}: TBuySellFormFooterProps) => {
     const { isMobile } = useDevice();
     return (
         <div className='flex justify-end gap-[1rem]'>

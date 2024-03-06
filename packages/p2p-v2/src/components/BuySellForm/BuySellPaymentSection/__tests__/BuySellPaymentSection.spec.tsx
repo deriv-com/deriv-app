@@ -44,7 +44,6 @@ describe('BuySellPaymentSection', () => {
     it('should render the component as expected', () => {
         render(<BuySellPaymentSection {...mockProps} />);
         expect(screen.getByText('Receive payment to')).toBeInTheDocument();
-        expect(screen.getByText);
     });
     it('should render the payment method cards when there are available payment methods', () => {
         render(<BuySellPaymentSection {...mockProps} availablePaymentMethods={[mockAvailablePaymentMethods]} />);

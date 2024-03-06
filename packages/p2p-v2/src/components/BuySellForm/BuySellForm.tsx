@@ -157,7 +157,9 @@ const BuySellForm = ({
                     <div className='px-[2.4rem] mt-[2.4rem]'>
                         <InlineMessage variant='info'>
                             <Text size={isMobile ? 'xs' : '2xs'}>
-                                {`If the market rate changes from the rate shown here, we won't be able to process your order.`}
+                                {
+                                    'If the market rate changes from the rate shown here, we won’t be able to process your order.'
+                                }
                             </Text>
                         </InlineMessage>
                     </div>

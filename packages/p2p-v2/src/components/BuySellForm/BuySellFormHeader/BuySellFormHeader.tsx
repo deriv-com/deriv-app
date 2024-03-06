@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv-com/ui';
 
 type TBuySellFormHeaderProps = {
-    currency: string | undefined;
+    currency?: string;
     isBuy: boolean;
 };
 const BuySellFormHeader = ({ currency = '', isBuy }: TBuySellFormHeaderProps) => (

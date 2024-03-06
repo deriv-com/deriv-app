@@ -55,7 +55,7 @@ const BuySellPaymentSection = ({
                 <Text size={isMobile ? 'md' : 'sm'}>
                     {sortedList && sortedList.length > 0
                         ? 'You may choose up to 3.'
-                        : `To place an order, add one of the advertiser's preferred payment methods:`}
+                        : 'To place an order, add one of the advertiser’s preferred payment methods:'}
                 </Text>
                 <div className='flex gap-[0.8rem] flex-wrap'>
                     {sortedList?.map(paymentMethod => (

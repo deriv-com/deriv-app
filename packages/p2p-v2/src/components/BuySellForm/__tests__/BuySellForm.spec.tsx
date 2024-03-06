@@ -109,7 +109,7 @@ describe('BuySellForm', () => {
         render(<BuySellForm {...mockProps} advert={{ ...mockAdvertValues, rate_type: 'float' }} />);
         expect(
             screen.getByText(
-                `If the market rate changes from the rate shown here, we won't be able to process your order.`
+                'If the market rate changes from the rate shown here, we won’t be able to process your order.'
             )
         ).toBeInTheDocument();
     });

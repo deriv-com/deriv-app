@@ -57,9 +57,11 @@ export type TCFDStore = {
     has_cfd_error: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
+    is_from_mt5_migration_modal: boolean;
     is_sent_email_modal_enabled: boolean;
     setCFDSuccessDialog: (value: boolean) => void;
     setMT5MigrationError: (value: string) => void;
+    setIsFromMt5MigrationModal: (value: boolean) => void;
     setMigratedMT5Accounts: (value: Record<string, string>[]) => void;
     setError: (state: boolean, obj?: Error) => void;
     submitMt5Password: (

@@ -66,6 +66,9 @@ const MultiplierCardBody = ({
                     >
                         <Money amount={bid_price} currency={currency} />
                     </div>
+                    {!is_sold && (
+                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={total_profit} />
+                    )}
                 </ContractCardItem>
                 <ContractCardItem header={DEAL_CANCEL_FEE} className='dc-contract-card__deal-cancel-fee'>
                     {cancellation_price ? (

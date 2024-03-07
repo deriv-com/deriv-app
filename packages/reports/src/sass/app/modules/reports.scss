@@ -994,8 +994,24 @@ $side-padding: 1.2em;
             }
         }
         &__bid_price {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-weight: bold;
 
+            &--movement {
+                width: 16px;
+                height: 16px;
+
+                &-complete,
+                &-complete:after {
+                    display: none;
+                }
+                &:after {
+                    content: '';
+                    width: 16px;
+                }
+            }
             &--negative {
                 color: var(--text-loss-danger);
             }

@@ -47,6 +47,12 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                         >
                             <Money amount={contract_value} currency={currency} />
                         </div>
+                        {!is_sold && (
+                            <ArrowIndicator
+                                className='dc-contract-card__indicative--movement'
+                                value={sell_price || contract_value}
+                            />
+                        )}
                     </ContractCardItem>
 
                     <ContractCardItem header={ENTRY_SPOT}>
@@ -88,6 +94,12 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                             >
                                 <Money amount={contract_value} currency={currency} />
                             </div>
+                            {!is_sold && (
+                                <ArrowIndicator
+                                    className='dc-contract-card__indicative--movement'
+                                    value={sell_price || contract_value}
+                                />
+                            )}
                         </ContractCardItem>
 
                         <ContractCardItem header={STRIKE}>{barrier && addComma(barrier)}</ContractCardItem>

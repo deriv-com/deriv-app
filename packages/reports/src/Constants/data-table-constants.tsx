@@ -248,15 +248,21 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
     {
         title: localize('Contract value'),
         col_index: 'indicative',
-        renderCellContent: ({ cell_value, row_obj, is_footer }: TCellContentProps) => (
-            <IndicativeCell
-                amount={+cell_value}
-                currency={currency}
-                contract_info={row_obj.contract_info}
-                is_sell_requested={row_obj.is_sell_requested}
-                is_footer={is_footer}
-            />
-        ),
+        renderCellContent: ({ cell_value, row_obj, is_footer }: TCellContentProps) => {
+            const { profit_loss, contract_info } = row_obj ?? {};
+            const profit = profit_loss ?? contract_info.profit;
+
+            return (
+                <IndicativeCell
+                    amount={+cell_value}
+                    currency={currency}
+                    contract_info={row_obj.contract_info}
+                    is_sell_requested={row_obj.is_sell_requested}
+                    is_footer={is_footer}
+                    profit={profit}
+                />
+            );
+        },
     },
     {
         title: localize('Remaining time'),
@@ -376,6 +382,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                     })}
                 >
                     <Money amount={row_obj.contract_info.bid_price} currency={currency} />
+                    <ArrowIndicator className='open-positions__bid_price--movement' value={total_profit} />
                 </div>
             );
         },
@@ -509,6 +516,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
                     })}
                 >
                     <Money amount={row_obj.contract_info.bid_price} currency={currency} />
+                    <ArrowIndicator className='open-positions__bid_price--movement' value={total_profit} />
                 </div>
             );
         },

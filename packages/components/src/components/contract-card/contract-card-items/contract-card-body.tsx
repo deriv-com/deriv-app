@@ -157,7 +157,14 @@ const ContractCardBody = ({
                         )}
                     </ContractCardItem>
                     <ContractCardItem header={is_sold ? PAYOUT : CONTRACT_VALUE}>
-                        <Money currency={currency} amount={Number(sell_price || indicative)} />
+                        <div
+                            className={classNames({
+                                'dc-contract-card--profit': Number(profit) > 0,
+                                'dc-contract-card--loss': Number(profit) < 0,
+                            })}
+                        >
+                            <Money currency={currency} amount={Number(sell_price || indicative)} />
+                        </div>
                         {!is_sold && (
                             <ArrowIndicator
                                 className='dc-contract-card__indicative--movement'

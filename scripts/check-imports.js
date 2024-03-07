@@ -46,7 +46,7 @@ Object.entries(BLOCKED_IMPORTS).forEach(([packagePath, blockedPackages]) => {
         blockedPackages.forEach(packageName => {
             if (packageJsonContent.includes(packageName)) {
                 // eslint-disable-next-line no-console
-                console.error(`Using / importing "${packageName}" in ${packagePath}/package.json is NOT ALLOWED!`);
+                console.error(`Using of "${packageName}" in ${packagePath}/package.json is NOT ALLOWED!`);
                 process.exit(1);
             }
         });

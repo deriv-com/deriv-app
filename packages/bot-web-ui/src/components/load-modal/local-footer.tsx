@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { IMPORT_NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
+import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const LocalFooter = observer(() => {
@@ -25,7 +25,7 @@ const LocalFooter = observer(() => {
                     loadFileFromLocal();
                     toggleLoadModal();
                     setPreviewOnPopup(false);
-                    setOpenSettings(IMPORT_NOTIFICATION_TYPE.BOT_IMPORT);
+                    setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
                 }}
                 is_loading={is_open_button_loading}
                 has_effect

@@ -21,7 +21,7 @@ export type TNotificationStyle = {
     pauseOnFocusLoss?: boolean;
 };
 
-export enum IMPORT_NOTIFICATION_TYPE {
+export enum NOTIFICATION_TYPE {
     BOT_IMPORT = 'BOT_IMPORT',
     BOT_DELETE = 'BOT_DELETE',
 }
@@ -29,8 +29,8 @@ export enum IMPORT_NOTIFICATION_TYPE {
 export const notification_message = {
     bot_stop: 'You’ve just stopped the bot. Any open contracts can be viewed on the Reports page',
     workspace_change: 'Changes you make will not affect your running bot.',
-    [IMPORT_NOTIFICATION_TYPE.BOT_IMPORT]: 'You’ve successfully imported a bot.',
-    [IMPORT_NOTIFICATION_TYPE.BOT_DELETE]: 'You’ve successfully deleted a bot.',
+    [NOTIFICATION_TYPE.BOT_IMPORT]: 'You’ve successfully imported a bot.',
+    [NOTIFICATION_TYPE.BOT_DELETE]: 'You’ve successfully deleted a bot.',
 };
 
 export const notification_style = {

@@ -2,7 +2,7 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
 import { botNotification } from 'Components/bot-notification/bot-notification';
-import { IMPORT_NOTIFICATION_TYPE, notification_message } from 'Components/bot-notification/bot-notification-utils';
+import { notification_message, NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import * as strategy_description from '../constants/quick-strategies';
 import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';
@@ -43,7 +43,7 @@ export interface IDashboardStore {
     setInfoPanelVisibility: (visibility: boolean) => void;
     setIsFileSupported: (is_file_supported: boolean) => void;
     setWebSocketState: (is_web_socket_intialised: boolean) => void;
-    setOpenSettings: (toast_message: IMPORT_NOTIFICATION_TYPE) => void;
+    setOpenSettings: (toast_message: NOTIFICATION_TYPE) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     setStrategySaveType: (param: string) => void;
     setFaqTitle: (param: string) => void;
@@ -297,7 +297,7 @@ export default class DashboardStore implements IDashboardStore {
         this.is_web_socket_intialised = is_web_socket_intialised;
     };
 
-    setOpenSettings = (toast_message: IMPORT_NOTIFICATION_TYPE) => {
+    setOpenSettings = (toast_message: NOTIFICATION_TYPE) => {
         this.toast_message = toast_message;
         botNotification(notification_message[toast_message]);
     };

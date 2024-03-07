@@ -514,26 +514,17 @@ export default class AccountTransferStore {
         const accounts = this.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
 
-        const isMt5BetweenCFDsTransfer =
-            (selected_from?.is_mt && this.selected_to.is_mt) ||
-            (selected_from?.is_mt && this.selected_to.is_dxtrade) ||
-            (selected_from?.is_mt && this.selected_to.is_ctrader);
+        const platforms = ['is_mt', 'is_ctrader', 'is_dxtrade'] as const;
 
-        const isCTraderBetweenCFDsTransfer =
-            (selected_from?.is_ctrader && this.selected_to.is_ctrader) ||
-            (selected_from?.is_ctrader && this.selected_to.is_dxtrade) ||
-            (selected_from?.is_ctrader && this.selected_to.is_mt);
-
-        const isDxtradeBetweenCFDsTransfer =
-            (selected_from?.is_dxtrade && this.selected_to.is_dxtrade) ||
-            (selected_from?.is_dxtrade && this.selected_to.is_mt) ||
-            (selected_from?.is_dxtrade && this.selected_to.is_ctrader);
+        const isBetweenCFDsTransfer = platforms.some(from_platform => {
+            return platforms.some(to_platform => selected_from?.[from_platform] && this.selected_to?.[to_platform]);
+        });
 
         // if new value of selected_from is the same as the current selected_to
         // switch the value of selected_from and selected_to
         if (selected_from?.value === this.selected_to.value) {
             this.onChangeTransferTo({ target: { value: this.selected_from.value } });
-        } else if (isMt5BetweenCFDsTransfer || isCTraderBetweenCFDsTransfer || isDxtradeBetweenCFDsTransfer) {
+        } else if (isBetweenCFDsTransfer) {
             // not allowed to transfer from MT5 to MT5
             // not allowed to transfer from Dxtrade to Dxtrade
             // not allowed to transfer from cTrader to cTrader

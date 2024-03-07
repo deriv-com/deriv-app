@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { ORDERS_STATUS } from '@/constants';
 import { useQueryString } from '@/hooks';
 import useExtendedOrderDetails from '@/hooks/useExtendedOrderDetails';
-import { OrderStatusTag, OrderTimer } from '@/pages/orders/components';
+import { OrderStatusTag, OrderTimer, OrderRatingButton } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
 import { useActiveAccount, useServerTime } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
@@ -28,6 +28,7 @@ const OrdersTableRow = ({ ...props }) => {
         account_currency: accountCurrency,
         amount_display: amountDisplay,
         id,
+        isCompletedOrder,
         local_currency: localCurrency,
         price_display: priceDisplay,
         purchaseTime,
@@ -60,6 +61,7 @@ const OrdersTableRow = ({ ...props }) => {
                             <ChatIcon />
                         </div>
                     )}
+                    {isCompletedOrder && <OrderRatingButton />}
                 </div>
                 <div className='flex gap-1'>
                     <Text size='2xl' weight='bold'>
@@ -91,6 +93,7 @@ const OrdersTableRow = ({ ...props }) => {
             <Text size='sm'>{isBuyOrderForUser ? transactionAmount : offerAmount}</Text>
             <Text size='sm'>{isBuyOrderForUser ? offerAmount : transactionAmount}</Text>
             {!isPast && <OrderTimer distance={distance} />}
+            {isCompletedOrder && 'sm' && <OrderRatingButton />}
         </div>
     );
 };

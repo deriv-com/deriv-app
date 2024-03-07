@@ -15,60 +15,66 @@ const CompareAccountsDescription = ({ marketType, shortCode }: TCompareAccountsD
     const { isEU: isEuRegion } = useRegulationFlags();
     const isDemo = activeTrading?.is_virtual;
     const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
-    const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
+    const {
+        leverage,
+        counterpartyCompany,
+        counterpartyCompanyDescription,
+        jurisdiction,
+        jurisdictionDescription,
+        leverageDescription,
+        regulator,
+        regulatorDescription,
+        regulatorLicense,
+        spread,
+        spreadDescription,
+    } = getJurisdictionDescription(marketTypeShortCode ?? '');
 
     return (
-        <div className='max-h-[300px]'>
-            <div className='text-center m-9'>
-                <Text as='p' size='xl' weight='bold'>
-                    {'Up to'} {jurisdictionData.leverage}
-                </Text>
-                <Text as='p' size='sm'>
-                    {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
-                </Text>
-            </div>
+        <div className='flex flex-col items-center gap-5 px-16 pt-16 lg:px-0'>
+            <Text as='p' className='text-default lg:text-xl' weight='bold'>
+                {'Up to'} {leverage}
+            </Text>
+            <Text as='p' className='text-xs lg:text-sm'>
+                {!isEuRegion ? leverageDescription : 'Leverage'}
+            </Text>
             {!isEuRegion && (
-                <div className='m-9'>
-                    <Text as='p' size='xl' weight='bold'>
-                        {jurisdictionData.spread}
+                <Fragment>
+                    <Text align='center' as='p' className='text-default lg:text-xl' weight='bold'>
+                        {spread}
                     </Text>
-                    <Text as='p' size='sm'>
-                        {jurisdictionData.spread_description}
+                    <Text align='center' as='p' className='text-xs lg:text-sm'>
+                        {spreadDescription}
                     </Text>
-                </div>
+                </Fragment>
             )}
             {!isDemo && (
-                <Fragment>
-                    <div className='m-9'>
-                        <Text as='p' size='sm' weight='bold'>
-                            {jurisdictionData.counterparty_company}
-                        </Text>
-                        <Text as='p' size='sm'>
-                            {jurisdictionData.counterparty_company_description}
-                        </Text>
-                    </div>
-                    <div className='m-9'>
-                        <Text as='p' size='sm' weight='bold'>
-                            {jurisdictionData.jurisdiction}
-                        </Text>
-                        <Text as='p' size='sm'>
-                            {jurisdictionData.jurisdiction_description}
-                        </Text>
-                    </div>
-                    <div className='m-9'>
-                        <Text as='p' size='sm' weight='bold'>
-                            {jurisdictionData.regulator}
-                        </Text>
-                        {jurisdictionData.regulator_license && (
-                            <Text as='p' size='sm'>
-                                {jurisdictionData.regulator_license}
+                <div className='flex flex-col items-center gap-5 lg:gap-7 lg:px-6'>
+                    <Text as='p' size='sm' weight='bold'>
+                        {counterpartyCompany}
+                    </Text>
+                    <Text as='p' className='text-xs lg:text-sm'>
+                        {counterpartyCompanyDescription}
+                    </Text>
+                    <Text align='center' as='p' className='text-default lg:text-default' weight='bold'>
+                        {jurisdiction}
+                    </Text>
+                    <Text as='p' size='xs'>
+                        {jurisdictionDescription}
+                    </Text>
+                    <Text align='center' as='p' className='text-default lg:text-default' weight='bold'>
+                        {regulator}
+                    </Text>
+                    <div>
+                        {regulatorLicense && (
+                            <Text align='center' as='p' className='text-xs lg:text-sm'>
+                                {regulatorLicense}
                             </Text>
                         )}
-                        <Text as='p' size='sm'>
-                            {jurisdictionData.regulator_description}
+                        <Text align='center' as='p' className='text-xs lg:text-sm'>
+                            {regulatorDescription}
                         </Text>
                     </div>
-                </Fragment>
+                </div>
             )}
         </div>
     );

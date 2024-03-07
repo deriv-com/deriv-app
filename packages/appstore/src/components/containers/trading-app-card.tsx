@@ -144,13 +144,21 @@ const TradingAppCard = ({
             </div>
             <div
                 className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
-                data-testid={`trading-app-card-${platform_name.replaceAll(' ', '-').toLowerCase()}${
-                    selected_mt5_jurisdiction?.jurisdiction ? `-${selected_mt5_jurisdiction.jurisdiction}` : ''
+                data-testid={`dt_trading-app-card_${is_real ? 'real' : 'demo'}_${platform_name
+                    .replaceAll(' ', '-')
+                    .toLowerCase()}${
+                    selected_mt5_jurisdiction?.jurisdiction ? `_${selected_mt5_jurisdiction.jurisdiction}` : ''
                 }`}
             >
                 <div className='trading-app-card__details'>
                     <div>
-                        <Text className='title' size='xs' line_height='s' color='prominent'>
+                        <Text
+                            className='title'
+                            size='xs'
+                            line_height='s'
+                            color='prominent'
+                            data-testid='dt_cfd-account-name'
+                        >
                             {!is_real_account && sub_title ? `${sub_title} ${demo_label}` : sub_title}
                         </Text>
                         {!wallet_account && short_code_and_region && (
@@ -171,6 +179,9 @@ const TradingAppCard = ({
                             line_height='s'
                             weight='bold'
                             color={action_type === 'trade' ? 'prominent' : 'general'}
+                            data-testid={
+                                action_type === 'get' || is_deriv_platform ? 'dt_platform-name' : 'dt_account-balance'
+                            }
                         >
                             {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
                         </Text>
@@ -185,7 +196,15 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    <Text className='description' color={'general'} size='xxs' line_height='m'>
+                    <Text
+                        className='description'
+                        color={'general'}
+                        size='xxs'
+                        line_height='m'
+                        data-testid={
+                            action_type === 'get' || is_deriv_platform ? 'dt_platform-description' : 'dt_account-id'
+                        }
+                    >
                         {app_desc}
                     </Text>
                     {mt5_acc_auth_status && (

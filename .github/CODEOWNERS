@@ -171,9 +171,10 @@
 
 # ==============================================================
 #  deriv-app/api
+#  Deprecated - do not use. For -v2 projects use api-v2. For old projects - do not use api nor api-v2, use old patterns / old hooks. 
 # ==============================================================
 
-/packages/api/**/*                                              @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv
+/packages/api/**/*                                              @wojciech-deriv @matin-deriv @yashim-deriv
 
 # ==============================================================
 #  deriv-app/api-v2

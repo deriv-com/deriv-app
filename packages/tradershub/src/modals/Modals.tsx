@@ -1,8 +1,18 @@
 import React, { Fragment } from 'react';
-import { DxtradePasswordModal, JurisdictionModal } from '@/features/cfd/modals';
+import {
+    CTraderSuccessModal,
+    DxtradePasswordModal,
+    JurisdictionModal,
+    MT5AccountTypeModal,
+    MT5PasswordModal,
+    TopUpModal,
+    TradeModal,
+} from '@/features/cfd/modals';
+import { ChangePassword } from '@/features/cfd/screens';
 import { RealAccountCreation } from '@/flows';
 import { AccountSelector } from './AccountSelector';
 import { AddOrManageAccount } from './AddOrManageAccount';
+import { RegulationModal } from './RegulationModal';
 
 /**
  * @description The place to import and export all modals
@@ -17,6 +27,13 @@ const Modals = () => {
             <DxtradePasswordModal />
             <JurisdictionModal />
             <RealAccountCreation />
+            <TradeModal />
+            <TopUpModal />
+            <ChangePassword />
+            <MT5AccountTypeModal />
+            <RegulationModal />
+            <CTraderSuccessModal />
+            <MT5PasswordModal />
         </Fragment>
     );
 };

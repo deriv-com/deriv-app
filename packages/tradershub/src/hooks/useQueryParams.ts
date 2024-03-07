@@ -4,11 +4,17 @@ import { useHistory, useLocation } from 'react-router-dom';
 type ModalId =
     | 'AccountSelector'
     | 'AddOrManageAccount'
+    | 'ChangePassword'
+    | 'CTraderSuccessModal'
     | 'DxtradePasswordModal'
     | 'GetADerivAccountDialog'
     | 'JurisdictionModal'
+    | 'MT5AccountTypeModal'
     | 'MT5PasswordModal'
     | 'RealAccountCreation'
+    | 'RegulationModal'
+    | 'SentEmailContent'
+    | 'TopUpModal'
     | 'TradeModal';
 
 /**

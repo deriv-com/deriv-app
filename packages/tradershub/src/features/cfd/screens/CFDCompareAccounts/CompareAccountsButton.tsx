@@ -4,7 +4,6 @@ import { useModal } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
 import { DummyComponent } from '@cfd/components';
 import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
-import { CTraderSuccessModal, MT5PasswordModal } from '@cfd/modals';
 import {
     useActiveTradingAccount,
     useAuthentication,
@@ -85,21 +84,21 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
 
     useEffect(() => {
         if (isAccountCreated) {
-            show(<CTraderSuccessModal isDemo={isDemo} />);
+            openModal('CTraderSuccessModal');
         }
         if (createAccountError) {
             // Error Component to be implemented
             show(<DummyComponent />);
         }
-    }, [createAccountError, isAccountCreated, isDemo, show]);
+    }, [createAccountError, isAccountCreated, isDemo, openModal, show]);
 
     const onClickAdd = () => {
         if (platform === CFDPlatforms.MT5) {
             // Going to remove Placeholder once Verification flow is implemented
-            if (isAccountStatusVerified) show(<DummyComponent />);
+            if (isAccountStatusVerified) return;
 
             if (isAccountStatusVerified) {
-                show(<MT5PasswordModal />);
+                openModal('MT5PasswordModal');
             } else {
                 // show(<Verifaication />);
             }

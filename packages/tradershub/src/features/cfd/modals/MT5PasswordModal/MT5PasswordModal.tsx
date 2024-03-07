@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Dialog, Modal } from '@/components';
+import { useQueryParams } from '@/hooks';
 import { Category, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api-v2';
-import { useDevice } from '@deriv-com/ui';
+import { Modal, useDevice } from '@deriv-com/ui';
 import MT5PasswordFooter from './MT5PasswordFooter';
 import MT5PasswordInput from './MT5PasswordInput';
 
@@ -10,6 +10,7 @@ const MT5PasswordModal = () => {
     const [password, setPassword] = useState('');
     const { data: activeTrading } = useActiveTradingAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
+    const { closeModal, isModalOpen } = useQueryParams();
     const { isDesktop } = useDevice();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
@@ -19,27 +20,18 @@ const MT5PasswordModal = () => {
         PlatformDetails.mt5.title
     } account`;
 
-    if (!isDesktop) {
-        return (
-            <Modal>
-                <Modal.Header title={ModalHeaderTitle} />
-                <Modal.Content>
-                    <MT5PasswordInput password={password} setPassword={setPassword} />
-                </Modal.Content>
+    return (
+        <Modal isOpen={isModalOpen('MT5PasswordModal')} onRequestClose={closeModal}>
+            <Modal.Header onRequestClose={closeModal} title={ModalHeaderTitle} />
+            <Modal.Body>
+                <MT5PasswordInput password={password} setPassword={setPassword} />
+            </Modal.Body>
+            {!isDesktop && (
                 <Modal.Footer>
                     <MT5PasswordFooter password={password} />
                 </Modal.Footer>
-            </Modal>
-        );
-    }
-
-    return (
-        <Dialog>
-            <Dialog.Header />
-            <Dialog.Content>
-                <MT5PasswordInput password={password} setPassword={setPassword} />
-            </Dialog.Content>
-        </Dialog>
+            )}
+        </Modal>
     );
 };
 

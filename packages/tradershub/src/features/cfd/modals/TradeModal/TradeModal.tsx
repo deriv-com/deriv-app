@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
+import { useQueryParams } from '@/hooks';
 import { useCFDContext } from '@/providers';
-import { THooks, TMarketTypes, TPlatforms } from '@/types';
+import { THooks } from '@/types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '@cfd/constants';
 import { TradeScreen } from '@cfd/screens';
 import { Modal, Text, useDevice } from '@deriv-com/ui';
 
-type TTradeModalProps = {
-    account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
-    marketType?: TMarketTypes.All;
-    platform: TPlatforms.All;
-};
-
-const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
+const TradeModal = () => {
     const { isDesktop } = useDevice();
-    const { setCfdState } = useCFDContext();
+    const { setCfdState, cfdState } = useCFDContext();
+    const { isModalOpen, closeModal } = useQueryParams();
+
+    const { account, marketType, platform } = cfdState;
 
     useEffect(() => {
         setCfdState({
@@ -26,9 +24,11 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
 
     const appOrder = ['ios', 'android', 'huawei'];
 
+    if (!account || !platform || !marketType) return null;
+
     return (
-        <Modal className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background ' isOpen={true}>
-            <Modal.Header>
+        <Modal isOpen={isModalOpen('TradeModal')} onRequestClose={closeModal}>
+            <Modal.Header onRequestClose={closeModal}>
                 <Text weight='bold'>Trade</Text>
             </Modal.Header>
             <Modal.Body className='w-auto h-auto'>
@@ -37,7 +37,7 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
             <Modal.Footer>
                 <div className='pt-0 min-h-[190px] flex justify-center items-center flex-col h-fit w-full gap-16'>
                     <Text align='center' size='xs' weight='bold'>
-                        Download {PlatformDetails[platform].title} on your phone to trade with the{' '}
+                        Download {PlatformDetails[platform]?.title} on your phone to trade with the{' '}
                         {PlatformDetails[platform].title} account
                     </Text>
                     <div className='flex gap-16'>

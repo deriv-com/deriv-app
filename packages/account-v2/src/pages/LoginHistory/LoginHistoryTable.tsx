@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from '@deriv-com/ui';
 
-export const LoginHistoryTable = () => {
+export const LoginHistory = () => {
     // const { data, header } = useLoginHistoryTableData();
 
     return (
@@ -36,7 +36,7 @@ export const LoginHistoryTable = () => {
                 isFetching={true}
                 renderHeader={header => <span>{header}</span>}
                 rowRender={data => (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr) ' }}>
+                    <div className='grid grid-flow-col '>
                         <div>{data.action}</div>
                         <div>{data.browser} </div>
                         <div>{data.datetime}</div>

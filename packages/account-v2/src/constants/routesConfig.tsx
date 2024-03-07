@@ -1,6 +1,6 @@
 import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
-import { LoginHistoryTable } from '../pages/LoginHistoryTable';
+import { LoginHistory } from '../pages/LoginHistory';
 import { DummyRoute } from '../router/components/DummyRoute';
 import { ACCOUNT_V2_ROUTES } from './routes';
 
@@ -61,7 +61,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.AccountLimits,
     },
     {
-        routeComponent: LoginHistoryTable,
+        routeComponent: LoginHistory,
         routeName: 'Login history',
         routePath: ACCOUNT_V2_ROUTES.LoginHistory,
     },

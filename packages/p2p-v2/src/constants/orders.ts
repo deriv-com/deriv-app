@@ -1,4 +1,4 @@
-export const ORDERS_STATUS = Object.freeze({
+export const ORDERS_STATUS = {
     ACTIVE_ORDERS: 'Active orders',
     BUYER_CONFIRMED: 'buyer-confirmed',
     CANCELLED: 'cancelled',
@@ -10,4 +10,4 @@ export const ORDERS_STATUS = Object.freeze({
     PENDING: 'pending',
     REFUNDED: 'refunded',
     TIMED_OUT: 'timed-out',
-});
+} as const;

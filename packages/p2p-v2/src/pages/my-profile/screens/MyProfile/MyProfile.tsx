@@ -25,7 +25,7 @@ const MyProfile = () => {
 
     useEffect(() => {
         const isPoaPoiVerified = (!isP2PPoaRequired || isPoaVerified) && isPoiVerified;
-        if (isPoaPoiVerified && !!failureReason) setIsNicknameModalOpen(false);
+        if (isPoaPoiVerified && !!failureReason) setIsNicknameModalOpen(true);
     }, [failureReason, isP2PPoaRequired, isPoaVerified, isPoiVerified]);
 
     if (isLoading && !advertiserStats) {

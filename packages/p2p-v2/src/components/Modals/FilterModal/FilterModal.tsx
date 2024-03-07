@@ -65,11 +65,9 @@ const FilterModal = ({
     };
 
     const onResetClear = () => {
-        if (showPaymentMethods) {
-            setPaymentMethods([]);
-        } else {
-            setPaymentMethods(selectedPaymentMethods);
-            setIsMatching(isToggled);
+        setPaymentMethods([]);
+        if (!showPaymentMethods) {
+            setIsMatching(true);
         }
     };
 

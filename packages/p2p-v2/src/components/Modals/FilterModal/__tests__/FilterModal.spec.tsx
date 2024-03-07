@@ -74,22 +74,19 @@ describe('<FilterModal />', () => {
         expect(toggleSwitch).toBeInTheDocument();
         expect(toggleSwitch).toBeChecked();
         expect(resetButton).toBeInTheDocument();
-        expect(resetButton).toBeDisabled();
         expect(applyButton).toBeInTheDocument();
         expect(applyButton).toBeDisabled();
     });
 
-    it('should enable the reset and apply buttons when user toggles the ToggleSwitch', () => {
+    it('should enable the apply button when user toggles the ToggleSwitch', () => {
         render(<FilterModal {...mockProps} />, { wrapper });
 
         const toggleSwitch = screen.getByRole('checkbox');
-        const resetButton = screen.getByRole('button', { name: 'Reset' });
         const applyButton = screen.getByRole('button', { name: 'Apply' });
 
         userEvent.click(toggleSwitch);
 
         expect(toggleSwitch).not.toBeChecked();
-        expect(resetButton).toBeEnabled();
         expect(applyButton).toBeEnabled();
     });
 

@@ -20,13 +20,12 @@ const FilterModalFooter = ({
     showPaymentMethods,
 }: TFilterModalFooterProps) => {
     const { isMobile } = useDevice();
+
     return (
         <div className='p2p-v2-filter-modal-footer'>
             <Button
                 className='mr-[0.8rem]'
-                disabled={
-                    (showPaymentMethods && paymentMethods.length === 0) || (!showPaymentMethods && hasSameFilters)
-                }
+                disabled={showPaymentMethods && paymentMethods.length === 0}
                 isFullWidth={isMobile}
                 onClick={onResetClear}
                 size='lg'
@@ -35,10 +34,7 @@ const FilterModalFooter = ({
                 {showPaymentMethods ? 'Clear' : 'Reset'}
             </Button>
             <Button
-                disabled={
-                    (showPaymentMethods && (paymentMethods.length === 0 || hasSamePaymentMethods)) ||
-                    (!showPaymentMethods && hasSameFilters)
-                }
+                disabled={(showPaymentMethods && hasSamePaymentMethods) || (!showPaymentMethods && hasSameFilters)}
                 isFullWidth={isMobile}
                 onClick={onApplyConfirm}
                 size='lg'

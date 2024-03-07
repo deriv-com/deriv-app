@@ -3,7 +3,7 @@ import { Modal } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
+import { useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 
 type TTopUpModalProps = {

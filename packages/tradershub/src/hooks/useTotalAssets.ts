@@ -1,6 +1,6 @@
 import { displayMoney } from '@/helpers';
 import { useUIContext } from '@/providers';
-import { useActiveTradingAccount, useAuthorize } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize } from '@deriv/api-v2';
 import useCFDAssets from './useCFDAssets';
 import usePlatformAssets from './usePlatformAssets';
 

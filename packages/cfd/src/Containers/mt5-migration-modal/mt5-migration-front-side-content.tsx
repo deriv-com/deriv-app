@@ -106,7 +106,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                         is_info
                     />
                 </div>
-                <div className='mt5-migration-modal__message'>
+                <div>
                     <Text as='p' size={is_mobile ? 'xxs' : 'xs'} align='center'>
                         {has_derived_and_financial_mt5 ? (
                             <Localize
@@ -114,7 +114,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                                 components={[
                                     <strong key={0} />,
                                     <StaticUrl
-                                        key={0}
+                                        key={1}
                                         className='link'
                                         href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()].tnc_url}
                                     />,
@@ -126,14 +126,15 @@ const MT5MigrationFrontSideContent = observer(() => {
                             />
                         ) : (
                             <Localize
-                                i18n_default_text='By clicking on <0>Next</0> you agree to move your {{platform}} {{type}} {{from_account}} account(s) under Deriv {{account_to_migrate}} Ltd’s <1>terms and conditions</1>.'
+                                i18n_default_text='By clicking on <0>Next</0> you agree to move your {{platform}} {{type}} {{from_account}} account(s) under <2/>Deriv {{account_to_migrate}} Ltd’s <1>terms and conditions</1>.'
                                 components={[
                                     <strong key={0} />,
                                     <StaticUrl
-                                        key={0}
+                                        key={1}
                                         className='link'
                                         href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()].tnc_url}
                                     />,
+                                    is_mobile ? null : <br key={2} />,
                                 ]}
                                 values={{
                                     ...getFormattedAccounts(),

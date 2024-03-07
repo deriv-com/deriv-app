@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AppContainer, EUDisclaimerMessage } from '@/components';
-import { RealAccountCreation } from '@/flows';
 import { useRegulationFlags } from '@/hooks';
+import { Modals } from '@/modals';
 import { Router } from '@/routes';
 
 const AppContent = () => {
@@ -17,7 +17,7 @@ const AppContent = () => {
                 <Router />
             </AppContainer>
             {isEU && <EUDisclaimerMessage />}
-            <RealAccountCreation />
+            <Modals />
         </Fragment>
     );
 };

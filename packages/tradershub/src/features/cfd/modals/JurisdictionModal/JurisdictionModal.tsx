@@ -7,7 +7,6 @@ import { DummyComponent, DynamicLeverageContext } from '@cfd/components';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { MT5PasswordModal } from '@cfd/modals';
 import { DynamicLeverageScreen, DynamicLeverageTitle, JurisdictionScreen, JurisdictionTncSection } from '@cfd/screens';
-import { useAvailableMT5Accounts } from '@deriv/api-v2';
 import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
 
 type TJurisdictionFlowProps = { selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'] };
@@ -28,7 +27,6 @@ const JurisdictionModal = () => {
     const { isEU } = useRegulationFlags();
     const { cfdState, setCfdState } = useCFDContext();
 
-    const { isLoading } = useAvailableMT5Accounts();
     const { isDesktop } = useDevice();
 
     const { marketType: marketTypeState, selectedJurisdiction } = cfdState;
@@ -52,9 +50,6 @@ const JurisdictionModal = () => {
         setCfdState({ selectedJurisdiction });
     }, [selectedJurisdiction, setCfdState]);
 
-    // Do this later: Add Loading Placeholder
-    if (isLoading) return <Text weight='bold'>Loading...</Text>;
-
     const isModalOpen = isOpen('JurisdictionModal');
 
     return (
@@ -69,19 +64,23 @@ const JurisdictionModal = () => {
                     <Modal.Header onRequestClose={closeModal}>
                         <Text weight='bold'>{jurisdictionTitle}</Text>
                     </Modal.Header>
-                ) : null}
+                ) : (
+                    <DynamicLeverageTitle />
+                )}
                 <Modal.Body
                     className={twMerge(
-                        'p-0 flex flex-col relative min-h-0 overflow-auto lg:w-auto lg:h-auto lg:p-8 lg:min-w-[1100px]'
+                        'p-0 flex flex-col relative min-h-0 overflow-auto w-screen h-screen lg:w-auto lg:h-auto lg:p-8 lg:min-w-[1100px]',
+                        isDynamicLeverageVisible && 'lg:min-h-[700px]'
                     )}
                 >
-                    {isDynamicLeverageVisible && <DynamicLeverageTitle />}
                     <JurisdictionScreen setIsCheckBoxChecked={setIsCheckBoxChecked} />
                     {isDynamicLeverageVisible && <DynamicLeverageScreen />}
-                    <JurisdictionTncSection
-                        isCheckBoxChecked={isCheckBoxChecked}
-                        setIsCheckBoxChecked={setIsCheckBoxChecked}
-                    />
+                    {!isDynamicLeverageVisible && (
+                        <JurisdictionTncSection
+                            isCheckBoxChecked={isCheckBoxChecked}
+                            setIsCheckBoxChecked={setIsCheckBoxChecked}
+                        />
+                    )}
                 </Modal.Body>
                 {!isDynamicLeverageVisible ? (
                     <Modal.Footer className='lg:rounded-default'>

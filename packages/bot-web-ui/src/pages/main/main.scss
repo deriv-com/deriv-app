@@ -36,6 +36,9 @@
             &__active-line {
                 background-color: var(--general-main-1);
                 transition: none;
+                &[dir='rtl'] {
+                    inset-inline-end: 0;
+                }
             }
 
             &__active {

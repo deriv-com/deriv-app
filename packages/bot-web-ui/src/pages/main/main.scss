@@ -33,12 +33,13 @@
         }
 
         .dc-tabs {
+            [dir='rtl'] .dc-tabs__active-line {
+                inset-inline-end: 0;
+            }
+
             &__active-line {
                 background-color: var(--general-main-1);
                 transition: none;
-                &[dir='rtl'] {
-                    inset-inline-end: 0;
-                }
             }
 
             &__active {

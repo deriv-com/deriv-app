@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { TOrders } from 'types';
 import { ORDERS_STATUS } from '@/constants';
 import { useQueryString } from '@/hooks';
 import useExtendedOrderDetails from '@/hooks/useExtendedOrderDetails';
@@ -10,7 +11,7 @@ import { Text, useDevice } from '@deriv-com/ui';
 import ChatIcon from '../../../../../public/ic-chat.svg';
 import './OrdersTableRow.scss';
 
-const OrdersTableRow = ({ ...props }) => {
+const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     const { isMobile } = useDevice();
     const { queryString } = useQueryString();
     const isPast = queryString.get('tab') === ORDERS_STATUS.PAST_ORDERS;

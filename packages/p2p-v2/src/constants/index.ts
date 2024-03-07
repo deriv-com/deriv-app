@@ -4,4 +4,5 @@ export * from './buy-sell';
 export * from './orders';
 export * from './p2p-logo';
 export * from './payment-methods';
+export * from './url';
 export * from './validation';

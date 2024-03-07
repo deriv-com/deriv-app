@@ -1,13 +1,14 @@
-import { TServerTime } from 'types';
+import { TOrders, TServerTime } from 'types';
 import { BUY_SELL, ORDERS_STATUS } from '@/constants'; // Update your import path
 import { convertToMillis, getFormattedDateString, toMoment } from '@/utils';
-import { p2p } from '@deriv/api-v2';
 
-type TOrder = NonNullable<ReturnType<typeof p2p.order.useGetList>['data']>[number];
+type TOrder = TOrders[number];
 
 type TUserDetails = TOrder['advertiser_details'] | TOrder['client_details'];
+
+type TObject = Record<string, string>;
 interface ExtendedOrderDetails extends TOrder {
-    counterpartyAdStatusString: object;
+    counterpartyAdStatusString: TObject;
     hasReviewDetails: boolean;
     hasTimerExpired: boolean;
     isActiveOrder: boolean;
@@ -30,8 +31,8 @@ interface ExtendedOrderDetails extends TOrder {
     isPendingOrder: boolean;
     isRefundedOrder: boolean;
     isSellOrder: boolean;
-    labels: object;
-    myAdStatusString: object;
+    labels: TObject;
+    myAdStatusString: TObject;
     orderExpiryMilliseconds: number;
     otherUserDetails: TUserDetails;
     purchaseTime: string;

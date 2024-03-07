@@ -40,7 +40,7 @@ const MyProfile = () => {
         return (
             <div className='p2p-v2-my-profile'>
                 <MyProfileMobile />
-                {/* <NicknameModal isModalOpen={isNicknameModalOpen} setIsModalOpen={setIsNicknameModalOpen} /> */}
+                <NicknameModal isModalOpen={isNicknameModalOpen} setIsModalOpen={setIsNicknameModalOpen} />
             </div>
         );
     }
@@ -71,7 +71,7 @@ const MyProfile = () => {
                     <MyProfileCounterparties />
                 </Tab>
             </Tabs>
-            {/* <NicknameModal isModalOpen setIsModalOpen={setIsNicknameModalOpen} /> */}
+            <NicknameModal isModalOpen setIsModalOpen={setIsNicknameModalOpen} />
         </div>
     );
 };

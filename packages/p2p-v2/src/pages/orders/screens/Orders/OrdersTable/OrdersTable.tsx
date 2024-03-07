@@ -1,14 +1,12 @@
-import React, { memo, useState } from 'react';
-import { ORDERS_STATUS } from '@/constants/orders';
-import { useQueryString } from '@/hooks';
-import { p2p } from '@deriv/api-v2';
-import { Loader, Table } from '@deriv-com/ui';
-import { OrdersTableHeader } from '../OrdersTableHeader';
+import React, { memo } from 'react';
+import clsx from 'clsx';
+import { TOrders } from 'types';
+import { Loader, Table, useDevice } from '@deriv-com/ui';
+import { OrdersEmpty } from '../OrdersEmpty';
 import { OrdersTableRow } from '../OrdersTableRow';
 import './OrdersTable.scss';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type TOrdersTableRowRendererProps = {};
+type TOrdersTableRowRendererProps = TOrders[0];
 
 const OrdersTableRowRenderer = memo((values: TOrdersTableRowRendererProps) => <OrdersTableRow {...values} />);
 OrdersTableRowRenderer.displayName = 'OrdersTableRowRenderer';
@@ -63,27 +61,28 @@ const columnsPast = [
     },
 ];
 
-const OrdersTable = () => {
-    const [activeTab, setActiveTab] = useState<string>(ORDERS_STATUS.ACTIVE_ORDERS);
-    const { queryString, setQueryString } = useQueryString();
-    const currentTab = queryString.get('tab');
+type TOrdersTableProps = {
+    data: TOrders;
+    isActive: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
+    loadMoreOrders: () => void;
+};
 
-    const {
-        data = [],
-        isFetching,
-        isLoading,
-        loadMoreOrders,
-    } = p2p.order.useGetList({ active: activeTab === ORDERS_STATUS.ACTIVE_ORDERS ? 1 : 0 });
+const OrdersTable = ({ data, isActive, isFetching, isLoading, loadMoreOrders }: TOrdersTableProps) => {
+    const { isMobile } = useDevice();
+    if (data?.length === 0 && !isLoading) {
+        return <OrdersEmpty />;
+    }
+
+    const columns = isActive ? columnsActive : columnsPast;
     return (
-        <div className='p2p-v2-orders-table'>
-            <OrdersTableHeader activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div className={clsx('p2p-v2-orders-table', { 'p2p-v2-orders-table--inactive': !isActive })}>
             {isLoading ? (
-                <div>
-                    <Loader />
-                </div>
+                <Loader />
             ) : (
                 <Table
-                    columns={activeTab === ORDERS_STATUS.ACTIVE_ORDERS ? columnsActive : columnsPast}
+                    columns={isMobile ? [] : columns}
                     data={data}
                     isFetching={isFetching}
                     loadMoreFunction={loadMoreOrders}

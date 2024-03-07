@@ -38,3 +38,5 @@ export type TCurrencyListItem = {
 };
 
 export type TServerTime = ReturnType<typeof useServerTime>['data'];
+
+export type TOrders = NonNullable<ReturnType<typeof p2p.order.useGetList>['data']>;

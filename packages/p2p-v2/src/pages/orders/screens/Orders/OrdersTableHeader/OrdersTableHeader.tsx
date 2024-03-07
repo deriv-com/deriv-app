@@ -6,10 +6,9 @@ import './OrdersTableHeader.scss';
 
 type TOrdersTableHeaderProps = {
     activeTab: string;
-    setActiveTab: (tab: string) => void;
 };
 
-const OrdersTableHeader = ({ activeTab, setActiveTab }: TOrdersTableHeaderProps) => {
+const OrdersTableHeader = ({ activeTab }: TOrdersTableHeaderProps) => {
     const { isMobile } = useDevice();
     const { setQueryString } = useQueryString();
 
@@ -18,12 +17,11 @@ const OrdersTableHeader = ({ activeTab, setActiveTab }: TOrdersTableHeaderProps)
             <Tabs
                 TitleFontSize={isMobile ? 'md' : 'sm'}
                 activeTab={activeTab}
-                onChange={(index: number) => {
+                onChange={(index: number) =>
                     setQueryString({
                         tab: index === 0 ? ORDERS_STATUS.ACTIVE_ORDERS : ORDERS_STATUS.PAST_ORDERS,
-                    });
-                    setActiveTab(index === 0 ? ORDERS_STATUS.ACTIVE_ORDERS : ORDERS_STATUS.PAST_ORDERS);
-                }}
+                    })
+                }
                 variant='primary'
                 wrapperClassName='p2p-v2-orders-table-header__tabs'
             >

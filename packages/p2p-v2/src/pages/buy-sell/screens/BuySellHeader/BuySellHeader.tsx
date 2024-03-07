@@ -73,7 +73,10 @@ const BuySellHeader = ({
                     className='border-[#d6dadb] lg:p-0 lg:h-16 lg:w-16 h-[3.2rem] w-[3.2rem]'
                     icon={
                         isMobile ? (
-                            <LabelPairedBarsFilterSmBoldIcon className='absolute' />
+                            <LabelPairedBarsFilterSmBoldIcon
+                                className='absolute'
+                                data-testid='dt_p2p_v2_buy_sell_header_filter_button'
+                            />
                         ) : (
                             <LabelPairedBarsFilterMdBoldIcon />
                         )

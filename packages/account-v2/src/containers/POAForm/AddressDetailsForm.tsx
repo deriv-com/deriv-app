@@ -5,7 +5,7 @@ import { useDocumentUpload, useInvalidateQuery, useSettings } from '@deriv/api-v
 import { StandaloneXmarkBoldIcon, DerivLightIcPoaLockIcon } from '@deriv/quill-icons';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { IconWithMessage } from '../../components/IconWithMessage';
-import { accountV2DefaultRoute } from '../../constants/routes';
+import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
 import { AddressFields } from '../../modules/AddressFields';
 import { DocumentSubmission } from './DocumentSubmission';
 
@@ -93,7 +93,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                     <StandaloneXmarkBoldIcon
                         iconSize='md'
                         onClick={() => {
-                            history.push(accountV2DefaultRoute);
+                            history.push(ACCOUNT_V2_DEFAULT_ROUTE);
                         }}
                     />
                 </div>

@@ -2144,7 +2144,7 @@ type TPrivateSocketEndpoints = {
     };
 };
 
-//TODO remove these mock passkeys types after implementing them inside api-types
+// TODO: remove these mock passkeys types after implementing them inside api-types
 type PasskeysListRequest = {
     passkeys_list: 1;
     req_id?: number;

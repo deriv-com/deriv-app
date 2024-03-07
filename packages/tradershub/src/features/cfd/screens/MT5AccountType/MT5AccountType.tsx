@@ -1,14 +1,14 @@
-import React, { FC } from 'react';
+import React from 'react';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { MarketTypeDetails } from '../../constants';
 import { MT5AccountTypeCard } from '../MT5AccountTypeCard';
 
-type TProps = {
+type TMT5AccountTypeProps = {
     onMarketTypeSelect: (marketType: keyof typeof MarketTypeDetails) => void;
     selectedMarketType?: keyof typeof MarketTypeDetails;
 };
 
-const MT5AccountType: FC<TProps> = ({ onMarketTypeSelect, selectedMarketType }) => {
+const MT5AccountType = ({ onMarketTypeSelect, selectedMarketType }: TMT5AccountTypeProps) => {
     const { isEU } = useRegulationFlags();
     const marketTypeDetails = MarketTypeDetails(isEU);
     const sortedMarketTypeEntries = Object.entries(marketTypeDetails).sort(([keyA], [keyB]) => {
@@ -17,7 +17,7 @@ const MT5AccountType: FC<TProps> = ({ onMarketTypeSelect, selectedMarketType }) 
     });
 
     return (
-        <div className='flex items-center flex-shrink-0 bg-system-light-primary-background rounded-xl h-[70vh] w-[80vw] justify-center p-1200 flex-1 gap-1200'>
+        <div className='flex items-center flex-shrink-0 bg-system-light-primary-background rounded-xl h-[70vh] w-[80vw] justify-center p-24 flex-1 gap-24'>
             {sortedMarketTypeEntries.map(([key, value]) => (
                 <MT5AccountTypeCard
                     description={value.description}

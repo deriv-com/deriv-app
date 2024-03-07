@@ -5,7 +5,7 @@ import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
-import { daysSince, isDesktop, isEmptyObject, isMobile, routes } from '@deriv/shared';
+import { daysSince, isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
@@ -73,14 +73,7 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
-    const {
-        data: p2p_advert_info,
-        isFetching,
-        isSuccess: has_p2p_advert_info,
-    } = useP2PAdvertInfo(counterparty_advert_id, {
-        enabled: !!counterparty_advert_id,
-        retry: false,
-    });
+    const { data: p2p_advert_info } = useP2PAdvertInfo(counterparty_advert_id);
 
     const showErrorModal = () => {
         setCounterpartyAdvertId('');
@@ -100,8 +93,8 @@ const AdvertiserPage = () => {
 
     const setShowAdvertInfo = React.useCallback(
         () => {
-            const { is_active, is_buy, is_visible } = p2p_advert_info || {};
-            if (has_p2p_advert_info) {
+            if (p2p_advert_info) {
+                const { is_active, is_buy, is_visible } = p2p_advert_info || {};
                 const advert_type = is_buy ? 1 : 0;
 
                 if (is_active && is_visible) {
@@ -112,24 +105,16 @@ const AdvertiserPage = () => {
                 } else {
                     showErrorModal();
                 }
-            } else {
-                showErrorModal();
             }
         },
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [has_p2p_advert_info, p2p_advert_info]
+        [p2p_advert_info]
     );
 
     React.useEffect(() => {
-        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) {
-            if (isFetching && isDesktop()) {
-                showModal({ key: 'LoadingModal' });
-            } else if (counterparty_advert_id) {
-                setShowAdvertInfo();
-            }
-        }
-    }, [counterparty_advert_id, isFetching, setShowAdvertInfo, is_my_advert]);
+        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) setShowAdvertInfo();
+    }, [counterparty_advert_id, setShowAdvertInfo, is_my_advert]);
 
     React.useEffect(() => {
         if (location.search || counterparty_advertiser_id) {

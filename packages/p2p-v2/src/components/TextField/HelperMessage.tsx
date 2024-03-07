@@ -1,5 +1,5 @@
-import React, { InputHTMLAttributes, memo } from 'react';
-import { Text, TextProps } from '@deriv-com/ui/dist/components/Text';
+import React, { ComponentProps, InputHTMLAttributes, memo } from 'react';
+import { Text } from '@deriv-com/ui';
 
 export type HelperMessageProps = {
     inputValue?: InputHTMLAttributes<HTMLInputElement>['value'];
@@ -11,7 +11,7 @@ export type HelperMessageProps = {
 
 const HelperMessage: React.FC<HelperMessageProps> = memo(
     ({ inputValue, isError, maxLength, message, messageVariant = 'general' }) => {
-        const HelperMessageColors: Record<string, TextProps['color']> = {
+        const HelperMessageColors: Record<string, ComponentProps<typeof Text>['color']> = {
             error: 'error',
             general: 'less-prominent',
             warning: 'warning',

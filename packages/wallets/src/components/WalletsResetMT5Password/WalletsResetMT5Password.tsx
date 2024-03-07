@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
-import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api';
+import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword } from '../../utils/password';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletText } from '../Base';
-import { WalletPasswordFieldProps } from '../Base/WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 import { useModal } from '../ModalProvider';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
@@ -14,8 +13,6 @@ import './WalletsResetMT5Password.scss';
 type WalletsResetMT5PasswordProps = {
     actionParams: string;
     isInvestorPassword?: boolean;
-    onChange: WalletPasswordFieldProps['onChange'];
-    password: WalletPasswordFieldProps['password'];
     platform: Exclude<TPlatforms.All, 'ctrader'>;
     verificationCode: string;
 };
@@ -23,8 +20,6 @@ type WalletsResetMT5PasswordProps = {
 const WalletsResetMT5Password = ({
     actionParams,
     isInvestorPassword = false,
-    onChange,
-    password,
     platform,
     verificationCode,
 }: WalletsResetMT5PasswordProps) => {
@@ -43,6 +38,7 @@ const WalletsResetMT5Password = ({
     } = useTradingPlatformInvestorPasswordReset();
 
     const { hide, show } = useModal();
+    const [password, setPassword] = useState('');
     const { isDesktop, isMobile } = useDevice();
 
     const handleSubmit = () => {
@@ -108,7 +104,7 @@ const WalletsResetMT5Password = ({
                 </WalletText>
                 <WalletPasswordFieldLazy
                     label={isInvestorPassword ? 'New investor password' : `${title} password`}
-                    onChange={onChange}
+                    onChange={e => setPassword(e.target.value)}
                     password={password}
                 />
                 {!isInvestorPassword && (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import './PaymentMethodCardBody.scss';
 
 type TPaymentMethodCardBodyProps = {

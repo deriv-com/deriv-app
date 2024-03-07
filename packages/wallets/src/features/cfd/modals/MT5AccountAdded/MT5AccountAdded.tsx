@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api';
+import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -50,7 +50,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                         <WalletButton
                             onClick={() => {
                                 hide();
-                                history.push(`/wallets/cashier/transfer?to-account=${addedAccount?.loginid}`);
+                                history.push(`/wallets/cashier/transfer`, { toAccountLoginId: addedAccount?.loginid });
                             }}
                             size='lg'
                         >

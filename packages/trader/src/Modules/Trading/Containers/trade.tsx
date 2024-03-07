@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { TickSpotData } from '@deriv/api-types';
-import { LocalStore, isDesktop } from '@deriv/shared';
+import { isDesktop, TRADE_TYPES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import ChartLoader from 'App/Components/Elements/chart-loader';
@@ -11,7 +11,6 @@ import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-over
 import { ChartTopWidgets, DigitsWidget } from './chart-widgets';
 import FormLayout from '../Components/Form/form-layout';
 import TradeChart from './trade-chart';
-import LaunchModal from 'App/Components/Elements/LaunchModal';
 
 export type TBottomWidgetsParams = {
     digits: number[];
@@ -40,6 +39,7 @@ const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }: TBottomWidget
 const Trade = observer(() => {
     const { client, common, ui } = useStore();
     const {
+        contract_type,
         form_components,
         getFirstOpenMarket,
         has_barrier,
@@ -49,6 +49,7 @@ const Trade = observer(() => {
         is_synthetics_available,
         is_synthetics_trading_market_available,
         is_trade_enabled,
+        is_trade_params_expanded,
         is_turbos,
         is_vanilla,
         onMount,
@@ -56,7 +57,6 @@ const Trade = observer(() => {
         prepareTradeStore,
         setIsDigitsWidgetActive,
         setMobileDigitView,
-        setShowDescription,
         should_show_active_symbols_loading,
         show_digits_stats,
         symbol,
@@ -67,7 +67,7 @@ const Trade = observer(() => {
         is_mobile,
         notification_messages_ui: NotificationMessages,
     } = ui;
-    const { is_eu, is_logged_in } = client;
+    const { is_eu } = client;
     const { network_status } = common;
 
     const [digits, setDigits] = React.useState<number[]>([]);
@@ -77,7 +77,10 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState<string>();
     const [subcategory, setSubcategory] = React.useState<string>();
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
-    const [open_launch_modal, setOpenLaunchModal] = React.useState(false);
+
+    const should_elevate_navigation =
+        is_trade_params_expanded &&
+        (contract_type === TRADE_TYPES.MATCH_DIFF || contract_type === TRADE_TYPES.OVER_UNDER);
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
@@ -115,10 +118,6 @@ const Trade = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [symbol, setDigits, setTrySyntheticIndices, is_synthetics_available]);
 
-    React.useEffect(() => {
-        setOpenLaunchModal(is_turbos);
-    }, [is_turbos]);
-
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }: TBottomWidgetsParams) => {
         return <BottomWidgetsMobile digits={d} tick={t} setTick={setTick} setDigits={setDigits} />;
     }, []);
@@ -128,8 +127,6 @@ const Trade = observer(() => {
         setIsDigitsWidgetActive(index === 0);
         setSwipeIndex(index);
     };
-
-    const is_already_shown = LocalStore.get('launchTurbosModalShown') || false;
 
     const onTryOtherMarkets = async () => {
         if (!is_synthetics_available) {
@@ -153,100 +150,85 @@ const Trade = observer(() => {
         return '259px';
     }, [is_turbos, is_accumulator]);
 
-    const handleLaunchModal = () => {
-        setOpenLaunchModal(!open_launch_modal);
-        LocalStore.set('launchTurbosModalShown', true);
-    };
-
     // TODO: Uncomment and update this when DTrader 2.0 development starts:
     // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am DTrader 2.0.</Text>;
     return (
-        <React.Fragment>
-            {!is_eu && open_launch_modal && is_logged_in && !is_already_shown && (
-                <LaunchModal
-                    handleChange={handleLaunchModal}
-                    open={open_launch_modal}
-                    setShowDescription={setShowDescription}
-                />
-            )}
-            <div
-                className={classNames('trade-container', {
-                    [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
-                })}
-                id='trade_container'
-            >
-                <DesktopWrapper>
-                    <PositionsDrawer />
-                </DesktopWrapper>
-                {/* Div100vhContainer is workaround for browsers on devices
+        <div
+            className={classNames('trade-container', {
+                [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
+            })}
+            id='trade_container'
+        >
+            <DesktopWrapper>
+                <PositionsDrawer />
+            </DesktopWrapper>
+            {/* Div100vhContainer is workaround for browsers on devices
                     with toolbars covering screen height,
                     using css vh is not returning correct screen height */}
-                <Div100vhContainer
-                    className='chart-container'
-                    height_offset={chart_height_offset}
-                    id='chart_container'
-                    is_disabled={isDesktop()}
+            <Div100vhContainer
+                className='chart-container'
+                height_offset={chart_height_offset}
+                id='chart_container'
+                is_disabled={isDesktop()}
+            >
+                <NotificationMessages show_trade_notifications={is_mobile} />
+                <React.Suspense
+                    fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || !!is_chart_loading} />}
                 >
-                    <NotificationMessages show_trade_notifications={is_mobile} />
-                    <React.Suspense
-                        fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || !!is_chart_loading} />}
-                    >
-                        <DesktopWrapper>
-                            <div
-                                className={classNames('chart-container__wrapper', {
-                                    'vanilla-trade-chart': is_vanilla,
-                                })}
-                            >
-                                <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                                <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />
-                            </div>
-                        </DesktopWrapper>
-                        <MobileWrapper>
+                    <DesktopWrapper>
+                        <div
+                            className={classNames('chart-container__wrapper', {
+                                'vanilla-trade-chart': is_vanilla,
+                            })}
+                        >
                             <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                            <SwipeableWrapper
-                                className={classNames({ 'vanilla-trade-chart': is_vanilla })}
-                                is_disabled={
-                                    !show_digits_stats ||
-                                    !is_trade_enabled ||
-                                    !form_components.length ||
-                                    is_chart_loading ||
-                                    should_show_active_symbols_loading
-                                }
-                                is_swipe_disabled={swipe_index === 1}
-                                onChange={onChangeSwipeableIndex}
-                            >
-                                {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
-                                <TradeChart
-                                    bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
-                                    has_barrier={has_barrier}
-                                    is_accumulator={is_accumulator}
-                                    topWidgets={
-                                        !(open_launch_modal && is_logged_in && !is_already_shown) ? topWidgets : null
-                                    }
-                                />
-                            </SwipeableWrapper>
-                        </MobileWrapper>
-                    </React.Suspense>
-                </Div100vhContainer>
-                <div className={form_wrapper_class}>
-                    {is_market_closed && !is_market_unavailable_visible && (
-                        <MarketIsClosedOverlay
-                            is_eu={is_eu}
-                            is_synthetics_trading_market_available={is_synthetics_trading_market_available}
-                            onClick={onTryOtherMarkets}
-                            onMarketOpen={prepareTradeStore}
-                            symbol={symbol}
-                        />
-                    )}
-                    <FormLayout
-                        is_market_closed={is_market_closed}
-                        is_trade_enabled={
-                            is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
-                        }
+                            <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />
+                        </div>
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                        <SwipeableWrapper
+                            className={classNames({ 'vanilla-trade-chart': is_vanilla })}
+                            is_disabled={
+                                !show_digits_stats ||
+                                !is_trade_enabled ||
+                                !form_components.length ||
+                                is_chart_loading ||
+                                should_show_active_symbols_loading
+                            }
+                            is_swipe_disabled={swipe_index === 1}
+                            onChange={onChangeSwipeableIndex}
+                            should_elevate_navigation={should_elevate_navigation}
+                        >
+                            {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
+                            <TradeChart
+                                bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+                                has_barrier={has_barrier}
+                                is_accumulator={is_accumulator}
+                                topWidgets={topWidgets}
+                            />
+                        </SwipeableWrapper>
+                    </MobileWrapper>
+                </React.Suspense>
+            </Div100vhContainer>
+            <div className={form_wrapper_class}>
+                {is_market_closed && !is_market_unavailable_visible && (
+                    <MarketIsClosedOverlay
+                        is_eu={is_eu}
+                        is_synthetics_trading_market_available={is_synthetics_trading_market_available}
+                        onClick={onTryOtherMarkets}
+                        onMarketOpen={prepareTradeStore}
+                        symbol={symbol}
                     />
-                </div>
+                )}
+                <FormLayout
+                    is_market_closed={is_market_closed}
+                    is_trade_enabled={
+                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
+                    }
+                />
             </div>
-        </React.Fragment>
+        </div>
     );
 });
 

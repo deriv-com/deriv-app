@@ -1,0 +1,68 @@
+name: Deriv App Remote Config backup file
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  pull-requests: write
+  statuses: write
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  download_remote_config_backup_and_create_pr:
+    name: Download Remote Config Backup File and Create PR
+    runs-on: Runner_8cores_Deriv-app
+    environment: Production
+    env: 
+        REMOTE_CONFIG_BRANCH: "remote_config_update_branch"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Import GPG key
+      id: import-gpg
+      uses: deriv-com/ghaction-import-gpg@v6
+      with:
+        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        git_user_signingkey: true
+        git_commit_gpgsign: true
+    - name: Checkout to remote_config_update_branch
+      run: |
+        git fetch origin
+        git checkout "${{ env.REMOTE_CONFIG_BRANCH }}" || git checkout -b "${{ env.REMOTE_CONFIG_BRANCH }}" origin/"${{ env.REMOTE_CONFIG_BRANCH }}"
+      shell: bash
+    - name: Download Remote Config Backup File
+      uses: ./.github/actions/download_remote_config_backup
+      with:
+        REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
+
+    - name: Commit the file and Create PR
+      env:
+        GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
+        GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
+        GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}
+        GIT_COMMITTER_EMAIL: ${{ steps.import-gpg.outputs.email }}
+      run: |
+        if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit, Not creating a PR."
+        else
+            echo "Changes detected, creating a PR"
+
+            # Commit the newly downloaded file
+            cd $(git rev-parse --show-toplevel)
+            git add packages/api/src/remote_config.json
+            git commit -m "🤖 Remote Config file update 🤖"
+
+            # Force push to this branch in case a previous run created it.
+            git push --set-upstream origin "${{ env.REMOTE_CONFIG_BRANCH }}" -f
+
+            sudo apt install gh
+            gh auth login --with-token <<< ${{ github.token }}
+            gh pr close "${{ env.REMOTE_CONFIG_BRANCH }}" || true
+            gh pr create --base "master" --title "Sync Remote Config File 🤖" --head "binary-com:${{ env.REMOTE_CONFIG_BRANCH }}" --body "This is an automated Pull Request designed to synchronize our project's Remote Config from Its origin. It checks for the changes in the remote config URL and in case of any change, it will update it using this PR."
+        fi
+      shell: bash

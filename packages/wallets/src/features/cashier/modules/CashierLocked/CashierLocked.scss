@@ -1,0 +1,7 @@
+.wallets-cashier-locked {
+    margin-top: 9.2rem; //140px - 48px from cashier content
+
+    @include mobile {
+        margin-top: 1.6rem; //40px - 16px from cashier content
+    }
+}

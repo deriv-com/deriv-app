@@ -159,7 +159,6 @@ export default class RunPanelStore {
         let timer_counter = 1;
         if (window.sendRequestsStatistic) {
             performance.clearMeasures();
-            performance.mark('bot-start');
             // Log is sent every 10 seconds for 5 minutes
             this.timer = setInterval(() => {
                 window.sendRequestsStatistic(true);
@@ -679,6 +678,7 @@ export default class RunPanelStore {
     unregisterBotListeners = () => {
         observer.unregisterAll('bot.running');
         observer.unregisterAll('bot.stop');
+        observer.unregisterAll('bot.click_stop');
         observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');

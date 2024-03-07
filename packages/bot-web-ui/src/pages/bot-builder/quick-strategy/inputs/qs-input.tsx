@@ -2,11 +2,11 @@ import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
-import { Analytics } from '@deriv-com/analytics';
 import { Input, Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
 
 type TQSInput = {
     name: string;
@@ -31,49 +31,41 @@ const QSInput: React.FC<TQSInput> = observer(
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
 
-        const sendPlusValueToRudderstack = (value: string) => {
-            Analytics.trackEvent('ce_bot_quick_strategy_form', {
-                action: 'change_parameter_value',
-                parameter_value: value,
-                plus_push_amount: value,
-            });
-        };
-
-        const sendMinusValueToRudderstack = (value: string) => {
-            Analytics.trackEvent('ce_bot_quick_strategy_form', {
-                action: 'change_parameter_value',
-                parameter_value: value,
-                minus_push_amount: value,
-            });
-        };
-
-        const debounceChangePlus = React.useCallback(
-            debounce(sendPlusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const debounceInputChange = React.useCallback(
+            // Need the useCallback to stop the debounce function from being recreated on every render
+            debounce(rudderStackSendQsParameterChangeEvent, DEBOUNCE_INTERVAL_TIME, {
                 trailing: true,
                 leading: false,
             }),
             []
         );
 
-        const debounceChangeMinus = React.useCallback(
-            debounce(sendMinusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
-                trailing: true,
-                leading: false,
-            }),
-            []
-        );
-
-        const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
+        const handleButtonInputChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
             onChange(name, value);
             setFieldTouched(name, true, true);
             setFieldValue(name, value);
+            debounceInputChange({
+                parameter_type: name,
+                parameter_value: value,
+                parameter_field_type: 'number',
+                manual_parameter_input: 'no',
+                plus_minus_push: 'yes',
+            });
         };
 
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const input_value = e.target.value;
             const value = is_number ? Number(input_value) : input_value;
             onChange(name, value);
+            debounceInputChange({
+                parameter_type: name,
+                parameter_value: value,
+                parameter_field_type: 'number',
+                manual_parameter_input: 'yes',
+                plus_minus_push: 'no',
+            });
         };
 
         return (
@@ -117,8 +109,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;
-                                                        handleChange(e, String(value % 1 ? value.toFixed(2) : value));
-                                                        debounceChangeMinus(
+                                                        handleButtonInputChange(
+                                                            e,
                                                             String(value % 1 ? value.toFixed(2) : value)
                                                         );
                                                     }}
@@ -134,8 +126,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     data-testid='qs-input-increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;
-                                                        handleChange(e, String(value % 1 ? value.toFixed(2) : value));
-                                                        debounceChangePlus(
+                                                        handleButtonInputChange(
+                                                            e,
                                                             String(value % 1 ? value.toFixed(2) : value)
                                                         );
                                                     }}

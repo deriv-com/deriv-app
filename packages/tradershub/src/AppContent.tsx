@@ -1,21 +1,24 @@
-import React from 'react';
-import useRegulationFlags from './hooks/useRegulationFlags';
-import { EUDisclaimerMessage, useUIContext } from './components';
-import { Router } from './routes';
+import React, { Fragment } from 'react';
+import { useLocation } from 'react-router-dom';
+import { AppContainer, EUDisclaimerMessage } from '@/components';
+import { useRegulationFlags } from '@/hooks';
+import { Modals } from '@/modals';
+import { Router } from '@/routes';
 
 const AppContent = () => {
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
+    const location = useLocation();
+    const compareAccountsRoute = location.pathname === '/traders-hub/compare-accounts';
 
     return (
-        <div className='h-full-mobile lg:h-full-desktop'>
-            <div className='font-sans max-w-[1232px] mx-auto lg:py-2500 lg:px-50'>
-                <div className='z-10' id='v2_modal_show_header_root' />
+        <Fragment>
+            <div className='z-10' id='v2_modal_show_header_root' />
+            <AppContainer className={compareAccountsRoute ? 'max-w-[800px] lg:pt-0 lg:pb-20' : ''}>
                 <Router />
-            </div>
+            </AppContainer>
             {isEU && <EUDisclaimerMessage />}
-        </div>
+            <Modals />
+        </Fragment>
     );
 };
 

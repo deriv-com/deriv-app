@@ -1,0 +1,76 @@
+.p2p-v2-share-ads-modal {
+    width: 72rem;
+    @include mobile {
+        width: 32.8rem;
+    }
+
+    &__container {
+        margin-top: 2.4rem;
+
+        @include mobile {
+            align-items: center;
+            justify-content: center;
+            margin-top: 0;
+        }
+
+        &__card {
+            width: 48%;
+
+            @include mobile {
+                align-items: center;
+                width: 100%;
+                margin-top: 1.6rem;
+            }
+
+            &__button {
+                & .deriv-text {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                }
+            }
+        }
+    }
+
+    &__copy {
+        border-radius: 0.3rem;
+        border: 0.1em solid var(--general-active);
+        margin-top: 2.5rem;
+        padding: 0.8rem;
+
+        &-clipboard {
+            background: var(--general-section-5);
+            border-radius: 0.3rem;
+            margin-left: 1rem;
+
+            &--icon {
+                display: flex;
+                margin: 1.5rem 1rem;
+            }
+
+            &--popover {
+                display: flex;
+                right: 0;
+                top: 0;
+            }
+        }
+
+        &-link {
+            display: -webkit-box;
+            white-space: pre-wrap;
+            word-break: break-all;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+        }
+    }
+
+    &__line {
+        margin: 0 0 2.5rem;
+    }
+
+    &__share {
+        padding-left: 2.4rem;
+        width: 52%;
+    }
+}

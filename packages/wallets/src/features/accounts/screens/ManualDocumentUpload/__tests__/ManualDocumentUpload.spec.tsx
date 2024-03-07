@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { FlowProvider } from '../../../../../components';
 import ManualDocumentUpload from '../ManualDocumentUpload';
@@ -12,11 +12,13 @@ describe('<ManualDocumentUpload />', () => {
 
         render(
             <APIProvider>
-                <FlowProvider initialValues={{}} screens={screens}>
-                    {() => {
-                        return <ManualDocumentUpload />;
-                    }}
-                </FlowProvider>
+                <AuthProvider>
+                    <FlowProvider initialValues={{}} screens={screens}>
+                        {() => {
+                            return <ManualDocumentUpload />;
+                        }}
+                    </FlowProvider>
+                </AuthProvider>
             </APIProvider>
         );
 

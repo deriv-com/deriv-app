@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { THooks, TWalletLandingCompanyName } from '../../../../../../../../types';
 import { getAccountName } from '../../../../../../helpers';
 import { TransactionsCompletedRowAccountDetails } from '../TransactionsCompletedRowAccountDetails';

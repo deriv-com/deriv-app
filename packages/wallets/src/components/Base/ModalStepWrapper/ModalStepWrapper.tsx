@@ -10,6 +10,7 @@ type TModalStepWrapperProps = {
     renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
     shouldHideDerivAppHeader?: boolean;
+    shouldHideFooter?: boolean;
     shouldHideHeader?: boolean;
     shouldPreventCloseOnEscape?: boolean;
     title?: string;

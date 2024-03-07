@@ -418,8 +418,8 @@ describe('CFDAccountCard', () => {
             />,
             renderOptions
         );
-        expect(screen.getByText(/icedit/i)).toBeInTheDocument();
-        fireEvent.click(screen.getByText(/icedit/i));
+        expect(screen.getByText(/forgot password?/i)).toBeInTheDocument();
+        fireEvent.click(screen.getByText(/forgot password?/i));
         expect(props.onPasswordManager).toHaveBeenCalled();
     });
 
@@ -446,9 +446,7 @@ describe('CFDAccountCard', () => {
         expect(screen.getAllByText(/synthetic/i)[0]).toBeInTheDocument();
         expect(screen.getByText(/username/i)).toBeInTheDocument();
         expect(screen.getByText(/mtd20103240/i)).toBeInTheDocument();
-        expect(screen.getByText(/password/i)).toBeInTheDocument();
-        expect(screen.getByText('***************')).toBeInTheDocument();
-        expect(screen.getByText(/icedit/i)).toBeInTheDocument();
+        expect(screen.getByText(/forgot password?/i)).toBeInTheDocument();
         expect(screen.getByText(/trade on web terminal/i)).toBeInTheDocument();
     });
 

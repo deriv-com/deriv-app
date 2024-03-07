@@ -1,18 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
+import { useModal } from '@/providers';
+import { THooks, TPlatforms } from '@/types';
+import { DummyComponent } from '@cfd/components';
+import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
+import { CTraderSuccessModal, DxtradePasswordModal, MT5PasswordModal } from '@cfd/modals';
 import {
     useActiveTradingAccount,
     useAuthentication,
     useCreateOtherCFDAccount,
     useMT5AccountsList,
     useSettings,
-} from '@deriv/api';
-import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
-import { THooks, TPlatforms } from '../../../../types';
-import { DummyComponent } from '../../components/DummyComponent';
-import { Category, CFDPlatforms, MarketType } from '../../constants';
-import { DxtradePasswordModal } from '../../modals';
-import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
+} from '@deriv/api-v2';
+import { Button } from '@deriv-com/ui';
 import {
     getAccountVerificationStatus,
     shouldRestrictBviAccountCreation,
@@ -33,7 +32,7 @@ type TCompareAccountButton = {
 @params {string} marketType - The market type of the account. //Removed for now as it is needed by Verification flow
  */
 const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompareAccountButton) => {
-    const { show } = Provider.useModal();
+    const { show } = useModal();
 
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();
@@ -94,15 +93,14 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
 
     const onClickAdd = () => {
         if (platform === CFDPlatforms.MT5) {
-            // Going to remove Placeholder once the MT5PasswordModal
-            // and Verification flow is implemented
+            // Going to remove Placeholder once Verification flow is implemented
             if (isAccountStatusVerified) show(<DummyComponent />);
 
-            // if (isAccountStatusVerified) {
-            //     show(<MT5PasswordModal)
-            // } else {
-            //     show(<Verifaication />);
-            // }
+            if (isAccountStatusVerified) {
+                show(<MT5PasswordModal />);
+            } else {
+                // show(<Verifaication />);
+            }
         } else if (platform === CFDPlatforms.DXTRADE) {
             show(<DxtradePasswordModal />);
         } else {
@@ -116,9 +114,10 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
         }
     };
     return (
-        <div className='h-2000 m-1000 w-[calc(100%-40px)]'>
+        <div className='h-40 m-20 w-[calc(100%-40px)]'>
             <Button
                 className='w-full text-center text-system-light-primary-background'
+                color='primary-light'
                 data-testid='dt_compare_cfd_account_button'
                 disabled={isAccountAdded}
                 onClick={onClickAdd}

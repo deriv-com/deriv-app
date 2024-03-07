@@ -1,8 +1,9 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { FullPageMobileWrapper } from '../../../../components';
-import { BlockUnblockUserFilterModal } from '../../../../components/Modals/BlockUnblockUserFilterModal';
-import { useDevice, useQueryString } from '../../../../hooks';
+import { FullPageMobileWrapper } from '@/components';
+import { RadioGroupFilterModal } from '@/components/Modals';
+import { COUNTERPARTIES_DROPDOWN_LIST } from '@/constants';
+import { useDevice, useQueryString } from '@/hooks';
+import { Text } from '@deriv-com/ui';
 import { MyProfileCounterpartiesHeader } from './MyProfileCounterpartiesHeader';
 import { MyProfileCounterpartiesTable } from './MyProfileCounterpartiesTable';
 import './MyProfileCounterparties.scss';
@@ -65,8 +66,9 @@ const MyProfileCounterparties = () => {
                         setShowHeader={setShowHeader}
                     />
                 </div>
-                <BlockUnblockUserFilterModal
+                <RadioGroupFilterModal
                     isModalOpen={isFilterModalOpen}
+                    list={COUNTERPARTIES_DROPDOWN_LIST}
                     onRequestClose={() => setIsFilterModalOpen(false)}
                     onToggle={onToggle}
                     selected={dropdownValue}

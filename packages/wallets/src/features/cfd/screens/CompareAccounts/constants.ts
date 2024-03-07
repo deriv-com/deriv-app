@@ -33,12 +33,14 @@ export const JURISDICTION = {
 
 export const platformLabel = {
     CTrader: 'Deriv cTrader',
+    DerivX: 'Deriv X',
     MT5: 'MT5 Platform',
     OtherCFDs: 'Other CFDs Platform',
 } as const;
 
 export const headerColor = {
     CTrader: 'orange',
+    DerivX: 'green',
     MT5: 'blue',
     OtherCFDs: 'green',
 } as const;

@@ -1,17 +1,21 @@
 import React from 'react';
-import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
-import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
-import { THooks } from '../../../../types';
-import { PlatformDetails } from '../../constants';
-import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '../../flows/CTrader';
-import { CFDPlatformLayout } from '../CFDPlatformLayout';
+import { TradingAppCardLoader } from '@/components';
+import { useUIContext } from '@/providers';
+import { THooks } from '@/types';
+import { CFDPlatformLayout } from '@cfd/components';
+import { PlatformDetails } from '@cfd/constants';
+import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '@cfd/flows';
+import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api-v2';
 
 const CTraderList = () => {
+    const { uiState } = useUIContext();
+    const { accountType } = uiState;
     const { data: cTraderAccounts, isFetchedAfterMount } = useCtraderAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
     const hasCTraderAccount = cTraderAccounts?.some(
-        (account: THooks.CtraderAccountsList) => account.is_virtual === activeTradingAccount?.is_virtual
+        (account: THooks.CtraderAccountsList) =>
+            account.is_virtual === activeTradingAccount?.is_virtual && account.account_type === accountType
     );
 
     return (

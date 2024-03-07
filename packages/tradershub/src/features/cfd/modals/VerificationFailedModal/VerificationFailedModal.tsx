@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal } from '../../../../components';
-import { VerificationFailed } from '../../screens';
+import { Modal } from '@/components';
+import { VerificationFailed } from '@cfd/screens';
 
 const VerificationFailedModal = () => (
     <Modal>

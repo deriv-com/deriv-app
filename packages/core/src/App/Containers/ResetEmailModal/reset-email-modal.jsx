@@ -10,14 +10,14 @@ import { observer, useStore } from '@deriv/stores';
 const ResetEmailModal = observer(() => {
     const { ui, client } = useStore();
     const { disableApp, enableApp, is_loading, is_reset_email_modal_visible: is_visible, toggleResetEmailModal } = ui;
-    const { is_social_signup, email } = client;
+    const { email } = client;
     const verification_code = client.verification_code.request_email;
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState(null);
-    const [new_email, setNewEmail] = React.useState(null);
+    const [email_value, setEmailValue] = React.useState(null);
 
     const handleSubmit = values => {
-        setNewEmail(values.email);
+        setEmailValue(values.email);
         setIsConfirmResetEmailModal(true);
     };
 
@@ -33,18 +33,18 @@ const ResetEmailModal = observer(() => {
         return errors;
     };
 
-    const reset_initial_values = { email: '' };
+    const reset_initial_values = { email: email_value };
 
     if (is_confirm_email_modal_open) {
         return (
             <ConfirmEmailModal
-                changed_email={new_email}
+                changed_email={email_value}
                 is_open={is_confirm_email_modal_open}
                 onClose={() => setIsConfirmResetEmailModal(false)}
                 prev_email={email}
                 setErrorMessage={setEmailErrorMsg}
                 verification_code={verification_code}
-                is_social_signup={is_social_signup}
+                setEmailValue={setEmailValue}
             />
         );
     }

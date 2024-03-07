@@ -1,7 +1,7 @@
 import React from 'react';
-import { Analytics } from '@deriv-com/analytics';
 import { Popover, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { rudderStackSendQsInfoPopupEvent } from '../analytics/rudderstack-quick-strategy';
 
 type TQSInputLabel = {
     children?: React.ReactNode;
@@ -11,9 +11,8 @@ type TQSInputLabel = {
 
 const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description }) => {
     const sendEventToRudderstack = () => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'info_popup_open',
-            form_source: 'ce_bot_quick_strategy_form',
+        rudderStackSendQsInfoPopupEvent({
+            parameter_type: label,
         });
     };
 

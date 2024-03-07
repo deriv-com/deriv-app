@@ -12,7 +12,6 @@ import ArrowIndicator from '../../arrow-indicator';
 type TTurbosCardBody = Pick<
     TGeneralContractCardBodyProps,
     | 'addToast'
-    | 'connectWithContractUpdate'
     | 'contract_info'
     | 'contract_update'
     | 'currency'
@@ -26,6 +25,7 @@ type TTurbosCardBody = Pick<
     | 'setCurrentFocus'
 > & {
     progress_slider_mobile_el: React.ReactNode;
+    totalProfit: number;
 };
 
 const TurbosCardBody = ({

@@ -1,27 +1,16 @@
-import React, { Fragment } from 'react';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
-import { CFDSection, OptionsAndMultipliersSection, useUIContext } from '..';
+import React from 'react';
+import { twMerge } from 'tailwind-merge';
+import { CFDSection, OptionsAndMultipliersSection } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 
 const TradersHubContent = () => {
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
-
-    const { isEU } = useRegulationFlags(activeRegulation);
-
-    if (isEU) {
-        return (
-            <Fragment>
-                <CFDSection />
-                <OptionsAndMultipliersSection />
-            </Fragment>
-        );
-    }
+    const { isEU } = useRegulationFlags();
 
     return (
-        <Fragment>
+        <div className={twMerge('flex gap-24 flex-col', isEU && 'flex-col-reverse')}>
             <OptionsAndMultipliersSection />
             <CFDSection />
-        </Fragment>
+        </div>
     );
 };
 

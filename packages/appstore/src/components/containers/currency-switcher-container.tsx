@@ -10,7 +10,7 @@ import './currency-switcher-container.scss';
 interface CurrentSwitcherContainerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
     actions?: React.ReactNode;
     has_interaction?: boolean;
-    icon: Currency | 'Options';
+    icon: Currency | 'Options' | 'Unknown';
     title?: React.ReactNode;
     show_dropdown?: boolean;
 }

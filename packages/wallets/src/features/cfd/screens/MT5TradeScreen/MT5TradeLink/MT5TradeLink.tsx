@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCtraderServiceToken } from '@deriv/api';
+import { useCtraderServiceToken } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import CTraderLabelIcon from '../../../../../public/images/ctrader-label.svg';

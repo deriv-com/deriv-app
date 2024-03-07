@@ -1,10 +1,9 @@
 import React from 'react';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useHistory } from 'react-router-dom';
-import { useDevice, usePoiPoaStatus } from '../../hooks';
-import SendEmailIcon from '../../public/ic-send-email.svg';
-import { Checklist } from '../Checklist';
+import { Checklist } from '@/components';
+import { useDevice, usePoiPoaStatus } from '@/hooks';
+import { DerivLightIcCashierSendEmailIcon } from '@deriv/quill-icons';
+import { Loader, Text } from '@deriv-com/ui';
 import './Verification.scss';
 
 const getPoiAction = (status: string | undefined) => {
@@ -57,9 +56,10 @@ const Verification = () => {
         {
             isDisabled: isPoiPending,
             onClick: () => {
-                if (!isPoaVerified) redirectToVerification('/account/proof-of-identity');
+                if (!isPoiVerified) redirectToVerification('/account/proof-of-identity');
             },
-            status: isPoaVerified ? 'done' : 'action',
+            status: isPoiVerified ? 'done' : 'action',
+            testId: 'dt_p2p_v2_verification_poi_arrow_button',
             text: getPoiAction(poiStatus),
         },
         ...(isP2PPoaRequired
@@ -67,9 +67,10 @@ const Verification = () => {
                   {
                       isDisabled: isPoaPending,
                       onClick: () => {
-                          if (!isPoiVerified) redirectToVerification('/account/proof-of-address');
+                          if (!isPoaVerified) redirectToVerification('/account/proof-of-address');
                       },
-                      status: isPoiVerified ? 'done' : 'action',
+                      status: isPoaVerified ? 'done' : 'action',
+                      testId: 'dt_p2p_v2_verification_poa_arrow_button',
                       text: getPoaAction(poaStatus),
                   },
               ]
@@ -80,7 +81,7 @@ const Verification = () => {
 
     return (
         <div className='p2p-v2-verification'>
-            <SendEmailIcon className='p2p-v2-verification__icon' />
+            <DerivLightIcCashierSendEmailIcon className='p2p-v2-verification__icon' />
             <Text className='p2p-v2-verification__text' size={isMobile ? 'lg' : 'md'} weight='bold'>
                 Verify your P2P account
             </Text>

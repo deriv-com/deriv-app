@@ -59,6 +59,12 @@
         transform-origin: 45% 45;
         color: var(--text-prominent);
         @extend %inline-icon;
+
+        &--right {
+            position: absolute;
+            right: 0;
+            margin-right: 0.2rem;
+        }
     }
     &__icon-wrapper {
         display: inline-flex;
@@ -117,5 +123,21 @@
         &--vanillalongput {
             margin-right: 0.4rem;
         }
+    }
+}
+
+.learn-more_title {
+    margin-bottom: 0.8rem;
+    background-color: var(--general-section-1);
+    border: none;
+    border-bottom: 1px dotted var(--text-general);
+    padding: 0;
+    cursor: pointer;
+
+    @include mobile {
+        position: absolute;
+        top: 1.5rem;
+        background-color: transparent;
+        margin: unset;
     }
 }

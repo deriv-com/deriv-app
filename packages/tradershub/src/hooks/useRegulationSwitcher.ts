@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { useUIContext } from '../components';
-import { Regulation } from '../constants/constants';
+import { Regulation } from '@/constants';
+import { useUIContext } from '@/providers';
+import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api-v2';
 import useRegulationFlags from './useRegulationFlags';
 
 /**
@@ -10,14 +10,12 @@ import useRegulationFlags from './useRegulationFlags';
  * @example
  * const { buttons, handleButtonClick } = useRegulationSwitcher();
  */
-export const useRegulationSwitcher = () => {
+const useRegulationSwitcher = () => {
     const { switchAccount } = useAuthorize();
     const { data: tradingAccountsList } = useTradingAccountsList();
-    const { getUIState, setUIState } = useUIContext();
-
-    const currentRegulation = getUIState('regulation');
-    const accountType = getUIState('accountType');
-    const { isEU, isHighRisk } = useRegulationFlags(currentRegulation, accountType);
+    const { setUIState, uiState } = useUIContext();
+    const currentRegulation = uiState.regulation;
+    const { isEU, isHighRisk } = useRegulationFlags();
 
     const realCRAccount = tradingAccountsList?.find(account => account.loginid.startsWith('CR'))?.loginid ?? '';
     const realMFAccount = tradingAccountsList?.find(account => account.loginid.startsWith('MF'))?.loginid ?? '';
@@ -29,12 +27,16 @@ export const useRegulationSwitcher = () => {
     const handleButtonClick = (label: string) => {
         if (label !== currentRegulation) {
             if (label === Regulation.NonEU) {
-                setUIState('regulation', Regulation.NonEU);
+                setUIState({
+                    regulation: Regulation.NonEU,
+                });
                 if (realCRAccount) {
                     switchAccount(realCRAccount);
                 }
             } else {
-                setUIState('regulation', Regulation.EU);
+                setUIState({
+                    regulation: Regulation.EU,
+                });
                 if (realMFAccount) {
                     switchAccount(realMFAccount);
                 }
@@ -44,9 +46,13 @@ export const useRegulationSwitcher = () => {
 
     useEffect(() => {
         if (activeTrading?.loginid.startsWith('CR') || isHighRisk) {
-            setUIState('regulation', Regulation.NonEU);
+            setUIState({
+                regulation: Regulation.NonEU,
+            });
         } else if (activeTrading?.loginid.startsWith('MF') || isEU) {
-            setUIState('regulation', Regulation.EU);
+            setUIState({
+                regulation: Regulation.EU,
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -58,3 +64,5 @@ export const useRegulationSwitcher = () => {
         handleButtonClick,
     };
 };
+
+export default useRegulationSwitcher;

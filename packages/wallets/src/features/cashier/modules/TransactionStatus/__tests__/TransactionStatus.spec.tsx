@@ -1,9 +1,9 @@
 import React from 'react';
-import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import TransactionStatus from '../TransactionStatus';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: null,
         error: null,

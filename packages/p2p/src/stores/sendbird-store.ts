@@ -209,7 +209,7 @@ export default class SendbirdStore extends BaseStore {
 
         const is_inclusive_of_timestamp = false;
         const reverse_results = this.chat_messages.length > 0;
-        const custom_type = [''];
+        const custom_type = ['', `{"order_id":"${this.root_store.order_store.order_id}"}`];
         const result_size = 50;
 
         const messages_timestamp =
@@ -223,6 +223,7 @@ export default class SendbirdStore extends BaseStore {
             messageTypeFilter: MessageTypeFilter.ALL,
             customTypesFilter: custom_type,
         });
+
         retrieved_messages?.forEach(message => {
             if (message.isUserMessage() || message.isFileMessage()) {
                 chat_messages.push(message);

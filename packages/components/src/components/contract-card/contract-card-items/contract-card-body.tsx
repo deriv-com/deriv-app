@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus } from '@deriv/shared';
+import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus, getTotalProfit } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -12,20 +12,21 @@ import AccumulatorCardBody from './accumulator-card-body';
 import MultiplierCardBody from './multiplier-card-body';
 import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
+import LookBacksCardBody from './lookbacks-card-body';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
 import ArrowIndicator from '../../arrow-indicator';
 
 export type TContractCardBodyProps = {
     is_accumulator?: boolean;
+    is_lookbacks?: boolean;
     is_multiplier: boolean;
-    server_time: moment.Moment;
     is_turbos?: boolean;
     is_vanilla?: boolean;
+    server_time: moment.Moment;
 } & TGeneralContractCardBodyProps;
 
 const ContractCardBody = ({
     addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
@@ -41,6 +42,7 @@ const ContractCardBody = ({
     is_sold,
     is_turbos,
     is_vanilla,
+    is_lookbacks,
     onMouseLeave,
     removeToast,
     server_time,
@@ -68,13 +70,13 @@ const ContractCardBody = ({
 
     const toggle_card_dialog_props = {
         addToast,
-        connectWithContractUpdate,
         current_focus,
         error_message_alignment,
         getContractById,
         onMouseLeave,
         removeToast,
         setCurrentFocus,
+        totalProfit: is_multiplier && !isNaN(Number(profit)) ? getTotalProfit(contract_info) : Number(profit),
     };
 
     let card_body;
@@ -128,6 +130,16 @@ const ContractCardBody = ({
                 getCardLabels={getCardLabels}
                 is_sold={is_sold}
                 progress_slider={progress_slider_mobile_el}
+            />
+        );
+    } else if (is_lookbacks) {
+        card_body = (
+            <LookBacksCardBody
+                contract_info={contract_info}
+                currency={currency}
+                is_sold={is_sold}
+                indicative={indicative}
+                progress_slider_mobile_el={progress_slider_mobile_el}
             />
         );
     } else {
@@ -184,7 +196,7 @@ const ContractCardBody = ({
             <MobileWrapper>
                 <div
                     className={classNames('dc-contract-card__separatorclass', {
-                        'dc-contract-card__body-wrapper': !is_multiplier && !is_turbos,
+                        'dc-contract-card__body-wrapper': !is_multiplier && !is_turbos && !is_lookbacks,
                     })}
                 >
                     {card_body}

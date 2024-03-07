@@ -2,11 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 6.8rem;
-    width: 100%;
+    margin-top: 4rem;
+    width: 67.2rem;
 
     @include mobile {
+        margin-top: 2rem;
         padding: 2.4rem;
+        width: 100%;
     }
 
     &__text {
@@ -14,7 +16,6 @@
     }
 
     &__icon {
-        height: 12.8rem;
-        width: 12.8rem;
+        margin-bottom: 3rem;
     }
 }

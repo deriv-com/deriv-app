@@ -1,3 +1,5 @@
+@import '../../../styles/mixins.scss';
+
 .qs {
     --sidebar-width: 24rem;
     --footer-height: 7.2rem;
@@ -19,20 +21,13 @@
         width: 100%;
     }
 
-    .xy-center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
     .x-center {
         display: flex;
         align-items: center;
     }
 
     &__head {
-        @extend .x-center;
-        justify-content: space-between;
+        @include flex-center(space-between);
         border-bottom: 1px solid var(--border-divider);
 
         &__title {
@@ -113,7 +108,7 @@
             }
 
             &__head {
-                @extend .xy-center;
+                @include flex-center;
                 padding-bottom: 1rem;
 
                 @include mobile() {
@@ -202,8 +197,7 @@
             &__footer {
                 height: var(--footer-height);
                 border-top: 1px solid var(--border-divider);
-                @extend .x-center;
-                justify-content: flex-end;
+                @include flex-center(flex-end);
                 padding: 1.6rem 2.4rem;
                 background-color: var(--general-main-1);
 
@@ -225,7 +219,7 @@
             max-height: calc(100vh - 23rem) !important;
 
             @include desktop() {
-                height: calc(100vh - 23rem) !important;
+                height: calc(100vh - 16rem) !important;
             }
 
             margin-bottom: 1rem;
@@ -237,7 +231,6 @@
             }
 
             &--no-footer {
-                height: 100% !important;
                 max-height: 100% !important;
 
                 @include mobile() {
@@ -465,8 +458,7 @@
     }
 
     .seddle-actions {
-        @extend .x-center;
-        justify-content: center;
+        @include flex-center;
         position: absolute;
         background: transparent;
         border: none;

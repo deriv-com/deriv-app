@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 
 type TAddNewButtonProps = {
     isMobile: boolean;

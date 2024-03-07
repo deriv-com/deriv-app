@@ -27,7 +27,7 @@ import type {
     useTransactions,
     useTransferBetweenAccounts,
     useWalletAccountsList,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {

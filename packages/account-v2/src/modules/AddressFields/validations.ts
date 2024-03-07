@@ -52,7 +52,7 @@ export const addressDetailValidations = (countryCode: string, isSvg: boolean) =>
         }),
     addressPostcode: Yup.string()
         .max(20, 'Please enter a postal/ZIP code under 20 characters.')
-        .matches(regexChecks.address_details.address_postcode, 'Letters, numbers, spaces, hyphens only')
+        .matches(regexChecks.address_details.address_postcode, 'Only letters, numbers, space and hyphen are allowed.')
         .when({
             is: () => countryCode === 'gb',
             then: Yup.string().matches(

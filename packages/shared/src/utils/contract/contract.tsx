@@ -159,9 +159,11 @@ export const isVanillaFxContract = (contract_type = '', symbol = '') =>
     isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as typeof VANILLA_FX_SYMBOLS[number]);
 
 export const isSmartTraderContract = (contract_type = '') =>
-    /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK/i.test(contract_type);
+    /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK|LB/i.test(contract_type);
 
 export const isAsiansContract = (contract_type = '') => /ASIAN/i.test(contract_type);
+
+export const isLookBacksContract = (contract_type = '') => /LB/i.test(contract_type);
 
 export const isTicksContract = (contract_type = '') => /TICK/i.test(contract_type);
 
@@ -323,22 +325,22 @@ export const getLocalizedTurbosSubtype = (contract_type = '') => {
 };
 
 export const clickAndKeyEventHandler = (
-    callback: () => void,
+    callback?: () => void,
     e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
 ) => {
     if (e) {
         e.preventDefault();
         if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
-            callback();
+            callback?.();
         }
     } else {
-        callback();
+        callback?.();
     }
 };
 
 export const getSortedTradeTypes = (array: string[] = []) => {
-    if (array.includes(TRADE_TYPES.TURBOS.LONG)) {
-        return [TRADE_TYPES.TURBOS.LONG, ...array.filter(type => type !== TRADE_TYPES.TURBOS.LONG)];
+    if (array.includes(TRADE_TYPES.ACCUMULATOR)) {
+        return [TRADE_TYPES.ACCUMULATOR, ...array.filter(type => type !== TRADE_TYPES.ACCUMULATOR)];
     }
     if (array.includes(TRADE_TYPES.MULTIPLIER)) {
         return [TRADE_TYPES.MULTIPLIER, ...array.filter(type => type !== TRADE_TYPES.MULTIPLIER)];

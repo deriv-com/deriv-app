@@ -54,6 +54,9 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
     } = useStore();
 
     const handleValidate = (values: TFinancialInformationForm) => {
+        const current_step = (props.getCurrentStep?.() || 1) - 1;
+        props.onSave(current_step, values);
+
         const { errors } = splitValidationResultTypes(props.validate(values));
         if (shouldHideOccupationField(props.employment_status)) {
             delete errors?.occupation;

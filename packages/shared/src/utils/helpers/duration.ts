@@ -180,3 +180,17 @@ export const getDurationMinMaxValues = (
 
     return [min_value, max_value];
 };
+
+const formatDisplayedTime = (time_unit: number) => (time_unit < 10 ? `0${time_unit}` : time_unit);
+
+export const formatDurationTime = (time?: number) => {
+    if (time && !isNaN(time)) {
+        const minutes = Math.floor(time / 60);
+        const format_minutes = formatDisplayedTime(minutes);
+        const seconds = Math.floor(time % 60);
+        const format_seconds = formatDisplayedTime(seconds);
+        return `${format_minutes}:${format_seconds}`;
+    }
+
+    return '00:00';
+};

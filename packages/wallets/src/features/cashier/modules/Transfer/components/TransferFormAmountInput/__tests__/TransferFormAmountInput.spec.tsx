@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import { Formik } from 'formik';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TransferProvider } from '../../../provider';
@@ -46,8 +46,8 @@ const FORM_VALUES: TInitialTransferFormValues = {
     toAmount: 0,
 };
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useGetExchangeRate: jest.fn(({ base_currency }: { base_currency: string }) => ({
         data: {
             base_currency,
@@ -69,16 +69,18 @@ describe('TransferFormAmountInput', () => {
     it('renders two fields', () => {
         render(
             <APIProvider>
-                <TransferProvider accounts={ACCOUNTS}>
-                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
-                        {({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <TransferFormAmountInput fieldName='fromAmount' />
-                            </form>
-                        )}
-                    </Formik>
-                </TransferProvider>
+                <AuthProvider>
+                    <TransferProvider accounts={ACCOUNTS}>
+                        {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                        <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                            {({ handleSubmit }) => (
+                                <form onSubmit={handleSubmit}>
+                                    <TransferFormAmountInput fieldName='fromAmount' />
+                                </form>
+                            )}
+                        </Formik>
+                    </TransferProvider>
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -89,16 +91,18 @@ describe('TransferFormAmountInput', () => {
     it('has 2 decimal places in case of USD', () => {
         render(
             <APIProvider>
-                <TransferProvider accounts={ACCOUNTS}>
-                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
-                        {({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <TransferFormAmountInput fieldName='fromAmount' />
-                            </form>
-                        )}
-                    </Formik>
-                </TransferProvider>
+                <AuthProvider>
+                    <TransferProvider accounts={ACCOUNTS}>
+                        {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                        <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                            {({ handleSubmit }) => (
+                                <form onSubmit={handleSubmit}>
+                                    <TransferFormAmountInput fieldName='fromAmount' />
+                                </form>
+                            )}
+                        </Formik>
+                    </TransferProvider>
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -109,16 +113,18 @@ describe('TransferFormAmountInput', () => {
     it('has 8 decimal places in case of BTC', () => {
         render(
             <APIProvider>
-                <TransferProvider accounts={ACCOUNTS}>
-                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
-                        {({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <TransferFormAmountInput fieldName='toAmount' />
-                            </form>
-                        )}
-                    </Formik>
-                </TransferProvider>
+                <AuthProvider>
+                    <TransferProvider accounts={ACCOUNTS}>
+                        {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                        <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                            {({ handleSubmit }) => (
+                                <form onSubmit={handleSubmit}>
+                                    <TransferFormAmountInput fieldName='toAmount' />
+                                </form>
+                            )}
+                        </Formik>
+                    </TransferProvider>
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -129,16 +135,18 @@ describe('TransferFormAmountInput', () => {
     it('has 8 max digits restriction in case of USD', () => {
         render(
             <APIProvider>
-                <TransferProvider accounts={ACCOUNTS}>
-                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
-                        {({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <TransferFormAmountInput fieldName='fromAmount' />
-                            </form>
-                        )}
-                    </Formik>
-                </TransferProvider>
+                <AuthProvider>
+                    <TransferProvider accounts={ACCOUNTS}>
+                        {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                        <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                            {({ handleSubmit }) => (
+                                <form onSubmit={handleSubmit}>
+                                    <TransferFormAmountInput fieldName='fromAmount' />
+                                </form>
+                            )}
+                        </Formik>
+                    </TransferProvider>
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -150,16 +158,18 @@ describe('TransferFormAmountInput', () => {
     it('has 9 max digits restriction in case of BTC', () => {
         render(
             <APIProvider>
-                <TransferProvider accounts={ACCOUNTS}>
-                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
-                        {({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <TransferFormAmountInput fieldName='toAmount' />
-                            </form>
-                        )}
-                    </Formik>
-                </TransferProvider>
+                <AuthProvider>
+                    <TransferProvider accounts={ACCOUNTS}>
+                        {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                        <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                            {({ handleSubmit }) => (
+                                <form onSubmit={handleSubmit}>
+                                    <TransferFormAmountInput fieldName='toAmount' />
+                                </form>
+                            )}
+                        </Formik>
+                    </TransferProvider>
+                </AuthProvider>
             </APIProvider>
         );
 

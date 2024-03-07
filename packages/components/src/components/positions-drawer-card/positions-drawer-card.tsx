@@ -39,7 +39,7 @@ type TPositionsDrawerCardProps = {
     onMouseLeave?: () => void;
     removeToast: (key: string) => void;
     result?: string;
-    setCurrentFocus: (value: string) => void;
+    setCurrentFocus: (value: string | null) => void;
     server_time?: moment.Moment;
     should_show_transition?: boolean;
     should_show_cancellation_warning: boolean;

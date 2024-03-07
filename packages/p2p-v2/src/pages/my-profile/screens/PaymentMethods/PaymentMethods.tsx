@@ -1,9 +1,9 @@
-import React, { useReducer } from 'react';
+import React, { useCallback, useReducer } from 'react';
 import { TSelectedPaymentMethod } from 'types';
-import { p2p } from '@deriv/api';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { PaymentMethodForm } from '../../../../components/PaymentMethodForm';
-import { advertiserPaymentMethodsReducer } from '../../../../reducers';
+import { PaymentMethodForm } from '@/components';
+import { advertiserPaymentMethodsReducer } from '@/reducers';
+import { p2p } from '@deriv/api-v2';
+import { Loader } from '@deriv-com/ui';
 import { PaymentMethodsEmpty } from './PaymentMethodsEmpty';
 import { PaymentMethodsList } from './PaymentMethodsList';
 
@@ -40,9 +40,10 @@ const PaymentMethods = () => {
             type: 'DELETE',
         });
     };
-    const handleResetFormState = () => {
+
+    const handleResetFormState = useCallback(() => {
         dispatch({ type: 'RESET' });
-    };
+    }, []);
 
     if (isLoading) {
         return <Loader className='m-auto' isFullScreen={false} />;

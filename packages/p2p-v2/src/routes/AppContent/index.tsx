@@ -1,30 +1,52 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveAccount } from '@deriv/api';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
-import { CloseHeader } from '../../components';
-import { MyProfile } from '../../pages';
+import { useEventListener } from 'usehooks-ts';
+import { CloseHeader } from '@/components';
+import { BuySell, MyAds, MyProfile } from '@/pages';
+import { p2p, useActiveAccount } from '@deriv/api-v2';
+import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import './index.scss';
 
 const DEFAULT_TAB = 'buy-sell';
 
 export const routesConfiguration = [
-    { Component: <div> Buy Sell Page </div>, path: 'buy-sell', title: 'Buy / Sell' },
+    { Component: <BuySell />, path: 'buy-sell', title: 'Buy / Sell' },
     { Component: <div> Orders Page </div>, path: 'orders', title: 'Orders' },
-    { Component: <div> My Ads Page </div>, path: 'my-ads', title: 'My Ads' },
+    {
+        Component: <MyAds />,
+        path: 'my-ads',
+        title: 'My Ads',
+    },
     { Component: <MyProfile />, path: 'my-profile', title: 'My Profile' },
 ];
+
+const pathToTitleMapper = Object.fromEntries(routesConfiguration.map(route => [route.path, route.title]));
+
+const getCurrentRoute = () => {
+    const segments = new URL(window.location.href).pathname.split('/');
+    const endPath = segments.pop();
+    return endPath;
+};
+
 const AppContent = () => {
     const history = useHistory();
     const { data: activeAccountData, isLoading } = useActiveAccount();
+    const [activeTab, setActiveTab] = useState(() => pathToTitleMapper[getCurrentRoute() || DEFAULT_TAB]);
+    const { subscribe } = p2p.settings.useGetSettings();
 
-    const initialTab = useMemo(() => {
-        const pathname = new URL(window.location.href).pathname;
-        const segments = pathname.split('/');
+    useEffect(() => {
+        if (activeAccountData) subscribe();
+    }, [activeAccountData, subscribe]);
 
-        return routesConfiguration.find(route => route.path === segments[segments.length - 1])?.title || DEFAULT_TAB;
-    }, [window.location.href]);
+    useEventListener('switchTab', event => {
+        setActiveTab(pathToTitleMapper[event.detail.tab]);
+        history.push(`/cashier/p2p-v2/${event.detail.tab}`);
+    });
+
+    useEventListener('popstate', () => {
+        const endPath = getCurrentRoute();
+        if (endPath) setActiveTab(pathToTitleMapper[endPath]);
+    });
 
     if (isLoading || !activeAccountData) return <Loader color='#85acb0' />;
 
@@ -34,11 +56,12 @@ const AppContent = () => {
     return (
         <>
             <CloseHeader />
-            <div className='p2p-v2-tab__wrapper'>
+            <div className='p2p-v2-tab__wrapper overflow-hidden'>
                 <Tabs
-                    activeTab={initialTab}
+                    activeTab={activeTab}
                     className='p2p-v2-tab__items-wrapper'
                     onChange={index => {
+                        setActiveTab(routesConfiguration[index].title);
                         history.push(`/cashier/p2p-v2/${routesConfiguration[index].path}`);
                     }}
                     variant='secondary'

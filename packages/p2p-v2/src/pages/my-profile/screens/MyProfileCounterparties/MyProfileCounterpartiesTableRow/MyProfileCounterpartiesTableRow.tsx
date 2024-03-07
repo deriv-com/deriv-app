@@ -1,9 +1,8 @@
 import React, { memo, useState } from 'react';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { UserAvatar } from '../../../../../components';
-import { BlockUnblockUserModal } from '../../../../../components/Modals/BlockUnblockUserModal';
-import { useDevice } from '../../../../../hooks';
+import { UserAvatar } from '@/components';
+import { BlockUnblockUserModal } from '@/components/Modals';
+import { useDevice } from '@/hooks';
+import { Button, Text } from '@deriv-com/ui';
 import './MyProfileCounterpartiesTableRow.scss';
 
 type TMyProfileCounterpartiesTableRowProps = {
@@ -20,7 +19,7 @@ const MyProfileCounterpartiesTableRow = ({ id, isBlocked, nickname }: TMyProfile
         <>
             <div className='p2p-v2-my-profile-counterparties-table-row'>
                 <div className='p2p-v2-my-profile-counterparties-table-row__nickname-wrapper'>
-                    <UserAvatar nickname={nickname} />
+                    <UserAvatar className='h-[3rem] w-[3rem]' nickname={nickname} size={65} textSize='sm' />
                     <Text size={isMobile ? 'md' : 'sm'}>{nickname}</Text>
                 </div>
                 {/* TODO: variant to be replaced after available in @deriv-com/ui */}

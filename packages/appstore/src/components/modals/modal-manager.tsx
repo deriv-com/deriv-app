@@ -22,6 +22,7 @@ import AccountTransferModal from 'Components/account-transfer-modal';
 import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
 import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletModal from './wallet-modal';
+import WalletsUpgradeModal from './wallets-upgrade-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -152,6 +153,7 @@ const ModalManager = () => {
             <FailedVerificationModal />
             {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
             <WalletsMigrationFailed />
+            <WalletsUpgradeModal />
             {is_wallet_enabled && <WalletModal />}
         </React.Fragment>
     );

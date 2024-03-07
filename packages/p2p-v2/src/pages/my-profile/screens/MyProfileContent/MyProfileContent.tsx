@@ -1,7 +1,7 @@
 import React from 'react';
-import { useDevice } from '../../../../hooks';
+import { AdvertiserName, AdvertiserNameToggle } from '@/components';
+import { useDevice } from '@/hooks';
 import { MyProfileBalance } from '../MyProfileBalance';
-import { AdvertiserName, AdvertiserNameToggle } from '../../../../components';
 import './MyProfileContent.scss';
 
 const MyProfileContent = () => {

@@ -76,3 +76,4 @@ export { default as useWalletMigration } from './useWalletMigration';
 export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletsList } from './useWalletsList';
+export { default as useGrowthbookFeatureFlag } from './useGrowthbookFeatureFlag';

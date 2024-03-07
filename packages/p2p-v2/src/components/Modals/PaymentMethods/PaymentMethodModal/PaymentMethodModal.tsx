@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactModal from 'react-modal';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Button, Text } from '@deriv-com/ui';
 import { customStyles } from '../../helpers';
 import '../styles.scss';
 

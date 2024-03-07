@@ -23,6 +23,10 @@ export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
             {
                 loader: 'css-loader',
                 options: {
+                    modules: {
+                        auto: (path: string) => path.includes('.module.'),
+                        localIdentName: options.isRelease ? '[hash:base64]' : '[path][name]__[local]',
+                    },
                     url: true,
                 },
             },
@@ -42,6 +46,17 @@ export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
                 },
             },
             'sass-loader',
+            {
+                loader: 'sass-resources-loader',
+                options: {
+                    resources: [
+                        // eslint-disable-next-line global-require, import/no-dynamic-require
+                        ...require('../../shared/src/styles/index.js'),
+                        // eslint-disable-next-line global-require, import/no-dynamic-require
+                        ...require('../src/styles/index.js'),
+                    ],
+                },
+            },
         ],
     };
 

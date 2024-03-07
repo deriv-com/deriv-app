@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Modal from 'react-modal';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button, Text } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
 import './AvailableP2PBalanceModal.scss';
 
@@ -22,6 +21,7 @@ const AvailableP2PBalanceModal = ({ isModalOpen, onRequestClose }: TAvailableP2P
             onRequestClose={onRequestClose}
             shouldCloseOnOverlayClick={false}
             style={customStyles}
+            testId='dt_p2p_v2_available_p2p_balance_modal'
         >
             <Text as='p' weight='bold'>
                 Available Deriv P2P Balance

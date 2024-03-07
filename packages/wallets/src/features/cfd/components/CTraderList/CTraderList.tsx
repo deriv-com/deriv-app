@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCtraderAccountsList } from '@deriv/api';
+import { useCtraderAccountsList } from '@deriv/api-v2';
 import { WalletText } from '../../../../components/Base';
 import { PlatformDetails } from '../../constants';
 import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '../../flows/CTrader';

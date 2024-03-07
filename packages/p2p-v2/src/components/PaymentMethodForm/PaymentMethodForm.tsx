@@ -1,17 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TSelectedPaymentMethod } from 'types';
-import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Input } from '@deriv-com/ui/dist/components/Input';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Dropdown, PaymentMethodField, PaymentMethodsFormFooter, PaymentMethodsHeader } from '@/components';
+import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
+import { TFormState } from '@/reducers/types';
+import { p2p } from '@deriv/api-v2';
+import { Button, Input, Text } from '@deriv-com/ui';
 import CloseCircle from '../../public/ic-close-circle.svg';
-import { TFormState } from '../../reducers/types';
-import { Dropdown } from '../Dropdown';
-import { PaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
-import { PaymentMethodField } from '../PaymentMethodField';
-import { PaymentMethodsFormFooter } from '../PaymentMethodsFormFooter';
-import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {
@@ -34,8 +29,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
         reset,
     } = useForm({ mode: 'all' });
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { actionType, selectedPaymentMethod, title } = rest.formState || {};
-
+    const { actionType, selectedPaymentMethod, title } = rest.formState;
     const { data: availablePaymentMethods } = p2p.paymentMethods.useGet();
     const { create, error: createError, isSuccess: isCreateSuccessful } = p2p.advertiserPaymentMethods.useCreate();
     const { error: updateError, isSuccess: isUpdateSuccessful, update } = p2p.advertiserPaymentMethods.useUpdate();
@@ -43,16 +37,12 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
     useEffect(() => {
         if (isCreateSuccessful) {
             onResetFormState();
-        } else if (createError) {
-            setIsModalOpen(true);
         }
     }, [isCreateSuccessful, createError, onResetFormState]);
 
     useEffect(() => {
         if (isUpdateSuccessful) {
             onResetFormState();
-        } else if (updateError) {
-            setIsModalOpen(true);
         }
     }, [isUpdateSuccessful, onResetFormState, updateError]);
 
@@ -63,7 +53,6 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
         }));
         return listItems || [];
     }, [availablePaymentMethods]);
-
     const handleGoBack = () => {
         if (isDirty) {
             setIsModalOpen(true);
@@ -100,13 +89,14 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                 actionType === 'EDIT' ? null : (
                                     <CloseCircle
                                         className='p2p-v2-payment-method-form__icon--close'
+                                        data-testid='dt_p2p_v2_payment_methods_form_close_icon'
                                         fill='#999999'
-                                        height={30}
+                                        height={15.7}
                                         onClick={() => {
                                             onAdd();
                                             reset();
                                         }}
-                                        width={20}
+                                        width={15.7}
                                     />
                                 )
                             }
@@ -131,29 +121,31 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                 value={selectedPaymentMethod?.display_name ?? ''}
                                 variant='comboBox'
                             />
+                            {/* TODO: Remember to translate these */}
                             <Text color='less-prominent' size='xs'>
-                                {/* TODO: Remember to translate these */}
-                                <span className='p2p-v2-payment-method-form__text'>Don’t see your payment method?</span>
-                                <Button
-                                    className='p2p-v2-payment-method-form__button'
-                                    color='primary'
-                                    onClick={() => {
-                                        const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
-                                        if (paymentMethod) {
-                                            onAdd({
-                                                displayName: paymentMethod?.display_name,
-                                                fields: paymentMethod?.fields,
-                                                method: 'other',
-                                            });
-                                        }
-                                    }}
-                                    size='xs'
-                                    textSize='xs'
-                                    variant='ghost'
-                                >
-                                    Add new.
-                                </Button>
+                                Don’t see your payment method?
                             </Text>
+                            <Button
+                                className='p2p-v2-payment-method-form__button'
+                                color='primary'
+                                onClick={e => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
+                                    if (paymentMethod) {
+                                        onAdd({
+                                            displayName: paymentMethod?.display_name,
+                                            fields: paymentMethod?.fields,
+                                            method: 'other',
+                                        });
+                                    }
+                                }}
+                                size='xs'
+                                textSize='xs'
+                                variant='ghost'
+                            >
+                                Add new.
+                            </Button>
                         </>
                     )}
                 </div>
@@ -178,7 +170,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     isValid={isValid}
                 />
             </form>
-            {actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && (
+            {actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && isModalOpen && (
                 // TODO: Remember to translate these strings
                 <PaymentMethodModal
                     description='If you choose to cancel, the edited details will be lost.'
@@ -192,7 +184,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     title='Cancel your edits?'
                 />
             )}
-            {actionType === 'ADD' && (!isCreateSuccessful || !createError) && (
+            {actionType === 'ADD' && (!isCreateSuccessful || !createError) && isModalOpen && (
                 // TODO: Remember to translate these strings
                 <PaymentMethodModal
                     description='If you choose to cancel, the details you’ve entered will be lost.'
@@ -213,7 +205,6 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     isModalOpen={true}
                     onConfirm={() => {
                         onResetFormState();
-                        setIsModalOpen(false);
                     }}
                     title='Something’s not right'
                 />

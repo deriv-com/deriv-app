@@ -112,7 +112,7 @@ const address_details_config: ({
                 ],
                 [
                     'regular',
-                    localize('Letters, numbers, spaces, hyphens only'),
+                    localize('Only letters, numbers, space and hyphen are allowed.'),
                     {
                         regex: regex_checks.address_details.address_postcode,
                     },

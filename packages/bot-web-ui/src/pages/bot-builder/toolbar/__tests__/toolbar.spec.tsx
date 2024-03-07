@@ -32,6 +32,12 @@ const mockDbotStore = {
     dashboard: {},
 };
 
+jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
+jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
+    saveRecentWorkspace: jest.fn(),
+    unHighlightAllBlocks: jest.fn(),
+}));
+jest.mock('@deriv/bot-skeleton/src/scratch/xml/main.xml', () => '<xml>sample</xml>');
 jest.mock('Stores/useDBotStore', () => ({
     useDBotStore: jest.fn(() => mockDbotStore),
 }));

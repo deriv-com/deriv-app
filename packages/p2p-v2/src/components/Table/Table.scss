@@ -1,12 +1,19 @@
 .p2p-v2-table {
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    position: absolute;
+    &__content {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
 
-    @include mobile {
-        height: 100%;
+        @include mobile {
+            height: 100%;
+        }
+
+        &-row {
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--general-section-1);
+            }
+        }
     }
 
     scrollbar-width: thin; /* For Firefox */
@@ -34,5 +41,11 @@
             border-radius: 10px;
             background-color: var(--state-active);
         }
+    }
+
+    &__header {
+        display: grid;
+        border-bottom: 2px solid var(--general-section-1);
+        padding: 1.6rem;
     }
 }

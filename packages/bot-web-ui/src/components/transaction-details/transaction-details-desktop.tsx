@@ -65,7 +65,7 @@ const TransactionDetailsDesktop = observer(() => {
 
     return (
         <Draggable
-            bounds='.dashboard__main'
+            bounds='.main'
             dragHandleClassName='react-rnd-wrapper-header'
             is_visible={is_transaction_details_modal_open}
             minWidth={modalWidth}

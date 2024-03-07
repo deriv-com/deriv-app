@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import { Text } from '@deriv-com/ui';
 import './MyProfileStatsItem.scss';
 
 type TMyProfileStatsItemProps = {
@@ -8,6 +9,7 @@ type TMyProfileStatsItemProps = {
     onClickLifetime?: (isLifetimeClicked: boolean) => void;
     shouldShowDuration?: boolean;
     shouldShowLifetime?: boolean;
+    testId?: string;
     value: string;
 };
 const MyProfileStatsItem = ({
@@ -16,6 +18,7 @@ const MyProfileStatsItem = ({
     onClickLifetime,
     shouldShowDuration = true,
     shouldShowLifetime,
+    testId,
     value,
 }: TMyProfileStatsItemProps) => {
     const [hasClickedLifetime, setHasClickedLifetime] = useState(false);
@@ -26,9 +29,9 @@ const MyProfileStatsItem = ({
     };
 
     return (
-        <div className='p2p-v2-my-profile-stats__item'>
-            <span>
-                {label}{' '}
+        <div className='p2p-v2-my-profile-stats__item' data-testid={testId}>
+            <div>
+                <Text size='sm'>{label} </Text>
                 {shouldShowDuration && (
                     <button
                         className={clsx('p2p-v2-my-profile-stats__item--inactive', {
@@ -52,12 +55,10 @@ const MyProfileStatsItem = ({
                         </button>
                     </>
                 )}
-            </span>
-            <span>
-                <strong>
-                    {value} {currency}
-                </strong>
-            </span>
+            </div>
+            <Text size='sm' weight='bold'>
+                {value} {currency}
+            </Text>
         </div>
     );
 };

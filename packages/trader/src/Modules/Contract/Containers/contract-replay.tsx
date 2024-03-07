@@ -18,8 +18,8 @@ import {
     isMultiplierContract,
     isTurbosContract,
     isVanillaContract,
-    isSmartTraderContract,
     isResetContract,
+    isLookBacksContract,
     urlFor,
 } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -102,8 +102,8 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
-    const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
     const is_reset_contract = isResetContract(contract_info.contract_type);
+    const is_lookbacks = isLookBacksContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -117,7 +117,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             is_turbos={is_turbos}
             is_sell_requested={is_sell_requested}
             is_vanilla={is_vanilla}
-            is_smarttrader_contract={is_smarttrader_contract}
+            is_lookbacks={is_lookbacks}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             toggleHistoryTab={toggleHistoryTab}

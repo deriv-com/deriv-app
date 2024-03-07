@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+
 .bot {
     &__chart-container {
         position: relative;
@@ -7,23 +9,6 @@
             top: 0;
             width: 100vw;
             background-color: var(--general-main-1);
-        }
-        .cq-context {
-            div.ciq-chart {
-                div.stx_jump_today.home > svg {
-                    top: 10px;
-                    left: 8px;
-                    padding: 0;
-                    position: absolute;
-                }
-            }
-        }
-        .injectionDiv {
-            // Hide scratch workspace when switch to chart
-            display: none;
-        }
-        .cq-dialog-portal {
-            position: absolute;
         }
     }
 
@@ -87,12 +72,10 @@
                     padding: 0.4rem 0.2rem;
                     width: 4rem;
                     height: 4rem;
-                    display: flex;
                     border-radius: 50%;
-                    justify-content: center;
-                    align-items: center;
                     margin: 0.8rem;
                     opacity: 0.75;
+                    @include flex-center;
 
                     &__menu {
                         &__timeperiod {

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { p2p } from '@deriv/api';
-import { Table } from '../../../../../components';
+import { Table } from '@/components';
+import { p2p } from '@deriv/api-v2';
+import { Loader, Text } from '@deriv-com/ui';
 import { MyProfileCounterpartiesEmpty } from '../MyProfileCounterpartiesEmpty';
 import { MyProfileCounterpartiesTableRow } from '../MyProfileCounterpartiesTableRow';
 import './MyProfileCounterpartiesTable.scss';
@@ -48,15 +47,15 @@ const MyProfileCounterpartiesTable = ({
         if (data.length > 0) {
             setShowHeader(true);
         }
-    }, [data]);
+    }, [data, setShowHeader]);
+
+    if (isLoading) {
+        return <Loader className='p2p-v2-my-profile-counterparties-table__loader' isFullScreen={false} />;
+    }
 
     if (!isFetching && data.length === 0) {
         if (searchValue === '') return <MyProfileCounterpartiesEmpty />;
         return <Text weight='bold'>There are no matching name</Text>;
-    }
-
-    if (isLoading) {
-        return <Loader className='p2p-v2-my-profile-counterparties-table__loader' isFullScreen={false} />;
     }
 
     return (
@@ -64,7 +63,6 @@ const MyProfileCounterpartiesTable = ({
             data={data}
             isFetching={isFetching}
             loadMoreFunction={loadMoreAdvertisers}
-            rowClassname='p2p-v2-my-profile-counterparties-table__row'
             rowRender={(rowData: unknown) => (
                 <MyProfileCounterpartiesTableRowRenderer
                     {...(rowData as TMyProfileCounterpartiesTableRowRendererProps)}

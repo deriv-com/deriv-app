@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Input } from '@deriv-com/ui/dist/components/Input';
-import { VALID_SYMBOLS_PATTERN } from '../../constants';
+import { VALID_SYMBOLS_PATTERN } from '@/constants';
+import { Input } from '@deriv-com/ui';
 import { TextArea } from '..';
 
 type TPaymentMethodField = {

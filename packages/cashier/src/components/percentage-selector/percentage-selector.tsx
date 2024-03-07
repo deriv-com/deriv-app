@@ -51,7 +51,7 @@ const PercentageSelector = ({
 
     const calculateAmount = (e: TCalculateAmountInputEvent | TReactMouseEvent, percent: number) => {
         let new_percentage = percent;
-        const is_percentage_selected = percent > 0 && percent <= Number(selected_percentage);
+        const is_percentage_selected = percent > 0 && percent === Number(selected_percentage);
         if (is_percentage_selected) new_percentage -= 25;
 
         setSelectedPercentage(new_percentage || 0);

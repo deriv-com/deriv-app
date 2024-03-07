@@ -15,8 +15,22 @@ import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
-import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
-import VerificationModal from '../VerificationModal';
+
+const TradingAssessmentExistingUser = React.lazy(() =>
+    moduleLoader(() =>
+        import(
+            /* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user.jsx'
+        )
+    )
+);
+
+const VerificationModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "verification-modal" */ '../VerificationModal'))
+);
+
+const UrlUnavailableModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "url-unavailable-modal" */ '../UrlUnavailableModal'))
+);
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -74,8 +88,9 @@ const AppModals = observer(() => {
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
+        mt5_login_list,
     } = client;
-    const { is_mt5_notification_modal_visible, content_flag } = traders_hub;
+    const { content_flag } = traders_hub;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -93,6 +108,7 @@ const AppModals = observer(() => {
         is_kyc_information_submitted_modal_open,
         is_verification_modal_visible,
         is_verification_submitted,
+        isUrlUnavailableModalVisible,
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
     } = ui;
@@ -101,6 +117,11 @@ const AppModals = observer(() => {
     const url_action_param = url_params.get('action');
 
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
+
+    const should_show_mt5_notification_modal =
+        is_logged_in && mt5_login_list.length > 0
+            ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
+            : false;
 
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
@@ -160,7 +181,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <MT5AccountNeededModal />;
     } else if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
-    } else if (is_mt5_notification_modal_visible) {
+    } else if (should_show_mt5_notification_modal) {
         ComponentToLoad = <MT5Notification />;
     } else if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
@@ -168,6 +189,8 @@ const AppModals = observer(() => {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
     } else if (should_show_risk_accept_modal) {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
+    } else if (isUrlUnavailableModalVisible) {
+        ComponentToLoad = <UrlUnavailableModal />;
     }
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;

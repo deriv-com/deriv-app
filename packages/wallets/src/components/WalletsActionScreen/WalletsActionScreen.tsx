@@ -12,7 +12,7 @@ type TProps = {
         | ReactElement<ComponentProps<typeof WalletButton>>
         | ReactElement<ComponentProps<typeof WalletButtonGroup>>
         | null;
-    title?: string;
+    title?: ReactNode;
     titleSize?: ComponentProps<typeof WalletText>['size'];
 };
 

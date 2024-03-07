@@ -4,10 +4,10 @@ import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from '../../../stores/useDBotStore';
+import { rudderStackSendQsOpenEvent } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
-import { Analytics } from '@deriv-com/analytics';
 
 const Toolbox = observer(() => {
     const { ui } = useStore();
@@ -41,19 +41,13 @@ const Toolbox = observer(() => {
 
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
-        sendToRudderStackOnQuickStrategyIconClick();
-    };
-    // this is check if the user has opened quick strategy model from the dashboard
-    const sendToRudderStackOnQuickStrategyIconClick = () => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'open',
-            form_source: 'bot_builder_form',
-        });
+        // send to rs if quick strategy is opened from bot builder (desktop)
+        rudderStackSendQsOpenEvent();
     };
 
     if (!is_mobile) {
         return (
-            <div className='dashboard__toolbox' data-testid='dashboard__toolbox'>
+            <div className='db-toolbox' data-testid='dashboard__toolbox'>
                 <ToolbarButton
                     popover_message={localize('Click here to start building your Deriv Bot.')}
                     button_id='db-toolbar__get-started-button'

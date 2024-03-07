@@ -13,6 +13,10 @@
         flex-direction: column;
         gap: 1rem;
 
+        @include mobile {
+            gap: 0;
+        }
+
         & div {
             display: flex;
             align-items: center;
@@ -47,6 +51,8 @@
 
         @include mobile {
             border-right: 1px solid #f2f3f7;
+            gap: 1rem;
+
             &:last-child {
                 border-right: none;
                 padding: 0 1.6rem;
@@ -60,6 +66,7 @@
             @include mobile {
                 grid-template-columns: 1fr;
                 grid-template-rows: 1fr 1fr;
+                gap: 0.8rem;
             }
 
             & div {

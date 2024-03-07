@@ -71,7 +71,11 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
                                     closeModal();
                                 }}
                             >
-                                <CurrencyIcon className='currency-item-card__icons' icon={icon} size={32} />
+                                <CurrencyIcon
+                                    className='currency-item-card__icons'
+                                    icon={currency ? icon : 'UNKNOWN'}
+                                    size={32}
+                                />
                                 <div className='currency-item-card__details'>
                                     <Text size='xs'>{getCurrencyName(currency)}</Text>
                                     <Text color={is_selected ? 'prominent' : 'less-prominent'} size='xxs'>

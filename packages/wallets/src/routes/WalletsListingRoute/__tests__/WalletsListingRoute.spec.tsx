@@ -1,11 +1,11 @@
 import React, { PropsWithChildren } from 'react';
-import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../components/ModalProvider';
 import useDevice from '../../../hooks/useDevice';
 import WalletsListingRoute from '../WalletsListingRoute';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
     useAuthorize: jest.fn(),
     useWalletAccountsList: jest.fn(),

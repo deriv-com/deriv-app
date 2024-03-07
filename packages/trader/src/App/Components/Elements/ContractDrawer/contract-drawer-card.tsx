@@ -24,13 +24,19 @@ type TContractDrawerCardProps = {
     currency?: string;
     is_collapsed: boolean;
     is_market_closed: boolean;
-    is_smarttrader_contract: boolean;
     result?: string;
     server_time?: moment.Moment;
     toggleContractAuditDrawer: () => void;
 } & Pick<
     TContractCardBodyProps,
-    'contract_info' | 'contract_update' | 'is_accumulator' | 'is_mobile' | 'is_multiplier' | 'is_turbos' | 'is_vanilla'
+    | 'contract_info'
+    | 'contract_update'
+    | 'is_accumulator'
+    | 'is_mobile'
+    | 'is_multiplier'
+    | 'is_turbos'
+    | 'is_vanilla'
+    | 'is_lookbacks'
 > &
     Pick<TContractCardFooterProps, 'is_sell_requested' | 'onClickCancel' | 'onClickSell'> &
     Pick<TSwipeableContractDrawerProps, 'onSwipedDown' | 'onSwipedUp'>;
@@ -46,9 +52,9 @@ const ContractDrawerCard = observer(
         is_mobile,
         is_multiplier,
         is_vanilla,
-        is_smarttrader_contract,
         is_sell_requested,
         is_turbos,
+        is_lookbacks,
         onClickCancel,
         onClickSell,
         onSwipedUp,
@@ -110,6 +116,7 @@ const ContractDrawerCard = observer(
                 is_sold={is_sold}
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
+                is_lookbacks={is_lookbacks}
                 has_progress_slider={has_progress_slider}
                 removeToast={removeToast}
                 server_time={server_time}
@@ -124,6 +131,7 @@ const ContractDrawerCard = observer(
                 contract_info={contract_info}
                 getCardLabels={getCardLabels}
                 is_multiplier={is_multiplier}
+                is_lookbacks={is_lookbacks}
                 is_sell_requested={is_sell_requested}
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
@@ -169,20 +177,12 @@ const ContractDrawerCard = observer(
             </ContractCard>
         );
 
-        const has_swipeable_drawer =
-            is_sold || is_multiplier || is_accumulator || is_vanilla || is_turbos || is_smarttrader_contract;
-
         return (
             <React.Fragment>
                 <DesktopWrapper>{contract_card}</DesktopWrapper>
                 <MobileWrapper>
-                    <SwipeableContractDrawer
-                        onSwipedUp={has_swipeable_drawer ? onSwipedUp : undefined}
-                        onSwipedDown={has_swipeable_drawer ? onSwipedDown : undefined}
-                    >
-                        {has_swipeable_drawer && (
-                            <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
-                        )}
+                    <SwipeableContractDrawer onSwipedUp={onSwipedUp} onSwipedDown={onSwipedDown}>
+                        <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
                         {contract_card}
                     </SwipeableContractDrawer>
                 </MobileWrapper>

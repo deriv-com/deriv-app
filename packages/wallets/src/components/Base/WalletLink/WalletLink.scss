@@ -1,4 +1,23 @@
 .wallets-link {
+    cursor: pointer;
     color: var(--brand-coral, #ff444f);
-    text-decoration: underline;
+    border: none;
+    background: none;
+    font-size: inherit;
+    padding: 0;
+
+    &__variant {
+        &--normal {
+            text-decoration: underline;
+        }
+
+        &--bold {
+            font-weight: bold;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
 }

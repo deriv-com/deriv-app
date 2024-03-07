@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
+import { useCashierLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
 import Error from 'Components/error';
@@ -9,7 +10,6 @@ import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
 import PaymentAgentTransferForm from './payment-agent-transfer-form';
 import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useCashierLocked } from '@deriv/hooks';
 
 const PaymentAgentTransfer = observer(() => {
     const { client } = useStore();
@@ -44,7 +44,11 @@ const PaymentAgentTransfer = observer(() => {
         return <Loading className='cashier__loader' />;
     }
     if (is_cashier_locked) {
-        return <CashierLocked />;
+        return (
+            <div className='cashier-locked-padding'>
+                <CashierLocked />
+            </div>
+        );
     }
     if (error.is_show_full_page) {
         // for errors with CTA hide the form and show the error,

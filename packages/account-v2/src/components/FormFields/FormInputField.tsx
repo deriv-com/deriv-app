@@ -1,9 +1,13 @@
 import React, { ComponentProps } from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import * as Yup from 'yup';
-import { WalletTextField as TextField } from '../base/WalletTextField';
+import { Input } from '@deriv-com/ui';
+import { validateField } from '../../utils/validation';
 
-type FormInputFieldProps = Omit<ComponentProps<typeof TextField>, 'errorMessage' | 'isInvalid' | 'showMessage'> & {
+type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'isFullWidth' | 'label' | 'message' | 'name'> & {
+    isFullWidth?: boolean;
+    label: string;
+    message?: string;
     name: string;
     validationSchema?: Yup.AnySchema;
 };
@@ -16,32 +20,25 @@ type FormInputFieldProps = Omit<ComponentProps<typeof TextField>, 'errorMessage'
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => {
-    const validateField = (value: unknown) => {
-        try {
-            if (validationSchema) {
-                validationSchema.validateSync(value);
-            }
-        } catch (err: unknown) {
-            return (err as Yup.ValidationError).message;
-        }
-    };
+export const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => {
+    const formik = useFormikContext();
+
+    if (!formik) {
+        throw new Error('FormInputField must be used within a Formik component');
+    }
 
     return (
-        <Field name={name} validate={validateField}>
+        <Field name={name} validate={validateField(validationSchema)}>
             {({ field, meta: { error, touched } }: FieldProps<string>) => (
-                <TextField
+                <Input
                     {...field}
                     {...rest}
+                    aria-label={rest.label}
                     autoComplete='off'
-                    errorMessage={touched && error}
-                    isInvalid={touched && !!error}
-                    showMessage
-                    type='text'
+                    error={Boolean(error && touched)}
+                    message={error && touched ? error : rest.message}
                 />
             )}
         </Field>
     );
 };
-
-export default FormInputField;

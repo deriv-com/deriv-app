@@ -8,7 +8,7 @@ import {
     useMT5AccountsList,
     useSettings,
     useTradingPlatformPasswordChange,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -35,7 +35,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         mutate,
         status,
     } = useCreateMT5Account();
-    const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
+    const { isLoading: tradingPlatformPasswordChangeLoading, mutateAsync: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: accountStatus } = useAccountStatus();
     const { data: activeWallet } = useActiveWalletAccount();

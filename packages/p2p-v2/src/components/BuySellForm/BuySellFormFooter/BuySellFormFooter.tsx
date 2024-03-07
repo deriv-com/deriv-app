@@ -4,7 +4,7 @@ import { Button, useDevice } from '@deriv-com/ui';
 type TBuySellFormFooterProps = {
     isDisabled: boolean;
     onClickCancel: () => void;
-    onSubmit: () => void;
+    onSubmit?: () => void;
 };
 const BuySellFormFooter = ({ isDisabled, onClickCancel, onSubmit }: TBuySellFormFooterProps) => {
     const { isMobile } = useDevice();

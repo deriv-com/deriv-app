@@ -180,3 +180,9 @@
 # ==============================================================
 
 /packages/api-v2/**/*                                           @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv
+
+# ==============================================================
+#  scripts/check-imports.js 
+# ==============================================================
+
+/scripts/check-imports.js                                       @wojciech-deriv @matin-deriv @yashim-deriv

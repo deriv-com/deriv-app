@@ -139,5 +139,14 @@
         top: 1.5rem;
         background-color: transparent;
         margin: unset;
+
+        &:before {
+            content: '';
+            display: block;
+            height: 3.5rem;
+            width: 14rem;
+            position: absolute;
+            bottom: -1rem;
+        }
     }
 }

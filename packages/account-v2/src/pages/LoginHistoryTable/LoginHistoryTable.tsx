@@ -116,7 +116,7 @@ export const LoginHistoryTable = () => {
                 isFetching={true}
                 renderHeader={header => <span>{header}</span>}
                 rowRender={data => (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(300px, 1fr))' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
                         <div>{data.id}</div>
                         <div>{data.name} </div>
                         <div>{data.team}</div>

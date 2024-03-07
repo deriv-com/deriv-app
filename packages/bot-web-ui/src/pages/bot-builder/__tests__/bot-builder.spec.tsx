@@ -5,15 +5,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
-import BotNotification from 'Components/bot-notification/bot-notification';
-import { notification_message } from 'Components/bot-notification/notification-settings';
+import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import BotBuilder from '../bot-builder';
 
-jest.mock('react-toastify/dist/ReactToastify.css', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('../workspace-wrapper', () => jest.fn(() => <div>WorkspaceWrapper</div>));
 jest.mock('../quick-strategy', () => jest.fn(() => <div>QuickStrategy</div>));
@@ -31,8 +29,8 @@ jest.mock('@deriv/bot-skeleton', () => ({
 
 const mockBotNotification = jest.fn();
 
-jest.mock('Components/bot-notification/notification-settings', () => ({
-    ...jest.requireActual('Components/bot-notification/notification-settings'),
+jest.mock('Components/bot-notification/bot-notification', () => ({
+    ...jest.requireActual('Components/bot-notification/bot-notification'),
     botNotification: (message: string) => mockBotNotification(message),
 }));
 
@@ -114,7 +112,6 @@ describe('BotBuilder', () => {
         render(
             <>
                 <BotBuilder />
-                <BotNotification />
             </>,
             { wrapper }
         );

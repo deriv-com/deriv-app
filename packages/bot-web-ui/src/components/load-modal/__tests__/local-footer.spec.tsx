@@ -4,7 +4,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-import { IMPORT_NOTIFICATION_TYPE } from 'Components/bot-notification/notification-settings';
+import { IMPORT_NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { mock_ws } from 'Utils/mock';
 import DashboardStore from 'Stores/dashboard-store';
 import LoadModalStore from 'Stores/load-modal-store';

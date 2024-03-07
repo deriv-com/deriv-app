@@ -1,11 +1,8 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
-import {
-    botNotification,
-    IMPORT_NOTIFICATION_TYPE,
-    notification_message,
-} from 'Components/bot-notification/notification-settings';
+import { botNotification } from 'Components/bot-notification/bot-notification';
+import { IMPORT_NOTIFICATION_TYPE, notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import * as strategy_description from '../constants/quick-strategies';
 import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';

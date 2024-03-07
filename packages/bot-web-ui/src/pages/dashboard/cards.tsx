@@ -5,7 +5,7 @@ import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text 
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
-import { IMPORT_NOTIFICATION_TYPE } from 'Components/bot-notification/notification-settings';
+import { IMPORT_NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsOpenEvent } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';

@@ -1,8 +1,9 @@
 import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ToastContainer } from 'react-toastify';
 import { api_base, ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import BotNotification from 'Components/bot-notification/bot-notification';
 import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -15,6 +16,8 @@ import RoutePromptDialog from '../components/route-prompt-dialog';
 import BotBuilder from '../pages/bot-builder';
 import Main from '../pages/main';
 import './app.scss';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'react-toastify/dist/ReactToastify.css';
 
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -127,7 +130,7 @@ const AppContent = observer(() => {
                 <BotStopped />
                 <RoutePromptDialog />
                 <TransactionDetailsModal />
-                <BotNotification />
+                <ToastContainer />
             </div>
         </>
     );

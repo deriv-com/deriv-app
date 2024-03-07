@@ -5,7 +5,7 @@ import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { IMPORT_NOTIFICATION_TYPE } from 'Components/bot-notification/notification-settings';
+import { IMPORT_NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderstackDashboardDeleteYourBot } from '../analytics/rudderstack-dashboard';

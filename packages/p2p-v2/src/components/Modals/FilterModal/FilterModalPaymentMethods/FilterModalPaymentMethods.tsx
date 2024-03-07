@@ -29,8 +29,6 @@ const FilterModalPaymentMethods = ({
             setSearchedPaymentMethods(
                 data?.filter(paymentMethod => paymentMethod.display_name.toLowerCase().includes(value.toLowerCase()))
             );
-        } else {
-            setSearchedPaymentMethods([]);
         }
     };
 

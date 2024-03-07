@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { FullPageMobileWrapper, PageReturn } from '@/components';
-import { useDevice } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 import { LabelPairedChevronRightLgRegularIcon, LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
-import { Text, ToggleSwitch } from '@deriv-com/ui';
+import { Text, ToggleSwitch, useDevice } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
 import { FilterModalContent } from './FilterModalContent';
 import { FilterModalFooter } from './FilterModalFooter';
@@ -73,6 +72,10 @@ const FilterModal = ({
             setIsMatching(isToggled);
         }
     };
+
+    useEffect(() => {
+        ReactModal.setAppElement('#v2_modal_root');
+    }, []);
 
     useEffect(() => {
         if (data && paymentMethods.length > 0) {

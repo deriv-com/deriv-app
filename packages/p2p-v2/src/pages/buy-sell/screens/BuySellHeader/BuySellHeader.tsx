@@ -3,7 +3,7 @@ import { Search } from '@/components';
 import { FilterModal } from '@/components/Modals';
 import { SORT_BY_LIST } from '@/constants';
 import { TSortByValues } from '@/utils';
-import { LabelPairedBarsFilterMdBoldIcon } from '@deriv/quill-icons';
+import { LabelPairedBarsFilterMdBoldIcon, LabelPairedBarsFilterSmBoldIcon } from '@deriv/quill-icons';
 import { Button, Tab, Tabs, useDevice } from '@deriv-com/ui';
 import { CurrencyDropdown, SortDropdown } from '../../components';
 import './BuySellHeader.scss';
@@ -70,8 +70,14 @@ const BuySellHeader = ({
                     value={sortDropdownValue}
                 />
                 <Button
-                    className='border-[#d6dadb] p-0 lg:h-16 lg:w-16 h-[3.2rem] w-[3.2rem]'
-                    icon={<LabelPairedBarsFilterMdBoldIcon />}
+                    className='border-[#d6dadb] lg:p-0 lg:h-16 lg:w-16 h-[3.2rem] w-[3.2rem]'
+                    icon={
+                        isMobile ? (
+                            <LabelPairedBarsFilterSmBoldIcon className='absolute' />
+                        ) : (
+                            <LabelPairedBarsFilterMdBoldIcon />
+                        )
+                    }
                     onClick={() => setIsModalOpen(true)}
                     variant='outlined'
                 />

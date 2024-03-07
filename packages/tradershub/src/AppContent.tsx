@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { AppContainer, EUDisclaimerMessage } from '@/components';
 import { useRegulationFlags } from '@/hooks';
-import { Modals } from '@/modals';
 import { Router } from '@/routes';
 
 const AppContent = () => {

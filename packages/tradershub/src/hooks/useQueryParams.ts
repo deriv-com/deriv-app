@@ -8,7 +8,8 @@ type ModalId =
     | 'GetADerivAccountDialog'
     | 'JurisdictionModal'
     | 'MT5PasswordModal'
-    | 'RealAccountCreation';
+    | 'RealAccountCreation'
+    | 'TradeModal';
 
 /**
  * @description A hook to manage query params for modals

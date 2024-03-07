@@ -1,4 +1,4 @@
-import { MT5MarketTypeDetails, PlatformDetails } from '../constants';
+import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails } from '../constants';
 import { THooks, TMarketTypes, TWalletLandingCompanyName } from '../hooks/types';
 
 type TGetAccountNameProps = {
@@ -59,6 +59,15 @@ export const getAccountName = ({
         default:
             return '';
     }
+};
+
+//TODO: remove this function when landing_company_name will be added to transfer_between_accounts response in API for mt5 accounts
+export const getLandingCompanyNameOfMT5Account = (mt5Group?: string) => {
+    if (mt5Group?.includes(LandingCompanyDetails.bvi.name)) return LandingCompanyDetails.bvi.name;
+    if (mt5Group?.includes(LandingCompanyDetails.labuan.name)) return LandingCompanyDetails.labuan.name;
+    if (mt5Group?.includes(LandingCompanyDetails.svg.name)) return LandingCompanyDetails.svg.name;
+    if (mt5Group?.includes(LandingCompanyDetails.vanuatu.name)) return LandingCompanyDetails.vanuatu.name;
+    return LandingCompanyDetails.svg.name;
 };
 
 export const getMarketType = (mt5Group?: string) => {

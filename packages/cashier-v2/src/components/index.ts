@@ -9,4 +9,5 @@ export { NewsTicker } from './NewsTicker';
 export { PageContainer } from './PageContainer';
 export { PercentageSelector } from './PercentageSelector';
 export { ReceiptScreen } from './ReceiptScreen';
+export { TradingAppIcon } from './TradingAppIcon';
 export { TransferConfirmScreen } from './TransferConfirmScreen';

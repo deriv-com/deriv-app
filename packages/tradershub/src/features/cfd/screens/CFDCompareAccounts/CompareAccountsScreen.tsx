@@ -1,29 +1,18 @@
-import React, { useMemo } from 'react';
-import { useActiveTradingAccount, useCFDAccountsList, useCFDCompareAccounts } from '@deriv/api-v2';
+import React from 'react';
+import { useRegulationFlags } from '@/hooks';
+import { useCFDCompareAccounts } from '@deriv/api-v2';
 import { CompareAccountsCarousel } from '../../components';
 import CFDCompareAccountsCard from './CompareAccountsCard';
-import { isCTraderAccountAdded, isDxtradeAccountAdded } from './CompareAccountsConfig';
 import CompareAccountsHeader from './CompareAccountsHeader';
+import CTraderCompareAccountsCard from './CTraderCompareAccountsCard';
+import DerivXCompareAccountsCard from './DerivXCompareAccountsCard';
 
 const CompareAccountsScreen = () => {
-    const { data: activeDerivTrading } = useActiveTradingAccount();
+    const { isEU } = useRegulationFlags();
 
-    const { is_virtual: isDemo = false } = activeDerivTrading ?? {};
+    const { data: compareAccounts } = useCFDCompareAccounts(isEU);
 
-    const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
-    const { data: cfdAccounts } = useCFDAccountsList();
-
-    const { ctraderAccount, dxtradeAccount, mt5Accounts } = compareAccounts;
-
-    const isDxtradeAdded = useMemo(
-        () => !!cfdAccounts && isDxtradeAccountAdded(cfdAccounts.dxtrade, isDemo),
-        [cfdAccounts, isDemo]
-    );
-
-    const isCtraderAdded = useMemo(
-        () => !!cfdAccounts && isCTraderAccountAdded(cfdAccounts.ctrader, isDemo),
-        [cfdAccounts, isDemo]
-    );
+    const { mt5Accounts } = compareAccounts;
 
     return (
         <div className='m-0 overflow-x-auto lg:w-full lg:h-full '>
@@ -39,24 +28,8 @@ const CompareAccountsScreen = () => {
                             shortCode={item?.shortcode}
                         />
                     ))}
-                    {/* Renders cTrader data */}
-                    {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
-                        <CFDCompareAccountsCard
-                            isAccountAdded={isCtraderAdded}
-                            marketType={ctraderAccount.market_type}
-                            platform={ctraderAccount.platform}
-                            shortCode={ctraderAccount.shortcode}
-                        />
-                    )}
-                    {/* Renders Deriv X data */}
-                    {mt5Accounts?.length && hasDxtradeAccountAvailable && dxtradeAccount && (
-                        <CFDCompareAccountsCard
-                            isAccountAdded={isDxtradeAdded}
-                            marketType={dxtradeAccount.market_type}
-                            platform={dxtradeAccount.platform}
-                            shortCode={dxtradeAccount.shortcode}
-                        />
-                    )}
+                    <CTraderCompareAccountsCard />
+                    <DerivXCompareAccountsCard />
                 </CompareAccountsCarousel>
             </div>
         </div>

@@ -21,7 +21,7 @@ const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {
         <div className='passkeys-card__wrapper'>
             <Icon icon='IcPasskey' size={24} />
             <div>
-                <Text as='p' color='general' weight='bold' line_height='l'>
+                <Text as='p' weight='bold' line_height='l'>
                     {name}
                 </Text>
                 {stored_on && (

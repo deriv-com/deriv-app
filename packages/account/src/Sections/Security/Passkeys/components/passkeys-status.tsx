@@ -26,7 +26,7 @@ const PasskeysStatus = ({
                 })}
             >
                 <Icon icon={icon} size={96} />
-                <Text as='div' color='general' weight='bold' align='center' className='passkeys-status__title'>
+                <Text as='div' weight='bold' align='center' className='passkeys-status__title'>
                     {title}
                 </Text>
                 {description && (

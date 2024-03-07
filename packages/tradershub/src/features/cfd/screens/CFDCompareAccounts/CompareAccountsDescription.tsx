@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { getJurisdictionDescription } from './CompareAccountsConfig';

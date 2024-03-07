@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
-import { useResidenceList } from '@deriv/api';
+import { useResidenceList } from '@deriv/api-v2';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown, Input, useDevice } from '@deriv-com/ui';
 import { DOCUMENT_LIST } from '../../../mocks/idv-form.mock';

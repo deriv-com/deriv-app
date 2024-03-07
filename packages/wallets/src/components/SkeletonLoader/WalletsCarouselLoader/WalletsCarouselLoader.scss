@@ -20,19 +20,27 @@
     }
 
     &__card {
-        height: 11rem;
+        height: 14.6rem;
         border-radius: 0.8rem;
-        padding-right: 2.4rem;
+
+        &:first-child {
+            height: 17.6rem;
+        }
 
         &-body {
-            width: 16rem;
+            width: 24rem;
+
+            &:first-child {
+                width: 28.8rem;
+            }
         }
 
         &-container {
             display: flex;
+            align-items: center;
             gap: 1.6rem;
             overflow: hidden;
-            padding-left: 30vw;
+            transform: translateX(calc(50% - 14.4rem));
         }
     }
 

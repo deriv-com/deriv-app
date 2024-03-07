@@ -6,7 +6,7 @@ import { useRegulationFlags } from '@/hooks';
 import { AddOrManageAccount } from '@/modals';
 import { useModal } from '@/providers';
 import { THooks } from '@/types';
-import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
+import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api-v2';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
 import { DemoCurrencySwitcherAccountInfo, RealCurrencySwitcherAccountInfo } from './CurrencySwitcherAccountInfo';

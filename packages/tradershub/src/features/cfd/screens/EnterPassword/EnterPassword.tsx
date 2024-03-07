@@ -3,7 +3,7 @@ import { useRegulationFlags } from '@/hooks';
 import { TMarketTypes, TPlatforms } from '@/types';
 import { validPassword } from '@/utils';
 import { MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Button, PasswordInput, Text, useDevice } from '@deriv-com/ui';
 
 type TEnterPasswordProps = {

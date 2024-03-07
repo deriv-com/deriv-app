@@ -9,7 +9,6 @@ describe('useMT5MigrationModalContext', () => {
                 value={{
                     show_modal_front_side: false,
                     setShowModalFrontSide: () => null,
-                    setMigrationError: () => null,
                 }}
             >
                 {children}
@@ -27,7 +26,6 @@ describe('useMT5MigrationModalContext', () => {
                 value={{
                     show_modal_front_side: true,
                     setShowModalFrontSide: () => null,
-                    setMigrationError: () => null,
                 }}
             >
                 {children}

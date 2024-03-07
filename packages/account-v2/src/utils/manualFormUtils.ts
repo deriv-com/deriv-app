@@ -1,18 +1,22 @@
 import { FormikValues } from 'formik';
 import * as Yup from 'yup';
-import { manualDocumentSelfie, manualDocumentTypesData, TManualDocumentTypes } from '../constants/manualFormConstants';
+import {
+    MANUAL_DOCUMENT_SELFIE,
+    MANUAL_DOCUMENT_TYPES_DATA,
+    TManualDocumentTypes,
+} from '../constants/manualFormConstants';
 
 export const getTitleForFormInputs = (selectedDocument: TManualDocumentTypes) =>
-    manualDocumentTypesData[selectedDocument].inputSectionHeader;
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].inputSectionHeader;
 
 export const getTitleForDocumentUpload = (selectedDocument: TManualDocumentTypes) =>
-    manualDocumentTypesData[selectedDocument].uploadSectionHeader;
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].uploadSectionHeader;
 
 export const getFieldsConfig = (selectedDocument: TManualDocumentTypes) =>
-    manualDocumentTypesData[selectedDocument].fields;
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].fields;
 
 export const getUploadConfig = (selectedDocument: TManualDocumentTypes) =>
-    manualDocumentTypesData[selectedDocument].uploads;
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].uploads;
 
 export const getManualFormValidationSchema = (
     selectedDocument: TManualDocumentTypes,
@@ -39,7 +43,7 @@ export const getManualFormValidationSchema = (
 
 export const getSelfieValidationSchema = () => {
     return Yup.object({
-        [manualDocumentSelfie]: Yup.mixed<File | null>()
+        [MANUAL_DOCUMENT_SELFIE]: Yup.mixed<File | null>()
             .test({
                 message: 'File is required',
                 name: 'file',
@@ -48,7 +52,7 @@ export const getSelfieValidationSchema = () => {
                 },
             })
             .required(),
-    }).default(() => ({ [manualDocumentSelfie]: null }));
+    }).default(() => ({ [MANUAL_DOCUMENT_SELFIE]: null }));
 };
 
 export const setInitialValues = (fields: string[]) => {

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
-import { manualDocumentSelfie, TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { getManualFormValidationSchema, setInitialValues } from '../../utils/manualFormUtils';
 import { ManualFormDocumentUpload } from './ManualFormDocumentUpload';
 import { ManualFormFooter } from './ManualFormFooter';
@@ -30,7 +30,7 @@ export const ManualForm = ({
     const initialValues = useMemo(() => {
         const defaultValues = setInitialValues(Object.keys(validationSchema.fields));
         const formValues = { ...defaultValues, ...formData };
-        delete formValues[manualDocumentSelfie];
+        delete formValues[MANUAL_DOCUMENT_SELFIE];
         return formValues;
     }, [formData, validationSchema.fields]);
 

@@ -74,9 +74,9 @@ describe('WalletCard', () => {
         };
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCard {...mockProps} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('BTC Wallet')).toBeInTheDocument();

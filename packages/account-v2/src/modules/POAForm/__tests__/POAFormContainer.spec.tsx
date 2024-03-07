@@ -3,7 +3,7 @@ import * as routerDOM from 'react-router-dom';
 import { useActiveTradingAccount, useAuthorize } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { accountV2Routes, p2pRoute } from '../../../constants/routes';
+import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../../constants/routes';
 import { usePOAInfo } from '../../../hooks/usePOAInfo';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../../utils/platform';
 import { POAFormContainer } from '../POAFormContainer';
@@ -154,7 +154,7 @@ describe('POAFormPOAFormContainer', () => {
         jest.spyOn(routerDOM, 'useHistory').mockReturnValue({ push: pushMock });
         render(<POAFormContainer />);
         userEvent.click(screen.getByText('Back to P2P'));
-        expect(pushMock).toHaveBeenCalledWith(p2pRoute);
+        expect(pushMock).toHaveBeenCalledWith(P2P_ROUTE);
     });
 
     it('redirects to ProofOfIdentity when the Proof of identity button is clicked', () => {
@@ -174,7 +174,7 @@ describe('POAFormPOAFormContainer', () => {
 
         render(<POAFormContainer />);
         userEvent.click(screen.getByText('Proof of identity'));
-        expect(pushMock).toHaveBeenCalledWith(accountV2Routes.ProofOfIdentity);
+        expect(pushMock).toHaveBeenCalledWith(ACCOUNT_V2_ROUTES.ProofOfIdentity);
     });
 
     it('redirects to the homepage when the Continue trading button is clicked', () => {

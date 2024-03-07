@@ -1,8 +1,8 @@
-export const p2pRoute = '/cashier/p2p';
+export const P2P_ROUTE = '/cashier/p2p';
 
 export const ACCOUNT_V2_DEFAULT_ROUTE = '/account-v2';
 
-export const accountV2Routes = {
+export const ACCOUNT_V2_ROUTES = {
     AccountLimits: `${ACCOUNT_V2_DEFAULT_ROUTE}/account_limits`,
     ApiToken: `${ACCOUNT_V2_DEFAULT_ROUTE}/api_token`,
     CloseAccount: `${ACCOUNT_V2_DEFAULT_ROUTE}/close_your_account`,

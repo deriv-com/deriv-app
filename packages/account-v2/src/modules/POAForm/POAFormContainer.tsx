@@ -6,7 +6,7 @@ import { DerivLightDeclinedPoaIcon, DerivLightWaitingPoaIcon, DerivLightApproved
 import { DemoMessage } from '../../components/DemoMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { AUTH_STATUS_CODES } from '../../constants/constants';
-import { accountV2Routes, p2pRoute } from '../../constants/routes';
+import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../constants/routes';
 import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
 import { usePOAInfo } from '../../hooks/usePOAInfo';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
@@ -27,7 +27,7 @@ export const POAFormContainer = () => {
         isNavigationFromP2P() ? (
             <Button
                 onClick={() => {
-                    history.push(p2pRoute);
+                    history.push(P2P_ROUTE);
                     window.sessionStorage.removeItem('config.platform');
                 }}
             >
@@ -39,7 +39,7 @@ export const POAFormContainer = () => {
         isPOINeeded ? (
             <Button
                 onClick={() => {
-                    history.push(accountV2Routes.ProofOfIdentity);
+                    history.push(ACCOUNT_V2_ROUTES.ProofOfIdentity);
                 }}
             >
                 Proof of identity

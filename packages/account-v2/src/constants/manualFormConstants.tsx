@@ -12,15 +12,15 @@ export const MANUAL_DOCUMENT_TYPES = Object.freeze({
     DRIVING_LICENCE: 'DRIVING_LICENCE',
     NATIONAL_IDENTITY_CARD: 'NATIONAL_IDENTITY_CARD',
     NIMC_SLIP: 'NIMC_SLIP',
-    PASSPORT: 'passport',
+    PASSPORT: 'PASSPORT',
 });
 
 export const MANUAL_DOCUMENT_SELFIE = 'selfie_with_id';
 
 const MANUAL_FORM_PAGE_TYPES = Object.freeze({
-    BACK: 'back',
-    FRONT: 'front',
-    PHOTO: 'photo',
+    BACK: 'BACK',
+    FRONT: 'FRONT',
+    PHOTO: 'PHOTO',
 });
 
 const documentExpiry = {

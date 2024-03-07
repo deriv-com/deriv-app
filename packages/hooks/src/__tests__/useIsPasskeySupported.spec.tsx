@@ -1,19 +1,19 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { platformAuthenticatorIsAvailable } from '@simplewebauthn/browser';
-import useGrowthbookFeatureFlag from '../useGrowthbookFeatureFlag';
 import useIsPasskeySupported from '../useIsPasskeySupported';
+import { Analytics } from '@deriv-com/analytics';
 
 jest.mock('@simplewebauthn/browser', () => ({
     platformAuthenticatorIsAvailable: jest.fn(),
 }));
-jest.mock('../useGrowthbookFeatureFlag', () => jest.fn());
-
-const mockUseGrowthbookFeatureFlag = useGrowthbookFeatureFlag as jest.MockedFunction<typeof useGrowthbookFeatureFlag>;
+jest.mock('@deriv-com/analytics', () => ({
+    Analytics: { getFeatureValue: jest.fn() },
+}));
 
 describe('useIsPasskeySupported', () => {
     it('sets state correctly when passkey is supported', async () => {
         (platformAuthenticatorIsAvailable as jest.Mock).mockResolvedValue(true);
-        mockUseGrowthbookFeatureFlag.mockReturnValue(true);
+        (Analytics.getFeatureValue as jest.Mock).mockReturnValue(true);
 
         const { result, waitForNextUpdate } = renderHook(() => useIsPasskeySupported());
 
@@ -24,7 +24,7 @@ describe('useIsPasskeySupported', () => {
     });
     it('does not support passkey when growthbook feature flag is true and authenticator is not supported', async () => {
         (platformAuthenticatorIsAvailable as jest.Mock).mockResolvedValue(false);
-        mockUseGrowthbookFeatureFlag.mockReturnValue(true);
+        (Analytics.getFeatureValue as jest.Mock).mockReturnValue(true);
 
         const { result, waitForNextUpdate } = renderHook(() => useIsPasskeySupported());
 
@@ -35,7 +35,7 @@ describe('useIsPasskeySupported', () => {
     });
     it('does not support passkey when growthbook feature flag is false and authenticator is not supported', async () => {
         (platformAuthenticatorIsAvailable as jest.Mock).mockResolvedValue(false);
-        mockUseGrowthbookFeatureFlag.mockReturnValue(false);
+        (Analytics.getFeatureValue as jest.Mock).mockReturnValue(false);
 
         const { result, waitForNextUpdate } = renderHook(() => useIsPasskeySupported());
 
@@ -45,8 +45,8 @@ describe('useIsPasskeySupported', () => {
         expect(result.current.is_passkey_supported).toBe(false);
     });
     it('does not support passkey when growthbook feature flag is false and authenticator is supported', async () => {
-        (platformAuthenticatorIsAvailable as jest.Mock).mockResolvedValue(false);
-        mockUseGrowthbookFeatureFlag.mockReturnValue(false);
+        (platformAuthenticatorIsAvailable as jest.Mock).mockResolvedValue(true);
+        (Analytics.getFeatureValue as jest.Mock).mockReturnValue(false);
 
         const { result, waitForNextUpdate } = renderHook(() => useIsPasskeySupported());
 

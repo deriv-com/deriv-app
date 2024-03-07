@@ -16,7 +16,7 @@ const currencySelectorConfig = (
 ) => {
     return {
         header: {
-            active_title: localize('Please choose your currency'),
+            active_title: localize('Select your preferred currency'),
             title: localize('Account currency'),
         },
         body: CurrencySelector,

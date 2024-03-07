@@ -2,7 +2,7 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { PlatformDetails } from '@cfd/constants';
-import { useDynamicLeverage } from '@deriv/api';
+import { useDynamicLeverage } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';
 

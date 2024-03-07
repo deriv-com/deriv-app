@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useActiveTradingAccount, useCFDAccountsList, useCFDCompareAccounts } from '@deriv/api';
+import { useActiveTradingAccount, useCFDAccountsList, useCFDCompareAccounts } from '@deriv/api-v2';
 import { CompareAccountsCarousel } from '../../components';
 import CFDCompareAccountsCard from './CompareAccountsCard';
 import { isCTraderAccountAdded, isDxtradeAccountAdded } from './CompareAccountsConfig';

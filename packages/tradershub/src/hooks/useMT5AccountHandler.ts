@@ -6,7 +6,7 @@ import {
     useCreateMT5Account,
     useSettings,
     useTradingPlatformPasswordChange,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { Category, CFDPlatforms, MarketType } from '../features/cfd/constants';
 import { Jurisdiction } from '../features/cfd/screens/CFDCompareAccounts/constants';
 

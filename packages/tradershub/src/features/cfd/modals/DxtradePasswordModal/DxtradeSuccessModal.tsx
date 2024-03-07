@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Category, PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
 import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';

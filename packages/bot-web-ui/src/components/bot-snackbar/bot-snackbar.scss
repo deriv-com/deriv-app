@@ -1,7 +1,7 @@
 .bot-snackbar {
     position: fixed;
     z-index: var(--zindex-snackbar);
-    right: 38rem;
+    inset-inline-end: 38rem;
     top: 12rem;
 
     .dc-toast {
@@ -30,7 +30,7 @@
     .notification-close {
         cursor: pointer;
         filter: invert(1);
-        margin-left: 1rem;
+        margin-inline-start: 1rem;
         margin-top: 0.1rem;
     }
 }

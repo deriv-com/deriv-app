@@ -11,7 +11,7 @@ import { useRegulationFlags } from '@/hooks';
 import { useModal } from '@/providers';
 import { PlatformDetails } from '@cfd/constants';
 import { CTraderSuccessModal } from '@cfd/modals';
-import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
+import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { URLUtils } from '@deriv-com/utils';
 
 const { getDerivStaticURL } = URLUtils;

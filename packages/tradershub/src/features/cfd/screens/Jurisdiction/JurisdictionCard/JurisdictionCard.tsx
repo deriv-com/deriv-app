@@ -61,8 +61,10 @@ const verificationDocumentsMapper: TVerificationDocumentsMapper = {
 const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, onSelect }: TJurisdictionCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
     const { isEU } = useRegulationFlags();
+
+    const { marketType: marketTypeState } = cfdState;
 
     const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
@@ -84,7 +86,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
 
     const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = jurisdictionContents;
 
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const marketType = marketTypeState ?? MarketType.ALL;
     const rows = contents[marketType] ?? [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {
@@ -93,7 +95,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                 if (description.type === 'link') {
                     return (
                         <StaticLink
-                            className='py-0 pl-0 text-sm bg-transparent text-brand-red-light'
+                            className='py-0 pl-0 text-sm no-underline bg-transparent text-brand-red-light'
                             key={`jurisdiction-card-description-${description.text}`}
                             onClick={descriptionClickHandler(description.tag)}
                         >
@@ -114,7 +116,7 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                         ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
                 })}
             >
-                <Text className='leading-2 text-system-light-primary-background' size='sm' weight='bold'>
+                <Text className='leading-2 text-system-light-primary-background' size='xs' weight='bold'>
                     {row?.titleIndicators.displayText}
                 </Text>
             </div>
@@ -132,14 +134,14 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                 }
             }}
         >
-            <div className='flex flex-col justify-center w-full h-full px-16 pt-20 transition-transform duration-300 backface-hidden pb-36 transform-gpu'>
-                {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
-                <div className='mt-[25px] mb-[15px] text-center'>
+            <div className='flex flex-col justify-between w-full h-full px-16 pt-20 transition-transform duration-300 backface-hidden pb-36 transform-gpu'>
+                {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader ?? ''} />}
+                <div className='mt-20 text-center'>
                     <Text size='lg' weight='bold'>
                         {header}
                     </Text>
                 </div>
-                <div>
+                <div className='flex flex-col justify-between flex-1'>
                     {rows.map(row => (
                         <JurisdictionCardRow
                             description={parseDescription(row)}

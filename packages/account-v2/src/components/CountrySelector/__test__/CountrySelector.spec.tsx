@@ -1,11 +1,11 @@
 import React from 'react';
-import { APIProvider, useResidenceList } from '@deriv/api';
+import { APIProvider, AuthProvider, useResidenceList } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CountrySelector from '../CountrySelector';
+import { CountrySelector } from '../CountrySelector';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useResidenceList: jest.fn(),
 }));
 
@@ -14,7 +14,9 @@ const mockUseResidenceList = useResidenceList as jest.MockedFunction<typeof useR
 const renderComponents = () => {
     render(
         <APIProvider>
-            <CountrySelector label='Country' name='country' />
+            <AuthProvider>
+                <CountrySelector label='Country' name='country' />
+            </AuthProvider>
         </APIProvider>
     );
 };

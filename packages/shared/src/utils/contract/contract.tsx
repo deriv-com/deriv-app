@@ -339,8 +339,8 @@ export const clickAndKeyEventHandler = (
 };
 
 export const getSortedTradeTypes = (array: string[] = []) => {
-    if (array.includes(TRADE_TYPES.TURBOS.LONG)) {
-        return [TRADE_TYPES.TURBOS.LONG, ...array.filter(type => type !== TRADE_TYPES.TURBOS.LONG)];
+    if (array.includes(TRADE_TYPES.ACCUMULATOR)) {
+        return [TRADE_TYPES.ACCUMULATOR, ...array.filter(type => type !== TRADE_TYPES.ACCUMULATOR)];
     }
     if (array.includes(TRADE_TYPES.MULTIPLIER)) {
         return [TRADE_TYPES.MULTIPLIER, ...array.filter(type => type !== TRADE_TYPES.MULTIPLIER)];

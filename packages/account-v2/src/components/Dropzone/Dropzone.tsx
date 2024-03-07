@@ -107,12 +107,12 @@ const Dropzone: React.FC<TProps> = ({
             />
             <div
                 className={classNames(
-                    'wallets-dropzone',
-                    { 'wallets-dropzone--hover': showHoverMessage },
-                    { 'wallets-dropzone--active': file }
+                    'account-dropzone',
+                    { 'account-dropzone--hover': showHoverMessage },
+                    { 'account-dropzone--active': file }
                 )}
             >
-                <div className='w-full h-full flex flex-col items-center justify-center gap-400'>
+                <div className='flex flex-col items-center justify-center w-full h-full gap-400'>
                     {showHoverMessage && <Text size='sm'>{hoverMessage}</Text>}
                     {!file && (
                         <div className='flex flex-col items-center gap-700'>
@@ -142,8 +142,8 @@ const Dropzone: React.FC<TProps> = ({
                     {file && (
                         <React.Fragment key={file.name}>
                             <div
-                                className={classNames('wallets-dropzone__thumb', {
-                                    'wallets-dropzone__thumb--has-frame': hasFrame,
+                                className={classNames('account-dropzone__thumb', {
+                                    'account-dropzone__thumb--has-frame': hasFrame,
                                 })}
                                 data-testid='dt_remove-button'
                                 style={{ backgroundImage: `url(${file.preview})` }}

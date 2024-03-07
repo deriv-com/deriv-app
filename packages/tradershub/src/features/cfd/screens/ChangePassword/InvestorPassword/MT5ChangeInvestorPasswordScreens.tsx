@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Provider } from '@deriv/library';
+import { useModal } from '@/providers';
 import MT5ChangeInvestorPasswordInputsScreen from './MT5ChangeInvestorPasswordInputsScreen';
 import MT5ChangeInvestorPasswordSavedScreen from './MT5ChangeInvestorPasswordSavedScreen';
 
@@ -12,7 +12,7 @@ type TMT5ChangeInvestorPasswordScreens = {
 const MT5ChangeInvestorPasswordScreens = ({ setShowEmailSentScreen }: TMT5ChangeInvestorPasswordScreens) => {
     const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
-    const { hide } = Provider.useModal();
+    const { hide } = useModal();
 
     switch (activeScreen) {
         case 'savedScreen':

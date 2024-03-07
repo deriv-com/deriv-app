@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import Withdrawal from '../Withdrawal';
 
@@ -27,8 +27,8 @@ jest.mock('../../../components', () => ({
     PageContainer: jest.fn(({ children }) => <>{children}</>),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveAccount: jest.fn(),
     useCurrencyConfig: jest.fn(),
 }));

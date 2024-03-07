@@ -1,6 +1,6 @@
 import React from 'react';
-import { usePOA, usePOI } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useModal } from '@/providers';
+import { usePOA, usePOI } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
@@ -16,7 +16,7 @@ const reasons = ['Document details do not match profile details', 'Expired docum
  */
 
 const VerificationFailed = () => {
-    const { hide } = Provider.useModal();
+    const { hide } = useModal();
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
 

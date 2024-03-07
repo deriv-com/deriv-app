@@ -1,13 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getExampleImagesConfig } from '../../CommonMistakeExample/CommonMistakeExampleConfig';
+import { getExampleImagesConfig } from '../../CommonMistakeExample';
 import { DocumentSubmission } from '../DocumentSubmission';
 
 jest.mock('../../../../components/FormFields', () => ({
+    ...jest.requireActual('../../../../components/FormFields'),
     FormDocumentUploadField: () => <div>FormDocumentUploadField</div>,
 }));
 
 jest.mock('../../CommonMistakeExample', () => ({
+    ...jest.requireActual('../../CommonMistakeExample'),
     CommonMistakesExamples: ({ description }: { description: string }) => (
         <div data-testid='dt_common-mistake-example'>{description}</div>
     ),

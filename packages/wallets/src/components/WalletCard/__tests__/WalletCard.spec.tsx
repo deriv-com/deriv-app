@@ -6,7 +6,10 @@ import WalletCard from '../WalletCard';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useBalance: jest.fn(),
+    useBalance: jest.fn(() => ({
+        ...jest.requireActual('@deriv/api-v2').useBalance(),
+        isLoading: false,
+    })),
 }));
 
 describe('WalletCard', () => {
@@ -18,10 +21,6 @@ describe('WalletCard', () => {
     };
     beforeEach(() => {
         jest.clearAllMocks();
-        (useBalance as jest.Mock).mockImplementation(() => ({
-            ...jest.requireActual('@deriv/api-v2').useBalance(),
-            isLoading: true,
-        }));
         mockProps = {
             balance: '100 USD',
             currency: 'USD',
@@ -65,6 +64,28 @@ describe('WalletCard', () => {
         expect(gradient).toHaveClass('wallets-gradient--BTC-mobile-card-light');
     });
 
+    it('should render the correct wallet card and gradient background for BTC wallet in carousel content', () => {
+        mockProps = {
+            balance: '100 BTC',
+            currency: 'BTC',
+            isActive: true,
+            isCarouselContent: true,
+            landingCompanyName: 'Deriv',
+        };
+        render(
+            <APIProvider>
+                <AuthProvider>
+                    <WalletCard {...mockProps} />
+                </AuthProvider>
+            </APIProvider>
+        );
+        expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
+        const gradient = screen.getByTestId('dt_wallet_gradient_background');
+        expect(gradient).toHaveClass('wallets-gradient--BTC-mobile-card-light');
+        const details = screen.getByTestId('dt_wallet_card_details');
+        expect(details).toHaveClass('wallets-card__details__carousel-content--active');
+    });
+
     it('should render the correct wallet card and gradient background for demo wallet', () => {
         mockProps = {
             balance: '100 USD',
@@ -84,6 +105,10 @@ describe('WalletCard', () => {
     });
 
     it('should show balance loader when balance is loading', () => {
+        (useBalance as jest.Mock).mockImplementation(() => ({
+            ...jest.requireActual('@deriv/api-v2').useBalance(),
+            isLoading: true,
+        }));
         render(
             <APIProvider>
                 <WalletsAuthProvider>

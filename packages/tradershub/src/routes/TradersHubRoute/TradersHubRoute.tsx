@@ -25,63 +25,44 @@ const TradersHubRoute = () => {
     const isSwitcherVisible = isDIEL && isReal;
     const isTotalAssetsVisible = hasActiveDerivAccount || isDemo;
 
-    // if (!isDesktop)
-    //     return (
-    //         <div className='p-16'>
-    //             <div className='flex items-end justify-between pb-24'>
-    //                 <div className='flex flex-col'>
-    //                     <Text className='pb-4' weight='bold'>
-    //                         Trader&apos;s Hub
-    //                     </Text>
-    //                     <DemoRealSwitcher />
-    //                 </div>
-    //                 {isSwitcherVisible && <RegulationSwitcherMobile />}
-    //             </div>
-    //             <div />
-    //             <div className='grid pb-24 place-content-center'>{isTotalAssetsVisible && <TotalAssets />}</div>
-    //             <Tabs className='w-full p-4 rounded-sm'>
-    //                 <Tab className='px-8 py-6 rounded-xs' title='Options & Multipliers'>
-    //                     <OptionsAndMultipliersSection />
-    //                 </Tab>
-    //                 <Tab className='px-8 py-6 rounded-xs' title='CFDs'>
-    //                     <CFDSection />
-    //                 </Tab>
-    //             </Tabs>
-    //         </div>
-    //     );
-
-    return (
-        <div className='p-16 lg:space-y-24'>
-            <div className=''>
+    if (!isDesktop)
+        return (
+            <div className='p-16'>
                 <div className='flex items-end justify-between pb-24'>
-                    <div className='flex flex-col items-start gap-6 lg:flex-row'>
-                        <Text className='pb-4 font-sans lg:text-3xl text-default lg:p-0' weight='bold'>
+                    <div className='flex flex-col'>
+                        <Text className='pb-4' weight='bold'>
                             Trader&apos;s Hub
                         </Text>
                         <DemoRealSwitcher />
                     </div>
-                    <div className='lg:d-none'> {isSwitcherVisible && <RegulationSwitcherMobile />} </div>
+                    {isSwitcherVisible && <RegulationSwitcherMobile />}
                 </div>
-
-                <div className='lg:block d-none'>{isSwitcherVisible && <RegulationSwitcherDesktop />}</div>
-                {!isDesktop && (
-                    <div className='grid pb-24 place-content-center'>{isTotalAssetsVisible && <TotalAssets />}</div>
-                )}
-            </div>
-            <div className='lg:block d-none'>
-                <TradersHubContent />
-            </div>
-            <div className='lg:d-none'>
+                <div />
+                <div className='grid pb-24 place-content-center'>{isTotalAssetsVisible && <TotalAssets />}</div>
                 <Tabs className='w-full p-4 rounded-sm'>
                     <Tab className='px-8 py-6 rounded-xs' title='Options & Multipliers'>
                         <OptionsAndMultipliersSection />
                     </Tab>
-
                     <Tab className='px-8 py-6 rounded-xs' title='CFDs'>
                         <CFDSection />
                     </Tab>
                 </Tabs>
             </div>
+        );
+
+    return (
+        <div className='space-y-24'>
+            <div className='grid justify-between grid-cols-3 gap-2 align-start'>
+                <div className='flex items-center gap-12'>
+                    <Text className='font-sans text-3xl ' weight='bold'>
+                        Trader&apos;s Hub
+                    </Text>
+                    <DemoRealSwitcher />
+                </div>
+                <div>{isSwitcherVisible && <RegulationSwitcherDesktop />}</div>
+                {isTotalAssetsVisible && <TotalAssets />}
+            </div>
+            <TradersHubContent />
         </div>
     );
 };

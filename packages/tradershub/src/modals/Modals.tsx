@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { JurisdictionModal } from '@/features/cfd/modals';
+import { DxtradePasswordModal, JurisdictionModal } from '@/features/cfd/modals';
 import { RealAccountCreation } from '@/flows';
 import { AccountSelector } from './AccountSelector';
 import { AddOrManageAccount } from './AddOrManageAccount';
@@ -11,10 +11,12 @@ import { AddOrManageAccount } from './AddOrManageAccount';
 const Modals = () => {
     return (
         <Fragment>
+            {/* PLS DO NOT ADD ANY PROPS TO ANY MODALS HERE.💥 */}
             <AccountSelector />
+            <AddOrManageAccount />
+            <DxtradePasswordModal />
             <JurisdictionModal />
             <RealAccountCreation />
-            <AddOrManageAccount />
         </Fragment>
     );
 };

@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 type ModalId =
     | 'AccountSelector'
     | 'AddOrManageAccount'
+    | 'DxtradePasswordModal'
     | 'GetADerivAccountDialog'
     | 'JurisdictionModal'
     | 'MT5PasswordModal'

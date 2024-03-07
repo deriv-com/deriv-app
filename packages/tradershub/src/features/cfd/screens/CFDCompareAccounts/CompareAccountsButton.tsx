@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
+import { useQueryParams } from '@/hooks';
 import { useModal } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
 import { DummyComponent } from '@cfd/components';
 import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
-import { CTraderSuccessModal, DxtradePasswordModal, MT5PasswordModal } from '@cfd/modals';
+import { CTraderSuccessModal, MT5PasswordModal } from '@cfd/modals';
 import {
     useActiveTradingAccount,
     useAuthentication,
@@ -33,6 +34,7 @@ type TCompareAccountButton = {
  */
 const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompareAccountButton) => {
     const { show } = useModal();
+    const { openModal } = useQueryParams();
 
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();
@@ -102,7 +104,7 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
                 // show(<Verifaication />);
             }
         } else if (platform === CFDPlatforms.DXTRADE) {
-            show(<DxtradePasswordModal />);
+            openModal('DxtradePasswordModal');
         } else {
             createAccount({
                 payload: {

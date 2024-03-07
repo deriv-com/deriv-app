@@ -1,0 +1,51 @@
+import React from 'react';
+import { Table } from '@deriv-com/ui';
+
+export const LoginHistoryTable = () => {
+    // const { data, header } = useLoginHistoryTableData();
+
+    return (
+        <div className='flex flex-col '>
+            <Table
+                columns={[
+                    {
+                        header: 'Date and Time ',
+                    },
+                    {
+                        header: 'Action',
+                    },
+                    {
+                        header: 'Browser',
+                    },
+                    {
+                        header: 'IP Address',
+                    },
+                    {
+                        header: 'Status',
+                    },
+                ]}
+                data={[
+                    {
+                        action: 'Login',
+                        browser: 'Chrome v122.0.0.0',
+                        datetime: '2024-03-07 12:04:42 GMT',
+                        IpAddress: '94.201.147.222',
+                        status: 'Successful',
+                    },
+                ]}
+                isFetching={true}
+                renderHeader={header => <span>{header}</span>}
+                rowRender={data => (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr) ' }}>
+                        <div>{data.action}</div>
+                        <div>{data.browser} </div>
+                        <div>{data.datetime}</div>
+                        <div>{data.IpAddress} </div>
+                        <div>{data.status} </div>
+                    </div>
+                )}
+                tableClassname='data.name'
+            />
+        </div>
+    );
+};

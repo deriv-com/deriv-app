@@ -1,8 +1,7 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import clsx from 'clsx';
 import { ORDERS_STATUS } from '@/constants';
-import { useCountdownTimer, useQueryString } from '@/hooks';
+import { useQueryString } from '@/hooks';
 import useExtendedOrderDetails from '@/hooks/useExtendedOrderDetails';
 import { OrderStatusTag, OrderTimer } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
@@ -26,11 +25,11 @@ const OrdersTableRow = ({ ...props }) => {
     const distance = getDistanceToServerTime(orderDetails.orderExpiryMilliseconds, serverTime?.server_time_moment);
 
     const {
-        account_currency,
-        amount_display,
+        account_currency: accountCurrency,
+        amount_display: amountDisplay,
         id,
-        local_currency,
-        price_display,
+        local_currency: localCurrency,
+        price_display: priceDisplay,
         purchaseTime,
         shouldHighlightAlert,
         shouldHighlightDanger,
@@ -39,8 +38,8 @@ const OrdersTableRow = ({ ...props }) => {
         statusString,
     } = orderDetails;
     const isBuyOrderForUser = orderDetails.isBuyOrderForUser;
-    const transactionAmount = `${Number(price_display).toFixed(2)} ${local_currency}`;
-    const offerAmount = `${amount_display} ${account_currency}`;
+    const transactionAmount = `${Number(priceDisplay).toFixed(2)} ${localCurrency}`;
+    const offerAmount = `${amountDisplay} ${accountCurrency}`;
 
     if (isMobile) {
         return (

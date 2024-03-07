@@ -12,7 +12,6 @@ const OrdersEmpty = () => {
         <div className={isMobile ? 'py-16 px-[1.6rem]' : ''}>
             <ActionScreen
                 actionButtons={
-                    //TODO: Add onClick handler
                     <Button
                         onClick={() => history.push(`${BASE_URL}/buy-sell`)}
                         size='lg'

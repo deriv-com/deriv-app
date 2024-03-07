@@ -1,7 +1,7 @@
 import React from 'react';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import OrdersTable from '../OrdersTable';
 
 const mockProps = {

@@ -54,6 +54,10 @@
         }
     }
     &__popover {
+        margin-top: -50%;
+    }
+
+    &__popover-bubble {
         /* postcss-bem-linter: ignore */
         .dc-checkbox {
             margin-top: 0.8rem;
@@ -110,7 +114,10 @@
 
 /** @define dc-contract-card-dialog-toggle; */
 .dc-contract-card-dialog-toggle {
+    all: unset;
     position: absolute;
+    display: flex;
+    justify-content: end;
     width: calc(100% + 0.4rem);
     height: calc(100% + 0.4rem);
     right: 0.4rem;

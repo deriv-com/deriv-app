@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOnfido } from '@deriv/api';
+import { useOnfido } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { OnfidoContainer } from '../OnfidoContainer';
@@ -16,8 +16,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useOnfido: jest.fn(() => ({
         data: {},
         isOnfidoInitialized: true,

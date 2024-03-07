@@ -21,7 +21,7 @@ const TabTypes = {
  * @returns {React.ReactNode}
  */
 const AddOrManageAccount = () => {
-    const { data: currencies, isLoading } = useCurrencies();
+    const { data: currencies, isLoading, allCryptoCurrenciesAreAdded } = useCurrencies();
     const [activeTab, setActiveTab] = useState<'CRYPTO' | 'FIAT'>(TabTypes[0]);
 
     const { isModalOpen, closeModal } = useQueryParams();
@@ -83,7 +83,11 @@ const AddOrManageAccount = () => {
                                 You can open an account for each cryptocurrency.
                             </Text>
                         </div>
-                        <CurrenciesForm currencies={currencies?.CRYPTO ?? []} />
+                        <CurrenciesForm
+                            allCryptoCurrenciesAreAdded={allCryptoCurrenciesAreAdded}
+                            currencies={currencies?.CRYPTO ?? []}
+                            isSubmitButtonDisabled={allCryptoCurrenciesAreAdded}
+                        />
                     </Fragment>
                 )}
                 {activeTab === TabTypes[1] && (

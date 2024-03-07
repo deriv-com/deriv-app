@@ -26,8 +26,8 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, isDemo }) 
                     </WalletText>
                     {isLoading ? (
                         <div
-                            className='wallets-skeleton wallets-card--balance-loader'
-                            data-testid='dt_wallet_card_balance_loader'
+                            className='wallets-skeleton wallets-carousel-header__balance-loader'
+                            data-testid='dt_wallets_carousel_header_balance_loader'
                         />
                     ) : (
                         <WalletText color='general' size='lg' weight='bold'>

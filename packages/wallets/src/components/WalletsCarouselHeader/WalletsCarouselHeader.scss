@@ -1,3 +1,5 @@
+@import '../../components/SkeletonLoader/SkeletonLoader.scss';
+
 .wallets-carousel-header {
     background: var(--system-light-8-primary-background, #fff);
     border-bottom: 1px solid var(--general-section-1, #f2f3f4);
@@ -9,6 +11,13 @@
     top: 0;
     width: 100vw;
     z-index: 1;
+
+    &__balance-loader {
+        padding: 0.7rem;
+        width: 8rem;
+        background-color: #f8f5f542;
+        border-radius: 0.5rem;
+    }
 
     &__content {
         display: flex;

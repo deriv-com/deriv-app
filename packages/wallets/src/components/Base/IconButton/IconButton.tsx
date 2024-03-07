@@ -27,7 +27,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
 
         return (
             <button className={iconButtonClassNames} disabled={disabled} onClick={onClick} ref={ref} {...rest}>
-                <div className={`wallets-icon-button__icon wallets-icon-button__icon-size--${iconSize}`}>{icon}</div>
+                <div className={`wallets-icon-button__icon--${iconSize}`}>{icon}</div>
             </button>
         );
     }

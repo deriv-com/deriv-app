@@ -29,7 +29,7 @@ describe('WalletsCarouselHeader', () => {
 
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('100.00')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_wallet_card_balance_loader')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_wallets_carousel_header_balance_loader')).not.toBeInTheDocument();
     });
 
     it('should redirect to transfer page on click of transfer button', () => {
@@ -47,6 +47,6 @@ describe('WalletsCarouselHeader', () => {
 
         render(<WalletsCarouselHeader balance='100.00' currency='USD' />);
 
-        expect(screen.getByTestId('dt_wallet_card_balance_loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_carousel_header_balance_loader')).toBeInTheDocument();
     });
 });

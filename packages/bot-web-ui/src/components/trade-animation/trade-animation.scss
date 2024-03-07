@@ -216,7 +216,7 @@
 .bot-stop-notification {
     position: fixed;
     z-index: 9;
-    right: 38rem;
+    inset-inline-end: 38rem;
     top: 12rem;
 
     .dc-toast {
@@ -226,9 +226,11 @@
             position: relative;
             background: var(--text-prominent);
             color: var(--general-main-1);
-            padding: 1.6rem 3.2rem 1.6rem 1.6rem;
+            padding: 1.6rem;
+            padding-inline-end: 3.2rem;
             @include mobile {
-                padding: 0.8rem 3.2rem 0.8rem 0.8rem;
+                padding: 0.8rem;
+                padding-inline-end: 3.2rem;
             }
         }
 
@@ -246,9 +248,9 @@
         bottom: 10.5rem;
     }
     &__action-wrapper {
-        margin-left: 0.8rem;
+        margin-inline-start: 0.8rem;
         position: absolute;
-        right: 0.8rem;
+        inset-inline-end: 0.8rem;
         top: 1.6rem;
         @include mobile {
             top: 1rem;

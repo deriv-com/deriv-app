@@ -16,6 +16,7 @@ jobs:
   download_remote_config_backup_and_create_pr:
     name: Download Remote Config Backup File and Create PR
     runs-on: Runner_8cores_Deriv-app
+    environment: Production
     env: 
         REMOTE_CONFIG_BRANCH: "remote_config_update_branch"
     steps:

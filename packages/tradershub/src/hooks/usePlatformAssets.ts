@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useExchangeRates, useTradingAccountsList } from '@deriv/api';
+import { useExchangeRates, useTradingAccountsList } from '@deriv/api-v2';
 import { BrokerCodes, Regulation } from '../constants/constants';
 
 /**

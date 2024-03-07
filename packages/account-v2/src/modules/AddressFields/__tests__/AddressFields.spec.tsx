@@ -1,16 +1,17 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { useAuthorize, useSettings, useStatesList } from '@deriv/api';
+import { useAuthorize, useSettings, useStatesList } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { AddressFields } from '../AddressFields';
 
-jest.mock('@deriv/api');
+jest.mock('@deriv/api-v2');
 
 jest.mock('@deriv/quill-design', () => ({
     useBreakpoint: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('../../../components/FormFields/FormDropDownField', () => ({
+jest.mock('../../../components/FormFields/', () => ({
+    ...jest.requireActual('../../../components/FormFields'),
     FormDropDownField: jest.fn(() => <div data-testid='dt_dropdown' />),
 }));
 

@@ -79,15 +79,15 @@ const initDatadog = (is_datadog_enabled: boolean) => {
             beforeSend: event => {
                 if (event.type === 'resource') {
                     event.resource.url = event.resource.url.replace(
-                        /^https:\/\/api\.telegram\.org[a-zA-Z0-9/?=]*$/,
+                        /^https:\/\/api\.telegram\.org\/[a-zA-Z0-9]+(\?[a-zA-Z0-9_=&]+)?$/,
                         'telegram token=REDACTED'
                     );
 
-                    if (event.resource.url.match(/^https:\/\/eu\.deriv\.com\/ctrader-login[a-zA-Z0-9/?=]*$/)) {
+                    if (event.resource.url.match(/^https:\/\/eu\.deriv\.com\/ctrader-login*/)) {
                         const url = event.resource.url;
                         const accnt = getAcct1Value(url);
                         event.resource.url = event.resource.url.replace(
-                            /^https:\/\/eu\.deriv\.com\/ctrader-login[a-zA-Z0-9/?=]*$/,
+                            /^https:\/\/eu\.deriv\.com\/ctrader-login*/,
                             `https://eu.deriv.com/ctrader-login?acct1=${accnt}&token1=redacted`
                         );
                     }

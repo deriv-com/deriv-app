@@ -29,20 +29,22 @@ const TransferPercentageSelector = () => {
                 onChangePercentage={per => {
                     setValues(currentValues => ({
                         ...currentValues,
-                        fromAmount: (values.fromAccount.balance * per) / 100,
+                        fromAmount: ((values.fromAccount.balance * per) / 100).toFixed(
+                            values.fromAccount.currencyConfig.fractional_digits
+                        ),
                     }));
                     setPercentage(per);
                 }}
             />
 
             <Text align='center' color='less-prominent' size='xs'>
-                {values.fromAmount > values.fromAccount.balance
-                    ? `${percentage}% of available balance (
+                {`${percentage}% of available balance (
                     ${displayMoney(values.fromAccount.balance, values.fromAccount.currency, {
-                        fractional_digits: values.fromAccount.currencyConfig.fractional_digits,
+                        fractional_digits: values.fromAccount.currencyConfig
+                            ? values.fromAccount.currencyConfig.fractional_digits
+                            : 2,
                     })}
-                    )`
-                    : ' '}
+                    )`}
             </Text>
         </div>
     );

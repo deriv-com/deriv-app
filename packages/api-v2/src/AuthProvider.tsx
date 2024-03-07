@@ -133,8 +133,8 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
     }, []);
 
     const switchAccount = useCallback(
-        (newLoginid: string, switchCurrency?: boolean) => {
-            if (newLoginid === loginid && !switchCurrency) {
+        (newLoginid: string, forceRefresh?: boolean) => {
+            if (newLoginid === loginid && !forceRefresh) {
                 return;
             }
 

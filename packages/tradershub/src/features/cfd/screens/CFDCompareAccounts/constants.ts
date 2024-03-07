@@ -34,5 +34,5 @@ export const Jurisdiction = {
 export const platformLabel = {
     CTrader: 'Deriv cTrader',
     MT5: 'MT5 Platform',
-    OtherCFDs: 'Other CFDs Platform',
+    DerivX: 'Deriv X',
 } as const;

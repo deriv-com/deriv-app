@@ -3,7 +3,7 @@ import { TAdvertiserPaymentMethods } from 'types';
 import { formatTime } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
-import { PaymentMethodWithIcon } from '../PaymentMethodWithIcon';
+import { PaymentMethodWithIcon } from '../../PaymentMethodWithIcon';
 import './BuySellData.scss';
 
 type TBuySellDataProps = {
@@ -14,7 +14,7 @@ type TBuySellDataProps = {
     localCurrency: string;
     name: string;
     paymentMethodNames?: string[];
-    paymentMethods: ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data'];
+    paymentMethods: ReturnType<typeof p2p.paymentMethods.useGet>['data'];
     rate: string;
 };
 
@@ -58,7 +58,7 @@ const BuySellData = ({
                 </div>
             </div>
             <div className='flex flex-col mb-[1.6rem]'>
-                <Text color='less-prominent' size={labelSize}>
+                <Text className='mb-[0.8rem]' color='less-prominent' size={labelSize}>
                     Payment methods
                 </Text>
                 {paymentMethodNames?.length
@@ -72,7 +72,7 @@ const BuySellData = ({
                     : '-'}
             </div>
             <div className='flex flex-col mb-[1.6rem]'>
-                <Text color='less-prominent' size={labelSize}>{`${isBuy ? 'Seller' : 'Buyer'}'s instructions`}</Text>
+                <Text color='less-prominent' size={labelSize}>{`${isBuy ? 'Buyer' : 'Seller'}'s instructions`}</Text>
                 <Text size={valueSize}>{instructions}</Text>
             </div>
             <div className='flex flex-col mb-[1.6rem]'>

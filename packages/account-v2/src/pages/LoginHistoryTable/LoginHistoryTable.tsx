@@ -29,7 +29,7 @@ export const LoginHistoryTable = () => {
                         action: 'Login',
                         browser: 'Chrome v122.0.0.0',
                         datetime: '2024-03-07 12:04:42 GMT',
-                        IpAddress: '94.201.147.222',
+                        IpAddress: '942',
                         status: 'Successful',
                     },
                 ]}

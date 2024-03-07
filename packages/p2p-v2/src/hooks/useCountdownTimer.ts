@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 /**
  * Custom hook for a countdown timer.
- * @param {number} initialSeconds - The initial number of seconds for the countdown timer.
+ * @param {number} initialMilliseconds - The initial number of seconds for the countdown timer.
  * @param {number} interval - The interval in milliseconds at which the timer will update.
  * @returns {number} - The current value of the countdown timer in seconds.
  */

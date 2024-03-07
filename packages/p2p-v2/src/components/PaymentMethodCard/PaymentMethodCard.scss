@@ -19,4 +19,19 @@
         padding: 0.9rem 1rem;
         width: 15.4rem;
     }
+    &--medium {
+        width: 14.4rem;
+        padding: 1rem;
+        @include mobile {
+            width: 13.6rem;
+        }
+    }
+
+    &--dashed {
+        border: 1px dashed #d6dadb;
+    }
+
+    &--selected {
+        border: 2px solid #85acb0;
+    }
 }

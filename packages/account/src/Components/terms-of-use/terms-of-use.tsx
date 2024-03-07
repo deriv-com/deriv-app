@@ -151,6 +151,7 @@ const TermsOfUse = observer(
                                                     <Hr />
                                                     <Field
                                                         component={CheckboxField}
+                                                        label_font_size={isDesktop() ? 'xs' : 'xxs'}
                                                         className='terms-of-use__checkbox'
                                                         name='resident_self_declaration'
                                                         id='resident_self_declaration'

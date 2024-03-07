@@ -49,7 +49,7 @@ describe('SelfieDocumentUpload', () => {
         });
         window.URL.createObjectURL = jest.fn().mockImplementation(() => 'url');
         render(<SelfieDocumentUpload {...mockProps} />);
-        const dropZoneEl = screen.getByTestId('dt-dropzone-input');
+        const dropZoneEl = screen.getByTestId('dt_dropzone_input');
         userEvent.upload(dropZoneEl, file);
 
         expect(await screen.findByRole('button', { name: /Confirm and upload/i })).toBeEnabled();
@@ -61,7 +61,7 @@ describe('SelfieDocumentUpload', () => {
         const file = new File(['file'], 'ping.jpg', {
             type: 'image/jpg',
         });
-        const dropZoneEl = screen.getByTestId('dt-dropzone-input');
+        const dropZoneEl = screen.getByTestId('dt_dropzone_input');
         fireEvent.change(dropZoneEl, { target: { files: [file] } });
 
         expect(await screen.findByRole('button', { name: /Confirm and upload/i })).toBeEnabled();

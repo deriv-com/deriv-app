@@ -46,7 +46,7 @@ describe('FormDocumentUploadField', () => {
         const file = new File(['test file content'], 'test-file.txt', { type: 'text/plain' });
 
         await waitFor(() => {
-            const input = screen.getByTestId('dt-dropzone-input');
+            const input = screen.getByTestId('dt_dropzone_input');
             userEvent.upload(input, file);
         });
 

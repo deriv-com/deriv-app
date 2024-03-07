@@ -16,6 +16,9 @@ import RoutePromptDialog from '../components/route-prompt-dialog';
 import BotBuilder from '../pages/bot-builder';
 import Main from '../pages/main';
 import './app.scss';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'react-toastify/dist/ReactToastify.css';
+import '../components/bot-notification/bot-notification.scss';
 
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);

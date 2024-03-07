@@ -2,9 +2,6 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { toast } from 'react-toastify';
 import { notification_style, TAction, TNotificationContent, TNotificationStyle } from './bot-notification-utils';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import 'react-toastify/dist/ReactToastify.css';
-import './bot-notification.scss';
 
 export const NotificationContent: React.FC<TNotificationContent> = ({ message, primary_action }) => {
     return (

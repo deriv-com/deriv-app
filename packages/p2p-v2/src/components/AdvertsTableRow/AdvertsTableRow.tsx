@@ -64,6 +64,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
     const isBuyAdvert = counterparty_type === BUY_SELL.BUY;
     const isMyAdvert = data?.id === id;
     const ratingAverageDecimal = rating_average ? Number(rating_average).toFixed(1) : null;
+    const textColor = isMobile ? 'less-prominent' : 'general';
 
     return (
         <div
@@ -126,10 +127,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                         </Text>
                     )}
                     <Container {...(isMobile && { className: 'flex flex-col-reverse mb-7' })}>
-                        <Text
-                            color={isMobile ? 'less-prominent' : 'general'}
-                            size={isMobile && isBuySellPage ? 'xs' : 'sm'}
-                        >
+                        <Text color={textColor} size={isMobile && isBuySellPage ? 'xs' : 'sm'}>
                             {isMobile && 'Limits:'} {min_order_amount_limit_display}-{max_order_amount_limit_display}{' '}
                             {account_currency}
                         </Text>
@@ -145,14 +143,10 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                     <div className='flex flex-wrap gap-2'>
                         {payment_method_names ? (
                             payment_method_names.map((method: string, idx: number) => (
-                                <PaymentMethodLabel
-                                    color={isMobile ? 'less-prominent' : 'general'}
-                                    key={idx}
-                                    paymentMethodName={method}
-                                />
+                                <PaymentMethodLabel color={textColor} key={idx} paymentMethodName={method} />
                             ))
                         ) : (
-                            <PaymentMethodLabel color={isMobile ? 'less-prominent' : 'general'} paymentMethodName='-' />
+                            <PaymentMethodLabel color={textColor} paymentMethodName='-' />
                         )}
                     </div>
                 </Container>

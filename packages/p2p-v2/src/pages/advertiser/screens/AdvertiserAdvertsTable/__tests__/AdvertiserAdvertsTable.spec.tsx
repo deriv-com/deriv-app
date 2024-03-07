@@ -28,12 +28,6 @@ jest.mock('@deriv/api-v2', () => ({
             useGet: jest.fn(() => ({ data: [] })),
         },
     },
-    // useExchangeRateSubscription: {
-    //     data: {
-    //         exchange_rate: 1,
-    //     },
-    //     subscribe: jest.fn(),
-    // },
 }));
 
 const mockUseGetList = p2p.advert.useGetList as jest.Mock;

@@ -2,7 +2,15 @@ import React, { ChangeEvent } from 'react';
 import { Formik, Form, FormikValues, FormikErrors } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv/components';
-import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
+import {
+    getErrorMessages,
+    validPassword,
+    validLength,
+    WS,
+    getCFDPlatformLabel,
+    CFD_PLATFORMS,
+    validMT5Password,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { TPlatforms } from '../../Types';
 import './reset-trading-password-modal.scss';
@@ -44,19 +52,24 @@ const ResetTradingPassword = ({
 
     const validateReset = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
+        const max_length = platform === CFD_PLATFORMS.MT5 ? 16 : 25;
 
         if (
             !validLength(values.password, {
                 min: 8,
-                max: 25,
+                max: max_length,
             })
         ) {
             errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
                 min_number: 8,
-                max_number: 25,
+                max_number: max_length,
             });
         } else if (!validPassword(values.password)) {
             errors.password = getErrorMessages().password();
+        } else if (platform === CFD_PLATFORMS.MT5 && !validMT5Password(values.password)) {
+            errors.password = localize(
+                'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
+            );
         }
 
         return errors;
@@ -162,6 +175,9 @@ const ResetTradingPassword = ({
                                             }}
                                         />
                                     </Text>
+                                    <Text as='p' size='xs' className='reset-trading-password__details'>
+                                        {localize('You can use this password for all your Deriv MT5 accounts.')}
+                                    </Text>
                                     <fieldset className='reset-trading-password__input-field'>
                                         <PasswordMeter
                                             input={values.password}
@@ -188,7 +204,7 @@ const ResetTradingPassword = ({
                                         </PasswordMeter>
                                     </fieldset>
                                     <Text as='p' size='xs' className='reset-trading-password__hint'>
-                                        <Localize i18n_default_text='Strong passwords contain at least 8 characters that include uppercase and lowercase letters, numbers, and symbols.' />
+                                        <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
                                     </Text>
                                     <FormSubmitButton
                                         is_disabled={!values.password || !!errors.password || isSubmitting}

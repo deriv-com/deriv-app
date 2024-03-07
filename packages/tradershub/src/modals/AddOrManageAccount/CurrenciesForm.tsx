@@ -1,9 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Form, Formik } from 'formik';
 import { twMerge } from 'tailwind-merge';
 import { TCurrencyConfig } from '@/hooks/useCurrencies';
 import CurrencyCard from '@/screens/CurrencySelector/CurrencyCard';
-import { useActiveTradingAccount, useAuthorize } from '@deriv/api-v2';
+import { useActiveTradingAccount, useAuthorize, useMutation } from '@deriv/api-v2';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 
 type TCurrenciesForm = {
@@ -35,8 +35,9 @@ const CurrenciesForm = ({
     addedFiatCurrency,
 }: TCurrenciesForm) => {
     const { isDesktop } = useDevice();
-    const { switchCurrency } = useAuthorize();
+    const { switchAccount, data } = useAuthorize();
     const { data: activeTradingAccountData } = useActiveTradingAccount();
+    const { mutateAsync: mutateAccountCurrencyAsync } = useMutation('set_account_currency');
 
     const balance = activeTradingAccountData?.balance;
     const disableFiatCurrencies =
@@ -47,12 +48,16 @@ const CurrenciesForm = ({
         currency: '',
     };
 
-    const handleChangeCurrency = async (values: typeof initialValues) => {
-        switchCurrency(values.currency);
-    };
+    const handleSwitchCurrency = useCallback(
+        async (values: typeof initialValues) => {
+            await mutateAccountCurrencyAsync({ payload: { set_account_currency: values.currency } });
+            switchAccount(data.loginid ?? '', true);
+        },
+        [data.loginid, mutateAccountCurrencyAsync, switchAccount]
+    );
 
     return (
-        <Formik initialValues={initialValues} onSubmit={handleChangeCurrency}>
+        <Formik initialValues={initialValues} onSubmit={handleSwitchCurrency}>
             {({ values, isSubmitting }) => (
                 <Form className='flex flex-col items-center justify-between h-full min-h-0 py-16 lg:px-16 lg:p-24'>
                     <div

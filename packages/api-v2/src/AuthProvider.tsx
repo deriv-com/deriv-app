@@ -8,8 +8,7 @@ import { TSocketResponseData } from '../types';
 // Define the type for the context state
 type AuthContextType = {
     data: TSocketResponseData<'authorize'> | null | undefined;
-    switchAccount: (loginid: string) => void;
-    switchCurrency: (currency: string) => void;
+    switchAccount: (loginid: string, forceRefresh?: boolean) => void;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -81,7 +80,6 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
-    const { mutateAsync: mutateAccountCurrencyAsync } = useMutation('set_account_currency');
 
     const { queryClient } = useAPIContext();
 
@@ -152,15 +150,6 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
         [loginid]
     );
 
-    const switchCurrency = useCallback(
-        async (newCurrency: string) => {
-            setIsLoading(true);
-            await mutateAccountCurrencyAsync({ payload: { set_account_currency: newCurrency } });
-            switchAccount(loginid as string, true);
-        },
-        [loginid, mutateAccountCurrencyAsync, switchAccount]
-    );
-
     const refetch = useCallback(() => {
         switchAccount(loginid as string);
     }, [loginid]);
@@ -169,7 +158,6 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
         return {
             data,
             switchAccount,
-            switchCurrency,
             refetch,
             isLoading,
             isError,
@@ -177,7 +165,7 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
             isSuccess: isSuccess && !isLoading,
             error: isError,
         };
-    }, [data, switchAccount, switchCurrency, refetch, isLoading, isError, isFetching, isSuccess]);
+    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

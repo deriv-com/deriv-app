@@ -38,12 +38,6 @@
     &__message {
         padding: 0 2rem;
     }
-    &__description {
-        padding: 0 2.4rem;
-        @include mobile {
-            padding: 0;
-        }
-    }
 
     &__migration_content {
         display: grid;

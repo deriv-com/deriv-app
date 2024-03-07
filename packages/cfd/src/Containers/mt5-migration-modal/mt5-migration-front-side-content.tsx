@@ -18,7 +18,6 @@ import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 const MT5MigrationFrontSideContent = observer(() => {
     const { ui } = useStore();
     const { is_mobile, setMT5MigrationModalEnabled } = ui;
-    const content_size = is_mobile ? 'xxs' : 'xs';
     const { setShowModalFrontSide } = useMT5MigrationModalContext();
     const {
         getEligibleAccountToMigrate,
@@ -42,6 +41,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                           ? JURISDICTION_MARKET_TYPES.DERIVED
                           : JURISDICTION_MARKET_TYPES.FINANCIAL
                   ),
+
                   from_account: getFormattedJurisdictionCode(Jurisdiction.SVG),
               };
 
@@ -53,8 +53,8 @@ const MT5MigrationFrontSideContent = observer(() => {
     return (
         <React.Fragment>
             <div className='mt5-migration-modal__container'>
-                <div className='mt5-migration-modal__description'>
-                    <Text as='p' size={content_size} align='center'>
+                <div>
+                    <Text as='p' size={is_mobile ? 'xs' : 's'} align='center'>
                         {has_derived_and_financial_mt5 ? (
                             <Localize
                                 i18n_default_text='Enhance your trading experience by upgrading your <0>{{platform}} {{type_1}}</0> <1/>and <0>{{type_2}} {{from_account}}</0> account(s).'
@@ -65,11 +65,11 @@ const MT5MigrationFrontSideContent = observer(() => {
                             />
                         ) : (
                             <Localize
-                                i18n_default_text='Enhance your trading experience by upgrading your <0>{{platform}} {{type}} {{from_account}}</0> account(s).'
+                                i18n_default_text='Enhance your trading experience by upgrading your <0/><1>{{platform}} {{type}} {{from_account}} </1> account(s)'
                                 values={{
                                     ...getFormattedAccounts(),
                                 }}
-                                components={[<strong key={0} />]}
+                                components={[<br key={0} />, <strong key={1} />]}
                             />
                         )}
                     </Text>

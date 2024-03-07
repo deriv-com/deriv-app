@@ -1,0 +1,22 @@
+.wallets-carousel-header {
+    background: var(--system-light-8-primary-background, #fff);
+    border-bottom: 1px solid var(--general-section-1, #f2f3f4);
+    display: none; //TODO: hidden for now and will be displayed in the next PR when animation is added
+    height: 6.1rem;
+    justify-content: space-between;
+    padding: 1rem 1.6rem 1rem 0.8rem;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    z-index: 1;
+
+    &__content {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+    }
+}

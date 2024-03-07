@@ -32,6 +32,17 @@ $size-map: (
     ),
 );
 
+$icon-size-map: (
+    md: (
+        width: 1.6rem,
+        height: 1.6rem,
+    ),
+    lg: (
+        width: 2.4rem,
+        height: 2.4rem,
+    ),
+);
+
 $border-radius-map: (
     sm: 0.4rem,
     md: 6.4rem,
@@ -86,7 +97,12 @@ $border-radius-map: (
     &__icon {
         display: grid;
         place-content: center;
-        width: 1.6rem;
-        height: 1.6rem;
+
+        @each $icon-size, $values in $icon-size-map {
+            &-size--#{$icon-size} {
+                width: map-get($values, width);
+                height: map-get($values, height);
+            }
+        }
     }
 }

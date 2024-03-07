@@ -34,6 +34,7 @@ export * from './WalletsAppLinkedWithWalletIcon';
 export * from './WalletsCard';
 export * from './WalletsCarousel';
 export * from './WalletsCarouselContent';
+export * from './WalletsCarouselHeader';
 export * from './WalletsErrorScreen';
 export * from './WalletsPercentageSelector';
 export * from './WalletsPrimaryTabs';

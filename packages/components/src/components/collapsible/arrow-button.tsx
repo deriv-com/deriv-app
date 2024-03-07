@@ -100,6 +100,7 @@ const ArrowButton = ({
             })}
             onClick={toggleExpand}
             onKeyDown={toggleExpand}
+            data-testid='dt_handle_button'
         >
             {show_collapsible_button && icon_arrow}
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuthorize, useSettings, useStatesList } from '@deriv/api';
-import { FormDropDownField, FormInputField } from '../../components/FormFields';
-import { LANDING_COMPANY } from '../../constants/constants';
+import { FormDropDownField, FormInputField } from '../../../components/FormFields';
+import { LANDING_COMPANY } from '../../../constants/constants';
 import { addressDetailValidations } from './validations';
 
 export const AddressFields = () => {

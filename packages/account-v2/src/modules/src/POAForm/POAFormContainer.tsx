@@ -3,13 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import { DerivLightDeclinedPoaIcon, DerivLightWaitingPoaIcon, DerivLightApprovedPoaIcon } from '@deriv/quill-icons';
-import { DemoMessage } from '../../components/DemoMessage';
-import { IconWithMessage } from '../../components/IconWithMessage';
-import { AUTH_STATUS_CODES } from '../../constants/constants';
-import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../constants/routes';
-import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
-import { usePOAInfo } from '../../hooks/usePOAInfo';
-import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
+import { DemoMessage } from '../../../components/DemoMessage';
+import { IconWithMessage } from '../../../components/IconWithMessage';
+import { AUTH_STATUS_CODES } from '../../../constants/constants';
+import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../../constants/routes';
+import { AddressDetailsForm } from '../../../containers/POAForm/AddressDetailsForm';
+import { usePOAInfo } from '../../../hooks/usePOAInfo';
+import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../../utils/platform';
 
 export const POAFormContainer = () => {
     const { data: activeAccount } = useActiveTradingAccount();

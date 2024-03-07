@@ -1,5 +1,5 @@
 import { POICountrySelector } from '../containers/POICountrySelector';
-import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
+import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';
 import { DummyRoute } from '../router/components/DummyRoute';
 import { ACCOUNT_V2_ROUTES } from './routes';
 

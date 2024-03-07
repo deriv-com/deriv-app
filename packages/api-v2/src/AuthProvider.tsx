@@ -9,6 +9,7 @@ import { TSocketResponseData } from '../types';
 type AuthContextType = {
     data: TSocketResponseData<'authorize'> | null | undefined;
     switchAccount: (loginid: string) => void;
+    switchCurrency: (currency: string) => void;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -80,6 +81,7 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
+    const { mutateAsync: mutateAccountCurrencyAsync } = useMutation('set_account_currency');
 
     const { queryClient } = useAPIContext();
 
@@ -104,6 +106,7 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
                         setData(res);
+                        setLoginid(res?.authorize?.loginid ?? '');
                         setIsLoading(false);
                         setIsSuccess(true);
                     })
@@ -130,8 +133,8 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
     }, []);
 
     const switchAccount = useCallback(
-        (newLoginid: string) => {
-            if (newLoginid === loginid) {
+        (newLoginid: string, switchCurrency?: boolean) => {
+            if (newLoginid === loginid && !switchCurrency) {
                 return;
             }
 
@@ -149,6 +152,15 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
         [loginid]
     );
 
+    const switchCurrency = useCallback(
+        async (newCurrency: string) => {
+            setIsLoading(true);
+            await mutateAccountCurrencyAsync({ payload: { set_account_currency: newCurrency } });
+            switchAccount(loginid as string, true);
+        },
+        [loginid, mutateAccountCurrencyAsync, switchAccount]
+    );
+
     const refetch = useCallback(() => {
         switchAccount(loginid as string);
     }, [loginid]);
@@ -157,6 +169,7 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
         return {
             data,
             switchAccount,
+            switchCurrency,
             refetch,
             isLoading,
             isError,
@@ -164,7 +177,7 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
             isSuccess: isSuccess && !isLoading,
             error: isError,
         };
-    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess]);
+    }, [data, switchAccount, switchCurrency, refetch, isLoading, isError, isFetching, isSuccess]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

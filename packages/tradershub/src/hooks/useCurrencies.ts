@@ -5,8 +5,8 @@ import useRegulationFlags from './useRegulationFlags';
 
 type TWebsiteStatus = NonNullable<ReturnType<typeof useQuery<'website_status'>>['data']>['website_status'];
 export type TCurrencyConfig = NonNullable<TWebsiteStatus>['currencies_config'][string] & {
-    id: string;
-    isAdded: boolean;
+    id?: string;
+    isAdded?: boolean;
 };
 
 export type TCurrencies = {
@@ -80,11 +80,28 @@ const useCurrencies = () => {
         [currencyConfig?.CRYPTO]
     );
 
+    // Get the current account currency with its config and isAdded status
+    const currentAccountCurrency = useMemo(() => {
+        if (!authorizeData?.currency || !websiteStatusData?.website_status?.currencies_config) return;
+
+        return {
+            ...websiteStatusData?.website_status?.currencies_config[authorizeData?.currency],
+            id: authorizeData?.currency,
+        };
+    }, [authorizeData?.currency, websiteStatusData?.website_status?.currencies_config]);
+
+    // Get the added fiat currency with its config
+    const addedFiatCurrency = useMemo(() => {
+        return currencyConfig?.FIAT.find(currency => currency.isAdded);
+    }, [currencyConfig?.FIAT]);
+
     return {
         ...rest,
         data: currencyConfig,
         isLoading: isAuthorizeLoading || isWesiteStatusLoading || isLandingCompanyLoading,
         allCryptoCurrenciesAreAdded,
+        currentAccountCurrency,
+        addedFiatCurrency,
     };
 };
 

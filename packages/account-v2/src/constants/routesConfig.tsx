@@ -1,6 +1,6 @@
 import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
-import { LoginHistoryTable } from '../pages/LoginHistoryTable/index';
+import { LoginHistoryTable } from '../pages/LoginHistoryTable';
 import { DummyRoute } from '../router/components/DummyRoute';
 import { ACCOUNT_V2_ROUTES } from './routes';
 

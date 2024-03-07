@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import clsx from 'clsx';
 import { TAdvertiserStats } from 'types';
@@ -21,13 +20,13 @@ const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: TAdvertiser
     const isMyProfile = getCurrentRoute() === 'my-profile';
 
     const {
-        blocked_by_count,
+        blocked_by_count: blockedByCount,
         daysSinceJoined,
-        is_online,
-        last_online_time,
-        rating_average,
-        rating_count,
-        recommended_average,
+        is_online: isOnline,
+        last_online_time: lastOnlineTime,
+        rating_average: ratingAverage,
+        rating_count: ratingCount,
+        recommended_average: recommendedAverage,
     } = advertiserStats || {};
 
     return (
@@ -40,40 +39,40 @@ const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: TAdvertiser
             <div>
                 {!isMyProfile && (
                     <div className='border-r-[1px] border-solid border-r-[#ededed]'>
-                        <OnlineStatusIcon isOnline={is_online} isRelative size='0.8em' />
-                        <OnlineStatusLabel isOnline={is_online} lastOnlineTime={last_online_time} />
+                        <OnlineStatusIcon isOnline={isOnline} isRelative size='0.8em' />
+                        <OnlineStatusLabel isOnline={isOnline} lastOnlineTime={lastOnlineTime} />
                     </div>
                 )}
                 <Text color='less-prominent' size='sm'>
                     Joined {daysSinceJoined}d
                 </Text>
             </div>
-            {!rating_average && (
+            {!ratingAverage && (
                 <div>
                     <Text color='less-prominent' size='sm'>
                         Not rated yet
                     </Text>
                 </div>
             )}
-            {rating_average && (
+            {ratingAverage && (
                 <>
                     <div>
                         <div className='p2p-v2-advertiser-name-stats__rating'>
                             {isMobile && (
                                 <Text color='less-prominent' size='sm'>
-                                    ({rating_average})
+                                    ({ratingAverage})
                                 </Text>
                             )}
-                            <StarRating isReadonly ratingValue={rating_average} />
+                            <StarRating isReadonly ratingValue={ratingAverage} />
                             <Text color='less-prominent' size='sm'>
-                                ({rating_count} ratings)
+                                ({ratingCount} ratings)
                             </Text>
                         </div>
                     </div>
                     <div>
                         <ThumbUpIcon />
                         <Text color='less-prominent' size='sm'>
-                            {recommended_average || 0}%
+                            {recommendedAverage || 0}%
                         </Text>
                     </div>
                 </>
@@ -82,7 +81,7 @@ const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: TAdvertiser
                 <div>
                     <BlockedUserOutlineIcon />
                     <Text color='less-prominent' size='sm'>
-                        {blocked_by_count || 0}
+                        {blockedByCount || 0}
                     </Text>
                 </div>
             )}

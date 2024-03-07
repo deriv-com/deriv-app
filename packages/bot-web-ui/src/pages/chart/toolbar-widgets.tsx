@@ -15,7 +15,12 @@ const ToolbarWidgets = ({ updateChartType, updateGranularity, position }: TToolb
             {isDesktop() && (
                 <>
                     <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
-                    <Views portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                    <Views
+                        portalNodeId='modal_root'
+                        onChartType={updateChartType}
+                        onGranularity={updateGranularity}
+                        searchInputClassName='data-hj-whitelist'
+                    />
                     <DrawTools portalNodeId='modal_root' />
                     <Share portalNodeId='modal_root' />
                 </>

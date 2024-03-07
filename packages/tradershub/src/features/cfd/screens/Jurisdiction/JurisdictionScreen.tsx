@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { useCFDContext } from '@/providers';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { Jurisdiction } from '@cfd/constants';
-import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
+import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api-v2';
 import { JurisdictionCard } from './JurisdictionCard';
 
 type TJurisdictionScreenProps = {

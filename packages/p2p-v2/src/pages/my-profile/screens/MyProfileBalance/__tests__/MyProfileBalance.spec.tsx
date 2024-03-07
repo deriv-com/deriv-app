@@ -1,13 +1,15 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MyProfileBalance from '../MyProfileBalance';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
-        <div id='v2_modal_root' />
-        {children}
+        <AuthProvider>
+            <div id='v2_modal_root' />
+            {children}
+        </AuthProvider>
     </APIProvider>
 );
 
@@ -37,8 +39,8 @@ jest.mock('@/hooks', () => ({
     useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveAccount: jest.fn(() => mockUseActiveAccount),
 }));
 

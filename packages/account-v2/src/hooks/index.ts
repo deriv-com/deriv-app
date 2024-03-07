@@ -1,1 +1,1 @@
-export { default as useManualForm } from './ManualForm/useManualForm';
+export { default as useManualForm } from './useManualForm';

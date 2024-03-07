@@ -1,16 +1,19 @@
 import React, { Fragment } from 'react';
+import { useRegulationFlags } from '@/hooks';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { getJurisdictionDescription } from './CompareAccountsConfig';
 
 type TCompareAccountsDescription = {
-    isDemo: boolean;
-    isEuRegion: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode }: TCompareAccountsDescription) => {
+const CompareAccountsDescription = ({ marketType, shortCode }: TCompareAccountsDescription) => {
+    const { data: activeTrading } = useActiveTradingAccount();
+    const { isEU: isEuRegion } = useRegulationFlags();
+    const isDemo = activeTrading?.is_virtual;
     const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
     const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
 

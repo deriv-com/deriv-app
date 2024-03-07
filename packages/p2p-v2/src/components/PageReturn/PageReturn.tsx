@@ -13,7 +13,11 @@ type TPageReturnProps = {
 const PageReturn = ({ className = '', onClick, pageTitle }: TPageReturnProps) => {
     return (
         <div className={clsx('p2p-v2-page-return', className)}>
-            <LabelPairedArrowLeftLgBoldIcon className='p2p-v2-page-return__button' onClick={onClick} />
+            <LabelPairedArrowLeftLgBoldIcon
+                className='p2p-v2-page-return__button'
+                data-testid='dt_p2p_v2_page_return_btn'
+                onClick={onClick}
+            />
             <Text>{pageTitle}</Text>
         </div>
     );

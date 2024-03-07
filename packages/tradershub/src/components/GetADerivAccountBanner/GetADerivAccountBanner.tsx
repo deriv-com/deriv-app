@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text } from '@deriv-com/ui';
-import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
+import { useRealAccountCreationContext } from '../../providers/RealAccountCreationProvider';
 
 /**
  * `GetADerivAccountBanner` is a functional component that displays a banner message
@@ -10,7 +10,7 @@ import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
  * @returns {React.ReactElement} A `div` element containing the banner message and the button.
  */
 const GetADerivAccountBanner = () => {
-    const { setIsWizardOpen } = useSignupWizardContext();
+    const { setIsWizardOpen } = useRealAccountCreationContext();
     return (
         <div className='flex items-center justify-center w-full gap-16 p-16 rounded-xs bg-system-light-secondary-background'>
             <Text weight='bold'>You need a Deriv account to create a CFD account.</Text>

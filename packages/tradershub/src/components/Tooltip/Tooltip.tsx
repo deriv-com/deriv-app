@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { Text } from '@deriv-com/ui';
 import { TooltipClass, TooltipPointerClass } from './Tooltip.classnames';
 
@@ -36,8 +36,8 @@ const Tooltip = ({ alignment = 'bottom', children, className, message }: TToolti
         <div className='relative w-max h-max group z-1'>
             <div className='border rounded-md border-neutral-12'>{children}</div>
 
-            <div className={clsx(TooltipClass({ alignment }), className)}>
-                <div className={clsx(TooltipPointerClass({ alignment }), className)} />
+            <div className={twMerge(TooltipClass({ alignment }), className)}>
+                <div className={twMerge(TooltipPointerClass({ alignment }), className)} />
 
                 <span className='p-4 rounded-md bg-system-light-active-background '>
                     <Text size='sm'>{message}</Text>

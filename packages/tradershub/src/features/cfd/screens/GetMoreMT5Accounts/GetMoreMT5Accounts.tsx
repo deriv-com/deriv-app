@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import AddIcon from '@/assets/svgs/add-icon.svg';
+import { useModal } from '@/providers';
 import { MT5AccountTypeModal } from '@cfd/modals';
-import { Provider } from '@deriv/library';
 import { Text } from '@deriv-com/ui';
 
 const GetMoreMT5Accounts: FC = () => {
-    const { show } = Provider.useModal();
+    const { show } = useModal();
 
     return (
         <div

@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
  * To initialize Onfido, ensure that an empty container is present.
  * Call the hook and use `onfidoContainerId` to mark the empty container where the Onfido UI is to be mounted.
  *  @param [country] - The country code to be used to retrieve the Onfido service token.
+ *  @param [selectedDocument] - Type of document to be passed to bypass the document selection screen
  * For example:
  * ```
  * const { data: { onfidoContainerId } } = useOnfido()
@@ -24,7 +25,7 @@ import { v4 as uuidv4 } from 'uuid';
  * )
  * ```
  */
-const useOnfido = (country?: string) => {
+const useOnfido = (country?: string, selectedDocument?: string) => {
     // use to check that we do not re-attempt to reload the onfido script while its still loading
     const [isOnfidoLoading, setIsOnfidoLoading] = useState(false);
     const [isOnfidoInitialized, setIsOnfidoInitialized] = useState(false);
@@ -70,9 +71,12 @@ const useOnfido = (country?: string) => {
 
     const supportedDocuments = useMemo(() => {
         if (countryCode && residenceList.length) {
+            // TODO: Replace these logic with data from useKycAuthStatus hook.
             const onfidoResidence = residenceList.find(residence => residence?.value === countryCode)?.identity
                 ?.services?.onfido;
-
+            if (selectedDocument && onfidoResidence?.documents_supported) {
+                return [onfidoResidence?.documents_supported[selectedDocument]?.display_name];
+            }
             if (onfidoResidence && onfidoResidence.is_country_supported) {
                 return Object.keys(onfidoResidence.documents_supported ?? {}).map(
                     (document: string) => onfidoResidence.documents_supported?.[document].display_name
@@ -80,7 +84,7 @@ const useOnfido = (country?: string) => {
             }
         }
         return [];
-    }, [residenceList, countryCode]);
+    }, [residenceList, countryCode, selectedDocument]);
 
     const onComplete = useCallback(
         (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {

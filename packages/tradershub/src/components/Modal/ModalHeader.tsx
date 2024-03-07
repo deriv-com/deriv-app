@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
-import { Provider } from '@deriv/library';
+import { useModal } from '@/providers';
 import { Text } from '@deriv-com/ui';
 import { TModalComponents } from './Modal';
 
@@ -26,18 +26,18 @@ type TModalHeader = TModalComponents & {
  * @returns {JSX.Element} The ModalHeader component.
  */
 const ModalHeader = ({ className, hideCloseButton = false, title, titleClassName, titleSize }: TModalHeader) => {
-    const { hide } = Provider.useModal();
+    const { hide } = useModal();
 
     return (
         <div
-            className={clsx(
+            className={twMerge(
                 'flex items-center pl-16 pr-24 py-16 lg:px-24 border border-solid border-b-2 border-system-light-secondary-background w-full rounded-t-default',
                 title ? 'justify-between' : 'justify-end',
                 className
             )}
         >
             {title && (
-                <Text className={clsx('flex-1 font-sans', titleClassName)} size={titleSize} weight='bold'>
+                <Text className={twMerge('flex-1 font-sans', titleClassName)} size={titleSize} weight='bold'>
                     {title}
                 </Text>
             )}

@@ -57,11 +57,17 @@ export type TCFDStore = {
     has_cfd_error: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
+    is_from_mt5_migration_modal: boolean;
+    is_sent_email_modal_enabled: boolean;
     setCFDSuccessDialog: (value: boolean) => void;
     setMT5MigrationError: (value: string) => void;
+    setIsFromMt5MigrationModal: (value: boolean) => void;
     setMigratedMT5Accounts: (value: Record<string, string>[]) => void;
     setError: (state: boolean, obj?: Error) => void;
-    submitMt5Password: (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
+    submitMt5Password: (
+        values: TCFDPasswordFormValues,
+        actions: FormikHelpers<TCFDPasswordFormValues>
+    ) => Promise<void>;
     submitCFDPassword: (
         values: TCFDPasswordFormValues & { platform?: string },
         actions: FormikHelpers<TCFDPasswordFormValues>
@@ -70,6 +76,7 @@ export type TCFDStore = {
     is_cfd_verification_modal_visible: boolean;
     has_created_account_for_selected_jurisdiction: boolean;
     enableCFDPasswordModal: () => void;
+    setSentEmailModalStatus: (status: boolean) => void;
     onMount: () => void;
     onUnmount: () => void;
     setCurrentAccount: (
@@ -91,4 +98,8 @@ export type TCFDStore = {
         set_password?: number;
         platform?: string;
     }) => void;
+    is_mt5_password_invalid_format_modal_visible: boolean;
+    setIsMt5PasswordInvalidFormatModalVisible: (value: boolean) => void;
+    is_mt5_password_changed_modal_visible: boolean;
+    setIsMt5PasswordChangedModalVisible: (value: boolean) => void;
 };

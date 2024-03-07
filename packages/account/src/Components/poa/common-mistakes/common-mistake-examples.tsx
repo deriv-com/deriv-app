@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
 import { getExampleImagesConfig } from '../../../Configs/poa-common-mistake-examples-config';
 import IcErrorBadge from '../../../Assets/ic-error-badge.svg';
 import './common-mistake-examples.scss';
@@ -35,7 +36,9 @@ const CommonMistakeExamplePartials = ({ description, image }: TCommonMistakeExam
  * @returns React.ReactElement
  */
 const CommonMistakeExamples = () => {
-    const example_images = getExampleImagesConfig();
+    const { client } = useStore();
+    const { is_eu } = client;
+    const example_images = getExampleImagesConfig(is_eu);
     return (
         <React.Fragment>
             <Text as='div' weight='bold' size={isMobile() ? 'xxs' : 'xs'} className='common-mistake-examples__title'>

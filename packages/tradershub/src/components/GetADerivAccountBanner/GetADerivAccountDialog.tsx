@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 import { ButtonGroup } from '@/components';
 import { CUSTOM_STYLES } from '@/helpers';
 import { Button, Text } from '@deriv-com/ui';
-import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
+import { useRealAccountCreationContext } from '../../providers/RealAccountCreationProvider';
 
 type TGetADerivAccountDialog = {
     isOpen: boolean;
@@ -17,7 +17,7 @@ type TGetADerivAccountDialog = {
  * @returns {React.ReactElement} A `<Dialog>` component containing the dialog message and action button.
  */
 const GetADerivAccountDialog = ({ isOpen, onClose }: TGetADerivAccountDialog) => {
-    const { setIsWizardOpen } = useSignupWizardContext();
+    const { setIsWizardOpen } = useRealAccountCreationContext();
 
     return (
         <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>

@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, ReactElement } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import ModalContent from './ModalContent';
 import ModalFooter from './ModalFooter';
 import ModalHeader from './ModalHeader';
@@ -46,7 +46,7 @@ export type TModalComponents = PropsWithChildren<{
 const Modal = ({ children, className }: TModal) => {
     return (
         <div
-            className={clsx(
+            className={twMerge(
                 'flex flex-col h-[calc(100vh-40px)] w-screen bg-system-light-primary-background lg:mx-auto lg:h-full lg:w-full lg:rounded-default',
                 className
             )}

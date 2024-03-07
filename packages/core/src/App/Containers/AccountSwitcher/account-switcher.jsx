@@ -102,8 +102,9 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         if (is_positions_drawer_on) {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
+        await logoutClient();
+        window.location.href = getStaticUrl('/');
         history.push(routes.index);
-        await logoutClient().then(() => (window.location.href = getStaticUrl('/')));
     };
 
     const closeAccountsDialog = () => {

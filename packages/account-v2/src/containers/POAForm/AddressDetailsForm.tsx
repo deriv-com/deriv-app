@@ -1,15 +1,13 @@
 import React, { Fragment } from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { useDocumentUpload, useInvalidateQuery, useSettings } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
-import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
-import { Button, InlineMessage, Text } from '@deriv-com/ui';
-import IcPOALock from '../../assets/verification-status/ic-poa-lock.svg';
+import { useDocumentUpload, useInvalidateQuery, useSettings } from '@deriv/api-v2';
+import { StandaloneXmarkBoldIcon, DerivLightIcPoaLockIcon } from '@deriv/quill-icons';
+import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
 import { AddressFields } from '../../modules/AddressFields';
-import DocumentSubmission from './DocumentSubmission';
+import { DocumentSubmission } from './DocumentSubmission';
 
 type TAddressDetails = {
     addressCity: string;
@@ -32,7 +30,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
     } = useSettings();
     const { error: documentUploadError, isLoading: isDocumentUploading, upload } = useDocumentUpload();
     const invalidate = useInvalidateQuery();
-    const { isMobile } = useBreakpoint();
+    const { isMobile } = useDevice();
     const history = useHistory();
 
     const handleFormSubmit = async (values: TAddressDetails, { setStatus }: FormikHelpers<TAddressDetails>) => {
@@ -71,7 +69,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
     };
 
     if (fetchError) {
-        return <IconWithMessage icon={<IcPOALock width={128} />} title={fetchError.error.message} />;
+        return <IconWithMessage icon={<DerivLightIcPoaLockIcon width={128} />} title={fetchError.error.message} />;
     }
 
     const updateError = settingsUpdateError?.error.message ?? documentUploadError?.error.message;
@@ -82,7 +80,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
     return (
         <Fragment>
             {isMobile && (
-                <div className='grid grid-cols-[auto_25px] items-center pb-300 mb-500 border-solid border-b-75 border-solid-grey-2'>
+                <div className='grid grid-cols-[auto_25px] items-center pb-6 mb-10 border-solid border-b-1 border-solid-grey-2'>
                     <Text align='center' size='lg' weight='bold'>
                         Proof of address
                     </Text>
@@ -94,19 +92,19 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                     />
                 </div>
             )}
-            <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit} validateOnMount>
-                {({ isSubmitting, isValid, status }) => (
+            <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
+                {({ dirty, isSubmitting, isValid, status }) => (
                     <Form>
-                        <div className='flex flex-col w-full min-h-screen sm:w-auto space-y-800'>
+                        <div className='flex flex-col w-full min-h-screen space-y-16 lg:w-auto'>
                             {(updateError || status || resubmitting) && (
                                 <InlineMessage type='filled' variant='error'>
                                     {updateError ?? status?.message ?? resubmitMessage}
                                 </InlineMessage>
                             )}
-                            <div className='overflow-y-auto m-50 space-y-600'>
-                                <div className='flex h-1200 gap-400 self-stretch sm:self-auto justify-center items-center sm:gap-[11px]'>
+                            <div className='m-0 space-y-12 overflow-y-auto'>
+                                <div className='flex h-24 gap-8 self-stretch lg:self-auto justify-center items-center lg:gap-[11px]'>
                                     <Text weight='bold'>Address</Text>
-                                    <div className='w-full h-75 flex-[1_1_0] bg-solid-grey-2 sm:flex-shrink-0' />
+                                    <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 lg:flex-shrink-0' />
                                 </div>
                                 <InlineMessage type='filled' variant='warning'>
                                     <Text size='sm'>
@@ -117,10 +115,9 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                                 <AddressFields />
                                 <DocumentSubmission />
                             </div>
-                            <div className='sticky flex justify-end flex-shrink-0 w-full border-solid bottom-50 py-800 px-1200 bg-solid-slate-50 border-t-75 border-solid-grey-2'>
+                            <div className='sticky bottom-0 flex justify-end flex-shrink-0 w-full px-24 py-16 border-solid bg-solid-slate-0 border-t-1 border-solid-grey-2'>
                                 <Button
-                                    className='bg-solid-coral-700'
-                                    disabled={isSubmitting || !isValid}
+                                    disabled={isSubmitting || !isValid || !dirty}
                                     isFullWidth={isMobile}
                                     isLoading={isSettingsUpdating || isDocumentUploading}
                                     size='lg'

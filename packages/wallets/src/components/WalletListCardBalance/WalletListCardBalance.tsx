@@ -1,16 +1,15 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-import { useBalance } from '@deriv/api-v2';
-import { THooks } from '../../types';
+import { useActiveWalletAccount, useBalance } from '@deriv/api-v2';
 import { WalletText } from '../Base';
 import './WalletListCardBalance.scss';
 
-type TProps = {
-    balance: THooks.WalletAccountsList['display_balance'];
-};
-
-const WalletListCardBalance: React.FC<TProps> = ({ balance }) => {
+const WalletListCardBalance = () => {
     const { isLoading } = useBalance();
+    const { data: activeWallet } = useActiveWalletAccount();
+
+    const balance = activeWallet?.display_balance;
+
     return (
         <div className='wallets-balance__container'>
             {isLoading ? (

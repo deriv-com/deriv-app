@@ -1,24 +1,16 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { twMerge } from 'tailwind-merge';
 import { CFDSection, OptionsAndMultipliersSection } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 
 const TradersHubContent = () => {
     const { isEU } = useRegulationFlags();
 
-    if (isEU) {
-        return (
-            <Fragment>
-                <CFDSection />
-                <OptionsAndMultipliersSection />
-            </Fragment>
-        );
-    }
-
     return (
-        <Fragment>
+        <div className={twMerge('flex gap-24 flex-col', isEU && 'flex-col-reverse')}>
             <OptionsAndMultipliersSection />
             <CFDSection />
-        </Fragment>
+        </div>
     );
 };
 

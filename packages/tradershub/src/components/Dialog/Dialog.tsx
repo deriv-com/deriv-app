@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { useEventListener } from 'usehooks-ts';
-import { Provider } from '@deriv/library';
+import { useModal } from '@/providers';
 import DialogAction from './DialogAction';
 import DialogContent from './DialogContent';
 import DialogHeader from './DialogHeader';
@@ -45,7 +45,7 @@ type TDialog = {
  * ```
  */
 const Dialog = ({ children, className, shouldPreventCloseOnEscape = false }: TDialog) => {
-    const { hide } = Provider.useModal();
+    const { hide } = useModal();
 
     useEventListener('keydown', (event: KeyboardEvent) => {
         if (!shouldPreventCloseOnEscape && event.key === 'Escape') {
@@ -55,7 +55,7 @@ const Dialog = ({ children, className, shouldPreventCloseOnEscape = false }: TDi
 
     return (
         <div
-            className={clsx(
+            className={twMerge(
                 'flex flex-col gap-24 mx-auto w-[auto] p-24 bg-system-light-primary-background rounded-default',
                 className
             )}

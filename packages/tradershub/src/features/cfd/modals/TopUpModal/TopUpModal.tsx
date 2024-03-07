@@ -1,8 +1,9 @@
 import React from 'react';
 import { Modal } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { useIsEuRegion, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
+import { useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 
 type TTopUpModalProps = {
@@ -11,7 +12,7 @@ type TTopUpModalProps = {
 };
 
 const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
-    const { data: isEuRegion } = useIsEuRegion();
+    const { isEU } = useRegulationFlags();
     const { mutateAsync: MT5Deposit } = useMT5Deposit();
     const { mutateAsync: OtherCFDPlatformsDeposit } = useOtherCFDPlatformsDeposit();
 
@@ -29,7 +30,7 @@ const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
     };
 
     const platformTitle = PlatformDetails[platform].title;
-    const marketTypeDetails = MarketTypeDetails(isEuRegion)[account.market_type ?? MarketType.ALL];
+    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
     const marketTypeTitle = marketTypeDetails?.title ?? '';
     const title = platform === CFDPlatforms.MT5 ? `${platformTitle} ${marketTypeTitle}` : platformTitle;
 

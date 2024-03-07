@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 import { CloseHeader } from '@/components';
 import { BuySell, MyAds, MyProfile } from '@/pages';
-import { useActiveAccount } from '@deriv/api';
+import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import './index.scss';
 
@@ -32,6 +32,11 @@ const AppContent = () => {
     const history = useHistory();
     const { data: activeAccountData, isLoading } = useActiveAccount();
     const [activeTab, setActiveTab] = useState(() => pathToTitleMapper[getCurrentRoute() || DEFAULT_TAB]);
+    const { subscribe } = p2p.settings.useGetSettings();
+
+    useEffect(() => {
+        if (activeAccountData) subscribe();
+    }, [activeAccountData, subscribe]);
 
     useEventListener('switchTab', event => {
         setActiveTab(pathToTitleMapper[event.detail.tab]);

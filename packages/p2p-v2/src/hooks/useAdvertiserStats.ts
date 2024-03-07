@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { daysSince } from '@/utils';
-import { p2p, useAuthentication, useSettings } from '@deriv/api';
+import { p2p, useAuthentication, useSettings } from '@deriv/api-v2';
 
 /**
  * Formats the advertiser duration into the following format:
@@ -56,10 +56,12 @@ const useAdvertiserStats = (advertiserId?: string) => {
             ),
 
             /** The advertiser's full name */
-            fullName: (settings?.first_name || '') + (settings?.last_name || ''),
+            fullName: `${settings?.first_name || ''} ${settings?.last_name || ''}`,
 
             /** Checks if the advertiser has completed proof of address verification */
-            isAddressVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.document?.status,
+            isAddressVerified: isAdvertiser
+                ? data?.full_verification
+                : authenticationStatus?.document?.status === 'verified',
 
             /** Checks if the user is already an advertiser */
             isAdvertiser,
@@ -68,7 +70,9 @@ const useAdvertiserStats = (advertiserId?: string) => {
             isEligibleForLimitUpgrade: Boolean(data?.upgradable_daily_limits),
 
             /** Checks if the advertiser has completed proof of identity verification */
-            isIdentityVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.identity?.status,
+            isIdentityVerified: isAdvertiser
+                ? data?.full_verification
+                : authenticationStatus?.identity?.status === 'verified',
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */
             sellCompletionRate: data?.sell_completion_rate || 0,

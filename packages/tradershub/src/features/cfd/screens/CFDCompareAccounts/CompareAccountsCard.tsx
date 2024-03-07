@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRegulationFlags } from '@/hooks';
 import { Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms } from '../../constants';
@@ -10,23 +11,13 @@ import InstrumentsLabelHighlighted from './InstrumentsLabelHighlighted';
 
 type TCompareAccountsCard = {
     isAccountAdded: boolean;
-    isDemo: boolean;
-    isEuRegion: boolean;
-    isEuUser: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsCard = ({
-    isAccountAdded,
-    isDemo,
-    isEuRegion,
-    isEuUser,
-    marketType,
-    platform,
-    shortCode,
-}: TCompareAccountsCard) => {
+const CompareAccountsCard = ({ isAccountAdded, marketType, platform, shortCode }: TCompareAccountsCard) => {
+    const { isEU } = useRegulationFlags();
     return (
         <div>
             <div className='w-[180px] lg:w-[270px] relative overflow-hidden rounded-[24px] my-0 mx-10 border-solid border-1 border-system-light-hover-background hover:shadow-7 text-center flex flex-col justify-between h-full'>
@@ -38,27 +29,11 @@ const CompareAccountsCard = ({
                         </Text>
                     </div>
                 )}
-                <CompareAccountsTitleIcon
-                    isDemo={isDemo}
-                    marketType={marketType}
-                    platform={platform}
-                    shortCode={shortCode}
-                />
-                <CompareAccountsDescription
-                    isDemo={isDemo}
-                    isEuRegion={isEuRegion}
-                    marketType={marketType}
-                    shortCode={shortCode}
-                />
-                <InstrumentsLabelHighlighted
-                    isDemo={isDemo}
-                    isEuRegion={isEuRegion}
-                    marketType={marketType}
-                    platform={platform}
-                    shortCode={shortCode}
-                />
-                {isEuUser && (
-                    <div className='relative text-center top-[5px]'>
+                <CompareAccountsTitleIcon marketType={marketType} platform={platform} shortCode={shortCode} />
+                <CompareAccountsDescription marketType={marketType} shortCode={shortCode} />
+                <InstrumentsLabelHighlighted marketType={marketType} platform={platform} shortCode={shortCode} />
+                {isEU && (
+                    <div className='relative text-center top-5'>
                         <Text color='red' size='2xs' weight='bold'>
                             *Boom 300 and Crash 300 Index
                         </Text>

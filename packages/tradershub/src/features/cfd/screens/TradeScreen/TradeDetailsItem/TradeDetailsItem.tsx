@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { useHover } from 'usehooks-ts';
 import EditIcon from '@/assets/svgs/ic-edit.svg';
 import { Clipboard, Tooltip } from '@/components';
+import { useModal } from '@/providers';
 import { ChangePassword } from '@cfd/screens';
-import { Provider } from '@deriv/library';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 type TTradeDetailsItemProps = {
@@ -18,10 +18,10 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
     const { isDesktop } = useDevice();
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
-    const { show } = Provider.useModal();
+    const { show } = useModal();
     return (
         <div
-            className={clsx(
+            className={twMerge(
                 'flex items-center h-32 justify-between bg-system-light-secondary-background p-5 pl-8',
                 className
             )}

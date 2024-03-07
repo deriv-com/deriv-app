@@ -330,6 +330,7 @@ const ContractTypeWidget = observer(
                             <ContractType.Info
                                 handleSelect={handleSelect}
                                 item={item || { value }}
+                                selected_value={value}
                                 list={list_with_category()}
                                 info_banner={info_banner}
                             />

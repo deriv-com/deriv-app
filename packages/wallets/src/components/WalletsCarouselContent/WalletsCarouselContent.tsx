@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import { ProgressBar } from '../Base';
@@ -87,7 +87,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
     useEffect(() => {
         const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-        setCurrentIndex(index);
+        if (index >= 0) {
+            setCurrentIndex(index);
+        }
     }, [selectedLoginId, walletAccountsList]);
 
     // set the initial data loading flag to false once all "is loading" flags are false,
@@ -122,11 +124,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                     onClick={walletsCarouselEmblaApi?.scrollTo}
                 />
             </div>
-            <WalletListCardActions
-                isActive={activeWallet?.is_active || false}
-                isDemo={activeWallet?.is_virtual || false}
-                loginid={activeWallet?.loginid || ''}
-            />
+            <WalletListCardActions />
         </div>
     );
 };

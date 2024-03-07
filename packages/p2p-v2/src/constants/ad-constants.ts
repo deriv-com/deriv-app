@@ -14,6 +14,7 @@ export const AD_ACTION = Object.freeze({
     DEACTIVATE: 'deactivate',
     DELETE: 'delete',
     EDIT: 'edit',
+    SHARE: 'share',
 });
 
 export const ADVERT_TYPE = Object.freeze({

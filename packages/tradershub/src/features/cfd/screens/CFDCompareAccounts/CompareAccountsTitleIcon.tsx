@@ -1,16 +1,16 @@
 import React, { Fragment, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
-import { PlatformIcon, Tooltip } from '@/components';
+import { IconComponent, Tooltip } from '@/components';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms } from '@cfd/constants';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { AccountIcons, MarketTypeShortcode } from './constants';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
 
 type TCompareAccountsTitleIcon = {
-    isDemo: boolean;
     marketType: TMarketType;
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
@@ -52,7 +52,9 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherA
     }
 };
 
-const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
+const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
+    const { data: activeDerivTrading } = useActiveTradingAccount();
+    const isDemo = activeDerivTrading?.is_virtual;
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
     const jurisdictionCardIcon = getAccountIcon(platform, marketType);
 
@@ -70,7 +72,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
     return (
         <Fragment>
             <div className={'flex flex-col gap-5 pt-20 items-center'}>
-                <PlatformIcon icon={jurisdictionCardIcon} />
+                <IconComponent icon={jurisdictionCardIcon} />
                 <div className='flex items-center gap-8'>
                     <Text size='sm' weight='bold'>
                         {jurisdictionCardTitle}

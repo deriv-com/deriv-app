@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import { Controller, useForm } from 'react-hook-form';
 import Modal from 'react-modal';
 import { useDevice, useSwitchTab } from '@/hooks';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { DerivLightIcCashierUserIcon } from '@deriv/quill-icons';
 import { Button, Input, Text } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
@@ -65,6 +65,7 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
                     name='nickname'
                     render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                         <Input
+                            data-testid='dt_p2p_v2_nickname_modal_input'
                             error={!!error?.message || isError}
                             label='Your nickname'
                             message={createError?.error?.message || error?.message}

@@ -6,6 +6,7 @@ import { reaction } from 'mobx';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import TableError from 'Components/section-error';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { useP2PRenderedAdverts } from 'Hooks';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
@@ -28,7 +29,7 @@ const BuySellRowRendererComponent = row_props => {
 const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
-    const { buy_sell_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
     } = useStore();
@@ -47,6 +48,12 @@ const BuySellTable = ({ onScroll }) => {
 
     const { error, has_more_items_to_load, isError, isLoading, loadMoreAdverts, rendered_adverts } =
         useP2PRenderedAdverts();
+
+    React.useEffect(() => {
+        if (error?.code === api_error_codes.PERMISSION_DENIED) {
+            general_store.setIsBlocked(true);
+        }
+    }, [error?.code]);
 
     if (isLoading) {
         return <Loading is_fullscreen={false} />;

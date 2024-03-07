@@ -1,8 +1,9 @@
 import React from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { IconComponent } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 
 const TradingAccountsList = () => {
@@ -22,14 +23,14 @@ const TradingAccountsList = () => {
                         const iconCurrency = account.currency ?? 'USD';
                         return (
                             <button
-                                className={clsx(
+                                className={twMerge(
                                     'flex items-center self-stretch py-8 px-16 gap-16 rounded-xs cursor-pointer hover:bg-system-light-active-background',
                                     activeAccount?.loginid === account.loginid && 'bg-system-light-active-background'
                                 )}
                                 key={`trading-accounts-list-${account.loginid}`}
                                 onClick={() => switchAccount(account.loginid)}
                             >
-                                {IconToCurrencyMapper[iconCurrency].icon}
+                                <IconComponent height={35} icon={iconCurrency} width={35} />
                                 <div className='flex flex-col items-start flex-1'>
                                     <Text size='sm'>{IconToCurrencyMapper[iconCurrency].text}</Text>
                                     <Text size='sm'>{account.loginid}</Text>

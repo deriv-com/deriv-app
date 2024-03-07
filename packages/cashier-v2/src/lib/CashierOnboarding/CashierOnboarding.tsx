@@ -1,18 +1,24 @@
 import React from 'react';
-import { CashierOnboardingAccountIdentifierMessage } from './components/CashierOnboardingAccountIdentifierMessage';
-import { CashierOnboardingCryptoCard } from './components/CashierOnboardingCryptoCard';
-import { CashierOnboardingFiatCard } from './components/CashierOnboardingFiatCard';
-import { CashierOnboardingOnrampCard } from './components/CashierOnboardingOnrampCard';
-import { CashierOnboardingP2PCard } from './components/CashierOnboardingP2pCard';
-import { CashierOnboardingPaymentAgentCard } from './components/CashierOnboardingPaymentAgentCard';
+import {
+    CashierOnboardingAccountIdentifierMessage,
+    CashierOnboardingCryptoCard,
+    CashierOnboardingFiatCard,
+    CashierOnboardingOnrampCard,
+    CashierOnboardingP2PCard,
+    CashierOnboardingPaymentAgentCard,
+} from './components';
 import styles from './CashierOnboarding.module.scss';
 
-const CashierOnboarding: React.FC = () => {
+type TProps = {
+    setIsDeposit: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const CashierOnboarding: React.FC<TProps> = ({ setIsDeposit }) => {
     return (
         <div className={styles.container}>
             <CashierOnboardingAccountIdentifierMessage />
-            <CashierOnboardingFiatCard />
-            <CashierOnboardingCryptoCard />
+            <CashierOnboardingFiatCard setIsDeposit={setIsDeposit} />
+            <CashierOnboardingCryptoCard setIsDeposit={setIsDeposit} />
             <CashierOnboardingOnrampCard />
             <CashierOnboardingPaymentAgentCard />
             <CashierOnboardingP2PCard />

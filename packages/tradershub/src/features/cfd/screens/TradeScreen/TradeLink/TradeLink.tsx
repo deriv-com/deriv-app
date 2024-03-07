@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { getPlatformFromUrl } from '@/helpers';
-import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../../types';
 import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper, PlatformUrls } from '../../../constants';

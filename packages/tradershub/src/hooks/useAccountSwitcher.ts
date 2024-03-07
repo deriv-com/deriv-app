@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useUIContext } from '@/providers';
-import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api-v2';
 
 const accountTypes = [
     { label: 'Demo', value: 'demo' },

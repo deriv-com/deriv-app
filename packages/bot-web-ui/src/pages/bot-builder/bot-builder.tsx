@@ -1,10 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useRemoteConfig } from '@deriv/api';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import initDatadogLogs from 'Utils/datadog-logs';
 import LoadModal from '../../components/load-modal';
 import { useDBotStore } from '../../stores/useDBotStore';
 import SaveModal from '../dashboard/load-bot-preview/save-modal';
@@ -22,6 +24,12 @@ const BotBuilder = observer(() => {
     const { is_mobile } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+    const { data: remote_config_data } = useRemoteConfig();
+
+    React.useEffect(() => {
+        initDatadogLogs(remote_config_data.tracking_datadog);
+        window.is_datadog_logging_enabled = remote_config_data.tracking_datadog; // This will be used in the middleware inside of bot-skeleton to check if datadog is enabled before logging
+    }, [remote_config_data]);
 
     React.useEffect(() => {
         const is_bot_builder = active_tab === DBOT_TABS.BOT_BUILDER;

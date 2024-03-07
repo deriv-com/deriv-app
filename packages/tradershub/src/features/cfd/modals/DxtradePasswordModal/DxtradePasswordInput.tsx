@@ -2,7 +2,7 @@ import React from 'react';
 import DxtradePasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
 import { ActionScreen, SentEmailContent } from '@/components';
 import { useCFDContext, useModal } from '@/providers';
-import { useAccountStatus } from '@deriv/api';
+import { useAccountStatus } from '@deriv/api-v2';
 import useDxtradeAccountHandler from '../../../../hooks/useDxtradeAccountHandler';
 import { MarketType, QueryStatus } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
@@ -16,10 +16,10 @@ type TDxtradePasswordInputProps = {
 const DxtradePasswordInput = ({ password, setPassword }: TDxtradePasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { show } = useModal();
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
 
     const marketType = MarketType.ALL;
-    const platform = getCFDState('platform');
+    const { platform } = cfdState;
 
     const isDxtradePasswordNotSet = accountStatus?.is_dxtrade_password_not_set;
     const { createDxtradeAccountError, createDxtradeAccountLoading, createOtherCFDAccountSuccess, handleSubmit } =

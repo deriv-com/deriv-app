@@ -1,4 +1,4 @@
-import { Button, Modal, Text, PasswordInput, FormSubmitButton, PasswordMeter, Loading } from '@deriv/components';
+import { InlineMessage, Modal, Text, PasswordInput, FormSubmitButton, PasswordMeter, Loading } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { CFD_PLATFORMS, WS, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -16,35 +16,31 @@ const MT5MigrationBackSideContent = observer(() => {
     const { setAppstorePlatform } = common;
     const { setJurisdictionSelectedShortcode, setSentEmailModalStatus, submitMt5Password } = useCfdStore();
     const { getEligibleAccountToMigrate } = useMT5SVGEligibleToMigrate();
-    const { setShowModalFrontSide, setMigrationError } = useMT5MigrationModalContext();
+    const { setShowModalFrontSide } = useMT5MigrationModalContext();
     const formik_ref = React.useRef<FormikProps<TCFDPasswordFormValues>>(null);
 
     const initial_values: TCFDPasswordFormValues = {
         password: '',
     };
 
-    const header_size = is_mobile ? 'xs' : 's';
     const content_size = is_mobile ? 'xxs' : 'xs';
 
     const closeModal = () => {
         setShowModalFrontSide(true);
         setAppstorePlatform(CFD_PLATFORMS.MT5);
         setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
-        setMT5MigrationModalEnabled(true);
-        toggleMT5MigrationModal();
+        toggleMT5MigrationModal(false);
     };
 
     const onConfirmMigration = (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => {
         submitMt5Password(values, actions).then(() => {
-            if (formik_ref.current?.status?.error_message) {
-                setMigrationError(formik_ref.current?.status?.error_message);
-            }
             closeModal();
         });
     };
 
     const onForgotPassword = () => {
-        closeModal();
+        setMT5MigrationModalEnabled(false);
+        toggleMT5MigrationModal(false);
         WS.verifyEmail(email, 'trading_platform_mt5_password_reset', {
             url_parameters: {
                 redirect_to: 10,
@@ -86,48 +82,61 @@ const MT5MigrationBackSideContent = observer(() => {
             {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='mt5-migration-modal__container'>
-                        {isSubmitting ? (
-                            <Loading className='mt5-migration-modal__loading' />
-                        ) : (
-                            <React.Fragment>
-                                <div className='mt5-migration-modal__password-header-container'>
-                                    <Text as='p' weight='bold' size={header_size} align='center'>
-                                        <Localize i18n_default_text='Enter your Deriv MT5 password' />
-                                    </Text>
-                                    <Text as='p' size={content_size} align='center'>
-                                        <Localize i18n_default_text='Enter your Deriv MT5 password to upgrade your account(s).' />
-                                    </Text>
-                                </div>
-                                <div className='mt5-migration-modal__password-input-container'>
-                                    <PasswordMeter
-                                        input={values.password}
-                                        has_error={touched.password && errors.password}
-                                        custom_feedback_messages={getErrorMessages().password_warnings}
-                                    >
-                                        <PasswordInput
-                                            autoComplete='off'
-                                            label={localize('Deriv MT5 password')}
-                                            error={touched.password && errors.password}
-                                            name='password'
-                                            value={values.password}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                        />
-                                    </PasswordMeter>
-                                </div>
-                                <div className='mt5-migration-modal__password-forgot-container'>
-                                    <Button type='button' large secondary onClick={onForgotPassword}>
-                                        <Localize i18n_default_text='Forgot password?' />
-                                    </Button>
-                                </div>
-                            </React.Fragment>
-                        )}
+                        <div className='mt5-migration-modal__password-header-container'>
+                            <Text as='p' size={content_size}>
+                                <Localize i18n_default_text='Enter your Deriv MT5 password to upgrade your account(s).' />
+                            </Text>
+                        </div>
+                        <div className='mt5-migration-modal__password-input-container'>
+                            <PasswordMeter
+                                input={values.password}
+                                has_error={touched.password && errors.password}
+                                custom_feedback_messages={getErrorMessages().password_warnings}
+                            >
+                                <PasswordInput
+                                    autoComplete='off'
+                                    label={localize('Deriv MT5 password')}
+                                    error={touched.password && errors.password}
+                                    name='password'
+                                    value={values.password}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                />
+                            </PasswordMeter>
+                        </div>
+                        <div className='mt5-migration-modal__password-hint'>
+                            <InlineMessage type='information' size='sm'>
+                                <Text as='p' size='xxs'>
+                                    <Localize i18n_default_text="We've introduced additional password requirements to increase your account security. Your password should:" />
+                                </Text>
+                                <ul className='mt5-migration-modal__password-hint-items'>
+                                    <li>
+                                        <Text as='p' size='xxs' weight='bold'>
+                                            <Localize i18n_default_text='Be between 8 to 16 characters.' />
+                                        </Text>
+                                    </li>
+
+                                    <li>
+                                        <Text as='p' size='xxs' weight='bold'>
+                                            <Localize i18n_default_text='Contain at least one special character.' />
+                                        </Text>
+                                    </li>
+                                </ul>
+                                <Text as='p' size='xxs'>
+                                    <Localize i18n_default_text="If your current password doesn't match these requirements, you'll need to create a new one in the next step." />
+                                </Text>
+                            </InlineMessage>
+                        </div>
                     </div>
-                    <Modal.Footer has_separator>
+                    <Modal.Footer>
                         <FormSubmitButton
                             is_disabled={!!errors.password || isSubmitting}
                             is_absolute={is_mobile}
                             label={localize('Upgrade')}
+                            has_cancel
+                            onCancel={onForgotPassword}
+                            cancel_label={localize('Forgot password?')}
+                            is_loading={isSubmitting}
                         />
                     </Modal.Footer>
                 </form>

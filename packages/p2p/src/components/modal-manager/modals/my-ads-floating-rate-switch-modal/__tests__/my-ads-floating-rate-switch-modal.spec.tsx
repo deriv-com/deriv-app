@@ -128,6 +128,6 @@ describe('<MyAdsFloatingRateSwitchModal />', () => {
         render(<MyAdsFloatingRateSwitchModal />, { wrapper });
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
         userEvent.click(cancel_button);
-        expect(mock_store_values.my_ads_store.toggleMyAdsRateSwitchModal).toHaveBeenCalledWith('fixed', true);
+        expect(mock_store_values.my_ads_store.toggleMyAdsRateSwitchModal).toHaveBeenCalledWith('fixed', false);
     });
 });

@@ -28,7 +28,7 @@ const MyAdsFloatingRateSwitchModal = () => {
                     <Button
                         secondary
                         type='button'
-                        onClick={() => toggleMyAdsRateSwitchModal(selected_ad_type, p2p_settings?.reached_target_date)}
+                        onClick={() => toggleMyAdsRateSwitchModal(selected_ad_type, false)}
                         large
                     >
                         {p2p_settings?.reached_target_date ? (

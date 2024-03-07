@@ -1,1 +1,1 @@
-export { IDVForm } from './idv-form';
+export { IDVForm } from './IDVForm';

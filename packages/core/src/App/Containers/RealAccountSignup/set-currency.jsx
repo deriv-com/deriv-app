@@ -77,7 +77,7 @@ const SetCurrency = observer(({ setLoading, onSuccessSetAccountCurrency, onError
                     align='center'
                     className='set-currency-modal__heading-container__sub-heading'
                 >
-                    {localize('Please choose your currency')}
+                    {localize('Select your preferred currency')}
                 </Text>
             </div>
             <CurrencySelector

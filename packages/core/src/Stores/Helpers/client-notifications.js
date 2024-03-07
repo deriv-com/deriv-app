@@ -88,3 +88,16 @@ export const priority_toast_messages = [
     'p2p_advertiser_nickname_added',
     ...maintenance_notifications,
 ];
+
+export const poi_notifications = [
+    'authenticate',
+    'poi_expired',
+    'document_needs_action',
+    'identity',
+    'needs_poi',
+    'poi_failed',
+    'poi_verified',
+    'svg_needs_poi_poa',
+    'svg_needs_poi',
+    'svg_poi_expired',
+];

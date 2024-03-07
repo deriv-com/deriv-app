@@ -111,7 +111,7 @@ export const getMtCompanies = (is_eu: boolean) => {
     const financial_config = {
         account_type: 'financial',
         leverage: 1000,
-        short_title: is_eu ? localize('CFDs') : localize('Financial'),
+        short_title: is_eu ? localize('Deriv CFDs') : localize('Financial'),
     };
     const financial_stp_config = {
         account_type: 'financial_stp',
@@ -228,7 +228,7 @@ export const getMtCompanies = (is_eu: boolean) => {
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('CFDs') : localize('Financial'),
+                title: is_eu ? localize('Deriv CFDs') : localize('Financial'),
                 short_title: financial_config.short_title,
             },
             financial_svg: {
@@ -280,6 +280,9 @@ export const getFormattedJurisdictionCode = (jurisdiction_code: string) => {
             break;
         case Jurisdiction.VANUATU:
             formatted_label = localize('Vanuatu');
+            break;
+        case Jurisdiction.MALTA_INVEST:
+            formatted_label = localize('Malta');
             break;
         default:
             formatted_label = jurisdiction_code?.toUpperCase();

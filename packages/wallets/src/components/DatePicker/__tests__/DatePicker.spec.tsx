@@ -14,7 +14,16 @@ jest.mock('../../FlowProvider', () => ({
     useFlow: jest.fn(() => mockUseFlow),
 }));
 
-describe('DatePicker Component', () => {
+describe('DatePicker', () => {
+    beforeAll(() => {
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(new Date('2024-01-15').getTime());
+    });
+
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+
     test('should render with default props', () => {
         const mockOnDateChange = jest.fn();
         render(
@@ -79,7 +88,7 @@ describe('DatePicker Component', () => {
         expect(container).toHaveClass('wallets-datepicker__container--above');
     });
 
-    test.skip('should trigger onDateChange callback with correct date when date is selected', () => {
+    test('should trigger onDateChange callback with correct date when date is selected', () => {
         const mockOnDateChange = jest.fn();
         render(
             <FlowProvider
@@ -96,14 +105,8 @@ describe('DatePicker Component', () => {
 
         const calendarButton = screen.getByTestId('wallets_datepicker_button');
         fireEvent.click(calendarButton);
-
-        const date = new Date();
-        const month = `0${date.getMonth() + 1}`.slice(-2);
-        const year = date.getFullYear();
-
-        const dateElements = screen.getAllByText(15);
-        fireEvent.click(dateElements[0]);
-        const testDate = `${year}-${month}-15`;
+        fireEvent.click(screen.getByText(15));
+        const testDate = `2024-01-15`;
 
         expect(mockOnDateChange).toHaveBeenCalledWith(testDate);
     });

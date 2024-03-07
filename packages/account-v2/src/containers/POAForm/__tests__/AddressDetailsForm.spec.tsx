@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, useSettings } from '@deriv/api';
+import { APIProvider, AuthProvider, useSettings } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,11 +10,9 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('../DocumentSubmission', () => {
-    const DocumentSubmission = () => <div>DocumentSubmission</div>;
-    DocumentSubmission.displayName = 'DocumentSubmission';
-    return DocumentSubmission;
-});
+jest.mock('../DocumentSubmission', () => ({
+    DocumentSubmission: () => <div>DocumentSubmission</div>,
+}));
 
 const updateSettings = jest.fn();
 const mockUploadDocument = jest.fn();
@@ -30,8 +28,8 @@ const mockDefaultSettings = {
     },
 };
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useDocumentUpload: jest.fn(() => ({
         error: undefined,
         isLoading: false,
@@ -55,7 +53,9 @@ describe('AddressDetailsForm', () => {
         }));
         render(
             <APIProvider>
-                <AddressDetailsForm />
+                <AuthProvider>
+                    <AddressDetailsForm />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -69,7 +69,9 @@ describe('AddressDetailsForm', () => {
     it('should submit the form with updated values when "Save and Submit" button is clicked', async () => {
         render(
             <APIProvider>
-                <AddressDetailsForm />
+                <AuthProvider>
+                    <AddressDetailsForm />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -113,7 +115,9 @@ describe('AddressDetailsForm', () => {
 
         render(
             <APIProvider>
-                <AddressDetailsForm />
+                <AuthProvider>
+                    <AddressDetailsForm />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -123,7 +127,9 @@ describe('AddressDetailsForm', () => {
     it('should show resubmitting message', () => {
         render(
             <APIProvider>
-                <AddressDetailsForm resubmitting />
+                <AuthProvider>
+                    <AddressDetailsForm resubmitting />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -138,7 +144,9 @@ describe('AddressDetailsForm', () => {
 
         render(
             <APIProvider>
-                <AddressDetailsForm resubmitting />
+                <AuthProvider>
+                    <AddressDetailsForm resubmitting />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -153,7 +161,9 @@ describe('AddressDetailsForm', () => {
 
         render(
             <APIProvider>
-                <AddressDetailsForm resubmitting />
+                <AuthProvider>
+                    <AddressDetailsForm resubmitting />
+                </AuthProvider>
             </APIProvider>
         );
 

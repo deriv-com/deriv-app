@@ -23,7 +23,7 @@ const PageReturn = ({
 }: TPageReturnProps) => {
     return (
         <div className={clsx('p2p-v2-page-return', className, { 'p2p-v2-page-return--border': hasBorder })}>
-            <div className='flex flex-row items-center'>
+            <div className='flex items-center'>
                 <LabelPairedArrowLeftLgBoldIcon
                     className='p2p-v2-page-return__button'
                     data-testid='dt_p2p_v2_page_return_btn'

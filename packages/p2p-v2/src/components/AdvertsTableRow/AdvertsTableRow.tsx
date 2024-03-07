@@ -75,7 +75,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
             <Container>
                 {isBuySellPage && (
                     <div
-                        className='flex flex-row gap-4 items-center cursor-pointer'
+                        className='flex gap-4 items-center cursor-pointer'
                         onClick={() => history.push(`/cashier/p2p-v2/advertiser?id=${id}`)}
                     >
                         <UserAvatar
@@ -96,7 +96,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                                 </Text>
                                 <Badge tradeCount={completed_orders_count} />
                             </div>
-                            <div className='flex flex-row items-center'>
+                            <div className='flex items-center'>
                                 {hasRating ? (
                                     <>
                                         <Text className='lg:mr-0 mr-[-1.2rem]' color='less-prominent' size='xs'>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BUY_SELL } from '@/constants';
+import { ADVERT_TYPE, BUY_SELL } from '@/constants';
 import { p2p } from '@deriv/api-v2';
 import { Tab, Tabs } from '@deriv-com/ui';
 import { AdvertsTableRenderer } from './AdvertsTableRenderer';
@@ -21,7 +21,7 @@ const AdvertiserAdvertsTable = ({ advertiserId }: TAdvertiserAdvertsTableProps) 
             <Tabs
                 activeTab={activeTab}
                 className='lg:w-80 lg:mt-10'
-                onChange={(index: number) => setActiveTab(index === 0 ? 'Buy' : 'Sell')}
+                onChange={(index: number) => setActiveTab(index === 0 ? ADVERT_TYPE.BUY : ADVERT_TYPE.SELL)}
                 variant='secondary'
             >
                 <Tab className='text-xs' title='Buy' />

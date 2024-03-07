@@ -1,6 +1,5 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-
 import { useRemoteConfig } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
@@ -21,6 +20,7 @@ import AppModals from './Containers/Modals';
 import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
+import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
@@ -29,6 +29,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig();
 
     React.useEffect(() => {
+        initDatadog(data.tracking_datadog);
         if (process.env.RUDDERSTACK_KEY) {
             const config = {
                 growthbookKey: data.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,

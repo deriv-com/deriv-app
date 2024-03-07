@@ -6,7 +6,46 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
+import {
+    useTotalAccountBalance,
+    useCFDAccounts,
+    usePlatformAccounts,
+    useTotalAssetCurrency,
+    useExchangeRate,
+} from '@deriv/hooks';
+
+const isRatesLoaded = (
+    is_real: boolean,
+    total_assets_real_currency: string,
+    platform_real_accounts: ReturnType<typeof usePlatformAccounts>['real'],
+    cfd_real_accounts: ReturnType<typeof useCFDAccounts>['real'],
+    exchange_rates: ReturnType<typeof useExchangeRate>['exchange_rates']
+) => {
+    // for demo
+    if (!is_real) return true;
+
+    const currencies_need_exchange_rates: string[] = [];
+    platform_real_accounts.forEach(account => {
+        const target = account.currency || total_assets_real_currency || '';
+        if (target && total_assets_real_currency !== target && !currencies_need_exchange_rates.includes(target)) {
+            currencies_need_exchange_rates.push(target);
+        }
+    });
+    cfd_real_accounts.forEach(account => {
+        const target = account.currency || total_assets_real_currency || '';
+        if (target && total_assets_real_currency !== target && !currencies_need_exchange_rates.includes(target)) {
+            currencies_need_exchange_rates.push(target);
+        }
+    });
+
+    return (
+        currencies_need_exchange_rates.length === 0 ||
+        (total_assets_real_currency &&
+            exchange_rates?.[total_assets_real_currency] &&
+            currencies_need_exchange_rates.length &&
+            currencies_need_exchange_rates.length === Object.keys(exchange_rates?.[total_assets_real_currency]).length)
+    );
+};
 
 const AssetSummary = observer(() => {
     const { traders_hub, client, common, modules } = useStore();
@@ -22,6 +61,8 @@ const AssetSummary = observer(() => {
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
+    const total_assets_real_currency = useTotalAssetCurrency() ?? 'USD';
+    const { exchange_rates } = useExchangeRate();
 
     const is_real = selected_account_type === 'real';
 
@@ -40,7 +81,8 @@ const AssetSummary = observer(() => {
         ((is_switching || is_logging_in) && (eu_account || cr_account)) ||
         !is_landing_company_loaded ||
         is_loading ||
-        is_transfer_confirm;
+        is_transfer_confirm ||
+        !isRatesLoaded(is_real, total_assets_real_currency, platform_real_accounts, cfd_real_accounts, exchange_rates);
 
     if (should_show_loader) {
         return (

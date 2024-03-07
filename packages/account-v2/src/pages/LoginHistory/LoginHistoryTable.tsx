@@ -36,7 +36,7 @@ export const LoginHistory = () => {
                 isFetching={true}
                 renderHeader={header => <span>{header}</span>}
                 rowRender={data => (
-                    <div className='grid grid-flow-col '>
+                    <div className='grid grid-flow-col'>
                         <div>{data.action}</div>
                         <div>{data.browser} </div>
                         <div>{data.datetime}</div>

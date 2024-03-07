@@ -1,10 +1,36 @@
 import { action, makeObservable } from 'mobx';
-
 import { log_types } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
+import RootStore from './root-store';
 
-export default class DownloadStore {
-    constructor(root_store) {
+export type TLogTypes = Readonly<{
+    LOAD_BLOCK: 'load_block';
+    PURCHASE: 'purchase';
+    SELL: 'sell';
+    NOT_OFFERED: 'not_offered';
+    PROFIT: 'profit';
+    LOST: 'lost';
+    WELCOME_BACK: 'welcome_back';
+    WELCOME: 'welcome';
+}>;
+
+export type TExtra = {
+    profit?: string;
+    sold_for?: string;
+    longcode?: string;
+    transaction_id?: string;
+    current_currency?: string;
+};
+
+export interface IDownloadStore {
+    getSuccessJournalMessage: (message: string, extra: TExtra) => string | null | undefined;
+    onClickDownloadTransaction: () => void;
+    onClickDownloadJournal: () => void;
+}
+
+export default class DownloadStore implements IDownloadStore {
+    root_store: RootStore;
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             onClickDownloadTransaction: action.bound,
             onClickDownloadJournal: action.bound,
@@ -14,7 +40,7 @@ export default class DownloadStore {
         this.root_store = root_store;
     }
 
-    getSuccessJournalMessage = (message, extra) => {
+    getSuccessJournalMessage = (message: string, extra: TExtra) => {
         const { profit, sold_for, longcode, transaction_id, current_currency } = extra;
         switch (message) {
             case log_types.LOAD_BLOCK: {
@@ -49,7 +75,7 @@ export default class DownloadStore {
                 break;
             }
             default:
-                return null;
+                return '';
         }
     };
 

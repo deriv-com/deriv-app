@@ -5,7 +5,7 @@ import { Button, Loader, Text } from '@deriv-com/ui';
 import { DerivLightDeclinedPoaIcon, DerivLightWaitingPoaIcon, DerivLightApprovedPoaIcon } from '@deriv/quill-icons';
 import { DemoMessage } from '../../components/DemoMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
-import { authStatusCodes } from '../../constants/constants';
+import { AUTH_STATUS_CODES } from '../../constants/constants';
 import { accountV2Routes, p2pRoute } from '../../constants/routes';
 import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
 import { usePOAInfo } from '../../hooks/usePOAInfo';
@@ -106,9 +106,9 @@ export const POAFormContainer = () => {
     }
 
     switch (documentStatus) {
-        case authStatusCodes.NONE:
+        case AUTH_STATUS_CODES.NONE:
             return <AddressDetailsForm />;
-        case authStatusCodes.PENDING:
+        case AUTH_STATUS_CODES.PENDING:
             return (
                 <IconWithMessage
                     actionButton={redirectionButton}
@@ -125,7 +125,7 @@ export const POAFormContainer = () => {
                     ) : null}
                 </IconWithMessage>
             );
-        case authStatusCodes.VERIFIED:
+        case AUTH_STATUS_CODES.VERIFIED:
             return (
                 <IconWithMessage
                     actionButton={redirectionButton}
@@ -139,7 +139,7 @@ export const POAFormContainer = () => {
                     ) : null}
                 </IconWithMessage>
             );
-        case authStatusCodes.EXPIRED:
+        case AUTH_STATUS_CODES.EXPIRED:
             return (
                 <IconWithMessage
                     actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}
@@ -152,8 +152,8 @@ export const POAFormContainer = () => {
                     </Text>
                 </IconWithMessage>
             );
-        case authStatusCodes.REJECTED:
-        case authStatusCodes.SUSPECTED:
+        case AUTH_STATUS_CODES.REJECTED:
+        case AUTH_STATUS_CODES.SUSPECTED:
             return (
                 <IconWithMessage
                     actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}

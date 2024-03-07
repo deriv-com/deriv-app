@@ -5,7 +5,7 @@ import { useMT5AccountHandler } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
 import { MarketType, QueryStatus } from '@cfd/constants';
 import { CreatePassword, EnterPassword } from '@cfd/screens';
-import { useAccountStatus } from '@deriv/api';
+import { useAccountStatus } from '@deriv/api-v2';
 import MT5SuccessModal from './MT5SuccessModal';
 
 type TMT5PasswordInputProps = {
@@ -16,10 +16,11 @@ type TMT5PasswordInputProps = {
 const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { show } = useModal();
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
 
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
-    const platform = getCFDState('platform');
+    const { platform, marketType: marketTypeState } = cfdState;
+
+    const marketType = marketTypeState ?? MarketType.ALL;
 
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
     const {

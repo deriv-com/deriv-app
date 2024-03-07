@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveAccount } from '@deriv/api-v2';
 import { onboardingCryptoCardIcons } from '../../constants/icons';
 import { CashierOnboardingCard } from '../CashierOnboardingCard';
 import { CashierOnboardingIconMarquee } from '../CashierOnboardingIconMarquee';

@@ -4,7 +4,7 @@ import { useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
 import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
@@ -25,7 +25,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isDesktop } = useDevice();
     const { isEU } = useRegulationFlags();
 
-    const { getCFDState } = useCFDContext();
+    const { cfdState } = useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeAccount } = useActiveTradingAccount();
@@ -34,8 +34,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
     const ctraderPlatform = PlatformDetails.ctrader.platform;
 
-    const marketType = getCFDState('marketType');
-    const platform = getCFDState('platform');
+    const { marketType, platform } = cfdState;
 
     const platformToAccountsListMapper = useMemo(
         () => ({

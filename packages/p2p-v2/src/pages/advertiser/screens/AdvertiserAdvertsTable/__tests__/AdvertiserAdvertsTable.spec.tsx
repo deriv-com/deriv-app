@@ -24,6 +24,9 @@ jest.mock('@deriv/api-v2', () => ({
         advertiser: {
             useGetInfo: jest.fn(() => ({ data: { id: '123' } })),
         },
+        advertiserPaymentMethods: {
+            useGet: jest.fn(() => ({ data: [] })),
+        },
         paymentMethods: {
             useGet: jest.fn(() => ({ data: [] })),
         },

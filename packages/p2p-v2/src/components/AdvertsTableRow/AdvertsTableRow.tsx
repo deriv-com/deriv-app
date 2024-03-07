@@ -21,6 +21,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
     const isBuySellPage = getCurrentRoute() === 'buy-sell';
 
     const { data: paymentMethods } = p2p.paymentMethods.useGet();
+    const { data: advertiserPaymentMethods } = p2p.advertiserPaymentMethods.useGet();
     const { data } = p2p.advertiser.useGetInfo() || {};
     const { daily_buy = 0, daily_buy_limit = 0, daily_sell = 0, daily_sell_limit = 0 } = data || {};
 
@@ -175,6 +176,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                 <BuySellForm
                     advert={props}
                     advertiserBuyLimit={Number(daily_buy_limit) - Number(daily_buy)}
+                    advertiserPaymentMethods={advertiserPaymentMethods}
                     advertiserSellLimit={Number(daily_sell_limit) - Number(daily_sell)}
                     balanceAvailable={data?.balance_available ?? 0}
                     displayEffectiveRate={displayEffectiveRate}

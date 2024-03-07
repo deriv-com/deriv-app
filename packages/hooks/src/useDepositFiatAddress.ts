@@ -8,13 +8,13 @@ const useDepositFiatAddress = () => {
     const { data, mutate, ...rest } = useRequest('cashier');
     const dark_mode = is_dark_mode_on ? 'on' : 'off';
     const urlObject = new URL(window.location.href);
-    const lang = urlObject.searchParams.get('lang')?.toLowerCase() ?? 'en';
+    const lang = urlObject.searchParams.get('lang')?.toLowerCase();
 
     let deposit_iframe_url;
     if (typeof data?.cashier === 'string') {
         const cashierUrl = new URL(data.cashier);
-        cashierUrl.searchParams.set('Lang', lang);
         cashierUrl.searchParams.set('DarkMode', dark_mode);
+        lang && cashierUrl.searchParams.set('Lang', lang);
         deposit_iframe_url = cashierUrl.toString();
     }
 

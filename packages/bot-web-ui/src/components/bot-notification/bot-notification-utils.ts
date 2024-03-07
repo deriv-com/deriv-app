@@ -36,7 +36,7 @@ export const notification_message = {
 export const notification_style = {
     type: toast.TYPE.DEFAULT,
     position: toast.POSITION.BOTTOM_LEFT,
-    autoClose: 6000,
+    autoClose: 600000,
     hideProgressBar: true,
     closeOnClick: false,
     pauseOnHover: true,

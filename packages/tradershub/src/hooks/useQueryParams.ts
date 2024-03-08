@@ -6,6 +6,7 @@ type ModalId =
     | 'AddOrManageAccount'
     | 'ChangePassword'
     | 'CTraderSuccessModal'
+    | 'DummyComponentModal'
     | 'DxtradePasswordModal'
     | 'GetADerivAccountDialog'
     | 'JurisdictionModal'
@@ -13,9 +14,10 @@ type ModalId =
     | 'MT5PasswordModal'
     | 'RealAccountCreation'
     | 'RegulationModal'
-    | 'SentEmailContent'
+    | 'SentEmailContentModal'
     | 'TopUpModal'
-    | 'TradeModal';
+    | 'TradeModal'
+    | 'VerificationFailedModal';
 
 /**
  * @description A hook to manage query params for modals
@@ -58,7 +60,9 @@ const useQueryParams = () => {
     }, [queryParams, history]);
 
     useEffect(() => {
-        closeModal();
+        if (history.action === 'POP') {
+            closeModal();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

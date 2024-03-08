@@ -2,19 +2,15 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
 import ChangePassword from '@/assets/svgs/change-password-email.svg';
 import { ActionScreen } from '@/components';
+import { useCFDContext } from '@/providers';
 import { platformPasswordResetRedirectLink } from '@/utils';
 import { PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { Button, useDevice } from '@deriv-com/ui';
-import { TPlatforms } from '../../types';
 
-type TSentEmailContentProps = {
-    description?: string;
-    isInvestorPassword?: boolean;
-    platform?: TPlatforms.All;
-};
-
-const SentEmailContent = ({ description, isInvestorPassword = false, platform }: TSentEmailContentProps) => {
+const SentEmailContent = () => {
+    const { cfdState } = useCFDContext();
+    const { platform, description, isInvestorPassword } = cfdState;
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();

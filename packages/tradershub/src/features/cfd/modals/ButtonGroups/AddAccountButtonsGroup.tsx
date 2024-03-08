@@ -1,6 +1,7 @@
 import React from 'react';
-import { ButtonGroup, Modal, SentEmailContent } from '@/components';
-import { useCFDContext, useModal } from '@/providers';
+import { ButtonGroup } from '@/components';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { Button } from '@deriv-com/ui';
 import { PlatformDetails } from '../../constants';
 import DxtradeCreateAccountButton from '../DxtradePasswordModal/DxtradeCreateAccountButton';
@@ -11,27 +12,13 @@ type TAddAccountButtonsGroupProps = {
 };
 
 const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
-    const { show } = useModal();
     const { cfdState } = useCFDContext();
     const { platform } = cfdState;
+    const { openModal } = useQueryParams();
 
     return (
         <ButtonGroup className='w-full'>
-            <Button
-                isFullWidth
-                onClick={() => {
-                    show(
-                        <Modal>
-                            <Modal.Header title="We've sent you an email" />
-                            <Modal.Content>
-                                <SentEmailContent platform={platform} />
-                            </Modal.Content>
-                        </Modal>
-                    );
-                }}
-                size='lg'
-                variant='outlined'
-            >
+            <Button isFullWidth onClick={() => openModal('SentEmailContentModal')} size='lg' variant='outlined'>
                 Forgot password?
             </Button>
             {platform === PlatformDetails.dxtrade.platform && (

@@ -12,6 +12,7 @@ import { ChangePassword } from '@/features/cfd/screens';
 import { RealAccountCreation } from '@/flows';
 import { AccountSelector } from './AccountSelector';
 import { AddOrManageAccount } from './AddOrManageAccount';
+import { DummyComponentModal } from './DummyComponentModal';
 import { RegulationModal } from './RegulationModal';
 
 /**
@@ -24,6 +25,7 @@ const Modals = () => {
             {/* PLS DO NOT ADD ANY PROPS TO ANY MODALS HERE.💥 */}
             <AccountSelector />
             <AddOrManageAccount />
+            <DummyComponentModal />
             <DxtradePasswordModal />
             <JurisdictionModal />
             <RealAccountCreation />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CFDProvider, ModalProvider, RealAccountCreationProvider, UIProvider } from '@/providers';
+import { CFDProvider, RealAccountCreationProvider, UIProvider } from '@/providers';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import AppContent from './AppContent';
 import { Modals } from './modals';
@@ -10,12 +10,10 @@ const App = () => (
         <APIProvider standalone>
             <AuthProvider>
                 <CFDProvider>
-                    <ModalProvider>
-                        <RealAccountCreationProvider>
-                            <AppContent />
-                            <Modals />
-                        </RealAccountCreationProvider>
-                    </ModalProvider>
+                    <RealAccountCreationProvider>
+                        <AppContent />
+                        <Modals />
+                    </RealAccountCreationProvider>
                 </CFDProvider>
             </AuthProvider>
         </APIProvider>

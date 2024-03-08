@@ -12,7 +12,7 @@ const TradeModal = () => {
     const { setCfdState, cfdState } = useCFDContext();
     const { isModalOpen, closeModal } = useQueryParams();
 
-    const { account, marketType, platform } = cfdState;
+    const { account, marketType, platform = CFDPlatforms.MT5 } = cfdState;
 
     useEffect(() => {
         setCfdState({
@@ -24,10 +24,8 @@ const TradeModal = () => {
 
     const appOrder = ['ios', 'android', 'huawei'];
 
-    if (!account || !platform || !marketType) return null;
-
     return (
-        <Modal isOpen={isModalOpen('TradeModal')} onRequestClose={closeModal}>
+        <Modal ariaHideApp={false} isOpen={isModalOpen('TradeModal')} onRequestClose={closeModal}>
             <Modal.Header onRequestClose={closeModal}>
                 <Text weight='bold'>Trade</Text>
             </Modal.Header>

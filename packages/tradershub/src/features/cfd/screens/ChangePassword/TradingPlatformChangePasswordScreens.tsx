@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import DerivXPasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
 import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
 import { ActionScreen, SentEmailContent } from '@/components';
-import { useModal } from '@/providers';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { TPlatforms } from '@/types';
 import { platformPasswordResetRedirectLink } from '@/utils';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
@@ -18,10 +19,11 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
     const [activeScreen, setActiveScreen] = useState<TChangePasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);
 
-    const { hide } = useModal();
+    const { closeModal } = useQueryParams();
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
     const { data: activeTrading } = useActiveTradingAccount();
+    const { setCfdState } = useCFDContext();
 
     const { title } = PlatformDetails[platform];
 
@@ -48,12 +50,13 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
             ),
             button: (
                 <div className='flex gap-8'>
-                    <Button onClick={() => hide()} size='lg' variant='outlined'>
+                    <Button onClick={() => closeModal()} size='lg' variant='outlined'>
                         Cancel
                     </Button>
                     <Button
                         className='rounded-xs'
                         onClick={() => {
+                            setCfdState({ platform });
                             handleSendEmail();
                             handleClick('emailVerification');
                         }}
@@ -79,7 +82,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
     if (activeScreen === 'emailVerification')
         return (
             <div className='w-full mt-32 md:mt-40'>
-                <SentEmailContent platform={platform} />
+                <SentEmailContent />
             </div>
         );
 

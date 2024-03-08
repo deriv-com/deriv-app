@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useQueryParams } from '@/hooks';
-import { useModal } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
-import { DummyComponent } from '@cfd/components';
 import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
 import {
     useActiveTradingAccount,
@@ -32,7 +30,6 @@ type TCompareAccountButton = {
 @params {string} marketType - The market type of the account. //Removed for now as it is needed by Verification flow
  */
 const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompareAccountButton) => {
-    const { show } = useModal();
     const { openModal } = useQueryParams();
 
     const { data: accountSettings } = useSettings();
@@ -88,9 +85,9 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
         }
         if (createAccountError) {
             // Error Component to be implemented
-            show(<DummyComponent />);
+            openModal('DummyComponentModal');
         }
-    }, [createAccountError, isAccountCreated, isDemo, openModal, show]);
+    }, [createAccountError, isAccountCreated, isDemo, openModal]);
 
     const onClickAdd = () => {
         if (platform === CFDPlatforms.MT5) {
@@ -100,7 +97,7 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
             if (isAccountStatusVerified) {
                 openModal('MT5PasswordModal');
             } else {
-                // show(<Verifaication />);
+                openModal('DummyComponentModal');
             }
         } else if (platform === CFDPlatforms.DXTRADE) {
             openModal('DxtradePasswordModal');

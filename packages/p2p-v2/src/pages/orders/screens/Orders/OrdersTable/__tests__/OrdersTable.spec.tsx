@@ -83,11 +83,6 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('@/hooks', () => ({
-    ...jest.requireActual('@/hooks'),
-    useCountdownTimer: jest.fn(() => 100),
-}));
-
 const mockUseDevice = useDevice as jest.Mock;
 
 describe('OrdersTable', () => {

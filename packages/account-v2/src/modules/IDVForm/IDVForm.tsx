@@ -17,7 +17,7 @@ type TIDVFormProps = {
 };
 
 type TIDVFormValues = {
-    documentAdditional?: string;
+    additionalDocument?: string;
     documentNumber: string;
     documentType: string;
 };
@@ -36,7 +36,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
 
     const { isMobile } = useDevice();
 
-    const { documents_supported: documentSupported } = selectedCountry;
+    const { documents_supported: supportedDocuments } = selectedCountry;
 
     const idvNotApplicableOption = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
@@ -48,10 +48,10 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
     };
 
     useEffect(() => {
-        if (documentSupported && Object.keys(documentSupported)?.length) {
-            const docList = Object.keys(documentSupported).map((key: string) => {
+        if (supportedDocuments && Object.keys(supportedDocuments)?.length) {
+            const docList = Object.keys(supportedDocuments).map((key: string) => {
                 return {
-                    text: documentSupported[key].display_name,
+                    text: supportedDocuments[key].display_name,
                     value: key,
                 };
             });
@@ -62,7 +62,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
                 setDocumentList([...docList] as TDropDownList[]);
             }
         }
-    }, [documentSupported, idvNotApplicableOption, allowDefaultValue]);
+    }, [supportedDocuments, idvNotApplicableOption, allowDefaultValue]);
 
     if (!formik) {
         throw new Error('IDVForm must be used within a Formik component');
@@ -75,7 +75,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
         setSelectedDocument(getSelectedDocumentConfigData(item, mockDocumentList));
         if (item === idvNotApplicableOption.value) {
             setFieldValue('documentNumber', '', true);
-            setFieldValue('documentAdditional', '', true);
+            setFieldValue('additionalDocument', '', true);
         }
     };
 
@@ -121,7 +121,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
                 </Field>
             )}
             {selectedDocument?.additional?.display_name && (
-                <Field name='documentAdditional'>
+                <Field name='additionalDocument'>
                     {({ field, meta }: FieldProps) => (
                         <Input
                             {...field}

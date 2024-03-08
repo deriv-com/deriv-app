@@ -41,7 +41,7 @@ describe('getIDVFormValidationSchema', () => {
         const schema = getIDVFormValidationSchema(mockDocumentList);
 
         const result = await schema.isValid({
-            documentAdditional: 'hompl7358z',
+            additionalDocument: 'hompl7358z',
             documentNumber: '123456789011',
             documentType: 'aadhaar',
         });

@@ -72,7 +72,7 @@ const validateAdditionalDocumentNumber = (
 
 export const getIDVFormValidationSchema = (list: TDocument[]) => {
     return Yup.object({
-        documentAdditional: Yup.string().test({
+        additionalDocument: Yup.string().test({
             name: 'testAdditionalDocumentNumber',
             test: (value, context) => {
                 const documentConfig = getSelectedDocumentConfigData(context.parent.document_type, list);

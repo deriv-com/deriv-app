@@ -20,11 +20,11 @@ jest.mock('@/hooks', () => ({
 }));
 
 jest.mock('../OrdersTable', () => ({
-    OrdersTable: () => <div data-testid='dt_p2p_v2_orders_table' />,
+    OrdersTable: () => <div>OrdersTable</div>,
 }));
 
 jest.mock('../OrdersTableHeader', () => ({
-    OrdersTableHeader: () => <div data-testid='dt_p2p_v2_orders_table_header' />,
+    OrdersTableHeader: () => <div>OrdersTableHeader</div>,
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -34,7 +34,7 @@ jest.mock('@deriv-com/ui', () => ({
 describe('Orders', () => {
     it('should render Orders comopnent', () => {
         render(<Orders />);
-        expect(screen.getByTestId('dt_p2p_v2_orders_table')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_p2p_v2_orders_table_header')).toBeInTheDocument();
+        expect(screen.getByText('OrdersTable')).toBeInTheDocument();
+        expect(screen.getByText('OrdersTableHeader')).toBeInTheDocument();
     });
 });

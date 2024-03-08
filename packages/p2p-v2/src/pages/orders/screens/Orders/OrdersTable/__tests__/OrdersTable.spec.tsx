@@ -105,7 +105,7 @@ describe('OrdersTable', () => {
         expect(screen.getByText('Order ID')).toBeInTheDocument();
         expect(screen.getByText('test123')).toBeInTheDocument();
     });
-    it('should not render the table header when in mobile view', async () => {
+    it('should not render the table header when in mobile view', () => {
         mockUseDevice.mockReturnValue({ isMobile: true });
         render(<OrdersTable {...mockProps} data={mockData} />, { wrapper });
         expect(screen.queryByText('Order')).not.toBeInTheDocument();

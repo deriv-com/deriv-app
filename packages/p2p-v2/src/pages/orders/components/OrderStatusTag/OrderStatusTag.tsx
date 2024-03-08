@@ -11,10 +11,10 @@ type TOrderStatusTagProps = {
 };
 
 const OrderStatusTag = ({
-    shouldHighlightAlert,
-    shouldHighlightDanger,
-    shouldHighlightDisabled,
-    shouldHighlightSuccess,
+    shouldHighlightAlert = false,
+    shouldHighlightDanger = false,
+    shouldHighlightDisabled = false,
+    shouldHighlightSuccess = false,
     status,
 }: TOrderStatusTagProps) => {
     return (

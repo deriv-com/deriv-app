@@ -160,7 +160,6 @@ const TradingAppCard = ({
             );
         }
 
-        // Add more conditions here as needed
 
         return null;
     };

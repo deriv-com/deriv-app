@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Verification } from '@/components';
+import { ProfileContent, Verification } from '@/components';
 import { NicknameModal } from '@/components/Modals';
-import { useAdvertiserStats, useDevice, usePoiPoaStatus, useQueryString } from '@/hooks';
-import { Loader, Tab, Tabs } from '@deriv-com/ui';
+import { useAdvertiserStats, usePoiPoaStatus, useQueryString } from '@/hooks';
+import { Loader, Tab, Tabs, useDevice } from '@deriv-com/ui';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
-import { MyProfileContent } from '../MyProfileContent';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import { MyProfileStats } from '../MyProfileStats';
 import { PaymentMethods } from '../PaymentMethods';
@@ -47,7 +46,7 @@ const MyProfile = () => {
 
     return (
         <div className='p2p-v2-my-profile'>
-            <MyProfileContent />
+            <ProfileContent />
             <Tabs
                 activeTab={(currentTab !== 'default' && currentTab) || 'Stats'}
                 onChange={index => {
@@ -71,7 +70,7 @@ const MyProfile = () => {
                     <MyProfileCounterparties />
                 </Tab>
             </Tabs>
-            <NicknameModal isModalOpen setIsModalOpen={setIsNicknameModalOpen} />
+            <NicknameModal isModalOpen={isNicknameModalOpen} setIsModalOpen={setIsNicknameModalOpen} />
         </div>
     );
 };

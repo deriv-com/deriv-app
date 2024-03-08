@@ -43,11 +43,12 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
         return (
             <Button
                 className='border-none'
+                color='primary-light'
                 onClick={() => {
                     setShouldShowResendEmailReasons(true);
                 }}
                 size={emailLinkSize}
-                variant='outlined'
+                variant='ghost'
             >
                 Didn&apos;t receive the email?
             </Button>

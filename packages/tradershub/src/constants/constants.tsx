@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    CurrencyAudIcon,
     CurrencyBtcIcon,
     CurrencyDemoIcon,
     CurrencyEthIcon,
@@ -66,7 +67,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
 
 export const IconToCurrencyMapper: IconToCurrencyMapperType = {
     AUD: {
-        icon: <CurrencyUsdIcon />,
+        icon: <CurrencyAudIcon />,
         text: 'Australian Dollar',
     },
     BTC: {

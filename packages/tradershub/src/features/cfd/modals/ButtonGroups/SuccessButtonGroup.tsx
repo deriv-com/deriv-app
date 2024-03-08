@@ -20,7 +20,7 @@ const SuccessButtonGroup = () => {
     }
     return (
         <ButtonGroup className='justify-center w-full'>
-            <Button onClick={() => hide()} size='lg' variant='outlined'>
+            <Button color='black' onClick={() => hide()} size='lg' variant='outlined'>
                 Maybe later
             </Button>
             <Button

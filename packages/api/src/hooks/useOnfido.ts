@@ -104,8 +104,8 @@ const useOnfido = (country?: string, selectedDocument?: string) => {
                 containerId: onfidoContainerId,
                 language: {
                     locale: i18NLanguage,
-                    phrases: ONFIDO_PHRASES,
-                    mobilePhrases: ONFIDO_PHRASES,
+                    phrases: ONFIDO_PHRASES(),
+                    mobilePhrases: ONFIDO_PHRASES(),
                 },
                 token,
                 useModal: false,

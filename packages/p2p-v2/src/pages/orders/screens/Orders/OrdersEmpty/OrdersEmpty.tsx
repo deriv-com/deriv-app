@@ -9,7 +9,7 @@ const OrdersEmpty = () => {
     const textSize = isMobile ? 'lg' : 'md';
     const history = useHistory();
     return (
-        <div className={isMobile ? 'py-16 px-[1.6rem]' : ''}>
+        <div className='lg:p-0 py-16 px-[1.6rem]'>
             <ActionScreen
                 actionButtons={
                     <Button

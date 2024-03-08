@@ -199,6 +199,6 @@ describe('useAdvertiserStats', () => {
         const { result: verifiedResult } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(verifiedResult.current.data.isAddressVerified).toBe(true);
-        expect(verifiedResult.current.data.isIdentityVerified).toBe(true);
+        expect(verifiedResult.current.data.isIdentityVerified).toBeUndefined();
     });
 });

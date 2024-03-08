@@ -1,6 +1,5 @@
 export { default as useAdvertiserStats } from './useAdvertiserStats';
 export { default as useCopyToClipboard } from './useCopyToClipboard';
-export { default as useCountdownTimer } from './useCountdownTimer';
 export { default as useDevice } from './useDevice';
 export { default as useExtendedOrderDetails } from './useExtendedOrderDetails';
 export { default as useFetchMore } from './useFetchMore';

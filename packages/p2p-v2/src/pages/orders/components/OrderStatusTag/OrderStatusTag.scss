@@ -5,19 +5,19 @@
     width: fit-content;
 
     &--danger {
-        color: var(--brand-red-coral);
-        background-color: $color-status-error;
+        color: #ff444f;
+        background-color: rgba(236, 63, 63, 0.16);
     }
     &--alert {
-        color: var(--status-warning);
-        background-color: var(--status-alert-background);
+        color: #ffad3a;
+        background-color: rgba(255, 173, 58, 0.16);
     }
     &--success {
-        color: var(--text-profit-success);
-        background-color: $color-status-announcement;
+        color: #4bb4b3;
+        background-color: rgba(75, 180, 179, 0.16);
     }
     &--disabled {
-        color: var(--text-less-prominent);
+        color: #999999;
         background-color: rgba(153, 153, 153, 0.16);
     }
 }

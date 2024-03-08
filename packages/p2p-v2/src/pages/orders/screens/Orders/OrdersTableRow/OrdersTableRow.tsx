@@ -1,16 +1,16 @@
 import React from 'react';
 import clsx from 'clsx';
+import { TOrders } from 'types';
 import { ORDERS_STATUS } from '@/constants';
-import { useQueryString } from '@/hooks';
-import useExtendedOrderDetails from '@/hooks/useExtendedOrderDetails';
-import { OrderStatusTag, OrderTimer, OrderRatingButton } from '@/pages/orders/components';
+import { useExtendedOrderDetails, useQueryString } from '@/hooks';
+import { OrderRatingButton, OrderStatusTag, OrderTimer } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
 import { useActiveAccount, useServerTime } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import ChatIcon from '../../../../../public/ic-chat.svg';
 import './OrdersTableRow.scss';
 
-const OrdersTableRow = ({ ...props }) => {
+const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     const { isMobile } = useDevice();
     const { queryString } = useQueryString();
     const isPast = queryString.get('tab') === ORDERS_STATUS.PAST_ORDERS;

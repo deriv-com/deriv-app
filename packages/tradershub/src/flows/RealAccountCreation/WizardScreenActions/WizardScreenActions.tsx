@@ -35,6 +35,7 @@ const WizardScreenActions = ({ submitDisabled = false, isSubmitBtnLoading = fals
             <ButtonGroup className='p-24 sm:flex-row md:flex-row md:justify-end'>
                 {canGoToPrevStep && (
                     <Button
+                        color='black'
                         disabled={isSubmitting || isSubmitBtnLoading}
                         isFullWidth={!isDesktop}
                         onClick={goToPrevStep}

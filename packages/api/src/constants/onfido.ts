@@ -291,12 +291,17 @@ export const ONFIDO_PHRASES = () => ({
                 detail: localize(
                     'Check that it is connected and functional. You can also <fallback>continue verification on your phone</fallback>'
                 ),
+                detail_no_fallback: localize('Make sure your device has a working camera'),
+                title: localize('Camera not working?'),
             },
             camera_not_working: {
                 detail: localize('It may be disconnected. <fallback>Try using your phone instead</fallback>.'),
+                detail_no_fallback: localize("Make sure your device's camera works"),
+                title: localize('Camera not working'),
             },
             timeout: {
                 detail: localize("Remember to press stop when you're done. <fallback>Redo video actions</fallback>"),
+                title: localize('Looks like you took too long'),
             },
         },
         button_accessibility: localize('Take a photo'),

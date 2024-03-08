@@ -6,7 +6,6 @@ import BuySellFormFooter from '../BuySellFormFooter';
 const mockProps = {
     isDisabled: false,
     onClickCancel: jest.fn(),
-    onSubmit: jest.fn(),
 };
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -29,10 +28,11 @@ describe('BuySellFormFooter', () => {
         expect(mockProps.onClickCancel).toHaveBeenCalled();
     });
     it('should handle onclick for confirm button', () => {
-        render(<BuySellFormFooter {...mockProps} />);
+        const newProps = { mockProps, onSubmit: jest.fn() };
+        render(<BuySellFormFooter {...newProps} />);
         const confirmButton = screen.getByRole('button', { name: 'Confirm' });
         confirmButton.click();
-        expect(mockProps.onSubmit).toHaveBeenCalled();
+        expect(newProps.onSubmit).toHaveBeenCalled();
     });
     it('should render as expected in responsive view as well', () => {
         mockUseDevice.mockReturnValue({

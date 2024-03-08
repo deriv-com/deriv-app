@@ -40,7 +40,7 @@ const JurisdictionScreen = ({ setIsCheckBoxChecked }: TJurisdictionScreenProps) 
             className={twMerge(
                 `flex flex-col w-full lg:p-16 items-center justify-between transition-all ease-in duration-[0.6s] p-40`,
                 isDynamicLeverageVisible &&
-                    '[transform:rotateY(-180deg)] h-[700px] opacity-0 bg-system-light-primary-background'
+                    '[transform:rotateY(-180deg)] opacity-0 bg-system-light-primary-background d-none lg:block'
             )}
         >
             <div className='flex flex-col items-stretch justify-center w-full gap-16 py-0 lg:flex-row'>

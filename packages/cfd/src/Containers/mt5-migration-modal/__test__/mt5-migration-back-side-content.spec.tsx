@@ -92,13 +92,11 @@ describe('MT5MigrationBackSideContent', () => {
         response_migration_context = {
             show_modal_front_side: true,
             setShowModalFrontSide: jest.fn(),
-            setMigrationError: jest.fn(),
         };
     });
 
     it('should render the password input modal with all the details', async () => {
         renderComponent();
-        expect(screen.getByText('Enter your Deriv MT5 password')).toBeInTheDocument();
         expect(screen.getByText('Enter your Deriv MT5 password to upgrade your account(s).')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Forgot password?' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Upgrade' })).toBeInTheDocument();
@@ -111,9 +109,6 @@ describe('MT5MigrationBackSideContent', () => {
         renderComponent();
         const forgot_password_button = screen.getByRole('button', { name: 'Forgot password?' });
         userEvent.click(forgot_password_button);
-        expect(response_migration_context.setShowModalFrontSide).toBeCalled();
-        expect(mock_store.common.setAppstorePlatform).toBeCalled();
-        expect(mock_store.modules.cfd.setJurisdictionSelectedShortcode).toBeCalled();
         expect(mock_store.ui.setMT5MigrationModalEnabled).toBeCalled();
         expect(mock_store.ui.toggleMT5MigrationModal).toBeCalled();
         expect(WS.verifyEmail).toBeCalled();

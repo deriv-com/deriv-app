@@ -30,7 +30,7 @@ describe('BotNotification', () => {
             </StoreProvider>
         );
     });
-    it('should render BotNotification with correct message', () => {
+    it('should render NotificationContent component', () => {
         const { container } = render(<NotificationContent message='' />, {
             wrapper,
         });

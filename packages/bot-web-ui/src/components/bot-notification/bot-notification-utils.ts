@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { toast, ToastPosition, TypeOptions } from 'react-toastify';
+import { localize } from '@deriv/translations';
 
 export type TNotificationContent = {
     message: string;
@@ -27,10 +28,10 @@ export enum NOTIFICATION_TYPE {
 }
 
 export const notification_message = {
-    bot_stop: 'You’ve just stopped the bot. Any open contracts can be viewed on the Reports page',
-    workspace_change: 'Changes you make will not affect your running bot.',
-    [NOTIFICATION_TYPE.BOT_IMPORT]: 'You’ve successfully imported a bot.',
-    [NOTIFICATION_TYPE.BOT_DELETE]: 'You’ve successfully deleted a bot.',
+    bot_stop: localize('You’ve just stopped the bot. Any open contracts can be viewed on the Reports page.'),
+    workspace_change: localize('Changes you make will not affect your running bot.'),
+    [NOTIFICATION_TYPE.BOT_IMPORT]: localize('You’ve successfully imported a bot.'),
+    [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
 };
 
 export const notification_style = {

@@ -28,6 +28,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 
     return (
         <Button
+            color='black'
             onClick={() => {
                 if (isDemo) {
                     resetVirtualBalance();
@@ -87,6 +88,7 @@ const CurrencySwitcher = () => {
                                 </Modal.Content>
                                 <Modal.Footer className='grid-cols-1'>
                                     <Button
+                                        color='black'
                                         isFullWidth
                                         onClick={() => {
                                             setIsManageAccountOpen(true);

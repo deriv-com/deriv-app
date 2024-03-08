@@ -1,13 +1,15 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DailyLimitModal from '../DailyLimitModal';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
-        <div id='v2_modal_root' />
-        {children}
+        <AuthProvider>
+            <div id='v2_modal_root' />
+            {children}
+        </AuthProvider>
     </APIProvider>
 );
 
@@ -24,8 +26,8 @@ let mockUseAdvertiserUpdate = {
     mutate: mockUseAdvertiserUpdateMutate,
 };
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiser: {
             useUpdate: jest.fn(() => mockUseAdvertiserUpdate),

@@ -1,1 +1,1 @@
-export { SelfieDocumentUpload } from './selfie-document-upload';
+export { SelfieDocumentUpload } from './SelfieDocumentUpload';

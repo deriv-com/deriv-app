@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import { IconComponent, TradingAccountCard } from '@/components';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
+import { useModal } from '@/providers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
-import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 
@@ -22,7 +22,7 @@ const LeadingIcon = () => (
 const AddedCTraderAccountsList = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
-    const { show } = Provider.useModal();
+    const { show } = useModal();
     const account = cTraderAccounts?.find(account => account.is_virtual === activeTradingAccount?.is_virtual);
     const isVirtual = account?.is_virtual;
     const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, isVirtual);

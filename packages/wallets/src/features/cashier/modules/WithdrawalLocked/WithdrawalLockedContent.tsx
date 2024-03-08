@@ -2,34 +2,30 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 import { WalletLink, WalletText } from '../../../../components';
 
-type TWithdrawalLockedDescProps = {
-    askAuthenticate?: boolean;
+type TWithdrawalLimitReachedDescProps = {
     askFinancialRiskApproval?: boolean;
-    askFixDetails?: boolean;
-    financialAssessmentRequired?: boolean;
-    noWithdrawalOrTradingStatus?: boolean;
     poaNeedsVerification?: boolean;
     poaStatus: string;
     poiNeedsVerification?: boolean;
     poiStatus: string;
-    withdrawalLimitReached: boolean;
+};
+
+type TWithdrawalLockedDescProps = {
+    askAuthenticate?: boolean;
+    askFixDetails?: boolean;
+    financialAssessmentRequired?: boolean;
+    noWithdrawalOrTradingStatus?: boolean;
     withdrawalLockedStatus?: boolean;
 };
 
-const getWithdrawalLockedDesc = ({
-    askAuthenticate,
+export const getWithdrawalLimitReachedDesc = ({
     askFinancialRiskApproval,
-    askFixDetails,
-    financialAssessmentRequired,
-    noWithdrawalOrTradingStatus,
     poaNeedsVerification,
     poaStatus,
     poiNeedsVerification,
     poiStatus,
-    withdrawalLimitReached,
-    withdrawalLockedStatus,
-}: TWithdrawalLockedDescProps) => {
-    if (withdrawalLimitReached && poiNeedsVerification && poiStatus === 'none')
+}: TWithdrawalLimitReachedDescProps) => {
+    if (poiNeedsVerification && poiStatus === 'none')
         return {
             description: (
                 <WalletText align='center'>
@@ -41,7 +37,7 @@ const getWithdrawalLockedDesc = ({
             ),
         };
 
-    if (withdrawalLimitReached && poiNeedsVerification && poiStatus !== 'verified' && poiStatus !== 'none')
+    if (poiNeedsVerification && poiStatus !== 'verified' && poiStatus !== 'none')
         return {
             description: (
                 <WalletText align='center'>
@@ -53,7 +49,7 @@ const getWithdrawalLockedDesc = ({
             ),
         };
 
-    if (withdrawalLimitReached && poaNeedsVerification && poaStatus === 'none')
+    if (poaNeedsVerification && poaStatus === 'none')
         return {
             description: (
                 <WalletText align='center'>
@@ -65,7 +61,7 @@ const getWithdrawalLockedDesc = ({
             ),
         };
 
-    if (withdrawalLimitReached && poaNeedsVerification && poaStatus !== 'verified' && poaStatus !== 'none')
+    if (poaNeedsVerification && poaStatus !== 'verified' && poaStatus !== 'none')
         return {
             description: (
                 <WalletText align='center'>
@@ -77,7 +73,7 @@ const getWithdrawalLockedDesc = ({
             ),
         };
 
-    if (withdrawalLimitReached && askFinancialRiskApproval)
+    if (askFinancialRiskApproval)
         return {
             description: (
                 <WalletText align='center'>
@@ -88,7 +84,15 @@ const getWithdrawalLockedDesc = ({
                 </WalletText>
             ),
         };
+};
 
+const getWithdrawalLockedDesc = ({
+    askAuthenticate,
+    askFixDetails,
+    financialAssessmentRequired,
+    noWithdrawalOrTradingStatus,
+    withdrawalLockedStatus,
+}: TWithdrawalLockedDescProps) => {
     if (financialAssessmentRequired)
         return {
             description: (

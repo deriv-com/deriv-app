@@ -3,7 +3,7 @@ import { Table } from '@/components';
 import { MyAdsDeleteModal } from '@/components/Modals';
 import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
 import { AD_ACTION } from '@/constants';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { MyAdsEmpty } from '../../MyAdsEmpty';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';

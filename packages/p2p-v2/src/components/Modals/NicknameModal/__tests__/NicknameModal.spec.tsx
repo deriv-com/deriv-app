@@ -1,13 +1,15 @@
 import React from 'react';
-import { APIProvider, p2p } from '@deriv/api';
+import { APIProvider, AuthProvider, p2p } from '@deriv/api-v2';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import NicknameModal from '../NicknameModal';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
-    <APIProvider>
-        <div id='v2_modal_root' />
-        {children}
+    <APIProvider standalone>
+        <AuthProvider>
+            <div id='v2_modal_root' />
+            {children}
+        </AuthProvider>
     </APIProvider>
 );
 
@@ -19,8 +21,8 @@ jest.mock('lodash', () => ({
     ...jest.requireActual('lodash'),
     debounce: jest.fn(f => f),
 }));
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiser: {
             useCreate: jest.fn(() => ({

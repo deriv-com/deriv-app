@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { RadioGroupFilterModal } from '@/components/Modals';
 import { BUY_SELL, SORT_BY_LIST } from '@/constants';
 import { TSortByValues } from '@/utils';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { BuySellHeader } from '../BuySellHeader';
 import { BuySellTableRenderer } from './BuySellTableRenderer';
 import './BuySellTable.scss';

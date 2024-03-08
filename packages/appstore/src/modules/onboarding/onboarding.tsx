@@ -123,9 +123,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const footer_description = is_eu_user ? eu_footer_text : footer_text;
 
     useEffect(() => {
-        if (is_logged_in && is_landing_company_loaded) {
+        if (is_logged_in && is_landing_company_loaded && !skip_onboarding_flow) {
             trackOnboardingOpen();
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen]);
 
     if (!is_logged_in || !is_landing_company_loaded) {

@@ -1,7 +1,17 @@
 import type { Config } from 'tailwindcss';
+const plugin = require('tailwindcss/plugin');
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.d-none': {
+                    display: 'none',
+                },
+            });
+        }),
+    ],
     theme: {
         extend: {
             borderRadius: {
@@ -56,6 +66,7 @@ export default {
                         '8': '#323738',
                     },
                     red: {
+                        '0': '#ff444f',
                         '5': '#eb3e48',
                     },
                     green: {

@@ -5,7 +5,14 @@ import { IconComponent } from '@/components';
 import { StandaloneCircleInfoRegularIcon as CircleInfoIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 
-type TCurrencyCard = { className?: string; id: string; info?: boolean; title: string; wrapperClassName?: string };
+type TCurrencyCard = {
+    className?: string;
+    id: string;
+    info?: boolean;
+    isDisabled?: boolean;
+    title: string;
+    wrapperClassName?: string;
+};
 
 /**
  * @name CurrencyCard
@@ -18,7 +25,7 @@ type TCurrencyCard = { className?: string; id: string; info?: boolean; title: st
  * @returns {React.ReactNode}
  * @example <CurrencyCard id={id} info={info} title={title} />
  */
-const CurrencyCard = ({ id, info, title, wrapperClassName, className }: TCurrencyCard) => {
+const CurrencyCard = ({ id, info, title, wrapperClassName = '', className = '', isDisabled }: TCurrencyCard) => {
     const { setFieldValue, values } = useFormikContext<{ currency: string }>();
     const isSelected = values.currency === id;
     return (
@@ -29,9 +36,9 @@ const CurrencyCard = ({ id, info, title, wrapperClassName, className }: TCurrenc
                         isSelected
                             ? 'outline outline-2 outline-status-light-success'
                             : 'hover:outline outline-1 hover:outline-system-light-less-prominent'
-                    } ${className}`
+                    } ${className} ${isDisabled && 'opacity-25 pointer-events-none'}`
                 )}
-                onClick={() => setFieldValue('currency', isSelected ? '' : id)}
+                onClick={!isDisabled ? () => setFieldValue('currency', isSelected ? '' : id) : undefined}
                 type='button'
             >
                 <IconComponent icon={id} />

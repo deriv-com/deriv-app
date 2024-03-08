@@ -1,4 +1,4 @@
-import { InlineMessage, Modal, Text, PasswordInput, FormSubmitButton, PasswordMeter, Loading } from '@deriv/components';
+import { InlineMessage, Modal, Text, PasswordInput, FormSubmitButton } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { CFD_PLATFORMS, WS, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -88,21 +88,14 @@ const MT5MigrationBackSideContent = observer(() => {
                             </Text>
                         </div>
                         <div className='mt5-migration-modal__password-input-container'>
-                            <PasswordMeter
-                                input={values.password}
-                                has_error={touched.password && errors.password}
-                                custom_feedback_messages={getErrorMessages().password_warnings}
-                            >
-                                <PasswordInput
-                                    autoComplete='off'
-                                    label={localize('Deriv MT5 password')}
-                                    error={touched.password && errors.password}
-                                    name='password'
-                                    value={values.password}
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                />
-                            </PasswordMeter>
+                            <PasswordInput
+                                autoComplete='off'
+                                label={localize('Deriv MT5 password')}
+                                name='password'
+                                value={values.password}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                            />
                         </div>
                         <div className='mt5-migration-modal__password-hint'>
                             <InlineMessage type='information' size='sm'>

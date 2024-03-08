@@ -36,7 +36,7 @@ const CTraderTransferModal = observer(() => {
                             }}
                         >
                             <Text size='xxs'>{ctrader_account.login}</Text>
-                            <Text size='xxs' weight='bold'>
+                            <Text size='xxs' weight='bold' className='ctrader-transfer-modal__accounts-list--balance'>
                                 <Money
                                     amount={ctrader_account.balance}
                                     currency={ctrader_account.currency}

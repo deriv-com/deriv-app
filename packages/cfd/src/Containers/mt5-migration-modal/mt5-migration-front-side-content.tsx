@@ -65,7 +65,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                             />
                         ) : (
                             <Localize
-                                i18n_default_text='Enhance your trading experience by upgrading your <0/><1>{{platform}} {{type}} {{from_account}} </1> account(s)'
+                                i18n_default_text='Enhance your trading experience by upgrading your <0/><1>{{platform}} {{type}} {{from_account}} </1> account(s).'
                                 values={{
                                     ...getFormattedAccounts(),
                                 }}

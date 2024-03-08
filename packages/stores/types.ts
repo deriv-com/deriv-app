@@ -786,6 +786,8 @@ type TUiStore = {
     setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
+    promptFn: (() => void) | ((route_to: RouteComponentProps['location'], action: string) => boolean);
+    prompt_when: boolean;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
     setShouldTriggerTourGuide: (value: boolean) => void;

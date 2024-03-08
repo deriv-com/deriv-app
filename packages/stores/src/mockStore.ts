@@ -442,6 +442,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             openDerivRealAccountNeededModal: jest.fn(),
             populateHeaderExtensions: jest.fn(),
             populateSettingsExtensions: jest.fn(),
+            promptFn: jest.fn(),
+            prompt_when: false,
             purchase_states: [],
             setShouldShowCooldownModal: jest.fn(),
             setIsVerificationModalVisible: jest.fn(),

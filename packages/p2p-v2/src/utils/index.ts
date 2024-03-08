@@ -6,6 +6,7 @@ export * from './loader';
 export * from './object';
 export * from './payment-methods';
 export * from './react-node-to-string';
+export * from './routes';
 export * from './string';
 export * from './time';
 export * from './types';

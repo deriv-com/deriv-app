@@ -18,27 +18,27 @@ const getStatusLabel = (diff: Duration) => {
             return 'Seen more than 6 months ago';
         }
         if (diff.months() === 1) {
-            return `Seen ${diff.months} month ago`;
+            return `Seen ${diff.months()} month ago`;
         }
-        return `Seen ${diff.months} months ago`;
+        return `Seen ${diff.months()} months ago`;
     }
     if (diff.days()) {
         if (diff.days() === 1) {
-            return `Seen ${diff.days} day ago`;
+            return `Seen ${diff.days()} day ago`;
         }
-        return `Seen ${diff.days} days ago`;
+        return `Seen ${diff.days()} days ago`;
     }
     if (diff.hours()) {
         if (diff.hours() === 1) {
-            return `Seen ${diff.hours} hour ago`;
+            return `Seen ${diff.hours()} hour ago`;
         }
-        return `Seen ${diff.hours} hours ago`;
+        return `Seen ${diff.hours()} hours ago`;
     }
     if (diff.minutes()) {
         if (diff.minutes() === 1) {
-            return `Seen ${diff.minutes} minute ago`;
+            return `Seen ${diff.minutes()} minute ago`;
         }
-        return `Seen ${diff.minutes} minutes ago`;
+        return `Seen ${diff.minutes()} minutes ago`;
     }
     return 'Online';
 };

@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { useAdvertiserStats } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 
 declare global {
@@ -20,12 +21,16 @@ export type TAccumulatedPaymentMethods = Record<
 >;
 export type TPaymentMethod = NonNullable<TAdvertiserPaymentMethods>[number] | NonNullable<TPaymentMethods>[number];
 
+export type TAdvertiserStats = ReturnType<typeof useAdvertiserStats>['data'];
+
 export type TSelectedPaymentMethod = Partial<{
     displayName: string;
     fields: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['fields'];
     id: NonNullable<ReturnType<typeof p2p.paymentMethods.useGet>['data']>[number]['id'];
     method: NonNullable<TAdvertiserPaymentMethods>[number]['method'];
 }>;
+
+export type TAdvertsTableRowRenderer = Partial<NonNullable<ReturnType<typeof p2p.advert.useGetList>['data']>[0]>;
 
 type NonUndefinedValues<T> = {
     [K in keyof T]-?: Exclude<T[K], undefined>;

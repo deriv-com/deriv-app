@@ -9,10 +9,6 @@
 
     & .deriv-modal__body {
         padding: 0;
-        @include mobile {
-            height: calc(100% - 14rem);
-            overflow-y: scroll;
-        }
     }
 
     &--is-buy {

@@ -1000,8 +1000,8 @@ $side-padding: 1.2em;
             font-weight: bold;
 
             &--movement {
-                width: 16px;
-                height: 16px;
+                width: 1.6rem;
+                height: 1.6rem;
 
                 &-complete,
                 &-complete:after {
@@ -1009,7 +1009,7 @@ $side-padding: 1.2em;
                 }
                 &:after {
                     content: '';
-                    width: 16px;
+                    width: 1.6rem;
                 }
             }
             &--negative {

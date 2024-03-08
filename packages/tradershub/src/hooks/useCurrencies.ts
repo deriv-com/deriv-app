@@ -124,8 +124,8 @@ const useCurrencies = () => {
                 accountStatus?.is_deposit_attempt &&
                 !!cfdAccountsList?.dxtrade && // if there is no dxtrade account
                 !!cfdAccountsList.mt5 && // if there is no mt5 account
-                statements?.statement?.count === 0 && // if there is no statement && transactions
-                statements.statement.transactions?.length === 0),
+                !!statements?.statement?.count && // if there are transactions in the account
+                !!statements.statement?.transactions?.length),
         [
             accountStatus?.is_deposit_attempt,
             activeDerivTradingAccount?.balance,

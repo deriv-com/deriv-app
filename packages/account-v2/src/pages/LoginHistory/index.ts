@@ -1,1 +1,1 @@
-export { LoginHistory } from './LoginHistoryTable';
+export { LoginHistory } from './LoginHistory';

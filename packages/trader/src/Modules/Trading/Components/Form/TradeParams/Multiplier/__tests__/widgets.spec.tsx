@@ -40,7 +40,7 @@ describe('AccumulatorOptionsWidget', () => {
                 trade: {
                     growth_rate: 0.01,
                     has_open_accu_contract: true,
-                    tick_size_barrier: 0,
+                    tick_size_barrier_percentage: 0,
                 },
             },
         };

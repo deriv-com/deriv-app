@@ -706,6 +706,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 symbol: '',
                 take_profit: 0,
                 tick_size_barrier: 0,
+                tick_size_barrier_percentage: '',
                 ticks_history_stats: {
                     ticks_stayed_in: [],
                     last_tick_epoch: 0,

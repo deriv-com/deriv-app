@@ -1,20 +1,18 @@
 /* eslint-disable sort-keys */
 import React from 'react';
 import {
-    AccountsDerivXIcon as DerivX,
-    AccountsDmt5CfdsIcon as Mt5Cfds,
-    AccountsDmt5DerivedIcon as Mt5Derived,
-    AccountsDmt5FinancialIcon as Mt5Financial,
-    AccountsDmt5SwfIcon as Mt5Swf,
+    AccountsDerivXIcon as DERIVX,
+    AccountsDmt5DerivedIcon as MT5_DERIVED,
+    AccountsDmt5FinancialIcon as MT5_FINANCIAL,
+    AccountsDmt5SwfIcon as MT5_ALL,
     IconTypes,
 } from '@deriv/quill-icons';
 
 const iconMapper: Record<string, IconTypes> = {
-    DerivX,
-    Mt5Cfds,
-    Mt5Derived,
-    Mt5Financial,
-    Mt5Swf,
+    DERIVX,
+    MT5_DERIVED,
+    MT5_FINANCIAL,
+    MT5_ALL,
 };
 
 type TProps = {

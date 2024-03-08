@@ -17,14 +17,14 @@ const CTraderSuccessModal = () => {
     const renderButtons = useCallback(
         () =>
             isDemo ? (
-                <Button className='rounded-xs' onClick={() => closeModal()} size='lg'>
+                <Button className='rounded-xs' onClick={closeModal} size='lg'>
                     Continue
                 </Button>
             ) : (
                 <ButtonGroup>
                     <Button
                         className='border-2 rounded-xs border-system-light-less-prominent'
-                        onClick={() => closeModal()}
+                        onClick={closeModal}
                         size='lg'
                         variant='outlined'
                     >

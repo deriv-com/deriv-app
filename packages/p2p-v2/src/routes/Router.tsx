@@ -8,6 +8,7 @@ type TRoutes = `${typeof prefix}/cashier/p2p-v2` | `${typeof prefix}`;
 
 declare module 'react-router-dom' {
     export function useHistory(): {
+        goBack: () => void;
         push: (path: TRoutes | string) => void;
         replace(arg0: { pathname: string; search: string }): void;
     };

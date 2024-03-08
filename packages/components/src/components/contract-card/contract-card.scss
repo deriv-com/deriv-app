@@ -709,7 +709,7 @@
     }
     &__text {
         position: absolute;
-        color: var(--status-success);
+        color: var(--status-success) !important;
         width: 100%;
         text-align: center;
     }

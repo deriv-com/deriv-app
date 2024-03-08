@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveAccount } from '@deriv/api-v2';
 import type { TCurrency } from '../../../types';
 import type { TConfirm, TReceipt } from '../types';
 import { getPaymentAgentTransferValidationSchema } from '../utils';

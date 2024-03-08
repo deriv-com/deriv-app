@@ -66,6 +66,7 @@ export default {
                         '8': '#323738',
                     },
                     red: {
+                        '0': '#ff444f',
                         '5': '#eb3e48',
                     },
                     green: {

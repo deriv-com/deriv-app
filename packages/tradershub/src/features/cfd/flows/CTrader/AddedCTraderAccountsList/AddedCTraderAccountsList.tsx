@@ -4,7 +4,7 @@ import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useModal } from '@/providers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
-import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 

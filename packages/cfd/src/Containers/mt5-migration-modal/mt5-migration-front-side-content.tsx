@@ -116,7 +116,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                                     <StaticUrl
                                         key={1}
                                         className='link'
-                                        href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()].tnc_url}
+                                        href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()]?.tnc_url}
                                     />,
                                 ]}
                                 values={{
@@ -132,7 +132,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                                     <StaticUrl
                                         key={1}
                                         className='link'
-                                        href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()].tnc_url}
+                                        href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()]?.tnc_url}
                                     />,
                                     is_mobile ? null : <br key={2} />,
                                 ]}

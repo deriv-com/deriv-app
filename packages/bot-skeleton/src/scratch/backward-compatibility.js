@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../constants/config';
-import ApiHelpers from '../services/api/api-helpers';
+import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {

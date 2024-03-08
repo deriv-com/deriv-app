@@ -3,7 +3,7 @@ import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
 import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
-import ApiHelpers from '../../../../services/api/api-helpers';
+import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
 
 Blockly.Blocks.trade_definition_multiplier = {
     init() {

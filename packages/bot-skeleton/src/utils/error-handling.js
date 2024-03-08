@@ -1,5 +1,5 @@
 import { error_message_map } from './error-config';
-import { observer } from './observer';
+import { observer } from '@deriv/bot-trade-engine/tradeEngine/utils/pending-promise';
 
 const onKeyDownHandleError = event => {
     if (Blockly.selected !== null && Blockly.selected.parentBlock_ === null) {

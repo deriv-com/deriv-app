@@ -1,4 +1,4 @@
-import PendingPromise from '../../utils/pending-promise';
+import PendingPromise from '../tradeEngine/utils/pending-promise';
 
 const ServerTime = (() => {
     let clock_started = false;

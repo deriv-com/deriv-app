@@ -1,5 +1,5 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
-import { ApiHelpers, config as qs_config, load } from '@deriv/bot-skeleton';
+import { config as qs_config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { addDynamicBlockToDOM } from 'Utils/xml-dom-quick-strategy';
 import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';

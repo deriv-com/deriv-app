@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { updateWorkspaceName } from '@deriv/bot-skeleton';
+import { updateWorkspaceName, api_base } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
-import { api_base } from '@deriv/bot-trade-engine/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -54,7 +53,6 @@ const AppWrapper = observer(() => {
 
     const checkAndHandleConnection = () => {
         const api_status = api_base.getConnectionStatus();
-        console.log('api_status', api_status);
         //added this check because after sleep mode all the store values refresh and is_running is false.
         const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
         if (is_bot_running && (api_status === 'Closed' || api_status === 'Closing')) {

@@ -30,8 +30,8 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
         data: currencies,
         isLoading,
         allCryptoCurrenciesAreAdded,
-        currentAccountCurrency,
         addedFiatCurrency,
+        disableFiatCurrencies,
     } = useCurrencies();
     const [activeTab, setActiveTab] = useState<'CRYPTO' | 'FIAT'>(TabTypes[0]);
 
@@ -107,8 +107,8 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
                         <CurrenciesForm
                             addedFiatCurrency={addedFiatCurrency}
                             currencies={currencies?.FIAT ?? []}
-                            currentAccountCurrency={currentAccountCurrency}
-                            isSubmitButtonDisabled={!!addedFiatCurrency && currentAccountCurrency?.type !== 'fiat'}
+                            disableFiatCurrencies={disableFiatCurrencies}
+                            isSubmitButtonDisabled={disableFiatCurrencies}
                             submitButtonLabel='Change currency'
                         />
                     </Fragment>

@@ -10,7 +10,7 @@ type TCurrenciesForm = {
     addedFiatCurrency?: TCurrencyConfig;
     allCryptoCurrenciesAreAdded?: boolean;
     currencies: TCurrencyConfig[];
-    currentAccountCurrency?: TCurrencyConfig;
+    disableFiatCurrencies?: boolean;
     isSubmitButtonDisabled?: boolean;
     submitButtonLabel?: string;
 };
@@ -31,18 +31,13 @@ const CurrenciesForm = ({
     submitButtonLabel,
     isSubmitButtonDisabled = false,
     allCryptoCurrenciesAreAdded = false,
-    currentAccountCurrency,
     addedFiatCurrency,
+    disableFiatCurrencies,
 }: TCurrenciesForm) => {
     const { isDesktop } = useDevice();
     const { switchAccount, data } = useAuthorize();
-    const { data: activeTradingAccountData } = useActiveTradingAccount();
+    const { data: activeDerivTradingAccount } = useActiveTradingAccount();
     const { mutateAsync: mutateAccountCurrencyAsync } = useMutation('set_account_currency');
-
-    const balance = activeTradingAccountData?.balance;
-    const disableFiatCurrencies =
-        (!!addedFiatCurrency && currentAccountCurrency?.type !== 'fiat') ||
-        (!!balance && currentAccountCurrency?.type === 'fiat');
 
     const initialValues = {
         currency: '',
@@ -76,7 +71,7 @@ const CurrenciesForm = ({
                         {disableFiatCurrencies && (
                             <InlineMessage className='mx-16 bg-opacity-16 bg-status-light-warning lg:mx-0'>
                                 <Text align='center' as='p' className='w-full text-sm'>
-                                    {balance
+                                    {activeDerivTradingAccount?.balance
                                         ? `If you want to change your account currency, please contact us via live chat.`
                                         : `Please switch to your ${addedFiatCurrency?.id} account to change currencies.`}
                                 </Text>

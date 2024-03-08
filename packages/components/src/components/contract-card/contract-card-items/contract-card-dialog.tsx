@@ -8,8 +8,9 @@ export type TContractCardDialogProps = {
     children: React.ReactNode;
     is_visible: boolean;
     left: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     toggleDialog: (e: any) => void; // This function accomodates events for various HTML elements, which have no overlap, so typing it to any
-    toggle_ref?: React.RefObject<HTMLDivElement>;
+    toggle_ref?: React.RefObject<HTMLElement>;
     top: number;
 };
 

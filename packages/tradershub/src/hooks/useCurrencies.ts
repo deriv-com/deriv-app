@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { reorderCurrencies } from '@/helpers';
-import { useAuthorize, useLandingCompany, useQuery } from '@deriv/api';
+import { useAuthorize, useLandingCompany, useQuery } from '@deriv/api-v2';
 import useRegulationFlags from './useRegulationFlags';
 
 type TWebsiteStatus = NonNullable<ReturnType<typeof useQuery<'website_status'>>['data']>['website_status'];
@@ -74,10 +74,17 @@ const useCurrencies = () => {
         };
     }, [websiteStatusData?.website_status?.currencies_config, isAdded, legalAllowedCurrencies]);
 
+    // Check if all the crypto currencies are already added to the account list
+    const allCryptoCurrenciesAreAdded = useMemo(
+        () => currencyConfig?.CRYPTO.every(currency => currency.isAdded) ?? false,
+        [currencyConfig?.CRYPTO]
+    );
+
     return {
         ...rest,
         data: currencyConfig,
         isLoading: isAuthorizeLoading || isWesiteStatusLoading || isLandingCompanyLoading,
+        allCryptoCurrenciesAreAdded,
     };
 };
 

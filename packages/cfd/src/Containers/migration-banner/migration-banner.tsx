@@ -28,7 +28,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
         Analytics.trackEvent('ce_upgrade_mt5_banner', {
             action: 'push_cta_upgrade',
         });
-        toggleMT5MigrationModal();
+        toggleMT5MigrationModal(true);
     };
     const is_desktop_trade_modal = is_trade_modal && !is_mobile;
     return (

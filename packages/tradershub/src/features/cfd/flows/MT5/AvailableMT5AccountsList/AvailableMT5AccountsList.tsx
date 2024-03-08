@@ -6,12 +6,12 @@ import {
     TradingAccountCardLightButton,
 } from '@/components';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
-import { useRegulationFlags } from '@/hooks';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { useCFDContext, useModal } from '@/providers';
 import { THooks } from '@/types';
 import { MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { JurisdictionModal, MT5PasswordModal } from '@cfd/modals';
-import { useActiveTradingAccount } from '@deriv/api';
+import { MT5PasswordModal } from '@cfd/modals';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
@@ -22,6 +22,8 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
     const { setCfdState } = useCFDContext();
     const { show } = useModal();
 
+    const { openModal } = useQueryParams();
+
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
 
     const trailingButtonClick = () => {
@@ -29,7 +31,7 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
         if (!hasActiveDerivAccount) {
             setIsDerivedAccountModalOpen(true);
         }
-        !activeTradingAccount?.is_virtual && show(<JurisdictionModal />);
+        !activeTradingAccount?.is_virtual && openModal('JurisdictionModal');
         activeTradingAccount?.is_virtual && hasActiveDerivAccount && show(<MT5PasswordModal />);
     };
     const title = getCfdsAccountTitle(marketTypeDetails.title, activeTradingAccount?.is_virtual);

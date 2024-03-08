@@ -4,7 +4,7 @@ import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useModal } from '@/providers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
-import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 
@@ -31,6 +31,7 @@ const AddedCTraderAccountsList = () => {
         <div className='flex flex-col gap-y-4'>
             <Button
                 // todo: open transfer modal
+                color='black'
                 onClick={() => {
                     if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.CTRADER} />);
                     // else transferModal;

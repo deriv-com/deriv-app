@@ -7,7 +7,7 @@ import './PageReturn.scss';
 type TPageReturnProps = {
     className?: string;
     hasBorder?: boolean;
-    hideBackButton?: boolean;
+    hideBackButton?: boolean
     onClick: () => void;
     pageTitle: string;
     rightPlaceHolder?: JSX.Element;
@@ -16,7 +16,7 @@ type TPageReturnProps = {
 
 const PageReturn = ({
     className = '',
-    hasBorder = false,
+    hasBorder = false
     hideBackButton = false,
     onClick,
     pageTitle,
@@ -25,9 +25,9 @@ const PageReturn = ({
 }: TPageReturnProps) => {
     return (
         <div className={clsx('p2p-v2-page-return', className, { 'p2p-v2-page-return--border': hasBorder })}>
-            <div className='flex flex-row items-center'>
+            <div className='flex items-center'>
                 <LabelPairedArrowLeftLgBoldIcon
-                    className={clsx('p2p-v2-page-return__button', { hidden: hideBackButton })}
+                    className={clsx('p2p-v2-page-return__button', { hidden: hideBackButton })
                     data-testid='dt_p2p_v2_page_return_btn'
                     onClick={onClick}
                 />

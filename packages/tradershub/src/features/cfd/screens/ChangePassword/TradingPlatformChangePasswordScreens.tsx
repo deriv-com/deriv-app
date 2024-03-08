@@ -6,7 +6,7 @@ import { useModal } from '@/providers';
 import { TPlatforms } from '@/types';
 import { platformPasswordResetRedirectLink } from '@/utils';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 
 type TradingPlatformChangePasswordScreensProps = {
@@ -48,7 +48,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
             ),
             button: (
                 <div className='flex gap-8'>
-                    <Button onClick={() => hide()} size='lg' variant='outlined'>
+                    <Button color='black' onClick={() => hide()} size='lg' variant='outlined'>
                         Cancel
                     </Button>
                     <Button

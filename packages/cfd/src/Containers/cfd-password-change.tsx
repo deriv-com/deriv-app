@@ -126,22 +126,16 @@ const CFDPasswordChange = observer(
                                     </Text>
                                 </div>
                                 <div className='input-element'>
-                                    <PasswordMeter
-                                        input={values.old_password}
-                                        has_error={!!(touched.old_password && errors.old_password)}
-                                        custom_feedback_messages={getErrorMessages().password_warnings}
-                                    >
-                                        <PasswordInput
-                                            autoComplete='old-password'
-                                            label={localize('Current password')}
-                                            error={touched.old_password && errors.old_password}
-                                            name='old_password'
-                                            value={values.old_password}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            data_testId={`dt_mt5_old_password`}
-                                        />
-                                    </PasswordMeter>
+                                    <PasswordInput
+                                        autoComplete='old-password'
+                                        label={localize('Current password')}
+                                        error={touched.old_password && errors.old_password}
+                                        name='old_password'
+                                        value={values.old_password}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        data_testId={`dt_mt5_old_password`}
+                                    />
                                 </div>
                                 <div className='input-element'>
                                     <PasswordMeter

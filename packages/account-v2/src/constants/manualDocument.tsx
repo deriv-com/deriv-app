@@ -23,13 +23,13 @@ export const getManualUploadDocumentList = (isNimcRequired: boolean): TDocumentT
             description: 'Upload the front and back of your driving licence.',
             icon: IcPoiDrivingLicence,
             title: 'Driving licence',
-            value: 'DRIVING_LICENCE',
+            value: 'driving_license',
         },
         {
             description: 'Upload the front and back of your identity card.',
             icon: IcPoiIdentityCard,
             title: 'Identity card',
-            value: 'NATIONAL_IDENTITY_CARD',
+            value: 'national_identity_card',
         },
     ];
 
@@ -37,7 +37,7 @@ export const getManualUploadDocumentList = (isNimcRequired: boolean): TDocumentT
         description: 'Upload both of these documents to prove your identity.',
         icon: IcPoiNimcSlip,
         title: 'NIMC slip and proof of age',
-        value: 'NIMC_SLIP',
+        value: 'nimc_slip',
     };
 
     return isNimcRequired ? [...baseDocumentList, nimcDocument] : baseDocumentList;

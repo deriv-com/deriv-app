@@ -26,13 +26,13 @@ const validateDocumentNumber = (
     if (!documentNumber && documentConfig?.text) {
         let documentName = '';
         switch (documentConfig.id) {
-            case 'driversLicense':
+            case 'drivers_license':
                 documentName = 'Driver License Reference number';
                 break;
             case 'ssnit':
                 documentName = 'SSNIT number';
                 break;
-            case 'nationalIdNoPhoto':
+            case 'national_id_no_photo':
                 documentName = 'NIN';
                 break;
             default:

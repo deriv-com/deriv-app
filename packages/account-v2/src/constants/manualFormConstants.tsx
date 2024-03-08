@@ -9,18 +9,18 @@ import ProofOfAgeIcon from '../assets/manual-upload/proof-of-age.svg';
 export type TManualDocumentTypes = typeof MANUAL_DOCUMENT_TYPES[keyof typeof MANUAL_DOCUMENT_TYPES];
 
 export const MANUAL_DOCUMENT_TYPES = Object.freeze({
-    DRIVING_LICENCE: 'DRIVING_LICENCE',
-    NATIONAL_IDENTITY_CARD: 'NATIONAL_IDENTITY_CARD',
-    NIMC_SLIP: 'NIMC_SLIP',
-    PASSPORT: 'PASSPORT',
+    driving_license: 'driving_license',
+    national_identity_card: 'national_identity_card',
+    nimc_slip: 'nimc_slip',
+    passport: 'passport',
 });
 
 export const MANUAL_DOCUMENT_SELFIE = 'selfie_with_id';
 
 const MANUAL_FORM_PAGE_TYPES = Object.freeze({
-    BACK: 'BACK',
-    FRONT: 'FRONT',
-    PHOTO: 'PHOTO',
+    back: 'back',
+    front: 'front',
+    photo: 'photo',
 });
 
 const documentExpiry = {
@@ -29,7 +29,7 @@ const documentExpiry = {
 };
 
 export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
-    [MANUAL_DOCUMENT_TYPES.DRIVING_LICENCE]: {
+    [MANUAL_DOCUMENT_TYPES.driving_license]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -42,19 +42,19 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
             {
                 error: 'Front side of driving licence is required.',
                 icon: <DrivingLicenseCardFront />,
-                pageType: MANUAL_FORM_PAGE_TYPES.FRONT,
+                pageType: MANUAL_FORM_PAGE_TYPES.front,
                 text: 'Upload the front of your driving licence.',
             },
             {
                 error: 'Back side of driving licence is required.',
                 icon: <IdentityCardBack />,
-                pageType: MANUAL_FORM_PAGE_TYPES.BACK,
+                pageType: MANUAL_FORM_PAGE_TYPES.back,
                 text: 'Upload the back of your driving licence.',
             },
         ],
         uploadSectionHeader: 'Next, upload the front and back of your driving licence.',
     },
-    [MANUAL_DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD]: {
+    [MANUAL_DOCUMENT_TYPES.national_identity_card]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -67,19 +67,19 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
             {
                 error: 'Front side of identity card is required.',
                 icon: <IdentityCardFront />,
-                pageType: MANUAL_FORM_PAGE_TYPES.FRONT,
+                pageType: MANUAL_FORM_PAGE_TYPES.front,
                 text: 'Upload the front of your identity card.',
             },
             {
                 error: 'Back side of identity card is required.',
                 icon: <IdentityCardBack />,
-                pageType: MANUAL_FORM_PAGE_TYPES.BACK,
+                pageType: MANUAL_FORM_PAGE_TYPES.back,
                 text: 'Upload the back of your identity card.',
             },
         ],
         uploadSectionHeader: 'Next, upload the front and back of your identity card.',
     },
-    [MANUAL_DOCUMENT_TYPES.NIMC_SLIP]: {
+    [MANUAL_DOCUMENT_TYPES.nimc_slip]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -92,19 +92,19 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
             {
                 error: 'Front side of NIMC slip is required.',
                 icon: <NIMCSlipFront />,
-                pageType: MANUAL_FORM_PAGE_TYPES.FRONT,
+                pageType: MANUAL_FORM_PAGE_TYPES.front,
                 text: 'Upload your NIMC slip.',
             },
             {
                 error: 'Back side of NIMC slip is required.',
                 icon: <ProofOfAgeIcon />,
-                pageType: MANUAL_FORM_PAGE_TYPES.PHOTO,
+                pageType: MANUAL_FORM_PAGE_TYPES.photo,
                 text: 'Upload your proof of age: birth certificate or age declaration document.',
             },
         ],
         uploadSectionHeader: 'Next, upload the page of your NIMC slip that contains your photo.',
     },
-    [MANUAL_DOCUMENT_TYPES.PASSPORT]: {
+    [MANUAL_DOCUMENT_TYPES.passport]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -117,7 +117,7 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
             {
                 error: 'Front side of passport is required.',
                 icon: <PassportPlaceholder />,
-                pageType: MANUAL_FORM_PAGE_TYPES.FRONT,
+                pageType: MANUAL_FORM_PAGE_TYPES.front,
                 text: 'Upload the page of your passport that contains your photo.',
             },
         ],

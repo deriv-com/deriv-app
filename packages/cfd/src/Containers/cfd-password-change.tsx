@@ -174,7 +174,7 @@ const CFDPasswordChange = observer(
                                         </li>
                                         <li className='cfd-password-change-list'>
                                             <Text as='p' size='xs'>
-                                                <Localize i18n_default_text='An lowercase letter' />
+                                                <Localize i18n_default_text='A lowercase letter' />
                                             </Text>
                                         </li>
                                         <li className='cfd-password-change-list'>

@@ -6,7 +6,8 @@
         height: 4.8rem;
         width: fit-content;
         text-align: start;
-        padding: 0.8rem 0.8rem 0.8rem 1.6rem;
+        padding: 0.8rem;
+        padding-inline-start: 1.6rem;
         border-radius: 0.8rem;
         font-size: 1.4rem;
         font-family: inherit;
@@ -40,11 +41,11 @@
 
     &__close-button {
         padding: 0.5rem 0;
-        margin-left: 1.2rem;
+        margin-inline-start: 1.2rem;
         opacity: 0.8;
 
         @include mobile {
-            margin-left: 1.2rem;
+            margin-inline-start: 1.2rem;
         }
 
         svg {
@@ -68,7 +69,7 @@
         color: var(--general-main-1);
         font-size: 1.4rem;
         font-weight: bold;
-        margin-left: 2rem;
+        margin-inline-start: 2rem;
         margin-bottom: 0.2rem;
         border: 0;
         padding: 0;
@@ -78,7 +79,7 @@
 
         @include mobile {
             font-size: 1.2rem;
-            margin-left: 1.2rem;
+            margin-inline-start: 1.2rem;
             margin-bottom: 0.6rem;
         }
     }

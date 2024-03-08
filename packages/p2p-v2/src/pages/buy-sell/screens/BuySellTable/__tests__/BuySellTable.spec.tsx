@@ -1,9 +1,13 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
-import { render, screen } from '@testing-library/react';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { render, screen, waitFor } from '@testing-library/react';
 import BuySellTable from '../BuySellTable';
 
-const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
 
 let mockAdvertiserListData = {
     data: [],
@@ -12,14 +16,17 @@ let mockAdvertiserListData = {
     loadMoreAdverts: jest.fn(),
 };
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advert: {
             useGetList: jest.fn(() => mockAdvertiserListData),
         },
         advertiser: {
             useGetInfo: jest.fn(() => ({ data: { id: '123' } })),
+        },
+        advertiserPaymentMethods: {
+            useGet: jest.fn(() => ({ data: [] })),
         },
         paymentMethods: {
             useGet: jest.fn(() => ({ data: [] })),
@@ -38,6 +45,14 @@ jest.mock('@deriv-com/ui', () => ({
 }));
 
 describe('<BuySellTable.spec />', () => {
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                href: 'https://app.deriv.com/cashier/p2p-v2/buy-sell',
+            },
+            writable: true,
+        });
+    });
     it('should render the BuySellHeader component and loader component if isLoading is true', () => {
         render(<BuySellTable />, { wrapper });
 
@@ -45,7 +60,7 @@ describe('<BuySellTable.spec />', () => {
         expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
-    it('should render the Table component if data is not empty', () => {
+    it('should render the Table component if data is not empty', async () => {
         mockAdvertiserListData = {
             data: [
                 // @ts-expect-error caused by typing of never[]
@@ -77,11 +92,13 @@ describe('<BuySellTable.spec />', () => {
 
         render(<BuySellTable />, { wrapper });
 
-        expect(screen.getByText('John Doe')).toBeInTheDocument();
-        expect(screen.getByText('250+')).toBeInTheDocument();
-        expect(screen.getByText('10-100 USD')).toBeInTheDocument();
-        expect(screen.getByText('100.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('Bank transfer')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Buy USD' })).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('John Doe')).toBeInTheDocument();
+            expect(screen.getByText('250+')).toBeInTheDocument();
+            expect(screen.getByText('10-100 USD')).toBeInTheDocument();
+            expect(screen.getByText('100.00 USD')).toBeInTheDocument();
+            expect(screen.getByText('Bank transfer')).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: 'Buy USD' })).toBeInTheDocument();
+        });
     });
 });

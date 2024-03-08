@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ButtonGroup, Modal } from '@/components';
+import { useModal } from '@/providers';
 import { PlatformDetails } from '@cfd/constants';
 import { CFDSuccess } from '@cfd/screens';
-import { Provider } from '@deriv/library';
 import { Button } from '@deriv-com/ui';
 
 type TCTraderSuccessModal = {
@@ -12,7 +12,7 @@ type TCTraderSuccessModal = {
 
 const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
     const history = useHistory();
-    const { hide } = Provider.useModal();
+    const { hide } = useModal();
 
     const renderButtons = useCallback(
         () =>
@@ -24,6 +24,7 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
                 <ButtonGroup>
                     <Button
                         className='border-2 rounded-xs border-system-light-less-prominent'
+                        color='black'
                         onClick={() => hide()}
                         size='lg'
                         variant='outlined'

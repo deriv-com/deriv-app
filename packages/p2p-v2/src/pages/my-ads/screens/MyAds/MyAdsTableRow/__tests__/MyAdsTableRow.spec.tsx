@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDevice } from '@/hooks';
-import { useExchangeRateSubscription } from '@deriv/api';
+import { useExchangeRateSubscription } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MyAdsTableRow from '../MyAdsTableRow';
@@ -70,7 +70,7 @@ const mockProps = {
     visibility_status: [],
 };
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useExchangeRateSubscription: jest.fn(),
 }));
 

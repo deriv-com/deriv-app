@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 import { Clipboard } from '@/components';
 import { BUY_SELL, RATE_TYPE } from '@/constants';
 import { useCopyToClipboard } from '@/hooks';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Button, Divider, Text, useDevice } from '@deriv-com/ui';
 //TODO: replace below icons with the one from quill once available
 import CheckmarkCircle from '../../../public/ic-checkmark-circle.svg';

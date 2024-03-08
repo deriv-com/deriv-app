@@ -714,7 +714,8 @@ export default class TradeStore extends BaseStore {
                     contract_types_list: contract_categories.contract_types_list,
                 });
                 contractType = contractTypeParam;
-                if (showModal) this.root_store.ui.toggleUrlUnavailableModal(true);
+                const { is_logging_in, is_switching } = this.root_store.client;
+                if (showModal && !is_logging_in && !is_switching) this.root_store.ui.toggleUrlUnavailableModal(true);
                 this.processNewValuesAsync({
                     ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
                         has_only_forward_starting_contracts: boolean;

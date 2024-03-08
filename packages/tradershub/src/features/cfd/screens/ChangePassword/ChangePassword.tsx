@@ -1,13 +1,14 @@
 import React from 'react';
 import { Modal } from '@/components';
+import { useCFDContext } from '@/providers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
-import { Provider } from '@deriv/library';
 import MT5ChangePasswordScreens from './MT5ChangePasswordScreens';
 import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
 
 const ChangePassword = () => {
-    const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform') ?? CFDPlatforms.MT5;
+    const { cfdState } = useCFDContext();
+    const { platform: platformState } = cfdState;
+    const platform = platformState ?? CFDPlatforms.MT5;
     const { title } = PlatformDetails[platform];
 
     const isDerivX = platform === CFDPlatforms.DXTRADE;

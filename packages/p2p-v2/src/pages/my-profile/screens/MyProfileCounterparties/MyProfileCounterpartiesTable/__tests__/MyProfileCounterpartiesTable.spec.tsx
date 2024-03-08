@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import MyProfileCounterpartiesTable from '../MyProfileCounterpartiesTable';
 
 const mockProps = {
@@ -16,7 +16,7 @@ const mockApiValues = {
     loadMoreAdvertisers: jest.fn(),
 };
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     p2p: {
         advertiser: {
             useGetList: jest.fn(() => mockApiValues),

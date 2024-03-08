@@ -74,7 +74,7 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
                     <span className='flex items-center justify-center gap-8'>
                         {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
                         <Text className='text-system-light-primary-background' size='sm' weight='bold'>
-                            Web terminal
+                            Web terminalsdjbdh
                         </Text>
                     </span>
                 </Button>

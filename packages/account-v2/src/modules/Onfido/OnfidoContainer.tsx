@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 import { useOnfido } from '@deriv/api-v2';
@@ -7,7 +8,8 @@ import IcAccountMissingDetails from '../../assets/proof-of-identity/ic-account-m
 import { ErrorMessage } from '../../components/ErrorMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { OnfidoView } from '../../containers/Onfido/OnfidoView';
+import { OnfidoView, PersonalDetailsFormWithExample } from '../../containers';
+import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
 
 // TODO: Remove optional and default props when POI is ready
 type TOnfidoContainer = {
@@ -26,6 +28,8 @@ export const OnfidoContainer = ({
     const [isOnfidoEnabled, setIsOnfidoEnabled] = useState(isEnabledByDefault);
     const [transitionEnd, setTransitionEnd] = useState(false);
     const history = useHistory();
+
+    const validationSchema = getNameDOBValidationSchema();
 
     const {
         data: { hasSubmitted, onfidoContainerId, onfidoRef },
@@ -98,22 +102,27 @@ export const OnfidoContainer = ({
 
     return (
         <div className={twMerge('flex flex-col items-center gap-16 p-16 lg:p-0')}>
-            <div
-                className={twMerge(
-                    '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-24 p-16',
-                    transitionEnd && 'hidden',
-                    isOnfidoEnabled && 'scale-y-0 opacity-50'
-                )}
-            >
-                {/* Do this: Dummy div here replace with PoiConfirmWithExample */}
+            {!isEnabledByDefault && (
                 <div
-                    className='border-1 border-solid border-solid-grey-2 rounded-lg w-[200px] sm:w-[638px] h-[384px]'
-                    data-testid='dt_poi-confirm-with-example'
-                    onClick={() => setIsOnfidoEnabled(true)}
-                    onKeyDown={() => setIsOnfidoEnabled(true)}
-                    tabIndex={0}
-                />
-            </div>
+                    className={twMerge(
+                        '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-24 p-16',
+                        transitionEnd && 'hidden',
+                        isOnfidoEnabled && 'scale-y-0 opacity-50'
+                    )}
+                >
+                    <Formik
+                        initialValues={validationSchema.getDefault()}
+                        onSubmit={() => {
+                            console.log('Submission triggered');
+                            setIsOnfidoEnabled(true);
+                        }}
+                        validateOnMount
+                        validationSchema={validationSchema}
+                    >
+                        {({ submitForm }) => <PersonalDetailsFormWithExample onConfirm={submitForm} />}
+                    </Formik>
+                </div>
+            )}
             <OnfidoView
                 isOnfidoEnabled={isOnfidoEnabled}
                 isOnfidoInitialized={isOnfidoInitialized}

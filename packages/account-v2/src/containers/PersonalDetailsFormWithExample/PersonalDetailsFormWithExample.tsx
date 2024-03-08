@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useMemo } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
 import { Checkbox, InlineMessage, Loader, Text } from '@deriv-com/ui';
@@ -8,29 +8,20 @@ import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
 
 const ExampleImage = lazy(() => import('../../assets/proof-of-identity/personal-details-example.svg'));
 
-type TPersonalDetailsFormWithExampleFormProps = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
+type TPersonalDetailsFormWithExample = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
 
-export const PersonalDetailsFormWithExample = () => {
-    const formik = useFormikContext<TPersonalDetailsFormWithExampleFormProps>();
+type TPersonalDetailsFormWithExampleProps = {
+    onConfirm: () => void;
+};
+
+export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFormWithExampleProps) => {
+    const formik = useFormikContext<TPersonalDetailsFormWithExample>();
 
     if (!formik) {
         throw new Error('PersonalDetailsFormWithExample must be used within a Formik component');
     }
 
-    const { errors, values } = formik;
-
-    const { dateOfBirth, firstName, lastName } = values;
-
-    const isDisabled = useMemo(() => {
-        return (
-            !firstName ||
-            !lastName ||
-            !dateOfBirth ||
-            !!errors?.firstName ||
-            !!errors?.lastName ||
-            !!errors?.dateOfBirth
-        );
-    }, [firstName, lastName, dateOfBirth, errors.firstName, errors.lastName, errors.dateOfBirth]);
+    const { isValid } = formik;
 
     return (
         <section className='p-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
@@ -83,10 +74,16 @@ export const PersonalDetailsFormWithExample = () => {
                     {({ field, meta: { error, touched } }: FieldProps) => (
                         <Checkbox
                             {...field}
-                            disabled={isDisabled}
+                            disabled={!isValid}
                             error={Boolean(error && touched)}
                             id='detailsConfirmation'
                             label='I confirm that the name and date of birth above match my chosen identity document.'
+                            onChange={value => {
+                                console.log('Value: ', value);
+                                if (value) {
+                                    onConfirm();
+                                }
+                            }}
                         />
                     )}
                 </Field>

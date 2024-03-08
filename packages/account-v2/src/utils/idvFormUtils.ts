@@ -72,21 +72,21 @@ const validateAdditionalDocumentNumber = (
 
 export const getIDVFormValidationSchema = (list: TDocument[]) => {
     return Yup.object({
-        document_additional: Yup.string().test({
+        documentAdditional: Yup.string().test({
             name: 'test-additional-document-number',
             test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(context.parent.document_type, list);
+                const documentConfig = getSelectedDocumentConfigData(context.parent.documentType, list);
                 return validateAdditionalDocumentNumber(documentConfig, value, context);
             },
         }),
-        document_number: Yup.string().test({
+        documentNumber: Yup.string().test({
             name: 'test-document-number',
             test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(context.parent.document_type, list);
+                const documentConfig = getSelectedDocumentConfigData(context.parent.documentType, list);
                 return validateDocumentNumber(documentConfig, value as string, context);
             },
         }),
-        document_type: Yup.string().required('Please select a document type.'),
+        documentType: Yup.string().required('Please select a document type.'),
     });
 };
 

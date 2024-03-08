@@ -1,42 +1,42 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
-import { useResidenceList } from '@deriv/api-v2';
+import { InferType } from 'yup';
+import { useKycAuthStatus } from '@deriv/api-v2';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
-import { Dropdown, Input, useDevice } from '@deriv-com/ui';
+import { Divider, Dropdown, Input, Text, useDevice } from '@deriv-com/ui';
+import { FormDropDownField, FormInputField } from '../../components/FormFields';
+import { PersonalDetailsFormWithExample } from '../../containers';
 import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
 import { getIDVNotApplicableOption } from '../../utils/defaultOptions';
-import { getExampleFormat, getSelectedDocumentConfigData, TDocument } from '../../utils/idvFormUtils';
+import {
+    getExampleFormat,
+    getIDVFormValidationSchema,
+    getSelectedDocumentConfigData,
+    TDocument,
+} from '../../utils/idvFormUtils';
 
 type TIDVFormProps = {
     allowDefaultValue?: boolean;
     allowIDVSkip?: boolean;
-    selectedCountry: Exclude<
-        NonNullable<NonNullable<ReturnType<typeof useResidenceList>['data'][0]['identity']>['services']>['idv'],
+    supportedDocuments: Exclude<
+        Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
         undefined
-    >;
+    >['idv'];
 };
 
-type TIDVFormValues = {
-    document_additional?: string;
-    document_number: string;
-    document_type: string;
-};
+type TIDVFormValues = InferType<ReturnType<typeof getIDVFormValidationSchema>>;
 
 type TDropDownList = {
     text: string;
     value: string;
 };
 
-export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TIDVFormProps) => {
-    const formik: FormikProps<TIDVFormValues> = useFormikContext();
+export const IDVForm = ({ allowDefaultValue, allowIDVSkip, supportedDocuments }: TIDVFormProps) => {
+    const formik = useFormikContext<TIDVFormValues>();
 
     const [documentList, setDocumentList] = useState<TDropDownList[]>([]);
 
     const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
-
-    const { isMobile } = useDevice();
-
-    const { documents_supported } = selectedCountry;
 
     const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
@@ -48,10 +48,10 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
     };
 
     useEffect(() => {
-        if (documents_supported && Object.keys(documents_supported)?.length) {
-            const docList = Object.keys(documents_supported).map((key: string) => {
+        if (supportedDocuments && Object.keys(supportedDocuments)?.length) {
+            const docList = Object.keys(supportedDocuments).map((key: string) => {
                 return {
-                    text: documents_supported[key].display_name,
+                    text: supportedDocuments[key].display_name,
                     value: key,
                 };
             });
@@ -62,7 +62,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
                 setDocumentList([...docList] as TDropDownList[]);
             }
         }
-    }, [documents_supported, IDV_NOT_APPLICABLE_OPTION, allowDefaultValue]);
+    }, [supportedDocuments, IDV_NOT_APPLICABLE_OPTION, allowDefaultValue]);
 
     if (!formik) {
         throw new Error('IDVForm must be used within a Formik component');
@@ -89,7 +89,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
 
     return (
         <section className='flex flex-col gap-75'>
-            <Field name='document_type'>
+            {/* <Field name='document_type'>
                 {({ field, meta }: FieldProps) => (
                     <Dropdown
                         aria-label='Choose the document type'
@@ -114,6 +114,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
                             aria-label='Enter your document number'
                             disabled={!values.document_type}
                             error={meta.touched && Boolean(meta.error)}
+                            isFullWidth
                             label='Enter your document number'
                             message={meta.error ?? getExampleFormat(selectedDocument?.example_format)}
                         />
@@ -128,11 +129,36 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
                             aria-label='Enter additional document number'
                             disabled={!selectedDocument?.additional}
                             error={meta.touched && Boolean(meta.error)}
+                            isFullWidth
                             label='Enter additional document number'
                             message={meta.error ?? getExampleFormat(selectedDocument?.additional?.example_format)}
                         />
                     )}
                 </Field>
+            )} */}
+            <FormDropDownField
+                handleSelect={handleSelect}
+                label='Choose the document type'
+                list={documentList}
+                name='documentType'
+            />
+            {values?.documentType !== IDV_NOT_APPLICABLE_OPTION.value && (
+                <FormInputField
+                    disabled={!values?.documentNumber}
+                    isFullWidth
+                    label='Enter your document number'
+                    message={getExampleFormat(selectedDocument?.example_format)}
+                    name='documentNumber'
+                />
+            )}
+            {selectedDocument?.additional?.display_name && (
+                <FormInputField
+                    disabled={!values?.documentAdditional}
+                    isFullWidth
+                    label='Enter additional document number'
+                    message={getExampleFormat(selectedDocument?.example_format)}
+                    name='documentAdditional'
+                />
             )}
         </section>
     );

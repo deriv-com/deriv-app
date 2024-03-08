@@ -9,6 +9,7 @@ type FormDropDownFieldProps = Omit<
     ComponentProps<typeof Dropdown>,
     'dropdownIcon' | 'errorMessage' | 'isRequired' | 'name' | 'onSelect' | 'variant'
 > & {
+    handleSelect?: (value: string) => void;
     name: string;
     validationSchema?: Yup.AnySchema;
 };
@@ -20,7 +21,7 @@ type FormDropDownFieldProps = Omit<
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-export const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropDownFieldProps) => {
+export const FormDropDownField = ({ handleSelect, name, validationSchema, ...rest }: FormDropDownFieldProps) => {
     const { isMobile } = useDevice();
     const formik = useFormikContext();
 
@@ -34,10 +35,12 @@ export const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropD
                 <Dropdown
                     {...field}
                     {...rest}
+                    aria-label={rest.label}
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
-                    errorMessage={error}
+                    errorMessage={touched && error ? error : ''}
                     isRequired={touched && !!error}
-                    onSelect={value => form.setFieldValue(name, value)}
+                    onSearch={field.onChange}
+                    onSelect={handleSelect ? value => handleSelect(value) : value => form.setFieldValue(name, value)}
                     variant={isMobile ? 'prompt' : 'comboBox'}
                 />
             )}

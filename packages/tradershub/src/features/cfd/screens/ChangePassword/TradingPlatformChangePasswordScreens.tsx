@@ -50,7 +50,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
             ),
             button: (
                 <div className='flex gap-8'>
-                    <Button onClick={() => closeModal()} size='lg' variant='outlined'>
+                    <Button color='black' onClick={closeModal} size='lg' variant='outlined'>
                         Cancel
                     </Button>
                     <Button

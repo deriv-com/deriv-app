@@ -26,6 +26,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 
     return (
         <Button
+            color='black'
             onClick={() => {
                 if (isDemo) {
                     resetVirtualBalance();

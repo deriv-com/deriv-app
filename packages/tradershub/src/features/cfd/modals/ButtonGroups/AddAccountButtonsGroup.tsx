@@ -18,7 +18,13 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
 
     return (
         <ButtonGroup className='w-full'>
-            <Button isFullWidth onClick={() => openModal('SentEmailContentModal')} size='lg' variant='outlined'>
+            <Button
+                color='black'
+                isFullWidth
+                onClick={() => openModal('SentEmailContentModal')}
+                size='lg'
+                variant='outlined'
+            >
                 Forgot password?
             </Button>
             {platform === PlatformDetails.dxtrade.platform && (

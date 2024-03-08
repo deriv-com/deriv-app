@@ -24,6 +24,7 @@ const CTraderSuccessModal = () => {
                 <ButtonGroup>
                     <Button
                         className='border-2 rounded-xs border-system-light-less-prominent'
+                        color='black'
                         onClick={closeModal}
                         size='lg'
                         variant='outlined'

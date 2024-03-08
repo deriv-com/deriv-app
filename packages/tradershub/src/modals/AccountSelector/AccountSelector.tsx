@@ -19,6 +19,7 @@ const AccountSelector = () => {
             </Modal.Body>
             <Modal.Footer className='grid-cols-1'>
                 <Button
+                    color='black'
                     isFullWidth
                     onClick={() => {
                         openModal('AddOrManageAccount');

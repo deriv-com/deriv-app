@@ -31,6 +31,8 @@ const AddedDxtradeAccountsList = () => {
     const trailing = () => (
         <div className='flex flex-col gap-y-4'>
             <Button
+                // open transfer modal
+                color='black'
                 onClick={() => {
                     if (isVirtual) {
                         setCfdState({

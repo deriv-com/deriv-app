@@ -30,6 +30,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
             trailing={() => (
                 <div className='flex flex-col gap-y-4'>
                     <Button
+                        color='black'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
                             if (isVirtual) {

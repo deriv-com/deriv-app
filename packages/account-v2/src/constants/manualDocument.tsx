@@ -23,7 +23,7 @@ export const getManualUploadDocumentList = (isNimcRequired: boolean): TDocumentT
             description: 'Upload the front and back of your driving licence.',
             icon: IcPoiDrivingLicence,
             title: 'Driving licence',
-            value: 'driving_license',
+            value: 'driving_licence',
         },
         {
             description: 'Upload the front and back of your identity card.',

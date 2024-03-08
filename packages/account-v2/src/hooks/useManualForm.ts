@@ -7,7 +7,7 @@ const useManualForm = (countryCode: string, selectedDocument: TManualDocumentTyp
     const servicesAvailable = kycAuthStatus?.identity?.available_services;
 
     if (countryCode === 'ng') {
-        if (selectedDocument === MANUAL_DOCUMENT_TYPES.nimc_slip) {
+        if (selectedDocument === MANUAL_DOCUMENT_TYPES.nimcSlip) {
             return {
                 isExpiryDateRequired: false,
                 isLoading,

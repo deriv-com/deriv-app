@@ -16,7 +16,7 @@ describe('ManualForm', () => {
         isExpiryDateRequired: false,
         onCancel: jest.fn(),
         onSubmit: jest.fn(),
-        selectedDocument: 'driving_license',
+        selectedDocument: 'driving_licence',
     };
 
     const renderComponent = (props = mockProps) => {
@@ -45,14 +45,14 @@ describe('ManualForm', () => {
     });
 
     it('should render the header texts correctly for the document Identity card', () => {
-        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.national_identity_card };
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.nationalIdentityCard };
         renderComponent(newProps);
         expect(screen.getByText(/First, enter your Identity card number and the expiry date./)).toBeInTheDocument();
         expect(screen.getByText(/Next, upload the front and back of your identity card./)).toBeInTheDocument();
     });
 
     it('should render the header texts correctly for the document NIMC slip', () => {
-        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.nimc_slip };
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.nimcSlip };
         renderComponent(newProps);
         expect(screen.getByText(/First, enter your NIMC slip number./)).toBeInTheDocument();
         expect(

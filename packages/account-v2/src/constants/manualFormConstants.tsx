@@ -9,9 +9,9 @@ import ProofOfAgeIcon from '../assets/manual-upload/proof-of-age.svg';
 export type TManualDocumentTypes = typeof MANUAL_DOCUMENT_TYPES[keyof typeof MANUAL_DOCUMENT_TYPES];
 
 export const MANUAL_DOCUMENT_TYPES = Object.freeze({
-    driving_license: 'driving_license',
-    national_identity_card: 'national_identity_card',
-    nimc_slip: 'nimc_slip',
+    drivingLicence: 'driving_licence',
+    nationalIdentityCard: 'national_identity_card',
+    nimcSlip: 'nimc_slip',
     passport: 'passport',
 });
 
@@ -29,7 +29,7 @@ const documentExpiry = {
 };
 
 export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
-    [MANUAL_DOCUMENT_TYPES.driving_license]: {
+    [MANUAL_DOCUMENT_TYPES.drivingLicence]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -54,7 +54,7 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
         ],
         uploadSectionHeader: 'Next, upload the front and back of your driving licence.',
     },
-    [MANUAL_DOCUMENT_TYPES.national_identity_card]: {
+    [MANUAL_DOCUMENT_TYPES.nationalIdentityCard]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -79,7 +79,7 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
         ],
         uploadSectionHeader: 'Next, upload the front and back of your identity card.',
     },
-    [MANUAL_DOCUMENT_TYPES.nimc_slip]: {
+    [MANUAL_DOCUMENT_TYPES.nimcSlip]: {
         fields: {
             documentExpiry,
             documentNumber: {

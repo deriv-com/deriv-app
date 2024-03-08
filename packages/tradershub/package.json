@@ -15,7 +15,7 @@
     "dependencies": {
         "@deriv/api-v2": "^1.0.0",
         "@deriv/quill-icons": "^1.19.0",
-        "@deriv-com/ui": "1.10.2",
+        "@deriv-com/ui": "1.10.8",
         "@deriv-com/utils": "latest",
         "@deriv/react-joyride": "^2.6.2",
         "class-variance-authority": "^0.7.0",

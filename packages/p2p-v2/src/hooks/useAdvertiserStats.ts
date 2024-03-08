@@ -71,7 +71,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** Checks if the advertiser has completed proof of identity verification */
             isIdentityVerified: isAdvertiser
-                ? data?.full_verification
+                ? data?.basic_verification
                 : authenticationStatus?.identity?.status === 'verified',
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */

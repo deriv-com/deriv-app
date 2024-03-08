@@ -64,7 +64,7 @@ const WalletCard: React.FC<TProps> = ({
                         </WalletText>
                         {isLoading ? (
                             <div
-                                className='wallets-skeleton wallets-card--balance-loader'
+                                className='wallets-skeleton wallets-card__balance-loader'
                                 data-testid='dt_wallet_card_balance_loader'
                             />
                         ) : (

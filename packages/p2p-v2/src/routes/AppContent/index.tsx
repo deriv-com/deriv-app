@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 import { CloseHeader } from '@/components';
-import { BuySell, MyAds, MyProfile } from '@/pages';
+import { Advertiser, BuySell, MyAds, MyProfile } from '@/pages';
+import { getCurrentRoute } from '@/utils';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import './index.scss';
@@ -18,15 +19,12 @@ export const routesConfiguration = [
         title: 'My Ads',
     },
     { Component: <MyProfile />, path: 'my-profile', title: 'My Profile' },
+    { Component: <Advertiser />, path: 'advertiser', title: 'Advertiser' },
 ];
 
-const pathToTitleMapper = Object.fromEntries(routesConfiguration.map(route => [route.path, route.title]));
+const tabRoutesConfiguration = routesConfiguration.filter(route => route.path !== 'advertiser');
 
-const getCurrentRoute = () => {
-    const segments = new URL(window.location.href).pathname.split('/');
-    const endPath = segments.pop();
-    return endPath;
-};
+const pathToTitleMapper = Object.fromEntries(tabRoutesConfiguration.map(route => [route.path, route.title]));
 
 const AppContent = () => {
     const history = useHistory();
@@ -57,24 +55,28 @@ const AppContent = () => {
         <>
             <CloseHeader />
             <div className='p2p-v2-tab__wrapper overflow-hidden'>
-                <Tabs
-                    activeTab={activeTab}
-                    className='p2p-v2-tab__items-wrapper'
-                    onChange={index => {
-                        setActiveTab(routesConfiguration[index].title);
-                        history.push(`/cashier/p2p-v2/${routesConfiguration[index].path}`);
-                    }}
-                    variant='secondary'
-                    wrapperClassName='p2p-v2-tab__wrapper'
-                >
-                    {routesConfiguration.map(({ Component, path, title }) => {
-                        return (
-                            <Tab key={path} title={title}>
-                                {Component}
-                            </Tab>
-                        );
-                    })}
-                </Tabs>
+                {getCurrentRoute()?.includes('advertiser') ? (
+                    <Advertiser />
+                ) : (
+                    <Tabs
+                        activeTab={activeTab}
+                        className='p2p-v2-tab__items-wrapper'
+                        onChange={index => {
+                            setActiveTab(tabRoutesConfiguration[index].title);
+                            history.push(`/cashier/p2p-v2/${tabRoutesConfiguration[index].path}`);
+                        }}
+                        variant='secondary'
+                        wrapperClassName='p2p-v2-tab__wrapper'
+                    >
+                        {tabRoutesConfiguration.map(({ Component, path, title }) => {
+                            return (
+                                <Tab key={path} title={title}>
+                                    {Component}
+                                </Tab>
+                            );
+                        })}
+                    </Tabs>
+                )}
             </div>
         </>
     );

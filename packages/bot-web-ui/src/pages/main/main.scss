@@ -1,5 +1,12 @@
 @import '../../styles/mixins.scss';
 
+.run-panel {
+    // fix for the RTL issue on tab active line
+    .dc-tabs__active-line {
+        right: auto;
+    }
+}
+
 .main {
     display: flex;
     overflow: hidden;

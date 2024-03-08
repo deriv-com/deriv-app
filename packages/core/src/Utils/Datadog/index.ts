@@ -45,8 +45,8 @@ const getConfigValues = (environment: string) => {
  * @returns {void}
  * **/
 const initDatadog = (is_datadog_enabled: boolean) => {
-    if(!is_datadog_enabled){
-        if(window.DD_RUM){
+    if (!is_datadog_enabled) {
+        if (window.DD_RUM) {
             window.DD_RUM = undefined;
         }
         return;

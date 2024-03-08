@@ -109,12 +109,7 @@ describe('BotBuilder', () => {
         window.Blockly = getMockBlockly('not-ui');
         mock_DBot_store?.run_panel.setIsRunning(true);
         mock_DBot_store?.toolbar.setResetButtonState(false);
-        render(
-            <>
-                <BotBuilder />
-            </>,
-            { wrapper }
-        );
+        render(<BotBuilder />, { wrapper });
         expect(mockBotNotification).toHaveBeenCalledWith(notification_message.workspace_change);
     });
 

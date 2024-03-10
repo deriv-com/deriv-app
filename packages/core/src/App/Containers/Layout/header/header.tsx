@@ -1,28 +1,15 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Loading } from '@deriv/components';
 import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import DefaultHeader from './default-header';
+import DefaultHeaderWallets from './defaut-header-wallets';
+import DTraderHeader from './dtrader-header';
+import TradersHubHeader from './traders-hub-header';
+import DTraderHeaderWallets from './dtrader-header-wallets';
+import TradersHubHeaderWallets from './traders-hub-header-wallets';
 import { useReadLocalStorage } from 'usehooks-ts';
-
-const DefaultHeader = React.lazy(() => import(/* webpackChunkName: "default-header" */ './default-header'));
-
-const DefaultHeaderWallets = React.lazy(
-    () => import(/* webpackChunkName: "defaut-header-wallets" */ './defaut-header-wallets')
-);
-
-const DTraderHeader = React.lazy(() => import(/* webpackChunkName: "dtrader-header" */ './dtrader-header'));
-
-const DTraderHeaderWallets = React.lazy(
-    () => import(/* webpackChunkName: "dtrader-header-wallets" */ './dtrader-header-wallets')
-);
-
-const TradersHubHeader = React.lazy(() => import(/* webpackChunkName: "traders-hub-header" */ './traders-hub-header'));
-
-const TradersHubHeaderWallets = React.lazy(
-    () => import(/* webpackChunkName: "traders-hub-header-wallets" */ './traders-hub-header-wallets')
-);
 
 const Header = observer(() => {
     const { client } = useStore();
@@ -67,41 +54,17 @@ const Header = observer(() => {
     if (is_logged_in) {
         let result;
         if (traders_hub_routes) {
-            result = should_show_wallets ? (
-                <React.Suspense fallback={<Loading is_fullscreen={false} />}>
-                    <TradersHubHeaderWallets />
-                </React.Suspense>
-            ) : (
-                <React.Suspense fallback={<Loading is_fullscreen={false} />}>
-                    <TradersHubHeader />
-                </React.Suspense>
-            );
+            result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {
-            result = should_show_wallets ? (
-                <React.Suspense fallback={<Loading is_fullscreen={false} />}>
-                    <DTraderHeaderWallets />
-                </React.Suspense>
-            ) : (
-                <React.Suspense fallback={<Loading is_fullscreen={false} />}>
-                    <DTraderHeader />
-                </React.Suspense>
-            );
+            result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;
         }
         return result;
     } else if (pathname === routes.onboarding) {
         return null;
     }
-    return is_next_wallet_enabled ? (
-        <React.Suspense fallback={<Loading is_fullscreen={false} />}>
-            <DefaultHeaderWallets />
-        </React.Suspense>
-    ) : (
-        <React.Suspense fallback={<Loading is_fullscreen={false} />}>
-            <DefaultHeader />
-        </React.Suspense>
-    );
+    return is_next_wallet_enabled ? <DefaultHeaderWallets /> : <DefaultHeader />;
 });
 
 export default Header;

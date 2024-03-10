@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { ResetTradingPasswordModal } from '@deriv/account';
 import { Loading } from '@deriv/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
@@ -23,7 +24,6 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 // import WalletsUpgradeModal from './wallets-upgrade-modal';
 // import RealWalletsUpgrade from './real-wallets-upgrade';
 
-import { ResetTradingPasswordModal } from '@deriv/account';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import JurisdictionModal from '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal';

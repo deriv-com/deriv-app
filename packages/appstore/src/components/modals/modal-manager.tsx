@@ -1,10 +1,30 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { ResetTradingPasswordModal } from '@deriv/account';
 import { Loading } from '@deriv/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
-import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
+import { TOpenAccountTransferMeta } from 'Types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+
+// import { ResetTradingPasswordModal } from '@deriv/account';
+// import RegulatorsCompareModal from './regulators-compare-modal';
+// import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
+// import JurisdictionModal from '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal';
+// import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
+// import CFDDbviOnBoarding from '@deriv/cfd/src/Containers/cfd-dbvi-onboarding';
+// import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
+// import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';
+// import MT5TradeModal from '@deriv/cfd/src/Containers/mt5-trade-modal';
+// import CFDPasswordManagerModal from '@deriv/cfd/src/Containers/cfd-password-manager-modal';
+// import MT5MigrationModal from '@deriv/cfd/src/Containers/mt5-migration-modal';
+// import FailedVerificationModal from './failed-veriification-modal';
+// import AccountTransferModal from 'Components/account-transfer-modal';
+// import WalletsMigrationFailed from './wallets-migration-failed';
+// import WalletsUpgradeModal from './wallets-upgrade-modal';
+// import RealWalletsUpgrade from './real-wallets-upgrade';
+
+import { ResetTradingPasswordModal } from '@deriv/account';
+import RegulatorsCompareModal from './regulators-compare-modal';
 import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import JurisdictionModal from '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal';
 import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
@@ -14,14 +34,14 @@ import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';
 import MT5TradeModal from '@deriv/cfd/src/Containers/mt5-trade-modal';
 import CFDPasswordManagerModal from '@deriv/cfd/src/Containers/cfd-password-manager-modal';
 import MT5MigrationModal from '@deriv/cfd/src/Containers/mt5-migration-modal';
-import { TOpenAccountTransferMeta } from 'Types';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
-import RealWalletsUpgrade from './real-wallets-upgrade';
 import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletsUpgradeModal from './wallets-upgrade-modal';
 
+const RealWalletsUpgrade = React.lazy(
+    () => import(/* webpackChunkName: "real-wallets-upgrade" */ './real-wallets-upgrade')
+);
 const MT5AccountTypeModal = React.lazy(
     () => import(/* webpackChunkName: "account-type-modal" */ './account-type-modal')
 );
@@ -52,6 +72,7 @@ const ModalManager = () => {
         is_account_transfer_modal_open,
         toggleAccountTransferModal,
         is_real_wallets_upgrade_on,
+        is_wallet_migration_failed,
     } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
@@ -162,7 +183,7 @@ const ModalManager = () => {
             />
             <FailedVerificationModal />
             {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
-            <WalletsMigrationFailed />
+            {is_wallet_migration_failed && <WalletsMigrationFailed />}
             <WalletsUpgradeModal />
         </React.Fragment>
     );

@@ -112,6 +112,7 @@ const useCurrencies = () => {
         return currencyConfig?.FIAT.find(currency => currency.isAdded);
     }, [currencyConfig?.FIAT]);
 
+    // NOTE: redesign the logic to make it more readable and maintainable
     // Disable fiat currencies if the current account currency is not fiat or if the account is deposit attempt
     const disableFiatCurrencies = useMemo(
         () =>

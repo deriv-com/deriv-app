@@ -64,9 +64,9 @@ describe('<ContractDrawerCard />', () => {
         render(mockContractDrawerCard(mocked_props));
 
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
-        expect(screen.getByText(/Profit\/Loss/i)).toBeInTheDocument();
+        expect(screen.getByText(/Total profit\/loss/i)).toBeInTheDocument();
         expect(screen.getByText(/Stake/i)).toBeInTheDocument();
-        expect(screen.getByText(/Sell price/i)).toBeInTheDocument();
+        expect(screen.getByText(/Contract value/i)).toBeInTheDocument();
         expect(screen.getByText(/Potential payout/i)).toBeInTheDocument();
     });
     it('should render Market Closed Contract Overlay if is_market_closed === true and getEndTime returns false', () => {

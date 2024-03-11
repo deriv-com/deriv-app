@@ -54,6 +54,7 @@
 /** @define trade-container; weak */
 .trade-container {
     background: var(--general-main-1);
+    direction: ltr;
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;
@@ -113,7 +114,7 @@
                     }
 
                     .btn-purchase__effect-detail--arrow {
-                        inset-inline-start: 12rem;
+                        left: 12rem;
                     }
                 }
 
@@ -219,7 +220,7 @@
     &__currency {
         position: absolute;
         height: 3.2rem;
-        inset-inline-end: 4rem;
+        right: 4rem;
         align-items: center;
         justify-content: center;
         display: flex;
@@ -583,10 +584,12 @@
                 top: 1px;
 
                 &--increment {
-                    inset-inline-end: 1px;
+                    /*rtl:ignore*/
+                    right: 1px;
                 }
                 &--decrement {
-                    inset-inline-start: 1px;
+                    /*rtl:ignore*/
+                    left: 1px;
                 }
             }
             &:hover {
@@ -781,17 +784,11 @@
     }
     .dc-dropdown--left {
         .dc-dropdown__display-text {
-            padding-inline-start: 15px;
-            padding-inline-end: unset;
+            padding-left: 15px;
+            padding-right: unset;
         }
         .dc-dropdown__select-arrow {
-            inset-inline-start: 0.3rem;
-            @include rtl {
-                transform: rotate(180deg);
-                &--up {
-                    transform: rotate(0deg);
-                }
-            }
+            left: 0.3rem;
         }
     }
 }
@@ -900,6 +897,9 @@
 
 .expiry-text-container,
 .range-text-container {
+    @include rtl {
+        direction: rtl;
+    }
     margin-top: 0.5rem;
 
     @include mobile {

@@ -26,7 +26,7 @@
             color: var(--text-prominent);
             font-weight: bold;
             vertical-align: middle;
-            padding-inline-start: 0.4em;
+            padding-left: 0.4em;
             overflow-wrap: anywhere;
         }
         &:hover,
@@ -39,9 +39,6 @@
 
             .contract-type-widget__select-arrow {
                 transform: rotate(-90deg);
-                @include rtl {
-                    transform: rotate(90deg);
-                }
             }
         }
     }
@@ -55,13 +52,10 @@
         position: absolute;
         pointer-events: none;
         top: 37%;
-        inset-inline-start: 0.6em;
+        left: 0.6em;
         line-height: 1;
         transition: transform 0.25s ease;
         transform: rotate(90deg);
-        @include rtl {
-            transform: rotate(-90deg);
-        }
         transform-origin: 45% 45;
         color: var(--text-prominent);
         @extend %inline-icon;
@@ -76,10 +70,10 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding-inline-start: 1.2em;
+        padding-left: 1.2em;
 
         @include mobile {
-            padding-inline-start: 0;
+            padding-left: 0;
         }
         /* postcss-bem-linter: ignore */
         .category-wrapper {

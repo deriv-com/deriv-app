@@ -12,7 +12,7 @@
 
     &__wrapper {
         position: absolute;
-        inset-inline-end: calc(100% + 10px);
+        right: calc(100% + 10px);
         top: -66px;
         display: flex;
         flex-direction: column;
@@ -40,6 +40,13 @@
                 background-color: var(--general-section-1);
                 cursor: pointer;
                 border-radius: $BORDER_RADIUS;
+                @include rtl {
+                    direction: rtl;
+
+                    .dc-icon {
+                        rotate: 180deg;
+                    }
+                }
             }
         }
         /* postcss-bem-linter: ignore */
@@ -55,11 +62,17 @@
 
             /* postcss-bem-linter: ignore */
             .dc-input {
+                @include rtl {
+                    direction: rtl;
+                }
                 margin-bottom: 0;
 
                 /* postcss-bem-linter: ignore */
                 &__field {
                     padding: 0.8rem 1.2rem 0.8rem 3.6rem;
+                    @include rtl {
+                        padding: 0.8rem 3.6rem 0.8rem 1.2rem;
+                    }
                     height: 3.2rem;
 
                     /* postcss-bem-linter: ignore */
@@ -70,6 +83,8 @@
                 /* postcss-bem-linter: ignore */
                 &__leading-icon {
                     top: 1.2rem;
+                    margin-left: 1rem;
+                    left: 0;
                 }
                 /* postcss-bem-linter: ignore */
                 &__trailing-icon {
@@ -93,7 +108,15 @@
 
             /* postcss-bem-linter: ignore */
             .dc-vertical-tab__header-title {
+                @include rtl {
+                    direction: rtl;
+                }
                 height: 56px;
+            }
+            .dc-vertical-tab__header {
+                @include rtl {
+                    direction: rtl;
+                }
             }
         }
         /* postcss-bem-linter: ignore */
@@ -107,9 +130,6 @@
     &--enter,
     &--exit {
         transform: translate3d(20%, 0, 0);
-        @include rtl {
-            transform: translate3d(-20%, 0, 0);
-        }
         pointer-events: none;
         opacity: 0;
         height: 0;

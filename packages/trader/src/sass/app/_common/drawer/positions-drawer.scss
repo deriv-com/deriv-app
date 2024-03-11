@@ -15,7 +15,7 @@ $header-height: 3.6em;
     position: fixed;
     z-index: 2;
     top: #{$HEADER_HEIGHT};
-    inset-inline-start: 4px;
+    left: 4px;
     box-sizing: border-box;
     opacity: 0;
     transform: translateX(-100%);
@@ -25,10 +25,6 @@ $header-height: 3.6em;
     border: 1px solid var(--general-section-1);
     background-color: var(--general-section-1);
     color: var(--text-prominent);
-
-    @include rtl {
-        transform: translateX(100%);
-    }
 
     &__bg {
         position: absolute;
@@ -50,9 +46,6 @@ $header-height: 3.6em;
     &--open {
         transform: translateX(#{$POSITIONS_DRAWER_MARGIN});
         opacity: 1;
-        @include rtl {
-            transform: translateX(#{-$POSITIONS_DRAWER_MARGIN});
-        }
     }
     &__header {
         height: $header-height;
@@ -60,6 +53,9 @@ $header-height: 3.6em;
         flex-direction: row;
         align-items: center;
         padding: 0 1em;
+        @include rtl {
+            direction: rtl;
+        }
 
         &:after {
             content: '';
@@ -120,7 +116,7 @@ $header-height: 3.6em;
     }
     &__icon-close {
         display: inline-block;
-        margin-left: auto;
+        margin-inline-start: auto;
         cursor: pointer;
         svg {
             @extend %inline-icon;

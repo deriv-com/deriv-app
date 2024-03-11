@@ -42,7 +42,7 @@ const OrderDetailsConfirmModal = ({ isModalOpen, onRequestClose }: TOrderDetails
         <Modal
             ariaHideApp={false}
             className='p2p-v2-order-details-confirm-modal'
-            isOpen
+            isOpen={isModalOpen}
             onRequestClose={onRequestClose}
         >
             <Modal.Header

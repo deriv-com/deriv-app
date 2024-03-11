@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { TTextColors } from '@/utils';
 import { Text, useDevice } from '@deriv-com/ui';
@@ -12,14 +12,7 @@ type TFadeInMessage = {
     timeout: number;
 };
 
-const FadeInMessage = ({
-    children,
-    color,
-    isVisible,
-    key,
-    noText,
-    timeout,
-}: React.PropsWithChildren<TFadeInMessage>) => {
+const FadeInMessage = ({ children, color, isVisible, key, noText, timeout }: PropsWithChildren<TFadeInMessage>) => {
     const { isMobile } = useDevice();
 
     return (

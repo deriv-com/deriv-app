@@ -1,5 +1,4 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
 
 export const ROOT_CLASS = 'manual-poi-details';
 

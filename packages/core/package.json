@@ -105,7 +105,7 @@
         "@deriv/cfd": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",
-        "@deriv/deriv-charts": "^2.1.4",
+        "@deriv/deriv-charts": "^2.1.5",
         "@deriv/hooks": "^1.0.0",
         "@deriv/p2p": "^0.7.3",
         "@deriv/p2p-v2": "^1.0.0",

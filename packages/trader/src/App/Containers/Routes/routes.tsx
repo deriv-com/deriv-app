@@ -20,11 +20,11 @@ type TTradePageMountingMiddlewareParams = {
     path_to: string;
 };
 
-const checkRoutingMatch = (route_list: Array<string | undefined>, path = '') => {
+export const checkRoutingMatch = (route_list: Array<string | undefined>, path = '') => {
     return route_list.some(route => !!matchPath(path, { path: route, exact: true }));
 };
 
-const tradePageMountingMiddleware = ({
+export const tradePageMountingMiddleware = ({
     path_from,
     path_to,
     action,

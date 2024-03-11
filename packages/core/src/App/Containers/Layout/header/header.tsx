@@ -1,28 +1,41 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useReadLocalStorage } from 'usehooks-ts';
 import HeaderFallback from './header-fallback';
 
-const DefaultHeader = React.lazy(() => import(/* webpackChunkName: "default-header" */ './default-header'));
+const DefaultHeader = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "default-header" */ './default-header')),
+    () => <HeaderFallback />
+)();
 
-const DefaultHeaderWallets = React.lazy(
-    () => import(/* webpackChunkName: "defaut-header-wallets" */ './defaut-header-wallets')
-);
+const DefaultHeaderWallets = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "defaut-header-wallets" */ './defaut-header-wallets')),
+    () => <HeaderFallback />
+)();
 
-const DTraderHeader = React.lazy(() => import(/* webpackChunkName: "dtrader-header" */ './dtrader-header'));
+const DTraderHeader = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "dtrader-header" */ './dtrader-header')),
+    () => <HeaderFallback />
+)();
 
-const DTraderHeaderWallets = React.lazy(
-    () => import(/* webpackChunkName: "dtrader-header-wallets" */ './dtrader-header-wallets')
-);
+const DTraderHeaderWallets = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "dtrader-header-wallets" */ './dtrader-header-wallets')),
+    () => <HeaderFallback />
+)();
 
-const TradersHubHeader = React.lazy(() => import(/* webpackChunkName: "traders-hub-header" */ './traders-hub-header'));
+const TradersHubHeader = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "traders-hub-header" */ './traders-hub-header')),
+    () => <HeaderFallback />
+)();
 
-const TradersHubHeaderWallets = React.lazy(
-    () => import(/* webpackChunkName: "traders-hub-header-wallets" */ './traders-hub-header-wallets')
-);
+const TradersHubHeaderWallets = makeLazyLoader(
+    () =>
+        moduleLoader(() => import(/* webpackChunkName: "traders-hub-header-wallets" */ './traders-hub-header-wallets')),
+    () => <HeaderFallback />
+)();
 
 const Header = observer(() => {
     const { client } = useStore();
@@ -67,41 +80,17 @@ const Header = observer(() => {
     if (is_logged_in) {
         let result;
         if (traders_hub_routes) {
-            result = should_show_wallets ? (
-                <React.Suspense fallback={<HeaderFallback />}>
-                    <TradersHubHeaderWallets />
-                </React.Suspense>
-            ) : (
-                <React.Suspense fallback={<HeaderFallback />}>
-                    <TradersHubHeader />
-                </React.Suspense>
-            );
+            result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {
-            result = should_show_wallets ? (
-                <React.Suspense fallback={<HeaderFallback />}>
-                    <DTraderHeaderWallets />
-                </React.Suspense>
-            ) : (
-                <React.Suspense fallback={<HeaderFallback />}>
-                    <DTraderHeader />
-                </React.Suspense>
-            );
+            result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;
         }
         return result;
     } else if (pathname === routes.onboarding) {
         return null;
     }
-    return is_next_wallet_enabled ? (
-        <React.Suspense fallback={<HeaderFallback />}>
-            <DefaultHeaderWallets />
-        </React.Suspense>
-    ) : (
-        <React.Suspense fallback={<HeaderFallback />}>
-            <DefaultHeader />
-        </React.Suspense>
-    );
+    return is_next_wallet_enabled ? <DefaultHeaderWallets /> : <DefaultHeader />;
 });
 
 export default Header;

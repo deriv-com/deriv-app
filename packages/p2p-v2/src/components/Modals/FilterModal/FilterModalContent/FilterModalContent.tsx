@@ -33,7 +33,7 @@ const FilterModalContent = ({
                     {filterOptions.map(option => (
                         <div
                             className={clsx(
-                                'py-8 px-[1.6rem] flex flex-row items-center justify-between border-b-[1px] border-solid border-[#f2f3f4]',
+                                'py-8 px-[1.6rem] flex items-center justify-between border-b-[1px] border-solid border-[#f2f3f4]',
                                 {
                                     'cursor-pointer': option.onClick,
                                 }

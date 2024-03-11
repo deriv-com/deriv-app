@@ -1,10 +1,14 @@
 import React, { memo, useCallback } from 'react';
 import { Form, Formik } from 'formik';
 import { twMerge } from 'tailwind-merge';
+import { CurrencyTypes } from '@/constants';
+import useAddNewCurrencyAccount from '@/hooks/useAddNewCurrencyAccount';
 import { TCurrencyConfig } from '@/hooks/useCurrencies';
 import CurrencyCard from '@/screens/CurrencySelector/CurrencyCard';
 import { useActiveTradingAccount, useAuthorize, useMutation } from '@deriv/api-v2';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
+
+type TCurrencyTypes = keyof typeof CurrencyTypes;
 
 type TCurrenciesForm = {
     addedFiatCurrency?: TCurrencyConfig;
@@ -13,6 +17,7 @@ type TCurrenciesForm = {
     disableFiatCurrencies?: boolean;
     isSubmitButtonDisabled?: boolean;
     submitButtonLabel?: string;
+    type?: TCurrencyTypes;
 };
 
 /**
@@ -24,6 +29,7 @@ type TCurrenciesForm = {
  * @param {boolean} props.allCryptoCurrenciesAreAdded - The allCryptoCurrenciesAreAdded prop is a boolean that determines if all the cryptocurrencies are added.
  * @param {boolean} props.isFiatCurrencyAdded - The isFiatCurrencyAdded prop is a boolean that determines if the fiat currency is added.
  * @param {string} props.submitButtonLabel - The label for the submit button.
+ * @param {TCurrencyTypes} props.type - The type of the currency.
  * @returns {React.ReactNode}
  */
 const CurrenciesForm = ({
@@ -33,15 +39,23 @@ const CurrenciesForm = ({
     allCryptoCurrenciesAreAdded = false,
     addedFiatCurrency,
     disableFiatCurrencies,
+    type,
 }: TCurrenciesForm) => {
     const { isDesktop } = useDevice();
     const { switchAccount, data } = useAuthorize();
     const { data: activeDerivTradingAccount } = useActiveTradingAccount();
     const { mutateAsync: mutateAccountCurrencyAsync } = useMutation('set_account_currency');
-
+    const { mutateAsync: mutateAddAccountAsync } = useAddNewCurrencyAccount();
     const initialValues = {
         currency: '',
     };
+
+    const handleAddAccount = useCallback(
+        async (values: typeof initialValues) => {
+            await mutateAddAccountAsync(values.currency);
+        },
+        [mutateAddAccountAsync]
+    );
 
     const handleSwitchCurrency = useCallback(
         async (values: typeof initialValues) => {
@@ -52,7 +66,13 @@ const CurrenciesForm = ({
     );
 
     return (
-        <Formik initialValues={initialValues} onSubmit={handleSwitchCurrency}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={type === CurrencyTypes.CRYPTO ? handleAddAccount : handleSwitchCurrency}
+            validate={values =>
+                values.currency && !isSubmitButtonDisabled ? {} : { currency: 'Please select a currency' }
+            }
+        >
             {({ values, isSubmitting }) => (
                 <Form className='flex flex-col items-center justify-between h-full min-h-0 py-16 lg:px-16 lg:p-24'>
                     <div

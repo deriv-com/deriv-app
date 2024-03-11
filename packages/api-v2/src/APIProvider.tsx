@@ -164,7 +164,12 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
 
-    if (!standaloneDerivAPI.current) standaloneDerivAPI.current = initializeDerivAPI(() => setReconnect(true));
+    if (!standaloneDerivAPI.current)
+        standaloneDerivAPI.current = standalone ? initializeDerivAPI(() => setReconnect(true)) : null;
+
+    const setOnReconnected = useCallback((onReconnected: () => void) => {
+        onReconnectedRef.current = onReconnected;
+    }, []);
 
     const send: TSendFunction = (name, payload) => {
         return standaloneDerivAPI.current?.send({ [name]: 1, ...payload });
@@ -255,9 +260,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
                 subscribe,
                 unsubscribe,
                 queryClient,
-                setOnReconnected: (onReconnected: () => void) => {
-                    onReconnectedRef.current = onReconnected;
-                },
+                setOnReconnected,
             }}
         >
             <QueryClientProvider client={queryClient}>

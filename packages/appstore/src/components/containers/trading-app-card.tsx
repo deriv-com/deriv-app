@@ -161,7 +161,6 @@ const TradingAppCard = ({
             );
         }
 
-
         return null;
     };
 

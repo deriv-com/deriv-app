@@ -54,7 +54,7 @@ const AppContent = () => {
     return (
         <>
             <CloseHeader />
-            <div className='overflow-hidden p2p-v2-tab__wrapper'>
+            <div className='p2p-v2-tab__wrapper overflow-hidden'>
                 {getCurrentRoute()?.includes('advertiser') ? (
                     <Advertiser />
                 ) : (

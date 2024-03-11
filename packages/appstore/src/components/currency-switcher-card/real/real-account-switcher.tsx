@@ -1,5 +1,5 @@
 import React from 'react';
-import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
+import { getStatusBadgeConfig } from '@deriv/account';
 import { StatusBadge, Text } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';

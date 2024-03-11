@@ -46,8 +46,8 @@ const FilterModal = ({
         },
     ];
 
-    const sortedSelectedPaymentMethods = [...selectedPaymentMethods].sort();
-    const sortedPaymentMethods = [...paymentMethods].sort();
+    const sortedSelectedPaymentMethods = [...selectedPaymentMethods].sort((a, b) => a.localeCompare(b));
+    const sortedPaymentMethods = [...paymentMethods].sort((a, b) => a.localeCompare(b));
     const hasSamePaymentMethods = JSON.stringify(sortedSelectedPaymentMethods) === JSON.stringify(sortedPaymentMethods);
     const hasSameMatching = isToggled === isMatching;
     const hasSameFilters = hasSamePaymentMethods && hasSameMatching;

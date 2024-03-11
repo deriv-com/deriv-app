@@ -7,12 +7,11 @@ import {
     useAccountTransferVisible,
     useFeatureFlags,
     useIsP2PEnabled,
-    useIsPasskeySupported,
     useOnrampVisible,
     usePaymentAgentTransferVisible,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getStaticUrl, removeExactRouteFromRoutes, routes, whatsapp_url } from '@deriv/shared';
+import { deepCopy, getStaticUrl, removeExactRouteFromRoutes, routes, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -50,6 +49,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_landing_company_loaded,
         is_proof_of_ownership_enabled,
         is_eu,
+        is_passkey_supported,
     } = client;
     const { cashier } = modules;
     const { payment_agent } = cashier;
@@ -59,8 +59,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { is_p2p_enabled } = useIsP2PEnabled();
-
-    const { is_passkey_supported, is_passkey_support_checking } = useIsPasskeySupported();
 
     const { pathname: route } = useLocation();
 
@@ -93,12 +91,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     React.useEffect(() => {
         const processRoutes = () => {
-            if (is_passkey_support_checking) return;
             let routes_config = getRoutesConfig({});
 
             const should_remove_passkeys_route = !is_mobile || !is_passkey_supported;
             if (should_remove_passkeys_route) {
-                routes_config = removeExactRouteFromRoutes(routes_config, 'passkeys');
+                routes_config = removeExactRouteFromRoutes(deepCopy(routes_config), 'passkeys');
             }
             let primary_routes = [];
 
@@ -124,7 +121,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         should_allow_authentication,
         is_trading_hub_category,
         is_next_wallet_enabled,
-        is_passkey_support_checking,
         is_mobile,
         is_passkey_supported,
         is_p2p_enabled,

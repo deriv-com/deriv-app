@@ -19,12 +19,7 @@ const PasskeysStatus = ({
 }: React.PropsWithChildren<TPasskeysStatus>) => {
     return (
         <React.Fragment>
-            <FormBody
-                scroll_offset='22rem'
-                className={classNames('passkeys-status__wrapper', {
-                    [`${className}`]: className,
-                })}
-            >
+            <FormBody scroll_offset='22rem' className={classNames('passkeys-status__wrapper', className)}>
                 <Icon icon={icon} size={96} />
                 <Text as='div' weight='bold' align='center' className='passkeys-status__title'>
                     {title}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Loading } from '@deriv/components';
-import { useGetPasskeysList, useIsPasskeySupported, useRegisterPasskey } from '@deriv/hooks';
+import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import PasskeysStatusContainer from './components/passkeys-status-container';
@@ -11,11 +11,11 @@ import { getModalContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passke
 import './passkeys.scss';
 
 const Passkeys = observer(() => {
-    const { ui } = useStore();
+    const { ui, client } = useStore();
     const { is_mobile } = ui;
+    const { is_passkey_supported } = client;
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
-    const { is_passkey_supported, is_passkey_support_checking } = useIsPasskeySupported();
     const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, reloadPasskeysList } = useGetPasskeysList();
     const {
         cancelPasskeyRegistration,
@@ -39,7 +39,7 @@ const Passkeys = observer(() => {
         }
     }, [is_passkey_registered, passkeys_list]);
 
-    if (is_passkey_support_checking || is_passkeys_list_loading) {
+    if (is_passkeys_list_loading) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
     if (!should_show_passkeys) {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { FadeWrapper, Loading } from '@deriv/components';
-import { useIsPasskeySupported } from '@deriv/hooks';
 import {
+    deepCopy,
     flatten,
     matchRoute,
     removeExactRouteFromRoutes,
@@ -36,21 +36,21 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         landing_company_shortcode,
         should_allow_authentication,
         should_allow_poinc_authentication,
+        is_passkey_supported,
     } = client;
     const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
 
     const [available_routes, setAvailableRoutes] = React.useState(routes);
-    const { is_passkey_supported, is_passkey_support_checking } = useIsPasskeySupported();
 
     React.useEffect(() => {
-        if (is_passkey_support_checking) return;
-
         const should_remove_passkeys_route = is_desktop || (is_mobile && !is_passkey_supported);
         if (should_remove_passkeys_route) {
-            const desktop_routes = removeExactRouteFromRoutes(routes as TSharedRoute[], 'passkeys');
+            const desktop_routes = removeExactRouteFromRoutes(deepCopy(routes) as TSharedRoute[], 'passkeys');
             setAvailableRoutes(desktop_routes as TRoute[]);
+        } else {
+            setAvailableRoutes(routes);
         }
-    }, [routes, is_passkey_support_checking, is_desktop, is_mobile, is_passkey_supported]);
+    }, [routes, is_desktop, is_mobile, is_passkey_supported]);
 
     // subroutes of a route is structured as an array of arrays
     const subroutes = flatten(available_routes.map(i => i.subroutes));

@@ -607,6 +607,8 @@ type TClientStore = {
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
     setRealAccountSignupFormStep: (step: number) => void;
+    is_passkey_supported: boolean;
+    setIsPasskeySupported: (value: boolean) => void;
 };
 
 type TCommonStoreError = {

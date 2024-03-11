@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
+import { platformAuthenticatorIsAvailable } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -152,6 +153,8 @@ export default class ClientStore extends BaseStore {
     real_account_signup_form_data = [];
     real_account_signup_form_step = 0;
 
+    is_passkey_supported = false;
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
@@ -219,6 +222,7 @@ export default class ClientStore extends BaseStore {
             is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
+            is_passkey_supported: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -394,6 +398,7 @@ export default class ClientStore extends BaseStore {
             setIsP2PEnabled: action.bound,
             setRealAccountSignupFormData: action.bound,
             setRealAccountSignupFormStep: action.bound,
+            setIsPasskeySupported: action.bound,
         });
 
         reaction(
@@ -1623,10 +1628,6 @@ export default class ClientStore extends BaseStore {
             if (!no_cr_account && this.is_low_risk) {
                 this.switchAccount(this.virtual_account_loginid);
             }
-
-            if (localStorage.getItem('show_effortless_login_modal') === null) {
-                localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
-            }
         }
         this.selectCurrency('');
 
@@ -1653,6 +1654,7 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
+            await this.setIsPasskeySupported();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2646,5 +2648,15 @@ export default class ClientStore extends BaseStore {
 
     setRealAccountSignupFormStep(step) {
         this.real_account_signup_form_step = step;
+    }
+
+    async setIsPasskeySupported() {
+        try {
+            const is_passkeys_enabled = Analytics?.getFeatureValue('web_passkeys', false);
+            const result = await platformAuthenticatorIsAvailable();
+            this.is_passkey_supported = is_passkeys_enabled && result;
+        } catch (e) {
+            //need error handling
+        }
     }
 }

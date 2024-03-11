@@ -42,7 +42,7 @@ export const isRouteVisible = (route: TRoute, is_logged_in: boolean) =>
     !(route && route.is_authenticated && !is_logged_in);
 
 export const removeExactRouteFromRoutes = (routes_array: TRoute[], route_to_remove: keyof typeof routes) => {
-    return routes_array.filter(route => {
+    return routes_array.filter((route: TRoute) => {
         if (route.path === routes[route_to_remove]) {
             return false;
         }

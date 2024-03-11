@@ -9,10 +9,10 @@
     padding: 1rem 1.6rem 1rem 0.8rem;
     position: absolute;
     top: 0;
-    width: 100vw;
+    width: 100%;
     z-index: 1;
     opacity: 1;
-    transition: opacity 0.8s ease;
+    transition: opacity 0.3s ease-in;
 
     &--hidden {
         opacity: 0;

@@ -11,6 +11,12 @@ type TProps = {
     onWalletSettled?: (value: boolean) => void;
 };
 
+type NumberWithinRangeProps = {
+    max: number;
+    min: number;
+    number: number;
+};
+
 /**
  * carousel component
  * idea behind data flow here:
@@ -30,65 +36,80 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     // for the embla "on select" callback
     // to avoid unbinding / cleaning etc, just let it use up-to-date list
     const walletsAccountsListRef = useRef(walletAccountsList);
-    const tweenNodes = useRef<HTMLElement[]>([]);
-    const tweenFactor = useRef(0);
+    const transitionNodes = useRef<HTMLElement[]>([]);
+    const transitionFactor = useRef(0);
 
-    const numberWithinRange = (number: number, min: number, max: number): number =>
+    const numberWithinRange = ({ max, min, number }: NumberWithinRangeProps): number =>
         Math.min(Math.max(number, min), max);
 
     // scale based on the width difference between active and inactive wallets
-    const tweenFactorBase = 1 - 24 / 28.8;
+    const transitionFactorScale = 1 - 24 / 28.8;
 
-    const setTweenNodes = useCallback((emblaApi: EmblaCarouselType) => {
-        tweenNodes.current = emblaApi.slideNodes().map(slideNode => {
+    // sets the transition nodes to be scaled
+    const setTransitionNodes = useCallback((walletsCarouselEmblaApi: EmblaCarouselType) => {
+        // find and store all available wallet card containers for the transition nodes
+        transitionNodes.current = walletsCarouselEmblaApi.slideNodes().map(slideNode => {
             return slideNode.querySelector('.wallets-card__container') as HTMLElement;
         });
     }, []);
 
-    const setTweenFactor = useCallback(
-        (emblaApi: EmblaCarouselType) => {
-            tweenFactor.current = tweenFactorBase * emblaApi.scrollSnapList().length;
+    // function to set the transition factor based on the number of scroll snaps
+    const setTransitionFactor = useCallback(
+        (walletsCarouselEmblaApi: EmblaCarouselType) => {
+            transitionFactor.current = transitionFactorScale * walletsCarouselEmblaApi.scrollSnapList().length;
         },
-        [tweenFactorBase]
+        [transitionFactorScale]
     );
 
-    const tweenScale = useCallback((emblaApi: EmblaCarouselType, eventName?: EmblaEventType) => {
-        const engine = emblaApi.internalEngine();
-        const scrollProgress = emblaApi.scrollProgress();
-        const slidesInView = emblaApi.slidesInView();
-        const isScrollEvent = eventName === 'scroll';
+    // function to interpolate the scale of wallet cards based on scroll events
+    const transitionScale = useCallback(
+        (walletsCarouselEmblaApi: EmblaCarouselType, walletsCarouselEvent?: EmblaEventType) => {
+            const engine = walletsCarouselEmblaApi.internalEngine();
+            const scrollProgress = walletsCarouselEmblaApi.scrollProgress();
+            const slidesInView = walletsCarouselEmblaApi.slidesInView();
+            const isScrollEvent = walletsCarouselEvent === 'scroll';
 
-        emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
-            let diffToTarget = scrollSnap - scrollProgress;
-            const slidesInSnap = engine.slideRegistry[snapIndex];
+            walletsCarouselEmblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
+                //scrollProgress returns the progress for the whole list with a value of 0<x<1 while scrollSnap return the position of the item in the array
+                //difference between the array item position and the progress in the whole scroll event is calculated to determine the transition value
+                let diffToTarget = scrollSnap - scrollProgress;
+                const slidesInSnap = engine.slideRegistry[snapIndex];
 
-            slidesInSnap.forEach(slideIndex => {
-                if (isScrollEvent && !slidesInView.includes(slideIndex)) return;
+                slidesInSnap.forEach(slideIndex => {
+                    if (isScrollEvent && !slidesInView.includes(slideIndex)) return;
 
-                if (engine.options.loop) {
-                    engine.slideLooper.loopPoints.forEach(loopItem => {
-                        const target = loopItem.target();
+                    // iterate through the loop points in the carousel engine using the embla API internal engine
+                    if (engine.options.loop) {
+                        engine.slideLooper.loopPoints.forEach(loopItem => {
+                            const target = loopItem.target();
 
-                        if (slideIndex === loopItem.index && target !== 0) {
-                            const sign = Math.sign(target);
+                            // determine the direction of the loop based on the sign and adjust the difference to the target based on loop direction
+                            if (slideIndex === loopItem.index && target !== 0) {
+                                const sign = Math.sign(target);
 
-                            if (sign === -1) {
-                                diffToTarget = scrollSnap - (1 + scrollProgress);
+                                if (sign === -1) {
+                                    diffToTarget = scrollSnap - (1 + scrollProgress);
+                                }
+                                if (sign === 1) {
+                                    diffToTarget = scrollSnap + (1 - scrollProgress);
+                                }
                             }
-                            if (sign === 1) {
-                                diffToTarget = scrollSnap + (1 - scrollProgress);
-                            }
-                        }
-                    });
-                }
+                        });
+                    }
 
-                const tweenValue = 1 - Math.abs(diffToTarget * tweenFactor.current);
-                const scale = numberWithinRange(tweenValue, 0, 1).toString();
-                const tweenNode = tweenNodes.current[slideIndex];
-                tweenNode.style.transform = `scale(${scale})`;
+                    // calculate transition scale value based on the scroll position
+                    // active wallet will scale down until it reaches the point where width is 24rem and vice versa
+                    const transitionValue = 1 - Math.abs(diffToTarget * transitionFactor.current);
+                    const scale = numberWithinRange({ max: 1, min: 0, number: transitionValue }).toString();
+
+                    // apply the scale to the wallet cards
+                    const transitionNode = transitionNodes.current[slideIndex];
+                    transitionNode.style.transform = `scale(${scale})`;
+                });
             });
-        });
-    }, []);
+        },
+        []
+    );
 
     const [walletsCarouselEmblaRef, walletsCarouselEmblaApi] = useEmblaCarousel({
         containScroll: false,
@@ -141,18 +162,18 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
             walletsCarouselEmblaApi?.scrollTo(index, true);
 
-            walletsCarouselEmblaApi && setTweenNodes(walletsCarouselEmblaApi);
-            walletsCarouselEmblaApi && setTweenFactor(walletsCarouselEmblaApi);
-            walletsCarouselEmblaApi && tweenScale(walletsCarouselEmblaApi);
+            walletsCarouselEmblaApi && setTransitionNodes(walletsCarouselEmblaApi);
+            walletsCarouselEmblaApi && setTransitionFactor(walletsCarouselEmblaApi);
+            walletsCarouselEmblaApi && transitionScale(walletsCarouselEmblaApi);
 
             walletsCarouselEmblaApi
-                ?.on('reInit', setTweenNodes)
-                .on('reInit', setTweenFactor)
-                .on('reInit', tweenScale)
-                .on('scroll', tweenScale);
+                ?.on('reInit', setTransitionNodes)
+                .on('reInit', setTransitionFactor)
+                .on('reInit', transitionScale)
+                .on('scroll', transitionScale);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [walletsCarouselEmblaApi, isInitialDataLoaded, tweenScale]);
+    }, [walletsCarouselEmblaApi, isInitialDataLoaded, transitionScale]);
 
     useEffect(() => {
         const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;

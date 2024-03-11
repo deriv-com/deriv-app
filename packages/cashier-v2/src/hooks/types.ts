@@ -10,6 +10,8 @@ import {
     useTransferBetweenAccounts,
 } from '@deriv/api-v2';
 
+export type TGenericSizes = '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace THooks {
     export type Accounts = NonNullable<ReturnType<typeof useAllAccountsList>['data']>;

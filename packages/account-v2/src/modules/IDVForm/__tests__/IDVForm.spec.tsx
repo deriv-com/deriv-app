@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { Formik } from 'formik';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as utils from '../../../utils/idvFormUtils';
 import { IDVForm } from '../IDVForm';
@@ -16,34 +16,31 @@ const documentAName = 'Document 1';
 const documentBName = 'Document 2';
 
 const mockProps: TIDVFormProps = {
-    selectedCountry: {
-        documents_supported: {
-            document_1: {
-                additional: {
-                    display_name: 'Additional Document',
-                    format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
-                },
-                display_name: documentAName,
-                format: '^[0-9]{12}$',
+    countryCode: 'in',
+    supportedDocuments: {
+        document_1: {
+            additional: {
+                display_name: 'Additional Document',
+                format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
             },
-            document_2: {
-                display_name: documentBName,
-                format: '^[a-zA-Z0-9]{10,17}$',
-            },
+            display_name: documentAName,
+            format: '^[0-9]{12}$',
         },
-        has_visual_sample: 0,
-        is_country_supported: 1,
+        document_2: {
+            display_name: documentBName,
+            format: '^[a-zA-Z0-9]{10,17}$',
+        },
     },
 };
 
 const mockDocumentConfig = {
     additional: {
-        display_name: 'Additional doc',
-        example_format: 'ABCDE1234F',
+        displayName: 'Additional doc',
+        exampleFormat: 'ABCDE1234F',
         format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
     },
-    example_format: '1234567890',
-    id: 'doc_1',
+    exampleFormat: '1234567890',
+    id: 'document_1',
     text: documentAName,
     value: '^[0-9]{12}$',
 };
@@ -69,27 +66,29 @@ describe('IDVForm', () => {
     });
 
     it('should throw error when IDVform is not wrapped with Formik', () => {
-        expect(() => render(<IDVForm selectedCountry={{}} />)).toThrowError();
+        expect(() => render(<IDVForm {...mockProps} />)).toThrowError();
     });
 
     it('Should change the document type value when document type is changed', async () => {
+        jest.spyOn(utils, 'getSelectedDocumentConfigData').mockReturnValue(mockDocumentConfig);
         renderComponent();
         const elDocumentType = screen.getByLabelText(documentTypeLabel);
 
-        userEvent.click(elDocumentType);
-        expect(await screen.findByText(documentAName)).toBeInTheDocument();
+        expect(elDocumentType).toHaveValue('');
 
-        userEvent.tab();
+        userEvent.click(elDocumentType);
+
+        userEvent.click(screen.getByText(documentAName));
+
         await waitFor(() => {
-            expect(screen.queryByText(documentBName)).not.toBeInTheDocument();
+            expect(elDocumentType).toHaveValue('Document 1');
         });
     });
 
     it('should render the hint messages for the selected document', async () => {
+        jest.spyOn(utils, 'getSelectedDocumentConfigData').mockReturnValue(mockDocumentConfig);
         renderComponent();
         const elDocumentType = screen.getByLabelText(documentTypeLabel);
-
-        jest.spyOn(utils, 'getSelectedDocumentConfigData').mockReturnValue(mockDocumentConfig);
 
         userEvent.click(elDocumentType);
 

@@ -10,7 +10,7 @@ const App: React.FC = () => {
     return (
         <APIProvider standalone>
             <AuthProvider>
-                <POIFlowContainer countryCode='gh' />
+                <POIFlowContainer countryCode='in' />
                 <AppOverlay title='Settings'>
                     <RouteLinks />
                 </AppOverlay>

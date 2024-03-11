@@ -1,15 +1,17 @@
 import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/object';
+import { useKycAuthStatus } from '@deriv/api-v2';
+import { getIDVDocumentExampleFormat, TIDVDocumentConfig } from '../constants/idvDocumentConfig';
 
-export const getExampleFormat = (example_format?: string) => (example_format ? `Example: ${example_format}` : '');
+export const getExampleFormat = (exampleFormat?: string) => (exampleFormat ? `Example: ${exampleFormat}` : '');
 
 export type TDocument = {
     additional?: {
-        display_name?: string;
-        example_format?: string;
+        displayName?: string;
+        exampleFormat?: string;
         format?: string;
     };
-    example_format?: string;
+    exampleFormat?: string;
     id: string;
     text: string;
     value: string;
@@ -20,8 +22,8 @@ const validateDocumentNumber = (
     documentNumber: string,
     context: Yup.TestContext<AnyObject>
 ) => {
-    const isSameAsExample = documentNumber === documentConfig?.example_format;
-    const exampleFormat = getExampleFormat(documentConfig?.example_format);
+    const isSameAsExample = documentNumber === documentConfig?.exampleFormat;
+    const exampleFormat = getExampleFormat(documentConfig?.exampleFormat);
 
     if (!documentNumber && documentConfig?.text) {
         let documentName = '';
@@ -56,7 +58,7 @@ const validateAdditionalDocumentNumber = (
     if (!additionalDocNumber) {
         return context.createError({
             message: `Please enter your ${
-                documentConfig?.additional?.display_name?.toLowerCase() ?? 'document number'
+                documentConfig?.additional?.displayName?.toLowerCase() ?? 'document number'
             }.`,
         });
     } else if (
@@ -70,19 +72,25 @@ const validateAdditionalDocumentNumber = (
     return true;
 };
 
-export const getIDVFormValidationSchema = (list: TDocument[]) => {
+export const getIDVFormValidationSchema = (
+    countryCode: string,
+    list: Exclude<
+        Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
+        undefined
+    >['idv']
+) => {
     return Yup.object({
-        documentAdditional: Yup.string().test({
+        additionalDocument: Yup.string().test({
             name: 'test-additional-document-number',
             test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(context.parent.documentType, list);
+                const documentConfig = getSelectedDocumentConfigData(countryCode, context.parent.documentType, list);
                 return validateAdditionalDocumentNumber(documentConfig, value, context);
             },
         }),
         documentNumber: Yup.string().test({
             name: 'test-document-number',
             test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(context.parent.documentType, list);
+                const documentConfig = getSelectedDocumentConfigData(countryCode, context.parent.documentType, list);
                 return validateDocumentNumber(documentConfig, value as string, context);
             },
         }),
@@ -90,9 +98,49 @@ export const getIDVFormValidationSchema = (list: TDocument[]) => {
     });
 };
 
-export const getSelectedDocumentConfigData: (prop: string, list: TDocument[]) => TDocument | undefined = (
-    item: string,
-    list: TDocument[] = []
-) => {
-    return list?.find(doc => doc.id === item);
+export const getSelectedDocumentConfigData = (
+    countryCode: string,
+    documentType: string,
+    documentList: Exclude<
+        Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
+        undefined
+    >['idv']
+): TDocument | undefined => {
+    const exampleFormatConfigs = getIDVDocumentExampleFormat();
+
+    const selectedDocumentConfig = (exampleFormatConfigs?.[countryCode] as TIDVDocumentConfig)?.[documentType];
+    const selectedDocument = documentList?.[documentType];
+
+    if (!selectedDocument) {
+        return undefined;
+    }
+
+    const documentConfig: TDocument = {
+        exampleFormat: selectedDocumentConfig.exampleFormat as string,
+        id: documentType,
+        text: selectedDocument.display_name as string,
+        value: selectedDocument.format as string,
+    };
+
+    if (selectedDocument.additional) {
+        documentConfig.additional = {
+            displayName: selectedDocument.additional.display_name,
+            exampleFormat: selectedDocumentConfig.additionalDocumentExampleFormat as string,
+            format: selectedDocument.additional.format,
+        };
+    }
+    return documentConfig;
+};
+
+export const generatePlaceholderText = (selected_doc: string): string => {
+    switch (selected_doc) {
+        case 'drivers_license':
+            return 'Enter Driver License Reference number';
+        case 'ssnit':
+            return 'Enter your SSNIT number';
+        case 'national_id_no_photo':
+            return 'Enter your National Identification Number (NIN)';
+        default:
+            return 'Enter your document number';
+    }
 };

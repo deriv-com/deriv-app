@@ -1,27 +1,41 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useMemo } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
 import { Checkbox, InlineMessage, Loader, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
 import { FormInputField } from '../../components/FormFields';
 import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
+import { validateField } from '../../utils/validation';
 
 const ExampleImage = lazy(() => import('../../assets/proof-of-identity/personal-details-example.svg'));
 
-type TPersonalDetailsFormWithExample = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
+type TPersonalDetailsFormWithExampleValues = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
 
 type TPersonalDetailsFormWithExampleProps = {
     onConfirm: () => void;
 };
 
 export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFormWithExampleProps) => {
-    const formik = useFormikContext<TPersonalDetailsFormWithExample>();
+    const formik = useFormikContext<TPersonalDetailsFormWithExampleValues>();
 
     if (!formik) {
         throw new Error('PersonalDetailsFormWithExample must be used within a Formik component');
     }
 
-    const { isValid } = formik;
+    const { errors, values } = formik;
+
+    const isDisabled = useMemo(() => {
+        return (
+            !values?.firstName ||
+            !values?.lastName ||
+            !values?.dateOfBirth ||
+            !!errors?.firstName ||
+            !!errors?.lastName ||
+            !!errors?.dateOfBirth
+        );
+    }, [values, errors]);
+
+    const validationSchema = getNameDOBValidationSchema();
 
     return (
         <section className='p-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
@@ -38,14 +52,20 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                         label='First name*'
                         message='Your first name as in your identity document'
                         name='firstName'
+                        validationSchema={validationSchema.fields.firstName}
                     />
                     <FormInputField
                         isFullWidth
                         label='Last name*'
                         message='Your last name as in your identity document'
                         name='lastName'
+                        validationSchema={validationSchema.fields.lastName}
                     />
-                    <Field name='dateOfBirth' type='input'>
+                    <Field
+                        name='dateOfBirth'
+                        type='input'
+                        validate={validateField(validationSchema.fields.dateOfBirth)}
+                    >
                         {({ field, form, meta }: FieldProps<string>) => (
                             <DatePicker
                                 {...field}
@@ -70,16 +90,20 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                 </div>
             </div>
             <div>
-                <Field name='detailsConfirmation' type='checkbox'>
-                    {({ field, meta: { error, touched } }: FieldProps) => (
+                <Field
+                    name='detailsConfirmation'
+                    type='checkbox'
+                    validate={validateField(validationSchema.fields.nameDOBConfirmation)}
+                >
+                    {({ field, form, meta: { error, touched } }: FieldProps) => (
                         <Checkbox
                             {...field}
-                            disabled={!isValid}
+                            disabled={isDisabled}
                             error={Boolean(error && touched)}
                             id='detailsConfirmation'
                             label='I confirm that the name and date of birth above match my chosen identity document.'
                             onChange={value => {
-                                console.log('Value: ', value);
+                                form.setFieldValue(field.name, value);
                                 if (value) {
                                     onConfirm();
                                 }

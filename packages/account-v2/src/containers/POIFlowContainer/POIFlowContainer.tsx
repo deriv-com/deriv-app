@@ -7,8 +7,11 @@ type TPOIFlowContainerProps = {
     countryCode: string;
 };
 
+type TSupportedDocuments = DeepNonNullable<
+    ReturnType<typeof useKycAuthStatus>['kyc_auth_status']
+>['identity']['supported_documents']['idv'];
+
 export const POIFlowContainer = ({ countryCode }: TPOIFlowContainerProps) => {
-    console.log('Country code: ', countryCode);
     const { isLoading, kyc_auth_status: kycAuthStatus } = useKycAuthStatus({ country: countryCode });
 
     if (isLoading || !kycAuthStatus) {
@@ -25,7 +28,12 @@ export const POIFlowContainer = ({ countryCode }: TPOIFlowContainerProps) => {
             return <OnfidoContainer country={countryCode} />;
         }
         case 'idv': {
-            return <IDVService supportedDocuments={supportedDocuments?.idv} />;
+            return (
+                <IDVService
+                    countryCode={countryCode}
+                    supportedDocuments={supportedDocuments?.idv as TSupportedDocuments}
+                />
+            );
         }
         default: {
             return <>Default</>;

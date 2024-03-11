@@ -11,7 +11,7 @@ import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-conf
 import OnfidoSdkView from './onfido-sdk-view';
 import type { SdkHandle, SdkResponse, SupportedLanguages } from '../../../Types';
 import { convertAlpha2toAlpha3, convertAlpha3toAlpha2, getOnfidoSupportedLocaleCode } from '../../../Helpers/utils';
-import { ONFIDO_PHRASES } from '@deriv/api/src/constants';
+import { getOnfidoPhrases } from '../../../Constants/onfido';
 
 type TAPIError = {
     code?: string;
@@ -99,8 +99,8 @@ const OnfidoSdkViewContainer = observer(
                         containerId: 'onfido',
                         language: {
                             locale: getOnfidoSupportedLocaleCode(current_language) as SupportedLanguages,
-                            phrases: ONFIDO_PHRASES(),
-                            mobilePhrases: ONFIDO_PHRASES(),
+                            phrases: getOnfidoPhrases(),
+                            mobilePhrases: getOnfidoPhrases(),
                         },
                         token: service_token,
                         useModal: false,

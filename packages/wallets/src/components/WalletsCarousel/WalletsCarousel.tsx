@@ -37,31 +37,6 @@ const WalletsCarousel: React.FC = () => {
         };
     }, [handleScroll, heightFromTop]);
 
-    // useEffect(() => {
-    //     let isMounted = true;
-    //     const currentContainerRef = containerRef.current;
-
-    //     const handleScroll = () => {
-    //         if (currentContainerRef) {
-    //             const newHeightFromTop = currentContainerRef.getBoundingClientRect().top;
-    //             setHeightFromTop(newHeightFromTop);
-    //             heightFromTop && setIsContentScrolled(heightFromTop < -100);
-    //         }
-    //     };
-
-    //     if (isMounted) {
-    //         currentContainerRef?.addEventListener('touchmove', handleScroll);
-    //         currentContainerRef?.addEventListener('scroll', handleScroll);
-    //         handleScroll();
-    //     }
-
-    //     return () => {
-    //         currentContainerRef?.removeEventListener('touchmove', handleScroll);
-    //         currentContainerRef?.removeEventListener('scroll', handleScroll);
-    //         isMounted = false;
-    //     };
-    // }, [heightFromTop]);
-
     return (
         <React.Fragment>
             {!isActiveWalletLoading && (

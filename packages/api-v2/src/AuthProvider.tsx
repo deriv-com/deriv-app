@@ -9,7 +9,7 @@ import { TSocketResponseData } from '../types';
 type AuthContextType = {
     loginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
-    switchAccount: (loginid: string) => Promise<void>;
+    switchAccount: (loginid: string, forceRefresh?: boolean) => Promise<void>;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -99,6 +99,8 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
             const activeLoginID = authorizeResponse.authorize?.loginid;
             if (!activeLoginID) return;
 
+            setLoginid(activeLoginID);
+
             const accountList = authorizeResponse.authorize?.account_list;
             if (!accountList) return;
 
@@ -151,8 +153,11 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
     }, [cookieTimeout, loginIDKey, mutateAsync, processAuthorizeResponse]);
 
     const switchAccount = useCallback(
-        async (newLoginId: string) => {
-            if (newLoginId === loginid) return;
+        async (newLoginId: string, forceRefresh?: boolean) => {
+            if (newLoginId === loginid && !forceRefresh) {
+                return;
+            }
+
             queryClient.cancelQueries();
 
             setIsLoading(true);

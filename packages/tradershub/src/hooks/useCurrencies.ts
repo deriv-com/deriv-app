@@ -24,7 +24,7 @@ export type TCurrencies = {
 /** A custom hook to get the currency config information from `website_status` endpoint and in predefined order */
 const useCurrencies = () => {
     const { data: authorizeData, isLoading: isAuthorizeLoading, isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: websiteStatusData, isLoading: isWesiteStatusLoading, ...rest } = useQuery('website_status');
+    const { data: websiteStatusData, isLoading: isWebsiteStatusLoading, ...rest } = useQuery('website_status');
     const { data: landingCompanyData, isLoading: isLandingCompanyLoading } = useLandingCompany();
     const { data: activeDerivTradingAccount } = useActiveTradingAccount();
     const { data: accountStatus } = useAccountStatus();
@@ -112,6 +112,7 @@ const useCurrencies = () => {
         return currencyConfig?.FIAT.find(currency => currency.isAdded);
     }, [currencyConfig?.FIAT]);
 
+    // NOTE: redesign the logic to make it more readable and maintainable
     // Disable fiat currencies if the current account currency is not fiat or if the account is deposit attempt
     const disableFiatCurrencies = useMemo(
         () =>
@@ -141,7 +142,7 @@ const useCurrencies = () => {
     return {
         ...rest,
         data: currencyConfig,
-        isLoading: isAuthorizeLoading || isWesiteStatusLoading || isLandingCompanyLoading,
+        isLoading: isAuthorizeLoading || isWebsiteStatusLoading || isLandingCompanyLoading,
         allCryptoCurrenciesAreAdded,
         currentAccountCurrencyConfig,
         addedFiatCurrency,

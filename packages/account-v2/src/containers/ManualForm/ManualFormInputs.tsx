@@ -14,7 +14,7 @@ export const ManualFormInputs = ({ isExpiryDateRequired, selectedDocument }: TMa
         <Fragment>
             <Text>{getTitleForFormInputs(selectedDocument)}</Text>
             <div className='gap-24 flex flex-col lg:grid lg:grid-cols-2'>
-                <Field name='document_number'>
+                <Field name='documentNumber'>
                     {({ field, meta }: FieldProps) => {
                         const hasError = meta.touched && !!meta.error;
                         const fieldLabel = `${fieldsConfig.documentNumber.label}*`;
@@ -33,7 +33,7 @@ export const ManualFormInputs = ({ isExpiryDateRequired, selectedDocument }: TMa
                     }}
                 </Field>
                 {isExpiryDateRequired && (
-                    <Field name='document_expiry'>
+                    <Field name='documentExpiry'>
                         {({ field, form, meta }: FieldProps) => {
                             const hasError = meta.touched && !!meta.error;
                             const fieldLabel = `${fieldsConfig.documentExpiry.label}*`;
@@ -47,7 +47,7 @@ export const ManualFormInputs = ({ isExpiryDateRequired, selectedDocument }: TMa
                                     isInvalid={hasError}
                                     label={fieldLabel}
                                     onDateChange={(date: string | null) => {
-                                        form.setFieldValue('document_expiry', date);
+                                        form.setFieldValue('documentExpiry', date);
                                     }}
                                 />
                             );

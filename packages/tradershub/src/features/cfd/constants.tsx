@@ -20,7 +20,7 @@ type TAppContent = {
     title: string;
 };
 
-type TPlatform = 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
+type TPlatform = 'ctrader_ios' | 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
 
 export type TTM5FilterLandingCompany = Exclude<TJurisdiction, 'malta' | 'seychelles' | undefined>;
 type TLandingCompanyDetails = { name: string; shortcode: string; tncUrl: string };
@@ -97,7 +97,7 @@ export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
 export const PlatformDetails = {
     ctrader: {
         icon: (width?: number) => <IconComponent icon='CTrader' width={width} />,
-        link: 'https://onelink.to/hyqpv7',
+        link: 'https://onelink.to/5jgj8z',
         platform: 'ctrader' as TPlatforms.OtherAccounts,
         title: 'Deriv cTrader',
     },
@@ -133,6 +133,12 @@ export const AppToContentMapper: TAppToContentMapper = {
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
         text: 'Download',
         title: 'CTrader Windows App',
+    },
+    ctrader_ios: {
+        icon: <MacOSIcon />,
+        link: 'https://getctradermac.com/deriv/ctrader-deriv-setup.dmg',
+        text: 'Download',
+        title: 'CTrader MacOS App',
     },
     linux: {
         icon: <LinuxIcon />,
@@ -193,7 +199,7 @@ export type TAppLinks = {
 export const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     ctrader: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
-        ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
+        ios: 'https://apps.apple.com/us/app/deriv-ctrader/id6466996509',
     },
     dxtrade: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',

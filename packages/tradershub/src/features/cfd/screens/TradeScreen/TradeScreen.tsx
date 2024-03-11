@@ -114,6 +114,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                     )}
                     {platform === ctraderPlatform && (
                         <TradeDetailsItem
+                            className='rounded-t-sm'
                             value=' Use your Deriv account email and password to login into the cTrader platform.'
                             variant='info'
                         />
@@ -149,13 +150,14 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                 {platform === dxtradePlatform && (
                     <TradeLink isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
                 )}
-                {platform === ctraderPlatform && (
+                {platform === ctraderPlatform && isDesktop && (
                     <Fragment>
                         <TradeLink platform={ctraderPlatform} />
                         <TradeLink
                             app={ctraderPlatform as keyof typeof AppToContentMapper}
                             platform={ctraderPlatform}
                         />
+                        <TradeLink app='ctrader_ios' platform={ctraderPlatform} />
                     </Fragment>
                 )}
             </div>

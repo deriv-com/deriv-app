@@ -43,17 +43,17 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
     return (
         <div className='flex items-center justify-between px-16 py-24 border-solid border-t-1 border-system-light-secondary-background'>
             <div className='flex items-center gap-16'>
-                {(platform === mt5Platform || app === ctraderPlatform) && (
+                {(platform === mt5Platform || platform === ctraderPlatform) && (
                     <Fragment>
                         <div className='w-1600 h-1600'>{content.icon}</div>
                         <Text size='sm'>{content.title}</Text>
                     </Fragment>
                 )}
-                {platform !== mt5Platform && app !== ctraderPlatform && (
+                {platform !== mt5Platform && app !== ctraderPlatform && app !== 'ctrader_ios' && (
                     <Text size='sm'>Run {PlatformDetails[platform ?? dxtradePlatform].title} on your browser</Text>
                 )}
             </div>
-            {(platform === mt5Platform || app === ctraderPlatform) && (
+            {(platform === mt5Platform || app === ctraderPlatform || app === 'ctrader_ios') && (
                 <Button
                     className='px-16 border-opacity-black-8 rounded-xs'
                     color='black'
@@ -64,7 +64,7 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
                     {content.text}
                 </Button>
             )}
-            {platform !== mt5Platform && app !== ctraderPlatform && (
+            {platform !== mt5Platform && app !== ctraderPlatform && app !== 'ctrader_ios' && (
                 <Button
                     className='flex items-center justify-center gap-8 p-8 border-none rounded-md cursor-pointer bg-system-dark-primary-background'
                     color='white'

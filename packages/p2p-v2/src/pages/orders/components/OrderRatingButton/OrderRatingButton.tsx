@@ -1,7 +1,6 @@
 import React from 'react';
 import { LabelPairedStarLgFillIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
-import './OrderRatingButton.scss';
 
 type TOrderRatingButtonProps = {
     buttonLabel?: string;

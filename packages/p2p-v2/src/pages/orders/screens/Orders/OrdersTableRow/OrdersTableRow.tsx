@@ -93,7 +93,7 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
             <Text size='sm'>{isBuyOrderForUser ? transactionAmount : offerAmount}</Text>
             <Text size='sm'>{isBuyOrderForUser ? offerAmount : transactionAmount}</Text>
             {!isPast && <OrderTimer distance={distance} />}
-            {isCompletedOrder && <OrderRatingButton />}
+            {true && <OrderRatingButton />}
         </div>
     );
 };

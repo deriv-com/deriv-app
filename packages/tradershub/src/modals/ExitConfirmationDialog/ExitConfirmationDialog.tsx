@@ -22,7 +22,7 @@ const ExitConfirmationDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose:
                     If you hit Yes, the info you entered will be lost.
                 </Text>
                 <div className='flex justify-end gap-8'>
-                    <Button onClick={handleClose} variant='outlined'>
+                    <Button color='black' onClick={handleClose} variant='outlined'>
                         Yes
                     </Button>
                     <Button onClick={onClose}>No</Button>

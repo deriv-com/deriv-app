@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
-import { useOnfido } from '@deriv/api';
+import { useOnfido } from '@deriv/api-v2';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import IcAccountMissingDetails from '../../assets/proof-of-identity/ic-account-missing-details.svg';
 import { ErrorMessage } from '../../components/ErrorMessage';
@@ -108,7 +108,7 @@ export const OnfidoContainer = ({
                 {/* Do this: Dummy div here replace with PoiConfirmWithExample */}
                 <div
                     className='border-1 border-solid border-solid-grey-2 rounded-lg w-[200px] sm:w-[638px] h-[384px]'
-                    data-testid='dt_poi-confirm-with-example'
+                    data-testid='dt_poi_confirm_with_example'
                     onClick={() => setIsOnfidoEnabled(true)}
                     onKeyDown={() => setIsOnfidoEnabled(true)}
                     tabIndex={0}

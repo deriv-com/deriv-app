@@ -9,7 +9,6 @@ const ContractHistory = 'ContractHistory';
 const mocked_default_props: React.ComponentProps<typeof ContractAudit> = {
     contract_info: mockContractInfo(),
     contract_update_history: [{ order_date: 1700482235 }, { order_date: 1700482236 }],
-    has_result: true,
     is_multiplier: true,
     is_accumulator: false,
     is_turbos: false,
@@ -31,12 +30,6 @@ jest.mock('../contract-details', () => jest.fn(() => <div>{ContractDetails}</div
 jest.mock('../contract-history', () => jest.fn(() => <div>{ContractHistory}</div>));
 
 describe('<ContractAudit />', () => {
-    it('should not render component if has_result is falsy', () => {
-        const { container } = render(<ContractAudit {...mocked_default_props} has_result={false} />);
-
-        expect(container).toBeEmptyDOMElement();
-    });
-
     it('should render only ContractDetails component if is_multiplier, is_accumulator and is_turbos are falsy', () => {
         render(<ContractAudit {...mocked_default_props} is_multiplier={false} />);
 

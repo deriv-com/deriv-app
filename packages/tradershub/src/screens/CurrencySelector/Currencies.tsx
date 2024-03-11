@@ -32,7 +32,7 @@ const Currencies = ({ type, list: currencies = [] }: TCurrencies) => {
             )}
             <div className={twMerge('flex flex-wrap justify-start', currencies.length < 4 ? 'lg:justify-center' : '')}>
                 {currencies?.map(currency => (
-                    <CurrencyCard id={currency?.id} key={currency?.id} title={currency?.name ?? ''} />
+                    <CurrencyCard id={currency?.id ?? ''} key={currency?.id} title={currency?.name ?? ''} />
                 ))}
             </div>
         </div>

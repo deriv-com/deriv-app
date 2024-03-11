@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RadioGroupFilterModal } from '@/components/Modals';
 import { BUY_SELL, SORT_BY_LIST } from '@/constants';
 import { TSortByValues } from '@/utils';
@@ -6,8 +6,6 @@ import { p2p } from '@deriv/api-v2';
 import { BuySellHeader } from '../BuySellHeader';
 import { BuySellTableRenderer } from './BuySellTableRenderer';
 import './BuySellTable.scss';
-
-export type TBuySellTableRowRenderer = Partial<NonNullable<ReturnType<typeof p2p.advert.useGetList>['data']>[0]>;
 
 const BuySellTable = () => {
     const { data: p2pSettingsData } = p2p.settings.useGetSettings();
@@ -29,6 +27,10 @@ const BuySellTable = () => {
         setSortDropdownValue(value as TSortByValues);
         setIsFilterModalOpen(false);
     };
+
+    useEffect(() => {
+        if (p2pSettingsData?.localCurrency) setSelectedCurrency(p2pSettingsData.localCurrency);
+    }, [p2pSettingsData?.localCurrency]);
 
     return (
         <div className='p2p-v2-buy-sell-table h-full w-full relative flex flex-col'>

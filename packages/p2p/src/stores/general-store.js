@@ -523,8 +523,6 @@ export default class GeneralStore extends BaseStore {
                 this.setIsP2pBlockedForPa(true);
             }
 
-            this.setIsLoading(false);
-
             const { sendbird_store } = this.root_store;
 
             this.setP2PConfig();
@@ -538,10 +536,6 @@ export default class GeneralStore extends BaseStore {
                 ),
                 p2p_settings_subscription: subscribeWS({ p2p_settings: 1 }, [this.setP2PSettings]),
             };
-
-            if (this.ws_subscriptions) {
-                this.setIsLoading(false);
-            }
         });
     }
 
@@ -834,10 +828,10 @@ export default class GeneralStore extends BaseStore {
                 this.setIsAdvertiser(false);
             } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                 this.setIsBlocked(true);
-                this.setIsLoading(false);
-                return;
             }
         }
+
+        this.setIsLoading(false);
 
         if (!this.is_p2p_user) {
             requestWS({ get_account_status: 1 }).then(account_response => {

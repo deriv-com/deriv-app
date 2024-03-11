@@ -1,0 +1,18 @@
+.p2p-v2-orders-table {
+    & .deriv-table {
+        &__header {
+            grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 1.5fr;
+        }
+
+        &__content__row {
+            border-bottom: 1px solid #f2f3f4;
+        }
+    }
+
+    &--inactive {
+        & .deriv-table__header {
+            grid-template-columns: 2fr 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 2fr;
+            gap: 1rem;
+        }
+    }
+}

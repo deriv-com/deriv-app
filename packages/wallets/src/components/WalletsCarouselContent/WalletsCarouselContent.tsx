@@ -87,7 +87,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
     useEffect(() => {
         const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-        setCurrentIndex(index);
+        if (index >= 0) {
+            setCurrentIndex(index);
+        }
     }, [selectedLoginId, walletAccountsList]);
 
     // set the initial data loading flag to false once all "is loading" flags are false,
@@ -109,6 +111,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                     <WalletCard
                         balance={account.display_balance}
                         currency={account.currency || 'USD'}
+                        iconSize='xl'
+                        isActive={account.is_active}
+                        isCarouselContent
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}
                         landingCompanyName={account.landing_company_name}

@@ -187,7 +187,7 @@ export const getOnfidoPhrases = () => ({
     },
     linked_computer: {
         button_primary: localize('Continue'),
-        info: localize('Make sure§'),
+        info: localize('Make sure'),
         list_item_desktop_open: localize('2. Your desktop window stays open'),
         list_item_sent_by_you: localize('1. This link was sent by you'),
         subtitle: localize('Continue with the verification'),

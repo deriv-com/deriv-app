@@ -45,8 +45,14 @@ const getConfigValues = (environment: string) => {
  * @returns {void}
  * **/
 const initDatadog = (is_datadog_enabled: boolean) => {
-    const DATADOG_APP_ID = is_datadog_enabled ? process.env.DATADOG_APPLICATION_ID ?? '' : '';
-    const DATADOG_CLIENT_TOKEN = is_datadog_enabled ? process.env.DATADOG_CLIENT_TOKEN ?? '' : '';
+    if (!is_datadog_enabled) {
+        if (window.DD_RUM) {
+            window.DD_RUM = undefined;
+        }
+        return;
+    }
+    const DATADOG_APP_ID = process.env.DATADOG_APPLICATION_ID ?? '';
+    const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
     const isProduction = process.env.NODE_ENV === 'production';
     const isStaging = process.env.NODE_ENV === 'staging';
 

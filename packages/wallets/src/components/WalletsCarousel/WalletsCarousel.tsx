@@ -8,20 +8,23 @@ import './WalletsCarousel.scss';
 
 const WalletsCarousel: React.FC = () => {
     const [isWalletSettled, setIsWalletSettled] = useState(true);
-    const [isContentScrolled, setIsContentScrolled] = useState(false);
+    const [showWalletsCarouselHeader, setShowWalletsCarouselHeader] = useState(false);
     const [heightFromTop, setHeightFromTop] = useState(0);
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
 
     const containerRef = useRef<HTMLDivElement>(null);
 
+    // function to handle scrolling event for hiding/displaying WalletsCarouselHeader
+    // walletsCarouselHeader will be displayed when height from top of screen is more than 100px
     const handleScroll = useCallback(() => {
         if (containerRef.current) {
             const newHeightFromTop = containerRef.current.getBoundingClientRect().top;
             setHeightFromTop(newHeightFromTop);
-            heightFromTop && setIsContentScrolled(heightFromTop < -100);
+            heightFromTop && setShowWalletsCarouselHeader(heightFromTop < -100);
         }
     }, [heightFromTop]);
 
+    //this handle scroll function listens to the scroll as well as touchmove events to handle drag scrolling on mobile
     useEventListener('touchmove', handleScroll, containerRef);
     useEventListener('scroll', handleScroll, containerRef);
 
@@ -43,7 +46,7 @@ const WalletsCarousel: React.FC = () => {
                 <WalletsCarouselHeader
                     balance={activeWallet?.display_balance}
                     currency={activeWallet?.currency || 'USD'}
-                    hidden={!isContentScrolled}
+                    hidden={!showWalletsCarouselHeader}
                     isDemo={activeWallet?.is_virtual}
                 />
             )}

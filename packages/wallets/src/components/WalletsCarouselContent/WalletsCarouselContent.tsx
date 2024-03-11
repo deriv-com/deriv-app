@@ -133,6 +133,22 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         walletsCarouselEmblaApi?.on('settle', () => {
             onWalletSettled?.(true);
         });
+
+        return () => {
+            walletsCarouselEmblaApi?.off('select', () => {
+                const index = walletsCarouselEmblaApi?.selectedScrollSnap();
+                if (index === undefined) {
+                    return;
+                }
+                const loginId = walletsAccountsListRef?.current?.[index]?.loginid;
+
+                loginId && setSelectedLoginId(loginId);
+            });
+
+            walletsCarouselEmblaApi?.off('settle', () => {
+                onWalletSettled?.(true);
+            });
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletsCarouselEmblaApi]);
 
@@ -161,6 +177,14 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                 .on('reInit', setTransitionFactor)
                 .on('reInit', transitionScale)
                 .on('scroll', transitionScale);
+
+            return () => {
+                walletsCarouselEmblaApi
+                    ?.off('reInit', setTransitionNodes)
+                    .off('reInit', setTransitionFactor)
+                    .off('reInit', transitionScale)
+                    .off('scroll', transitionScale);
+            };
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletsCarouselEmblaApi, isInitialDataLoaded, transitionScale]);

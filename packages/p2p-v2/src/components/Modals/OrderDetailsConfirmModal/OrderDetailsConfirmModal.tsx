@@ -39,16 +39,12 @@ const OrderDetailsConfirmModal = ({ isModalOpen, onRequestClose }: TOrderDetails
     //     formatMoney(local_currency, amount_display * Number(roundOffDecimal(rate, setDecimalPlaces(rate, 6))), true)
     // );
 
-    useEffect(() => {
-        Modal.setAppElement('#v2_modal_root');
-    }, []);
-
     return (
         <Modal
+            ariaHideApp={false}
             className='p2p-v2-order-details-confirm-modal'
             isOpen
             onRequestClose={onRequestClose}
-            style={customStyles}
         >
             <Modal.Header
                 className='border-none lg:py-14 lg:px-[2.4rem] py-4 px-[1.6rem]'

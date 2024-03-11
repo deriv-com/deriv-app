@@ -15,16 +15,9 @@ const mockProps = {
     onRequestClose: jest.fn(),
 };
 
-const wrapper = ({ children }: { children: JSX.Element }) => (
-    <div>
-        <div id='v2_modal_root' />
-        {children}
-    </div>
-);
-
 describe('<OrderDetailsConfirmModal />', () => {
     it('should render the modal’s default screen', () => {
-        render(<OrderDetailsConfirmModal {...mockProps} />, { wrapper });
+        render(<OrderDetailsConfirmModal {...mockProps} />);
 
         expect(screen.getByText('Payment confirmation')).toBeInTheDocument();
         expect(
@@ -42,7 +35,7 @@ describe('<OrderDetailsConfirmModal />', () => {
     });
 
     it('should handle accepted files', async () => {
-        render(<OrderDetailsConfirmModal {...mockProps} />, { wrapper });
+        render(<OrderDetailsConfirmModal {...mockProps} />);
 
         const file = new File(['test'], 'test.png', { type: 'image/png' });
         const fileInput = screen.getByTestId('dt_p2p_v2_file_upload_input') as HTMLInputElement;
@@ -60,7 +53,7 @@ describe('<OrderDetailsConfirmModal />', () => {
     });
 
     it('should show error message if file is not supported', async () => {
-        render(<OrderDetailsConfirmModal {...mockProps} />, { wrapper });
+        render(<OrderDetailsConfirmModal {...mockProps} />);
 
         const file = new File(['test'], 'test.mp4', { type: 'video/mp4' });
         const fileInput = screen.getByTestId('dt_p2p_v2_file_upload_input');
@@ -73,7 +66,7 @@ describe('<OrderDetailsConfirmModal />', () => {
     });
 
     it('should show error message if file is over 5MB', async () => {
-        render(<OrderDetailsConfirmModal {...mockProps} />, { wrapper });
+        render(<OrderDetailsConfirmModal {...mockProps} />);
 
         const blob = new Blob([new Array(6 * 1024 * 1024).join('a')], { type: 'image/png' });
         const file = new File([blob], 'test.png');
@@ -87,7 +80,7 @@ describe('<OrderDetailsConfirmModal />', () => {
     });
 
     it('should remove file when close icon is clicked', async () => {
-        render(<OrderDetailsConfirmModal {...mockProps} />, { wrapper });
+        render(<OrderDetailsConfirmModal {...mockProps} />);
 
         const file = new File(['test'], 'test.png', { type: 'image/png' });
         const fileInput = screen.getByTestId('dt_p2p_v2_file_upload_input');

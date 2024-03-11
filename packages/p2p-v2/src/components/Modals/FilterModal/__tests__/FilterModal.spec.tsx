@@ -13,13 +13,6 @@ const mockProps = {
     setSelectedPaymentMethods: jest.fn(),
 };
 
-const wrapper = ({ children }: { children: JSX.Element }) => (
-    <div>
-        <div id='v2_modal_root' />
-        {children}
-    </div>
-);
-
 let mockData = [
     {
         display_name: 'Alipay',
@@ -60,7 +53,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should render the initial page of the FilterModal', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const toggleSwitch = screen.getByRole('checkbox');
         const resetButton = screen.getByRole('button', { name: 'Reset' });
@@ -79,7 +72,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should enable the apply button when user toggles the ToggleSwitch', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const toggleSwitch = screen.getByRole('checkbox');
         const applyButton = screen.getByRole('button', { name: 'Apply' });
@@ -91,7 +84,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should call setSelectedPaymentMethods, onToggle, and onRequestClose when user clicks the Apply button', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const toggleSwitch = screen.getByRole('checkbox');
         const applyButton = screen.getByRole('button', { name: 'Apply' });
@@ -105,7 +98,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should call setPaymentMethods when user clicks on Reset button', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const toggleSwitch = screen.getByRole('checkbox');
         const resetButton = screen.getByRole('button', { name: 'Reset' });
@@ -120,7 +113,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should render the payment methods page of the FilterModal', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -144,7 +137,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should show the search results when user types in the search input', async () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -164,7 +157,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should show No results for message if payment method is not in the list', async () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -192,7 +185,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should enable the clear and confirm buttons when user selects a payment method', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -209,7 +202,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should clear the selected payment methods when user clicks on the clear button', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -224,7 +217,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should go back to the initial page when user clicks on the back button', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -237,7 +230,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should call go back to the initial page and display the selected payment methods when user clicks on the confirm button', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -255,7 +248,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should call setSelectedPaymentMethods if a payment method is unselected', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -270,7 +263,7 @@ describe('<FilterModal />', () => {
 
     it('should populate the payment methods list with the data from the API', () => {
         mockData = undefined;
-        const { rerender } = render(<FilterModal {...mockProps} />, { wrapper });
+        const { rerender } = render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);
@@ -306,7 +299,7 @@ describe('<FilterModal />', () => {
             isMobile: true,
         });
 
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const backButton = screen.getByTestId('dt_p2p_v2_mobile_wrapper_button');
         userEvent.click(backButton);
@@ -315,7 +308,7 @@ describe('<FilterModal />', () => {
     });
 
     it('should go back to initial page if backButton is pressed in payment methods page in mobile', () => {
-        render(<FilterModal {...mockProps} />, { wrapper });
+        render(<FilterModal {...mockProps} />);
 
         const paymentMethodsText = screen.getByText('Payment methods');
         userEvent.click(paymentMethodsText);

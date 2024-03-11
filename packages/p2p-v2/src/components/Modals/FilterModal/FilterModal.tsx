@@ -3,7 +3,6 @@ import { FullPageMobileWrapper, PageReturn } from '@/components';
 import { p2p } from '@deriv/api-v2';
 import { LabelPairedChevronRightLgRegularIcon } from '@deriv/quill-icons';
 import { Modal, Text, ToggleSwitch, useDevice } from '@deriv-com/ui';
-import { customStyles } from '../helpers';
 import { FilterModalContent } from './FilterModalContent';
 import { FilterModalFooter } from './FilterModalFooter';
 import './FilterModal.scss';
@@ -71,10 +70,6 @@ const FilterModal = ({
     };
 
     useEffect(() => {
-        Modal.setAppElement('#v2_modal_root');
-    }, []);
-
-    useEffect(() => {
         if (data && paymentMethods.length > 0) {
             const selectedPaymentMethodsDisplayName = data
                 .filter(paymentMethod => paymentMethods.includes(paymentMethod.id))
@@ -118,12 +113,7 @@ const FilterModal = ({
     }
 
     return (
-        <Modal
-            className='p2p-v2-filter-modal'
-            isOpen={isModalOpen}
-            onRequestClose={onRequestClose}
-            style={customStyles}
-        >
+        <Modal ariaHideApp={false} className='p2p-v2-filter-modal' isOpen={isModalOpen} onRequestClose={onRequestClose}>
             <Modal.Header className='border-2' onRequestClose={onRequestClose}>
                 <PageReturn
                     onClick={() => setShowPaymentMethods(false)}

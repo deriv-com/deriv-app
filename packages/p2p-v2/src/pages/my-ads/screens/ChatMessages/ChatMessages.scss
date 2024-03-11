@@ -2,7 +2,8 @@
     background-color: var(--general-main-1);
     margin-top: auto;
     margin-right: 0.8rem;
-    flex: 1 1 0;
+    height: calc(70vh - 16rem);
+    overflow-y: auto;
 
     &__date {
         margin-top: 1.6rem;

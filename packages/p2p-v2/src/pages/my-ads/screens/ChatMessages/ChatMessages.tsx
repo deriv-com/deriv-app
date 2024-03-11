@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import clsx from 'clsx';
 import { CHAT_MESSAGE_TYPE } from '@/constants';
 import { useSendbird } from '@/hooks';
 import { convertToMB, formatMilliseconds, isImageType, isPDFType } from '@/utils';
-import { Text } from '@deriv-com/ui';
-import { AdminMessage } from '../AdminMessage';
+import { Text, useDevice } from '@deriv-com/ui';
+import PDFIcon from '../../../../public/ic-pdf.svg';
 import { ChatMessageReceipt } from '../ChatMessageReceipt';
 import { ChatMessageText } from '../ChatMessageText';
 import './ChatMessages.scss';
@@ -15,10 +15,22 @@ type TChatMessagesProps = {
     chatMessages: TChatMessages;
     userId?: string;
 };
+
+const AdminMessage = () => (
+    <div className='p2p-v2-chat-messages__item p2p-v2-chat-messages__item__admin'>
+        <ChatMessageText color='general' type='admin'>
+            Hello! This is where you can chat with the counterparty to confirm the order details.
+            <br />
+            Note: In case of a dispute, we’ll use this chat as a reference.
+        </ChatMessageText>
+    </div>
+);
+
 const ChatMessages = ({ chatChannel, chatMessages = [], userId }: TChatMessagesProps) => {
-    let currentDate = null;
+    const { isMobile } = useDevice();
+    let currentDate = '';
     const getMessageFormat = (chatMessage: TChatMessages[number], messageColor: string) => {
-        const { fileType = '', name, size, url } = chatMessage ?? {};
+        const { fileType = '', name, size = 0, url } = chatMessage ?? {};
         if (isImageType(fileType))
             return (
                 <a className='p2p-v2-chat-messages__item__image' href={url} rel='noopener noreferrer' target='_blank'>
@@ -29,7 +41,7 @@ const ChatMessages = ({ chatChannel, chatMessages = [], userId }: TChatMessagesP
             return (
                 <ChatMessageText color={messageColor}>
                     <div className='p2p-v2-chat-messages__item__pdf'>
-                        {/* <Icon icon='IcPdf' data_testid='dt_pdf_icon' size={20} /> */}
+                        <PDFIcon />
                         <a href={url} rel='noopener noreferrer' target='_blank'>
                             {name}
                         </a>
@@ -48,25 +60,20 @@ const ChatMessages = ({ chatChannel, chatMessages = [], userId }: TChatMessagesP
     };
 
     return (
-        <div>
-            <div className='p2p-v2-chat-messages__item p2p-v2-chat-messages__item__admin'>
-                <ChatMessageText color='general' type='admin'>
-                    Hello! This is where you can chat with the counterparty to confirm the order details.
-                    <br />
-                    Note: In case of a dispute, we’ll use this chat as a reference.
-                </ChatMessageText>
-            </div>
+        <div className='p2p-v2-chat-messages'>
+            <AdminMessage />
             {chatMessages.map(chatMessage => {
                 const isMyMessage = chatMessage.senderUserId === userId;
                 const messageDate = formatMilliseconds(chatMessage.createdAt, 'MMMM D, YYYY');
-                const messageColor = isMyMessage ? 'colored-background' : 'general';
+                const messageColor = isMyMessage ? 'white' : 'general';
                 const shouldRenderDate = currentDate !== messageDate && Boolean((currentDate = messageDate));
+                const { customType, message, messageType } = chatMessage;
 
                 return (
-                    <React.Fragment key={chatMessage.id}>
+                    <Fragment key={chatMessage.id}>
                         {shouldRenderDate && (
                             <div className='p2p-v2-chat-messages__date'>
-                                <Text align='center' color='less-prominent' size='xs' weight='bold'>
+                                <Text align='center' color='less-prominent' size={isMobile ? 'md' : 'sm'} weight='bold'>
                                     {messageDate}
                                 </Text>
                             </div>
@@ -77,27 +84,26 @@ const ChatMessages = ({ chatChannel, chatMessages = [], userId }: TChatMessagesP
                                 `p2p-v2-chat-messages__item__${isMyMessage ? 'outgoing' : 'incoming'}`
                             )}
                         >
-                            {chatMessage.messageType === CHAT_MESSAGE_TYPE.USER && (
-                                <ChatMessageText color={messageColor} type={chatMessage.customType}>
-                                    {chatMessage.message}
+                            {messageType === CHAT_MESSAGE_TYPE.USER && (
+                                <ChatMessageText color={messageColor} type={customType}>
+                                    {message}
                                 </ChatMessageText>
                             )}
-                            {chatMessage.messageType === CHAT_MESSAGE_TYPE.FILE &&
-                                getMessageFormat(chatMessage, messageColor)}
+                            {messageType === CHAT_MESSAGE_TYPE.FILE && getMessageFormat(chatMessage, messageColor)}
                             <div className='p2p-v2-chat-messages__item__timestamp'>
-                                <Text color='less-prominent' size='2xs'>
+                                <Text color='less-prominent' size={isMobile ? 'xs' : '2xs'}>
                                     {formatMilliseconds(chatMessage.createdAt, 'HH:mm', true)}
                                 </Text>
-                                {/* {isMyMessage && (
+                                {isMyMessage && (
                                     <ChatMessageReceipt
                                         chatChannel={chatChannel}
                                         message={chatMessage}
                                         userId={userId}
                                     />
-                                )} */}
+                                )}
                             </div>
                         </div>
-                    </React.Fragment>
+                    </Fragment>
                 );
             })}
         </div>

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FileUploaderComponent } from '@/components/FileUploaderComponent';
 import { getErrorMessage, maxPotFileSize, TFile } from '@/utils';
 import { Button, InlineMessage, Modal, Text, useDevice } from '@deriv-com/ui';
-import { customStyles } from '../helpers';
 import './OrderDetailsConfirmModal.scss';
 
 type TOrderDetailsConfirmModalProps = {

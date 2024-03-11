@@ -1,6 +1,7 @@
 export * from './ad-utils';
 export * from './adverts';
 export * from './currency';
+export * from './file';
 export * from './format-value';
 export * from './loader';
 export * from './object';

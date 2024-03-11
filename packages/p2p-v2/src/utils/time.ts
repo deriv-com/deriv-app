@@ -58,3 +58,15 @@ export const formatTime = (minutes: number) => {
 
     return `${hours} ${hoursText} ${remainingMinutes} ${minutesText}`;
 };
+
+/**
+ * returns miliseconds into UTC formatted string
+ * @param {Number} miliseconds miliseconds
+ * @param {String} strFormat formatting using moment e.g - YYYY-MM-DD HH:mm
+ */
+export const formatMilliseconds = (miliseconds: moment.MomentInput, strFormat: string, isLocalTime = false) => {
+    if (isLocalTime) {
+        return moment(miliseconds).format(strFormat);
+    }
+    return moment.utc(miliseconds).format(strFormat);
+};

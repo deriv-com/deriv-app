@@ -67,7 +67,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                     })}
                     ref={dropzoneRef}
                 >
-                    <input {...getInputProps()} data-testid='dt_file_upload_input' />
+                    <input {...getInputProps()} data-testid='dt_p2p_v2_file_upload_input' />
                     <div className='p2p-v2-file-dropzone__content'>
                         <FadeInMessage
                             // default message when not on hover or onDrag

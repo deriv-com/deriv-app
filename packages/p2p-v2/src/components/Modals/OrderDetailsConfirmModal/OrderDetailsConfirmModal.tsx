@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FileUploaderComponent } from '@/components/FileUploaderComponent';
 import { getErrorMessage, maxPotFileSize, TFile } from '@/utils';
 import { Button, InlineMessage, Modal, Text, useDevice } from '@deriv-com/ui';
@@ -18,6 +18,7 @@ type TDocumentFile = {
 const OrderDetailsConfirmModal = ({ isModalOpen, onRequestClose }: TOrderDetailsConfirmModalProps) => {
     const [documentFile, setDocumentFile] = useState<TDocumentFile>({ errorMessage: null, files: [] });
     const { isMobile } = useDevice();
+    const buttonTextSize = isMobile ? 'md' : 'sm';
 
     const handleAcceptedFiles = (files: TFile[]) => {
         if (files.length > 0) {
@@ -37,6 +38,10 @@ const OrderDetailsConfirmModal = ({ isModalOpen, onRequestClose }: TOrderDetails
     // const displayPaymentAmount = removeTrailingZeros(
     //     formatMoney(local_currency, amount_display * Number(roundOffDecimal(rate, setDecimalPlaces(rate, 6))), true)
     // );
+
+    useEffect(() => {
+        Modal.setAppElement('#v2_modal_root');
+    }, []);
 
     return (
         <Modal
@@ -59,7 +64,7 @@ const OrderDetailsConfirmModal = ({ isModalOpen, onRequestClose }: TOrderDetails
                     your payment
                 </Text>
                 <Text className='pt-[0.8rem] pb-[2.4rem]' color='less-prominent' size='sm'>
-                    We accept JPG, PDF, or PNG (up to 5MB)
+                    We accept JPG, PDF, or PNG (up to 5MB).
                 </Text>
                 <InlineMessage className='mb-4' variant='warning'>
                     <Text size={isMobile ? 'xs' : '2xs'}>
@@ -80,12 +85,12 @@ const OrderDetailsConfirmModal = ({ isModalOpen, onRequestClose }: TOrderDetails
             </Modal.Body>
             <Modal.Footer className='gap-4 border-none lg:p-[2.4rem] p-[1.6rem]'>
                 <Button className='border-2' color='black' size='lg' variant='outlined'>
-                    <Text lineHeight='6xl' size={isMobile ? 'md' : 'sm'} weight='bold'>
+                    <Text lineHeight='6xl' size={buttonTextSize} weight='bold'>
                         Go Back
                     </Text>
                 </Button>
                 <Button size='lg'>
-                    <Text lineHeight='6xl' size={isMobile ? 'md' : 'sm'} weight='bold'>
+                    <Text lineHeight='6xl' size={buttonTextSize} weight='bold'>
                         Confirm
                     </Text>
                 </Button>

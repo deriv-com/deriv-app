@@ -58,8 +58,8 @@ const FileUploaderComponent = ({
             {(value.length > 0 || !!validationErrorMessage) && (
                 <StandaloneCircleXmarkBoldIcon
                     className='p2p-v2-file-uploader-component__close-icon'
+                    data-testid='dt_p2p_v2_remove_file_icon'
                     fill='#999'
-                    // data_testid='dt_p2p_v2_remove_file_icon'
                     onClick={onClickClose}
                 />
             )}

@@ -2,7 +2,7 @@ import React from 'react';
 import { FormikValues, useFormikContext } from 'formik';
 import { Button, Icon, Popover, Text } from '@deriv/components';
 import BlockSelector from 'Components/block-selector';
-import { Localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdFormController from 'Pages/my-ads/ad-form-controller';
 import { useStores } from 'Stores';
@@ -44,14 +44,14 @@ const AdConditionsSection = ({ ...props }) => {
                 <Localize i18n_default_text='Only users who match these criteria will see your ad.' />
             </Text>
             <BlockSelector
-                label='Joined more than'
+                label={localize('Joined more than')}
                 onSelect={setJoiningDays}
                 options={joining_days}
                 tooltip_info="We'll only show your ad to people who've been using Deriv P2P for longer than the time you choose."
                 value={min_join_days}
             />
             <BlockSelector
-                label='Completion rate of more than'
+                label={localize('Completion rate of more than')}
                 onSelect={setMinCompletionRate}
                 options={completion_rates}
                 tooltip_info="We'll only show your ad to people with a completion rate higher than your selection. The completion rate is the percentage of successful orders."
@@ -59,7 +59,7 @@ const AdConditionsSection = ({ ...props }) => {
             />
             <div className='ad-conditions-section__countries-label'>
                 <Text color='less-prominent' size='xs' line_height='xl'>
-                    <Localize i18n_default_text={'Preferred countries'} />
+                    <Localize i18n_default_text='Preferred countries' />
                 </Text>
                 <Popover
                     alignment='top'

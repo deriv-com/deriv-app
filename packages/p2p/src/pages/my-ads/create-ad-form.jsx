@@ -1,15 +1,6 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
-import {
-    Button,
-    Checkbox,
-    Div100vhContainer,
-    FormProgress,
-    Modal,
-    Text,
-    ThemedScrollbars,
-    Wizard,
-} from '@deriv/components';
+import { Button, Checkbox, Div100vhContainer, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { reaction } from 'mobx';
@@ -19,9 +10,7 @@ import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
-import AdConditionsSection from './ad-conditions-section';
-import AdPaymentDetailsSection from './ad-payment-details-section';
-import AdTypeSection from './ad-type-section';
+import AdWizard from './ad-wizard';
 import './create-ad-form.scss';
 
 const CreateAdFormWrapper = ({ children }) => {
@@ -34,7 +23,6 @@ const CreateAdFormWrapper = ({ children }) => {
 const CreateAdForm = () => {
     const { buy_sell_store, floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
     const should_not_show_auto_archive_message_again = React.useRef(false);
-    const [current_step, setCurrentStep] = React.useState(0);
     const { useRegisterModalProps } = useModalManagerContext();
     const steps = [
         { header: { title: 'Set ad type and amount' } },
@@ -143,16 +131,7 @@ const CreateAdForm = () => {
                                     is_scrollbar_hidden={isMobile()}
                                 >
                                     <CreateAdFormWrapper>
-                                        <Wizard
-                                            className='create-ad-form__wizard'
-                                            initial_step={0}
-                                            onStepChange={step => setCurrentStep(step.active_step - 1)}
-                                            nav={<FormProgress steps={steps} current_step={current_step} />}
-                                        >
-                                            <AdTypeSection />
-                                            <AdPaymentDetailsSection />
-                                            <AdConditionsSection />
-                                        </Wizard>
+                                        <AdWizard steps={steps} />
                                     </CreateAdFormWrapper>
                                 </ThemedScrollbars>
                             </Form>

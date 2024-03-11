@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
-import { Button, Div100vhContainer, FormProgress, Modal, Text, ThemedScrollbars, Wizard } from '@deriv/components';
+import { Button, Div100vhContainer, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -10,9 +10,7 @@ import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
 import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import AdConditionsSection from './ad-conditions-section';
-import AdPaymentDetailsSection from './ad-payment-details-section';
-import AdTypeSection from './ad-type-section';
+import AdWizard from './ad-wizard';
 import './edit-ad-form.scss';
 
 const EditAdFormWrapper = ({ children }) => {
@@ -25,7 +23,6 @@ const EditAdFormWrapper = ({ children }) => {
 
 const EditAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
-    const [current_step, setCurrentStep] = React.useState(0);
     const steps = [
         { header: { title: 'Edit ad type and amount' } },
         { header: { title: 'Edit payment details' } },
@@ -135,16 +132,7 @@ const EditAdForm = () => {
                             <Form noValidate>
                                 <ThemedScrollbars className='edit-ad-form__scrollbar' is_scrollbar_hidden={isMobile()}>
                                     <EditAdFormWrapper>
-                                        <Wizard
-                                            className='create-ad-form__wizard'
-                                            initial_step={0}
-                                            onStepChange={step => setCurrentStep(step.active_step - 1)}
-                                            nav={<FormProgress steps={steps} current_step={current_step} />}
-                                        >
-                                            <AdTypeSection action='edit' />
-                                            <AdPaymentDetailsSection />
-                                            <AdConditionsSection />
-                                        </Wizard>
+                                        <AdWizard action='edit' steps={steps} />
                                     </EditAdFormWrapper>
                                 </ThemedScrollbars>
                             </Form>

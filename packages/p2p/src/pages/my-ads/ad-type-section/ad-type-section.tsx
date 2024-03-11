@@ -9,6 +9,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import AdFormController from 'Pages/my-ads/ad-form-controller';
 import { useStores } from 'Stores';
+import AdTypeSectionTrailingIcon from './ad-type-section-trailing-icon';
 
 type AdTypeSection = {
     action?: string;
@@ -17,7 +18,6 @@ type AdTypeSection = {
 const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
     const {
         client: { currency, local_currency_config },
-        ui: is_desktop,
     } = useStore();
     const local_currency = local_currency_config.currency;
     const { buy_sell_store, floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
@@ -60,7 +60,7 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
                 general_store.showModal({
                     key: 'AdCancelModal',
                     props: {
-                        message: 'If you choose to cancel, the edited details will be lost.',
+                        message: localize('If you choose to cancel, the edited details will be lost.'),
                         onConfirm: () => {
                             my_ads_store.setShowEditAdForm(false);
                         },
@@ -74,7 +74,7 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
             general_store.showModal({
                 key: 'AdCancelModal',
                 props: {
-                    message: "If you choose to cancel, the details you've entered will be lost.",
+                    message: localize("If you choose to cancel, the details you've entered will be lost."),
                     onConfirm: () => {
                         my_ads_store.setApiErrorMessage('');
                         floating_rate_store.setApiErrorMessage('');
@@ -120,14 +120,7 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
                             error={touched.offer_amount && errors.offer_amount}
                             label={localize('Total amount')}
                             className='ad-type-section__field'
-                            trailing_icon={
-                                <Text
-                                    color={is_desktop ? 'less-prominent' : 'prominent'}
-                                    size={is_desktop ? 'xxs' : 's'}
-                                >
-                                    {currency}
-                                </Text>
-                            }
+                            trailing_icon={<AdTypeSectionTrailingIcon label={currency} />}
                             onFocus={() => setFieldTouched('offer_amount', true)}
                             onChange={e => {
                                 my_ads_store.restrictLength(e, handleChange);
@@ -179,14 +172,7 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
                                     currency,
                                 })}
                                 className='ad-type-section__field'
-                                trailing_icon={
-                                    <Text
-                                        color={is_desktop ? 'less-prominent' : 'prominent'}
-                                        size={is_desktop ? 'xxs' : 's'}
-                                    >
-                                        {local_currency}
-                                    </Text>
-                                }
+                                trailing_icon={<AdTypeSectionTrailingIcon label={local_currency} />}
                                 onChange={e => {
                                     my_ads_store.restrictLength(e, handleChange);
                                 }}
@@ -208,14 +194,7 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
                             error={touched.min_transaction && errors.min_transaction}
                             label={localize('Min order')}
                             className='ad-type-section__field'
-                            trailing_icon={
-                                <Text
-                                    color={is_desktop ? 'less-prominent' : 'prominent'}
-                                    size={is_desktop ? 'xxs' : 's'}
-                                >
-                                    {currency}
-                                </Text>
-                            }
+                            trailing_icon={<AdTypeSectionTrailingIcon label={currency} />}
                             onChange={e => {
                                 my_ads_store.restrictLength(e, handleChange);
                             }}
@@ -234,14 +213,7 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
                             error={touched.max_transaction && errors.max_transaction}
                             label={localize('Max order')}
                             className='ad-type-section__field'
-                            trailing_icon={
-                                <Text
-                                    color={is_desktop ? 'less-prominent' : 'prominent'}
-                                    size={is_desktop ? 'xxs' : 's'}
-                                >
-                                    {currency}
-                                </Text>
-                            }
+                            trailing_icon={<AdTypeSectionTrailingIcon label={currency} />}
                             onChange={e => {
                                 my_ads_store.restrictLength(e, handleChange);
                             }}

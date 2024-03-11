@@ -2,7 +2,14 @@
     display: flex;
     justify-content: flex-end;
     column-gap: 0.8rem;
-    margin-top: 10rem;
     border-top: 1px solid var(--general-section-1);
     padding: 2rem 0;
+
+    @include desktop {
+        margin-top: 10rem;
+    }
+
+    @include mobile {
+        margin-top: 3rem;
+    }
 }

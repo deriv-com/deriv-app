@@ -44,7 +44,7 @@ describe('<AdCancelModal/>', () => {
 
         render(<AdCancelModal message={message} title={title} />);
 
-        const dont_cancel_button = screen.getByText("Don't cancel");
+        const dont_cancel_button = screen.getByRole('button', { name: "Don't cancel" });
         userEvent.click(dont_cancel_button);
         expect(mock_modal_manager.hideModal).toHaveBeenCalled();
     });
@@ -55,7 +55,7 @@ describe('<AdCancelModal/>', () => {
 
         render(<AdCancelModal message={message} onConfirm={onConfirm} title={title} />);
 
-        const cancel_button = screen.getByText('Cancel');
+        const cancel_button = screen.getByRole('button', { name: 'Cancel' });
         userEvent.click(cancel_button);
         expect(onConfirm).toHaveBeenCalled();
     });

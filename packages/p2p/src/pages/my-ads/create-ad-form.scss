@@ -75,27 +75,13 @@
         }
     }
 
-    &__wizard {
-        @include desktop {
-            width: 67.2rem;
-        }
-
-        @include mobile {
-            padding: 1.6rem;
-        }
-
-        .dc-form-progress {
-            background-color: var(--general-section-1);
-            margin-top: 2rem;
-
-            &__step {
-                width: 24rem;
-            }
-
-            &__steps {
-                margin-top: 0;
-                margin-bottom: 1.6rem;
-            }
-        }
+    &__progress-bar {
+        width: 5.6rem;
+        height: 5.6rem;
+        border-radius: 50%;
+        border: 2px solid;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

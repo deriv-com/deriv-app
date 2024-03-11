@@ -75,14 +75,30 @@ const AdvertiserPage = () => {
 
     const { data: p2p_advert_info } = useP2PAdvertInfo(counterparty_advert_id);
 
-    const showErrorModal = () => {
+    const showErrorModal = eligibility_status => {
+        let error_message = localize("It's either deleted or no longer active.");
+        let error_modal_title = localize('This ad is unavailable');
+
+        if (eligibility_status?.length > 0) {
+            error_modal_title = '';
+            if (eligibility_status.length === 1) {
+                if (eligibility_status.includes('completion_rate')) {
+                    error_message = localize('Your completion rate is too low for this ad.');
+                } else if (eligibility_status.includes('join_date')) {
+                    error_message = localize("You've not used Deriv P2P long enough for this ad.");
+                }
+            } else {
+                error_message = localize("The advertiser has set conditions for this ad that you don't meet.");
+            }
+        }
+
         setCounterpartyAdvertId('');
         showModal({
             key: 'ErrorModal',
             props: {
-                error_message: "It's either deleted or no longer active.",
+                error_message,
                 error_modal_button_text: 'OK',
-                error_modal_title: 'This ad is unavailable',
+                error_modal_title,
                 onClose: () => {
                     hideModal({ should_hide_all_modals: true });
                 },
@@ -94,16 +110,16 @@ const AdvertiserPage = () => {
     const setShowAdvertInfo = React.useCallback(
         () => {
             if (p2p_advert_info) {
-                const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+                const { eligibility_status, is_active, is_buy, is_eligible, is_visible } = p2p_advert_info || {};
                 const advert_type = is_buy ? 1 : 0;
 
-                if (is_active && is_visible) {
+                if (is_active && is_visible && is_eligible) {
                     advertiser_page_store.setActiveIndex(advert_type);
                     advertiser_page_store.handleTabItemClick(advert_type);
                     buy_sell_store.setSelectedAdState(p2p_advert_info);
                     showModal({ key: 'BuySellModal' });
                 } else {
-                    showErrorModal();
+                    showErrorModal(eligibility_status);
                 }
             }
         },

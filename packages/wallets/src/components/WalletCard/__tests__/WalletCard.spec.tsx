@@ -67,7 +67,6 @@ describe('WalletCard', () => {
         mockProps = {
             balance: '100 BTC',
             currency: 'BTC',
-            isActive: true,
             isCarouselContent: true,
             landingCompanyName: 'Deriv',
         };
@@ -82,7 +81,7 @@ describe('WalletCard', () => {
         const gradient = screen.getByTestId('dt_wallet_gradient_background');
         expect(gradient).toHaveClass('wallets-gradient--BTC-mobile-card-light');
         const details = screen.getByTestId('dt_wallet_card_details');
-        expect(details).toHaveClass('wallets-card__details__carousel-content--active');
+        expect(details).toHaveClass('wallets-card__details wallets-card__details__carousel-content');
     });
 
     it('should render the correct wallet card and gradient background for demo wallet', () => {

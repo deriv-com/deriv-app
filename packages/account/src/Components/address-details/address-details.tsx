@@ -244,7 +244,7 @@ const AddressDetails = observer(
                                                                     list_portal_id='modal_root'
                                                                     disabled={
                                                                         disabled_items.includes('address_state') ||
-                                                                        (account_settings?.address_state &&
+                                                                        (!!account_settings?.address_state &&
                                                                             has_real_account)
                                                                     }
                                                                 />

@@ -1,10 +1,12 @@
 import React, { lazy, Suspense } from 'react';
-import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
+import { TPlatforms } from '../../../types';
 import Loader from '../../Loader/Loader';
+import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 
 export interface WalletPasswordFieldProps extends WalletTextFieldProps {
     password: string;
     passwordError?: boolean;
+    platform: TPlatforms.All;
     shouldDisablePasswordMeter?: boolean;
 }
 

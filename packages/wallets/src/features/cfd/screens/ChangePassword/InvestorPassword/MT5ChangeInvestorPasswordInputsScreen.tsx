@@ -7,7 +7,7 @@ import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../compone
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
-import { validPassword } from '../../../../../utils/password';
+import { validPassword } from '../../../../../utils/password-validation';
 import { PlatformDetails } from '../../../constants';
 
 type TFormInitialValues = {
@@ -113,6 +113,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     name='newPassword'
                                     onChange={handleChange}
                                     password={values.newPassword}
+                                    platform={PlatformDetails.mt5.platform}
                                     showMessage
                                 />
                             </div>

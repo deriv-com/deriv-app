@@ -1,15 +1,18 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import * as Yup from 'yup';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import { dictionary } from '@zxcvbn-ts/language-common';
+import { Platforms } from '../../../../../shared/src/utils/constants';
 import { passwordErrorMessage, passwordRegex, warningMessages } from '../../../constants/password';
-import { calculateScore, isPasswordValid, passwordKeys, Score, validPassword } from '../../../utils/password';
+import { TPlatforms } from '../../../types';
+import { calculateScore, passwordKeys, Score, validPassword } from '../../../utils/password-validation';
 import { WalletPasswordFieldProps } from '../WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 import { WalletTextField } from '../WalletTextField';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-export const validatePassword = (password: string) => {
+export const validatePassword = (password: string, platform: TPlatforms.All) => {
     const score = calculateScore(password);
     let errorMessage = '';
 
@@ -17,13 +20,29 @@ export const validatePassword = (password: string) => {
     zxcvbnOptions.setOptions(options);
 
     const { feedback } = zxcvbn(password);
-    if (!passwordRegex.isLengthValid.test(password)) {
-        errorMessage = passwordErrorMessage.invalidLength;
-    } else if (!isPasswordValid(password)) {
-        errorMessage = passwordErrorMessage.missingCharacter;
-    } else {
+    try {
+        if (platform === Platforms.MT5) {
+            Yup.string()
+                .matches(passwordRegex.isMT5LengthValid, passwordErrorMessage.invalidLengthMT5)
+                .validateSync(password);
+            Yup.string()
+                .matches(passwordRegex.isMT5PasswordValid, passwordErrorMessage.missingCharacterMT5)
+                .validateSync(password);
+        } else {
+            Yup.string()
+                .matches(passwordRegex.isLengthValid, passwordErrorMessage.invalidLength)
+                .validateSync(password);
+            Yup.string()
+                .matches(passwordRegex.isPasswordValid, passwordErrorMessage.missingCharacter)
+                .validateSync(password);
+        }
         errorMessage = warningMessages[feedback.warning as passwordKeys] ?? '';
+    } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+            errorMessage = err?.message;
+        }
     }
+
     return { errorMessage, score };
 };
 
@@ -35,13 +54,14 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     onChange,
     password,
     passwordError,
+    platform,
     shouldDisablePasswordMeter = false,
     showMessage,
 }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
 
-    const { errorMessage, score } = useMemo(() => validatePassword(password), [password]);
+    const { errorMessage, score } = useMemo(() => validatePassword(password, platform), [password, platform]);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +93,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
             <WalletTextField
                 autoComplete={autoComplete}
                 errorMessage={isTouched && (passwordError ? passwordErrorMessage.PasswordError : errorMessage)}
-                isInvalid={(!validPassword(password) && isTouched) || passwordError}
+                isInvalid={(!validPassword(password, platform) && isTouched) || passwordError}
                 label={label}
                 message={getMessage()}
                 messageVariant={errorMessage ? 'warning' : undefined}

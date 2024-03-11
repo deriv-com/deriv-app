@@ -15,7 +15,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password';
+import { validPassword } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
@@ -171,7 +171,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                             !password ||
                             createMT5AccountLoading ||
                             tradingPlatformPasswordChangeLoading ||
-                            !validPassword(password)
+                            !validPassword(password, platform)
                         }
                         isFullWidth
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
@@ -188,7 +188,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     !password ||
                     createMT5AccountLoading ||
                     tradingPlatformPasswordChangeLoading ||
-                    !validPassword(password)
+                    !validPassword(password, platform)
                 }
                 isFullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}

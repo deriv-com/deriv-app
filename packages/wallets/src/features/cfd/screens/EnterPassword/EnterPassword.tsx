@@ -3,7 +3,7 @@ import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password';
+import { validPassword } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
@@ -54,6 +54,7 @@ const EnterPassword: React.FC<TProps> = ({
                         onChange={onPasswordChange}
                         password={password}
                         passwordError={passwordError}
+                        platform={platform}
                         shouldDisablePasswordMeter
                         showMessage={false}
                     />
@@ -71,7 +72,7 @@ const EnterPassword: React.FC<TProps> = ({
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={!password || isLoading || !validPassword(password)}
+                        disabled={!password || isLoading || !validPassword(password, platform)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

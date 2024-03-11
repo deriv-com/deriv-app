@@ -1,4 +1,4 @@
-import { passwordKeys } from '../utils/password';
+import { passwordKeys } from '../utils/password-validation';
 
 export const passwordRegex = {
     hasLowerCase: /[a-z]/,
@@ -6,6 +6,8 @@ export const passwordRegex = {
     hasSymbol: /\W/,
     hasUpperCase: /[A-Z]/,
     isLengthValid: /^.{8,25}$/,
+    isMT5LengthValid: /^.{8,16}$/,
+    isMT5PasswordValid: /^(?=.*[!@#$%^&*()+\-=[\]{};':"|,.<>/?_~])[ -~]{8,16}$/,
     isPasswordValid: /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}$/,
 };
 
@@ -16,8 +18,10 @@ export const passwordValues = {
 };
 
 export const passwordErrorMessage = {
-    invalidLength: 'You should enter 8-25 characters.',
+    invalidLength: `You should enter ${passwordValues.minLength}-${passwordValues.maxLength} characters.`,
+    invalidLengthMT5: `You should enter 8-16 characters.`,
     missingCharacter: 'Password should have lower and uppercase English letters with numbers.',
+    missingCharacterMT5: 'Password must contain lowercase, uppercase letters, numbers, and special characters.',
     PasswordError: 'That password is incorrect. Please try again.',
 };
 

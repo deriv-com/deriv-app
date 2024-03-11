@@ -1,4 +1,6 @@
 import { passwordRegex, passwordValues } from '../constants/password';
+import { CFD_PLATFORMS } from '../features/cfd/constants';
+import { TPlatforms } from '../types';
 
 export type Score = 0 | 1 | 2 | 3 | 4;
 export type passwordKeys =
@@ -19,7 +21,12 @@ export type passwordKeys =
     | 'userInputs'
     | 'wordByItself';
 
-export const validPassword = (value: string) => passwordRegex.isPasswordValid.test(value);
+export const validPassword = (value: string, platform: TPlatforms.All) => {
+    if (platform === CFD_PLATFORMS.MT5) {
+        return passwordRegex.isMT5PasswordValid.test(value);
+    }
+    return passwordRegex.isPasswordValid.test(value);
+};
 
 export const isPasswordValid = (password: string) => {
     return passwordRegex.isPasswordValid.test(password) && passwordRegex.isLengthValid.test(password);

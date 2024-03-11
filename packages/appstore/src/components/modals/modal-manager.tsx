@@ -10,7 +10,7 @@ import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 // !!! Too many conditions to show modal
-import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
+// import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
 
 const RealWalletsUpgrade = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
@@ -84,14 +84,16 @@ const JurisdictionModal = makeLazyLoader(
     () => <Loading />
 )();
 
-// const CFDPasswordModal = makeLazyLoader(
-//     () =>
-//         moduleLoader(
-//             () =>
-//                 import(/* webpackChunkName: "cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/cfd-password-modal')
-//         ),
-//     () => <Loading />
-// )();
+const CFDPasswordModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/cfd-password-modal'
+                )
+        ),
+    () => <Loading />
+)();
 
 const CFDDbviOnBoarding = makeLazyLoader(
     () =>
@@ -180,6 +182,11 @@ const ModalManager = () => {
         is_jurisdiction_modal_visible,
         is_cfd_verification_modal_visible,
         mt5_migration_error,
+        is_mt5_password_invalid_format_modal_visible,
+        is_cfd_password_modal_enabled,
+        is_cfd_success_dialog_enabled,
+        error_type,
+        is_sent_email_modal_enabled,
     } = modules.cfd;
     const {
         enableApp,
@@ -190,6 +197,7 @@ const ModalManager = () => {
         is_top_up_virtual_open,
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
+        is_mt5_migration_modal_enabled,
     } = ui;
     const {
         is_demo,
@@ -263,10 +271,29 @@ const ModalManager = () => {
     getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
     getRealSwapfreeAccountsExistingData(existing_accounts_data('all'));
 
+    const should_show_password =
+        is_cfd_password_modal_enabled &&
+        !is_cfd_success_dialog_enabled &&
+        (!has_cfd_error || error_type === 'PasswordError' || error_type === 'PasswordReset');
+    const should_show_success_modals = !has_cfd_error && is_cfd_success_dialog_enabled;
+    const should_show_success = should_show_success_modals && !is_mt5_migration_modal_enabled;
+    const should_show_migration_success =
+        should_show_success_modals &&
+        is_mt5_migration_modal_enabled &&
+        !is_populating_mt5_account_list &&
+        !is_mt5_migration_modal_open;
+    const should_show_sent_email_modal = is_sent_email_modal_enabled;
+    const should_show_cfd_password_modal =
+        should_show_password ||
+        is_mt5_password_invalid_format_modal_visible ||
+        should_show_success ||
+        should_show_migration_success ||
+        should_show_sent_email_modal;
+
     return (
         <React.Fragment>
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
-            <CFDPasswordModal platform={platform} />
+            {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
             {is_cfd_reset_password_modal_enabled && <CFDResetPasswordModal platform={platform} />}
             {has_cfd_error && <CFDServerErrorDialog />}

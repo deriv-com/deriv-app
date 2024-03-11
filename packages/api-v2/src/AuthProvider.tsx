@@ -81,13 +81,19 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient } = useAPIContext();
+    const { queryClient, setOnReconnected } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
     const [data, setData] = useState<TSocketResponseData<'authorize'> | null>();
+
+    useEffect(() => {
+        setOnReconnected(() => {
+            mutateAsync({ payload: { authorize: getToken(loginid || '') || '' } });
+        });
+    }, [loginid]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -106,6 +112,7 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
                         setData(res);
                         setIsLoading(false);
                         setIsSuccess(true);
+                        setLoginid(res?.authorize?.loginid ?? '');
                     })
                     .catch(() => {
                         setIsLoading(false);

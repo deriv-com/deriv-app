@@ -31,6 +31,7 @@ type APIContextData = {
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
     queryClient: QueryClient;
+    setOnReconnected: (onReconnected: () => void) => void;
 };
 
 const APIContext = createContext<APIContextData | null>(null);
@@ -78,7 +79,7 @@ const getWebSocketURL = () => {
  * @param {string} wss_url - The WebSocket URL.
  * @returns {WebSocket} The WebSocket instance associated with the provided URL.
  */
-const getWebsocketInstance = (wss_url: string, onWSClose: () => void) => {
+const getWebsocketInstance = (wss_url: string, onWSClose: () => void, onOpen?: () => void) => {
     if (!window.WSConnections) {
         window.WSConnections = {};
     }
@@ -92,6 +93,10 @@ const getWebsocketInstance = (wss_url: string, onWSClose: () => void) => {
         window.WSConnections[wss_url] = new WebSocket(wss_url);
         window.WSConnections[wss_url].addEventListener('close', () => {
             if (typeof onWSClose === 'function') onWSClose();
+        });
+
+        window.WSConnections[wss_url].addEventListener('open', () => {
+            if (typeof onOpen === 'function') onOpen();
         });
     }
 
@@ -113,13 +118,13 @@ export const getActiveWebsocket = () => {
  * without causing race conditions with deriv-app core stores.
  * @returns {DerivAPIBasic} The initialized DerivAPI instance.
  */
-const initializeDerivAPI = (onWSClose: () => void): DerivAPIBasic => {
+const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
     if (!window.DerivAPI) {
         window.DerivAPI = {};
     }
 
     const wss_url = getWebSocketURL();
-    const websocketConnection = getWebsocketInstance(wss_url, onWSClose);
+    const websocketConnection = getWebsocketInstance(wss_url, onWSClose, onOpen);
 
     if (!window.DerivAPI?.[wss_url] || window.DerivAPI?.[wss_url].isConnectionClosed()) {
         window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: websocketConnection });
@@ -153,8 +158,13 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     const [reconnect, setReconnect] = useState(false);
     const activeLoginid = window.localStorage.getItem('active_loginid');
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
-    const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
+    const standaloneDerivAPI = useRef<DerivAPIBasic>();
     const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();
+
+    // on reconnected ref
+    const onReconnectedRef = useRef<() => void>();
+
+    if (!standaloneDerivAPI.current) standaloneDerivAPI.current = initializeDerivAPI(() => setReconnect(true));
 
     const send: TSendFunction = (name, payload) => {
         return standaloneDerivAPI.current?.send({ [name]: 1, ...payload });
@@ -219,15 +229,22 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
 
     useEffect(() => {
         let reconnectTimerId: NodeJS.Timeout;
-        if (standalone || reconnect) {
-            standaloneDerivAPI.current = initializeDerivAPI(() => {
-                reconnectTimerId = setTimeout(() => setReconnect(true), 500);
-            });
+        if (reconnect) {
+            standaloneDerivAPI.current = initializeDerivAPI(
+                () => {
+                    reconnectTimerId = setTimeout(() => setReconnect(true), 500);
+                },
+                () => {
+                    if (onReconnectedRef.current) {
+                        onReconnectedRef.current();
+                    }
+                }
+            );
             setReconnect(false);
         }
 
         return () => clearTimeout(reconnectTimerId);
-    }, [environment, reconnect, standalone]);
+    }, [environment, reconnect]);
 
     return (
         <APIContext.Provider
@@ -238,6 +255,9 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
                 subscribe,
                 unsubscribe,
                 queryClient,
+                setOnReconnected: (onReconnected: () => void) => {
+                    onReconnectedRef.current = onReconnected;
+                },
             }}
         >
             <QueryClientProvider client={queryClient}>

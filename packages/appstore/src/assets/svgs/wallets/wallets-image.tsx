@@ -3,7 +3,8 @@ import { TImageTestID, TWalletsImagesListKey, WalletsImageProps } from './image-
 import HowItWorks from 'Assets/svgs/wallets/how-it-works.svg';
 import IntroducingWallets from 'Assets/svgs/wallets/introducing-wallets.svg';
 import IntroducingWalletsEU from 'Assets/svgs/wallets/introducing-wallets-eu.svg';
-import ReaduToEnableWallets from './ready-to-enable-wallets.svg';
+import ReadyToEnableWalletsDesktop from './ready-to-enable-wallets-desktop.svg';
+import ReadyToEnableWalletsMobile from './ready-to-enable-wallets-mobile.svg';
 import ReadyDesktopEuImage from 'Assets/svgs/wallets/wallets-ready-desktop-eu.svg';
 import ReadyDesktopImage from 'Assets/svgs/wallets/wallets-ready-desktop.svg';
 import ReadyMobileEuImage from 'Assets/svgs/wallets/wallets-ready-mobile-eu.svg';
@@ -13,7 +14,8 @@ import TradingAccountsEU from 'Assets/svgs/wallets/trading-accounts-eu.svg';
 import UpgradeDesktopImage from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg';
 import UpgradeModalImage from 'Assets/svgs/wallets/wallets-upgrade-modal.svg';
 import UpgradeMobileImage from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
-import WhyWalletsImage from 'Assets/svgs/wallets/why-wallets.svg';
+import WhyWalletsDesktopImage from 'Assets/svgs/wallets/why-wallets-desktop.svg';
+import WhyWalletsMobileImage from 'Assets/svgs/wallets/why-wallets-mobile.svg';
 
 export const WalletsImagesList = {
     how_it_works: HowItWorks,
@@ -32,8 +34,10 @@ export const WalletsImagesList = {
     upgrade_mobile: UpgradeMobileImage,
     upgrading_mobile: ReadyMobileImage,
     upgrading_mobile_eu: ReadyMobileEuImage,
-    ready_to_enable_wallets: ReaduToEnableWallets,
-    why_wallets: WhyWalletsImage,
+    ready_to_enable_wallets_desktop: ReadyToEnableWalletsDesktop,
+    ready_to_enable_wallets_mobile: ReadyToEnableWalletsMobile,
+    why_wallets_desktop: WhyWalletsDesktopImage,
+    why_wallets_mobile: WhyWalletsMobileImage,
 } as const;
 
 const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKey>) => {

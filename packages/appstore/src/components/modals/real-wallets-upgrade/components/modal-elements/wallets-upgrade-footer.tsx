@@ -31,11 +31,8 @@ export const DefaultFooter = ({ handleBack, handleNext }: TDefaultFooter) => (
     </Modal.Footer>
 );
 
-export const InitialFooter = ({ handleClose, handleNext }: TInitialFooter) => (
+export const InitialFooter = ({ handleNext }: TInitialFooter) => (
     <Modal.Footer className='wallet-steps__footer' has_separator>
-        <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
-            <Localize i18n_default_text='Maybe later' />
-        </Button>
         <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
             <Localize i18n_default_text='Next' />
         </Button>

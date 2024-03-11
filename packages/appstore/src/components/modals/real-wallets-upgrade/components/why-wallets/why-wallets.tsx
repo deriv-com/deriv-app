@@ -21,16 +21,18 @@ const WhyWallets = () => {
     const form_line_height = is_mobile ? 'm' : 'l';
 
     return (
-        <div className='wallet-steps__content'>
+        <div className='wallet-steps__content why-wallets__content'>
             <React.Fragment>
-                <WalletsImage image='why_wallets' />
+                <div className='why-wallets__image-container'>
+                    <WalletsImage image={`why_wallets_${is_mobile ? 'mobile' : 'desktop'}`} />
+                </div>
                 <Text
                     as='h1'
                     color='prominent'
                     weight='bold'
                     align='center'
                     size={text_title_size}
-                    className='wallet-steps__title'
+                    className='why-wallets__title'
                     line_height={form_line_height}
                 >
                     <Localize i18n_default_text='Why Wallets' />
@@ -40,34 +42,36 @@ const WhyWallets = () => {
                     color='prominent'
                     size={text_body_size}
                     align='center'
-                    className='wallet-steps__description'
+                    className='why-wallets__description'
                     line_height={form_line_height}
                 >
                     <Localize i18n_default_text='Deposit, transfer, trade' />
                 </Text>
-                {bullets.map(bullet => (
-                    <div key={bullet} className='wallet-steps__bullet'>
-                        {bullet && (
-                            <div className='wallet-steps__bullet-points'>
-                                <Icon
-                                    icon='IcAppstoreTick'
-                                    className='wallet-steps__bullet-icon'
-                                    size={is_mobile ? 12 : 16}
-                                />
-                                <Text
-                                    as='p'
-                                    color='prominent'
-                                    align='center'
-                                    className='wallet-steps__bullet-text'
-                                    size={text_info_size}
-                                    line_height={form_line_height}
-                                >
-                                    {bullet}
-                                </Text>
-                            </div>
-                        )}
-                    </div>
-                ))}
+                <div className='why-wallets__bullet-list-container'>
+                    {bullets.map(bullet => (
+                        <div key={bullet} className='why-wallets__bullet'>
+                            {bullet && (
+                                <div className='why-wallets__bullet-points'>
+                                    <Icon
+                                        icon='IcAppstoreTick'
+                                        className='why-wallets__bullet-icon'
+                                        size={is_mobile ? 12 : 16}
+                                    />
+                                    <Text
+                                        as='p'
+                                        color='prominent'
+                                        align='center'
+                                        className='why-wallets__bullet-text'
+                                        size={text_info_size}
+                                        line_height={form_line_height}
+                                    >
+                                        {bullet}
+                                    </Text>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
             </React.Fragment>
         </div>
     );

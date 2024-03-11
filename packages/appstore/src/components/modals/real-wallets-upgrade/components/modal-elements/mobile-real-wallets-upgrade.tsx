@@ -1,12 +1,16 @@
 import React from 'react';
-import { MobileDialog, Modal } from '@deriv/components';
+import { MobileDialog, SwipeableWrapper } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { TRealWalletsUpgradeSteps } from 'Types';
-import WalletsUpgradeContent from './wallets-upgrade-content';
+import WalletSteps from './wallet_steps';
 import WalletsUpgradeFooter from './wallets-upgrade-footer';
+import './mobile-real-wallets-upgrade.scss';
 
 const MobileRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWalletsUpgradeSteps) => {
     const { traders_hub: is_real_wallets_upgrade_on } = useStore();
+
+    const wallet_steps = WalletSteps(wallet_upgrade_steps);
+    const { current_step, handleBack, handleNext } = wallet_upgrade_steps;
 
     return (
         <MobileDialog
@@ -16,9 +20,19 @@ const MobileRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWallet
             wrapper_classname='wallet-steps'
             footer={<WalletsUpgradeFooter wallet_upgrade_steps={wallet_upgrade_steps} />}
         >
-            <Modal.Body className='wallet-steps'>
-                <WalletsUpgradeContent wallet_upgrade_steps={wallet_upgrade_steps} />
-            </Modal.Body>
+            <div className='mobile-real-wallets-upgrade'>
+                <SwipeableWrapper
+                    onChange={
+                        (index => {
+                            if (typeof index !== 'number') return;
+                            if (index > current_step) handleNext();
+                            if (index < current_step) handleBack();
+                        }) as (index: number) => void
+                    }
+                >
+                    {wallet_steps.map(slide => slide.component)}
+                </SwipeableWrapper>
+            </div>
         </MobileDialog>
     );
 });

@@ -20,7 +20,10 @@ const ReadyToUpgradeWallets = observer(({ value, toggleCheckbox }: TReadyToUpgra
 
     return (
         <div className='wallet-steps__content'>
-            <WalletsImage image='ready_to_enable_wallets' className='wallet-steps__image' />
+            <WalletsImage
+                image={`ready_to_enable_wallets_${is_mobile ? 'mobile' : 'desktop'}`}
+                className='wallet-steps__image'
+            />
             <div className='wallet-steps__text'>
                 <Text size={is_mobile ? 'xsm' : 'm'} align='center' weight='bold' line_height={form_line_height}>
                     <Localize i18n_default_text='Ready to enable Wallets' />

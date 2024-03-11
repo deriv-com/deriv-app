@@ -3,7 +3,6 @@ import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api-v2';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown, Input, useDevice } from '@deriv-com/ui';
-import { DOCUMENT_LIST } from '../../../mocks/idv-form.mock';
 import { getIDVNotApplicableOption } from '../../../utils/defaultOptions';
 import { getExampleFormat, getSelectedDocumentConfigData, TDocument } from '../../../utils/idvFormUtils';
 
@@ -17,9 +16,9 @@ type TIDVFormProps = {
 };
 
 type TIDVFormValues = {
-    document_additional?: string;
-    document_number: string;
-    document_type: string;
+    additionalDocument?: string;
+    documentNumber: string;
+    documentType: string;
 };
 
 type TDropDownList = {
@@ -36,9 +35,9 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
 
     const { isMobile } = useDevice();
 
-    const { documents_supported } = selectedCountry;
+    const { documents_supported: supportedDocuments } = selectedCountry;
 
-    const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
+    const idvNotApplicableOption = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
     const defaultDocument = {
         example_format: '',
@@ -48,21 +47,21 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
     };
 
     useEffect(() => {
-        if (documents_supported && Object.keys(documents_supported)?.length) {
-            const docList = Object.keys(documents_supported).map((key: string) => {
+        if (supportedDocuments && Object.keys(supportedDocuments)?.length) {
+            const docList = Object.keys(supportedDocuments).map((key: string) => {
                 return {
-                    text: documents_supported[key].display_name,
+                    text: supportedDocuments[key].display_name,
                     value: key,
                 };
             });
 
             if (allowDefaultValue) {
-                setDocumentList([...docList, IDV_NOT_APPLICABLE_OPTION] as TDropDownList[]);
+                setDocumentList([...docList, idvNotApplicableOption] as TDropDownList[]);
             } else {
                 setDocumentList([...docList] as TDropDownList[]);
             }
         }
-    }, [documents_supported, IDV_NOT_APPLICABLE_OPTION, allowDefaultValue]);
+    }, [supportedDocuments, idvNotApplicableOption, allowDefaultValue]);
 
     if (!formik) {
         throw new Error('IDVForm must be used within a Formik component');
@@ -71,17 +70,17 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
     const { setFieldValue, values } = formik;
 
     const bindDocumentData = (item: string) => {
-        setFieldValue('document_type', item, true);
-        setSelectedDocument(getSelectedDocumentConfigData(item, DOCUMENT_LIST));
-        if (item === IDV_NOT_APPLICABLE_OPTION.value) {
-            setFieldValue('document_number', '', true);
-            setFieldValue('document_additional', '', true);
+        setFieldValue('documentType', item, true);
+        setSelectedDocument(getSelectedDocumentConfigData(item, mockDocumentList));
+        if (item === idvNotApplicableOption.value) {
+            setFieldValue('documentNumber', '', true);
+            setFieldValue('additionalDocument', '', true);
         }
     };
 
     const handleSelect = (item: string) => {
         if (item === 'No results found') {
-            setFieldValue('document_type', defaultDocument, true);
+            setFieldValue('documentType', defaultDocument, true);
         } else {
             bindDocumentData(item);
         }
@@ -89,7 +88,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
 
     return (
         <section className='flex flex-col gap-75'>
-            <Field name='document_type'>
+            <Field name='documentType'>
                 {({ field, meta }: FieldProps) => (
                     <Dropdown
                         aria-label='Choose the document type'
@@ -106,13 +105,13 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
                     />
                 )}
             </Field>
-            {values?.document_type !== IDV_NOT_APPLICABLE_OPTION.value && (
-                <Field name='document_number'>
+            {values?.documentType !== idvNotApplicableOption.value && (
+                <Field name='documentNumber'>
                     {({ field, meta }: FieldProps) => (
                         <Input
                             {...field}
                             aria-label='Enter your document number'
-                            disabled={!values.document_type}
+                            disabled={!values.documentType}
                             error={meta.touched && Boolean(meta.error)}
                             label='Enter your document number'
                             message={meta.error ?? getExampleFormat(selectedDocument?.example_format)}
@@ -121,7 +120,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
                 </Field>
             )}
             {selectedDocument?.additional?.display_name && (
-                <Field name='document_additional'>
+                <Field name='additionalDocument'>
                     {({ field, meta }: FieldProps) => (
                         <Input
                             {...field}

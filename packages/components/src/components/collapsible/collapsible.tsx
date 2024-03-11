@@ -14,7 +14,7 @@ type TCollapsible = {
 };
 
 const swipe_config = {
-    delta: 100,
+    delta: 10,
     trackTouch: true,
     trackMouse: true,
 };
@@ -58,8 +58,8 @@ const Collapsible = ({
     );
 
     const swipe_handlers = useSwipeable({
-        onSwipedUp: () => !is_open && should_show_collapsible && expand(true),
-        onSwipedDown: () => is_open && should_show_collapsible && expand(false),
+        onSwipedUp: () => !is_open && should_show_collapsible && toggleExpand(),
+        onSwipedDown: () => is_open && should_show_collapsible && toggleExpand(),
         ...swipe_config,
     });
 

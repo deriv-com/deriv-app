@@ -1,4 +1,12 @@
-import { OSDetect, getPlatformFromUrl, mobileOSDetect } from '@deriv/shared';
+import {
+    OSDetect,
+    getPlatformFromUrl,
+    getErrorMessages,
+    validLength,
+    validPassword,
+    validMT5Password,
+    mobileOSDetect,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
@@ -44,8 +52,9 @@ const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: MT5TradeAccou
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
+const CTRADER_DESKTOP_MAC_DOWNLOAD = 'https://getctradermac.com/deriv/ctrader-deriv-setup.dmg';
+const CTRADER_DESKTOP_WINDOWS_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 
 const CTRADER_UAT_URL = 'https://ct-uat.deriv.com/';
 const CTRADER_PRODUCTION_URL = 'https://ct.deriv.com/';
@@ -54,7 +63,7 @@ const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503'
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
-const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
+const CTRADER_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-ctrader/id6466996509';
 const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
 const CTRADER_URL = is_staging || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
@@ -117,6 +126,24 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
 
 const getCTraderWebTerminalLink = (category?: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
+};
+
+const validatePassword = (password: string): string | undefined => {
+    if (
+        !validLength(password, {
+            min: 8,
+            max: 16,
+        })
+    ) {
+        return localize('You should enter {{min_number}}-{{max_number}} characters.', {
+            min_number: 8,
+            max_number: 16,
+        });
+    } else if (!validPassword(password)) {
+        return getErrorMessages().password();
+    } else if (!validMT5Password(password)) {
+        return localize('Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.');
+    }
 };
 
 const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
@@ -184,12 +211,14 @@ export {
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
     getPlatformMt5DownloadLink,
-    CTRADER_DESKTOP_DOWNLOAD,
+    CTRADER_DESKTOP_MAC_DOWNLOAD,
+    CTRADER_DESKTOP_WINDOWS_DOWNLOAD,
     getDXTradeWebTerminalLink,
     getCTraderWebTerminalLink,
     platformsIcons,
     getTitle,
     getTopUpConfig,
+    validatePassword,
     getMobileAppInstallerURL,
     WEBTRADER_URL,
     getDesktopDownloadOptions,

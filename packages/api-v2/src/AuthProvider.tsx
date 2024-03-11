@@ -8,7 +8,7 @@ import { TSocketResponseData } from '../types';
 // Define the type for the context state
 type AuthContextType = {
     data: TSocketResponseData<'authorize'> | null | undefined;
-    switchAccount: (loginid: string) => void;
+    switchAccount: (loginid: string, forceRefresh?: boolean) => void;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -95,6 +95,8 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
 
         const { promise, cleanup } = waitForLoginAndTokenWithTimeout(cookieTimeout);
 
+        let isMounted = true;
+
         promise
             .then(async ({ token }) => {
                 setIsLoading(true);
@@ -102,6 +104,7 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
                         setData(res);
+                        setLoginid(res?.authorize?.loginid ?? '');
                         setIsLoading(false);
                         setIsSuccess(true);
                     })
@@ -115,16 +118,21 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
                     });
             })
             .catch(() => {
-                setIsLoading(false);
-                setIsError(true);
+                if (isMounted) {
+                    setIsLoading(false);
+                    setIsError(true);
+                }
             });
 
-        return cleanup;
+        return () => {
+            isMounted = false;
+            cleanup();
+        };
     }, []);
 
     const switchAccount = useCallback(
-        (newLoginid: string) => {
-            if (newLoginid === loginid) {
+        (newLoginid: string, forceRefresh?: boolean) => {
+            if (newLoginid === loginid && !forceRefresh) {
                 return;
             }
 

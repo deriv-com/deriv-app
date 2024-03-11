@@ -92,6 +92,7 @@
         "react-joyride": "^2.5.3",
         "react-rnd": "^10.4.1",
         "react-transition-group": "4.4.2",
+        "scratch-blocks": "^1.0.7",
         "yup": "^0.32.11"
     }
 }

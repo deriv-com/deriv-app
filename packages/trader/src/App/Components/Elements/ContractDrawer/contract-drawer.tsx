@@ -11,6 +11,7 @@ import {
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    mobileOSDetect,
     TContractStore,
     TContractInfo,
 } from '@deriv/shared';
@@ -40,6 +41,8 @@ type TContractDrawerProps = RouteComponentProps & {
         | 'onClickSell'
     >;
 
+const PAGE_BOTTOM_MARGIN = ['iOS', 'unknown'].includes(mobileOSDetect()) ? 0 : 13;
+
 const ContractDrawer = observer(
     ({
         contract_info = {},
@@ -64,8 +67,6 @@ const ContractDrawer = observer(
         const contract_drawer_ref = React.useRef<HTMLDivElement>(null);
         const contract_drawer_card_ref = React.useRef<HTMLDivElement>(null);
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
-
-        const MARGIN_BOTTOM_SIZE = 13;
 
         const exit_spot =
             isUserSold(contract_info) && !is_accumulator && !is_multiplier && !is_turbos
@@ -138,7 +139,7 @@ const ContractDrawer = observer(
                         transform: (should_show_contract_audit &&
                             contract_drawer_ref.current &&
                             contract_drawer_card_ref.current &&
-                            `translateY(calc(${contract_drawer_card_ref.current.clientHeight}px - ${contract_drawer_ref.current.clientHeight}px + ${MARGIN_BOTTOM_SIZE}px))`) as React.CSSProperties['transform'],
+                            `translateY(calc(${contract_drawer_card_ref.current.clientHeight}px - ${contract_drawer_ref.current.clientHeight}px + ${PAGE_BOTTOM_MARGIN}px))`) as React.CSSProperties['transform'],
                     }}
                     ref={contract_drawer_ref}
                 >

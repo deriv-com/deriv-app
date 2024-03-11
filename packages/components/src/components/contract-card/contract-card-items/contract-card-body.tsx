@@ -53,7 +53,7 @@ const ContractCardBody = ({
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
-    const { CONTRACT_VALUE, PAYOUT, POTENTIAL_PAYOUT, TOTAL_PROFIT_LOSS, PROFIT_LOSS, STAKE } = getCardLabels();
+    const { CONTRACT_VALUE, POTENTIAL_PAYOUT, TOTAL_PROFIT_LOSS, STAKE } = getCardLabels();
 
     const progress_slider_mobile_el = (
         <ProgressSliderMobile
@@ -146,7 +146,7 @@ const ContractCardBody = ({
             <React.Fragment>
                 <div className='dc-contract-card-items-wrapper'>
                     <ContractCardItem
-                        header={is_sold ? PROFIT_LOSS : TOTAL_PROFIT_LOSS}
+                        header={TOTAL_PROFIT_LOSS}
                         is_crypto={isCryptocurrency(currency)}
                         is_loss={Number(profit) < 0}
                         is_won={Number(profit) > 0}
@@ -156,7 +156,7 @@ const ContractCardBody = ({
                             <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
                         )}
                     </ContractCardItem>
-                    <ContractCardItem header={is_sold ? PAYOUT : CONTRACT_VALUE}>
+                    <ContractCardItem header={CONTRACT_VALUE}>
                         <div
                             className={classNames({
                                 'dc-contract-card--profit': Number(profit) > 0,

@@ -1,3 +1,3 @@
-import AccountDisabledModal from './account-disabled-modal';
+import CFDAccountDisabledModal from './account-disabled-modal';
 
-export default AccountDisabledModal;
+export default CFDAccountDisabledModal;

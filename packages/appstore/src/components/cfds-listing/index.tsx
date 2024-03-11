@@ -72,6 +72,9 @@ const CFDsListing = observer(() => {
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
+        if (!current_acc_status?.includes('enabled')) {
+            return MT5_ACCOUNT_STATUS.DISABLED;
+        }
         if (jurisdiction) {
             switch (jurisdiction) {
                 case Jurisdiction.BVI: {
@@ -188,15 +191,17 @@ const CFDsListing = observer(() => {
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
-                        const server_disabled = !existing_account?.status?.includes('enabled');
                         const list_size = combined_cfd_mt5_accounts.length;
+                        const account_disabled = !existing_account?.status?.includes('enabled');
                         const has_mt5_account_status =
-                            existing_account?.status || is_idv_revoked
+                            existing_account?.status ||
+                            is_idv_revoked ||
+                            (existing_account.action_type === 'multi-action' && account_disabled)
                                 ? getMT5AccountAuthStatus(
                                       existing_account?.status,
                                       existing_account?.landing_company_short
                                   )
-                                : null;
+                                : '';
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -204,7 +209,7 @@ const CFDsListing = observer(() => {
                                 clickable_icon
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
-                                name={!has_mt5_account_status && !server_disabled ? existing_account?.name : ''}
+                                name={!has_mt5_account_status ? existing_account?.name : ''}
                                 short_code_and_region={existing_account?.short_code_and_region}
                                 platform={existing_account.platform}
                                 description={existing_account.description}
@@ -251,7 +256,6 @@ const CFDsListing = observer(() => {
                                 }}
                                 openFailedVerificationModal={openFailedVerificationModal}
                                 market_type={existing_account.market_type}
-                                server_disabled={server_disabled}
                             />
                         );
                     })}

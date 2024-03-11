@@ -619,3 +619,19 @@ export const isCallPut = (trade_type: 'rise_fall' | 'rise_fall_equal' | 'high_lo
     trade_type === TRADE_TYPES.RISE_FALL ||
     trade_type === TRADE_TYPES.RISE_FALL_EQUAL ||
     trade_type === TRADE_TYPES.HIGH_LOW;
+
+export const getContractBasis = (contract_type = '') => {
+    switch (contract_type.toUpperCase()) {
+        case CONTRACT_TYPES.TURBOS.LONG:
+        case CONTRACT_TYPES.TURBOS.SHORT:
+            return 'Turbos';
+        case CONTRACT_TYPES.VANILLA.CALL:
+        case CONTRACT_TYPES.VANILLA.PUT:
+            return 'Vanillas';
+        case CONTRACT_TYPES.MULTIPLIER.DOWN:
+        case CONTRACT_TYPES.MULTIPLIER.UP:
+            return 'Multipliers';
+        default:
+            return '';
+    }
+};

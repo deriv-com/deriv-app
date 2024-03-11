@@ -3,10 +3,12 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
 import { StaticUrl } from '@deriv/components';
 import {
+    checkServerMaintenance,
     daysSince,
     extractInfoFromShortcode,
     formatDate,
     formatMoney,
+    getContractBasis,
     getEndTime,
     getMarketName,
     getPathname,
@@ -20,7 +22,6 @@ import {
     isHighLow,
     isMobile,
     isMultiplierContract,
-    checkServerMaintenance,
     isTurbosContract,
     LocalStore,
     routes,
@@ -205,7 +206,11 @@ export default class NotificationStore extends BaseStore {
             id,
             buy_price,
             contract_id,
-            contract_type: getTradeTypeName(contract_type, isHighLow({ shortcode }), isTurbosContract(contract_type)),
+            contract_type: `${getContractBasis(contract_type)} ${getTradeTypeName(
+                contract_type,
+                isHighLow({ shortcode }),
+                isTurbosContract(contract_type)
+            )}`,
             currency,
             profit: isMultiplierContract(contract_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit,
             status,

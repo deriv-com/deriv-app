@@ -45,7 +45,7 @@ describe('<WalletsUpgradeModal />', () => {
         render(<WalletsUpgradeModal />, { wrapper });
 
         expect(screen.getByText('Introducing Wallets')).toBeInTheDocument();
-        expect(screen.getByText('Upgrade now')).toBeInTheDocument();
+        expect(screen.getByText('Enable now')).toBeInTheDocument();
     });
 
     it('Should not show modal if user is not eligible for migration', () => {
@@ -71,7 +71,7 @@ describe('<WalletsUpgradeModal />', () => {
 
         render(<WalletsUpgradeModal />, { wrapper });
 
-        expect(screen.queryByText('Upgrade now')).not.toBeInTheDocument();
+        expect(screen.queryByText('Enable now')).not.toBeInTheDocument();
     });
 
     it('Should not show modal if is_wallet_modal_closed is in sessionStorage', () => {
@@ -96,7 +96,7 @@ describe('<WalletsUpgradeModal />', () => {
 
         render(<WalletsUpgradeModal />, { wrapper });
 
-        expect(screen.queryByText('Upgrade now')).not.toBeInTheDocument();
+        expect(screen.queryByText('Enable now')).not.toBeInTheDocument();
     });
 
     it('Should close modal when close button is clicked', () => {
@@ -126,5 +126,5 @@ describe('<WalletsUpgradeModal />', () => {
         expect(sessionStorage.getItem('is_wallet_migration_modal_closed')).toBe('true');
     });
 
-    // TODO: Add test for clicking Upgrade now button after the next flow is ready
+    // TODO: Add test for clicking Enable now button after the next flow is ready
 });

@@ -23,7 +23,7 @@ describe('<WalletsBanner />', () => {
             render(<WalletsBannerUpgrade />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
-            const btn = screen.getByRole('button', { name: /Upgrade now/i });
+            const btn = screen.getByRole('button', { name: /Enable now/i });
             expect(btn).toBeInTheDocument();
         });
 

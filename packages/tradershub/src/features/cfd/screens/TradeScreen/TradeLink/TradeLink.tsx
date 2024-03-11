@@ -43,7 +43,7 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
     return (
         <div className='flex items-center justify-between px-16 py-24 border-solid border-t-1 border-system-light-secondary-background'>
             <div className='flex items-center gap-16'>
-                {(platform === mt5Platform || platform === ctraderPlatform) && (
+                {(platform === mt5Platform || app === ctraderPlatform || app === 'ctrader_ios') && (
                     <Fragment>
                         <div className='w-1600 h-1600'>{content.icon}</div>
                         <Text size='sm'>{content.title}</Text>

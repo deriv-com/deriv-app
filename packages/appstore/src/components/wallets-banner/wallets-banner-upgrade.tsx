@@ -24,12 +24,11 @@ const WalletsBannerUpgrade = observer(() => {
                 </div>
                 <Button
                     className='wallets-banner__upgrade-banner-button'
-                    text={localize('Upgrade now')}
+                    text={localize('Enable now')}
                     primary
                     large
                     onClick={() => {
-                        // TODO: Uncomment this when wallet migration modal ready
-                        // toggleWalletsUpgrade(true)
+                        toggleWalletsUpgrade(true);
                     }}
                 />
             </div>

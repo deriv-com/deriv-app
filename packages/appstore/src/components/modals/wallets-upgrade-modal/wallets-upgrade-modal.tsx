@@ -43,12 +43,11 @@ const WalletsUpgradeModal = () => {
                     <Button
                         large={is_desktop}
                         onClick={() => {
-                            // TODO: Uncomment this when wallet migration modal ready
-                            // toggleWalletsUpgrade(true);
+                            toggleWalletsUpgrade(true);
                             closeModal();
                         }}
                         primary
-                        text={localize('Upgrade now')}
+                        text={localize('Enable now')}
                     />
                 </div>
                 <WalletsImage image='upgrade_modal' className='wallets-upgrade-modal__image' />

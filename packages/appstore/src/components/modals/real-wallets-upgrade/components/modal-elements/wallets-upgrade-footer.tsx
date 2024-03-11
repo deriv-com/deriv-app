@@ -54,7 +54,7 @@ export const EndFooter = ({ handleBack, is_disabled, upgradeToWallets }: TEndFoo
             disabled={!is_disabled}
             onClick={upgradeToWallets}
         >
-            <Localize i18n_default_text='Upgrade to Wallets' />
+            <Localize i18n_default_text='Enable' />
         </Button>
     </Modal.Footer>
 );

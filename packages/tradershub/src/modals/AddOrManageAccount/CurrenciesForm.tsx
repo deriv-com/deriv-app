@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { Form, Formik } from 'formik';
 import { twMerge } from 'tailwind-merge';
 import { CurrencyTypes } from '@/constants';
-import useAddNewCurrencyAccount from '@/hooks/useAddNewCurrencyAccount';
+import { useAddNewCurrencyAccount } from '@/hooks';
 import { TCurrencyConfig } from '@/hooks/useCurrencies';
 import CurrencyCard from '@/screens/CurrencySelector/CurrencyCard';
 import { useActiveTradingAccount, useAuthorize, useMutation } from '@deriv/api-v2';

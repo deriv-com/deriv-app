@@ -2,6 +2,11 @@ import { useMemo } from 'react';
 import { useAccountStatus, useActiveTradingAccount, useCFDAccountsList, useQuery } from '@deriv/api-v2';
 import useCurrencies from './useCurrencies';
 
+/**
+ * @name useDisableFiatCurrencies
+ * @description A custom React hook that returns a boolean to disable fiat currencies based on the account status and the current account currency.
+ * @returns {boolean} - The boolean to disable fiat currencies.
+ */
 const useDisableFiatCurrencies = () => {
     const { data: activeDerivTradingAccount } = useActiveTradingAccount();
     const { data: accountStatus, isSuccess: isAccountStatusSuccess } = useAccountStatus();

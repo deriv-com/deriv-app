@@ -4,7 +4,8 @@ import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useReadLocalStorage } from 'usehooks-ts';
-import HeaderFallback from './header-fallback';
+
+const HeaderFallback = () => <div className='header' />;
 
 const DefaultHeader = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "default-header" */ './default-header')),

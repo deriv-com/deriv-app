@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import ReactModal from 'react-modal';
 import { FullPageMobileWrapper, PageReturn } from '@/components';
 import { p2p } from '@deriv/api-v2';
-import { LabelPairedChevronRightLgRegularIcon, LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
-import { Text, ToggleSwitch, useDevice } from '@deriv-com/ui';
+import { LabelPairedChevronRightLgRegularIcon } from '@deriv/quill-icons';
+import { Modal, Text, ToggleSwitch, useDevice } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
 import { FilterModalContent } from './FilterModalContent';
 import { FilterModalFooter } from './FilterModalFooter';
@@ -72,16 +71,16 @@ const FilterModal = ({
     };
 
     useEffect(() => {
-        ReactModal.setAppElement('#v2_modal_root');
+        Modal.setAppElement('#v2_modal_root');
     }, []);
 
     useEffect(() => {
         if (data && paymentMethods.length > 0) {
-            const filteredPaymentMethods = data
+            const selectedPaymentMethodsDisplayName = data
                 .filter(paymentMethod => paymentMethods.includes(paymentMethod.id))
                 .map(paymentMethod => paymentMethod.display_name);
 
-            setPaymentMethodNames(filteredPaymentMethods.join(', '));
+            setPaymentMethodNames(selectedPaymentMethodsDisplayName.join(', '));
         } else if (paymentMethods.length === 0) {
             setPaymentMethodNames('All');
         }
@@ -119,36 +118,39 @@ const FilterModal = ({
     }
 
     return (
-        <ReactModal
+        <Modal
             className='p2p-v2-filter-modal'
             isOpen={isModalOpen}
             onRequestClose={onRequestClose}
             style={customStyles}
         >
-            <PageReturn
-                className='py-6 px-8 m-0'
-                hasBorder
-                hideBackButton={!showPaymentMethods}
-                onClick={() => setShowPaymentMethods(false)}
-                pageTitle={headerText}
-                rightPlaceHolder={<LabelPairedXmarkLgBoldIcon className='cursor-pointer' onClick={onRequestClose} />}
-                weight='bold'
-            />
-            <FilterModalContent
-                filterOptions={filterOptions}
-                paymentMethods={paymentMethods}
-                setPaymentMethods={setPaymentMethods}
-                showPaymentMethods={showPaymentMethods}
-            />
-            <FilterModalFooter
-                hasSameFilters={hasSameFilters}
-                hasSamePaymentMethods={hasSamePaymentMethods}
-                onApplyConfirm={onApplyConfirm}
-                onResetClear={onResetClear}
-                paymentMethods={paymentMethods}
-                showPaymentMethods={showPaymentMethods}
-            />
-        </ReactModal>
+            <Modal.Header className='border-2' onRequestClose={onRequestClose}>
+                <PageReturn
+                    onClick={() => setShowPaymentMethods(false)}
+                    pageTitle={headerText}
+                    shouldHideBackButton={!showPaymentMethods}
+                    weight='bold'
+                />
+            </Modal.Header>
+            <Modal.Body>
+                <FilterModalContent
+                    filterOptions={filterOptions}
+                    paymentMethods={paymentMethods}
+                    setPaymentMethods={setPaymentMethods}
+                    showPaymentMethods={showPaymentMethods}
+                />
+            </Modal.Body>
+            <Modal.Footer className='p-0'>
+                <FilterModalFooter
+                    hasSameFilters={hasSameFilters}
+                    hasSamePaymentMethods={hasSamePaymentMethods}
+                    onApplyConfirm={onApplyConfirm}
+                    onResetClear={onResetClear}
+                    paymentMethods={paymentMethods}
+                    showPaymentMethods={showPaymentMethods}
+                />
+            </Modal.Footer>
+        </Modal>
     );
 };
 

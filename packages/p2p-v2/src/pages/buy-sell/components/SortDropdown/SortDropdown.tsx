@@ -18,7 +18,8 @@ const SortDropdown = ({ list, onSelect, setIsFilterModalOpen, value }: TSortDrop
     if (isMobile) {
         return (
             <Button
-                className='w-[3.2rem] border-[#d6dadb]'
+                className='w-[3.2rem] !border-[#d6dadb] border-[1px]'
+                color='black'
                 icon={<SortIcon className='absolute' data-testid='dt_p2p_v2_sort_dropdown_button' />}
                 onClick={() => setIsFilterModalOpen(true)}
                 variant='outlined'

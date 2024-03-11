@@ -70,7 +70,8 @@ const BuySellHeader = ({
                     value={sortDropdownValue}
                 />
                 <Button
-                    className='border-[#d6dadb] lg:p-0 lg:h-16 lg:w-16 h-[3.2rem] w-[3.2rem]'
+                    className='!border-[#d6dadb] border-[1px] lg:p-0 lg:h-16 lg:w-16 h-[3.2rem] w-[3.2rem]'
+                    color='black'
                     icon={
                         isMobile ? (
                             <LabelPairedBarsFilterSmBoldIcon

@@ -4,8 +4,7 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    padding: 1.5rem 2.4rem;
-    border-top: 2px solid #f2f3f4;
+    padding: 1.5rem;
 
     @include mobile {
         position: relative;

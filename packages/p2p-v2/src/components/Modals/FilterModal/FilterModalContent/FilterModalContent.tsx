@@ -39,7 +39,7 @@ const FilterModalContent = ({
                                 }
                             )}
                             key={option.text}
-                            {...(option.onClick && { onClick: option.onClick })}
+                            onClick={option.onClick}
                         >
                             <div className='flex flex-col'>
                                 <Text size='sm'>{option.text}</Text>

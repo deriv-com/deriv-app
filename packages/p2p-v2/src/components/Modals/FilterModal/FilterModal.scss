@@ -1,6 +1,5 @@
 .p2p-v2-filter-modal {
     @include desktop {
-        @include p2p-v2-modal-styles;
         height: 56rem;
         width: 44rem;
     }

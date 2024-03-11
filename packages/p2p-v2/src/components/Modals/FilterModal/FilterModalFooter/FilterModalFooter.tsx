@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import './FilterModalFooter.scss';
 
 type TFilterModalFooterProps = {
@@ -24,14 +24,17 @@ const FilterModalFooter = ({
     return (
         <div className='p2p-v2-filter-modal-footer'>
             <Button
-                className='mr-[0.8rem]'
+                className='mr-[0.8rem] border-2 !border-[#999]'
+                color='black'
                 disabled={showPaymentMethods && paymentMethods.length === 0}
                 isFullWidth={isMobile}
                 onClick={onResetClear}
                 size='lg'
                 variant='outlined'
             >
-                {showPaymentMethods ? 'Clear' : 'Reset'}
+                <Text lineHeight='6xl' size='sm' weight='bold'>
+                    {showPaymentMethods ? 'Clear' : 'Reset'}
+                </Text>
             </Button>
             <Button
                 disabled={(showPaymentMethods && hasSamePaymentMethods) || (!showPaymentMethods && hasSameFilters)}
@@ -39,7 +42,9 @@ const FilterModalFooter = ({
                 onClick={onApplyConfirm}
                 size='lg'
             >
-                {showPaymentMethods ? 'Confirm' : 'Apply'}
+                <Text lineHeight='6xl' size='sm' weight='bold'>
+                    {showPaymentMethods ? 'Confirm' : 'Apply'}
+                </Text>
             </Button>
         </div>
     );

@@ -31,8 +31,7 @@ const useAddNewCurrencyAccount = () => {
     }, [addTradingAccountToLocalStorage, newTradingAccountData, status, switchAccount]);
 
     /**
-     * @name handleSubmit
-     * @description A function that handles the form submission and calls the mutation.
+     * A function that handles the form submission and calls the mutation.
      */
     const mutate = useCallback(
         (currency: string) => {
@@ -46,8 +45,7 @@ const useAddNewCurrencyAccount = () => {
     );
 
     /**
-     * @name handleSubmit
-     * @description A function that handles the form submission and calls the mutation.
+     *  Async function that handles the form submission and calls the mutation.
      */
     const mutateAsync = useCallback(
         (currency: string) =>

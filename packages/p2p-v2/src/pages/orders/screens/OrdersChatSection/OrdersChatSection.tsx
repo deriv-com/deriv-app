@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { FullPageMobileWrapper } from '@/components';
 import { useSendbird } from '@/hooks';
 import { Divider, Loader, useDevice } from '@deriv-com/ui';
-import { ChatFooter } from '../ChatFooter';
-import { ChatHeader } from '../ChatHeader';
-import { ChatMessages } from '../ChatMessages';
+import { ChatFooter } from '../../components/ChatFooter';
+import { ChatHeader } from '../../components/ChatHeader';
+import { ChatMessages } from '../../components/ChatMessages';
 import './OrdersChatSection.scss';
 
 //TODO: remove dummy values after implementation of order details page.

@@ -24,7 +24,7 @@ const ChatFooter = ({ isClosed }: TChatFooterProps) => {
         <div className='px-[2.4rem] pt-[1.6rem] pb-[2.8rem]'>
             <Input
                 isFullWidth
-                label='asdfasdf'
+                label='Enter message'
                 maxLength={5000}
                 message={`${value.length}/5000`}
                 onChange={onChange}

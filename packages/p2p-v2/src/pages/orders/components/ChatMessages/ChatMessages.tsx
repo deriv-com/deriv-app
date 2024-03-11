@@ -34,7 +34,7 @@ const ChatMessages = ({ chatChannel, chatMessages = [], userId }: TChatMessagesP
         if (isImageType(fileType))
             return (
                 <a className='p2p-v2-chat-messages__item__image' href={url} rel='noopener noreferrer' target='_blank'>
-                    <img src={url} />
+                    <img alt={name} src={url} />
                 </a>
             );
         else if (isPDFType(fileType)) {

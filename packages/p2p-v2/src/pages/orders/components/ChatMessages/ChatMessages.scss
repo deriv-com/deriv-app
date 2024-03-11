@@ -5,6 +5,9 @@
     height: calc(70vh - 16rem);
     overflow-y: auto;
 
+    @include mobile {
+        height: unset;
+    }
     &__date {
         margin-top: 1.6rem;
         text-align: center;

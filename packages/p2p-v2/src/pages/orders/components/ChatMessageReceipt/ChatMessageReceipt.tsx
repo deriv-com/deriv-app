@@ -13,7 +13,7 @@ type TChatMessageReceiptProps = {
 };
 
 const ChatMessageReceipt = ({ chatChannel, message, userId }: TChatMessageReceiptProps) => {
-    let Icon: ComponentType<SVGAttributes<SVGElement>> = MessagePendingIcon;
+    let Icon: ComponentType<SVGAttributes<SVGElement>>;
 
     if (message.status === CHAT_MESSAGE_STATUS.PENDING) {
         Icon = MessagePendingIcon;

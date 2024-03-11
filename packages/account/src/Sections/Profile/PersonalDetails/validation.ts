@@ -123,6 +123,7 @@ export const makeSettingsRequest = (
     const request = settings;
 
     if (request.residence) delete request.residence;
+    if (request.email) delete request.email;
     if (request.first_name) {
         request.first_name = request.first_name.trim();
     }

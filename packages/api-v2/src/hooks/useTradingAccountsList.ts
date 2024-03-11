@@ -9,7 +9,7 @@ const useTradingAccountsList = () => {
 
     // Filter out non-trading accounts.
     const filtered_accounts = useMemo(
-        () => account_list_data?.filter(account => account.is_trading),
+        () => account_list_data?.filter(account => account.is_trading) ?? [],
         [account_list_data]
     );
 

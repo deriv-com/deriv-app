@@ -190,13 +190,13 @@ describe('format-response', () => {
             );
         });
 
-        it('should return ReportNotAvailable error code if errors array contains DobMismatch or NameMismatchand and is_report_flag_available  ', () => {
+        it('should return ReportNotAvailable error code if errors array contains DobMismatch or NameMismatchand and is_report_not_available  ', () => {
             expect(formatIDVError(['DobMismatch', 'NameMismatch'], STATUS_CODES.REJECTED, undefined, true)).toBe(
                 IDV_ERROR_STATUS.ReportNotAvailable.code
             );
         });
 
-        it('should return DobMismatch error code if errors array contains DobMismatch and is_report_flag_available is false', () => {
+        it('should return DobMismatch error code if errors array contains DobMismatch and is_report_not_available is false', () => {
             expect(formatIDVError(['DobMismatch'], STATUS_CODES.REJECTED, undefined, false)).toBe(
                 IDV_ERROR_STATUS.DobMismatch.code
             );

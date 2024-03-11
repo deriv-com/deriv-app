@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatIDVError, WS, IDV_ERROR_STATUS, POIContext } from '@deriv/shared';
+import { formatIDVError, WS, IDV_ERROR_STATUS, POIContext, isIDVReportNotAvailable } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CountrySelector from '../../../Components/poi/poi-country-selector';
 import IdvDocumentSubmit from '../../../Components/poi/idv-document-submit';
@@ -80,8 +80,8 @@ const POISubmission = observer(
         );
 
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
-
-        const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk, 'report_available' in idv);
+        const is_report_not_available = isIDVReportNotAvailable(idv);
+        const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk, is_report_not_available);
 
         const setIdentityService = React.useCallback(
             identity_last_attempt => {

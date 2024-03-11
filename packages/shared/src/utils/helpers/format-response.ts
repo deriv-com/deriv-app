@@ -74,7 +74,10 @@ const isVerifiedOrNone = (errors: Array<TIDVErrorStatus>, status_code: string, i
     );
 };
 
-const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>, is_report_flag_available?: boolean) => {
+export const isIDVReportNotAvailable = (idv: Record<string, unknown>) =>
+    'report_available' in idv && idv?.report_available === 0;
+
+const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>, is_report_not_available?: boolean) => {
     const status: Array<TIDVErrorStatus> = [];
     errors.forEach(error => {
         const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error]?.code;
@@ -83,7 +86,7 @@ const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>, is_report_flag_availa
         }
     });
     if (
-        is_report_flag_available &&
+        is_report_not_available &&
         (status.includes(IDV_ERROR_STATUS.NameMismatch.code) || status.includes(IDV_ERROR_STATUS.DobMismatch.code))
     ) {
         return IDV_ERROR_STATUS.ReportNotAvailable.code;
@@ -104,7 +107,7 @@ export const formatIDVError = (
     errors: Array<TIDVErrorStatus>,
     status_code: string,
     is_high_risk?: boolean,
-    is_report_flag_available?: boolean
+    is_report_not_available?: boolean
 ) => {
     /**
      * Check required incase of DIEL client
@@ -125,7 +128,7 @@ export const formatIDVError = (
         return IDV_ERROR_STATUS.Expired.code;
     }
 
-    return getIDVErrorStatus(errors, is_report_flag_available);
+    return getIDVErrorStatus(errors, is_report_not_available);
 };
 
 export const formatOnfidoError = (status_code: string, errors: Array<TOnfidoErrorStatus> = []) => {

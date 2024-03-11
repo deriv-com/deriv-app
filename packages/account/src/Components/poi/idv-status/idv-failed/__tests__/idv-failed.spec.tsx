@@ -74,7 +74,6 @@ describe('<IdvFailed/>', () => {
         const new_props = {
             ...mock_props,
             mismatch_status: IDV_ERROR_STATUS.NameDobMismatch.code,
-            report_available: true,
         };
         renderComponent({ props: new_props });
 
@@ -102,45 +101,6 @@ describe('<IdvFailed/>', () => {
         await waitFor(() => {
             expect(screen.getByTestId(IDV_ERROR_STATUS.Failed.code)).toBeInTheDocument();
             expect(screen.getByRole('button', { name: /Verify/i })).toBeInTheDocument();
-        });
-    });
-
-    it('should trigger idvform if rejected reason is NameDobMismatch and report is not available', async () => {
-        const new_props = {
-            ...mock_props,
-            mismatch_status: IDV_ERROR_STATUS.NameDobMismatch.code,
-            report_available: false,
-        };
-        renderComponent({ props: new_props });
-        await waitFor(() => {
-            expect(screen.getByTestId(IDV_ERROR_STATUS.NameDobMismatch.code)).toBeInTheDocument();
-            expect(screen.getByText('IDVForm')).toBeInTheDocument();
-        });
-    });
-
-    it('should not trigger idvform if rejected reason is NameMismatch and report is available', async () => {
-        const new_props = {
-            ...mock_props,
-            mismatch_status: IDV_ERROR_STATUS.NameMismatch.code,
-            report_available: true,
-        };
-        renderComponent({ props: new_props });
-        await waitFor(() => {
-            expect(screen.getByTestId(IDV_ERROR_STATUS.NameMismatch.code)).toBeInTheDocument();
-            expect(screen.queryByText('IDVForm')).not.toBeInTheDocument();
-        });
-    });
-
-    it('should trigger idvform if rejected reason is expired though report is available', async () => {
-        const new_props = {
-            ...mock_props,
-            mismatch_status: IDV_ERROR_STATUS.Expired.code,
-            report_available: true,
-        };
-        renderComponent({ props: new_props });
-        await waitFor(() => {
-            expect(screen.getByTestId(IDV_ERROR_STATUS.Expired.code)).toBeInTheDocument();
-            expect(screen.queryByText('IDVForm')).toBeInTheDocument();
         });
     });
 });

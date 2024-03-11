@@ -7,13 +7,12 @@ import { identity_status_codes } from './proof-of-identity-utils';
 
 const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {
     const { status, submissions_left, last_rejected } = idv;
-    const is_report_flag_available = 'report_available' in idv;
     switch (status) {
         case identity_status_codes.pending:
             return (
                 <IdvSubmitComplete
                     is_from_external={is_from_external}
-                    mismatch_status={formatIDVError(last_rejected, status, undefined, is_report_flag_available)}
+                    mismatch_status={formatIDVError(last_rejected, status)}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
                 />

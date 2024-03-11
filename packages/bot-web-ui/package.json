@@ -70,9 +70,10 @@
         "@datadog/browser-logs": "^4.36.0",
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-charts": "^2.0.5",
+        "@deriv/deriv-charts": "^2.1.5",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
+        "@deriv/api": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",
@@ -91,6 +92,7 @@
         "react-joyride": "^2.5.3",
         "react-rnd": "^10.4.1",
         "react-transition-group": "4.4.2",
+        "scratch-blocks": "^1.0.7",
         "yup": "^0.32.11"
     }
 }

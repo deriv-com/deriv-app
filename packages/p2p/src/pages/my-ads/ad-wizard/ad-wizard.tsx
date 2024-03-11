@@ -9,10 +9,12 @@ import AdTypeSection from 'Pages/my-ads/ad-type-section';
 type TStep = { header: { active_title: string; title: string }; sub_step_count: number };
 type TAdWizardNav = {
     action: string;
+    float_rate_offset_limit_string: string;
+    rate_type: string;
     steps: TStep[];
 };
 
-const AdWizard = ({ action, steps }: TAdWizardNav) => {
+const AdWizard = ({ action, float_rate_offset_limit_string, rate_type, steps }: TAdWizardNav) => {
     const [current_step, setCurrentStep] = React.useState(0);
 
     return (
@@ -58,7 +60,11 @@ const AdWizard = ({ action, steps }: TAdWizardNav) => {
                 </>
             }
         >
-            <AdTypeSection action={action} />
+            <AdTypeSection
+                action={action}
+                float_rate_offset_limit_string={float_rate_offset_limit_string}
+                rate_type={rate_type}
+            />
             <AdPaymentDetailsSection />
             <AdConditionsSection />
         </Wizard>

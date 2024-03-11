@@ -13,14 +13,16 @@ import AdTypeSectionTrailingIcon from './ad-type-section-trailing-icon';
 
 type AdTypeSection = {
     action?: string;
+    float_rate_offset_limit_string: string;
+    rate_type: string;
 };
 
-const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
+const AdTypeSection = ({ action = 'add', float_rate_offset_limit_string, rate_type, ...props }: AdTypeSection) => {
     const {
         client: { currency, local_currency_config },
     } = useStore();
     const local_currency = local_currency_config.currency;
-    const { buy_sell_store, floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { buy_sell_store, general_store, my_ads_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { dirty, errors, handleChange, isValid, setFieldValue, setFieldTouched, touched, values } =
         useFormikContext<FormikValues>();
@@ -29,7 +31,7 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
     const is_edit = action === 'edit';
     const is_next_btn_disabled = is_edit ? !isValid : !dirty || !isValid;
     const onChangeAdTypeHandler = (user_input: string) => {
-        if (floating_rate_store.rate_type === ad_type.FLOAT) {
+        if (rate_type === ad_type.FLOAT) {
             if (user_input === buy_sell.SELL) {
                 setFieldValue('rate_type', '+0.01');
             } else {
@@ -77,7 +79,6 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
                     message: localize("If you choose to cancel, the details you've entered will be lost."),
                     onConfirm: () => {
                         my_ads_store.setApiErrorMessage('');
-                        floating_rate_store.setApiErrorMessage('');
                         my_ads_store.setShowAdForm(false);
                         buy_sell_store.setCreateSellAdFromNoAds(false);
                     },
@@ -142,7 +143,7 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
                 </Field>
                 <Field name='rate_type'>
                     {({ field }) =>
-                        floating_rate_store.rate_type === ad_type.FLOAT ? (
+                        rate_type === ad_type.FLOAT ? (
                             <FloatingRate
                                 className='ad-type-section__field'
                                 data_testid='float_rate_type'
@@ -152,8 +153,8 @@ const AdTypeSection = ({ action = 'add', ...props }: AdTypeSection) => {
                                 onChange={handleChange}
                                 onFocus={() => setFieldTouched('rate_type', true)}
                                 offset={{
-                                    upper_limit: parseInt(floating_rate_store.float_rate_offset_limit),
-                                    lower_limit: parseInt(floating_rate_store.float_rate_offset_limit) * -1,
+                                    upper_limit: parseInt(float_rate_offset_limit_string),
+                                    lower_limit: parseInt(float_rate_offset_limit_string) * -1,
                                 }}
                                 required
                                 change_handler={e => {

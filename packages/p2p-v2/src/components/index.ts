@@ -1,4 +1,5 @@
 export * from './AdvertiserName';
+export * from './AdvertsTableRow';
 export * from './Badge';
 export * from './BuySellForm';
 export * from './Checklist';
@@ -18,6 +19,7 @@ export * from './PaymentMethodLabel';
 export * from './PaymentMethodsFormFooter';
 export * from './PaymentMethodsHeader';
 export * from './PopoverDropdown';
+export * from './ProfileContent';
 export * from './RadioGroup';
 export * from './Search';
 export * from './StarRating';

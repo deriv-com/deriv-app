@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
 import { Button, Checkbox, Div100vhContainer, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import { useP2PSettings } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { reaction } from 'mobx';
@@ -21,7 +22,16 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
-    const { buy_sell_store, floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { buy_sell_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const {
+        p2p_settings: {
+            adverts_archive_period,
+            float_rate_offset_limit_string,
+            order_payment_period_string,
+            rate_type,
+        },
+    } = useP2PSettings();
+
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const { useRegisterModalProps } = useModalManagerContext();
     const steps = [
@@ -64,7 +74,6 @@ const CreateAdForm = () => {
 
     const onCleanup = () => {
         my_ads_store.setApiErrorMessage('');
-        floating_rate_store.setApiErrorMessage('');
         my_ads_store.setShowAdForm(false);
         buy_sell_store.setCreateSellAdFromNoAds(false);
         my_ads_store.payment_method_ids = [];
@@ -75,14 +84,13 @@ const CreateAdForm = () => {
         my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
+
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => {
                 if (my_ads_store.api_error_message) general_store.showModal({ key: 'AdCreateEditErrorModal' });
             }
         );
-        // P2P configuration is not subscribable. Hence need to fetch it on demand
-        general_store.setP2PConfig();
 
         return () => {
             disposeApiErrorReaction();
@@ -92,31 +100,20 @@ const CreateAdForm = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    React.useEffect(() => {
-        const ad_website_status = setInterval(() => {
-            if (my_ads_store.is_ad_created_modal_visible) {
-                my_ads_store.getWebsiteStatus();
-            }
-        }, 10000);
-
-        return () => {
-            clearInterval(ad_website_status);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [my_ads_store.is_ad_created_modal_visible]);
-
     return (
         <React.Fragment>
             <Formik
                 initialValues={{
                     contact_info: general_store.contact_info,
                     default_advert_description: general_store.default_advert_description,
+                    float_rate_offset_limit: float_rate_offset_limit_string,
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    order_completion_time: general_store.order_payment_period,
+                    order_completion_time: order_payment_period_string,
                     payment_info: my_ads_store.payment_info,
-                    rate_type: floating_rate_store.rate_type === ad_type.FLOAT ? '-0.01' : '',
+                    rate_type_string: rate_type,
+                    rate_type: rate_type === ad_type.FLOAT ? '-0.01' : '',
                     type: buy_sell_store.create_sell_ad_from_no_ads ? buy_sell.SELL : buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
@@ -131,7 +128,11 @@ const CreateAdForm = () => {
                                     is_scrollbar_hidden={isMobile()}
                                 >
                                     <CreateAdFormWrapper>
-                                        <AdWizard steps={steps} />
+                                        <AdWizard
+                                            float_rate_offset_limit_string={float_rate_offset_limit_string}
+                                            rate_type={rate_type}
+                                            steps={steps}
+                                        />
                                     </CreateAdFormWrapper>
                                 </ThemedScrollbars>
                             </Form>
@@ -150,7 +151,7 @@ const CreateAdForm = () => {
                     <Text as='p' size='xs' color='prominent'>
                         <Localize
                             i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be deactivated."
-                            values={{ adverts_archive_period: my_ads_store.adverts_archive_period }}
+                            values={{ adverts_archive_period }}
                         />
                     </Text>
                     <br />

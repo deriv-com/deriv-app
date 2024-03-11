@@ -483,12 +483,12 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         },
         [CONTRACT_TYPES.TURBOS.LONG]: {
             name: localize('Turbos'),
-            button_name: localize('Long'),
+            button_name: localize('Up'),
             position: 'top',
         },
         [CONTRACT_TYPES.TURBOS.SHORT]: {
             name: localize('Turbos'),
-            button_name: localize('Short'),
+            button_name: localize('Down'),
             position: 'bottom',
         },
         [CONTRACT_TYPES.VANILLA.CALL]: {

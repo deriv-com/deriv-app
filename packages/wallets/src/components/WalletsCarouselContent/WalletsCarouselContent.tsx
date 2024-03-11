@@ -11,11 +11,10 @@ type TProps = {
     onWalletSettled?: (value: boolean) => void;
 };
 
-type NumberWithinRangeProps = {
-    max: number;
-    min: number;
-    number: number;
-};
+const numberWithinRange = (number: number, min: number, max: number): number => Math.min(Math.max(number, min), max);
+
+// scale based on the width difference between active and inactive wallets
+const TRANSITION_FACTOR_SCALE = 1 - 24 / 28.8;
 
 /**
  * carousel component
@@ -39,12 +38,6 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     const transitionNodes = useRef<HTMLElement[]>([]);
     const transitionFactor = useRef(0);
 
-    const numberWithinRange = ({ max, min, number }: NumberWithinRangeProps): number =>
-        Math.min(Math.max(number, min), max);
-
-    // scale based on the width difference between active and inactive wallets
-    const transitionFactorScale = 1 - 24 / 28.8;
-
     // sets the transition nodes to be scaled
     const setTransitionNodes = useCallback((walletsCarouselEmblaApi: EmblaCarouselType) => {
         // find and store all available wallet card containers for the transition nodes
@@ -54,12 +47,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     }, []);
 
     // function to set the transition factor based on the number of scroll snaps
-    const setTransitionFactor = useCallback(
-        (walletsCarouselEmblaApi: EmblaCarouselType) => {
-            transitionFactor.current = transitionFactorScale * walletsCarouselEmblaApi.scrollSnapList().length;
-        },
-        [transitionFactorScale]
-    );
+    const setTransitionFactor = useCallback((walletsCarouselEmblaApi: EmblaCarouselType) => {
+        transitionFactor.current = TRANSITION_FACTOR_SCALE * walletsCarouselEmblaApi.scrollSnapList().length;
+    }, []);
 
     // function to interpolate the scale of wallet cards based on scroll events
     const transitionScale = useCallback(
@@ -100,7 +90,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                     // calculate transition scale value based on the scroll position
                     // active wallet will scale down until it reaches the point where width is 24rem and vice versa
                     const transitionValue = 1 - Math.abs(diffToTarget * transitionFactor.current);
-                    const scale = numberWithinRange({ max: 1, min: 0, number: transitionValue }).toString();
+                    const scale = numberWithinRange(transitionValue, 0, 1).toString();
 
                     // apply the scale to the wallet cards
                     const transitionNode = transitionNodes.current[slideIndex];

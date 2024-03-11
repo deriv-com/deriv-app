@@ -409,7 +409,7 @@ describe('<TradeCategoriesGIF />', () => {
     });
     it('expect ImageTurbos to be rendered when trade category is TRADE_TYPES.TURBOS.LONG', async () => {
         jest.isolateModules(() => {
-            jest.doMock('Assets/SvgComponents/trade_explanations/img-tick-high-low.svg', () => ({
+            jest.doMock('Assets/SvgComponents/trade_explanations/img-turbos.svg', () => ({
                 __esModule: true,
                 default: jest.fn(() => 'ImageTurbos'),
             }));

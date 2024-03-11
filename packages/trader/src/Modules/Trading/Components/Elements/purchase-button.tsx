@@ -119,7 +119,8 @@ const PurchaseButton = ({
                 'btn-purchase--multiplier': is_multiplier,
                 'btn-purchase--multiplier-deal-cancel': has_deal_cancellation,
                 'btn-purchase--turbos': is_turbos,
-                'btn-purchase--has-bottom-gradient': is_accumulator || is_vanilla || is_turbos,
+                'btn-purchase--has-bottom-gradient-green': index === 0 && (is_accumulator || is_vanilla || is_turbos),
+                'btn-purchase--has-bottom-gradient-red': index === 1 && (is_vanilla || is_turbos),
             })}
             onClick={() => {
                 if (is_multiplier && mf_account_status === MT5_ACCOUNT_STATUS.PENDING) {

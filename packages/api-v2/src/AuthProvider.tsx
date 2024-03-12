@@ -91,7 +91,7 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
 
     useEffect(() => {
         setOnReconnected(() => {
-            mutateAsync({ payload: { authorize: getToken(loginid || '') || '' } });
+            mutateAsync({ payload: { authorize: getToken(loginid || '') ?? '' } });
         });
     }, [loginid]);
 

@@ -103,7 +103,7 @@ const Dropzone: React.FC<TProps> = ({
         <div {...getRootProps()} className={className} ref={rootRef as RefObject<HTMLDivElement>}>
             <input
                 {...(getInputProps() as DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>)}
-                data-testid='dt_dropzone-input'
+                data-testid='dt_dropzone_input'
             />
             <div
                 className={classNames(
@@ -145,14 +145,14 @@ const Dropzone: React.FC<TProps> = ({
                                 className={classNames('account-dropzone__thumb', {
                                     'account-dropzone__thumb--has-frame': hasFrame,
                                 })}
-                                data-testid='dt_remove-button'
+                                data-testid='dt_remove_button'
                                 style={{ backgroundImage: `url(${file.preview})` }}
                             >
                                 {hasFrame && <DropzoneFrame />}
                                 <IconButton
                                     className='absolute top-400 right-400 rounded-pill'
                                     color='black'
-                                    data-testid='dt_remove-button-icon'
+                                    data-testid='dt_remove_button_icon'
                                     icon={<StandaloneXmarkBoldIcon className='fill-solid-slate-50' iconSize='sm' />}
                                     isRound
                                     onClick={removeFile}

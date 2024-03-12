@@ -12,7 +12,7 @@ const useOrderList = (
         payload: { ...payload, offset: payload?.offset, limit: payload?.limit },
         options: {
             getNextPageParam: (lastPage, pages) => {
-                if (!lastPage?.p2p_order_list?.list) return;
+                if (!lastPage?.p2p_order_list?.list?.length) return;
 
                 return pages.length;
             },

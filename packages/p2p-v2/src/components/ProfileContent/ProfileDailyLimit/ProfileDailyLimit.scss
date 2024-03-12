@@ -1,0 +1,10 @@
+.p2p-v2-profile-daily-limit {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.4rem;
+
+    & span {
+        flex: 1;
+    }
+}

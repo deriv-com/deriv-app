@@ -3,9 +3,10 @@
         display: flex;
         flex-direction: column;
         gap: 1.6rem;
-        padding: 2.4rem 2.4rem 0;
+        margin: 1.6rem 2.4rem;
+
         @include mobile {
-            padding: 2.4rem 1.6rem;
+            margin: 1.6rem;
             justify-content: flex-start;
         }
     }
@@ -34,17 +35,8 @@
         margin: 1.6rem;
         text-align: unset;
     }
-    &__message {
-        padding: 0 3.2rem 3.2rem;
-    }
-    &__description {
-        margin: 3.2rem 2.4rem 0;
-        @include mobile {
-            margin: 1.6rem;
-        }
-    }
+
     &__migration_content {
-        margin: 3.2rem 15rem;
         display: grid;
         grid-template-columns: 1fr;
         grid-gap: 1.6rem;
@@ -91,7 +83,9 @@
     &__migration_infobox {
         display: flex;
         justify-content: center;
-        padding-bottom: 2rem;
+        .dc-hint-box {
+            align-items: flex-start;
+        }
     }
     &__password {
         &-header-container {
@@ -146,6 +140,7 @@
         position: fixed;
         bottom: 4rem;
         width: 100%;
+        background: var(--general-main-1);
 
         .dc-btn {
             width: 100%;

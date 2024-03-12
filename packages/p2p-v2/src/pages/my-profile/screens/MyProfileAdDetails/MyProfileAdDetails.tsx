@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FullPageMobileWrapper, TextArea } from '@/components';
 import { useDevice, useQueryString } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
-import { Button, Loader } from '@deriv-com/ui';
+import { Button, Loader, Text } from '@deriv-com/ui';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
@@ -98,7 +98,9 @@ const MyProfileAdDetails = () => {
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
             <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg'>
-                Save
+                <Text lineHeight='6xl' size='sm' weight='bold'>
+                    Save
+                </Text>
             </Button>
         </div>
     );

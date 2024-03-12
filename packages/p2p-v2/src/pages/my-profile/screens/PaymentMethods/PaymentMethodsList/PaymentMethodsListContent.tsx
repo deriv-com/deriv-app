@@ -87,7 +87,7 @@ const PaymentMethodsListContent = ({
             {Object.keys(groupedPaymentMethods)?.map(key => {
                 return (
                     <div className='p2p-v2-payment-methods-list__group' key={key}>
-                        <Text color='black' weight='bold'>
+                        <Text size='sm' weight='bold'>
                             {groupedPaymentMethods[key].title}
                         </Text>
                         <div className='p2p-v2-payment-methods-list__group-body'>

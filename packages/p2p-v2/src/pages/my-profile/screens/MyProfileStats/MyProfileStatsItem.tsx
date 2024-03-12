@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import './MyProfileStatsItem.scss';
 
 type TMyProfileStatsItemProps = {
@@ -22,6 +22,8 @@ const MyProfileStatsItem = ({
     value,
 }: TMyProfileStatsItemProps) => {
     const [hasClickedLifetime, setHasClickedLifetime] = useState(false);
+    const { isMobile } = useDevice();
+    const textSize = isMobile ? 'xs' : 'sm';
 
     const onClickLabel = (showLifetime: boolean) => {
         setHasClickedLifetime(showLifetime);
@@ -31,32 +33,33 @@ const MyProfileStatsItem = ({
     return (
         <div className='p2p-v2-my-profile-stats__item' data-testid={testId}>
             <div>
-                <Text size='sm'>{label} </Text>
+                <Text color='less-prominent' size={textSize}>
+                    {label}{' '}
+                </Text>
                 {shouldShowDuration && (
-                    <button
-                        className={clsx('p2p-v2-my-profile-stats__item--inactive', {
-                            'p2p-v2-my-profile-stats__item--active': !hasClickedLifetime && shouldShowLifetime,
-                        })}
-                        onClick={() => onClickLabel(false)}
-                    >
-                        30d
+                    <button className='p2p-v2-my-profile-stats__item--inactive' onClick={() => onClickLabel(false)}>
+                        <Text
+                            color={!hasClickedLifetime && shouldShowLifetime ? 'red' : 'less-prominent'}
+                            size={textSize}
+                        >
+                            30d{' '}
+                        </Text>
                     </button>
                 )}{' '}
                 {shouldShowLifetime && (
                     <>
-                        |{' '}
-                        <button
-                            className={clsx('p2p-v2-my-profile-stats__item--inactive', {
-                                'p2p-v2-my-profile-stats__item--active': hasClickedLifetime,
-                            })}
-                            onClick={() => onClickLabel(true)}
-                        >
-                            lifetime
+                        <Text color='less-prominent' size={textSize}>
+                            |{' '}
+                        </Text>
+                        <button className='p2p-v2-my-profile-stats__item--inactive' onClick={() => onClickLabel(true)}>
+                            <Text color={hasClickedLifetime ? 'red' : 'less-prominent'} size={textSize}>
+                                lifetime
+                            </Text>
                         </button>
                     </>
                 )}
             </div>
-            <Text size='sm' weight='bold'>
+            <Text size={isMobile ? 'md' : 'sm'} weight='bold'>
                 {value} {currency}
             </Text>
         </div>

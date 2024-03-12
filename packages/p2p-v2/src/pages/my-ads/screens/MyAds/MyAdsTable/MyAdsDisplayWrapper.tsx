@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { FullPageMobileWrapper } from '@/components';
-import { Button, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { MyAdsToggle } from '../MyAdsToggle';
 
 type TMyAdsDisplayWrapperProps = {
@@ -8,16 +8,24 @@ type TMyAdsDisplayWrapperProps = {
     onClickToggle: () => void;
 };
 
+const MyAdsButton = () => {
+    const { isMobile } = useDevice();
+
+    return (
+        <Button isFullWidth={isMobile} size='lg'>
+            <Text lineHeight='6xl' size={isMobile ? 'md' : 'sm'} weight='bold'>
+                Create new ad
+            </Text>
+        </Button>
+    );
+};
+
 const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChildren<TMyAdsDisplayWrapperProps>) => {
     const { isMobile } = useDevice();
     if (isMobile) {
         return (
             <FullPageMobileWrapper
-                renderFooter={() => (
-                    <Button isFullWidth size='lg' textSize='md'>
-                        Create new ad
-                    </Button>
-                )}
+                renderFooter={() => <MyAdsButton />}
                 renderHeader={() => <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />}
                 shouldShowBackIcon={false}
             >
@@ -29,9 +37,7 @@ const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChi
     return (
         <>
             <div className='flex items-center justify-between my-[1.6rem]'>
-                <Button size='lg' textSize='sm'>
-                    Create new ad
-                </Button>
+                <MyAdsButton />
                 <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />
             </div>
             {children}

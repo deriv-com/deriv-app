@@ -14,16 +14,16 @@ type TMyProfileCounterpartiesTableProps = {
 
 type TMyProfileCounterpartiesTableRowRendererProps = {
     id?: string;
-    is_blocked: boolean;
+    isBlocked: boolean;
     name?: string;
 };
 
 const MyProfileCounterpartiesTableRowRenderer = ({
     id,
-    is_blocked,
+    isBlocked,
     name,
 }: TMyProfileCounterpartiesTableRowRendererProps) => (
-    <MyProfileCounterpartiesTableRow id={id!} isBlocked={is_blocked} nickname={name!} />
+    <MyProfileCounterpartiesTableRow id={id!} isBlocked={isBlocked} nickname={name!} />
 );
 
 //TODO: rewrite the implementation in accordance with @deriv-com/ui table component
@@ -38,9 +38,9 @@ const MyProfileCounterpartiesTable = ({
         isLoading,
         loadMoreAdvertisers,
     } = p2p.advertiser.useGetList({
-        trade_partners: 1,
-        is_blocked: dropdownValue === 'blocked' ? 1 : 0,
         advertiser_name: searchValue,
+        is_blocked: dropdownValue === 'blocked' ? 1 : 0,
+        trade_partners: 1,
     });
 
     useEffect(() => {

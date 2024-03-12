@@ -21,6 +21,7 @@ import {
     getUrlSmartTrader,
     getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
+    MT5_ACCOUNT_RIGHTS,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -88,7 +89,7 @@ const TradingAppCard = ({
 
     const handleStatusBadgeClick = (mt5_acc_auth_status: string) => {
         switch (mt5_acc_auth_status) {
-            case MT5_ACCOUNT_STATUS.DISABLED:
+            case MT5_ACCOUNT_RIGHTS.DISABLED:
                 return setAccountDisabledModalVisibility(true);
             case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
             case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:

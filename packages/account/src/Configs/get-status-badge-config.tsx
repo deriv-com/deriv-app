@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
+import { AUTH_STATUS_CODES, MT5_ACCOUNT_RIGHTS, MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TAuthStatusCodes, TMT5AccountStatus } from '../Types/common.type';
 import { Link } from 'react-router-dom';
@@ -80,7 +80,7 @@ const getStatusBadgeConfig = (
                 text: <Localize i18n_default_text='<0>Account closed</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
             };
-        case MT5_ACCOUNT_STATUS.DISABLED:
+        case MT5_ACCOUNT_RIGHTS.DISABLED:
             return {
                 text: (
                     <Localize

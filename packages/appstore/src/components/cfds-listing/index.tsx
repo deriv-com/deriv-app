@@ -1,7 +1,14 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
-import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction, MT5_ACCOUNT_STATUS } from '@deriv/shared';
+import {
+    isMobile,
+    formatMoney,
+    getAuthenticationStatusInfo,
+    Jurisdiction,
+    MT5_ACCOUNT_STATUS,
+    MT5_ACCOUNT_RIGHTS,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
@@ -73,7 +80,7 @@ const CFDsListing = observer(() => {
 
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
         if (!current_acc_status?.includes('enabled')) {
-            return MT5_ACCOUNT_STATUS.DISABLED;
+            return MT5_ACCOUNT_RIGHTS.DISABLED;
         }
         if (jurisdiction) {
             switch (jurisdiction) {

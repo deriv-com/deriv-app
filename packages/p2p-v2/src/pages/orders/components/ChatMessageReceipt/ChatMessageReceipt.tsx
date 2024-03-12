@@ -30,7 +30,7 @@ const ChatMessageReceipt = ({ chatChannel, message, userId }: TChatMessageReceip
         }
     }
 
-    return <Icon />;
+    return <Icon data-testid='dt_p2p_v2_chat_message_receipt_icon' />;
 };
 
 export default ChatMessageReceipt;

@@ -2,7 +2,7 @@ import { action, autorun, computed, makeObservable, observable } from 'mobx';
 
 import { isMobile, isTouchDevice, routes } from '@deriv/shared';
 
-import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
+import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH, NEW_MAX_TABLET_WIDTH, MAX_RESPONSIVE_WIDTH } from 'Constants/ui';
 
 import BaseStore from './base-store';
 
@@ -337,6 +337,8 @@ export default class UIStore extends BaseStore {
             is_desktop: computed,
             is_mobile: computed,
             is_tablet: computed,
+            is_new_tablet: computed,
+            is_responsive: computed,
             is_warning_scam_message_modal_visible: computed,
             url_hashed_values: observable,
             notifyAppInstall: action.bound,
@@ -530,6 +532,18 @@ export default class UIStore extends BaseStore {
 
     get is_tablet() {
         return MAX_MOBILE_WIDTH < this.screen_width && this.screen_width <= MAX_TABLET_WIDTH;
+    }
+
+    get is_new_tablet() {
+        return MAX_RESPONSIVE_WIDTH < this.screen_width && this.screen_width < NEW_MAX_TABLET_WIDTH;
+    }
+
+    get is_responsive() {
+        return this.screen_width < MAX_RESPONSIVE_WIDTH;
+    }
+
+    get is_tablet_or_below() {
+        return this.screen_width < NEW_MAX_TABLET_WIDTH;
     }
 
     get is_account_switcher_disabled() {

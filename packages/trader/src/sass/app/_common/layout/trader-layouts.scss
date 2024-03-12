@@ -1,39 +1,41 @@
 /** @define app-contents; weak */
 .app-contents {
-    &--show-positions-drawer:not(&--is-mobile) {
-        .trade-container {
-            .chart-container {
-                width: 100%;
+    @include new-desktop {
+        &--show-positions-drawer:not(&--is-mobile) {
+            .trade-container {
+                .chart-container {
+                    width: 100%;
 
-                .sc-navigation-widget,
-                .cq-top-ui-widgets,
-                .sc-toolbar-widget,
-                .stx-panel-control {
-                    transform: translate3d(248px, 0, 0);
-                }
-                .cq-chart-controls {
-                    transform: translate3d(130px, 0, 0) !important;
-                }
-                .cq-bottom-ui-widgets {
-                    .digits__container,
-                    .accumulators-stats {
-                        transform: translate3d(130px, 0, 0) !important;
+                    .sc-navigation-widget,
+                    .cq-top-ui-widgets,
+                    .sc-toolbar-widget,
+                    .stx-panel-control {
+                        transform: translate3d(248px, 0, 0);
                     }
-                }
-                .cq-chart-control-left {
                     .cq-chart-controls {
-                        transform: translate3d(248px, 0, 0) !important;
+                        transform: translate3d(130px, 0, 0) !important;
                     }
                     .cq-bottom-ui-widgets {
                         .digits__container,
                         .accumulators-stats {
-                            transform: translate3d(170px, 40px, 0) !important;
+                            transform: translate3d(130px, 0, 0) !important;
                         }
                     }
-                }
-                &__loader {
-                    .barspinner {
-                        transform: translate3d(130px, 0, 0) !important;
+                    .cq-chart-control-left {
+                        .cq-chart-controls {
+                            transform: translate3d(248px, 0, 0) !important;
+                        }
+                        .cq-bottom-ui-widgets {
+                            .digits__container,
+                            .accumulators-stats {
+                                transform: translate3d(170px, 40px, 0) !important;
+                            }
+                        }
+                    }
+                    &__loader {
+                        .barspinner {
+                            transform: translate3d(130px, 0, 0) !important;
+                        }
                     }
                 }
             }
@@ -109,7 +111,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
 
-            @include mobile {
+            @include new-mobile {
                 z-index: 4;
                 height: auto;
                 border-bottom-right-radius: $BORDER_RADIUS;
@@ -319,8 +321,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         top: 75px;
                     }
                     .stx_jump_today {
-                        @include mobile {
-                            z-index: 15; // must be greater than z-index of mobile .stx-holder.stx-panel-chart
+                        @include new-mobile {
+                            z-index: 15; // must be greater than z-index of new-mobile .stx-holder.stx-panel-chart
                         }
 
                         &.home > svg {
@@ -344,7 +346,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
 
                 /* postcss-bem-linter: ignore */
-                &-mobile {
+                &-new-mobile {
                     /* TODO: Remove this override once the issue is fixed in smartcharts */
                     .stx-holder.stx-panel-chart {
                         z-index: 14;
@@ -368,13 +370,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
 
-            @include mobile {
+            @include new-mobile {
                 height: 100%;
                 width: calc(100% - 1.6rem);
                 margin-left: 0.8rem;
             }
         }
-        @include mobile {
+        @include new-mobile {
             display: flex;
             flex-direction: column-reverse;
             height: 100%;
@@ -394,15 +396,15 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
     }
-    @include mobile {
+    @include new-mobile {
         flex-direction: column;
         min-height: calc(100vh - 48px);
         padding: 0;
     }
 }
 
-/** @define mobile-wrapper; weak */
-.mobile-wrapper {
+/** @define new-mobile-wrapper; weak */
+.new-mobile-wrapper {
     padding: 0 0.8rem;
     display: flex;
     flex-direction: column;
@@ -483,7 +485,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         }
     }
     // smartchart library style fixes
-    .smartcharts-mobile {
+    .smartcharts-new-mobile {
         .sc-categorical-display {
             height: calc(100% - 8px) !important;
         }
@@ -560,7 +562,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 &.ciq-disabled {
                     display: none;
                 }
-                @include mobile {
+                @include new-mobile {
                     top: 0.8rem;
                     left: 0.8rem;
                     min-width: 170px;
@@ -597,7 +599,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .sc-toolbar-widget {
             transition: transform 0.25s ease;
 
-            @include mobile {
+            @include new-mobile {
                 background: transparent;
                 border-width: 0;
                 bottom: 2.8rem;
@@ -641,7 +643,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         background: transparent;
         min-height: 100%;
 
-        @include mobile {
+        @include new-mobile {
             .flutter-chart {
                 height: calc(100% - 5px);
             }
@@ -693,7 +695,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 // TODO: improve handling of rendering markets dropdown via portals from smartcharts library
 /** @define smartcharts-portal; weak */
 .smartcharts-portal {
-    @include mobile {
+    @include new-mobile {
         &--open {
             .smartcharts {
                 z-index: 9999;
@@ -739,7 +741,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 .smartcharts {
     &-dark,
     &-light {
-        @include mobile {
+        @include new-mobile {
             /* postcss-bem-linter: ignore */
             .cq-menu-dropdown-enter-done {
                 margin-top: 0;

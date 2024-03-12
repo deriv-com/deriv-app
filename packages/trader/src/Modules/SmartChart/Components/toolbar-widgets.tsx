@@ -13,8 +13,8 @@ const ToolbarWidgets = ({ is_mobile, position, updateChartType, updateGranularit
     return (
         <ToolbarWidget position={position || (is_mobile ? 'bottom' : null)}>
             <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
-            {isDesktop() && <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />}
-            {isDesktop() && (
+            {!is_mobile && <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />}
+            {!is_mobile && (
                 <Views
                     portalNodeId='modal_root'
                     searchInputClassName='data-hj-whitelist'
@@ -22,8 +22,8 @@ const ToolbarWidgets = ({ is_mobile, position, updateChartType, updateGranularit
                     onGranularity={updateGranularity}
                 />
             )}
-            {isDesktop() && <DrawTools portalNodeId='modal_root' />}
-            {isDesktop() && <Share portalNodeId='modal_root' />}
+            {!is_mobile && <DrawTools portalNodeId='modal_root' />}
+            {!is_mobile && <Share portalNodeId='modal_root' />}
         </ToolbarWidget>
     );
 };

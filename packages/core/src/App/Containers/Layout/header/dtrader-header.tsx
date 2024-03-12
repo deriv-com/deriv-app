@@ -30,7 +30,7 @@ const DTraderHeader = observer(() => {
     const {
         header_extension,
         is_app_disabled,
-        is_mobile,
+        is_tablet_or_below,
         is_route_modal_on,
         toggleReadyToDepositModal,
         is_real_acc_signup_on,
@@ -86,7 +86,7 @@ const DTraderHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {!is_mobile && (
+                    {!is_tablet_or_below && (
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
@@ -94,7 +94,7 @@ const DTraderHeader = observer(() => {
                             current_language={current_language}
                         />
                     )}
-                    {is_mobile && (
+                    {is_tablet_or_below && (
                         <React.Fragment>
                             <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                             {header_extension && is_logged_in && (
@@ -102,16 +102,16 @@ const DTraderHeader = observer(() => {
                             )}
                         </React.Fragment>
                     )}
-                    {!is_mobile && <TradersHubHomeButton />}
+                    {!is_tablet_or_below && <TradersHubHomeButton />}
                     <MenuLinks />
                 </div>
 
                 <div
                     className={classNames('header__menu-right', {
-                        'header__menu-right--hidden': is_mobile && is_logging_in,
+                        'header__menu-right--hidden': is_tablet_or_below && is_logging_in,
                     })}
                 >
-                    {!is_mobile && (
+                    {!is_tablet_or_below && (
                         <div className='header__menu--dtrader--separator--account'>
                             <div className='header__menu--dtrader--separator' />
                         </div>
@@ -124,7 +124,7 @@ const DTraderHeader = observer(() => {
                                 'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
                             })}
                         >
-                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
+                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_tablet_or_below} speed={3} />
                         </div>
                     )}
                     <HeaderAccountActions onClickDeposit={handleClickCashier} />

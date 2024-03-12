@@ -31,14 +31,14 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 margin-right: 1.6rem;
                 padding: 0.4rem;
 
-                @include mobile {
+                @include new-mobile {
                     margin-right: 0.8rem;
                 }
             }
             &-wrapper {
                 max-width: 35rem;
 
-                @include mobile {
+                @include new-mobile {
                     max-width: 11rem;
                 }
 
@@ -55,7 +55,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     overflow: hidden;
                 }
 
-                @include mobile {
+                @include new-mobile {
                     font-size: 1rem;
                     letter-spacing: normal;
                     line-height: 1.4;
@@ -158,7 +158,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 }
             }
         }
-        @include mobile {
+        @include new-mobile {
             padding: 0.8rem;
             margin-left: 0.8rem;
         }
@@ -189,7 +189,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         right: 0;
         top: 0;
     }
-    @include mobile {
+    @include new-mobile {
         left: 0;
     }
 }

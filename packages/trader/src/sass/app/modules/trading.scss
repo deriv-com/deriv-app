@@ -45,7 +45,7 @@
 }
 
 /** @define modal-dialog; weak */
-.dc-mobile-dialog {
+.dc-new-mobile-dialog {
     .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
         background: initial;
     }
@@ -62,7 +62,7 @@
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
-        @include mobile {
+        @include new-mobile {
             padding: 0;
             margin-bottom: 0.8rem;
             background-color: transparent;
@@ -263,7 +263,7 @@
             justify-self: left;
             align-items: center;
 
-            @include mobile {
+            @include new-mobile {
                 color: var(--text-colored-background);
                 width: 100%;
                 justify-content: space-between;
@@ -319,7 +319,7 @@
                 opacity: 1;
                 transition: 0.3s;
 
-                @include mobile {
+                @include new-mobile {
                     color: var(--text-colored-background);
                 }
             }
@@ -328,7 +328,7 @@
                 font-weight: normal;
                 @include typeface(--paragraph-left-normal-black);
                 color: var(--text-less-prominent);
-                @include mobile {
+                @include new-mobile {
                     @include typeface(--xsmall-left-normal-black);
                     color: var(--text-colored-background);
                 }
@@ -359,7 +359,7 @@
     }
     &__price-info {
         &-currency {
-            @include mobile {
+            @include new-mobile {
                 font-size: 0.9rem;
             }
         }
@@ -460,7 +460,7 @@
             align-items: center;
             padding: 0 1rem;
             border-bottom: 0.1rem solid var(--general-hover);
-            @include mobile {
+            @include new-mobile {
                 height: 4.5rem;
                 padding: 0 1.6rem;
                 border-bottom: 0.1rem solid var(--general-section-1);
@@ -482,7 +482,7 @@
         }
         &__text {
             padding: 1.6rem 1.6rem 0;
-            @include mobile {
+            @include new-mobile {
                 padding: 1.6rem 0 0.8rem 1.6rem;
             }
         }
@@ -510,7 +510,7 @@
                 background-color: var(--general-active);
                 font-weight: var(--text-weight-bold);
             }
-            @include mobile {
+            @include new-mobile {
                 display: flex;
                 align-items: center;
                 height: 4.8rem;
@@ -642,7 +642,7 @@
             background-color: var(--general-section-1);
             border-color: var(--general-section-1);
             color: var(--text-general);
-            @include mobile {
+            @include new-mobile {
                 width: 45%;
                 padding: 0;
                 margin-bottom: 0rem;
@@ -671,7 +671,7 @@
             .trade-container__price-info-currency {
                 margin-left: -0.1rem;
             }
-            @include mobile {
+            @include new-mobile {
                 padding: 0.4rem 0 0 !important;
                 margin-bottom: -0.5rem;
 
@@ -686,7 +686,7 @@
         .trade-container__price-info-currency {
             font-size: 1.2rem;
         }
-        @include mobile {
+        @include new-mobile {
             padding: 0 0.4rem;
             min-height: 1.4rem;
             margin-bottom: 0.4rem;
@@ -828,7 +828,7 @@
                 }
             }
         }
-        @include mobile {
+        @include new-mobile {
             padding: initial;
             position: relative;
 
@@ -846,17 +846,17 @@
         }
         .dc-btn--sell {
             margin-bottom: 0.5rem;
-            @include mobile {
+            @include new-mobile {
                 margin-bottom: 1rem;
             }
         }
-        @include mobile {
+        @include new-mobile {
             padding: 0;
             margin-bottom: 0;
         }
     }
     &__notification {
-        @include mobile {
+        @include new-mobile {
             margin-bottom: 0.6rem;
         }
     }
@@ -867,7 +867,7 @@
         height: calc(100% + 2px);
         left: -2px;
     }
-    @include mobile {
+    @include new-mobile {
         display: grid;
         grid-template-areas: 'a b';
         grid-column-gap: 0.5rem;
@@ -896,7 +896,7 @@
 .range-text-container {
     margin-top: 0.5rem;
 
-    @include mobile {
+    @include new-mobile {
         margin: 0 0 0.8rem;
         position: relative;
         top: -0.8rem;
@@ -917,7 +917,7 @@
 }
 
 /** @define dc-collapsible */
-@include mobile {
+@include new-mobile {
     .dc-collapsible {
         position: absolute;
         bottom: 0;
@@ -955,7 +955,7 @@
 }
 
 /** @define market-unavailable-modal */
-@include mobile {
+@include new-mobile {
     .market-unavailable-modal {
         @media only screen and (max-height: 600px) {
             align-items: flex-start;
@@ -999,7 +999,7 @@
 }
 
 .account-verification-required-modal {
-    @include mobile {
+    @include new-mobile {
         &-text {
             padding: 1.5rem;
         }
@@ -1019,7 +1019,7 @@
         &-body {
             padding: 0 2.4rem;
         }
-        @include mobile {
+        @include new-mobile {
             &-header__title {
                 font-size: 1.4rem;
                 padding: 1.6rem;

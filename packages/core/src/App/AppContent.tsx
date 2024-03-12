@@ -25,6 +25,7 @@ import initDatadog from '../Utils/Datadog';
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
+    const { is_tablet_or_below } = store.ui;
 
     const { data } = useRemoteConfig();
 
@@ -59,9 +60,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            <DesktopWrapper>
-                <Footer />
-            </DesktopWrapper>
+            {!is_tablet_or_below && <Footer />}
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>

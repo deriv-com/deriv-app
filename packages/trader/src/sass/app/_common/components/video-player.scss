@@ -277,7 +277,7 @@
 
         .dc-list,
         .dc-themed-scrollbars {
-            @include mobile {
+            @include new-mobile {
                 height: 13.2rem;
             }
         }

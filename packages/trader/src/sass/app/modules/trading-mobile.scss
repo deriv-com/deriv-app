@@ -1,4 +1,4 @@
-@include mobile {
+@include new-mobile {
     /** @define dc-collapsible; weak */
     .dc-collapsible {
         touch-action: pan-x;
@@ -157,7 +157,7 @@
     }
     /** @define allow-equals; weak */
     .allow-equals,
-    .take-profit.mobile-widget {
+    .take-profit.new-mobile-widget {
         .dc-checkbox__label {
             font-weight: bold;
             color: var(--text-prominent);
@@ -347,7 +347,7 @@
                     gap: 10px;
                     align-items: flex-start;
 
-                    .trade-params__amount--mobile {
+                    .trade-params__amount--new-mobile {
                         display: flex;
                         height: 4.8rem;
                         align-items: center;
@@ -368,7 +368,7 @@
             }
         }
         &__header {
-            @include mobile {
+            @include new-mobile {
                 padding: 0.5rem 0;
 
                 &-label {
@@ -533,7 +533,7 @@
                 }
             }
         }
-        &--mobile {
+        &--new-mobile {
             &-strike {
                 overflow: auto;
                 margin-top: unset;

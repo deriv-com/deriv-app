@@ -14,7 +14,7 @@ type TUiStore = Pick<
     ReturnType<typeof useStore>['ui'],
     | 'addToast'
     | 'current_focus'
-    | 'is_mobile'
+    | 'is_responsive'
     | 'removeToast'
     | 'setCurrentFocus'
     | 'should_show_cancellation_warning'
@@ -99,7 +99,7 @@ const PositionsDrawer = observer(({ ...props }) => {
         removePositionById: onClickRemove,
     } = portfolio;
     const {
-        is_mobile,
+        is_responsive,
         is_positions_drawer_on,
         togglePositionsDrawer: toggleDrawer,
         addToast,
@@ -152,7 +152,7 @@ const PositionsDrawer = observer(({ ...props }) => {
                     onClickRemove={onClickRemove}
                     server_time={server_time}
                     getContractById={getContractById}
-                    is_mobile={is_mobile}
+                    is_responsive={is_responsive}
                     current_focus={current_focus}
                     removeToast={removeToast}
                     setCurrentFocus={setCurrentFocus}

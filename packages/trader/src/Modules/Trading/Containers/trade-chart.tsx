@@ -32,8 +32,13 @@ const TradeChart = observer((props: TTradeChartProps) => {
         updateGranularity,
     } = contract_trade;
     const { all_positions } = portfolio;
-    const { is_chart_countdown_visible, is_chart_layout_default, is_dark_mode_on, is_mobile, is_positions_drawer_on } =
-        ui;
+    const {
+        is_chart_countdown_visible,
+        is_chart_layout_default,
+        is_dark_mode_on,
+        is_responsive,
+        is_positions_drawer_on,
+    } = ui;
     const { current_language, is_socket_opened } = common;
     const { should_show_eu_content } = client;
     const {
@@ -60,7 +65,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
-        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: is_mobile ? 3 : undefined } : {}),
+        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: is_responsive ? 3 : undefined } : {}),
         ...(has_barrier ? { whitespace: 110 } : {}),
     };
 
@@ -100,7 +105,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
             barriers={barriers}
             contracts_array={markers_array}
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
-            crosshair={is_mobile ? 0 : undefined}
+            crosshair={is_responsive ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
             chartControlsWidgets={null}
@@ -118,8 +123,8 @@ const TradeChart = observer((props: TTradeChartProps) => {
             enabledNavigationWidget={isDesktop()}
             enabledChartFooter={false}
             id='trade'
-            isMobile={is_mobile}
-            maxTick={is_mobile ? max_ticks : undefined}
+            isMobile={is_responsive}
+            maxTick={is_responsive ? max_ticks : undefined}
             granularity={show_digits_stats || is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
@@ -138,7 +143,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
                     <ToolbarWidgets
                         updateChartType={updateChartType}
                         updateGranularity={updateGranularity}
-                        is_mobile={is_mobile}
+                        is_mobile={is_responsive}
                     />
                 );
             }}
@@ -149,10 +154,10 @@ const TradeChart = observer((props: TTradeChartProps) => {
             getMarketsOrder={getMarketsOrder}
             should_zoom_out_on_yaxis={is_accumulator}
             yAxisMargin={{
-                top: is_mobile ? 76 : 106,
+                top: is_responsive ? 76 : 106,
             }}
             isLive
-            leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
+            leftMargin={!is_responsive && is_positions_drawer_on ? 328 : 80}
         >
             {is_accumulator && (
                 <AccumulatorsChartElements
@@ -162,7 +167,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
                     should_show_profit_text={!!accumulator_contract_barriers_data.accumulators_high_barrier}
                     symbol={symbol}
-                    is_mobile={is_mobile}
+                    is_mobile={is_responsive}
                 />
             )}
         </SmartChart>

@@ -53,6 +53,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
     const {
         is_dark_mode_on: is_dark_theme,
         is_mobile,
+        is_responsive,
         notification_messages_ui: NotificationMessages,
         toggleHistoryTab,
     } = ui;
@@ -152,7 +153,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             >
                 <Div100vhContainer
                     className='trade-container__replay'
-                    is_disabled={isDesktop()}
+                    is_disabled={!is_responsive}
                     height_offset='80px' // * 80px = header + contract details header heights in mobile
                 >
                     <DesktopWrapper>{contract_drawer_el}</DesktopWrapper>

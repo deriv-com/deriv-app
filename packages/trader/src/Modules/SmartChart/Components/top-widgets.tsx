@@ -60,8 +60,7 @@ const TopWidgets = ({
     return (
         <React.Fragment>
             {InfoBox}
-            <MobileWrapper>{portal}</MobileWrapper>
-            <DesktopWrapper>{ChartTitleLocal}</DesktopWrapper>
+            {is_mobile ? portal : ChartTitleLocal}
         </React.Fragment>
     );
 };

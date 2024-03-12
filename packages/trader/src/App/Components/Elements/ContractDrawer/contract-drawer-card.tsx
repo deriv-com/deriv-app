@@ -179,13 +179,14 @@ const ContractDrawerCard = observer(
 
         return (
             <React.Fragment>
-                <DesktopWrapper>{contract_card}</DesktopWrapper>
-                <MobileWrapper>
+                {is_mobile ? (
                     <SwipeableContractDrawer onSwipedUp={onSwipedUp} onSwipedDown={onSwipedDown}>
                         <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
                         {contract_card}
                     </SwipeableContractDrawer>
-                </MobileWrapper>
+                ) : (
+                    contract_card
+                )}
             </React.Fragment>
         );
     }

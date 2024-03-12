@@ -54,14 +54,14 @@ export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digit
 export const ChartTopWidgets = observer(({ open_market, open }: TChartTopWidgets) => {
     const { ui } = useStore();
     const { is_digits_widget_active, onChange: onSymbolChange } = useTraderStore();
-    const { is_dark_mode_on, is_mobile } = ui;
+    const { is_dark_mode_on, is_responsive } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
 
     return (
         <TopWidgets
             open_market={open_market}
             open={open}
-            is_mobile={is_mobile}
+            is_mobile={is_responsive}
             is_digits_widget_active={is_digits_widget_active}
             onSymbolChange={symbolChange(onSymbolChange) as ReturnType<typeof useTraderStore>['onChange']}
             theme={theme}

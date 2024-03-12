@@ -42,7 +42,7 @@
         white-space: normal;
     }
 
-    @include mobile {
+    @include new-mobile {
         position: unset;
         top: unset;
         left: unset;

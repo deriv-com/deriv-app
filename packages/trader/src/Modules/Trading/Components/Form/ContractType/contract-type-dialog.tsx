@@ -3,6 +3,7 @@ import { DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { Header } from './ContractTypeInfo';
 import { localize } from '@deriv/translations';
 import ContractTypeMenu from './ContractTypeMenu';
+import { useStore } from '@deriv/stores';
 
 type TContractTypeDialog = {
     is_info_dialog_open: boolean;
@@ -55,26 +56,29 @@ const ContractTypeDialog = ({
     ) : (
         localize('Trade types')
     );
+    const { ui } = useStore();
+    const { is_responsive } = ui;
 
     return (
         <React.Fragment>
-            <MobileWrapper>
-                <span className='contract-type-widget__select-arrow' />
-                <MobileDialog
-                    info_banner={is_info_dialog_open ? '' : info_banner}
-                    portal_element_id='modal_root'
-                    title={current_mobile_title}
-                    header_classname='contract-type-widget__header'
-                    wrapper_classname={is_info_dialog_open ? 'contracts-modal-info' : 'contracts-modal-list'}
-                    visible={is_open}
-                    onClose={onClose}
-                    has_content_scroll={!is_info_dialog_open}
-                    learn_more_banner={is_info_dialog_open ? '' : learn_more_banner}
-                >
-                    {children}
-                </MobileDialog>
-            </MobileWrapper>
-            <DesktopWrapper>
+            {is_responsive ? (
+                <React.Fragment>
+                    <span className='contract-type-widget__select-arrow' />
+                    <MobileDialog
+                        info_banner={is_info_dialog_open ? '' : info_banner}
+                        portal_element_id='modal_root'
+                        title={current_mobile_title}
+                        header_classname='contract-type-widget__header'
+                        wrapper_classname={is_info_dialog_open ? 'contracts-modal-info' : 'contracts-modal-list'}
+                        visible={is_open}
+                        onClose={onClose}
+                        has_content_scroll={!is_info_dialog_open}
+                        learn_more_banner={is_info_dialog_open ? '' : learn_more_banner}
+                    >
+                        {children}
+                    </MobileDialog>
+                </React.Fragment>
+            ) : (
                 <ContractTypeMenu
                     info_banner={info_banner}
                     is_info_dialog_open={is_info_dialog_open}
@@ -94,7 +98,7 @@ const ContractTypeDialog = ({
                 >
                     {children}
                 </ContractTypeMenu>
-            </DesktopWrapper>
+            )}
         </React.Fragment>
     );
 };

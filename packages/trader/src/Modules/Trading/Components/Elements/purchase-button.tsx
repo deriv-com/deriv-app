@@ -79,7 +79,7 @@ const PurchaseButton = ({
     type,
 }: TPurchaseButton) => {
     const {
-        ui: { setIsMFVericationPendingModal },
+        ui: { setIsMFVericationPendingModal, is_responsive },
     } = useStore();
     const mf_account_status = useMFAccountStatus();
     const getIconType = () => {
@@ -131,9 +131,34 @@ const PurchaseButton = ({
                 }
             }}
         >
-            <DesktopWrapper>
-                <div className='btn-purchase__info btn-purchase__info--left'>
-                    <div className='btn-purchase__type-wrapper'>
+            {!is_responsive && (
+                <React.Fragment>
+                    <div className='btn-purchase__info btn-purchase__info--left'>
+                        <div className='btn-purchase__type-wrapper'>
+                            <IconComponentWrapper type={getIconType()} />
+                            <ButtonTextWrapper
+                                should_fade={should_fade}
+                                is_loading={is_loading}
+                                type={type}
+                                is_high_low={is_high_low}
+                            />
+                        </div>
+                    </div>
+                    <div className='btn-purchase__effect-detail' />
+                    <div className='btn-purchase__effect-detail--arrow' />
+                    <div className='btn-purchase__info btn-purchase__info--right'>
+                        <div className='btn-purchase__text_wrapper'>{button_value}</div>
+                    </div>
+                </React.Fragment>
+            )}
+            {is_responsive && (
+                <React.Fragment>
+                    <div
+                        className={classNames('btn-purchase__top', {
+                            'btn-purchase__top--accumulator': is_accumulator,
+                            'btn-purchase--vanilla': is_vanilla,
+                        })}
+                    >
                         <IconComponentWrapper type={getIconType()} />
                         <ButtonTextWrapper
                             should_fade={should_fade}
@@ -142,47 +167,26 @@ const PurchaseButton = ({
                             is_high_low={is_high_low}
                         />
                     </div>
-                </div>
-                <div className='btn-purchase__effect-detail' />
-                <div className='btn-purchase__effect-detail--arrow' />
-                <div className='btn-purchase__info btn-purchase__info--right'>
-                    <div className='btn-purchase__text_wrapper'>{button_value}</div>
-                </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <div
-                    className={classNames('btn-purchase__top', {
-                        'btn-purchase__top--accumulator': is_accumulator,
-                        'btn-purchase--vanilla': is_vanilla,
-                    })}
-                >
-                    <IconComponentWrapper type={getIconType()} />
-                    <ButtonTextWrapper
-                        should_fade={should_fade}
-                        is_loading={is_loading}
-                        type={type}
-                        is_high_low={is_high_low}
-                    />
-                </div>
-                {!is_turbos && !is_vanilla && !is_accumulator && (
-                    <div className='btn-purchase__bottom'>
-                        <ContractInfo
-                            basis={basis}
-                            currency={currency}
-                            growth_rate={growth_rate}
-                            is_accumulator={is_accumulator}
-                            is_loading={is_loading}
-                            is_multiplier={is_multiplier}
-                            is_turbos={is_turbos}
-                            is_vanilla_fx={is_vanilla_fx}
-                            is_vanilla={is_vanilla}
-                            should_fade={should_fade}
-                            proposal_info={info}
-                            type={type}
-                        />
-                    </div>
-                )}
-            </MobileWrapper>
+                    {!is_turbos && !is_vanilla && !is_accumulator && (
+                        <div className='btn-purchase__bottom'>
+                            <ContractInfo
+                                basis={basis}
+                                currency={currency}
+                                growth_rate={growth_rate}
+                                is_accumulator={is_accumulator}
+                                is_loading={is_loading}
+                                is_multiplier={is_multiplier}
+                                is_turbos={is_turbos}
+                                is_vanilla_fx={is_vanilla_fx}
+                                is_vanilla={is_vanilla}
+                                should_fade={should_fade}
+                                proposal_info={info}
+                                type={type}
+                            />
+                        </div>
+                    )}
+                </React.Fragment>
+            )}
         </button>
     );
 };

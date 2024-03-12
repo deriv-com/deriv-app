@@ -74,7 +74,6 @@ const TransferFormAccountSelection = ({ setValidationSchema }) => {
                 label='From'
                 list={() =>
                     accounts?.map(account => {
-                        // console.log('=> render ', account);
                         return {
                             listItem: <TransferAccountTile account={account} />,
                             text: account.loginid,
@@ -100,11 +99,12 @@ const TransferFormAccountSelection = ({ setValidationSchema }) => {
                         // console.log('=> render ', account);
                         return {
                             listItem: <TransferAccountTile account={account} />,
-                            text: account.loginid,
+                            account_type: account.account_type,
                             value: account.loginid,
                         };
                     })
                 }
+                listHeader='Header'
                 name={undefined}
                 onSelect={loginid => {
                     setValues(currentValues => ({
@@ -112,6 +112,7 @@ const TransferFormAccountSelection = ({ setValidationSchema }) => {
                         toAccount: accounts?.find(account => account.loginid === loginid),
                     }));
                 }}
+                showListHeader
                 value={values.toAccount.loginid}
             />
             {/* <Dropdown /> */}

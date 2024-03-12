@@ -82,15 +82,6 @@ const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccount) =>
 
     const isLoading = !accounts || isActiveAccountLoading || isCurrencyConfigLoading;
 
-    // console.log(
-    //     '=> hook - conditions !accounts=',
-    //     !accounts,
-    //     ', isActiveAccountLoading=',
-    //     isActiveAccountLoading,
-    //     ', isCurrencyConfigLoading=',
-    //     isCurrencyConfigLoading
-    // );
-
     const extendedTransferableAccounts = !isLoading
         ? [
               ...sortedMT5Accounts(accounts, getConfig),
@@ -112,14 +103,6 @@ const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccount) =>
                   }
               })
             : undefined;
-    // console.log(
-    //     '=> hook - isLoading=',
-    //     isLoading,
-    //     ', extendedTransferableAccounts',
-    //     extendedTransferableAccounts,
-    //     ', transferableActiveAccount',
-    //     transferableActiveAccount
-    // );
 
     return {
         accounts: extendedTransferableAccounts,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useKycAuthStatus } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import { IDVService, OnfidoContainer } from '../../modules';
+import { IDVService, ManualUpload, OnfidoContainer } from '../../modules';
 
 type TPOIFlowContainerProps = {
     countryCode: string;
@@ -25,7 +25,7 @@ export const POIFlowContainer = ({ countryCode }: TPOIFlowContainerProps) => {
     // [TODO] - Add other services
     switch (availableServices?.[0]) {
         case 'onfido': {
-            return <OnfidoContainer country={countryCode} />;
+            return <OnfidoContainer countryCode={countryCode} />;
         }
         case 'idv': {
             return (
@@ -36,7 +36,7 @@ export const POIFlowContainer = ({ countryCode }: TPOIFlowContainerProps) => {
             );
         }
         default: {
-            return <>Default</>;
+            return <ManualUpload countryCode={countryCode} />;
         }
     }
 };

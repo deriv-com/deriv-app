@@ -13,14 +13,14 @@ import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
 
 // TODO: Remove optional and default props when POI is ready
 type TOnfidoContainer = {
-    country?: string;
+    countryCode?: string;
     isEnabledByDefault?: boolean;
     onOnfidoSubmit?: () => void;
     selectedDocument?: TManualDocumentTypes;
 };
 
 export const OnfidoContainer = ({
-    country,
+    countryCode,
     isEnabledByDefault = false,
     onOnfidoSubmit,
     selectedDocument,
@@ -37,7 +37,7 @@ export const OnfidoContainer = ({
         isServiceTokenLoading,
         onfidoInitializationError,
         serviceTokenError,
-    } = useOnfido(country, selectedDocument);
+    } = useOnfido(countryCode, selectedDocument);
 
     useEffect(() => {
         if (hasSubmitted) {

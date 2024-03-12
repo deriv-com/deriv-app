@@ -16,4 +16,10 @@
 
 .item {
     padding: 0.8rem 1.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+        background: $color-grey-4;
+    }
 }

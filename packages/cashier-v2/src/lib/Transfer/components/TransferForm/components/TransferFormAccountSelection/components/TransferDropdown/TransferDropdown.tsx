@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useCombobox } from 'downshift';
-import { LabelPairedChevronDownMdRegularIcon, LabelPairedChevronUpMdRegularIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
+import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
+import { Text, useOnClickOutside } from '@deriv-com/ui';
 import { TGenericSizes } from '../../../../../../../../hooks/types';
-import reactNodeToString from '../../../../../../../../utils/react-node-to-string';
 import { TransferDropdownList } from './components';
-import './TransferDropdown.scss';
 import styles from './TransferDropdown.module.scss';
 
 type TProps = {
@@ -29,26 +26,24 @@ type TProps = {
     variant?: 'comboBox' | 'prompt';
 };
 
-const TransferDropdown: React.FC<TProps> = ({
-    content,
-    disabled,
-    label,
-    list,
-    listHeight = 'md',
-    message,
-    onChange,
-    onSelect,
-    typeVariant = 'normal',
-    value,
-    variant = 'prompt',
-}) => {
+const TransferDropdown: React.FC<TProps> = ({ content, label, list, message, onSelect, value }) => {
+    const clickOutsideRef = useRef(null);
     const [items, setItems] = useState(list);
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => setIsOpen(currentValue => !currentValue);
 
+    useOnClickOutside(clickOutsideRef, () => {
+        setIsOpen(false);
+    });
+
+    const onSelectItem = (value: string) => {
+        setIsOpen(false);
+        return onSelect(value);
+    };
+
     return (
-        <div className={styles.container}>
+        <div className={styles.container} ref={clickOutsideRef}>
             <button className={styles['selection-container']} onClick={toggleMenu}>
                 <div className={styles['selection-label']}>
                     <Text size='xs'>{label}</Text>
@@ -71,24 +66,28 @@ const TransferDropdown: React.FC<TProps> = ({
                         <TransferDropdownList
                             header='Deriv MT5 accounts'
                             items={items.filter(item => item.account_type === 'mt5')}
+                            onSelect={onSelectItem}
                         />
                     )}
                     {items.find(item => item.account_type === 'ctrader') && (
                         <TransferDropdownList
                             header='Deriv cTrader accounts'
                             items={items.filter(item => item.account_type === 'ctrader')}
+                            onSelect={onSelectItem}
                         />
                     )}
                     {items.find(item => item.account_type === 'dxtrade') && (
                         <TransferDropdownList
                             header='Deriv X accounts'
                             items={items.filter(item => item.account_type === 'dxtrade')}
+                            onSelect={onSelectItem}
                         />
                     )}
                     {items.find(item => item.account_type === 'binary') && (
                         <TransferDropdownList
                             header='Deriv accounts'
                             items={items.filter(item => item.account_type === 'binary')}
+                            onSelect={onSelectItem}
                         />
                     )}
                 </ul>

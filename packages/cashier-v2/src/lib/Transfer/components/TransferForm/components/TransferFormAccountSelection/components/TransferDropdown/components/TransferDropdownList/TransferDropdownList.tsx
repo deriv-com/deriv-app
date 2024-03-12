@@ -5,9 +5,10 @@ import styles from './TransferDropdownList.module.scss';
 type TProps = {
     header: string;
     items: any;
+    onSelect: (value: string) => void;
 };
 
-const TransferDropdownList: React.FC<TProps> = ({ header, items }) => {
+const TransferDropdownList: React.FC<TProps> = ({ header, items, onSelect }) => {
     return (
         <div className={styles['items-list']}>
             <li className={styles['item-header']}>
@@ -17,7 +18,7 @@ const TransferDropdownList: React.FC<TProps> = ({ header, items }) => {
             </li>
             {items.map((item, index) => {
                 return (
-                    <li className={styles.item} key={item.loginid} {...item.props}>
+                    <li className={styles.item} key={item.loginid} onClick={() => onSelect(item.value)}>
                         {item.listItem}
                     </li>
                 );

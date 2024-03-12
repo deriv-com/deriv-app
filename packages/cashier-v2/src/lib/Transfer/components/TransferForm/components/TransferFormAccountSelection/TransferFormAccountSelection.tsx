@@ -3,7 +3,6 @@ import { useFormikContext } from 'formik';
 import { useTransfer } from '../../../../provider';
 import { getTransferValidationSchema } from '../../../../utils';
 import { TransferAccountTile } from './components/TransferAccountTile';
-// import { Dropdown } from '@deriv-com/ui';
 import { TransferDropdown } from './components/TransferDropdown';
 import styles from './TransferFormAccountSelection.module.scss';
 
@@ -43,7 +42,7 @@ const getValidationSchema = (fromAccount, toAccount) => {
 
 const TransferFormAccountSelection = ({ setValidationSchema }) => {
     const { setValues, values } = useFormikContext();
-    const { accounts, activeAccount, isLoading, subscribeToExchangeRate, unSubscribeToExchangeRate } = useTransfer();
+    const { accounts, activeAccount, isLoading } = useTransfer();
 
     // useEffect(() => {
     //     if (values.fromAccount.currency)
@@ -76,12 +75,11 @@ const TransferFormAccountSelection = ({ setValidationSchema }) => {
                     accounts?.map(account => {
                         return {
                             listItem: <TransferAccountTile account={account} />,
-                            text: account.loginid,
+                            account_type: account.account_type,
                             value: account.loginid,
                         };
                     })
                 }
-                name={undefined}
                 onSelect={loginid => {
                     setValues(currentValues => ({
                         ...currentValues,
@@ -96,7 +94,6 @@ const TransferFormAccountSelection = ({ setValidationSchema }) => {
                 label='To'
                 list={() =>
                     accounts?.map(account => {
-                        // console.log('=> render ', account);
                         return {
                             listItem: <TransferAccountTile account={account} />,
                             account_type: account.account_type,
@@ -104,39 +101,14 @@ const TransferFormAccountSelection = ({ setValidationSchema }) => {
                         };
                     })
                 }
-                listHeader='Header'
-                name={undefined}
                 onSelect={loginid => {
                     setValues(currentValues => ({
                         ...currentValues,
                         toAccount: accounts?.find(account => account.loginid === loginid),
                     }));
                 }}
-                showListHeader
                 value={values.toAccount.loginid}
             />
-            {/* <Dropdown /> */}
-            {/* <Dropdown
-                dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
-                list={[
-                    {
-                        text: <TransferAccountTile />,
-                        value: 'opt1',
-                    },
-                ]}
-                name='transferFromDropdown'
-                value='opt1'
-            />
-            <Dropdown
-                dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
-                list={[
-                    {
-                        text: <div>yalla</div>,
-                        value: 'yalla',
-                    },
-                ]}
-                name='transferToDropdown'
-            /> */}
         </div>
     );
 };

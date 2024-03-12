@@ -274,6 +274,7 @@ export const config = {
         flyoutWorkspacesStartScale: 0.7,
         mainWorkspaceStartScale: 0.9,
         previewWorkspaceStartScale: 0.6,
+        indentWorkspace: { x: 0, y: 60 },
     },
     strategies: {
         martingale: {

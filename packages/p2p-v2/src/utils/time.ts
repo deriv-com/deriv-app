@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 /**
  * Function that converts a numerical epoch value into a Moment instance
@@ -57,4 +57,82 @@ export const formatTime = (minutes: number) => {
     }
 
     return `${hours} ${hoursText} ${remainingMinutes} ${minutesText}`;
+};
+
+/**
+ * Gets the formatted date string in the format "DD MMM YYYY HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
+ * or "MMM DD YYYY HH:mm:ss" for local time. e.g.: "Jan 01 1970 21:01:11" or without seconds if
+ * hasSeconds is false. e.g.: "01 Jan 1970 21:01" or "Jan 01 1970 21:01".
+ *
+ * @param {Date} dateObj - The date object to format.
+ * @param {boolean} isLocal - Whether to use local time or UTC time.
+ * @param {boolean} hasSeconds - Whether to include seconds in the time.
+ * @returns {String} The formatted date string.
+ */
+export const getFormattedDateString = (
+    dateObj: Date,
+    isLocal = false,
+    hasSeconds = false,
+    onlyDate = false
+): string => {
+    const dateString = isLocal ? dateObj.toString().split(' ') : dateObj.toUTCString().split(' ');
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    const [_, day, month, year, time] = dateString;
+    const times = time.split(':');
+
+    // Return time in the format "HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
+    if (!hasSeconds) {
+        times.pop();
+    }
+
+    if (onlyDate) {
+        return `${month} ${day} ${year}`;
+    }
+
+    const timeWithoutSec = times.join(':');
+
+    // Return in the format "DD MMM YYYY HH:mm". e.g.: "01 Jan 1970 21:01"
+    return `${day} ${month} ${year}, ${timeWithoutSec}`;
+};
+
+/**
+ * Converts the epoch time to milliseconds.
+ * @param {Number} epoch - The epoch time to convert.
+ * @returns {Number} The epoch time in milliseconds.
+ */
+export const convertToMillis = (epoch: number): number => {
+    const milliseconds = epoch * 1000;
+    return milliseconds;
+};
+
+/**
+ * Converts a number to double digits.
+ * @param {Number} number - The number to convert.
+ * @returns {String} The number in double digits.
+ */
+const toDoubleDigits = (number: number): string => number.toString().padStart(2, '0');
+
+/**
+ * Converts the distance in milliseconds to a timer string in the format "HH:MM:SS". e.g.: "00:00:00"
+ * @param {Number} distance - The distance in milliseconds.
+ * @returns {String} The timer string.
+ */
+export const millisecondsToTimer = (distance: number): string => {
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    return `${toDoubleDigits(hours)}:${toDoubleDigits(minutes)}:${toDoubleDigits(seconds)}`;
+};
+
+/**
+ * Get the distance to the server time.
+ * @param {Number} compareTime - The time to compare to the server time.
+ * @param {Moment} serverTime - The server time.
+ * @returns {Number} The distance to the server time.
+ */
+export const getDistanceToServerTime = (compareTime: number, serverTime?: Moment): number => {
+    const time = moment(compareTime);
+    const distance = time.diff(serverTime, 'milliseconds');
+    return distance;
 };

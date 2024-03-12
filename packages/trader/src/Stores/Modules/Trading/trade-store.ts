@@ -305,7 +305,7 @@ export default class TradeStore extends BaseStore {
     }, 2000);
     debouncedSetChartStatus = debounce((status: boolean) => {
         this.is_chart_loading = status;
-    }); // no time is needed for this debounce, it's only to put the call into macrotasks queue
+    }); // no time is needed here, the only goal is to put the call into macrotasks queue
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
     is_purchasing_contract = false;

@@ -11,6 +11,7 @@ type TChatFooterIconProps = {
 const ChatFooterIcon = ({ length, onClick }: TChatFooterIconProps) => {
     return (
         <Button
+            className='h-full p-0'
             color='white'
             icon={length > 0 ? <SendMessageIcon /> : <AttachmentIcon />}
             onClick={onClick}

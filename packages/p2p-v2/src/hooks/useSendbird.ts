@@ -275,7 +275,6 @@ const useSendbird = (orderId: string) => {
 
     useEffect(() => {
         // if the user has not created a chat URL for the order yet, create one using p2p_create_chat endpoint
-        //
         if (!orderInfo?.chat_channel_url) {
             createChat({
                 order_id: orderId,

@@ -16,7 +16,8 @@ const Passkeys = observer(() => {
     const { is_passkey_supported } = client;
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
-    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, reloadPasskeysList } = useGetPasskeysList();
+    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, reloadPasskeysList } =
+        useGetPasskeysList(is_passkey_supported);
     const {
         cancelPasskeyRegistration,
         createPasskey,

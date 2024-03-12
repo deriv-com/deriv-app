@@ -8,7 +8,7 @@ const useShowEffortlessLoginModal = () => {
     const { is_mobile } = ui;
 
     const [show_effortless_modal, setShouldShowEffortlessModal] = React.useState(false);
-    const { passkeys_list, is_passkeys_list_loading } = useGetPasskeysList();
+    const { passkeys_list, is_passkeys_list_loading } = useGetPasskeysList(is_passkey_supported);
 
     const stored_value = localStorage.getItem('show_effortless_login_modal');
 

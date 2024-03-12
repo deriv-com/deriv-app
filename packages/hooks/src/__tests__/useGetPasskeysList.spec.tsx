@@ -18,7 +18,7 @@ describe('useGetPasskeysList', () => {
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: true });
         (useQuery as jest.Mock).mockReturnValue({ data: { passkeys_list: [] } });
 
-        const { result } = renderHook(() => useGetPasskeysList());
+        const { result } = renderHook(() => useGetPasskeysList(true));
 
         expect(useQuery).toHaveBeenCalledWith('passkeys_list', { options: { enabled: true } });
         expect(result.current.passkeys_list).toEqual([]);
@@ -27,7 +27,16 @@ describe('useGetPasskeysList', () => {
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: false });
         (useQuery as jest.Mock).mockReturnValue({ data: { passkeys_list: undefined } });
 
-        const { result } = renderHook(() => useGetPasskeysList());
+        const { result } = renderHook(() => useGetPasskeysList(true));
+
+        expect(useQuery).toHaveBeenCalledWith('passkeys_list', { options: { enabled: false } });
+        expect(result.current.passkeys_list).toEqual(undefined);
+    });
+    it('does not call useQuery with false parameter and when isSuccess is true', () => {
+        (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: true });
+        (useQuery as jest.Mock).mockReturnValue({ data: { passkeys_list: undefined } });
+
+        const { result } = renderHook(() => useGetPasskeysList(false));
 
         expect(useQuery).toHaveBeenCalledWith('passkeys_list', { options: { enabled: false } });
         expect(result.current.passkeys_list).toEqual(undefined);

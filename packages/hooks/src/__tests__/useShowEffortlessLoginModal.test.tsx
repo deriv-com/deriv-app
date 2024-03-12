@@ -11,7 +11,10 @@ describe('useShowEffortlessLoginModal', () => {
         localStorage.clear();
     });
 
-    const mock = mockStore({ client: { is_passkey_supported: true } });
+    const mock = mockStore({
+        client: { is_passkey_supported: true, is_logged_in: true },
+        ui: { is_mobile: true },
+    });
 
     const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
 
@@ -34,15 +37,11 @@ describe('useShowEffortlessLoginModal', () => {
         const { result } = renderHook(() => useShowEffortlessLoginModal(), { wrapper });
         expect(result.current).toBe(false);
     });
-    // TODO: Fix this test
-    // it('should return true when passkey is supported and passkeys list is empty', async () => {
-    //     (useGetPasskeysList as jest.Mock).mockReturnValue({ passkeys_list: [], is_passkeys_list_loading: false });
-    //     // localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
-    //
-    //     const { result, waitForNextUpdate } = renderHook(() => useShowEffortlessLoginModal(), { wrapper });
-    //
-    //     await waitForNextUpdate();
-    //
-    //     expect(result.current).toBe(true);
-    // });
+    it('should return true when passkey is supported and passkeys list is empty', async () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({ passkeys_list: [], is_passkeys_list_loading: false });
+
+        const { result } = renderHook(() => useShowEffortlessLoginModal(), { wrapper });
+
+        expect(result.current).toBe(true);
+    });
 });

@@ -22,7 +22,6 @@ export const POIFlowContainer = ({ countryCode }: TPOIFlowContainerProps) => {
         identity: { available_services: availableServices, supported_documents: supportedDocuments },
     } = kycAuthStatus;
 
-    // [TODO] - Add other services
     switch (availableServices?.[0]) {
         case 'onfido': {
             return <OnfidoContainer countryCode={countryCode} />;

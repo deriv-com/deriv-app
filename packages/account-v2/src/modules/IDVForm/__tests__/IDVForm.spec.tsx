@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { Formik } from 'formik';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as utils from '../../../utils/idvFormUtils';
 import { IDVForm } from '../IDVForm';

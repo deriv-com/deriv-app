@@ -2,15 +2,11 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
-// !!! Lazy loading for this modal will be added later because I need to modify webpack.config.json
-import { ResetTradingPasswordModal } from '@deriv/account';
 import { Loading } from '@deriv/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-// !!! Too many conditions to show modal
-// import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
 
 const RealWalletsUpgrade = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
@@ -154,6 +150,17 @@ const MT5MigrationModal = makeLazyLoader(
             () =>
                 import(
                     /* webpackChunkName: "modal_cfd_mt5-migration-modal" */ '@deriv/cfd/src/Containers/mt5-migration-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
+const ResetTradingPasswordModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_account_reset-trading-password-modal" */ '@deriv/account/src/Components/reset-trading-password-modal'
                 )
         ),
     () => <Loading />
@@ -320,7 +327,6 @@ const ModalManager = () => {
             )}
             {is_reset_trading_password_modal_visible && (
                 <ResetTradingPasswordModal
-                    // context={store}
                     platform={trading_platform_dxtrade_password_reset ? 'dxtrade' : 'mt5'}
                     enableApp={enableApp}
                     disableApp={disableApp}

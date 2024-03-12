@@ -18,9 +18,9 @@ import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 import { useStores } from 'Stores';
-
+import { getEligibilityMessage } from 'Utils/adverts';
+import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
@@ -81,15 +81,7 @@ const AdvertiserPage = () => {
 
         if (eligibility_status?.length > 0) {
             error_modal_title = '';
-            if (eligibility_status.length === 1) {
-                if (eligibility_status.includes('completion_rate')) {
-                    error_message = localize('Your completion rate is too low for this ad.');
-                } else if (eligibility_status.includes('join_date')) {
-                    error_message = localize("You've not used Deriv P2P long enough for this ad.");
-                }
-            } else {
-                error_message = localize("The advertiser has set conditions for this ad that you don't meet.");
-            }
+            error_message = getEligibilityMessage(eligibility_status);
         }
 
         setCounterpartyAdvertId('');

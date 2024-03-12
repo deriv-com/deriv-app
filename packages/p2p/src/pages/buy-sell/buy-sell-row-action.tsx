@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { useStore } from '@deriv/stores';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
+import { getEligibilityMessage } from 'Utils/adverts';
 
 type TBuySellRowActionProps = {
     account_currency?: string;
@@ -28,20 +29,8 @@ const BuySellRowAction = ({
     } = useStore();
     const { general_store } = useStores();
 
-    const getEligibilityStatus = () => {
-        if (eligibility_status?.length === 1) {
-            if (eligibility_status.includes('completion_rate')) {
-                return localize('Your completion rate is too low for this ad.');
-            } else if (eligibility_status.includes('join_date')) {
-                return localize("You've not used Deriv P2P long enough for this ad.");
-            }
-        }
-
-        return localize("The advertiser has set conditions for this ad that you don't meet.");
-    };
-
-    const onUnavailableClick = () => {
-        showModal({ key: 'ErrorModal', props: { error_message: getEligibilityStatus() } });
+    const onUnavailableClick = (eligibility_status: string[]) => {
+        showModal({ key: 'ErrorModal', props: { error_message: getEligibilityMessage(eligibility_status) } });
     };
 
     if (is_eligible) {
@@ -77,7 +66,7 @@ const BuySellRowAction = ({
     }
 
     return (
-        <Button onClick={onUnavailableClick} secondary small={is_desktop}>
+        <Button onClick={() => onUnavailableClick(eligibility_status)} secondary small={is_desktop}>
             <Localize i18n_default_text='Unavailable' />
         </Button>
     );

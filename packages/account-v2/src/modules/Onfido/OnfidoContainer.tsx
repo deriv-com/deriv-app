@@ -105,9 +105,9 @@ export const OnfidoContainer = ({
             {!isEnabledByDefault && (
                 <div
                     className={twMerge(
-                        '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-24 p-16',
+                        '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-1 p-16',
                         transitionEnd && 'hidden',
-                        isOnfidoEnabled && 'scale-y-0 opacity-50'
+                        isOnfidoEnabled && 'scale-y-0 opacity-0'
                     )}
                 >
                     <Formik
@@ -119,7 +119,9 @@ export const OnfidoContainer = ({
                         validateOnMount
                         validationSchema={validationSchema}
                     >
-                        {({ submitForm }) => <PersonalDetailsFormWithExample onConfirm={submitForm} />}
+                        {({ submitForm }) => {
+                            return <PersonalDetailsFormWithExample onConfirm={submitForm} />;
+                        }}
                     </Formik>
                 </div>
             )}

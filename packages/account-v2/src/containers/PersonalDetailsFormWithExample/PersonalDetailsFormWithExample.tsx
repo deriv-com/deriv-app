@@ -91,20 +91,21 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
             </div>
             <div>
                 <Field
-                    name='detailsConfirmation'
+                    name='nameDOBConfirmation'
                     type='checkbox'
                     validate={validateField(validationSchema.fields.nameDOBConfirmation)}
                 >
                     {({ field, form, meta: { error, touched } }: FieldProps) => (
                         <Checkbox
                             {...field}
+                            data-testid='dt_poi_confirm_with_example'
                             disabled={isDisabled}
                             error={Boolean(error && touched)}
-                            id='detailsConfirmation'
+                            // id='detailsConfirmation'
                             label='I confirm that the name and date of birth above match my chosen identity document.'
                             onChange={value => {
-                                form.setFieldValue(field.name, value);
-                                if (value) {
+                                form.setFieldValue(field.name, value.target.checked);
+                                if (value.target.checked) {
                                     onConfirm();
                                 }
                             }}

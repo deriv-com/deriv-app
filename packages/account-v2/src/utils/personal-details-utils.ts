@@ -19,7 +19,7 @@ export const getPersonalDetailsBaseValidationSchema = () => {
             .min(2, characterLengthMessage)
             .max(50, characterLengthMessage)
             .matches(/^[a-zA-Z\s\-.']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.'),
-        nameDOBConfirmation: Yup.boolean().required().oneOf([true]),
+        nameDOBConfirmation: Yup.boolean().required(),
         phoneNumber: Yup.string()
             .required('Phone number is required.')
             .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, 'Please enter a valid phone number.')

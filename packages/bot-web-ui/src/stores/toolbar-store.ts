@@ -90,13 +90,16 @@ export default class ToolbarStore implements IToolbarStore {
             from: null,
             showIncompatibleStrategyDialog: null,
         });
-        const { is_mobile = false } = this.root_store?.app?.core?.ui || {};
-        await Blockly.derivWorkspace.cleanUp(0, is_mobile ? 60 : 56);
         workspace.strategy_to_load = workspace.cached_xml.main;
     };
 
     onSortClick = () => {
-        Blockly.derivWorkspace.cleanUp();
+        const {
+            workspaces: {
+                indentWorkspace: { x, y },
+            },
+        } = config;
+        Blockly.derivWorkspace.cleanUp(x, y);
     };
 
     onUndoClick = (is_redo: boolean): void => {

@@ -8,9 +8,10 @@ const prefix = '/traders-hub';
 type TRoutes = `${typeof prefix}${'' | '/compare-accounts' | '/onboarding'}`;
 
 declare module 'react-router-dom' {
-    // Had to put string here cause of the difference in the type of the path we have throughout the app
-    export function useHistory(): { push: (path: TRoutes | string) => void }; // NOSONAR
-
+    export function useHistory(): {
+        location: { pathname: string; search: string };
+        push: (path: string | { pathname: string; search: string; state?: Record<string, unknown> }) => void;
+    };
     export function useRouteMatch(path: TRoutes): boolean;
 }
 

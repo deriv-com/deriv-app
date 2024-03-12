@@ -4,7 +4,7 @@ import { TSelectedPaymentMethod } from 'types';
 import { Dropdown, PaymentMethodField, PaymentMethodsFormFooter, PaymentMethodsHeader } from '@/components';
 import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
 import { TFormState } from '@/reducers/types';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Button, Input, Text } from '@deriv-com/ui';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import './PaymentMethodForm.scss';
@@ -29,8 +29,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
         reset,
     } = useForm({ mode: 'all' });
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { actionType, selectedPaymentMethod, title } = rest.formState || {};
-
+    const { actionType, selectedPaymentMethod, title } = rest.formState;
     const { data: availablePaymentMethods } = p2p.paymentMethods.useGet();
     const { create, error: createError, isSuccess: isCreateSuccessful } = p2p.advertiserPaymentMethods.useCreate();
     const { error: updateError, isSuccess: isUpdateSuccessful, update } = p2p.advertiserPaymentMethods.useUpdate();
@@ -38,16 +37,12 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
     useEffect(() => {
         if (isCreateSuccessful) {
             onResetFormState();
-        } else if (createError) {
-            setIsModalOpen(true);
         }
     }, [isCreateSuccessful, createError, onResetFormState]);
 
     useEffect(() => {
         if (isUpdateSuccessful) {
             onResetFormState();
-        } else if (updateError) {
-            setIsModalOpen(true);
         }
     }, [isUpdateSuccessful, onResetFormState, updateError]);
 
@@ -58,7 +53,6 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
         }));
         return listItems || [];
     }, [availablePaymentMethods]);
-
     const handleGoBack = () => {
         if (isDirty) {
             setIsModalOpen(true);
@@ -95,6 +89,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                 actionType === 'EDIT' ? null : (
                                     <CloseCircle
                                         className='p2p-v2-payment-method-form__icon--close'
+                                        data-testid='dt_p2p_v2_payment_methods_form_close_icon'
                                         fill='#999999'
                                         height={15.7}
                                         onClick={() => {
@@ -133,7 +128,9 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                             <Button
                                 className='p2p-v2-payment-method-form__button'
                                 color='primary'
-                                onClick={() => {
+                                onClick={e => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
                                     const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
                                     if (paymentMethod) {
                                         onAdd({
@@ -173,7 +170,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     isValid={isValid}
                 />
             </form>
-            {actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && (
+            {actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && isModalOpen && (
                 // TODO: Remember to translate these strings
                 <PaymentMethodModal
                     description='If you choose to cancel, the edited details will be lost.'
@@ -187,7 +184,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     title='Cancel your edits?'
                 />
             )}
-            {actionType === 'ADD' && (!isCreateSuccessful || !createError) && (
+            {actionType === 'ADD' && (!isCreateSuccessful || !createError) && isModalOpen && (
                 // TODO: Remember to translate these strings
                 <PaymentMethodModal
                     description='If you choose to cancel, the details you’ve entered will be lost.'
@@ -208,7 +205,6 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     isModalOpen={true}
                     onConfirm={() => {
                         onResetFormState();
-                        setIsModalOpen(false);
                     }}
                     title='Something’s not right'
                 />

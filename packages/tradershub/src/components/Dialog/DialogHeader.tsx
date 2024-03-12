@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
-import { Provider } from '@deriv/library';
+import { useModal } from '@/providers';
 import { Text } from '@deriv-com/ui';
 
 /**
@@ -24,7 +24,7 @@ type TDialogHeader = {
  * @returns {JSX.Element} The DialogHeader component.
  */
 const DialogHeader = ({ className, titleSize, hideCloseButton = false, title }: TDialogHeader) => {
-    const { hide } = Provider.useModal();
+    const { hide } = useModal();
 
     return (
         <div className={twMerge('flex items-start', title ? 'justify-between' : 'justify-end', className)}>

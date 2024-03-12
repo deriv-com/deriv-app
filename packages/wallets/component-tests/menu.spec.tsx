@@ -27,6 +27,6 @@ test.describe('Wallets - Traders Hub', () => {
         await page.goto(`${baseURL}/wallets`);
 
         const balanceContainer = await page.textContent('.wallets-balance__container');
-        expect(balanceContainer).toContain('10.00000000 BTC');
+        expect(balanceContainer).toContain('9,988,000.89 USD');
     });
 });

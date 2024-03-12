@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useModal } from '@/providers';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Button } from '@deriv-com/ui';
 import { ButtonGroup } from '../../../../components';
 
 const SuccessButtonGroup = () => {
-    const { hide } = Provider.useModal();
+    const { hide } = useModal();
     const { data: activeTrading } = useActiveTradingAccount();
     const isDemo = activeTrading?.is_virtual;
     const history = useHistory();
@@ -20,7 +20,7 @@ const SuccessButtonGroup = () => {
     }
     return (
         <ButtonGroup className='justify-center w-full'>
-            <Button onClick={() => hide()} size='lg' variant='outlined'>
+            <Button color='black' onClick={() => hide()} size='lg' variant='outlined'>
                 Maybe later
             </Button>
             <Button

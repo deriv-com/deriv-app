@@ -14,7 +14,7 @@ const useAdvertList = (
         payload: { ...payload, offset: payload?.offset, limit: payload?.limit },
         options: {
             getNextPageParam: (lastPage, pages) => {
-                if (!lastPage?.p2p_advert_list?.list) return;
+                if (lastPage?.p2p_advert_list?.list.length === 0 || !lastPage?.p2p_advert_list?.list) return;
 
                 return pages.length;
             },

@@ -1,10 +1,14 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Verification from '../Verification';
 
-const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
 
 let mockUsePoiPoaStatusData = {
     data: {

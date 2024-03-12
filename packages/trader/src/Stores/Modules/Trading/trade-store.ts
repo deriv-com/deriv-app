@@ -1592,6 +1592,7 @@ export default class TradeStore extends BaseStore {
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
         this.debouncedProposal();
+        //
     }
 
     onUnmount() {

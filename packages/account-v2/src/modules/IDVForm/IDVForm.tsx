@@ -36,7 +36,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, countryCode, supporte
 
     const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
 
-    const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
+    const idvNotApplicableOption = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
     const defaultDocument = {
         example_format: '',
@@ -55,12 +55,12 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, countryCode, supporte
             });
 
             if (allowDefaultValue) {
-                setDocumentList([...docList, IDV_NOT_APPLICABLE_OPTION] as TDropDownList[]);
+                setDocumentList([...docList, idvNotApplicableOption] as TDropDownList[]);
             } else {
                 setDocumentList([...docList] as TDropDownList[]);
             }
         }
-    }, [supportedDocuments, IDV_NOT_APPLICABLE_OPTION, allowDefaultValue]);
+    }, [supportedDocuments, idvNotApplicableOption, allowDefaultValue]);
 
     if (!formik) {
         throw new Error('IDVForm must be used within a Formik component');
@@ -73,7 +73,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, countryCode, supporte
     const bindDocumentData = (item: string) => {
         setFieldValue('documentType', item, true);
         setSelectedDocument(getSelectedDocumentConfigData(countryCode, item, supportedDocuments));
-        if (item === IDV_NOT_APPLICABLE_OPTION.value) {
+        if (item === idvNotApplicableOption.value) {
             setFieldValue('documentNumber', '', true);
             setFieldValue('additionalDocument', '', true);
         }
@@ -96,7 +96,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, countryCode, supporte
                 name='documentType'
                 validationSchema={validationSchema.fields.documentType}
             />
-            {values?.documentType !== IDV_NOT_APPLICABLE_OPTION.value && (
+            {values?.documentType !== idvNotApplicableOption.value && (
                 <FormInputField
                     disabled={!values?.documentType}
                     isFullWidth

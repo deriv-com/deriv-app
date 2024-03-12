@@ -81,14 +81,14 @@ export const getIDVFormValidationSchema = (
 ) => {
     return Yup.object({
         additionalDocument: Yup.string().test({
-            name: 'test-additional-document-number',
+            name: 'testAdditionalDocumentNumber',
             test: (value, context) => {
                 const documentConfig = getSelectedDocumentConfigData(countryCode, context.parent.documentType, list);
                 return validateAdditionalDocumentNumber(documentConfig, value, context);
             },
         }),
         documentNumber: Yup.string().test({
-            name: 'test-document-number',
+            name: 'testDocumentNumber',
             test: (value, context) => {
                 const documentConfig = getSelectedDocumentConfigData(countryCode, context.parent.documentType, list);
                 return validateDocumentNumber(documentConfig, value as string, context);

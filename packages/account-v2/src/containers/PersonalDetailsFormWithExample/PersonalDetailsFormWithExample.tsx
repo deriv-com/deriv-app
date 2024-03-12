@@ -101,7 +101,6 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                             data-testid='dt_poi_confirm_with_example'
                             disabled={isDisabled}
                             error={Boolean(error && touched)}
-                            // id='detailsConfirmation'
                             label='I confirm that the name and date of birth above match my chosen identity document.'
                             onChange={value => {
                                 form.setFieldValue(field.name, value.target.checked);

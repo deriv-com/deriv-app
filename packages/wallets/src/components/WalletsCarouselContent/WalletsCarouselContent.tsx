@@ -13,7 +13,7 @@ type TProps = {
 
 const numberWithinRange = (number: number, min: number, max: number): number => Math.min(Math.max(number, min), max);
 
-// scale based on the width difference between active and inactive wallets
+// scale based on the width difference between active wallet (288px) and inactive wallets (240px)
 const TRANSITION_FACTOR_SCALE = 1 - 24 / 28.8;
 
 /**

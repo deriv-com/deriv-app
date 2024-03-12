@@ -88,16 +88,8 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
     const { data } = useActiveWalletAccount();
 
     useEffect(() => {
-        let isMounted = true;
-
-        if (isMounted) {
-            onOptionsAndMultipliersLoaded?.(true);
-        }
-
-        return () => {
-            isMounted = false;
-            onOptionsAndMultipliersLoaded?.(false);
-        };
+        onOptionsAndMultipliersLoaded?.(true);
+        return () => onOptionsAndMultipliersLoaded?.(false);
     }, [onOptionsAndMultipliersLoaded]);
 
     return (

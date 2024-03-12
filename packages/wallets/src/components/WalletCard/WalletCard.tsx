@@ -38,25 +38,25 @@ const WalletCard: React.FC<TProps> = ({
                 >
                     <div
                         className={classNames('wallets-card__details', {
-                            'wallets-card__details__carousel-content': isCarouselContent,
+                            'wallets-card__carousel-content-details': isCarouselContent,
                         })}
                         data-testid='dt_wallet_card_details'
                     >
                         <div
-                            className={classNames('wallets-card__details__top', {
-                                'wallets-card__details__top__carousel-content': isCarouselContent,
+                            className={classNames('wallets-card__details-top', {
+                                'wallets-card__carousel-content-details-top': isCarouselContent,
                             })}
                         >
                             <WalletCardIcon size={iconSize} type={isDemo ? 'Demo' : currency} />
                             {!isCarouselContent && (
-                                <div className='wallets-card__details-landing_company'>
+                                <div className='wallets-card__details-landing-company'>
                                     {landingCompanyName && (
                                         <WalletListCardBadge isDemo={isDemo} label={landingCompanyName} />
                                     )}
                                 </div>
                             )}
                         </div>
-                        <div className='wallets-card__details__bottom'>
+                        <div className='wallets-card__details-bottom'>
                             <WalletText color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
                                 {currency} Wallet
                             </WalletText>

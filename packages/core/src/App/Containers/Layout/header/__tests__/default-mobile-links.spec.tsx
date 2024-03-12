@@ -9,6 +9,7 @@ jest.mock('App/Components/Routes', () => ({
 jest.mock('../show-notifications', () =>
     jest.fn(() => <div data-testid='dt_show_notifications'>MockedShowNotifications</div>)
 );
+
 jest.mock('../traders-hub-onboarding', () =>
     jest.fn(() => <div data-testid='dt_traders_hub_onboarding'>MockedTradersHubOnboarding</div>)
 );

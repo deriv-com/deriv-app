@@ -74,7 +74,10 @@ const isVerifiedOrNone = (errors: Array<TIDVErrorStatus>, status_code: string, i
     );
 };
 
-const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>) => {
+export const isIDVReportNotAvailable = (idv: Record<string, unknown>) =>
+    'report_available' in idv && idv?.report_available === 0;
+
+const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>, is_report_not_available?: boolean) => {
     const status: Array<TIDVErrorStatus> = [];
     errors.forEach(error => {
         const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error]?.code;
@@ -82,8 +85,10 @@ const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>) => {
             status.push(error_key);
         }
     });
-
-    if (status.includes(IDV_ERROR_STATUS.ReportNotAvailable.code)) {
+    if (
+        is_report_not_available &&
+        (status.includes(IDV_ERROR_STATUS.NameMismatch.code) || status.includes(IDV_ERROR_STATUS.DobMismatch.code))
+    ) {
         return IDV_ERROR_STATUS.ReportNotAvailable.code;
     }
 
@@ -98,7 +103,12 @@ const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>) => {
 };
 
 // formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
-export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: string, is_high_risk?: boolean) => {
+export const formatIDVError = (
+    errors: Array<TIDVErrorStatus>,
+    status_code: string,
+    is_high_risk?: boolean,
+    is_report_not_available?: boolean
+) => {
     /**
      * Check required incase of DIEL client
      */
@@ -118,7 +128,7 @@ export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: stri
         return IDV_ERROR_STATUS.Expired.code;
     }
 
-    return getIDVErrorStatus(errors);
+    return getIDVErrorStatus(errors, is_report_not_available);
 };
 
 export const formatOnfidoError = (status_code: string, errors: Array<TOnfidoErrorStatus> = []) => {

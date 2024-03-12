@@ -255,7 +255,14 @@ const AddressDetails = observer(
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
                                                                     value={
-                                                                        address_state_to_display || values.address_state
+                                                                        address_state_to_display ||
+                                                                        (values.address_state
+                                                                            ? states_list.find(
+                                                                                  state =>
+                                                                                      state?.value ===
+                                                                                      values.address_state
+                                                                              )?.text
+                                                                            : '')
                                                                     }
                                                                     list_items={states_list}
                                                                     use_text={true}

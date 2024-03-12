@@ -7,6 +7,8 @@ import { FadeInMessage } from './FadeInMessage';
 import { PreviewSingle } from './PreviewSingle';
 import './FileDropzone.scss';
 
+const DROPZONE_TIMEOUT = 150;
+
 // TODO: Remove this and other associated files once FileDropzone component from deriv-com/ui is completed
 const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) => {
     const {
@@ -74,14 +76,14 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                             // default message when not on hover or onDrag
                             isVisible={!isDragActive && !!message && value.length < 1 && !validationErrorMessage}
                             noText={noClick}
-                            timeout={150}
+                            timeout={DROPZONE_TIMEOUT}
                         >
                             <RenderErrorMessage open={open} />
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on hover if files are accepted onDrag
                             isVisible={isDragActive && !isDragReject}
-                            timeout={150}
+                            timeout={DROPZONE_TIMEOUT}
                         >
                             {hoverMessage}
                         </FadeInMessage>
@@ -105,7 +107,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                             // message shown if there are errors with the dragged file
                             color='error'
                             isVisible={isDragReject}
-                            timeout={150}
+                            timeout={DROPZONE_TIMEOUT}
                         >
                             {errorMessage}
                         </FadeInMessage>
@@ -113,7 +115,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                             // message shown on if there are validation errors with file uploaded
                             color='error'
                             isVisible={!!validationErrorMessage && !isDragActive}
-                            timeout={150}
+                            timeout={DROPZONE_TIMEOUT}
                         >
                             <RenderValidationErrorMessage open={open} />
                         </FadeInMessage>

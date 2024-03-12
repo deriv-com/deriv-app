@@ -5,7 +5,6 @@ import { mock_ws } from 'Utils/mock';
 import { action } from 'mobx';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/xml/main.xml', () => '<xml>sample</xml>');
 
 const mock_login_id = 'test_login_id';
 

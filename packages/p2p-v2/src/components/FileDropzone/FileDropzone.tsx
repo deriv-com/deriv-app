@@ -7,6 +7,7 @@ import { FadeInMessage } from './FadeInMessage';
 import { PreviewSingle } from './PreviewSingle';
 import './FileDropzone.scss';
 
+// TODO: Remove this and other associated files once FileDropzone component from deriv-com/ui is completed
 const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) => {
     const {
         accept,

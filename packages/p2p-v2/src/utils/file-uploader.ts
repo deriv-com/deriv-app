@@ -73,8 +73,8 @@ export const truncateFileName = (file: TFile, limit: number): string => {
  * @returns {string | null} file extension or null if not found
  */
 const getFileExtension = (file: TFile): string | null => {
-    const f = file?.type?.match(/[^/]+$/u);
-    return f && f[0];
+    const f = /[^/]+$/u.exec(file?.type);
+    return f ? f[0] : null;
 };
 
 /**
@@ -85,6 +85,6 @@ const getFileExtension = (file: TFile): string | null => {
 export const renameFile = (file: TFile): Blob => {
     const newFile = new Blob([file], { type: file.type });
     // eslint-disable-next-line no-control-regex
-    newFile.name = file.name.replace(/[^\x00-\x7F]+/g, '');
+    newFile.name = file.name.replace(/[^\x00-\x7F]+/g, ''); //NOSONAR
     return newFile;
 };

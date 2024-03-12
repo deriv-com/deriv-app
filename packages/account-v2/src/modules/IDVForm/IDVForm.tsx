@@ -39,7 +39,7 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, countryCode, supporte
     const idvNotApplicableOption = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
     const defaultDocument = {
-        example_format: '',
+        exampleFormat: '',
         id: '',
         text: '',
         value: '',

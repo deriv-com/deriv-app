@@ -1,10 +1,13 @@
 export { Breadcrumb } from './Breadcrumb';
+export { CardDescription } from './CardDescription';
 export { CashierBreadcrumb } from './CashierBreadcrumb';
 export { Clipboard } from './Clipboard';
 export { CurrencyIcon } from './CurrencyIcon';
 export { DummyComponent } from './DummyComponent';
 export { ErrorScreen } from './ErrorScreen';
+export { ExpansionPanel } from './ExpansionPanel';
 export { NewsTicker } from './NewsTicker';
 export { PageContainer } from './PageContainer';
 export { ReceiptScreen } from './ReceiptScreen';
+export { SearchBox } from './SearchBox';
 export { TransferConfirmScreen } from './TransferConfirmScreen';

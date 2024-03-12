@@ -3,7 +3,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv/components';
-import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
+import { getCFDAccountKey, isMobile } from '@deriv/shared';
 import { TCFDDashboardContainer, TCFDsPlatformType, TTradingPlatformAccounts } from 'Components/props.types';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import PasswordBox from '../Components/passwordbox';
@@ -90,7 +90,7 @@ const CTraderDerivXTradeModal = ({
         modules: { cfd },
     } = useStore();
 
-    const { ctrader_accounts_list } = client;
+    const { ctrader_accounts_list, trading_platform_available_accounts } = client;
     const { setAccountType, toggleMT5TradeModal } = cfd;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal } = ui;
@@ -113,9 +113,13 @@ const CTraderDerivXTradeModal = ({
                 </Text>
                 <div className='cfd-trade-modal__expansion-panel--divider' />
                 <Text size='xxs' line_height='xl' className='cfd-trade-modal__expansion-panel--content'>
-                    {localize(
-                        'Manage up to 5 Deriv cTrader accounts (up to 4 strategy accounts and 1 non-strategy account for payouts and commissions).'
-                    )}
+                    <Localize
+                        i18n_default_text='Manage up to {{max_count}} Deriv cTrader accounts (up to {{ strategy_count }} strategy accounts and 1 non-strategy account for payouts and commissions).'
+                        values={{
+                            max_count: trading_platform_available_accounts[0]?.max_count,
+                            strategy_count: Number(trading_platform_available_accounts[0]?.max_count) - 1,
+                        }}
+                    />
                 </Text>
                 <div className='cfd-trade-modal__expansion-panel--divider' />
                 <Text size='xxs' line_height='xl' className='cfd-trade-modal__expansion-panel--content'>
@@ -262,35 +266,37 @@ const CTraderDerivXTradeModal = ({
                                 </div>
                             );
                         })}
-                        <div className='cfd-trade-modal__get-more-accounts'>
-                            <Button
-                                onClick={() => {
-                                    toggleMT5TradeModal();
-                                    if ((!has_any_real_account || no_CR_account) && is_real) {
-                                        openDerivRealAccountNeededModal();
-                                    } else {
-                                        setAccountType({
-                                            category: selected_account_type,
-                                            type: 'all',
-                                        });
-                                        setAppstorePlatform(CFD_PLATFORMS.CTRADER);
-                                        getAccount();
-                                    }
-                                }}
-                                transparent
-                            >
-                                <Icon
-                                    icon={'IcAppstoreGetMoreAccounts'}
-                                    size={24}
-                                    className='cfd-trade-modal__get-more-accounts--icon'
-                                />
-                                <div className='cfd-trade-modal__get-more-accounts--details'>
-                                    <Text size='xxs' line-height='xxs'>
-                                        {localize('Get another cTrader account')}
-                                    </Text>
-                                </div>
-                            </Button>
-                        </div>
+                        {(trading_platform_available_accounts[0]?.available_count ?? 1) > 0 && (
+                            <div className='cfd-trade-modal__get-more-accounts'>
+                                <Button
+                                    onClick={() => {
+                                        toggleMT5TradeModal();
+                                        if ((!has_any_real_account || no_CR_account) && is_real) {
+                                            openDerivRealAccountNeededModal();
+                                        } else {
+                                            setAccountType({
+                                                category: selected_account_type,
+                                                type: 'all',
+                                            });
+                                            setAppstorePlatform(CFD_PLATFORMS.CTRADER);
+                                            getAccount();
+                                        }
+                                    }}
+                                    transparent
+                                >
+                                    <Icon
+                                        icon={'IcAppstoreGetMoreAccounts'}
+                                        size={24}
+                                        className='cfd-trade-modal__get-more-accounts--icon'
+                                    />
+                                    <div className='cfd-trade-modal__get-more-accounts--details'>
+                                        <Text size='xxs' line-height='xxs'>
+                                            {localize('Get another cTrader account')}
+                                        </Text>
+                                    </div>
+                                </Button>
+                            </div>
+                        )}
 
                         <div className='cfd-trade-modal__expansion-panel'>
                             <ExpansionPanel message={message} />

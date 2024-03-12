@@ -15,7 +15,6 @@ const useAddNewCurrencyAccount = () => {
         status,
         ...rest
     } = useCreateNewRealAccount();
-    // const { data: settingsData } = useSettings();
 
     const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
     const { switchAccount } = useAuthorize();

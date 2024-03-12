@@ -1,18 +1,24 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import * as Yup from 'yup';
+import { ValidationError } from 'yup';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import { dictionary } from '@zxcvbn-ts/language-common';
-import { Platforms } from '../../../../../shared/src/utils/constants';
-import { passwordErrorMessage, passwordRegex, warningMessages } from '../../../constants/password';
-import { TPlatforms } from '../../../types';
-import { calculateScore, passwordKeys, Score, validPassword } from '../../../utils/password-validation';
+import { passwordErrorMessage, warningMessages } from '../../../constants/password';
+import {
+    calculateScore,
+    cfdSchema,
+    mt5Schema,
+    passwordKeys,
+    Score,
+    validPassword,
+    validPasswordMT5,
+} from '../../../utils/password-validation';
 import { WalletPasswordFieldProps } from '../WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 import { WalletTextField } from '../WalletTextField';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-export const validatePassword = (password: string, platform: TPlatforms.All) => {
+export const validatePassword = (password: string, mt5Policy: boolean) => {
     const score = calculateScore(password);
     let errorMessage = '';
 
@@ -21,24 +27,14 @@ export const validatePassword = (password: string, platform: TPlatforms.All) => 
 
     const { feedback } = zxcvbn(password);
     try {
-        if (platform === Platforms.MT5) {
-            Yup.string()
-                .matches(passwordRegex.isMT5LengthValid, passwordErrorMessage.invalidLengthMT5)
-                .validateSync(password);
-            Yup.string()
-                .matches(passwordRegex.isMT5PasswordValid, passwordErrorMessage.missingCharacterMT5)
-                .validateSync(password);
+        if (mt5Policy) {
+            mt5Schema.validateSync(password);
         } else {
-            Yup.string()
-                .matches(passwordRegex.isLengthValid, passwordErrorMessage.invalidLength)
-                .validateSync(password);
-            Yup.string()
-                .matches(passwordRegex.isPasswordValid, passwordErrorMessage.missingCharacter)
-                .validateSync(password);
+            cfdSchema.validateSync(password);
         }
         errorMessage = warningMessages[feedback.warning as passwordKeys] ?? '';
     } catch (err) {
-        if (err instanceof Yup.ValidationError) {
+        if (err instanceof ValidationError) {
             errorMessage = err?.message;
         }
     }
@@ -50,18 +46,18 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     autoComplete,
     label,
     message,
+    mt5Policy = false,
     name = 'walletPasswordField',
     onChange,
     password,
     passwordError,
-    platform,
     shouldDisablePasswordMeter = false,
     showMessage,
 }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
 
-    const { errorMessage, score } = useMemo(() => validatePassword(password, platform), [password, platform]);
+    const { errorMessage, score } = useMemo(() => validatePassword(password, mt5Policy), [password, mt5Policy]);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +89,9 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
             <WalletTextField
                 autoComplete={autoComplete}
                 errorMessage={isTouched && (passwordError ? passwordErrorMessage.PasswordError : errorMessage)}
-                isInvalid={(!validPassword(password, platform) && isTouched) || passwordError}
+                isInvalid={
+                    (!(mt5Policy ? validPasswordMT5(password) : validPassword(password)) && isTouched) || passwordError
+                }
                 label={label}
                 message={getMessage()}
                 messageVariant={errorMessage ? 'warning' : undefined}

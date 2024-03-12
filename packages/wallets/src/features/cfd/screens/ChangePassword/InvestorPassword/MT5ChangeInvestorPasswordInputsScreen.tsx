@@ -113,16 +113,12 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     name='newPassword'
                                     onChange={handleChange}
                                     password={values.newPassword}
-                                    platform={PlatformDetails.mt5.platform}
                                     showMessage
                                 />
                             </div>
                             <div className='wallets-change-investor-password-screens__form-buttons'>
                                 <WalletButton
-                                    disabled={
-                                        !values.currentPassword ||
-                                        !validPassword(values.newPassword, PlatformDetails.mt5.platform)
-                                    }
+                                    disabled={!values.currentPassword || !validPassword(values.newPassword)}
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size={isMobile ? 'lg' : 'md'}
                                     type='submit'

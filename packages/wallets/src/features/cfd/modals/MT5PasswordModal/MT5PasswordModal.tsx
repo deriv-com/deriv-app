@@ -45,8 +45,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { getModalState, hide, show } = useModal();
     const { data: settings } = useSettings();
+    // TODO: add this parameter for PasswordNotSet for new MT5 password policy
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
-
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
@@ -171,7 +171,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                             !password ||
                             createMT5AccountLoading ||
                             tradingPlatformPasswordChangeLoading ||
-                            !validPassword(password, platform)
+                            !validPassword(password)
                         }
                         isFullWidth
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
@@ -188,7 +188,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     !password ||
                     createMT5AccountLoading ||
                     tradingPlatformPasswordChangeLoading ||
-                    !validPassword(password, platform)
+                    !validPassword(password)
                 }
                 isFullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
@@ -213,6 +213,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const passwordComponent = useMemo(() => {
         return isMT5PasswordNotSet ? (
             <CreatePassword
+                hasMT5account={hasMT5Account}
                 icon={<MT5PasswordIcon />}
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 onPasswordChange={e => setPassword(e.target.value)}
@@ -241,6 +242,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     }, [
         createMT5AccountLoading,
         error?.error?.code,
+        hasMT5Account,
         isMT5PasswordNotSet,
         marketType,
         onSubmit,

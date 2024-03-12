@@ -84,7 +84,7 @@ const WalletsResetMT5Password = ({
                     <Trans defaults='Cancel' />
                 </WalletButton>
                 <WalletButton
-                    disabled={!validPassword(password, platform)}
+                    disabled={!validPassword(password)}
                     isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                     onClick={handleSubmit}
                     size='lg'
@@ -106,7 +106,6 @@ const WalletsResetMT5Password = ({
                     label={isInvestorPassword ? 'New investor password' : `${title} password`}
                     onChange={e => setPassword(e.target.value)}
                     password={password}
-                    platform={platform}
                 />
                 {!isInvestorPassword && (
                     <WalletText size='sm'>
@@ -120,7 +119,7 @@ const WalletsResetMT5Password = ({
                             <Trans defaults='Cancel' />
                         </WalletButton>
                         <WalletButton
-                            disabled={!validPassword(password, platform)}
+                            disabled={!validPassword(password)}
                             isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                             onClick={handleSubmit}
                             variant='contained'

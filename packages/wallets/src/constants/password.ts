@@ -14,12 +14,13 @@ export const passwordRegex = {
 export const passwordValues = {
     longPassword: 12,
     maxLength: 25,
+    maxLengthMT5: 16,
     minLength: 8,
 };
 
 export const passwordErrorMessage = {
     invalidLength: `You should enter ${passwordValues.minLength}-${passwordValues.maxLength} characters.`,
-    invalidLengthMT5: `You should enter 8-16 characters.`,
+    invalidLengthMT5: `You should enter ${passwordValues.minLength}-${passwordValues.maxLengthMT5} characters.`,
     missingCharacter: 'Password should have lower and uppercase English letters with numbers.',
     missingCharacterMT5: 'Password must contain lowercase, uppercase letters, numbers, and special characters.',
     PasswordError: 'That password is incorrect. Please try again.',

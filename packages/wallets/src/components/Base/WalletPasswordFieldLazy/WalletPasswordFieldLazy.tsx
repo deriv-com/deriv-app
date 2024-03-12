@@ -1,12 +1,11 @@
 import React, { lazy, Suspense } from 'react';
-import { TPlatforms } from '../../../types';
 import Loader from '../../Loader/Loader';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 
 export interface WalletPasswordFieldProps extends WalletTextFieldProps {
+    mt5Policy?: boolean; // This prop is used to utilize the new password validation for MT5.
     password: string;
     passwordError?: boolean;
-    platform: TPlatforms.All;
     shouldDisablePasswordMeter?: boolean;
 }
 

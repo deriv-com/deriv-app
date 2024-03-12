@@ -1,6 +1,7 @@
 import React from 'react';
 import { useKycAuthStatus } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
+import { usePOIInfo } from '../../hooks';
 import { IDVService, ManualUpload, OnfidoContainer } from '../../modules';
 
 type TPOIFlowContainerProps = {
@@ -12,7 +13,7 @@ type TSupportedDocuments = DeepNonNullable<
 >['identity']['supported_documents']['idv'];
 
 export const POIFlowContainer = ({ countryCode }: TPOIFlowContainerProps) => {
-    const { isLoading, kyc_auth_status: kycAuthStatus } = useKycAuthStatus({ country: countryCode });
+    const { isLoading, kycAuthStatus } = usePOIInfo({ country: countryCode });
 
     if (isLoading || !kycAuthStatus) {
         return <Loader />;

@@ -8,7 +8,6 @@ import {
     extractInfoFromShortcode,
     formatDate,
     formatMoney,
-    getContractBasis,
     getEndTime,
     getMarketName,
     getPathname,
@@ -202,11 +201,12 @@ export default class NotificationStore extends BaseStore {
         } = contract_info;
         const id = `${contract_id}_${status}`;
         if (this.trade_notifications.some(({ id: notification_id }) => notification_id === id)) return;
+        const contract_main_title = getTradeTypeName(contract_type, isHighLow({ shortcode }), false, true);
         this.trade_notifications.push({
             id,
             buy_price,
             contract_id,
-            contract_type: `${getContractBasis(contract_type)} ${getTradeTypeName(
+            contract_type: `${contract_main_title ?? ''} ${getTradeTypeName(
                 contract_type,
                 isHighLow({ shortcode }),
                 isTurbosContract(contract_type)

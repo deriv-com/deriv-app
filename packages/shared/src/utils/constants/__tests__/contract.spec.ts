@@ -8,7 +8,6 @@ import {
     getContractCategoriesConfig,
     getContractTypePosition,
     getCleanedUpCategories,
-    getContractBasis,
 } from '../contract';
 import { CONTRACT_TYPES, TRADE_TYPES } from '../../contract';
 
@@ -228,16 +227,5 @@ describe('getContractCategoriesConfig', () => {
         };
 
         expect(getContractCategoriesConfig()).toEqual(categories);
-    });
-});
-
-describe('getContractBasis', () => {
-    it('should return correct basis for Vanillas, Turbos and Multipliers', () => {
-        expect(getContractBasis('Vanillalongcall')).toEqual('Vanillas');
-        expect(getContractBasis('Turboslong')).toEqual('Turbos');
-        expect(getContractBasis('MultUp')).toEqual('Multipliers');
-    });
-    it('should return empty string for all contracts except Vanillas, Turbos and Multipliers', () => {
-        expect(getContractBasis('Accu')).toEqual('');
     });
 });

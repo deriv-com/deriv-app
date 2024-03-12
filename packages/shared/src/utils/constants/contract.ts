@@ -476,28 +476,34 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         [CONTRACT_TYPES.MULTIPLIER.UP]: {
             name: localize('Up'),
             position: 'top',
+            main_title: localize('Multipliers'),
         },
         [CONTRACT_TYPES.MULTIPLIER.DOWN]: {
             name: localize('Down'),
             position: 'bottom',
+            main_title: localize('Multipliers'),
         },
         [CONTRACT_TYPES.TURBOS.LONG]: {
             name: localize('Turbos'),
             button_name: localize('Up'),
             position: 'top',
+            main_title: localize('Turbos'),
         },
         [CONTRACT_TYPES.TURBOS.SHORT]: {
             name: localize('Turbos'),
             button_name: localize('Down'),
             position: 'bottom',
+            main_title: localize('Turbos'),
         },
         [CONTRACT_TYPES.VANILLA.CALL]: {
             name: localize('Call'),
             position: 'top',
+            main_title: localize('Vanillas'),
         },
         [CONTRACT_TYPES.VANILLA.PUT]: {
             name: localize('Put'),
             position: 'bottom',
+            main_title: localize('Vanillas'),
         },
         [CONTRACT_TYPES.RUN_HIGH_LOW.HIGH]: {
             name: localize('Only Ups'),
@@ -619,19 +625,3 @@ export const isCallPut = (trade_type: 'rise_fall' | 'rise_fall_equal' | 'high_lo
     trade_type === TRADE_TYPES.RISE_FALL ||
     trade_type === TRADE_TYPES.RISE_FALL_EQUAL ||
     trade_type === TRADE_TYPES.HIGH_LOW;
-
-export const getContractBasis = (contract_type = '') => {
-    switch (contract_type.toUpperCase()) {
-        case CONTRACT_TYPES.TURBOS.LONG:
-        case CONTRACT_TYPES.TURBOS.SHORT:
-            return 'Turbos';
-        case CONTRACT_TYPES.VANILLA.CALL:
-        case CONTRACT_TYPES.VANILLA.PUT:
-            return 'Vanillas';
-        case CONTRACT_TYPES.MULTIPLIER.DOWN:
-        case CONTRACT_TYPES.MULTIPLIER.UP:
-            return 'Multipliers';
-        default:
-            return '';
-    }
-};

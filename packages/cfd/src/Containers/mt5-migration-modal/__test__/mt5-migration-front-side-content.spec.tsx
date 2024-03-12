@@ -35,7 +35,7 @@ describe('MT5MigrationFrontSideContent', () => {
 
     beforeEach(() => {
         migration_response = {
-            eligible_account_to_migrate_label: 'bvi',
+            eligible_account_to_migrate_label: 'BVI',
             eligible_svg_to_bvi_derived_accounts: false,
             eligible_svg_to_bvi_financial_accounts: false,
             eligible_svg_to_vanuatu_derived_accounts: false,
@@ -51,14 +51,47 @@ describe('MT5MigrationFrontSideContent', () => {
 
     it('should render MT5MigrationFrontSideContent', () => {
         renderComponent();
-        const getByTextCaseInsensitive = (text: string) =>
-            screen.getByText(content => content.toLowerCase() === text.toLowerCase());
-        expect(
-            getByTextCaseInsensitive('We are giving you a new MT5 account(s) to enhance your trading experience')
-        ).toBeInTheDocument();
+
+        expect(screen.getByText(/Enhance your trading experience by upgrading your/i)).toBeInTheDocument();
         expect(screen.getByText(/Your existing/i)).toBeInTheDocument();
-        expect(screen.getByText(/MT5 SVG/i)).toBeInTheDocument();
-        expect(screen.getByText(/account\(s\) will remain accessible/i)).toBeInTheDocument();
+        expect(screen.getByText(/account\(s\) will remain accessible\./i)).toBeInTheDocument();
+        expect(screen.getByText(/By clicking/i)).toBeInTheDocument();
+        expect(screen.getByText(/you agree to move your/i)).toBeInTheDocument();
+        expect(screen.getByText(/MT5 Financial SVG account\(s\)/i)).toBeInTheDocument();
+        expect(screen.getByText(/under Deriv BVI Ltd’s/i)).toBeInTheDocument();
+
+        const terms_conditions_link = screen.getByRole('link', { name: 'terms and conditions' });
+        expect(terms_conditions_link.hasAttribute('https://deriv.com/tnc/deriv-(bvi)-ltd.pdf'));
+        expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
+    });
+
+    it('should render MT5MigrationFrontSideContent with derived and Financial vanuatu account details', () => {
+        migration_response = {
+            eligible_account_to_migrate_label: 'Vanuatu',
+            eligible_svg_to_bvi_derived_accounts: false,
+            eligible_svg_to_bvi_financial_accounts: false,
+            eligible_svg_to_vanuatu_derived_accounts: true,
+            eligible_svg_to_vanuatu_financial_accounts: true,
+            getEligibleAccountToMigrate: jest.fn(() => 'vanuatu'),
+            has_derived_and_financial_mt5: true,
+            has_derived_mt5_to_migrate: true,
+            has_svg_accounts_to_migrate: true,
+            no_of_svg_accounts_to_migrate: 1,
+            svg_accounts_to_migrate: [],
+        };
+        renderComponent();
+
+        expect(screen.getByText(/Enhance your trading experience by upgrading your/i)).toBeInTheDocument();
+        expect(screen.getByText(/Your existing/i)).toBeInTheDocument();
+        expect(screen.getByText(/account\(s\) will remain accessible\./i)).toBeInTheDocument();
+        expect(screen.getByText(/By clicking/i)).toBeInTheDocument();
+        expect(screen.getByText(/you agree to move your/i)).toBeInTheDocument();
+        expect(screen.getByText(/MT5 Derived and Financial SVG account\(s\)/i)).toBeInTheDocument();
+        expect(screen.getByText(/under Deriv Vanuatu Ltd’s/i)).toBeInTheDocument();
+
+        const terms_conditions_link = screen.getByRole('link', { name: 'terms and conditions' });
+        expect(terms_conditions_link.hasAttribute('https://deriv.com/tnc/general-terms.pdf'));
+
         expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
     });
 

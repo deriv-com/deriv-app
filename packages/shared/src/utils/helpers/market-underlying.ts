@@ -64,6 +64,6 @@ export const getTradeTypeName = (
         category &&
         (getContractConfig(is_high_low)[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig);
     if (!trade_type) return null;
-    if (show_main_title) return trade_type?.main_title;
+    if (show_main_title) return trade_type?.main_title ?? '';
     return (show_button_name && trade_type.button_name) || trade_type.name || null;
 };

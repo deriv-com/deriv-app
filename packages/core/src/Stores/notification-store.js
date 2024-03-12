@@ -206,7 +206,7 @@ export default class NotificationStore extends BaseStore {
             id,
             buy_price,
             contract_id,
-            contract_type: `${contract_main_title ?? ''} ${getTradeTypeName(
+            contract_type: `${contract_main_title} ${getTradeTypeName(
                 contract_type,
                 isHighLow({ shortcode }),
                 isTurbosContract(contract_type)

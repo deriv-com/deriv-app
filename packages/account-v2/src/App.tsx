@@ -11,7 +11,7 @@ const App: React.FC = () => {
         <APIProvider standalone>
             <AuthProvider>
                 {/* [TODO]: Replace this hardcoded countryCode with Country selector */}
-                <POIFlowContainer countryCode='fr' />
+                <POIFlowContainer countryCode='in' />
                 <AppOverlay title='Settings'>
                     <RouteLinks />
                 </AppOverlay>

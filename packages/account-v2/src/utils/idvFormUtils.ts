@@ -1,3 +1,4 @@
+import { FormikValues } from 'formik';
 import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/object';
 import { useKycAuthStatus } from '@deriv/api-v2';
@@ -77,25 +78,30 @@ export const getIDVFormValidationSchema = (
     list: Exclude<
         Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
         undefined
-    >['idv']
+    >['idv'],
+    formData: FormikValues
 ) => {
     return Yup.object({
         additionalDocument: Yup.string().test({
             name: 'testAdditionalDocumentNumber',
             test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(countryCode, context.parent.documentType, list);
+                const documentConfig = getSelectedDocumentConfigData(countryCode, formData.documentType, list);
                 return validateAdditionalDocumentNumber(documentConfig, value, context);
             },
         }),
         documentNumber: Yup.string().test({
             name: 'testDocumentNumber',
             test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(countryCode, context.parent.documentType, list);
+                const documentConfig = getSelectedDocumentConfigData(countryCode, formData.documentType, list);
                 return validateDocumentNumber(documentConfig, value as string, context);
             },
         }),
         documentType: Yup.string().required('Please select a document type.'),
-    });
+    }).default(() => ({
+        additionalDocument: '',
+        documentNumber: '',
+        documentType: '',
+    }));
 };
 
 export const getSelectedDocumentConfigData = (

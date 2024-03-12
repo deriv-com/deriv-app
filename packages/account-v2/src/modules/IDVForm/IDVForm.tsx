@@ -68,11 +68,12 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, countryCode, supporte
 
     const { setFieldValue, values } = formik;
 
-    const validationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments);
+    const validationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments, values);
 
     const bindDocumentData = (item: string) => {
         setFieldValue('documentType', item, true);
-        setSelectedDocument(getSelectedDocumentConfigData(countryCode, item, supportedDocuments));
+        const documentConfig = getSelectedDocumentConfigData(countryCode, item, supportedDocuments);
+        setSelectedDocument(documentConfig);
         if (item === idvNotApplicableOption.value) {
             setFieldValue('documentNumber', '', true);
             setFieldValue('additionalDocument', '', true);

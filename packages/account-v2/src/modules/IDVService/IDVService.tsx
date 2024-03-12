@@ -1,5 +1,4 @@
 // [TODO]: Remove this eslint disable rule once form submission is implemented
-/* eslint-disable no-console */
 import React, { Fragment } from 'react';
 import { Formik } from 'formik';
 import { useKycAuthStatus } from '@deriv/api-v2';
@@ -18,12 +17,18 @@ type TIDVServiceProps = {
 };
 
 export const IDVService = ({ countryCode, supportedDocuments }: TIDVServiceProps) => {
-    const validationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments);
+    const validationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments, {});
 
     const initialValues = { ...validationSchema.getDefault(), ...getNameDOBValidationSchema().getDefault() };
 
     return (
-        <Formik initialValues={initialValues} onSubmit={() => console.log('Form submitted')} validateOnMount>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={() => {
+                // [TODO]: Implement submit
+            }}
+            validateOnMount
+        >
             <Fragment>
                 <div>
                     <IDVForm allowDefaultValue countryCode={countryCode} supportedDocuments={supportedDocuments} />
@@ -36,7 +41,7 @@ export const IDVService = ({ countryCode, supportedDocuments }: TIDVServiceProps
                         </div>
                         <PersonalDetailsFormWithExample
                             onConfirm={() => {
-                                console.log('Personal details updated');
+                                // [TODO]: Implement onConfirm
                             }}
                         />
                     </section>

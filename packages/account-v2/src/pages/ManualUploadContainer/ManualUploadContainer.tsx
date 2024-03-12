@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { InferType, object } from 'yup';
 import { Loader } from '@deriv-com/ui';
@@ -71,12 +70,13 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
             />
         );
     }
+    // [TODO]: Integrate country selector
     return (
         <OnfidoContainer
-            country='ng'
+            countryCode='ng'
             isEnabledByDefault
             onOnfidoSubmit={() => {
-                // TODO: Implement onfido submit
+                // [TODO]: Implement onfido submit
             }}
             selectedDocument={selectedDocument as TManualDocumentTypes}
         />

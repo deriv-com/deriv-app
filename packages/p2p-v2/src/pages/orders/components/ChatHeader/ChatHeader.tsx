@@ -8,7 +8,7 @@ type TChatHeaderProps = {
     lastOnlineTime: number;
     nickname: string;
 };
-const ChatHeader = ({ isOnline = 1, lastOnlineTime = 123143, nickname = 'asdf' }: TChatHeaderProps) => {
+const ChatHeader = ({ isOnline, lastOnlineTime, nickname }: TChatHeaderProps) => {
     const { isMobile } = useDevice();
     return (
         <div className='p2p-v2-chat-header flex items-center gap-[1.6rem]'>

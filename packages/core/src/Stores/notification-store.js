@@ -210,7 +210,7 @@ export default class NotificationStore extends BaseStore {
                 contract_type,
                 isHighLow({ shortcode }),
                 isTurbosContract(contract_type)
-            )}`,
+            )}`.trim(),
             currency,
             profit: isMultiplierContract(contract_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit,
             status,

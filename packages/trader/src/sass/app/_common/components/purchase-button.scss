@@ -245,7 +245,7 @@
 
     &--has-bottom-gradient {
         @include mobile {
-            &-green {
+            &-1 {
                 background: var(--purchase-section-1);
                 background: linear-gradient(
                     0deg,
@@ -255,7 +255,7 @@
                     var(--purchase-main-1) 100%
                 );
             }
-            &-red {
+            &-2 {
                 background: var(--purchase-section-2);
                 background: linear-gradient(
                     0deg,

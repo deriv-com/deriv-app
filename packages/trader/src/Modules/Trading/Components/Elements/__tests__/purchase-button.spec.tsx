@@ -81,13 +81,13 @@ describe('<PurchaseButton />', () => {
     it('should apply specific classNames if it is vanillas, turbos or accumulators contract type', () => {
         renderComponent(<PurchaseButton {...default_mocked_props} is_vanilla />);
 
-        expect(screen.getByRole('button')).toHaveClass('btn-purchase--has-bottom-gradient-red');
+        expect(screen.getByRole('button')).toHaveClass('btn-purchase--has-bottom-gradient-2');
     });
 
     it('should not apply any specific classNames if it is not vanillas, turbos or accumulators contract type', () => {
         renderComponent(<PurchaseButton {...default_mocked_props} />);
 
-        expect(screen.getByRole('button')).not.toHaveClass('btn-purchase--has-bottom-gradient-1');
+        expect(screen.getByRole('button')).not.toHaveClass('btn-purchase--has-bottom-gradient-2');
     });
 
     it('should call function setPurchaseState and onClickPurchase if purchase button was clicked', () => {

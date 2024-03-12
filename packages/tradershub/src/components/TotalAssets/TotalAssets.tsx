@@ -2,20 +2,20 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { TotalAssetsLoader } from '@/components';
 import { useTotalAssets } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
-import { Text, useDevice } from '@deriv-com/ui';
+import { useActiveTradingAccount } from '@deriv/api-v2';
+import { Text } from '@deriv-com/ui';
 
 const TotalAssets = () => {
     const { data: totalAssets, isSuccess } = useTotalAssets();
     const { data: activeTrading } = useActiveTradingAccount();
 
-    const { isDesktop } = useDevice();
-
     if (!isSuccess) return <TotalAssetsLoader />;
 
     return (
         <div className='relative inline-block w-auto text-center lg:text-right'>
-            {isDesktop && <Text size='sm'>Total assets</Text>}
+            <div className='d-none lg:block'>
+                <Text size='sm'>Total assets</Text>
+            </div>
             <Text
                 as='p'
                 className={twMerge(

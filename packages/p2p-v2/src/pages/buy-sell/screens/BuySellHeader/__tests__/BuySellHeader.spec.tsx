@@ -17,9 +17,11 @@ const mockProps = {
             value: 'rating',
         },
     ],
+    selectedCurrency: 'IDR',
     setActiveTab: jest.fn(),
     setIsFilterModalOpen: jest.fn(),
     setSearchValue: jest.fn(),
+    setSelectedCurrency: jest.fn(),
     setSortDropdownValue: jest.fn(),
     sortDropdownValue: 'rate' as TSortByValues,
 };
@@ -30,6 +32,19 @@ jest.mock('@deriv-com/ui', () => ({
         isMobile: false,
     }),
 }));
+
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    p2p: {
+        settings: {
+            useGetSettings: () => ({
+                data: {},
+            }),
+        },
+    },
+}));
+
+jest.mock('../../../components/CurrencyDropdown/CurrencyDropdown', () => jest.fn(() => <div>CurrencyDropdown</div>));
 
 const mockUseDevice = useDevice as jest.Mock;
 

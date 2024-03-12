@@ -14,11 +14,13 @@ jobs:
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Setup Node
       uses: "./.github/actions/setup_node"
+    - name: Check imports
+      run: npm run check-imports
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
-    - name: Invalidate NPM Cache
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-      uses: "./.github/actions/invalidate_npm_cache"
+    # - name: Invalidate NPM Cache
+    #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    #   uses: "./.github/actions/invalidate_npm_cache"
     - name: Build
       uses: "./.github/actions/build"
     - name: Check TypeScript for @deriv/api

@@ -392,9 +392,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         </a>
                                     </MobileDrawer.Item>
                                 )}
-                                <MobileDrawer.Item className='header__menu-mobile-livechat'>
-                                    {cs_chat_livechat && <LiveChat />}
-                                </MobileDrawer.Item>
+                                {cs_chat_livechat && (
+                                    <MobileDrawer.Item className='header__menu-mobile-livechat'>
+                                        <LiveChat />
+                                    </MobileDrawer.Item>
+                                )}
                                 {is_logged_in && (
                                     <MobileDrawer.Item
                                         onClick={() => {

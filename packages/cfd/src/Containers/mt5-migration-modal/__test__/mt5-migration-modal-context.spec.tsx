@@ -6,7 +6,10 @@ describe('useMT5MigrationModalContext', () => {
     it('should return default context values', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <MT5MigrationModalContext.Provider
-                value={{ show_modal_front_side: false, setShowModalFrontSide: () => null }}
+                value={{
+                    show_modal_front_side: false,
+                    setShowModalFrontSide: () => null,
+                }}
             >
                 {children}
             </MT5MigrationModalContext.Provider>
@@ -20,7 +23,10 @@ describe('useMT5MigrationModalContext', () => {
     it('should update context values', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <MT5MigrationModalContext.Provider
-                value={{ show_modal_front_side: true, setShowModalFrontSide: () => null }}
+                value={{
+                    show_modal_front_side: true,
+                    setShowModalFrontSide: () => null,
+                }}
             >
                 {children}
             </MT5MigrationModalContext.Provider>

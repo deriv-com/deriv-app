@@ -13,7 +13,7 @@ jest.mock('@/components/UserAvatar', () => ({
     UserAvatar: () => <div>UserAvatar</div>,
 }));
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     p2p: {
         counterparty: {
             useBlock: () => ({

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
-import { useResidenceList } from '@deriv/api';
+import { useResidenceList } from '@deriv/api-v2';
 import { LabelPairedChevronDownMdRegularIcon, StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
 import { Divider, Dropdown, Input, Text } from '@deriv-com/ui';
 import TaxInfoConfirmation from './TaxInfoConfirmation';
@@ -88,7 +88,7 @@ const AdditionalInformation = () => {
                             setFieldValue('taxResidence', selectedItem);
                         }}
                         value={values.taxResidence}
-                        variant='comboBox'
+                        variant='prompt'
                     />
                     <div className='pt-6'>
                         <StandaloneCircleInfoRegularIcon />

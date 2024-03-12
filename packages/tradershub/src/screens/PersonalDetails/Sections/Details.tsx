@@ -7,8 +7,8 @@ const ExampleImage = lazy(() => import('@/assets/svgs/personal-details-example.s
 
 const Details = () => {
     const { errors, handleBlur, handleChange, touched, values } = useFormikContext<{
-        confirmation: boolean;
         dateOfBirth: string;
+        detailsConfirmation: boolean;
         firstName: string;
         lastName: string;
     }>();
@@ -21,7 +21,7 @@ const Details = () => {
                 </Text>
                 <Divider className='w-full' color='#F2F3F4' />
             </div>
-            <div className='p-16 mx-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
+            <div className='p-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
                 <InlineMessage className='items-start mb-16' variant='warning'>
                     <Text as='p' className='text-sm lg:text-default'>
                         To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
@@ -33,7 +33,7 @@ const Details = () => {
                     <div className='flex flex-col w-full gap-20 lg:w-1/2'>
                         <Input
                             className='text-default'
-                            disabled={values.confirmation}
+                            disabled={values.detailsConfirmation}
                             error={Boolean(errors.firstName && touched.firstName)}
                             isFullWidth
                             label='First name*'
@@ -49,7 +49,7 @@ const Details = () => {
                         />
                         <Input
                             className='text-default'
-                            disabled={values.confirmation}
+                            disabled={values.detailsConfirmation}
                             error={Boolean(errors.lastName && touched.lastName)}
                             isFullWidth
                             label='Last name*'
@@ -66,7 +66,7 @@ const Details = () => {
                         {/** Add date picker when available from deriv/ui */}
                         <Input
                             className='text-default'
-                            disabled={values.confirmation}
+                            disabled={values.detailsConfirmation}
                             error={Boolean(errors.dateOfBirth && touched.dateOfBirth)}
                             isFullWidth
                             label='Date of birth*'

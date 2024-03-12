@@ -1,0 +1,48 @@
+/* stylelint-disable color-no-hex */
+
+.account-dropzone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.8rem;
+    height: 100%;
+    width: 100%;
+    border: 0.1rem dashed var(--system-light-5-active-background, #d6dadb);
+    padding: 2rem;
+
+    &--hover,
+    &--active {
+        background-color: var(--general-section-1, #f2f3f4);
+    }
+
+    &--hover {
+        border-style: solid;
+    }
+
+    &--active {
+        border: 0.1rem solid var(--status-success, #4bb4b3);
+    }
+
+    &__thumb {
+        position: relative;
+        width: 100%;
+        max-width: 27.6rem;
+        height: 16.6rem;
+        border-radius: 0.8rem;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin-bottom: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        &--has-frame {
+            background-size: contain;
+            height: 100%;
+            margin-bottom: 0;
+            border: 0.5rem solid transparent;
+        }
+    }
+}

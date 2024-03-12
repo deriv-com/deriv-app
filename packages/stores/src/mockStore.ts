@@ -23,6 +23,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             active_account_landing_company: '',
             trading_platform_available_accounts: [],
             account_limits: {},
+            self_exclusion: {},
+            getSelfExclusion: jest.fn(),
             account_status: {
                 p2p_poa_required: 1,
                 authentication: {
@@ -459,8 +461,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_additional_kyc_info_modal_open: false,
             toggleAdditionalKycInfoModal: jest.fn(),
             is_kyc_information_submitted_modal_open: false,
+            isUrlUnavailableModalVisible: false,
             toggleKycInformationSubmittedModal: jest.fn(),
             setAccountSwitcherDisabledMessage: jest.fn(),
+            toggleUrlUnavailableModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),
@@ -623,6 +627,9 @@ const mock = (): TStores & { is_mock: boolean } => {
                 migrated_mt5_accounts: [],
                 mt5_migration_error: '',
                 enableCFDPasswordModal: jest.fn(),
+                is_sent_email_modal_enabled: false,
+                setSentEmailModalStatus: jest.fn(),
+                submitMt5Password: jest.fn(() => Promise.resolve()),
                 setJurisdictionSelectedShortcode: jest.fn(),
                 setAccountType: jest.fn(),
                 setMigratedMT5Accounts: jest.fn(),

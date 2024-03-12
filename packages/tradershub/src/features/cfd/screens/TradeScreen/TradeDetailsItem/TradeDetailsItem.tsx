@@ -3,8 +3,8 @@ import { twMerge } from 'tailwind-merge';
 import { useHover } from 'usehooks-ts';
 import EditIcon from '@/assets/svgs/ic-edit.svg';
 import { Clipboard, Tooltip } from '@/components';
+import { useModal } from '@/providers';
 import { ChangePassword } from '@cfd/screens';
-import { Provider } from '@deriv/library';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 type TTradeDetailsItemProps = {
@@ -18,7 +18,7 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
     const { isDesktop } = useDevice();
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
-    const { show } = Provider.useModal();
+    const { show } = useModal();
     return (
         <div
             className={twMerge(

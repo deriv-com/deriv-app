@@ -15,8 +15,22 @@ import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
-import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
-import VerificationModal from '../VerificationModal';
+
+const TradingAssessmentExistingUser = React.lazy(() =>
+    moduleLoader(() =>
+        import(
+            /* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user.jsx'
+        )
+    )
+);
+
+const VerificationModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "verification-modal" */ '../VerificationModal'))
+);
+
+const UrlUnavailableModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "url-unavailable-modal" */ '../UrlUnavailableModal'))
+);
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -94,6 +108,7 @@ const AppModals = observer(() => {
         is_kyc_information_submitted_modal_open,
         is_verification_modal_visible,
         is_verification_submitted,
+        isUrlUnavailableModalVisible,
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
     } = ui;
@@ -174,6 +189,8 @@ const AppModals = observer(() => {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
     } else if (should_show_risk_accept_modal) {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
+    } else if (isUrlUnavailableModalVisible) {
+        ComponentToLoad = <UrlUnavailableModal />;
     }
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;

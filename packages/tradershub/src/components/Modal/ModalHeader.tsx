@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 import CloseIcon from '@/assets/svgs/ic-close-dark.svg';
-import { Provider } from '@deriv/library';
+import { useModal } from '@/providers';
 import { Text } from '@deriv-com/ui';
 import { TModalComponents } from './Modal';
 
@@ -26,7 +26,7 @@ type TModalHeader = TModalComponents & {
  * @returns {JSX.Element} The ModalHeader component.
  */
 const ModalHeader = ({ className, hideCloseButton = false, title, titleClassName, titleSize }: TModalHeader) => {
-    const { hide } = Provider.useModal();
+    const { hide } = useModal();
 
     return (
         <div

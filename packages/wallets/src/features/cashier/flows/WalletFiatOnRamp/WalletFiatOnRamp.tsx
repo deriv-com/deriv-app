@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { FiatOnRampModule } from '../../modules';
+import { CashierLocked, FiatOnRampModule } from '../../modules';
 
 const WalletFiatOnRamp = () => {
     const { data } = useActiveWalletAccount();
@@ -16,7 +16,11 @@ const WalletFiatOnRamp = () => {
         }
     }, [history, isCrypto]);
 
-    return <FiatOnRampModule />;
+    return (
+        <CashierLocked>
+            <FiatOnRampModule />
+        </CashierLocked>
+    );
 };
 
 export default WalletFiatOnRamp;

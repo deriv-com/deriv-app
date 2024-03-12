@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
-import { useSettings, useVerifyEmail } from '@deriv/api';
+import { useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { WithdrawalVerificationRequest } from './WithdrawalVerificationRequest';
 import { WithdrawalVerificationSent } from './WithdrawalVerificationSent';
 

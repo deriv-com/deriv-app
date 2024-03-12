@@ -3,11 +3,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
-import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
-import { ContentFlag, WS, routes } from '@deriv/shared';
+import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
+import { ContentFlag, WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import ChooseCurrency from './choose-currency.jsx';
@@ -17,9 +16,13 @@ import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
-
+import 'Sass/details-form.scss';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
+
+const AccountWizard = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-wizard-modal" */ './account-wizard.jsx'))
+);
 
 const modal_pages_indices = {
     account_wizard: 0,
@@ -130,18 +133,20 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         {
             action: 'signup',
             body: local_props => (
-                <AccountWizard
-                    setIsRiskWarningVisible={setIsRiskWarningVisible}
-                    onFinishSuccess={showStatusDialog}
-                    onOpenDepositModal={closeModalthenOpenDepositModal}
-                    onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
-                    is_loading={local_props.is_loading}
-                    setLoading={setLoading}
-                    onError={showErrorModal}
-                    onClose={closeModal}
-                    realAccountSignup={realAccountSignup}
-                    setRealAccountFormData={setRealAccountFormData}
-                />
+                <React.Suspense fallback={<UILoader />}>
+                    <AccountWizard
+                        setIsRiskWarningVisible={setIsRiskWarningVisible}
+                        onFinishSuccess={showStatusDialog}
+                        onOpenDepositModal={closeModalthenOpenDepositModal}
+                        onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
+                        is_loading={local_props.is_loading}
+                        setLoading={setLoading}
+                        onError={showErrorModal}
+                        onClose={closeModal}
+                        realAccountSignup={realAccountSignup}
+                        setRealAccountFormData={setRealAccountFormData}
+                    />
+                </React.Suspense>
             ),
             title: WizardHeading,
         },

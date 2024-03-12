@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { APIProvider, p2p, useAuthentication, useSettings } from '@deriv/api';
+import { APIProvider, AuthProvider, p2p, useAuthentication, useSettings } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import useAdvertiserStats from '../useAdvertiserStats';
 
@@ -7,8 +7,8 @@ const mockUseSettings = useSettings as jest.MockedFunction<typeof useSettings>;
 const mockUseAuthentication = useAuthentication as jest.MockedFunction<typeof useAuthentication>;
 const mockUseAdvertiserInfo = p2p.advertiser.useGetInfo as jest.MockedFunction<typeof p2p.advertiser.useGetInfo>;
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiser: {
             useGetInfo: jest.fn().mockReturnValue({
@@ -50,13 +50,21 @@ describe('useAdvertiserStats', () => {
             ...mockUseAdvertiserInfo,
             isSuccess: false,
         });
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(result.current.data).toBe(undefined);
     });
     test('should return the correct information', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
         mockUseSettings.mockReturnValueOnce({
             data: { first_name: 'Jane', last_name: 'Doe' },
         });
@@ -79,7 +87,11 @@ describe('useAdvertiserStats', () => {
         expect(result.current.data.daysSinceJoined).toBe(120);
     });
     test('should return the correct total count and lifetime', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
 
         mockUseAdvertiserInfo.mockReturnValueOnce({
             data: {
@@ -100,7 +112,11 @@ describe('useAdvertiserStats', () => {
         expect(result.current.data.tradeVolumeLifetime).toBe(100);
     });
     test('should return the correct rates and limits', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
         mockUseAdvertiserInfo.mockReturnValueOnce({
             data: {
                 buy_completion_rate: 1.4,
@@ -121,7 +137,11 @@ describe('useAdvertiserStats', () => {
         expect(result.current.data.isEligibleForLimitUpgrade).toBe(true);
     });
     test('should return the correct buy/release times', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
         mockUseAdvertiserInfo.mockReturnValueOnce({
             data: {
                 buy_time_avg: 150,
@@ -134,7 +154,11 @@ describe('useAdvertiserStats', () => {
         expect(result.current.data.averageReleaseTime).toBe(1);
     });
     test('should return the correct verification statuses', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
         mockUseAdvertiserInfo.mockReturnValueOnce({
             data: {
                 full_verification: false,
@@ -175,6 +199,6 @@ describe('useAdvertiserStats', () => {
         const { result: verifiedResult } = renderHook(() => useAdvertiserStats(), { wrapper });
 
         expect(verifiedResult.current.data.isAddressVerified).toBe(true);
-        expect(verifiedResult.current.data.isIdentityVerified).toBe(true);
+        expect(verifiedResult.current.data.isIdentityVerified).toBeUndefined();
     });
 });

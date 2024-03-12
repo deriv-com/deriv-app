@@ -15,7 +15,9 @@ const useP2PPaymentMethods = () => {
     const { client } = useStore();
     const { is_authorize } = client;
 
-    const { data, ...rest } = useFetch('p2p_payment_methods', { options: { enabled: is_authorize } });
+    const { data, ...rest } = useFetch('p2p_payment_methods', {
+        options: { enabled: is_authorize, refetchOnWindowFocus: false },
+    });
 
     // Modify the data to add additional information.
     const modified_data = React.useMemo(() => {

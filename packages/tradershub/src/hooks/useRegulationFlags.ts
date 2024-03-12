@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { useUIContext } from '@/components';
-import { useActiveTradingAccount, useIsEuRegion, useLandingCompany, useTradingAccountsList } from '@deriv/api';
-import { Regulation } from '../constants/constants';
+import { Regulation } from '@/constants';
+import { useUIContext } from '@/providers';
+import { useActiveTradingAccount, useIsEuRegion, useLandingCompany, useTradingAccountsList } from '@deriv/api-v2';
 
 /**
  * @description A custom hook that returns regulation flags based on the regulation passed in
@@ -25,7 +25,7 @@ const useRegulationFlags = () => {
         const isNonEURegulation = regulation === Regulation.NonEU;
 
         const isEU = isEUCountry || isEURegulation;
-        const isNonEU = !isEUCountry || isNonEURegulation;
+        const isNonEU = isHighRisk || isNonEURegulation;
 
         const isRealAccount = !activeTradingAccount?.is_virtual || accountType === 'real';
 

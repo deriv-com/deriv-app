@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useModal } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
 import { DummyComponent } from '@cfd/components';
 import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
@@ -9,8 +10,7 @@ import {
     useCreateOtherCFDAccount,
     useMT5AccountsList,
     useSettings,
-} from '@deriv/api';
-import { Provider } from '@deriv/library';
+} from '@deriv/api-v2';
 import { Button } from '@deriv-com/ui';
 import {
     getAccountVerificationStatus,
@@ -32,7 +32,7 @@ type TCompareAccountButton = {
 @params {string} marketType - The market type of the account. //Removed for now as it is needed by Verification flow
  */
 const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompareAccountButton) => {
-    const { show } = Provider.useModal();
+    const { show } = useModal();
 
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();
@@ -117,6 +117,7 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
         <div className='h-40 m-20 w-[calc(100%-40px)]'>
             <Button
                 className='w-full text-center text-system-light-primary-background'
+                color='primary-light'
                 data-testid='dt_compare_cfd_account_button'
                 disabled={isAccountAdded}
                 onClick={onClickAdd}

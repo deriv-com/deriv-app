@@ -1,5 +1,5 @@
 import { RATE_TYPE } from '@/constants';
-import { useAuthorize } from '@deriv/api';
+import { useAuthorize } from '@deriv/api-v2';
 
 const AdRateError = () => {
     //TODO: get rate values after implementation of floatingRate hook

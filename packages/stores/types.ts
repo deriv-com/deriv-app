@@ -23,6 +23,7 @@ import type {
     P2PAdvertiserInformationResponse,
     P2POrderListResponse,
     WebsiteStatus,
+    GetSelfExclusion,
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -414,6 +415,8 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
+    self_exclusion: Partial<GetSelfExclusion>;
+    getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
@@ -692,6 +695,7 @@ type TUiStore = {
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
     is_unsupported_contract_modal_visible: boolean;
+    isUrlUnavailableModalVisible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
     openRealAccountSignup: (
@@ -745,6 +749,7 @@ type TUiStore = {
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
+    toggleUrlUnavailableModal: (value: boolean) => void;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
@@ -788,7 +793,7 @@ type TUiStore = {
     toggleAccountSuccessModal: () => void;
     setIsMFVericationPendingModal: (value: boolean) => void;
     setMT5MigrationModalEnabled: (value: boolean) => void;
-    toggleMT5MigrationModal: () => void;
+    toggleMT5MigrationModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;

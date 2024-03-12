@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import useAuthorize from './useAuthorize';
 import useQuery from '../useQuery';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useMutation from '../useMutation';
@@ -9,7 +10,8 @@ type TSetSettingsPayload = NonNullable<
 
 /** A custom hook to get and update the user settings. */
 const useSettings = () => {
-    const { data, ...rest } = useQuery('get_settings');
+    const { isSuccess } = useAuthorize();
+    const { data, ...rest } = useQuery('get_settings', { options: { enabled: isSuccess } });
     const { mutate, ...mutate_rest } = useMutation('set_settings', { onSuccess: () => invalidate('get_settings') });
     const invalidate = useInvalidateQuery();
 

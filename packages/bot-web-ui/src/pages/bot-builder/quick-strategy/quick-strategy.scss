@@ -219,7 +219,7 @@
             max-height: calc(100vh - 23rem) !important;
 
             @include desktop() {
-                height: calc(100vh - 23rem) !important;
+                height: calc(100vh - 16rem) !important;
             }
 
             margin-bottom: 1rem;
@@ -231,7 +231,6 @@
             }
 
             &--no-footer {
-                height: 100% !important;
                 max-height: 100% !important;
 
                 @include mobile() {

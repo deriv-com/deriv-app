@@ -32,6 +32,7 @@ import {
     hasBarrier,
     isHighLow,
     CONTRACT_TYPES,
+    getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
 } from '@deriv/shared';
@@ -295,6 +296,14 @@ export default class TradeStore extends BaseStore {
     // Mobile
     is_trade_params_expanded = true;
 
+    debouncedSendTradeParamsAnalytics = debounce((payload: TEvents['ce_contracts_set_up_form']) => {
+        if (payload.action === 'change_parameter_value') {
+            const { duration_type, parameter_value } = payload;
+            if (!duration_type && parameter_value === '') return;
+        }
+        Analytics.trackEvent('ce_contracts_set_up_form', payload);
+    }, 2000);
+
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
     is_purchasing_contract = false;
@@ -467,6 +476,7 @@ export default class TradeStore extends BaseStore {
             resetAccumulatorData: action.bound,
             resetErrorServices: action.bound,
             resetPreviousSymbol: action.bound,
+            sendTradeParamsAnalytics: action.bound,
             setActiveSymbols: action.bound,
             setBarrierChoices: action.bound,
             setChartModeFromURL: action.bound,
@@ -1001,6 +1011,26 @@ export default class TradeStore extends BaseStore {
                                     status: 'open',
                                 });
                             }
+                            if (
+                                !this.root_store.ui.is_mobile &&
+                                (this.basis_list.length > 1 || this.duration_units_list.length > 1)
+                            ) {
+                                const durationMode =
+                                    this.root_store.ui.is_advanced_duration && this.expiry_type
+                                        ? this.expiry_type
+                                        : this.duration_units_list.find(({ value }) => value === this.duration_unit)
+                                              ?.text ?? '';
+                                this.sendTradeParamsAnalytics({
+                                    action: 'run_contract',
+                                    ...(this.duration_units_list.length > 1
+                                        ? { switcher_duration_mode_name: durationMode.toLowerCase() }
+                                        : {}),
+                                    ...(this.basis_list.length > 1
+                                        ? { switcher_stakepayout_mode_name: this.basis }
+                                        : {}),
+                                });
+                            }
+
                             this.is_purchasing_contract = false;
                             return;
                         }
@@ -1029,6 +1059,19 @@ export default class TradeStore extends BaseStore {
         [].forEach.bind(el_purchase_value, el => {
             (el as HTMLDivElement).classList.add('trade-container__price-info--fade');
         })();
+    };
+
+    sendTradeParamsAnalytics = (options: Partial<TEvents['ce_contracts_set_up_form']>, isDebounced?: boolean) => {
+        const payload = {
+            form_name: 'default',
+            trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
+            ...options,
+        } as TEvents['ce_contracts_set_up_form'];
+        if (isDebounced) {
+            this.debouncedSendTradeParamsAnalytics(payload);
+        } else {
+            Analytics.trackEvent('ce_contracts_set_up_form', payload);
+        }
     };
 
     /**

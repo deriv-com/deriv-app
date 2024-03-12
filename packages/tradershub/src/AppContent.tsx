@@ -16,7 +16,7 @@ const AppContent = () => {
             <AppContainer className={compareAccountsRoute ? 'max-w-[800px] lg:pt-0 lg:pb-20' : ''}>
                 <Router />
             </AppContainer>
-            {isEU && <EUDisclaimerMessage />}
+            {isEU && !compareAccountsRoute && <EUDisclaimerMessage />}
             <Modals />
         </Fragment>
     );

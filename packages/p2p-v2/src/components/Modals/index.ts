@@ -5,5 +5,6 @@ export * from './DailyLimitModal';
 export * from './FilterModal';
 export * from './MyAdsDeleteModal';
 export * from './NicknameModal';
+export * from './OrderDetailsConfirmModal';
 export * from './PaymentMethods';
 export * from './RadioGroupFilterModal';

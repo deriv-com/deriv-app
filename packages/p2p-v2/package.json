@@ -12,9 +12,9 @@
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
-        "@deriv/api-v2": "^1.0.0",
         "@deriv-com/ui": "1.10.2",
         "@deriv-com/utils": "latest",
+        "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
         "@deriv/quill-icons": "^1.19.0",
         "@deriv/react-joyride": "^2.6.2",
@@ -34,6 +34,8 @@
         "react-router-dom": "^5.2.0",
         "react-share": "^5.1.0",
         "react-simple-star-rating": "4.0.4",
+        "serialize-query-params": "^2.0.2",
+        "use-query-params": "^2.2.1",
         "usehooks-ts": "^2.7.0"
     },
     "devDependencies": {

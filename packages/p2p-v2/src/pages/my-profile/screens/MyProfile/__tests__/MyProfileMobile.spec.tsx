@@ -21,18 +21,14 @@ jest.mock('../../PaymentMethods', () => ({
 }));
 
 function resetMockedData() {
-    mockQueryString = new Map(
-        Object.entries({
-            tab: 'default',
-        })
-    );
+    mockQueryString = {
+        tab: 'default',
+    };
 }
 
-let mockQueryString = new Map(
-    Object.entries({
-        tab: 'default',
-    })
-);
+let mockQueryString = {
+    tab: 'default',
+};
 
 const mockSetQueryString = jest.fn();
 jest.mock('@/hooks', () => ({
@@ -61,11 +57,9 @@ describe('MyProfileMobile', () => {
             expect(mockSetQueryString).toBeCalledWith({
                 tab,
             });
-            mockQueryString = new Map(
-                Object.entries({
-                    tab,
-                })
-            );
+            mockQueryString = {
+                tab,
+            };
             render(<MyProfileMobile />);
         };
 

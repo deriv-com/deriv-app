@@ -89,7 +89,7 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
                     <Button
                         className='p2p-v2-nickname-modal__form__button-group__cancel'
                         onClick={() => {
-                            switchTab('buy-sell');
+                            // switchTab('buy-sell');
                             setIsModalOpen(false);
                         }}
                         size='lg'

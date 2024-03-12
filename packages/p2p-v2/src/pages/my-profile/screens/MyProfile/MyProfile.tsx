@@ -21,7 +21,7 @@ const MyProfile = () => {
     const { isP2PPoaRequired, isPoaVerified, isPoiVerified } = data || {};
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState<boolean | undefined>(false);
 
-    const currentTab = queryString.get('tab');
+    const currentTab = queryString.tab;
 
     useEffect(() => {
         const isPoaPoiVerified = (!isP2PPoaRequired || isPoaVerified) && isPoiVerified;

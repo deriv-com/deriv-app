@@ -9,7 +9,7 @@ import { PaymentMethods } from '../PaymentMethods';
 
 const MyProfileMobile = () => {
     const { queryString, setQueryString } = useQueryString();
-    const currentTab = queryString.get('tab');
+    const currentTab = queryString.tab;
 
     if (currentTab === 'Stats') {
         return <MyProfileStatsMobile />;

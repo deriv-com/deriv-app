@@ -41,8 +41,7 @@ const useAdvertiserCreate = () => {
 
         if (!advertiser) return undefined;
 
-        const { basic_verification, full_verification, is_approved, is_listed, is_online, show_name, created_time } =
-            advertiser;
+        const { basic_verification, full_verification, is_approved, is_listed, is_online, show_name } = advertiser;
 
         return {
             ...data?.p2p_advertiser_create,

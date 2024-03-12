@@ -75,7 +75,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         this.bot_folder_name = `Binary Bot - ${localize('Strategies')}`;
         this.setKey();
         this.client = null;
-        this.access_token = localStorage.getItem('google_access_token') || '';
+        this.access_token = localStorage.getItem('google_access_token') ?? '';
         importExternal('https://accounts.google.com/gsi/client').then(() => this.initialiseClient());
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
@@ -113,16 +113,16 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         this.is_authorised = is_signed_in;
     }
 
-    signIn() {
+    async signIn() {
         if (!this.is_authorised) {
-            this.client.requestAccessToken();
+            await this.client.requestAccessToken();
         }
     }
 
-    signOut() {
+    async signOut() {
         if (this.access_token) {
-            gapi.client.setToken({ access_token: '' });
-            google.accounts.oauth2.revoke(this.access_token);
+            await gapi.client.setToken({ access_token: '' });
+            await google.accounts.oauth2.revoke(this.access_token);
             localStorage.removeItem('google_access_token');
             this.access_token = '';
         }
@@ -166,18 +166,17 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         } catch (err) {
             if ((err as TErrorWithStatus)?.status === 401) {
                 await this.signOut();
-                setTimeout(() => {
-                    const picker = document.getElementsByClassName('picker-dialog-content')[0] as HTMLElement;
-                    picker?.parentNode?.removeChild(picker);
-                    const pickerBackground = document.getElementsByClassName(
-                        'picker-dialog-bg'
-                    ) as HTMLCollectionOf<HTMLElement>;
-                    if (pickerBackground.length) {
-                        for (let i = 0; i < pickerBackground.length; i++) {
-                            pickerBackground[i].style.display = 'none';
-                        }
+                const picker = document.getElementsByClassName('picker-dialog-content')[0] as HTMLElement;
+                picker?.parentNode?.removeChild(picker);
+                const pickerBackground = document.getElementsByClassName(
+                    'picker-dialog-bg'
+                ) as HTMLCollectionOf<HTMLElement>;
+
+                if (pickerBackground.length) {
+                    for (let i = 0; i < pickerBackground.length; i++) {
+                        pickerBackground[i].style.display = 'none';
                     }
-                }, 500);
+                }
             }
         }
 

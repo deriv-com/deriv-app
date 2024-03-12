@@ -303,7 +303,9 @@ export default class TradeStore extends BaseStore {
         }
         Analytics.trackEvent('ce_contracts_set_up_form', payload);
     }, 2000);
-
+    debouncedSetChartStatus = debounce((status: boolean) => {
+        this.is_chart_loading = status;
+    }); // no time is needed here, the only goal is to put the call into macrotasks queue
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
     is_purchasing_contract = false;
@@ -1582,8 +1584,9 @@ export default class TradeStore extends BaseStore {
         });
     }
 
-    setChartStatus(status: boolean) {
-        this.is_chart_loading = status;
+    setChartStatus(status: boolean, isFromChart?: boolean) {
+        if (isFromChart) this.debouncedSetChartStatus(status);
+        else this.is_chart_loading = status;
     }
 
     async initAccountCurrency(new_currency: string) {

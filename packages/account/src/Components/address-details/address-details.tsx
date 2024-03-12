@@ -53,7 +53,7 @@ type TAddressDetails = {
 };
 
 type TAutoComplete = {
-    value: boolean;
+    value: string;
     text: string;
 };
 
@@ -230,13 +230,14 @@ const AddressDetails = observer(
                                                                     type='text'
                                                                     label={localize('State/Province')}
                                                                     list_items={states_list}
-                                                                    onItemSelection={({
-                                                                        value,
-                                                                        text,
-                                                                    }: TAutoComplete) => {
+                                                                    onItemSelection={({ value }: TAutoComplete) => {
                                                                         setFieldValue(
                                                                             'address_state',
-                                                                            value ? text : '',
+                                                                            value
+                                                                                ? states_list.find(
+                                                                                      state => state?.value === value
+                                                                                  )?.text
+                                                                                : '',
                                                                             true
                                                                         );
                                                                         setAddressStateToDisplay('');

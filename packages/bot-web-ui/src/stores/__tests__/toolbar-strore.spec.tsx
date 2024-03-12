@@ -12,21 +12,31 @@ jest.mock('@deriv/bot-skeleton', () => ({
     onWorkspaceResize: jest.fn(),
 }));
 
+const mock_undo = jest.fn();
+const mock_cleanup = jest.fn();
+const mock_zoom = jest.fn();
+
 window.Blockly = {
     derivWorkspace: {
-        current_strategy_id: {
-            utils: {
-                genUid: jest.fn(),
-            },
+        undo: mock_undo,
+        hasRedoStack: jest.fn(),
+        hasUndoStack: jest.fn(),
+        cached_xml: {
+            main: 'main',
         },
-        getAllBlocks: jest.fn(() => ({
-            find: jest.fn(),
+        getMetrics: jest.fn(() => ({
+            viewWidth: 100,
+            viewHeight: 100,
         })),
+        zoom: mock_zoom,
+        cleanUp: mock_cleanup,
     },
     utils: {
         genUid: jest.fn(),
     },
-    Events: () => ({}),
+    Events: {
+        setGroup: jest.fn(),
+    },
     svgResize: jest.fn(),
 };
 
@@ -56,5 +66,41 @@ describe('ToolbarStore', () => {
     it('should hide dialog on close reset dialog click', () => {
         toolbarStore.closeResetDialog();
         expect(toolbarStore.is_dialog_open).toBe(false);
+    });
+
+    it('should show dialog onResetOkButtonClick', () => {
+        toolbarStore.onResetOkButtonClick();
+        mock_DBot_store.run_panel.is_running = true;
+        expect(toolbarStore.is_dialog_open).toBe(false);
+    });
+
+    it('should show dialog onResetOkButtonClick and bot running', () => {
+        toolbarStore.onResetOkButtonClick();
+        expect(toolbarStore.is_reset_button_clicked).toBe(true);
+    });
+
+    it('should reset default strategy correctly', async () => {
+        await toolbarStore.resetDefaultStrategy();
+        expect(window.Blockly.derivWorkspace.strategy_to_load).toBe('main');
+    });
+
+    it('should call onSortClick correctly', () => {
+        toolbarStore.onSortClick();
+        expect(mock_cleanup).toHaveBeenCalled();
+    });
+
+    it('should handle undo and redo click correctly', () => {
+        toolbarStore.onUndoClick(true);
+        expect(mock_undo).toHaveBeenCalledWith(true);
+    });
+
+    it('should call onZoomInOutClick ', () => {
+        toolbarStore.onZoomInOutClick(true);
+        expect(mock_zoom).toHaveBeenCalledWith(50, 50, 1);
+    });
+
+    it('should call onZoomInOutClick ', () => {
+        toolbarStore.onZoomInOutClick(false);
+        expect(mock_zoom).toHaveBeenCalledWith(50, 50, -1);
     });
 });

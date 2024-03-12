@@ -61,19 +61,13 @@ describe('GTM Module', () => {
 
     it('should fail on sending null for init', () => {
         // eslint-disable-next-line no-console
-        const originalConsoleWarn = console.warn;
-        // eslint-disable-next-line no-console
         console.warn = jest.fn();
         GTM.init(null);
         // eslint-disable-next-line no-console
         expect(console.warn).toHaveBeenCalledWith('Error initializing GTM reactions ', expect.any(Error));
-        // eslint-disable-next-line no-console
-        console.warn = originalConsoleWarn;
     });
 
     it('onRunBot should fail on sending null', () => {
-        // eslint-disable-next-line no-console
-        const originalConsoleWarn = console.warn;
         const captured_warnings = [];
         // eslint-disable-next-line no-console
         console.warn = message => captured_warnings.push(message);
@@ -81,9 +75,8 @@ describe('GTM Module', () => {
             GTM.onRunBot(null);
             mock_DBot_store.transactions.elements = mock_row_data;
             expect(captured_warnings[0]).toContain('Error pushing run data to datalayer');
-        } finally {
-            // eslint-disable-next-line no-console
-            console.warn = originalConsoleWarn;
+        } catch (error) {
+            expect(error).toBeInstanceOf(Error);
         }
     });
 });

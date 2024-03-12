@@ -45,6 +45,14 @@ jest.mock('@deriv-com/ui', () => ({
 }));
 
 describe('<BuySellTable.spec />', () => {
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                href: 'https://app.deriv.com/cashier/p2p-v2/buy-sell',
+            },
+            writable: true,
+        });
+    });
     it('should render the BuySellHeader component and loader component if isLoading is true', () => {
         render(<BuySellTable />, { wrapper });
 

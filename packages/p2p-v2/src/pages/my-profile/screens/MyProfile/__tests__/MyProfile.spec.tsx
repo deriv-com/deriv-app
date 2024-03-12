@@ -1,6 +1,7 @@
 import React from 'react';
-import { useAdvertiserStats, useDevice, usePoiPoaStatus } from '@/hooks';
-import { APIProvider } from '@deriv/api-v2';
+import { useAdvertiserStats, usePoiPoaStatus } from '@/hooks';
+import { useDevice } from '@deriv-com/ui';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MyProfile from '../MyProfile';
@@ -8,7 +9,7 @@ import MyProfile from '../MyProfile';
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
         <div id='v2_modal_root' />
-        {children}
+        <AuthProvider>{children}</AuthProvider>
     </APIProvider>
 );
 
@@ -17,18 +18,24 @@ jest.mock('use-query-params', () => ({
     useQueryParams: jest.fn().mockReturnValue([{}, jest.fn()]),
 }));
 
-jest.mock('@/components/Verification', () => ({
+jest.mock('@/components', () => ({
+    ...jest.requireActual('@/components'),
+    ProfileContent: jest.fn(() => <div>ProfileContentScreen</div>),
     Verification: jest.fn(() => <div>Verification</div>),
 }));
+
+jest.mock('use-query-params', () => ({
+    ...jest.requireActual('use-query-params'),
+    useQueryParams: jest.fn().mockReturnValue([{}, jest.fn()]),
+}));
+
 jest.mock('@/components/Modals/NicknameModal', () => ({
     NicknameModal: jest.fn(({ isModalOpen }) => {
         if (isModalOpen) return <div>NicknameModal</div>;
         return <></>;
     }),
 }));
-jest.mock('../../MyProfileContent', () => ({
-    MyProfileContent: jest.fn(() => <div>MyProfileContent</div>),
-}));
+
 jest.mock('../../MyProfileStats', () => ({
     MyProfileStats: jest.fn(() => <div>MyProfileStatsScreen</div>),
 }));
@@ -72,6 +79,11 @@ jest.mock('@/hooks', () => ({
         queryString: {},
         setQueryString: jest.fn(),
     })),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => mockUseDevice),
 }));
 
 describe('MyProfile', () => {

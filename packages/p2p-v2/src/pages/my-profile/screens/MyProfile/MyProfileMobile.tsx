@@ -1,8 +1,7 @@
 import React from 'react';
-import { MobileTabs } from '@/components';
+import { MobileTabs, ProfileContent } from '@/components';
 import { useQueryString } from '@/hooks';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
-import { MyProfileContent } from '../MyProfileContent';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import MyProfileStatsMobile from '../MyProfileStats/MyProfileStatsMobile';
 import { PaymentMethods } from '../PaymentMethods';
@@ -26,7 +25,7 @@ const MyProfileMobile = () => {
 
     return (
         <>
-            <MyProfileContent />
+            <ProfileContent />
             <MobileTabs
                 onChangeTab={clickedTab =>
                     setQueryString({

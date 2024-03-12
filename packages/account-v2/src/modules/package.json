@@ -1,6 +1,6 @@
 {
     "name": "@deriv-lib/account-v2-lib",
-    "version": "1.0.2",
+    "version": "0.0.0-development",
     "main": "dist/js/index.js",
     "types": "dist/types/index.d.ts",
     "engines": {
@@ -52,7 +52,9 @@
         "eslint-plugin-sonarjs": "^0.23.0",
         "eslint-plugin-sort-destructure-keys": "^1.5.0",
         "eslint-plugin-typescript-sort-keys": "^2.3.0",
+        "mini-css-extract-plugin": "^2.8.1",
         "postcss": "^8.4.24",
+        "postcss-import": "^16.0.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-i18next": "^11.11.0",

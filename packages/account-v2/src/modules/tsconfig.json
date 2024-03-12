@@ -2,12 +2,17 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "skipLibCheck": true,
-        "outDir": "./dist",
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "module": "es6",
+        "target": "es5",
+        "jsx": "react",
+
         "baseUrl": "./",
         "paths": {
             "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src"],
+    "include": ["./src/**/*"],
     "exclude": ["**/node_modules", "dist", "**/shared/*", "**/api/*"]
 }

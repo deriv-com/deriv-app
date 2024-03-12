@@ -21,7 +21,7 @@ const InstrumentsIconWithLabel: FC<TInstrumentsIcon> = ({ highlighted, icon, isA
         >
             <InstrumentIcon height={24} width={24} />
             <div className='ml-5'>
-                <Text size='sm' weight='bold'>
+                <Text className='text-xs lg:text-sm' weight='bold'>
                     {text}
                 </Text>
             </div>

@@ -11,10 +11,10 @@ export const reorderCurrencies = (list: TCurrencyConfig[], type: keyof typeof Cu
     const newOrder = CurrenciesListOrder[type];
 
     return list.sort((a, b) => {
-        if (newOrder.indexOf(a.id) < newOrder.indexOf(b.id)) {
+        if (newOrder.indexOf(String(a.id)) < newOrder.indexOf(String(b.id))) {
             return -1;
         }
-        if (newOrder.indexOf(a.id) > newOrder.indexOf(b.id)) {
+        if (newOrder.indexOf(String(a.id)) > newOrder.indexOf(String(b.id))) {
             return 1;
         }
         return 0;

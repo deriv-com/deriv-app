@@ -1,9 +1,7 @@
 import path from 'path';
 import CopyPlugin from 'copy-webpack-plugin';
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
-import TerserPlugin from 'terser-webpack-plugin';
-import tailwindcss from 'tailwindcss';
 
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
@@ -52,7 +50,7 @@ export default () => ({
             {
                 test: /\.(sc|sa|c)ss$/,
                 use: [
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
@@ -128,46 +126,6 @@ export default () => ({
             },
         ],
     },
-    // optimization: {
-    //     minimize: isRelease,
-    //     minimizer: isRelease
-    //         ? [
-    //               new TerserPlugin({
-    //                   parallel: 2,
-    //                   test: /\.js$/,
-    //               }),
-    //               new CssMinimizerPlugin(),
-    //           ]
-    //         : [],
-    //     splitChunks: {
-    //         automaticNameDelimiter: '~',
-    //         cacheGroups: {
-    //             default: {
-    //                 minChunks: 2,
-    //                 minSize: 102400,
-    //                 priority: -20,
-    //                 reuseExistingChunk: true,
-    //             },
-    //             defaultVendors: {
-    //                 idHint: 'vendors',
-    //                 priority: -10,
-    //                 test: /[\\/]node_modules[\\/]/,
-    //             },
-    //             shared: {
-    //                 chunks: 'all',
-    //                 name: 'shared',
-    //                 test: /[\\/]shared[\\/]/,
-    //             },
-    //         },
-    //         chunks: 'all',
-    //         enforceSizeThreshold: 500000,
-    //         maxAsyncRequests: 30,
-    //         maxInitialRequests: 3,
-    //         minChunks: 1,
-    //         minSize: 102400,
-    //         minSizeReduction: 102400,
-    //     },
-    // },
     output: {
         filename: 'js/[name].js',
         path: path.resolve(__dirname, 'dist'),
@@ -182,6 +140,10 @@ export default () => ({
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css',
+            chunkFilename: '[id].css',
+        }),
         new CopyPlugin({
             patterns: [
                 {

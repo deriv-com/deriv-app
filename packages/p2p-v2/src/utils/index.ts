@@ -1,6 +1,7 @@
 export * from './ad-utils';
 export * from './adverts';
 export * from './currency';
+export * from './file-dropzone';
 export * from './file-uploader';
 export * from './format-value';
 export * from './loader';

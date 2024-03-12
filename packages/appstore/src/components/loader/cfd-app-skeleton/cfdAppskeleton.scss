@@ -1,0 +1,30 @@
+@import '../skeletonLoader.scss';
+
+.cfd-app-skeleton-loader {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        &__icon {
+            height: 3.8rem;
+            border-radius: $BORDER_RADIUS_2;
+            width: 5.7rem;
+        }
+        &__title {
+            height: 2.4rem;
+            border-radius: $BORDER_RADIUS_2;
+            width: 10.6rem;
+        }
+    }
+
+    &__body {
+        height: 2.4rem;
+        border-radius: $BORDER_RADIUS_2;
+        width: 42.2rem;
+    }
+}

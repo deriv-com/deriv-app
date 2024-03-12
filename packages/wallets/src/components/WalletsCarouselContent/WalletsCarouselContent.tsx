@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
@@ -23,7 +24,8 @@ const TRANSITION_FACTOR_SCALE = 1 - 24 / 28.8;
  * - everything else gets in sync with Embla eventually
  */
 const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
-    const { switchAccount } = useAuthorize();
+    const switchWalletAccount = useWalletAccountSwitcher();
+
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
@@ -155,9 +157,10 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     // load active wallet whenever its scrolled
     useEffect(() => {
         if (selectedLoginId) {
-            switchAccount(selectedLoginId);
-            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-            walletsCarouselEmblaApi?.scrollTo(index);
+            switchWalletAccount(selectedLoginId).then(() => {
+                const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+                walletsCarouselEmblaApi?.scrollTo(index);
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedLoginId, walletAccountsList]);

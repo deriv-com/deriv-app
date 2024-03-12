@@ -1,8 +1,9 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { APIProvider, AuthProvider, useActiveWalletAccount, useJurisdictionStatus, usePOI } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useJurisdictionStatus, usePOI } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../AuthProvider';
 import { ModalProvider } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import MT5AccountAdded from '../MT5AccountAdded';
@@ -54,11 +55,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <ModalProvider>
                         <MT5AccountAdded marketType='financial' platform='mt5' />
                     </ModalProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Your Financial demo account is ready')).toBeInTheDocument();
@@ -80,11 +81,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <ModalProvider>
                         <MT5AccountAdded marketType='financial' platform='mt5' />
                     </ModalProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Your Financial (SVG) account is ready')).toBeInTheDocument();
@@ -113,11 +114,11 @@ describe('MT5AccountAdded', () => {
         render(
             <Router history={history}>
                 <APIProvider>
-                    <AuthProvider>
+                    <WalletsAuthProvider>
                         <ModalProvider>
                             <MT5AccountAdded account={mockAddedAccount} marketType='financial' platform='mt5' />
                         </ModalProvider>
-                    </AuthProvider>
+                    </WalletsAuthProvider>
                 </APIProvider>
             </Router>
         );
@@ -158,11 +159,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <ModalProvider>
                         <MT5AccountAdded marketType='financial' platform='mt5' />
                     </ModalProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Almost there')).toBeInTheDocument();
@@ -203,11 +204,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <ModalProvider>
                         <MT5AccountAdded marketType='financial' platform='mt5' />
                     </ModalProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Almost there')).toBeInTheDocument();

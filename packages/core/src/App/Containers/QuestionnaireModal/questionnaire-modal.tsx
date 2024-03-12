@@ -56,7 +56,7 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
                     'questionnaire-modal__options': !a_variant,
                 })}
             >
-                {ab_questionnaire[1]?.answers.map(({ code, text, header }, index) => {
+                {ab_questionnaire[1]?.answers?.map(({ code, text, header }, index) => {
                     return (
                         <li
                             key={`${code}_questionnaire`}

@@ -8,6 +8,7 @@ import {
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
     useFeatureFlags,
+    useP2PSettings,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -35,6 +36,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = ui;
     const {
         account_status,
+        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -54,7 +56,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
-    const { data: is_p2p_enabled } = useIsP2PEnabled();
+    const { is_p2p_enabled } = useIsP2PEnabled();
 
     const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
@@ -66,6 +68,17 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const timeout = React.useRef();
     const history = useHistory();
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const {
+        subscribe,
+        rest: { isSubscribed },
+        p2p_settings,
+    } = useP2PSettings();
+
+    React.useEffect(() => {
+        if (is_authorize && !isSubscribed) {
+            subscribe();
+        }
+    }, [is_authorize, p2p_settings, subscribe, isSubscribed]);
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -98,7 +111,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         return () => clearTimeout(timeout.current);
-    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
+    }, [
+        is_appstore,
+        account_status,
+        should_allow_authentication,
+        is_trading_hub_category,
+        is_next_wallet_enabled,
+        is_p2p_enabled,
+    ]);
 
     const toggleDrawer = React.useCallback(() => {
         if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);

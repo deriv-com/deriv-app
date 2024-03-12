@@ -25,7 +25,7 @@ const GetADerivAccountDialog = ({ isOpen, onClose }: TGetADerivAccountDialog) =>
                 <Text weight='bold'>You&apos;ll need a Deriv account</Text>
                 <Text size='sm'>A Deriv account will allow you to fund (and withdraw from) your CFDs account(s).</Text>
                 <ButtonGroup className='justify-end '>
-                    <Button onClick={onClose} variant='outlined'>
+                    <Button color='black' onClick={onClose} variant='outlined'>
                         Cancel
                     </Button>
                     <Button

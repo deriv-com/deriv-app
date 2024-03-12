@@ -113,7 +113,7 @@ export const OnfidoContainer = ({
                     <Formik
                         initialValues={validationSchema.getDefault()}
                         onSubmit={() => {
-                            console.log('Submission triggered');
+                            // [TODO]: Add onSubmit logic
                             setIsOnfidoEnabled(true);
                         }}
                         validateOnMount

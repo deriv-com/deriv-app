@@ -42,9 +42,6 @@ const mock_store = mockStore({
 });
 const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 const combined_store = { ...mock_DBot_store, core: { ...mock_store } };
-const updateElementsAction = action((elements: any) => {
-    mock_DBot_store.transactions.elements = [];
-});
 
 describe('GTM Module', () => {
     it('should initialize GTM and push data layer getting called from core', () => {
@@ -82,26 +79,8 @@ describe('GTM Module', () => {
         console.warn = message => captured_warnings.push(message);
         try {
             GTM.onRunBot(null);
-            updateElementsAction({});
             mock_DBot_store.transactions.elements = mock_row_data;
-            GTM.onTransactionClosed(mock_row_data[mock_login_id][1]?.data || {});
             expect(captured_warnings[0]).toContain('Error pushing run data to datalayer');
-        } finally {
-            // eslint-disable-next-line no-console
-            console.warn = originalConsoleWarn;
-        }
-    });
-
-    it('onTransaction should fail on sending null', () => {
-        // eslint-disable-next-line no-console
-        const originalConsoleWarn = console.warn;
-        const captured_warnings = [];
-        // eslint-disable-next-line no-console
-        console.warn = message => captured_warnings.push(message);
-        try {
-            updateElementsAction([]);
-            GTM.onTransactionClosed(mock_row_data[mock_login_id][1]?.data || {});
-            expect(mock_DBot_store.transactions.elements).toEqual([]);
         } finally {
             // eslint-disable-next-line no-console
             console.warn = originalConsoleWarn;

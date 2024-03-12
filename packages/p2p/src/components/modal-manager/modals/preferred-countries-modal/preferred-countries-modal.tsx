@@ -19,7 +19,7 @@ const PreferredCountriesModal = ({ onApply }: tPreferredCountriesModal) => {
             title={localize('Preferred countries')}
             toggleModal={() => hideModal()}
         >
-            <Modal.Body>
+            <Modal.Body className='preferred-countries-modal__body'>
                 <Formik initialValues={{ search: '' }}>
                     {({ submitForm, values: { search } }) => (
                         <Form>
@@ -42,7 +42,7 @@ const PreferredCountriesModal = ({ onApply }: tPreferredCountriesModal) => {
                     )}
                 </Formik>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className='preferred-countries-modal__footer'>
                 <Button large onClick={hideModal} secondary>
                     <Localize i18n_default_text='Clear' />
                 </Button>

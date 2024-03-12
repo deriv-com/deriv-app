@@ -14,20 +14,24 @@ import AdTypeSectionTrailingIcon from './ad-type-section-trailing-icon';
 type AdTypeSection = {
     action?: string;
     float_rate_offset_limit_string: string;
+    is_form_dirty: boolean;
     rate_type: string;
 };
 
-const AdTypeSection = ({ action = 'add', float_rate_offset_limit_string, rate_type, ...props }: AdTypeSection) => {
+const AdTypeSection = ({
+    action = 'add',
+    float_rate_offset_limit_string,
+    is_form_dirty,
+    rate_type,
+    ...props
+}: AdTypeSection) => {
     const {
         client: { currency, local_currency_config },
     } = useStore();
     const local_currency = local_currency_config.currency;
-    const { buy_sell_store, general_store, my_ads_store, my_profile_store } = useStores();
-    const [selected_methods, setSelectedMethods] = React.useState([]);
+    const { buy_sell_store, general_store, my_ads_store } = useStores();
     const { dirty, errors, handleChange, isValid, setFieldValue, setFieldTouched, touched, values } =
         useFormikContext<FormikValues>();
-    const { payment_method_details, payment_method_names, type } = my_ads_store.p2p_advert_information;
-    const is_buy_advert = type === buy_sell.BUY;
     const is_edit = action === 'edit';
     const is_next_btn_disabled = is_edit ? !isValid : !dirty || !isValid;
     const onChangeAdTypeHandler = (user_input: string) => {
@@ -44,21 +48,7 @@ const AdTypeSection = ({ action = 'add', float_rate_offset_limit_string, rate_ty
 
     const onCancel = () => {
         if (is_edit) {
-            const payment_methods_changed = is_buy_advert
-                ? !(
-                      !!payment_method_names &&
-                      selected_methods?.every(pm => {
-                          const method = my_profile_store.getPaymentMethodDisplayName(pm);
-                          return payment_method_names.includes(method);
-                      }) &&
-                      selected_methods.length === payment_method_names.length
-                  )
-                : !(
-                      !!payment_method_details &&
-                      selected_methods.every(pm => Object.keys(payment_method_details).includes(pm)) &&
-                      selected_methods.length === Object.keys(payment_method_details).length
-                  );
-            if (dirty || payment_methods_changed) {
+            if (dirty || is_form_dirty) {
                 general_store.showModal({
                     key: 'AdCancelModal',
                     props: {

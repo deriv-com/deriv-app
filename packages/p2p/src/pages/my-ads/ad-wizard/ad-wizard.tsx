@@ -16,6 +16,7 @@ type TAdWizardNav = {
 
 const AdWizard = ({ action, float_rate_offset_limit_string, rate_type, steps }: TAdWizardNav) => {
     const [current_step, setCurrentStep] = React.useState(0);
+    const [is_form_dirty, setIsFormDirty] = React.useState(false);
 
     return (
         <Wizard
@@ -63,9 +64,10 @@ const AdWizard = ({ action, float_rate_offset_limit_string, rate_type, steps }: 
             <AdTypeSection
                 action={action}
                 float_rate_offset_limit_string={float_rate_offset_limit_string}
+                is_form_dirty={is_form_dirty}
                 rate_type={rate_type}
             />
-            <AdPaymentDetailsSection />
+            <AdPaymentDetailsSection setIsFormDirty={setIsFormDirty} />
             <AdConditionsSection />
         </Wizard>
     );

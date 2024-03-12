@@ -3,7 +3,6 @@ import { Button } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 type TAdFormControllerProps = {
-    action: string;
     getCurrentStep: () => number;
     getTotalSteps: () => number;
     goToFirstStep: () => void;

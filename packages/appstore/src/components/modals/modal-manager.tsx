@@ -7,12 +7,6 @@ import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-/* 
-Keep it without lazy loading for now, because there are 6 small modals inside of this modal
-Don't need to move the logic to show/hide common modal here
-Need to modify it inside of the cfd package 
-*/
-import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
 
 const RealWalletsUpgrade = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
@@ -81,6 +75,17 @@ const JurisdictionModal = makeLazyLoader(
             () =>
                 import(
                     /* webpackChunkName: "modal_cfd_jurisdiction-modal" */ '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
+const CFDPasswordModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/cfd-password-modal'
                 )
         ),
     () => <Loading />
@@ -184,6 +189,10 @@ const ModalManager = () => {
         is_jurisdiction_modal_visible,
         is_cfd_verification_modal_visible,
         mt5_migration_error,
+        is_mt5_password_invalid_format_modal_visible,
+        is_cfd_password_modal_enabled,
+        is_cfd_success_dialog_enabled,
+        is_sent_email_modal_enabled,
     } = modules.cfd;
     const {
         enableApp,
@@ -267,10 +276,16 @@ const ModalManager = () => {
     getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
     getRealSwapfreeAccountsExistingData(existing_accounts_data('all'));
 
+    const should_show_cfd_password_modal =
+        is_cfd_password_modal_enabled ||
+        is_cfd_success_dialog_enabled ||
+        is_mt5_password_invalid_format_modal_visible ||
+        is_sent_email_modal_enabled;
+
     return (
         <React.Fragment>
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
-            <CFDPasswordModal platform={platform} />
+            {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
             {is_cfd_reset_password_modal_enabled && <CFDResetPasswordModal platform={platform} />}
             {has_cfd_error && <CFDServerErrorDialog />}

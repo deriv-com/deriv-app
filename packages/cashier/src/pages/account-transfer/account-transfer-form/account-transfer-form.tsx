@@ -191,8 +191,8 @@ const AccountTransferForm = observer(
 
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
-        const exchange_rate = (account_currency: string | undefined) =>
-            account_currency != null ? exchange_rates?.USD?.[account_currency] || 1 : 1;
+        const exchange_rate = (account_currency?: string) =>
+            account_currency != undefined ? exchange_rates?.USD?.[account_currency] || 1 : 1;
 
         const history = useHistory();
 

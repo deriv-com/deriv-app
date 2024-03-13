@@ -8,30 +8,23 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
         <AuthProvider>{children}</AuthProvider>
     </APIProvider>
 );
-let mockUseAdvertiserStats = {
-    data: {
+
+const mockProps = {
+    advertiserStats: {
         fullName: 'Jane Doe',
         name: 'Jane',
-        show_name: 0,
+        show_name: 1,
     },
-    isLoading: false,
 };
 
-jest.mock('@/hooks', () => ({
-    ...jest.requireActual('@/hooks'),
-    useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-describe('AdvertiserNameStats', () => {
+describe('AdvertiserName', () => {
     it('should render full name', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                ...mockUseAdvertiserStats.data,
-                show_name: 1,
-            },
-            isLoading: false,
-        };
-        render(<AdvertiserName />, { wrapper });
-        expect(screen.queryByText('Jane Doe')).toBeInTheDocument();
+        render(<AdvertiserName {...mockProps} />, { wrapper });
+        expect(screen.queryByText(/Jane Doe/)).toBeInTheDocument();
     });
 });

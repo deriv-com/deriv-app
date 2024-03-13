@@ -130,6 +130,11 @@ class DBot {
 
                 Blockly.derivWorkspace = this.workspace;
 
+                const varDB = new Blockly.Names('window');
+                varDB.variableMap_ = Blockly.derivWorkspace.getVariableMap();
+
+                Blockly.JavaScript.variableDB_ = varDB;
+
                 this.addBeforeRunFunction(this.unselectBlocks.bind(this));
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
                 this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));

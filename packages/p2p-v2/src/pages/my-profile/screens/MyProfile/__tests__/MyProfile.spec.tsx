@@ -1,20 +1,28 @@
 import React from 'react';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MyProfile from '../MyProfile';
 
-jest.mock('@/components/Verification', () => ({
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
+
+jest.mock('@/components', () => ({
+    ...jest.requireActual('@/components'),
+    ProfileContent: jest.fn(() => <div>ProfileContentScreen</div>),
     Verification: jest.fn(() => <div>Verification</div>),
 }));
+
 jest.mock('@/components/Modals/NicknameModal', () => ({
     NicknameModal: jest.fn(({ isModalOpen }) => {
         if (isModalOpen) return <div>NicknameModal</div>;
         return <></>;
     }),
 }));
-jest.mock('../../MyProfileContent', () => ({
-    MyProfileContent: jest.fn(() => <div>MyProfileContent</div>),
-}));
+
 jest.mock('../../MyProfileStats', () => ({
     MyProfileStats: jest.fn(() => <div>MyProfileStatsScreen</div>),
 }));
@@ -49,6 +57,8 @@ function resetMockedData() {
     mockUseAdvertiserStats = {
         data: {
             fullName: 'Jane Doe',
+            totalOrders: 0,
+            tradePartners: 0,
         },
         failureReason: undefined,
         isLoading: false,
@@ -75,12 +85,16 @@ const mockUseDevice = {
 
 jest.mock('@/hooks', () => ({
     useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
-    useDevice: jest.fn(() => mockUseDevice),
     usePoiPoaStatus: jest.fn(() => mockUsePoiPoaStatus),
     useQueryString: jest.fn(() => ({
         queryString: mockQueryString,
         setQueryString: jest.fn(),
     })),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => mockUseDevice),
 }));
 
 describe('MyProfile', () => {
@@ -91,21 +105,21 @@ describe('MyProfile', () => {
         // @ts-expect-error Clear data to assert loading state
         mockUseAdvertiserStats.data = undefined;
         mockUseAdvertiserStats.isLoading = true;
-        render(<MyProfile />);
+        render(<MyProfile />, { wrapper });
         expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
     it('should render the verification component if user has not completed POI ', () => {
         mockUsePoiPoaStatus.data.isPoaVerified = true;
         mockUsePoiPoaStatus.data.isPoiVerified = false;
 
-        render(<MyProfile />);
+        render(<MyProfile />, { wrapper });
         expect(screen.getByText('Verification')).toBeInTheDocument();
     });
     it('should render the verification component if user has not completed  POA', () => {
         mockUsePoiPoaStatus.data.isPoaVerified = false;
         mockUsePoiPoaStatus.data.isPoiVerified = true;
 
-        render(<MyProfile />);
+        render(<MyProfile />, { wrapper });
         expect(screen.getByText('Verification')).toBeInTheDocument();
     });
     it('should show the nickname modal if user has completed POI or POA for the first time', () => {
@@ -114,11 +128,11 @@ describe('MyProfile', () => {
         // @ts-expect-error Add failureReason to assert nickname modal visible case
         mockUseAdvertiserStats.failureReason = 'Failure';
 
-        render(<MyProfile />);
+        render(<MyProfile />, { wrapper });
         expect(screen.getByText('NicknameModal')).toBeInTheDocument();
     });
     it('should render the tabs and correct screens', () => {
-        render(<MyProfile />);
+        render(<MyProfile />, { wrapper });
         expect(screen.getByText('MyProfileStatsScreen')).toBeInTheDocument();
 
         const paymentMethodsBtn = screen.getByRole('button', {
@@ -130,7 +144,7 @@ describe('MyProfile', () => {
     it('should render the mobile view', () => {
         mockUseDevice.isMobile = true;
 
-        render(<MyProfile />);
+        render(<MyProfile />, { wrapper });
         expect(screen.getByText('MyProfileMobile')).toBeInTheDocument();
     });
 });

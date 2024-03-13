@@ -1,6 +1,7 @@
 import React from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../AuthProvider';
 import { FlowProvider } from '../../../../../components';
 import ManualDocumentUpload from '../ManualDocumentUpload';
 
@@ -12,13 +13,13 @@ describe('<ManualDocumentUpload />', () => {
 
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <FlowProvider initialValues={{}} screens={screens}>
                         {() => {
                             return <ManualDocumentUpload />;
                         }}
                     </FlowProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 

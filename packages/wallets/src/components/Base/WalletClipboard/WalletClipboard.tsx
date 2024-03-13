@@ -8,8 +8,8 @@ import './WalletClipboard.scss';
 
 type TProps = {
     infoMessage?: string;
-    popoverAlignment: 'bottom' | 'left' | 'right' | 'top';
-    successMessage: string;
+    popoverAlignment?: 'bottom' | 'left' | 'right' | 'top';
+    successMessage?: string;
     textCopy: string;
 };
 

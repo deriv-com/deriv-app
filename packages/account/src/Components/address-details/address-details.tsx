@@ -114,11 +114,6 @@ const AddressDetails = observer(
         };
 
         const handleSubmitData = (values: TAddressDetailFormProps, actions: FormikHelpers<TAddressDetailFormProps>) => {
-            if (values.address_state && states_list.length) {
-                values.address_state = address_state_to_display
-                    ? getLocation(states_list, address_state_to_display, 'value')
-                    : getLocation(states_list, values.address_state, 'value');
-            }
             onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
         };
 
@@ -230,14 +225,13 @@ const AddressDetails = observer(
                                                                     type='text'
                                                                     label={localize('State/Province')}
                                                                     list_items={states_list}
-                                                                    onItemSelection={({ value }: TAutoComplete) => {
+                                                                    onItemSelection={({
+                                                                        value,
+                                                                        text,
+                                                                    }: TAutoComplete) => {
                                                                         setFieldValue(
                                                                             'address_state',
-                                                                            value
-                                                                                ? states_list.find(
-                                                                                      state => state?.value === value
-                                                                                  )?.text
-                                                                                : '',
+                                                                            value ? text : '',
                                                                             true
                                                                         );
                                                                         setAddressStateToDisplay('');
@@ -255,14 +249,7 @@ const AddressDetails = observer(
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
                                                                     value={
-                                                                        address_state_to_display ||
-                                                                        (values.address_state
-                                                                            ? states_list.find(
-                                                                                  state =>
-                                                                                      state?.value ===
-                                                                                      values.address_state
-                                                                              )?.text
-                                                                            : '')
+                                                                        address_state_to_display || values.address_state
                                                                     }
                                                                     list_items={states_list}
                                                                     use_text={true}

@@ -598,9 +598,10 @@ type TClientStore = {
     is_bot_allowed: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
-    setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
+    setAccounts: (accounts: Record<string, TActiveAccount>) => void;
     should_show_eu_error: boolean;
     is_options_blocked: boolean;
+    setIsP2PEnabled: (is_p2p_enabled: boolean) => void;
     real_account_signup_form_data: Array<Record<string, unknown>>;
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
@@ -695,6 +696,7 @@ type TUiStore = {
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
     is_unsupported_contract_modal_visible: boolean;
+    isUrlUnavailableModalVisible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
     openRealAccountSignup: (
@@ -748,6 +750,7 @@ type TUiStore = {
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
+    toggleUrlUnavailableModal: (value: boolean) => void;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
@@ -791,7 +794,7 @@ type TUiStore = {
     toggleAccountSuccessModal: () => void;
     setIsMFVericationPendingModal: (value: boolean) => void;
     setMT5MigrationModalEnabled: (value: boolean) => void;
-    toggleMT5MigrationModal: () => void;
+    toggleMT5MigrationModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;

@@ -275,9 +275,6 @@ export const getTimePercentage = (server_time: moment.Moment, start_time: number
     return Math.round(percentage);
 };
 
-export const getTickSizeBarrierPercentage = (tick_size_barrier: number) =>
-    `${(tick_size_barrier * 100 + Number.EPSILON).toFixed(5)}%`;
-
 export const getGrowthRatePercentage = (growth_rate: number) => growth_rate * 100;
 
 export const getDisplayStatus = (contract_info: TContractInfo) => {
@@ -339,8 +336,8 @@ export const clickAndKeyEventHandler = (
 };
 
 export const getSortedTradeTypes = (array: string[] = []) => {
-    if (array.includes(TRADE_TYPES.TURBOS.LONG)) {
-        return [TRADE_TYPES.TURBOS.LONG, ...array.filter(type => type !== TRADE_TYPES.TURBOS.LONG)];
+    if (array.includes(TRADE_TYPES.ACCUMULATOR)) {
+        return [TRADE_TYPES.ACCUMULATOR, ...array.filter(type => type !== TRADE_TYPES.ACCUMULATOR)];
     }
     if (array.includes(TRADE_TYPES.MULTIPLIER)) {
         return [TRADE_TYPES.MULTIPLIER, ...array.filter(type => type !== TRADE_TYPES.MULTIPLIER)];

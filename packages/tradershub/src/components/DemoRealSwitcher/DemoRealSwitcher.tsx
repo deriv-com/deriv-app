@@ -4,7 +4,7 @@ import { useOnClickOutside } from 'usehooks-ts';
 import { DemoRealSwitcherLoader } from '@/components';
 import { useAccountSwitcher, useRegulationFlags } from '@/hooks';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
-import { Button, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 
 const DemoRealSwitcher = () => {
     const { selectedAccount, setSelectedAccount, accountTypes } = useAccountSwitcher();
@@ -27,14 +27,12 @@ const DemoRealSwitcher = () => {
 
     return (
         <div className='relative inline-block w-auto ' ref={ref}>
-            <Button
+            <button
                 className={twMerge(
                     'cursor-pointer w-auto py-2 px-6 border-1 border-solid rounded-xs',
                     value === 'demo' ? 'border-status-light-information' : 'border-status-light-success '
                 )}
                 onClick={toggleDropdown}
-                size='sm'
-                variant='outlined'
             >
                 <div className='flex items-center'>
                     <Text
@@ -54,7 +52,7 @@ const DemoRealSwitcher = () => {
                         )}
                     />
                 </div>
-            </Button>
+            </button>
             {isDropdownOpen && (
                 <div className='absolute z-10 flex flex-col items-center w-full top-28 rounded-xs bg-system-light-primary-background shadow-10'>
                     {accountTypes.map(account => (

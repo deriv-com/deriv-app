@@ -1,14 +1,12 @@
 .mt5-migration-modal {
     &__container {
-        min-height: 42.2rem;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2.4rem;
-        padding: 2.4rem;
+        gap: 1.6rem;
+        margin: 1.6rem 2.4rem;
+
         @include mobile {
-            padding: 2.4rem 1.6rem;
+            margin: 1.6rem;
             justify-content: flex-start;
         }
     }
@@ -37,17 +35,8 @@
         margin: 1.6rem;
         text-align: unset;
     }
-    &__message {
-        padding: 0 3.2rem 3.2rem;
-    }
-    &__description {
-        margin: 3.2rem 2.4rem 0;
-        @include mobile {
-            margin: 1.6rem;
-        }
-    }
+
     &__migration_content {
-        margin: 3.2rem 15rem;
         display: grid;
         grid-template-columns: 1fr;
         grid-gap: 1.6rem;
@@ -94,7 +83,9 @@
     &__migration_infobox {
         display: flex;
         justify-content: center;
-        padding-bottom: 2rem;
+        .dc-hint-box {
+            align-items: flex-start;
+        }
     }
     &__password {
         &-header-container {
@@ -103,10 +94,7 @@
             gap: 0.8rem;
         }
         &-input-container {
-            width: 35.2rem;
-            @include mobile {
-                width: 100%;
-            }
+            width: 100%;
         }
         &-forgot-container {
             display: flex;
@@ -114,6 +102,19 @@
             justify-content: center;
             @include mobile {
                 justify-content: flex-end;
+            }
+        }
+
+        &-hint {
+            &-items {
+                display: flex;
+                flex-direction: column;
+                padding: 1.2rem 2.4rem;
+                list-style-type: disc;
+                gap: 1.2rem;
+                &:first-child {
+                    margin-bottom: 0.8rem;
+                }
             }
         }
     }
@@ -126,6 +127,9 @@
     .dc-modal-header {
         border-bottom: 0.2rem solid var(--general-section-1);
     }
+    .dc-modal-footer {
+        padding: 2.4rem;
+    }
 }
 
 .mt5-migration-modal__mobile-container {
@@ -136,6 +140,7 @@
         position: fixed;
         bottom: 4rem;
         width: 100%;
+        background: var(--general-main-1);
 
         .dc-btn {
             width: 100%;

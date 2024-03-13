@@ -1,10 +1,13 @@
 import React, { ComponentProps } from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import * as Yup from 'yup';
+import { Input } from '@deriv-com/ui';
 import { validateField } from '../../utils/validation';
-import { WalletTextField as TextField } from '../base/WalletTextField';
 
-type FormInputFieldProps = Omit<ComponentProps<typeof TextField>, 'errorMessage' | 'isInvalid' | 'showMessage'> & {
+type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'isFullWidth' | 'label' | 'message' | 'name'> & {
+    isFullWidth?: boolean;
+    label: string;
+    message?: string;
     name: string;
     validationSchema?: Yup.AnySchema;
 };
@@ -17,20 +20,25 @@ type FormInputFieldProps = Omit<ComponentProps<typeof TextField>, 'errorMessage'
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => (
-    <Field name={name} validate={validateField(validationSchema)}>
-        {({ field, meta: { error, touched } }: FieldProps<string>) => (
-            <TextField
-                {...field}
-                {...rest}
-                autoComplete='off'
-                errorMessage={touched && error}
-                isInvalid={touched && !!error}
-                showMessage
-                type='text'
-            />
-        )}
-    </Field>
-);
+export const FormInputField = ({ name, validationSchema, ...rest }: FormInputFieldProps) => {
+    const formik = useFormikContext();
 
-export default FormInputField;
+    if (!formik) {
+        throw new Error('FormInputField must be used within a Formik component');
+    }
+
+    return (
+        <Field name={name} validate={validateField(validationSchema)}>
+            {({ field, meta: { error, touched } }: FieldProps<string>) => (
+                <Input
+                    {...field}
+                    {...rest}
+                    aria-label={rest.label}
+                    autoComplete='off'
+                    error={Boolean(error && touched)}
+                    message={error && touched ? error : rest.message}
+                />
+            )}
+        </Field>
+    );
+};

@@ -1,6 +1,6 @@
 import React, { AnchorHTMLAttributes, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { getStaticUrl } from '@/helpers';
+import { URLUtils } from '@deriv-com/utils';
 
 type StaticLinkProps = {
     children: ReactNode;
@@ -20,7 +20,8 @@ type StaticLinkProps = {
  * @returns {ElementType} The `StaticLink` component.
  */
 const StaticLink = ({ children, className, href, staticUrl, onClick }: StaticLinkProps) => {
-    const link = href ?? (staticUrl && getStaticUrl(staticUrl));
+    const { getDerivStaticURL } = URLUtils;
+    const link = href ?? (staticUrl && getDerivStaticURL(staticUrl));
     const isNewTab = href || staticUrl;
     return (
         <a

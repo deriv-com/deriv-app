@@ -9,7 +9,7 @@ import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/M
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import { localize, Localize } from '@deriv/translations';
-import { clickAndKeyEventHandler, getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
+import { clickAndKeyEventHandler, getGrowthRatePercentage } from '@deriv/shared';
 
 type TAmountWidgetProps = {
     amount: number;
@@ -138,15 +138,15 @@ export const MultiplierOptionsWidget = observer(() => {
 });
 
 export const AccumulatorOptionsWidget = observer(() => {
-    const { growth_rate, has_open_accu_contract, tick_size_barrier } = useTraderStore();
+    const { growth_rate, has_open_accu_contract, tick_size_barrier_percentage } = useTraderStore();
     const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
     const modal_title = localize('Growth rate');
     const tooltip_message = (
         <Localize
-            i18n_default_text='Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.'
+            i18n_default_text='Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier_percentage}} from the previous spot price.'
             values={{
                 growth_rate: getGrowthRatePercentage(growth_rate),
-                tick_size_barrier: getTickSizeBarrierPercentage(tick_size_barrier),
+                tick_size_barrier_percentage,
             }}
         />
     );

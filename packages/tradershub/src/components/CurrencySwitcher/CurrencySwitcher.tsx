@@ -4,9 +4,9 @@ import { CurrencySwitcherLoader, Modal, TradingAccountsList } from '@/components
 import { IconToCurrencyMapper } from '@/constants';
 import { useRegulationFlags } from '@/hooks';
 import { AddOrManageAccount } from '@/modals';
+import { useModal } from '@/providers';
 import { THooks } from '@/types';
-import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api-v2';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
 import { DemoCurrencySwitcherAccountInfo, RealCurrencySwitcherAccountInfo } from './CurrencySwitcherAccountInfo';
@@ -28,6 +28,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 
     return (
         <Button
+            color='black'
             onClick={() => {
                 if (isDemo) {
                     resetVirtualBalance();
@@ -46,7 +47,7 @@ const CurrencySwitcher = () => {
     const [isManageAccountOpen, setIsManageAccountOpen] = useState(false);
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
-    const { show, hide } = Provider.useModal();
+    const { show, hide } = useModal();
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
     const onManageAccountClose = useCallback(() => setIsManageAccountOpen(false), []);
@@ -87,6 +88,7 @@ const CurrencySwitcher = () => {
                                 </Modal.Content>
                                 <Modal.Footer className='grid-cols-1'>
                                     <Button
+                                        color='black'
                                         isFullWidth
                                         onClick={() => {
                                             setIsManageAccountOpen(true);

@@ -1,8 +1,9 @@
 import React, { Fragment, useState } from 'react';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useCFDContext, useModal } from '@/providers';
+import { useActiveTradingAccount } from '@deriv/api-v2';
+import { URLUtils } from '@deriv-com/utils';
 import {
     GetADerivAccountDialog,
     IconComponent,
@@ -10,16 +11,17 @@ import {
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '../../../../../../components';
-import { getStaticUrl } from '../../../../../../helpers/urls';
 import { PlatformDetails } from '../../../../constants';
 import { DxtradePasswordModal } from '../../../../modals/DxtradePasswordModal';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
     <div>
         <IconComponent
             icon='DerivX'
             onClick={() => {
-                window.open(getStaticUrl('/derivx'));
+                window.open(getDerivStaticURL('/derivx'));
             }}
         />
     </div>
@@ -27,8 +29,8 @@ const LeadingIcon = () => (
 
 const AvailableDxtradeAccountsList = () => {
     const { hasActiveDerivAccount } = useRegulationFlags();
-    const { show } = Provider.useModal();
-    const { setCfdState } = Provider.useCFDContext();
+    const { show } = useModal();
+    const { setCfdState } = useCFDContext();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
     const [isDerivedAccountModalOpen, setIsDerivedAccountModalOpen] = useState(false);
@@ -38,7 +40,7 @@ const AvailableDxtradeAccountsList = () => {
     const title = getCfdsAccountTitle(PlatformDetails.dxtrade.title, activeTradingAccount?.is_virtual);
 
     const trailingButtonClick = () => {
-        setCfdState('platform', PlatformDetails.dxtrade.platform);
+        setCfdState({ platform: PlatformDetails.dxtrade.platform });
         if (!hasActiveDerivAccount) {
             setIsDerivedAccountModalOpen(true);
         } else {

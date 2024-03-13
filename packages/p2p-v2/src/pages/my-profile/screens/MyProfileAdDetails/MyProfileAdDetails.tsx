@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FullPageMobileWrapper, TextArea } from '@/components';
 import { useDevice, useQueryString } from '@/hooks';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Button, Loader } from '@deriv-com/ui';
 import './MyProfileAdDetails.scss';
 

@@ -18,9 +18,9 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
-    - name: Invalidate NPM Cache
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-      uses: "./.github/actions/invalidate_npm_cache"
+    # - name: Invalidate NPM Cache
+    #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    #   uses: "./.github/actions/invalidate_npm_cache"
     - name: Build
       run: npm run build:all
     - name: Install Playwright Browsers

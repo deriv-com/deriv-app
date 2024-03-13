@@ -1,14 +1,13 @@
 import React from 'react';
-import { useUIContext } from '@/components';
 import { useRegulationSwitcher } from '@/hooks';
 import { RegulationModal } from '@/modals';
-import { Provider } from '@deriv/library';
+import { useModal, useUIContext } from '@/providers';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import { Tab, Tabs, Text } from '@deriv-com/ui';
 
 const RegulationSwitcherDesktop = () => {
     const { uiState } = useUIContext();
-    const { show } = Provider.useModal();
+    const { show } = useModal();
     const { buttons, handleButtonClick } = useRegulationSwitcher();
     const activeRegulation = uiState.regulation;
 

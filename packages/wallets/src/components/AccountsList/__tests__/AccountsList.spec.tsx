@@ -1,6 +1,7 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../AuthProvider';
 import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import WalletMobileTourGuide from '../../WalletTourGuide/WalletMobileTourGuide';
@@ -32,9 +33,9 @@ jest.mock(
 
 const wrapper = ({ children }: PropsWithChildren) => (
     <APIProvider>
-        <AuthProvider>
+        <WalletsAuthProvider>
             <ModalProvider>{children}</ModalProvider>
-        </AuthProvider>
+        </WalletsAuthProvider>
     </APIProvider>
 );
 

@@ -2,7 +2,7 @@ import React, { useCallback, useReducer } from 'react';
 import { TSelectedPaymentMethod } from 'types';
 import { PaymentMethodForm } from '@/components';
 import { advertiserPaymentMethodsReducer } from '@/reducers';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { PaymentMethodsEmpty } from './PaymentMethodsEmpty';
 import { PaymentMethodsList } from './PaymentMethodsList';

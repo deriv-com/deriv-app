@@ -1,6 +1,5 @@
 import type { Config } from 'tailwindcss';
 const plugin = require('tailwindcss/plugin');
-import QuillTailwindConfig from '@deriv/quill-design/quill-tailwind/tailwind.config.cjs';
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
@@ -13,7 +12,6 @@ export default {
             });
         }),
     ],
-    presets: [QuillTailwindConfig],
     theme: {
         extend: {
             borderRadius: {
@@ -68,6 +66,7 @@ export default {
                         '8': '#323738',
                     },
                     red: {
+                        '0': '#ff444f',
                         '5': '#eb3e48',
                     },
                     green: {
@@ -141,6 +140,25 @@ export default {
                 lg: { min: '1280px' },
                 xl: { min: '1440px' },
             },
+            opacity: {
+                0: '0',
+                4: '0.04',
+                8: '0.08',
+                16: '0.16',
+                24: '0.24',
+                32: '0.32',
+                40: '0.4',
+                48: '0.48',
+                56: '0.56',
+                64: '0.64',
+                72: '0.72',
+                80: '0.8',
+                88: '0.88',
+                96: '0.96',
+                100: '1',
+                overlay: '0.72',
+                disabled: ' 0.32',
+            },
             spacing: {
                 0: '0px',
                 1: '1px',
@@ -179,6 +197,26 @@ export default {
                 56: '56px',
                 58: '58px',
                 60: '60px',
+                62: '62px',
+                64: '64px',
+                66: '66px',
+                68: '68px',
+                70: '70px',
+                72: '72px',
+                74: '74px',
+                76: '76px',
+                78: '78px',
+                80: '80px',
+                82: '82px',
+                84: '84px',
+                86: '86px',
+                88: '88px',
+                90: '90px',
+                92: '92px',
+                94: '94px',
+                96: '96px',
+                98: '98px',
+                100: '100px',
             },
         },
     },

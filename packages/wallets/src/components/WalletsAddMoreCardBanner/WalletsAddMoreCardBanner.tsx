@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet, useDerivAccountsList } from '@deriv/api-v2';
+import { useCreateWallet } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
 import { THooks } from '../../types';
@@ -21,7 +22,8 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     is_crypto: isCrypto,
     landing_company_name: landingCompanyName,
 }: TProps) => {
-    const { switchAccount } = useDerivAccountsList();
+    const switchWalletAccount = useWalletAccountSwitcher();
+
     const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
@@ -43,9 +45,9 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     useEffect(() => {
         if (data && isMutateSuccess) {
             addWalletAccountToLocalStorage(data);
-            switchAccount(data?.client_id);
+            switchWalletAccount(data?.client_id);
         }
-    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchAccount]);
+    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchWalletAccount]);
 
     useEffect(
         () => {

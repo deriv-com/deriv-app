@@ -1,6 +1,7 @@
 import React from 'react';
-import { APIProvider, AuthProvider, useBalance } from '@deriv/api-v2';
+import { APIProvider, useBalance } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../AuthProvider';
 import WalletListCardBalance from '../WalletListCardBalance';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -19,7 +20,7 @@ jest.mock('@deriv/api-v2', () => ({
 describe('WalletListCardBalance', () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
         <APIProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <WalletsAuthProvider>{children}</WalletsAuthProvider>
         </APIProvider>
     );
 

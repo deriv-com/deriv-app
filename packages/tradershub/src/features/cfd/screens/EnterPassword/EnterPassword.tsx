@@ -3,7 +3,7 @@ import { useRegulationFlags } from '@/hooks';
 import { TMarketTypes, TPlatforms } from '@/types';
 import { validPassword } from '@/utils';
 import { MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Button, PasswordInput, Text, useDevice } from '@deriv-com/ui';
 
 type TEnterPasswordProps = {
@@ -62,7 +62,7 @@ const EnterPassword = ({
             </div>
             {isDesktop && (
                 <div className='flex items-center justify-end w-full gap-8 pt-24'>
-                    <Button onClick={onSecondaryClick} size='lg' variant='outlined'>
+                    <Button color='black' onClick={onSecondaryClick} size='lg' variant='outlined'>
                         Forgot password?
                     </Button>
                     <Button

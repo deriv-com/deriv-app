@@ -25,23 +25,23 @@
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
         "deep-diff": "^1.0.2",
-        "typescript": "^4.6.3",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
         "eslint-config-prettier": "^7.2.0",
         "eslint-plugin-import": "^2.23.4",
         "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-react": "^7.22.0",
-        "eslint-plugin-react-hooks": "^4.2.0"
+        "eslint-plugin-react-hooks": "^4.2.0",
+        "typescript": "^4.6.3"
     },
     "dependencies": {
+        "blockly": "3.20191014.4",
         "@deriv/deriv-api": "^1.0.15",
         "@deriv/indicators": "^1.0.0",
         "@deriv/js-interpreter": "^3.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "binary-utils": "^4.23.0",
-        "blockly": "3.20191014.4",
         "file-saver": "^2.0.2",
         "immutable": "^3.8.2",
         "localforage": "^1.9.0",
@@ -50,7 +50,7 @@
         "mobx-react": "^7.5.1",
         "redux": "^4.0.1",
         "redux-thunk": "^2.2.0",
-        "scratch-blocks": "0.1.0-prerelease.20200917235131",
+        "scratch-blocks": "^1.0.7",
         "shx": "^0.3.2"
     }
 }

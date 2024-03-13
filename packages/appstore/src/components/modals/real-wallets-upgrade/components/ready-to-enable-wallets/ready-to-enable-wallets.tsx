@@ -14,27 +14,20 @@ const ReadyToEnableWallets = observer(({ value, toggleCheckbox }: TReadyToEnable
     const { ui } = useStore();
     const { is_mobile } = ui;
 
-    const text_body_size = is_mobile ? 'xs' : 's';
-    const text_info_size = is_mobile ? 'xxs' : 'xs';
-    const form_line_height = is_mobile ? 'm' : 'l';
-
     return (
         <div className='wallet-steps__content'>
-            <WalletsImage
-                image={`ready_to_enable_wallets_${is_mobile ? 'mobile' : 'desktop'}`}
-                className='wallet-steps__image'
-            />
+            <WalletsImage image={`ready_to_enable_wallets_${is_mobile ? 'mobile' : 'desktop'}`} />
             <div className='wallet-steps__text'>
-                <Text size={is_mobile ? 'xsm' : 'l'} align='center' weight='bold' line_height={form_line_height}>
+                <Text size={is_mobile ? 'xsm' : 'l'} align='center' weight='bold' line_height={is_mobile ? 'm' : 'xs'}>
                     <Localize i18n_default_text='Ready to enable Wallets' />
                 </Text>
-                <Text size={text_body_size} align='center' line_height={form_line_height}>
+                <Text size={is_mobile ? 'xs' : 's'} align='center' line_height='m'>
                     <Localize i18n_default_text='Wallets will become your dedicated fund management tool, allowing you to transfer funds between Wallets and trading accounts instantly.' />
                 </Text>
             </div>
             <div className='wallet-steps__info-section'>
                 <Icon className='wallet-steps__info-section-icon' icon='ic-info-blue' size={16} />
-                <Text size={text_info_size} line_height={form_line_height}>
+                <Text size={is_mobile ? 'xxs' : 'xs'} line_height='m'>
                     <Localize i18n_default_text='Your open trading positions will not be affected while we are setting up your wallets.' />
                 </Text>
             </div>

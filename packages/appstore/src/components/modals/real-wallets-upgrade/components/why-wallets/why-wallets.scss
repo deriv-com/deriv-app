@@ -6,7 +6,10 @@
     }
 
     &__title {
-        padding-top: 2rem;
+        margin-top: 3.2rem;
+        @include mobile {
+            margin-top: 4rem;
+        }
     }
 
     &__image-container {

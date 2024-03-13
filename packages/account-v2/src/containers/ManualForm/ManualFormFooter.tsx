@@ -13,14 +13,14 @@ const footerItems = [
 ];
 
 export const ManualFormFooter = () => (
-    <div className='grid grid-cols-2 mb-24 justify-items-center items-center gap-24 lg:flex lg:justify-evenly'>
+    <ul className='grid grid-cols-2 mb-24 justify-items-center items-center gap-24 lg:flex lg:justify-evenly'>
         {footerItems.map(footer => (
-            <div className='w-[12.4rem] flex flex-col justify-start items-center' key={footer.text}>
+            <li className='w-[12.4rem] flex flex-col justify-start items-center' key={footer.text}>
                 <div className='flex justify-center items-center w-72 h-72'>{footer.icon}</div>
                 <Text align='center' size='2xs'>
                     {footer.text}
                 </Text>
-            </div>
+            </li>
         ))}
-    </div>
+    </ul>
 );

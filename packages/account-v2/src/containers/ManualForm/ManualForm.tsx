@@ -3,7 +3,7 @@ import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
 import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getManualFormValidationSchema, setInitialValues } from '../../utils/manualFormUtils';
+import { getManualFormValidationSchema } from '../../utils/manualFormUtils';
 import { ManualFormDocumentUpload } from './ManualFormDocumentUpload';
 import { ManualFormFooter } from './ManualFormFooter';
 import { ManualFormInputs } from './ManualFormInputs';
@@ -28,11 +28,13 @@ export const ManualForm = ({
     const validationSchema = getManualFormValidationSchema(selectedDocument, isExpiryDateRequired);
 
     const initialValues = useMemo(() => {
-        const defaultValues = setInitialValues(Object.keys(validationSchema.fields));
+        const defaultValues = validationSchema.getDefault();
         const formValues = { ...defaultValues, ...formData };
-        delete formValues[MANUAL_DOCUMENT_SELFIE];
+        if (MANUAL_DOCUMENT_SELFIE in formValues) {
+            delete formValues[MANUAL_DOCUMENT_SELFIE];
+        }
         return formValues;
-    }, [formData, validationSchema.fields]);
+    }, [formData, validationSchema]);
 
     return (
         <Formik

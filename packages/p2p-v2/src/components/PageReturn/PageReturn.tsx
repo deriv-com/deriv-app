@@ -10,6 +10,7 @@ type TPageReturnProps = {
     onClick: () => void;
     pageTitle: string;
     rightPlaceHolder?: JSX.Element;
+    shouldHideBackButton?: boolean;
     weight?: string;
 };
 
@@ -19,13 +20,14 @@ const PageReturn = ({
     onClick,
     pageTitle,
     rightPlaceHolder,
+    shouldHideBackButton = false,
     weight = 'normal',
 }: TPageReturnProps) => {
     return (
         <div className={clsx('p2p-v2-page-return', className, { 'p2p-v2-page-return--border': hasBorder })}>
             <div className='flex items-center'>
                 <LabelPairedArrowLeftLgBoldIcon
-                    className='p2p-v2-page-return__button'
+                    className={clsx('p2p-v2-page-return__button', { hidden: shouldHideBackButton })}
                     data-testid='dt_p2p_v2_page_return_btn'
                     onClick={onClick}
                 />

@@ -1,0 +1,13 @@
+.p2p-v2-orders-table-row {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 1.5fr;
+    &--inactive {
+        grid-template-columns: 2fr 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 2fr;
+        gap: 1rem;
+    }
+
+    &__timer {
+        border: 1px solid #d6dadb;
+    }
+}

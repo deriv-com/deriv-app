@@ -23,8 +23,8 @@ const CompareAccountsCard = ({ isAccountAdded, marketType, platform, shortCode }
             <div className='w-[180px] lg:w-[270px] relative overflow-hidden rounded-[24px] my-0 mx-10 border-solid border-1 border-system-light-hover-background hover:shadow-7 text-center flex flex-col justify-between h-full'>
                 <CompareAccountsPlatformLabel platform={platform} />
                 {platform === CFDPlatforms.CTRADER && (
-                    <div className='p-1 lg:p-[15px] absolute z-10 flex items-center justify-center w-[150px] h-20 bg-brand-orange text-system-light-primary-background translate-x-8 -translate-y-20 rotate-45 lg:translate-x-[170px] transform'>
-                        <Text className='text-system-light-primary-background' size='sm' weight='bold'>
+                    <div className='p-1 lg:p-12 absolute z-10 flex items-center justify-center w-[150px] h-20 bg-brand-orange text-system-light-primary-background translate-x-[85px] translate-y-12 rotate-45 lg:translate-x-[170px] transform'>
+                        <Text className='text-sm text-system-light-primary-background' weight='bold'>
                             New!
                         </Text>
                     </div>

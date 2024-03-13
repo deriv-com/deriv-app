@@ -1,0 +1,11 @@
+@import '../skeletonLoader.scss';
+
+.cashier-button-skeleton-loader {
+    display: none;
+    height: 2.4rem;
+    border-radius: $BORDER_RADIUS;
+    width: 5.9rem;
+    @include mobile {
+        display: block;
+    }
+}

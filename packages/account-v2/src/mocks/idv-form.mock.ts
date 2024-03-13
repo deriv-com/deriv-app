@@ -1,6 +1,6 @@
 import { useResidenceList } from '@deriv/api-v2';
 
-export const DOCUMENT_LIST = [
+export const mockDocumentList = [
     {
         id: 'aadhaar',
         text: 'Aadhaar Card',
@@ -43,7 +43,7 @@ export const DOCUMENT_LIST = [
     },
 ];
 
-export const SELECTED_COUNTRY: Exclude<
+export const selectedCountry: Exclude<
     NonNullable<NonNullable<ReturnType<typeof useResidenceList>['data'][0]['identity']>['services']>['idv'],
     undefined
 > = {
@@ -81,7 +81,7 @@ export const SELECTED_COUNTRY: Exclude<
     is_country_supported: 1,
 };
 
-export const INITIAL_VALUES = {
+export const initialValues = {
     document_type: '',
     document_number: '',
     document_additional: '',

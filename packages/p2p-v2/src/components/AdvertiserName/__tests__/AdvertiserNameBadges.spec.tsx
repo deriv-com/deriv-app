@@ -8,7 +8,7 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
         <AuthProvider>{children}</AuthProvider>
     </APIProvider>
 );
-let mockUseAdvertiserStats = {
+const mockUseAdvertiserStats = {
     data: {
         isAddressVerified: false,
         isIdentityVerified: false,
@@ -22,54 +22,45 @@ jest.mock('../../../hooks', () => ({
     useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
 }));
 
+const mockProps = {
+    advertiserStats: {
+        isAddressVerified: false,
+        isIdentityVerified: false,
+        totalOrders: 20,
+    },
+};
+
 describe('AdvertiserNameBadges', () => {
     it('should render not verified badges', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                isAddressVerified: false,
-                isIdentityVerified: false,
-                totalOrders: 20,
-            },
-            isLoading: false,
-        };
-        render(<AdvertiserNameBadges />, { wrapper });
+        render(<AdvertiserNameBadges {...mockProps} />, { wrapper });
         expect(screen.queryAllByText('not verified')).toHaveLength(2);
     });
     it('should render verified badges', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                isAddressVerified: true,
-                isIdentityVerified: true,
-                totalOrders: 20,
-            },
-            isLoading: false,
+        mockProps.advertiserStats = {
+            isAddressVerified: true,
+            isIdentityVerified: true,
+            totalOrders: 20,
         };
-        render(<AdvertiserNameBadges />, { wrapper });
+        render(<AdvertiserNameBadges {...mockProps} />, { wrapper });
         expect(screen.queryAllByText('verified')).toHaveLength(2);
     });
     it('should render verified/not verified badges', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                isAddressVerified: true,
-                isIdentityVerified: false,
-                totalOrders: 20,
-            },
-            isLoading: false,
+        mockProps.advertiserStats = {
+            isAddressVerified: true,
+            isIdentityVerified: false,
+            totalOrders: 20,
         };
-        render(<AdvertiserNameBadges />, { wrapper });
+        render(<AdvertiserNameBadges {...mockProps} />, { wrapper });
         expect(screen.getByText('verified')).toBeInTheDocument();
         expect(screen.getByText('not verified')).toBeInTheDocument();
     });
     it('should render trade badge with 100+ orders', () => {
-        mockUseAdvertiserStats = {
-            data: {
-                isAddressVerified: true,
-                isIdentityVerified: false,
-                totalOrders: 200,
-            },
-            isLoading: false,
+        mockProps.advertiserStats = {
+            isAddressVerified: true,
+            isIdentityVerified: true,
+            totalOrders: 100,
         };
-        render(<AdvertiserNameBadges />, { wrapper });
+        render(<AdvertiserNameBadges {...mockProps} />, { wrapper });
         expect(screen.getByText('100+')).toBeInTheDocument();
     });
 });

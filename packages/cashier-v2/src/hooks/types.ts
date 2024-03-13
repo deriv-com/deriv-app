@@ -35,8 +35,4 @@ export namespace TMarketTypes {
     export type SortedMT5Accounts = Exclude<THooks.SortedMT5Accounts['market_type'], undefined>;
 }
 
-export type TWalletLandingCompanyName =
-    | Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'>
-    | 'virtual';
-
 export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];

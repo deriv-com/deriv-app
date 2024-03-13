@@ -2,6 +2,7 @@ export * from './AdErrorTooltipModal';
 export * from './AvailableP2PBalanceModal';
 export * from './BlockUnblockUserModal';
 export * from './DailyLimitModal';
+export * from './EmailVerificationModal';
 export * from './FilterModal';
 export * from './MyAdsDeleteModal';
 export * from './NicknameModal';

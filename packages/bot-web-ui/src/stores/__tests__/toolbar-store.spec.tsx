@@ -69,9 +69,7 @@ describe('ToolbarStore', () => {
     });
 
     it('should show dialog onResetOkButtonClick while bot is running', () => {
-        if (mock_DBot_store) {
-            mock_DBot_store.run_panel.is_running = true;
-        }
+        mock_DBot_store.run_panel.setIsRunning(true);
         toolbarStore.onResetOkButtonClick();
         expect(toolbarStore.is_reset_button_clicked).toBe(true);
     });

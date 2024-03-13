@@ -92,7 +92,7 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                 />
             </>
         );
-    }, [currency_config.display_code, last_transaction, setIsTransactionsCryptoVisible]);
+    }, [currency_config?.display_code, last_transaction, setIsTransactionsCryptoVisible]);
 
     const LoadingState = useCallback(() => <Loading is_fullscreen={false} />, []);
 

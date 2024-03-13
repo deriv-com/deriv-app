@@ -13,6 +13,7 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class MyAdsStore extends BaseStore {
     advert_details = null;
     adverts = [];
+    adverts_archive_period = null;
     api_error = '';
     api_error_message = '';
     current_method = { key: null, is_deleted: false };
@@ -25,6 +26,7 @@ export default class MyAdsStore extends BaseStore {
     is_form_loading = false;
     is_table_loading = false;
     is_loading = false;
+    maximum_order_amount = 0;
     p2p_advert_information = {};
     show_ad_form = false;
     selected_ad_id = '';
@@ -43,6 +45,7 @@ export default class MyAdsStore extends BaseStore {
         makeObservable(this, {
             advert_details: observable,
             adverts: observable,
+            adverts_archive_period: observable,
             api_error: observable,
             api_error_message: observable,
             current_method: observable,
@@ -55,6 +58,7 @@ export default class MyAdsStore extends BaseStore {
             is_form_loading: observable,
             is_table_loading: observable,
             is_loading: observable,
+            maximum_order_amount: observable,
             p2p_advert_information: observable,
             selected_ad_id: observable,
             should_show_add_payment_method: observable,
@@ -65,6 +69,7 @@ export default class MyAdsStore extends BaseStore {
             selected_ad_type: computed,
             getAccountStatus: action.bound,
             getAdvertInfo: action.bound,
+            getWebsiteStatus: action.bound,
             handleSubmit: action.bound,
             hideQuickAddModal: action.bound,
             onClickActivateDeactivate: action.bound,
@@ -79,6 +84,7 @@ export default class MyAdsStore extends BaseStore {
             showQuickAddModal: action.bound,
             setAdvertDetails: action.bound,
             setAdverts: action.bound,
+            setAdvertsArchivePeriod: action.bound,
             setApiError: action.bound,
             setApiErrorMessage: action.bound,
             setApiErrorCode: action.bound,
@@ -92,6 +98,7 @@ export default class MyAdsStore extends BaseStore {
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
             setIsTableLoading: action.bound,
+            setMaximumOrderAmount: action.bound,
             setP2pAdvertInformation: action.bound,
             setSelectedAdId: action.bound,
             setShouldShowAddPaymentMethod: action.bound,
@@ -155,6 +162,19 @@ export default class MyAdsStore extends BaseStore {
             .finally(() => this.setIsFormLoading(false));
     }
 
+    getWebsiteStatus(createAd = () => {}, setSubmitting) {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response.error) {
+                this.setApiErrorMessage(response.error.message);
+                setSubmitting(false);
+            } else {
+                const { p2p_config } = response.website_status;
+                this.setAdvertsArchivePeriod(p2p_config.adverts_archive_period);
+                createAd();
+            }
+        });
+    }
+
     handleSubmit(values, { setSubmitting }) {
         this.setApiErrorMessage('');
 
@@ -168,7 +188,7 @@ export default class MyAdsStore extends BaseStore {
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             order_expiry_period: values.order_completion_time,
-            rate_type: values.rate_type_string,
+            rate_type: this.root_store.floating_rate_store.rate_type,
             rate: Number(values.rate_type),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
@@ -186,37 +206,45 @@ export default class MyAdsStore extends BaseStore {
             create_advert.description = values.default_advert_description;
         }
 
-        requestWS(create_advert).then(response => {
-            // If we get an error we should let the user submit the form again else we just go back to the list of ads
-            if (response) {
-                if (response.error) {
-                    this.setApiErrorCode(response.error.code);
-                    this.setApiErrorMessage(response.error.message);
-                    setSubmitting(false);
-                } else if (should_not_show_auto_archive_message !== 'true') {
-                    this.setAdvertDetails(response.p2p_advert_create);
-                    this.setIsAdCreatedModalVisible(true);
-                } else if (!this.is_ad_created_modal_visible) {
-                    if (!response.p2p_advert_create.is_visible) {
+        const createAd = () => {
+            requestWS(create_advert).then(response => {
+                // If we get an error we should let the user submit the form again else we just go back to the list of ads
+                if (response) {
+                    if (response.error) {
+                        this.setApiErrorCode(response.error.code);
+                        this.setApiErrorMessage(response.error.message);
+                        setSubmitting(false);
+                    } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
                         this.setAdvertDetails(response.p2p_advert_create);
+                        this.setIsAdCreatedModalVisible(true);
+                    } else if (!this.is_ad_created_modal_visible) {
+                        if (!response.p2p_advert_create.is_visible) {
+                            this.setAdvertDetails(response.p2p_advert_create);
+                        }
+                        if (this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_BALANCE)) {
+                            this.root_store.general_store.showModal({
+                                key: 'AdVisibilityErrorModal',
+                                props: { error_code: api_error_codes.AD_EXCEEDS_BALANCE },
+                            });
+                        } else if (
+                            this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_DAILY_LIMIT)
+                        ) {
+                            this.root_store.general_store.showModal({
+                                key: 'AdVisibilityErrorModal',
+                                props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
+                            });
+                        }
+                        this.setShowAdForm(false);
                     }
-                    if (this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_BALANCE)) {
-                        this.root_store.general_store.showModal({
-                            key: 'AdVisibilityErrorModal',
-                            props: { error_code: api_error_codes.AD_EXCEEDS_BALANCE },
-                        });
-                    } else if (
-                        this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_DAILY_LIMIT)
-                    ) {
-                        this.root_store.general_store.showModal({
-                            key: 'AdVisibilityErrorModal',
-                            props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
-                        });
-                    }
-                    this.setShowAdForm(false);
                 }
-            }
-        });
+            });
+        };
+
+        if (should_not_show_auto_archive_message !== 'true') {
+            this.getWebsiteStatus(createAd, setSubmitting);
+        } else {
+            createAd();
+        }
     }
 
     hideQuickAddModal() {
@@ -318,7 +346,7 @@ export default class MyAdsStore extends BaseStore {
         if (values.description) {
             update_advert.description = values.description;
         }
-        if (values.reached_target_date) {
+        if (this.root_store.floating_rate_store.reached_target_date) {
             update_advert.is_active = values.is_active;
         }
 
@@ -373,7 +401,7 @@ export default class MyAdsStore extends BaseStore {
             this.setIsTableLoading(true);
             this.setApiErrorMessage('');
         }
-        const { general_store } = this.root_store;
+        const { floating_rate_store, general_store } = this.root_store;
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_adverts: 1,
@@ -386,6 +414,18 @@ export default class MyAdsStore extends BaseStore {
                     const adverts_list = is_first_page ? list : [...this.adverts, ...list];
                     this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
                     this.setAdverts(adverts_list);
+                    if (!floating_rate_store.change_ad_alert) {
+                        let should_update_ads = false;
+                        if (floating_rate_store.rate_type === ad_type.FLOAT) {
+                            // Check if there are any Fixed rate ads
+                            should_update_ads = list.some(ad => ad.rate_type === ad_type.FIXED);
+                            floating_rate_store.setChangeAdAlert(should_update_ads);
+                        } else if (floating_rate_store.rate_type === ad_type.FIXED) {
+                            // Check if there are any Float rate ads
+                            should_update_ads = list.some(ad => ad.rate_type === ad_type.FLOAT);
+                            floating_rate_store.setChangeAdAlert(should_update_ads);
+                        }
+                    }
                 } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                     general_store.setIsBlocked(true);
                 } else if (response.error.code !== api_error_codes.ADVERTISER_NOT_REGISTERED) {
@@ -430,6 +470,10 @@ export default class MyAdsStore extends BaseStore {
 
     setAdverts(adverts) {
         this.adverts = adverts;
+    }
+
+    setAdvertsArchivePeriod(adverts_archive_period) {
+        this.adverts_archive_period = adverts_archive_period;
     }
 
     setApiError(api_error) {
@@ -484,6 +528,10 @@ export default class MyAdsStore extends BaseStore {
         this.is_table_loading = is_table_loading;
     }
 
+    setMaximumOrderAmount(maximum_order_amount) {
+        this.maximum_order_amount = maximum_order_amount;
+    }
+
     setP2pAdvertInformation(p2p_advert_information) {
         this.p2p_advert_information = p2p_advert_information;
     }
@@ -514,7 +562,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     validateCreateAdForm(values) {
-        const { general_store } = this.root_store;
+        const { general_store, floating_rate_store } = this.root_store;
         const validations = {
             default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
@@ -551,15 +599,15 @@ export default class MyAdsStore extends BaseStore {
                 v => !!v,
                 v => !isNaN(v),
                 v =>
-                    values.rate_type_string === ad_type.FIXED
+                    floating_rate_store.rate_type === ad_type.FIXED
                         ? v > 0 &&
                           decimalValidator(v) &&
                           countDecimalPlaces(v) <=
                               general_store.external_stores.client.local_currency_config.decimal_places
                         : true,
                 v =>
-                    values.rate_type_string === ad_type.FLOAT
-                        ? rangeValidator(parseFloat(v), values.float_rate_offset_limit)
+                    floating_rate_store.rate_type === ad_type.FLOAT
+                        ? rangeValidator(parseFloat(v), parseFloat(floating_rate_store.float_rate_offset_limit))
                         : true,
             ],
         };
@@ -575,7 +623,8 @@ export default class MyAdsStore extends BaseStore {
             min_transaction: localize('Min limit'),
             offer_amount: localize('Amount'),
             payment_info: localize('Payment instructions'),
-            rate_type: values.rate_type_string === ad_type.FLOAT ? localize('Floating rate') : localize('Fixed rate'),
+            rate_type:
+                floating_rate_store.rate_type === ad_type.FLOAT ? localize('Floating rate') : localize('Fixed rate'),
         };
 
         const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
@@ -626,7 +675,7 @@ export default class MyAdsStore extends BaseStore {
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
             localize("Enter a value that's within -{{limit}}% to +{{limit}}%", {
-                limit: values.float_rate_offset_limit,
+                limit: floating_rate_store.float_rate_offset_limit,
             }),
         ];
 
@@ -664,7 +713,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     validateEditAdForm(values) {
-        const { general_store } = this.root_store;
+        const { general_store, floating_rate_store } = this.root_store;
         const validations = {
             description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
@@ -699,7 +748,7 @@ export default class MyAdsStore extends BaseStore {
                         : true,
                 v =>
                     this.required_ad_type === ad_type.FLOAT
-                        ? rangeValidator(parseFloat(v), parseFloat(values.float_rate_offset_limit))
+                        ? rangeValidator(parseFloat(v), parseFloat(floating_rate_store.float_rate_offset_limit))
                         : true,
             ],
         };
@@ -757,7 +806,7 @@ export default class MyAdsStore extends BaseStore {
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
             localize("Enter a value that's within -{{limit}}% to +{{limit}}%", {
-                limit: values.float_rate_offset_limit,
+                limit: floating_rate_store.float_rate_offset_limit,
             }),
         ];
 

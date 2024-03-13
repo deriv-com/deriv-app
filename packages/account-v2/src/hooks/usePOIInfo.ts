@@ -1,4 +1,5 @@
 import { useKycAuthStatus } from '@deriv/api-v2';
+import { POI_SERVICE } from '../constants/constants';
 
 type TPOIInfoPayload = Parameters<typeof useKycAuthStatus>[0];
 
@@ -17,14 +18,14 @@ export const usePOIInfo = (payload: TPOIInfoPayload) => {
 
     if (
         payload?.country === 'ng' &&
-        !identity.available_services?.includes('idv') &&
-        identity.available_services?.includes('onfido')
+        !identity.available_services?.includes(POI_SERVICE.idv) &&
+        identity.available_services?.includes(POI_SERVICE.onfido)
     ) {
         return {
             isLoading,
             kycAuthStatus: {
                 ...kycAuthStatus,
-                identity: { ...identity, available_services: ['manual', 'onfido'] },
+                identity: { ...identity, available_services: [POI_SERVICE.manual, POI_SERVICE.onfido] },
             },
             ...rest,
         };

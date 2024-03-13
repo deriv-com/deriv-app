@@ -161,6 +161,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                             className={classNames('contract-drawer__mobile-wrapper', {
                                 'contract-drawer__mobile-wrapper--is-multiplier': is_mobile && is_multiplier,
                             })}
+                            data-testid='dt_contract-drawer__mobile-wrapper'
                         >
                             {contract_drawer_el}
                         </div>
@@ -171,6 +172,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                 'replay-chart__container--is-multiplier': is_mobile && is_multiplier,
                                 'vanilla-trade-chart': is_vanilla,
                             })}
+                            data-testid='dt_replay-chart__container'
                         >
                             <DesktopWrapper>
                                 <NotificationMessages />
@@ -188,6 +190,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                     <React.Fragment>
                                         <InfoBoxWidget />
                                         <SwipeableWrapper
+                                            data-testid='dt_replay-chart__swipeable-wrapper'
                                             className='replay-chart__container-swipeable-wrapper'
                                             is_swipe_disabled={swipe_index === 1}
                                             onChange={

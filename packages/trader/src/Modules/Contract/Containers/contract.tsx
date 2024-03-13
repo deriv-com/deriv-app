@@ -47,6 +47,7 @@ const Contract = observer(({ match, history }: TContract) => {
                     }
                     redirectOnClick={() => history.push(routes.trade)}
                     should_show_refresh={false}
+                    data-testid='dt_error-component'
                 />
             ) : (
                 <CSSTransition

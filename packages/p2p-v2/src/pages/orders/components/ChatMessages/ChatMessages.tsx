@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, SyntheticEvent, useEffect, useRef } from 'react';
 import clsx from 'clsx';
-import { CHAT_MESSAGE_TYPE } from '@/constants';
+import { CHAT_FILE_TYPE, CHAT_MESSAGE_TYPE } from '@/constants';
 import { useSendbird } from '@/hooks';
 import { convertToMB, formatMilliseconds, isImageType, isPDFType } from '@/utils';
 import { Text, useDevice } from '@deriv-com/ui';
@@ -29,44 +29,74 @@ const AdminMessage = () => (
 const ChatMessages = ({ chatChannel, chatMessages = [], userId }: TChatMessagesProps) => {
     const { isMobile } = useDevice();
     let currentDate = '';
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (chatMessages.length > 0 && scrollRef.current) {
+            // Scroll all the way to the bottom of the container.
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, [chatMessages.length]);
+
     const getMessageFormat = (chatMessage: TChatMessages[number], messageColor: string) => {
         const { fileType = '', name, size = 0, url } = chatMessage ?? {};
-        if (isImageType(fileType))
-            return (
-                <a className='p2p-v2-chat-messages__item__image' href={url} rel='noopener noreferrer' target='_blank'>
-                    <img alt={name} src={url} />
-                </a>
-            );
-        else if (isPDFType(fileType)) {
-            return (
-                <ChatMessageText color={messageColor}>
-                    <div className='p2p-v2-chat-messages__item__pdf'>
-                        <PDFIcon />
-                        <a href={url} rel='noopener noreferrer' target='_blank'>
+        switch (fileType) {
+            case CHAT_FILE_TYPE.IMAGE:
+                return (
+                    <a
+                        className='p2p-v2-chat-messages__item__image'
+                        href={url}
+                        rel='noopener noreferrer'
+                        target='_blank'
+                    >
+                        <img alt={name} onLoad={onImageLoad} src={url} />
+                    </a>
+                );
+            case CHAT_FILE_TYPE.PDF:
+                return (
+                    <ChatMessageText color={messageColor}>
+                        <div className='p2p-v2-chat-messages__item__pdf'>
+                            <PDFIcon />
+                            <a href={url} rel='noopener noreferrer' target='_blank'>
+                                {name}
+                            </a>
+                        </div>
+                        {`${convertToMB(size).toFixed(2)}MB`}
+                    </ChatMessageText>
+                );
+
+            default:
+                return (
+                    <ChatMessageText color={messageColor}>
+                        <a
+                            className='p2p-v2-chat-messages__item__file'
+                            href={url}
+                            rel='noopener noreferrer'
+                            target='_blank'
+                        >
                             {name}
                         </a>
-                    </div>
-                    {`${convertToMB(size).toFixed(2)}MB`}
-                </ChatMessageText>
-            );
+                    </ChatMessageText>
+                );
         }
-        return (
-            <ChatMessageText color={messageColor}>
-                <a className='p2p-v2-chat-messages__item__file' href={url} rel='noopener noreferrer' target='_blank'>
-                    {name}
-                </a>
-            </ChatMessageText>
-        );
+    };
+
+    const onImageLoad = (event: SyntheticEvent<HTMLImageElement, Event>) => {
+        // Height of element changes after the image is loaded. Accommodate
+        // this extra height in the scroll.
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop += (event.currentTarget.parentNode as HTMLElement)?.clientHeight;
+        }
     };
 
     return (
-        <div className='p2p-v2-chat-messages'>
+        <div className='p2p-v2-chat-messages' ref={scrollRef}>
             <AdminMessage />
             {chatMessages.map(chatMessage => {
                 const isMyMessage = chatMessage.senderUserId === userId;
                 const messageDate = formatMilliseconds(chatMessage.createdAt, 'MMMM D, YYYY');
                 const messageColor = isMyMessage ? 'white' : 'general';
-                const shouldRenderDate = currentDate !== messageDate && Boolean((currentDate = messageDate));
+                const shouldRenderDate = currentDate !== messageDate && !!(currentDate = messageDate);
                 const { customType, message, messageType } = chatMessage;
 
                 return (

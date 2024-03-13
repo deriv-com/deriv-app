@@ -1,18 +1,20 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useHistory } from 'react-router-dom';
 import { TOrders } from 'types';
 import { ORDERS_STATUS } from '@/constants';
 import { useExtendedOrderDetails, useQueryString } from '@/hooks';
 import { OrderRatingButton, OrderStatusTag, OrderTimer } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
 import { useActiveAccount, useServerTime } from '@deriv/api-v2';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import ChatIcon from '../../../../../public/ic-chat.svg';
 import './OrdersTableRow.scss';
 
 const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     const { isMobile } = useDevice();
     const { queryString } = useQueryString();
+    const history = useHistory();
     const isPast = queryString.get('tab') === ORDERS_STATUS.PAST_ORDERS;
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
@@ -58,7 +60,14 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
                     {!isPast && (
                         <div className='flex items-center gap-5'>
                             <OrderTimer distance={distance} />
-                            <ChatIcon />
+                            <Button
+                                className='h-full p-0'
+                                color='white'
+                                onClick={() => history.push(`/cashier/p2p-v2/advertiser?id=${id}`)}
+                                variant='contained'
+                            >
+                                <ChatIcon />
+                            </Button>
                         </div>
                     )}
                     {isCompletedOrder && <OrderRatingButton />}
@@ -76,7 +85,10 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     }
 
     return (
-        <div className={clsx('p2p-v2-orders-table-row', { 'p2p-v2-orders-table-row--inactive': isPast })}>
+        <div
+            className={clsx('p2p-v2-orders-table-row cursor-pointer', { 'p2p-v2-orders-table-row--inactive': isPast })}
+            onClick={() => history.push(`/cashier/p2p-v2/advertiser?id=${id}`)}
+        >
             {isPast && <Text size='sm'>{purchaseTime}</Text>}
             <Text size='sm'>{isBuyOrderForUser ? 'Buy' : 'Sell'}</Text>
             <Text size='sm'>{id}</Text>

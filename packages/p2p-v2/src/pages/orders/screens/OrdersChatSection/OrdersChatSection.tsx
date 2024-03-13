@@ -1,34 +1,29 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { FullPageMobileWrapper } from '@/components';
-import { useSendbird } from '@/hooks';
+import { useExtendedOrderDetails, useSendbird } from '@/hooks';
 import { Divider, Loader, useDevice } from '@deriv-com/ui';
-import { ChatFooter } from '../../components/ChatFooter';
-import { ChatHeader } from '../../components/ChatHeader';
-import { ChatMessages } from '../../components/ChatMessages';
+import { ChatError, ChatFooter, ChatHeader, ChatMessages } from '../../components';
 import './OrdersChatSection.scss';
 
-//TODO: remove dummy values and specify property type after implementation of order details page and endpoint implementation.
-const otherUserDetails = {
-    id: '66',
-    isInactive: 0,
-    isOnline: 1 as 0 | 1,
-    lastOnlineTime: 1709810646,
-    name: 'client CR90000343',
+type TOrdersChatSectionProps = {
+    id: string;
+    otherUserDetails: ReturnType<typeof useExtendedOrderDetails>['data']['otherUserDetails'];
 };
 
-// type TOrdersChatSectionProps = {
-//     otherUserDeatils: object;
-// };
-
-const OrdersChatSection = () => {
+const OrdersChatSection = ({ id, otherUserDetails }: TOrdersChatSectionProps) => {
     const { isMobile } = useDevice();
     const history = useHistory();
-    const { id, isOnline, lastOnlineTime, name } = otherUserDetails;
-    const { activeChatChannel, isChatLoading, messages, userId } = useSendbird(id);
+    const { is_online: isOnline, last_online_time: lastOnlineTime, name } = otherUserDetails ?? {};
+    const { activeChatChannel, isChatLoading, isError, messages, refreshChat, sendFile, sendMessage, userId } =
+        useSendbird(id);
 
-    if (isChatLoading) {
-        return <Loader isFullScreen={false} />;
+    if (isError) {
+        return (
+            <div className='p2p-v2-orders-chat-section flex flex-col justify-center items-center h-[70vh]'>
+                <ChatError onClickRetry={refreshChat} />
+            </div>
+        );
     }
 
     if (isMobile) {
@@ -38,29 +33,37 @@ const OrdersChatSection = () => {
                 //TODO: handle goback based on route
                 onBack={() => history.goBack()}
                 renderFooter={() => (
-                    <ChatFooter isClosed={!!otherUserDetails.isInactive || !!activeChatChannel?.isFrozen} />
+                    <ChatFooter
+                        isClosed={!!otherUserDetails?.isInactive || !!activeChatChannel?.isFrozen}
+                        sendFile={sendFile}
+                        sendMessage={sendMessage}
+                    />
                 )}
                 renderHeader={() => <ChatHeader isOnline={isOnline} lastOnlineTime={lastOnlineTime} nickname={name} />}
             >
                 {isChatLoading ? (
                     <Loader isFullScreen={false} />
                 ) : (
-                    <ChatMessages chatChannel={activeChatChannel} chatMessages={messages} userId={userId} />
+                    <ChatMessages chatChannel={activeChatChannel} chatMessages={messages} isError userId={userId} />
                 )}
             </FullPageMobileWrapper>
         );
     }
     return (
-        <div>
+        <div className='p2p-v2-orders-chat-section flex flex-col justify-center items-center h-[70vh]'>
             {isChatLoading ? (
                 <Loader isFullScreen={false} />
             ) : (
                 <>
                     <ChatHeader isOnline={isOnline} lastOnlineTime={lastOnlineTime} nickname={name} />
-                    <Divider color='#f2f3f4' />
+                    <Divider className='w-full' color='#f2f3f4' />
                     <ChatMessages chatChannel={activeChatChannel} chatMessages={messages} userId={userId} />
-                    <Divider color='#f2f3f4' />
-                    <ChatFooter isClosed={!!otherUserDetails.isInactive || !!activeChatChannel?.isFrozen} />
+                    <Divider className='w-full' color='#f2f3f4' />
+                    <ChatFooter
+                        isClosed={!!otherUserDetails?.isInactive || !!activeChatChannel?.isFrozen}
+                        sendFile={sendFile}
+                        sendMessage={sendMessage}
+                    />
                 </>
             )}
         </div>

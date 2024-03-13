@@ -3,7 +3,7 @@ import { getLastOnlineLabel } from '@/utils';
 import { Text } from '@deriv-com/ui';
 
 type TOnlineStatusLabelProps = {
-    isOnline: 0 | 1;
+    isOnline: boolean;
     lastOnlineTime: number;
 };
 

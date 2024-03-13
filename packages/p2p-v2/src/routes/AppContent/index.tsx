@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 import { CloseHeader } from '@/components';
 import { Advertiser, BuySell, MyAds, MyProfile, Orders } from '@/pages';
+import { OrderDetails } from '@/pages/orders/screens/OrderDetails';
 import { getCurrentRoute } from '@/utils';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
@@ -19,7 +20,7 @@ export const routesConfiguration = [
         title: 'My Ads',
     },
     { Component: <MyProfile />, path: 'my-profile', title: 'My Profile' },
-    { Component: <Advertiser />, path: 'advertiser', title: 'Advertiser' },
+    { Component: <OrderDetails />, path: 'advertiser', title: 'Advertiser' },
 ];
 
 const tabRoutesConfiguration = routesConfiguration.filter(route => route.path !== 'advertiser');
@@ -54,9 +55,9 @@ const AppContent = () => {
     return (
         <>
             <CloseHeader />
-            <div className='p2p-v2-tab__wrapper overflow-hidden'>
+            <div className='overflow-hidden p2p-v2-tab__wrapper'>
                 {getCurrentRoute()?.includes('advertiser') ? (
-                    <Advertiser />
+                    <OrderDetails />
                 ) : (
                     <Tabs
                         activeTab={activeTab}

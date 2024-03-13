@@ -1,9 +1,9 @@
 import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails } from '../constants';
-import { THooks, TMarketTypes, TWalletLandingCompanyName } from '../hooks/types';
+import { THooks, TMarketTypes } from '../hooks/types';
 
 type TGetAccountNameProps = {
-    accountCategory: THooks.TransferAccount['account_category'];
-    accountType: THooks.TransferAccount['account_type'];
+    accountCategory: THooks.TransferAccounts[number]['account_category'];
+    accountType: THooks.TransferAccounts[number]['account_type'];
     mt5MarketType?: TMarketTypes.SortedMT5Accounts;
 };
 

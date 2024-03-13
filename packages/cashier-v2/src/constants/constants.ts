@@ -1,4 +1,4 @@
-import { TMarketTypes, TMT5LandingCompanyName, TWalletLandingCompanyName } from '../hooks/types';
+import { TMT5LandingCompanyName } from '../hooks/types';
 
 export const walletIconMapper = {
     AUD: {
@@ -81,26 +81,7 @@ export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefin
     },
 } as const;
 
-interface TWalletLandingCompanyDetails {
-    icon: {
-        dark: string;
-        light: string;
-    };
-    name: TWalletLandingCompanyName;
-    title: string;
-}
-
-interface TMT5MarketTypeDetails {
-    icon?: {
-        dark: string;
-        light: string;
-    };
-    landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
-    name: TMarketTypes.All;
-    title: string;
-}
-
-export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetails> = {
+export const MT5MarketTypeDetails = {
     all: {
         icon: {
             dark: 'IcWalletMt5All',

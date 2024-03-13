@@ -39,7 +39,7 @@ type TTradeModalProps = {
 const PlatformIconsAndDescriptions = (
     platform: TCFDsPlatformType,
     is_demo: string,
-    mt5_trade_account: Required<DetailsOfEachMT5Loginid>
+    ctrader_derivx_trade_account: Required<DetailsOfEachMT5Loginid>
 ) => {
     return (
         <React.Fragment>
@@ -60,10 +60,10 @@ const PlatformIconsAndDescriptions = (
                         ]}
                     />
                 </Text>
-                {(mt5_trade_account as TTradingPlatformAccounts)?.display_login &&
+                {(ctrader_derivx_trade_account as TTradingPlatformAccounts)?.display_login &&
                     platform !== CFD_PLATFORMS.CTRADER && (
                         <Text color='less-prominent' size='xxxs' line_height='xxxs'>
-                            {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
+                            {(ctrader_derivx_trade_account as TTradingPlatformAccounts)?.display_login}
                         </Text>
                     )}
             </div>

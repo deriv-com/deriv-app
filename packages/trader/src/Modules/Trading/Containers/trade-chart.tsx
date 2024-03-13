@@ -104,7 +104,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
             chartControlsWidgets={null}
-            chartStatusListener={(v: boolean) => setChartStatus(!v)}
+            chartStatusListener={(v: boolean) => setChartStatus(!v, true)}
             chartType={chart_type}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),

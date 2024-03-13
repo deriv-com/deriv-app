@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import { floatingPointValidator } from '@/utils';
 import { useDevice } from '@deriv-com/ui';
@@ -24,6 +24,7 @@ jest.mock('@deriv-com/ui', () => ({
 
 const mockUseDevice = useDevice as jest.Mock;
 const mockOnChange = jest.fn();
+const mockHandleSubmit = jest.fn();
 jest.mock('react-hook-form', () => ({
     ...jest.requireActual('react-hook-form'),
     Controller: ({ control, defaultValue, name, render }) =>
@@ -37,7 +38,7 @@ jest.mock('react-hook-form', () => ({
         getValues: jest.fn(() => ({
             amount: 1,
         })),
-        handleSubmit: jest.fn(),
+        handleSubmit: mockHandleSubmit,
     }),
 }));
 
@@ -70,6 +71,12 @@ const mockAdvertValues = {
 const mockProps = {
     advert: mockAdvertValues,
     advertiserBuyLimit: 1000,
+    advertiserPaymentMethods: [
+        {
+            display_name: 'alipay',
+            id: '1',
+        },
+    ],
     advertiserSellLimit: 1000,
     balanceAvailable: 10,
     displayEffectiveRate: '1',
@@ -102,7 +109,7 @@ describe('BuySellForm', () => {
         render(<BuySellForm {...mockProps} advert={{ ...mockAdvertValues, rate_type: 'float' }} />);
         expect(
             screen.getByText(
-                `If the market rate changes from the rate shown here, we won't be able to process your order.`
+                'If the market rate changes from the rate shown here, we won’t be able to process your order.'
             )
         ).toBeInTheDocument();
     });
@@ -114,10 +121,13 @@ describe('BuySellForm', () => {
         expect(screen.getByText('Buy USD')).toBeInTheDocument();
     });
     it("should handle onsubmit when form is submitted and it's valid", () => {
+        mockUseDevice.mockReturnValue({
+            isMobile: false,
+        });
         render(<BuySellForm {...mockProps} />);
         const confirmButton = screen.getByRole('button', { name: 'Confirm' });
         userEvent.click(confirmButton);
-        expect(mockMutateFn).toHaveBeenCalled();
+        expect(mockHandleSubmit).toHaveBeenCalled();
     });
     it('should disable the input field when balance is 0', () => {
         render(<BuySellForm {...mockProps} balanceAvailable={0} />);
@@ -156,5 +166,31 @@ describe('BuySellForm', () => {
         const inputField = screen.getByPlaceholderText('Buy amount');
         userEvent.type(inputField, '1');
         expect(mockOnChange).toHaveBeenCalled();
+    });
+    it('should render the bank details text area when sell order and no payment methods are there', () => {
+        render(<BuySellForm {...mockProps} advert={{ ...mockAdvertValues, payment_method_names: [], type: 'buy' }} />);
+        expect(screen.getByText('Your bank details')).toBeInTheDocument();
+    });
+    it('should render the contact details text area when sell order and payment methods are there', () => {
+        render(
+            <BuySellForm
+                {...mockProps}
+                advert={{ ...mockAdvertValues, payment_method_names: ['alipay'], type: 'buy' }}
+            />
+        );
+        expect(screen.getByText('Your contact details')).toBeInTheDocument();
+    });
+    it('should send the payment_method_ids when payment methods are selected and sell order', () => {
+        render(
+            <BuySellForm
+                {...mockProps}
+                advert={{ ...mockAdvertValues, payment_method_names: ['alipay'], type: 'buy' }}
+            />
+        );
+        const checkbox = screen.getByRole('checkbox');
+        userEvent.click(checkbox);
+        const confirmButton = screen.getByRole('button', { name: 'Confirm' });
+        userEvent.click(confirmButton);
+        expect(mockMutateFn).toHaveBeenCalledWith(expect.objectContaining({ payment_method_ids: [1] }));
     });
 });

@@ -29,7 +29,7 @@ const CompareAccountsCarousel = ({ children }: PropsWithChildren) => {
 
     return (
         <div className='relative overflow-hidden'>
-            <div className='w-full h-full pt-20 overflow-hidden' ref={emblaRef}>
+            <div className='w-full h-full px-10 pt-20 overflow-hidden' ref={emblaRef}>
                 <div className='flex flex-row ease-in-out max-h-[auto] backface-hidden duration-0 -ml-10 touch-pan-y'>
                     {children}
                 </div>

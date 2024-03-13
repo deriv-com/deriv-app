@@ -1,11 +1,33 @@
 @import '../../components/SkeletonLoader/SkeletonLoader.scss';
 
 .wallets-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    &__carousel-content {
+        background-color: transparent;
+        margin: 0 -0.8rem;
 
-    &--balance-loader {
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &-details {
+            padding: 1.6rem;
+            width: 28.8rem;
+            height: 17.6rem;
+
+            &-top {
+                justify-content: flex-start;
+                width: unset;
+            }
+        }
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__balance-loader {
         padding: 0.7rem;
         width: 8rem;
         background-color: #f8f5f542;
@@ -21,21 +43,21 @@
         align-items: flex-start;
         aspect-ratio: 1.667;
 
-        &__top {
+        &-top {
             display: flex;
             flex-direction: row;
             width: 100%;
             justify-content: space-between;
         }
 
-        &__bottom {
+        &-bottom {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             align-self: stretch;
         }
 
-        &-landing_company {
+        &-landing-company {
             display: flex;
             justify-content: flex-end;
             align-items: flex-start;

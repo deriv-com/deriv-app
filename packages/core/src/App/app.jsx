@@ -1,5 +1,4 @@
 import React from 'react';
-import Cookies from 'js-cookie';
 import WS from 'Services/ws-methods';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
@@ -16,10 +15,8 @@ import {
     setUrlLanguage,
     setWebsocket,
     useOnLoadTranslation,
-    LocalStore,
-    getAppId,
 } from '@deriv/shared';
-import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider, P2PSettingsProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
@@ -58,24 +55,6 @@ const AppWithoutTranslation = ({ root_store }) => {
         };
 
         initializeTranslations();
-        if (process.env.RUDDERSTACK_KEY) {
-            const config = {
-                growthbookKey:
-                    process.env.IS_GROWTHBOOK_ENABLED === 'true' ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
-                growthbookDecryptionKey:
-                    process.env.IS_GROWTHBOOK_ENABLED === 'true' ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
-                rudderstackKey: process.env.RUDDERSTACK_KEY,
-            };
-            Analytics.initialise(config);
-            Analytics.setAttributes({
-                account_type: LocalStore?.get('active_loginid')?.substring(0, 2) ?? 'unlogged',
-                app_id: getAppId(),
-                device_type: root_store?.ui?.is_mobile ? 'mobile' : 'desktop',
-                device_language: navigator?.language || 'en-EN',
-                user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies.getJSON('website_status'),
-            });
-        }
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
@@ -121,7 +100,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                                 <POIProvider>
                                     <StoreProvider store={root_store}>
                                         <ExchangeRatesProvider>
-                                            <AppContent passthrough={platform_passthrough} />
+                                            <P2PSettingsProvider>
+                                                <AppContent passthrough={platform_passthrough} />
+                                            </P2PSettingsProvider>
                                         </ExchangeRatesProvider>
                                     </StoreProvider>
                                 </POIProvider>

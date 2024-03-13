@@ -13,7 +13,7 @@ const DefaultHeader = makeLazyLoader(
 )();
 
 const DefaultHeaderWallets = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "defaut-header-wallets" */ './defaut-header-wallets')),
+    () => moduleLoader(() => import(/* webpackChunkName: "default-header-wallets" */ './default-header-wallets')),
     () => <HeaderFallback />
 )();
 

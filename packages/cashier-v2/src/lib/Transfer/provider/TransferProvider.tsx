@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv/api-v2';
+import React, { createContext, useContext, useState } from 'react';
 import { THooks } from '../../../hooks/types';
 import { useExtendedTransferAccounts } from '../hooks';
+import { TTransferableAccounts, TTransferReceipt } from '../types';
 
 export type TTransferContext = {
-    accounts?: ReturnType<typeof useExtendedTransferAccounts>['accounts'];
-    activeAccount?: ReturnType<typeof useExtendedTransferAccounts>['activeAccount'];
+    accounts?: TTransferableAccounts;
+    activeAccount?: TTransferableAccounts[number];
     isLoading?: boolean;
-    setTransferReceipt?: React.Dispatch<React.SetStateAction<any>>;
+    setTransferReceipt?: React.Dispatch<React.SetStateAction<TTransferReceipt | undefined>>;
     transferReceipt?: {
         amount: string;
         fromAccount: ReturnType<typeof useExtendedTransferAccounts>['accounts'][number];
@@ -34,32 +34,19 @@ type TTransferProviderProps = {
 const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>> = ({ accounts, children }) => {
     const {
         accounts: transferAccounts,
-        activeAccount,
+        activeAccount: transferActiveAccount,
         isLoading: isExtendedTransferAccountsLoading,
     } = useExtendedTransferAccounts(accounts);
 
-    const { mutateAsync } = useTransferBetweenAccounts();
-
-    const [transferReceipt, setTransferReceipt] = useState();
+    const [transferReceipt, setTransferReceipt] = useState<TTransferReceipt>();
 
     const isLoading = isExtendedTransferAccountsLoading;
-
-    const requestTransferBetweenAccounts = values => {
-        const { fromAccount, fromAmount, toAccount } = values;
-
-        mutateAsync({
-            account_from: fromAccount.loginid,
-            account_to: toAccount.loginid,
-            amount: fromAccount ? parseFloat(fromAmount) : 0,
-            currency: fromAccount.currency,
-        });
-    };
 
     return (
         <TransferContext.Provider
             value={{
                 accounts: transferAccounts,
-                activeAccount,
+                activeAccount: transferActiveAccount,
                 isLoading,
                 setTransferReceipt,
                 transferReceipt,

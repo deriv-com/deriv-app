@@ -2,33 +2,28 @@ import React, { useCallback, useEffect } from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { PageContainer } from '../../components';
-import TransferProvider from './provider/TransferProvider';
-import { TransferForm } from './components';
+import TransferProvider, { useTransfer } from './provider/TransferProvider';
+import { TransferForm, TransferReceipt } from './components';
 
-const Transfer = () => {
+const TransferModule = () => {
     const { data: transferAccounts, isSuccess, mutate } = useTransferBetweenAccounts();
-
     const requestForAccounts = useCallback(() => mutate({ accounts: 'all' }), [mutate]);
-
-    // console.log('=> Transfer - isSuccess', isSuccess, ', API data', transferAccounts);
 
     useEffect(() => {
         requestForAccounts();
     }, [requestForAccounts]);
 
-    if (isSuccess) {
+    if (isSuccess && transferAccounts.accounts?.length) {
         if (transferAccounts?.accounts?.length <= 1) return <div>Need more than one account</div>;
 
         return (
             <PageContainer>
                 <TransferProvider accounts={transferAccounts?.accounts}>
-                    <TransferForm />
+                    <Transfer />
                 </TransferProvider>
             </PageContainer>
         );
     }
-
-    // console.log('=> Transfer - Loader shown');
     return (
         <PageContainer>
             <Loader />
@@ -36,4 +31,18 @@ const Transfer = () => {
     );
 };
 
-export default Transfer;
+const Transfer = () => {
+    const { transferReceipt } = useTransfer();
+
+    if (transferReceipt) {
+        return <TransferReceipt data={transferReceipt} />;
+    }
+
+    return (
+        <>
+            <TransferForm />
+        </>
+    );
+};
+
+export default TransferModule;

@@ -10,8 +10,8 @@ import {
 type TGetTransferValidationSchema = {
     fromAccount: {
         balance: number;
-        currency?: TCurrency;
-        fractionalDigits: number;
+        currency: TCurrency;
+        fractionalDigits?: number;
         limits: {
             max: number;
             min: number;
@@ -19,7 +19,7 @@ type TGetTransferValidationSchema = {
     };
     toAccount: {
         currency: TCurrency;
-        fractionalDigits: number;
+        fractionalDigits?: number;
     };
 };
 
@@ -33,7 +33,7 @@ export const getTransferValidationSchema = ({ fromAccount, toAccount }: TGetTran
             })
             .test({
                 name: 'test-decimals',
-                test: (value = '', context) => decimalsValidator(value, context, fromAccount.fractionalDigits),
+                test: (value = '', context) => decimalsValidator(value, context, fromAccount.fractionalDigits ?? 2),
             })
             .test({
                 name: 'test-insufficient-funds',
@@ -54,7 +54,7 @@ export const getTransferValidationSchema = ({ fromAccount, toAccount }: TGetTran
             })
             .test({
                 name: 'test-decimals',
-                test: (value = '', context) => decimalsValidator(value, context, toAccount.fractionalDigits),
+                test: (value = '', context) => decimalsValidator(value, context, toAccount.fractionalDigits ?? 2),
             }),
     });
 };

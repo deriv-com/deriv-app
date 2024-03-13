@@ -2,15 +2,15 @@ import React from 'react';
 import { Button, Loader, Text, useDevice } from '@deriv-com/ui';
 import { CurrencyIcon, ReceiptScreen, TradingAppIcon } from '../../../../components';
 import { getLandingCompanyNameOfMT5Account, getMarketType } from '../../../../helpers';
+import { TTransferableAccounts, TTransferReceipt } from '../../types';
 import styles from './TransferReceipt.module.scss';
 
-const TransferReceipt = ({ data }) => {
+const TransferReceipt: React.FC<TTransferReceipt> = ({ amount, fromAccount, toAccount }) => {
     const { isMobile } = useDevice();
-    const { amount, fromAccount, toAccount } = data;
 
-    if (!data) return <Loader />;
+    if (!amount || !fromAccount || !toAccount) return <Loader />;
 
-    const getAccountName = account => {
+    const getAccountName = (account: TTransferableAccounts[number]) => {
         if (account.account_type === 'binary') return account.currency;
 
         if (account.account_type === 'dxtrade') return 'Deriv X';
@@ -18,17 +18,17 @@ const TransferReceipt = ({ data }) => {
         if (account.account_type === 'ctrader') return 'cTrader';
 
         if (account.account_type === 'mt5') {
-            const marketType = getMarketType(toAccount.mt5_group)
+            const marketType = getMarketType(account.mt5_group)
                 .split('')
                 .map((char, i) => (i === 0 ? char.toUpperCase() : char))
                 .join('');
             return `${marketType} 
-        ${getLandingCompanyNameOfMT5Account(toAccount.mt5_group).toUpperCase()}`;
+        ${getLandingCompanyNameOfMT5Account(account.mt5_group).toUpperCase()}`;
         }
     };
 
-    const getIcon = account => {
-        if (account.account_type === 'binary')
+    const getIcon = (account: TTransferableAccounts[number]) => {
+        if (account.account_type === 'binary' && account.currency)
             return <CurrencyIcon currency={account.currency} size={isMobile ? 'sm' : 'md'} />;
 
         if (account.account_type === 'dxtrade') return <TradingAppIcon name='DERIVX' size={isMobile ? 'sm' : 'md'} />;

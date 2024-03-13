@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
+import { TTransferableAccounts, TTransferFormikContext } from 'src/lib/Transfer/types';
+import { TCurrency } from '../../../../../../types';
 import { useTransfer } from '../../../../provider';
 import { getTransferValidationSchema } from '../../../../utils';
 import { TransferAccountTile } from './components/TransferAccountTile';
 import { TransferDropdown } from './components/TransferDropdown';
 import styles from './TransferFormAccountSelection.module.scss';
 
-const getInitialToAccount = (
-    accounts: TExtendedTransferAccount['accounts'],
-    activeAccount: TExtendedTransferAccount['activeAccount']
-) => {
+const getInitialToAccount = (accounts: TTransferableAccounts, activeAccount: TTransferableAccounts[number]) => {
     if (!accounts || !activeAccount) return;
 
     if (activeAccount.loginid !== accounts[0].loginid) return accounts[0];
@@ -17,51 +16,47 @@ const getInitialToAccount = (
     return accounts[1];
 };
 
-const getValidationSchema = (fromAccount, toAccount) => {
+const getValidationSchema = (fromAccount: TTransferableAccounts[number], toAccount: TTransferableAccounts[number]) => {
+    if (!fromAccount.currencyConfig) return;
+
     const limits =
         fromAccount.currencyConfig.transfer_between_accounts[
-            `limits${fromAccount.account_type !== 'binary' ? fromAccount.account_type : ''}`
+            // eslint-disable-next-line sonarjs/no-nested-template-literals
+            `limits${fromAccount.account_type !== 'binary' ? `_${fromAccount.account_type}` : ''}`
         ];
 
     return getTransferValidationSchema({
         fromAccount: {
             balance: parseFloat(fromAccount?.balance ?? '0'),
-            currency: fromAccount?.currency,
+            currency: fromAccount?.currency as TCurrency,
             fractionalDigits: fromAccount?.currencyConfig?.fractional_digits,
-            limits: {
-                max: limits.max,
-                min: limits.min,
-            },
+            limits,
         },
         toAccount: {
-            currency: toAccount?.currency,
+            currency: toAccount?.currency as TCurrency,
             fractionalDigits: toAccount?.currencyConfig?.fractional_digits,
         },
     });
 };
 
-const TransferFormAccountSelection = ({ setValidationSchema }) => {
-    const { setValues, values } = useFormikContext();
+const TransferFormAccountSelection = ({
+    setValidationSchema,
+}: {
+    setValidationSchema: React.Dispatch<React.SetStateAction<ReturnType<typeof getTransferValidationSchema>>>;
+}) => {
+    const { setValues, values } = useFormikContext<TTransferFormikContext>();
     const { accounts, activeAccount, isLoading } = useTransfer();
 
-    // useEffect(() => {
-    //     if (values.fromAccount.currency)
-    //         subscribeToExchangeRate({
-    //             base_currency: values.fromAccount.currency,
-    //             target_currency: values.toAccount.currency,
-    //         });
-    //     return () => unSubscribeToExchangeRate();
-    // }, [values.fromAccount, values.toAccount]);
-
     useEffect(() => {
-        if (!isLoading) {
+        if (accounts && activeAccount && !isLoading) {
             const fromAccount = activeAccount;
             const toAccount = getInitialToAccount(accounts, activeAccount);
-            setValues({
+            setValues(currentValues => ({
+                ...currentValues,
                 fromAccount,
                 toAccount,
-            });
-            setValidationSchema(getValidationSchema(activeAccount, toAccount));
+            }));
+            setValidationSchema(getValidationSchema(fromAccount, toAccount));
         }
     }, [isLoading]);
 

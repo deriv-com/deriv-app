@@ -2,7 +2,7 @@ import React, { Fragment, SyntheticEvent, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { CHAT_FILE_TYPE, CHAT_MESSAGE_TYPE } from '@/constants';
 import { useSendbird } from '@/hooks';
-import { convertToMB, formatMilliseconds, isImageType, isPDFType } from '@/utils';
+import { convertToMB, formatMilliseconds } from '@/utils';
 import { Text, useDevice } from '@deriv-com/ui';
 import PDFIcon from '../../../../public/ic-pdf.svg';
 import { ChatMessageReceipt } from '../ChatMessageReceipt';

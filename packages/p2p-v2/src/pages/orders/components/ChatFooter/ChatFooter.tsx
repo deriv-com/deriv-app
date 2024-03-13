@@ -29,7 +29,7 @@ const ChatFooter = ({ isClosed, sendFile, sendMessage }: TChatFooterProps) => {
         const elTarget = textInputRef.current;
         const shouldRestoreFocus = document.activeElement === elTarget;
 
-        if (elTarget && elTarget.value) {
+        if (elTarget?.value) {
             sendMessage(elTarget.value);
             elTarget.value = '';
             setValue('');

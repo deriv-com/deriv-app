@@ -9,6 +9,7 @@ import {
     usePaymentAgentTransferVisible,
     useFeatureFlags,
     useP2PSettings,
+    useAuthorize,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -36,7 +37,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = ui;
     const {
         account_status,
-        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -54,6 +54,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
+    const { isSuccess } = useAuthorize();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { is_p2p_enabled } = useIsP2PEnabled();
@@ -75,10 +76,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = useP2PSettings();
 
     React.useEffect(() => {
-        if (is_authorize && !isSubscribed) {
+        if (isSuccess && !isSubscribed) {
             subscribe();
         }
-    }, [is_authorize, p2p_settings, subscribe, isSubscribed]);
+    }, [isSuccess, p2p_settings, subscribe, isSubscribed]);
 
     React.useEffect(() => {
         const processRoutes = () => {

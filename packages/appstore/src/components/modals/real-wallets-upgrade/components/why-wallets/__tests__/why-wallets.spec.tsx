@@ -24,7 +24,7 @@ describe('WhyWallets', () => {
 
     it('should render icon', () => {
         checkContainerWhyWalletsComponent();
-        expect(screen.queryByTestId('dt_why_wallets')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_why_wallets_desktop')).toBeInTheDocument();
     });
 
     it('should render title, description and bullets', () => {

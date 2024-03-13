@@ -19,10 +19,7 @@ const WhyWallets = () => {
         <div className='wallet-steps__content why-wallets__content'>
             <React.Fragment>
                 <div className='why-wallets__image-container'>
-                    <WalletsImage
-                        image={`why_wallets_${is_mobile ? 'mobile' : 'desktop'}`}
-                        data-testid='dt_why_wallets'
-                    />
+                    <WalletsImage image={`why_wallets_${is_mobile ? 'mobile' : 'desktop'}`} />
                 </div>
                 <Text
                     as='h1'

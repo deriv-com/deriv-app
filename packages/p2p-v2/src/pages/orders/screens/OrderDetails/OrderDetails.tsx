@@ -7,7 +7,7 @@ import { OrdersChatSection } from '../OrdersChatSection';
 const OrderDetails = () => {
     const location = useLocation();
     const urlParams = new URLSearchParams(location.search);
-    const orderId = urlParams.get('id') ?? '';
+    const orderId = urlParams.get('order') ?? '';
     const { data: orderInfo } = p2p.order.useGet(orderId);
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();

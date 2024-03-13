@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { TOrders } from 'types';
-import { ORDERS_STATUS } from '@/constants';
+import { BASE_URL, ORDERS_STATUS } from '@/constants';
 import { useExtendedOrderDetails, useQueryString } from '@/hooks';
 import { OrderRatingButton, OrderStatusTag, OrderTimer } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
@@ -63,7 +63,7 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
                             <Button
                                 className='h-full p-0'
                                 color='white'
-                                onClick={() => history.push(`/cashier/p2p-v2/advertiser?id=${id}`)}
+                                onClick={() => history.push(`${BASE_URL}/orders?order=${id}`)}
                                 variant='contained'
                             >
                                 <ChatIcon />
@@ -87,7 +87,7 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     return (
         <div
             className={clsx('p2p-v2-orders-table-row cursor-pointer', { 'p2p-v2-orders-table-row--inactive': isPast })}
-            onClick={() => history.push(`/cashier/p2p-v2/advertiser?id=${id}`)}
+            onClick={() => history.push(`${BASE_URL}/orders?order=${id}`)}
         >
             {isPast && <Text size='sm'>{purchaseTime}</Text>}
             <Text size='sm'>{isBuyOrderForUser ? 'Buy' : 'Sell'}</Text>

@@ -3,7 +3,8 @@ import { mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import { mock_ws } from 'Utils/mock';
 import { mockDBotStore } from 'Stores/useDBotStore';
-import ChartStore from '../chart-store';
+import ChartStore, { g_subscribers_map } from '../chart-store';
+// import { g_subscribers_map } from '../chart-store';
 
 window.Blockly = {
     derivWorkspace: {
@@ -14,6 +15,10 @@ window.Blockly = {
 };
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
+jest.mock('@deriv/deriv-api/dist/DerivAPIBasic', () => ({
+    ...jest.requireActual('@deriv/deriv-api/dist/DerivAPIBasic'),
+    subscribe: jest.fn(() => 'asd'),
+}));
 
 describe('ChartStore', () => {
     const mock_store: TStores = mockStore({
@@ -34,7 +39,7 @@ describe('ChartStore', () => {
         chartStore = new ChartStore(mock_DBot_store);
     });
 
-    it('should initialize ChartStore correctly', () => {
+    it('should initialize ChartStore with default values', () => {
         expect(chartStore.symbol).toBeUndefined();
         expect(chartStore.is_chart_loading).toBeUndefined();
         expect(chartStore.chart_type).toBe('line');
@@ -85,13 +90,13 @@ describe('ChartStore', () => {
     });
 
     it('should forget ticks history', () => {
-        const req = { ticks: 1 };
-        const key = JSON.stringify(req);
-        chartStore.wsForget(req);
-
-        // expect(chartStore.g_subscribers_map[key]).toBeDefined();
-        // expect(mock_DBot_store.ws.forgetStream).toHaveBeenCalledWith(chartStore.g_subscribers_map[key]);
-        // expect(chartStore.g_subscribers_map[key]).toBeUndefined();
+        const subscribe_req = { subscribe: 1 };
+        const callback = jest.fn();
+        chartStore.wsSubscribe(subscribe_req, callback);
+        const key = JSON.stringify(subscribe_req);
+        expect(g_subscribers_map).toHaveProperty(key);
+        chartStore.wsForget(subscribe_req);
+        expect(g_subscribers_map).not.toHaveProperty(key);
     });
 
     it('should forget stream', () => {
@@ -132,6 +137,20 @@ describe('ChartStore', () => {
         const marketsOrder = chartStore.getMarketsOrder(active_symbols);
 
         expect(marketsOrder).toEqual(['AUDUSD', 'EURUSD']);
+    });
+
+    it('should get markets order without dispay name', () => {
+        const active_symbols = [{ market: 'EURUSD' }, { market: 'AUDUSD', display_name: 'AUD/USD' }];
+        const marketsOrder = chartStore.getMarketsOrder(active_symbols);
+
+        expect(marketsOrder).toEqual(['EURUSD', 'AUDUSD']);
+    });
+
+    it('should get markets order with synthetic index', () => {
+        const active_symbols = [{ market: 'synthetic_index', display_name: 'Synthetic Index' }];
+        const marketsOrder = chartStore.getMarketsOrder(active_symbols);
+
+        expect(marketsOrder).toEqual(['synthetic_index']);
     });
 
     it('should update symbol and save to local storage', () => {

@@ -4,13 +4,7 @@ import { mock_ws } from 'Utils/mock';
 import { mockDBotStore } from 'Stores/useDBotStore';
 import ToolbarStore from '../toolbar-store';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
-jest.mock('@deriv/bot-skeleton', () => ({
-    ...jest.requireActual('@deriv/bot-skeleton'),
-    onWorkspaceResize: jest.fn(),
-}));
 
 const mock_undo = jest.fn();
 const mock_cleanup = jest.fn();
@@ -49,7 +43,7 @@ describe('ToolbarStore', () => {
         toolbarStore = new ToolbarStore(mock_DBot_store);
     });
 
-    it('should initialize correctly', () => {
+    it('should initialize ToolbarStore with default values', () => {
         expect(toolbarStore.is_animation_info_modal_open).toBe(false);
         expect(toolbarStore.is_dialog_open).toBe(false);
         expect(toolbarStore.file_name).toBe('Untitled Bot');
@@ -68,23 +62,26 @@ describe('ToolbarStore', () => {
         expect(toolbarStore.is_dialog_open).toBe(false);
     });
 
-    it('should show dialog onResetOkButtonClick', () => {
+    it('should not show dialog onResetOkButtonClick', () => {
         toolbarStore.onResetOkButtonClick();
-        mock_DBot_store.run_panel.is_running = true;
         expect(toolbarStore.is_dialog_open).toBe(false);
+        expect(toolbarStore.is_reset_button_clicked).toBe(false);
     });
 
-    it('should show dialog onResetOkButtonClick and bot running', () => {
+    it('should show dialog onResetOkButtonClick while bot is running', () => {
+        if (mock_DBot_store) {
+            mock_DBot_store.run_panel.is_running = true;
+        }
         toolbarStore.onResetOkButtonClick();
         expect(toolbarStore.is_reset_button_clicked).toBe(true);
     });
 
-    it('should reset default strategy correctly', async () => {
+    it('should call reset default strategy', async () => {
         await toolbarStore.resetDefaultStrategy();
         expect(window.Blockly.derivWorkspace.strategy_to_load).toBe('main');
     });
 
-    it('should call onSortClick correctly', () => {
+    it('should call onSortClick', () => {
         toolbarStore.onSortClick();
         expect(mock_cleanup).toHaveBeenCalled();
     });

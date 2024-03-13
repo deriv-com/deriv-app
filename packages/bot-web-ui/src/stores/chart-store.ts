@@ -11,7 +11,7 @@ import { ServerTime } from '@deriv/bot-skeleton';
 import { LocalStore } from '@deriv/shared';
 import RootStore from './root-store';
 
-const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {};
+export const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {};
 let WS: RootStore['ws'];
 
 export default class ChartStore {

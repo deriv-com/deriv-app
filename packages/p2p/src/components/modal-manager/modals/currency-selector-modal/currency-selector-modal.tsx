@@ -1,6 +1,5 @@
 import React from 'react';
 import { MobileFullPageModal } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -9,8 +8,7 @@ import { useStores } from 'Stores';
 
 const CurrencySelectorModal = () => {
     const { buy_sell_store } = useStores();
-    const { p2p_settings } = useP2PSettings();
-    const { onLocalCurrencySelect, selected_local_currency } = buy_sell_store;
+    const { local_currencies, onLocalCurrencySelect, selected_local_currency } = buy_sell_store;
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
@@ -23,7 +21,7 @@ const CurrencySelectorModal = () => {
         >
             <CurrencySelector
                 default_value={selected_local_currency}
-                list={p2p_settings?.currency_list}
+                list={local_currencies}
                 onSelect={value => {
                     onLocalCurrencySelect(value);
                     hideModal();

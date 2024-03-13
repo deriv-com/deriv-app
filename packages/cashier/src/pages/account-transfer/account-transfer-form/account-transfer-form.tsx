@@ -126,7 +126,7 @@ const AccountTransferForm = observer(
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const mf_account_status = useMFAccountStatus();
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
-        const { handleSubscription } = useExchangeRate();
+        const { exchange_rates, handleSubscription } = useExchangeRate();
 
         const {
             account_transfer_amount,
@@ -190,6 +190,9 @@ const AccountTransferForm = observer(
             is_mf_status_pending || is_mf_status_need_verification || is_mf_status_verification_failed;
 
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+
+        const exchange_rate = (account_currency: string | undefined) =>
+            account_currency != null ? exchange_rates?.USD?.[account_currency] || 1 : 1;
 
         const history = useHistory();
 
@@ -677,7 +680,10 @@ const AccountTransferForm = observer(
                                                                         />,
                                                                         <Money
                                                                             key={1}
-                                                                            amount={transfer_limit.max}
+                                                                            amount={(
+                                                                                exchange_rate(selected_from.currency) *
+                                                                                Number(transfer_limit.max)
+                                                                            ).toString()}
                                                                             currency={selected_from.currency}
                                                                             show_currency
                                                                         />,
@@ -728,7 +734,10 @@ const AccountTransferForm = observer(
                                                                     />,
                                                                     <Money
                                                                         key={1}
-                                                                        amount={transfer_limit.max}
+                                                                        amount={(
+                                                                            exchange_rate(selected_from.currency) *
+                                                                            Number(transfer_limit.max)
+                                                                        ).toString()}
                                                                         currency={selected_from.currency}
                                                                         show_currency
                                                                     />,

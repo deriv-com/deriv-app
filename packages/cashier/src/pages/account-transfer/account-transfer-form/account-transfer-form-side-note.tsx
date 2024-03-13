@@ -40,6 +40,7 @@ const AccountTransferNote = ({
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
     const account_currency = currency_config?.display_code;
+    const is_crypto = currency_config?.is_crypto;
     const exchange_rate = account_currency != null ? exchange_rates?.USD?.[account_currency] || 1 : 1;
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
     const platform_name_mt5 = getPlatformSettings('mt5').name;
@@ -262,7 +263,7 @@ const AccountTransferNote = ({
                     values={{
                         allowed_internal: addComma(
                             exchange_rate * Number(allowed_transfers_amount?.internal),
-                            2,
+                            is_crypto ? 8 : 2,
                             false
                         ),
                         currency: account_currency,
@@ -276,6 +277,7 @@ const AccountTransferNote = ({
         allowed_transfers_amount?.internal,
         allowed_transfers_amount?.mt5,
         exchange_rate,
+        is_crypto,
         is_dxtrade_transfer,
         is_mt_transfer,
     ]);

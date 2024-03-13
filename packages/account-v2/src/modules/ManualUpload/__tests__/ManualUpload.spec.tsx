@@ -18,6 +18,15 @@ jest.mock('../../../hooks', () => ({
     }),
 }));
 
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useOnfido: jest.fn(() => ({
+        data: {},
+        isOnfidoInitialized: true,
+        isServiceTokenLoading: false,
+    })),
+}));
+
 describe('ManualUpload', () => {
     beforeAll(() => {
         global.URL.createObjectURL = jest.fn();
@@ -124,5 +133,19 @@ describe('ManualUpload', () => {
         userEvent.click(elBackButton);
 
         expect(screen.getAllByTestId('dt_manual_document_types')).toHaveLength(3);
+    });
+
+    it('should render OnfidoContainer when poiService is onfido', () => {
+        (useManualForm as jest.Mock).mockReturnValue({
+            isExpiryDateRequired: false,
+            isLoading: false,
+            poiService: 'onfido',
+        });
+        render(<ManualUpload countryCode='ng' />);
+
+        const elDocumentType = screen.getAllByTestId('dt_manual_document_types')[3];
+        userEvent.click(elDocumentType);
+
+        expect(screen.getByTestId('dt_onfido_element')).toBeVisible();
     });
 });

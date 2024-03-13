@@ -11,9 +11,9 @@ type TRowData = {
 const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as const;
 
 const headers = {
-    datetime: 'Date and Time',
     action: 'Action',
     browser: 'Browser',
+    datetime: 'Date and Time',
     ipAddress: 'IP Address',
     status: 'Status',
 };
@@ -35,13 +35,14 @@ export const LoginHistory = () => {
                     },
                 ]}
                 isFetching={true}
+                // eslint-disable-next-line @typescript-eslint/no-empty-function -- adding empty function until the types are fixed in the Table component
+                loadMoreFunction={() => {}}
                 renderHeader={header => <span>{header}</span>}
                 rowRender={(data: TRowData) => (
                     <div className='grid grid-flow-col'>
-                        {Object.keys(data).map(key => (
-                            <div key={key}>{data[key as keyof TRowData]}</div>
+                        {columnOrder.map(key => (
+                            <div key={key}>{data[key]}</div>
                         ))}
-                        ;
                     </div>
                 )}
             />

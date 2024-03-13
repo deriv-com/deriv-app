@@ -72,8 +72,6 @@ const Header = observer(() => {
                 setAccounts(
                     client_accounts as Record<string, ReturnType<typeof useStore>['client']['accounts'][number]>
                 );
-                const active_loginig_from_local_storage = localStorage.getItem('active_loginid') ?? '';
-                if (loginid !== active_loginig_from_local_storage) switchAccount(active_loginig_from_local_storage);
             }
         }
     }, [accounts, client_accounts, is_logged_in, loginid, setAccounts, should_show_wallets, switchAccount]);

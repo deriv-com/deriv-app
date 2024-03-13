@@ -26,15 +26,15 @@ export const getManualFormValidationSchema = (
     const uploadConfig = getUploadConfig(selectedDocument);
 
     const documentExpiryValidation = Yup.object({
-        document_expiry: Yup.string().required(fieldsConfig.documentExpiry.errorMessage),
-    }).default(() => ({ document_expiry: '' }));
+        documentExpiry: Yup.string().required(fieldsConfig.documentExpiry.errorMessage),
+    }).default(() => ({ documentExpiry: '' }));
 
     const documentUploadValidation = Object.fromEntries(
         uploadConfig.map(item => [item.pageType, Yup.string().required(item.error).default(null)])
     );
 
     const baseSchema = Yup.object({
-        document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
+        documentNumber: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
         ...documentUploadValidation,
     });
 

@@ -58,14 +58,20 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
         }
     };
 
-    const { address_city, address_line_1, address_line_2, address_postcode, address_state } = settings;
+    const {
+        address_city: addressCity,
+        address_line_1: addressLine1,
+        address_line_2: addressLine2,
+        address_postcode: addressPostcode,
+        address_state: addressState,
+    } = settings;
 
     const initialValues: TAddressDetails = {
-        addressCity: address_city ?? '',
-        addressLine1: address_line_1 ?? '',
-        addressLine2: address_line_2 ?? '',
-        addressPostcode: address_postcode ?? '',
-        addressState: address_state ?? '',
+        addressCity: addressCity ?? '',
+        addressLine1: addressLine1 ?? '',
+        addressLine2: addressLine2 ?? '',
+        addressPostcode: addressPostcode ?? '',
+        addressState: addressState ?? '',
     };
 
     if (fetchError) {

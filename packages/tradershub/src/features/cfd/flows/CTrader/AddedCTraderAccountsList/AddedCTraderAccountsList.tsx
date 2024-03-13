@@ -31,6 +31,7 @@ const AddedCTraderAccountsList = () => {
         <div className='flex flex-col gap-y-4'>
             <Button
                 // todo: open transfer modal
+                color='black'
                 onClick={() => {
                     if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.CTRADER} />);
                     // else transferModal;

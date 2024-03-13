@@ -10,10 +10,10 @@ export const usePOAInfo = () => {
 
         const {
             document,
-            is_allow_document_upload,
-            is_poa_address_mismatch,
-            is_poa_resubmission_allowed,
-            is_poi_needed,
+            is_allow_document_upload: isAllowDocumentUpload,
+            is_poa_address_mismatch: isPoaAddressMismatch,
+            is_poa_resubmission_allowed: isPoaResubmissionAllowed,
+            is_poi_needed: isPOINeeded,
         } = authenticationData;
 
         const hasRestrictedMT5Account = !!mt5LoginList?.filter(mt5_account =>
@@ -21,21 +21,20 @@ export const usePOAInfo = () => {
         ).length;
 
         const isPOAResubmission =
-            is_poa_resubmission_allowed ||
+            isPoaResubmissionAllowed ||
             (hasRestrictedMT5Account && ['expired', 'rejected', 'suspected'].includes(document?.status ?? '')) ||
-            is_poa_address_mismatch;
+            isPoaAddressMismatch;
 
-        const documentNotRequired = !is_allow_document_upload;
+        const documentNotRequired = !isAllowDocumentUpload;
 
-        const documentSubmitted =
-            document?.status === 'pending' && !is_poa_resubmission_allowed && !is_poa_address_mismatch;
+        const documentSubmitted = document?.status === 'pending' && !isPoaResubmissionAllowed && !isPoaAddressMismatch;
 
         return {
             documentNotRequired,
             documentStatus: document?.status,
             documentSubmitted,
             isPOAResubmission,
-            isPOINeeded: is_poi_needed,
+            isPOINeeded,
         };
     }, [authenticationData, mt5LoginList]);
 

@@ -18,7 +18,11 @@ const OrderDetails = () => {
     });
     return (
         <div className='grid grid-cols-none lg:grid-cols-2'>
-            <OrdersChatSection id={orderId} otherUserDetails={orderDetails?.otherUserDetails} />
+            <OrdersChatSection
+                id={orderId}
+                isInactive={!!orderDetails?.isInactiveOrder}
+                otherUserDetails={orderDetails?.otherUserDetails}
+            />
         </div>
     );
 };

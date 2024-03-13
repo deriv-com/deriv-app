@@ -8,10 +8,11 @@ import './OrdersChatSection.scss';
 
 type TOrdersChatSectionProps = {
     id: string;
+    isInactive: boolean;
     otherUserDetails: ReturnType<typeof useExtendedOrderDetails>['data']['otherUserDetails'];
 };
 
-const OrdersChatSection = ({ id, otherUserDetails }: TOrdersChatSectionProps) => {
+const OrdersChatSection = ({ id, isInactive, otherUserDetails }: TOrdersChatSectionProps) => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { is_online: isOnline, last_online_time: lastOnlineTime, name } = otherUserDetails ?? {};
@@ -34,7 +35,7 @@ const OrdersChatSection = ({ id, otherUserDetails }: TOrdersChatSectionProps) =>
                 onBack={() => history.goBack()}
                 renderFooter={() => (
                     <ChatFooter
-                        isClosed={!!otherUserDetails?.isInactive || !!activeChatChannel?.isFrozen}
+                        isClosed={isInactive || !!activeChatChannel?.isFrozen}
                         sendFile={sendFile}
                         sendMessage={sendMessage}
                     />
@@ -44,7 +45,7 @@ const OrdersChatSection = ({ id, otherUserDetails }: TOrdersChatSectionProps) =>
                 {isChatLoading ? (
                     <Loader isFullScreen={false} />
                 ) : (
-                    <ChatMessages chatChannel={activeChatChannel} chatMessages={messages} isError userId={userId} />
+                    <ChatMessages chatChannel={activeChatChannel} chatMessages={messages} userId={userId} />
                 )}
             </FullPageMobileWrapper>
         );

@@ -7,7 +7,7 @@ type TProps = {
     description: string;
     icons: TIconTypes.TIcon[] | [];
     title: string;
-    urls: { url: string }[] | [];
+    urls: { url?: string }[] | [];
 };
 
 const CardDescription: React.FC<TProps> = ({ description, icons, title, urls = [] }) => {

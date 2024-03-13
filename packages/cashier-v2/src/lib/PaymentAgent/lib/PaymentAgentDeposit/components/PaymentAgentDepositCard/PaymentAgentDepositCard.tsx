@@ -1,10 +1,15 @@
 import React from 'react';
 import { ExpansionPanel } from '../../../../../../components';
+import type { THooks } from '../../../../../../hooks/types';
 import { PaymentAgentDepositCardDescription } from '../../../../components';
 import { PaymentAgentDepositCardDetails } from './components';
 import styles from './PaymentAgentDepositCard.module.scss';
 
-const PaymentAgentDepositCard = ({ paymentAgent }) => {
+type TProps = {
+    paymentAgent: THooks.PaymentAgentList[number];
+};
+
+const PaymentAgentDepositCard: React.FC<TProps> = ({ paymentAgent }) => {
     return (
         <div className={styles.container}>
             <ExpansionPanel

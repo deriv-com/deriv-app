@@ -2,7 +2,7 @@ import type { THooks } from '../../../hooks/types';
 import { getNormalizedPaymentMethod } from './getNormalizedPaymentMethod';
 
 export const getSupportedPaymentMethods = (paymentAgentList?: THooks.PaymentAgentList) => {
-    const supportedPaymentMethods: string[] = [];
+    const supportedPaymentMethods = new Set<string>();
 
     paymentAgentList?.forEach(paymentAgent => {
         paymentAgent.supported_payment_methods
@@ -18,15 +18,11 @@ export const getSupportedPaymentMethods = (paymentAgentList?: THooks.PaymentAgen
             .forEach((paymentMethod?: string) => {
                 if (!paymentMethod) return;
 
-                const isSupportedPaymentMethodExist = supportedPaymentMethods.some(
-                    supportedPaymentMethod => supportedPaymentMethod.toLowerCase() === paymentMethod?.toLowerCase()
-                );
-
-                if (!isSupportedPaymentMethodExist) {
-                    supportedPaymentMethods.push(paymentMethod);
+                if (!supportedPaymentMethods.has(paymentMethod)) {
+                    supportedPaymentMethods.add(paymentMethod);
                 }
             });
     });
 
-    return supportedPaymentMethods.sort();
+    return [...supportedPaymentMethods].sort((a, b) => a.localeCompare(b));
 };

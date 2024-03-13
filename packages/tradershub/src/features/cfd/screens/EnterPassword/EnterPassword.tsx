@@ -62,7 +62,7 @@ const EnterPassword = ({
             </div>
             {isDesktop && (
                 <div className='flex items-center justify-end w-full gap-8 pt-24'>
-                    <Button onClick={onSecondaryClick} size='lg' variant='outlined'>
+                    <Button color='black' onClick={onSecondaryClick} size='lg' variant='outlined'>
                         Forgot password?
                     </Button>
                     <Button

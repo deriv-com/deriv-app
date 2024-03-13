@@ -7,6 +7,16 @@ import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 
 const CurrencySelector = ({ className, default_value, list, onSelect }) => {
+    const local_currencies_list = list.map(currency => ({
+        ...currency,
+        component: (
+            <div className='currency-dropdown__list-item'>
+                <div className='currency-dropdown__list-item-symbol'>{currency.value}</div>
+                <div className='currency-dropdown__list-item-name'>{currency.display_name}</div>
+            </div>
+        ),
+    }));
+
     const getSortedList = list_items => {
         const sorted_list = list_items.filter(list_item => list_item.is_default || list_item.has_adverts);
         const index = sorted_list.findIndex(item => item.text === default_value);
@@ -18,7 +28,7 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
 
         return sorted_list;
     };
-    const [filtered_currency_list, setFilteredCurrencyList] = React.useState(getSortedList(list));
+    const [filtered_currency_list, setFilteredCurrencyList] = React.useState(getSortedList(local_currencies_list));
 
     return (
         <Formik enableReinitialize initialValues={{ currency: '' }}>
@@ -63,7 +73,7 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                                         icon='IcCloseCircle'
                                         onClick={() => {
                                             setFieldValue('currency', '');
-                                            setFilteredCurrencyList(getSortedList(list));
+                                            setFilteredCurrencyList(getSortedList(local_currencies_list));
                                         }}
                                     />
                                 ) : (

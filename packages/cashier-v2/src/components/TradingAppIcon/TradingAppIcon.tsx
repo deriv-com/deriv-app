@@ -2,18 +2,18 @@
 import React from 'react';
 import {
     AccountsDerivXIcon as DERIVX,
-    AccountsDmt5DerivedIcon as MT5_DERIVED,
-    AccountsDmt5FinancialIcon as MT5_FINANCIAL,
-    AccountsDmt5SwfIcon as MT5_ALL,
+    AccountsDmt5DerivedIcon as DMT5_DERIVED,
+    AccountsDmt5FinancialIcon as DMT5_FINANCIAL,
+    AccountsDmt5SwfIcon as DMT5_ALL,
     IconTypes,
 } from '@deriv/quill-icons';
 
 const iconMapper: Record<string, IconTypes> = {
     DERIVX,
-    MT5_DERIVED,
-    MT5_FINANCIAL,
-    MT5_SYNTHETIC: MT5_FINANCIAL,
-    MT5_ALL,
+    DMT5_DERIVED,
+    DMT5_FINANCIAL,
+    DMT5_SYNTHETIC: DMT5_FINANCIAL,
+    DMT5_ALL,
 };
 
 type TProps = {

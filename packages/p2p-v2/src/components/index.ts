@@ -6,6 +6,7 @@ export * from './Checklist';
 export * from './Clipboard';
 export * from './CloseHeader';
 export * from './Dropdown';
+export * from './FileDropzone';
 export * from './FlyoutMenu';
 export * from './FullPageMobileWrapper';
 export * from './Input';

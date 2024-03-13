@@ -138,7 +138,7 @@ export const getDistanceToServerTime = (compareTime: number, serverTime?: Moment
 };
 
 /**
- * The below function returns miliseconds into UTC formatted string
+ * Formats milliseconds into a string according to the specified format.
  * @param {Number} miliseconds miliseconds
  * @param {String} strFormat formatting using moment e.g - YYYY-MM-DD HH:mm
  */

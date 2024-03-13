@@ -8,10 +8,10 @@ type TChatMessageTextProps = {
 };
 
 const ChatMessageText = ({ children, color, type = '' }: PropsWithChildren<TChatMessageTextProps>) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     return (
         <div className='p2p-v2-chat-message-text'>
-            <Text color={color} lineHeight='xl' size={type === 'admin' && !isMobile ? 'xs' : 'sm'}>
+            <Text color={color} lineHeight='xl' size={type === 'admin' && isDesktop ? 'xs' : 'sm'}>
                 {children}
             </Text>
         </div>

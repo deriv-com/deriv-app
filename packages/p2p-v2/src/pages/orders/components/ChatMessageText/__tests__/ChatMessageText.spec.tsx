@@ -4,7 +4,7 @@ import ChatMessageText from '../ChatMessageText';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: () => ({ isMobile: false }),
+    useDevice: () => ({ isDesktop: true }),
 }));
 
 describe('ChatMessageText', () => {

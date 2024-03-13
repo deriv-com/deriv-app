@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { Button } from '@deriv-com/ui';
 import AttachmentIcon from '../../../../public/ic-attachment.svg';
 import SendMessageIcon from '../../../../public/ic-send-message.svg';
 
 type TChatFooterIconProps = {
     length: number;
-    onClick: () => void;
+    onClick: MouseEventHandler<HTMLButtonElement>;
 };
 
 const ChatFooterIcon = ({ length, onClick }: TChatFooterIconProps) => {

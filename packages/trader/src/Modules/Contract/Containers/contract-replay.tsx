@@ -190,8 +190,8 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                     <React.Fragment>
                                         <InfoBoxWidget />
                                         <SwipeableWrapper
-                                            data-testid='dt_replay-chart__swipeable-wrapper'
                                             className='replay-chart__container-swipeable-wrapper'
+                                            data-testid='dt_replay-chart__swipeable-wrapper'
                                             is_swipe_disabled={swipe_index === 1}
                                             onChange={
                                                 onChangeSwipeableIndex as React.ComponentProps<

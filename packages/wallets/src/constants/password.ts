@@ -44,3 +44,12 @@ export const warningMessages: Record<passwordKeys, string> = {
     userInputs: 'There should not be any personal or page related data.',
     wordByItself: 'Single words are easy to guess.',
 };
+
+// Display on MT5 Password Reset Modal for new password requirements
+export const passwordRequirements = [
+    '8 to 16 characters',
+    'A special character such as ( _ @ ? ! / # )',
+    'An uppercase letter',
+    'A lowercase letter',
+    'A number',
+];

@@ -57,7 +57,6 @@ const EnterPassword: React.FC<TProps> = ({
                         shouldDisablePasswordMeter
                         showMessage={false}
                     />
-                    {/* TODO: handle redirection to MT5PasswordReset if BE returns with this error: InvalidTradingPlatformPasswordFormat' || 'IncorrectMT5PasswordFormat */}
                     {passwordError && (
                         <WalletText size='sm'>
                             Hint: You may have entered your Deriv password, which is different from your {title}{' '}

@@ -19,6 +19,7 @@ import { validPassword } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
+import MT5ResetPasswordModal from '../MT5ResetPasswordModal/MT5ResetPasswordModal';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -45,7 +46,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { getModalState, hide, show } = useModal();
     const { data: settings } = useSettings();
-    // TODO: add this parameter for PasswordNotSet for new MT5 password policy
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
@@ -252,8 +252,15 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         tradingPlatformPasswordChangeLoading,
     ]);
 
-    if (status === 'error' && error?.error?.code !== 'PasswordError') {
-        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
+    if (status === 'error') {
+        if (
+            error?.error?.code === 'InvalidTradingPlatformPasswordFormat' ||
+            error?.error?.code === 'IncorrectMT5PasswordFormat'
+        )
+            return <MT5ResetPasswordModal />;
+        else if (error?.error?.code !== 'PasswordError')
+            return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
+        return;
     }
 
     if (isSuccess) {

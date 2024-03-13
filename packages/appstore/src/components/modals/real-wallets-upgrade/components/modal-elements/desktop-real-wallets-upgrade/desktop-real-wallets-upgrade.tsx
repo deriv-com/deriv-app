@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
-import WalletsUpgradeFooter from './wallets-upgrade-footer';
-import WalletsUpgradeContent from './wallets-upgrade-content';
+import WalletsUpgradeFooter from '../wallets-upgrade-footer/wallets-upgrade-footer';
+import WalletsUpgradeContent from '../wallets-upgrade-content';
 import { TRealWalletsUpgradeSteps } from 'Types';
 
 const DesktopRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWalletsUpgradeSteps) => {
@@ -20,7 +20,7 @@ const DesktopRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWalle
             has_close_icon
             title=' '
         >
-            <Modal.Body className='wallet-steps'>
+            <Modal.Body>
                 <WalletsUpgradeContent wallet_upgrade_steps={wallet_upgrade_steps} />
             </Modal.Body>
             <WalletsUpgradeFooter wallet_upgrade_steps={wallet_upgrade_steps} />

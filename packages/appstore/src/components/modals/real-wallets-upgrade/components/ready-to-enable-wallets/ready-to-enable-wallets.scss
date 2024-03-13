@@ -1,4 +1,26 @@
-.wallet-steps {
+.ready-to-enable-wallets {
+    &__content {
+        max-width: 77.6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5rem auto 0;
+        text-align: center;
+
+        @include mobile {
+            margin: 2rem auto 8rem;
+        }
+    }
+
+    // this is for slightly better aligning the SVG with the "why wallets" one
+    &__image {
+        position: relative;
+        right: 0.3rem;
+        @include mobile {
+            right: 0.2rem;
+        }
+    }
+
     &__text {
         display: flex;
         flex-direction: column;
@@ -10,20 +32,17 @@
     }
 
     &__info-section {
+        display: grid;
+        grid-template-columns: 1.6rem 1fr;
+        align-items: center;
+        gap: 0.8rem;
         padding: 1.6rem;
         margin-top: 2.4rem;
         background-color: var(--transparent-info);
         border-radius: 0.8rem;
-        display: flex;
-        align-items: flex-start;
-        gap: 0.8rem;
-
-        &-icon {
-            height: 1.6rem;
-            min-width: 1.6rem;
-        }
 
         @include mobile {
+            align-items: start;
             padding: 0.8rem;
             margin-top: 1.6rem;
         }
@@ -33,10 +52,5 @@
         margin-top: 2.4rem;
         display: flex;
         justify-content: center;
-        .dc-checkbox__label {
-            @include mobile {
-                font-size: var(--text-size-xxs);
-            }
-        }
     }
 }

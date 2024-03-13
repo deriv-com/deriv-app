@@ -16,7 +16,7 @@ const WhyWallets = () => {
     ];
 
     return (
-        <div className='wallet-steps__content why-wallets__content'>
+        <div className='why-wallets__content'>
             <div className='why-wallets__image-container'>
                 <WalletsImage image={`why_wallets_${is_mobile ? 'mobile' : 'desktop'}`} />
             </div>
@@ -45,7 +45,7 @@ const WhyWallets = () => {
                 {bullets.map(bullet => (
                     <div key={bullet} className='why-wallets__bullet'>
                         {bullet && (
-                            <div className='why-wallets__bullet-points'>
+                            <div className='why-wallets__bullet-row'>
                                 <Icon
                                     icon='IcAppstoreTick'
                                     className='why-wallets__bullet-icon'

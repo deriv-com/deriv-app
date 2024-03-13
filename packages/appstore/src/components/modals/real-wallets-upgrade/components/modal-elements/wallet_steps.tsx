@@ -1,7 +1,7 @@
 import React from 'react';
 import WhyWallets from '../why-wallets';
-import { WhyWalletsFooter, ReadyToEnableWalletsFooter } from './wallets-upgrade-footer';
 import ReadyToEnableWallets from '../ready-to-enable-wallets';
+import { WhyWalletsFooter, ReadyToEnableWalletsFooter } from './wallets-upgrade-footer';
 import { TWalletSteps } from 'Types';
 
 const WalletSteps = ({

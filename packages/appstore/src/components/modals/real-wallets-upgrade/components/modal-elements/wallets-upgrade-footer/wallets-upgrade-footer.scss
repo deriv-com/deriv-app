@@ -1,0 +1,23 @@
+.wallets-upgrade-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: inherit;
+
+    @include mobile {
+        background: var(--fill-normal);
+
+        &__button {
+            width: 100%;
+        }
+    }
+
+    @include mobile {
+        &__mobile-progress-bar-container {
+            height: 4rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

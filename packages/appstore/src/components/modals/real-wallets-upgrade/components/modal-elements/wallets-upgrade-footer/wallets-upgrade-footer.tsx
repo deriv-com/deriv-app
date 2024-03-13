@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, ProgressBarTracker } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import WalletSteps from './wallet_steps';
+import WalletSteps from '../wallet_steps';
 import { TRealWalletsUpgradeSteps } from 'Types';
 import './wallets-upgrade-footer.scss';
 
@@ -22,8 +22,8 @@ export const WhyWalletsFooter = ({ handleNext }: TWhyWalletsFooter) => {
     const { is_desktop } = ui;
 
     return is_desktop ? (
-        <Modal.Footer className='wallet-steps__footer' has_separator>
-            <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
+        <Modal.Footer className='wallets-upgrade-footer' has_separator>
+            <Button primary large className='wallets-upgrade-footer__button' onClick={handleNext}>
                 <Localize i18n_default_text='Next' />
             </Button>
         </Modal.Footer>
@@ -39,16 +39,16 @@ export const ReadyToEnableWalletsFooter = ({
     const { is_desktop } = ui;
 
     return (
-        <Modal.Footer className='wallet-steps__footer' has_separator>
+        <Modal.Footer className='wallets-upgrade-footer' has_separator>
             {is_desktop && (
-                <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
+                <Button secondary large className='wallets-upgrade-footer__button' onClick={handleBack}>
                     <Localize i18n_default_text='Back' />
                 </Button>
             )}
             <Button
                 primary
                 large
-                className='wallet-steps__footer-button'
+                className='wallets-upgrade-footer__button'
                 disabled={!is_disabled}
                 onClick={upgradeToWallets}
             >

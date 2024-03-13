@@ -1,0 +1,15 @@
+@include mobile {
+    .mobile-real-wallets-upgrade {
+        .dc-swipeable {
+            overflow-x: hidden;
+
+            &__nav {
+                display: none;
+            }
+
+            &__item {
+                padding-inline: 1.6rem;
+            }
+        }
+    }
+}

@@ -6,9 +6,6 @@ import { useStore } from '@deriv/stores';
  * @deprecated This hook is deprecated. Please use the hook from @deriv/api instead.
  */
 const useWalletMigration = () => {
-    // TODO: delete it later, it's a temporary solution
-    // because we have to check for authorize from client store before doing API call
-    // This hook will be refactored later for subscribe when BE is ready
     const { client } = useStore();
     const { is_authorize } = client;
 

@@ -59,13 +59,6 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                     components={[<strong key={0} />]}
                 />
             </Text>
-
-            <Text as='p' align='center' size='xxs'>
-                <Localize
-                    i18n_default_text='For MT5 login issues, visit our <0>Help Centre</0>.'
-                    components={[<StaticUrl key={0} className='help-center-link' href={mt5_help_centre_url} />]}
-                />
-            </Text>
         </div>
     );
 };

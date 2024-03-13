@@ -4,9 +4,9 @@ import getActiveLoginIDFromLocalStorage from './getActiveLoginIDFromLocalStorage
 /**
  * Gets the current user's auth `token` for the active `loginid` from the `localStorage`.
  */
-const getActiveAuthTokenIDFromLocalStorage = () => {
+const getActiveAuthTokenIDFromLocalStorage = (loginIDKey?: string) => {
     const accounts = getAccountsFromLocalStorage();
-    const active_loginid = getActiveLoginIDFromLocalStorage();
+    const active_loginid = getActiveLoginIDFromLocalStorage(loginIDKey);
 
     // If there is no active loginid or no accounts list, return undefined.
     if (!active_loginid || !accounts) return;

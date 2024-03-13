@@ -8,11 +8,17 @@ type TRowData = {
     ipAddress?: string;
     status?: string;
 };
+const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as const;
 
-const headers = ['Date and Time', 'Action', 'Browser', 'IP Address', 'Status'] as const;
-const columns = headers.map(header => ({
-    header,
-}));
+const headers = {
+    datetime: 'Date and Time',
+    action: 'Action',
+    browser: 'Browser',
+    ipAddress: 'IP Address',
+    status: 'Status',
+};
+
+const columns = columnOrder.map(key => ({ header: headers[key] }));
 
 export const LoginHistory = () => {
     return (
@@ -35,6 +41,7 @@ export const LoginHistory = () => {
                         {Object.keys(data).map(key => (
                             <div key={key}>{data[key as keyof TRowData]}</div>
                         ))}
+                        ;
                     </div>
                 )}
             />

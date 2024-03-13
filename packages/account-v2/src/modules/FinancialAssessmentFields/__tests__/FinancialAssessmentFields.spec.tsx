@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { APIProvider, AuthProvider, useAuthorize } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { FinancialAssessmentFields } from '../FinancialAssessmentFields';
 
 jest.mock('@deriv-com/ui', () => ({
@@ -9,10 +10,18 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-// jest.mock('../../../components/FormFields/', () => ({
-//     ...jest.requireActual('../../../components/FormFields'),
-//     FormDropDownField: jest.fn(() => <div data-testid='dt_dropdown' />),
-// }));
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useAuthorize: jest.fn(() => ({
+        data: {
+            landing_company_name: 'svg',
+        },
+    })),
+}));
+
+beforeEach(() => {
+    jest.restoreAllMocks();
+});
 
 const initialValues = {
     accountTurnover: '',
@@ -63,6 +72,53 @@ describe('FinancialAssessmentFields', () => {
                 </APIProvider>
             )
         ).toThrow('FinancialAssessmentFields must be used within a Formik component');
-        jest.restoreAllMocks();
+    });
+
+    it('should not render employment status if landing company is maltainvest', () => {
+        (useAuthorize as jest.Mock).mockReturnValue({
+            data: {
+                landing_company_name: 'maltainvest',
+            },
+        });
+
+        render(
+            <APIProvider>
+                <AuthProvider>
+                    <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+                        <Form>
+                            <FinancialAssessmentFields />;
+                        </Form>
+                    </Formik>
+                </AuthProvider>
+            </APIProvider>
+        );
+
+        expect(screen.queryByRole('combobox', { name: 'Employment Status' })).not.toBeInTheDocument();
+    });
+
+    it('should not render occupation if employment status is unemployed', () => {
+        (useAuthorize as jest.Mock).mockReturnValue({
+            data: {
+                landing_company_name: 'svg',
+            },
+        });
+        render(
+            <APIProvider>
+                <AuthProvider>
+                    <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+                        <Form>
+                            <FinancialAssessmentFields />;
+                        </Form>
+                    </Formik>
+                </AuthProvider>
+            </APIProvider>
+        );
+        // screen.debug();
+        expect(screen.getByRole('combobox', { name: 'Occupation' })).toBeInTheDocument();
+        const employmentStatus = screen.getByRole('combobox', { name: 'Employment status' });
+        userEvent.type(employmentStatus, 'Unemployed');
+        const unemployedOption = screen.getByRole('option', { name: 'Unemployed' });
+        userEvent.click(unemployedOption);
+        expect(screen.queryByRole('combobox', { name: 'Occupation' })).not.toBeInTheDocument();
     });
 });

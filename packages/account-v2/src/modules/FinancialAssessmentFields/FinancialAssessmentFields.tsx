@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 import { useAuthorize } from '@deriv/api-v2';
 import { FormDropDownField } from '../../components/FormFields';
+import { LANDING_COMPANY } from '../../constants/constants';
 import type { TFinancialAssessmentFormValues } from '../types';
 import {
     accountTurnoverList,
@@ -22,7 +23,7 @@ export const FinancialAssessmentFields = () => {
 
     const { landing_company_name: landingCompanyShortcode } = activeAccount;
 
-    const isMF = landingCompanyShortcode === 'maltainvest';
+    const isMF = landingCompanyShortcode === LANDING_COMPANY.MALTAINVEST;
 
     const formik = useFormikContext<TFinancialAssessmentFormValues>();
 

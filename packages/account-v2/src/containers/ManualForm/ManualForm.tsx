@@ -40,9 +40,10 @@ export const ManualForm = ({
         <Formik
             initialValues={initialValues as TmanualDocumentFormValues}
             onSubmit={onSubmit}
+            validateOnMount
             validationSchema={validationSchema}
         >
-            {({ dirty, isSubmitting, isValid }) => (
+            {({ dirty, isSubmitting, isValid, values }) => (
                 <Form>
                     <div className='flex flex-col min-h-screen w-full'>
                         <div className='flex flex-col gap-24'>
@@ -63,7 +64,7 @@ export const ManualForm = ({
                             >
                                 Back
                             </Button>
-                            <Button disabled={!isValid || isSubmitting || !dirty} size='lg'>
+                            <Button disabled={!isValid || isSubmitting || !dirty} size='lg' type='submit'>
                                 Next
                             </Button>
                         </div>

@@ -5,7 +5,6 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 import { Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 
@@ -16,7 +15,6 @@ const MT5MigrationBackSideContent = observer(() => {
     const { setAppstorePlatform } = common;
     const { setJurisdictionSelectedShortcode, setSentEmailModalStatus, submitMt5Password } = useCfdStore();
     const { getEligibleAccountToMigrate } = useMT5SVGEligibleToMigrate();
-    const { setShowModalFrontSide } = useMT5MigrationModalContext();
     const formik_ref = React.useRef<FormikProps<TCFDPasswordFormValues>>(null);
 
     const initial_values: TCFDPasswordFormValues = {
@@ -26,7 +24,6 @@ const MT5MigrationBackSideContent = observer(() => {
     const content_size = is_mobile ? 'xxs' : 'xs';
 
     const closeModal = () => {
-        setShowModalFrontSide(true);
         setAppstorePlatform(CFD_PLATFORMS.MT5);
         setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
         toggleMT5MigrationModal(false);

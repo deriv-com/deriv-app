@@ -3,6 +3,7 @@ import { Text, useDevice } from '@deriv-com/ui';
 import { CurrencyIcon, TradingAppIcon } from '../../../../../../../../components';
 import { getLandingCompanyNameOfMT5Account, getMarketType } from '../../../../../../../../helpers';
 import styles from './TransferAccountTile.module.scss';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 
 const getAccountName = account => {
     if (account.account_type === 'binary') return account.currency;
@@ -44,12 +45,12 @@ const TransferAccountTile = account => {
                 {getIcon(account.account, isMobile)}
                 <div className={styles['account-info']}>
                     <Text size='sm'>{getAccountName(account.account)}</Text>
-                    <Text color='less-prominent' size='xs'>
+                    <Text color='less-prominent' size='2xs'>
                         {account.account.loginid}
                     </Text>
                 </div>
             </div>
-            <Text size='md'>10,000.00 USD</Text>
+            <Text size='sm'>{displayMoney(account.account.balance, account.account.currency)}</Text>
         </div>
     );
 };

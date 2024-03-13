@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { TTransferableAccounts, TTransferFormikContext } from 'src/lib/Transfer/types';
 import { TCurrency } from '../../../../../../types';
 import { useTransfer } from '../../../../provider';
+import { TTransferableAccounts, TTransferFormikContext } from '../../../../types';
 import { getTransferValidationSchema } from '../../../../utils';
-import { TransferAccountTile } from './components/TransferAccountTile';
 import { TransferDropdown } from './components/TransferDropdown';
 import styles from './TransferFormAccountSelection.module.scss';
 
@@ -63,46 +62,30 @@ const TransferFormAccountSelection = ({
     return (
         <div className={styles.container}>
             <TransferDropdown
-                content={<TransferAccountTile account={values.fromAccount} />}
-                isFullWidth
                 label='From'
-                list={() =>
-                    accounts?.map(account => {
-                        return {
-                            listItem: <TransferAccountTile account={account} />,
-                            account_type: account.account_type,
-                            value: account.loginid,
-                        };
-                    })
-                }
+                list={accounts}
                 onSelect={loginid => {
                     setValues(currentValues => ({
                         ...currentValues,
-                        fromAccount: accounts?.find(account => account.loginid === loginid),
+                        fromAccount:
+                            values.toAccount?.loginid === loginid
+                                ? values.toAccount
+                                : accounts?.find(account => account.loginid === loginid),
+                        toAccount: values.toAccount?.loginid === loginid ? values.fromAccount : values.toAccount,
                     }));
                 }}
-                value={values.fromAccount.loginid}
+                value={values.fromAccount}
             />
             <TransferDropdown
-                content={<TransferAccountTile account={values.toAccount} />}
-                isFullWidth
                 label='To'
-                list={() =>
-                    accounts?.map(account => {
-                        return {
-                            listItem: <TransferAccountTile account={account} />,
-                            account_type: account.account_type,
-                            value: account.loginid,
-                        };
-                    })
-                }
+                list={accounts?.filter(account => account.loginid !== values.fromAccount?.loginid)}
                 onSelect={loginid => {
                     setValues(currentValues => ({
                         ...currentValues,
                         toAccount: accounts?.find(account => account.loginid === loginid),
                     }));
                 }}
-                value={values.toAccount.loginid}
+                value={values.toAccount}
             />
         </div>
     );

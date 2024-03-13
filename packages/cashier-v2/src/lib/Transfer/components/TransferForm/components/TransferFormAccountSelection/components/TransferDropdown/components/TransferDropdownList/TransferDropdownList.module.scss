@@ -22,4 +22,8 @@
     &:hover {
         background: $color-grey-4;
     }
+
+    &--selected {
+        background: $color-grey-5;
+    }
 }

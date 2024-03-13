@@ -1,8 +1,8 @@
 import { FormikValues } from 'formik';
 import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/object';
-import { useKycAuthStatus } from '@deriv/api-v2';
 import { getIDVDocumentExampleFormat, TIDVDocumentConfig } from '../constants/idvDocumentConfig';
+import { TSupportedDocuments } from '../types';
 
 export const getExampleFormat = (exampleFormat?: string) => (exampleFormat ? `Example: ${exampleFormat}` : '');
 
@@ -73,14 +73,7 @@ const validateAdditionalDocumentNumber = (
     return true;
 };
 
-export const getIDVFormValidationSchema = (
-    countryCode: string,
-    list: Exclude<
-        Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
-        undefined
-    >['idv'],
-    formData: FormikValues
-) => {
+export const getIDVFormValidationSchema = (countryCode: string, list: TSupportedDocuments, formData: FormikValues) => {
     return Yup.object({
         additionalDocument: Yup.string().test({
             name: 'testAdditionalDocumentNumber',
@@ -107,10 +100,7 @@ export const getIDVFormValidationSchema = (
 export const getSelectedDocumentConfigData = (
     countryCode: string,
     documentType: string,
-    documentList: Exclude<
-        Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
-        undefined
-    >['idv']
+    documentList: TSupportedDocuments
 ): TDocument | undefined => {
     const exampleFormatConfigs = getIDVDocumentExampleFormat();
 

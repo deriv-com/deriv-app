@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useFormikContext } from 'formik';
 import { InferType } from 'yup';
-import { useKycAuthStatus } from '@deriv/api-v2';
 import { FormDropDownField, FormInputField } from '../../components/FormFields';
+import { TSupportedDocuments } from '../../types';
 import { getIDVNotApplicableOption } from '../../utils/defaultOptions';
 import {
     generatePlaceholderText,
@@ -16,10 +16,7 @@ type TIDVFormProps = {
     allowDefaultValue?: boolean;
     allowIDVSkip?: boolean;
     countryCode: string;
-    supportedDocuments: Exclude<
-        Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
-        undefined
-    >['idv'];
+    supportedDocuments: TSupportedDocuments;
 };
 
 type TIDVFormValues = InferType<ReturnType<typeof getIDVFormValidationSchema>>;

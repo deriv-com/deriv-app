@@ -1,10 +1,11 @@
 import { ServerTime } from '@deriv/bot-skeleton';
+import { LocalStore } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import { mock_ws } from 'Utils/mock';
 import { mockDBotStore } from 'Stores/useDBotStore';
 import ChartStore, { g_subscribers_map } from '../chart-store';
-// import { g_subscribers_map } from '../chart-store';
+import 'Utils/mock/mock-local-storage';
 
 window.Blockly = {
     derivWorkspace: {
@@ -15,10 +16,6 @@ window.Blockly = {
 };
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
-jest.mock('@deriv/deriv-api/dist/DerivAPIBasic', () => ({
-    ...jest.requireActual('@deriv/deriv-api/dist/DerivAPIBasic'),
-    subscribe: jest.fn(() => 'asd'),
-}));
 
 describe('ChartStore', () => {
     const mock_store: TStores = mockStore({
@@ -60,7 +57,7 @@ describe('ChartStore', () => {
             getAllBlocks: jest.fn(() => [{ type: 'trade_definition_market', getFieldValue: jest.fn(() => 'EURUSD') }]),
         };
 
-        Blockly.derivWorkspace = mockWorkspace;
+        window.Blockly.derivWorkspace = mockWorkspace;
         chartStore.updateSymbol();
 
         expect(chartStore.symbol).toEqual('EURUSD');
@@ -94,6 +91,7 @@ describe('ChartStore', () => {
         const callback = jest.fn();
         chartStore.wsSubscribe(subscribe_req, callback);
         const key = JSON.stringify(subscribe_req);
+
         expect(g_subscribers_map).toHaveProperty(key);
         chartStore.wsForget(subscribe_req);
         expect(g_subscribers_map).not.toHaveProperty(key);
@@ -132,18 +130,11 @@ describe('ChartStore', () => {
         const active_symbols = [
             { market: 'EURUSD', display_name: 'EUR/USD' },
             { market: 'AUDUSD', display_name: 'AUD/USD' },
+            { market: 'CADUSD', display_name: 'CAD/USD' },
         ];
-
         const marketsOrder = chartStore.getMarketsOrder(active_symbols);
 
-        expect(marketsOrder).toEqual(['AUDUSD', 'EURUSD']);
-    });
-
-    it('should get markets order without dispay name', () => {
-        const active_symbols = [{ market: 'EURUSD' }, { market: 'AUDUSD', display_name: 'AUD/USD' }];
-        const marketsOrder = chartStore.getMarketsOrder(active_symbols);
-
-        expect(marketsOrder).toEqual(['EURUSD', 'AUDUSD']);
+        expect(marketsOrder).toEqual(['AUDUSD', 'CADUSD', 'EURUSD']);
     });
 
     it('should get markets order with synthetic index', () => {
@@ -158,5 +149,10 @@ describe('ChartStore', () => {
         chartStore.onSymbolChange(mockSymbol);
 
         expect(chartStore.symbol).toEqual(mockSymbol);
+    });
+
+    it('should call restoreFromStorage ', () => {
+        LocalStore.set('bot.chart_props', '{none}');
+        chartStore.restoreFromStorage();
     });
 });

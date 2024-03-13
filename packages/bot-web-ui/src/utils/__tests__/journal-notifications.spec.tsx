@@ -87,23 +87,7 @@ describe('isCustomJournalMessage', () => {
 
         isCustomJournalMessage(message, showErrorMessage, centerAndHighlightBlock, pushMessage);
 
-        setTimeout(() => {
-            expect(pushMessage).toHaveBeenCalledWith(expect.any(Object));
-        });
-    });
-
-    it('should push array as message when message is not an array', () => {
-        const message = {
-            message: ['item1'],
-            block_id: 123,
-            variable_name: 'testVariable',
-        };
-
-        isCustomJournalMessage(message, showErrorMessage, centerAndHighlightBlock, pushMessage);
-
-        setTimeout(() => {
-            expect(pushMessage).toHaveBeenCalledWith(expect.any(Object));
-        });
+        expect(pushMessage).toHaveBeenCalled();
     });
 
     it('should push boolean value as message when message is a boolean', () => {

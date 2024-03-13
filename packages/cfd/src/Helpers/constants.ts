@@ -52,8 +52,9 @@ const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: MT5TradeAccou
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
+const CTRADER_DESKTOP_MAC_DOWNLOAD = 'https://getctradermac.com/deriv/ctrader-deriv-setup.dmg';
+const CTRADER_DESKTOP_WINDOWS_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 
 const CTRADER_UAT_URL = 'https://ct-uat.deriv.com/';
 const CTRADER_PRODUCTION_URL = 'https://ct.deriv.com/';
@@ -62,7 +63,7 @@ const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503'
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
-const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
+const CTRADER_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-ctrader/id6466996509';
 const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
 const CTRADER_URL = is_staging || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
@@ -210,7 +211,8 @@ export {
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
     getPlatformMt5DownloadLink,
-    CTRADER_DESKTOP_DOWNLOAD,
+    CTRADER_DESKTOP_MAC_DOWNLOAD,
+    CTRADER_DESKTOP_WINDOWS_DOWNLOAD,
     getDXTradeWebTerminalLink,
     getCTraderWebTerminalLink,
     platformsIcons,

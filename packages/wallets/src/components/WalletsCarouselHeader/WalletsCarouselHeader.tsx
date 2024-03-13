@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useBalance } from '@deriv/api-v2';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
@@ -9,15 +10,16 @@ import './WalletsCarouselHeader.scss';
 type TProps = {
     balance?: string;
     currency: string;
+    hidden?: boolean;
     isDemo?: boolean;
 };
 
-const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, isDemo }) => {
+const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isDemo }) => {
     const history = useHistory();
     const { isLoading } = useBalance();
 
     return (
-        <div className='wallets-carousel-header'>
+        <div className={classNames('wallets-carousel-header', { 'wallets-carousel-header--hidden': hidden })}>
             <div className='wallets-carousel-header__content'>
                 <WalletCurrencyCard currency={currency} isCarouselHeader isDemo={isDemo} size='md' />
                 <div className='wallets-carousel-header__details'>
@@ -39,6 +41,7 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, isDemo }) 
             <IconButton
                 color='transparent'
                 data-testid='dt_wallets_carousel_header_button'
+                disabled={hidden}
                 icon={<IcCashierTransfer />}
                 iconSize='lg'
                 onClick={() => {

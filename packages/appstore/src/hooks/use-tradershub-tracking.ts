@@ -1,10 +1,10 @@
 import { Analytics } from '@deriv-com/analytics';
 import { useStore } from '@deriv/stores';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 // This hook is used to track the onboarding form in TradersHub
 export const useTradersHubTracking = () => {
-    const { traders_hub, ui, client } = useStore();
+    const { traders_hub } = useStore();
 
     const { is_first_time_visit } = traders_hub;
 

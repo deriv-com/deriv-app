@@ -15,22 +15,8 @@
     }
 
     &__details {
+        display: flex;
+        flex-direction: column;
         flex-grow: 1;
-        user-select: none;
-        &-title {
-            font-weight: bold;
-            font-size: 1.4rem;
-            line-height: 2rem;
-        }
-
-        &-description {
-            font-size: 1.2rem;
-            line-height: 1.4rem;
-
-            @include mobile {
-                font-size: 1.4rem;
-                line-height: 2rem;
-            }
-        }
     }
 }

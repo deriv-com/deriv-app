@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import { Formik } from 'formik';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import { TransferProvider } from '../../../provider';
 import { TAccount, TInitialTransferFormValues } from '../../../types';
 import TransferFormAmountInput from '../TransferFormAmountInput';
@@ -69,7 +70,7 @@ describe('TransferFormAmountInput', () => {
     it('renders two fields', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <TransferProvider accounts={ACCOUNTS}>
                         {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
                         <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
@@ -80,7 +81,7 @@ describe('TransferFormAmountInput', () => {
                             )}
                         </Formik>
                     </TransferProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -91,7 +92,7 @@ describe('TransferFormAmountInput', () => {
     it('has 2 decimal places in case of USD', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <TransferProvider accounts={ACCOUNTS}>
                         {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
                         <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
@@ -102,7 +103,7 @@ describe('TransferFormAmountInput', () => {
                             )}
                         </Formik>
                     </TransferProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -113,7 +114,7 @@ describe('TransferFormAmountInput', () => {
     it('has 8 decimal places in case of BTC', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <TransferProvider accounts={ACCOUNTS}>
                         {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
                         <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
@@ -124,7 +125,7 @@ describe('TransferFormAmountInput', () => {
                             )}
                         </Formik>
                     </TransferProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -135,7 +136,7 @@ describe('TransferFormAmountInput', () => {
     it('has 8 max digits restriction in case of USD', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <TransferProvider accounts={ACCOUNTS}>
                         {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
                         <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
@@ -146,7 +147,7 @@ describe('TransferFormAmountInput', () => {
                             )}
                         </Formik>
                     </TransferProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -158,7 +159,7 @@ describe('TransferFormAmountInput', () => {
     it('has 9 max digits restriction in case of BTC', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <TransferProvider accounts={ACCOUNTS}>
                         {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
                         <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
@@ -169,7 +170,7 @@ describe('TransferFormAmountInput', () => {
                             )}
                         </Formik>
                     </TransferProvider>
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 

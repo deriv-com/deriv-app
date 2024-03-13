@@ -15,12 +15,16 @@ const BuySellTable = () => {
     const [sortDropdownValue, setSortDropdownValue] = useState<TSortByValues>('rate');
     const [searchValue, setSearchValue] = useState<string>('');
     const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
+    const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([]);
+    const [shouldUseClientLimits, setShouldUseClientLimits] = useState<boolean>(true);
 
     const { data, isFetching, isLoading, loadMoreAdverts } = p2p.advert.useGetList({
         advertiser_name: searchValue,
         counterparty_type: activeTab === 'Buy' ? BUY_SELL.BUY : BUY_SELL.SELL,
         local_currency: selectedCurrency,
+        payment_method: selectedPaymentMethods.length > 0 ? selectedPaymentMethods : undefined,
         sort_by: sortDropdownValue,
+        use_client_limits: shouldUseClientLimits ? 1 : 0,
     });
 
     const onToggle = (value: string) => {
@@ -37,11 +41,15 @@ const BuySellTable = () => {
             <BuySellHeader
                 activeTab={activeTab}
                 selectedCurrency={selectedCurrency}
+                selectedPaymentMethods={selectedPaymentMethods}
                 setActiveTab={setActiveTab}
                 setIsFilterModalOpen={setIsFilterModalOpen}
                 setSearchValue={setSearchValue}
                 setSelectedCurrency={setSelectedCurrency}
+                setSelectedPaymentMethods={setSelectedPaymentMethods}
+                setShouldUseClientLimits={setShouldUseClientLimits}
                 setSortDropdownValue={setSortDropdownValue}
+                shouldUseClientLimits={shouldUseClientLimits}
                 sortDropdownValue={sortDropdownValue}
             />
             <BuySellTableRenderer

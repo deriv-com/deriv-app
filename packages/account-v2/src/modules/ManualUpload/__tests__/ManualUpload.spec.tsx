@@ -1,5 +1,4 @@
-import React, { ComponentProps } from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useManualForm } from '../../../hooks';
@@ -27,18 +26,6 @@ describe('ManualUpload', () => {
     afterAll(() => {
         jest.clearAllMocks();
     });
-
-    // const mockProps: ComponentProps<typeof ManualUpload> = {
-    //     countryCode: 'in',
-    // };
-
-    // const renderComponent = (props = mockProps) => (
-    //     <APIProvider standalone>
-    //         <AuthProvider>
-    //             <ManualUpload {...props} />
-    //         </AuthProvider>
-    //     </APIProvider>
-    // );
 
     it('should render DocumentSelection when no document is selected', () => {
         render(<ManualUpload countryCode='in' />);

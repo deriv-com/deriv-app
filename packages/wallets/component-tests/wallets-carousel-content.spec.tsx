@@ -56,7 +56,7 @@ test.describe('Wallets - Mobile carousel', () => {
         });
     });
 
-    test.skip('renders cards for all wallets', async ({ baseURL }) => {
+    test('renders cards for all wallets', async ({ baseURL }) => {
         await mobilePage.goto(`${baseURL}/wallets`);
 
         // Ensure the carousel is loaded and visible
@@ -89,9 +89,9 @@ test.describe('Wallets - Mobile carousel', () => {
         expect(card4text).toBe('0.00 USD');
     });
 
-    test.skip('renders progress bar with active item and updates it when swiping', async ({ baseURL }) => {
+    test('renders progress bar with active item and updates it when swiping', async ({ baseURL }) => {
         await mobilePage.goto(`${baseURL}/wallets`);
-        const activeProgressBarItem = mobilePage.locator('.wallets-progress-bar div:nth-child(1)');
+        const activeProgressBarItem = await mobilePage.locator('.wallets-progress-bar div:nth-child(1)');
         const progressBarItemClass = await activeProgressBarItem.getAttribute('class');
 
         expect(progressBarItemClass).toContain('wallets-progress-bar-active');
@@ -99,7 +99,7 @@ test.describe('Wallets - Mobile carousel', () => {
         // swipe left
         await swipeLeft(mobilePage);
 
-        const activeProgressBarItem2 = mobilePage.locator('.wallets-progress-bar div:nth-child(2)');
+        const activeProgressBarItem2 = await mobilePage.locator('.wallets-progress-bar div:nth-child(2)');
         const progressBarItemClass2 = await activeProgressBarItem2.getAttribute('class');
 
         expect(progressBarItemClass2).toContain('wallets-progress-bar-active');
@@ -109,23 +109,23 @@ test.describe('Wallets - Mobile carousel', () => {
 
         await swipeLeft(mobilePage);
 
-        const activeProgressBarItem3 = mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
+        const activeProgressBarItem3 = await mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
         const progressBarItemClass3 = await activeProgressBarItem3.getAttribute('class');
 
         expect(progressBarItemClass3).toContain('wallets-progress-bar-active');
     });
 
-    test.skip('switches account when clicking on progress bar', async ({ baseURL }) => {
+    test('switches account when clicking on progress bar', async ({ baseURL }) => {
         // given
         await mobilePage.goto(`${baseURL}/wallets`);
 
-        const progressBarItem = mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
+        const progressBarItem = await mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
 
         // when
         await progressBarItem.click();
 
         // then
-        const activeProgressBarItem2 = mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
+        const activeProgressBarItem2 = await mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
         const progressBarItemClass2 = await activeProgressBarItem2.getAttribute('class');
 
         expect(progressBarItemClass2).toContain('wallets-progress-bar-active');

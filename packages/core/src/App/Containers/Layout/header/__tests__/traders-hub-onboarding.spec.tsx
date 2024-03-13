@@ -18,7 +18,7 @@ jest.mock('@deriv/hooks', () => ({
 describe('TradersHubOnboarding', () => {
     const onboarding_icon_testid = 'dt_traders_hub_onboarding_icon';
     const popover_wrapper_testid = 'dt_popover_wrapper';
-    const view_onboarding_message = /view onboarding/i;
+    const view_onboarding_message = /view tutorial/i;
 
     const history = createBrowserHistory();
     const renderTradersHubOnboardingWithRouter = (mocked_store: TCoreStores = mockStore({})) => {
@@ -31,12 +31,11 @@ describe('TradersHubOnboarding', () => {
         );
     };
 
-    it('should render "TradersHubOnboarding" component, and redirect to onboarding should work', () => {
+    it('should render "TradersHubOnboarding" component', () => {
         renderTradersHubOnboardingWithRouter();
         expect(screen.getByTestId('dt_traders_hub_onboarding')).toBeInTheDocument();
 
         userEvent.click(screen.getByTestId(onboarding_icon_testid));
-        expect(history.location.pathname).toBe(routes.onboarding);
     });
 
     it('should display Traders hub onboarding icon + popover tooltip should appear on hover in desktop', () => {
@@ -48,7 +47,7 @@ describe('TradersHubOnboarding', () => {
         expect(view_onboarding).toBeInTheDocument();
     });
 
-    it('should not display popover tooltip in mobile, and redirect to onboarding should work', () => {
+    it('should not display popover tooltip in mobile', () => {
         renderTradersHubOnboardingWithRouter(
             mockStore({
                 ui: {
@@ -61,6 +60,5 @@ describe('TradersHubOnboarding', () => {
         expect(view_onboarding).not.toBeInTheDocument();
 
         userEvent.click(screen.getByTestId(onboarding_icon_testid));
-        expect(history.location.pathname).toBe(routes.onboarding);
     });
 });

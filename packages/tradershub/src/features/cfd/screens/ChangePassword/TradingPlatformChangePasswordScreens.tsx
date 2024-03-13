@@ -48,7 +48,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
             ),
             button: (
                 <div className='flex gap-8'>
-                    <Button onClick={() => hide()} size='lg' variant='outlined'>
+                    <Button color='black' onClick={() => hide()} size='lg' variant='outlined'>
                         Cancel
                     </Button>
                     <Button

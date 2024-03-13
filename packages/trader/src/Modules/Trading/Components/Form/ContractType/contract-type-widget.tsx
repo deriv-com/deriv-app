@@ -41,15 +41,14 @@ const ContractTypeWidget = observer(
         const [selected_category, setSelectedCategory] = React.useState<TList['key']>('All');
         const [search_query, setSearchQuery] = React.useState('');
         const [item, setItem] = React.useState<TContractType | null>(null);
+        const animation_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
         const handleClickOutside = React.useCallback(
             (event: MouseEvent) => {
                 if (is_mobile) return;
                 if (wrapper_ref && !wrapper_ref.current?.contains(event.target as Node) && is_dialog_open) {
                     setDialogVisibility(false);
-                    setInfoDialogVisibility(false);
                     setItem({ ...item, value });
-                    setHideBackButton(false);
                 }
             },
             [item, value, is_dialog_open, is_mobile]
@@ -57,6 +56,12 @@ const ContractTypeWidget = observer(
 
         const getCategoryName = (clicked_item: TContractType) =>
             getContractTypes(list_with_category(), clicked_item)?.find(item => item.value === clicked_item.value)?.text;
+
+        React.useEffect(() => {
+            return () => {
+                clearTimeout(animation_timeout.current);
+            };
+        }, []);
 
         React.useEffect(() => {
             document.addEventListener('mousedown', handleClickOutside);
@@ -127,10 +132,6 @@ const ContractTypeWidget = observer(
             });
         };
 
-        const handleVisibility = () => {
-            setDialogVisibility(!is_dialog_open);
-        };
-
         const onSearchBlur = () => {
             if (search_query) {
                 Analytics.trackEvent('ce_trade_types_form', {
@@ -142,8 +143,10 @@ const ContractTypeWidget = observer(
 
         const onWidgetClick = () => {
             setDialogVisibility(!is_dialog_open);
-            setHideBackButton(false);
-            setInfoDialogVisibility(false);
+            animation_timeout.current = setTimeout(() => {
+                setHideBackButton(false);
+                setInfoDialogVisibility(false);
+            }, 200);
             setItem({ ...item, value });
         };
 
@@ -155,8 +158,14 @@ const ContractTypeWidget = observer(
         const onChangeInput = (searchQueryItem: string) => setSearchQuery(searchQueryItem);
 
         const handleLearnMore = () => {
-            handleVisibility();
-            handleInfoClick(item || { value });
+            setDialogVisibility(true);
+            setInfoDialogVisibility(true);
+            setItem(item || { value });
+            Analytics.trackEvent('ce_trade_types_form', {
+                action: 'info_open',
+                tab_name: selected_category,
+                trade_type_name: getCategoryName(item || { value }),
+            });
             setHideBackButton(true);
         };
 

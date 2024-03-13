@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 const progressBarBaseStyles =
-    'z-10 box-border flex h-16 w-16 items-center rounded-pill outline outline-2 transition-all delay-8 duration-8 ease-out ';
+    'z-10 box-border flex h-16 w-16 items-center rounded-full outline outline-2 transition-all delay-8 duration-8 ease-out ';
 
 export const stepperVariants = cva(progressBarBaseStyles, {
     compoundVariants: [

@@ -31,6 +31,7 @@ const AddedDxtradeAccountsList = () => {
         <div className='flex flex-col gap-y-4'>
             <Button
                 // open transfer modal
+                color='black'
                 onClick={() => {
                     if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.DXTRADE} />);
                     // else transferModal;

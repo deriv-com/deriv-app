@@ -83,10 +83,9 @@ const getStatusBadgeConfig = (
         case MT5_ACCOUNT_RIGHTS.DISABLED:
             return {
                 text: (
-                    <Localize
-                        i18n_default_text='<0>Disabled</0>'
-                        components={[<Text key={0} weight='bold' size='xxxs' color='var(--status-danger)' />]}
-                    />
+                    <Text weight='bold' size='xxxs' color='var(--status-danger)'>
+                        <Localize i18n_default_text='Disabled' />
+                    </Text>
                 ),
                 icon: 'IcAlertDanger',
             };

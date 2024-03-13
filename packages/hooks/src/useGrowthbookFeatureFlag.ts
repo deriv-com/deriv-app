@@ -6,7 +6,10 @@ interface UseGrowthbookFeatureFlagArgs<T> {
     defaultValue: T;
 }
 
-const useGrowthbookFeatureFlag = <T extends string>({ featureFlag, defaultValue }: UseGrowthbookFeatureFlagArgs<T>) => {
+const useGrowthbookFeatureFlag = <T extends string | boolean>({
+    featureFlag,
+    defaultValue,
+}: UseGrowthbookFeatureFlagArgs<T>) => {
     const [featureFlagValue, setFeatureFlagValue] = useState<T>(defaultValue);
 
     useEffect(() => {

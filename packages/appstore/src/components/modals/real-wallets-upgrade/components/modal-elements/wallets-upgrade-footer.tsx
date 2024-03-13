@@ -1,68 +1,84 @@
 import React from 'react';
-import { Button, Modal } from '@deriv/components';
+import { Button, Modal, ProgressBarTracker } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import WalletSteps from './wallet_steps';
 import { TRealWalletsUpgradeSteps } from 'Types';
+import './wallets-upgrade-footer.scss';
 
-type TDefaultFooter = {
-    handleBack: () => void;
-    handleNext: () => void;
+type TWhyWalletsFooter = {
+    handleClose: VoidFunction;
+    handleNext: VoidFunction;
 };
 
-type TInitialFooter = {
-    handleClose: () => void;
-    handleNext: () => void;
-};
-
-type TEndFooter = {
-    handleBack: () => void;
+type TReadyToEnableWalletsFooter = {
+    handleBack: VoidFunction;
     is_disabled: boolean;
     upgradeToWallets: (value: boolean) => void;
 };
 
-export const DefaultFooter = ({ handleBack, handleNext }: TDefaultFooter) => (
-    <Modal.Footer className='wallet-steps__footer' has_separator>
-        <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
-            <Localize i18n_default_text='Back' />
-        </Button>
-        <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
-            <Localize i18n_default_text='Next' />
-        </Button>
-    </Modal.Footer>
-);
+export const WhyWalletsFooter = ({ handleNext }: TWhyWalletsFooter) => {
+    const { ui } = useStore();
+    const { is_desktop } = ui;
 
-export const InitialFooter = ({ handleNext }: TInitialFooter) => (
-    <Modal.Footer className='wallet-steps__footer' has_separator>
-        <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
-            <Localize i18n_default_text='Next' />
-        </Button>
-    </Modal.Footer>
-);
+    return is_desktop ? (
+        <Modal.Footer className='wallet-steps__footer' has_separator>
+            <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
+                <Localize i18n_default_text='Next' />
+            </Button>
+        </Modal.Footer>
+    ) : null;
+};
 
-export const EndFooter = ({ handleBack, is_disabled, upgradeToWallets }: TEndFooter) => (
-    <Modal.Footer className='wallet-steps__footer' has_separator>
-        <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
-            <Localize i18n_default_text='Back' />
-        </Button>
-        <Button
-            primary
-            large
-            className='wallet-steps__footer-button'
-            disabled={!is_disabled}
-            onClick={upgradeToWallets}
-        >
-            <Localize i18n_default_text='Enable' />
-        </Button>
-    </Modal.Footer>
-);
-
-const WalletsUpgradeFooter = ({ wallet_upgrade_steps }: TRealWalletsUpgradeSteps) => {
-    const wallet_steps_array = WalletSteps({ ...wallet_upgrade_steps });
-
-    const { current_step, handleBack, handleNext } = wallet_upgrade_steps;
+export const ReadyToEnableWalletsFooter = ({
+    handleBack,
+    is_disabled,
+    upgradeToWallets,
+}: TReadyToEnableWalletsFooter) => {
+    const { ui } = useStore();
+    const { is_desktop } = ui;
 
     return (
-        wallet_steps_array?.[current_step]?.footer || <DefaultFooter handleBack={handleBack} handleNext={handleNext} />
+        <Modal.Footer className='wallet-steps__footer' has_separator>
+            {is_desktop && (
+                <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
+                    <Localize i18n_default_text='Back' />
+                </Button>
+            )}
+            <Button
+                primary
+                large
+                className='wallet-steps__footer-button'
+                disabled={!is_disabled}
+                onClick={upgradeToWallets}
+            >
+                <Localize i18n_default_text='Enable' />
+            </Button>
+        </Modal.Footer>
+    );
+};
+
+const WalletsUpgradeFooter = ({ wallet_upgrade_steps }: TRealWalletsUpgradeSteps) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+
+    const wallet_steps_array = WalletSteps({ ...wallet_upgrade_steps });
+    const { current_step } = wallet_upgrade_steps;
+
+    return (
+        <>
+            {is_mobile && (
+                <div className='wallets-upgrade-footer__mobile-progress-bar-container'>
+                    <ProgressBarTracker
+                        step={current_step + 1}
+                        steps_list={['why_wallets_step', 'enable_step']}
+                        is_transition
+                    />
+                </div>
+            )}
+
+            {wallet_steps_array?.[current_step]?.footer}
+        </>
     );
 };
 

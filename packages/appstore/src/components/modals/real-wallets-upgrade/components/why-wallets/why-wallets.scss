@@ -7,10 +7,6 @@
 
     &__title {
         padding-top: 2rem;
-
-        @include mobile {
-            font-size: var(--text-size-m);
-        }
     }
 
     &__image-container {
@@ -21,10 +17,6 @@
 
     &__description {
         padding: 0.5rem 0 1.5rem;
-
-        @include mobile {
-            font-size: var(--text-size-sm);
-        }
     }
 
     &__bullet {

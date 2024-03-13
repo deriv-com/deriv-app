@@ -1,16 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ReadyToUpgradeWallets from '../ready-to-upgrade-wallets';
+import ReadyToEnableWallets from '../ready-to-enable-wallets';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
-describe('ReadyToUpgradeWallets', () => {
+describe('ReadyToEnableWallets', () => {
     const containerReadyToUpgradeWallets = (mock: ReturnType<typeof mockStore>) => {
         const toggleCheckbox = jest.fn();
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
-        return render(<ReadyToUpgradeWallets toggleCheckbox={toggleCheckbox} value={false} />, {
+        return render(<ReadyToEnableWallets toggleCheckbox={toggleCheckbox} value={false} />, {
             wrapper,
         });
     };

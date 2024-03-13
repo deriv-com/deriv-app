@@ -15,35 +15,33 @@ const WhyWallets = () => {
         localize('Multiple currency support'),
     ];
 
-    const text_title_size = is_mobile ? 'xsm' : 'l';
-    const text_body_size = is_mobile ? 's' : 'm';
-    const text_info_size = is_mobile ? 'xs' : 's';
-    const form_line_height = is_mobile ? 'm' : 'l';
-
     return (
         <div className='wallet-steps__content why-wallets__content'>
             <React.Fragment>
                 <div className='why-wallets__image-container'>
-                    <WalletsImage image={`why_wallets_${is_mobile ? 'mobile' : 'desktop'}`} />
+                    <WalletsImage
+                        image={`why_wallets_${is_mobile ? 'mobile' : 'desktop'}`}
+                        data-testid='dt_why_wallets'
+                    />
                 </div>
                 <Text
                     as='h1'
                     color='prominent'
                     weight='bold'
                     align='center'
-                    size={text_title_size}
+                    size={is_mobile ? 'xsm' : 'l'}
                     className='why-wallets__title'
-                    line_height={form_line_height}
+                    line_height='m'
                 >
                     <Localize i18n_default_text='Why Wallets' />
                 </Text>
                 <Text
                     as='p'
                     color='prominent'
-                    size={text_body_size}
+                    size={is_mobile ? 's' : 'm'}
                     align='center'
                     className='why-wallets__description'
-                    line_height={form_line_height}
+                    line_height='m'
                 >
                     <Localize i18n_default_text='Deposit, transfer, trade' />
                 </Text>
@@ -62,8 +60,8 @@ const WhyWallets = () => {
                                         color='prominent'
                                         align='center'
                                         className='why-wallets__bullet-text'
-                                        size={text_info_size}
-                                        line_height={form_line_height}
+                                        size={is_mobile ? 'xs' : 's'}
+                                        line_height={is_mobile ? 's' : 'm'}
                                     >
                                         {bullet}
                                     </Text>

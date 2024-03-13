@@ -18,20 +18,17 @@
         background-color: var(--transparent-info);
         border-radius: 0.8rem;
         display: flex;
-        flex-direction: column;
         align-items: flex-start;
-        justify-content: center;
         gap: 0.8rem;
 
-        @include mobile {
-            margin-top: 1.6rem;
+        &-icon {
+            height: 1.6rem;
+            min-width: 1.6rem;
         }
 
-        &-text {
-            display: grid;
-            grid-template-columns: 1.6rem 1fr;
-            grid-column-gap: 0.8rem;
-            align-items: center;
+        @include mobile {
+            padding: 0.8rem;
+            margin-top: 1.6rem;
         }
     }
 

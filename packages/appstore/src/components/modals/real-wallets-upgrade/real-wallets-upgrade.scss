@@ -10,6 +10,9 @@
 
     &__content {
         max-width: 77.6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin: 5rem auto 0;
         text-align: center;
 
@@ -28,7 +31,7 @@
             justify-content: center;
             background: var(--fill-normal);
             &-button {
-                width: 50%;
+                width: 100%;
             }
         }
     }

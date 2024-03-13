@@ -66,7 +66,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @balakrishna-deriv @yashim-deriv
+*                                                               @balakrishna-deriv @yashim-deriv @wojciech-deriv @matin-deriv
 
 
 # ==============================================================
@@ -180,7 +180,7 @@
 #  deriv-app/api-v2
 # ==============================================================
 
-/packages/api-v2/**/*                                           @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv
+/packages/api-v2/**/*                                           @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @hirad-deriv @mahdiyeh-deriv @maryia-deriv @matin-deriv @nijil-deriv @sandeep-deriv @yashim-deriv
 
 # ==============================================================
 #  scripts/check-imports.js 

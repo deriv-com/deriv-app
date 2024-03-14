@@ -66,6 +66,7 @@ const ChatFooter = ({ isClosed, sendFile, sendMessage }: TChatFooterProps) => {
 
     return (
         <div className='px-[2.4rem] pt-[1.6rem] pb-[2.8rem] w-full'>
+            {/* TODO: replace with text area component once multiline functionality available */}
             <Input
                 isFullWidth
                 label='Enter message'

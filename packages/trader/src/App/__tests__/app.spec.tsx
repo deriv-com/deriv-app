@@ -4,14 +4,11 @@ import App from '../app';
 import { mockStore } from '@deriv/stores';
 import moment from 'moment';
 
-const rootStore = {
-    ...mockStore({}),
+const rootStore = mockStore({
     common: {
-        ...mockStore({}).common,
         server_time: moment(new Date()).utc(),
     },
     client: {
-        ...mockStore({}).client,
         is_landing_company_loaded: true,
         is_logged_in: false,
     },
@@ -23,7 +20,7 @@ const rootStore = {
             },
         },
     },
-};
+});
 
 const mockWs = {
     activeSymbols: jest.fn(),

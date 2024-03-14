@@ -30,7 +30,7 @@ import {
     getGrowthRatePercentage,
     getCardLabels,
     toMoment,
-    isStarted,
+    hasContractStarted,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -333,8 +333,7 @@ const getRowAction: TDataList['getRowAction'] = row_obj => {
               ),
           }
         : getContractPath(row_obj.id || 0);
-    //Add alternative content for forwardstarting contracts, that haven't started yet
-    if (!isStarted(row_obj?.contract_info))
+    if (!hasContractStarted(row_obj?.contract_info))
         action = {
             component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
         };

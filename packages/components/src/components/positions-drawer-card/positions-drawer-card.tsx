@@ -14,7 +14,7 @@ import {
     getEndTime,
     isMobile,
     isVanillaContract,
-    isStarted,
+    hasContractStarted,
 } from '@deriv/shared';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TToastConfig } from '../types/contract.types';
@@ -89,7 +89,7 @@ const PositionsDrawerCard = ({
     });
 
     const is_unsupported =
-        !isStarted(
+        !hasContractStarted(
             contract_info as Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>
         ) ||
         !!getUnsupportedContracts()[contract_info?.contract_type as keyof ReturnType<typeof getUnsupportedContracts>];

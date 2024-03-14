@@ -10,7 +10,7 @@ import {
     TRADE_TYPES,
     isTurbosContract,
     isVanillaContract,
-    isStarted,
+    hasContractStarted,
     TContractInfo,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -138,7 +138,7 @@ const PositionsDrawer = observer(({ ...props }) => {
             symbol === p.contract_info.underlying &&
             //Added check for unsupported and forward starting contracts, which have not started yet
             getSupportedContracts()[p.contract_info?.contract_type as keyof ReturnType<typeof getSupportedContracts>] &&
-            isStarted(
+            hasContractStarted(
                 p.contract_info as Required<
                     Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>
                 >

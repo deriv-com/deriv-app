@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
 import useCurrencyConfig from './useCurrencyConfig';
@@ -6,13 +7,20 @@ import { displayMoney } from '../utils';
 
 /** A custom hook that returns the list of accounts for the current user. */
 const useDerivAccountsList = () => {
-    const { data: authorize_data, ...rest } = useAuthorize();
+    const { data: authorize_data, isSuccess } = useAuthorize();
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
 
+    const { data: account_list_data, ...rest } = useQuery('account_list', {
+        options: {
+            enabled: isSuccess,
+            refetchOnWindowFocus: false,
+        },
+    });
+
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
-        return authorize_data.account_list?.map(account => {
+        return account_list_data?.account_list?.map(account => {
             return {
                 ...account,
                 /** Creation time of the account. */
@@ -43,7 +51,7 @@ const useDerivAccountsList = () => {
                 is_mf: account.loginid?.startsWith('MF'),
             } as const;
         });
-    }, [authorize_data.account_list, authorize_data.loginid, getConfig]);
+    }, [account_list_data?.account_list, authorize_data.loginid, getConfig]);
 
     // Add balance to each account
     const modified_accounts_with_balance = useMemo(

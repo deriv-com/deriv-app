@@ -30,11 +30,7 @@ const PopulateHeader = observer(() => {
             symbol === p.contract_info.underlying &&
             //Added check for unsupported and forward starting contracts, which have not started yet
             getSupportedContracts()[p.contract_info?.contract_type as keyof ReturnType<typeof getSupportedContracts>] &&
-            hasContractStarted(
-                p.contract_info as Required<
-                    Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>
-                >
-            ) &&
+            hasContractStarted(p.contract_info) &&
             (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
                 ? filterByContractType(
                       p.contract_info,

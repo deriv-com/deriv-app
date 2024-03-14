@@ -6,8 +6,6 @@ import { TickSpotData, WebsiteStatus } from '@deriv/api-types';
 
 type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start'>>;
 
-type THasContractStarted = Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>;
-
 export const isContractElapsed = (contract_info: TContractInfo, tick?: null | TickSpotData) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
     const end_time = getEndTime(contract_info) || 0;
@@ -27,8 +25,8 @@ export const isSoldBeforeStart = (contract_info: TIsSoldBeforeStart) =>
     contract_info.sell_time && +contract_info.sell_time < +contract_info.date_start;
 
 //is used in trading page and open positions
-export const hasContractStarted = (contract_info: THasContractStarted) =>
-    contract_info?.current_spot_time > contract_info?.date_start;
+export const hasContractStarted = (contract_info: TContractInfo) =>
+    Number(contract_info?.current_spot_time) > Number(contract_info?.date_start);
 
 export const isUserCancelled = (contract_info: TContractInfo) => contract_info.status === 'cancelled';
 

@@ -89,9 +89,7 @@ const PositionsDrawerCard = ({
     });
 
     const is_unsupported =
-        !hasContractStarted(
-            contract_info as Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>
-        ) ||
+        !hasContractStarted(contract_info as Parameters<typeof hasContractStarted>[0]) ||
         !!getUnsupportedContracts()[contract_info?.contract_type as keyof ReturnType<typeof getUnsupportedContracts>];
 
     const loader_el = (

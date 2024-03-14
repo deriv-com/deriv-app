@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import BotStopNotification from 'Components/bot-stop-notification';
 import ContractResultOverlay from 'Components/contract-result-overlay';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -26,7 +25,6 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         onRunButtonClick,
         onStopBotClick,
         performSelfExclusionCheck,
-        show_bot_stop_message,
     } = run_panel;
     const { account_status } = client;
     const cashier_validation = account_status?.cashier_validation;
@@ -95,7 +93,6 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}
             />
-            {show_bot_stop_message && <BotStopNotification />}
             <div
                 className={classNames('animation__container', className, {
                     'animation--running': contract_stage > 0,

@@ -236,6 +236,11 @@ const AccountWizard = observer(props => {
                         ? getLocation(residence_list, values.tax_residence, 'value')
                         : values.tax_residence;
                 }
+                if (values.address_state) {
+                    values.address_state = values.address_state
+                        ? getLocation(states_list, values.address_state, 'value')
+                        : values.address_state;
+                }
 
                 return {
                     ...obj,

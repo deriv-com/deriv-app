@@ -91,4 +91,4 @@ Common pitfalls of BEM:
 - what if I *really* need to use store?
   * re-implement necessary logic within your package and don't use store
   * if re-implementing not viable, make explicit data synchronisation e.g. via special class responsible for synchronisation. So all the bad code interacting with old store is in one place and easy to remove.
-  * 
+  * under no circumstances, DO NOT attempt to synchronise code using non-explicit ways, like global variables, local storage, session etc. There should be zero coupling between old, core packages and new -v2 (as ultimate goal is to completely move away from core)

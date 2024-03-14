@@ -15,11 +15,7 @@ describe('<ReplayChart>', () => {
         is_reset_contract: false,
     };
 
-    const store = mockStore({
-        contract_replay: {
-            has_error: false,
-        },
-    });
+    const store = mockStore({});
 
     it('renders SmartChart component with correct props', () => {
         render(

@@ -6,13 +6,6 @@ import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import {
-    rudderStackSendQsEditStrategyEvent,
-    rudderStackSendQsRunStrategyEvent,
-    rudderStackSendQsSelectedTabEvent,
-    rudderStackSendQsStrategyChangeEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormValues } from '../types';
 import FormTabs from './form-tabs';
@@ -41,30 +34,18 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
-        rudderStackSendQsStrategyChangeEvent({ selected_strategy });
     };
 
     const handleTabChange = (tab: string) => {
         setActiveTab(tab);
-        rudderStackSendQsSelectedTabEvent({ strategy_switcher_mode: getQsActiveTabString(tab) });
     };
 
     const onEdit = async () => {
-        rudderStackSendQsEditStrategyEvent({
-            form_values: values,
-            selected_strategy,
-            strategy_switcher_mode: getQsActiveTabString(activeTab),
-        });
         await setFieldValue('action', 'EDIT');
         submitForm();
     };
 
     const onRun = () => {
-        rudderStackSendQsRunStrategyEvent({
-            form_values: values,
-            selected_strategy,
-            strategy_switcher_mode: getQsActiveTabString(activeTab),
-        });
         handleSubmit();
     };
 

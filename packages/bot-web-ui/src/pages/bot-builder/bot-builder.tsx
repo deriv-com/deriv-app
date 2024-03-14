@@ -3,9 +3,7 @@ import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics'; //BotTAction will add ones that PR gets merged
 import BotSnackbar from 'Components/bot-snackbar';
-import { DBOT_TABS } from 'Constants/bot-contents';
 import initDatadogLogs from 'Utils/datadog-logs';
 import LoadModal from '../../components/load-modal';
 import { useDBotStore } from '../../stores/useDBotStore';
@@ -31,24 +29,6 @@ const BotBuilder = observer(() => {
         initDatadogLogs(remote_config_data.tracking_datadog);
         window.is_datadog_logging_enabled = remote_config_data.tracking_datadog; // This will be used in the middleware inside of bot-skeleton to check if datadog is enabled before logging
     }, [remote_config_data]);
-
-    React.useEffect(() => {
-        const is_bot_builder = active_tab === DBOT_TABS.BOT_BUILDER;
-        if (is_bot_builder) {
-            Analytics.trackEvent('ce_bot_builder_form', {
-                action: 'open',
-                form_source: 'ce_bot_builder_form',
-            });
-        }
-        return () => {
-            if (is_bot_builder) {
-                Analytics.trackEvent('ce_bot_builder_form', {
-                    action: 'close',
-                    form_source: 'ce_bot_builder_form',
-                });
-            }
-        };
-    }, [active_tab]);
 
     React.useEffect(() => {
         onMount();

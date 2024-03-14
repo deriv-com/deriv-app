@@ -21,9 +21,15 @@ import {
 } from '../pages/tutorials/tutorials.types';
 import RootStore from './root-store';
 
+type TDialogOptions = {
+    title?: string;
+    url?: string;
+    type?: string;
+};
+
 export interface IDashboardStore {
     active_tab: number;
-    dialog_options: { [key: string]: string };
+    dialog_options: TDialogOptions;
     faq_search_value: string | null;
     has_mobile_preview_loaded: boolean;
     is_web_socket_intialised: boolean;
@@ -203,7 +209,7 @@ export default class DashboardStore implements IDashboardStore {
     active_tab = 0;
     active_tab_tutorials = 0;
     active_tour_step_number = 0;
-    dialog_options = {};
+    dialog_options: TDialogOptions = {};
     faq_search_value = '';
     getFileArray = [];
     has_file_loaded = false;
@@ -365,8 +371,8 @@ export default class DashboardStore implements IDashboardStore {
         this.faq_search_value = faq_search_value;
     };
 
-    showVideoDialog = (param: { [key: string]: string }): void => {
-        const { url, type } = param;
+    showVideoDialog = (dialog_option: TDialogOptions): void => {
+        const { url, type = '' } = dialog_option;
         const dialog_type = ['google', 'url'];
         if (dialog_type.includes(type)) {
             if (type === 'url') {

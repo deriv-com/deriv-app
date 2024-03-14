@@ -7,7 +7,6 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderstackDashboardDeleteYourBot } from '../analytics/rudderstack-dashboard';
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
@@ -63,9 +62,6 @@ const DeleteDialog = observer(() => {
         if (type === 'confirm') {
             removeBotStrategy(selected_strategy_id);
             setOpenSettings('delete', true);
-            rudderstackDashboardDeleteYourBot({ delete_popup_respond: 'yes' });
-        } else {
-            rudderstackDashboardDeleteYourBot({ delete_popup_respond: 'no' });
         }
         onToggleDeleteDialog(param);
     };

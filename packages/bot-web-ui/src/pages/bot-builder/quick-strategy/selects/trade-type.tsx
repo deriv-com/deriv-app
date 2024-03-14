@@ -92,7 +92,7 @@ const TradeTypeSelect: React.FC = () => {
                             list_items={trade_type_dropdown_options}
                             onItemSelection={(item: TItem) => {
                                 const value = (item as TTradeType)?.value;
-                                const text = (item as TTradeType)?.value;
+                                const text = (item as TTradeType)?.text;
                                 if (value && text) {
                                     setFieldValue?.('tradetype', value);
                                     setValue('tradetype', value);

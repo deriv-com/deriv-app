@@ -39,6 +39,7 @@ export type TContractInfo = {
     expiry_time: number;
     exit_tick?: number;
     id: string;
+    is_completed?: boolean;
     is_expired: number;
     is_forward_starting: number;
     is_intraday: number;

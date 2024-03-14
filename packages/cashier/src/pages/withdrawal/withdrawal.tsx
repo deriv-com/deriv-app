@@ -50,14 +50,14 @@ const WithdrawalPageContent = observer(() => {
     const { is_withdraw_confirmed } = withdraw;
     const currency_config = useCurrentCurrencyConfig();
 
-    if (!!currency_config && !currency_config?.is_crypto && (verification_code || iframe_url))
+    if (!currency_config.is_crypto && (verification_code || iframe_url))
         return (
             <PageContainer hide_breadcrumb>
                 <WithdrawalFiat />
             </PageContainer>
         );
 
-    if (!!currency_config && verification_code && currency_config?.is_crypto && !is_withdraw_confirmed)
+    if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed)
         return (
             <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
                 <WithdrawalCryptoForm />
@@ -72,7 +72,7 @@ const WithdrawalPageContent = observer(() => {
         );
 
     return (
-        <PageContainer hide_breadcrumb right={currency_config?.is_crypto ? <WithdrawalSideNotes /> : undefined}>
+        <PageContainer hide_breadcrumb right={currency_config.is_crypto ? <WithdrawalSideNotes /> : undefined}>
             <WithdrawalVerificationEmail />
         </PageContainer>
     );

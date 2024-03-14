@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { APIProvider } from '@deriv/api';
-import { useP2PSettings } from '@deriv/hooks';
 import { ExchangeRatesProvider, mockStore, StoreProvider } from '@deriv/stores';
 import FloatingRate from '../floating-rate';
+import { useP2PConfig } from '@deriv/hooks';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
     <APIProvider>
@@ -15,7 +15,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 jest.mock('@deriv/hooks');
 
-const mockUseP2PSettings = useP2PSettings as jest.MockedFunction<typeof useP2PSettings>;
+const mockUseP2PConfigs = useP2PConfig as jest.MockedFunction<typeof useP2PConfig>;
 
 describe('<FloatingRate/>', () => {
     const floating_rate_props = {
@@ -30,9 +30,9 @@ describe('<FloatingRate/>', () => {
     };
 
     beforeEach(() => {
-        mockUseP2PSettings.mockReturnValue({
+        mockUseP2PConfigs.mockReturnValue({
             // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
-            p2p_settings: {
+            data: {
                 override_exchange_rate: '1.00',
             },
         });

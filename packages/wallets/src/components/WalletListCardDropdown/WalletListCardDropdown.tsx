@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
@@ -9,7 +10,7 @@ import './WalletListCardDropdown.scss';
 const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { switchAccount } = useAuthorize();
+    const switchWalletAccount = useWalletAccountSwitcher();
     const { t } = useTranslation();
 
     const [inputWidth, setInputWidth] = useState('auto');
@@ -68,7 +69,7 @@ const WalletListCardDropdown = () => {
                     }
                     name='wallets-list-card-dropdown'
                     onSelect={selectedItem => {
-                        switchAccount(selectedItem);
+                        switchWalletAccount(selectedItem);
                     }}
                     showListHeader
                     showMessageContainer={false}

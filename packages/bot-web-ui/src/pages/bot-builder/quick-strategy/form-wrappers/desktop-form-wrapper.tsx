@@ -135,7 +135,15 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                             <Button secondary disabled={!isValid} onClick={onEdit}>
                                 {localize('Edit')}
                             </Button>
-                            <Button data-testid='qs-run-button' primary onClick={onRun} disabled={!isValid}>
+                            <Button
+                                data-testid='qs-run-button'
+                                primary
+                                onClick={e => {
+                                    e.preventDefault();
+                                    onRun();
+                                }}
+                                disabled={!isValid}
+                            >
                                 {localize('Run')}
                             </Button>
                         </div>

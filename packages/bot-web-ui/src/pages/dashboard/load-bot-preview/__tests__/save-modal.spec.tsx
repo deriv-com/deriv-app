@@ -113,7 +113,7 @@ describe('RecentComponent', () => {
 
         userEvent.click(screen.getByRole('radio', { name: /Google Drive/i }));
         await waitFor(async () => {
-            userEvent.click(screen.getByRole('button', { name: /Continue/i }));
+            userEvent.click(screen.getByRole('button', { name: /Save/i }));
         });
 
         expect(mock_DBot_store?.save_modal.onConfirmSave).toHaveBeenCalledWith(
@@ -128,7 +128,7 @@ describe('RecentComponent', () => {
 
         userEvent.click(screen.getByRole('radio', { name: /Local/i }));
         await waitFor(async () => {
-            userEvent.click(screen.getByRole('button', { name: /Continue/i }));
+            userEvent.click(screen.getByRole('button', { name: /Save/i }));
         });
 
         expect(mock_DBot_store?.save_modal.onConfirmSave).toHaveBeenCalledWith(

@@ -28,7 +28,7 @@ export const useTransfer = () => {
 };
 
 type TTransferProviderProps = {
-    accounts: THooks.TransferAccount;
+    accounts: THooks.TransferAccounts;
 };
 
 const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>> = ({ accounts, children }) => {

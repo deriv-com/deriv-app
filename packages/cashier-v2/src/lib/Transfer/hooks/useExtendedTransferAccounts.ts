@@ -4,7 +4,7 @@ import { THooks } from '../../../hooks/types';
 
 type TGetCurrencyConfig = ReturnType<typeof useCurrencyConfig>['getConfig'];
 
-const sortedMT5Accounts = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
+const sortedMT5Accounts = (accounts: THooks.TransferAccounts, getConfig: TGetCurrencyConfig) => {
     return [
         ...accounts
             .filter(account => account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'synthetic')
@@ -27,7 +27,7 @@ const sortedMT5Accounts = (accounts: THooks.TransferAccount, getConfig: TGetCurr
     ];
 };
 
-const derivCTrader = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
+const derivCTrader = (accounts: THooks.TransferAccounts, getConfig: TGetCurrencyConfig) => {
     return accounts
         .filter(account => account.account_type === 'ctrader')
         .map(account => ({
@@ -36,7 +36,7 @@ const derivCTrader = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyC
         }));
 };
 
-const derivXAccount = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) =>
+const derivXAccount = (accounts: THooks.TransferAccounts, getConfig: TGetCurrencyConfig) =>
     accounts
         .filter(account => account.account_type === 'dxtrade')
         .map(account => ({
@@ -44,7 +44,7 @@ const derivXAccount = (accounts: THooks.TransferAccount, getConfig: TGetCurrency
             currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
         }));
 
-const fiatDerivAccounts = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
+const fiatDerivAccounts = (accounts: THooks.TransferAccounts, getConfig: TGetCurrencyConfig) => {
     return accounts
         .filter(
             account => account.account_type === 'binary' && account.currency && getConfig(account.currency)?.is_fiat
@@ -55,7 +55,7 @@ const fiatDerivAccounts = (accounts: THooks.TransferAccount, getConfig: TGetCurr
         }));
 };
 
-const sortedCryptoDerivAccounts = (accounts: THooks.TransferAccount, getConfig: TGetCurrencyConfig) => {
+const sortedCryptoDerivAccounts = (accounts: THooks.TransferAccounts, getConfig: TGetCurrencyConfig) => {
     return accounts
         .filter(
             account => account.account_type === 'binary' && account.currency && getConfig(account.currency)?.is_crypto
@@ -75,7 +75,7 @@ const sortedCryptoDerivAccounts = (accounts: THooks.TransferAccount, getConfig: 
     - sorts the mt5 accounts based on group type
     - sorts the crypto accounts alphabetically
 */
-const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccount) => {
+const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccounts) => {
     // console.log('=> hook - accounts', accounts);
     const { data: activeAccount, isLoading: isActiveAccountLoading } = useActiveAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();

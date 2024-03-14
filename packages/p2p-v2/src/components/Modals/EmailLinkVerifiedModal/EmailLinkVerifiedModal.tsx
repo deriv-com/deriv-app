@@ -11,7 +11,7 @@ type TEmailLinkVerifiedModal = {
 // TODO: replace value, currency and username with actual values when implementing function
 const EmailLinkVerifiedModal = ({ isModalOpen, onRequestClose }: TEmailLinkVerifiedModal) => {
     return (
-        <Modal ariaHideApp={false} className='p2p-v2-email-link-verified-modal' isOpen>
+        <Modal ariaHideApp={false} className='p2p-v2-email-link-verified-modal' isOpen={isModalOpen}>
             <Modal.Header hideBorder onRequestClose={onRequestClose} />
             <Modal.Body className='flex flex-col items-center gap-[2.4rem] px-[2.4rem] pt-[2.4rem]'>
                 <DerivLightIcEmailVerificationLinkValidIcon height={128} width={128} />

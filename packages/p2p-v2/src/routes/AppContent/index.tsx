@@ -7,7 +7,6 @@ import { getCurrentRoute } from '@/utils';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import './index.scss';
-import { EmailLinkVerifiedModal } from '@/components/Modals';
 
 const DEFAULT_TAB = 'buy-sell';
 
@@ -78,7 +77,6 @@ const AppContent = () => {
                         })}
                     </Tabs>
                 )}
-                <EmailLinkVerifiedModal />
             </div>
         </>
     );

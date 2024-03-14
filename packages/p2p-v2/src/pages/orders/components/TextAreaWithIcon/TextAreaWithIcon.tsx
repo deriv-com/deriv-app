@@ -3,14 +3,14 @@ import { TextArea } from '@deriv-com/ui';
 import './TextAreaWithIcon.scss';
 
 type TTextAreaWithIconProps = ComponentProps<typeof TextArea> & {
-    icon?: ReactNode;
+    icon: ReactNode;
 };
 
 const TextAreaWithIcon = forwardRef<HTMLTextAreaElement, TTextAreaWithIconProps>(({ icon, ...rest }, ref) => {
     return (
         <div className='p2p-v2-text-area-with-icon'>
             <TextArea {...rest} className='p2p-v2-text-area-with-icon__textarea' ref={ref} textSize='sm' />
-            {icon && <div className='p2p-v2-text-area-with-icon__icon'>{icon}</div>}
+            {<div className='p2p-v2-text-area-with-icon__icon'>{icon}</div>}
         </div>
     );
 });

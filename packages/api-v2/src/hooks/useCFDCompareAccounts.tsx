@@ -3,6 +3,7 @@ import useActiveWalletAccount from './useActiveWalletAccount';
 import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 import useLandingCompany from './useLandingCompany';
 import useMT5AccountsList from './useMT5AccountsList';
+import useActiveTradingAccount from './useActiveTradingAccount';
 
 // Remove the hardcoded values and use the values from the API once it's ready
 export const MARKET_TYPE = {
@@ -67,9 +68,13 @@ const ctraderAccount = {
 };
 
 /** A custom hook that gets compare accounts values. */
-const useCFDCompareAccounts = () => {
+const useCFDCompareAccounts = (isEU?: boolean) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { is_virtual: isDemo } = activeWallet || {};
+    const { data: activeDerivTradingAccount } = useActiveTradingAccount();
+    const { is_virtual: isDemoWallet } = activeWallet ?? {};
+    const { is_virtual: isDemoTrading } = activeDerivTradingAccount ?? {};
+
+    const isDemo = isDemoWallet || isDemoTrading;
 
     const { data: allAvailableMt5Accounts } = useAvailableMT5Accounts();
     const { data: addedAccounts, ...rest } = useMT5AccountsList();
@@ -107,14 +112,21 @@ const useCFDCompareAccounts = () => {
 
         if (!modifiedMt5Data) return;
 
+        if (isEU) {
+            return modifiedMt5Data.filter(
+                account => account.shortcode === 'maltainvest' && account.market_type === 'financial'
+            );
+        }
+
         const sortedData = marketTypeOrder.reduce((acc, marketType) => {
-            const accounts = modifiedMt5Data.filter(account => account.market_type === marketType);
+            const accounts = modifiedMt5Data.filter(
+                account => account.market_type === marketType && account.shortcode !== 'maltainvest'
+            );
             if (!accounts.length) return acc;
             return [...acc, ...accounts];
         }, [] as typeof modifiedMt5Data);
-
         return sortedData;
-    }, [modifiedMt5Data]);
+    }, [isEU, modifiedMt5Data]);
 
     const { data: landingCompany } = useLandingCompany();
 

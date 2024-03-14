@@ -19,7 +19,7 @@ const getHighlightedIconLabel = (
     marketType: TMarketTypes,
     shortCode: TShortCode
 ): THighlightedIconLabel[] => {
-    const marketTypeShortCode = marketType?.concat('_', shortCode || '');
+    const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
 
     const forexLabel = (() => {
         if (isEuRegion) {
@@ -121,22 +121,22 @@ const getPlatformType = (platform: TPlatforms.All) => {
             return 'CTrader';
         case CFDPlatforms.DXTRADE:
         default:
-            return 'OtherCFDs';
+            return 'DerivX';
     }
 };
 
 const cfdConfig = {
-    counterparty_company: 'Deriv (SVG) LLC',
-    counterparty_company_description: 'Counterparty company',
+    counterpartyCompany: 'Deriv (SVG) LLC',
+    counterpartyCompanyDescription: 'Counterparty company',
     jurisdiction: 'St. Vincent & Grenadines',
-    jurisdiction_description: 'Jurisdiction',
+    jurisdictionDescription: 'Jurisdiction',
     leverage: '1:1000',
-    leverage_description: 'Maximum leverage',
+    leverageDescription: 'Maximum leverage',
     regulator: 'Financial Commission',
-    regulator_description: 'Regulator/External dispute resolution',
-    regulator_license: '',
+    regulatorDescription: 'Regulator/External dispute resolution',
+    regulatorLicense: '',
     spread: '0.5 pips',
-    spread_description: 'Spreads from',
+    spreadDescription: 'Spreads from',
 };
 
 const getJurisdictionDescription = (shortcode?: string) => {
@@ -145,41 +145,41 @@ const getJurisdictionDescription = (shortcode?: string) => {
         case MarketTypeShortcode.FINANCIAL_BVI:
             return {
                 ...cfdConfig,
-                counterparty_company: 'Deriv (BVI) Ltd',
+                counterpartyCompany: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
                 regulator: 'British Virgin Islands Financial Services Commission',
-                regulator_description: 'Regulator/External dispute resolution',
-                regulator_license: '(License no. SIBA/L/18/1114)',
+                regulatorDescription: 'Regulator/External dispute resolution',
+                regulatorLicense: '(License no. SIBA/L/18/1114)',
             };
         case MarketTypeShortcode.SYNTHETIC_VANUATU:
         case MarketTypeShortcode.FINANCIAL_VANUATU:
             return {
                 ...cfdConfig,
-                counterparty_company: 'Deriv (V) Ltd',
+                counterpartyCompany: 'Deriv (V) Ltd',
                 jurisdiction: 'Vanuatu',
                 regulator: 'Vanuatu Financial Services Commission',
-                regulator_description: 'Regulator/External dispute resolution',
-                regulator_license: '',
+                regulatorDescription: 'Regulator/External dispute resolution',
+                regulatorLicense: '',
             };
         case MarketTypeShortcode.FINANCIAL_LABUAN:
             return {
                 ...cfdConfig,
-                counterparty_company: 'Deriv (FX) Ltd',
+                counterpartyCompany: 'Deriv (FX) Ltd',
                 jurisdiction: 'Labuan',
                 leverage: '1:100',
                 regulator: 'Labuan Financial Services Authority',
-                regulator_description: 'Regulator/External dispute resolution',
-                regulator_license: '(License no. MB/18/0024)',
+                regulatorDescription: 'Regulator/External dispute resolution',
+                regulatorLicense: '(License no. MB/18/0024)',
             };
         case MarketTypeShortcode.FINANCIAL_MALTAINVEST:
             return {
                 ...cfdConfig,
-                counterparty_company: 'Deriv Investments (Europe) Limited',
+                counterpartyCompany: 'Deriv Investments (Europe) Limited',
                 jurisdiction: 'Malta',
                 leverage: '1:30',
                 regulator: 'Financial Commission',
-                regulator_description: '',
-                regulator_license: 'Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
+                regulatorDescription: '',
+                regulatorLicense: 'Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
             };
         case MarketTypeShortcode.ALL_DXTRADE:
         case MarketTypeShortcode.ALL_SVG:

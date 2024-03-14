@@ -6,7 +6,7 @@ import { useModal } from '@/providers';
 import { THooks } from '@/types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '@cfd/constants';
 import { TopUpModal, TradeModal } from '@cfd/modals';
-import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
+import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
@@ -31,6 +31,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
             trailing={() => (
                 <div className='flex flex-col gap-y-4'>
                     <Button
+                        color='black'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
                             if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.MT5} />);

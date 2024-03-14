@@ -53,7 +53,7 @@ type TAddressDetails = {
 };
 
 type TAutoComplete = {
-    value: boolean;
+    value: string;
     text: string;
 };
 
@@ -92,7 +92,7 @@ const AddressDetails = observer(
 
         const {
             ui,
-            client: { residence },
+            client: { residence, account_settings },
             traders_hub: { is_eu_user },
         } = useStore();
 
@@ -114,11 +114,6 @@ const AddressDetails = observer(
         };
 
         const handleSubmitData = (values: TAddressDetailFormProps, actions: FormikHelpers<TAddressDetailFormProps>) => {
-            if (values.address_state && states_list.length) {
-                values.address_state = address_state_to_display
-                    ? getLocation(states_list, address_state_to_display, 'value')
-                    : getLocation(states_list, values.address_state, 'value');
-            }
             onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
         };
 
@@ -187,7 +182,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('First line of address')}
                                                 disabled={
                                                     disabled_items.includes('address_line_1') ||
-                                                    (!!props.value?.address_line_1 && has_real_account)
+                                                    (!!account_settings?.address_line_1 && has_real_account)
                                                 }
                                             />
                                             <FormInputField
@@ -197,7 +192,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('Second line of address')}
                                                 disabled={
                                                     disabled_items.includes('address_line_2') ||
-                                                    (!!props.value?.address_line_2 && has_real_account)
+                                                    (!!account_settings?.address_line_2 && has_real_account)
                                                 }
                                             />
                                             <FormInputField
@@ -207,7 +202,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('Town/City')}
                                                 disabled={
                                                     disabled_items.includes('address_city') ||
-                                                    (!!props.value?.address_city && has_real_account)
+                                                    (!!account_settings?.address_city && has_real_account)
                                                 }
                                             />
                                             {!isFetched && (
@@ -244,7 +239,8 @@ const AddressDetails = observer(
                                                                     list_portal_id='modal_root'
                                                                     disabled={
                                                                         disabled_items.includes('address_state') ||
-                                                                        (props.value?.address_state && has_real_account)
+                                                                        (!!account_settings?.address_state &&
+                                                                            has_real_account)
                                                                     }
                                                                 />
                                                             </DesktopWrapper>
@@ -267,7 +263,7 @@ const AddressDetails = observer(
                                                                     }}
                                                                     disabled={
                                                                         disabled_items.includes('address_state') ||
-                                                                        (!!props.value?.address_state &&
+                                                                        (!!account_settings?.address_state &&
                                                                             has_real_account)
                                                                     }
                                                                 />
@@ -283,7 +279,7 @@ const AddressDetails = observer(
                                                     placeholder={localize('State/Province')}
                                                     disabled={
                                                         disabled_items.includes('address_state') ||
-                                                        (!!props.value?.address_state && has_real_account)
+                                                        (!!account_settings?.address_state && has_real_account)
                                                     }
                                                 />
                                             )}
@@ -297,7 +293,7 @@ const AddressDetails = observer(
                                                 }}
                                                 disabled={
                                                     disabled_items.includes('address_postcode') ||
-                                                    (!!props.value?.address_postcode && has_real_account)
+                                                    (!!account_settings?.address_postcode && has_real_account)
                                                 }
                                             />
                                         </div>

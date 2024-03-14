@@ -30,16 +30,7 @@ describe('<CurrencySelector/>', () => {
         set_currency: false,
     };
 
-    const fiat_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.';
-    const mt5_cfd_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.';
-    const dxtrade_non_eu_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 or Deriv X account.';
-    const mt5_eu =
-        "Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real CFDs account, your account currency cannot be changed.";
-    const mt5_non_eu =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 account.';
+    const msg = 'Please note that you can only have 1 fiat account.';
 
     const runCommonTests = (msg: string) => {
         expect(screen.getByRole('heading', { name: /fiat currencies/i })).toBeInTheDocument();
@@ -249,7 +240,7 @@ describe('<CurrencySelector/>', () => {
     it('should render Fiat currencies and submit the form', async () => {
         renderComponent({});
 
-        runCommonTests(fiat_msg);
+        runCommonTests(msg);
         fireEvent.click(screen.getByRole('button', { name: /next/i }));
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalled();
@@ -309,7 +300,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(dxtrade_non_eu_msg);
+        runCommonTests(msg);
     });
 
     it('should render Fiat currencies when is_dxtrade_allowed,is_eu and is_mt5_allowed are true', () => {
@@ -325,7 +316,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(mt5_eu);
+        runCommonTests(msg);
     });
 
     it('should render Fiat currencies when is_mt5_allowed and is_eu are true', () => {
@@ -340,7 +331,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(mt5_eu);
+        runCommonTests(msg);
     });
 
     it('should render Fiat currencies when is_mt5_allowed is true', () => {
@@ -352,7 +343,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(mt5_non_eu);
+        runCommonTests(msg);
     });
 
     it('should render Cryptocurrencies and submit the form ', async () => {
@@ -391,7 +382,7 @@ describe('<CurrencySelector/>', () => {
 
     it('should submit the form when getCurrentStep is not passed ', async () => {
         renderComponent({});
-        runCommonTests(fiat_msg);
+        runCommonTests(msg);
         fireEvent.click(screen.getByRole('button', { name: /next/i }));
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalled();

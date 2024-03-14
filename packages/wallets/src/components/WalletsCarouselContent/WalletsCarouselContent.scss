@@ -3,14 +3,12 @@
     width: 100vw;
     padding: 2rem;
     overflow: hidden;
-    gap: 1.6rem;
 
     &__container {
-        height: max-content;
+        height: 17.6rem;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        gap: 2.4rem;
 
         & > .wallets-card__details {
             width: 45vw;

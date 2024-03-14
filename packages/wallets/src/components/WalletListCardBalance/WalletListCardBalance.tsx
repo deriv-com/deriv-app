@@ -6,13 +6,13 @@ import './WalletListCardBalance.scss';
 
 const WalletListCardBalance = () => {
     const { isLoading } = useBalance();
-    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
 
     const balance = activeWallet?.display_balance;
 
     return (
         <div className='wallets-balance__container'>
-            {isLoading ? (
+            {isLoading || isActiveWalletLoading ? (
                 <div
                     className='wallets-skeleton wallets-balance--loader'
                     data-testid='dt_wallet_list_card_balance_loader'

@@ -504,6 +504,8 @@ type TGetMT5AccountTitle = {
     account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
     jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
 };
+
+//returns the title for the MT5 account - e.g.  MT5 Financial Vanuatu
 export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5AccountTitle) => {
     return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
         account_type

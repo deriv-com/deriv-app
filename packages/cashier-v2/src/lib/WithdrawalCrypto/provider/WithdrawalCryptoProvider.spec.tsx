@@ -7,12 +7,12 @@ import {
     useExchangeRateSubscription,
     usePOA,
     usePOI,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { cleanup, renderHook } from '@testing-library/react-hooks';
 import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './WithdrawalCryptoProvider';
 import { waitFor } from '@testing-library/react';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useAccountLimits: jest.fn(),
     useActiveAccount: jest.fn(),
     useCryptoWithdrawal: jest.fn(),

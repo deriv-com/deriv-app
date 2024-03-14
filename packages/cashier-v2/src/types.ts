@@ -1,3 +1,4 @@
+import { IconTypes } from '@deriv/quill-icons';
 import { FormatUtils } from '@deriv-com/utils';
 import { cashierPathRoutes } from './routes/Router';
 
@@ -39,3 +40,13 @@ declare module 'react-router-dom' {
 }
 
 export type TCurrency = NonNullable<NonNullable<Parameters<typeof FormatUtils['formatMoney']>['1']>['currency']>;
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace TIconTypes {
+    export type TIcon = { icon: IconTypes; key: string };
+
+    export type TIcons = {
+        dark: TIcon[];
+        light: TIcon[];
+    };
+}

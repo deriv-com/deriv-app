@@ -2,7 +2,6 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import { Button, Div100vhContainer, Input, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -28,7 +27,7 @@ const EditAdFormWrapper = ({ children }) => {
 };
 
 const EditAdForm = () => {
-    const { general_store, my_ads_store, my_profile_store } = useStores();
+    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
 
     const {
         account_currency,
@@ -51,7 +50,6 @@ const EditAdForm = () => {
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const [is_payment_method_touched, setIsPaymentMethodTouched] = React.useState(false);
     const { useRegisterModalProps } = useModalManagerContext();
-    const { p2p_settings } = useP2PSettings();
 
     // when editing payment methods in creating an ad, once user declines to save their payment method, flow is to close all add payment method modals
     useRegisterModalProps({
@@ -102,6 +100,9 @@ const EditAdForm = () => {
         my_profile_store.getAdvertiserPaymentMethods();
         my_ads_store.setIsEditAdErrorModalVisible(false);
         my_ads_store.setEditAdFormError('');
+        floating_rate_store.setApiErrorMessage('');
+        // P2P configuration is not subscribed. Hence need to fetch it on demand
+        general_store.setP2PConfig();
 
         if (payment_method_names && !payment_method_details) {
             const selected_payment_method_values = [];
@@ -143,16 +144,17 @@ const EditAdForm = () => {
                 initialValues={{
                     contact_info,
                     description,
-                    float_rate_offset_limit: p2p_settings.float_rate_offset_limit_string,
-                    is_active: rate_type !== p2p_settings.rate_type && p2p_settings.reached_target_date ? 1 : is_active,
                     max_transaction: max_order_amount_display,
                     min_transaction: min_order_amount_display,
                     offer_amount: amount_display,
                     // set a max of 1 hour if expiry period is more than 1 hour
                     order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
                     rate_type: setInitialAdRate(),
-                    reached_target_date: p2p_settings.reached_target_date,
                     type,
+                    is_active:
+                        rate_type !== floating_rate_store.rate_type && floating_rate_store.reached_target_date
+                            ? 1
+                            : is_active,
                 }}
                 onSubmit={my_ads_store.onClickSaveEditAd}
                 validate={my_ads_store.validateEditAdForm}
@@ -239,10 +241,10 @@ const EditAdForm = () => {
                                                                 offset={{
                                                                     upper_limit:
                                                                         // eslint-disable-next-line max-len
-                                                                        p2p_settings.float_rate_offset_limit_string,
+                                                                        floating_rate_store.float_rate_offset_limit,
                                                                     lower_limit:
                                                                         // eslint-disable-next-line max-len
-                                                                        p2p_settings.float_rate_offset_limit_string *
+                                                                        floating_rate_store.float_rate_offset_limit *
                                                                         -1,
                                                                 }}
                                                                 onFocus={() => setFieldTouched('rate_type', true)}

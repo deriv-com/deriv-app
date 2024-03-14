@@ -1,144 +1,88 @@
-import Joyride from 'react-joyride';
-import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Localize, localize } from '@deriv/translations';
+import Joyride, { CallBackProps, STATUS, EVENTS, ACTIONS } from 'react-joyride';
+import { observer } from 'mobx-react-lite';
 import {
     tour_step_config,
-    tour_styles,
     getTourStepLocale,
-    tour_styles_dark_mode,
     tour_step_config_high_risk,
+    getHighRiskTourStepLocale,
 } from 'Constants/tour-steps-config';
+import { tour_styles, tour_styles_dark_mode } from 'Constants/tour-steps-styles';
 import { useStores } from 'Stores/index';
-import { routes, ContentFlag } from '@deriv/shared';
-import { SpanButton } from '@deriv/components';
+import { ContentFlag } from '@deriv/shared';
 import { useTradersHubTracking } from 'Hooks/index';
+import { localize } from '@deriv/translations';
+import { SpanButton } from '@deriv/components';
 
 const TourGuide = () => {
-    const { traders_hub, ui, client } = useStores();
-    const {
-        is_tour_open,
-        toggleIsTourOpen,
-        setIsOnboardingVisited,
-        content_flag,
-        is_onboarding_visited,
-        selectAccountType,
-        setIsFirstTimeVisit,
-    } = traders_hub;
+    const { traders_hub, ui } = useStores();
+    const { is_tour_open, toggleIsTourOpen, content_flag, setIsFirstTimeVisit } = traders_hub;
     const { is_dark_mode_on, should_trigger_tour_guide, setShouldTriggerTourGuide } = ui;
-    const { prev_account_type } = client;
 
-    const history = useHistory();
-    const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
+    const [joyride_index, setJoyrideIndex] = React.useState(0);
     const tour_step_locale = getTourStepLocale();
-    const high_risk_tour_step_locale = getTourStepLocale();
+    const high_risk_tour_step_locale = getHighRiskTourStepLocale();
+    const low_risk = content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     const { trackLastStep, trackStepForward, trackOnboardingRestart } = useTradersHubTracking();
 
-    tour_step_locale.last = (
-        <div
-            onClick={() => {
-                trackLastStep();
-                setIsOnboardingVisited(true);
-                toggleIsTourOpen(false);
-                selectAccountType(prev_account_type);
-                if (should_trigger_tour_guide) {
-                    setShouldTriggerTourGuide(false);
-                }
-            }}
-        >
-            <Localize i18n_default_text='OK' />
-        </div>
-    );
+    const handleNextAction = (index: number) => {
+        trackStepForward(7);
+        setJoyrideIndex(index + 1);
+    };
 
-    high_risk_tour_step_locale.last = (
-        <div
-            onClick={() => {
-                trackLastStep();
-                setIsOnboardingVisited(true);
-                toggleIsTourOpen(false);
-                if (should_trigger_tour_guide) {
-                    setShouldTriggerTourGuide(false);
-                }
-            }}
-        >
-            <Localize i18n_default_text='OK' />
-        </div>
-    );
+    const handlePrevAction = (index: number) => {
+        if (tour_step_config.length === joyride_index + 1) {
+            trackLastStep();
+            trackOnboardingRestart();
+            setIsFirstTimeVisit(false);
+            setJoyrideIndex(0);
+        } else {
+            setJoyrideIndex(index - 1);
+        }
+    };
 
-    if (joyride_index === 0) {
-        tour_step_locale.next = (
-            <div
-                onClick={() => {
-                    trackStepForward(7);
-                }}
-            >
-                <Localize i18n_default_text='Next' />
-            </div>
-        );
+    const callbackHandle = (data: CallBackProps) => {
+        const { action, index, type, status } = data;
+        const finishedStatuses: string[] = [STATUS.FINISHED];
+        const skipTypes: string[] = [EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND];
 
-        high_risk_tour_step_locale.next = (
-            <div
-                onClick={() => {
-                    trackStepForward(7);
-                }}
-            >
-                <Localize i18n_default_text='Next' />
-            </div>
-        );
-    }
+        if (finishedStatuses.includes(status)) {
+            toggleIsTourOpen(false);
+            setShouldTriggerTourGuide(false);
+            setJoyrideIndex(0);
+            return;
+        }
+
+        if (!skipTypes.includes(type)) {
+            return;
+        }
+
+        if (action === ACTIONS.NEXT) {
+            handleNextAction(index);
+        } else if (action === ACTIONS.PREV) {
+            handlePrevAction(index);
+        }
+    };
 
     if (tour_step_config.length === joyride_index + 1) {
-        tour_step_locale.back = (
-            <SpanButton
-                has_effect
-                text={localize('Repeat tour')}
-                secondary
-                medium
-                onClick={() => {
-                    trackOnboardingRestart();
-                    setIsFirstTimeVisit(false);
-                    history.push(routes.onboarding);
-                    toggleIsTourOpen(true);
-                }}
-            />
-        );
+        tour_step_locale.back = <SpanButton has_effect text={localize('Repeat tour')} secondary medium />;
     }
-
-    high_risk_tour_step_locale.back = (
-        <SpanButton
-            has_effect
-            text={localize('Repeat tour')}
-            secondary
-            medium
-            onClick={() => {
-                trackOnboardingRestart();
-                setIsFirstTimeVisit(false);
-                history.push(routes.onboarding);
-                toggleIsTourOpen(true);
-            }}
-        />
-    );
-
-    const low_risk = content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     return (
         <Joyride
-            run={(!is_onboarding_visited && is_tour_open) || should_trigger_tour_guide}
+            run={is_tour_open || should_trigger_tour_guide}
             continuous
             disableScrolling
             hideCloseButton
             disableCloseOnEsc
             steps={low_risk ? tour_step_config : tour_step_config_high_risk}
-            styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
+            stepIndex={joyride_index}
             locale={low_risk ? tour_step_locale : high_risk_tour_step_locale}
-            floaterProps={{
-                disableAnimation: true,
-            }}
-            callback={data => setJoyrideIndex(data.index)}
+            styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
+            floaterProps={{ disableAnimation: true }}
+            callback={callbackHandle}
         />
     );
 };
-
 export default observer(TourGuide);

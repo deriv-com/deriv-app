@@ -1,19 +1,15 @@
-// [TODO]: Remove this eslint disable rule once form submission is implemented
 import React, { Fragment } from 'react';
 import { Formik } from 'formik';
-import { useKycAuthStatus } from '@deriv/api-v2';
 import { Button, Divider, Text } from '@deriv-com/ui';
 import { PersonalDetailsFormWithExample } from '../../containers';
+import { TSupportedDocuments } from '../../types';
 import { getIDVFormValidationSchema } from '../../utils/idvFormUtils';
 import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
 import { IDVForm } from '../IDVForm';
 
 type TIDVServiceProps = {
     countryCode: string;
-    supportedDocuments: Exclude<
-        Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
-        undefined
-    >['idv'];
+    supportedDocuments: TSupportedDocuments;
 };
 
 export const IDVService = ({ countryCode, supportedDocuments }: TIDVServiceProps) => {
@@ -48,7 +44,12 @@ export const IDVService = ({ countryCode, supportedDocuments }: TIDVServiceProps
                 </div>
                 <div>
                     <Divider />
-                    <Button onClick={() => 'Clicked Back'} type='button'>
+                    <Button
+                        onClick={() => {
+                            // [TODO]: Implement onConfirm
+                        }}
+                        type='button'
+                    >
                         Back
                     </Button>
                     <Button type='submit'>Verify</Button>

@@ -86,7 +86,7 @@
     },
     "dependencies": {
         "@cloudflare/stream-react": "^1.9.1",
-        "@deriv-com/analytics": "1.4.10",
+        "@deriv-com/analytics": "1.4.13",
         "@deriv-com/utils": "latest",
         "@deriv/api-types": "^1.0.118",
         "@deriv/components": "^1.0.0",

@@ -104,6 +104,9 @@ test.describe('Wallets - Mobile carousel', () => {
 
         expect(progressBarItemClass2).toContain('wallets-progress-bar-active');
 
+        // timeout to wait for previous swiping animation
+        await mobilePage.waitForTimeout(1000);
+
         await swipeLeft(mobilePage);
 
         const activeProgressBarItem3 = mobilePage.locator('.wallets-progress-bar div:nth-child(3)');

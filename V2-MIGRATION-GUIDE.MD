@@ -18,6 +18,12 @@ Main differences between legacy and new patterns:
 - **Use hooks** use hooks for data handling and processing
 - **React-query for data handling** use react query for server interaction
 
+
+# Handbook
+
+The recommended approach is to choose the most recent and clean -v2 package. Copy it over and rename. 
+Then strip out of anything unnecessary. As of Mar'23, recommended package is cashier-v2 to base new ones of (though its completely fine to start from others if there are resons for it). 
+
 # Engineering principles / compass / north star:
 
 The below are based on observations of what is missing. 

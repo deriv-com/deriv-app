@@ -26,8 +26,8 @@ export const isEndedBeforeCancellationExpired = (contract_info: TContractInfo) =
 export const isSoldBeforeStart = (contract_info: TIsSoldBeforeStart) =>
     contract_info.sell_time && +contract_info.sell_time < +contract_info.date_start;
 
-export const isStarted = (contract_info: TIsStarted) =>
-    !contract_info.is_forward_starting || contract_info.current_spot_time > contract_info.date_start;
+//is used in trading page and open positions
+export const isStarted = (contract_info: TIsStarted) => contract_info?.current_spot_time > contract_info?.date_start;
 
 export const isUserCancelled = (contract_info: TContractInfo) => contract_info.status === 'cancelled';
 

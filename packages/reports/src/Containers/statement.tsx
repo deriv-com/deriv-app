@@ -6,8 +6,8 @@ import {
     extractInfoFromShortcode,
     formatDate,
     getContractPath,
-    getSupportedContracts,
     getUnsupportedContracts,
+    hasStarted,
     isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -21,8 +21,8 @@ import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
-import { TSupportedContractType, TUnsupportedContractType } from 'Types';
-import { TSource } from '@deriv/components/src/components/data-table/data-table';
+import { TUnsupportedContractType } from 'Types';
+import { TSource } from '@deriv/components/src/components/data-table/table-row';
 import { TRow } from '@deriv/components/src/components/types/common.types';
 
 type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
@@ -87,22 +87,28 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         const contract_type = extractInfoFromShortcode(row_obj.shortcode)?.category?.toUpperCase();
-        action =
-            getSupportedContracts()[contract_type as TSupportedContractType] &&
-            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
-                ? getContractPath(row_obj.id)
-                : {
-                      message: '',
-                      component: (
-                          <Localize
-                              i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
-                              values={{
-                                  trade_type_name:
-                                      getUnsupportedContracts()[contract_type as TUnsupportedContractType]?.name,
-                              }}
-                          />
-                      ),
-                  };
+        const unsupported_contract_config = getUnsupportedContracts()[contract_type as TUnsupportedContractType];
+        action = unsupported_contract_config
+            ? {
+                  message: '',
+                  component: (
+                      <Localize
+                          i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
+                          values={{
+                              trade_type_name: unsupported_contract_config?.name,
+                          }}
+                      />
+                  ),
+              }
+            : getContractPath(row_obj.id);
+        if (
+            isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time) &&
+            !hasStarted(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
+        )
+            action = {
+                message: '',
+                component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
+            };
     } else if (row_obj.action_type === 'withdrawal') {
         if (row_obj.withdrawal_details && row_obj.longcode) {
             action = {

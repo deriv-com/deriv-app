@@ -30,6 +30,7 @@ import {
     getGrowthRatePercentage,
     getCardLabels,
     toMoment,
+    isStarted,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -318,19 +319,28 @@ export const OpenPositionsTable = ({
     );
 };
 
-const getRowAction: TDataList['getRowAction'] = row_obj =>
-    row_obj.is_unsupported
+const getRowAction: TDataList['getRowAction'] = row_obj => {
+    const unsupported_contract_config = getUnsupportedContracts()[row_obj.type as TUnsupportedContractType];
+    let action = unsupported_contract_config
         ? {
               component: (
                   <Localize
                       i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          trade_type_name: getUnsupportedContracts()[row_obj.type as TUnsupportedContractType]?.name,
+                          trade_type_name: unsupported_contract_config?.name,
                       }}
                   />
               ),
           }
         : getContractPath(row_obj.id || 0);
+    //Add alternative content for forwardstarting contracts, that haven't started yet
+    if (!isStarted(row_obj?.contract_info))
+        action = {
+            component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
+        };
+
+    return action;
+};
 
 /*
  * After refactoring transactionHandler for creating positions,

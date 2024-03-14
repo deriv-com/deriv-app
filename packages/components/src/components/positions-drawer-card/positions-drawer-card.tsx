@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import ContractCard from '../contract-card';
 import {
     getContractPath,
+    getUnsupportedContracts,
     isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
@@ -13,6 +14,7 @@ import {
     getEndTime,
     isMobile,
     isVanillaContract,
+    isStarted,
 } from '@deriv/shared';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TToastConfig } from '../types/contract.types';
@@ -28,7 +30,6 @@ type TPositionsDrawerCardProps = {
     getContractById: (contract_id: number) => TContractStore;
     is_mobile?: boolean;
     is_sell_requested?: boolean;
-    is_unsupported?: boolean;
     is_link_disabled?: boolean;
     profit_loss?: number;
     onClickCancel: (contract_id?: number) => void;
@@ -57,7 +58,6 @@ const PositionsDrawerCard = ({
     current_focus,
     getContractById,
     is_sell_requested,
-    is_unsupported,
     is_link_disabled,
     profit_loss,
     onClickCancel,
@@ -87,6 +87,12 @@ const PositionsDrawerCard = ({
         'dc-contract-card--green': Number(profit_loss) > 0 && !result,
         'dc-contract-card--red': Number(profit_loss) < 0 && !result,
     });
+
+    const is_unsupported =
+        !isStarted(
+            contract_info as Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>
+        ) ||
+        !!getUnsupportedContracts()[contract_info?.contract_type as keyof ReturnType<typeof getUnsupportedContracts>];
 
     const loader_el = (
         <div className='dc-contract-card__content-loader'>
@@ -157,13 +163,13 @@ const PositionsDrawerCard = ({
         </React.Fragment>
     );
 
-    const supported_contract_card = (
+    const unsupported_contract_card = (
         <div className={contract_card_classname} onClick={() => toggleUnsupportedContractModal(true)}>
             {contract_info?.underlying ? contract_el : loader_el}
         </div>
     );
 
-    const unsupported_contract_card = is_link_disabled ? (
+    const supported_contract_card = is_link_disabled ? (
         <div className={contract_card_classname}>{contract_info?.underlying ? contract_el : loader_el}</div>
     ) : (
         <NavLink
@@ -183,7 +189,7 @@ const PositionsDrawerCard = ({
             getContractPath={getContractPath}
             is_multiplier={is_multiplier}
             is_positions
-            is_unsupported={!!is_unsupported}
+            is_unsupported={is_unsupported}
             onClickRemove={onClickRemove}
             profit_loss={Number(profit_loss)}
             result={result ?? ''}
@@ -203,7 +209,7 @@ const PositionsDrawerCard = ({
                     if (typeof onMouseLeave === 'function') onMouseLeave();
                 }}
             >
-                {is_unsupported ? supported_contract_card : unsupported_contract_card}
+                {is_unsupported ? unsupported_contract_card : supported_contract_card}
                 {card_footer}
             </div>
         </ContractCard>

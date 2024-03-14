@@ -94,3 +94,11 @@ export const isForwardStarting = (shortcode: string, purchase_time?: number) => 
     const start_time: string = shortcode_info?.start_time || '';
     return start_time && purchase_time && /f$/gi.test(start_time);
 };
+
+//is used in statement
+export const hasStarted = (shortcode: string, purchase_time?: number) => {
+    const shortcode_info = extractInfoFromShortcode(shortcode);
+    if (shortcode_info?.multiplier) return false;
+    const start_time: string = (shortcode_info?.start_time || '').slice(0, -1);
+    return start_time && purchase_time && Date.now() / 1000 > Number(start_time);
+};

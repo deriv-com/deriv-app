@@ -3,7 +3,16 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv/components';
-import { routes, useNewRowTransition, TRADE_TYPES, isTurbosContract, isVanillaContract } from '@deriv/shared';
+import {
+    routes,
+    getSupportedContracts,
+    useNewRowTransition,
+    TRADE_TYPES,
+    isTurbosContract,
+    isVanillaContract,
+    isStarted,
+    TContractInfo,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { filterByContractType } from './helpers';
@@ -127,6 +136,13 @@ const PositionsDrawer = observer(({ ...props }) => {
         p =>
             p.contract_info &&
             symbol === p.contract_info.underlying &&
+            //Added check for unsupported and forwardstarting contracts, which have not started yet
+            getSupportedContracts()[p.contract_info?.contract_type as keyof ReturnType<typeof getSupportedContracts>] &&
+            isStarted(
+                p.contract_info as Required<
+                    Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>
+                >
+            ) &&
             (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
                 ? filterByContractType(
                       p.contract_info,

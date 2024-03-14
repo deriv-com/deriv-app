@@ -95,7 +95,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                     id='tab__dashboard__table__tiles'
                 >
                     {actions.map(icons => {
-                        const { icon, content, method, type } = icons;
+                        const { icon, content, method } = icons;
                         return (
                             <div
                                 key={content}

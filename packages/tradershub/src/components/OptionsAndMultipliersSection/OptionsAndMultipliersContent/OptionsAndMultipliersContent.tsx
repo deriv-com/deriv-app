@@ -2,10 +2,11 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } from '@/components';
 import { optionsAndMultipliersContent } from '@/constants';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
+import { getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
 import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Button, useDevice } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -15,6 +16,8 @@ type OptionsAndMultipliersContentItem = {
     smallIcon: JSX.Element;
     title: string;
 };
+
+const { getDerivStaticURL } = URLUtils;
 
 type TShowButtonProps = Pick<OptionsAndMultipliersContentItem, 'isExternal' | 'redirect'>;
 
@@ -30,10 +33,10 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
         event.persist();
         switch (title) {
             case 'Deriv Trader':
-                window.open(getStaticUrl(`/dtrader`));
+                window.open(getDerivStaticURL(`/dtrader`));
                 break;
             case 'Deriv Bot':
-                window.open(getStaticUrl(`/dbot`));
+                window.open(getDerivStaticURL(`/dbot`));
                 break;
             case 'SmartTrader':
                 window.open(getUrlSmartTrader());
@@ -42,7 +45,7 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
                 window.open(getUrlBinaryBot());
                 break;
             case 'Deriv GO':
-                window.open(getStaticUrl('/deriv-go'));
+                window.open(getDerivStaticURL('/deriv-go'));
                 break;
             default:
                 break;
@@ -93,7 +96,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 const OptionsAndMultipliersContent = () => {
     const { isDesktop } = useDevice();
     const { data } = useActiveTradingAccount();
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
 
     const { isEU } = useRegulationFlags();
 

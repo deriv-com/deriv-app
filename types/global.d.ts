@@ -16,6 +16,7 @@ declare global {
         Onfido: {
             init: (args: any) => any;
         };
+        DD_RUM: object | undefined;
     }
 }
 

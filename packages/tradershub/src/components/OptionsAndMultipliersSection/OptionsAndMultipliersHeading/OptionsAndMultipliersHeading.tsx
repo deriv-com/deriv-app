@@ -1,8 +1,7 @@
 import React from 'react';
 import { CurrencySwitcher, StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
-import { useIsEuRegion } from '@deriv/api';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 
 const getDescription = (isEU: boolean) => {
     if (isEU) {
@@ -28,8 +27,7 @@ const getDescription = (isEU: boolean) => {
  * @returns {React.ElementType} The `OptionsAndMultipliersHeading` component.
  */
 const OptionsAndMultipliersHeading = () => {
-    const { isDesktop } = useDevice();
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
     const { isEU } = useRegulationFlags();
 
     const title = isEU ? 'Multipliers' : 'Options & multipliers';
@@ -41,11 +39,11 @@ const OptionsAndMultipliersHeading = () => {
     return (
         <div className='flex flex-col items-start justify-between gap-16 lg:flex-row lg:gap-48'>
             <div className='gap-2 lg:flex lg:flex-col'>
-                {isDesktop && (
+                <div className='d-none lg:block'>
                     <Text size='lg' weight='bold'>
                         {title}
                     </Text>
-                )}
+                </div>
                 {description}
             </div>
             <CurrencySwitcher />

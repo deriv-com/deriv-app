@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSubscription } from '@deriv/api';
+import { useGetAccountStatus, useSubscription } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PCompletedOrdersNotification from '../useP2PCompletedOrdersNotification';
@@ -7,9 +7,12 @@ import useP2PCompletedOrdersNotification from '../useP2PCompletedOrdersNotificat
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useSubscription: jest.fn(),
+    useGetAccountStatus: jest.fn(),
 }));
 
 const mockUseSubscription = useSubscription as jest.MockedFunction<typeof useSubscription<'p2p_order_list'>>;
+
+const mockUseGetAccountStatus = useGetAccountStatus as jest.MockedFunction<typeof useGetAccountStatus>;
 
 describe('useP2PCompletedOrdersNotification', () => {
     test('should not subscribe to p2p_order_list if user is not logged in', () => {
@@ -86,6 +89,13 @@ describe('useP2PCompletedOrdersNotification', () => {
             subscribe: jest.fn(),
             unsubscribe: jest.fn(),
             isSubscribed: false,
+        });
+
+        mockUseGetAccountStatus.mockReturnValue({
+            // @ts-expect-error need to come up with a way to mock the return type of useGetAccountStatus
+            data: {
+                is_p2p_user: true,
+            },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

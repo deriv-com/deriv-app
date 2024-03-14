@@ -39,6 +39,7 @@ describe('<MyProfile />', () => {
                     partner_count: 1,
                 },
                 is_advertiser: true,
+                is_p2p_user: true,
                 should_show_dp2p_blocked: false,
                 setActiveIndex: jest.fn(),
             },
@@ -67,17 +68,17 @@ describe('<MyProfile />', () => {
         expect(screen.getByText('test error')).toBeInTheDocument();
     });
 
-    it('should render loading component if advertiser info is empty and should_show_dp2p_blocked is false', () => {
-        mock_store.my_profile_store.error_message = '';
-        mock_store.general_store.advertiser_info = {};
+    it('should render loading component if is_p2p_user is null', () => {
+        mock_store.general_store.is_p2p_user = null;
 
         render(<MyProfile />);
 
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
 
-    it('should render Verification component if is_advertiser is false', () => {
+    it('should render Verification component if is_advertiser is false and is_p2p_user false', () => {
         mock_store.general_store.is_advertiser = false;
+        mock_store.general_store.is_p2p_user = false;
 
         render(<MyProfile />);
 

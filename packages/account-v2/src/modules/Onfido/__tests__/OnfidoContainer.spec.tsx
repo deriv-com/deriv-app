@@ -1,12 +1,8 @@
 import React from 'react';
-import { useOnfido } from '@deriv/api';
+import { useOnfido } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { OnfidoContainer } from '../OnfidoContainer';
-
-jest.mock('@deriv/quill-design', () => ({
-    qtMerge: jest.fn((...args) => args.join(' ')),
-}));
 
 const mockPush = jest.fn();
 
@@ -20,8 +16,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useOnfido: jest.fn(() => ({
         data: {},
         isOnfidoInitialized: true,
@@ -120,8 +116,8 @@ describe('OnfidoContainer', () => {
         });
         render(<OnfidoContainer />);
 
-        userEvent.click(screen.getByTestId('dt_poi-confirm-with-example'));
-        const onfidoView = screen.getByTestId('dt_onfido-element');
+        userEvent.click(screen.getByTestId('dt_poi_confirm_with_example'));
+        const onfidoView = screen.getByTestId('dt_onfido_element');
         expect(onfidoView).not.toHaveClass('opacity-600 pointer-events-none');
     });
 });

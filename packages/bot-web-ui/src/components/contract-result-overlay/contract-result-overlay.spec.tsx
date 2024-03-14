@@ -32,21 +32,21 @@ describe('ContractResultOverlay', () => {
     });
 
     it('should render the ContractResultOverlay component', () => {
-        const { container } = render(<ContractResultOverlay profit={0} className={''} />, {
+        const { container } = render(<ContractResultOverlay profit={0} />, {
             wrapper,
         });
         expect(container).toBeInTheDocument();
     });
 
     it('should show contract won', () => {
-        render(<ContractResultOverlay profit={0} className={''} />, {
+        render(<ContractResultOverlay profit={0} />, {
             wrapper,
         });
         expect(screen.getByText('Won')).toBeInTheDocument();
     });
 
     it('should show contract lost', () => {
-        render(<ContractResultOverlay profit={-1} className={''} />, {
+        render(<ContractResultOverlay profit={-1} />, {
             wrapper,
         });
         expect(screen.getByText('Lost')).toBeInTheDocument();

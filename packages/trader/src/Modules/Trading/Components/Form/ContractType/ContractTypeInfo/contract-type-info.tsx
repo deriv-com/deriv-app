@@ -20,6 +20,7 @@ type TInfo = {
     item: TContractType;
     list: TList[];
     info_banner?: React.ReactNode;
+    selected_value: string;
 };
 
 const TABS = {
@@ -29,7 +30,7 @@ const TABS = {
 
 type TSelectedTab = 'description' | 'glossary';
 
-const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
+const Info = observer(({ handleSelect, item, selected_value, list, info_banner }: TInfo) => {
     const { cached_multiplier_cancellation_list, symbol } = useTraderStore();
     const {
         active_symbols: { active_symbols },
@@ -38,15 +39,22 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
             trade: { is_vanilla_fx },
         },
     } = useStore();
+    const { RISE_FALL, RISE_FALL_EQUAL, TURBOS, VANILLA } = TRADE_TYPES;
+    const CONTRACT_TYPE_SUBSTITUTE = {
+        [RISE_FALL_EQUAL]: RISE_FALL,
+        [TURBOS.SHORT]: TURBOS.LONG,
+        [VANILLA.PUT]: VANILLA.CALL,
+    };
     const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(TABS.DESCRIPTION);
-    const [selected_contract_type, setSelectedContractType] = React.useState(item.value);
-    const { RISE_FALL_EQUAL, TURBOS, VANILLA } = TRADE_TYPES;
+    const [selected_contract_type, setSelectedContractType] = React.useState(
+        CONTRACT_TYPE_SUBSTITUTE[selected_value] ?? selected_value
+    );
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
             i.value !== RISE_FALL_EQUAL && i.value !== TURBOS.SHORT && i.value !== VANILLA.PUT
     );
-    const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(selected_contract_type);
-    const should_show_video = /accumulator|turboslong|vanilla/i.test(selected_contract_type);
+    const has_toggle_buttons = /accumulator|turbos|vanilla|multiplier/i.test(selected_contract_type);
+    const should_show_video = /accumulator|turbos|vanilla|high_low|rise_fall|touch/i.test(selected_contract_type);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION || !has_toggle_buttons;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY && has_toggle_buttons;
     const width = is_mobile ? '328' : '528';
@@ -187,7 +195,17 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
                 <Button
                     id={`dt_contract_info_${selected_contract_type}_btn`}
                     className='contract-type-info__button'
-                    onClick={e => handleSelect({ value: selected_contract_type }, e)}
+                    onClick={e =>
+                        handleSelect(
+                            {
+                                value:
+                                    selected_contract_type === CONTRACT_TYPE_SUBSTITUTE[selected_value]
+                                        ? selected_value
+                                        : selected_contract_type,
+                            },
+                            e
+                        )
+                    }
                     text={localize('Choose {{contract_type}}', {
                         contract_type: button_name ?? '',
                         interpolation: { escapeValue: false },

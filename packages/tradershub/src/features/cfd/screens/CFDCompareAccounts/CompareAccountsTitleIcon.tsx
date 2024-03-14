@@ -1,16 +1,16 @@
 import React, { Fragment, useRef } from 'react';
-import { useHover } from 'usehooks-ts';
 import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
-import { PlatformIcon, Tooltip } from '@/components';
+import { IconComponent } from '@/components';
+import { useRegulationFlags } from '@/hooks';
 import { THooks, TPlatforms } from '@/types';
 import { CFDPlatforms } from '@cfd/constants';
-import { Text, useDevice } from '@deriv-com/ui';
+import { useActiveTradingAccount } from '@deriv/api-v2';
+import { Divider, Text, Tooltip, useDevice } from '@deriv-com/ui';
 import { AccountIcons, MarketTypeShortcode } from './constants';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
 
 type TCompareAccountsTitleIcon = {
-    isDemo: boolean;
     marketType: TMarketType;
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
@@ -18,7 +18,10 @@ type TCompareAccountsTitleIcon = {
 
 type TMarketWithShortCode = `${TMarketType}_${string}`;
 
-const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType) => {
+const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType, isEU: boolean) => {
+    if (isEU) {
+        return AccountIcons.default;
+    }
     if (platform === CFDPlatforms.DXTRADE || platform === CFDPlatforms.CTRADER) {
         return AccountIcons[platform];
     }
@@ -52,12 +55,14 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherA
     }
 };
 
-const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
+const CompareAccountsTitleIcon = ({ marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
+    const { data: activeDerivTrading } = useActiveTradingAccount();
+    const isDemo = activeDerivTrading?.is_virtual;
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
-    const jurisdictionCardIcon = getAccountIcon(platform, marketType);
+    const { isEU } = useRegulationFlags();
+    const jurisdictionCardIcon = getAccountIcon(platform, marketType, isEU);
 
     const hoverRef = useRef(null);
-    const isHovered = useHover(hoverRef);
     const { isDesktop } = useDevice();
 
     const jurisdictionCardTitle =
@@ -69,18 +74,18 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     return (
         <Fragment>
-            <div className={'flex flex-col gap-5 pt-20 items-center'}>
-                <PlatformIcon icon={jurisdictionCardIcon} />
+            <div className='flex flex-col items-center gap-5 pt-20 pb-5'>
+                <IconComponent className='w-40 h-40 lg:w-48 lg:h-48' icon={jurisdictionCardIcon} />
                 <div className='flex items-center gap-8'>
                     <Text size='sm' weight='bold'>
                         {jurisdictionCardTitle}
                     </Text>
                     {marketTypeShortCode === MarketTypeShortcode.FINANCIAL_LABUAN && (
                         <Tooltip
-                            alignment='bottom'
-                            className='-translate-x-[80%]'
-                            isVisible={isHovered && isDesktop}
+                            className='lg:-translate-x-[70%] -translate-x-[85%] text-sm lg:max-w-[200px] max-w-[150px]'
                             message={labuanJurisdictionMessage}
+                            position='bottom'
+                            triggerAction={isDesktop ? 'hover' : 'click'}
                         >
                             <div ref={hoverRef}>
                                 <InfoIcon />
@@ -89,7 +94,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
                     )}
                 </div>
             </div>
-            <hr className='mx-auto w-[213px] border-t-1 border-solid border-system-light-less-prominent-text' />
+            <Divider className='w-4/5 mx-auto' />
         </Fragment>
     );
 };

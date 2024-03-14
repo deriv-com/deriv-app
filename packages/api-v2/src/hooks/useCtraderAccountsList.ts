@@ -2,12 +2,13 @@ import { useMemo } from 'react';
 import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
+import { displayMoney } from '../utils';
 import useExchangeRates from './useExchangeRates';
 import useTradingAccountsList from './useTradingAccountsList';
 
 /** A custom hook that gets the list of created cTrader accounts. */
 const useCtraderAccountsList = () => {
-    const { isSuccess } = useAuthorize();
+    const { data: authorize_data, isSuccess } = useAuthorize();
     const { data: ctrader_accounts, ...rest } = useQuery('trading_platform_accounts', {
         payload: { platform: 'ctrader' },
         options: { enabled: isSuccess },
@@ -34,14 +35,21 @@ const useCtraderAccountsList = () => {
                     /** The platform of the account */
                     platform: 'ctrader' as const,
                     /** Formatted display balance */
-                    formatted_balance: `${account.display_balance} ${account.currency}`,
+                    formatted_balance: displayMoney(account.balance || 0, account.currency || 'USD', {
+                        preferred_language: authorize_data?.preferred_language,
+                    }),
                     /** Converted balance from the exchange rate */
                     converted_balance: getExchangeRate(fiat_account, account.currency ?? 'USD') * balance,
                 };
             }),
-        [ctrader_accounts?.trading_platform_accounts, fiat_account, getConfig, getExchangeRate]
+        [
+            authorize_data?.preferred_language,
+            fiat_account,
+            getConfig,
+            getExchangeRate,
+            ctrader_accounts?.trading_platform_accounts,
+        ]
     );
-
     return {
         /** List of all created cTrader accounts */
         data: modified_ctrader_accounts,

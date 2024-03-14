@@ -527,7 +527,7 @@
             padding: 0.5rem 0.8rem;
             align-items: center;
             justify-content: space-between;
-            background: var(--general-section-3);
+            background: var(--general-section-2, #f2f3f4);
         }
     }
     &__spec-box {
@@ -577,6 +577,8 @@
                     @include typeface(--paragraph-center-bold-black, none);
                     background-color: transparent;
                     border: 1px solid var(--border-normal-2);
+                    border-radius: 0.5rem;
+                    padding: 0.6rem 1.6rem;
                     color: var(--text-less-prominent);
 
                     &:hover {
@@ -588,8 +590,7 @@
                 &-container {
                     display: flex;
                     flex-direction: column;
-                    margin-top: 4rem;
-                    margin-bottom: 6rem;
+                    margin: 4rem 1.6rem 6rem;
                     @include mobile {
                         margin-top: 5rem;
                         margin-bottom: 0;
@@ -601,7 +602,8 @@
                 }
             }
 
-            &--windows {
+            &--windows,
+            &--macos {
                 display: flex;
                 gap: 1.6rem;
                 align-items: center;
@@ -2069,12 +2071,15 @@
     color: var(--text-prominent);
 
     &__container {
-        display: grid;
-        grid-template-rows: 12rem 7rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         height: 100%;
         width: 100%;
         justify-items: center;
         flex-grow: 1;
+        gap: 4rem;
+        padding: 2.4rem 0;
 
         @include mobile {
             min-height: 24rem;
@@ -2099,8 +2104,7 @@
     }
     &__password-area {
         @include desktop {
-            width: calc(min(33rem, 100vw));
-            padding: 2.4rem;
+            width: calc(min(34rem, 100vw));
         }
         @include mobile {
             width: 100%;
@@ -2113,7 +2117,7 @@
         min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        padding-top: 2rem;
+        padding: 2rem 0;
         margin: 0 auto;
     }
     &__description {
@@ -2231,6 +2235,78 @@
         margin: 1.6rem 0;
         .dc-btn {
             margin: 0.5rem;
+        }
+    }
+}
+
+.cfd-password-change {
+    &-list {
+        list-style: disc;
+        margin-top: 0.4rem;
+        &-container {
+            padding-left: 2.5rem;
+            margin-bottom: 1.3rem;
+            font-size: 1.6rem;
+            color: var(--text-general);
+        }
+    }
+    &-modal {
+        &-description {
+            margin: 1.5rem 0 2rem;
+            @include mobile {
+                margin: 1rem 1rem 2rem;
+                &--button {
+                    display: flex;
+                    width: 100%;
+                }
+                &--footer {
+                    padding: 1rem 1.6rem;
+                    border-top: 1px solid var(--general-hover);
+                }
+            }
+        }
+    }
+    &__content {
+        border-top: 1px solid var(--general-hover);
+        // to override the default padding
+        padding: 0 !important;
+        &-center {
+            justify-content: center;
+        }
+    }
+    &__password-success {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include mobile {
+            padding: 1.4rem 1.6rem 2.4rem;
+        }
+    }
+    &__icon {
+        // to adjust the icon to the center
+        margin: 0 0 2rem 2.4rem;
+        @include mobile {
+            margin: 0 0 2.4rem 2.4rem;
+        }
+    }
+    &__heading {
+        margin-bottom: 0.8rem;
+    }
+    &__subtext {
+        margin-bottom: 1.6rem;
+    }
+    @include desktop {
+        &__footer {
+            &-button {
+                padding: 0 1rem 1rem 0;
+                align-self: self-end;
+            }
+        }
+        &__container {
+            padding: 0 1.3rem;
+            border-bottom: 1px solid var(--general-hover);
         }
     }
 }

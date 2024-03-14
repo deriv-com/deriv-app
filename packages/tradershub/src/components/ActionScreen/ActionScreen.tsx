@@ -1,5 +1,5 @@
 import React, { ComponentProps, isValidElement, ReactNode } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { Text } from '@deriv-com/ui';
 
 type TActionScreenProps = {
@@ -29,7 +29,9 @@ const ActionScreen = ({
     titleSize = 'md',
 }: TActionScreenProps) => {
     return (
-        <div className={clsx('flex flex-col items-center justify-center gap-24 w-auto h-auto rounded-xs', className)}>
+        <div
+            className={twMerge('flex flex-col items-center justify-center gap-24 w-auto h-auto rounded-xs', className)}
+        >
             {icon}
             <div className='flex flex-col items-center justify-center gap-8'>
                 {title && (

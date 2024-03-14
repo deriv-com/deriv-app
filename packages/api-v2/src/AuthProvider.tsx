@@ -7,8 +7,9 @@ import { TSocketResponseData } from '../types';
 
 // Define the type for the context state
 type AuthContextType = {
+    loginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
-    switchAccount: (loginid: string) => void;
+    switchAccount: (loginid: string, forceRefresh?: boolean) => Promise<void>;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -17,90 +18,169 @@ type AuthContextType = {
     error: unknown;
 };
 
+type LoginToken = {
+    loginId: string;
+    token: string;
+};
+
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
     children: React.ReactNode;
+    cookieTimeout?: number;
+    loginIDKey?: string;
 };
 
-async function waitForLoginAndToken(): Promise<any> {
-    const checkLogin = (resolve: (value: any) => void, reject: (reason?: any) => void) => {
-        const loginId = getActiveLoginIDFromLocalStorage();
+function waitForLoginAndTokenWithTimeout(loginIDKey?: string, cookieTimeout = 10000) {
+    // Default timeout of 10 seconds
+    let timeoutHandle: NodeJS.Timeout | undefined,
+        cookieTimeoutHandle: NodeJS.Timeout | undefined, // Handle for the cookieTimeout
+        rejectFunction: (reason?: string) => void; // To be used for rejecting the promise in case of a timeout or cookieTimeout expiry
+
+    const checkLogin = (
+        resolve: (value: { loginId: string; token: string }) => void,
+        reject: (reason?: string) => void
+    ) => {
+        const loginId = getActiveLoginIDFromLocalStorage(loginIDKey);
         const token = getToken(loginId as string);
         if (loginId && token) {
-            resolve({
-                loginId,
-                token,
-            });
+            clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
+            clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
+            resolve({ loginId, token });
         } else {
-            setTimeout(checkLogin, 100, resolve, reject);
+            timeoutHandle = setTimeout(checkLogin, 100, resolve, reject);
         }
     };
 
-    return new Promise<any>(checkLogin);
+    // Function to clear the timeouts and reject the promise if called
+    const cleanup = () => {
+        clearTimeout(timeoutHandle);
+        clearTimeout(cookieTimeoutHandle);
+        rejectFunction('Operation cancelled');
+    };
+
+    const promise = new Promise<LoginToken>((resolve, reject) => {
+        rejectFunction = reject; // Assign reject function to be accessible outside promise scope for cleanup
+
+        // Set up the cookieTimeout to reject the promise if not resolved in time
+        cookieTimeoutHandle = setTimeout(() => {
+            cleanup(); // Cleanup and reject the promise
+            reject(new Error('Waiting for login or token timed out'));
+        }, cookieTimeout);
+
+        checkLogin(resolve, reject);
+    });
+
+    return {
+        promise,
+        cleanup,
+    };
 }
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient } = useAPIContext();
+    const { queryClient, setOnReconnected } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
+
     const [data, setData] = useState<TSocketResponseData<'authorize'> | null>();
+
+    const processAuthorizeResponse = useCallback(
+        (authorizeResponse: TSocketResponseData<'authorize'>) => {
+            setData(authorizeResponse);
+
+            const activeLoginID = authorizeResponse.authorize?.loginid;
+            if (!activeLoginID) return;
+
+            setLoginid(activeLoginID);
+
+            const accountList = authorizeResponse.authorize?.account_list;
+            if (!accountList) return;
+
+            const activeAccount = accountList.find(acc => acc.loginid === activeLoginID);
+            if (!activeAccount) return;
+
+            localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
+        },
+        [loginIDKey]
+    );
+
+    useEffect(() => {
+        setOnReconnected(() => {
+            mutateAsync({ payload: { authorize: getToken(loginid || '') ?? '' } });
+        });
+    }, [loginid]);
 
     useEffect(() => {
         setIsLoading(true);
         setIsSuccess(false);
 
-        waitForLoginAndToken().then(({ token }) => {
-            setIsLoading(true);
-            setIsFetching(true);
-            mutateAsync({ payload: { authorize: token || '' } })
-                .then(res => {
-                    setData(res);
-                    setIsLoading(false);
-                    setIsSuccess(true);
-                })
-                .catch(() => {
+        const { promise, cleanup } = waitForLoginAndTokenWithTimeout(loginIDKey, cookieTimeout);
+
+        let isMounted = true;
+
+        promise
+            .then(async ({ token }) => {
+                setIsLoading(true);
+                setIsFetching(true);
+                await mutateAsync({ payload: { authorize: token || '' } })
+                    .then(res => {
+                        processAuthorizeResponse(res);
+                        setIsLoading(false);
+                        setIsSuccess(true);
+                        setLoginid(res?.authorize?.loginid ?? '');
+                    })
+                    .catch(() => {
+                        setIsLoading(false);
+                        setIsError(true);
+                    })
+                    .finally(() => {
+                        setIsLoading(false);
+                        setIsFetching(false);
+                    });
+            })
+            .catch(() => {
+                if (isMounted) {
                     setIsLoading(false);
                     setIsError(true);
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                    setIsFetching(false);
-                });
-        });
-    }, []);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+            cleanup();
+        };
+    }, [cookieTimeout, loginIDKey, mutateAsync, processAuthorizeResponse]);
 
     const switchAccount = useCallback(
-        (newLoginid: string) => {
-            if (newLoginid === loginid) {
+        async (newLoginId: string, forceRefresh?: boolean) => {
+            if (newLoginId === loginid && !forceRefresh) {
                 return;
             }
 
             queryClient.cancelQueries();
 
             setIsLoading(true);
-            mutateAsync({ payload: { authorize: getToken(newLoginid) || '' } }).then(res => {
-                setLoginid(newLoginid);
-                setData(res);
-                setIsLoading(false);
 
-                localStorage.setItem('active_loginid', newLoginid);
-            });
+            const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
+            setLoginid(newLoginId);
+            processAuthorizeResponse(authorizeResponse);
+
+            setIsLoading(false);
         },
-        [loginid]
+        [loginid, mutateAsync, processAuthorizeResponse, queryClient]
     );
 
     const refetch = useCallback(() => {
         switchAccount(loginid as string);
-    }, [loginid]);
+    }, [loginid, switchAccount]);
 
     const value = useMemo(() => {
         return {

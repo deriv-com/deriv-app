@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { p2p, useChatCreate, useOrderInfo, useSendbirdServiceToken, useServerTime } from '@deriv/api';
+import { p2p, useChatCreate, useOrderInfo, useSendbirdServiceToken, useServerTime } from '@deriv/api-v2';
 import SendbirdChat, { BaseChannel, User } from '@sendbird/chat';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
 import { BaseMessage, MessageType, MessageTypeFilter } from '@sendbird/chat/message';
@@ -18,8 +18,8 @@ export const renameFile = (file: File) => {
 };
 
 const ChatMessageStatus = {
-    ERRORED: 'ERRORED',
-    PENDING: 'PENDING',
+    ERRORED: 1,
+    PENDING: 0,
 } as const;
 
 type ChatMessage = {
@@ -33,7 +33,7 @@ type ChatMessage = {
     name?: string;
     senderUserId?: string;
     size?: number;
-    status?: keyof typeof ChatMessageStatus;
+    status?: number;
     url?: string;
 };
 
@@ -87,6 +87,7 @@ const useSendbird = (orderId: string) => {
         isSuccess: isSuccessSendbirdServiceToken,
     } = useSendbirdServiceToken();
     const { data: advertiserInfo, isSuccess: isSuccessAdvertiserInfo } = p2p.advertiser.useGetInfo();
+    //TODO: p2p_chat_create endpoint to be removed once chat_channel_url is created from p2p_order_create
     const { isError: isErrorChatCreate, mutate: createChat } = useChatCreate();
     const { data: orderInfo, isError: isErrorOrderInfo } = useOrderInfo(orderId);
     const { data: serverTime, isError: isErrorServerTime } = useServerTime();
@@ -284,6 +285,7 @@ const useSendbird = (orderId: string) => {
     }, [orderId, orderInfo?.chat_channel_url]);
 
     return {
+        activeChatChannel: chatChannel,
         isChatLoading,
         isError:
             isChatError || isErrorChatCreate || isErrorOrderInfo || isErrorServerTime || isErrorSendbirdServiceToken,
@@ -292,6 +294,7 @@ const useSendbird = (orderId: string) => {
         refreshChat: initialiseChat,
         sendFile,
         sendMessage,
+        userId: user?.userId,
     };
 };
 

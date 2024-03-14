@@ -1,19 +1,18 @@
 import React, { FC } from 'react';
 import AddIcon from '@/assets/svgs/add-icon.svg';
-import { MT5AccountTypeModal } from '@cfd/modals';
-import { Provider } from '@deriv/library';
+import { useQueryParams } from '@/hooks';
 import { Text } from '@deriv-com/ui';
 
 const GetMoreMT5Accounts: FC = () => {
-    const { show } = Provider.useModal();
+    const { openModal } = useQueryParams();
 
     return (
         <div
             className='flex items-start w-full cursor-pointer'
-            onClick={() => show(<MT5AccountTypeModal />)}
+            onClick={() => openModal('MT5AccountTypeModal')}
             onKeyDown={e => {
                 if (e.key === 'Enter') {
-                    show(<MT5AccountTypeModal />);
+                    openModal('MT5AccountTypeModal');
                 }
             }}
             role='button'

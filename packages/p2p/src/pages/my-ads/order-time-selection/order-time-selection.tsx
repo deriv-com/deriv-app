@@ -15,7 +15,7 @@ const OrderTimeSelection = ({ ...field }: FormikValues) => {
     const { showModal } = useModalManagerContext();
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const order_time_info_message = 'Orders will expire if they aren’t completed within this time.';
+    const order_time_info_message = localize('Orders will expire if they aren’t completed within this time.');
     const order_completion_time_list = [
         {
             text: localize('1 hour'),

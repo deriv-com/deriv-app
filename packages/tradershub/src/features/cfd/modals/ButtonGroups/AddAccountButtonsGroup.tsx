@@ -1,7 +1,8 @@
 import React from 'react';
-import { Provider } from '@deriv/library';
+import { ButtonGroup } from '@/components';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { Button } from '@deriv-com/ui';
-import { ButtonGroup, Modal, SentEmailContent } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import DxtradeCreateAccountButton from '../DxtradePasswordModal/DxtradeCreateAccountButton';
 import MT5CreateAccountButton from '../MT5PasswordModal/MT5CreateAccountButton';
@@ -11,24 +12,16 @@ type TAddAccountButtonsGroupProps = {
 };
 
 const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
-    const { show } = Provider.useModal();
-    const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform');
+    const { cfdState } = useCFDContext();
+    const { platform } = cfdState;
+    const { openModal } = useQueryParams();
 
     return (
         <ButtonGroup className='w-full'>
             <Button
+                color='black'
                 isFullWidth
-                onClick={() => {
-                    show(
-                        <Modal>
-                            <Modal.Header title="We've sent you an email" />
-                            <Modal.Content>
-                                <SentEmailContent platform={platform} />
-                            </Modal.Content>
-                        </Modal>
-                    );
-                }}
+                onClick={() => openModal('SentEmailContentModal')}
                 size='lg'
                 variant='outlined'
             >

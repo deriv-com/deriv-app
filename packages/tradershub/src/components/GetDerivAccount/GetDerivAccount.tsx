@@ -1,14 +1,15 @@
 import React from 'react';
-import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
-import { PlatformIcon } from '../PlatformIcon';
+import { useQueryParams } from '@/hooks';
+import { IconComponent } from '../IconComponent';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
 
 const TrailingButton = () => {
-    const { setIsWizardOpen } = useSignupWizardContext();
-    return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
+    const { openModal } = useQueryParams();
+
+    return <TradingAccountCardLightButton onSubmit={() => openModal('RealAccountCreation')} />;
 };
 
-const LeadingIcon = () => <PlatformIcon icon='DerivApps' width={60} />;
+const LeadingIcon = () => <IconComponent icon='DerivApps' width={60} />;
 
 const GetDerivAccount = () => {
     const title = 'Deriv account';

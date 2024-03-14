@@ -29,7 +29,7 @@ const DocumentSubmission: React.FC = () => {
                 <div className='wallets-poa__document__container__disclaimer'>
                     <WalletText size='sm' weight='bold'>
                         {t(
-                            'We accept only these types of documents as proof of address. The document must be recent (issued within last 6 months) and include your name and address:'
+                            'We accept only these types of documents as proof of address. The document must be recent (issued within last 12 months) and include your name and address:'
                         )}
                     </WalletText>
 

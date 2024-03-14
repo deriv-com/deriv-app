@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
+import { useP2PCompletedOrdersNotification } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
@@ -32,6 +33,8 @@ const App = () => {
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
+
+    useP2PCompletedOrdersNotification();
 
     React.useEffect(() => {
         init();

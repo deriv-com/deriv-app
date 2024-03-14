@@ -663,6 +663,7 @@
     height: 100%;
 
     &__main-container {
+        position: relative;
         max-width: 68.2rem;
         height: 100%;
     }
@@ -765,7 +766,6 @@
 
     &__country {
         &-container {
-            max-width: 68rem;
             align-items: flex-start;
 
             .proof-of-identity__fieldset {
@@ -826,8 +826,6 @@
     }
 
     &__footer {
-        max-width: 68rem;
-
         @include mobile {
             display: flex;
             flex-direction: row;

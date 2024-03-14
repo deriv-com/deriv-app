@@ -2,10 +2,9 @@ import React from 'react';
 import { TradingAppCardLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from '@cfd/components';
-import { useIsEuRegion } from '@deriv/api';
 
 const CFDContent = () => {
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
 
     const { isEU } = useRegulationFlags();
 

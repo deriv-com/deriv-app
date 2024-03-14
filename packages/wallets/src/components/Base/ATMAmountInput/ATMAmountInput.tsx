@@ -65,7 +65,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                         className='wallets-atm-amount-input__input'
                         disabled={disabled || isFocused}
                         readOnly
-                        value={`${formattedValue} ${currency || ''}`}
+                        value={`${formattedValue} ${currency ?? ''}`}
                     />
                     <input
                         className='wallets-atm-amount-input__input'
@@ -75,7 +75,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                         onFocus={onFocusHandler}
                         onPaste={formatOnPaste}
                         ref={inputRef}
-                        type='numeric'
+                        type='tel'
                         value={formattedValue}
                     />
                 </WalletText>

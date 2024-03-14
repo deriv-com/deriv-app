@@ -1,0 +1,38 @@
+.p2p-v2-buy-sell-form {
+    width: 44rem;
+    height: unset;
+    @include mobile {
+        width: 100vw;
+        height: 100vh;
+        box-shadow: none;
+    }
+
+    & .deriv-modal__body {
+        padding: 0;
+    }
+
+    &--is-buy {
+        height: 64.9rem;
+        & .deriv-modal__body {
+            max-height: calc(100vh - 13rem);
+            overflow: auto;
+        }
+        @include mobile {
+            height: unset;
+            max-height: unset;
+        }
+    }
+
+    &__full-page-modal {
+        position: absolute;
+        top: -4rem;
+        left: 0;
+        background: #fff;
+        z-index: 1;
+        height: calc(100vh - 8rem);
+
+        & .p2p-v2-mobile-wrapper__body {
+            overflow: auto;
+        }
+    }
+}

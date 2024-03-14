@@ -80,7 +80,9 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id, rate_type);
-    const onClickShare = () => showModal({ key: 'ShareMyAdsModal', props: { advert } });
+    const onClickShare = () => {
+        if (!general_store.is_barred) showModal({ key: 'ShareMyAdsModal', props: { advert } });
+    };
     const onClickSwitchAd = () => {
         if (!general_store.is_barred) {
             general_store.showModal({ key: 'MyAdsFloatingRateSwitchModal', props: {} });

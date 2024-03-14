@@ -25,6 +25,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
         text: 'Multipliers',
         value: TRADE_TYPES.MULTIPLIER,
     },
+    selected_value: TRADE_TYPES.MULTIPLIER,
     info_banner: <div>Info banner</div>,
     list: [
         {
@@ -313,6 +314,7 @@ describe('<Info />', () => {
     it('Should render toggle buttons if TRADE_TYPES.VANILLA.CALL info page is open', () => {
         mocked_props.item.text = 'Call/Put';
         mocked_props.item.value = TRADE_TYPES.VANILLA.CALL;
+        mocked_props.selected_value = TRADE_TYPES.VANILLA.CALL;
         render(mockInfoProvider());
 
         expect(screen.getByText(description)).toBeInTheDocument();
@@ -322,6 +324,8 @@ describe('<Info />', () => {
     it('Should render toggle buttons if TRADE_TYPES.MULTIPLIER info page is open', () => {
         mocked_props.item.text = 'Multipliers';
         mocked_props.item.value = TRADE_TYPES.MULTIPLIER;
+        mocked_props.selected_value = TRADE_TYPES.MULTIPLIER;
+
         render(mockInfoProvider());
 
         expect(screen.getByText(description)).toBeInTheDocument();

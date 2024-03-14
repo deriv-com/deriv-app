@@ -1,0 +1,104 @@
+import React from 'react';
+import { Trans } from 'react-i18next';
+import {
+    useAccountLimits,
+    useAccountStatus,
+    useActiveWalletAccount,
+    useAuthentication,
+    useCashierValidation,
+    useCurrencyConfig,
+} from '@deriv/api-v2';
+import { Loader, WalletsActionScreen } from '../../../../components';
+import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from './WithdrawalLockedContent';
+import './WithdrawalLocked.scss';
+
+const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: authentication } = useAuthentication();
+    const { data: cashierValidation } = useCashierValidation();
+    const { data: accountLimits } = useAccountLimits();
+    const { data: status } = useAccountStatus();
+    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+
+    const currency = activeWallet?.currency || 'USD';
+
+    const poaNeedsVerification = authentication?.is_poa_needed;
+    const poiNeedsVerification = authentication?.is_poa_needed;
+    const poaStatus = authentication?.poa_status || 'none';
+    const poiStatus = authentication?.poi_status || 'none';
+
+    const askAuthenticate = cashierValidation?.ask_authenticate;
+    const askFinancialRiskApproval = cashierValidation?.ask_financial_risk_approval;
+    const askFixDetails = cashierValidation?.ask_fix_details;
+    const financialAssessmentRequired = cashierValidation?.financial_assessment_required;
+    const noWithdrawalOrTradingStatus = cashierValidation?.no_withdrawal_or_trading_status;
+    const withdrawalLockedStatus = cashierValidation?.withdrawal_locked_status;
+
+    const isWithdrawalLocked = status?.is_withdrawal_locked;
+
+    const remainder = accountLimits?.remainder;
+    const minimumWithdrawal = activeWallet?.currency_config?.is_crypto
+        ? activeWallet?.currency_config?.minimum_withdrawal
+        : 0.01;
+    const withdrawalLimitReached = !!(
+        typeof remainder !== 'undefined' &&
+        typeof minimumWithdrawal !== 'undefined' &&
+        +remainder < minimumWithdrawal
+    );
+
+    if (isCurrencyConfigLoading) {
+        return <Loader />;
+    }
+
+    if (withdrawalLimitReached) {
+        return (
+            <div className='wallets-withdrawal-locked'>
+                <WalletsActionScreen
+                    description={
+                        getWithdrawalLimitReachedDesc({
+                            askFinancialRiskApproval,
+                            poaNeedsVerification,
+                            poaStatus,
+                            poiNeedsVerification,
+                            poiStatus,
+                        })?.description
+                    }
+                    title={
+                        <Trans
+                            defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'
+                            values={{ currency }}
+                        />
+                    }
+                />
+            </div>
+        );
+    }
+
+    if (isWithdrawalLocked) {
+        return (
+            <div className='wallets-withdrawal-locked'>
+                <WalletsActionScreen
+                    description={
+                        getWithdrawalLockedDesc({
+                            askAuthenticate,
+                            askFixDetails,
+                            financialAssessmentRequired,
+                            noWithdrawalOrTradingStatus,
+                            withdrawalLockedStatus,
+                        })?.description
+                    }
+                    title={
+                        <Trans
+                            defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'
+                            values={{ currency }}
+                        />
+                    }
+                />
+            </div>
+        );
+    }
+
+    return <>{children}</>;
+};
+
+export default WithdrawalLocked;

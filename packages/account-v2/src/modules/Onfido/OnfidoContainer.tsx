@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
-import { useOnfido } from '@deriv/api';
-import { qtMerge } from '@deriv/quill-design';
+import { twMerge } from 'tailwind-merge';
+import { useOnfido } from '@deriv/api-v2';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import IcAccountMissingDetails from '../../assets/proof-of-identity/ic-account-missing-details.svg';
 import { ErrorMessage } from '../../components/ErrorMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
+import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { OnfidoView } from '../../containers/Onfido/OnfidoView';
 
 // TODO: Remove optional and default props when POI is ready
@@ -14,9 +14,15 @@ type TOnfidoContainer = {
     country?: string;
     isEnabledByDefault?: boolean;
     onOnfidoSubmit?: () => void;
+    selectedDocument?: TManualDocumentTypes;
 };
 
-export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, onOnfidoSubmit }: TOnfidoContainer) => {
+export const OnfidoContainer = ({
+    country,
+    isEnabledByDefault = false,
+    onOnfidoSubmit,
+    selectedDocument,
+}: TOnfidoContainer) => {
     const [isOnfidoEnabled, setIsOnfidoEnabled] = useState(isEnabledByDefault);
     const [transitionEnd, setTransitionEnd] = useState(false);
     const history = useHistory();
@@ -27,7 +33,7 @@ export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, on
         isServiceTokenLoading,
         onfidoInitializationError,
         serviceTokenError,
-    } = useOnfido(country);
+    } = useOnfido(country, selectedDocument);
 
     useEffect(() => {
         if (hasSubmitted) {
@@ -51,7 +57,7 @@ export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, on
     const hasPersonalDetailsValidationError = ['MissingPersonalDetails', 'InvalidPostalCode'].includes(
         serviceTokenError?.error.code ?? ''
     );
-    const showErrorMessage = onfidoInitializationError?.message || serviceTokenError?.error?.message;
+    const showErrorMessage = onfidoInitializationError?.message ?? serviceTokenError?.error?.message;
 
     if (isServiceTokenLoading) {
         return <Loader />;
@@ -91,17 +97,18 @@ export const OnfidoContainer = ({ country = 'co', isEnabledByDefault = false, on
     }
 
     return (
-        <div className={qtMerge('flex flex-col items-center gap-800 p-800 lg:p-50')}>
+        <div className={twMerge('flex flex-col items-center gap-16 p-16 lg:p-0')}>
             <div
-                className={clsx(
-                    '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-1300 p-800',
-                    { '[display:none]': transitionEnd, 'scale-y-0 opacity-50': isOnfidoEnabled }
+                className={twMerge(
+                    '[transition:transform_0.35s_ease,_opacity_0.35s_linear]origin-top opacity-24 p-16',
+                    transitionEnd && 'hidden',
+                    isOnfidoEnabled && 'scale-y-0 opacity-50'
                 )}
             >
-                {/* TODO: Dummy div here replace with PoiConfirmWithExample */}
+                {/* Do this: Dummy div here replace with PoiConfirmWithExample */}
                 <div
-                    className='border-75 border-solid border-solid-slate-300 rounded-500 w-[200px] sm:w-[638px] h-[384px]'
-                    data-testid='dt_poi-confirm-with-example'
+                    className='border-1 border-solid border-solid-grey-2 rounded-lg w-[200px] sm:w-[638px] h-[384px]'
+                    data-testid='dt_poi_confirm_with_example'
                     onClick={() => setIsOnfidoEnabled(true)}
                     onKeyDown={() => setIsOnfidoEnabled(true)}
                     tabIndex={0}

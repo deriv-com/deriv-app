@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
-import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { useHover } from 'usehooks-ts';
 import EditIcon from '@/assets/svgs/ic-edit.svg';
 import { Clipboard, Tooltip } from '@/components';
-import { ChangePassword } from '@cfd/screens';
-import { Provider } from '@deriv/library';
+import { useQueryParams } from '@/hooks';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 type TTradeDetailsItemProps = {
@@ -18,10 +17,10 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
     const { isDesktop } = useDevice();
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
-    const { show } = Provider.useModal();
+    const { openModal } = useQueryParams();
     return (
         <div
-            className={clsx(
+            className={twMerge(
                 'flex items-center h-32 justify-between bg-system-light-secondary-background p-5 pl-8',
                 className
             )}
@@ -42,7 +41,7 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
                     <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
                         <div ref={hoverRef}>
                             <Button className='underline' color='white' size='sm' variant='ghost'>
-                                <EditIcon className='cursor-pointer' onClick={() => show(<ChangePassword />)} />
+                                <EditIcon className='cursor-pointer' onClick={() => openModal('ChangePassword')} />
                             </Button>
                         </div>
                     </Tooltip>

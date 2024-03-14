@@ -1,10 +1,10 @@
 import React, { Fragment, useMemo } from 'react';
 import ImportantIcon from '@/assets/svgs/ic-important.svg';
 import { useRegulationFlags } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
 import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
@@ -25,7 +25,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isDesktop } = useDevice();
     const { isEU } = useRegulationFlags();
 
-    const { getCFDState } = Provider.useCFDContext();
+    const { cfdState } = useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeAccount } = useActiveTradingAccount();
@@ -34,8 +34,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
     const ctraderPlatform = PlatformDetails.ctrader.platform;
 
-    const marketType = getCFDState('marketType');
-    const platform = getCFDState('platform');
+    const { marketType, platform } = cfdState;
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -64,12 +63,12 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
 
     return (
         <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>
-            <div className='flex flex-col gap-16 p-24 border-b-100 border-system-light-secondary-background'>
+            <div className='flex flex-col gap-16 p-24 border-b-3 border-system-light-secondary-background'>
                 <div className='flex items-center justify-between w-full'>
                     <div className='flex items-center'>
                         <div className='mr-8'>{platformIcon}</div>
                         <div className='flex flex-col'>
-                            <div className='flex flex-row items-center gap-300'>
+                            <div className='flex flex-row items-center gap-6'>
                                 <Text size='sm'>
                                     {platform === mt5Platform
                                         ? marketTypeDetails[marketType ?? MarketType.ALL]?.title
@@ -92,7 +91,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                         </Text>
                     </div>
                 </div>
-                <div className='flex flex-col gap-100'>
+                <div className='flex flex-col gap-4'>
                     {platform === mt5Platform && (
                         <Fragment>
                             <TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
@@ -126,7 +125,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                         width={platform === mt5Platform ? 16 : 20}
                     />
                     <Text color='less-prominent' size='2xs'>
-                        {serviceMaintenanceMessages[(platform || mt5Platform) as TPlatforms.All]}
+                        {serviceMaintenanceMessages[(platform ?? mt5Platform) as TPlatforms.All]}
                     </Text>
                 </div>
             </div>

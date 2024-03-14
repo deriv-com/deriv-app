@@ -4,6 +4,8 @@ import useQuery from '../../useQuery';
 
 jest.mock('../../useQuery');
 
+jest.mock('../useAuthorize', () => jest.fn(() => ({ isSuccess: true })));
+
 describe('useKycAuthStatus', () => {
     afterEach(() => {
         jest.clearAllMocks();

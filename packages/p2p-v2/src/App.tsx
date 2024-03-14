@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import AppContent from './routes/AppContent';
 import { Router } from './routes';
 import './index.scss';
@@ -7,8 +7,10 @@ import './index.scss';
 const App: React.FC = () => {
     return (
         <APIProvider standalone>
-            <Router />
-            <AppContent />
+            <AuthProvider>
+                <Router />
+                <AppContent />
+            </AuthProvider>
         </APIProvider>
     );
 };

@@ -3,9 +3,8 @@ import { render } from '@testing-library/react';
 import App from '../app';
 import { mockStore } from '@deriv/stores';
 import moment from 'moment';
-import { TStores } from '@deriv/stores/types';
 
-const root_store = {
+const rootStore = {
     ...mockStore({}),
     common: {
         ...mockStore({}).common,
@@ -17,7 +16,6 @@ const root_store = {
         is_logged_in: false,
     },
     modules: {
-        ...mockStore({}).modules,
         cashier: {
             general_store: {
                 onMountCommon: jest.fn(),
@@ -27,7 +25,7 @@ const root_store = {
     },
 };
 
-const mock_ws = {
+const mockWs = {
     activeSymbols: jest.fn(),
     authorized: {
         activeSymbols: jest.fn(),
@@ -61,8 +59,8 @@ describe('App', () => {
         const { container } = render(
             <App
                 passthrough={{
-                    root_store: root_store as TStores,
-                    WS: mock_ws,
+                    root_store: rootStore,
+                    WS: mockWs,
                 }}
             />
         );
@@ -71,12 +69,12 @@ describe('App', () => {
 
     it('should call setPromptHandler on unmount', () => {
         const setPromptHandler = jest.fn();
-        root_store.ui.setPromptHandler = setPromptHandler;
+        rootStore.ui.setPromptHandler = setPromptHandler;
         const { unmount } = render(
             <App
                 passthrough={{
-                    root_store: root_store as TStores,
-                    WS: mock_ws,
+                    root_store: rootStore,
+                    WS: mockWs,
                 }}
             />
         );

@@ -2,7 +2,7 @@ import { setWebsocket } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import initStore from 'App/init-store';
 
-const mock_ws = {
+const mockWs = {
     activeSymbols: jest.fn(),
     authorized: {
         activeSymbols: jest.fn(),
@@ -34,9 +34,10 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('initStore', () => {
+    const rootStore = mockStore({});
+
     it('should return the root store', () => {
-        const root_store = mockStore({});
-        const result = initStore(root_store, mock_ws);
+        const result = initStore(rootStore, mockWs);
         expect(result).toBeDefined();
         expect(Object.keys(result)).toEqual([
             'client',
@@ -54,15 +55,13 @@ describe('initStore', () => {
     });
 
     it('should set the websocket', () => {
-        const root_store = mockStore({});
-        initStore(root_store, mock_ws);
-        expect(setWebsocket).toHaveBeenCalledWith(mock_ws);
+        initStore(rootStore, mockWs);
+        expect(setWebsocket).toHaveBeenCalledWith(mockWs);
     });
 
     it('should return the same store if it already exists', () => {
-        const root_store = mockStore({});
-        const result1 = initStore(root_store, mock_ws);
-        const result2 = initStore(root_store, mock_ws);
+        const result1 = initStore(rootStore, mockWs);
+        const result2 = initStore(rootStore, mockWs);
         expect(result1).toBe(result2);
     });
 });

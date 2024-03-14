@@ -317,6 +317,7 @@ export default class CFDStore extends BaseStore {
                 this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
                 WS.transferBetweenAccounts();
                 this.setIsAccountBeingCreated(false);
+                WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER);
             } else {
                 this.setError(true, response.error);
                 this.setIsAccountBeingCreated(false);

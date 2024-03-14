@@ -3,7 +3,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv/components';
-import { getCFDAccountKey, isMobile, WS } from '@deriv/shared';
+import { getCFDAccountKey, isMobile } from '@deriv/shared';
 import { TCFDDashboardContainer, TCFDsPlatformType, TTradingPlatformAccounts } from 'Components/props.types';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import PasswordBox from '../Components/passwordbox';
@@ -280,7 +280,6 @@ const CTraderDerivXTradeModal = ({
                                             });
                                             setAppstorePlatform(CFD_PLATFORMS.CTRADER);
                                             getAccount();
-                                            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER);
                                         }
                                     }}
                                     transparent

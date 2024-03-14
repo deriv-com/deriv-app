@@ -79,7 +79,7 @@ describe('<ContractReplay>', () => {
         render(<MockContractReplay store={mocked_store} />);
 
         expect(screen.getByText('Contract details')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_replay-chart__container')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_replay_chart_container')).toBeInTheDocument();
         expect(screen.getByTestId('dt_contract_replay_container')).toBeInTheDocument();
     });
 
@@ -102,6 +102,6 @@ describe('<ContractReplay>', () => {
         render(<MockContractReplay store={mocked_store} />);
 
         expect(screen.getByText('DigitsWidget')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_replay-chart__swipeable-wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_replay_chart_swipeable_wrapper')).toBeInTheDocument();
     });
 });

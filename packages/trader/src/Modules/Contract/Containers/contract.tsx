@@ -40,7 +40,7 @@ const Contract = observer(({ match, history }: TContract) => {
         <React.Fragment>
             {has_error ? (
                 <ErrorComponent
-                    data-testid='dt_error-component'
+                    data-testid='dt_error_component'
                     message={error_message}
                     is_dialog={dialog_errors.includes(error_code ?? '')}
                     redirect_label={

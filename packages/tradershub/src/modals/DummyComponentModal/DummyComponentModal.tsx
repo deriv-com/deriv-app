@@ -8,9 +8,9 @@ const DummyComponentModal = () => {
 
     return (
         <Modal ariaHideApp={false} isOpen={isModalOpen('DummyComponentModal')} onRequestClose={closeModal}>
-            {/* <Modal.Body className='max-w-[330px] '> */}
-            <DummyComponent />
-            {/* </Modal.Body> */}
+            <Modal.Body className='max-w-[330px] '>
+                <DummyComponent />
+            </Modal.Body>
         </Modal>
     );
 };

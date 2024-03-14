@@ -100,7 +100,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                             <div className='flex items-center'>
                                 {hasRating ? (
                                     <>
-                                        <Text className='lg:mr-0 mr-[-1.2rem]' color='less-prominent' size='xs'>
+                                        <Text className='lg:mr-0' color='less-prominent' size='xs'>
                                             {ratingAverageDecimal}
                                         </Text>
                                         <StarRating
@@ -108,7 +108,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                                             ratingValue={Number(ratingAverageDecimal)}
                                             starsScale={isMobile ? 0.7 : 0.9}
                                         />
-                                        <Text className='lg:ml-1 ml-[-1rem]' color='less-prominent' size='xs'>
+                                        <Text className='lg:ml-[-0.5rem] ml-[-2.5rem]' color='less-prominent' size='xs'>
                                             ({rating_count})
                                         </Text>
                                     </>
@@ -159,13 +159,11 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                         'flex-row justify-end': !isBuySellPage,
                     })}
                 >
-                    {isMobile && isBuySellPage && (
-                        <LabelPairedChevronRightMdRegularIcon className='absolute top-0 right-4' />
-                    )}
+                    {isMobile && isBuySellPage && <LabelPairedChevronRightMdRegularIcon className='absolute top-0' />}
                     <Button
                         className='lg:w-[7.5rem]'
                         onClick={() => setIsModalOpen(true)}
-                        size={isMobile ? 'md' : 'sm'}
+                        size={isMobile ? 'lg' : 'sm'}
                         textSize={isMobile ? 'md' : 'xs'}
                     >
                         {isBuyAdvert ? 'Buy' : 'Sell'} {account_currency}

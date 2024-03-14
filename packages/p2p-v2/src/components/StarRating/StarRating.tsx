@@ -35,7 +35,7 @@ const StarRating = ({
             ratingValue={fractionalizedValue}
             readonly={isReadonly}
             size={12}
-            style={{ transform: `scale(${starsScale})` }}
+            style={{ transform: `scale(${starsScale})`, transformOrigin: 'left' }}
         />
     );
 };

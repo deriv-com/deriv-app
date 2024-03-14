@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import ToggleMenuDrawer from '../toggle-menu-drawer';
 
 jest.mock('@deriv/components', () => {
@@ -39,9 +39,7 @@ describe('<ToggleMenuDrawer />', () => {
                     },
                 })}
             >
-                <P2PSettingsProvider>
-                    <ToggleMenuDrawer />
-                </P2PSettingsProvider>
+                <ToggleMenuDrawer />
             </StoreProvider>
         );
     };

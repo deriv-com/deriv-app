@@ -9,6 +9,7 @@ type TRoutes = `${typeof prefix}${'' | '/compare-accounts' | '/onboarding'}`;
 
 declare module 'react-router-dom' {
     export function useHistory(): {
+        action: 'POP' | 'PUSH' | 'REPLACE';
         location: { pathname: string; search: string };
         push: (path: string | { pathname: string; search: string; state?: Record<string, unknown> }) => void;
     };

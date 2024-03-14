@@ -1,0 +1,16 @@
+.p2p-v2-chat-footer {
+    &__input {
+        .deriv-input {
+            &__field {
+                &:not(:placeholder-shown) ~ label,
+                &:focus ~ label {
+                    display: none;
+                }
+            }
+
+            &__helper-message {
+                text-align: end;
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
-import PageReturn from '../PageReturn';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import PageReturn from '../PageReturn';
 
 const mockOnClick = jest.fn();
 describe('PageReturn', () => {

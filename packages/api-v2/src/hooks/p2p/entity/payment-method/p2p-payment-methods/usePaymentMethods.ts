@@ -5,7 +5,9 @@ import useQuery from '../../../../../useQuery';
 /** A custom hook that returns a list of P2P available payment methods **/
 const usePaymentMethods = () => {
     const { isSuccess } = useAuthorize();
-    const { data, ...rest } = useQuery('p2p_payment_methods', { options: { enabled: isSuccess } });
+    const { data, ...rest } = useQuery('p2p_payment_methods', {
+        options: { enabled: isSuccess, refetchOnWindowFocus: false },
+    });
     // Modify the data to add additional information.
     const modified_data = useMemo(() => {
         const p2p_payment_methods = data?.p2p_payment_methods;

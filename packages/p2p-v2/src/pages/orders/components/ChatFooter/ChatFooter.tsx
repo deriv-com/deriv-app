@@ -2,7 +2,6 @@ import React, { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { Input, Text, useDevice } from '@deriv-com/ui';
 import ChatFooterIcon from '../ChatFooterIcon/ChatFooterIcon';
 import { TextAreaWithIcon } from '../TextAreaWithIcon';
-import './ChatFooter.scss';
 
 type TChatFooterProps = {
     isClosed: boolean;

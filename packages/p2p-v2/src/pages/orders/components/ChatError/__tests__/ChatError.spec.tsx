@@ -14,7 +14,7 @@ describe('ChatError', () => {
         expect(screen.getByText('Oops, something went wrong')).toBeInTheDocument();
     });
 
-    it('should render the onclick', () => {
+    it('should handle the onclick', () => {
         const mockFn = jest.fn();
         render(<ChatError onClickRetry={mockFn} />);
         const button = screen.getByRole('button', { name: 'Retry' });

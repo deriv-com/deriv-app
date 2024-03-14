@@ -82,7 +82,7 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
-        "@deriv-com/analytics": "1.4.12",
+        "@deriv-com/analytics": "1.4.13",
         "@deriv-com/utils": "latest",
         "@deriv/account": "^1.0.0",
         "@deriv/api": "^1.0.0",

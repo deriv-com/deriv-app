@@ -1,10 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
+import { observer } from '@deriv/stores';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
-import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
@@ -15,12 +14,11 @@ const NoAds = ({ is_ads_page = false }) => {
     const { buy_sell_store, general_store, my_ads_store } = useStores();
     const { showModal } = useModalManagerContext();
     const { handleTabClick, is_barred } = general_store;
-    const { is_buy, selected_local_currency, setCreateSellAdFromNoAds } = buy_sell_store;
+    const { is_buy, local_currencies, selected_local_currency, setCreateSellAdFromNoAds } = buy_sell_store;
     const { setShowAdForm } = my_ads_store;
     const history = useHistory();
-    const { p2p_settings } = useP2PSettings();
 
-    const is_default_currency = p2p_settings.currency_list.filter(
+    const is_default_currency = local_currencies.filter(
         currency => currency.text.toLowerCase() === selected_local_currency?.toLowerCase() && currency.is_default
     ).length;
 

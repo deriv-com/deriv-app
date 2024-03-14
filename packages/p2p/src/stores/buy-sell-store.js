@@ -1,5 +1,7 @@
+import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { formatMoney, getDecimalPlaces } from '@deriv/shared';
+import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { requestWS, subscribeWS } from 'Utils/websocket';
@@ -18,6 +20,7 @@ export default class BuySellStore extends BaseStore {
     is_loading = true;
     is_sort_dropdown_open = false;
     is_submit_disabled = true;
+    local_currencies = [];
     local_currency = null;
     receive_amount = 0;
     search_results = [];
@@ -57,6 +60,7 @@ export default class BuySellStore extends BaseStore {
             is_loading: observable,
             is_sort_dropdown_open: observable,
             is_submit_disabled: observable,
+            local_currencies: observable,
             local_currency: observable,
             receive_amount: observable,
             search_results: observable,
@@ -81,6 +85,7 @@ export default class BuySellStore extends BaseStore {
             is_buy_advert: computed,
             is_sell_advert: computed,
             modal_title: computed,
+            getWebsiteStatus: action.bound,
             handleAdvertInfoResponse: action.bound,
             handleChange: action.bound,
             handleSubmit: action.bound,
@@ -100,6 +105,7 @@ export default class BuySellStore extends BaseStore {
             setIsSortDropdownOpen: action.bound,
             setIsSubmitDisabled: action.bound,
             setLocalCurrency: action.bound,
+            setLocalCurrencies: action.bound,
             setInitialReceiveAmount: action.bound,
             setReceiveAmount: action.bound,
             setSearchResults: action.bound,
@@ -174,6 +180,17 @@ export default class BuySellStore extends BaseStore {
         if (!this.is_buy) {
             this.root_store.my_profile_store.getAdvertiserPaymentMethods();
         }
+    }
+
+    getWebsiteStatus() {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response) {
+                const { error, website_status } = response;
+
+                if (error) this.setErrorMessage(error.message);
+                else this.setLocalCurrencies(website_status.p2p_config?.local_currencies);
+            }
+        });
     }
 
     handleChange(e) {
@@ -304,6 +321,37 @@ export default class BuySellStore extends BaseStore {
 
     setLocalCurrency(local_currency) {
         this.local_currency = local_currency;
+    }
+
+    setLocalCurrencies(local_currencies) {
+        const currency_list = [];
+
+        local_currencies.forEach(currency => {
+            const { display_name, has_adverts, is_default, symbol } = currency;
+
+            if (is_default && !this.selected_local_currency) {
+                this.setSelectedLocalCurrency(symbol);
+                this.setLocalCurrency(symbol);
+            }
+
+            currency_list.push({
+                component: (
+                    <div className='currency-dropdown__list-item'>
+                        <div className='currency-dropdown__list-item-symbol'>{symbol}</div>
+                        <Text as='div' align='right' size='xs' line_height='xxs'>
+                            {display_name}
+                        </Text>
+                    </div>
+                ),
+                display_name,
+                has_adverts,
+                is_default,
+                text: symbol,
+                value: symbol,
+            });
+        });
+
+        this.local_currencies = currency_list;
     }
 
     setInitialReceiveAmount(initial_price) {

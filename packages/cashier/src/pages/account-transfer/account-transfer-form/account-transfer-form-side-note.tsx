@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 import { GetLimits } from '@deriv/api-types';
 import { Text } from '@deriv/components';
-import { useExchangeRate } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
-import { useCurrencyConfig } from '@deriv/api';
-import { addComma, calcDecimalPlaces, getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
+import { useActiveAccount, useCurrencyConfig } from '@deriv/api';
+import { addComma, getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
+import { useExchangeRate } from '@deriv/hooks';
 
 type TAccountTransferNoteProps = {
     allowed_transfers_amount: GetLimits['daily_cumulative_amount_transfers'];
@@ -38,19 +38,24 @@ const AccountTransferNote = ({
 }: TAccountTransferNoteProps) => {
     const { handleSubscription, exchange_rates } = useExchangeRate();
     const { getConfig } = useCurrencyConfig();
+    const { data: active_account } = useActiveAccount();
+    const active_account_currency = active_account?.currency;
     const currency_config = getConfig(currency);
-    const account_currency = currency_config?.display_code;
+    const selected_account_currency = currency_config?.display_code;
     const fractional_digits = currency_config?.fractional_digits;
-    const exchange_rate = account_currency != null ? exchange_rates?.USD?.[account_currency] || 1 : 1;
+    const exchange_rate =
+        selected_account_currency && active_account_currency != null
+            ? exchange_rates?.[active_account_currency]?.[selected_account_currency] || 1
+            : 1;
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
     const platform_name_mt5 = getPlatformSettings('mt5').name;
     const platform_name_ctrader = getPlatformSettings('ctrader').name;
 
     useEffect(() => {
-        if (account_currency) {
-            handleSubscription('USD', account_currency);
+        if (selected_account_currency && active_account_currency) {
+            handleSubscription(active_account_currency, selected_account_currency);
         }
-    }, [account_currency, exchange_rate, handleSubscription]);
+    }, [selected_account_currency, active_account_currency, exchange_rate, handleSubscription]);
 
     const getCountTransferFeeNote = useCallback(() => {
         if (transfer_fee === 0) {
@@ -196,7 +201,7 @@ const AccountTransferNote = ({
                         i18n_default_text='We charge 2% or {{ minimum_fee }} {{ currency }} (whichever is higher) for all cryptocurrency transfers.'
                         values={{
                             minimum_fee,
-                            currency: account_currency,
+                            currency: selected_account_currency,
                         }}
                     />
                 </AccountTransferBullet>
@@ -208,7 +213,7 @@ const AccountTransferNote = ({
                         i18n_default_text='We charge 1% or {{ minimum_fee }} {{ currency }} (whichever is higher) for all cryptocurrency transfers.'
                         values={{
                             minimum_fee,
-                            currency: account_currency,
+                            currency: selected_account_currency,
                         }}
                     />
                 </AccountTransferBullet>
@@ -219,12 +224,12 @@ const AccountTransferNote = ({
                 <Localize
                     i18n_default_text="We don't charge a fee for transferring funds between your Deriv {{currency}} account to Deriv MT5, Deriv cTrader, or Deriv X account."
                     values={{
-                        currency: account_currency,
+                        currency: selected_account_currency,
                     }}
                 />
             </AccountTransferBullet>
         );
-    }, [account_currency, minimum_fee, transfer_fee]);
+    }, [selected_account_currency, minimum_fee, transfer_fee]);
 
     const getDailyCumilativeLimitNotes = useCallback(() => {
         if (is_dxtrade_transfer) {
@@ -237,7 +242,7 @@ const AccountTransferNote = ({
                                 exchange_rate * Number(allowed_transfers_amount?.dxtrade),
                                 fractional_digits
                             ),
-                            currency: account_currency,
+                            currency: selected_account_currency,
                         }}
                     />
                 </AccountTransferBullet>
@@ -252,7 +257,7 @@ const AccountTransferNote = ({
                                 exchange_rate * Number(allowed_transfers_amount?.mt5),
                                 fractional_digits
                             ),
-                            currency: account_currency,
+                            currency: selected_account_currency,
                         }}
                     />
                 </AccountTransferBullet>
@@ -267,13 +272,13 @@ const AccountTransferNote = ({
                             exchange_rate * Number(allowed_transfers_amount?.internal),
                             fractional_digits
                         ),
-                        currency: account_currency,
+                        currency: selected_account_currency,
                     }}
                 />
             </AccountTransferBullet>
         );
     }, [
-        account_currency,
+        selected_account_currency,
         allowed_transfers_amount?.dxtrade,
         allowed_transfers_amount?.internal,
         allowed_transfers_amount?.mt5,

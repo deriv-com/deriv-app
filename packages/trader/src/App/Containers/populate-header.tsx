@@ -3,7 +3,14 @@ import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggl
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { TRADE_TYPES, isTurbosContract, isVanillaContract } from '@deriv/shared';
+import {
+    TRADE_TYPES,
+    isTurbosContract,
+    isVanillaContract,
+    isStarted,
+    TContractInfo,
+    getSupportedContracts,
+} from '@deriv/shared';
 
 const PopulateHeader = observer(() => {
     const { portfolio, client } = useStore();
@@ -21,6 +28,13 @@ const PopulateHeader = observer(() => {
         p =>
             p.contract_info &&
             symbol === p.contract_info.underlying &&
+            //Added check for unsupported and forwardstarting contracts, which have not started yet
+            getSupportedContracts()[p.contract_info?.contract_type as keyof ReturnType<typeof getSupportedContracts>] &&
+            isStarted(
+                p.contract_info as Required<
+                    Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>
+                >
+            ) &&
             (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
                 ? filterByContractType(
                       p.contract_info,

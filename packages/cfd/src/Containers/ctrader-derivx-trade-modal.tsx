@@ -108,11 +108,11 @@ const CTraderDerivXTradeModal = ({
         ),
         content: (
             <React.Fragment>
-                <Text size='xxs' line_height='xl' className='cfd-trade-modal__expansion-panel--content'>
+                <Text size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
                     {localize('Use your Deriv account email and password to log in to cTrader.')}
                 </Text>
                 <div className='cfd-trade-modal__expansion-panel--divider' />
-                <Text size='xxs' line_height='xl' className='cfd-trade-modal__expansion-panel--content'>
+                <Text size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
                     <Localize
                         i18n_default_text='Manage up to {{max_count}} Deriv cTrader accounts (up to {{ strategy_count }} strategy accounts and 1 non-strategy account for payouts and commissions).'
                         values={{
@@ -122,7 +122,7 @@ const CTraderDerivXTradeModal = ({
                     />
                 </Text>
                 <div className='cfd-trade-modal__expansion-panel--divider' />
-                <Text size='xxs' line_height='xl' className='cfd-trade-modal__expansion-panel--content'>
+                <Text size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
                     {localize('Keep 1 non-strategy account open to manage deposits, withdrawals, and commissions.')}
                 </Text>
             </React.Fragment>

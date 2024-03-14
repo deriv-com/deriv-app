@@ -22,7 +22,7 @@ export const passwordErrorMessage = {
     invalidLength: `You should enter ${passwordValues.minLength}-${passwordValues.maxLength} characters.`,
     invalidLengthMT5: `You should enter ${passwordValues.minLength}-${passwordValues.maxLengthMT5} characters.`,
     missingCharacter: 'Password should have lower and uppercase English letters with numbers.',
-    missingCharacterMT5: 'Password must contain lowercase, uppercase letters, numbers, and special characters.',
+    missingCharacterMT5: 'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.',
     PasswordError: 'That password is incorrect. Please try again.',
 };
 

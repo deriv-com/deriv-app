@@ -104,6 +104,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                                             {ratingAverageDecimal}
                                         </Text>
                                         <StarRating
+                                            allowHalfIcon
                                             isReadonly
                                             ratingValue={Number(ratingAverageDecimal)}
                                             starsScale={isMobile ? 0.7 : 0.9}
@@ -159,7 +160,9 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                         'flex-row justify-end': !isBuySellPage,
                     })}
                 >
-                    {isMobile && isBuySellPage && <LabelPairedChevronRightMdRegularIcon className='absolute top-0' />}
+                    {isMobile && isBuySellPage && (
+                        <LabelPairedChevronRightMdRegularIcon className='absolute top-0 right-0' />
+                    )}
                     <Button
                         className='lg:w-[7.5rem]'
                         onClick={() => setIsModalOpen(true)}

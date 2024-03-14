@@ -4,14 +4,18 @@ import { LabelPairedStarLgFillIcon, LabelPairedStarLgRegularIcon } from '@deriv/
 import './StarRating.scss';
 
 type TStarRatingProps = {
+    allowHalfIcon?: boolean;
+    allowHover?: boolean;
     initialValue?: number;
     isReadonly?: boolean;
-    onClick?: () => void;
+    onClick?: (rate: number) => void;
     ratingValue: number;
     starsScale?: number;
 };
 
 const StarRating = ({
+    allowHalfIcon = false,
+    allowHover = false,
     initialValue = 0,
     isReadonly = false,
     onClick,
@@ -24,8 +28,8 @@ const StarRating = ({
 
     return (
         <Rating
-            allowHalfIcon
-            allowHover={false}
+            allowHalfIcon={allowHalfIcon}
+            allowHover={allowHover}
             className='p2p-v2-star-rating'
             emptyIcon={<LabelPairedStarLgRegularIcon fill='#FFAD3A' />}
             fullIcon={<LabelPairedStarLgFillIcon fill='#FFAD3A' />}

@@ -128,6 +128,6 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
 
     return {
         description: error?.message ?? '',
-        button_text: <Localize i18n_default_text='Try again' />,
+        button_text: error ? <Localize i18n_default_text='Try again' /> : undefined,
     };
 };

@@ -4,7 +4,7 @@ import { Button, Modal } from '@deriv/components';
 type TPasskeyModal = {
     header?: React.ReactElement;
     description?: React.ReactElement | string;
-    button_text: React.ReactElement;
+    button_text?: React.ReactElement;
     onButtonClick: React.MouseEventHandler<HTMLButtonElement>;
     is_modal_open: boolean;
     className?: string;
@@ -35,9 +35,11 @@ const PasskeyModal = ({
     >
         <Modal.Body>{description}</Modal.Body>
         <Modal.Footer>
-            <Button onClick={onButtonClick} large primary>
-                {button_text}
-            </Button>
+            {button_text && (
+                <Button onClick={onButtonClick} large primary>
+                    {button_text}
+                </Button>
+            )}
         </Modal.Footer>
     </Modal>
 );

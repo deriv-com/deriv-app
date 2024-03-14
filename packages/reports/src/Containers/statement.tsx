@@ -8,7 +8,6 @@ import {
     getContractPath,
     getUnsupportedContracts,
     hasStarted,
-    isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -101,10 +100,7 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
                   ),
               }
             : getContractPath(row_obj.id);
-        if (
-            isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time) &&
-            !hasStarted(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
-        )
+        if (!hasStarted(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time))
             action = {
                 message: '',
                 component: <Localize i18n_default_text="You'll see these details once the contract starts." />,

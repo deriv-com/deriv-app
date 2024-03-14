@@ -27,7 +27,6 @@ const getRowAction = (row_obj: { [key: string]: unknown }) => {
     const contract_type = extractInfoFromShortcode(row_obj?.shortcode as string)
         ?.category?.toString()
         .toUpperCase();
-    //In profit table only closed contracts are shown, so no need in forwardstarting check
     return getUnsupportedContracts()[contract_type as TUnsupportedContractType]
         ? {
               component: (

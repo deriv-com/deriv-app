@@ -28,7 +28,7 @@ const PopulateHeader = observer(() => {
         p =>
             p.contract_info &&
             symbol === p.contract_info.underlying &&
-            //Added check for unsupported and forwardstarting contracts, which have not started yet
+            //Added check for unsupported and forward starting contracts, which have not started yet
             getSupportedContracts()[p.contract_info?.contract_type as keyof ReturnType<typeof getSupportedContracts>] &&
             isStarted(
                 p.contract_info as Required<

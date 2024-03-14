@@ -6,9 +6,11 @@ import {
     useCryptoWithdrawal,
     useCurrencyConfig,
     useMT5AccountsList,
+    usePaymentAgentList,
     useSortedMT5Accounts,
     useTransferBetweenAccounts,
 } from '@deriv/api-v2';
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace THooks {
     export type Accounts = NonNullable<ReturnType<typeof useAllAccountsList>['data']>;
@@ -21,6 +23,7 @@ export namespace THooks {
     export type TransferAccounts = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >;
+    export type PaymentAgentList = NonNullable<ReturnType<typeof usePaymentAgentList>['data']>;
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace

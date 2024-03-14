@@ -4,6 +4,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
+import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -57,7 +58,7 @@ describe('RecentFooter', () => {
 
         await waitFor(() => {
             expect(mock_DBot_store?.load_modal?.is_load_modal_open).toBeFalsy();
-            expect(mock_DBot_store?.dashboard?.toast_message).toBe('import');
+            expect(mock_DBot_store?.dashboard?.toast_message).toBe(NOTIFICATION_TYPE.BOT_IMPORT);
         });
     });
 });

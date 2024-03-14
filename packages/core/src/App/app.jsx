@@ -16,7 +16,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider, ExchangeRatesProvider, P2PSettingsProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
@@ -100,9 +100,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                                 <POIProvider>
                                     <StoreProvider store={root_store}>
                                         <ExchangeRatesProvider>
-                                            <P2PSettingsProvider>
-                                                <AppContent passthrough={platform_passthrough} />
-                                            </P2PSettingsProvider>
+                                            <AppContent passthrough={platform_passthrough} />
                                         </ExchangeRatesProvider>
                                     </StoreProvider>
                                 </POIProvider>

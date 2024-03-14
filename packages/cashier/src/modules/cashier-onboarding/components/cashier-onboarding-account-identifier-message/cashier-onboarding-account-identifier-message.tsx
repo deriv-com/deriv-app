@@ -16,7 +16,7 @@ const CashierOnboardingAccountIdentifierMessage: React.FC = observer(() => {
             message={
                 <Localize
                     i18n_default_text='This is your <0>{{currency}}</0> account {{loginid}}.'
-                    values={{ currency: currency_config?.display_code, loginid }}
+                    values={{ currency: currency_config.display_code, loginid }}
                     components={[<strong key={0} />]}
                 />
             }

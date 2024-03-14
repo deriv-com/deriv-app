@@ -33,7 +33,10 @@ const DerivAppsGetAccount: React.FC = () => {
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
     useEffect(() => {
-        const openSuccessModal = () => {
+        if (newTradingAccountData && isAccountCreationSuccess) {
+            addTradingAccountToLocalStorage(newTradingAccountData);
+        }
+        if (isAccountCreationSuccess) {
             show(
                 <ModalStepWrapper
                     renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
@@ -51,12 +54,6 @@ const DerivAppsGetAccount: React.FC = () => {
                     defaultRootId: 'wallets_modal_root',
                 }
             );
-        };
-        if (newTradingAccountData && isAccountCreationSuccess) {
-            addTradingAccountToLocalStorage(newTradingAccountData);
-        }
-        if (isAccountCreationSuccess) {
-            openSuccessModal();
         }
     }, [addTradingAccountToLocalStorage, newTradingAccountData, isAccountCreationSuccess]);
 

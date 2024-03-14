@@ -39,7 +39,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         setModalOptions({
             shouldHideDerivAppHeader,
         });
-    }, [shouldHideDerivAppHeader, setModalOptions]);
+    }, [shouldHideDerivAppHeader]);
 
     const Footer = () =>
         hasRenderFooter ? (

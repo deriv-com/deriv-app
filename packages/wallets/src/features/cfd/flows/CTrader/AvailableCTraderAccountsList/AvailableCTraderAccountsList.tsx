@@ -46,7 +46,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
                 />
             );
         }
-    }, [accountType, activeWallet?.wallet_currency_type, error?.error?.message, hide, show, status]);
+    }, [accountType, activeWallet?.wallet_currency_type, error?.error?.message, status]);
 
     return (
         <div className='wallets-available-ctrader'>

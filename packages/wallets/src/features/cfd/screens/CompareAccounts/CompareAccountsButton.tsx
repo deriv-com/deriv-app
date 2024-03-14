@@ -108,7 +108,7 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
                 />
             );
         }
-    }, [createAccountError, isAccountCreated, isDemo, show, walletCurrencyType]);
+    }, [createAccountError, isAccountCreated, isDemo, walletCurrencyType]);
 
     const onClickAdd = () => {
         if (isCrypto && USDSVGWallet) {

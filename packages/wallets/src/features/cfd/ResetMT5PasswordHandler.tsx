@@ -37,7 +37,7 @@ const ResetMT5PasswordHandler = () => {
                 );
             }
         }
-    }, [platformMapping, resetTradingPlatformActionParams, show]);
+    }, [platformMapping, resetTradingPlatformActionParams]);
 
     return null;
 };

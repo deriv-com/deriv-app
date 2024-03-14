@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
-import { useAuthorize } from '@deriv/api-v2';
+import { useIsEuRegion } from '@deriv/api-v2';
 import { FormDropDownField } from '../../components/FormFields';
-import { LANDING_COMPANY } from '../../constants/constants';
-import type { TFinancialAssessmentFormValues } from '../types';
 import {
     accountTurnoverList,
     educationLevelList,
@@ -13,17 +11,14 @@ import {
     estimatedWorthList,
     incomeSourceList,
     netIncomeList,
-    occupationList,
     sourceOfWealthList,
-} from './financialInformationList';
+} from '../../constants/financialInformationList';
+import { filterOccupationList, shouldHideOccupation } from '../../utils/financialAssessmentUtils';
+import type { TFinancialAssessmentFormValues } from '../types';
 import { financialAssessmentValidations } from './validations';
 
 export const FinancialAssessmentFields = () => {
-    const { data: activeAccount } = useAuthorize();
-
-    const { landing_company_name: landingCompanyShortcode } = activeAccount;
-
-    const isMF = landingCompanyShortcode === LANDING_COMPANY.MALTAINVEST;
+    const { isEUCountry } = useIsEuRegion();
 
     const formik = useFormikContext<TFinancialAssessmentFormValues>();
 
@@ -31,9 +26,18 @@ export const FinancialAssessmentFields = () => {
         throw new Error('FinancialAssessmentFields must be used within a Formik component');
     }
 
-    const hideOccupation = [EMPLOYMENT_VALUES.SelfEmployed, EMPLOYMENT_VALUES.Unemployed].some(
-        val => val === formik.values.employmentStatus
-    );
+    const { setFieldValue, values } = formik;
+    const { employmentStatus, occupation } = values;
+
+    const hideOccupation = shouldHideOccupation(employmentStatus || '');
+
+    const filteredOccupationList = useMemo(() => filterOccupationList(employmentStatus || ''), [employmentStatus]);
+
+    useEffect(() => {
+        if (employmentStatus === EMPLOYMENT_VALUES.employed && occupation === EMPLOYMENT_VALUES.unemployed) {
+            setFieldValue('occupation', '');
+        }
+    }, [employmentStatus, setFieldValue, occupation]);
 
     const {
         accountTurnover: accountTurnoverSchema,
@@ -48,14 +52,14 @@ export const FinancialAssessmentFields = () => {
     } = financialAssessmentValidations;
 
     return (
-        <div className='grid pt-8 grid-col-1'>
+        <div className='grid pt-8 space-y-6 grid-col-1'>
             <FormDropDownField
                 label='Source of income'
                 list={incomeSourceList}
                 name='incomeSource'
                 validationSchema={incomeSourceSchema}
             />
-            {!isMF && (
+            {!isEUCountry && (
                 <FormDropDownField
                     label='Employment status'
                     list={employmentStatusList}
@@ -72,7 +76,7 @@ export const FinancialAssessmentFields = () => {
             {!hideOccupation && (
                 <FormDropDownField
                     label='Occupation'
-                    list={occupationList}
+                    list={filteredOccupationList}
                     name='occupation'
                     validationSchema={occupationSchema}
                 />

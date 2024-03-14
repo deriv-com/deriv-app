@@ -9,71 +9,64 @@ import {
     forexTradingFrequencyList,
     otherInstrumentsTradingExperienceList,
     otherInstrumentsTradingFrequencyList,
-} from './tradingInformationList';
+} from '../../constants/tradingInformationList';
 import { tradingExperienceValidations } from './validations';
 
-export const TradingExperienceFields = () => {
-    const {
-        binaryOptionsTradingExperience: binaryOptionsTradingExperienceSchema,
-        binaryOptionsTradingFrequency: binaryOptionsTradingFrequencySchema,
-        cfdTradingExperience: cfdTradingExperienceSchema,
-        cfdTradingFrequency: cfdTradingFrequencySchema,
-        forexTradingExperience: forexTradingExperienceSchema,
-        forexTradingFrequency: forexTradingFrequencySchema,
-        otherTradingInstrumentsExperience: otherTradingInstrumentsExperienceSchema,
-        otherTradingInstrumentsFrequency: otherTradingInstrumentsFrequencySchema,
-    } = tradingExperienceValidations;
+const tradingExperienceConfig = [
+    {
+        label: 'Forex trading experience',
+        list: forexTradingExperienceList,
+        name: 'forexTradingExperience',
+        validationSchema: tradingExperienceValidations.forexTradingExperience,
+    },
+    {
+        label: 'Forex trading frequency',
+        list: forexTradingFrequencyList,
+        name: 'forexTradingFrequency',
+        validationSchema: tradingExperienceValidations.forexTradingFrequency,
+    },
+    {
+        label: 'Binary options trading experience',
+        list: binaryOptionsTradingExperienceList,
+        name: 'binaryOptionsTradingExperience',
+        validationSchema: tradingExperienceValidations.binaryOptionsTradingExperience,
+    },
+    {
+        label: 'Binary options trading frequency',
+        list: binaryOptionsTradingFrequencyList,
+        name: 'binaryOptionsTradingFrequency',
+        validationSchema: tradingExperienceValidations.binaryOptionsTradingFrequency,
+    },
+    {
+        label: 'CFD trading experience',
+        list: cfdTradingExperienceList,
+        name: 'cfdTradingExperience',
+        validationSchema: tradingExperienceValidations.cfdTradingExperience,
+    },
+    {
+        label: 'CFD trading frequency',
+        list: cfdTradingFrequencyList,
+        name: 'cfdTradingFrequency',
+        validationSchema: tradingExperienceValidations.cfdTradingFrequency,
+    },
+    {
+        label: 'Other trading instruments experience',
+        list: otherInstrumentsTradingExperienceList,
+        name: 'otherInstrumentsTradingExperience',
+        validationSchema: tradingExperienceValidations.otherTradingInstrumentsExperience,
+    },
+    {
+        label: 'Other trading instruments frequency',
+        list: otherInstrumentsTradingFrequencyList,
+        name: 'otherInstrumentsTradingFrequency',
+        validationSchema: tradingExperienceValidations.otherTradingInstrumentsFrequency,
+    },
+];
 
-    return (
-        <div className='grid pt-8 grid-col-1'>
-            <FormDropDownField
-                label='Forex trading experience'
-                list={forexTradingExperienceList}
-                name='forexTradingExperience'
-                validationSchema={forexTradingExperienceSchema}
-            />
-            <FormDropDownField
-                label='Forex trading frequency'
-                list={forexTradingFrequencyList}
-                name='forexTradingFrequency'
-                validationSchema={forexTradingFrequencySchema}
-            />
-            <FormDropDownField
-                label='Binary options trading experience'
-                list={binaryOptionsTradingExperienceList}
-                name='binaryOptionsTradingExperience'
-                validationSchema={binaryOptionsTradingExperienceSchema}
-            />
-            <FormDropDownField
-                label='Binary options trading frequency'
-                list={binaryOptionsTradingFrequencyList}
-                name='binaryOptionsTradingFrequency'
-                validationSchema={binaryOptionsTradingFrequencySchema}
-            />
-            <FormDropDownField
-                label='CFD trading experience'
-                list={cfdTradingExperienceList}
-                name='cfdTradingExperience'
-                validationSchema={cfdTradingExperienceSchema}
-            />
-            <FormDropDownField
-                label='CFD trading frequency'
-                list={cfdTradingFrequencyList}
-                name='cfdTradingFrequency'
-                validationSchema={cfdTradingFrequencySchema}
-            />
-            <FormDropDownField
-                label='Other trading instruments experience'
-                list={otherInstrumentsTradingExperienceList}
-                name='otherInstrumentsTradingExperience'
-                validationSchema={otherTradingInstrumentsExperienceSchema}
-            />
-            <FormDropDownField
-                label='Other trading instruments frequency'
-                list={otherInstrumentsTradingFrequencyList}
-                name='otherInstrumentsTradingFrequency'
-                validationSchema={otherTradingInstrumentsFrequencySchema}
-            />
-        </div>
-    );
-};
+export const TradingExperienceFields = () => (
+    <div className='grid pt-8 space-y-6 grid-col-1'>
+        {tradingExperienceConfig.map(({ label, list, name, validationSchema }) => (
+            <FormDropDownField key={name} label={label} list={list} name={name} validationSchema={validationSchema} />
+        ))}
+    </div>
+);

@@ -81,11 +81,7 @@ const IDVForm = ({
                 };
             });
 
-            if (is_for_mt5) {
-                setDocumentList([...new_document_list]);
-            } else {
-                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
-            }
+            setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
         }
     }, [document_data, selected_country, IDV_NOT_APPLICABLE_OPTION, is_for_mt5]);
 

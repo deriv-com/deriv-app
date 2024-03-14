@@ -1,13 +1,12 @@
 import React from 'react';
 import InfoIcon from '@/assets/svgs/ic-info-outline.svg';
-import { useRegulationSwitcher } from '@/hooks';
-import { RegulationModal } from '@/modals';
-import { useModal, useUIContext } from '@/providers';
+import { useQueryParams, useRegulationSwitcher } from '@/hooks';
+import { useUIContext } from '@/providers';
 import { Tab, Tabs } from '@deriv-com/ui';
 
 const RegulationSwitcherMobile = () => {
-    const { show } = useModal();
     const { uiState } = useUIContext();
+    const { openModal } = useQueryParams();
 
     const { buttons, handleButtonClick } = useRegulationSwitcher();
 
@@ -15,7 +14,7 @@ const RegulationSwitcherMobile = () => {
 
     return (
         <div className='flex items-center gap-8'>
-            <InfoIcon className='w-16 h-auto' onClick={() => show(<RegulationModal />)} />
+            <InfoIcon className='w-16 h-auto' onClick={() => openModal('RegulationModal')} />
             <Tabs
                 TitleFontSize='sm'
                 activeTab={activeRegulation}

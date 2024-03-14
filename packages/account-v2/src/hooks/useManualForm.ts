@@ -2,7 +2,7 @@ import { useKycAuthStatus } from '@deriv/api-v2';
 import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../constants/manualFormConstants';
 
 /** A custom hook used for manual verification flow */
-const useManualForm = (countryCode: string, selectedDocument: TManualDocumentTypes) => {
+export const useManualForm = (countryCode: string, selectedDocument: TManualDocumentTypes) => {
     const { isLoading, kyc_auth_status: kycAuthStatus, ...rest } = useKycAuthStatus({ country: countryCode });
     const servicesAvailable = kycAuthStatus?.identity?.available_services;
 
@@ -29,5 +29,3 @@ const useManualForm = (countryCode: string, selectedDocument: TManualDocumentTyp
         ...rest,
     };
 };
-
-export default useManualForm;

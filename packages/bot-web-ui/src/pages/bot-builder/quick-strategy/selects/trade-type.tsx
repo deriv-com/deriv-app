@@ -49,8 +49,6 @@ const TradeTypeSelect: React.FC = () => {
                     await setFieldValue?.('tradetype', trade_types?.[0].value || '');
                     await validateForm();
                     setValue('tradetype', trade_types?.[0].value);
-                } else {
-                    const selected_item = trade_types?.find(trade_types => trade_types?.value === selected);
                 }
             };
             debounce(async () => {
@@ -87,7 +85,7 @@ const TradeTypeSelect: React.FC = () => {
                             value={selected_trade_type?.text || ''}
                             list_items={trade_type_dropdown_options}
                             onItemSelection={(item: TItem) => {
-                                const { value, text } = item as TTradeType;
+                                const { value } = item as TTradeType;
                                 if (item) {
                                     setFieldValue?.('tradetype', value);
                                     setValue('tradetype', value);

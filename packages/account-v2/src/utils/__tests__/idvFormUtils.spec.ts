@@ -1,6 +1,6 @@
 import { getIDVFormValidationSchema, getSelectedDocumentConfigData } from '../idvFormUtils';
 
-const DOCUMENT_LIST = [
+const mockDocumentList = [
     {
         additional: {
             display_name: 'PAN Card',
@@ -28,33 +28,33 @@ const DOCUMENT_LIST = [
 
 describe('getSelectedDocumentConfigData', () => {
     it('should return undefined if list is empty', () => {
-        expect(getSelectedDocumentConfigData('passport', DOCUMENT_LIST)).toBeUndefined();
+        expect(getSelectedDocumentConfigData('passport', mockDocumentList)).toBeUndefined();
     });
 
     it('should return document congfig if document type is matched', () => {
-        expect(getSelectedDocumentConfigData('epic', DOCUMENT_LIST)).toEqual(DOCUMENT_LIST[2]);
+        expect(getSelectedDocumentConfigData('epic', mockDocumentList)).toEqual(mockDocumentList[2]);
     });
 });
 
 describe('getIDVFormValidationSchema', () => {
     it('should return return true when data matches schema', async () => {
-        const schema = getIDVFormValidationSchema(DOCUMENT_LIST);
+        const schema = getIDVFormValidationSchema(mockDocumentList);
 
         const result = await schema.isValid({
-            document_additional: 'hompl7358z',
-            document_number: '123456789011',
-            document_type: 'aadhaar',
+            additionalDocument: 'hompl7358z',
+            documentNumber: '123456789011',
+            documentType: 'aadhaar',
         });
 
         expect(result).toBeTruthy();
     });
 
     it('should return false when data fails to match schema', async () => {
-        const schema = getIDVFormValidationSchema(DOCUMENT_LIST);
+        const schema = getIDVFormValidationSchema(mockDocumentList);
 
         const result = await schema.isValid({
-            document_number: 'Abc123456',
-            document_type: 'epic',
+            documentNumber: 'Abc123456',
+            documentType: 'epic',
         });
 
         expect(result).toBeFalsy();

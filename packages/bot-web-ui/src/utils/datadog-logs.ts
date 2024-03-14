@@ -9,7 +9,13 @@ import { formatDate, formatTime } from '@deriv/shared';
  * @returns {void}
  * **/
 const initDatadogLogs = (is_datadog_enabled: boolean) => {
-    const DATADOG_CLIENT_TOKEN_LOGS = is_datadog_enabled ? process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '' : '';
+    if (!is_datadog_enabled) {
+        if (window.DD_RUM) {
+            window.DD_RUM = undefined;
+        }
+        return;
+    }
+    const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
     const isProduction = process.env.NODE_ENV === 'production';
     const isStaging = process.env.NODE_ENV === 'staging';
     let dataDogSessionSampleRate = 0;

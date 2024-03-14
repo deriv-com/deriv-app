@@ -2,7 +2,7 @@ import React, { Fragment, memo, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { twMerge } from 'tailwind-merge';
 import { CUSTOM_STYLES } from '@/helpers';
-import { useCurrencies, useQueryParams, useRegulationFlags } from '@/hooks';
+import { useCurrencies, useDisableFiatCurrencies, useQueryParams, useRegulationFlags } from '@/hooks';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Tab, Tabs, Text } from '@deriv-com/ui';
 import CurrenciesForm from './CurrenciesForm';
@@ -15,13 +15,13 @@ const TabTypes = {
 /**
  * @name AddOrManageAccount
  * @description The AddOrManageAccount component is used to display the Add or manage account modal.
- * @param {TAddOrManageAccount} props - The props of the component.
  * @param {boolean} props.isOpen - The isOpen prop is a boolean that determines if the modal is open.
  * @param {VoidFunction} props.onClose - The onClose prop is a function that closes the modal.
  * @returns {React.ReactNode}
  */
 const AddOrManageAccount = () => {
-    const { data: currencies, isLoading, allCryptoCurrenciesAreAdded } = useCurrencies();
+    const { data: currencies, isLoading, allCryptoCurrenciesAreAdded, addedFiatCurrency } = useCurrencies();
+    const disableFiatCurrencies = useDisableFiatCurrencies();
     const [activeTab, setActiveTab] = useState<'CRYPTO' | 'FIAT'>(TabTypes[0]);
 
     const { isModalOpen, closeModal } = useQueryParams();
@@ -87,6 +87,7 @@ const AddOrManageAccount = () => {
                             allCryptoCurrenciesAreAdded={allCryptoCurrenciesAreAdded}
                             currencies={currencies?.CRYPTO ?? []}
                             isSubmitButtonDisabled={allCryptoCurrenciesAreAdded}
+                            type={TabTypes[0]}
                         />
                     </Fragment>
                 )}
@@ -100,7 +101,13 @@ const AddOrManageAccount = () => {
                                 Choose the currency you would like to trade with.
                             </Text>
                         </div>
-                        <CurrenciesForm currencies={currencies?.FIAT ?? []} submitButtonLabel='Change currency' />
+                        <CurrenciesForm
+                            addedFiatCurrency={addedFiatCurrency}
+                            currencies={currencies?.FIAT ?? []}
+                            disableFiatCurrencies={disableFiatCurrencies}
+                            isSubmitButtonDisabled={disableFiatCurrencies}
+                            submitButtonLabel='Change currency'
+                        />
                     </Fragment>
                 )}
             </div>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { NewsTicker } from '../../../../components';
-import { TIcons } from '../../types';
+import { TIconTypes } from '../../../../types';
 import styles from './CashierOnboardingIconMarquee.module.scss';
 
 type TProps = {
-    icons: TIcons[];
+    icons: TIconTypes.TIcon[];
 };
 
 const CashierOnboardingIconMarquee: React.FC<TProps> = ({ icons }) => {

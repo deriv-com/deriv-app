@@ -19,7 +19,7 @@ const WalletListCardBalance = () => {
                 />
             ) : (
                 <WalletText align='right' size='xl' weight='bold'>
-                    <Trans defaults={balance} />
+                    {balance}
                 </WalletText>
             )}
         </div>

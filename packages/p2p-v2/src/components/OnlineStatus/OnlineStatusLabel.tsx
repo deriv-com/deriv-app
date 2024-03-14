@@ -3,11 +3,11 @@ import { getLastOnlineLabel } from '@/utils';
 import { Text } from '@deriv-com/ui';
 
 type TOnlineStatusLabelProps = {
-    isOnline: boolean;
+    isOnline?: boolean;
     lastOnlineTime: number;
 };
 
-const OnlineStatusLabel = ({ isOnline, lastOnlineTime }: TOnlineStatusLabelProps) => {
+const OnlineStatusLabel = ({ isOnline = false, lastOnlineTime }: TOnlineStatusLabelProps) => {
     return (
         <Text color='less-prominent' size='sm'>
             {getLastOnlineLabel(isOnline, lastOnlineTime)}

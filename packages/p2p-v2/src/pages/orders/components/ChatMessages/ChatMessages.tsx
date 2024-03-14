@@ -85,7 +85,9 @@ const ChatMessages = ({ chatChannel, chatMessages = [], userId }: TChatMessagesP
         // Height of element changes after the image is loaded. Accommodate
         // this extra height in the scroll.
         if (scrollRef.current) {
-            scrollRef.current.scrollTop += (event.currentTarget.parentNode as HTMLElement)?.clientHeight;
+            scrollRef.current.scrollTop += event.currentTarget.parentElement
+                ? event.currentTarget.parentElement.clientHeight
+                : 0;
         }
     };
 

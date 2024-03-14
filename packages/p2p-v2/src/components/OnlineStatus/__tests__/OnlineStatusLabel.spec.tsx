@@ -17,7 +17,7 @@ jest.mock('@/utils', () => ({
 
 describe('<OnlineStatusLabel/>', () => {
     it('should call the getLastOnlineLabel function with isOnline and lastOnlineTime', () => {
-        render(<OnlineStatusLabel isOnline={false} lastOnlineTime={1685446791} />);
+        render(<OnlineStatusLabel lastOnlineTime={1685446791} />);
         expect(getLastOnlineLabel).toHaveBeenCalledWith(false, 1685446791);
         expect(screen.getByText('Seen 2 days ago')).toBeInTheDocument();
     });

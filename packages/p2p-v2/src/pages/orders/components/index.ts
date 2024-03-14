@@ -5,3 +5,4 @@ export * from './ChatMessages';
 export * from './OrderRatingButton';
 export * from './OrderStatusTag';
 export * from './OrderTimer';
+export * from './TextAreaWithIcon';

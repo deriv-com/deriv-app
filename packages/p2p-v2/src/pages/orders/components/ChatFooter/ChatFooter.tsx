@@ -1,6 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { Input, Text, useDevice } from '@deriv-com/ui';
 import ChatFooterIcon from '../ChatFooterIcon/ChatFooterIcon';
+import { TextAreaWithIcon } from '../TextAreaWithIcon';
 import './ChatFooter.scss';
 
 type TChatFooterProps = {
@@ -11,10 +12,10 @@ type TChatFooterProps = {
 const ChatFooter = ({ isClosed, sendFile, sendMessage }: TChatFooterProps) => {
     const { isMobile } = useDevice();
     const [value, setValue] = useState('');
-    const fileInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement | null>;
-    const textInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement | null>;
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const textInputRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(event.target.value);
     };
     if (isClosed) {
@@ -40,10 +41,10 @@ const ChatFooter = ({ isClosed, sendFile, sendMessage }: TChatFooterProps) => {
         }
     };
 
-    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === 'Enter' && !isMobile) {
             if (event.ctrlKey || event.metaKey) {
-                const element = event.target as HTMLInputElement;
+                const element = event.currentTarget;
                 const { value } = element;
 
                 if (typeof element.selectionStart === 'number' && typeof element.selectionEnd === 'number') {
@@ -66,28 +67,30 @@ const ChatFooter = ({ isClosed, sendFile, sendMessage }: TChatFooterProps) => {
 
     return (
         <div className='px-[2.4rem] pt-[1.6rem] pb-[2.8rem] w-full'>
-            {/* TODO: replace with text area component once multiline functionality available */}
-            <Input
-                isFullWidth
-                label='Enter message'
-                maxLength={5000}
-                message={`${value.length}/5000`}
-                onChange={onChange}
-                onKeyDown={handleKeyDown}
-                ref={ref => (textInputRef.current = ref)}
-                rightPlaceholder={
+            <TextAreaWithIcon
+                icon={
                     <ChatFooterIcon
                         length={value.length}
                         onClick={() => (value.length > 0 ? sendChatMessage() : fileInputRef.current?.click())}
                     />
                 }
-                wrapperClassName='p2p-v2-chat-footer__input'
+                maxLength={5000}
+                onChange={onChange}
+                onKeyDown={handleKeyDown}
+                placeholder='Enter message'
+                ref={ref => (textInputRef.current = ref)}
+                shouldShowCounter
+                value={value}
             />
             <div className='hidden'>
                 <Input
                     data-testid='dt_p2p_v2_file_input'
                     name='file'
-                    onChange={e => sendFile(e.target.files?.[0] as File)}
+                    onChange={e => {
+                        if (e.target.files?.[0]) {
+                            sendFile(e.target.files[0]);
+                        }
+                    }}
                     ref={el => (fileInputRef.current = el)}
                     type='file'
                 />

@@ -49,9 +49,7 @@ describe('isCustomJournalMessage', () => {
 
         isCustomJournalMessage(message, showErrorMessage, centerAndHighlightBlock, pushMessage);
 
-        setTimeout(() => {
-            expect(pushMessage).toHaveBeenCalledWith(expect.any(Object));
-        });
+        expect(pushMessage).toHaveBeenCalled();
     });
 
     it('should push "NULL" message when message is null', () => {

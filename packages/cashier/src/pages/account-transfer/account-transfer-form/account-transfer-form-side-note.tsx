@@ -4,7 +4,7 @@ import { Text } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 import { useCurrencyConfig } from '@deriv/api';
-import { addComma, getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
+import { addComma, calcDecimalPlaces, getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
 
 type TAccountTransferNoteProps = {
     allowed_transfers_amount: GetLimits['daily_cumulative_amount_transfers'];
@@ -235,8 +235,7 @@ const AccountTransferNote = ({
                         values={{
                             allowed_dxtrade: addComma(
                                 exchange_rate * Number(allowed_transfers_amount?.dxtrade),
-                                2,
-                                false
+                                fractional_digits
                             ),
                             currency: account_currency,
                         }}
@@ -249,7 +248,10 @@ const AccountTransferNote = ({
                     <Localize
                         i18n_default_text='Each day you can transfer up to {{ allowed_mt5 }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
                         values={{
-                            allowed_mt5: addComma(exchange_rate * Number(allowed_transfers_amount?.mt5), 2, false),
+                            allowed_mt5: addComma(
+                                exchange_rate * Number(allowed_transfers_amount?.mt5),
+                                fractional_digits
+                            ),
                             currency: account_currency,
                         }}
                     />
@@ -263,8 +265,7 @@ const AccountTransferNote = ({
                     values={{
                         allowed_internal: addComma(
                             exchange_rate * Number(allowed_transfers_amount?.internal),
-                            fractional_digits,
-                            false
+                            fractional_digits
                         ),
                         currency: account_currency,
                     }}

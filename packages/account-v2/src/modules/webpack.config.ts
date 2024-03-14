@@ -49,6 +49,7 @@ export default () => ({
             {
                 test: /\.(sc|sa|c)ss$/,
                 use: [
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {

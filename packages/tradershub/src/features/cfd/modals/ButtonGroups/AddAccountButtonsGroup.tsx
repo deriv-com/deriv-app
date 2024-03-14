@@ -18,6 +18,7 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     return (
         <ButtonGroup className='w-full'>
             <Button
+                color='black'
                 isFullWidth
                 onClick={() => {
                     show(

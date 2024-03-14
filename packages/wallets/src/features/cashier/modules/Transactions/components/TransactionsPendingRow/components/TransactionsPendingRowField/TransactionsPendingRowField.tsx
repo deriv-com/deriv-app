@@ -26,24 +26,21 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
     const isFieldHovered = useHover(fieldRef);
 
     const onValueClick = useCallback(() => {
-        if (hint)
-            isMobile
-                ? show(
-                      <WalletActionModal
-                          actionButtonsOptions={[
-                              {
-                                  isPrimary: true,
-                                  onClick: () => window.open(hint.link),
-                                  text: 'View',
-                              },
-                          ]}
-                          description={hint.text}
-                          title='Transaction details'
-                      />,
-                      { defaultRootId: 'wallets_modal_root' }
-                  )
-                : window.open(hint?.link);
-    }, [hint, isMobile, show]);
+        show(
+            <WalletActionModal
+                actionButtonsOptions={[
+                    {
+                        isPrimary: true,
+                        onClick: () => window.open(hint?.link),
+                        text: 'View',
+                    },
+                ]}
+                description={hint?.text}
+                title='Transaction details'
+            />,
+            { defaultRootId: 'wallets_modal_root' }
+        );
+    }, [hint, show]);
 
     return (
         <div className={classNames('wallets-transactions-pending-row-field', className)} key={name}>

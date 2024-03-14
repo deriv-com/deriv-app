@@ -3,6 +3,8 @@ export type TContractType = {
     value: string;
 };
 
+export type TFilteredContractType = Omit<TContractType, 'value'> & { value: string | string[] };
+
 export type TContractCategory = {
     component?: JSX.Element | null;
     contract_types: TContractType[];

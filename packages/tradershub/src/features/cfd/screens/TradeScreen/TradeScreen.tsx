@@ -134,30 +134,27 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                 {platform === mt5Platform && (
                     <Fragment>
                         <TradeLink
-                            app='web'
+                            app='mt5_web'
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
                         {isDesktop && (
                             <Fragment>
-                                <TradeLink app='windows' platform={mt5Platform} />
-                                <TradeLink app='macos' platform={mt5Platform} />
-                                <TradeLink app='linux' platform={mt5Platform} />
+                                <TradeLink app='mt5_windows' platform={mt5Platform} />
+                                <TradeLink app='mt5_macos' platform={mt5Platform} />
+                                <TradeLink app='mt5_linux' platform={mt5Platform} />
                             </Fragment>
                         )}
                     </Fragment>
                 )}
                 {platform === dxtradePlatform && (
-                    <TradeLink isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
+                    <TradeLink app='mt5_web' isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
                 )}
                 {platform === ctraderPlatform && isDesktop && (
                     <Fragment>
-                        <TradeLink platform={ctraderPlatform} />
-                        <TradeLink
-                            app={ctraderPlatform as keyof typeof AppToContentMapper}
-                            platform={ctraderPlatform}
-                        />
-                        <TradeLink app='ctrader_ios' platform={ctraderPlatform} />
+                        <TradeLink app='ctrader_web' platform={ctraderPlatform} />
+                        <TradeLink app='ctrader_windows' platform={ctraderPlatform} />
+                        <TradeLink app='ctrader_mac' platform={ctraderPlatform} />
                     </Fragment>
                 )}
             </div>

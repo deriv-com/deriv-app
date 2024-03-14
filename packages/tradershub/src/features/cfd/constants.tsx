@@ -20,7 +20,14 @@ type TAppContent = {
     title: string;
 };
 
-type TPlatform = 'ctrader_ios' | 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
+type TDesktopLinks =
+    | 'ctrader_mac'
+    | 'ctrader_web'
+    | 'ctrader_windows'
+    | 'mt5_linux'
+    | 'mt5_macos'
+    | 'mt5_web'
+    | 'mt5_windows';
 
 export type TTM5FilterLandingCompany = Exclude<TJurisdiction, 'malta' | 'seychelles' | undefined>;
 type TLandingCompanyDetails = { name: string; shortcode: string; tncUrl: string };
@@ -34,7 +41,7 @@ type TcompanyNamesAndUrls = {
 };
 
 type TAppToContentMapper = {
-    [key in TPlatform]: Omit<TAppContent, 'description'>;
+    [key in TDesktopLinks]: Omit<TAppContent, 'description'>;
 };
 
 type TPlatformUrls = {
@@ -51,6 +58,16 @@ export const CFDPlatforms = {
     DXTRADE: 'dxtrade',
     MT5: 'mt5',
 } as const;
+
+export const DesktopLinks = {
+    CTRADER_WINDOWS: 'ctrader_windows',
+    CTRADER_MAC: 'ctrader_mac',
+    CTRADER_WEB: 'ctrader_web',
+    MT5_LINUX: 'mt5_linux',
+    MT5_MACOS: 'mt5_macos',
+    MT5_WEB: 'mt5_web',
+    MT5_WINDOWS: 'mt5_windows',
+};
 
 export const MarketType = {
     ALL: 'all',
@@ -128,37 +145,43 @@ export const companyNamesAndUrls: TcompanyNamesAndUrls = {
 };
 
 export const AppToContentMapper: TAppToContentMapper = {
-    ctrader: {
+    ctrader_web: {
+        icon: '',
+        link: '',
+        text: 'Open',
+        title: 'cTrader web',
+    },
+    ctrader_windows: {
         icon: <WindowsIcon />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
         text: 'Download',
-        title: 'CTrader Windows App',
+        title: 'cTrader Windows App',
     },
-    ctrader_ios: {
+    ctrader_mac: {
         icon: <MacOSIcon />,
         link: 'https://getctradermac.com/deriv/ctrader-deriv-setup.dmg',
         text: 'Download',
-        title: 'CTrader MacOS App',
+        title: 'cTrader MacOS App',
     },
-    linux: {
+    mt5_linux: {
         icon: <LinuxIcon />,
         link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
         text: 'Learn more',
         title: 'MetaTrader 5 Linux app',
     },
-    macos: {
+    mt5_macos: {
         icon: <MacOSIcon />,
         link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
         text: 'Download',
         title: 'MetaTrader 5 MacOS app',
     },
-    web: {
+    mt5_web: {
         icon: <MT5Icon />,
         link: '',
         text: 'Open',
         title: 'MetaTrader 5 web',
     },
-    windows: {
+    mt5_windows: {
         icon: <WindowsIcon />,
         link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: 'Download',

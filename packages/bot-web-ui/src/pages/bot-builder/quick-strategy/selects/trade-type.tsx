@@ -91,8 +91,9 @@ const TradeTypeSelect: React.FC = () => {
                             value={selected_trade_type?.text || ''}
                             list_items={trade_type_dropdown_options}
                             onItemSelection={(item: TItem) => {
-                                const { value, text } = item as TTradeType;
-                                if (item) {
+                                const value = (item as TTradeType)?.value;
+                                const text = (item as TTradeType)?.value;
+                                if (value && text) {
                                     setFieldValue?.('tradetype', value);
                                     setValue('tradetype', value);
                                     rudderStackSendQsParameterChangeEvent({

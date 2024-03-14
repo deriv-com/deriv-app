@@ -1,7 +1,7 @@
 import React from 'react';
 import { WalletText } from '../../../../components';
 import { TransactionStatus } from '../TransactionStatus';
-import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './provider/WithdrawalCryptoProvider';
+import { WithdrawalCryptoProvider, useWithdrawalCryptoContext } from './provider';
 import { WithdrawalCryptoDisclaimer, WithdrawalCryptoForm, WithdrawalCryptoReceipt } from './components';
 import './WithdrawalCrypto.scss';
 

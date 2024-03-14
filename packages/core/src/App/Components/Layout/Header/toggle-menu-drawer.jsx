@@ -9,7 +9,6 @@ import {
     useIsP2PEnabled,
     useOnrampVisible,
     usePaymentAgentTransferVisible,
-    useP2PSettings,
 } from '@deriv/hooks';
 import { deepCopy, getStaticUrl, removeExactRouteFromRoutes, routes, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -37,7 +36,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = ui;
     const {
         account_status,
-        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -58,7 +56,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
-    const { is_p2p_enabled } = useIsP2PEnabled();
+    const { data: is_p2p_enabled } = useIsP2PEnabled();
 
     const { pathname: route } = useLocation();
 
@@ -77,17 +75,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const timeout = React.useRef();
     const history = useHistory();
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const {
-        subscribe,
-        rest: { isSubscribed },
-        p2p_settings,
-    } = useP2PSettings();
-
-    React.useEffect(() => {
-        if (is_authorize && !isSubscribed) {
-            subscribe();
-        }
-    }, [is_authorize, p2p_settings, subscribe, isSubscribed]);
 
     React.useEffect(() => {
         const processRoutes = () => {

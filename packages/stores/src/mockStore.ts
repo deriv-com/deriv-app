@@ -296,7 +296,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             updateMt5LoginList: jest.fn(),
             should_show_eu_error: false,
             is_options_blocked: false,
-            setIsP2PEnabled: jest.fn(),
             real_account_signup_form_data: [],
             real_account_signup_form_step: 0,
             setRealAccountSignupFormData: jest.fn(),
@@ -707,7 +706,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 stop_loss: 0,
                 symbol: '',
                 take_profit: 0,
-                tick_size_barrier: 0,
+                tick_size_barrier_percentage: '',
                 ticks_history_stats: {
                     ticks_stayed_in: [],
                     last_tick_epoch: 0,

@@ -2,7 +2,7 @@ import React, { Fragment, memo, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { twMerge } from 'tailwind-merge';
 import { CUSTOM_STYLES } from '@/helpers';
-import { useCurrencies, useRegulationFlags } from '@/hooks';
+import { useCurrencies, useDisableFiatCurrencies, useRegulationFlags } from '@/hooks';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Tab, Tabs, Text } from '@deriv-com/ui';
 import CurrenciesForm from './CurrenciesForm';
@@ -26,13 +26,8 @@ const TabTypes = {
  * @returns {React.ReactNode}
  */
 const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
-    const {
-        data: currencies,
-        isLoading,
-        allCryptoCurrenciesAreAdded,
-        addedFiatCurrency,
-        disableFiatCurrencies,
-    } = useCurrencies();
+    const { data: currencies, isLoading, allCryptoCurrenciesAreAdded, addedFiatCurrency } = useCurrencies();
+    const disableFiatCurrencies = useDisableFiatCurrencies();
     const [activeTab, setActiveTab] = useState<'CRYPTO' | 'FIAT'>(TabTypes[0]);
 
     const { isEU } = useRegulationFlags();
@@ -91,6 +86,7 @@ const AddOrManageAccount = ({ isOpen, onClose }: TAddOrManageAccount) => {
                             allCryptoCurrenciesAreAdded={allCryptoCurrenciesAreAdded}
                             currencies={currencies?.CRYPTO ?? []}
                             isSubmitButtonDisabled={allCryptoCurrenciesAreAdded}
+                            type={TabTypes[0]}
                         />
                     </Fragment>
                 )}

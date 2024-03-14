@@ -130,7 +130,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                             setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);
-                            setOpenSettings('import');
+                            setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
                         }}
                     />
                     <DesktopWrapper>

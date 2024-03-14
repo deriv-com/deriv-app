@@ -1,13 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { reorderCurrencies } from '@/helpers';
-import {
-    useAccountStatus,
-    useActiveTradingAccount,
-    useAuthorize,
-    useCFDAccountsList,
-    useLandingCompany,
-    useQuery,
-} from '@deriv/api-v2';
+import { useAuthorize, useLandingCompany, useQuery } from '@deriv/api-v2';
 import useRegulationFlags from './useRegulationFlags';
 
 type TWebsiteStatus = NonNullable<ReturnType<typeof useQuery<'website_status'>>['data']>['website_status'];
@@ -24,17 +17,16 @@ export type TCurrencies = {
 /** A custom hook to get the currency config information from `website_status` endpoint and in predefined order */
 const useCurrencies = () => {
     const { data: authorizeData, isLoading: isAuthorizeLoading, isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: websiteStatusData, isLoading: isWebsiteStatusLoading, ...rest } = useQuery('website_status');
-    const { data: landingCompanyData, isLoading: isLandingCompanyLoading } = useLandingCompany();
-    const { data: activeDerivTradingAccount } = useActiveTradingAccount();
-    const { data: accountStatus } = useAccountStatus();
-    const { data: cfdAccountsList } = useCFDAccountsList();
-
-    const { data: statements } = useQuery('statement', {
+    const {
+        data: websiteStatusData,
+        isLoading: isWebsiteStatusLoading,
+        ...rest
+    } = useQuery('website_status', {
         options: {
-            enabled: !!websiteStatusData || isAuthorizeSuccess,
+            enabled: isAuthorizeSuccess,
         },
     });
+    const { data: landingCompanyData, isLoading: isLandingCompanyLoading } = useLandingCompany();
 
     const { isNonEU } = useRegulationFlags();
 
@@ -112,33 +104,6 @@ const useCurrencies = () => {
         return currencyConfig?.FIAT.find(currency => currency.isAdded);
     }, [currencyConfig?.FIAT]);
 
-    // NOTE: redesign the logic to make it more readable and maintainable
-    // Disable fiat currencies if the current account currency is not fiat or if the account is deposit attempt
-    const disableFiatCurrencies = useMemo(
-        () =>
-            // if the current account currency is not fiat
-            (!!addedFiatCurrency && currentAccountCurrencyConfig?.type !== 'fiat') ||
-            // if there is balance in the account and the current account currency is fiat
-            (!!activeDerivTradingAccount?.balance && currentAccountCurrencyConfig?.type === 'fiat') ||
-            // if the account is deposit attempt and the current account currency is fiat
-            (currentAccountCurrencyConfig?.type === 'fiat' &&
-                accountStatus?.is_deposit_attempt &&
-                !!cfdAccountsList?.dxtrade && // if there is no dxtrade account
-                !!cfdAccountsList.mt5 && // if there is no mt5 account
-                !!statements?.statement?.count && // if there are transactions in the account
-                !!statements.statement?.transactions?.length),
-        [
-            accountStatus?.is_deposit_attempt,
-            activeDerivTradingAccount?.balance,
-            addedFiatCurrency,
-            cfdAccountsList?.dxtrade,
-            cfdAccountsList?.mt5,
-            currentAccountCurrencyConfig?.type,
-            statements?.statement?.count,
-            statements?.statement?.transactions,
-        ]
-    );
-
     return {
         ...rest,
         data: currencyConfig,
@@ -146,7 +111,6 @@ const useCurrencies = () => {
         allCryptoCurrenciesAreAdded,
         currentAccountCurrencyConfig,
         addedFiatCurrency,
-        disableFiatCurrencies,
     };
 };
 

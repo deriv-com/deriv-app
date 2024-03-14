@@ -1,6 +1,8 @@
 export { default as useAccountSwitcher } from './useAccountSwitcher';
+export { default as useAddNewCurrencyAccount } from './useAddNewCurrencyAccount';
 export { default as useCFDAssets } from './useCFDAssets';
 export { default as useCurrencies } from './useCurrencies';
+export { default as useDisableFiatCurrencies } from './useDisableFiatCurrencies';
 export { default as useMT5AccountHandler } from './useMT5AccountHandler';
 export { default as useNewCRRealAccount } from './useNewCRRealAccount';
 export { default as usePlatformAssets } from './usePlatformAssets';

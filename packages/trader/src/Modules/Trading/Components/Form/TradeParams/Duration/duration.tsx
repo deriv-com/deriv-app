@@ -29,12 +29,12 @@ export type TDuration = {
     hasDurationUnit: (duration_type: string, is_advanced: boolean) => boolean;
     is_advanced_duration: TUIStore['is_advanced_duration'];
     is_minimized?: boolean;
-    market_open_times: TTradeStore['market_open_times'];
     max_value: number | null;
     min_value: number | null;
     onChange: TTradeStore['onChange'];
     onChangeMultiple: TTradeStore['onChangeMultiple'];
     onChangeUiStore: TUIStore['onChangeUiStore'];
+    sendTradeParamsAnalytics: TTradeStore['sendTradeParamsAnalytics'];
     server_time?: moment.MomentInput;
     simple_duration_unit: TUIStore['simple_duration_unit'];
     start_date: TTradeStore['start_date'];
@@ -56,12 +56,12 @@ const Duration = ({
     hasDurationUnit,
     is_advanced_duration,
     is_minimized,
-    market_open_times,
     max_value,
     min_value,
     onChange,
     onChangeMultiple,
     onChangeUiStore,
+    sendTradeParamsAnalytics,
     server_time,
     simple_duration_unit,
     start_date,
@@ -104,15 +104,36 @@ const Duration = ({
             duration_unit: value,
             duration: Number(duration_value),
         });
+
+        if (name === 'advanced_duration_unit') {
+            sendTradeParamsAnalytics({
+                action: 'change_parameter_value',
+                parameter_type: 'duration_type',
+                parameter_field_type: 'dropdown',
+                duration_type: duration_units_list.find(unit => unit.value === value)?.text?.toLowerCase() ?? '',
+            });
+        }
     };
 
-    const changeDurationValue = ({ target }: { target: { name: string; value: string | number } }) => {
+    const changeDurationValue = ({ target }: { target: { name: string; value: string | number; type?: string } }) => {
         const { name, value } = target;
         const duration_name = `duration_${is_advanced_duration ? advanced_duration_unit : simple_duration_unit}`;
 
         // e.target.value returns string, we need to convert them to number
         onChangeUiStore({ name: duration_name, value: +value });
         onChange({ target: { name, value: +value } });
+        const displayedValue = max_value && +value > max_value ? max_value : +value;
+        const isTickDuration = duration_unit === 't';
+        sendTradeParamsAnalytics(
+            {
+                action: 'change_parameter_value',
+                parameter_field_type: isTickDuration ? 'tick_bar' : 'number',
+                parameter_type: isTickDuration ? 'tick_value' : 'duration_value',
+                parameter_value: `${displayedValue}`,
+                ...(isTickDuration ? {} : { input_type: target.type ? 'manual' : 'plus_minus' }),
+            },
+            true
+        );
     };
 
     const onToggleDurationType = ({ target }: { target: { name: string; value: boolean } }) => {
@@ -202,7 +223,6 @@ const Duration = ({
                             expiry_list={expiry_list}
                             expiry_type={expiry_type}
                             getDurationFromUnit={getDurationFromUnit}
-                            market_open_times={market_open_times}
                             number_input_props={passthrough_props.number_input}
                             onChange={onChange}
                             onChangeUiStore={onChangeUiStore}

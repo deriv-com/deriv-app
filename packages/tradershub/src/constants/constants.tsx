@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    CurrencyAudIcon,
     CurrencyBtcIcon,
     CurrencyDemoIcon,
     CurrencyEthIcon,
@@ -10,64 +11,63 @@ import {
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
 } from '@deriv/quill-icons';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
-import IcAppstoreBinaryBot from '../public/images/ic-appstore-binary-bot.svg';
-import IcAppstoreDerivBot from '../public/images/ic-appstore-deriv-bot.svg';
-import IcAppstoreDerivGo from '../public/images/ic-appstore-deriv-go.svg';
-import IcAppstoreDerivTrader from '../public/images/ic-appstore-deriv-trader.svg';
-import IcAppstoreSmartTrader from '../public/images/ic-appstore-smart-trader.svg';
+import { URLUtils } from '@deriv-com/utils';
+import { IconComponent } from '../components';
+import { getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
 
-type IconToCurrencyMapperType = {
+const { getDerivStaticURL } = URLUtils;
+
+export type IconToCurrencyMapperType = {
     [key: string]: {
         icon: React.ReactNode;
         text: string;
     };
 };
 
-export const optionsAndMultipliersContent = [
+export const optionsAndMultipliersContent = (isEU: boolean) => [
     {
-        description: 'Options and multipliers trading platform.',
-        icon: <IcAppstoreDerivTrader />,
+        description: isEU ? 'Multipliers trading platform.' : 'Options and multipliers trading platform.',
+        icon: <IconComponent icon='DTrader' />,
         redirect: '/',
-        smallIcon: <IcAppstoreDerivTrader height='3.2rem' width='3.2rem' />,
+        smallIcon: <IconComponent height={32} icon='DTrader' width={32} />,
         title: 'Deriv Trader',
     },
     {
         description: 'Automate your trading, no coding needed.',
-        icon: <IcAppstoreDerivBot />,
+        icon: <IconComponent icon='DBot' />,
         redirect: '/bot',
-        smallIcon: <IcAppstoreDerivBot height='3.2rem' width='3.2rem' />,
+        smallIcon: <IconComponent height={32} icon='DBot' width={32} />,
         title: 'Deriv Bot',
     },
     {
         description: 'Our legacy options trading platform.',
-        icon: <IcAppstoreSmartTrader />,
+        icon: <IconComponent icon='SmartTrader' />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
-        smallIcon: <IcAppstoreSmartTrader height='3.2rem' width='3.2rem' />,
+        smallIcon: <IconComponent height={32} icon='SmartTrader' width={32} />,
         title: 'SmartTrader',
     },
     {
         description: 'Our legacy automated trading platform.',
-        icon: <IcAppstoreBinaryBot />,
+        icon: <IconComponent icon='BinaryBot' />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
-        smallIcon: <IcAppstoreBinaryBot height='3.2rem' width='3.2rem' />,
+        smallIcon: <IconComponent height={32} icon='BinaryBot' width={32} />,
         title: 'Binary Bot',
     },
     {
         description: 'Trade on the go with our mobile app.',
-        icon: <IcAppstoreDerivGo />,
+        icon: <IconComponent icon='DerivGo' />,
         isExternal: true,
-        redirect: getStaticUrl('/deriv-go'),
-        smallIcon: <IcAppstoreDerivGo height='3.2rem' width='3.2rem' />,
+        redirect: getDerivStaticURL('/deriv-go'),
+        smallIcon: <IconComponent height={32} icon='DerivGo' width={32} />,
         title: 'Deriv GO',
     },
 ];
 
 export const IconToCurrencyMapper: IconToCurrencyMapperType = {
     AUD: {
-        icon: <CurrencyUsdIcon />,
+        icon: <CurrencyAudIcon />,
         text: 'Australian Dollar',
     },
     BTC: {
@@ -106,7 +106,7 @@ export const IconToCurrencyMapper: IconToCurrencyMapperType = {
         icon: <CurrencyUsdcIcon />,
         text: 'USD Coin',
     },
-    USDT: {
+    UST: {
         icon: <CurrencyUsdtIcon />,
         text: 'Tether',
     },
@@ -114,4 +114,27 @@ export const IconToCurrencyMapper: IconToCurrencyMapperType = {
         icon: <CurrencyDemoIcon />,
         text: 'Demo',
     },
+};
+
+export const CurrencyTypes = {
+    CRYPTO: 'CRYPTO',
+    FIAT: 'FIAT',
+} as const;
+
+export const Regulation = {
+    EU: 'EU',
+    NonEU: 'Non-EU',
+} as const;
+
+export const BrokerCodes = {
+    CR: 'CR',
+    MF: 'MF',
+} as const;
+
+export const CurrenciesListOrder: {
+    CRYPTO: string[];
+    FIAT: string[];
+} = {
+    FIAT: ['USD', 'EUR', 'GBP', 'AUD'],
+    CRYPTO: ['TUSDT', 'BTC', 'ETH', 'LTC', 'UST', 'eUSDT', 'BUSD', 'DAI', 'EURS', 'IDK', 'PAX', 'TUSD', 'USDC', 'USDK'],
 };

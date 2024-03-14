@@ -1,4 +1,4 @@
-import type { TEvents } from '@deriv/analytics';
+import type { TEvents } from '@deriv-com/analytics';
 
 export type TPayload = {
     data: Omit<

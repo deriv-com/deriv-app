@@ -19,8 +19,6 @@ export const onWorkspaceResize = () => {
 
         const el_scratch_div = document.getElementById('scratch_div');
         if (el_scratch_div) {
-            el_scratch_div.style.width = 'calc(100vw - 3.2rem)';
-            el_scratch_div.style.height = 'var(--bot-content-height)';
             Blockly.svgResize(workspace);
         }
     }

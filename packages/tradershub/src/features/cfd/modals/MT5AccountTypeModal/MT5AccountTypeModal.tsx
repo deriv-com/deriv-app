@@ -1,34 +1,38 @@
 import React, { ComponentProps, useState } from 'react';
-import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
-import { ModalStepWrapper } from '../../../../components';
-import { MT5AccountType } from '../../screens';
+import { Modal } from '@/components';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
+import { MT5AccountType } from '@cfd/screens';
+import { Button } from '@deriv-com/ui';
 
 type TMarketTypes = ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
 const MT5AccountTypeModal = () => {
     const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
-    const { setCfdState } = Provider.useCFDContext();
+    const { setCfdState } = useCFDContext();
+    const { openModal } = useQueryParams();
 
     return (
-        <ModalStepWrapper
-            renderFooter={() => (
+        <Modal>
+            <Modal.Header title='Select Deriv MT5’s account type' />
+            <Modal.Content>
+                <MT5AccountType onMarketTypeSelect={setSelectedMarketType} selectedMarketType={selectedMarketType} />
+            </Modal.Content>
+            <Modal.Footer>
                 <Button
-                    colorStyle='coral'
+                    className='rounded-xs'
                     disabled={!selectedMarketType}
                     onClick={() => {
-                        setCfdState('marketType', selectedMarketType);
+                        setCfdState({
+                            marketType: selectedMarketType,
+                        });
+                        openModal('JurisdictionModal');
                     }}
-                    size='md'
-                    variant='primary'
                 >
                     Next
                 </Button>
-            )}
-            title='Select Deriv MT5’s account type'
-        >
-            <MT5AccountType onMarketTypeSelect={setSelectedMarketType} selectedMarketType={selectedMarketType} />
-        </ModalStepWrapper>
+            </Modal.Footer>
+        </Modal>
     );
 };
 

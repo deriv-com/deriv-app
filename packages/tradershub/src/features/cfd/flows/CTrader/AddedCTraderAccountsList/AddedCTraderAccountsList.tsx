@@ -1,63 +1,77 @@
 import React, { Fragment } from 'react';
-import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
-import { Button, Text } from '@deriv/quill-design';
-import { TradingAccountCard } from '../../../../../components';
-import { getStaticUrl } from '../../../../../helpers/urls';
-import CTrader from '../../../../../public/images/cfd/ctrader.svg';
-import { PlatformDetails } from '../../../constants';
+import { IconComponent, TradingAccountCard } from '@/components';
+import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
+import { useModal } from '@/providers';
+import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
+import { TopUpModal, TradeModal } from '@cfd/modals';
+import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api-v2';
+import { Button, Text } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
+
+const { getDerivStaticURL } = URLUtils;
+
+const LeadingIcon = () => (
+    <IconComponent
+        icon='CTrader'
+        onClick={() => {
+            window.open(getDerivStaticURL('/deriv-ctrader'));
+        }}
+    />
+);
 
 const AddedCTraderAccountsList = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
-    const { data: activeTrading } = useActiveTradingAccount();
-
-    const leading = () => (
-        <div
-            className='cursor-pointer'
-            onClick={() => {
-                window.open(getStaticUrl('/deriv-ctrader'));
-            }}
-            // Fix sonarcloud issue
-            onKeyDown={event => {
-                if (event.key === 'Enter') {
-                    window.open(getStaticUrl('/deriv-ctrader'));
-                }
-            }}
-        >
-            <CTrader />
-        </div>
-    );
+    const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { show } = useModal();
+    const account = cTraderAccounts?.find(account => account.is_virtual === activeTradingAccount?.is_virtual);
+    const isVirtual = account?.is_virtual;
+    const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, isVirtual);
 
     const trailing = () => (
-        <div className='flex flex-col gap-y-200'>
+        <div className='flex flex-col gap-y-4'>
             <Button
                 // todo: open transfer modal
-                className='border-opacity-black-400 rounded-200 px-800'
-                colorStyle='black'
-                variant='secondary'
+                color='black'
+                onClick={() => {
+                    if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.CTRADER} />);
+                    // else transferModal;
+                }}
+                variant='outlined'
             >
-                Transfer
+                {isVirtual ? 'Top up' : 'Transfer'}
             </Button>
-            <Button className='rounded-200 px-800'>Open</Button>
+            <Button
+                onClick={() =>
+                    account &&
+                    show(
+                        <TradeModal
+                            account={account}
+                            marketType={account?.market_type}
+                            platform={CFDPlatforms.CTRADER}
+                        />
+                    )
+                }
+            >
+                Open
+            </Button>
         </div>
     );
 
     return (
         <div>
-            <TradingAccountCard leading={leading} trailing={trailing}>
+            <TradingAccountCard leading={LeadingIcon} trailing={trailing}>
                 <div className='flex flex-col flex-grow'>
-                    {cTraderAccounts
-                        ?.filter(account => account.is_virtual === activeTrading?.is_virtual)
-                        .map(account => (
-                            <Fragment key={`added-ctrader-${account.login}`}>
-                                <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
-                                <Text bold size='sm'>
-                                    {account?.formatted_balance}
-                                </Text>
-                                <Text color='primary' size='sm'>
-                                    {account.login}
-                                </Text>
-                            </Fragment>
-                        ))}
+                    {account && (
+                        <Fragment>
+                            <Text size='sm'>{title}</Text>
+                            <Text size='sm' weight='bold'>
+                                {account?.formatted_balance}
+                            </Text>
+                            <Text color='primary' size='sm'>
+                                {account.login}
+                            </Text>
+                        </Fragment>
+                    )}
                 </div>
             </TradingAccountCard>
         </div>

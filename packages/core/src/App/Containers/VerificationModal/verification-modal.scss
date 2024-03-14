@@ -8,9 +8,18 @@
         height: 100%;
         overflow: auto;
 
+        &__country {
+            &-container {
+                width: 39.5rem;
+            }
+        }
+
         &__main-container {
+            display: flex;
+            justify-content: center;
             margin: 0 auto;
             max-width: 84rem;
+            position: inherit;
 
             .onfido-container {
                 padding-top: 1.6rem;
@@ -165,6 +174,7 @@
                     border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
                     border-top: 1px solid var(--general-section-1);
                     background-color: var(--general-main-1);
+                    max-width: none;
 
                     @include mobile {
                         &-btn {

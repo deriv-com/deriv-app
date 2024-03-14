@@ -1,7 +1,9 @@
-import React, { ComponentProps, isValidElement, PropsWithChildren, ReactNode } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import React, { ComponentProps, isValidElement, ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
+import { Text } from '@deriv-com/ui';
 
-type TProps = {
+type TActionScreenProps = {
+    children?: ReactNode;
     className?: string;
     description: ReactNode;
     descriptionSize?: ComponentProps<typeof Text>['size'];
@@ -16,7 +18,8 @@ type TProps = {
  * As its common and repeated in many places,
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
-const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
+const ActionScreen = ({
+    children,
     className,
     description,
     descriptionSize = 'md',
@@ -24,18 +27,15 @@ const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     renderButtons,
     title,
     titleSize = 'md',
-}) => {
+}: TActionScreenProps) => {
     return (
         <div
-            className={qtMerge([
-                'flex flex-col items-center justify-center gap-1200  w-auto h-auto rounded-200',
-                className,
-            ])}
+            className={twMerge('flex flex-col items-center justify-center gap-24 w-auto h-auto rounded-xs', className)}
         >
             {icon}
-            <div className='flex flex-col items-center justify-center gap-400'>
+            <div className='flex flex-col items-center justify-center gap-8'>
                 {title && (
-                    <Text bold size={titleSize}>
+                    <Text size={titleSize} weight='bold'>
                         {title}
                     </Text>
                 )}
@@ -48,6 +48,7 @@ const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                 )}
             </div>
             {renderButtons?.()}
+            {children}
         </div>
     );
 };

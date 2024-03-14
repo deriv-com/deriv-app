@@ -16,6 +16,7 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
         <div className='flyout__item-buttons'>
             <Button
                 id={`db-flyout__add--${block_type}`}
+                data-testid={`dt_flyout__add_${block_type}`}
                 className='flyout__button-add flyout__button-add--hide'
                 has_effect
                 is_plus

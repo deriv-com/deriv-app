@@ -20,7 +20,6 @@ const mocked_props: React.ComponentProps<typeof ContractDrawerCard> = {
     is_mobile: false,
     is_multiplier: false,
     is_vanilla: false,
-    is_smarttrader_contract: false,
     is_sell_requested: false,
     is_turbos: false,
     onClickCancel: jest.fn(),
@@ -28,7 +27,6 @@ const mocked_props: React.ComponentProps<typeof ContractDrawerCard> = {
     onSwipedUp: jest.fn(),
     onSwipedDown: jest.fn(),
     result: 'won',
-    status: 'won',
     toggleContractAuditDrawer: jest.fn(),
 };
 

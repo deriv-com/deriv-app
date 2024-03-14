@@ -17,6 +17,7 @@ interface TDatePickerProps extends TFlowFieldProps {
 
 const DatePicker = ({
     defaultValue,
+    disabled,
     label,
     maxDate,
     message,
@@ -54,6 +55,7 @@ const DatePicker = ({
     return (
         <div className='wallets-datepicker' ref={datePickerRef}>
             <FlowTextField
+                disabled={disabled}
                 label={label}
                 message={message}
                 name={name}
@@ -62,6 +64,7 @@ const DatePicker = ({
                     <button
                         className='wallets-datepicker__button'
                         data-testid='wallets_datepicker_button'
+                        disabled={disabled}
                         onClick={toggleCalendar}
                     >
                         <CalendarIcon />

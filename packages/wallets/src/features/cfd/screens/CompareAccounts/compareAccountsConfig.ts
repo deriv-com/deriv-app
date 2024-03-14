@@ -120,6 +120,7 @@ const getPlatformType = (platform: TPlatforms.All) => {
         case CFD_PLATFORMS.CTRADER:
             return 'CTrader';
         case CFD_PLATFORMS.DXTRADE:
+            return 'DerivX';
         default:
             return 'OtherCFDs';
     }

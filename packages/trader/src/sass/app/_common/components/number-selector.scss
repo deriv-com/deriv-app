@@ -37,8 +37,8 @@
             margin-right: 0;
         }
         &--percentage {
-            width: 20%;
             border-radius: unset;
+            flex: 1;
             height: 3.2rem;
 
             &:not(:first-child) {

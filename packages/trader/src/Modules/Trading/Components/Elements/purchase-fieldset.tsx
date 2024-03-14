@@ -114,7 +114,6 @@ const PurchaseFieldset = ({
                         <ContractInfo
                             basis={basis}
                             currency={currency}
-                            has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}

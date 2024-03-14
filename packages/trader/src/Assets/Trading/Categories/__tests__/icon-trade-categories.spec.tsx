@@ -8,7 +8,7 @@ jest.mock('@deriv/components', () => ({
     Icon: jest.fn(() => 'MockedIcon'),
 }));
 
-describe('<IconTradeCatgory />', () => {
+describe('<IconTradeCategory />', () => {
     const mocked_icon = 'MockedIcon';
     it('Expect empty div to be rendered when category is empty', () => {
         render(<IconTradeCategory category='' />);

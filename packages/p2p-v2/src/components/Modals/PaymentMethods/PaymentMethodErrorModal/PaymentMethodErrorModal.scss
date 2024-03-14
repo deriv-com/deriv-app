@@ -1,0 +1,27 @@
+.p2p-v2-payment-method-error-modal {
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.4rem;
+        width: 44rem;
+        @include mobile {
+            width: 100%;
+        }
+    }
+    &__buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        &--cancel {
+            background: transparent;
+            border: 2px solid #999999;
+
+            &:active:not([disabled]) {
+                border: 1px solid #999999;
+            }
+        }
+    }
+}

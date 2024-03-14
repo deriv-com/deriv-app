@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
-import { Provider } from '@deriv/library';
-import { Button, qtMerge, Text } from '@deriv/quill-design';
+import { CurrencySwitcherLoader, Modal, TradingAccountsList } from '@/components';
+import { IconToCurrencyMapper } from '@/constants';
+import { useRegulationFlags } from '@/hooks';
+import { AddOrManageAccount } from '@/modals';
+import { useModal } from '@/providers';
+import { THooks } from '@/types';
+import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api-v2';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
-import { IconToCurrencyMapper } from '../../constants/constants';
-import { THooks } from '../../types';
-import { ModalStepWrapper } from '../ModalStepWrapper';
-import { TradingAccountsList } from '../TradingAccountsList';
+import { Button } from '@deriv-com/ui';
+import { DemoCurrencySwitcherAccountInfo, RealCurrencySwitcherAccountInfo } from './CurrencySwitcherAccountInfo';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];
@@ -26,8 +28,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 
     return (
         <Button
-            className='flex items-center justify-center border-solid h-1600 py-300 px-800 rounded-200 border-sm border-system-light-less-prominent-text'
-            colorStyle='black'
+            color='black'
             onClick={() => {
                 if (isDemo) {
                     resetVirtualBalance();
@@ -35,7 +36,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
                     history.push('/cashier/deposit');
                 }
             }}
-            variant='secondary'
+            variant='outlined'
         >
             {buttonText}
         </Button>
@@ -43,59 +44,67 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 };
 
 const CurrencySwitcher = () => {
-    const { data: activeAccount } = useActiveTradingAccount();
+    const [isManageAccountOpen, setIsManageAccountOpen] = useState(false);
+    const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
-    const { show } = Provider.useModal();
+    const { show, hide } = useModal();
+
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
+    const onManageAccountClose = useCallback(() => setIsManageAccountOpen(false), []);
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
-    const renderButton = () => {
-        return (
-            <Button
-                className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
-                colorStyle='black'
-                fullWidth
-                variant='secondary'
-            >
-                Add or manage account
-            </Button>
-        );
-    };
+    if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
+
+    if (!isSuccess) return <CurrencySwitcherLoader />;
+
+    const { icon, text } = IconToCurrencyMapper[iconCurrency];
 
     return (
-        <div className='flex items-center justify-between border-solid gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>
-            {IconToCurrencyMapper[iconCurrency].icon}
-            <div className='flex items-center justify-between grow gap-800'>
-                <div className='flex flex-col justify-center'>
-                    <Text bold={!isDemo} className={qtMerge('flex', !isDemo && 'text-status-light-success')} size='sm'>
-                        {isDemo ? 'Demo' : activeAccount?.display_balance}
-                    </Text>
-                    <Text
-                        bold={isDemo}
-                        className={qtMerge(
-                            'flex',
-                            isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'
-                        )}
-                        size='sm'
-                    >
-                        {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
-                    </Text>
-                </div>
-                <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />
-                <div className='cursor-pointer'>
-                    {!isDemo && (
-                        <StandaloneChevronDownBoldIcon
-                            onClick={() => {
-                                show(
-                                    <ModalStepWrapper renderFooter={renderButton} title='Select account'>
-                                        <TradingAccountsList />
-                                    </ModalStepWrapper>
-                                );
-                            }}
-                        />
-                    )}
-                </div>
+        <div className='flex items-center justify-between w-full gap-16 p-16 border-solid rounded-default border-1 border-system-light-active-background lg:w-auto lg:shrink-0'>
+            <div className='flex-none '>{icon}</div>
+            <div className='grow'>
+                {isDemo ? (
+                    <DemoCurrencySwitcherAccountInfo displayBalance={activeAccount?.display_balance} />
+                ) : (
+                    <RealCurrencySwitcherAccountInfo
+                        currencyText={text}
+                        displayBalance={activeAccount?.display_balance}
+                    />
+                )}
             </div>
+            <div className='flex-none'>
+                <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />
+            </div>
+            {!isDemo && (
+                <StandaloneChevronDownBoldIcon
+                    className='flex-none cursor-pointer'
+                    onClick={() => {
+                        show(
+                            <Modal>
+                                <Modal.Header title='Select account' titleClassName='text-[14px] lg:text-[16px]' />
+                                <Modal.Content>
+                                    <TradingAccountsList />
+                                </Modal.Content>
+                                <Modal.Footer className='grid-cols-1'>
+                                    <Button
+                                        color='black'
+                                        isFullWidth
+                                        onClick={() => {
+                                            setIsManageAccountOpen(true);
+                                            hide();
+                                        }}
+                                        variant='outlined'
+                                    >
+                                        Add or manage account
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
+                        );
+                    }}
+                />
+            )}
+            <AddOrManageAccount isOpen={isManageAccountOpen} onClose={onManageAccountClose} />
         </div>
     );
 };

@@ -10,7 +10,7 @@ module.exports = {
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',
     clearMocks: true,
-    projects: ['<rootDir>/packages/*/jest.config.js'],
+    projects: ['<rootDir>/packages/*/jest.config.js', '<rootDir>/packages/*/jest.config.ts'],
     transform: {
         '^.+\\.jsx?$': 'babel-jest',
         '^.+/es/^.+$': 'babel-jest',

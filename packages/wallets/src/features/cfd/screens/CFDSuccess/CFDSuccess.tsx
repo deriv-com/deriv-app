@@ -1,12 +1,12 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletSuccess, WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';
 
 type TSuccessProps = {
@@ -51,7 +51,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         }
     }
 
-    const platformTitlePrefix = platform === PlatformDetails.mt5.platform ? PlatformDetails.mt5.title : '';
+    const platformTitlePrefix = platform === PlatformDetails.mt5.platform ? CFD_PLATFORMS.MT5.toLocaleUpperCase() : '';
 
     return (
         <WalletSuccess

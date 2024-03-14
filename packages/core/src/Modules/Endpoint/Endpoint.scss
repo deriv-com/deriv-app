@@ -1,0 +1,26 @@
+.endpoint {
+    width: 30vw;
+    min-width: 30rem;
+    margin: 20vh auto;
+
+    @include mobile {
+        margin: auto;
+    }
+    &__title {
+        margin-bottom: 1.6rem;
+    }
+    &__checkbox {
+        margin-top: 4.5rem;
+        margin-bottom: 1.6rem;
+    }
+    .dc-btn--secondary {
+        margin-left: 1.6rem;
+    }
+    .feature-flags {
+        margin-top: 4rem;
+
+        &__item {
+            margin-top: 1.6rem;
+        }
+    }
+}

@@ -102,7 +102,9 @@ function FlowProvider<T extends TWalletScreens>({
             enableReinitialize
             initialValues={initialValues}
             onSubmit={() => undefined}
+            validateOnBlur
             validateOnChange
+            validateOnMount
             validationSchema={validationSchema}
         >
             {({ errors, setFieldValue, values }) => {

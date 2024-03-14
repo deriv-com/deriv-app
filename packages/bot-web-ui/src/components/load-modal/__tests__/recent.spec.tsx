@@ -51,11 +51,7 @@ describe('Recent component of load modal', () => {
     it('should render Recent component with recent bots strategies, title and preview when recent_strategies are exist', () => {
         mock_DBot_store?.load_modal.setRecentStrategies(recent_strategies);
         const { container } = render(<Recent />, { wrapper });
-
-        const strategies_title = screen.getByText('Recent');
         const strategy_previw = screen.getByText('Preview');
-
-        expect(strategies_title).toBeInTheDocument();
         expect(strategy_previw).toBeInTheDocument();
         expect(container).toBeInTheDocument();
     });

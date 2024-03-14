@@ -1,9 +1,9 @@
 import React from 'react';
-import { useCashierFiatAddress } from '@deriv/api';
+import { useCashierFiatAddress } from '@deriv/api-v2';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import WithdrawalFiat from '../WithdrawalFiat';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useCashierFiatAddress: jest.fn(),
 }));
 
@@ -22,7 +22,7 @@ describe('<WithdrawalFiat />', () => {
         await act(async () => {
             render(<WithdrawalFiat verificationCode={verificationCode} />);
             await waitFor(() => {
-                expect(screen.queryByTestId('dt_wallets-loader')).not.toBeInTheDocument();
+                expect(screen.queryByTestId('dt_wallets_loader')).not.toBeInTheDocument();
             });
             const iframe = screen.getByTestId('dt_wallets_withdrawal_fiat_iframe');
             expect(iframe).toHaveAttribute('src', 'https://example.com');
@@ -38,7 +38,7 @@ describe('<WithdrawalFiat />', () => {
         });
 
         render(<WithdrawalFiat verificationCode={verificationCode} />);
-        expect(screen.getByTestId('dt_wallets-loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
     });
 
     it('should render the error screen when server responds with error', () => {

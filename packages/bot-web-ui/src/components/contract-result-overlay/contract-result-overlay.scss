@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+
 @keyframes animate-fade-in {
     0% {
         opacity: 0;
@@ -20,11 +22,9 @@
     border-bottom-right-radius: 0;
     box-sizing: border-box;
     z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background-color: var(--overlay-inside-dialog);
     animation: animate-fade-in 0.3s;
+    @include flex-center;
 
     &:hover {
         background: 0;

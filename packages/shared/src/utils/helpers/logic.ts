@@ -2,7 +2,7 @@ import moment from 'moment';
 import { isEmptyObject } from '../object';
 import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';
-import { TickSpotData } from '@deriv/api-types';
+import { TickSpotData, WebsiteStatus } from '@deriv/api-types';
 
 type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start'>>;
 
@@ -60,7 +60,12 @@ export const getBuyPrice = (contract_store: TContractStore) => {
 };
 
 /**
- * Set contract update form initial values
- * @param {object} contract_update - contract_update response
- * @param {object} limit_order - proposal_open_contract.limit_order response
+ * Checks if the server is currently down or updating.
+ *
+ * @param {WebsiteStatusResponse} response - The response object containing the status of the website.
+ * @returns {boolean} True if the website status is 'down' or 'updating', false otherwise.
  */
+export const checkServerMaintenance = (website_status: WebsiteStatus | undefined | null) => {
+    const { site_status = '' } = website_status || {};
+    return site_status === 'down' || site_status === 'updating';
+};

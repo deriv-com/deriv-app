@@ -77,7 +77,7 @@ describe('TransactionDetailsDesktop', () => {
         const computedStyle = window.getComputedStyle(draggable_element);
         const transformValue = computedStyle.getPropertyValue('transform');
 
-        expect(transformValue).toBe('translate(-1034px,0px)');
+        expect(transformValue).toBe('translate(-882px,0px)');
     });
 
     it('should close DesktopTransactionTable modal', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
-import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { observer } from '@deriv/stores';
+import { getShortNickname } from 'Utils/string';
 import OnlineStatusIcon from './online-status-icon';
 
 type TOnlineStatusAvatarProps = {
@@ -25,7 +25,7 @@ const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }: TOnlineSta
                     <circle fill='black' cx='87%' cy='86%' r={size * 0.37} />
                 </mask>
                 <rect
-                    fill={generateHexColourFromNickname(nickname)}
+                    fill='#FF444F'
                     style={{
                         width: '100%',
                         height: '100%',

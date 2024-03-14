@@ -27,3 +27,4 @@ nx-cloud.env
 test-results/
 playwright-report/
 playwright/.cache/
+.nx

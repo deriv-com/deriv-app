@@ -7,11 +7,7 @@ import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-type TAccumulatorsAmountMobile = {
-    is_nativepicker?: boolean;
-};
-
-const AccumulatorsAmountMobile = observer(({ is_nativepicker }: TAccumulatorsAmountMobile) => {
+const AccumulatorsAmountMobile = observer(() => {
     const { ui, client } = useStore();
     const { current_focus, setCurrentFocus } = ui;
     const { is_single_currency } = client;
@@ -28,13 +24,12 @@ const AccumulatorsAmountMobile = observer(({ is_nativepicker }: TAccumulatorsAmo
                     current_focus={current_focus}
                     fractional_digits={getDecimalPlaces(currency)}
                     id='dt_amount_input'
-                    inline_prefix={is_single_currency ? currency : null}
+                    inline_prefix={is_single_currency ? currency : undefined}
                     is_autocomplete_disabled
                     is_disabled={has_open_accu_contract}
                     is_float
                     is_hj_whitelisted
                     is_incrementable
-                    is_nativepicker={is_nativepicker}
                     is_negative_disabled
                     max_length={AMOUNT_MAX_LENGTH}
                     name='amount'

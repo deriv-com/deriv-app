@@ -1,26 +1,26 @@
 import React, { ReactNode } from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { useCtraderAccountsList } from '@deriv/api';
+import { useCtraderAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 
 type TradingAccountCardProps = {
     children: ReactNode;
-    leading: () => ReactNode;
-    trailing: () => ReactNode;
+    leading: ReactNode;
+    trailing: ReactNode;
 };
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
 }));
 
 jest.mock('../../../../../../components/', () => ({
     TradingAccountCard: ({ children, leading, trailing }: TradingAccountCardProps) => (
         <div>
-            {leading && <div>{leading()}</div>}
+            {leading}
             {children}
-            {trailing && <div>{trailing()}</div>}
+            {trailing}
         </div>
     ),
 }));

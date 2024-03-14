@@ -1,14 +1,13 @@
-import React, { FC } from 'react';
-import { Provider } from '@deriv/library';
-import { Link, Text, useBreakpoint } from '@deriv/quill-design';
-import { getStaticUrl } from '../../../../../helpers/urls';
-import { THooks } from '../../../../../types';
-import { companyNamesAndUrls } from '../../../constants';
+import React from 'react';
+import { StaticLink } from '@/components';
+import { useCFDContext } from '@/providers';
+import { companyNamesAndUrls, Jurisdiction, MarketType } from '@cfd/constants';
+import { Checkbox, Text } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
-type TProps = {
+type TJurisdictionTncSectionProps = {
     isCheckBoxChecked: boolean;
-    selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
     setIsCheckBoxChecked: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -22,40 +21,39 @@ type TProps = {
  * @returns
  */
 
-const JurisdictionTncSection: FC<TProps> = ({ isCheckBoxChecked, selectedJurisdiction, setIsCheckBoxChecked }) => {
-    const { isMobile } = useBreakpoint();
-    const { getCFDState } = Provider.useCFDContext();
-    const marketType = getCFDState('marketType') || 'all';
+const JurisdictionTncSection = ({ isCheckBoxChecked, setIsCheckBoxChecked }: TJurisdictionTncSectionProps) => {
+    const { getDerivStaticURL } = URLUtils;
+    const { cfdState } = useCFDContext();
+    const { marketType: marketTypeState, selectedJurisdiction } = cfdState;
+    const marketType = marketTypeState ?? MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='sticky flex flex-col justify-center mt-1500 gap-600 lg:h-2500 bottom-50 bg-system-light-primary-background pt-[15px] px-1000 pb-500 w-screen'>
+        <div className='text-center space-y-12 bg-system-light-primary-background pt-15 lg:pb-10 w-full p-10 lg:p-0 fixed bottom-[72px] lg:unset lg:min-h-90'>
             {selectedJurisdiction && (
                 <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
             )}
-            {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
-                <div className='flex items-center justify-center gap-400'>
-                    <input
+            {selectedJurisdiction && selectedJurisdiction !== Jurisdiction.SVG && (
+                <div className='flex justify-center space-x-8'>
+                    <Checkbox
                         checked={isCheckBoxChecked}
-                        className='cursor-pointer'
-                        id='tnc-checkbox'
+                        label={
+                            <Text className='text-sm lg:text-default'>
+                                I confirm and accept {selectedCompany.name}&lsquo;s{' '}
+                                <StaticLink
+                                    className='no-underline cursor-pointer text-solid-coral-700 hover:no-underline'
+                                    href={getDerivStaticURL(selectedCompany.tncUrl)}
+                                >
+                                    Terms and Conditions
+                                </StaticLink>
+                            </Text>
+                        }
+                        name='tnc'
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                             setIsCheckBoxChecked(event.target.checked)
                         }
-                        type='checkbox'
+                        wrapperClassName='w-auto'
                     />
-                    <label className='cursor-pointer' htmlFor='tnc-checkbox'>
-                        <Text size={isMobile ? 'sm' : 'md'}>
-                            I confirm and accept {selectedCompany.name}&lsquo;s{' '}
-                            <Link
-                                className='cursor-pointer text-solid-coral-700'
-                                href={getStaticUrl(selectedCompany.tncUrl)}
-                                target='_blank'
-                            >
-                                Terms and Conditions
-                            </Link>
-                        </Text>
-                    </label>
                 </div>
             )}
         </div>

@@ -1,10 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import moment from 'moment';
 import { Text } from '@deriv/components';
-import { useIsMounted, WS, convertTimeFormat, isMarketClosed } from '@deriv/shared';
+import { useIsMounted, WS, convertTimeFormat, isMarketClosed, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TradingTimesRequest, TradingTimesResponse } from '@deriv/api-types';
 
@@ -64,6 +63,8 @@ const calculateTimeLeft = (remaining_time_to_open: number) => {
 
 const MarketCountdownTimer = observer(
     ({ is_main_page, setIsTimerLoading, onMarketOpen, symbol }: TMarketCountDownTimer) => {
+        const { common } = useStore();
+        const { current_language } = common;
         const { active_symbols } = useTraderStore();
         const isMounted = useIsMounted();
         const [when_market_opens, setWhenMarketOpens] = React.useState<TWhenMarketOpens>({} as TWhenMarketOpens);
@@ -74,12 +75,12 @@ const MarketCountdownTimer = observer(
             if (!is_main_page || (is_main_page && isMarketClosed(active_symbols, symbol))) {
                 setLoading(true);
                 // eslint-disable-next-line consistent-return
-                // @ts-expect-error there is no explict return type because of if statements
+                // @ts-expect-error there is no explicit return type because of if statements
                 const whenMarketOpens = async (days_offset: number, target_symbol: string) => {
                     // days_offset is 0 for today, 1 for tomorrow, etc.
                     if (days_offset > days_to_check_before_exit) return {};
                     let remaining_time_to_open;
-                    const target_date = moment(new Date()).add(days_offset, 'days');
+                    const target_date = toMoment(new Date()).add(days_offset, 'days');
                     const api_response = await getTradingTimes(target_date.format('YYYY-MM-DD'));
                     if (!api_response.api_initial_load_error) {
                         const returned_symbol = getSymbol(target_symbol, api_response.trading_times);
@@ -151,7 +152,7 @@ const MarketCountdownTimer = observer(
         let opening_time_banner = null;
         if (opening_time) {
             const formatted_opening_time = convertTimeFormat(opening_time);
-            const target_date = moment(new Date()).add(days_offset, 'days');
+            const target_date = toMoment(new Date()).locale(current_language.toLowerCase()).add(days_offset, 'days');
             const opening_date = target_date.format('DD MMM YYYY');
             const opening_day = target_date.format('dddd');
             opening_time_banner = (

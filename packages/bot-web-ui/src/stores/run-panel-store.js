@@ -1,8 +1,10 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { error_types, message_types, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
-import { isSafari, mobileOSDetect } from '@deriv/shared';
+import { isSafari, mobileOSDetect, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { botNotification } from 'Components/bot-notification/bot-notification';
+import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
@@ -148,6 +150,11 @@ export default class RunPanelStore {
 
     setShowBotStopMessage(value) {
         this.show_bot_stop_message = value;
+        if (value)
+            botNotification(notification_message.bot_stop, {
+                label: localize('Reports'),
+                onClick: () => (window.location.href = routes.reports),
+            });
     }
 
     async performSelfExclusionCheck() {
@@ -159,7 +166,6 @@ export default class RunPanelStore {
         let timer_counter = 1;
         if (window.sendRequestsStatistic) {
             performance.clearMeasures();
-            performance.mark('bot-start');
             // Log is sent every 10 seconds for 5 minutes
             this.timer = setInterval(() => {
                 window.sendRequestsStatistic(true);
@@ -679,6 +685,7 @@ export default class RunPanelStore {
     unregisterBotListeners = () => {
         observer.unregisterAll('bot.running');
         observer.unregisterAll('bot.stop');
+        observer.unregisterAll('bot.click_stop');
         observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');

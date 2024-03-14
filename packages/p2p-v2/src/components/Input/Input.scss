@@ -1,0 +1,65 @@
+.p2p-v2-input {
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem 0 3.6rem;
+    width: 100%;
+
+    &__leading-icon {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        margin: 0 1.6rem;
+    }
+
+    @include mobile {
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+
+    &__error {
+        padding-top: 0.2rem;
+        position: absolute;
+        margin-left: 1rem;
+        bottom: 13.3rem;
+        left: 4.5rem;
+
+        @include mobile {
+            bottom: 0;
+            box-decoration-break: clone;
+            padding-top: 0.4rem;
+            margin: 0 0 0.6rem 1.6rem;
+            margin-bottom: 0.6rem;
+            position: relative;
+            left: 0;
+        }
+    }
+
+    &__field {
+        display: flex;
+        width: 92%;
+        height: 4rem;
+        padding: 1rem 1.6rem;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        border: 1px solid #d6dadb;
+
+        @include mobile {
+            width: 100%;
+        }
+
+        &:focus-visible {
+            outline: none;
+            border-color: #85acb0;
+        }
+
+        &::placeholder {
+            color: #999;
+        }
+
+        &--error {
+            // stylelint-disable-next-line declaration-no-important
+            border-color: #ec3f3f !important;
+        }
+    }
+}

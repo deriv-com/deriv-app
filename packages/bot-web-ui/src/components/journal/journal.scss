@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+
 /**
  * @define journal
  */
@@ -58,9 +60,7 @@
             border: solid 1px var(--general-section-1);
 
             &-filter {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
+                @include flex-center(flex-end);
                 cursor: pointer;
                 flex: 1;
 

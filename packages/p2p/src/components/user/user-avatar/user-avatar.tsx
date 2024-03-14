@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { getShortNickname } from 'Utils/string';
 import { Text } from '@deriv/components';
 
 type TUserAvatarProps = {
@@ -15,7 +15,6 @@ const UserAvatar = React.memo(({ className, nickname, size, text_size }: TUserAv
         <div
             className={classNames('user-avatar', className)}
             style={{
-                backgroundColor: generateHexColourFromNickname(nickname),
                 height: `${size}px`,
                 width: `${size}px`,
             }}

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, StaticUrl } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { routes, platforms } from '@deriv/shared';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -12,7 +12,9 @@ import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import AccountsInfoLoaderWallets from 'App/Components/Layout/Header/wallets/accounts-info-loader-wallets';
-import TradersHubHomeButton from './traders-hub-home-button';
+import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-logo-short.svg';
+import WalletsLogo from 'Assets/SvgComponents/header/wallets-logo.svg';
+import { useHistory } from 'react-router';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 
@@ -22,6 +24,7 @@ const MenuLeft = observer(() => {
     const { app_routing_history, current_language } = common;
     const { header_extension } = ui;
     const { setTogglePlatformType } = traders_hub;
+    const history = useHistory();
 
     const filterPlatformsForClients = (payload: typeof platform_config) =>
         payload.filter(config => {
@@ -44,6 +47,12 @@ const MenuLeft = observer(() => {
     return (
         <div className='header__menu-left'>
             <DesktopWrapper>
+                <div className='header__menu-left-logo'>
+                    <StaticUrl href='/'>
+                        <DerivBrandLogo />
+                    </StaticUrl>
+                </div>
+                <WalletsLogo className='header__menu-left-logo' onClick={() => history.push(routes.wallets)} />
                 <PlatformSwitcher
                     app_routing_history={app_routing_history}
                     platform_config={filterPlatformsForClients(platform_config)}
@@ -57,9 +66,6 @@ const MenuLeft = observer(() => {
                     <div className='header__menu-left-extensions'>{header_extension}</div>
                 )}
             </MobileWrapper>
-            <DesktopWrapper>
-                <TradersHubHomeButton />
-            </DesktopWrapper>
             <MenuLinks />
         </div>
     );
@@ -79,11 +85,6 @@ const MenuRight = observer(() => {
                 'header__menu-right--hidden': is_mobile && is_logging_in,
             })}
         >
-            <DesktopWrapper>
-                <div className='header__menu--dtrader--separator--account'>
-                    <Divider />
-                </div>
-            </DesktopWrapper>
             {(is_logging_in || is_switching) && (
                 <div
                     id='dt_core_header_acc-info-preloader'

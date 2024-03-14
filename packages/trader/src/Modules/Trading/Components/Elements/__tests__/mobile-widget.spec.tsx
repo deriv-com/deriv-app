@@ -56,7 +56,7 @@ describe('<MobileWidget />', () => {
         });
     });
 
-    it('should render mocked multiplier amount widgets if is_multplier is true', () => {
+    it('should render mocked multiplier amount widgets if is_multiplier is true', () => {
         render(mockMobileWidget({ mocked_store_props }));
         expect(screen.getByText(/mockedmultiplieramountwidgets/i)).toBeInTheDocument();
         expect(screen.getByText(/mockedtradeparamsmobile/i)).toBeInTheDocument();

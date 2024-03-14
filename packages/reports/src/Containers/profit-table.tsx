@@ -11,7 +11,7 @@ import {
     isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
 import { TSupportedContractType, TUnsupportedContractType } from 'Types';
@@ -169,7 +169,8 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
             </>
         );
     };
-
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Profit Table for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <ReportsMeta filter_component={filter_component} className='profit-table__filter' />

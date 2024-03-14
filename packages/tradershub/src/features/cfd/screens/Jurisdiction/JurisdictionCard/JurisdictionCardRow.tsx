@@ -1,5 +1,5 @@
-import React, { FC, ReactNode } from 'react';
-import { Text } from '@deriv/quill-design';
+import React, { ReactNode } from 'react';
+import { Text } from '@deriv-com/ui';
 
 type TJurisdictionCardRowProps = {
     description?: ReactNode;
@@ -7,16 +7,16 @@ type TJurisdictionCardRowProps = {
     title: string;
 };
 
-const JurisdictionCardRow: FC<TJurisdictionCardRowProps> = ({ description, renderTag, title }) => {
+const JurisdictionCardRow = ({ description, renderTag, title }: TJurisdictionCardRowProps) => {
     return (
-        <div className='flex flex-col w-full gap-400 py-1000 px-50 lg:py-700 first:mt-800'>
+        <div className='w-full py-20 border-b border-solid space-y-14 border-system-light-secondary-background last:border-none lg:py-14 first:mt-16'>
             <div className='flex items-center justify-between'>
-                <Text bold size='sm'>
+                <Text size='sm' weight='bold'>
                     {title}
                 </Text>
                 {renderTag && <div>{renderTag()}</div>}
             </div>
-            {description && <Text size='sm'>{description}</Text>}
+            {description && <Text size='xs'>{description}</Text>}
         </div>
     );
 };

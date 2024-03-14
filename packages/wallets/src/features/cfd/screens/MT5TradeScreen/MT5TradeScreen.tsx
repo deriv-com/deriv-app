@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useMemo } from 'react';
-import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -46,6 +46,16 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         [ctraderAccountsList, dxtradeAccountsList, mt5Account]
     );
 
+    const shouldShowAccountBalance = useMemo(() => {
+        if (
+            platform === mt5Platform &&
+            platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]?.status ===
+                'migrated_without_position'
+        )
+            return false;
+        return true;
+    }, [marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
+
     const details = useMemo(() => {
         return platform === mt5Platform
             ? platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
@@ -61,17 +71,32 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         return details?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
-    const showNoNewPositionsMessage = useMemo(() => {
-        return (
-            !activeWalletData?.is_virtual &&
-            details?.landing_company_short === 'svg' &&
-            ['synthetic', 'financial'].includes(marketType ?? '') && (
-                <InlineMessage type='warning' variant='outlined'>
-                    No new positions
-                </InlineMessage>
-            )
-        );
-    }, [activeWalletData?.is_virtual, details?.landing_company_short, marketType]);
+    const migrationMessage = useMemo(() => {
+        if (platform === mt5Platform && !activeWalletData?.is_virtual) {
+            switch (
+                platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]?.status
+            ) {
+                case 'migrated_with_position':
+                    return (
+                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                            <WalletText color='warning' size='2xs' weight='bold'>
+                                No new positions
+                            </WalletText>
+                        </InlineMessage>
+                    );
+                case 'migrated_without_position':
+                    return (
+                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                            <WalletText color='warning' size='2xs' weight='bold'>
+                                Account closed
+                            </WalletText>
+                        </InlineMessage>
+                    );
+                default:
+                    return null;
+            }
+        }
+    }, [activeWalletData?.is_virtual, marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
 
     return (
         <div className='wallets-mt5-trade-screen'>
@@ -97,8 +122,8 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                     </div>
                     <div className='wallets-mt5-trade-screen__details-description--right'>
-                        <WalletText weight='bold'>{details?.display_balance}</WalletText>
-                        {showNoNewPositionsMessage}
+                        {shouldShowAccountBalance && <WalletText weight='bold'>{details?.display_balance}</WalletText>}
+                        {migrationMessage}
                     </div>
                 </div>
 

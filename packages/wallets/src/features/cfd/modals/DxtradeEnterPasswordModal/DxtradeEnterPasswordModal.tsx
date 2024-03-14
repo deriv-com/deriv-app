@@ -1,6 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAccountStatus, useActiveWalletAccount, useCreateOtherCFDAccount, useDxtradeAccountsList } from '@deriv/api';
+import {
+    useAccountStatus,
+    useActiveWalletAccount,
+    useCreateOtherCFDAccount,
+    useDxtradeAccountsList,
+} from '@deriv/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -49,15 +54,11 @@ const DxtradeEnterPasswordModal = () => {
         if (isSuccess) {
             if (accountType === 'demo') {
                 return (
-                    <WalletButton
-                        isFullWidth
-                        onClick={() => {
-                            hide();
-                        }}
-                        size='lg'
-                    >
-                        OK
-                    </WalletButton>
+                    <div className='wallets-success-btn'>
+                        <WalletButton isFullWidth onClick={hide} size='lg'>
+                            OK
+                        </WalletButton>
+                    </div>
                 );
             }
             return (

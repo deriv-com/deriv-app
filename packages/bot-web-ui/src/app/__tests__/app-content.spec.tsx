@@ -17,6 +17,7 @@ const mock_data = {
     },
 };
 const mock_unsubscribe = jest.fn();
+jest.mock('react-toastify/dist/ReactToastify.css', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),
@@ -45,7 +46,7 @@ jest.mock('Components/bot-notification-messages', () => ({
     __esModule: true,
     default: () => <div>BotNotificationMessages</div>,
 }));
-jest.mock('Components/dashboard', () => ({
+jest.mock('../../pages/main', () => ({
     __esModule: true,
     default: () => <div>Dashboard</div>,
 }));
@@ -53,11 +54,11 @@ jest.mock('Components/network-toast-popup', () => ({
     __esModule: true,
     default: () => <div>NetworkToastPopup</div>,
 }));
-jest.mock('Components/dashboard/bot-builder', () => ({
+jest.mock('../../pages/bot-builder', () => ({
     __esModule: true,
     default: () => <div>BotBuilder</div>,
 }));
-jest.mock('Components/dashboard/bot-stopped', () => ({
+jest.mock('Components/bot-stopped', () => ({
     __esModule: true,
     default: () => <div>BotStopped</div>,
 }));

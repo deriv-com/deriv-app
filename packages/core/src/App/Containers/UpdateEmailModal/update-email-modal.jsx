@@ -67,17 +67,19 @@ const UpdateEmailModal = observer(() => {
                         <Icon className='change-email-update__modal-icon' icon={`IcEmailVerified`} size={128} />
                     )}
                     <Text className='change-email-update__modal-title' weight='bold' size='s'>
-                        <Localize i18n_default_text={!update_email_error ? 'Success!' : 'Failed'} />
+                        {update_email_error ? (
+                            <Localize i18n_default_text='Failed' />
+                        ) : (
+                            <Localize i18n_default_text='Success!' />
+                        )}
                     </Text>
                     <Text className='change-email-update__modal-description' size='xs'>
-                        <Localize
-                            i18n_default_text={
-                                !update_email_error
-                                    ? 'Your email address has changed.<0 />Now, log in with your new email address.'
-                                    : update_email_error
-                            }
-                            components={[<br key={0} />]}
-                        />
+                        {update_email_error ?? (
+                            <Localize
+                                i18n_default_text='Your email address has changed.<0/>Now, log in with your new email address.'
+                                components={[<br key={0} />]}
+                            />
+                        )}
                     </Text>
                     <Modal.Footer className='change-email-update__footer'>
                         <Button onClick={onClickButton} has_effect text={localize('Log in')} primary large />

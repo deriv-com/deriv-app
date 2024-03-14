@@ -6,6 +6,18 @@ import generateKey from './src/utils/generate-keys';
 
 const messages = new Map();
 const values = new Set();
+let defaultMessages;
+
+try {
+    if (fs.existsSync('./src/translations/en.json')) {
+        const entries = Object.entries(JSON.parse(fs.readFileSync('./src/translations/en.json', 'utf-8')));
+        defaultMessages = new Map(entries);
+    } else {
+        defaultMessages = new Map();
+    }
+} catch (err) {
+    defaultMessages = new Map();
+}
 
 module.exports = async function (source) {
     const ast = parse(source, {
@@ -31,10 +43,16 @@ module.exports = async function (source) {
                                 key
                             )} and ${value}.`
                         );
-                    path.node.arguments[0] = {
-                        type: 'StringLiteral',
-                        value: key,
-                    };
+
+                    // This ensures that if no translations have been translated for the strings yet, don't transpile the strings into keys
+                    // otherwise, i18n will display the keys instead of the strings
+                    // only transpile when translations for the strings are available
+                    if (defaultMessages.has(key)) {
+                        path.node.arguments[0] = {
+                            type: 'StringLiteral',
+                            value: key,
+                        };
+                    }
                     messages.set(key, value);
                 }
             }

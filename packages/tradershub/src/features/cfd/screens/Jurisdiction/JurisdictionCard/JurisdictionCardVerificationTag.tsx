@@ -1,11 +1,11 @@
-import React, { FC, ReactNode } from 'react';
-import { useAuthentication } from '@deriv/api';
-import VerificationFailedIcon from '../../../../../public/images/ic-verification-failed-status.svg';
-import VerificationPendingIcon from '../../../../../public/images/ic-verification-pending-status.svg';
-import VerificationSuccessIcon from '../../../../../public/images/ic-verification-success-status.svg';
-import { THooks } from '../../../../../types';
+import React, { ReactNode } from 'react';
+import VerificationFailedIcon from '@/assets/svgs/ic-verification-failed-status.svg';
+import VerificationPendingIcon from '@/assets/svgs/ic-verification-pending-status.svg';
+import VerificationSuccessIcon from '@/assets/svgs/ic-verification-success-status.svg';
+import { THooks } from '@/types';
+import { useAuthentication } from '@deriv/api-v2';
 
-type TProps = {
+type TJurisdictionCardVerificationTagProps = {
     category: 'poa' | 'poi' | null;
     icon: ReactNode;
 };
@@ -28,11 +28,11 @@ const verificationStatusIconMapper: Partial<
  * @returns
  */
 
-const JurisdictionCardVerificationTag: FC<TProps> = ({ category, icon }) => {
+const JurisdictionCardVerificationTag = ({ category, icon }: TJurisdictionCardVerificationTagProps) => {
     const { data } = useAuthentication();
 
     const renderStatusIcon = (
-        category: TProps['category'],
+        category: TJurisdictionCardVerificationTagProps['category'],
         status: NonNullable<THooks.Authentication['poa_status' | 'poi_status']>
     ) => {
         if (category && status && Object.keys(verificationStatusIconMapper).includes(status)) {

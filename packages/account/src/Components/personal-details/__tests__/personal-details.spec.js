@@ -8,7 +8,7 @@ import { splitValidationResultTypes } from '../../real-account-signup/helpers/ut
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
 import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 

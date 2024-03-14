@@ -126,10 +126,22 @@ describe('withdrawalCryptoValidator', () => {
         expect(fiatAmountMessages).toEqual('Should be a valid number.');
     });
 
-    it('should return "Insufficient funds" if amount > balance', () => {
+    it('should return "Insufficient funds" if amount > balance regardless of the verification status of the user', () => {
         mockValue = '11.0000000';
 
-        const cryptoAmountMessages = validateCryptoInput(
+        let cryptoAmountMessages = validateCryptoInput(
+            mockActiveWallet,
+            mockFractionalDigits,
+            mockIsClientVerified,
+            mockRemainder,
+            mockValue
+        );
+
+        expect(cryptoAmountMessages).toEqual('Insufficient funds');
+
+        mockIsClientVerified = false;
+
+        cryptoAmountMessages = validateCryptoInput(
             mockActiveWallet,
             mockFractionalDigits,
             mockIsClientVerified,
@@ -140,8 +152,9 @@ describe('withdrawalCryptoValidator', () => {
         expect(cryptoAmountMessages).toEqual('Insufficient funds');
     });
 
-    it('should return error if amount > max withdrawal limit OR amount < min withdrawal limit for a verified user', () => {
-        mockValue = '11.0000000';
+    it('should return limit error if amount < min withdrawal limit but is still less than the balance for verified user', () => {
+        mockValue = '0.5000000';
+        mockIsClientVerified = true;
 
         const cryptoAmountMessages = validateCryptoInput(
             mockActiveWallet,
@@ -151,11 +164,26 @@ describe('withdrawalCryptoValidator', () => {
             mockValue
         );
 
-        expect(cryptoAmountMessages).toEqual('Insufficient funds');
+        expect(cryptoAmountMessages).toEqual('The current allowed withdraw amount is 1.0000000 to 10.0000000 BTC.');
     });
 
-    it('should return error if amount > max withdrawal limit OR amount < min withdrawal limit for an unverified user', () => {
-        mockValue = '11.0000000';
+    it('should not return limit error if amount is within limits but is still less than the balance for verified user', () => {
+        mockValue = '9.5000000';
+        mockIsClientVerified = true;
+
+        const cryptoAmountMessages = validateCryptoInput(
+            mockActiveWallet,
+            mockFractionalDigits,
+            mockIsClientVerified,
+            mockRemainder,
+            mockValue
+        );
+
+        expect(cryptoAmountMessages).toEqual(undefined);
+    });
+
+    it('should not return limit error if amount is within limits but is still less than the balance for unverified user', () => {
+        mockValue = '8.5000000';
         mockIsClientVerified = false;
 
         const cryptoAmountMessages = validateCryptoInput(
@@ -166,19 +194,22 @@ describe('withdrawalCryptoValidator', () => {
             mockValue
         );
 
-        expect(cryptoAmountMessages).toEqual(`The current allowed withdraw amount is 1.0000000 to 9.0000000 BTC.`);
+        expect(cryptoAmountMessages).toEqual(undefined);
     });
 
-    it('should return "This field is required." if no value is passed to crypto input field', () => {
+    it('should return limit error if amount > max withdrawal limit but is still less than the balance for unverified user', () => {
+        mockValue = '9.5000000';
+        mockIsClientVerified = false;
+
         const cryptoAmountMessages = validateCryptoInput(
             mockActiveWallet,
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            ''
+            mockValue
         );
 
-        expect(cryptoAmountMessages).toEqual('This field is required.');
+        expect(cryptoAmountMessages).toEqual('The current allowed withdraw amount is 1.0000000 to 9.0000000 BTC.');
     });
 
     it('should return "This field is required." if no value is passed to crypto address field', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import useInfiniteQuery from '../useInfiniteQuery';
 import { renderHook } from '@testing-library/react-hooks';
-import useAdvertList from '../hooks/p2p/useAdvertList';
+import useAdvertList from '../hooks/p2p/entity/advert/p2p-advert/useAdvertList';
 import APIProvider from '../APIProvider';
 
 jest.mock('../useInfiniteQuery');

@@ -37,13 +37,7 @@ type TCalendarRef = {
     setSelectedDate?: (date: string) => void;
 };
 
-const Calendar: React.MemoExoticComponent<
-    React.ForwardRefExoticComponent<TCalendarProps & React.RefAttributes<TCalendarRef>>
-> & {
-    Body?: (props: React.ComponentProps<typeof Body>) => JSX.Element;
-    Header?: (props: React.ComponentProps<typeof Header>) => JSX.Element;
-    Footer?: (props: React.ComponentProps<typeof Footer>) => JSX.Element;
-} = React.memo(
+const Calendar = React.memo(
     React.forwardRef<TCalendarRef, TCalendarProps>(
         (
             {
@@ -182,7 +176,7 @@ const Calendar: React.MemoExoticComponent<
                 }
             };
 
-            const isPeriodDisabled = (date: moment.MomentInput, unit: moment.unitOfTime.StartOf) => {
+            const isPeriodDisabled = (date: moment.Moment | string, unit: moment.unitOfTime.StartOf) => {
                 const start_of_period = toMoment(date).clone().startOf(unit);
                 const end_of_period = toMoment(date).clone().endOf(unit);
                 return end_of_period.isBefore(toMoment(min_date)) || start_of_period.isAfter(toMoment(max_date));
@@ -218,7 +212,11 @@ const Calendar: React.MemoExoticComponent<
             );
         }
     )
-);
+) as React.MemoExoticComponent<React.ForwardRefExoticComponent<TCalendarProps & React.RefAttributes<TCalendarRef>>> & {
+    Body: (props: React.ComponentProps<typeof Body>) => JSX.Element;
+    Header: (props: React.ComponentProps<typeof Header>) => JSX.Element;
+    Footer: (props: React.ComponentProps<typeof Footer>) => JSX.Element;
+};
 
 Calendar.displayName = 'Calendar';
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { FlowTextField } from '../../FlowField';
 import { FlowProvider } from '../../FlowProvider';
@@ -15,7 +14,16 @@ jest.mock('../../FlowProvider', () => ({
     useFlow: jest.fn(() => mockUseFlow),
 }));
 
-describe('DatePicker Component', () => {
+describe('DatePicker', () => {
+    beforeAll(() => {
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(new Date('2024-01-15').getTime());
+    });
+
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+
     test('should render with default props', () => {
         const mockOnDateChange = jest.fn();
         render(
@@ -97,11 +105,8 @@ describe('DatePicker Component', () => {
 
         const calendarButton = screen.getByTestId('wallets_datepicker_button');
         fireEvent.click(calendarButton);
-
-        const testDay = moment().format('D');
-        const dateElements = screen.getAllByText(testDay);
-        fireEvent.click(dateElements[0]);
-        const testDate = `${moment().format('YYYY')}-${moment().format('MM')}-${moment().format('DD')}`;
+        fireEvent.click(screen.getByText(15));
+        const testDate = `2024-01-15`;
 
         expect(mockOnDateChange).toHaveBeenCalledWith(testDate);
     });

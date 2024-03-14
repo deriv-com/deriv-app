@@ -2,10 +2,12 @@ import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
-import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
+import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
+import NameAndAddressIcon from '../../../../../public/images/ic-name-and-address.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
+import useVerificationDocs from '../hooks/useVerificationDocs';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
 import JurisdictionCardBack from './JurisdictionCardBack';
@@ -32,11 +34,15 @@ type TVerificationDocumentsMapper = {
 const verificationDocumentsMapper: TVerificationDocumentsMapper = {
     documentNumber: {
         category: 'poi',
+        icon: <DocumentIcon />,
+    },
+    identityDocument: {
+        category: 'poi',
         icon: <IdCardIcon />,
     },
     nameAndAddress: {
         category: 'poa',
-        icon: <DocumentsIcon />,
+        icon: <NameAndAddressIcon />,
     },
     notApplicable: {
         category: null,
@@ -51,6 +57,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getModalState } = useModal();
+    const verificationDocs = useVerificationDocs(jurisdiction);
 
     const descriptionClickHandler = (tag?: string) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.stopPropagation();
@@ -61,7 +68,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
         }
     };
 
-    const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = useMemo<TJurisdictionCardItems>(
+    const { contents, header, isOverHeaderAvailable, overHeader } = useMemo<TJurisdictionCardItems>(
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
     );
@@ -110,8 +117,9 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                         {rows.map(row => {
                             return (
                                 <JurisdictionCardRow
+                                    className={`wallets-jurisdiction-card-row--${row.key}`}
                                     description={parseDescription(row)}
-                                    key={`wallets-jurisdiction-card--${row?.title}`}
+                                    key={`wallets-jurisdiction-card-row--${row.key}`}
                                     renderTag={() => {
                                         if (!row?.titleIndicators) return;
 

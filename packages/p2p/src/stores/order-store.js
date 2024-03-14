@@ -23,6 +23,7 @@ export default class OrderStore {
             is_loading: observable,
             is_rating_modal_open: observable,
             is_recommended: observable,
+            is_verifying_email: observable,
             orders: observable,
             order_id: observable,
             order_payment_method_details: observable,
@@ -31,6 +32,7 @@ export default class OrderStore {
             verification_code: observable,
             verification_link_error_message: observable,
             should_navigate_to_buy_sell: observable,
+            should_navigate_to_order_details: observable,
             has_order_payment_method_details: computed,
             order_information: computed,
             nav: computed,
@@ -50,6 +52,7 @@ export default class OrderStore {
             setDateTo: action.bound,
             setForceRerenderOrders: action.bound,
             setShouldNavigateToBuySell: action.bound,
+            setShouldNavigateToOrderDetails: action.bound,
             setApiErrorMessage: action.bound,
             setCancellationBlockDuration: action.bound,
             setCancellationCountPeriod: action.bound,
@@ -60,6 +63,7 @@ export default class OrderStore {
             setIsLoading: action.bound,
             setIsRatingModalOpen: action.bound,
             setIsRecommended: action.bound,
+            setIsVerifyingEmail: action.bound,
             setOrderPaymentMethodDetails: action.bound,
             setOrderDetails: action.bound,
             setOrderId: action.bound,
@@ -99,9 +103,11 @@ export default class OrderStore {
     has_more_items_to_load = false;
     is_invalid_verification_link_modal_open = false;
     should_navigate_to_buy_sell = false;
+    should_navigate_to_order_details = false;
     is_loading = false;
     is_rating_modal_open = false;
     is_recommended = undefined;
+    is_verifying_email = false;
     orders = [];
     order_id = null;
     order_payment_method_details = null;
@@ -509,6 +515,7 @@ export default class OrderStore {
                 dry_run: 1,
             }).then(response => {
                 general_store.hideModal();
+                this.setIsVerifyingEmail(true);
                 if (response) {
                     if (!response.error) {
                         clearTimeout(wait);
@@ -573,6 +580,10 @@ export default class OrderStore {
         this.should_navigate_to_buy_sell = should_navigate_to_buy_sell;
     }
 
+    setShouldNavigateToOrderDetails(should_navigate_to_order_details) {
+        this.should_navigate_to_order_details = should_navigate_to_order_details;
+    }
+
     setErrorCode(error_code) {
         this.error_code = error_code;
     }
@@ -599,6 +610,10 @@ export default class OrderStore {
 
     setIsRecommended(is_recommended) {
         this.is_recommended = is_recommended;
+    }
+
+    setIsVerifyingEmail(is_verifying_email) {
+        this.is_verifying_email = is_verifying_email;
     }
 
     setOrders(orders) {

@@ -30,18 +30,20 @@ const TransferMessages: React.FC = () => {
                 return (
                     <WalletAlertMessage key={text} message={message} type={type}>
                         {action?.buttonLabel && action?.navigateTo && (
-                            <WalletButton size='sm' type='button' variant='contained'>
-                                <Link
-                                    className='wallets-transfer-messages__link'
-                                    to={action.navigateTo}
-                                    {...(action?.shouldOpenInNewTab && {
-                                        rel: 'noopener noreferrer',
-                                        target: '_blank',
-                                    })}
-                                >
-                                    <Trans defaults={action.buttonLabel} />
-                                </Link>
-                            </WalletButton>
+                            <div className='wallets-transfer-messages__action-button'>
+                                <WalletButton size='sm' type='button' variant='contained'>
+                                    <Link
+                                        className='wallets-transfer-messages__link'
+                                        to={action.navigateTo}
+                                        {...(action?.shouldOpenInNewTab && {
+                                            rel: 'noopener noreferrer',
+                                            target: '_blank',
+                                        })}
+                                    >
+                                        <Trans defaults={action.buttonLabel} />
+                                    </Link>
+                                </WalletButton>
+                            </div>
                         )}
                     </WalletAlertMessage>
                 );

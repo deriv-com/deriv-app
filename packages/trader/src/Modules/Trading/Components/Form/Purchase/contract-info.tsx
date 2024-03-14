@@ -12,7 +12,6 @@ type TContractInfo = Pick<
     ReturnType<typeof useTraderStore>,
     'basis' | 'growth_rate' | 'is_accumulator' | 'is_turbos' | 'is_vanilla' | 'is_multiplier' | 'currency'
 > & {
-    has_increased?: boolean | null;
     is_loading: boolean;
     is_vanilla_fx?: boolean;
     proposal_info: TProposalTypeInfo;
@@ -24,7 +23,6 @@ const ContractInfo = ({
     basis,
     currency,
     growth_rate,
-    has_increased,
     is_accumulator,
     is_loading,
     is_multiplier,
@@ -133,7 +131,6 @@ const ContractInfo = ({
                                     has_error_or_not_loaded={has_error_or_not_loaded}
                                     proposal_info={proposal_info}
                                     currency={getCurrencyDisplayCode(currency)}
-                                    has_increased={has_increased}
                                     is_turbos={is_turbos}
                                     is_vanilla={is_vanilla}
                                 />
@@ -144,7 +141,6 @@ const ContractInfo = ({
                                         has_error_or_not_loaded={has_error_or_not_loaded}
                                         proposal_info={proposal_info}
                                         currency={getCurrencyDisplayCode(currency)}
-                                        has_increased={has_increased}
                                         is_turbos={is_turbos}
                                         is_vanilla={is_vanilla}
                                     />

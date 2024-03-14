@@ -10,7 +10,7 @@ import './account-switcher-wallet.scss';
 
 type TAccountSwitcherWalletProps = {
     is_visible: boolean;
-    toggle: (value: boolean) => void;
+    toggle: (value?: boolean) => void;
 };
 
 export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
@@ -21,8 +21,16 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
 
-    const validateClickOutside = (event: MouseEvent) =>
-        is_visible && !(event.target as unknown as HTMLElement).classList.contains('acc-info');
+    const validateClickOutside = (event: MouseEvent) => {
+        const checkAllParentNodes = (node: HTMLElement): boolean => {
+            if (node?.classList?.contains('acc-info__wallets')) return true;
+            const parent = node?.parentNode as HTMLElement;
+            if (parent) return checkAllParentNodes(parent);
+            return false;
+        };
+
+        return is_visible && !checkAllParentNodes(event.target as HTMLElement);
+    };
 
     const closeAccountsDialog = React.useCallback(() => {
         toggle(false);

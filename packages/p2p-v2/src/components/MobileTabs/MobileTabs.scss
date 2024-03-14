@@ -1,0 +1,16 @@
+.p2p-v2-mobile-tabs {
+    display: flex;
+    flex-direction: column;
+
+    .derivs-button {
+        padding: 2.3rem 1.6rem;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 0.1rem solid #e6e9e9;
+        flex-direction: row-reverse;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}

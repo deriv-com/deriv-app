@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { Button, Text } from '@deriv/components';
 import './questionnaire-modal.scss';
 
@@ -29,13 +29,19 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
     }, [ab_questionnaire]);
 
     const onClickAnswer = (answer_code: string, answer_index: number) => {
-        Analytics.trackEvent('ce_questionnaire_form', {
-            action: 'choose_answer',
-            question: ab_questionnaire[0].question,
-            answer_content: ab_questionnaire[0].answers.filter(({ code }) => code === answer_code)[0].text,
-            answer_code,
-            answer_index,
-        });
+        window.dataLayer = [
+            ...window.dataLayer,
+            {
+                event: 'ce_questionnaire_form',
+                analyticsData: {
+                    action: 'choose_answer',
+                    question: ab_questionnaire[0].question,
+                    answer_content: ab_questionnaire[0].answers.filter(({ code }) => code === answer_code)[0].text,
+                    answer_code,
+                    answer_index,
+                },
+            },
+        ];
         handleSignup();
     };
 
@@ -45,25 +51,24 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
                 {ab_questionnaire[1].question}
             </Text>
             <ul
-                data-testid='questionnaire-modal-variant'
                 className={classNames({
                     'questionnaire-modal__answers': a_variant,
                     'questionnaire-modal__options': !a_variant,
                 })}
             >
-                {ab_questionnaire[1]?.answers.map(({ code, text, header }, index) => {
+                {ab_questionnaire[1]?.answers?.map(({ code, text, header }, index) => {
                     return (
-                        <Button
+                        <li
                             key={`${code}_questionnaire`}
-                            data-testid={`${code}_questionnaire`}
-                            onClick={() => onClickAnswer(code, index + 1)}
-                            transparent
+                            className={classNames({
+                                'questionnaire-modal__answers_content': a_variant,
+                                'questionnaire-modal__options_card': !a_variant,
+                            })}
                         >
-                            <li
-                                className={classNames({
-                                    'questionnaire-modal__answers_content': a_variant,
-                                    'questionnaire-modal__options_card': !a_variant,
-                                })}
+                            <Button
+                                data-testid={`dt_questionnaire_${code}`}
+                                onClick={() => onClickAnswer(code, index + 1)}
+                                transparent
                             >
                                 {header && (
                                     <Text as='p' size='xs' weight='bold'>
@@ -73,8 +78,8 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
                                 <Text as='p' size='xs'>
                                     {text}
                                 </Text>
-                            </li>
-                        </Button>
+                            </Button>
+                        </li>
                     );
                 })}
             </ul>

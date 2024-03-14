@@ -26,19 +26,10 @@ $card-width: 456px;
 
     &--warning {
         margin-bottom: 1.6rem;
+        width: fit-content;
 
         @include mobile {
             margin: 1rem 2rem;
-        }
-
-        .dc-hint-box {
-            &__icon {
-                @include mobile {
-                    align-self: flex-start;
-                    min-width: 16px;
-                    min-height: 16px;
-                }
-            }
         }
     }
 }

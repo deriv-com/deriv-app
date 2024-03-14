@@ -57,43 +57,43 @@ const DateFieldComponent = ({ label, placeholder, showCalendar, value }: TDateFi
     );
 };
 
-const days_duration_list = [
-    {
-        value: 'all_time',
-        label: localize('All time'),
-        duration: 0,
-    },
-    {
-        value: 'today',
-        label: localize('Today'),
-        duration: 1,
-    },
-    {
-        value: 'last_7_days',
-        label: localize('Last 7 days'),
-        duration: 7,
-    },
-    {
-        value: 'last_30_days',
-        label: localize('Last 30 days'),
-        duration: 30,
-    },
-    {
-        value: 'last_60_days',
-        label: localize('Last 60 days'),
-        duration: 60,
-    },
-    {
-        value: 'last_quarter',
-        label: localize('Last quarter'),
-        duration: 90,
-    },
-];
-
 const CompositeCalendar = (props: TCompositeCalendarProps) => {
     const { ui } = useStore();
     const { current_focus, setCurrentFocus } = ui;
     const { from, to, onChange } = props;
+
+    const days_duration_list = [
+        {
+            value: 'all_time',
+            label: localize('All time'),
+            duration: 0,
+        },
+        {
+            value: 'today',
+            label: localize('Today'),
+            duration: 1,
+        },
+        {
+            value: 'last_7_days',
+            label: localize('Last 7 days'),
+            duration: 7,
+        },
+        {
+            value: 'last_30_days',
+            label: localize('Last 30 days'),
+            duration: 30,
+        },
+        {
+            value: 'last_60_days',
+            label: localize('Last 60 days'),
+            duration: 60,
+        },
+        {
+            value: 'last_quarter',
+            label: localize('Last quarter'),
+            duration: 90,
+        },
+    ];
 
     const [show_to, setShowTo] = React.useState(false);
     const [show_from, setShowFrom] = React.useState(false);

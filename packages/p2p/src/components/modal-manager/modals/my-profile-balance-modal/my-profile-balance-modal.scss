@@ -5,5 +5,9 @@
         @include mobile {
             padding: 0 1.6rem;
         }
+
+        &-text {
+            margin-bottom: 1.6rem;
+        }
     }
 }

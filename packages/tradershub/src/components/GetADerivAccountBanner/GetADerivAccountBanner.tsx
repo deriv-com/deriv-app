@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Text } from '@deriv/quill-design';
+import { Button, Text } from '@deriv-com/ui';
+import { useRealAccountCreationContext } from '../../providers/RealAccountCreationProvider';
 
 /**
  * `GetADerivAccountBanner` is a functional component that displays a banner message
@@ -8,11 +9,16 @@ import { Button, Text } from '@deriv/quill-design';
  *
  * @returns {React.ReactElement} A `div` element containing the banner message and the button.
  */
-const GetADerivAccountBanner = () => (
-    <div className='flex items-center justify-center w-full p-800 gap-800 rounded-200 bg-system-light-secondary-background'>
-        <Text bold>You need a Deriv account to create a CFD account.</Text>
-        <Button className='rounded-200'>Get a Deriv account</Button>
-    </div>
-);
+const GetADerivAccountBanner = () => {
+    const { setIsWizardOpen } = useRealAccountCreationContext();
+    return (
+        <div className='flex items-center justify-center w-full gap-16 p-16 rounded-xs bg-system-light-secondary-background'>
+            <Text weight='bold'>You need a Deriv account to create a CFD account.</Text>
+            <Button className='rounded-xs' onClick={() => setIsWizardOpen(true)}>
+                Get a Deriv account
+            </Button>
+        </div>
+    );
+};
 
 export default GetADerivAccountBanner;

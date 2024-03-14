@@ -1,0 +1,113 @@
+.tutorials-quick-strategy {
+    &__title {
+        margin-bottom: 1.6rem;
+    }
+
+    &__cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        @include mobile {
+            width: 100%;
+            grid-template-columns: 1fr;
+        }
+
+        gap: 2.4rem;
+        margin-right: 12rem;
+    }
+
+    &__placeholder {
+        display: grid;
+        grid-template-columns: 10fr 1fr;
+        align-items: center;
+        padding: 1.6rem;
+        border: 2px solid var(--border-normal);
+        border-radius: 8px;
+        cursor: pointer;
+
+        &__title {
+            margin-bottom: 1.6rem;
+        }
+
+        &__content {
+            display: grid;
+            grid-template-columns: 10fr 1fr;
+            align-items: baseline;
+
+            ul {
+                list-style: disc;
+                margin-left: 1.6rem;
+                color: var(--text-general);
+            }
+
+            li:not(:last-child) {
+                margin-bottom: 1.6rem;
+            }
+
+            &__text {
+                position: relative;
+                top: 0.15rem;
+                margin-left: 0.3rem;
+                color: var(--text-general);
+            }
+        }
+
+        &__icon {
+            margin-left: 2rem;
+        }
+    }
+
+    &__breadcrumb {
+        display: flex;
+        margin-bottom: 1.6rem;
+
+        &__clickable {
+            cursor: pointer;
+            margin-right: 0.5rem;
+        }
+    }
+
+    .qs {
+        &__body__content__description {
+            padding: 1rem 0;
+            width: 85%;
+
+            @include mobile {
+                height: calc(100vh - 16rem);
+                width: 100%;
+            }
+        }
+
+        &__description__image {
+            width: 55%;
+            margin-bottom: 4rem;
+
+            @include mobile {
+                height: 36rem;
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+
+            &.formula {
+                width: unset;
+                margin: 1.5rem 0.5rem;
+                img {
+                    height: 100%;
+                    width: auto;
+                    max-width: 100%;
+                    object-fit: contain;
+                }
+            }
+        }
+
+        &__description__content.italic {
+            span {
+                font-size: 1.4rem;
+
+                @include mobile {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+    }
+}

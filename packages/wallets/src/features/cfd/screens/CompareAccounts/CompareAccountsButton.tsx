@@ -3,14 +3,14 @@ import { useHistory } from 'react-router-dom';
 import {
     useActiveWalletAccount,
     useAuthentication,
-    useAuthorize,
     useCreateOtherCFDAccount,
     useMT5AccountsList,
     useSettings,
     useWalletAccountsList,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { WalletButton, WalletError } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
+import useWalletAccountSwitcher from '../../../../hooks/useWalletAccountSwitcher';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
 import { Verification } from '../../flows/Verification';
@@ -35,7 +35,7 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
     const history = useHistory();
     const { show } = useModal();
 
-    const { switchAccount } = useAuthorize();
+    const switchWalletAccount = useWalletAccountSwitcher();
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();
     const {
@@ -112,8 +112,9 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
 
     const onClickAdd = () => {
         if (isCrypto && USDSVGWallet) {
-            switchAccount(USDSVGWallet.loginid);
-            history.push('/wallets');
+            switchWalletAccount(USDSVGWallet.loginid).then(() => {
+                history.push('/wallets');
+            });
         }
         if (platform === CFD_PLATFORMS.MT5) {
             if (isAccountStatusVerified) {

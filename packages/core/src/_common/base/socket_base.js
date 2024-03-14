@@ -40,6 +40,8 @@ const BinarySocketBase = (() => {
 
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
+    const blockRequest = value => deriv_api?.blockRequest(value);
+
     const close = () => {
         binary_socket.close();
     };
@@ -178,6 +180,8 @@ const BinarySocketBase = (() => {
     const subscribeTransaction = cb => subscribe({ transaction: 1 }, cb);
 
     const subscribeWebsiteStatus = cb => subscribe({ website_status: 1 }, cb);
+
+    const getTicksHistory = request_object => deriv_api.send(request_object);
 
     const buyAndSubscribe = request => {
         return new Promise(resolve => {
@@ -433,6 +437,7 @@ const BinarySocketBase = (() => {
         },
         cache: delegateToObject({}, () => deriv_api.cache),
         storage: delegateToObject({}, () => deriv_api.storage),
+        blockRequest,
         buy,
         buyAndSubscribe,
         sell,
@@ -454,6 +459,7 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        getTicksHistory,
         tradingPlatformPasswordChange,
         tradingPlatformPasswordReset,
         tradingPlatformAvailableAccounts,

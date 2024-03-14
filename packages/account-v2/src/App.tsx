@@ -1,15 +1,30 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
-import { APIProvider } from '@deriv/api';
-import { BrandDerivLogoCoralIcon } from '@deriv/quill-icons';
+import { Formik } from 'formik';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { AppOverlay } from './components/AppOverlay';
+import { RouteLinks } from './router/components/RouteLinks';
+import { getNameDOBValidationSchema } from './utils/personal-details-utils';
+import { PersonalDetailsFormWithExample } from './containers';
 import './index.scss';
 
-const App: React.FC = () => (
-    <APIProvider standalone>
-        <div className=' text-solid-slate-500 text-heading-h1'>Account V2</div>
-        <div className='p-300'>
-            <BrandDerivLogoCoralIcon height='120px' width='120px' />
-        </div>
-    </APIProvider>
-);
+// [TODO]: Remove schema once PersonalDetailsFormWithExample is merged
+const schema = getNameDOBValidationSchema();
+
+const App: React.FC = () => {
+    return (
+        <APIProvider standalone>
+            <AuthProvider>
+                {/* [TODO]: Remove Formik once code is merged */}
+                <Formik initialValues={schema.getDefault()} onSubmit={() => {}} validationSchema={schema}>
+                    <PersonalDetailsFormWithExample />
+                </Formik>
+                <AppOverlay title='Settings'>
+                    <RouteLinks />
+                </AppOverlay>
+            </AuthProvider>
+        </APIProvider>
+    );
+};
 
 export default App;

@@ -1,5 +1,6 @@
+import { EMPLOYMENT_VALUES } from '../constants';
+import { TEmploymentStatus } from '../types';
 import { TInitPreBuildDVRs, TOptions, getPreBuildDVRs } from './declarative-validation-rules';
-
 import fromEntries from 'object.fromentries';
 
 type TConfig = {
@@ -107,3 +108,7 @@ export const getValidationFunction = (rule: string) => {
     return (value: string, options: TOptions, values: Record<string, string | boolean>) =>
         !!func(value, options, values);
 };
+
+// Adding string as type because, employment_status can come from Personal details or Financial assessment.
+export const shouldHideOccupationField = (employment_status?: TEmploymentStatus | string) =>
+    [EMPLOYMENT_VALUES.SELF_EMPLOYED, EMPLOYMENT_VALUES.UNEMPLOYED].some(status => status === employment_status);

@@ -4,7 +4,7 @@ import {
     useActiveWalletAccount,
     useCreateNewRealAccount,
     useSettings,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { toMoment } from '../../../../shared/src/utils/date';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';

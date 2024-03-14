@@ -1,16 +1,29 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount } from '@deriv/api';
-import { Button, Text, useBreakpoint } from '@deriv/quill-design';
-import { optionsAndMultipliersContent } from '../../../constants/constants';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
-import { TradingAccountCard } from '../../TradingAccountCard';
+import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } from '@/components';
+import { optionsAndMultipliersContent } from '@/constants';
+import { getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
+import { useActiveTradingAccount } from '@deriv/api-v2';
+import { Button, useDevice } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
 
-type TShowButtonProps = Pick<typeof optionsAndMultipliersContent[number], 'isExternal' | 'redirect'>;
+type OptionsAndMultipliersContentItem = {
+    description: string;
+    icon: JSX.Element;
+    isExternal?: boolean;
+    redirect: string;
+    smallIcon: JSX.Element;
+    title: string;
+};
 
-type TLinkTitleProps = Pick<typeof optionsAndMultipliersContent[number], 'icon' | 'title'>;
+const { getDerivStaticURL } = URLUtils;
 
-const LinkTitle: FC<TLinkTitleProps> = ({ icon, title }) => {
+type TShowButtonProps = Pick<OptionsAndMultipliersContentItem, 'isExternal' | 'redirect'>;
+
+type TLinkTitleProps = Pick<OptionsAndMultipliersContentItem, 'icon' | 'title'>;
+
+const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
     const handleClick = (
         event:
             | React.KeyboardEvent<HTMLButtonElement>
@@ -20,10 +33,10 @@ const LinkTitle: FC<TLinkTitleProps> = ({ icon, title }) => {
         event.persist();
         switch (title) {
             case 'Deriv Trader':
-                window.open(getStaticUrl(`/dtrader`));
+                window.open(getDerivStaticURL(`/dtrader`));
                 break;
             case 'Deriv Bot':
-                window.open(getStaticUrl(`/dbot`));
+                window.open(getDerivStaticURL(`/dbot`));
                 break;
             case 'SmartTrader':
                 window.open(getUrlSmartTrader());
@@ -32,7 +45,7 @@ const LinkTitle: FC<TLinkTitleProps> = ({ icon, title }) => {
                 window.open(getUrlBinaryBot());
                 break;
             case 'Deriv GO':
-                window.open(getStaticUrl('/deriv-go'));
+                window.open(getDerivStaticURL('/deriv-go'));
                 break;
             default:
                 break;
@@ -57,24 +70,23 @@ const LinkTitle: FC<TLinkTitleProps> = ({ icon, title }) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { data } = useActiveTradingAccount();
-    if (data?.loginid) {
-        return (
-            <Button
-                className='rounded-200'
-                onClick={() => {
-                    if (isExternal) {
-                        window.open(redirect, '_blank');
-                    } else {
-                        history.push(redirect);
-                    }
-                }}
-            >
-                Open
-            </Button>
-        );
-    }
-    return null;
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
+
+    if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
+
+    return (
+        <Button
+            onClick={() => {
+                if (isExternal) {
+                    window.open(redirect, '_blank');
+                } else {
+                    history.push(redirect);
+                }
+            }}
+        >
+            Open
+        </Button>
+    );
 };
 
 /**
@@ -82,34 +94,44 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
  * @returns {React.ElementType} The `OptionsAndMultipliersContent` component.
  */
 const OptionsAndMultipliersContent = () => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { data } = useActiveTradingAccount();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
+
+    const { isEU } = useRegulationFlags();
+
+    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
+
+    const filteredContent = isEU
+        ? getoptionsAndMultipliersContent.filter(account => account.title === 'Deriv Trader')
+        : getoptionsAndMultipliersContent;
+
+    if (!isRegulationAccessible)
+        return (
+            <div className='pt-40'>
+                <TradingAppCardLoader />
+            </div>
+        );
 
     return (
-        <div className='grid w-full grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
-            {optionsAndMultipliersContent.map(account => {
-                const trailingComponent = () => (
-                    <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />
-                );
+        <div className='grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-4'>
+            {filteredContent.map(account => {
+                const { description, icon, isExternal, redirect, smallIcon, title } = account;
+
+                const trailingComponent = () => <ShowOpenButton isExternal={isExternal} redirect={redirect} />;
 
                 const leadingComponent = () => (
-                    <LinkTitle icon={data?.loginid || !isMobile ? account.icon : account.smallIcon} title={title} />
+                    <LinkTitle icon={data?.loginid || isDesktop ? icon : smallIcon} title={title} />
                 );
 
-                const title = account.title;
                 return (
                     <TradingAccountCard
                         {...account}
-                        key={`trading-account-card-${account.title}`}
+                        key={`trading-account-card-${title}`}
                         leading={leadingComponent}
                         trailing={trailingComponent}
                     >
-                        <div className='flex flex-col flex-grow'>
-                            <Text bold size='sm'>
-                                {account.title}
-                            </Text>
-                            <Text size='xs'>{account.description}</Text>
-                        </div>
+                        <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
                     </TradingAccountCard>
                 );
             })}

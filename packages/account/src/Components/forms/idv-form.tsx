@@ -51,11 +51,8 @@ const IDVForm = ({
         if (document_data && selected_country && selected_country.value) {
             const document_types = Object.keys(document_data);
             if (document_types.length === 0) return;
-            const filtered_documents = ['gh', 'ng'].includes(selected_country.value)
-                ? document_types.filter(d => d !== 'voter_id')
-                : document_types;
 
-            const new_document_list = filtered_documents.map(key => {
+            const new_document_list = document_types.map(key => {
                 const { display_name, format } = document_data[key];
                 const { new_display_name, example_format, additional_document_example_format } = getDocumentData(
                     selected_country.value ?? '',

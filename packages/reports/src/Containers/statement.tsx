@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
 import {
+    capitalizeFirstLetter,
     extractInfoFromShortcode,
     formatDate,
     getContractPath,
@@ -10,7 +11,7 @@ import {
     isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component';
@@ -57,10 +58,7 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
     if (address_hash || blockchain_hash) {
         const lines = message.split(/,\s/);
         messages = lines.map((text, index) => {
-            if (index !== lines.length - 1) {
-                return `${text}, `;
-            }
-            return text;
+            return capitalizeFirstLetter(index !== lines.length - 1 ? `${text}, ` : text);
         });
     }
 
@@ -237,7 +235,8 @@ const Statement = observer(({ component_icon }: TStatement) => {
             </div>
         </React.Fragment>
     );
-
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Statement for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <ReportsMeta

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
+import { useCashierLocked } from '@deriv/hooks';
 import { WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import Error from '../../components/error';
@@ -10,7 +11,6 @@ import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useCashierLocked } from '@deriv/hooks';
 
 type TAccountTransferProps = {
     onClickDeposit?: VoidFunction;
@@ -68,7 +68,11 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     }
 
     if (is_cashier_locked) {
-        return <CashierLocked />;
+        return (
+            <div className='cashier-locked-padding'>
+                <CashierLocked />
+            </div>
+        );
     }
     if (is_transfer_locked) {
         return <AccountTransferLocked />;

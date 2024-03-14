@@ -13,7 +13,7 @@ import {
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { TRoute } from 'Types';
 import 'Sass/app/modules/reports.scss';
 
@@ -82,6 +82,20 @@ const Reports = observer(({ history, location, routes }: TReports) => {
     if (!is_logged_in && is_logging_in) {
         return <Loading is_fullscreen />;
     }
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled)
+    //     return (
+    //         <React.Fragment>
+    //             <Text as='p' size='xl'>
+    //                 Hello! I am Reports page for DTrader 2.0.
+    //             </Text>
+    //             <div>
+    //                 {selected_route?.component && (
+    //                     <selected_route.component icon_component={selected_route.icon_component} />
+    //                 )}
+    //             </div>
+    //         </React.Fragment>
+    //     );
     return (
         <FadeWrapper is_visible={is_reports_visible} className='reports-page-wrapper' keyname='reports-page-wrapper'>
             <div className='reports'>

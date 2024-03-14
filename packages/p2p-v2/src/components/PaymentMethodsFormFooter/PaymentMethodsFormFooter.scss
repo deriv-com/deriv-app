@@ -1,0 +1,16 @@
+.p2p-v2-payment-method-form {
+    &__buttons {
+        display: flex;
+        justify-content: end;
+        gap: 1.6rem;
+
+        &--cancel {
+            background: transparent;
+            border: 2px solid #999999;
+
+            &:active:not([disabled]) {
+                border: 1px solid #999999;
+            }
+        }
+    }
+}

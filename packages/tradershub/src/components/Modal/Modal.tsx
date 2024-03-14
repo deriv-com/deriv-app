@@ -1,5 +1,5 @@
-import React, { ReactElement, ReactNode } from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import React, { PropsWithChildren, ReactElement } from 'react';
+import { twMerge } from 'tailwind-merge';
 import ModalContent from './ModalContent';
 import ModalFooter from './ModalFooter';
 import ModalHeader from './ModalHeader';
@@ -14,7 +14,8 @@ import ModalHeader from './ModalHeader';
 type TModalChildren =
     | ReactElement<typeof ModalContent>
     | ReactElement<typeof ModalFooter>
-    | ReactElement<typeof ModalHeader>;
+    | ReactElement<typeof ModalHeader>
+    | null;
 
 /**
  * Type for the Modal component props
@@ -33,10 +34,9 @@ type TModal = {
  * @property {ReactNode} children - Children nodes
  * @property {string} [className] - Optional CSS class name
  */
-export type TModalComponents = {
-    children: ReactNode;
+export type TModalComponents = PropsWithChildren<{
     className?: string;
-};
+}>;
 
 /**
  * Modal component
@@ -46,8 +46,8 @@ export type TModalComponents = {
 const Modal = ({ children, className }: TModal) => {
     return (
         <div
-            className={qtMerge(
-                'flex flex-col h-screen w-screen bg-background-primary-base lg:mx-auto lg:h-full lg:w-full lg:rounded-400',
+            className={twMerge(
+                'flex flex-col h-[calc(100vh-40px)] w-screen bg-system-light-primary-background lg:mx-auto lg:h-full lg:w-full lg:rounded-default',
                 className
             )}
         >

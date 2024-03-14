@@ -1,6 +1,12 @@
 import React from 'react';
 import { AutoHeightWrapper } from '@deriv/components';
-import { WS, isVerificationServiceSupported, formatIDVFormValues, formatIDVError } from '@deriv/shared';
+import {
+    WS,
+    isVerificationServiceSupported,
+    formatIDVFormValues,
+    formatIDVError,
+    isIDVReportNotAvailable,
+} from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
@@ -28,6 +34,7 @@ const POISubmissionForMT5 = observer(
         const { account_settings, getChangeableFields, account_status } = client;
         const { refreshNotifications } = notifications;
         const { is_eu_user } = traders_hub;
+        const is_report_not_available = isIDVReportNotAvailable(idv);
 
         React.useEffect(() => {
             if (citizen_data) {
@@ -41,10 +48,11 @@ const POISubmissionForMT5 = observer(
 
                 const is_idv_supported =
                     service === service_code.idv ||
-                    (!service && isVerificationServiceSupported(residence_list, account_settings, 'idv'));
+                    isVerificationServiceSupported(residence_list, account_settings, 'idv');
                 const is_onfido_supported =
                     service === service_code.onfido ||
-                    (!service && isVerificationServiceSupported(residence_list, account_settings, 'onfido'));
+                    (account_settings?.citizen !== 'ng' &&
+                        isVerificationServiceSupported(residence_list, account_settings, 'onfido'));
 
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                     setSubmissionService(service_code.idv);
@@ -55,7 +63,7 @@ const POISubmissionForMT5 = observer(
                             identity_status_codes.expired,
                         ].includes(status)
                     ) {
-                        setIdvMismatchStatus(formatIDVError(last_rejected, status));
+                        setIdvMismatchStatus(formatIDVError(last_rejected, status, undefined, is_report_not_available));
                     }
                 } else if (onfido_submissions_left && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);

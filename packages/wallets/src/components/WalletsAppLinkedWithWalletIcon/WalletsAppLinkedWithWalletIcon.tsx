@@ -23,11 +23,6 @@ const WalletsAppLinkedWithWalletIcon = ({
             className={`wallets-app-linked-with-wallet-icon wallets-app-linked-with-wallet-icon--${size}`}
             data-testid='wallets-app-linked-with-wallet-icon'
         >
-            {/* App Icon */}
-            <div className='wallets-app-linked-with-wallet-icon__app-icon'>
-                <WalletResponsiveSvg icon={appIcon} />
-            </div>
-
             {/* Wallet Icon */}
             <div className='wallets-app-linked-with-wallet-icon__wallet-icon'>
                 <WalletGradientBackground currency={currency && currency.toUpperCase()} isDemo={isDemo}>
@@ -36,6 +31,11 @@ const WalletsAppLinkedWithWalletIcon = ({
                         icon={walletIcon}
                     />
                 </WalletGradientBackground>
+            </div>
+
+            {/* App Icon */}
+            <div className='wallets-app-linked-with-wallet-icon__app-icon'>
+                <WalletResponsiveSvg icon={appIcon} />
             </div>
         </div>
     );

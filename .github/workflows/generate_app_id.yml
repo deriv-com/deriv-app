@@ -35,7 +35,7 @@ jobs:
             - name: Comment on pull request with App ID and URLs
               id: sticky_comment_on_pr
               if: steps.generate_app_id.outputs.should_post_comment
-              uses: marocchino/sticky-pull-request-comment@v1
+              uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   header: deriv-app-id-action

@@ -18,14 +18,14 @@ const ErrorComponent = ({
 }) => {
     const history = useHistory();
 
-        React.useEffect(() => {
-            if (!history) return undefined;
-            return history.listen(() => {
-                if (typeof setError === 'function') {
-                    setError(false, null);
-                }
-            });
-        }, [history, setError]);
+    React.useEffect(() => {
+        if (!history) return undefined;
+        return history.listen(() => {
+            if (typeof setError === 'function') {
+                setError(false, null);
+            }
+        });
+    }, [history, setError]);
 
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 

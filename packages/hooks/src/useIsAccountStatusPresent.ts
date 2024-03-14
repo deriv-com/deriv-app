@@ -8,7 +8,6 @@ const AccountStatusList = [
     'allow_poa_resubmission',
     'allow_poi_resubmission',
     'authenticated',
-    'authenticated_with_idv_photoid',
     'cashier_locked',
     'crs_tin_information',
     'deposit_attempt',

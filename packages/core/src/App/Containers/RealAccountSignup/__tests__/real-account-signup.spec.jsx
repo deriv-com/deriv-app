@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 
 import RealAccountSignup from '../real-account-signup.jsx';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

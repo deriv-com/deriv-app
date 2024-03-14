@@ -8,15 +8,22 @@ import { TJurisdictionCardItems } from './props.types';
 export type TJurisdictionContent = {
     bvi: TJurisdictionCardItems;
     labuan: TJurisdictionCardItems;
-    maltainvest: TJurisdictionCardItems;
+    maltainvest?: TJurisdictionCardItems;
     svg: TJurisdictionCardItems;
     vanuatu: TJurisdictionCardItems;
 };
 
-export const getJurisdictionContents = (): Record<string, TJurisdictionCardItems> => ({
-    bvi: getJurisdictionBviContents(),
-    labuan: getJurisdictionLabuanContents(),
-    maltainvest: getJurisdictionMaltainvestContents(),
-    svg: getJurisdictionSvgContents(),
-    vanuatu: getJurisdictionVanuatuContents(),
-});
+export const getJurisdictionContents = (isEU?: boolean): Record<string, TJurisdictionCardItems> => {
+    if (isEU) {
+        return {
+            maltainvest: getJurisdictionMaltainvestContents(),
+        };
+    }
+
+    return {
+        bvi: getJurisdictionBviContents(),
+        labuan: getJurisdictionLabuanContents(),
+        svg: getJurisdictionSvgContents(),
+        vanuatu: getJurisdictionVanuatuContents(),
+    };
+};

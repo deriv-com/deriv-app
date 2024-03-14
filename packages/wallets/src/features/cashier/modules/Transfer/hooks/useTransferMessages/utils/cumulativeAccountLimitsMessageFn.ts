@@ -80,9 +80,17 @@ const cumulativeAccountLimitsMessageFn = ({
     )
         return null;
 
-    const sourceCurrencyLimit = allowedSumUSD * (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const USDToSourceRate =
+        activeWallet.currency === sourceAccount.currency
+            ? 1 / (activeWalletExchangeRates?.rates?.USD ?? 1)
+            : // if the source ("from") account is not the active wallet,
+              // compute USD -> sourceCurrency rate as activeWalletCurrency -> sourceCurrency rate,
+              // divided by activeWalletCurrency -> USD rate
+              (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1) /
+              (activeWalletExchangeRates?.rates?.USD ?? 1);
 
-    const sourceCurrencyRemainder = availableSumUSD * (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const sourceCurrencyLimit = allowedSumUSD * USDToSourceRate;
+    const sourceCurrencyRemainder = availableSumUSD * USDToSourceRate;
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,

@@ -8,8 +8,54 @@
 
     @include mobile {
         height: calc(100% - 7.4rem);
-        &--has-toggle-buttons {
-            height: calc(100% - 14.85rem);
+
+        &--has-only-toggle-buttons {
+            height: calc(100% - 14rem);
+        }
+
+        &--has-dropdown-and-toggle-buttons {
+            height: calc(100% - 19.4rem);
+        }
+
+        &--has-only-dropdown {
+            height: calc(100% - 12rem);
+        }
+
+        &--has-dropdown-and-info {
+            height: calc(100% - 16.8rem);
+        }
+
+        &--has-all-containers {
+            height: calc(100% - 23.4rem);
+        }
+    }
+
+    &__dropdown {
+        margin: 1.6rem 1.6rem 0;
+        width: 52.8rem;
+        height: 4rem;
+
+        @include mobile {
+            width: 32.8rem;
+            margin: 1.6rem auto 0;
+        }
+
+        .dc-dropdown__display {
+            justify-content: flex-start;
+            height: 4rem;
+        }
+
+        .dc-list {
+            &__item {
+                &-text {
+                    justify-content: flex-start;
+                    height: 4rem;
+                    padding: 1rem 1.6rem;
+                }
+                &--selected .dc-list__item-text {
+                    border-radius: 0;
+                }
+            }
         }
     }
 
@@ -117,18 +163,21 @@
         display: flex;
         align-items: center;
         width: 100%;
-        padding-left: 2.4rem;
-
-        @include mobile {
-            padding-left: 2.4rem;
-        }
+        position: relative;
     }
     &__title {
         cursor: default;
     }
     &__icon {
         cursor: pointer;
+        padding-left: 2.4rem;
         padding-right: 2.4rem;
+
+        &-cross {
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+        }
     }
     &__scrollbars {
         position: relative;
@@ -197,14 +246,21 @@
     &__video {
         width: 100%;
         height: 27rem;
-        padding: 0 1.5rem;
         margin-bottom: 1.6rem;
         overflow: hidden;
 
         @include mobile {
-            padding: 0;
             height: 18.45rem;
             margin-bottom: 1.8rem;
+        }
+    }
+
+    &__banner-wrapper {
+        margin: 0 0.8rem 0.8rem;
+
+        @include mobile {
+            width: 32.8rem;
+            margin: 0.8rem auto;
         }
     }
 }

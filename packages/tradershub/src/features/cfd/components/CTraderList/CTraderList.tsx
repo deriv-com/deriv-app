@@ -1,23 +1,29 @@
 import React from 'react';
-import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
-import { Text } from '@deriv/quill-design';
-import { PlatformDetails } from '../../constants';
-import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '../../flows/CTrader';
+import { TradingAppCardLoader } from '@/components';
+import { useUIContext } from '@/providers';
+import { THooks } from '@/types';
+import { CFDPlatformLayout } from '@cfd/components';
+import { PlatformDetails } from '@cfd/constants';
+import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '@cfd/flows';
+import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api-v2';
 
 const CTraderList = () => {
-    const { data: cTraderAccounts } = useCtraderAccountsList();
+    const { uiState } = useUIContext();
+    const { accountType } = uiState;
+    const { data: cTraderAccounts, isFetchedAfterMount } = useCtraderAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
-    const hasCTraderAccount = cTraderAccounts?.some(account => account.is_virtual === activeTradingAccount?.is_virtual);
+    const hasCTraderAccount = cTraderAccounts?.some(
+        (account: THooks.CtraderAccountsList) =>
+            account.is_virtual === activeTradingAccount?.is_virtual && account.account_type === accountType
+    );
 
     return (
-        <div className='pb-1200'>
-            <Text bold>{PlatformDetails.ctrader.title}</Text>
-
-            <div className='grid grid-cols-3 gap-x-800 gap-y-2400 lg:grid-cols-1 lg:grid-rows-1'>
-                {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
-            </div>
-        </div>
+        <CFDPlatformLayout title={PlatformDetails.ctrader.title}>
+            {!isFetchedAfterMount && <TradingAppCardLoader />}
+            {isFetchedAfterMount &&
+                (hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />)}
+        </CFDPlatformLayout>
     );
 };
 

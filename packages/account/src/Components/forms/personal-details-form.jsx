@@ -593,6 +593,21 @@ const PersonalDetailsForm = props => {
                                 required
                             />
                         )}
+                        {values?.tax_residence && values?.tax_identification_number && (
+                            <Checkbox
+                                name='crs_confirmation'
+                                value={values?.crs_confirmation}
+                                label={
+                                    <Localize i18n_default_text='I confirm that my tax information is accurate and complete.' />
+                                }
+                                label_font_size={isMobile() ? 'xxs' : 'xs'}
+                                onChange={e => {
+                                    setFieldValue('crs_confirmation', e.target.checked, true);
+                                    setFieldTouched('crs_confirmation', true);
+                                }}
+                                has_error={!!(touched?.crs_confirmation && errors?.crs_confirmation)}
+                            />
+                        )}
                     </React.Fragment>
                 </div>
             )}

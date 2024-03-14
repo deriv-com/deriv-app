@@ -1,0 +1,1 @@
+export { DemoMessage } from './DemoMessage';

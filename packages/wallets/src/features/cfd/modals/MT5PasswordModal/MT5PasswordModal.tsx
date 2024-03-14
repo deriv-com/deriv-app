@@ -8,7 +8,7 @@ import {
     useMT5AccountsList,
     useSettings,
     useTradingPlatformPasswordChange,
-} from '@deriv/api';
+} from '@deriv/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -16,8 +16,9 @@ import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
-import { companyNamesAndUrls, MarketTypeDetails, PlatformDetails } from '../../constants';
-import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
+import { PlatformDetails } from '../../constants';
+import { CreatePassword, EnterPassword } from '../../screens';
+import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -26,31 +27,29 @@ type TProps = {
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
-    const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
-    const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
+    const {
+        data: newMT5Account,
+        error,
+        isLoading: createMT5AccountLoading,
+        isSuccess,
+        mutate,
+        status,
+    } = useCreateMT5Account();
+    const { isLoading: tradingPlatformPasswordChangeLoading, mutateAsync: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: accountStatus } = useAccountStatus();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
-    const { data: settings } = useSettings();
-    const { getModalState, hide, show } = useModal();
     const { isMobile } = useDevice();
     const history = useHistory();
-
+    const { data: mt5Accounts } = useMT5AccountsList();
+    const { getModalState, hide, show } = useModal();
+    const { data: settings } = useSettings();
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
-    const marketTypeTitle =
-        marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
-            ? PlatformDetails[platform].title
-            : MarketTypeDetails[marketType].title;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
-
-    const landingCompanyName = `(${
-        companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
-    })`;
 
     const onSubmit = useCallback(async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
@@ -114,14 +113,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     ]);
 
     const renderTitle = useCallback(() => {
-        if (isSuccess) {
-            return ' ';
-        }
         if (hasMT5Account) {
             return `Add a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
         }
         return `Create a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
-    }, [hasMT5Account, isDemo, isSuccess]);
+    }, [hasMT5Account, isDemo]);
 
     const renderSuccessButton = useCallback(() => {
         if (isDemo) {
@@ -171,7 +167,12 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
+                        disabled={
+                            !password ||
+                            createMT5AccountLoading ||
+                            tradingPlatformPasswordChangeLoading ||
+                            !validPassword(password)
+                        }
                         isFullWidth
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                         onClick={onSubmit}
@@ -210,39 +211,37 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     ]);
 
     const passwordComponent = useMemo(() => {
-        if (!isSuccess)
-            return isMT5PasswordNotSet ? (
-                <CreatePassword
-                    icon={<MT5PasswordIcon />}
-                    isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                    onPasswordChange={e => setPassword(e.target.value)}
-                    onPrimaryClick={onSubmit}
-                    password={password}
-                    platform={PlatformDetails.mt5.platform}
-                />
-            ) : (
-                <EnterPassword
-                    isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                    marketType={marketType}
-                    onPasswordChange={e => setPassword(e.target.value)}
-                    onPrimaryClick={onSubmit}
-                    onSecondaryClick={() =>
-                        show(
-                            <ModalWrapper>
-                                <SentEmailContent platform={platform} />
-                            </ModalWrapper>
-                        )
-                    }
-                    password={password}
-                    passwordError={error?.error?.code === 'PasswordError'}
-                    platform={PlatformDetails.mt5.platform}
-                />
-            );
+        return isMT5PasswordNotSet ? (
+            <CreatePassword
+                icon={<MT5PasswordIcon />}
+                isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                onPasswordChange={e => setPassword(e.target.value)}
+                onPrimaryClick={onSubmit}
+                password={password}
+                platform={PlatformDetails.mt5.platform}
+            />
+        ) : (
+            <EnterPassword
+                isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                marketType={marketType}
+                onPasswordChange={e => setPassword(e.target.value)}
+                onPrimaryClick={onSubmit}
+                onSecondaryClick={() =>
+                    show(
+                        <ModalWrapper>
+                            <SentEmailContent platform={platform} />
+                        </ModalWrapper>
+                    )
+                }
+                password={password}
+                passwordError={error?.error?.code === 'PasswordError'}
+                platform={PlatformDetails.mt5.platform}
+            />
+        );
     }, [
         createMT5AccountLoading,
         error?.error?.code,
         isMT5PasswordNotSet,
-        isSuccess,
         marketType,
         onSubmit,
         password,
@@ -251,61 +250,23 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         tradingPlatformPasswordChangeLoading,
     ]);
 
-    const successComponent = useMemo(() => {
-        const renderSuccessDescription = () => {
-            if (isDemo) {
-                return `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`;
-            }
-            return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
-        };
-        if (isSuccess) {
-            return (
-                <CFDSuccess
-                    description={renderSuccessDescription()}
-                    displayBalance={
-                        mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'
-                    }
-                    landingCompany={selectedJurisdiction}
-                    marketType={marketType}
-                    platform={platform}
-                    renderButton={renderSuccessButton}
-                    title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : landingCompanyName} account is ready`}
-                />
-            );
-        }
-    }, [
-        isSuccess,
-        isDemo,
-        activeWallet?.wallet_currency_type,
-        activeWallet?.display_balance,
-        marketTypeTitle,
-        landingCompanyName,
-        mt5Accounts,
-        selectedJurisdiction,
-        marketType,
-        platform,
-        renderSuccessButton,
-    ]);
-
     if (status === 'error' && error?.error?.code !== 'PasswordError') {
         return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
+    }
+
+    if (isSuccess) {
+        return <MT5AccountAdded account={newMT5Account} marketType={marketType} platform={platform} />;
     }
 
     if (isMobile) {
         return (
             <ModalStepWrapper renderFooter={renderFooter} title={renderTitle()}>
-                {successComponent}
                 {passwordComponent}
             </ModalStepWrapper>
         );
     }
 
-    return (
-        <ModalWrapper hideCloseButton={isSuccess}>
-            {successComponent}
-            {passwordComponent}
-        </ModalWrapper>
-    );
+    return <ModalWrapper hideCloseButton={isSuccess}>{passwordComponent}</ModalWrapper>;
 };
 
 export default MT5PasswordModal;

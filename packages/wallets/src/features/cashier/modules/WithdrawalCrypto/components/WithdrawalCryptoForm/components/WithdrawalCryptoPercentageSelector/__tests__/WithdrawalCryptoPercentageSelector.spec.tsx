@@ -13,17 +13,29 @@ const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock
 const mockUseWithdrawalCryptoContext = useWithdrawalCryptoContext as jest.Mock;
 
 describe('<WithdrawalCryptoPercentageSelector />', () => {
-    it('should show the percentage message when the input amount is between min withdrawal limit and max withdrawal limit', () => {
-        mockUseFormikContext.mockReturnValue({
-            values: {
-                cryptoAmount: '9.00000000',
-            },
-        });
+    beforeEach(() => {
         mockUseWithdrawalCryptoContext.mockReturnValue({
+            accountLimits: {
+                remainder: 0,
+            },
             activeWallet: {
                 balance: 10,
                 currency: 'BTC',
                 display_balance: '10.00000000 BTC',
+            },
+            fractionalDigits: {
+                crypto: 7,
+                fiat: 2,
+            },
+            isClientVerified: true,
+        });
+    });
+
+    it('should show the percentage message when the input amount is between min withdrawal limit and max withdrawal limit', () => {
+        mockUseFormikContext.mockReturnValue({
+            values: {
+                cryptoAmount: '9.00000000',
+                fiatAmount: '392218.20',
             },
         });
 
@@ -31,17 +43,11 @@ describe('<WithdrawalCryptoPercentageSelector />', () => {
         expect(screen.getByText('90% of available balance (10.00000000 BTC)')).toBeInTheDocument();
     });
 
-    it('should hide the percentage message when the input amount is between min withdrawal limit and max withdrawal limit', () => {
+    it('should hide the percentage message when the input amount is not between min withdrawal limit and max withdrawal limit', () => {
         mockUseFormikContext.mockReturnValue({
             values: {
                 cryptoAmount: '11.00000000',
-            },
-        });
-        mockUseWithdrawalCryptoContext.mockReturnValue({
-            activeWallet: {
-                balance: 10,
-                currency: 'BTC',
-                display_balance: '10.00000000 BTC',
+                fiatAmount: '43,579.80',
             },
         });
 

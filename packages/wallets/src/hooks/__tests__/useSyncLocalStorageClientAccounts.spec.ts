@@ -16,8 +16,8 @@ jest.mock('usehooks-ts', () => ({
     useReadLocalStorage: jest.fn((key: string) => global.localStorage.getItem(key)),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveAccount: jest.fn(() => ({
         data: {
             account_category: 'wallet',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
+import { useP2PCompletedOrdersNotification } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
@@ -11,7 +12,7 @@ import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
 import { setLanguage } from 'Components/i18next';
 import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager';
-import Routes from 'Components/routes/routes.jsx';
+import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
@@ -32,6 +33,8 @@ const App = () => {
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
+
+    useP2PCompletedOrdersNotification();
 
     React.useEffect(() => {
         init();
@@ -255,7 +258,7 @@ const App = () => {
     }, [action_param, code_param]);
 
     if (is_logging_in || general_store.is_loading) {
-        return <Loading is_fullscreen />;
+        return <Loading className='p2p__loading' is_fullscreen={false} />;
     }
 
     return (

@@ -33,12 +33,11 @@ type TContractDrawerProps = RouteComponentProps & {
         | 'is_market_closed'
         | 'is_multiplier'
         | 'is_sell_requested'
-        | 'is_smarttrader_contract'
+        | 'is_lookbacks'
         | 'is_turbos'
         | 'is_vanilla'
         | 'onClickCancel'
         | 'onClickSell'
-        | 'status'
     >;
 
 const ContractDrawer = observer(
@@ -53,16 +52,15 @@ const ContractDrawer = observer(
         is_multiplier,
         is_turbos,
         is_vanilla,
-        is_smarttrader_contract,
+        is_lookbacks,
         onClickCancel,
         onClickSell,
-        status,
         toggleHistoryTab,
     }: TContractDrawerProps) => {
         const { common, ui } = useStore();
         const { server_time } = common;
         const { is_mobile } = ui;
-        const { currency, exit_tick_display_value, is_sold } = contract_info;
+        const { currency, exit_tick_display_value } = contract_info;
         const contract_drawer_ref = React.useRef<HTMLDivElement>(null);
         const contract_drawer_card_ref = React.useRef<HTMLDivElement>(null);
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
@@ -79,9 +77,6 @@ const ContractDrawer = observer(
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info)) ?? ''}
                 duration={getDurationTime(contract_info)}
                 exit_spot={exit_spot}
-                has_result={
-                    !!is_sold || is_multiplier || is_vanilla || is_turbos || is_accumulator || is_smarttrader_contract
-                }
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
@@ -110,14 +105,13 @@ const ContractDrawer = observer(
                     is_turbos={is_turbos}
                     is_vanilla={is_vanilla}
                     is_sell_requested={is_sell_requested}
-                    is_smarttrader_contract={is_smarttrader_contract}
+                    is_lookbacks={is_lookbacks}
                     is_collapsed={should_show_contract_audit}
                     onClickCancel={onClickCancel}
                     onClickSell={onClickSell}
                     onSwipedUp={() => setShouldShowContractAudit(true)}
                     onSwipedDown={() => setShouldShowContractAudit(false)}
                     server_time={server_time}
-                    status={status}
                     toggleContractAuditDrawer={() => setShouldShowContractAudit(!should_show_contract_audit)}
                 />
                 <DesktopWrapper>{contract_audit}</DesktopWrapper>
@@ -133,10 +127,7 @@ const ContractDrawer = observer(
                 <div
                     id='dt_contract_drawer'
                     className={classNames('contract-drawer', {
-                        'contract-drawer--with-collapsible-btn':
-                            !!getEndTime(contract_info) ||
-                            ((is_multiplier || is_vanilla || is_turbos || is_accumulator || is_smarttrader_contract) &&
-                                isMobile()),
+                        'contract-drawer--with-collapsible-btn': !!getEndTime(contract_info) || is_mobile,
                         'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                         'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                     })}

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api';
+import { useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '../../flows/OtherCFDs/Dxtrade';
 import './OtherCFDPlatformsList.scss';

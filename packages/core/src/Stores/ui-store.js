@@ -177,6 +177,7 @@ export default class UIStore extends BaseStore {
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     is_mt5_migration_modal_enabled = false;
+    isUrlUnavailableModalVisible = false;
     sub_section_index = 0;
 
     is_additional_kyc_info_modal_open = false;
@@ -292,6 +293,7 @@ export default class UIStore extends BaseStore {
             is_verification_submitted: observable,
             is_mt5_migration_modal_open: observable,
             is_mt5_migration_modal_enabled: observable,
+            isUrlUnavailableModalVisible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
             notification_messages_ui: observable,
@@ -427,6 +429,7 @@ export default class UIStore extends BaseStore {
             toggleAdditionalKycInfoModal: action.bound,
             toggleKycInformationSubmittedModal: action.bound,
             toggleMT5MigrationModal: action.bound,
+            toggleUrlUnavailableModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -679,6 +682,9 @@ export default class UIStore extends BaseStore {
     }
 
     closeRealAccountSignup() {
+        this.root_store.client.setRealAccountSignupFormData([]);
+        this.root_store.client.setRealAccountSignupFormStep(0);
+
         this.is_real_acc_signup_on = false;
         this.resetRealAccountSignupTarget();
         setTimeout(() => {
@@ -990,7 +996,11 @@ export default class UIStore extends BaseStore {
         this.is_mt5_migration_modal_enabled = value;
     }
 
-    toggleMT5MigrationModal() {
-        this.is_mt5_migration_modal_open = !this.is_mt5_migration_modal_open;
+    toggleMT5MigrationModal(value) {
+        this.is_mt5_migration_modal_open = value;
+    }
+
+    toggleUrlUnavailableModal(value) {
+        this.isUrlUnavailableModalVisible = value;
     }
 }

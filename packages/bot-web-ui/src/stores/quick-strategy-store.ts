@@ -1,9 +1,9 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { ApiHelpers, config as qs_config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { STRATEGIES } from 'Components/quick-strategy/config';
-import { TFormData } from 'Components/quick-strategy/types';
 import { addDynamicBlockToDOM } from 'Utils/xml-dom-quick-strategy';
+import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
+import { TFormData } from '../pages/bot-builder/quick-strategy/types';
 import RootStore from './root-store';
 
 export type TActiveSymbol = {
@@ -157,14 +157,16 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
                 el_block.innerHTML = value;
             });
         };
-        const { unit, action, ...rest_data } = data;
+        const { unit, action, type, ...rest_data } = data;
         const fields_to_update = {
             market,
             submarket,
             tradetypecat: trade_type_cat,
             dalembert_unit: unit,
             oscar_unit: unit,
+            type: 'both',
             ...rest_data,
+            purchase: type,
         };
 
         Object.keys(fields_to_update).forEach(key => {

@@ -1,6 +1,8 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
-import { messageWithButton, messageWithImage, getIcon } from '../notify-item';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
+import { getIcon, messageWithButton, messageWithImage } from '../notify-item';
 
 const messageWithButtonMockProps = {
     unique_id: '123',

@@ -14,6 +14,8 @@ type TThemedScrollbars = {
     onScroll?: UIEventHandler<HTMLDivElement>;
     refSetter?: RefObject<HTMLDivElement & SVGSVGElement> | null;
     style?: React.CSSProperties;
+    scroll_height?: number;
+    should_scroll_to_selected?: boolean;
     width?: string;
     testId?: string;
 };
@@ -32,9 +34,17 @@ const ThemedScrollbars = ({
     onScroll,
     refSetter = null,
     style = {},
+    scroll_height,
+    should_scroll_to_selected = false,
     width,
 }: React.PropsWithChildren<TThemedScrollbars>) => {
     const [hoverRef, isHovered] = useHover<HTMLDivElement & SVGSVGElement>(refSetter, false);
+
+    React.useEffect(() => {
+        if (should_scroll_to_selected && scroll_height) {
+            hoverRef?.current?.scrollTo(0, scroll_height);
+        }
+    }, [scroll_height, hoverRef, should_scroll_to_selected]);
 
     if (is_bypassed) return children as JSX.Element;
 

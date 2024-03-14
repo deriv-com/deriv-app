@@ -56,10 +56,11 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
 
 const TransferReceipt = () => {
     const { activeWallet, receipt, resetTransfer } = useTransfer();
+    const { isMobile } = useDevice();
 
     if (!receipt) return null;
 
-    const { feeAmount, feePercentage, fromAccount, fromAmount, toAccount, toAmount } = receipt;
+    const { feeAmount, fromAccount, fromAmount, toAccount, toAmount } = receipt;
 
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
     const displayTransferredFromAmount = `${fromAmount.toFixed(fromAccount?.currencyConfig?.fractional_digits)} ${
@@ -71,9 +72,7 @@ const TransferReceipt = () => {
     const transferredAmountMessage = isSameCurrency
         ? displayTransferredFromAmount
         : `${displayTransferredFromAmount} (${displayTransferredToAmount})`;
-    const feeMessage = feeAmount
-        ? `${feePercentage}% transfer fees: ${feeAmount} ${fromAccount?.currencyConfig?.display_code}`
-        : '';
+    const feeMessage = feeAmount ? `Transfer fees: ${feeAmount} ${fromAccount?.currencyConfig?.display_code}` : '';
 
     return (
         <div className='wallets-transfer-receipt'>
@@ -81,7 +80,7 @@ const TransferReceipt = () => {
                 <ReceiptCard
                     account={fromAccount}
                     activeWallet={activeWallet}
-                    balance={`- ${displayTransferredFromAmount}`}
+                    balance={`-${displayTransferredFromAmount}`}
                 />
                 <div className='wallets-transfer-receipt__arrow-icon'>
                     <Arrow />
@@ -89,7 +88,7 @@ const TransferReceipt = () => {
                 <ReceiptCard
                     account={toAccount}
                     activeWallet={activeWallet}
-                    balance={`+ ${displayTransferredToAmount}`}
+                    balance={`+${displayTransferredToAmount}`}
                 />
             </div>
             <div
@@ -112,7 +111,11 @@ const TransferReceipt = () => {
                 </WalletText>
             </div>
             <div className='wallets-transfer-receipt__button'>
-                <WalletButton onClick={() => resetTransfer()} size='lg'>
+                <WalletButton
+                    onClick={() => resetTransfer()}
+                    size={isMobile ? 'md' : 'lg'}
+                    textSize={isMobile ? 'md' : 'sm'}
+                >
                     Make a new transfer
                 </WalletButton>
             </div>

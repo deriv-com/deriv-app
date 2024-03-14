@@ -16,6 +16,7 @@ import {
     SelectNative,
     Text,
     ThemedScrollbars,
+    Checkbox,
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -149,6 +150,7 @@ const validatePersonalDetails = ({
             (v: string) => (tin_regex ? tin_regex?.some(regex => v.match(regex)) : true),
             () => !!values.tax_residence,
         ];
+        validations.crs_confirmation = [(v: string) => !!v];
     }
     const mappedKey: { [key: string]: string } = {
         citizen: localize('Citizenship'),
@@ -156,6 +158,7 @@ const validatePersonalDetails = ({
         tax_identification_number: localize('Tax identification number'),
         account_opening_reason: localize('Account opening reason'),
         place_of_birth: localize('Place of birth'),
+        crs_confirmation: localize('CRS confirmation'),
     };
 
     const field_error_messages = (field_name: string): string[] => [
@@ -205,6 +208,10 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmit, is_dirty, resid
         tax_residence_text: values.tax_residence,
         place_of_birth_text: values.place_of_birth,
     });
+
+    if (values.crs_confirmation) {
+        delete values.crs_confirmation;
+    }
 
     const payload = {
         ...values,
@@ -496,6 +503,29 @@ const CFDPersonalDetailsForm = ({
                                                     </React.Fragment>
                                                 )}
                                             </Field>
+                                            {is_tin_mandatory && values?.tax_identification_number && (
+                                                <Field name='crs_confirmation'>
+                                                    {({
+                                                        field,
+                                                        form: { handleBlur, setFieldValue },
+                                                        meta: { touched, error },
+                                                    }: FieldProps<boolean, TFormValues>) => (
+                                                        <Checkbox
+                                                            {...field}
+                                                            value={field.value}
+                                                            label={
+                                                                <Localize i18n_default_text='I confirm that my tax information is accurate and complete.' />
+                                                            }
+                                                            label_font_size={isMobile() ? 'xxs' : 'xs'}
+                                                            onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                                                                setFieldValue(field.name, e.currentTarget.checked, true)
+                                                            }
+                                                            onBlur={handleBlur}
+                                                            has_error={!!(touched && error)}
+                                                        />
+                                                    )}
+                                                </Field>
+                                            )}
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { useIsAccountStatusPresent } from '@deriv/hooks';
-import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
+import { isDesktop, getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import ProofOfAddress from '../Components/proof-of-address';
@@ -87,8 +86,6 @@ const RealAccountSignupVerifications = observer(({ onFinish }: TRealAccountSignu
 
     const { need_poi_for_maltainvest, need_poi_for_bvi_labuan_vanuatu } = getAuthenticationStatusInfo(account_status);
 
-    const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');
-
     const poi_config: TItemsState<typeof passthroughProps> = {
         body: ProofOfIdentity,
         form_value: {
@@ -130,10 +127,7 @@ const RealAccountSignupVerifications = observer(({ onFinish }: TRealAccountSignu
     };
 
     const shouldShowPOA = () => {
-        if (JURISDICTION.LABUAN === jurisdiction_selected_shortcode && is_authenticated_with_idv_photoid) {
-            return true;
-        }
-        return !['pending', 'verified'].includes(authentication_status.document_status);
+        return isPOARequiredForMT5(account_status, jurisdiction_selected_shortcode);
     };
 
     const should_show_personal_details =
@@ -196,20 +190,13 @@ const RealAccountSignupVerifications = observer(({ onFinish }: TRealAccountSignu
 
     const form_value = getCurrent('form_value');
 
-    const passthrough: Partial<TRealAccountSignupVerificationsProps> & {
-        is_authenticated_with_idv_photoid?: boolean;
-    } = ((getCurrent('forwarded_props') || []) as TItemsState<typeof passthroughProps>['forwarded_props']).reduce(
-        (forwarded_prop, item) => {
-            return Object.assign(forwarded_prop, {
-                [item]: passthroughProps[item],
-            });
-        },
-        {}
-    );
-
-    if (shouldShowPOA()) {
-        passthrough.is_authenticated_with_idv_photoid = is_authenticated_with_idv_photoid;
-    }
+    const passthrough: Partial<TRealAccountSignupVerificationsProps> = (
+        (getCurrent('forwarded_props') || []) as TItemsState<typeof passthroughProps>['forwarded_props']
+    ).reduce((forwarded_prop, item) => {
+        return Object.assign(forwarded_prop, {
+            [item]: passthroughProps[item],
+        });
+    }, {});
 
     return (
         <Div100vhContainer

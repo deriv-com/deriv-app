@@ -118,18 +118,6 @@ export const getUnsupportedContracts = () => ({
         name: 'Low Tick',
         position: 'bottom',
     },
-    LBFLOATCALL: {
-        name: 'Close-to-Low',
-        position: 'top',
-    },
-    LBFLOATPUT: {
-        name: 'High-to-Close',
-        position: 'top',
-    },
-    LBHIGHLOW: {
-        name: 'High-to-Low',
-        position: 'top',
-    },
     CALLSPREAD: {
         name: 'Spread Up',
         position: 'top',
@@ -251,6 +239,18 @@ export const getSupportedContracts = is_high_low => ({
     RESETPUT: {
         name: 'Reset Put',
         position: 'bottom',
+    },
+    LBFLOATCALL: {
+        name: 'Close-Low',
+        position: 'top',
+    },
+    LBFLOATPUT: {
+        name: 'High-Close',
+        position: 'top',
+    },
+    LBHIGHLOW: {
+        name: 'High-Low',
+        position: 'top',
     },
 });
 

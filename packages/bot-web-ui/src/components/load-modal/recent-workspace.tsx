@@ -13,20 +13,23 @@ type TRecentWorkspaceProps = {
 const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
     const { load_modal } = useDBotStore();
     const { getRecentFileIcon, getSaveType, previewRecentStrategy, selected_strategy_id } = load_modal;
+
     return (
         <div
-            className={classnames('load-strategy__recent-item load-dialog', {
+            className={classnames('load-strategy__recent-item', {
                 'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
             })}
             key={workspace.id}
             onClick={selected_strategy_id === workspace.id ? undefined : () => previewRecentStrategy(workspace.id)}
             data-testid='dt_recent_workspace_item'
         >
-            <div className='load-strategy__recent-item-text load-dialog'>
-                <div className='load-strategy__recent-item-title'>{workspace.name}</div>
+            <div className='load-strategy__recent-item-text'>
+                <div className='load-strategy__recent-item-title' title={workspace.name}>
+                    {workspace.name}
+                </div>
                 <div className='load-strategy__recent-item-time'>{timeSince(workspace.timestamp)}</div>
             </div>
-            <div className='load-strategy__recent-item-location load-dialog'>
+            <div className='load-strategy__recent-item-location'>
                 <Icon
                     icon={getRecentFileIcon(workspace.save_type)}
                     className={classnames({

@@ -58,6 +58,13 @@ export const MARKER_TYPES_CONFIG = {
         },
         content_config: { spot_className: 'chart-spot__spot' },
     },
+    SPOT_EXIT_2: {
+        type: 'SPOT_EXIT_2',
+        marker_config: {
+            ContentComponent: MarkerSpot,
+        },
+        content_config: { className: 'chart-spot__spot' },
+    },
     SPOT_MIDDLE: {
         type: 'SPOT_MIDDLE',
         marker_config: {

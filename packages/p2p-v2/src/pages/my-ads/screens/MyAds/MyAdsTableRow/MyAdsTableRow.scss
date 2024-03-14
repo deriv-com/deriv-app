@@ -1,0 +1,129 @@
+@mixin popoverIcons($background-color, $height, $width) {
+    align-items: center;
+    background-color: $background-color;
+    cursor: pointer;
+    display: flex;
+    height: $height;
+    justify-content: center;
+    width: $width;
+
+    @include desktop {
+        &:hover {
+            background-color: var(--general-hover);
+            border-radius: 0.5rem;
+        }
+    }
+}
+
+.p2p-v2-my-ads-table-row {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    &__line {
+        border-bottom: 1px solid #f2f3f4;
+        padding: 1.6rem;
+        position: relative;
+        display: grid;
+        align-items: center;
+        grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.9fr;
+
+        &-disabled {
+            span:not(.p2p-v2-my-ads-table-row__actions span) {
+                color: #999;
+            }
+            .p2p-v2-progress-indicator {
+                &__container {
+                    background-color: #999;
+                }
+                &__bar {
+                    background-color: #eaeced;
+                }
+            }
+        }
+
+        @include mobile {
+            grid-template-columns: unset;
+            padding: 1.6rem;
+            width: 100%;
+        }
+
+        &__type-and-status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+
+            &__wrapper {
+                display: flex;
+            }
+        }
+
+        &-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &-methods {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+
+    &__rate {
+        color: var(--text-profit-success);
+        font-weight: bold;
+    }
+
+    &__available {
+        align-items: flex-start;
+        flex-flow: column;
+        justify-content: center;
+        width: 85%;
+
+        &-progress {
+            margin-bottom: 0.4rem;
+
+            @include mobile {
+                margin: 0.4rem 0;
+            }
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        &-popovers {
+            background-color: var(--general-main-1);
+            display: flex;
+            height: 99%;
+            justify-content: center;
+            min-width: 14rem;
+            padding: 1.6rem;
+            position: absolute;
+            align-items: center;
+            right: 5.5rem;
+            top: 0;
+            .derivs-button {
+                background-color: #fff;
+                &__color--primary:hover:not(:disabled) {
+                    background-color: var(--general-hover);
+                }
+                &__size--md {
+                    padding: 0.6rem 0.85rem;
+                }
+            }
+            & svg {
+                fill: #333333;
+            }
+
+            @include mobile {
+                display: flex;
+                justify-content: unset;
+            }
+
+            div {
+                margin: auto;
+            }
+        }
+    }
+}

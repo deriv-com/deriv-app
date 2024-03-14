@@ -1,0 +1,38 @@
+.p2p-v2-mobile-wrapper {
+    @include mobile {
+        height: calc(100vh - 4rem);
+        width: 100vw;
+        border-radius: 0;
+        display: grid;
+        grid-template-rows: 6rem auto;
+
+        &--fixed-footer {
+            grid-template-rows: 6rem auto 8rem;
+        }
+
+        &--no-header {
+            grid-template-rows: auto;
+        }
+
+        &--no-header-fixed-footer {
+            grid-template-rows: auto 7rem;
+        }
+
+        &--no-footer {
+            grid-template-rows: 6rem auto;
+        }
+    }
+
+    &__header {
+        align-items: center;
+        padding: 2rem;
+        border-bottom: 2px solid #f2f3f4;
+        display: flex;
+        gap: 2rem;
+    }
+
+    &__footer {
+        padding: 2rem;
+        border-top: 2px solid #f2f3f4;
+    }
+}

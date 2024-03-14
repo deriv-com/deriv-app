@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react';
-import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
+import useDevice from '../../../../hooks/useDevice';
 import DerivXPasswordIcon from '../../../../public/images/ic-derivx-password-updated.svg';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';
@@ -22,6 +23,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { isMobile } = useDevice();
 
     const { title } = PlatformDetails[platform];
 
@@ -67,7 +69,11 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
         introScreen: {
             bodyText: `Use this password to log in to your ${title} accounts on the desktop, web, and mobile apps.`,
             button: (
-                <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg'>
+                <WalletButton
+                    onClick={() => handleClick('confirmationScreen')}
+                    size='lg'
+                    textSize={isMobile ? 'md' : 'sm'}
+                >
                     Change password
                 </WalletButton>
             ),

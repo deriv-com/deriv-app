@@ -106,7 +106,7 @@ describe('TransactionDetailsMobile', () => {
         render(<TransactionDetailsMobile />, {
             wrapper,
         });
-        const close_btn = screen.getByTestId('page_overlay_header_close');
+        const close_btn = screen.getByTestId('dt_page_overlay_header_close');
         fireEvent.click(close_btn);
         expect(mock_DBot_store?.transactions.is_transaction_details_modal_open).toBeFalsy();
     });

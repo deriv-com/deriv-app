@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import PersonalDetailsForm from '../personal-details-form';
@@ -51,5 +51,23 @@ describe('PersonalDetailsForm', () => {
         userEvent.click(ms_radio_input);
         expect(mr_radio_input).not.toBeChecked();
         expect(ms_radio_input).toBeChecked();
+    });
+
+    it('should display crs confirmation checkbox if tax residence & tin fields are filled', () => {
+        render(
+            <Formik
+                initialValues={{ tax_residence: '', tax_identification_number: '', crs_confirmation: false }}
+                onSubmit={jest.fn()}
+            >
+                <PersonalDetailsForm is_svg />
+            </Formik>
+        );
+
+        fireEvent.change(screen.getByTestId('tax_residence'), { target: { value: 'Afghanistan' } });
+        fireEvent.change(screen.getByTestId('tax_identification_number'), { target: { value: '1234567890' } });
+
+        expect(
+            screen.queryByLabelText(/i confirm that my tax information is accurate and complete/i)
+        ).toBeInTheDocument();
     });
 });

@@ -1,0 +1,429 @@
+@import '../../styles/mixins.scss';
+
+.bot-dashboard {
+    position: relative;
+    height: calc(100vh - 8.4rem);
+    overflow: hidden;
+
+    @include mobile {
+        height: calc(100vh - 3.4rem);
+    }
+
+    .toolbar__section {
+        justify-content: end;
+
+        @include mobile {
+            column-gap: 1rem;
+        }
+    }
+
+    .run-panel__container {
+        height: var(--tab-content-height) !important;
+        position: sticky;
+        // TODO: need to set global variables for translation
+        transform: translateX(calc(367px));
+        transition: all 0.4s;
+        margin-top: 1rem;
+
+        &--tour-active {
+            transform: translateX(calc(0px)) !important;
+
+            .dc-drawer__toggle-icon--right {
+                transform: rotate(180deg) !important;
+            }
+        }
+    }
+
+    .dc-drawer--open {
+        @include desktop {
+            transform: translateX(calc(0px)) !important;
+        }
+
+        @include mobile {
+            transform: translateY(calc(-100% + 3.6rem));
+        }
+    }
+}
+
+.db {
+    --icon-height: 2.4rem;
+    --icon-width: 2.4rem;
+    --border-radius: 2.4rem;
+
+    &-sidebar {
+        position: relative;
+        background-color: var(--general-main-1);
+        padding: 2.4rem;
+        height: 100%;
+
+        &--block {
+            display: block;
+        }
+
+        display: none;
+
+        &__images {
+            background: var(--general-section-6);
+        }
+    }
+    &-info-panel {
+        &__close-action {
+            position: absolute;
+            right: 1.4rem;
+            top: 1.4rem;
+            height: 2rem;
+            width: 2rem;
+            line-height: 2.3rem;
+            text-align: center;
+            border-radius: 1rem;
+
+            &:hover {
+                cursor: pointer;
+                background: var(--general-section-1);
+            }
+        }
+
+        &__content {
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+                color: var(--button-primary-default);
+            }
+        }
+    }
+}
+
+.tab {
+    &__dashboard {
+        display: flex;
+        width: 100%;
+
+        &--tour-active {
+            width: calc(100% - 36rem);
+
+            @include mobile {
+                width: 100%;
+            }
+        }
+        &__header {
+            padding: 1.6rem;
+            margin-top: 4.8rem;
+            &--listed {
+                margin-top: 0.6rem;
+            }
+            @include mobile {
+                height: auto;
+                margin-top: 0;
+            }
+            .title {
+                text-align: center;
+                height: 7.2;
+                @include mobile {
+                    height: auto;
+                }
+            }
+            .subtitle {
+                text-align: center;
+                margin-top: 1.6rem;
+                &__has-list {
+                    margin-top: 0;
+                    text-align: left;
+                    @include mobile {
+                        width: 85%;
+                    }
+                }
+            }
+        }
+
+        &__content {
+            display: flex;
+            align-items: flex-start;
+
+            height: var(--tab-content-height);
+            flex-grow: 1;
+            background: var(--general-main-1);
+            overflow: hidden;
+            position: relative;
+
+            @include desktop {
+                padding: 1.6rem 0 0;
+            }
+
+            @include mobile {
+                height: calc(100vh - 19rem);
+                align-items: flex-start;
+            }
+            .quick-panel {
+                flex: 1 1 44%;
+            }
+            .preview-panel {
+                display: none;
+                flex: 1 1 56%;
+                &--active {
+                    display: block;
+                    @include mobile {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        &__mobile-container {
+            @include flex-center;
+            margin: 1.4rem 0;
+            column-gap: 1rem;
+            height: 3.2rem;
+
+            &--minimized {
+                height: 3.6rem;
+            }
+        }
+
+        &__centered {
+            @include flex-center;
+            flex-direction: column;
+
+            @include tablet {
+                width: 100%;
+            }
+
+            @include mobile {
+                width: 100%;
+                padding: 0 1rem;
+            }
+
+            &--not-listed {
+                @include desktop {
+                    width: 100%;
+                    margin-top: 4.8rem;
+                }
+            }
+
+            &--listed {
+                align-items: initial;
+                justify-content: flex-start;
+                padding: 0.4rem 2.4rem;
+                height: 100%;
+            }
+        }
+
+        &__preview {
+            height: calc(100% + 2rem);
+
+            @include mobile {
+                display: none;
+            }
+
+            @include tablet {
+                display: none;
+            }
+
+            &__retrigger {
+                button {
+                    background: var(--general-section-1);
+                    border-radius: 2.4rem;
+                    outline: none;
+                    border: none;
+                    height: 4rem;
+                    padding: 1rem;
+                    @include flex-center;
+                    cursor: pointer;
+
+                    @include mobile {
+                        width: 3.2rem;
+                        height: 3.2rem;
+                        padding: 0.8rem;
+                    }
+                }
+
+                &__text {
+                    margin-left: 0.4rem;
+                    color: var(--text-general);
+                }
+
+                &__icon {
+                    width: var(--icon-width);
+                    height: var(--icon-height);
+                }
+            }
+        }
+
+        &__home {
+            &__retrigger {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 2rem;
+
+                button {
+                    background: var(--general-section-1);
+                    border-radius: 2.4rem;
+                    outline: none;
+                    border: none;
+                    height: 4rem;
+                    padding: 1rem;
+                    @include flex-center;
+                    cursor: pointer;
+                }
+
+                &__text {
+                    margin-left: 0.4rem;
+                    color: var(--text-general);
+                }
+
+                &__icon {
+                    width: var(--icon-width);
+                    height: var(--icon-height);
+                }
+            }
+        }
+
+        &__description {
+            @include desktop {
+                text-align: center;
+                margin-bottom: 4rem;
+            }
+        }
+
+        &__info-panel {
+            position: relative;
+            background-color: var(--general-main-1);
+            padding: 2.4rem;
+            margin-left: 1.6rem;
+            display: none;
+            height: calc(100vh - 16.7rem);
+            overflow-y: auto;
+
+            &--active {
+                display: block;
+                width: 30%;
+            }
+        }
+
+        &__table {
+            @include mobile-tablet-mix {
+                width: calc(100% - 9.3rem);
+            }
+
+            &--minimized {
+                width: 100%;
+            }
+
+            &__tiles {
+                @include flex-center(center, flex-start);
+                word-wrap: break-word;
+                font-size: 1.3rem;
+                text-align: center;
+
+                @include mobile {
+                    flex-wrap: wrap;
+                }
+
+                &--minimized {
+                    align-items: flex-start;
+
+                    @include mobile-tablet-mix {
+                        display: flex;
+                        justify-content: space-around;
+                        flex-flow: unset;
+                    }
+                }
+            }
+
+            &__disabled-card {
+                pointer-events: none;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
+
+            &__block {
+                @include flex-center;
+                flex-direction: column;
+                padding-right: 2.4rem;
+
+                @include mobile {
+                    padding: 1rem;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                span {
+                    width: 9.1rem;
+                    word-wrap: break-word;
+                    text-align: center;
+                    height: 4.2rem;
+                    @include mobile {
+                        height: auto;
+                    }
+                }
+
+                &--minimized {
+                    width: 6.4rem;
+
+                    & .dc-text {
+                        width: 8rem;
+                        text-align: center;
+                    }
+                }
+                &:nth-last-child(2) {
+                    padding-right: 0;
+                }
+            }
+
+            &__images {
+                background-color: var(--general-section-1);
+                margin-bottom: 0.8rem;
+                border-radius: 0.8rem;
+                padding: 1.6rem;
+
+                &--minimized {
+                    @include mobile {
+                        width: 6.4rem;
+                        height: 6.4rem;
+                        padding: 0.8rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.user-guide {
+    position: absolute;
+    right: 1.6rem;
+    top: 1.8rem;
+    z-index: 1;
+    &__button {
+        @include flex-center;
+        padding: 0.8rem 1.4rem;
+        border: none;
+        outline: none;
+        border-radius: 2.4rem;
+        background-color: var(--general-section-1);
+
+        @include mobile {
+            height: 3.2rem;
+            width: 3.2rem;
+            line-height: 3.6rem;
+            text-align: center;
+            padding: 0;
+        }
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    &__icon {
+        height: 24px;
+        width: 24px;
+        @include mobile {
+            height: 16px;
+            width: 16px;
+        }
+    }
+    &__label {
+        margin-left: 0.4rem;
+    }
+}

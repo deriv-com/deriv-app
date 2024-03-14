@@ -1,15 +1,23 @@
 import React, { useEffect } from 'react';
-import { useActiveTradingAccount, useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api';
-import { Text } from '@deriv/quill-design';
-import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '../../flows/OtherCFDs/Dxtrade';
+import { TradingAppCardLoader } from '@/components';
+import { useUIContext } from '@/providers';
+import { THooks } from '@/types';
+import { CFDPlatformLayout } from '@cfd/components';
+import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '@cfd/flows';
+import { useActiveTradingAccount, useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api-v2';
 
 const OtherCFDPlatformsList = () => {
+    const { uiState } = useUIContext();
+    const { accountType } = uiState;
     const { isFetching } = useAuthorize();
     const { data: dxTradeAccounts, isFetchedAfterMount } = useDxtradeAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const invalidate = useInvalidateQuery();
 
-    const hasDxtradeAccount = dxTradeAccounts?.some(account => account.is_virtual === activeTradingAccount?.is_virtual);
+    const hasDxtradeAccount = dxTradeAccounts?.some(
+        (account: THooks.DxtradeAccountsList) =>
+            account.is_virtual === activeTradingAccount?.is_virtual && account.account_type === accountType
+    );
 
     useEffect(() => {
         if (!isFetching) {
@@ -18,13 +26,11 @@ const OtherCFDPlatformsList = () => {
     }, [invalidate, isFetching]);
 
     return (
-        <div className='pb-1200'>
-            <Text bold>Other CFD Platforms</Text>
-            <div className='grid grid-cols-3 gap-x-800 gap-y-2400 lg:grid-cols-1 lg:grid-rows-1'>
-                {isFetchedAfterMount &&
-                    (hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />)}
-            </div>
-        </div>
+        <CFDPlatformLayout title='Other CFD Platforms'>
+            {!isFetchedAfterMount && <TradingAppCardLoader />}
+            {isFetchedAfterMount &&
+                (hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />)}
+        </CFDPlatformLayout>
     );
 };
 

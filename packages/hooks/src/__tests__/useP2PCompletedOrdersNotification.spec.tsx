@@ -1,23 +1,25 @@
 import * as React from 'react';
-import { useFetch, useSubscription } from '@deriv/api';
+import { useGetAccountStatus, useSubscription } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PCompletedOrdersNotification from '../useP2PCompletedOrdersNotification';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
     useSubscription: jest.fn(),
+    useGetAccountStatus: jest.fn(),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
 const mockUseSubscription = useSubscription as jest.MockedFunction<typeof useSubscription<'p2p_order_list'>>;
 
+const mockUseGetAccountStatus = useGetAccountStatus as jest.MockedFunction<typeof useGetAccountStatus>;
+
 describe('useP2PCompletedOrdersNotification', () => {
-    test('should unsubscribe from p2p_order_list if user is not authorized', () => {
+    test('should not subscribe to p2p_order_list if user is not logged in', () => {
         const mock = mockStore({
             client: {
                 is_authorize: false,
+                is_p2p_enabled: true,
                 currency: 'USD',
             },
             notifications: {
@@ -25,13 +27,11 @@ describe('useP2PCompletedOrdersNotification', () => {
             },
         });
 
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
-
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
         mockUseSubscription.mockReturnValue({
             subscribe: jest.fn(),
             unsubscribe: jest.fn(),
+            isSubscribed: false,
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -39,15 +39,15 @@ describe('useP2PCompletedOrdersNotification', () => {
         );
 
         renderHook(() => useP2PCompletedOrdersNotification(), { wrapper });
-
-        expect(mockUseSubscription('p2p_order_list').unsubscribe).toBeCalled();
+        expect(mockUseSubscription('p2p_order_list').subscribe).not.toBeCalled();
         expect(mock.notifications.p2p_completed_orders).toEqual([]);
     });
 
-    test('should unsubscribe from p2p_order_list if user p2p is disabled', () => {
+    test('should not subscribe to p2p_order_list if user p2p is disabled', () => {
         const mock = mockStore({
             client: {
-                is_authorize: false,
+                is_authorize: true,
+                is_p2p_enabled: false,
                 currency: 'EUR',
             },
             notifications: {
@@ -55,13 +55,11 @@ describe('useP2PCompletedOrdersNotification', () => {
             },
         });
 
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
-
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
         mockUseSubscription.mockReturnValue({
             subscribe: jest.fn(),
             unsubscribe: jest.fn(),
+            isSubscribed: false,
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -70,6 +68,73 @@ describe('useP2PCompletedOrdersNotification', () => {
 
         renderHook(() => useP2PCompletedOrdersNotification(), { wrapper });
 
+        expect(mockUseSubscription('p2p_order_list').subscribe).not.toBeCalled();
+        expect(mock.notifications.p2p_completed_orders).toEqual([]);
+    });
+
+    test('should not call unsubscribe from p2p_order_list if user is logged in and p2p is enabled but list is not subscribed', () => {
+        const mock = mockStore({
+            client: {
+                is_authorize: true,
+                is_p2p_enabled: true,
+                currency: 'USD',
+            },
+            notifications: {
+                p2p_completed_orders: [],
+            },
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useSubscription
+        mockUseSubscription.mockReturnValue({
+            subscribe: jest.fn(),
+            unsubscribe: jest.fn(),
+            isSubscribed: false,
+        });
+
+        mockUseGetAccountStatus.mockReturnValue({
+            // @ts-expect-error need to come up with a way to mock the return type of useGetAccountStatus
+            data: {
+                is_p2p_user: true,
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { unmount } = renderHook(() => useP2PCompletedOrdersNotification(), { wrapper });
+
+        unmount();
+        expect(mockUseSubscription('p2p_order_list').unsubscribe).not.toBeCalled();
+        expect(mock.notifications.p2p_completed_orders).toEqual([]);
+    });
+
+    test('should unsubscribe from p2p_order_list if user is logged in and p2p is enabled and list is subscribed', () => {
+        const mock = mockStore({
+            client: {
+                is_authorize: true,
+                is_p2p_enabled: true,
+                currency: 'USD',
+            },
+            notifications: {
+                p2p_completed_orders: [],
+            },
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useSubscription
+        mockUseSubscription.mockReturnValue({
+            subscribe: jest.fn(),
+            unsubscribe: jest.fn(),
+            isSubscribed: true,
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { unmount } = renderHook(() => useP2PCompletedOrdersNotification(), { wrapper });
+
+        unmount();
         expect(mockUseSubscription('p2p_order_list').unsubscribe).toBeCalled();
         expect(mock.notifications.p2p_completed_orders).toEqual([]);
     });
@@ -78,15 +143,13 @@ describe('useP2PCompletedOrdersNotification', () => {
         const mock = mockStore({
             client: {
                 is_authorize: true,
+                is_p2p_enabled: true,
                 currency: 'USD',
             },
             notifications: {
                 p2p_completed_orders: [],
             },
         });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
         const mock_p2p_order_list = [
             {

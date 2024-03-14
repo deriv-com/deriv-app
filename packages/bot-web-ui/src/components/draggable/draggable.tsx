@@ -23,7 +23,7 @@ export default function Draggable({
     bounds = 'window',
     children,
     dragHandleClassName,
-    enableResizing = false,
+    enableResizing = true,
     header_title,
     height = 'fit-content',
     is_visible,
@@ -54,7 +54,7 @@ export default function Draggable({
                 top: yaxis,
             }}
             dragHandleClassName={dragHandleClassName}
-            enableResizing={enableResizing}
+            enableResizing={{ right: enableResizing, bottom: enableResizing, bottomRight: enableResizing }}
             minHeight={height}
             minWidth={minWidth}
             onDrag={(e, data) => {

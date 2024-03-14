@@ -27,19 +27,19 @@ describe('<AccumulatorCardBody />', () => {
         getContractById: jest.fn(),
         is_sold: true,
         setCurrentFocus: jest.fn(),
-        status: 'profit',
         currency: 'USD',
         removeToast: jest.fn(),
+        totalProfit: 111,
     };
     it('should display all contract card items, label, and values', () => {
         render(<AccumulatorCardBody {...mock_props} />);
-        expect(screen.getByText('Initial stake:')).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().INITIAL_STAKE)).toBeInTheDocument();
         expect(screen.getByText('123.00')).toBeInTheDocument();
-        expect(screen.getByText('Current stake:')).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CURRENT_STAKE)).toBeInTheDocument();
         expect(screen.getByText('234.00')).toBeInTheDocument();
-        expect(screen.getByText('Total profit/loss:')).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
         expect(screen.getByText('111.00')).toBeInTheDocument();
-        expect(screen.getByText('Take profit:')).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().TAKE_PROFIT)).toBeInTheDocument();
         expect(screen.getByText('300.00')).toBeInTheDocument();
     });
 
@@ -47,7 +47,19 @@ describe('<AccumulatorCardBody />', () => {
         if (mock_props?.contract_update?.take_profit?.order_amount)
             mock_props.contract_update.take_profit.order_amount = null;
         render(<AccumulatorCardBody {...mock_props} />);
-        expect(screen.getByText('Take profit:')).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().TAKE_PROFIT)).toBeInTheDocument();
         expect(screen.getByText('-')).toBeInTheDocument();
+    });
+
+    it('should not render arrow indicator if the contract was sold (is_sold === true)', () => {
+        render(<AccumulatorCardBody {...mock_props} />);
+
+        expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
+    });
+
+    it('should render arrow indicator if the contract is not sold (is_sold === false)', () => {
+        render(<AccumulatorCardBody {...mock_props} is_sold={false} />);
+
+        expect(screen.getAllByTestId('dt_arrow_indicator')).not.toHaveLength(0);
     });
 });

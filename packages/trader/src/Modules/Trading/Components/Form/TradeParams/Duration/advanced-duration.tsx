@@ -25,7 +25,6 @@ type TAdvancedDuration = Pick<
     | 'onChangeUiStore'
     | 'server_time'
     | 'start_date'
-    | 'market_open_times'
 > & {
     changeDurationUnit: ({ target }: { target: { name: string; value: string } }) => void;
     expiry_list: {

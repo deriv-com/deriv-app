@@ -18,35 +18,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('CashierOnboardingAccountIdentifierMessage', () => {
-    test('should not show regulation for crypto accounts', () => {
-        const mock = mockStore({
-            client: { currency: 'BTC' },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-        render(<CashierOnboardingAccountIdentifierMessage />, { wrapper });
-
-        expect(screen.queryByText(/EU/)).not.toBeInTheDocument();
-        expect(screen.queryByText(/non-EU/)).not.toBeInTheDocument();
-    });
-
-    test('should not show regulation for low risk account', () => {
-        const mock = mockStore({
-            client: { currency: 'USD', is_low_risk: true },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-        render(<CashierOnboardingAccountIdentifierMessage />, { wrapper });
-
-        expect(screen.queryByText(/EU/)).not.toBeInTheDocument();
-        expect(screen.queryByText(/non-EU/)).not.toBeInTheDocument();
-    });
-
-    test('should show regulation for fiat currency', () => {
+    test('should show fiat currency in identfier message for active fiat account', () => {
         const mock = mockStore({
             client: { currency: 'USD' },
         });
@@ -56,6 +28,20 @@ describe('CashierOnboardingAccountIdentifierMessage', () => {
         );
         render(<CashierOnboardingAccountIdentifierMessage />, { wrapper });
 
-        expect(screen.queryByText(/non-EU/)).toBeInTheDocument();
+        expect(screen.queryByText('USD')).toBeInTheDocument();
+    });
+
+    test('should show crypto currency in identfier message for active crypto account', () => {
+        const mock = mockStore({
+            client: { currency: 'BTC' },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        render(<CashierOnboardingAccountIdentifierMessage />, { wrapper });
+
+        expect(screen.queryByText('USD')).not.toBeInTheDocument();
+        expect(screen.queryByText('BTC')).toBeInTheDocument();
     });
 });

@@ -1,0 +1,16 @@
+.p2p-v2-advertiser-name {
+    display: grid;
+    grid-gap: 1.6rem;
+    grid-template-columns: min-content auto max-content;
+
+    @include mobile {
+        grid-template-columns: min-content auto;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+}

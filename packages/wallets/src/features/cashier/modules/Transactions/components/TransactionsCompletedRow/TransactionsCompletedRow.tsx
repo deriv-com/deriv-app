@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
-import { PlatformDetails } from '../../../../constants';
 import { TransactionsCompletedRowAccountDetails } from './components/TransactionsCompletedRowAccountDetails';
 import { TransactionsCompletedRowTransferAccountDetails } from './components/TransactionsCompletedRowTransferAccountDetails';
 import './TransactionsCompletedRow.scss';
@@ -13,22 +12,21 @@ type TProps = {
 };
 
 const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
-    // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
-    const dxtradeToFrom = useMemo(() => {
-        if (
-            transaction?.action_type !== 'transfer' ||
-            !transaction.longcode ||
-            !transaction.longcode.includes(PlatformDetails.dxtrade.title)
-        )
-            return null;
+    // TODO: remove this once backend adds `to` and `from` for Deriv X and CTrader transfers
+    const dxtradeOrCtraderToFrom = useMemo(() => {
+        if (transaction?.action_type !== 'transfer' || !transaction.longcode) return null;
         const longcodeMessageTokens = transaction.longcode.split(' ');
-        const direction = longcodeMessageTokens[1];
-        const dxtradeLoginid = longcodeMessageTokens.find(token => token.startsWith('DX'));
-        return {
-            from: { loginid: wallet.loginid },
-            to: { loginid: wallet.loginid },
-            ...(direction && { [direction]: { loginid: dxtradeLoginid } }),
-        };
+        const direction = longcodeMessageTokens[4] === 'cTrader' ? 'to' : longcodeMessageTokens[1];
+        const dxtradeOrCtraderLoginid = longcodeMessageTokens.find(
+            token => token.startsWith('DX') || token.startsWith('CT')
+        );
+        return dxtradeOrCtraderLoginid
+            ? {
+                  from: { loginid: wallet.loginid },
+                  to: { loginid: wallet.loginid },
+                  ...(direction && { [direction]: { loginid: dxtradeOrCtraderLoginid } }),
+              }
+            : null;
     }, [transaction?.action_type, transaction.longcode, wallet.loginid]);
 
     if (!transaction.action_type || !transaction.amount) return null;
@@ -54,11 +52,13 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
             ) : (
                 <TransactionsCompletedRowTransferAccountDetails
                     accounts={accounts}
-                    direction={(transaction.from ?? dxtradeToFrom?.from)?.loginid === wallet?.loginid ? 'to' : 'from'}
+                    direction={
+                        (transaction.from ?? dxtradeOrCtraderToFrom?.from)?.loginid === wallet?.loginid ? 'to' : 'from'
+                    }
                     loginid={
                         [
-                            transaction.from?.loginid ?? dxtradeToFrom?.from.loginid,
-                            transaction.to?.loginid ?? dxtradeToFrom?.to.loginid,
+                            transaction.from?.loginid ?? dxtradeOrCtraderToFrom?.from.loginid,
+                            transaction.to?.loginid ?? dxtradeOrCtraderToFrom?.to.loginid,
                         ].find(loginid => loginid !== wallet?.loginid) ?? ''
                     }
                 />

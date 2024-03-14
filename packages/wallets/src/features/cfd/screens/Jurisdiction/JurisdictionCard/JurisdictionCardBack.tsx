@@ -1,8 +1,9 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { WalletText } from '../../../../../components/Base/WalletText';
 import BackArrowIcon from '../../../../../public/images/ic-back-arrow.svg';
-import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
+import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
+import NameAndAddressIcon from '../../../../../public/images/ic-name-and-address.svg';
 import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import VerificationFailedStatusIcon from '../../../../../public/images/ic-verification-failed-status.svg';
@@ -16,8 +17,9 @@ import {
 import './JurisdictionCardBack.scss';
 
 const verificationIconsMapper: Record<string, JSX.Element> = {
-    documentNumber: <IdCardIcon />,
-    nameAndAddress: <DocumentsIcon />,
+    documentNumber: <DocumentIcon />,
+    identityDocument: <IdCardIcon />,
+    nameAndAddress: <NameAndAddressIcon />,
     notApplicable: <NotApplicableIcon />,
     selfie: <SelfieIcon />,
 };

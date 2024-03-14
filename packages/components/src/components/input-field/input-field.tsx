@@ -21,7 +21,7 @@ type TInputField = {
     classNamePrefix?: string;
     classNameWrapper?: string; // CSS class for the component wrapper
     currency?: string;
-    current_focus: string | null;
+    current_focus?: string | null;
     data_testid?: string;
     data_tip?: string;
     data_value?: string;

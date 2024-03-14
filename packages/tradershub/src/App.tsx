@@ -1,17 +1,23 @@
-import React, { FC } from 'react';
-import { APIProvider } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import React from 'react';
+import { CFDProvider, ModalProvider, RealAccountCreationProvider, UIProvider } from '@/providers';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import AppContent from './AppContent';
 import './index.scss';
 
-const App: FC = () => (
-    <APIProvider standalone>
-        <Provider.ModalProvider>
-            <Provider.CFDProvider>
-                <AppContent />
-            </Provider.CFDProvider>
-        </Provider.ModalProvider>
-    </APIProvider>
+const App = () => (
+    <UIProvider>
+        <APIProvider standalone>
+            <AuthProvider>
+                <CFDProvider>
+                    <ModalProvider>
+                        <RealAccountCreationProvider>
+                            <AppContent />
+                        </RealAccountCreationProvider>
+                    </ModalProvider>
+                </CFDProvider>
+            </AuthProvider>
+        </APIProvider>
+    </UIProvider>
 );
 
 export default App;

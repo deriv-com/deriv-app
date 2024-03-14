@@ -11,7 +11,7 @@ jobs:
     runs-on: Runner_8cores_Deriv-app
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup Node
         uses: './.github/actions/setup_node'
       - name: Install dependencies
@@ -21,4 +21,4 @@ jobs:
       - name: Test
         run: JEST_MAX_WORKERS=95% npm run test:jest -- --collectCoverage
       - name: Coveralls
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949

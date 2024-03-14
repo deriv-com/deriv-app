@@ -131,15 +131,9 @@
         }
     }
 
-    &-hintbox {
-        margin: -0.5rem 0 2.4rem;
+    &__inline-message {
+        margin-bottom: 2.4rem;
         padding: 0 2.4rem;
-
-        .dc-hint-box {
-            &__icon {
-                align-self: flex-start;
-            }
-        }
     }
 
     &-icon {

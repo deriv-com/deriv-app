@@ -42,14 +42,10 @@
         border-color: transparent;
         padding: 0 0.2rem;
         color: inherit;
+
         @include mobile {
             position: relative;
             right: 9rem;
-        }
-
-        &--symbol {
-            font-size: 1.4rem;
-            line-height: 1.5;
         }
         &:before {
             @include typeface(--paragraph-center-normal-black);

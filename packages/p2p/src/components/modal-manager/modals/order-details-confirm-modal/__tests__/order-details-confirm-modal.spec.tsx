@@ -68,6 +68,9 @@ describe('<OrderDetailsConfirmModal/>', () => {
         expect(screen.getByText('Confirm')).toBeInTheDocument();
         expect(screen.getByText('Go Back')).toBeInTheDocument();
         expect(screen.getByText('We accept JPG, PDF, or PNG (up to 5MB).')).toBeInTheDocument();
+        expect(
+            screen.getByText('Sending forged documents will result in an immediate and permanent ban.')
+        ).toBeInTheDocument();
     });
     it('should handle GoBack Click', () => {
         const { hideModal } = useModalManagerContext();
@@ -103,5 +106,19 @@ describe('<OrderDetailsConfirmModal/>', () => {
             expect(confirmOrderRequest).toHaveBeenCalledWith(order_information.id, true);
             expect(hideModal).toHaveBeenCalled();
         });
+    });
+
+    it('should call hideModal when clicking the close icon', () => {
+        const { hideModal } = useModalManagerContext();
+
+        render(<OrderDetailsConfirmModal />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
+
+        const close_icon = screen.getByTestId('dt_modal_close_icon');
+
+        userEvent.click(close_icon);
+
+        expect(hideModal).toHaveBeenCalled();
     });
 });

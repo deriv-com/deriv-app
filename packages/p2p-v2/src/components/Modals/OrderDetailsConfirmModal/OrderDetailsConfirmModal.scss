@@ -1,0 +1,13 @@
+.p2p-v2-order-details-confirm-modal {
+    height: auto;
+    width: 44rem;
+    border-radius: 8px;
+
+    @include mobile {
+        max-width: calc(100vw - 3.2rem);
+    }
+
+    .deriv-modal__close-icon {
+        margin-right: 0;
+    }
+}

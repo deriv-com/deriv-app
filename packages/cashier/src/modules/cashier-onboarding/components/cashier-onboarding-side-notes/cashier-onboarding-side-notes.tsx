@@ -10,8 +10,8 @@ const CashierOnboardingSideNotes: React.FC = observer(() => {
 
     return (
         <>
-            {currency_config?.is_crypto && <CashierOnboardingSideNoteCrypto />}
-            {currency_config?.is_fiat && <CashierOnboardingSideNoteFiat />}
+            {currency_config.is_crypto && <CashierOnboardingSideNoteCrypto />}
+            {currency_config.is_fiat && <CashierOnboardingSideNoteFiat />}
             <SideNotePaymentMethodsLearnMore />
         </>
     );

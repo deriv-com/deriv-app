@@ -129,15 +129,16 @@ const TradersHub = observer(() => {
 
     return (
         <React.Fragment>
-            <Div100vhContainer
-                className={classNames('traders-hub--mobile', {
-                    'traders-hub--mobile--eu-user': is_eu_user,
-                })}
-                height_offset='50px'
-                is_disabled={isDesktop()}
-            >
+            <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
                 {can_show_notify && <Notifications />}
-                <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                <div
+                    id='traders-hub'
+                    className={classNames('traders-hub', {
+                        'traders-hub--eu-user': is_eu_user && is_mt5_allowed,
+                        'traders-hub--eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
+                    })}
+                    ref={traders_hub_ref}
+                >
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
                     <MobileWrapper>
@@ -176,6 +177,7 @@ const TradersHub = observer(() => {
                             components={[<strong key={0} />]}
                         />
                     </Text>
+                    <div className='disclaimer__bottom-plug' />
                 </div>
             )}
         </React.Fragment>

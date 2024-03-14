@@ -68,6 +68,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 {({ field }: FieldProps<string>) => (
                     <WalletTextField
                         {...field}
+                        data-testid='dt_withdrawal_crypto_amount_input'
                         errorMessage={errors.cryptoAmount}
                         isInvalid={Boolean(errors.cryptoAmount)}
                         label={`Amount (${activeWallet?.currency})`}
@@ -81,6 +82,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 className={classNames('wallets-withdrawal-crypto-amount-converter__arrow', {
                     'wallets-withdrawal-crypto-amount-converter__arrow--rtl': !isCryptoInputActive,
                 })}
+                data-testid='dt_withdrawal_crypto_amount_converter_arrow'
             >
                 <ArrowBold />
             </div>
@@ -88,6 +90,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 {({ field }: FieldProps<string>) => (
                     <WalletTextField
                         {...field}
+                        data-testid='dt_withdrawal_fiat_amount_input'
                         errorMessage={errors.fiatAmount}
                         isInvalid={Boolean(errors.fiatAmount)}
                         label='Amount (USD)'

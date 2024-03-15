@@ -220,7 +220,7 @@ const TradersHubHeader = observer(() => {
                 </React.Fragment>
             )}
             {is_set_currency_modal_visible && <SetAccountCurrencyModal />}
-            {modal_data.active_modal && (
+            {modal_data.active_modal === 'currency_selection' && (
                 <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
             )}
         </header>

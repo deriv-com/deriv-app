@@ -6,6 +6,7 @@ import { useCFDContext } from '@/providers';
 import { MarketType, QueryStatus } from '@cfd/constants';
 import { CreatePassword, EnterPassword } from '@cfd/screens';
 import { useAccountStatus } from '@deriv/api-v2';
+import MT5ChangePassword from './MT5ChangePassword';
 import MT5SuccessModal from './MT5SuccessModal';
 
 type TMT5PasswordInputProps = {
@@ -31,6 +32,10 @@ const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => 
         tradingPlatformPasswordChangeLoading,
     } = useMT5AccountHandler();
 
+    const doesNotMeetPasswordPolicy =
+        isCreateMT5AccountError?.error?.code === 'InvalidTradingPlatformPasswordFormat' ||
+        isCreateMT5AccountError?.error?.code === 'IncorrectMT5PasswordFormat';
+
     if (!platform || (status === QueryStatus.ERROR && isCreateMT5AccountError?.error?.code !== 'PasswordError')) {
         return (
             <ActionScreen
@@ -38,6 +43,10 @@ const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => 
                 title={isCreateMT5AccountError?.error?.code}
             />
         );
+    }
+
+    if (doesNotMeetPasswordPolicy) {
+        return <MT5ChangePassword />;
     }
 
     if (isCreateMT5AccountSuccess) return <MT5SuccessModal />;
@@ -66,7 +75,7 @@ const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => 
                 openModal('SentEmailContentModal');
             }}
             password={password}
-            passwordError={isCreateMT5AccountError?.error?.code === 'PasswordError'}
+            passwordError={!!isCreateMT5AccountError?.error?.code}
             platform={platform}
         />
     );

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -22,14 +21,12 @@ const AdErrorTooltipModal = ({
     remaining_amount,
     advert_type,
 }: TAdErrorTooltipModal) => {
-    const { general_store } = useStores();
+    const { my_ads_store, general_store } = useStores();
     const {
         ui: { is_mobile },
     } = useStore();
     const { hideModal, is_modal_open } = useModalManagerContext();
-    const { advertiser_buy_limit, advertiser_sell_limit } = general_store;
-
-    const { p2p_settings } = useP2PSettings();
+    const { daily_buy_limit, daily_sell_limit } = general_store.advertiser_info;
 
     const getAdErrorMessage = (error_code: string) => {
         switch (error_code) {
@@ -40,7 +37,7 @@ const AdErrorTooltipModal = ({
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than {{maximum_order_amount}} {{currency}}.'
                         values={{
-                            maximum_order_amount: p2p_settings?.maximum_order_amount,
+                            maximum_order_amount: my_ads_store.maximum_order_amount,
                             currency: account_currency,
                         }}
                     />
@@ -74,7 +71,8 @@ const AdErrorTooltipModal = ({
                     />
                 );
             case api_error_codes.AD_EXCEEDS_DAILY_LIMIT: {
-                const remaining_limit = advert_type === buy_sell.BUY ? advertiser_buy_limit : advertiser_sell_limit;
+                const remaining_limit =
+                    advert_type === buy_sell.BUY ? localize(daily_buy_limit) : localize(daily_sell_limit);
                 return (
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than your remaining daily limit ({{remaining_limit}} {{currency}}).'

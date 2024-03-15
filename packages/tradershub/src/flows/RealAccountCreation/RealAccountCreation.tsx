@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import ReactModal from 'react-modal';
 import { DesktopProgressBar, MobileProgressBar, TSteps } from '@/components';
 import { CUSTOM_STYLES } from '@/helpers';
+import { useQueryParams } from '@/hooks';
 import { AccountOpeningSuccessModal, ExitConfirmationDialog } from '@/modals';
 import { useRealAccountCreationContext } from '@/providers';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
@@ -20,13 +21,14 @@ const FORM_PROGRESS_STEPS: TSteps = ['Account currency', 'Personal details', 'Ad
  */
 const RealAccountCreation = () => {
     const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
-    const { currentStep, isWizardOpen } = useRealAccountCreationContext();
+    const { currentStep } = useRealAccountCreationContext();
+    const { isModalOpen } = useQueryParams();
 
     return (
         <Fragment>
             <ReactModal
                 ariaHideApp={false}
-                isOpen={isWizardOpen}
+                isOpen={isModalOpen('RealAccountCreation')}
                 onRequestClose={() => setIsConfirmationDialogOpen(true)}
                 shouldCloseOnOverlayClick={false}
                 style={CUSTOM_STYLES}

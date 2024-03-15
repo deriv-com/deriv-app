@@ -80,9 +80,3 @@ export const selectedCountry: Exclude<
     has_visual_sample: 0,
     is_country_supported: 1,
 };
-
-export const initialValues = {
-    document_type: '',
-    document_number: '',
-    document_additional: '',
-};

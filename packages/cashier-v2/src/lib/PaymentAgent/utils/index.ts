@@ -1,3 +1,3 @@
 export * from './getNormalizedIconPaymentMethod';
-export * from './getNormalizedPaymentMethod';
+export * from './getPAListWithNormalizedPaymentMethods';
 export * from './getSupportedPaymentMethods';

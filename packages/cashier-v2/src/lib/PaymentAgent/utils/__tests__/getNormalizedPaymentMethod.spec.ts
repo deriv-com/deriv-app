@@ -1,6 +1,6 @@
-import { getNormalizedPaymentMethod } from '../getNormalizedPaymentMethod';
+import { getNormalizedPaymentMethod, normalizePaymentMethods } from '../getPAListWithNormalizedPaymentMethods';
 
-describe('should normalize payment methods', () => {
+describe('getNormalizedPaymentMethod', () => {
     it('should normalize "ABSA Cash Send" to proper payment methods', () => {
         const result = getNormalizedPaymentMethod('ABSA Cash Send');
 
@@ -23,5 +23,34 @@ describe('should normalize payment methods', () => {
         const result = getNormalizedPaymentMethod('mocked payment method');
 
         expect(result).toEqual(['mocked payment method']);
+    });
+});
+
+describe('normalizePaymentMethods', () => {
+    const paymentMethods = [
+        { payment_method: 'Direct deposit FNB and ABSA' },
+        { payment_method: 'GPay' },
+        { payment_method: 'Mastercard' },
+        { payment_method: 'Visa' },
+        { payment_method: 'M-Pesa Tigo-Pesa T-Pesa' },
+        { payment_method: 'Mpesa' },
+    ];
+
+    it('should normalize payment methods into array without duplications', () => {
+        const result = normalizePaymentMethods(paymentMethods);
+
+        expect(result.length).toBe(8);
+        expect(result).toEqual(
+            expect.arrayContaining([
+                { payment_method: 'ABSA Bank' },
+                { payment_method: 'Bank transfer' },
+                { payment_method: 'First National Bank (FNB)' },
+                { payment_method: 'Google Pay' },
+                { payment_method: 'Card' },
+                { payment_method: 'M-PESA' },
+                { payment_method: 'Tigo Pesa' },
+                { payment_method: 'T-pesa' },
+            ])
+        );
     });
 });

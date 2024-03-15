@@ -147,6 +147,7 @@ module.exports = function (env) {
                 '@babel/polyfill': '@babel/polyfill',
                 classnames: 'classnames',
                 '@deriv/components': '@deriv/components',
+                '@deriv/indicators': '@deriv/indicators',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/translations': '@deriv/translations',
                 formik: 'formik',

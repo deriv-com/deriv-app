@@ -1,7 +1,7 @@
 import React from 'react';
-import { setColors , api_base } from '@deriv/bot-skeleton';
-import ServerTime from '@deriv/bot-trade-engine/api/server_time';
-import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
+import { setColors, api_base } from '@deriv/bot-skeleton';
+import ServerTime from '@vinuderiv/bot-trade-engine/api/server_time';
+import ApiHelpers from '@vinuderiv/bot-trade-engine/api/api-helpers';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import TransactionDetailsModal from 'Components/transaction-details';

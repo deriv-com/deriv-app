@@ -1,9 +1,9 @@
 import { save_types } from '../constants';
 import { config } from '../constants/config';
-import { api_base } from '@deriv/bot-trade-engine/api/api-base';
-import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
-import Interpreter from '@deriv/bot-trade-engine/tradeEngine/utils/interpreter';
-import { compareXml, observer as globalObserver } from '../utils';
+import { api_base } from '@vinuderiv/bot-trade-engine/api/api-base';
+import ApiHelpers from '@vinuderiv/bot-trade-engine/api/api-helpers';
+import Interpreter from '@vinuderiv/bot-trade-engine/tradeEngine/utils/interpreter';
+import { compareXml, observer as globalObserver } from '@vinuderiv/bot-trade-engine/tradeEngine/utils/observer';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 
 import main_xml from './xml/main.xml';
@@ -26,7 +26,6 @@ class DBot {
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
         const recent_files = await getSavedWorkspaces();
-
         api_base.init();
         this.interpreter = Interpreter();
         const that = this;
@@ -226,7 +225,6 @@ class DBot {
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
-        console.log(api_base.is_stopping, 'api_base.is_stopping')
         if (api_base.is_stopping) return;
 
         try {

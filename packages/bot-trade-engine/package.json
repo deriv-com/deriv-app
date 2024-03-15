@@ -2,9 +2,13 @@
 "name": "@deriv/bot-trade-engine",
 "private": true,
 "version": "1.0.0",
+"main": "dist/js",
 "dependencies": {
     "@deriv/indicators": "^1.0.0"
 },
 "devDependencies": {
+},
+"scripts": {
+    "build": "f () { webpack --progress --env base=$1 ;}; f"
 }
 }

@@ -4,6 +4,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
+import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { mock_ws } from 'Utils/mock';
 import DashboardStore from 'Stores/dashboard-store';
 import LoadModalStore from 'Stores/load-modal-store';
@@ -82,6 +83,6 @@ describe('LocalFooter', () => {
         expect(mock_DBot_store?.load_modal.loadFileFromLocal).toHaveBeenCalled();
         expect(mock_DBot_store?.load_modal.toggleLoadModal).toHaveBeenCalled();
         expect(mock_DBot_store?.dashboard.setPreviewOnPopup).toHaveBeenCalledWith(false);
-        expect(mock_DBot_store?.dashboard.setOpenSettings).toHaveBeenCalledWith('import');
+        expect(mock_DBot_store?.dashboard.setOpenSettings).toHaveBeenCalledWith(NOTIFICATION_TYPE.BOT_IMPORT);
     });
 });

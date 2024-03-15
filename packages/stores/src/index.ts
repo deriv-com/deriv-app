@@ -5,5 +5,3 @@ export { default as StoreProvider } from './storeProvider';
 export { default as useStore } from './useStore';
 export { default as ExchangeRatesContext } from './stores/ExchangeRatesContext';
 export { default as ExchangeRatesProvider } from './providers/ExchangeRatesProvider';
-export { default as P2PSettingsContext } from './stores/P2PSettingsContext';
-export { default as P2PSettingsProvider } from './providers/P2PSettingsProvider';

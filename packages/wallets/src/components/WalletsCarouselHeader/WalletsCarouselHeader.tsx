@@ -41,7 +41,6 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
             <IconButton
                 color='transparent'
                 data-testid='dt_wallets_carousel_header_button'
-                disabled={hidden}
                 icon={<IcCashierTransfer />}
                 iconSize='lg'
                 onClick={() => {

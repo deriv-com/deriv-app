@@ -45,7 +45,6 @@ type TPositionsDrawerCardProps = {
     should_show_transition?: boolean;
     should_show_cancellation_warning: boolean;
     toggleCancellationWarning: () => void;
-    toggleUnsupportedContractModal: (value: boolean) => void;
 };
 
 const PositionsDrawerCard = ({
@@ -73,7 +72,6 @@ const PositionsDrawerCard = ({
     should_show_transition,
     should_show_cancellation_warning,
     toggleCancellationWarning,
-    toggleUnsupportedContractModal,
 }: TPositionsDrawerCardProps) => {
     const is_accumulator = isAccumulatorContract(contract_info?.contract_type);
     const is_multiplier = isMultiplierContract(contract_info?.contract_type || '');
@@ -87,10 +85,6 @@ const PositionsDrawerCard = ({
         'dc-contract-card--green': Number(profit_loss) > 0 && !result,
         'dc-contract-card--red': Number(profit_loss) < 0 && !result,
     });
-
-    const is_unsupported =
-        !hasContractStarted(contract_info) ||
-        !!getUnsupportedContracts()[contract_info?.contract_type as keyof ReturnType<typeof getUnsupportedContracts>];
 
     const loader_el = (
         <div className='dc-contract-card__content-loader'>
@@ -161,13 +155,7 @@ const PositionsDrawerCard = ({
         </React.Fragment>
     );
 
-    const unsupported_contract_card = (
-        <div className={contract_card_classname} onClick={() => toggleUnsupportedContractModal(true)}>
-            {contract_info?.underlying ? contract_el : loader_el}
-        </div>
-    );
-
-    const supported_contract_card = is_link_disabled ? (
+    const contract_card_body = is_link_disabled ? (
         <div className={contract_card_classname}>{contract_info?.underlying ? contract_el : loader_el}</div>
     ) : (
         <NavLink
@@ -187,12 +175,10 @@ const PositionsDrawerCard = ({
             getContractPath={getContractPath}
             is_multiplier={is_multiplier}
             is_positions
-            is_unsupported={is_unsupported}
             onClickRemove={onClickRemove}
             profit_loss={Number(profit_loss)}
             result={result ?? ''}
             should_show_result_overlay={true}
-            toggleUnsupportedContractModal={toggleUnsupportedContractModal}
         >
             <div
                 id={`dc_contract_card_${contract_info?.contract_id}`}
@@ -207,7 +193,7 @@ const PositionsDrawerCard = ({
                     if (typeof onMouseLeave === 'function') onMouseLeave();
                 }}
             >
-                {is_unsupported ? unsupported_contract_card : supported_contract_card}
+                {contract_card_body}
                 {card_footer}
             </div>
         </ContractCard>

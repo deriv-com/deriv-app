@@ -66,7 +66,6 @@ type TUiStore = Pick<
     | 'setCurrentFocus'
     | 'should_show_cancellation_warning'
     | 'toggleCancellationWarning'
-    | 'toggleUnsupportedContractModal'
 >;
 
 type TMobileRowRenderer = TUiStore & {
@@ -468,7 +467,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         setCurrentFocus,
         should_show_cancellation_warning,
         toggleCancellationWarning,
-        toggleUnsupportedContractModal,
     } = ui;
     const { server_time } = common;
     const { getContractById } = contract_trade;
@@ -483,7 +481,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         setCurrentFocus,
         should_show_cancellation_warning,
         toggleCancellationWarning,
-        toggleUnsupportedContractModal,
         getContractById,
     };
 

@@ -24,19 +24,18 @@ const DummyComponent = props => (
 
 #### Props
 
-| Name                           | Type       | Default | Description                                                                                     |
-| ------------------------------ | ---------- | ------- | ----------------------------------------------------------------------------------------------- |
-| contract_info                  | {object}   | null    | The information of the contract                                                                 |
-| getCardLabels                  | {function} | null    | Function returns the labels to show in the card                                                 |
-| getContractPath                | {function} | null    | Function returns the path to the contract information page                                      |
-| is_multiplier                  | {boolean}  | `false` | Defines the type of contract                                                                    |
-| is_positions                   | {boolean}  | `false` | Defines whether the contract is position or not                                                 |
-| onClickRemove                  | {function} | null    | Function triggers when user clicks on close button                                              |
-| result                         | {string}   | null    | The result of the contract. one of `'won'` or `'lost'`                                          |
-| profit_loss                    | {number}   | null    | Fallback for the result of the contract. Won if `profit_loss > 0` and lost if `profit_loss < 0` |
-| should_show_result_overlay     | {boolean}  | null    | Defines the visibility of the result overlay                                                    |
-| is_unsupported                 | {boolean}  | `false` | Defines whether the contract is supported or not                                                |
-| toggleUnsupportedContractModal | {function} | null    | Function triggers when user clicks on result overlay if the contract is unsupported             |
+| Name                       | Type       | Default | Description                                                                                     |
+| -------------------------- | ---------- | ------- | ----------------------------------------------------------------------------------------------- |
+| contract_info              | {object}   | null    | The information of the contract                                                                 |
+| getCardLabels              | {function} | null    | Function returns the labels to show in the card                                                 |
+| getContractPath            | {function} | null    | Function returns the path to the contract information page                                      |
+| is_multiplier              | {boolean}  | `false` | Defines the type of contract                                                                    |
+| is_positions               | {boolean}  | `false` | Defines whether the contract is position or not                                                 |
+| onClickRemove              | {function} | null    | Function triggers when user clicks on close button                                              |
+| result                     | {string}   | null    | The result of the contract. one of `'won'` or `'lost'`                                          |
+| profit_loss                | {number}   | null    | Fallback for the result of the contract. Won if `profit_loss > 0` and lost if `profit_loss < 0` |
+| should_show_result_overlay | {boolean}  | null    | Defines the visibility of the result overlay                                                    |
+| is_unsupported             | {boolean}  | `false` | Defines whether the contract is supported or not                                                |
 
 ---
 

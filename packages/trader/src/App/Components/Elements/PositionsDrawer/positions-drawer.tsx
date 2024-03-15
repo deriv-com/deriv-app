@@ -27,7 +27,6 @@ type TUiStore = Pick<
     | 'setCurrentFocus'
     | 'should_show_cancellation_warning'
     | 'toggleCancellationWarning'
-    | 'toggleUnsupportedContractModal'
 >;
 type TPortfolioStore = Pick<
     ReturnType<typeof useStore>['portfolio'],
@@ -116,7 +115,6 @@ const PositionsDrawer = observer(({ ...props }) => {
         setCurrentFocus,
         should_show_cancellation_warning,
         toggleCancellationWarning,
-        toggleUnsupportedContractModal,
     } = ui;
     const drawer_ref = React.useRef(null);
     const list_ref = React.useRef<HTMLDivElement>(null);
@@ -169,7 +167,6 @@ const PositionsDrawer = observer(({ ...props }) => {
                     setCurrentFocus={setCurrentFocus}
                     should_show_cancellation_warning={should_show_cancellation_warning}
                     toggleCancellationWarning={toggleCancellationWarning}
-                    toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                     {...args}
                     {...props}
                 />

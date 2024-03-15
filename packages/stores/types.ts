@@ -835,6 +835,7 @@ type TUiStore = {
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: () => void;
+    is_set_currency_modal_visible: boolean;
 };
 
 type TPortfolioStore = {

@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useQueryParams } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { useDynamicLeverageModalState } from '@cfd/components';
 import { Jurisdiction } from '@cfd/constants';
@@ -16,6 +17,7 @@ const JurisdictionScreen = ({ setIsCheckBoxChecked }: TJurisdictionScreenProps) 
     const { data: mt5AccountsList } = useMT5AccountsList();
     const { marketType, selectedJurisdiction } = cfdState;
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
+    const { isModalOpen } = useQueryParams();
     const jurisdictions = useMemo(
         () =>
             availableMT5Accounts
@@ -30,6 +32,12 @@ const JurisdictionScreen = ({ setIsCheckBoxChecked }: TJurisdictionScreenProps) 
                 .map(account => account.landing_company_short) ?? [],
         [marketType, mt5AccountsList]
     );
+
+    useEffect(() => {
+        if (!isModalOpen('JurisdictionModal')) {
+            setCfdState({ selectedJurisdiction: '' });
+        }
+    }, [isModalOpen, setCfdState, setIsCheckBoxChecked]);
 
     useEffect(() => {
         setIsCheckBoxChecked(false);

@@ -1,4 +1,4 @@
-import React, { ComponentProps, useEffect, useState } from 'react';
+import React, { ComponentProps, useState } from 'react';
 import { useQueryParams } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { MT5AccountType } from '@cfd/screens';
@@ -10,12 +10,6 @@ const MT5AccountTypeModal = () => {
     const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
     const { setCfdState } = useCFDContext();
     const { openModal, isModalOpen, closeModal } = useQueryParams();
-
-    useEffect(() => {
-        if (!isModalOpen('MT5AccountTypeModal')) {
-            setSelectedMarketType(undefined);
-        }
-    }, [isModalOpen, setSelectedMarketType]);
 
     return (
         <Modal ariaHideApp={false} isOpen={isModalOpen('MT5AccountTypeModal')} onRequestClose={closeModal}>

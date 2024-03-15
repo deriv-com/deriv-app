@@ -29,7 +29,7 @@ const AssetSummary = observer(() => {
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
-    const total_assets_real_currency = useTotalAssetCurrency() ?? 'USD';
+    const total_assets_real_currency = useTotalAssetCurrency();
     const { exchange_rates } = useExchangeRate();
 
     const is_real = selected_account_type === 'real';

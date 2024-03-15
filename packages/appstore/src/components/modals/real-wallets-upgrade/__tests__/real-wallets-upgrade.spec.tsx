@@ -2,6 +2,7 @@ import React from 'react';
 import RealWalletsUpgrade from '../real-wallets-upgrade';
 import { render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { WalletMigrationProvider } from '../../../../providers';
 
 describe('<RealWalletsUpgrade />', () => {
     const wrapper = (mock: ReturnType<typeof mockStore>) => {
@@ -18,7 +19,12 @@ describe('<RealWalletsUpgrade />', () => {
             },
         });
 
-        const { container } = render(<RealWalletsUpgrade />, { wrapper: wrapper(mock) });
+        const { container } = render(
+            <WalletMigrationProvider>
+                <RealWalletsUpgrade />
+            </WalletMigrationProvider>,
+            { wrapper: wrapper(mock) }
+        );
 
         expect(container).toBeInTheDocument();
     });
@@ -31,7 +37,12 @@ describe('<RealWalletsUpgrade />', () => {
             },
         });
 
-        const { container } = render(<RealWalletsUpgrade />, { wrapper: wrapper(mock) });
+        const { container } = render(
+            <WalletMigrationProvider>
+                <RealWalletsUpgrade />
+            </WalletMigrationProvider>,
+            { wrapper: wrapper(mock) }
+        );
 
         expect(container).toBeEmptyDOMElement();
     });

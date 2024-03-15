@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import debounce from 'lodash.debounce';
 import { NavLink } from 'react-router-dom';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted, clickAndKeyEventHandler } from '@deriv/shared';
 import { TPassThrough, TRow } from '../types/common.types';
 import { TColIndex, TDataListCell } from './data-list-cell';
 import { TSource } from '../data-table/table-row';
@@ -64,6 +64,10 @@ const DataListRow = ({
         }
     };
 
+    const toggleDetailsDecorator = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        clickAndKeyEventHandler(toggleDetails, e);
+    };
+
     React.useEffect(() => {
         if (isMounted() && is_dynamic_height) {
             measure?.();
@@ -97,7 +101,11 @@ const DataListRow = ({
                     })}
                 >
                     {action_desc ? (
-                        <div className={'data-list__item'} onClick={toggleDetails}>
+                        <div
+                            className={'data-list__item'}
+                            onClick={toggleDetailsDecorator}
+                            onKeyDown={toggleDetailsDecorator}
+                        >
                             {show_desc ? (
                                 <div className={'data-list__desc--wrapper'}>
                                     {action_desc.component && <div>{action_desc.component}</div>}

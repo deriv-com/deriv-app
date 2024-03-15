@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import debounce from 'lodash.debounce';
 import ThemedScrollbars from '../themed-scrollbars';
+import { clickAndKeyEventHandler } from '@deriv/shared';
 import { TTableRowItem } from '../types/common.types';
 
 type TTableRowIndex = {
@@ -30,6 +31,11 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
             debouncedHideDetails();
         }
     };
+
+    const toggleDetailsDecorator = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        clickAndKeyEventHandler(toggleDetails, e);
+    };
+
     React.useEffect(() => {
         if (is_dynamic_height) {
             measure?.();
@@ -44,7 +50,8 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
     if (is_dynamic_height) {
         return (
             <div
-                onClick={is_footer || !replace ? undefined : toggleDetails}
+                onClick={is_footer || !replace ? undefined : toggleDetailsDecorator}
+                onKeyDown={is_footer || !replace ? undefined : toggleDetailsDecorator}
                 className={classNames(className, { 'statement__row--detail': show_details })}
             >
                 {show_details && typeof replace === 'object' ? <div>{replace?.component}</div> : cells}
@@ -53,7 +60,8 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
     }
     return (
         <div
-            onClick={is_footer || !replace ? undefined : toggleDetails}
+            onClick={is_footer || !replace ? undefined : toggleDetailsDecorator}
+            onKeyDown={is_footer || !replace ? undefined : toggleDetailsDecorator}
             className={classNames(className, { 'statement__row--detail': show_details })}
         >
             {show_details && typeof replace === 'object' ? (

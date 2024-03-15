@@ -35,7 +35,6 @@ const DummyComponent = props => (
 | result                     | {string}   | null    | The result of the contract. one of `'won'` or `'lost'`                                          |
 | profit_loss                | {number}   | null    | Fallback for the result of the contract. Won if `profit_loss > 0` and lost if `profit_loss < 0` |
 | should_show_result_overlay | {boolean}  | null    | Defines the visibility of the result overlay                                                    |
-| is_unsupported             | {boolean}  | `false` | Defines whether the contract is supported or not                                                |
 
 ---
 

@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import ContractCard from '../contract-card';
 import {
     getContractPath,
-    getUnsupportedContracts,
     isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
@@ -14,7 +13,6 @@ import {
     getEndTime,
     isMobile,
     isVanillaContract,
-    hasContractStarted,
 } from '@deriv/shared';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TToastConfig } from '../types/contract.types';

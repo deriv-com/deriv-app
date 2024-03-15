@@ -48,7 +48,6 @@ describe('TradeModals', () => {
 
         render(mockTradeModals(mock_root_store));
 
-        expect(screen.getByText('Unsupported contract modal')).toBeInTheDocument();
         expect(screen.getByText('Market unavailable modal')).toBeInTheDocument();
         expect(screen.getByText('Services error modal')).toBeInTheDocument();
     });

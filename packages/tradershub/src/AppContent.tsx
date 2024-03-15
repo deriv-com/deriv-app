@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AppContainer, EUDisclaimerMessage } from '@/components';
 import { useRegulationFlags } from '@/hooks';
-import { Modals } from '@/modals';
 import { Router } from '@/routes';
 
 const AppContent = () => {
@@ -16,8 +15,7 @@ const AppContent = () => {
             <AppContainer className={compareAccountsRoute ? 'max-w-[800px] lg:pt-0 lg:pb-20' : ''}>
                 <Router />
             </AppContainer>
-            {isEU && !compareAccountsRoute && <EUDisclaimerMessage />}
-            <Modals />
+            {isEU && <EUDisclaimerMessage />}
         </Fragment>
     );
 };

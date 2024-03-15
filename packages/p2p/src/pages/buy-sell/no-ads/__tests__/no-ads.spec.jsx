@@ -1,14 +1,19 @@
 import React from 'react';
-import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
-import { APIProvider } from '@deriv/api';
-import { P2PSettingsProvider } from '@deriv/stores';
+import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import NoAds from '../no-ads';
 
 const mock_store_values = {
     buy_sell_store: {
         is_buy: true,
+        local_currencies: [
+            {
+                text: 'USD',
+                value: 'USD',
+                is_default: true,
+            },
+        ],
         selected_local_currency: 'USD',
         setCreateSellAdFromNoAds: jest.fn(),
     },
@@ -25,27 +30,6 @@ const mock_store_values = {
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store_values),
-}));
-
-const wrapper = ({ children }) => (
-    <APIProvider>
-        <P2PSettingsProvider>{children}</P2PSettingsProvider>
-    </APIProvider>
-);
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useP2PSettings: jest.fn().mockReturnValue({
-        p2p_settings: {
-            currency_list: [
-                {
-                    text: 'USD',
-                    value: 'USD',
-                    is_default: true,
-                },
-            ],
-        },
-    }),
 }));
 
 const mock_modal_manager = {
@@ -65,7 +49,7 @@ const mock_props = {
 
 describe('<NoAds/>', () => {
     it('should render the component', () => {
-        render(<NoAds />, { wrapper });
+        render(<NoAds />);
         expect(screen.getByText('No ads for this currency 😞')).toBeInTheDocument();
         expect(screen.getByText('Create ad')).toBeInTheDocument();
         expect(
@@ -73,7 +57,7 @@ describe('<NoAds/>', () => {
         ).toBeInTheDocument();
     });
     it('should display "You have no ads 😞" when is_ads_page is true', () => {
-        render(<NoAds {...mock_props} is_ads_page />, { wrapper });
+        render(<NoAds {...mock_props} is_ads_page />);
         expect(screen.getByText('You have no ads 😞')).toBeInTheDocument();
         expect(screen.getByText('Create new ad')).toBeInTheDocument();
     });
@@ -82,8 +66,7 @@ describe('<NoAds/>', () => {
         render(
             <Router history={history}>
                 <NoAds is_ads_page />
-            </Router>,
-            { wrapper }
+            </Router>
         );
         const create_ad_button = screen.getByRole('button', { name: 'Create new ad' });
         expect(create_ad_button).toBeInTheDocument();

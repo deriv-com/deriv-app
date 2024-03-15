@@ -14,7 +14,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password-validation';
+import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
@@ -151,7 +151,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     !password ||
                     createMT5AccountLoading ||
                     tradingPlatformPasswordChangeLoading ||
-                    !validPassword(password)
+                    !validPasswordMT5(password)
                 }
                 isFullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
@@ -176,7 +176,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const PasswordComponent = useMemo(() => {
         return isMT5PasswordNotSet ? (
             <CreatePassword
-                icon={<MT5PasswordIcon />}
+                Icon={<MT5PasswordIcon />}
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
@@ -217,7 +217,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 <MT5ResetPasswordModal
                     onClickSuccess={onSubmit}
                     sendEmailVerification={() => sendEmailVerification(platform)}
-                    setPassword={setPassword}
+                    setStorePassword={setPassword}
                     successButtonLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 />
             );

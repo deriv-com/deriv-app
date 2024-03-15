@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
@@ -7,7 +7,7 @@ import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 
 type TProps = {
-    icon: React.ReactNode;
+    Icon: ReactNode;
     isLoading?: boolean;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
@@ -16,7 +16,7 @@ type TProps = {
 };
 
 const CreatePassword: React.FC<TProps> = ({
-    icon,
+    Icon,
     isLoading,
     onPasswordChange,
     onPrimaryClick,
@@ -28,7 +28,7 @@ const CreatePassword: React.FC<TProps> = ({
 
     return (
         <div className='wallets-create-password'>
-            {icon}
+            {Icon}
             <div className='wallets-create-password__text'>
                 <WalletText align='center' lineHeight='xl' weight='bold'>
                     Create a {title} password

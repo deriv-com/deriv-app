@@ -27,7 +27,7 @@ type TFormInitialValues = {
 type TProps = {
     onClickSuccess: () => void;
     sendEmailVerification: () => void;
-    setPassword: Dispatch<SetStateAction<string>>;
+    setStorePassword: Dispatch<SetStateAction<string>>;
     successButtonLoading: boolean;
 };
 
@@ -40,7 +40,7 @@ const SuccessButton = ({ isFullWidth, isLoading, onClick }: ComponentProps<typeo
 const MT5ResetPasswordModal: React.FC<TProps> = ({
     onClickSuccess,
     sendEmailVerification,
-    setPassword,
+    setStorePassword,
     successButtonLoading,
 }) => {
     const { error, isLoading, isSuccess, mutateAsync: tradingPasswordChange } = useTradingPlatformPasswordChange();
@@ -48,14 +48,15 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
     const { platform, title } = PlatformDetails.mt5;
     const { isDesktop, isMobile } = useDevice();
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
-    const { show } = useModal();
+    const { hide, show } = useModal();
     const formikRef = useRef<FormikProps<TFormInitialValues> | null>(null);
 
     const handleSuccessButtonClick = () => {
         if (formikRef.current?.values?.newPassword) {
-            setPassword(formikRef.current?.values?.newPassword);
+            setStorePassword(formikRef.current?.values?.newPassword);
         }
         onClickSuccess();
+        hide();
     };
 
     const successButtonProps = {

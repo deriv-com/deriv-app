@@ -162,7 +162,7 @@ const DxtradeEnterPasswordModal = () => {
         if (!isSuccess && accountStatusSuccess) {
             return isDxtradePasswordNotSet ? (
                 <CreatePassword
-                    icon={<DxTradePasswordIcon />}
+                    Icon={<DxTradePasswordIcon />}
                     isLoading={isLoading}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}

@@ -1,5 +1,5 @@
 import React from 'react';
-import WhyWallets from '../why-wallets';
+import { WalletsUpgradeStepOneContent } from '../wallets-upgrade-step-one';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
@@ -8,17 +8,17 @@ let mock = mockStore({});
 const checkContainerWhyWalletsComponent = () => {
     const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
 
-    const { container } = render(<WhyWallets />, {
+    const { container } = render(<WalletsUpgradeStepOneContent />, {
         wrapper,
     });
     expect(container).toBeInTheDocument();
 };
 
-describe('WhyWallets', () => {
+describe('WalletsUpgradeStepOneContent', () => {
     beforeEach(() => {
         mock = mockStore({});
     });
-    it('should render WhyWallets Component', () => {
+    it('should render WalletsUpgradeStepOneContent Component', () => {
         checkContainerWhyWalletsComponent();
     });
 

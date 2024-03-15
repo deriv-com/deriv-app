@@ -1,7 +1,6 @@
 import React from 'react';
-import WhyWallets from '../why-wallets';
-import ReadyToEnableWallets from '../ready-to-enable-wallets';
-import { WhyWalletsFooter, ReadyToEnableWalletsFooter } from './wallets-upgrade-footer';
+import { WalletsUpgradeStepOneContent, WalletsUpgradeStepOneFooter } from '../wallets-upgrade-step-one';
+import { WalletsUpgradeStepTwoContent, WalletsUpgradeStepTwoFooter } from '../wallets-upgrade-step-two';
 import { TWalletSteps } from 'Types';
 
 const WalletSteps = ({
@@ -13,15 +12,15 @@ const WalletSteps = ({
     upgradeToWallets,
 }: TWalletSteps) => [
     {
-        name: 'why_wallets',
-        component: <WhyWallets />,
-        footer: <WhyWalletsFooter handleClose={handleClose} handleNext={handleNext} />,
+        name: 'wallets_upgrade_step_one',
+        content: <WalletsUpgradeStepOneContent />,
+        footer: <WalletsUpgradeStepOneFooter handleClose={handleClose} handleNext={handleNext} />,
     },
     {
-        name: 'ready_to_enable_wallets',
-        component: <ReadyToEnableWallets value={is_disabled} toggleCheckbox={toggleCheckbox} />,
+        name: 'wallets_upgrade_step_one',
+        content: <WalletsUpgradeStepTwoContent value={is_disabled} toggleCheckbox={toggleCheckbox} />,
         footer: (
-            <ReadyToEnableWalletsFooter
+            <WalletsUpgradeStepTwoFooter
                 handleBack={handleBack}
                 is_disabled={is_disabled}
                 upgradeToWallets={upgradeToWallets}

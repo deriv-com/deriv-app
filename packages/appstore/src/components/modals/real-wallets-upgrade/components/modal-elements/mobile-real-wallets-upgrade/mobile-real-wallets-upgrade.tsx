@@ -1,9 +1,8 @@
 import React from 'react';
-import { MobileDialog, SwipeableWrapper } from '@deriv/components';
+import { MobileDialog, ProgressBarTracker, SwipeableWrapper } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { TRealWalletsUpgradeSteps } from 'Types';
 import WalletSteps from '../wallet_steps';
-import WalletsUpgradeFooter from '../wallets-upgrade-footer/wallets-upgrade-footer';
 import './mobile-real-wallets-upgrade.scss';
 
 const MobileRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWalletsUpgradeSteps) => {
@@ -18,7 +17,18 @@ const MobileRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWallet
             visible={is_real_wallets_upgrade_on}
             onClose={wallet_upgrade_steps.handleClose}
             wrapper_classname='mobile-real-wallets-upgrade'
-            footer={<WalletsUpgradeFooter wallet_upgrade_steps={wallet_upgrade_steps} />}
+            footer={
+                <>
+                    <div className='mobile-real-wallets-upgrade__footer-progress-bar-container'>
+                        <ProgressBarTracker
+                            step={current_step + 1}
+                            steps_list={['why_wallets_step', 'enable_step']}
+                            is_transition
+                        />
+                    </div>
+                    {wallet_steps[current_step].footer}
+                </>
+            }
         >
             <div className='mobile-real-wallets-upgrade'>
                 <SwipeableWrapper
@@ -28,7 +38,7 @@ const MobileRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWallet
                         if (index < current_step) handleBack();
                     }}
                 >
-                    {wallet_steps.map(slide => slide.component)}
+                    {wallet_steps.map(slide => slide.content)}
                 </SwipeableWrapper>
             </div>
         </MobileDialog>

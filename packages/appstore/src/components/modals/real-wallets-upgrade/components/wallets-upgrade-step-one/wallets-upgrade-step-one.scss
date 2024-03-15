@@ -1,4 +1,4 @@
-.why-wallets {
+.wallets-upgrade-step-one {
     &__content {
         display: flex;
         flex-direction: column;
@@ -7,6 +7,20 @@
         @include mobile {
             margin: 2rem auto 8rem;
             align-self: flex-start;
+        }
+    }
+
+    &__footer {
+        position: sticky;
+        bottom: 0;
+        background-color: inherit;
+
+        @include mobile {
+            background: var(--fill-normal);
+
+            &-button {
+                width: 100%;
+            }
         }
     }
 

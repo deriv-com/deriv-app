@@ -1,11 +1,16 @@
 import React from 'react';
-import { Text, Icon } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
-import './why-wallets.scss';
+import './wallets-upgrade-step-one.scss';
 import WalletsImage from 'Assets/svgs/wallets';
 
-const WhyWallets = () => {
+type TWalletsUpgradeStepOneFooter = {
+    handleClose: VoidFunction;
+    handleNext: VoidFunction;
+};
+
+const WalletsUpgradeStepOneContent = () => {
     const { ui } = useStore();
     const { is_mobile } = ui;
 
@@ -16,8 +21,8 @@ const WhyWallets = () => {
     ];
 
     return (
-        <div className='why-wallets__content'>
-            <div className='why-wallets__image-container'>
+        <div className='wallets-upgrade-step-one__content'>
+            <div className='wallets-upgrade-step-one__image-container'>
                 <WalletsImage image={`why_wallets_${is_mobile ? 'mobile' : 'desktop'}`} />
             </div>
             <Text
@@ -26,7 +31,7 @@ const WhyWallets = () => {
                 weight='bold'
                 align='center'
                 size={is_mobile ? 'xsm' : 'l'}
-                className='why-wallets__title'
+                className='wallets-upgrade-step-one__title'
                 line_height={is_mobile ? 'm' : 'xs'}
             >
                 <Localize i18n_default_text='Why Wallets' />
@@ -36,26 +41,26 @@ const WhyWallets = () => {
                 color='prominent'
                 size={is_mobile ? 's' : 'm'}
                 align='center'
-                className='why-wallets__description'
+                className='wallets-upgrade-step-one__description'
                 line_height='m'
             >
                 <Localize i18n_default_text='Deposit, transfer, trade' />
             </Text>
-            <div className='why-wallets__bullet-list-container'>
+            <div className='wallets-upgrade-step-one__bullet-list-container'>
                 {bullets.map(bullet => (
-                    <div key={bullet} className='why-wallets__bullet'>
+                    <div key={bullet} className='wallets-upgrade-step-one__bullet'>
                         {bullet && (
-                            <div className='why-wallets__bullet-row'>
+                            <div className='wallets-upgrade-step-one__bullet-row'>
                                 <Icon
                                     icon='IcAppstoreTick'
-                                    className='why-wallets__bullet-icon'
+                                    className='wallets-upgrade-step-one__bullet-icon'
                                     size={is_mobile ? 12 : 16}
                                 />
                                 <Text
                                     as='p'
                                     color='prominent'
                                     align='center'
-                                    className='why-wallets__bullet-text'
+                                    className='wallets-upgrade-step-one__bullet-text'
                                     size={is_mobile ? 'xs' : 's'}
                                     line_height={is_mobile ? 's' : 'm'}
                                 >
@@ -70,4 +75,17 @@ const WhyWallets = () => {
     );
 };
 
-export default WhyWallets;
+const WalletsUpgradeStepOneFooter = ({ handleNext }: TWalletsUpgradeStepOneFooter) => {
+    const { ui } = useStore();
+    const { is_desktop } = ui;
+
+    return is_desktop ? (
+        <Modal.Footer className='wallets-upgrade-step-one__footer' has_separator>
+            <Button primary large className='wallets-upgrade-step-one__footer-button' onClick={handleNext}>
+                <Localize i18n_default_text='Next' />
+            </Button>
+        </Modal.Footer>
+    ) : null;
+};
+
+export { WalletsUpgradeStepOneContent, WalletsUpgradeStepOneFooter };

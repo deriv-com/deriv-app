@@ -1,4 +1,4 @@
-.ready-to-enable-wallets {
+.wallets-upgrade-step-two {
     &__content {
         max-width: 77.6rem;
         display: flex;
@@ -9,6 +9,20 @@
 
         @include mobile {
             margin: 2rem auto 8rem;
+        }
+    }
+
+    &__footer {
+        position: sticky;
+        bottom: 0;
+        background-color: inherit;
+
+        @include mobile {
+            background: var(--fill-normal);
+
+            &-button {
+                width: 100%;
+            }
         }
     }
 

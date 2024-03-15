@@ -30,6 +30,7 @@ export const ManualForm = ({
     const initialValues = useMemo(() => {
         const defaultValues = validationSchema.getDefault();
         const formValues = { ...defaultValues, ...formData };
+        // Removing Selfie data from formValues as it is not part of this section of manual form
         if (MANUAL_DOCUMENT_SELFIE in formValues) {
             delete formValues[MANUAL_DOCUMENT_SELFIE];
         }

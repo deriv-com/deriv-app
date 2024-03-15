@@ -9,7 +9,7 @@ describe('getFormattedOccupationList', () => {
         expect(getFormattedOccupationList(employment_status)).toHaveLength(occupation_list.length);
     });
 
-    it('should return all Occupations when Employment status is Self-Employed', () => {
+    it('should not return Unemployed as Occupations when Employment status is Self-Employed', () => {
         const employment_status = EMPLOYMENT_VALUES.SELF_EMPLOYED;
         const formatted_list = getFormattedOccupationList(employment_status);
 
@@ -18,7 +18,7 @@ describe('getFormattedOccupationList', () => {
         expect(formatted_list).not.toContain(occupation_list.find(item => item.value === EMPLOYMENT_VALUES.UNEMPLOYED));
     });
 
-    it('should return all Occupations when Employment status is Employed', () => {
+    it('should not return Unemployed as Occupations when Employment status is Employed', () => {
         const employment_status = EMPLOYMENT_VALUES.EMPLOYED;
         const formatted_list = getFormattedOccupationList(employment_status);
 

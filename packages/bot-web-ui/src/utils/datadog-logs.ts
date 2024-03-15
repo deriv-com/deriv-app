@@ -10,8 +10,8 @@ import { formatDate, formatTime } from '@deriv/shared';
  * **/
 const initDatadogLogs = (is_datadog_enabled: boolean) => {
     if (!is_datadog_enabled) {
-        if (window.DD_RUM) {
-            window.DD_RUM = undefined;
+        if (window.DD_LOGS) {
+            datadogLogs.setTrackingConsent('not-granted');
         }
         return;
     }

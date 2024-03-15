@@ -92,7 +92,7 @@
     },
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
-        "@datadog/browser-rum": "^4.37.0",
+        "@datadog/browser-rum": "^5.11.0",
         "@deriv-com/analytics": "1.4.13",
         "@deriv-com/utils": "latest",
         "@deriv/account": "^1.0.0",

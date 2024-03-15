@@ -3,13 +3,17 @@
 .wallets-card {
     &__carousel-content {
         background-color: transparent;
-        margin: 0 -0.8rem;
+        margin: 0 -0.4rem;
 
         &:first-child {
             margin-left: 0;
         }
 
         &-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
             padding: 1.6rem;
             width: 28.8rem;
             height: 17.6rem;

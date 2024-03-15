@@ -15,7 +15,7 @@ jest.mock('../../../assets/proof-of-identity/personal-details-example.svg', () =
 const renderComponent = () => {
     return render(
         <Formik initialValues={{}} onSubmit={jest.fn()} validationSchema={getNameDOBValidationSchema()}>
-            <PersonalDetailsFormWithExample />
+            <PersonalDetailsFormWithExample onConfirm={jest.fn()} />
         </Formik>
     );
 };

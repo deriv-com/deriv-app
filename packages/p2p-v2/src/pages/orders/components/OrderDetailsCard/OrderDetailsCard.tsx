@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Text } from '@deriv-com/ui';
+import { Divider } from '@deriv-com/ui';
 import { OrderDetailsCardHeader } from './OrderDetailsCardHeader';
 import { OrderDetailsInfo } from './OrderDetailsInfo';
 import './OrderDetailsCard.scss';
@@ -19,9 +19,7 @@ type TOrderDetailsCardProps = {
     orderId: string;
 };
 
-// TODO: pass id down to this component, and call useOrderInfo to get order details
 const OrderDetailsCard = ({ orderId }: TOrderDetailsCardProps) => {
-    // Uncomment this when integrating real confirm order flow
     // const { data: orderDetails } = p2p.order.useGet(orderId);
 
     const { displayPaymentAmount, id, localCurrency, orderExpiryMilliseconds, statusString } = mockOrderDetails;

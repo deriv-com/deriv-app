@@ -31,19 +31,6 @@ const mockPaymentMethodDetails = {
                 display_name: 'SWIFT or IFSC code',
                 value: '1',
             },
-            bank_name: {
-                display_name: 'Bank Name',
-                value: '1',
-            },
-            branch: {
-                display_name: 'Branch',
-                value: '1',
-            },
-            instructions: {
-                display_name: 'Instructions',
-                type: 'memo',
-                value: '1',
-            },
         },
         type: 'bank',
     },
@@ -68,8 +55,8 @@ const mockPaymentMethodDetails = {
 };
 
 const PaymentMethodAccordion = ({ paymentMethodDetails }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [shouldExpandAll, setShouldExpandAll] = useState(false);
+    const [expandedIds, setExpandedIds] = useState<string[]>([]);
+    const paymentMethodKeys = Object.keys(mockPaymentMethodDetails);
 
     return (
         <div className='flex flex-col p-[1.6rem] gap-2'>
@@ -77,52 +64,66 @@ const PaymentMethodAccordion = ({ paymentMethodDetails }) => {
                 <Text size='sm' weight='bold'>
                     Your payment details
                 </Text>
-                <Button
-                    className='h-0 p-0'
-                    onClick={() => setShouldExpandAll(prevState => !prevState)}
-                    textSize='xs'
-                    variant='ghost'
-                >
-                    Expand all
-                </Button>
+                {paymentMethodKeys && (
+                    <Button
+                        className='h-0 p-0'
+                        onClick={() => {
+                            if (expandedIds.length !== paymentMethodKeys.length) setExpandedIds(paymentMethodKeys);
+                            else setExpandedIds([]);
+                        }}
+                        textSize='xs'
+                        variant='ghost'
+                    >
+                        {expandedIds.length === paymentMethodKeys.length ? 'Collapse all' : 'Expand all'}
+                    </Button>
+                )}
             </div>
-            {/* <Text size='sm'>sadkj;asjdkljadashjkl</Text> */}
-            {Object.keys(mockPaymentMethodDetails).map(key => {
-                const paymentMethodType = mockPaymentMethodDetails[key].type;
-                const paymentMethodFields = mockPaymentMethodDetails[key].fields;
+            {!paymentMethodKeys ? (
+                <Text size='sm'>sadkj;asjdkljadashjkl</Text>
+            ) : (
+                <>
+                    {paymentMethodKeys.map(key => {
+                        const paymentMethodType = mockPaymentMethodDetails[key].type;
+                        const paymentMethodFields = mockPaymentMethodDetails[key].fields;
 
-                return (
-                    <div className='py-2' key={key}>
-                        <div
-                            className='flex items-center justify-between cursor-pointer'
-                            onClick={() => setIsExpanded(prevState => !prevState)}
-                        >
-                            <div className='flex items-center gap-6'>
-                                {paymentMethodType === 'ewallet' && <IcCashierEwallet />}
-                                {paymentMethodType === 'bank' && <IcCashierBankTransfer />}
-                                {paymentMethodType === 'other' && <IcCashierOther height={16} width={16} />}
-                                <Text size='sm'>{mockPaymentMethodDetails[key].display_name}</Text>
+                        return (
+                            <div className='py-2' key={key}>
+                                <div
+                                    className='flex items-center justify-between cursor-pointer'
+                                    onClick={() => {
+                                        if (expandedIds.includes(key))
+                                            setExpandedIds(expandedIds.filter(id => id !== key));
+                                        else setExpandedIds([...expandedIds, key]);
+                                    }}
+                                >
+                                    <div className='flex items-center gap-6'>
+                                        {paymentMethodType === 'ewallet' && <IcCashierEwallet />}
+                                        {paymentMethodType === 'bank' && <IcCashierBankTransfer />}
+                                        {paymentMethodType === 'other' && <IcCashierOther height={16} width={16} />}
+                                        <Text size='sm'>{mockPaymentMethodDetails[key].display_name}</Text>
+                                    </div>
+                                    <LabelPairedChevronRightSmRegularIcon />
+                                </div>
+                                {expandedIds.includes(key) && (
+                                    <div className='flex flex-col ml-[3.1rem]'>
+                                        {Object.keys(paymentMethodFields).map(fieldKey => {
+                                            const field = paymentMethodFields[fieldKey];
+                                            return (
+                                                <div className='flex flex-col py-4' key={fieldKey}>
+                                                    <Text color='less-prominent' size='xs'>
+                                                        {field.display_name}
+                                                    </Text>
+                                                    <Text size='xs'>{field.value}</Text>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                             </div>
-                            <LabelPairedChevronRightSmRegularIcon />
-                        </div>
-                        {(isExpanded || shouldExpandAll) && (
-                            <div className='flex flex-col ml-[3.1rem]'>
-                                {Object.keys(paymentMethodFields).map(fieldKey => {
-                                    const field = paymentMethodFields[fieldKey];
-                                    return (
-                                        <div className='flex flex-col py-4' key={fieldKey}>
-                                            <Text color='less-prominent' size='xs'>
-                                                {field.display_name}
-                                            </Text>
-                                            <Text size='xs'>{field.value}</Text>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
-                );
-            })}
+                        );
+                    })}
+                </>
+            )}
         </div>
     );
 };

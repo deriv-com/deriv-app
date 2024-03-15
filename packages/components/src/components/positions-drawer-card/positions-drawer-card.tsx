@@ -89,7 +89,7 @@ const PositionsDrawerCard = ({
     });
 
     const is_unsupported =
-        !hasContractStarted(contract_info as Parameters<typeof hasContractStarted>[0]) ||
+        !hasContractStarted(contract_info) ||
         !!getUnsupportedContracts()[contract_info?.contract_type as keyof ReturnType<typeof getUnsupportedContracts>];
 
     const loader_el = (

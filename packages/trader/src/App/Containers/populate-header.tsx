@@ -8,7 +8,6 @@ import {
     isTurbosContract,
     isVanillaContract,
     hasContractStarted,
-    TContractInfo,
     getSupportedContracts,
 } from '@deriv/shared';
 

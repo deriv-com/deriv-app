@@ -95,7 +95,6 @@ export const isForwardStarting = (shortcode: string, purchase_time?: number) => 
     return start_time && purchase_time && /f$/gi.test(start_time);
 };
 
-//is used in statement
 export const hasForwardContractStarted = (shortcode: string) => {
     const shortcode_info = extractInfoFromShortcode(shortcode);
     const start_time: string = shortcode_info?.start_time || '';

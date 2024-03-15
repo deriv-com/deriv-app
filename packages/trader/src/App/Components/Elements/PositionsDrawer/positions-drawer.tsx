@@ -11,7 +11,6 @@ import {
     isTurbosContract,
     isVanillaContract,
     hasContractStarted,
-    TContractInfo,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';

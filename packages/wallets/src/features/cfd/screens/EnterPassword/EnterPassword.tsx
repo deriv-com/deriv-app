@@ -36,22 +36,6 @@ const EnterPassword: React.FC<TProps> = ({
         platform === PlatformDetails.dxtrade.platform ? accountType : MarketTypeDetails[marketType].title;
     const passwordErrorHints = `Hint: You may have entered your Deriv password, which is different from your ${title} password.`;
 
-    const DesktopFooter = () => (
-        <div className='wallets-enter-password__buttons'>
-            <WalletButton onClick={onSecondaryClick} size='lg' variant='outlined'>
-                Forgot password?
-            </WalletButton>
-            <WalletButton
-                disabled={!password || isLoading || !validPassword(password)}
-                isLoading={isLoading}
-                onClick={onPrimaryClick}
-                size='lg'
-            >
-                Add account
-            </WalletButton>
-        </div>
-    );
-
     return (
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password__container'>
@@ -76,7 +60,21 @@ const EnterPassword: React.FC<TProps> = ({
                     {passwordError && <WalletText size='sm'>{passwordErrorHints}</WalletText>}
                 </div>
             </div>
-            {isDesktop && <DesktopFooter />}
+            {isDesktop && (
+                <div className='wallets-enter-password__buttons'>
+                    <WalletButton onClick={onSecondaryClick} size='lg' variant='outlined'>
+                        Forgot password?
+                    </WalletButton>
+                    <WalletButton
+                        disabled={!password || isLoading || !validPassword(password)}
+                        isLoading={isLoading}
+                        onClick={onPrimaryClick}
+                        size='lg'
+                    >
+                        Add account
+                    </WalletButton>
+                </div>
+            )}
         </div>
     );
 };

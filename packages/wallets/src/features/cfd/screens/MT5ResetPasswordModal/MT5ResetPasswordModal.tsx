@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { ComponentProps, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { useTradingPlatformPasswordChange } from '@deriv/api-v2';
 import {
@@ -31,6 +31,12 @@ type TProps = {
     successButtonLoading: boolean;
 };
 
+const SuccessButton = ({ isFullWidth, isLoading, onClick }: ComponentProps<typeof WalletButton>) => (
+    <WalletButton isFullWidth={isFullWidth} isLoading={isLoading} onClick={onClick} size='lg'>
+        Next
+    </WalletButton>
+);
+
 const MT5ResetPasswordModal: React.FC<TProps> = ({
     onClickSuccess,
     sendEmailVerification,
@@ -45,27 +51,23 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
     const { show } = useModal();
     const formikRef = useRef<FormikProps<TFormInitialValues> | null>(null);
 
-    const SuccessButton = () => (
-        <WalletButton
-            isFullWidth={isMobile}
-            isLoading={successButtonLoading}
-            onClick={() => {
-                // TODO: Perform testing to verify that the account is created successfully with the new password
-                if (formikRef.current?.values?.newPassword) {
-                    setPassword(formikRef.current?.values?.newPassword);
-                }
-                onClickSuccess();
-            }}
-            size='lg'
-        >
-            Next
-        </WalletButton>
-    );
+    const handleSuccessButtonClick = () => {
+        if (formikRef.current?.values?.newPassword) {
+            setPassword(formikRef.current?.values?.newPassword);
+        }
+        onClickSuccess();
+    };
+
+    const successButtonProps = {
+        isFullWidth: isMobile,
+        isLoading: successButtonLoading,
+        onClick: handleSuccessButtonClick,
+    };
 
     if (isSuccess) {
         show(
             <ModalStepWrapper
-                renderFooter={() => (isMobile ? <SuccessButton /> : null)}
+                renderFooter={() => (isMobile ? <SuccessButton {...successButtonProps} /> : null)}
                 shouldFixedFooter={isMobile}
                 shouldHideFooter={isDesktop}
                 shouldHideHeader={isDesktop}
@@ -75,7 +77,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                         description={`You have a new ${title} password to log in to your ${title} accounts on the web and mobile apps.`}
                         descriptionSize='sm'
                         icon={<MT5SuccessPasswordReset />}
-                        renderButtons={() => (isDesktop ? <SuccessButton /> : null)}
+                        renderButtons={() => (isDesktop ? <SuccessButton {...successButtonProps} /> : null)}
                         title='Success'
                     />
                 </div>
@@ -147,8 +149,8 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                         />
                                     </div>
                                     <ul className='wallets-mt5-reset__requirements'>
-                                        {passwordRequirements.map((requirement, index) => (
-                                            <li key={index}>
+                                        {passwordRequirements.map(requirement => (
+                                            <li key={requirement}>
                                                 <WalletText size='sm'>{requirement}</WalletText>
                                             </li>
                                         ))}

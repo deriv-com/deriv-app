@@ -320,14 +320,14 @@ export const OpenPositionsTable = ({
 };
 
 const getRowAction: TDataList['getRowAction'] = row_obj => {
-    const unsupported_contract_config = getUnsupportedContracts()[row_obj.type as TUnsupportedContractType];
-    let action = unsupported_contract_config
+    const unsupportedContractConfig = getUnsupportedContracts()[row_obj.type as TUnsupportedContractType];
+    let action = unsupportedContractConfig
         ? {
               component: (
                   <Localize
                       i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          trade_type_name: unsupported_contract_config?.name,
+                          trade_type_name: unsupportedContractConfig?.name,
                       }}
                   />
               ),

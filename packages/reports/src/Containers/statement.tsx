@@ -87,15 +87,15 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         const contract_type = extractInfoFromShortcode(row_obj.shortcode)?.category?.toUpperCase();
-        const unsupported_contract_config = getUnsupportedContracts()[contract_type as TUnsupportedContractType];
-        action = unsupported_contract_config
+        const unsupportedContractConfig = getUnsupportedContracts()[contract_type as TUnsupportedContractType];
+        action = unsupportedContractConfig
             ? {
                   message: '',
                   component: (
                       <Localize
                           i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                           values={{
-                              trade_type_name: unsupported_contract_config?.name,
+                              trade_type_name: unsupportedContractConfig?.name,
                           }}
                       />
                   ),

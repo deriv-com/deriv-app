@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import debounce from 'lodash.debounce';
 import { NavLink } from 'react-router-dom';
 import { useIsMounted } from '@deriv/shared';
 import { TPassThrough, TRow } from '../types/common.types';
@@ -48,11 +49,32 @@ const DataListRow = ({
     const [show_desc, setShowDesc] = React.useState(false);
     const isMounted = useIsMounted();
 
+    const debouncedHideDetails = React.useMemo(
+        () =>
+            debounce(() => {
+                setShowDesc(false);
+            }, 5000),
+        []
+    );
+
+    const toggleDetails = () => {
+        if (action_desc) {
+            setShowDesc(!show_desc);
+            debouncedHideDetails();
+        }
+    };
+
     React.useEffect(() => {
         if (isMounted() && is_dynamic_height) {
             measure?.();
         }
     }, [show_desc, is_dynamic_height, measure]);
+
+    React.useEffect(() => {
+        return debouncedHideDetails.cancel;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
             {destination_link ? (
@@ -75,7 +97,7 @@ const DataListRow = ({
                     })}
                 >
                     {action_desc ? (
-                        <div className={'data-list__item'} onClick={() => setShowDesc(!show_desc)}>
+                        <div className={'data-list__item'} onClick={toggleDetails}>
                             {show_desc ? (
                                 <div className={'data-list__desc--wrapper'}>
                                     {action_desc.component && <div>{action_desc.component}</div>}

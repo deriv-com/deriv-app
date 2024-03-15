@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import {
     DesktopWalletsList,
@@ -25,6 +25,8 @@ const WalletsListingRoute: React.FC = () => {
     const resetTradingPlatformActionParams = getActionFromUrl();
 
     const firstLoginid = walletAccounts?.[0]?.loginid;
+
+    const [initialised, setInitialised] = useState(false);
 
     const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = useMemo(
         () => ({
@@ -54,11 +56,13 @@ const WalletsListingRoute: React.FC = () => {
     }, [platformMapping, resetTradingPlatformActionParams, show]);
 
     useEffect(() => {
-        if (!activeWallet) {
+        if (!activeWallet && !initialised) {
             const activeLinkedAccount = walletAccounts?.find(wallet => wallet.is_linked_account_active);
             if (activeLinkedAccount) {
+                setInitialised(true);
                 switchWalletAccount(activeLinkedAccount.loginid);
             } else if (firstLoginid) {
+                setInitialised(true);
                 switchWalletAccount(firstLoginid);
             }
         }

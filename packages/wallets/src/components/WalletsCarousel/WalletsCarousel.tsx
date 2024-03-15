@@ -26,6 +26,7 @@ const WalletsCarousel: React.FC = () => {
 
     //this handle scroll function listens to the scroll as well as touchmove events to handle drag scrolling on mobile
     useEventListener('touchmove', handleScroll, containerRef);
+    useEventListener('touchend', handleScroll, containerRef);
     useEventListener('scroll', handleScroll, containerRef);
 
     useEffect(() => {

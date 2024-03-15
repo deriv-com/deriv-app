@@ -17,11 +17,11 @@ export const personalDetails = Yup.object().shape({
         .matches(/^[a-zA-Z\s\-.'']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.')
         .min(2, 'You should enter 2-50 characters.')
         .max(50, 'You should enter 2-50 characters.'),
-    phoneNumber: Yup.string()
-        .required('Phone number is required.')
-        .min(9, 'You should enter 9-35 numbers.')
-        .max(35, 'You should enter 9-35 numbers.')
-        .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, 'Please enter a valid phone number.'),
+    // phoneNumber: Yup.string()
+    //     .required('Phone number is required.')
+    //     .min(9, 'You should enter 9-35 numbers.')
+    //     .max(35, 'You should enter 9-35 numbers.')
+    //     .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, 'Please enter a valid phone number.'),
     placeOfBirth: Yup.string().required('Place of birth is required.'),
     taxIdentificationNumber: Yup.string(),
     taxResidence: Yup.string().when('taxIdentificationNumber', {

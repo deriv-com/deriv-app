@@ -13,6 +13,7 @@ import { RealAccountCreation } from '@/flows';
 import { AccountSelector } from './AccountSelector';
 import { AddOrManageAccount } from './AddOrManageAccount';
 import { DummyComponentModal } from './DummyComponentModal';
+import { InvalidInputModal } from './InvalidInputModal';
 import { RegulationModal } from './RegulationModal';
 
 /**
@@ -27,6 +28,7 @@ const Modals = () => {
             <AddOrManageAccount />
             <DummyComponentModal />
             <DxtradePasswordModal />
+            <InvalidInputModal />
             <JurisdictionModal />
             <RealAccountCreation />
             <TradeModal />

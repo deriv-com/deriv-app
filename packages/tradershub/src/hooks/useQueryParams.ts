@@ -9,6 +9,7 @@ type ModalId =
     | 'DummyComponentModal'
     | 'DxtradePasswordModal'
     | 'GetADerivAccountDialog'
+    | 'InvalidInputModal'
     | 'JurisdictionModal'
     | 'MT5AccountTypeModal'
     | 'MT5PasswordModal'
@@ -40,12 +41,12 @@ const useQueryParams = () => {
     const isModalOpen = useCallback((modalId: ModalId) => queryParams.get('modal') === modalId, [queryParams]);
 
     const openModal = useCallback(
-        (modalId: string) => {
+        (modalId: string, state: Record<string, unknown> = {}) => {
             queryParams.set('modal', modalId);
             history.push({
                 pathname: history.location.pathname,
                 search: queryParams.toString(),
-                state: { modal: modalId },
+                state: { modal: modalId, ...state },
             });
         },
         [queryParams, history]

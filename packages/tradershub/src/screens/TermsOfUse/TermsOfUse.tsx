@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
 import { ScrollToFieldError } from '@/helpers';
-import { useNewCRRealAccount } from '@/hooks';
+import { useNewCRRealAccount, useQueryParams } from '@/hooks';
 import { termsOfUse } from '@/utils';
 import { Divider, Text } from '@deriv-com/ui';
 import FatcaDeclaration from './TermsOfUseSections/FatcaDeclaration';
@@ -15,7 +15,8 @@ import PEPs from './TermsOfUseSections/PEPs';
  * @returns {React.ReactNode}
  */
 const TermsOfUse = () => {
-    const { mutate, isLoading } = useNewCRRealAccount();
+    const { mutate, isLoading, status, error } = useNewCRRealAccount();
+    const { openModal } = useQueryParams();
 
     const initialValues = {
         fatcaDeclaration: '',
@@ -28,6 +29,10 @@ const TermsOfUse = () => {
         mutate();
         actions.setSubmitting(false);
     };
+
+    if (status === 'error') {
+        openModal('InvalidInputModal', error as any);
+    }
 
     return (
         <WizardScreenWrapper heading='Terms of Use'>

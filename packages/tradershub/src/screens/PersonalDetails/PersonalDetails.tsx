@@ -42,7 +42,7 @@ const PersonalDetails = () => {
                 onSubmit={handleSubmit}
                 validateOnBlur
                 validateOnChange
-                validationSchema={personalDetails}
+                // validationSchema={personalDetails}
             >
                 {() => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>

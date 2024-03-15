@@ -4,6 +4,7 @@ import WalletsBannerUpgrading from './wallets-banner-upgrading';
 import WalletsBannerReady from './wallets-banner-ready';
 import { useWalletMigrationContext } from '../../providers/WalletMigrationProvider';
 import { observer, useStore } from '@deriv/stores';
+import './wallets-banner.scss';
 
 const WalletsBanner = observer(() => {
     const { is_eligible, is_failed, is_in_progress, is_migrated } = useWalletMigrationContext();

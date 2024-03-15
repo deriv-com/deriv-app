@@ -1,6 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useWS } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
 
 type TWalletMigrationContext = {
     state?: string;
@@ -33,8 +32,6 @@ export const useWalletMigrationContext = () => {
 
 const WalletMigrationProvider = ({ children }: TWalletMigrationProvider) => {
     const WS = useWS();
-    const { client } = useStore();
-    const { is_authorize } = client;
     const [state, setState] = useState<string | undefined>(undefined);
 
     const getState = useCallback(async () => {
@@ -42,13 +39,19 @@ const WalletMigrationProvider = ({ children }: TWalletMigrationProvider) => {
         if (response?.wallet_migration?.state) setState(response?.wallet_migration?.state);
     }, [WS]);
 
-    const startMigration = useCallback(() => WS?.send({ wallet_migration: 'start' }), [WS]);
+    const startMigration = useCallback(async () => {
+        await WS?.send({ wallet_migration: 'start' });
+        getState();
+    }, [WS, getState]);
 
-    const resetMigration = useCallback(() => WS?.send({ wallet_migration: 'reset' }), [WS]);
+    const resetMigration = useCallback(async () => {
+        await WS?.send({ wallet_migration: 'reset' });
+        getState();
+    }, [WS, getState]);
 
     useEffect(() => {
-        if (is_authorize) getState();
-    }, [WS, getState, is_authorize]);
+        getState();
+    }, [WS, getState]);
 
     // check the state every 2 seconds if migration started
     useEffect(() => {

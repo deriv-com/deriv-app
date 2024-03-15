@@ -41,7 +41,7 @@ const useQueryParams = () => {
     const isModalOpen = useCallback((modalId: ModalId) => queryParams.get('modal') === modalId, [queryParams]);
 
     const openModal = useCallback(
-        (modalId: string, state: Record<string, unknown> = {}) => {
+        (modalId: ModalId, state: Record<string, unknown> = {}) => {
             queryParams.set('modal', modalId);
             history.push({
                 pathname: history.location.pathname,

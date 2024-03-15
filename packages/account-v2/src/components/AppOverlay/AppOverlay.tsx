@@ -13,9 +13,7 @@ export const AppOverlay = ({ children, title }: TAppOverlayProps) => {
     const { pathname } = useLocation();
     const { isMobile } = useDevice();
 
-    const sectionTitle = useMemo(() => {
-        return routes.find(route => route.routePath === pathname)?.routeName;
-    }, [pathname]);
+    const sectionTitle = useMemo(() => routes.find(route => route.routePath === pathname)?.routeName, [pathname]);
 
     return (
         <div className='w-full h-full px-20 overflow-x-auto'>

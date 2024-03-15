@@ -3,6 +3,7 @@ import { Button, Text } from '@deriv-com/ui';
 import { isNavigationFromDerivGO } from '../../utils/platform';
 
 export const AccountClosureSteps = () => {
+    const shouldDisplayCancelButton = !isNavigationFromDerivGO();
     return (
         <div>
             <section className='flex flex-col gap-20'>
@@ -43,7 +44,7 @@ export const AccountClosureSteps = () => {
                 </Text>
             </section>
             <section className='mt-24 flex gap-x-16 justify-end'>
-                {!isNavigationFromDerivGO() && (
+                {shouldDisplayCancelButton && (
                     <Button color='black' rounded='sm' size='md' variant='outlined'>
                         Cancel
                     </Button>

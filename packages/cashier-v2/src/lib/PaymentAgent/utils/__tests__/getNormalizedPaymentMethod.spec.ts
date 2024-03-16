@@ -22,7 +22,7 @@ describe('getNormalizedPaymentMethod', () => {
     it('should return the same method that was provided', () => {
         const result = getNormalizedPaymentMethod('mocked payment method');
 
-        expect(result).toEqual(['mocked payment method']);
+        expect(result).toBe('mocked payment method');
     });
 });
 

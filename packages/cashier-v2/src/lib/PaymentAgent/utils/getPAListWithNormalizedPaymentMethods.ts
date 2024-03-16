@@ -28,5 +28,5 @@ export const getNormalizedPaymentMethod = (paymentMethod: string) => {
         return methods;
     }, [] as string[]);
 
-    return normalizedPaymentMethods.length === 0 ? [paymentMethod] : normalizedPaymentMethods;
+    return normalizedPaymentMethods.length === 0 ? paymentMethod : normalizedPaymentMethods;
 };

@@ -30,7 +30,7 @@ const defaultPaymentMethod = '0';
 
 const PaymentAgentProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: list, isLoading: isPaymentAgentListLoading } = usePaymentAgentList();
-    const allPaymentAgentList = useMemo(() => getPAListWithNormalizedPaymentMethods(list), [list]);
+    const allPaymentAgentList = useMemo(() => shuffleArray(getPAListWithNormalizedPaymentMethods(list)), [list]);
     const [isSearchLoading, setIsSearchLoading] = useState(false);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(defaultPaymentMethod);
     const [searchTerm, setSearchTerm] = useState('');
@@ -40,22 +40,19 @@ const PaymentAgentProvider: React.FC<React.PropsWithChildren> = ({ children }) =
     );
 
     const filteredByPaymentMethodPaymentAgentList = useMemo(() => {
-        const list =
-            defaultPaymentMethod === selectedPaymentMethod
-                ? allPaymentAgentList
-                : allPaymentAgentList?.filter(paymentAgent => {
-                      const paymentMethods = paymentAgent.supported_payment_methods;
-                      const paymentMethodIndex = paymentMethods
-                          .map(({ payment_method: paymentMethod }) => {
-                              if (!paymentMethod) return;
-                              return paymentMethod.toLowerCase().replace(' ', '');
-                          })
-                          .indexOf(selectedPaymentMethod.toLowerCase().replace(' ', ''));
+        return defaultPaymentMethod === selectedPaymentMethod
+            ? allPaymentAgentList
+            : allPaymentAgentList?.filter(paymentAgent => {
+                  const paymentMethods = paymentAgent.supported_payment_methods;
+                  const paymentMethodIndex = paymentMethods
+                      .map(({ payment_method: paymentMethod }) => {
+                          if (!paymentMethod) return;
+                          return paymentMethod.toLowerCase().replace(' ', '');
+                      })
+                      .indexOf(selectedPaymentMethod.toLowerCase().replace(' ', ''));
 
-                      if (paymentMethodIndex !== -1) return paymentAgent;
-                  });
-
-        return shuffleArray(list);
+                  if (paymentMethodIndex !== -1) return paymentAgent;
+              });
     }, [allPaymentAgentList, selectedPaymentMethod]);
 
     const searchedByTermPaymentAgentList = useMemo(() => {

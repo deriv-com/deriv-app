@@ -31,6 +31,11 @@ const useMT5AccountHandler = () => {
 
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
     const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;
+
+    const doesNotMeetPasswordPolicy =
+        isCreateMT5AccountError?.error?.code === 'InvalidTradingPlatformPasswordFormat' ||
+        isCreateMT5AccountError?.error?.code === 'IncorrectMT5PasswordFormat';
+
     const handleSubmit = (password: string) => {
         // in order to create account, we need to set a password through trading_platform_password_change endpoint first
         // then only mt5_create_account can be called, otherwise it will response an error for password required
@@ -78,6 +83,7 @@ const useMT5AccountHandler = () => {
 
     return {
         createMT5AccountLoading,
+        doesNotMeetPasswordPolicy,
         handleSubmit,
         isCreateMT5AccountError,
         isCreateMT5AccountSuccess,

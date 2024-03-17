@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
+import { validPassword } from '@/utils';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
-import { Button, PasswordInput, Text } from '@deriv-com/ui';
+import { Button, Modal, PasswordInput, Text } from '@deriv-com/ui';
 import { CFDPlatforms } from '../../constants';
 
 type TFormInitialValues = {
@@ -14,6 +15,7 @@ const initialValues: TFormInitialValues = { currentPassword: '', newPassword: ''
 const MT5ChangePassword = () => {
     const {
         // error: changeInvestorPasswordError,
+        isLoading: changeInvestorPasswordLoading,
         mutateAsync: changeInvestorPassword,
         // status: changeInvestorPasswordStatus,
     } = useTradingPlatformInvestorPasswordChange();
@@ -31,9 +33,9 @@ const MT5ChangePassword = () => {
         <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
             {({ handleChange, handleSubmit, values }) => (
                 <Form onSubmit={handleSubmit}>
-                    <div className='inline-flex flex-col items-center w-full gap-24 rounded-default bg-system-light-primary-background lg:w-[525px]'>
+                    <Modal.Body className='inline-flex flex-col items-center w-full gap-24 rounded-default bg-system-light-primary-background lg:w-[525px]'>
                         <div className='flex flex-col items-center justify-center text-center lg:gap-8'>
-                            <Text weight='bold'>Deriv MT5 latest password requirements</Text>
+                            {/* <Text weight='bold'>Deriv MT5 latest password requirements</Text> */}
                             <Text size='sm'>
                                 To enhance your MT5 account security we have upgraded our password policy. Please update
                                 your password accordingly.
@@ -43,7 +45,7 @@ const MT5ChangePassword = () => {
                             isFullWidth
                             label='current password'
                             name='currentPassword'
-                            onChange={handleChange}
+                            // onChange={handleChange}
                             value={values.currentPassword}
                         />
                         <PasswordInput
@@ -74,26 +76,33 @@ const MT5ChangePassword = () => {
                                 A number
                             </Text>
                         </ol>
-
-                        <div className='flex justify-end w-full gap-x-8'>
-                            <Button
-                                color='black'
-                                // disabled={!password || isLoading || !validPassword(password)}
-                                // isLoading={isLoading}
-                                // onClick={onPrimaryClick}
-                                variant='outlined'
-                            >
-                                Forgot password
-                            </Button>
-                            <Button
-                            // disabled={!password || isLoading || !validPassword(password)}
-                            // isLoading={isLoading}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            color='black'
+                            disabled={
+                                !values.newPassword ||
+                                changeInvestorPasswordLoading ||
+                                !validPassword(values.newPassword)
+                            }
+                            isLoading={changeInvestorPasswordLoading}
                             // onClick={onPrimaryClick}
-                            >
-                                Change my password
-                            </Button>
-                        </div>
-                    </div>
+                            variant='outlined'
+                        >
+                            Forgot password
+                        </Button>
+                        <Button
+                            disabled={
+                                !values.newPassword ||
+                                changeInvestorPasswordLoading ||
+                                !validPassword(values.newPassword)
+                            }
+                            isLoading={changeInvestorPasswordLoading}
+                            // onClick={onPrimaryClick}
+                        >
+                            Change my password
+                        </Button>
+                    </Modal.Footer>
                 </Form>
             )}
         </Formik>

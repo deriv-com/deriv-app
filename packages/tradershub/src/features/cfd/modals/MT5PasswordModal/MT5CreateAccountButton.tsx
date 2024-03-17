@@ -14,13 +14,7 @@ const MT5CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonPr
     const isDisabled = !password || isLoading || !validPassword(password);
 
     return (
-        <Button
-            disabled={isDisabled}
-            isFullWidth
-            isLoading={isLoading}
-            onClick={() => handleSubmit(password)}
-            size='lg'
-        >
+        <Button disabled={isDisabled} isLoading={isLoading} onClick={() => handleSubmit(password)}>
             {buttonText}
         </Button>
     );

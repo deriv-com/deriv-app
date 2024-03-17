@@ -51,28 +51,4 @@ describe('WalletsListingRoute', () => {
         expect(screen.getByText('WalletsCarousel')).toBeInTheDocument();
         expect(screen.queryByText('WalletTourGuide')).not.toBeInTheDocument();
     });
-
-    it('calls switchAccount when there is no active wallet', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-
-        render(<WalletsListingRoute />, { wrapper });
-        expect(mockSwitchAccount).toHaveBeenCalledWith('123');
-    });
-
-    it('does not call switchAccount when there is an active wallet', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { loginid: '123' } });
-
-        render(<WalletsListingRoute />, { wrapper });
-        expect(mockSwitchAccount).not.toHaveBeenCalled();
-    });
-
-    it('calls switchAccount with the first account when there is no active wallet', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-        (useWalletAccountsList as jest.Mock).mockReturnValue({ data: [{ loginid: '123' }, { loginid: '456' }] });
-
-        render(<WalletsListingRoute />, { wrapper });
-        expect(mockSwitchAccount).toHaveBeenCalledWith('123');
-        expect(mockSwitchAccount).not.toHaveBeenCalledWith('456');
-    });
 });

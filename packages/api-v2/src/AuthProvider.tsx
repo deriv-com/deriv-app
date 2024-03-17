@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useCallback, useEffect, useMemo } from 'react';
 import { useAPIContext } from './APIProvider';
 
-import { getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
+import { getAccountsFromLocalStorage, getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
 import useMutation from './useMutation';
 import { TSocketResponseData } from '../types';
 
@@ -30,9 +30,14 @@ type AuthProviderProps = {
     children: React.ReactNode;
     cookieTimeout?: number;
     loginIDKey?: string;
+    selectDefaultAccount?: (loginids: string[]) => string;
 };
 
-function waitForLoginAndTokenWithTimeout(loginIDKey?: string, cookieTimeout = 10000) {
+function waitForLoginAndTokenWithTimeout(
+    loginIDKey?: string,
+    cookieTimeout = 10000,
+    selectDefaultAccount?: (accounts: any[]) => string
+) {
     // Default timeout of 10 seconds
     let timeoutHandle: NodeJS.Timeout | undefined,
         cookieTimeoutHandle: NodeJS.Timeout | undefined, // Handle for the cookieTimeout
@@ -44,10 +49,17 @@ function waitForLoginAndTokenWithTimeout(loginIDKey?: string, cookieTimeout = 10
     ) => {
         const loginId = getActiveLoginIDFromLocalStorage(loginIDKey);
         const token = getToken(loginId as string);
+        const storedAccounts = getAccountsFromLocalStorage();
         if (loginId && token) {
             clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
             clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
             resolve({ loginId, token });
+        }
+        if (selectDefaultAccount && storedAccounts && Object.keys(storedAccounts).length > 0) {
+            const selectedLoginId = selectDefaultAccount(storedAccounts as any);
+            clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
+            clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
+            resolve({ loginId: selectedLoginId, token: getToken(selectedLoginId) || '' });
         } else {
             timeoutHandle = setTimeout(checkLogin, 100, resolve, reject);
         }
@@ -78,7 +90,7 @@ function waitForLoginAndTokenWithTimeout(loginIDKey?: string, cookieTimeout = 10
     };
 }
 
-const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps) => {
+const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccount }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
@@ -122,7 +134,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
         setIsLoading(true);
         setIsSuccess(false);
 
-        const { promise, cleanup } = waitForLoginAndTokenWithTimeout(loginIDKey, cookieTimeout);
+        const { promise, cleanup } = waitForLoginAndTokenWithTimeout(loginIDKey, cookieTimeout, selectDefaultAccount);
 
         let isMounted = true;
 

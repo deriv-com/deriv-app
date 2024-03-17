@@ -23,14 +23,12 @@ type DropdownProps = Omit<
     'actions' | 'children' | 'className' | 'has_interaction' | 'icon' | 'title' | 'show_dropdown'
 >;
 
-const CurrencyPlatformIcon = React.memo(({ icon }: CurrencyPlatformIconProps) =>
+const CurrencyPlatformIcon = ({ icon }: CurrencyPlatformIconProps) =>
     icon === 'Options' ? (
         <TradingPlatformIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
     ) : (
         <CurrencyIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
-    )
-);
-CurrencyPlatformIcon.displayName = 'CurrencyPlatformIcon';
+    );
 
 const Dropdown = observer(({ ...props }: DropdownProps) => {
     const store = useStore();

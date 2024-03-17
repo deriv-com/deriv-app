@@ -4,7 +4,6 @@ import { observer, useStore } from '@deriv/stores';
 
 type TWalletMigrationContext = {
     state?: string;
-    // state?: 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
     is_ineligible: boolean;
     is_eligible: boolean;
     is_in_progress: boolean;

@@ -3,7 +3,6 @@ import React from 'react';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { AppOverlay } from './components/AppOverlay';
 import { RouteLinks } from './router/components/RouteLinks';
-import { AccountClosureForm } from './containers';
 import './index.scss';
 
 const App: React.FC = () => {

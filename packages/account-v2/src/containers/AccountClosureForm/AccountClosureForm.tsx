@@ -8,11 +8,7 @@ import {
     MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT,
     TAccountClosureFormActions,
 } from '../../constants';
-import {
-    getAccountClosureReasons,
-    getAccountClosureValidationSchema,
-    TAccountClosureReasonsFormValues,
-} from '../../utils/accountClosure';
+import { getAccountClosureValidationSchema, TAccountClosureReasonsFormValues } from '../../utils/accountClosure';
 
 export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void }) => {
     const reasons = accountClosureReasons();
@@ -153,10 +149,7 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                         color='black'
                         onClick={() => {
                             dispatch({ payload: false, type: 'displayConfirmModal' });
-                            const formValues = formRef.current?.values as TAccountClosureReasonsFormValues;
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            const reasons = getAccountClosureReasons(formValues);
-                            // [TODO]: Handle Form submission
+                            // [TODO]: Handle Form submission by enabling the below lines and make API call
                         }}
                         rounded='sm'
                         size='md'

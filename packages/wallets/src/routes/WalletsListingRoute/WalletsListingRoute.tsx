@@ -53,17 +53,6 @@ const WalletsListingRoute: React.FC = () => {
         }
     }, [platformMapping, resetTradingPlatformActionParams, show]);
 
-    useEffect(() => {
-        if (!activeWallet) {
-            const activeLinkedAccount = walletAccounts?.find(wallet => wallet.is_linked_account_active);
-            if (activeLinkedAccount) {
-                switchWalletAccount(activeLinkedAccount.loginid);
-            } else if (firstLoginid) {
-                switchWalletAccount(firstLoginid);
-            }
-        }
-    }, [activeWallet, firstLoginid, switchWalletAccount, walletAccounts]);
-
     return (
         <div className='wallets-listing-route'>
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}

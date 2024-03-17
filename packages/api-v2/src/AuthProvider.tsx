@@ -54,8 +54,7 @@ function waitForLoginAndTokenWithTimeout(
             clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
             clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
             resolve({ loginId, token });
-        }
-        if (selectDefaultAccount && storedAccounts && Object.keys(storedAccounts).length > 0) {
+        } else if (selectDefaultAccount && storedAccounts && Object.keys(storedAccounts).length > 0) {
             const selectedLoginId = selectDefaultAccount(storedAccounts as any);
             clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
             clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
@@ -176,7 +175,6 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             if (newLoginId === loginid && !forceRefresh) {
                 return;
             }
-
             queryClient.cancelQueries();
 
             setIsLoading(true);

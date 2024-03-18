@@ -92,7 +92,6 @@ describe('Trader', () => {
 
     it('should show market is closed overlay', () => {
         rootStore.modules.trade.is_market_closed = true;
-        rootStore.modules.trade.has_only_forward_starting_contracts = false;
         render(<MockTrader rootStore={rootStore} />);
         expect(screen.getByText('This market is closed')).toBeInTheDocument();
     });
@@ -111,7 +110,6 @@ describe('Trader', () => {
     });
 
     it('should not render chart loader when chart is not loading', () => {
-        rootStore.modules.trade.is_chart_loading = false;
         render(<MockTrader rootStore={rootStore} />);
         expect(screen.queryByText('ChartLoader')).not.toBeInTheDocument();
     });

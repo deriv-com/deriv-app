@@ -32,6 +32,10 @@ const JurisdictionScreen = ({ setIsCheckBoxChecked }: TJurisdictionScreenProps) 
     );
 
     useEffect(() => {
+        return () => setCfdState({ selectedJurisdiction: '' });
+    }, [setCfdState, setIsCheckBoxChecked]);
+
+    useEffect(() => {
         setIsCheckBoxChecked(false);
     }, [selectedJurisdiction, setIsCheckBoxChecked]);
 

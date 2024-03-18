@@ -34,7 +34,7 @@ const Row = ({ attribute, content, id, idx }: TRowProps) => (
                                 weight={item?.options?.weight}
                             >
                                 {item?.text}
-                                {item?.options?.shouldShowAsterickAtEnd && <Text color='error'>*</Text>}
+                                {item?.options?.shouldShowAsteriskAtEnd && <Text color='error'>*</Text>}
                             </Text>
                         ))
                     ) : (

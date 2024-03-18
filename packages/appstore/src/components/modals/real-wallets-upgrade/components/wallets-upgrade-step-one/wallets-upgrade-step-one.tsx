@@ -10,7 +10,7 @@ type TWalletsUpgradeStepOneFooter = {
     handleNext: VoidFunction;
 };
 
-const WalletsUpgradeStepOneContent = () => {
+const WalletsUpgradeStepOneBullets = () => {
     const { ui } = useStore();
     const { is_mobile } = ui;
 
@@ -21,9 +21,39 @@ const WalletsUpgradeStepOneContent = () => {
     ];
 
     return (
+        <div className='wallets-upgrade-step-one__bullet-list-container'>
+            {bullets.map(bullet => (
+                <div key={bullet} className='wallets-upgrade-step-one__bullet'>
+                    <div className='wallets-upgrade-step-one__bullet-row'>
+                        <Icon
+                            icon='IcAppstoreTick'
+                            className='wallets-upgrade-step-one__bullet-icon'
+                            size={is_mobile ? 12 : 16}
+                        />
+                        <Text
+                            as='p'
+                            color='prominent'
+                            align='center'
+                            className='wallets-upgrade-step-one__bullet-text'
+                            size={is_mobile ? 'xs' : 's'}
+                            line_height={is_mobile ? 's' : 'm'}
+                        >
+                            {bullet}
+                        </Text>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
+const WalletsUpgradeStepOneContent = () => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+
+    return (
         <div className='wallets-upgrade-step-one__content'>
             <div className='wallets-upgrade-step-one__image-container'>
-                <WalletsImage image={`why_wallets_${is_mobile ? 'mobile' : 'desktop'}`} />
+                <WalletsImage image={`wallets_upgrade_step_one_${is_mobile ? 'mobile' : 'desktop'}`} />
             </div>
             <Text
                 as='h1'
@@ -46,31 +76,7 @@ const WalletsUpgradeStepOneContent = () => {
             >
                 <Localize i18n_default_text='Deposit, transfer, trade' />
             </Text>
-            <div className='wallets-upgrade-step-one__bullet-list-container'>
-                {bullets.map(bullet => (
-                    <div key={bullet} className='wallets-upgrade-step-one__bullet'>
-                        {bullet && (
-                            <div className='wallets-upgrade-step-one__bullet-row'>
-                                <Icon
-                                    icon='IcAppstoreTick'
-                                    className='wallets-upgrade-step-one__bullet-icon'
-                                    size={is_mobile ? 12 : 16}
-                                />
-                                <Text
-                                    as='p'
-                                    color='prominent'
-                                    align='center'
-                                    className='wallets-upgrade-step-one__bullet-text'
-                                    size={is_mobile ? 'xs' : 's'}
-                                    line_height={is_mobile ? 's' : 'm'}
-                                >
-                                    {bullet}
-                                </Text>
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
+            <WalletsUpgradeStepOneBullets />
         </div>
     );
 };

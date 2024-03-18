@@ -12,6 +12,11 @@ jest.mock('@deriv/hooks', () => ({
     })),
 }));
 
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+}));
+
 describe('<WalletsUpgradeModal />', () => {
     let modal_root_el: HTMLDivElement;
 
@@ -26,7 +31,7 @@ describe('<WalletsUpgradeModal />', () => {
     });
 
     it('Should show modal if user is eligible for migration and is_wallet_modal_closed is not in sessionStorage', () => {
-        const mockRootStore = mockStore({
+        const mock = mockStore({
             traders_hub: {
                 toggleWalletsUpgrade: jest.fn(),
             },
@@ -39,7 +44,7 @@ describe('<WalletsUpgradeModal />', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => [true, jest.fn()]);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
         render(<WalletsUpgradeModal />, { wrapper });
@@ -49,7 +54,7 @@ describe('<WalletsUpgradeModal />', () => {
     });
 
     it('Should not show modal if user is not eligible for migration', () => {
-        const mockRootStore = mockStore({
+        const mock = mockStore({
             traders_hub: {
                 toggleWalletsUpgrade: jest.fn(),
             },
@@ -66,7 +71,7 @@ describe('<WalletsUpgradeModal />', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => [true, jest.fn()]);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
         render(<WalletsUpgradeModal />, { wrapper });
@@ -75,7 +80,7 @@ describe('<WalletsUpgradeModal />', () => {
     });
 
     it('Should not show modal if is_wallet_modal_closed is in sessionStorage', () => {
-        const mockRootStore = mockStore({
+        const mock = mockStore({
             traders_hub: {
                 toggleWalletsUpgrade: jest.fn(),
             },
@@ -91,7 +96,7 @@ describe('<WalletsUpgradeModal />', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => [!isWalletMigrationModalClosed, jest.fn()]);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
         render(<WalletsUpgradeModal />, { wrapper });
@@ -100,7 +105,7 @@ describe('<WalletsUpgradeModal />', () => {
     });
 
     it('Should close modal when close button is clicked', () => {
-        const mockRootStore = mockStore({
+        const mock = mockStore({
             traders_hub: {
                 toggleWalletsUpgrade: jest.fn(),
             },
@@ -114,7 +119,7 @@ describe('<WalletsUpgradeModal />', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => [true, setModalOpen]);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
         render(<WalletsUpgradeModal />, { wrapper });

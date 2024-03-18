@@ -15,8 +15,8 @@ import UpgradeDesktopImage from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg
 import EnableWalletsModalDesktop from 'Assets/svgs/wallets/enable-wallets-modal-desktop.svg';
 import EnableWalletsModalMobile from 'Assets/svgs/wallets/enable-wallets-modal-mobile.svg';
 import UpgradeMobileImage from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
-import WhyWalletsDesktopImage from 'Assets/svgs/wallets/why-wallets-desktop.svg';
-import WhyWalletsMobileImage from 'Assets/svgs/wallets/why-wallets-mobile.svg';
+import WalletsUpgradeStepOneDesktop from 'Assets/svgs/wallets/wallets-upgrade-step-one-desktop.svg';
+import WalletsUpgradeStepOneMobile from 'Assets/svgs/wallets/wallets-upgrade-step-one-mobile.svg';
 
 export const WalletsImagesList = {
     enable_wallets_modal_desktop: EnableWalletsModalDesktop,
@@ -38,8 +38,8 @@ export const WalletsImagesList = {
     upgrading_mobile_eu: ReadyMobileEuImage,
     ready_to_enable_wallets_desktop: ReadyToEnableWalletsDesktop,
     ready_to_enable_wallets_mobile: ReadyToEnableWalletsMobile,
-    why_wallets_desktop: WhyWalletsDesktopImage,
-    why_wallets_mobile: WhyWalletsMobileImage,
+    wallets_upgrade_step_one_desktop: WalletsUpgradeStepOneDesktop,
+    wallets_upgrade_step_one_mobile: WalletsUpgradeStepOneMobile,
 } as const;
 
 const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKey>) => {

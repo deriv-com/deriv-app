@@ -18,9 +18,6 @@ export const mockPaymentAgents = [
             {
                 payment_method: 'ewallets',
             },
-            {
-                payment_method: 'bankwire',
-            },
         ],
         urls: [
             {
@@ -115,6 +112,9 @@ export const mockPaymentAgents = [
             },
             {
                 payment_method: 'E-wallet',
+            },
+            {
+                payment_method: 'Bank wire',
             },
         ],
         urls: [

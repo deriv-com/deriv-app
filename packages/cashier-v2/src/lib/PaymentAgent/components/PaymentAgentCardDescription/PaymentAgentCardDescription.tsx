@@ -5,7 +5,6 @@ import { Text } from '@deriv-com/ui';
 import type { THooks } from '../../../../hooks/types';
 import { capitalizeFirstLetter } from '../../../../utils';
 import { paymentMethodIcons } from '../../constants';
-import { getNormalizedIconPaymentMethod } from '../../utils';
 import styles from './PaymentAgentCardDescription.module.scss';
 
 type TProps = {
@@ -23,11 +22,9 @@ const PaymentAgentDepositCardDescription: React.FC<TProps> = ({ paymentAgent }) 
     const theme: 'dark' | 'light' = 'light';
 
     const icons = supportedPaymentMethods.reduce((acc, { payment_method: paymentMethod }) => {
-        if (!paymentMethod) return acc;
-        const normalizedIconPaymentMethod = getNormalizedIconPaymentMethod(paymentMethod);
-        if (!normalizedIconPaymentMethod) return acc;
-        if (!acc.has(paymentMethodIcons[normalizedIconPaymentMethod][theme])) {
-            acc.add(paymentMethodIcons[normalizedIconPaymentMethod][theme]);
+        if (!paymentMethod || !paymentMethodIcons[paymentMethod]) return acc;
+        if (!acc.has(paymentMethodIcons[paymentMethod][theme])) {
+            acc.add(paymentMethodIcons[paymentMethod][theme]);
         }
         return acc;
     }, new Set<{ icon: IconTypes; key: string }>());

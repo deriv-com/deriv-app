@@ -33,7 +33,7 @@ describe('PaymentAgentProvider', () => {
         act(() => result.current.onSelectPaymentMethodHandler('Bank wire'));
         expect(result.current.paymentAgentList?.length).toBe(2);
 
-        act(() => result.current.onSelectPaymentMethodHandler('Diamond Bank'));
+        act(() => result.current.onSelectPaymentMethodHandler('DiamondBank'));
         expect(result.current.paymentAgentList?.length).toBe(1);
     });
 

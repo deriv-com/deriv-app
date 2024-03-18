@@ -18,6 +18,7 @@ export * from './SentEmailContent';
 export * from './StaticLink';
 export * from './Tooltip';
 export * from './TotalAssets';
+export * from './TradersHub';
 export * from './TradersHubContent';
 export * from './TradingAccountCard';
 export * from './TradingAccountsList';

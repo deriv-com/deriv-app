@@ -232,10 +232,10 @@ const TradeParamsMobile = observer(
             is_vanilla,
             duration_unit: selected_duration_unit,
         } = useTraderStore();
-        const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
-        const selected_duration_tab_idx = duration_units_list.findIndex(d => d.value === selected_duration_unit);
 
         React.useEffect(() => {
+            const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
+            const selected_duration_tab_idx = duration_units_list.findIndex(d => d.value === selected_duration_unit);
             const defaultDuration = makeGetDefaultDuration(0, 'default')(duration_unit);
 
             setSelectedDuration(duration_unit, has_duration_error ? duration_value : defaultDuration);

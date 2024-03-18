@@ -5,9 +5,6 @@ import { MarketType } from '@cfd/constants';
 import { CreatePassword, EnterPassword } from '@cfd/screens';
 import { useAccountStatus, useActiveTradingAccount } from '@deriv/api-v2';
 import { Modal } from '@deriv-com/ui';
-import MT5ChangePassword from './MT5ChangePassword';
-import MT5PasswordFooter from './MT5PasswordFooter';
-import MT5SuccessModal from './MT5SuccessModal';
 
 type TMT5PasswordInputProps = {
     password: string;
@@ -16,40 +13,17 @@ type TMT5PasswordInputProps = {
 
 const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
+    const { data: activeTrading } = useActiveTradingAccount();
     const { cfdState } = useCFDContext();
+    const { isCreateMT5AccountSuccess } = useMT5AccountHandler();
+    const { openModal } = useQueryParams();
 
     const { platform, marketType: marketTypeState } = cfdState;
-
     const marketType = marketTypeState ?? MarketType.ALL;
-
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
-    const { doesNotMeetPasswordPolicy, isCreateMT5AccountSuccess } = useMT5AccountHandler();
-    const { data: activeTrading } = useActiveTradingAccount();
-
     const isDemo = activeTrading?.is_virtual;
 
-    if (doesNotMeetPasswordPolicy) {
-        return (
-            <React.Fragment>
-                <Modal.Header title='Deriv MT5 latest password requirements<' />
-                <Modal.Body>
-                    <MT5ChangePassword />
-                </Modal.Body>
-                <Modal.Footer>
-                    <MT5PasswordFooter password={password} />
-                </Modal.Footer>
-            </React.Fragment>
-        );
-    }
-
-    if (isCreateMT5AccountSuccess)
-        return (
-            <React.Fragment>
-                <Modal.Body>
-                    <MT5SuccessModal />
-                </Modal.Body>
-            </React.Fragment>
-        );
+    if (isCreateMT5AccountSuccess) openModal('MT5SuccessModal');
 
     if (isMT5PasswordNotSet) {
         return (

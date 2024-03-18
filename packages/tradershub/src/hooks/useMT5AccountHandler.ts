@@ -23,11 +23,11 @@ const useMT5AccountHandler = () => {
     const { data: activeTrading } = useActiveTradingAccount();
     const { data: settings } = useSettings();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
-    const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
-
     const { cfdState } = useCFDContext();
+
     const { marketType: marketTypeState, selectedJurisdiction } = cfdState;
     const marketType = marketTypeState ?? MarketType.ALL;
+    const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
 
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
     const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;

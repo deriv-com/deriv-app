@@ -22,6 +22,7 @@ const WizardScreens = () => {
     const { currentStep } = useRealAccountCreationContext();
     const { isEU } = useRegulationFlags();
 
+    // If the user is in the EU, we need to display the TradingAssessment and FinancialAssessment screens
     const screens = useMemo(() => {
         if (isEU) {
             return [CurrencySelector, PersonalDetails, Address, TradingAssessment, FinancialAssessment, TermsOfUse];
@@ -29,6 +30,7 @@ const WizardScreens = () => {
         return [CurrencySelector, PersonalDetails, Address, TermsOfUse];
     }, [isEU]);
 
+    // currentStep is 1-indexed, so we need to subtract 1 to get the correct index
     const Screen = screens[currentStep - 1];
 
     return <Screen />;

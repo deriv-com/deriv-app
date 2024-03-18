@@ -41,7 +41,7 @@ const CurrencySelector = () => {
                             {currencies && (
                                 <Fragment>
                                     <Currencies list={currencies[CurrencyTypes.FIAT]} type={CurrencyTypes.FIAT} />
-                                    {!isEU && (
+                                    {!isEU && ( // Crypto currencies are not available for EU clients
                                         <Fragment>
                                             <Divider className='my-24' />
                                             <Currencies

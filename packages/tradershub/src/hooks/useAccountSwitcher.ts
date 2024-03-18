@@ -53,6 +53,7 @@ const useAccountSwitcher = () => {
                 switchAccount(loginId);
             }
 
+            // Open the RealAccountCreation modal if the user is in the EU and is switching to a real account
             if (isEU && openModal && account.value === 'real') {
                 openModal('RealAccountCreation');
             }

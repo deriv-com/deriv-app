@@ -9,6 +9,12 @@ import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import WizardScreens from './WizardScreens/WizardScreens';
 
+/**
+ * @name getFormSteps
+ * @description The getFormSteps function is used to get the form steps based on the user's location.
+ * @param {boolean} isEU - A boolean value to check if the user is in the EU.
+ * @returns {string[]} - An array of strings representing the form steps.
+ */
 const getFormSteps = (isEU: boolean) => {
     const commonSteps = ['Account currency', 'Personal details', 'Address', 'Terms of use'];
 
@@ -32,9 +38,10 @@ const RealAccountCreation = () => {
     const { isModalOpen } = useQueryParams();
     const { isEU } = useRegulationFlags();
 
+    // Get the form steps based on the user's location
     const FORM_PROGRESS_STEPS = useMemo(() => getFormSteps(isEU), [isEU]);
 
-    // Set total steps based on the user's location
+    // Set the total steps in the progress bar based on the form steps
     useEffect(() => {
         if (FORM_PROGRESS_STEPS.length) {
             return setTotalSteps(FORM_PROGRESS_STEPS.length);

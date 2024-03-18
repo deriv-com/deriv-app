@@ -1,15 +1,14 @@
 import path from 'path';
 import CopyPlugin from 'copy-webpack-plugin';
-
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+const entries = require('./webpack-entries.json');
+
 const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 export default () => ({
     devtool: isRelease ? 'source-map' : 'eval-cheap-module-source-map',
-    entry: {
-        index: path.resolve(__dirname, 'src', 'index.ts'),
-    },
+    entry: entries,
     externals: [
         {
             '@deriv/quill-icons': '@deriv/quill-icons',
@@ -77,6 +76,7 @@ export default () => ({
                         options: {
                             // Provide path to the file with resources
                             resources: [
+                                './src/index.css',
                                 // eslint-disable-next-line global-require, import/no-dynamic-require
                                 ...require('../../../shared/src/styles/index.js'),
                             ],

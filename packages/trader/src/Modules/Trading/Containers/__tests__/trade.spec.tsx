@@ -8,7 +8,6 @@ import ChartLoader from 'App/Components/Elements/chart-loader';
 import { Div100vhContainer } from '@deriv/components';
 
 jest.mock('App/Components/Elements/PositionsDrawer', () => jest.fn(() => <div>PositionsDrawer</div>));
-jest.mock('App/Components/Elements/market-is-closed-overlay', () => jest.fn(() => <div>MarketIsClosedOverlay</div>));
 jest.mock('../trade-chart', () => jest.fn(() => <div>TradeChart</div>));
 jest.mock('../../Components/Form/form-layout', () => jest.fn(() => <div>FormLayout</div>));
 jest.mock('App/Components/Elements/chart-loader', () =>
@@ -28,12 +27,6 @@ jest.mock('@deriv/components', () => ({
             </div>
         );
     },
-    SwipeableWrapper: ({ children }: PropsWithChildren) => (
-        <div>
-            <p>SwipableWrapper</p>
-            {children}
-        </div>
-    ),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -107,7 +100,6 @@ describe('Trader', () => {
             </StoreProvider>
         );
         expect(screen.queryByText('PositionsDrawer')).not.toBeInTheDocument();
-        expect(screen.getByText('SwipableWrapper')).toBeInTheDocument();
         expect(screen.getByText('TradeChart')).toBeInTheDocument();
         expect(screen.getByText('FormLayout')).toBeInTheDocument();
     });
@@ -122,7 +114,7 @@ describe('Trader', () => {
                 </TraderProviders>
             </StoreProvider>
         );
-        expect(screen.getByText('MarketIsClosedOverlay')).toBeInTheDocument();
+        expect(screen.getByText('This market is closed')).toBeInTheDocument();
     });
 
     it('should call unmount and onMount when component is mounted and unmounted', () => {
@@ -206,5 +198,43 @@ describe('Trader', () => {
             );
         });
         expect(rootStore.modules.trade.getFirstOpenMarket).toBeCalledTimes(1);
+    });
+
+    it('should be able to click see open markets button in market is closed overlay', async () => {
+        rootStore.modules.trade.getFirstOpenMarket = jest.fn(() => ({
+            category: 'category',
+            subcategory: 'subcategory',
+        }));
+        await act(async () => {
+            render(
+                <StoreProvider store={mockStore({})}>
+                    <TraderProviders store={rootStore}>
+                        <Trader />
+                    </TraderProviders>
+                </StoreProvider>
+            );
+
+            const seeOpenMarketsButton = screen.getByText('See open markets');
+            expect(seeOpenMarketsButton).toBeInTheDocument();
+            seeOpenMarketsButton.click();
+        });
+    });
+
+    it('should be able to click try synthetic indices button in market is closed overlay', async () => {
+        rootStore.modules.trade.is_synthetics_trading_market_available = true;
+        rootStore.modules.trade.is_synthetics_available = true;
+        await act(async () => {
+            render(
+                <StoreProvider store={mockStore({})}>
+                    <TraderProviders store={rootStore}>
+                        <Trader />
+                    </TraderProviders>
+                </StoreProvider>
+            );
+
+            const trySyntheticIndicesButton = screen.getByText('Try Synthetic Indices');
+            expect(trySyntheticIndicesButton).toBeInTheDocument();
+            trySyntheticIndicesButton.click();
+        });
     });
 });

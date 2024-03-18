@@ -5,7 +5,6 @@ import { getTextFieldError } from '@/utils';
 import { TextArea } from '@deriv-com/ui';
 
 type TAdFormTextAreaProps = {
-    control: ReturnType<typeof useForm>['control'];
     field: string;
     hint?: string;
     label: string;

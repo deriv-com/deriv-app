@@ -44,7 +44,7 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
                 <div className='p2p-v2-form-progress'>
                     <div className='p2p-v2-form-progress__header'>
                         <Text as='h2' color='prominent' weight='bold'>
-                            {steps[currentStep].header.activeTitle}
+                            {steps[currentStep].header.title}
                         </Text>
                         <div className='p2p-v2-form-progress__steps'>
                             <div
@@ -59,7 +59,7 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
                                     <div className='p2p-v2-form-progress__step'>
                                         <Text
                                             align='center'
-                                            className={clsx('identifier', {
+                                            className={clsx('p2p-v2-identifier', {
                                                 'identifier--active': idx <= currentStep,
                                             })}
                                             color='white'

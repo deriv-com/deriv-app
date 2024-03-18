@@ -3,7 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useFloatingRate } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { AdWizard } from '../../components/AdWizard';
-import './CreateEditAd.scss';
 
 const STEPS = [
     { header: { title: 'Set ad type and amount' } },

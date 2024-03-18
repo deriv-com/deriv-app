@@ -6,7 +6,6 @@ import { BUY_SELL, MY_ADS_URL, RATE_TYPE } from '@/constants';
 import { AdFormController } from '../AdFormController';
 import { AdFormInput } from '../AdFormInput';
 import { AdFormTextArea } from '../AdFormTextArea';
-import './AdTypeSection.scss';
 
 type TAdTypeSectionProps = {
     currency: string;

@@ -236,13 +236,10 @@ const TradeParamsMobile = observer(
         const selected_duration_tab_idx = duration_units_list.findIndex(d => d.value === selected_duration_unit);
 
         React.useEffect(() => {
-            if (has_duration_error) {
-                setSelectedDuration(duration_unit, makeGetDefaultDuration(0, 'default')(duration_unit));
-            } else {
-                setSelectedDuration(duration_unit, duration_value);
-            }
-            if (toggled_duration_tab_idx === -1)
-                setSelectedDuration(selected_duration_unit, makeGetDefaultDuration(0, 'default')(duration_unit));
+            const defaultDuration = makeGetDefaultDuration(0, 'default')(duration_unit);
+
+            setSelectedDuration(duration_unit, has_duration_error ? duration_value : defaultDuration);
+            if (toggled_duration_tab_idx === -1) setSelectedDuration(selected_duration_unit, defaultDuration);
             setDurationTabIdx(toggled_duration_tab_idx === -1 ? selected_duration_tab_idx : toggled_duration_tab_idx);
         }, [duration_unit]);
 

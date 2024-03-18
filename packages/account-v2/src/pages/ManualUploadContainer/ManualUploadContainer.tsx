@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { InferType, object } from 'yup';
 import { Loader } from '@deriv-com/ui';
@@ -10,13 +9,18 @@ import { OnfidoContainer } from '../../modules/Onfido';
 import { getManualFormValidationSchema, getSelfieValidationSchema } from '../../utils/manualFormUtils';
 
 type TManualUploadContainerProps = {
+    countryCode: string;
     selectedDocument: string | null;
     setSelectedDocument: (value: string | null) => void;
 };
 
-export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }: TManualUploadContainerProps) => {
+export const ManualUploadContainer = ({
+    countryCode,
+    selectedDocument,
+    setSelectedDocument,
+}: TManualUploadContainerProps) => {
     const { isExpiryDateRequired, isLoading, poiService } = useManualForm(
-        'ng',
+        countryCode,
         selectedDocument as TManualDocumentTypes
     );
 
@@ -71,12 +75,13 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
             />
         );
     }
+    // [TODO]: Integrate country selector
     return (
         <OnfidoContainer
-            country='ng'
+            countryCode='ng'
             isEnabledByDefault
             onOnfidoSubmit={() => {
-                // TODO: Implement onfido submit
+                // [TODO]: Implement onfido submit
             }}
             selectedDocument={selectedDocument as TManualDocumentTypes}
         />

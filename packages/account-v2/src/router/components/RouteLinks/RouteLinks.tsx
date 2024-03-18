@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, NavLink, Redirect, Route, Switch } from 'react-router-dom';
-import { defaultRoute, routes } from '../../../constants/routesConfig';
+import { defaultRoute, routes } from '../../routesConfig';
 
 export const RouteLinks = () => (
     <BrowserRouter>

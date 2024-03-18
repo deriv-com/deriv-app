@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetSettings } from '@deriv/api-types';
+import { GetSettings, StatesList } from '@deriv/api-types';
 import {
     generateValidationFunction,
     getDefaultFields,
@@ -16,15 +16,18 @@ type TAddressDetailsConfigProps = {
     real_account_signup_target: string;
     residence: string;
     account_settings: GetSettings;
+    states_list: StatesList;
 };
 
 const address_details_config: ({
+    states_list,
     account_settings,
     is_svg,
 }: {
+    states_list: StatesList;
     account_settings: GetSettings;
     is_svg: boolean;
-}) => TSchema = ({ account_settings, is_svg }) => {
+}) => TSchema = ({ states_list, account_settings, is_svg }) => {
     const is_gb = account_settings.country_code === 'gb';
     if (!account_settings) {
         return {};
@@ -85,7 +88,7 @@ const address_details_config: ({
         },
         address_state: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
-            default_value: account_settings.address_state ?? '',
+            default_value: states_list.find(state => state.value === account_settings.address_state)?.text ?? '',
             rules: [
                 ['req', localize('State is required')],
                 [
@@ -160,11 +163,11 @@ const address_details_config: ({
 };
 
 const addressDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence, account_settings }: TAddressDetailsConfigProps,
+    { states_list, upgrade_info, real_account_signup_target, residence, account_settings }: TAddressDetailsConfigProps,
     AddressDetails: React.Component
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
-    const config = address_details_config({ account_settings, is_svg });
+    const config = address_details_config({ states_list, account_settings, is_svg });
     const disabled_items = account_settings.immutable_fields;
 
     return {

@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { IconComponent, TradingAccountCard } from '@/components';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
-import { useModal } from '@/providers';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
-import { TopUpModal, TradeModal } from '@cfd/modals';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
@@ -22,7 +22,8 @@ const LeadingIcon = () => (
 const AddedCTraderAccountsList = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
-    const { show } = useModal();
+    const { openModal } = useQueryParams();
+    const { setCfdState } = useCFDContext();
     const account = cTraderAccounts?.find(account => account.is_virtual === activeTradingAccount?.is_virtual);
     const isVirtual = account?.is_virtual;
     const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, isVirtual);
@@ -33,7 +34,14 @@ const AddedCTraderAccountsList = () => {
                 // todo: open transfer modal
                 color='black'
                 onClick={() => {
-                    if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.CTRADER} />);
+                    if (isVirtual) {
+                        setCfdState({
+                            account,
+                            platform: CFDPlatforms.CTRADER,
+                        });
+                        openModal('TopUpModal');
+                    }
+
                     // else transferModal;
                 }}
                 variant='outlined'
@@ -41,16 +49,14 @@ const AddedCTraderAccountsList = () => {
                 {isVirtual ? 'Top up' : 'Transfer'}
             </Button>
             <Button
-                onClick={() =>
-                    account &&
-                    show(
-                        <TradeModal
-                            account={account}
-                            marketType={account?.market_type}
-                            platform={CFDPlatforms.CTRADER}
-                        />
-                    )
-                }
+                onClick={() => {
+                    setCfdState({
+                        account,
+                        marketType: account?.market_type,
+                        platform: CFDPlatforms.CTRADER,
+                    });
+                    openModal('TradeModal');
+                }}
             >
                 Open
             </Button>

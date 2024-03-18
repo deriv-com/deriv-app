@@ -8,13 +8,22 @@ import {
     MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT,
     TAccountClosureFormActions,
 } from '../../constants';
-import { getAccountClosureValidationSchema, TAccountClosureReasonsFormValues } from '../../utils/accountClosure';
+import {
+    getAccountClosureValidationSchema,
+    TAccountClosureReasonsFormValues,
+    validateAccountClosure,
+} from '../../utils/accountClosure';
 
 export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void }) => {
     const reasons = accountClosureReasons();
     const validationSchema = getAccountClosureValidationSchema();
 
     const formRef = useRef<FormikProps<TAccountClosureReasonsFormValues>>(null);
+
+    const isReasonNotSelected = !validateAccountClosure(
+        formRef.current?.values as TAccountClosureReasonsFormValues,
+        formRef.current?.dirty ?? false
+    );
 
     const initialState = {
         disableCheckbox: false,
@@ -82,6 +91,7 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                                 ))}
                             </div>
                             <Field
+                                aria-label="If you don't mind sharing, which other trading platforms do you use?"
                                 as={TextArea}
                                 className='mb-12'
                                 label="If you don't mind sharing, which other trading platforms do you use?"
@@ -93,10 +103,11 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                                         type: 'remainingCharacters',
                                     });
                                 }}
+                                role='textarea'
                                 textSize={'sm'}
-                                type='textarea'
                             />
                             <Field
+                                aria-label='What could we do to improve?'
                                 as={TextArea}
                                 hint={`Remaining characters: ${state.remainingCharacters}`}
                                 label='What could we do to improve?'
@@ -108,8 +119,8 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                                         type: 'remainingCharacters',
                                     });
                                 }}
+                                role='textarea'
                                 textSize={'sm'}
-                                type='textarea'
                             />
                         </section>
                         <section className='mt-24 flex gap-x-16 justify-end'>
@@ -127,6 +138,11 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                                 Continue
                             </Button>
                         </section>
+                        {isReasonNotSelected && (
+                            <Text as='p' className='mt-16' color='error' size='xs' weight='bold'>
+                                Please select at least one reason
+                            </Text>
+                        )}
                     </Form>
                 )}
             </Formik>

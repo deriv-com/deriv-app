@@ -29,6 +29,35 @@ export const getAccountClosureValidationSchema = () => {
     }));
 };
 
+export const validateAccountClosure = (values: TAccountClosureReasonsFormValues, isDirty: boolean) => {
+    if (isDirty) {
+        const {
+            anotherWebsite,
+            difficultTransactions,
+            financialPriorities,
+            lackOfFeatures,
+            notInterested,
+            notUserFriendly,
+            otherReasons,
+            stopTrading,
+            unsatisfactoryService,
+        } = values;
+
+        return (
+            anotherWebsite ||
+            difficultTransactions ||
+            financialPriorities ||
+            lackOfFeatures ||
+            notInterested ||
+            notUserFriendly ||
+            otherReasons ||
+            stopTrading ||
+            unsatisfactoryService
+        );
+    }
+    return true;
+};
+
 export type TAccountClosureReasonsFormValues = Yup.InferType<ReturnType<typeof getAccountClosureValidationSchema>>;
 
 export const getAccountClosureReasons = (values: TAccountClosureReasonsFormValues) => {

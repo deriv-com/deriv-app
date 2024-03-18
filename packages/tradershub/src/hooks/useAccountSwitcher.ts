@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useUIContext } from '@/providers';
-import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api-v2';
+import { useActiveTradingAccount, useAuthorize, useIsDIELEnabled, useTradingAccountsList } from '@deriv/api-v2';
 
 const accountTypes = [
     { label: 'Demo', value: 'demo' },
@@ -26,15 +26,22 @@ const useAccountSwitcher = () => {
     const [selectedAccount, setSelected] = useState(activeType);
     const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
     const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
+    const { data: isDIEL } = useIsDIELEnabled();
 
     useEffect(() => {
+        if (isDIEL && activeAccountType === 'demo') {
+            setUIState({
+                regulation: 'Non-EU',
+            });
+        }
+
         if (activeType) {
             setSelected(activeType);
             setUIState({
                 accountType: activeAccountType,
             });
         }
-    }, [activeAccountType, activeType, setUIState]);
+    }, [activeAccountType, activeType, isDIEL, setUIState]);
 
     const setSelectedAccount = useCallback(
         (account: TAccountType) => {

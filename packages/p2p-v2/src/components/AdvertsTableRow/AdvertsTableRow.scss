@@ -6,7 +6,7 @@
     align-items: center;
 
     @include mobile {
-        grid-template-columns: 2fr 0.7fr;
+        grid-template-columns: 2fr 0.8fr;
     }
 
     &--advertiser {

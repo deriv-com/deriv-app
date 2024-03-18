@@ -14,6 +14,10 @@ const getTermsOfUseConfig = (account_settings: Partial<TTermsOfConfigSettings>) 
         supported_in: ['svg', 'maltainvest'],
         default_value: false,
     },
+    resident_self_declaration: {
+        supported_in: ['maltainvest'],
+        default_value: false,
+    },
     fatca_declaration: {
         supported_in: ['svg', 'maltainvest'],
         default_value: String(account_settings?.fatca_declaration ?? ''),
@@ -24,7 +28,8 @@ const termsOfUseConfig = (
     {
         real_account_signup_target,
         account_settings,
-    }: { real_account_signup_target: string; account_settings: TTermsOfConfigSettings },
+        residence,
+    }: { real_account_signup_target: string; account_settings: TTermsOfConfigSettings; residence: string },
     TermsOfUse: React.Component
 ) => {
     const active_title = localize('Terms of use');
@@ -39,6 +44,7 @@ const termsOfUseConfig = (
         props: {
             real_account_signup_target,
             is_multi_account: Boolean(String(account_settings?.fatca_declaration ?? '')),
+            residence,
         },
         icon: 'IcDashboardTermsOfUse',
     };

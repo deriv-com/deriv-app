@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import { Modal } from '@/components';
+import { useQueryParams } from '@/hooks';
 import { useCFDContext } from '@/providers';
-import { THooks, TMarketTypes, TPlatforms } from '@/types';
+import { THooks } from '@/types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '@cfd/constants';
 import { TradeScreen } from '@cfd/screens';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Modal, Text, useDevice } from '@deriv-com/ui';
 
-type TTradeModalProps = {
-    account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
-    marketType?: TMarketTypes.All;
-    platform: TPlatforms.All;
-};
-
-const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
+const TradeModal = () => {
     const { isDesktop } = useDevice();
-    const { setCfdState } = useCFDContext();
+    const { setCfdState, cfdState } = useCFDContext();
+    const { isModalOpen, closeModal } = useQueryParams();
+
+    const { account, marketType, platform = CFDPlatforms.MT5 } = cfdState;
 
     useEffect(() => {
         setCfdState({
@@ -28,15 +25,17 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
     const appOrder = ['ios', 'android', 'huawei'];
 
     return (
-        <Modal>
-            <Modal.Header title='Trade' />
-            <Modal.Content>
+        <Modal ariaHideApp={false} isOpen={isModalOpen('TradeModal')} onRequestClose={closeModal}>
+            <Modal.Header onRequestClose={closeModal}>
+                <Text weight='bold'>Trade</Text>
+            </Modal.Header>
+            <Modal.Body className='w-auto h-auto'>
                 <TradeScreen account={account} />
-            </Modal.Content>
-            <Modal.Footer align='center'>
+            </Modal.Body>
+            <Modal.Footer>
                 <div className='pt-0 min-h-[190px] flex justify-center items-center flex-col h-fit w-full gap-16'>
                     <Text align='center' size='xs' weight='bold'>
-                        Download {PlatformDetails[platform].title} on your phone to trade with the{' '}
+                        Download {PlatformDetails[platform]?.title} on your phone to trade with the{' '}
                         {PlatformDetails[platform].title} account
                     </Text>
                     <div className='flex gap-16'>

@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useRegulationFlags } from '@/hooks';
 import { useRealAccountCreationContext } from '@/providers';
-import { Address, CurrencySelector, PersonalDetails, TermsOfUse } from '@/screens';
+import {
+    Address,
+    CurrencySelector,
+    FinancialAssessment,
+    PersonalDetails,
+    TermsOfUse,
+    TradingAssessment,
+} from '@/screens';
 
 /**
  * @name WizardScreens
@@ -12,19 +20,18 @@ import { Address, CurrencySelector, PersonalDetails, TermsOfUse } from '@/screen
  */
 const WizardScreens = () => {
     const { currentStep } = useRealAccountCreationContext();
+    const { isEU } = useRegulationFlags();
 
-    switch (currentStep) {
-        case 1:
-            return <CurrencySelector />;
-        case 2:
-            return <PersonalDetails />;
-        case 3:
-            return <Address />;
-        case 4:
-            return <TermsOfUse />;
-        default:
-            return null;
-    }
+    const screens = useMemo(() => {
+        if (isEU) {
+            return [CurrencySelector, PersonalDetails, Address, TradingAssessment, FinancialAssessment, TermsOfUse];
+        }
+        return [CurrencySelector, PersonalDetails, Address, TermsOfUse];
+    }, [isEU]);
+
+    const Screen = screens[currentStep - 1];
+
+    return <Screen />;
 };
 
 export default WizardScreens;

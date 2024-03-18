@@ -1,5 +1,6 @@
 import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
+import { ConnectedApps } from '../pages/ConnectedApps';
 import { DummyRoute } from '../router/components/DummyRoute';
 import { ACCOUNT_V2_ROUTES } from './routes';
 
@@ -70,7 +71,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.ApiToken,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: ConnectedApps,
         routeName: 'Connected apps',
         routePath: ACCOUNT_V2_ROUTES.ConnectedApps,
     },

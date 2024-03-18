@@ -1,11 +1,10 @@
-import React, { ComponentProps, PropsWithChildren } from 'react';
+import React, { ComponentProps } from 'react';
 import { act, render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import Trader from '../trade';
 import TraderProviders from '../../../../trader-providers';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
-import { Div100vhContainer } from '@deriv/components';
 
 jest.mock('App/Components/Elements/PositionsDrawer', () => jest.fn(() => <div>PositionsDrawer</div>));
 jest.mock('../trade-chart', () => jest.fn(() => <div>TradeChart</div>));
@@ -13,21 +12,6 @@ jest.mock('../../Components/Form/form-layout', () => jest.fn(() => <div>FormLayo
 jest.mock('App/Components/Elements/chart-loader', () =>
     jest.fn(({ is_visible }: ComponentProps<typeof ChartLoader>) => (is_visible ? <div>ChartLoader</div> : null))
 );
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Div100vhContainer: ({
-        children,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        is_disabled,
-        ...props
-    }: PropsWithChildren<ComponentProps<typeof Div100vhContainer>>) => {
-        return (
-            <div {...props} data-testid='dt_div100vhcontainer'>
-                {children}
-            </div>
-        );
-    },
-}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -68,6 +52,14 @@ const rootStore = mockStore({
     },
 });
 
+const MockTrader = () => (
+    <StoreProvider store={mockStore({})}>
+        <TraderProviders store={rootStore}>
+            <Trader />
+        </TraderProviders>
+    </StoreProvider>
+);
+
 describe('Trader', () => {
     beforeEach(() => {
         (isDesktop as jest.Mock).mockReturnValue(true);
@@ -76,13 +68,7 @@ describe('Trader', () => {
     });
 
     it('renders the trader component in desktop view', () => {
-        render(
-            <StoreProvider store={mockStore({})}>
-                <TraderProviders store={rootStore}>
-                    <Trader />
-                </TraderProviders>
-            </StoreProvider>
-        );
+        render(<MockTrader />);
         expect(screen.getByText('PositionsDrawer')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_swipeable')).not.toBeInTheDocument();
         expect(screen.getByText('TradeChart')).toBeInTheDocument();
@@ -93,13 +79,7 @@ describe('Trader', () => {
         rootStore.ui.is_mobile = true;
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-        render(
-            <StoreProvider store={mockStore({})}>
-                <TraderProviders store={rootStore}>
-                    <Trader />
-                </TraderProviders>
-            </StoreProvider>
-        );
+        render(<MockTrader />);
         expect(screen.queryByText('PositionsDrawer')).not.toBeInTheDocument();
         expect(screen.getAllByTestId('dt_swipeable')).not.toHaveLength(0);
         expect(screen.getByText('TradeChart')).toBeInTheDocument();
@@ -109,13 +89,7 @@ describe('Trader', () => {
     it('should show market is closed overlay', () => {
         rootStore.modules.trade.is_market_closed = true;
         rootStore.modules.trade.has_only_forward_starting_contracts = false;
-        render(
-            <StoreProvider store={mockStore({})}>
-                <TraderProviders store={rootStore}>
-                    <Trader />
-                </TraderProviders>
-            </StoreProvider>
-        );
+        render(<MockTrader />);
         expect(screen.getByText('This market is closed')).toBeInTheDocument();
     });
 
@@ -124,13 +98,7 @@ describe('Trader', () => {
         const onUnmount = jest.fn();
         rootStore.modules.trade.onMount = onMount;
         rootStore.modules.trade.onUnmount = onUnmount;
-        const { unmount } = render(
-            <StoreProvider store={mockStore({})}>
-                <TraderProviders store={rootStore}>
-                    <Trader />
-                </TraderProviders>
-            </StoreProvider>
-        );
+        const { unmount } = render(<MockTrader />);
         expect(onMount).toBeCalledTimes(1);
         unmount();
         expect(onUnmount).toBeCalledTimes(1);
@@ -138,51 +106,29 @@ describe('Trader', () => {
 
     it('should render chart loader when chart is loading', () => {
         rootStore.modules.trade.is_chart_loading = true;
-        render(
-            <StoreProvider store={mockStore({})}>
-                <TraderProviders store={rootStore}>
-                    <Trader />
-                </TraderProviders>
-            </StoreProvider>
-        );
+        render(<MockTrader />);
         expect(screen.getByText('ChartLoader')).toBeInTheDocument();
     });
 
     it('should not render chart loader when chart is not loading', () => {
         rootStore.modules.trade.is_chart_loading = false;
-        render(
-            <StoreProvider store={mockStore({})}>
-                <TraderProviders store={rootStore}>
-                    <Trader />
-                </TraderProviders>
-            </StoreProvider>
-        );
+        render(<MockTrader />);
         expect(screen.queryByText('ChartLoader')).not.toBeInTheDocument();
     });
 
     it('should have a correct height offset for div100vhcontainer for accumulator', () => {
         rootStore.modules.trade.is_accumulator = true;
-        render(
-            <StoreProvider store={mockStore({})}>
-                <TraderProviders store={rootStore}>
-                    <Trader />
-                </TraderProviders>
-            </StoreProvider>
-        );
-        expect(screen.getByTestId('dt_div100vhcontainer')).toHaveAttribute('height_offset', '295px');
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        render(<MockTrader />);
+        expect(screen.getByTestId('dt_div_100_vh')).toHaveStyle('height: calc(768px - 295px);');
     });
 
     it('should have a correct height offset for div100vhcontainer for turbos', () => {
         rootStore.modules.trade.is_accumulator = false;
         rootStore.modules.trade.is_turbos = true;
-        render(
-            <StoreProvider store={mockStore({})}>
-                <TraderProviders store={rootStore}>
-                    <Trader />
-                </TraderProviders>
-            </StoreProvider>
-        );
-        expect(screen.getByTestId('dt_div100vhcontainer')).toHaveAttribute('height_offset', '300px');
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        render(<MockTrader />);
+        expect(screen.getByTestId('dt_div_100_vh')).toHaveStyle('height: calc(768px - 300px);');
     });
 
     it('should set category and subcategory when component is mounted', async () => {
@@ -191,13 +137,7 @@ describe('Trader', () => {
             subcategory: 'subcategory',
         }));
         await act(async () => {
-            render(
-                <StoreProvider store={mockStore({})}>
-                    <TraderProviders store={rootStore}>
-                        <Trader />
-                    </TraderProviders>
-                </StoreProvider>
-            );
+            render(<MockTrader />);
         });
         expect(rootStore.modules.trade.getFirstOpenMarket).toBeCalledTimes(1);
     });
@@ -208,13 +148,7 @@ describe('Trader', () => {
             subcategory: 'subcategory',
         }));
         await act(async () => {
-            render(
-                <StoreProvider store={mockStore({})}>
-                    <TraderProviders store={rootStore}>
-                        <Trader />
-                    </TraderProviders>
-                </StoreProvider>
-            );
+            render(<MockTrader />);
 
             const seeOpenMarketsButton = screen.getByText('See open markets');
             expect(seeOpenMarketsButton).toBeInTheDocument();
@@ -226,13 +160,7 @@ describe('Trader', () => {
         rootStore.modules.trade.is_synthetics_trading_market_available = true;
         rootStore.modules.trade.is_synthetics_available = true;
         await act(async () => {
-            render(
-                <StoreProvider store={mockStore({})}>
-                    <TraderProviders store={rootStore}>
-                        <Trader />
-                    </TraderProviders>
-                </StoreProvider>
-            );
+            render(<MockTrader />);
 
             const trySyntheticIndicesButton = screen.getByText('Try Synthetic Indices');
             expect(trySyntheticIndicesButton).toBeInTheDocument();

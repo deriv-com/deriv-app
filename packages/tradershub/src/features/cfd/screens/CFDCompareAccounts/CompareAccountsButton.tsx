@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { useModal } from '@/providers';
+import { useQueryParams } from '@/hooks';
 import { THooks, TPlatforms } from '@/types';
-import { DummyComponent } from '@cfd/components';
 import { Category, CFDPlatforms, MarketType } from '@cfd/constants';
-import { CTraderSuccessModal, DxtradePasswordModal, MT5PasswordModal } from '@cfd/modals';
 import {
     useActiveTradingAccount,
     useAuthentication,
@@ -32,7 +30,7 @@ type TCompareAccountButton = {
 @params {string} marketType - The market type of the account. //Removed for now as it is needed by Verification flow
  */
 const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompareAccountButton) => {
-    const { show } = useModal();
+    const { openModal } = useQueryParams();
 
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();
@@ -83,26 +81,26 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
 
     useEffect(() => {
         if (isAccountCreated) {
-            show(<CTraderSuccessModal isDemo={isDemo} />);
+            openModal('CTraderSuccessModal');
         }
         if (createAccountError) {
             // Error Component to be implemented
-            show(<DummyComponent />);
+            openModal('DummyComponentModal');
         }
-    }, [createAccountError, isAccountCreated, isDemo, show]);
+    }, [createAccountError, isAccountCreated, isDemo, openModal]);
 
     const onClickAdd = () => {
         if (platform === CFDPlatforms.MT5) {
             // Going to remove Placeholder once Verification flow is implemented
-            if (isAccountStatusVerified) show(<DummyComponent />);
+            if (isAccountStatusVerified) return;
 
             if (isAccountStatusVerified) {
-                show(<MT5PasswordModal />);
+                openModal('MT5PasswordModal');
             } else {
-                // show(<Verifaication />);
+                openModal('DummyComponentModal');
             }
         } else if (platform === CFDPlatforms.DXTRADE) {
-            show(<DxtradePasswordModal />);
+            openModal('DxtradePasswordModal');
         } else {
             createAccount({
                 payload: {

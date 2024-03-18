@@ -9,3 +9,4 @@ export * from './NicknameModal';
 export * from './OrderDetailsConfirmModal';
 export * from './PaymentMethods';
 export * from './RadioGroupFilterModal';
+export * from './RatingModal';

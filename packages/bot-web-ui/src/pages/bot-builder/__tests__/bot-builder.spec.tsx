@@ -5,8 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
+import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -25,6 +25,13 @@ jest.mock('@deriv/bot-skeleton', () => ({
         terminateBot: jest.fn(),
         terminateConnection: jest.fn(),
     },
+}));
+
+const mockBotNotification = jest.fn();
+
+jest.mock('Components/bot-notification/bot-notification', () => ({
+    ...jest.requireActual('Components/bot-notification/bot-notification'),
+    botNotification: (message: string) => mockBotNotification(message),
 }));
 
 const mockTextToDom = jest.fn(() => {
@@ -103,7 +110,7 @@ describe('BotBuilder', () => {
         mock_DBot_store?.run_panel.setIsRunning(true);
         mock_DBot_store?.toolbar.setResetButtonState(false);
         render(<BotBuilder />, { wrapper });
-        expect(screen.getByText(/Changes you make will not affect your running bot./i)).toBeInTheDocument();
+        expect(mockBotNotification).toHaveBeenCalledWith(notification_message.workspace_change);
     });
 
     it('should not show warning on change of block if bot is running but reset is clicked', () => {
@@ -122,16 +129,5 @@ describe('BotBuilder', () => {
         const { container } = render(<BotBuilder />, { wrapper });
         unmountComponentAtNode(container);
         await waitFor(() => expect(mockRemoveChangeListener).toHaveBeenCalledTimes(1));
-    });
-
-    it('should close the notification on click of notification close button', async () => {
-        window.Blockly = getMockBlockly('not-ui');
-        mock_DBot_store?.run_panel.setIsRunning(true);
-        mock_DBot_store?.toolbar.setResetButtonState(false);
-        render(<BotBuilder />, { wrapper });
-        const notification_close_button = screen.getByTestId('bot-snackbar-notification-close');
-        userEvent.click(notification_close_button);
-        const el = screen.queryByText(/Changes you make will not affect your running bot./i);
-        await waitFor(() => expect(el).not.toBeInTheDocument());
     });
 });

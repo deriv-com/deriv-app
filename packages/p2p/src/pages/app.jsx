@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
-import { Loading } from '@deriv/components';
-import { useP2PCompletedOrdersNotification, useP2PSettings } from '@deriv/hooks';
-import { isEmptyObject, routes, WS } from '@deriv/shared';
+import { useP2PCompletedOrdersNotification } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
+import { Loading } from '@deriv/components';
+import { routes, WS } from '@deriv/shared';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -27,7 +27,6 @@ const App = () => {
     const location = useLocation();
 
     const { buy_sell_store, general_store, order_store } = useStores();
-    const { p2p_settings, subscribe } = useP2PSettings();
 
     const lang = getLanguage();
 
@@ -42,7 +41,7 @@ const App = () => {
 
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
-        subscribe();
+        general_store.getWebsiteStatus();
 
         setP2PRedirectTo({
             routeToMyProfile: () => {
@@ -131,19 +130,6 @@ const App = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    React.useEffect(() => {
-        if (!isEmptyObject(p2p_settings)) {
-            p2p_settings.currency_list.forEach(currency => {
-                const { is_default, value } = currency;
-
-                if (is_default && !buy_sell_store.selected_local_currency) {
-                    buy_sell_store.setSelectedLocalCurrency(value);
-                    buy_sell_store.setLocalCurrency(value);
-                }
-            });
-        }
-    }, [p2p_settings]);
 
     // Redirect to /p2p/buy-sell if user navigates to /p2p without a subroute
     React.useEffect(() => {

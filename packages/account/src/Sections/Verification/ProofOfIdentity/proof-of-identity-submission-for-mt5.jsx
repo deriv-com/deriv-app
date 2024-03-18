@@ -38,9 +38,7 @@ const POISubmissionForMT5 = observer(
 
         React.useEffect(() => {
             if (citizen_data) {
-                const {
-                    authentication: { attempts },
-                } = account_status;
+                const attempts = account_status?.authentication?.attempts;
 
                 const { service } = attempts?.latest ?? {};
                 const { submissions_left: idv_submissions_left, last_rejected, status } = idv;

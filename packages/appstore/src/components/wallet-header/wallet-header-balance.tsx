@@ -16,9 +16,7 @@ const WalletHeaderBalance = observer(({ balance, currency }: TWalletHeaderBalanc
     } = useStore();
     const mf_account_status = useMFAccountStatus();
 
-    const {
-        account_status: { authentication },
-    } = client;
+    const { account_status: { authentication } = {} } = client;
 
     const balance_amount = (
         <Text weight='bold' size='m' color='prominent'>

@@ -3,7 +3,7 @@ import { Loader } from '@deriv-com/ui';
 import { useFetchConnectedApps } from '../../hooks';
 import { ConnectedAppsTable } from './ConnectedAppsTable';
 
-const ConnectedApps = () => {
+export const ConnectedApps = () => {
     const { data: connectedApps, isLoading } = useFetchConnectedApps();
 
     return isLoading ? (
@@ -16,5 +16,3 @@ const ConnectedApps = () => {
         </div>
     );
 };
-
-export default ConnectedApps;

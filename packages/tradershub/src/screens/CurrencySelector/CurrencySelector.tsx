@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Form, Formik, FormikValues } from 'formik';
 import { CurrencyTypes } from '@/constants';
 import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
+import { useRegulationFlags } from '@/hooks';
 import useCurrencies from '@/hooks/useCurrencies';
 import { ACTION_TYPES, useRealAccountCreationContext } from '@/providers';
 import { Divider, Loader } from '@deriv-com/ui';
@@ -15,6 +16,7 @@ import Currencies from './Currencies';
 const CurrencySelector = () => {
     const { dispatch, helpers, state } = useRealAccountCreationContext();
     const { data: currencies, isLoading } = useCurrencies();
+    const { isEU } = useRegulationFlags();
 
     const handleSubmit = (values: FormikValues) => {
         dispatch({ payload: { currency: values.currency }, type: ACTION_TYPES.SET_CURRENCY });
@@ -39,8 +41,15 @@ const CurrencySelector = () => {
                             {currencies && (
                                 <Fragment>
                                     <Currencies list={currencies[CurrencyTypes.FIAT]} type={CurrencyTypes.FIAT} />
-                                    <Divider className='my-24' />
-                                    <Currencies list={currencies[CurrencyTypes.CRYPTO]} type={CurrencyTypes.CRYPTO} />
+                                    {!isEU && (
+                                        <Fragment>
+                                            <Divider className='my-24' />
+                                            <Currencies
+                                                list={currencies[CurrencyTypes.CRYPTO]}
+                                                type={CurrencyTypes.CRYPTO}
+                                            />
+                                        </Fragment>
+                                    )}
                                 </Fragment>
                             )}
                         </div>

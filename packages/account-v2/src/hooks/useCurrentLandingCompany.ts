@@ -8,11 +8,15 @@ export const useCurrentLandingCompany = () => {
     const currentLandingCompany = useMemo(() => {
         const landingCompany =
             landingCompanies &&
-            Object.keys(landingCompanies).find(
-                company => landingCompanies[company]?.shortcode === activeAccount?.landing_company_name
-            );
+            Object.keys(landingCompanies).find(company => {
+                const companyVariables = landingCompanies[company as keyof typeof landingCompanies];
 
-        return landingCompany ? landingCompanies[landingCompany] : undefined;
+                if (companyVariables && typeof companyVariables === 'object' && 'shortcode' in companyVariables) {
+                    companyVariables?.shortcode === activeAccount?.landing_company_name;
+                }
+            });
+
+        return landingCompany ? landingCompanies[landingCompany as keyof typeof landingCompanies] : undefined;
     }, [landingCompanies, activeAccount]);
 
     return {

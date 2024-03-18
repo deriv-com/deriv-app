@@ -7,6 +7,8 @@ export { ErrorScreen } from './ErrorScreen';
 export { ExpansionPanel } from './ExpansionPanel';
 export { NewsTicker } from './NewsTicker';
 export { PageContainer } from './PageContainer';
+export { PercentageSelector } from './PercentageSelector';
 export { ReceiptScreen } from './ReceiptScreen';
 export { SearchBox } from './SearchBox';
+export { TradingAppIcon } from './TradingAppIcon';
 export { TransferConfirmScreen } from './TransferConfirmScreen';

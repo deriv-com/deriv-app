@@ -1,8 +1,9 @@
+import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
+import { AccountClosure } from '../pages';
 import { LoginHistory } from '../pages/LoginHistory';
-import { DummyRoute } from '../router/components/DummyRoute';
-import { ACCOUNT_V2_ROUTES } from './routes';
+import { DummyRoute } from './components/DummyRoute';
 
 export const routes = [
     {
@@ -81,7 +82,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.TwoFactorAuthentication,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: AccountClosure,
         routeName: 'Close your account',
         routePath: ACCOUNT_V2_ROUTES.CloseAccount,
     },

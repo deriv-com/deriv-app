@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import WalletsUpgradeModal from '../wallets-upgrade-modal';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { useWalletMigration } from '@deriv/hooks';
 import userEvent from '@testing-library/user-event';
+import { useWalletMigration } from '@deriv/api';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import WalletsUpgradeModal from '../wallets-upgrade-modal';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),

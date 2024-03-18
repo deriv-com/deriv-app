@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv/api';
 import { observer, useStore } from '@deriv/stores';
 import { DesktopRealWalletsUpgrade, MobileRealWalletsUpgrade } from './components/modal-elements';
 
@@ -24,10 +24,10 @@ const RealWalletsUpgrade = observer(() => {
 
     const handleClose = () => toggleWalletsUpgrade(false);
 
-    const { start_migration } = useWalletMigration();
+    const { startMigration } = useWalletMigration();
 
     const upgradeToWallets = () => {
-        start_migration();
+        startMigration();
         toggleWalletsUpgrade(false);
     };
 

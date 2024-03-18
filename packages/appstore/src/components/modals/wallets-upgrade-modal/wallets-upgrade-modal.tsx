@@ -1,10 +1,10 @@
 import React from 'react';
+import { useWalletMigration } from '@deriv/api';
 import { Text, Button, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import WalletsImage from 'Assets/svgs/wallets';
 import './wallets-upgrade-modal.scss';
-import { useWalletMigration } from '@deriv/hooks';
 
 const WalletsUpgradeModal = observer(() => {
     const { traders_hub, ui } = useStore();

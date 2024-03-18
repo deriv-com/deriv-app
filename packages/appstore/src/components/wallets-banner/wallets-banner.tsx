@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv/api';
 import WalletsBannerUpgrade from './wallets-banner-upgrade';
 import WalletsBannerUpgrading from './wallets-banner-upgrading';
 import WalletsBannerUnsuccessful from './wallets-banner-unsuccessful';

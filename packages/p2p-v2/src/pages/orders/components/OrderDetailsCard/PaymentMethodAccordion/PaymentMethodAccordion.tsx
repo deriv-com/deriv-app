@@ -4,6 +4,7 @@ import { Button, Text } from '@deriv-com/ui';
 import IcCashierBankTransfer from '../../../../../public/ic-cashier-bank-transfer.svg';
 import IcCashierEwallet from '../../../../../public/ic-cashier-ewallet.svg';
 import IcCashierOther from '../../../../../public/ic-cashier-other.svg';
+import './PaymentMethodAccordion.scss';
 
 const mockPaymentMethodDetails = {
     '64': {
@@ -66,7 +67,7 @@ const PaymentMethodAccordion = ({ paymentMethodDetails }) => {
                 </Text>
                 {paymentMethodKeys && (
                     <Button
-                        className='h-0 p-0'
+                        className='p2p-v2-payment-method-accordion__button'
                         onClick={() => {
                             if (expandedIds.length !== paymentMethodKeys.length) setExpandedIds(paymentMethodKeys);
                             else setExpandedIds([]);

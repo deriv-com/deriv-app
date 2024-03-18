@@ -1,0 +1,15 @@
+.p2p-v2-payment-method-accordion {
+    &__button {
+        height: 0;
+        padding: 0;
+
+        &:hover {
+            background-color: transparent;
+
+            & > span {
+                // stylelint-disable-next-line declaration-no-important
+                color: #ff444f !important;
+            }
+        }
+    }
+}

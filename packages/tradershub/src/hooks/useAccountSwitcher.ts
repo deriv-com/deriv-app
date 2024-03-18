@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useUIContext } from '@/providers';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api-v2';
+import useQueryParams from './useQueryParams';
+import useRegulationFlags from './useRegulationFlags';
 
 const accountTypes = [
     { label: 'Demo', value: 'demo' },
@@ -27,6 +29,9 @@ const useAccountSwitcher = () => {
     const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
     const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
 
+    const { isEU } = useRegulationFlags();
+    const { openModal } = useQueryParams();
+
     useEffect(() => {
         if (activeType) {
             setSelected(activeType);
@@ -47,8 +52,12 @@ const useAccountSwitcher = () => {
             if (loginId) {
                 switchAccount(loginId);
             }
+
+            if (isEU && openModal && account.value === 'real') {
+                openModal('RealAccountCreation');
+            }
         },
-        [demoLoginId, firstRealLoginId, setUIState, switchAccount]
+        [demoLoginId, firstRealLoginId, isEU, openModal, setUIState, switchAccount]
     );
 
     return {

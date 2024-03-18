@@ -14,8 +14,10 @@ const Passkeys = observer(() => {
     const { ui, client } = useStore();
     const { is_mobile } = ui;
     const { is_passkey_supported } = client;
+    let timeout: ReturnType<typeof setTimeout>;
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
+    const [is_modal_open, setIsModalOpen] = React.useState(false);
     const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, reloadPasskeysList } =
         useGetPasskeysList(is_passkey_supported);
     const {
@@ -29,6 +31,11 @@ const Passkeys = observer(() => {
     } = useRegisterPasskey();
 
     const should_show_passkeys = is_passkey_supported && is_mobile;
+    const error = passkeys_list_error || passkey_registration_error;
+    const modal_content = getModalContent({
+        error,
+        is_passkey_registration_started,
+    });
 
     React.useEffect(() => {
         if (!passkeys_list?.length && !is_passkey_registered) {
@@ -40,6 +47,16 @@ const Passkeys = observer(() => {
         }
     }, [is_passkey_registered, passkeys_list]);
 
+    React.useEffect(() => {
+        if (!!error || is_passkey_registration_started) {
+            setIsModalOpen(true);
+        }
+        return () => {
+            clearTimeout(timeout);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [error, is_passkey_registration_started]);
+
     if (is_passkeys_list_loading) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
@@ -47,13 +64,14 @@ const Passkeys = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    const error = passkeys_list_error || passkey_registration_error;
-    const modal_content = getModalContent({
-        error,
-        is_passkey_registration_started,
-    });
+    // to avoid flickering with blank Modal we need first close it, then clear content
+    const onCloseModal = (delayed_action: () => void) => {
+        setIsModalOpen(false);
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(delayed_action, 300);
+    };
 
-    const onCloseErrorModal = () => {
+    const onCloseError = () => {
         if (passkeys_list_error) {
             reloadPasskeysList();
         }
@@ -63,10 +81,14 @@ const Passkeys = observer(() => {
     };
     const onModalButtonClick = () => {
         if (error) {
-            onCloseErrorModal();
+            onCloseModal(onCloseError);
         } else {
             createPasskey();
         }
+    };
+
+    const onCloseRegistration = () => {
+        onCloseModal(cancelPasskeyRegistration);
     };
 
     return (
@@ -85,11 +107,11 @@ const Passkeys = observer(() => {
                 />
             )}
             <PasskeyModal
-                toggleModal={is_passkey_registration_started ? cancelPasskeyRegistration : undefined}
+                toggleModal={is_passkey_registration_started ? onCloseRegistration : undefined}
                 has_close_icon={!!modal_content.header}
                 header={modal_content.header}
                 className='passkeys-modal'
-                is_modal_open={!!error || is_passkey_registration_started}
+                is_modal_open={is_modal_open}
                 description={modal_content.description}
                 button_text={modal_content.button_text}
                 onButtonClick={onModalButtonClick}

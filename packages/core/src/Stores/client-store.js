@@ -2663,7 +2663,12 @@ export default class ClientStore extends BaseStore {
 
     async setIsPasskeySupported() {
         try {
-            const is_passkeys_enabled = Analytics?.getFeatureValue('web_passkeys', false);
+            // TODO: resolve issues with growthbook
+            // const is_passkeys_enabled_value = Analytics?.getFeatureValue('paskeys');
+            // const is_passkeys_enabled_isOn = Analytics?.getInstances().ab.isOn('paskeys');
+            // console.log('is_passkeys_enabled_value', is_passkeys_enabled_value);
+            // console.log('is_passkeys_enabled_isOn', is_passkeys_enabled_isOn);
+            const is_passkeys_enabled = true;
             const result = await platformAuthenticatorIsAvailable();
             this.is_passkey_supported = is_passkeys_enabled && result;
         } catch (e) {

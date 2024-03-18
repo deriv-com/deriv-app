@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, Button, Modal } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import WalletsImage from 'Assets/svgs/wallets';
 import './wallets-upgrade-modal.scss';
 import { useWalletMigration } from '@deriv/hooks';
 
-const WalletsUpgradeModal = () => {
+const WalletsUpgradeModal = observer(() => {
     const { traders_hub, ui } = useStore();
     const { toggleWalletsUpgrade } = traders_hub;
     const { is_mobile, is_desktop } = ui;
@@ -29,13 +29,17 @@ const WalletsUpgradeModal = () => {
         >
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
+                    <WalletsImage
+                        image={`enable_wallets_modal_${is_mobile ? 'mobile' : 'desktop'}`}
+                        className='wallets-upgrade-modal__image'
+                    />
                     <div className='wallets-upgrade-modal__description'>
-                        <Text size={is_mobile ? 's' : 'm'} weight='bold'>
+                        <Text align={is_mobile ? 'center' : 'left'} size={is_mobile ? 's' : 'm'} weight='bold'>
                             <Localize i18n_default_text='Introducing Wallets' />
                         </Text>
-                        <Text size={is_mobile ? 'xs' : 'sm'}>
+                        <Text align={is_mobile ? 'center' : 'left'} size={is_mobile ? 'xs' : 's'}>
                             <Localize
-                                i18n_default_text='Enjoy smoother and more secure transactions in multiple currencies with Wallets – <0></0>our new and improved Cashier.'
+                                i18n_default_text='Enjoy seamless transactions across multiple currencies and an intuitive user interface with funds segregation.'
                                 components={[<br key={0} />]}
                             />
                         </Text>
@@ -50,10 +54,9 @@ const WalletsUpgradeModal = () => {
                         text={localize('Enable now')}
                     />
                 </div>
-                <WalletsImage image='upgrade_modal' className='wallets-upgrade-modal__image' />
             </Modal.Body>
         </Modal>
     );
-};
+});
 
 export default WalletsUpgradeModal;

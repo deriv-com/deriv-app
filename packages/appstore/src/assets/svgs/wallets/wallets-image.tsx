@@ -12,12 +12,15 @@ import ReadyMobileImage from 'Assets/svgs/wallets/wallets-ready-mobile.svg';
 import TradingAccounts from 'Assets/svgs/wallets/trading-accounts.svg';
 import TradingAccountsEU from 'Assets/svgs/wallets/trading-accounts-eu.svg';
 import UpgradeDesktopImage from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg';
-import UpgradeModalImage from 'Assets/svgs/wallets/wallets-upgrade-modal.svg';
+import EnableWalletsModalDesktop from 'Assets/svgs/wallets/enable-wallets-modal-desktop.svg';
+import EnableWalletsModalMobile from 'Assets/svgs/wallets/enable-wallets-modal-mobile.svg';
 import UpgradeMobileImage from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
 import WhyWalletsDesktopImage from 'Assets/svgs/wallets/why-wallets-desktop.svg';
 import WhyWalletsMobileImage from 'Assets/svgs/wallets/why-wallets-mobile.svg';
 
 export const WalletsImagesList = {
+    enable_wallets_modal_desktop: EnableWalletsModalDesktop,
+    enable_wallets_modal_mobile: EnableWalletsModalMobile,
     how_it_works: HowItWorks,
     introducing_wallets: IntroducingWallets,
     introducing_wallets_eu: IntroducingWalletsEU,
@@ -28,7 +31,6 @@ export const WalletsImagesList = {
     trading_accounts: TradingAccounts,
     trading_accounts_eu: TradingAccountsEU,
     upgrade_desktop: UpgradeDesktopImage,
-    upgrade_modal: UpgradeModalImage,
     upgrading_desktop: ReadyDesktopImage,
     upgrading_desktop_eu: ReadyDesktopEuImage,
     upgrade_mobile: UpgradeMobileImage,

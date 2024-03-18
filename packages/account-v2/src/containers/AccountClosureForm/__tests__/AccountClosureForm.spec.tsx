@@ -1,9 +1,21 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ACCOUNT_MODAL_REF } from '../../../constants';
 import { AccountClosureForm } from '../AccountClosureForm';
 
 describe('AccountClosureForm', () => {
+    let elModalRoot: HTMLElement;
+    beforeAll(() => {
+        elModalRoot = document.createElement('div');
+        elModalRoot.setAttribute('id', ACCOUNT_MODAL_REF.replace('#', ''));
+        document.body.appendChild(elModalRoot);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(elModalRoot);
+    });
+
     it('should render form', () => {
         render(<AccountClosureForm handleOnBack={jest.fn()} />);
 

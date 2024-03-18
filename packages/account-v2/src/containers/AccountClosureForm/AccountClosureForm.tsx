@@ -1,8 +1,8 @@
 import React, { Fragment, useReducer, useRef } from 'react';
 import { Field, Form, Formik, FormikProps } from 'formik';
-import { StandaloneTriangleExclamationRegularIcon } from '@deriv/quill-icons';
 import { Button, Checkbox, Modal, Text, TextArea } from '@deriv-com/ui';
 import {
+    ACCOUNT_MODAL_REF,
     accountClosureReasons,
     CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT,
     MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT,
@@ -13,8 +13,11 @@ import {
     TAccountClosureReasonsFormValues,
     validateAccountClosure,
 } from '../../utils/accountClosure';
+import { AccountClosureConfirmModal } from './AccountClosureConfirmModal';
+import { AccountClosureSuccessModal } from './AccountClosureSuccessModal';
 
 export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void }) => {
+    Modal.setAppElement(ACCOUNT_MODAL_REF);
     const reasons = accountClosureReasons();
     const validationSchema = getAccountClosureValidationSchema();
 
@@ -49,6 +52,9 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
             }
             case 'displayConfirmModal': {
                 return { ...state, displayConfirmModal: !state.displayConfirmModal };
+            }
+            case 'displaySuccessModal': {
+                return { ...state, displaySuccessModal: !state.displaySuccessModal };
             }
             default:
                 return state;
@@ -146,44 +152,18 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                     </Form>
                 )}
             </Formik>
-            <Modal className='p-24 w-[440px] sm:w-[312px]' isOpen={state.displayConfirmModal}>
-                <Modal.Body className='flex flex-col'>
-                    <StandaloneTriangleExclamationRegularIcon
-                        className='self-center fill-status-light-danger'
-                        iconSize='2xl'
-                    />
-                    <Text align='center' as='h4' size='md' weight='bold'>
-                        Close your account?
-                    </Text>
-                    <Text align='center' as='p' className='mt-24' size='sm'>
-                        Closing your account will automatically log you out. We shall delete your personal information
-                        as soon as our legal obligations are met.
-                    </Text>
-                </Modal.Body>
-                <Modal.Footer className='mt-24 flex gap-x-16 justify-end' hideBorder>
-                    <Button
-                        color='black'
-                        onClick={() => {
-                            dispatch({ payload: false, type: 'displayConfirmModal' });
-                            // [TODO]: Handle Form submission by enabling the below lines and make API call
-                        }}
-                        rounded='sm'
-                        size='md'
-                        type='button'
-                        variant='outlined'
-                    >
-                        Go back
-                    </Button>
-                    <Button
-                        color='primary'
-                        onClick={() => dispatch({ payload: false, type: 'displayConfirmModal' })}
-                        rounded='sm'
-                        size='md'
-                    >
-                        Close account
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <AccountClosureConfirmModal
+                handleCancel={() => dispatch({ payload: false, type: 'displayConfirmModal' })}
+                handleSubmit={() => {
+                    dispatch({ payload: false, type: 'displayConfirmModal' });
+                    dispatch({ payload: true, type: 'displaySuccessModal' });
+                }}
+                isModalOpen={state.displayConfirmModal}
+            />
+            <AccountClosureSuccessModal
+                handleClose={() => dispatch({ payload: false, type: 'displaySuccessModal' })}
+                isModalOpen={state.displaySuccessModal}
+            />
         </Fragment>
     );
 };

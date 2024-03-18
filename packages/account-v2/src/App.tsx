@@ -9,6 +9,7 @@ const App: React.FC = () => {
     return (
         <APIProvider standalone>
             <AuthProvider>
+                <div id='account_modal' />
                 <AppOverlay title='Settings'>
                     <RouteLinks />
                 </AppOverlay>

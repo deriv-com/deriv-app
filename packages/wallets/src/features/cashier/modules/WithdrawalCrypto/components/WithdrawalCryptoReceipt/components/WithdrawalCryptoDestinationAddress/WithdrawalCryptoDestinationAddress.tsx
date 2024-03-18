@@ -1,10 +1,8 @@
 import React from 'react';
 import { WalletClipboard, WalletText } from '../../../../../../../../components';
-import useDevice from '../../../../../../../../hooks/useDevice';
 import './WithdrawalCryptoDestinationAddress.scss';
 
 const WithdrawalCryptoDestinationAddress: React.FC<{ address?: string }> = ({ address }) => {
-    const { isMobile } = useDevice();
     return (
         <div className='wallets-withdrawal-crypto-destination-address'>
             <div className='wallets-withdrawal-crypto-destination-address__title'>
@@ -16,12 +14,7 @@ const WithdrawalCryptoDestinationAddress: React.FC<{ address?: string }> = ({ ad
                 <WalletText size='sm' weight='bold'>
                     {address}
                 </WalletText>
-                <WalletClipboard
-                    infoMessage={isMobile ? undefined : 'copy'}
-                    popoverAlignment={isMobile ? 'left' : 'bottom'}
-                    successMessage='copied'
-                    textCopy={address ?? ''}
-                />
+                <WalletClipboard textCopy={address ?? ''} />
             </div>
         </div>
     );

@@ -83,7 +83,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient } = useAPIContext();
+    const { queryClient, setOnReconnected } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -113,6 +113,12 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
     );
 
     useEffect(() => {
+        setOnReconnected(() => {
+            mutateAsync({ payload: { authorize: getToken(loginid || '') ?? '' } });
+        });
+    }, [loginid]);
+
+    useEffect(() => {
         setIsLoading(true);
         setIsSuccess(false);
 
@@ -129,6 +135,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout }: AuthProviderProps
                         processAuthorizeResponse(res);
                         setIsLoading(false);
                         setIsSuccess(true);
+                        setLoginid(res?.authorize?.loginid ?? '');
                     })
                     .catch(() => {
                         setIsLoading(false);

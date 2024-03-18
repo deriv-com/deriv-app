@@ -1,7 +1,8 @@
 import React from 'react';
 import DxtradePasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
-import { ActionScreen, SentEmailContent } from '@/components';
-import { useCFDContext, useModal } from '@/providers';
+import { ActionScreen } from '@/components';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { useAccountStatus } from '@deriv/api-v2';
 import useDxtradeAccountHandler from '../../../../hooks/useDxtradeAccountHandler';
 import { MarketType, QueryStatus } from '../../constants';
@@ -15,8 +16,8 @@ type TDxtradePasswordInputProps = {
 
 const DxtradePasswordInput = ({ password, setPassword }: TDxtradePasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
-    const { show } = useModal();
-    const { cfdState } = useCFDContext();
+    const { cfdState, setCfdState } = useCFDContext();
+    const { openModal } = useQueryParams();
 
     const marketType = MarketType.ALL;
     const { platform } = cfdState;
@@ -55,7 +56,10 @@ const DxtradePasswordInput = ({ password, setPassword }: TDxtradePasswordInputPr
             marketType={marketType}
             onPasswordChange={e => setPassword(e.target.value)}
             onPrimaryClick={() => handleSubmit(password)}
-            onSecondaryClick={() => show(<SentEmailContent platform={platform} />)}
+            onSecondaryClick={() => {
+                setCfdState({ platform });
+                openModal('SentEmailContentModal');
+            }}
             password={password}
             passwordError={createDxtradeAccountError?.error?.code === 'PasswordError'}
             platform={platform}

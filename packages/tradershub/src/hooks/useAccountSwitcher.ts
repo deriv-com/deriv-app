@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Regulation } from '@/constants';
 import { useUIContext } from '@/providers';
 import { useActiveTradingAccount, useAuthorize, useIsDIELEnabled, useTradingAccountsList } from '@deriv/api-v2';
 
@@ -21,7 +22,7 @@ const useAccountSwitcher = () => {
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
     const { setUIState } = useUIContext();
-    const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
+    const activeAccountType = activeTradingAccount?.is_virtual ? accountTypes[0].value : accountTypes[1].value;
     const activeType = accountTypes.find(account => account.value === activeAccountType);
     const [selectedAccount, setSelected] = useState(activeType);
     const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
@@ -29,9 +30,9 @@ const useAccountSwitcher = () => {
     const { data: isDIEL } = useIsDIELEnabled();
 
     useEffect(() => {
-        if (isDIEL && activeAccountType === 'demo') {
+        if (isDIEL && activeAccountType === accountTypes[0].value) {
             setUIState({
-                regulation: 'Non-EU',
+                regulation: Regulation.NonEU,
             });
         }
 
@@ -50,7 +51,7 @@ const useAccountSwitcher = () => {
                 accountType: account.value,
             });
 
-            const loginId = account.value === 'demo' ? demoLoginId : firstRealLoginId;
+            const loginId = account.value === accountTypes[0].value ? demoLoginId : firstRealLoginId;
             if (loginId) {
                 switchAccount(loginId);
             }

@@ -1,49 +1,23 @@
 import React from 'react';
+import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
 import { Divider } from '@deriv-com/ui';
+import { OrderDetailsCardFooter } from './OrderDetailsCardFooter';
 import { OrderDetailsCardHeader } from './OrderDetailsCardHeader';
-import { OrderDetailsInfo } from './OrderDetailsInfo';
+import { OrderDetailsCardInfo } from './OrderDetailsCardInfo';
 import './OrderDetailsCard.scss';
 
-// TODO: remove this mock data when integrating real confirm order flow
-const mockExpiryTime = new Date().getTime() + 1 * 3600000;
-
-const mockOrderDetails = {
-    displayPaymentAmount: '155000.00',
-    id: '1',
-    localCurrency: 'USD',
-    orderExpiryMilliseconds: mockExpiryTime,
-    statusString: 'Wait for payment',
-};
-
 type TOrderDetailsCardProps = {
-    orderId: string;
+    orderDetails: ExtendedOrderDetails;
 };
 
-const OrderDetailsCard = ({ orderId }: TOrderDetailsCardProps) => {
-    // const { data: orderDetails } = p2p.order.useGet(orderId);
-
-    const { displayPaymentAmount, id, localCurrency, orderExpiryMilliseconds, statusString } = mockOrderDetails;
-
-    const orderDetails = [
-        { text: 'Buyer’s nickname', value: 'client CR90000343' },
-        { text: 'Buyer’s real name', value: 'Bob' },
-        { text: 'Receive', value: '155000.00 IDR' },
-        { text: 'Send', value: '10.00 USD' },
-        { text: 'Rate (1 USD)', value: '15500.00 IDR' },
-        { text: 'Time', value: '01 Jan 2022, 00:00' },
-    ];
-
+const OrderDetailsCard = ({ orderDetails }: TOrderDetailsCardProps) => {
     return (
         <div className='p2p-v2-order-details-card'>
-            <OrderDetailsCardHeader
-                localCurrency={localCurrency}
-                orderAmount={displayPaymentAmount}
-                orderExpiryTime={orderExpiryMilliseconds}
-                orderId={id}
-                orderStatus={statusString}
-            />
+            <OrderDetailsCardHeader orderDetails={orderDetails} />
             <Divider color='#f2f3f4' />
-            <OrderDetailsInfo orderDetails={orderDetails} />
+            <OrderDetailsCardInfo orderDetails={orderDetails} />
+            <Divider color='#f2f3f4' />
+            <OrderDetailsCardFooter orderDetails={orderDetails} />
         </div>
     );
 };

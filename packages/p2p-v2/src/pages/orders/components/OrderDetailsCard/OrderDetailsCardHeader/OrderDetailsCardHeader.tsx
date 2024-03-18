@@ -1,46 +1,62 @@
 import React from 'react';
+import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
 import { getDistanceToServerTime } from '@/utils';
 import { useServerTime } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 import { OrderTimer } from '../../OrderTimer';
 
 type TOrderDetailsCardProps = {
-    localCurrency: string;
-    orderAmount: string;
-    orderExpiryTime: number;
-    orderId: string;
-    orderStatus: string;
+    orderDetails: ExtendedOrderDetails;
 };
 
-const OrderDetailsCardHeader = ({
-    localCurrency,
-    orderAmount,
-    orderExpiryTime,
-    orderId,
-    orderStatus,
-}: TOrderDetailsCardProps) => {
+const OrderDetailsCardHeader = ({ orderDetails }: TOrderDetailsCardProps) => {
+    const {
+        displayPaymentAmount,
+        hasTimerExpired,
+        id,
+        isBuyerConfirmedOrder,
+        isPendingOrder,
+        local_currency: localCurrency,
+        orderExpiryMilliseconds,
+        shouldHighlightAlert,
+        shouldHighlightDanger,
+        shouldHighlightSuccess,
+        shouldShowOrderTimer,
+        statusString,
+    } = orderDetails;
+
     const { data: serverTime } = useServerTime();
-    const distance = getDistanceToServerTime(orderExpiryTime, serverTime?.server_time_moment);
+    const distance = getDistanceToServerTime(orderExpiryMilliseconds, serverTime?.server_time_moment);
+    const getStatusColor = () => {
+        if (shouldHighlightAlert) return 'warning';
+        else if (shouldHighlightDanger) return 'error';
+        else if (shouldHighlightSuccess) return 'success';
+        return 'less-prominent';
+    };
 
     return (
         <div className='flex justify-between p-[1.6rem]'>
             <div className='flex flex-col'>
-                <Text color='warning' size='sm' weight='bold'>
-                    {orderStatus}
+                <Text color={getStatusColor()} size='md' weight='bold'>
+                    {statusString}
                 </Text>
-                <Text size='xl'>
-                    {orderAmount} {localCurrency}
-                </Text>
+                {!hasTimerExpired && (isPendingOrder || isBuyerConfirmedOrder) && (
+                    <Text size='xl'>
+                        {displayPaymentAmount} {localCurrency}
+                    </Text>
+                )}
                 <Text color='less-prominent' size='xs'>
-                    Order ID {orderId}
+                    Order ID {id}
                 </Text>
             </div>
-            <div className='flex flex-col justify-center gap-1'>
-                <Text align='center' size='xs'>
-                    Time left
-                </Text>
-                <OrderTimer distance={distance} />
-            </div>
+            {shouldShowOrderTimer && (
+                <div className='flex flex-col justify-center gap-1'>
+                    <Text align='center' size='xs'>
+                        Time left
+                    </Text>
+                    <OrderTimer distance={distance} />
+                </div>
+            )}
         </div>
     );
 };

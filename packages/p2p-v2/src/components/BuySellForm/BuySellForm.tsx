@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import { Control, Controller, FieldValues, useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { TAdvertiserPaymentMethods, TAdvertType } from 'types';
-import { BUY_SELL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
+import { BASE_URL, BUY_SELL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
 import {
     getPaymentMethodObjects,
     getTextFieldError,
@@ -88,6 +89,7 @@ const BuySellForm = ({
         };
     });
 
+    const history = useHistory();
     const { isMobile } = useDevice();
     const isBuy = type === BUY_SELL.BUY;
 
@@ -130,6 +132,8 @@ const BuySellForm = ({
         }
 
         mutate(payload);
+        history.push(`${BASE_URL}/orders?order_id=${id}`);
+        onRequestClose();
     };
 
     const calculatedRate = removeTrailingZeros(roundOffDecimal(effectiveRate, setDecimalPlaces(effectiveRate, 6)));

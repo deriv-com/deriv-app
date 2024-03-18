@@ -1,7 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useHistory } from 'react-router-dom';
 import { TOrders } from 'types';
-import { ORDERS_STATUS } from '@/constants';
+import { BASE_URL, ORDERS_STATUS } from '@/constants';
 import { useExtendedOrderDetails, useQueryString } from '@/hooks';
 import { OrderRatingButton, OrderStatusTag, OrderTimer } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
@@ -11,6 +12,7 @@ import ChatIcon from '../../../../../public/ic-chat.svg';
 import './OrdersTableRow.scss';
 
 const OrdersTableRow = ({ ...props }: TOrders[number]) => {
+    const history = useHistory();
     const { isMobile } = useDevice();
     const { queryString } = useQueryString();
     const isPast = queryString.get('tab') === ORDERS_STATUS.PAST_ORDERS;
@@ -76,7 +78,10 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     }
 
     return (
-        <div className={clsx('p2p-v2-orders-table-row', { 'p2p-v2-orders-table-row--inactive': isPast })}>
+        <div
+            className={clsx('p2p-v2-orders-table-row', { 'p2p-v2-orders-table-row--inactive': isPast })}
+            onClick={() => history.push(`${BASE_URL}/orders?order_id=${id}`)}
+        >
             {isPast && <Text size='sm'>{purchaseTime}</Text>}
             <Text size='sm'>{isBuyOrderForUser ? 'Buy' : 'Sell'}</Text>
             <Text size='sm'>{id}</Text>

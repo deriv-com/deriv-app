@@ -1,22 +1,22 @@
 import React from 'react';
 import { TImageTestID, TWalletsImagesListKey, WalletsImageProps } from './image-types';
-import HowItWorks from 'Assets/svgs/wallets/how-it-works.svg';
-import IntroducingWallets from 'Assets/svgs/wallets/introducing-wallets.svg';
-import IntroducingWalletsEU from 'Assets/svgs/wallets/introducing-wallets-eu.svg';
-import ReadyToEnableWalletsDesktop from './ready-to-enable-wallets-desktop.svg';
-import ReadyToEnableWalletsMobile from './ready-to-enable-wallets-mobile.svg';
-import ReadyDesktopEuImage from 'Assets/svgs/wallets/wallets-ready-desktop-eu.svg';
-import ReadyDesktopImage from 'Assets/svgs/wallets/wallets-ready-desktop.svg';
-import ReadyMobileEuImage from 'Assets/svgs/wallets/wallets-ready-mobile-eu.svg';
-import ReadyMobileImage from 'Assets/svgs/wallets/wallets-ready-mobile.svg';
-import TradingAccounts from 'Assets/svgs/wallets/trading-accounts.svg';
-import TradingAccountsEU from 'Assets/svgs/wallets/trading-accounts-eu.svg';
-import UpgradeDesktopImage from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg';
-import EnableWalletsModalDesktop from 'Assets/svgs/wallets/enable-wallets-modal-desktop.svg';
-import EnableWalletsModalMobile from 'Assets/svgs/wallets/enable-wallets-modal-mobile.svg';
-import UpgradeMobileImage from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
-import WalletsUpgradeStepOneDesktop from 'Assets/svgs/wallets/wallets-upgrade-step-one-desktop.svg';
-import WalletsUpgradeStepOneMobile from 'Assets/svgs/wallets/wallets-upgrade-step-one-mobile.svg';
+import HowItWorks from './how-it-works.svg';
+import IntroducingWallets from './introducing-wallets.svg';
+import IntroducingWalletsEU from './introducing-wallets-eu.svg';
+import ReadyDesktopEuImage from './wallets-ready-desktop-eu.svg';
+import ReadyDesktopImage from './wallets-ready-desktop.svg';
+import ReadyMobileEuImage from './wallets-ready-mobile-eu.svg';
+import ReadyMobileImage from './wallets-ready-mobile.svg';
+import TradingAccounts from './trading-accounts.svg';
+import TradingAccountsEU from './trading-accounts-eu.svg';
+import UpgradeDesktopImage from './wallets-upgrade-desktop.svg';
+import EnableWalletsModalDesktop from './enable-wallets-modal-desktop.svg';
+import EnableWalletsModalMobile from './enable-wallets-modal-mobile.svg';
+import UpgradeMobileImage from './wallets-upgrade-mobile.svg';
+import WalletsUpgradeStepOneDesktop from './wallets-upgrade-step-one-desktop.svg';
+import WalletsUpgradeStepOneMobile from './wallets-upgrade-step-one-mobile.svg';
+import WalletsUpgradeStepTwoDesktop from './wallets-upgrade-step-two-desktop.svg';
+import WalletsUpgradeStepTwoMobile from './wallets-upgrade-step-two-mobile.svg';
 
 export const WalletsImagesList = {
     enable_wallets_modal_desktop: EnableWalletsModalDesktop,
@@ -36,8 +36,8 @@ export const WalletsImagesList = {
     upgrade_mobile: UpgradeMobileImage,
     upgrading_mobile: ReadyMobileImage,
     upgrading_mobile_eu: ReadyMobileEuImage,
-    ready_to_enable_wallets_desktop: ReadyToEnableWalletsDesktop,
-    ready_to_enable_wallets_mobile: ReadyToEnableWalletsMobile,
+    wallets_upgrade_step_two_desktop: WalletsUpgradeStepTwoDesktop,
+    wallets_upgrade_step_two_mobile: WalletsUpgradeStepTwoMobile,
     wallets_upgrade_step_one_desktop: WalletsUpgradeStepOneDesktop,
     wallets_upgrade_step_one_mobile: WalletsUpgradeStepOneMobile,
 } as const;

@@ -3,7 +3,7 @@ import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
 import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getManualFormValidationSchema, setInitialValues } from '../../utils/manualFormUtils';
+import { getManualFormValidationSchema } from '../../utils/manualFormUtils';
 import { ManualFormDocumentUpload } from './ManualFormDocumentUpload';
 import { ManualFormFooter } from './ManualFormFooter';
 import { ManualFormInputs } from './ManualFormInputs';
@@ -28,16 +28,20 @@ export const ManualForm = ({
     const validationSchema = getManualFormValidationSchema(selectedDocument, isExpiryDateRequired);
 
     const initialValues = useMemo(() => {
-        const defaultValues = setInitialValues(Object.keys(validationSchema.fields));
+        const defaultValues = validationSchema.getDefault();
         const formValues = { ...defaultValues, ...formData };
-        delete formValues[MANUAL_DOCUMENT_SELFIE];
+        // Removing Selfie data from formValues as it is not part of this section of manual form
+        if (MANUAL_DOCUMENT_SELFIE in formValues) {
+            delete formValues[MANUAL_DOCUMENT_SELFIE];
+        }
         return formValues;
-    }, [formData, validationSchema.fields]);
+    }, [formData, validationSchema]);
 
     return (
         <Formik
             initialValues={initialValues as TmanualDocumentFormValues}
             onSubmit={onSubmit}
+            validateOnMount
             validationSchema={validationSchema}
         >
             {({ dirty, isSubmitting, isValid }) => (
@@ -61,7 +65,7 @@ export const ManualForm = ({
                             >
                                 Back
                             </Button>
-                            <Button disabled={!isValid || isSubmitting || !dirty} size='lg'>
+                            <Button disabled={!isValid || isSubmitting || !dirty} size='lg' type='submit'>
                                 Next
                             </Button>
                         </div>

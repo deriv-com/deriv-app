@@ -41,7 +41,7 @@ export const OnfidoView = ({
                 <div
                     className={twMerge(
                         !isOnfidoInitialized && 'hidden',
-                        !isOnfidoEnabled && 'opacity-12 pointer-events-none'
+                        !isOnfidoEnabled && 'opacity-48 pointer-events-none'
                     )}
                     data-testid='dt_onfido_element'
                     id={onfidoElementId}

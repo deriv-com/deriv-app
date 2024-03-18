@@ -1,6 +1,6 @@
 import React from 'react';
 import { CurrencyIcon, TradingAppIcon } from '../../../../components';
-import { getMarketType } from '../../../../helpers';
+import { getMT5AccountDetails } from '../../../../helpers';
 import { TTransferableAccounts } from '../../types';
 
 type TProps = {
@@ -17,7 +17,9 @@ const TransferAccountIcon: React.FC<React.PropsWithChildren<TProps>> = ({ accoun
     if (account.account_type === 'mt5')
         return (
             <TradingAppIcon
-                name={`D${account.account_type.toUpperCase()}_${getMarketType(account.mt5_group).toUpperCase()}`}
+                name={`D${account.account_type.toUpperCase()}_${getMT5AccountDetails(
+                    account.mt5_group
+                ).marketTypeDetails.title.toUpperCase()}`}
                 size={size}
             />
         );

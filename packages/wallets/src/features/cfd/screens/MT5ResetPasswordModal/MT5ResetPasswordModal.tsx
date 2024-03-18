@@ -27,7 +27,7 @@ type TFormInitialValues = {
 type TProps = {
     onClickSuccess: () => void;
     sendEmailVerification: () => void;
-    setStorePassword: Dispatch<SetStateAction<string>>;
+    setPassword: Dispatch<SetStateAction<string>>;
     successButtonLoading: boolean;
 };
 
@@ -40,21 +40,20 @@ const SuccessButton = ({ isFullWidth, isLoading, onClick }: ComponentProps<typeo
 const MT5ResetPasswordModal: React.FC<TProps> = ({
     onClickSuccess,
     sendEmailVerification,
-    setStorePassword,
+    setPassword,
     successButtonLoading,
 }) => {
     const { error, isLoading, isSuccess, mutateAsync: tradingPasswordChange } = useTradingPlatformPasswordChange();
-    const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
+
     const { platform, title } = PlatformDetails.mt5;
     const { isDesktop, isMobile } = useDevice();
-    const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
     const { hide, show } = useModal();
+    const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
+
+    const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
     const formikRef = useRef<FormikProps<TFormInitialValues> | null>(null);
 
     const handleSuccessButtonClick = () => {
-        if (formikRef.current?.values?.newPassword) {
-            setStorePassword(formikRef.current?.values?.newPassword);
-        }
         onClickSuccess();
         hide();
     };
@@ -86,8 +85,13 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
         );
     }
 
-    const validateCurrentPassword = (value: string) => {
-        if (!value) return 'The field is required';
+    const onFormSubmitHandler = (values: TFormInitialValues) => {
+        tradingPasswordChange({
+            new_password: values.newPassword,
+            old_password: values.currentPassword,
+            platform,
+        });
+        setPassword(values.newPassword);
     };
 
     useEffect(() => {
@@ -96,88 +100,89 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
         }
     }, [error]);
 
-    const onFormSubmitHandler = async (values: TFormInitialValues) => {
-        tradingPasswordChange({
-            new_password: values.newPassword,
-            old_password: values.currentPassword,
-            platform,
-        });
+    const validateCurrentPassword = (value: string) => {
+        if (!value) return 'The field is required';
     };
 
     return (
-        <ModalStepWrapper title={`${title} latest password requirements`}>
-            <div className='wallets-mt5-reset'>
-                <Formik initialValues={initialValues} innerRef={formikRef} onSubmit={onFormSubmitHandler}>
-                    {({ errors, handleChange, values }) => (
-                        <Form>
-                            <div className='wallets-mt5-reset__container'>
-                                <div className='wallets-mt5-reset__content'>
-                                    <WalletText size='sm'>
-                                        To enhance your MT5 account security we have upgraded our password policy.
-                                        <br />
-                                        Please update your password accordingly.
-                                    </WalletText>
-                                    <div className='wallets-mt5-reset__fields'>
-                                        <Field name='currentPassword' validate={validateCurrentPassword}>
-                                            {({ field, form }: FieldProps) => {
-                                                return (
-                                                    <WalletTextField
-                                                        autoComplete='current-password'
-                                                        errorMessage={form.errors[field.name]}
-                                                        isInvalid={Boolean(form.errors[field.name])}
-                                                        label='Current password'
-                                                        name={field.name}
-                                                        onBlur={field.onBlur}
-                                                        onChange={field.onChange}
-                                                        renderRightIcon={() => (
-                                                            <PasswordViewerIcon
-                                                                setViewPassword={setIsCurrentPasswordVisible}
-                                                                viewPassword={isCurrentPasswordVisible}
-                                                            />
-                                                        )}
-                                                        type={isCurrentPasswordVisible ? 'text' : 'password'}
-                                                        value={values.currentPassword}
-                                                    />
-                                                );
-                                            }}
-                                        </Field>
-                                        <WalletPasswordFieldLazy
-                                            label='New Password'
-                                            mt5Policy
-                                            name='newPassword'
-                                            onChange={handleChange}
-                                            password={values.newPassword}
-                                        />
-                                    </div>
-                                    <ul className='wallets-mt5-reset__requirements'>
-                                        {passwordRequirements.map(requirement => (
-                                            <li key={requirement}>
-                                                <WalletText size='sm'>{requirement}</WalletText>
-                                            </li>
-                                        ))}
-                                    </ul>
+        <div className='wallets-mt5-reset'>
+            {isDesktop && (
+                <div className='wallets-mt5-reset__header'>
+                    <WalletText as='h2' weight='bold'>
+                        {title} latest password requirements
+                    </WalletText>
+                </div>
+            )}
+            <Formik initialValues={initialValues} innerRef={formikRef} onSubmit={onFormSubmitHandler}>
+                {({ errors, handleChange, values }) => (
+                    <Form>
+                        <div className='wallets-mt5-reset__container'>
+                            <div className='wallets-mt5-reset__content'>
+                                <WalletText size='sm'>
+                                    To enhance your MT5 account security we have upgraded our password policy.
+                                    <br />
+                                    Please update your password accordingly.
+                                </WalletText>
+                                <div className='wallets-mt5-reset__fields'>
+                                    <Field name='currentPassword' validate={validateCurrentPassword}>
+                                        {({ field, form }: FieldProps) => {
+                                            return (
+                                                <WalletTextField
+                                                    autoComplete='current-password'
+                                                    errorMessage={form.errors[field.name]}
+                                                    isInvalid={Boolean(form.errors[field.name])}
+                                                    label='Current password'
+                                                    name={field.name}
+                                                    onBlur={field.onBlur}
+                                                    onChange={handleChange}
+                                                    renderRightIcon={() => (
+                                                        <PasswordViewerIcon
+                                                            setViewPassword={setIsCurrentPasswordVisible}
+                                                            viewPassword={isCurrentPasswordVisible}
+                                                        />
+                                                    )}
+                                                    type={isCurrentPasswordVisible ? 'text' : 'password'}
+                                                    value={values.currentPassword}
+                                                />
+                                            );
+                                        }}
+                                    </Field>
+                                    <WalletPasswordFieldLazy
+                                        label='New Password'
+                                        mt5Policy
+                                        name='newPassword'
+                                        onChange={handleChange}
+                                        password={values.newPassword}
+                                    />
                                 </div>
+                                <ul className='wallets-mt5-reset__requirements'>
+                                    {passwordRequirements.map(requirement => (
+                                        <li key={requirement}>
+                                            <WalletText size='sm'>{requirement}</WalletText>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
-                            <div className='wallets-mt5-reset__footer'>
-                                <WalletButtonGroup isFlex isFullWidth={isMobile}>
-                                    <WalletButton onClick={sendEmailVerification} size='lg' variant='outlined'>
-                                        Forgot password?
-                                    </WalletButton>
-                                    <WalletButton
-                                        disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
-                                        isLoading={isLoading}
-                                        size='lg'
-                                        type='submit'
-                                    >
-                                        Change my password
-                                    </WalletButton>
-                                </WalletButtonGroup>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
-        </ModalStepWrapper>
+                        </div>
+                        <div className='wallets-mt5-reset__footer'>
+                            <WalletButtonGroup isFlex isFullWidth={isMobile}>
+                                <WalletButton onClick={sendEmailVerification} size='lg' variant='outlined'>
+                                    Forgot password?
+                                </WalletButton>
+                                <WalletButton
+                                    disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
+                                    isLoading={isLoading}
+                                    size='lg'
+                                    type='submit'
+                                >
+                                    Change my password
+                                </WalletButton>
+                            </WalletButtonGroup>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        </div>
     );
 };
 

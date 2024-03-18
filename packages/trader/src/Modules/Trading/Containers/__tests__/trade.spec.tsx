@@ -84,6 +84,7 @@ describe('Trader', () => {
             </StoreProvider>
         );
         expect(screen.getByText('PositionsDrawer')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_swipeable')).not.toBeInTheDocument();
         expect(screen.getByText('TradeChart')).toBeInTheDocument();
         expect(screen.getByText('FormLayout')).toBeInTheDocument();
     });
@@ -100,6 +101,7 @@ describe('Trader', () => {
             </StoreProvider>
         );
         expect(screen.queryByText('PositionsDrawer')).not.toBeInTheDocument();
+        expect(screen.getAllByTestId('dt_swipeable')).not.toHaveLength(0);
         expect(screen.getByText('TradeChart')).toBeInTheDocument();
         expect(screen.getByText('FormLayout')).toBeInTheDocument();
     });
@@ -117,7 +119,7 @@ describe('Trader', () => {
         expect(screen.getByText('This market is closed')).toBeInTheDocument();
     });
 
-    it('should call unmount and onMount when component is mounted and unmounted', () => {
+    it('should call unMount and onUnmount when component is mounted and unmounted', () => {
         const onMount = jest.fn();
         const onUnmount = jest.fn();
         rootStore.modules.trade.onMount = onMount;
@@ -158,7 +160,7 @@ describe('Trader', () => {
         expect(screen.queryByText('ChartLoader')).not.toBeInTheDocument();
     });
 
-    it('should have correct height offset for div100vhcontainer for accumulator', () => {
+    it('should have a correct height offset for div100vhcontainer for accumulator', () => {
         rootStore.modules.trade.is_accumulator = true;
         render(
             <StoreProvider store={mockStore({})}>
@@ -170,7 +172,7 @@ describe('Trader', () => {
         expect(screen.getByTestId('dt_div100vhcontainer')).toHaveAttribute('height_offset', '295px');
     });
 
-    it('should not have height offset for div100vhcontainer for turbos', () => {
+    it('should have a correct height offset for div100vhcontainer for turbos', () => {
         rootStore.modules.trade.is_accumulator = false;
         rootStore.modules.trade.is_turbos = true;
         render(

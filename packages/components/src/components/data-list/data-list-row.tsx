@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
-import debounce from 'lodash.debounce';
 import { NavLink } from 'react-router-dom';
 import { useIsMounted, clickAndKeyEventHandler } from '@deriv/shared';
 import { TPassThrough, TRow } from '../types/common.types';
 import { TColIndex, TDataListCell } from './data-list-cell';
 import { TSource } from '../data-table/table-row';
+import { useDebounce } from '../../hooks/use-debounce';
 
 type TMobileRowRenderer = {
     row?: TRow;
@@ -48,14 +48,7 @@ const DataListRow = ({
 }: TDataListRow) => {
     const [show_desc, setShowDesc] = React.useState(false);
     const isMounted = useIsMounted();
-
-    const debouncedHideDetails = React.useMemo(
-        () =>
-            debounce(() => {
-                setShowDesc(false);
-            }, 5000),
-        []
-    );
+    const debouncedHideDetails = useDebounce(() => setShowDesc(false), 5000);
 
     const toggleDetails = () => {
         if (action_desc) {
@@ -73,11 +66,6 @@ const DataListRow = ({
             measure?.();
         }
     }, [show_desc, is_dynamic_height, measure]);
-
-    React.useEffect(() => {
-        return debouncedHideDetails.cancel;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>

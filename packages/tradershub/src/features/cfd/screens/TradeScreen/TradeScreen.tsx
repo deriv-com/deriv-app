@@ -3,7 +3,7 @@ import ImportantIcon from '@/assets/svgs/ic-important.svg';
 import { useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
-import { MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
+import { MarketType, MarketTypeDetails, PlatformDetails, DesktopLinks } from '@cfd/constants';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { TradeDetailsItem } from './TradeDetailsItem';
@@ -134,27 +134,31 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                 {platform === mt5Platform && (
                     <Fragment>
                         <TradeLink
-                            app='mt5_web'
+                            app={DesktopLinks.MT5_WEB}
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
                         {isDesktop && (
                             <Fragment>
-                                <TradeLink app='mt5_windows' platform={mt5Platform} />
-                                <TradeLink app='mt5_macos' platform={mt5Platform} />
-                                <TradeLink app='mt5_linux' platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_WINDOWS} platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_MACOS} platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_LINUX} platform={mt5Platform} />
                             </Fragment>
                         )}
                     </Fragment>
                 )}
                 {platform === dxtradePlatform && (
-                    <TradeLink app='mt5_web' isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
+                    <TradeLink
+                        app={DesktopLinks.DXTRADE_WEB}
+                        isDemo={activeAccount?.is_virtual}
+                        platform={dxtradePlatform}
+                    />
                 )}
                 {platform === ctraderPlatform && isDesktop && (
                     <Fragment>
-                        <TradeLink app='ctrader_web' platform={ctraderPlatform} />
-                        <TradeLink app='ctrader_windows' platform={ctraderPlatform} />
-                        <TradeLink app='ctrader_mac' platform={ctraderPlatform} />
+                        <TradeLink app={DesktopLinks.CTRADER_WEB} platform={ctraderPlatform} />
+                        <TradeLink app={DesktopLinks.CTRADER_WINDOWS} platform={ctraderPlatform} />
+                        <TradeLink app={DesktopLinks.CTRADER_MAC} platform={ctraderPlatform} />
                     </Fragment>
                 )}
             </div>

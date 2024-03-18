@@ -24,6 +24,7 @@ type TDesktopLinks =
     | 'ctrader_mac'
     | 'ctrader_web'
     | 'ctrader_windows'
+    | 'dxtrade_web'
     | 'mt5_linux'
     | 'mt5_macos'
     | 'mt5_web'
@@ -67,7 +68,8 @@ export const DesktopLinks = {
     MT5_MACOS: 'mt5_macos',
     MT5_WEB: 'mt5_web',
     MT5_WINDOWS: 'mt5_windows',
-};
+    DXTRADE_WEB: 'dxtrade_web',
+} as const;
 
 export const MarketType = {
     ALL: 'all',
@@ -151,6 +153,12 @@ export const AppToContentMapper: TAppToContentMapper = {
         text: 'Open',
         title: 'cTrader web',
     },
+    dxtrade_web: {
+        icon: '',
+        link: '',
+        text: 'Open',
+        title: 'DerivX web',
+    },
     ctrader_windows: {
         icon: <WindowsIcon />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
@@ -222,7 +230,7 @@ export type TAppLinks = {
 export const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     ctrader: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
-        ios: 'https://apps.apple.com/us/app/deriv-ctrader/id6466996509',
+        ios: 'https://apps.apple.com/us/app/deriv-ctrader',
     },
     dxtrade: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',

@@ -17,7 +17,6 @@ import {
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
     useP2PNotificationCount,
-    useP2PSettings,
 } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, routes, WS } from '@deriv/shared';
 import ErrorDialog from '../../components/error-dialog';
@@ -70,17 +69,15 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, is_mobile, toggleCashier, toggleReadyToDepositModal } = ui;
-    const { currency, is_account_setting_loaded, is_authorize, is_logged_in, is_logging_in, is_svg, is_virtual } =
-        client;
+    const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
     const {
-        subscribe,
-        p2p_settings,
-        rest: { isSubscribed },
-    } = useP2PSettings();
-    const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
+        data: is_p2p_enabled,
+        isSuccess: is_p2p_enabled_success,
+        isLoading: is_p2p_enabled_loading,
+    } = useIsP2PEnabled();
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = useMemo(() => {
@@ -185,12 +182,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
-    React.useEffect(() => {
-        if (is_authorize && !isSubscribed) {
-            subscribe();
-        }
-    }, [is_authorize, p2p_settings, subscribe, isSubscribed]);
-
     useEffect(() => {
         if (
             is_payment_agent_transfer_visible_is_success &&
@@ -243,7 +234,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         ((!is_logged_in || is_mobile) && is_logging_in) ||
         !is_account_setting_loaded ||
         is_payment_agent_checking ||
-        (is_p2p_enabled_loading && !is_p2p_enabled_success)
+        is_p2p_enabled_loading
     ) {
         return <Loading is_fullscreen />;
     }

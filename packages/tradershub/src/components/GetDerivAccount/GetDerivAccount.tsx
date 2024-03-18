@@ -1,11 +1,12 @@
 import React from 'react';
-import { useRealAccountCreationContext } from '../../providers/RealAccountCreationProvider';
+import { useQueryParams } from '@/hooks';
 import { IconComponent } from '../IconComponent';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
 
 const TrailingButton = () => {
-    const { setIsWizardOpen } = useRealAccountCreationContext();
-    return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
+    const { openModal } = useQueryParams();
+
+    return <TradingAccountCardLightButton onSubmit={() => openModal('RealAccountCreation')} />;
 };
 
 const LeadingIcon = () => <IconComponent icon='DerivApps' width={60} />;

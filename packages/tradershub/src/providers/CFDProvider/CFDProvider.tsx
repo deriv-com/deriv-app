@@ -3,7 +3,10 @@ import { THooks, TMarketTypes, TPlatforms } from '@/types';
 
 type TCFDState = {
     // Add your CFD states here
+    account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
     accountId?: string;
+    description?: string;
+    isInvestorPassword?: boolean;
     marketType?: TMarketTypes.All;
     platform?: TPlatforms.All;
     selectedJurisdiction?: THooks.AvailableMT5Accounts['shortcode'];

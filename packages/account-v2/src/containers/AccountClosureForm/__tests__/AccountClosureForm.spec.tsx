@@ -41,6 +41,12 @@ describe('AccountClosureForm', () => {
         expect(screen.getByText(/Remaining characters: 102/i)).toBeInTheDocument();
     });
 
+    it('should disable continue button when no reason is selected', () => {
+        render(<AccountClosureForm handleOnBack={jest.fn()} />);
+
+        expect(screen.getByRole('button', { name: /Continue/i })).toBeDisabled();
+    });
+
     it('should render error message when no reason is selected but user tries to type in text area', () => {
         render(<AccountClosureForm handleOnBack={jest.fn()} />);
 
@@ -53,5 +59,37 @@ describe('AccountClosureForm', () => {
         userEvent.type(otherTradingPlatforms, 'Test');
 
         expect(screen.getByText(/Please select at least one reason/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Continue/i })).toBeDisabled();
+    });
+
+    it('should enable continue button when reason is selected', () => {
+        render(<AccountClosureForm handleOnBack={jest.fn()} />);
+
+        const reason = screen.getByRole('checkbox', { name: /The platforms lack key features or functionality/i });
+        userEvent.click(reason);
+
+        expect(screen.getByRole('button', { name: /Continue/i })).toBeEnabled();
+    });
+
+    it('should call handleOnBack when back button is clicked', () => {
+        const handleOnBack = jest.fn();
+        render(<AccountClosureForm handleOnBack={handleOnBack} />);
+
+        const backButton = screen.getByRole('button', { name: /Back/i });
+        userEvent.click(backButton);
+
+        expect(handleOnBack).toHaveBeenCalledTimes(1);
+    });
+
+    it('shoould render modal when reason is continue button is clicked', () => {
+        render(<AccountClosureForm handleOnBack={jest.fn()} />);
+
+        const reason = screen.getByRole('checkbox', { name: /Customer service was unsatisfactory/i });
+        userEvent.click(reason);
+
+        const continueButton = screen.getByRole('button', { name: /Continue/i });
+        userEvent.click(continueButton);
+
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 });

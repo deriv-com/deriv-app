@@ -71,7 +71,7 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                 onSubmit={() => dispatch({ payload: true, type: 'displayConfirmModal' })}
                 validationSchema={validationSchema}
             >
-                {({ setFieldValue, values }) => (
+                {({ dirty, setFieldValue, values }) => (
                     <Form>
                         <section>
                             <div className='gap-8 flex flex-col my-16'>
@@ -140,7 +140,14 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                             >
                                 Back
                             </Button>
-                            <Button color='primary' rounded='sm' size='md' type='submit' variant='contained'>
+                            <Button
+                                color='primary'
+                                disabled={!dirty || isReasonNotSelected}
+                                rounded='sm'
+                                size='md'
+                                type='submit'
+                                variant='contained'
+                            >
                                 Continue
                             </Button>
                         </section>

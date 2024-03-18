@@ -1,12 +1,13 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
+import { redirectToLogin } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
-import { requestLogout } from 'Services/logout';
+import { getLanguage, localize, Localize } from '@deriv/translations';
 import './wallets-upgrade-logout-modal.scss';
 
 const WalletsUpgradeLogoutModal = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { logout } = client;
     const { is_mobile } = ui;
 
     return (
@@ -14,8 +15,10 @@ const WalletsUpgradeLogoutModal = observer(() => {
             className='wallets-upgrade-logout-modal'
             confirm_button_text={localize('Log out')}
             onConfirm={() => {
-                requestLogout();
+                localStorage.setItem('wallets_upgrade_complete', 'true');
+                logout().then(() => redirectToLogin(false, getLanguage(), false));
             }}
+            is_closed_on_confirm
             is_visible
             dismissable={false}
             has_close_icon={false}

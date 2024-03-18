@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { useWalletMigration } from '@deriv/api';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
@@ -15,6 +16,7 @@ import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
+import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
@@ -123,6 +125,8 @@ const AppModals = observer(() => {
             ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
             : false;
 
+    const { is_migrated } = useWalletMigration();
+
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {
@@ -192,6 +196,11 @@ const AppModals = observer(() => {
     } else if (isUrlUnavailableModalVisible) {
         ComponentToLoad = <UrlUnavailableModal />;
     }
+
+    if (is_migrated) {
+        ComponentToLoad = <WalletsUpgradeLogoutModal />;
+    }
+
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;
     }

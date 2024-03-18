@@ -140,6 +140,7 @@ const ContractCardHeader = ({
                         getContractTypeDisplay={getContractTypeDisplay}
                         is_high_low={is_high_low}
                         is_multipliers={is_multipliers}
+                        is_turbos={is_turbos}
                         type={contract_type}
                     />
                 </div>

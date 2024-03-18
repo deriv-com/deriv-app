@@ -4,58 +4,44 @@ type TDefinedMT5LandingCompanyName = Exclude<TMT5LandingCompanyName, 'malta' | '
 
 interface TDefinedMT5LandingCompanyDetails {
     name: TDefinedMT5LandingCompanyName;
-    shortcode: string;
+    title: string;
 }
 
 export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefinedMT5LandingCompanyDetails> = {
     bvi: {
         name: 'bvi',
-        shortcode: 'BVI',
+        title: 'BVI',
     },
     labuan: {
         name: 'labuan',
-        shortcode: 'Labuan',
+        title: 'Labuan',
     },
     maltainvest: {
         name: 'maltainvest',
-        shortcode: 'Maltainvest',
+        title: 'CFDs',
     },
     svg: {
         name: 'svg',
-        shortcode: 'SVG',
+        title: 'SVG',
     },
     vanuatu: {
         name: 'vanuatu',
-        shortcode: 'Vanuatu',
+        title: 'Vanuatu',
     },
 } as const;
 
 export const MT5MarketTypeDetails = {
     all: {
         name: 'all',
-        title: 'MT5 Swap-Free',
+        title: 'Swap-Free',
     },
     financial: {
-        landingCompany: {
-            malta: {
-                name: 'malta',
-                title: 'MT5 CFDs',
-            },
-            svg: {
-                name: 'svg',
-                title: 'MT5 Financial',
-            },
-            virtual: {
-                name: 'virtual',
-                title: 'MT5 CFDs',
-            },
-        },
         name: 'financial',
-        title: 'MT5 Financial',
+        title: 'Financial',
     },
     synthetic: {
         name: 'synthetic',
-        title: 'MT5 Derived',
+        title: 'Derived',
     },
 } as const;
 

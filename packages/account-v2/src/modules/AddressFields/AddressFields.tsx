@@ -25,22 +25,57 @@ export const AddressFields = () => {
         addressState: addressStateSchema,
     } = addressDetailValidations(settings.country_code ?? '', isSvg);
 
+    const isFieldDisabled = (fieldName: string) => {
+        return settings?.immutable_fields?.includes(fieldName);
+    };
+
     return (
         <div className='grid pt-8 space-y-12 grid-col-1'>
-            <FormInputField label='First line of address*' name='addressLine1' validationSchema={addressLine1Schema} />
-            <FormInputField label='Second line of address' name='addressLine2' validationSchema={addressLine2Schema} />
-            <FormInputField label='Town/City*' name='addressCity' validationSchema={addressCitySchema} />
+            <FormInputField
+                disabled={isFieldDisabled('address_line_1')}
+                isFullWidth
+                label='First line of address*'
+                name='addressLine1'
+                validationSchema={addressLine1Schema}
+            />
+            <FormInputField
+                disabled={isFieldDisabled('address_line_2')}
+                isFullWidth
+                label='Second line of address'
+                name='addressLine2'
+                validationSchema={addressLine2Schema}
+            />
+            <FormInputField
+                disabled={isFieldDisabled('address_city')}
+                isFullWidth
+                label='Town/City*'
+                name='addressCity'
+                validationSchema={addressCitySchema}
+            />
             {statesListFetched && statesList.length ? (
                 <FormDropDownField
+                    disabled={isFieldDisabled('address_state')}
                     label='State/Province'
                     list={statesList}
                     name='addressState'
                     validationSchema={addressStateSchema}
                 />
             ) : (
-                <FormInputField label='State/Province' name='addressState' validationSchema={addressStateSchema} />
+                <FormInputField
+                    disabled={isFieldDisabled('address_state')}
+                    isFullWidth
+                    label='State/Province'
+                    name='addressState'
+                    validationSchema={addressStateSchema}
+                />
             )}
-            <FormInputField label='Postal/ZIP Code' name='addressPostcode' validationSchema={addressPostcodeSchema} />
+            <FormInputField
+                disabled={isFieldDisabled('address_postcode')}
+                isFullWidth
+                label='Postal/ZIP Code'
+                name='addressPostcode'
+                validationSchema={addressPostcodeSchema}
+            />
         </div>
     );
 };

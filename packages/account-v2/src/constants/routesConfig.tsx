@@ -1,3 +1,4 @@
+import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
 import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
 import { DummyRoute } from '../router/components/DummyRoute';
@@ -5,7 +6,7 @@ import { ACCOUNT_V2_ROUTES } from './routes';
 
 export const routes = [
     {
-        routeComponent: DummyRoute,
+        routeComponent: PersonalDetailsForm,
         routeName: 'Personal details',
         routePath: ACCOUNT_V2_ROUTES.PersonalDetails,
     },

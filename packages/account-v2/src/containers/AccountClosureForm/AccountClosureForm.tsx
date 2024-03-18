@@ -12,7 +12,7 @@ import {
     getAccountClosureValidationSchema,
     TAccountClosureReasonsFormValues,
     validateAccountClosure,
-} from '../../utils/accountClosure';
+} from '../../utils/accountClosureUtils';
 import { AccountClosureConfirmModal } from './AccountClosureConfirmModal';
 import { AccountClosureSuccessModal } from './AccountClosureSuccessModal';
 

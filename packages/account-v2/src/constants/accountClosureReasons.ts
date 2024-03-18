@@ -1,4 +1,4 @@
-import { TAccountClosureReasonsFormValues } from 'src/utils/accountClosure';
+import { TAccountClosureReasonsFormValues } from '../utils';
 
 export const accountClosureReasons = (): {
     label: string;

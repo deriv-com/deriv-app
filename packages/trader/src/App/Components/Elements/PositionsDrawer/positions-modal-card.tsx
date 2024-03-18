@@ -284,8 +284,8 @@ const PositionsModalCard = observer(
                             onClick={togglePositions}
                             className={classNames('positions-modal-card', 'dc-contract-card', {
                                 'positions-modal-card--multiplier': is_multiplier,
-                                'dc-contract-card--green': profit_loss > 0 && !is_multiplier,
-                                'dc-contract-card--red': profit_loss < 0 && !is_multiplier,
+                                'dc-contract-card--green': profit_loss > 0,
+                                'dc-contract-card--red': profit_loss < 0,
                             })}
                             to={getContractPath(id)}
                         >

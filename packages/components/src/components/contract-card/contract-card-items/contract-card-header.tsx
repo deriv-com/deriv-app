@@ -71,12 +71,14 @@ const ContractCardHeader = ({
     const is_mobile = isMobile();
     const is_turbos = isTurbosContract(contract_type);
     const is_lookbacks = isLookBacksContract(contract_type);
+    const is_multipliers = !!multiplier && !is_lookbacks;
+    const is_high_low = isHighLow({ shortcode });
 
     const contract_type_list_info = React.useMemo(
         () => [
             {
-                is_param_displayed: multiplier && !is_lookbacks,
-                displayed_param: `x${multiplier}`,
+                is_param_displayed: is_multipliers,
+                displayed_param: `${getContractTypeDisplay(contract_type ?? '', is_high_low)} x${multiplier}`.trim(),
             },
             {
                 is_param_displayed: is_accumulator,
@@ -87,7 +89,8 @@ const ContractCardHeader = ({
                 displayed_param: getLocalizedTurbosSubtype(contract_type),
             },
         ],
-        [multiplier, growth_rate, is_accumulator, is_turbos, is_lookbacks, contract_type]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [contract_type, growth_rate, multiplier, is_accumulator, is_multipliers, is_turbos, is_high_low]
     );
 
     const displayed_trade_param =
@@ -135,7 +138,8 @@ const ContractCardHeader = ({
                     <ContractTypeCell
                         displayed_trade_param={displayed_trade_param}
                         getContractTypeDisplay={getContractTypeDisplay}
-                        is_high_low={isHighLow({ shortcode })}
+                        is_high_low={is_high_low}
+                        is_multipliers={is_multipliers}
                         type={contract_type}
                     />
                 </div>

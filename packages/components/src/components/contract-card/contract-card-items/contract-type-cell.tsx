@@ -7,7 +7,7 @@ import { isVanillaContract, isSmartTraderContract, isLookBacksContract } from '@
 export type TContractTypeCellProps = {
     getContractTypeDisplay: TGetContractTypeDisplay;
     is_high_low: boolean;
-    multiplier?: number;
+    is_multipliers?: boolean;
     type?: string;
     displayed_trade_param?: React.ReactNode;
 };
@@ -16,6 +16,7 @@ const ContractTypeCell = ({
     displayed_trade_param,
     getContractTypeDisplay,
     is_high_low,
+    is_multipliers,
     type = '',
 }: TContractTypeCellProps) => (
     <div className='dc-contract-type'>
@@ -30,9 +31,10 @@ const ContractTypeCell = ({
             className={classNames('dc-contract-type__type-label', {
                 'dc-contract-type__type-label--smarttrader-contract': isSmartTraderContract(type),
                 'dc-contract-type__type-label--lookbacks-contract': isLookBacksContract(type),
+                'dc-contract-type__type-label--multipliers': is_multipliers,
             })}
         >
-            <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
+            <div>{getContractTypeDisplay(type, is_high_low, false, is_multipliers) || ''}</div>
             {displayed_trade_param && (
                 <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
             )}

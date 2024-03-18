@@ -30,6 +30,13 @@ const MarketSymbolIconRow = ({
         is_high_low,
         has_full_contract_title
     );
+    const hover_message = `${getTradeTypeName(
+        info_from_shortcode.category as string,
+        is_high_low,
+        false,
+        true
+    )} ${category_label}`.trim();
+
     if (should_show_category_icon && info_from_shortcode) {
         return (
             <div
@@ -63,7 +70,7 @@ const MarketSymbolIconRow = ({
                         classNameTarget='category-type-icon__popover'
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
-                        message={category_label}
+                        message={hover_message}
                         is_bubble_hover_enabled
                         disable_target_icon
                     >

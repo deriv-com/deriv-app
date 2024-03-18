@@ -184,8 +184,11 @@
 
         &__type-and-status {
             display: flex;
-            justify-content: space-between;
             margin-bottom: 0.8rem;
+
+            span:first-child {
+                flex: 1;
+            }
         }
 
         &-details {
@@ -208,7 +211,7 @@
             }
 
             .dc-text {
-                &:not(.ad-status--inactive) {
+                &:not(.ad-status--inactive, .dc-list__item-text) {
                     color: var(--text-disabled);
                 }
             }
@@ -246,6 +249,23 @@
                 @include mobile {
                     margin-bottom: 0.8rem;
                 }
+            }
+        }
+
+        &-more {
+            min-width: 2.4rem;
+            width: 2.4rem;
+
+            &--display {
+                border: 0;
+            }
+
+            .dc-list {
+                right: 0;
+            }
+
+            .suffix-icon {
+                left: 0;
             }
         }
     }

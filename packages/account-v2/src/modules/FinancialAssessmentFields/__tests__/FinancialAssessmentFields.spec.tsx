@@ -113,7 +113,7 @@ describe('FinancialAssessmentFields', () => {
                 </AuthProvider>
             </APIProvider>
         );
-        // screen.debug();
+
         expect(screen.getByRole('combobox', { name: 'Occupation' })).toBeInTheDocument();
         const employmentStatus = screen.getByRole('combobox', { name: 'Employment status' });
         userEvent.type(employmentStatus, 'Unemployed');

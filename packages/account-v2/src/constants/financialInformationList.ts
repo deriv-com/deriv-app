@@ -35,7 +35,7 @@ const employmentIndustryCategories = [
     'Real Estate',
     'Food Services',
     'Manufacturing',
-    'Unemployed',
+    EMPLOYMENT_VALUES.unemployed,
 ];
 
 const occupationCategories = [
@@ -52,7 +52,7 @@ const occupationCategories = [
     'Armed Forces',
     'Government Officers',
     'Students',
-    'Unemployed',
+    EMPLOYMENT_VALUES.unemployed,
 ];
 
 const sourceOfWealthCategories = [

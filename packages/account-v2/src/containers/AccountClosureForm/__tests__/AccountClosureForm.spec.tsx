@@ -81,7 +81,7 @@ describe('AccountClosureForm', () => {
         expect(handleOnBack).toHaveBeenCalledTimes(1);
     });
 
-    it('shoould render modal when reason is continue button is clicked', () => {
+    it('should render Confirm modal when reason is continue button is clicked', async () => {
         render(<AccountClosureForm handleOnBack={jest.fn()} />);
 
         const reason = screen.getByRole('checkbox', { name: /Customer service was unsatisfactory/i });
@@ -90,6 +90,6 @@ describe('AccountClosureForm', () => {
         const continueButton = screen.getByRole('button', { name: /Continue/i });
         userEvent.click(continueButton);
 
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        expect(await screen.findByRole('dialog')).toBeInTheDocument();
     });
 });

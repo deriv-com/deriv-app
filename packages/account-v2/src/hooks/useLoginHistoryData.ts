@@ -78,5 +78,11 @@ function fetch(FetchLimit, datas, LoginHistoryData) {
         datas[i].status = LoginHistoryData?.login_history[i].status === 1 ? 'Successful' : 'Failed';
 
         datas[i].id = i;
+        // console.log('Date and time:', datas[i].date);
+        // console.log('Action:', datas[i].action);
+        // console.log('browser:', datas[i].browser);
+        // console.log('IP:', datas[i].ip);
+        // console.log('Status:', datas[i].status);
+        // console.log('//////////////////////////////');
     }
 }

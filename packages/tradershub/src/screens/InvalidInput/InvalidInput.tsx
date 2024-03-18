@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import ErrorIcon from '@/assets/svgs/error-icon.svg';
+import { mapErrorDetails } from '@/helpers';
 import { useQueryParams } from '@/hooks';
 import { useRealAccountCreationContext } from '@/providers';
 import { Button, Text } from '@deriv-com/ui';
@@ -22,17 +23,18 @@ const InvalidInput = () => {
     const { openModal } = useQueryParams();
     const { state } = useLocation();
 
-    const errorDetails = state?.error?.details ?? {};
+    const errorDetails = state?.error?.details;
 
-    const ErrorList = Object.keys(errorDetails).map(key => {
-        const camelCaseKey = errorKeyMapping[key as keyof typeof errorKeyMapping] ?? key;
-        const userInput = formState[camelCaseKey as keyof typeof formState];
+    const errorKeys = mapErrorDetails(errorDetails);
+
+    const ErrorList = errorKeys.map(key => {
+        const userInput = formState[key as keyof typeof formState];
 
         return (
             <li className='list-disc' key={key}>
                 <Text size='sm'>
                     <span className='inline-block min-w-100'>
-                        <strong>{betterName[camelCaseKey as keyof typeof betterName]}</strong>
+                        <strong>{betterName[key as keyof typeof betterName]}</strong>
                     </span>
                     : {userInput}
                 </Text>
@@ -41,7 +43,7 @@ const InvalidInput = () => {
     });
 
     return (
-        <div className='flex flex-col items-center justify-center gap-4 p-24'>
+        <div className='flex flex-col items-center justify-center gap-18 p-24 min-w-[400px]'>
             <ErrorIcon />
             <Text align='center' size='sm' weight='bold'>
                 Invalid inputs
@@ -50,14 +52,16 @@ const InvalidInput = () => {
                 We don’t accept the following inputs for:{' '}
             </Text>
             <ul className='pl-4'>{ErrorList}</ul>
-            <Button
-                onClick={() => {
-                    helpers.setStep(1);
-                    openModal('RealAccountCreation');
-                }}
-            >
-                Lets try again
-            </Button>
+            <div className='mt-20'>
+                <Button
+                    onClick={() => {
+                        helpers.setStep(1);
+                        openModal('RealAccountCreation');
+                    }}
+                >
+                    Lets try again
+                </Button>
+            </div>
         </div>
     );
 };

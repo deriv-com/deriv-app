@@ -13,7 +13,7 @@ import { Modal } from '@deriv-com/ui';
 const InvalidInputModal = () => {
     const { isModalOpen, closeModal } = useQueryParams();
     return (
-        <Modal isOpen={isModalOpen('InvalidInputModal')} onRequestClose={closeModal}>
+        <Modal ariaHideApp={false} isOpen={isModalOpen('InvalidInputModal')} onRequestClose={closeModal}>
             <Modal.Body>
                 <InvalidInput />
             </Modal.Body>

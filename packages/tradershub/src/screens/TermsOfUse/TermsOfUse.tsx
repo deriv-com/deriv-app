@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
+import { use } from 'i18next';
 import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
 import { ScrollToFieldError } from '@/helpers';
 import { useNewCRRealAccount, useQueryParams } from '@/hooks';
@@ -30,9 +31,11 @@ const TermsOfUse = () => {
         actions.setSubmitting(false);
     };
 
-    if (status === 'error') {
-        openModal('InvalidInputModal', error as any);
-    }
+    useEffect(() => {
+        if (status === 'error') {
+            openModal('InvalidInputModal', error as Record<string, unknown>);
+        }
+    }, [status, error, openModal]);
 
     return (
         <WizardScreenWrapper heading='Terms of Use'>

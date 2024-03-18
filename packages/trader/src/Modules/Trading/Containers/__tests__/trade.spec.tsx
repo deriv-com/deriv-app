@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { act, render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import Trader from '../trade';
 import TraderProviders from '../../../../trader-providers';
 import { isDesktop, isMobile } from '@deriv/shared';
@@ -53,11 +53,9 @@ const rootStore = mockStore({
 });
 
 const MockTrader = () => (
-    <StoreProvider store={mockStore({})}>
-        <TraderProviders store={rootStore}>
-            <Trader />
-        </TraderProviders>
-    </StoreProvider>
+    <TraderProviders store={rootStore}>
+        <Trader />
+    </TraderProviders>
 );
 
 describe('Trader', () => {

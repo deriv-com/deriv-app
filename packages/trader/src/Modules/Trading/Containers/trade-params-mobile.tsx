@@ -224,7 +224,28 @@ const TradeParamsMobile = observer(
         h_duration,
         d_duration,
     }: TTradeParamsMobile) => {
-        const { basis_list, basis, expiry_epoch, is_turbos, is_vanilla } = useTraderStore();
+        const {
+            basis_list,
+            basis,
+            expiry_epoch,
+            is_turbos,
+            is_vanilla,
+            duration_unit: selected_duration_unit,
+        } = useTraderStore();
+        const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
+        const selected_duration_tab_idx = duration_units_list.findIndex(d => d.value === selected_duration_unit);
+
+        React.useEffect(() => {
+            if (has_duration_error) {
+                setSelectedDuration(duration_unit, makeGetDefaultDuration(0, 'default')(duration_unit));
+            } else {
+                setSelectedDuration(duration_unit, duration_value);
+            }
+            if (toggled_duration_tab_idx === -1)
+                setSelectedDuration(selected_duration_unit, makeGetDefaultDuration(0, 'default')(duration_unit));
+            setDurationTabIdx(toggled_duration_tab_idx === -1 ? selected_duration_tab_idx : toggled_duration_tab_idx);
+        }, [duration_unit]);
+
         const getDurationText = () => {
             const duration = duration_units_list.find(d => d.value === duration_unit);
             return `${duration_value} ${

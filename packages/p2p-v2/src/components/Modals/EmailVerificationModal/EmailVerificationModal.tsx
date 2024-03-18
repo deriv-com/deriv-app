@@ -72,7 +72,10 @@ const EmailVerificationModal = ({ isModalOpen, onRequestClose }: TEmailVerificat
                             </div>
                         ))}
                         <div className='flex justify-center'>
-                            <Button size='md'>Resend email</Button>
+                            {/* TODO: Replace 59s with epoch value (verification_next_request) from BE response
+                             * and disable the button if the epoch value is not reached yet
+                             */}
+                            <Button size='md'>Resend email 59s</Button>
                         </div>
                     </div>
                 )}

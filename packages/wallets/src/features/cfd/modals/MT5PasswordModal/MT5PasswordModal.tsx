@@ -185,6 +185,18 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     ]);
 
     const PasswordComponent = useMemo(() => {
+        if (isMT5PasswordNotSet)
+            return (
+                <CreatePassword
+                    Icon={<MT5PasswordIcon />}
+                    isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                    onPasswordChange={e => setPassword(e.target.value)}
+                    onPrimaryClick={onSubmit}
+                    password={password}
+                    platform={mt5Platform}
+                />
+            );
+
         if (showPasswordUpdateModal)
             return (
                 <MT5ResetPasswordModal
@@ -194,16 +206,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     successButtonLoading={createMT5AccountLoading}
                 />
             );
-
-        if (isMT5PasswordNotSet)
-            <CreatePassword
-                Icon={<MT5PasswordIcon />}
-                isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                onPasswordChange={e => setPassword(e.target.value)}
-                onPrimaryClick={onSubmit}
-                password={password}
-                platform={mt5Platform}
-            />;
 
         return (
             <EnterPassword

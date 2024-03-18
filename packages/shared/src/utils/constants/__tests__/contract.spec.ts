@@ -106,6 +106,19 @@ describe('getContractTypeDisplay', () => {
     it('should return an empty string if show_button_name === true and contract_config has no name field and no button_name', () => {
         expect(getContractTypeDisplay('TEST', true, true)).toBe('');
     });
+    it('should return main title for contracts which have such field if show_main_title is true', () => {
+        expect(getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN, true, false, true)).toBe('Multipliers');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.TURBOS.LONG, false, false, true)).toBe('Turbos');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.VANILLA.CALL, false, false, true)).toBe('Vanillas');
+    });
+    it('should not return main title for contracts which have not such field if show_main_title is true', () => {
+        expect(getContractTypeDisplay(CONTRACT_TYPES.FALL, false, false, true)).toBeFalsy;
+    });
+    it('should not return main title for contracts which have such field but show_main_title is false', () => {
+        expect(getContractTypeDisplay(CONTRACT_TYPES.TURBOS.LONG, false, false, false)).toBeFalsy;
+        expect(getContractTypeDisplay(CONTRACT_TYPES.VANILLA.CALL, false, false, false)).toBeFalsy;
+        expect(getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN, false, false, false)).toBeFalsy;
+    });
 });
 
 describe('getContractTypePosition', () => {

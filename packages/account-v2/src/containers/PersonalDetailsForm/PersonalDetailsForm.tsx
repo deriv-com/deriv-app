@@ -30,7 +30,11 @@ export const PersonalDetailsForm = () => {
 
     const isVirtual = activeAccount?.is_virtual;
 
-    const isSupportProfessionalClient = currentLandingCompany?.support_professional_client;
+    const isSupportProfessionalClient =
+        currentLandingCompany &&
+        typeof currentLandingCompany === 'object' &&
+        'support_professional_client' in currentLandingCompany &&
+        !!currentLandingCompany?.support_professional_client;
 
     const initialValues = getPersonalDetailsInitialValues(accountSettings, residenceList, statesLists, isSocialSignup);
 

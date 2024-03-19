@@ -35,15 +35,15 @@ const ActiveOrderInfo = ({ orderDetails }: TActiveOrderInfoProps) => {
                 />
                 <Divider color='#f2f3f4' />
                 {adDetails.map((detail, key) => (
-                    <>
-                        <div className='flex flex-col p-[1.6rem] gap-2' key={detail.text}>
+                    <React.Fragment key={detail.text}>
+                        <div className='flex flex-col p-[1.6rem] gap-2'>
                             <Text size={textSize} weight='bold'>
                                 {detail.text}
                             </Text>
                             <Text size={textSize}>{detail.value}</Text>
                         </div>
                         {key === 0 && <Divider color='#f2f3f4' />}
-                    </>
+                    </React.Fragment>
                 ))}
             </>
         );

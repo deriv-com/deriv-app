@@ -26,7 +26,7 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     const { isBuyOrderForUser, shouldShowLostFundsBanner } = orderDetails;
     const { isMobile } = useDevice();
     const headerText = `${isBuyOrderForUser ? 'Buy' : 'Sell'} USD order`;
-    const onReturn = () => history.push(`${BASE_URL}/orders`);
+    const onReturn = () => history.goBack();
     const warningMessage = 'Don’t risk your funds with cash transactions. Use bank transfers or e-wallets instead.';
 
     if (isLoading) return <Loader isFullScreen />;

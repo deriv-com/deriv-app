@@ -22,6 +22,7 @@ export const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelec
             {documentList.map(({ description, icon: Icon, title, value }) => (
                 <Card
                     className='flex flex-row items-center cursor-pointer'
+                    data-testid='dt_manual_document_types'
                     key={value}
                     onClick={() => handleOnClick(value)}
                 >

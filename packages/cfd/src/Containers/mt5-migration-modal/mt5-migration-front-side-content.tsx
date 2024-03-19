@@ -133,6 +133,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                                         key={1}
                                         className='link'
                                         href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()]?.tnc_url}
+                                        is_document
                                     />,
                                     is_mobile ? null : <br key={2} />,
                                 ]}

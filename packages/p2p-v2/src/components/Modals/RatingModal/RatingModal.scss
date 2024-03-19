@@ -1,0 +1,38 @@
+.p2p-v2-rating-modal {
+    height: auto;
+    width: 44rem;
+    border-radius: 8px;
+
+    @include mobile {
+        max-width: calc(100vw - 3.2rem);
+    }
+
+    &__button {
+        gap: 0.2rem;
+        padding-left: 0.4rem;
+
+        &--disabled {
+            // stylelint-disable-next-line declaration-no-important
+            border-color: #d6dadb !important;
+
+            & .deriv-text > span {
+                // stylelint-disable-next-line declaration-no-important
+                color: #999 !important;
+            }
+        }
+    }
+
+    &__stars {
+        @include mobile {
+            width: 75%;
+            display: flex;
+            justify-content: center;
+
+            & .p2p-v2-star-rating {
+                & svg {
+                    margin-right: 0.7rem;
+                }
+            }
+        }
+    }
+}

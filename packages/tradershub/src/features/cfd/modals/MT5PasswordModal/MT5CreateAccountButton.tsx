@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useQueryParams } from '@/hooks';
 import { Button } from '@deriv-com/ui';
 import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
-import { validPassword } from '../../../../utils/password';
 
 type TCreateAccountButtonProps = {
     buttonText: string;
@@ -10,16 +9,25 @@ type TCreateAccountButtonProps = {
 };
 
 const MT5CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonProps) => {
-    const { createMT5AccountLoading, doesNotMeetPasswordPolicy, handleSubmit, tradingPlatformPasswordChangeLoading } =
-        useMT5AccountHandler();
+    const {
+        createMT5AccountLoading,
+        doesNotMeetPasswordPolicy,
+        handleSubmit,
+        tradingPlatformPasswordChangeLoading,
+        createMT5AccountStatus,
+    } = useMT5AccountHandler();
     const { openModal } = useQueryParams();
 
     const isLoading = tradingPlatformPasswordChangeLoading || createMT5AccountLoading;
-    const isDisabled = !password || isLoading || !validPassword(password);
+    const isDisabled = !password || isLoading;
     useEffect(() => {
         if (doesNotMeetPasswordPolicy) openModal('MT5ChangePasswordModal');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [doesNotMeetPasswordPolicy]);
+
+    useEffect(() => {
+        if (createMT5AccountStatus === 'success') openModal('MT5SuccessModal');
+    }, [createMT5AccountStatus, openModal]);
 
     return (
         <Button disabled={isDisabled} isLoading={isLoading} onClick={() => handleSubmit(password)}>

@@ -1,28 +1,30 @@
 import React, { ChangeEvent } from 'react';
 import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
-import { TPlatforms } from '@/types';
+import { useCFDContext } from '@/providers';
 import { Category, PlatformDetails } from '@cfd/constants';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Modal, PasswordInput, Text, useDevice } from '@deriv-com/ui';
 import MT5PasswordFooter from '../../modals/MT5PasswordModal/MT5PasswordFooter';
 
 type TCreatePasswordProps = {
-    isDemo: boolean;
     onPasswordChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     password: string;
-    platform: TPlatforms.All;
 };
 
 /**
  * Component to create a password for the platform
- * @isDemo is the account demo or real
  * @param onPasswordChange
  * @param password
- * @param platform MT5 or Deriv X
  */
-const CreatePassword = ({ isDemo, onPasswordChange, password, platform }: TCreatePasswordProps) => {
+const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) => {
     const { isDesktop } = useDevice();
+    const { data: activeTrading } = useActiveTradingAccount();
+    const { cfdState } = useCFDContext();
 
+    const isDemo = activeTrading?.is_virtual;
+    const { platform } = cfdState;
     const { title } = PlatformDetails[platform];
+
     return (
         <React.Fragment>
             <Modal.Header>

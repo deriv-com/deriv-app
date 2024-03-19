@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { useRegulationFlags } from '@/hooks';
-import { TMarketTypes, TPlatforms } from '@/types';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Modal, PasswordInput, Text } from '@deriv-com/ui';
@@ -8,37 +8,35 @@ import MT5PasswordFooter from '../../modals/MT5PasswordModal/MT5PasswordFooter';
 
 type TEnterPasswordProps = {
     isLoading?: boolean;
-    marketType: TMarketTypes.CreateOtherCFDAccount;
     onPasswordChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
     password: string;
     passwordError?: boolean;
-    platform: TPlatforms.All;
 };
 
 /**
  * Component to display the enter password screen
- * @param {TMarketTypes.CreateOtherCFDAccount} marketType - market type all or synthetic or financial
  * @param {Function} onPasswordChange - callback to handle password change
  * @param {string} password - password value
- * @param {TPlatforms.All} platform - platform Mt5 or Dxtrade
  */
 
-const EnterPassword = ({ marketType, onPasswordChange, password, platform }: TEnterPasswordProps) => {
-    const title = PlatformDetails[platform].title;
+const EnterPassword = ({ onPasswordChange, password }: TEnterPasswordProps) => {
     const { isEU } = useRegulationFlags();
-
+    const { cfdState } = useCFDContext();
     const { data } = useActiveTradingAccount();
-    const accountType = data?.is_virtual ? 'Demo' : 'Real';
-    const marketTypeDetails = MarketTypeDetails(isEU);
+    const { closeModal } = useQueryParams();
 
+    const marketTypeDetails = MarketTypeDetails(isEU);
+    const { marketType, platform } = cfdState;
+    const accountType = data?.is_virtual ? 'Demo' : 'Real';
+    const title = PlatformDetails[platform].title;
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : marketTypeDetails[marketType]?.title;
 
     return (
         <React.Fragment>
-            <Modal.Header>
+            <Modal.Header onRequestClose={closeModal}>
                 <Text weight='bold'>{`Enter your ${title} password`}</Text>
             </Modal.Header>
             <Modal.Body>

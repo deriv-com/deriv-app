@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
-import { MarketTypeDetails, PlatformDetails } from '@cfd/constants';
+import { CFDPlatforms, Category, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Modal, PasswordInput, Text } from '@deriv-com/ui';
 import MT5PasswordFooter from '../../modals/MT5PasswordModal/MT5PasswordFooter';
@@ -28,8 +28,8 @@ const EnterPassword = ({ onPasswordChange, password }: TEnterPasswordProps) => {
     const { closeModal } = useQueryParams();
 
     const marketTypeDetails = MarketTypeDetails(isEU);
-    const { marketType, platform } = cfdState;
-    const accountType = data?.is_virtual ? 'Demo' : 'Real';
+    const { marketType = MarketType.ALL, platform = CFDPlatforms.MT5 } = cfdState;
+    const accountType = data?.is_virtual ? Category.DEMO : Category.REAL;
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : marketTypeDetails[marketType]?.title;

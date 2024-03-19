@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
 import { useCFDContext } from '@/providers';
-import { Category, PlatformDetails } from '@cfd/constants';
+import { Category, CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Modal, PasswordInput, Text, useDevice } from '@deriv-com/ui';
 import MT5PasswordFooter from '../../modals/MT5PasswordModal/MT5PasswordFooter';
@@ -22,7 +22,7 @@ const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) =>
     const { cfdState } = useCFDContext();
 
     const isDemo = activeTrading?.is_virtual;
-    const { platform } = cfdState;
+    const { platform = CFDPlatforms.MT5 } = cfdState;
     const { title } = PlatformDetails[platform];
 
     return (

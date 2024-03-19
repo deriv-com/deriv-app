@@ -17,7 +17,7 @@ const MT5ChangePassword = () => {
     const { isLoading: tradingPlatformPasswordChangeLoading, mutateAsync: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
 
-    const { handleSubmit: handleSubmit2, createMT5AccountStatus } = useMT5AccountHandler();
+    const { handleSubmit, createMT5AccountStatus } = useMT5AccountHandler();
     const { openModal } = useQueryParams();
 
     const onChangeButtonClickHandler = async (values: TFormInitialValues) => {
@@ -26,7 +26,7 @@ const MT5ChangePassword = () => {
             new_password: values.newPassword,
             old_password: values.currentPassword,
             platform: CFDPlatforms.MT5,
-        }).then(() => handleSubmit2(newPW)); // after change password, trigger account creation
+        }).then(() => handleSubmit(newPW));
     };
 
     useEffect(() => {
@@ -38,23 +38,21 @@ const MT5ChangePassword = () => {
             <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
                 {({ handleChange, handleSubmit, values }) => (
                     <Form onSubmit={handleSubmit}>
-                        <Modal.Body className='inline-flex flex-col items-center w-full gap-24 rounded-default bg-system-light-primary-background lg:p-24 lg:w-[525px]'>
-                            <div className='flex flex-col items-center justify-center text-center lg:gap-8'>
-                                <Text size='sm'>
-                                    To enhance your MT5 account security we have upgraded our password policy. Please
-                                    update your password accordingly.
-                                </Text>
-                            </div>
+                        <Modal.Body className='lg:p-24 lg:w-[525px]'>
+                            <Text size='sm'>
+                                To enhance your MT5 account security we have upgraded our password policy. Please update
+                                your password accordingly.
+                            </Text>
                             <PasswordInput
                                 isFullWidth
-                                label='current password'
+                                label='Current password'
                                 name='currentPassword'
                                 onChange={handleChange}
                                 value={values.currentPassword}
                             />
                             <PasswordInput
                                 isFullWidth
-                                label='new password'
+                                label='New password'
                                 name='newPassword'
                                 onChange={handleChange}
                                 value={values.newPassword}

@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
@@ -56,20 +57,25 @@ const BotBuilder = observer(() => {
 
     React.useEffect(() => {
         const workspace = window.Blockly?.derivWorkspace;
-        if (workspace && is_running && !is_blockly_listener_registered.current) {
+        if (workspace && !is_blockly_listener_registered.current) {
             is_blockly_listener_registered.current = true;
-            workspace.addChangeListener(handleBlockChangeOnBotRun);
+            if (is_running) {
+                workspace.addChangeListener(handleBlockChangeOnBotRun);
+            }
+            workspace.addChangeListener(handleBlockDelete);
         } else {
             removeBlockChangeListener();
+            removeBlockDeleteListener();
         }
 
         return () => {
             if (workspace && is_blockly_listener_registered.current) {
                 removeBlockChangeListener();
+                removeBlockDeleteListener();
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_running]);
+    }, [is_running, active_tab]);
 
     const handleBlockChangeOnBotRun = (e: Event) => {
         const { is_reset_button_clicked, setResetButtonState } = toolbar;
@@ -85,6 +91,22 @@ const BotBuilder = observer(() => {
     const removeBlockChangeListener = () => {
         is_blockly_listener_registered.current = false;
         window.Blockly?.derivWorkspace?.removeChangeListener(handleBlockChangeOnBotRun);
+    };
+
+    const handleBlockDelete = (e: Event) => {
+        if (e.type === 'delete' && active_tab === DBOT_TABS.BOT_BUILDER) {
+            botNotification(notification_message.block_delete, {
+                label: localize('Undo'),
+                onClick: () => {
+                    window.Blockly.derivWorkspace.undo();
+                },
+            });
+        }
+    };
+
+    const removeBlockDeleteListener = () => {
+        is_blockly_listener_registered.current = false;
+        window.Blockly?.derivWorkspace?.removeChangeListener(handleBlockDelete);
     };
 
     return (

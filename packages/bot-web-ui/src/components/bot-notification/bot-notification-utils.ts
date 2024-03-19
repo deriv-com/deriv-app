@@ -30,6 +30,7 @@ export enum NOTIFICATION_TYPE {
 export const notification_message = {
     bot_stop: localize('You’ve just stopped the bot. Any open contracts can be viewed on the Reports page.'),
     workspace_change: localize('Changes you make will not affect your running bot.'),
+    block_delete: localize('You’ve just deleted a block.'),
     [NOTIFICATION_TYPE.BOT_IMPORT]: localize('You’ve successfully imported a bot.'),
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
 };

@@ -95,6 +95,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
     const max_ticks = granularity === 0 ? 8 : 24;
 
     if (!symbol || !active_symbols.length) return null;
+
     return (
         <SmartChart
             barriers={barriers}
@@ -102,7 +103,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={is_mobile ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
-            showLastDigitStats={isDesktop() ? show_digits_stats : false}
+            showLastDigitStats={show_digits_stats}
             chartControlsWidgets={null}
             chartStatusListener={(v: boolean) => setChartStatus(!v, true)}
             chartType={chart_type}

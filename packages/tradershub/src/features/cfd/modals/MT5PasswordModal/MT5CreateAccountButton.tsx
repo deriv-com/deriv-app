@@ -22,8 +22,7 @@ const MT5CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonPr
     const isDisabled = !password || isLoading;
     useEffect(() => {
         if (doesNotMeetPasswordPolicy) openModal('MT5ChangePasswordModal');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [doesNotMeetPasswordPolicy]);
+    }, [doesNotMeetPasswordPolicy, openModal]);
 
     useEffect(() => {
         if (createMT5AccountStatus === 'success') openModal('MT5SuccessModal');

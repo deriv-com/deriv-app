@@ -26,6 +26,14 @@ const MT5ChangePassword = () => {
         if (createMT5AccountStatus === 'success') openModal('MT5SuccessModal');
     }, [createMT5AccountStatus, openModal]);
 
+    const passwordValidationChecklist = [
+        '8 to 16 characters',
+        'A special character such as ( _ @ ? ! / # )',
+        'An uppercase letter',
+        'A lowercase letter',
+        'A number',
+    ];
+
     return (
         <React.Fragment>
             <Modal.Body className='lg:p-24 lg:w-[525px]'>
@@ -48,25 +56,11 @@ const MT5ChangePassword = () => {
                     value={newPassword}
                 />
                 <ol className='w-full list-disc list-inside gap-y-8'>
-                    <Text as='li' size='xs'>
-                        8 to 16 characters
-                    </Text>
-
-                    <Text as='li' size='xs'>
-                        A special character such as ( _ @ ? ! / # )
-                    </Text>
-
-                    <Text as='li' size='xs'>
-                        An uppercase letter
-                    </Text>
-
-                    <Text as='li' size='xs'>
-                        A lowercase letter
-                    </Text>
-
-                    <Text as='li' size='xs'>
-                        A number
-                    </Text>
+                    {passwordValidationChecklist.map(item => (
+                        <Text as='li' key={item} size='xs'>
+                            {item}
+                        </Text>
+                    ))}
                 </ol>
             </Modal.Body>
             <Modal.Footer>

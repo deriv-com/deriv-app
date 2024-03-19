@@ -23,8 +23,8 @@ Blockly.Blocks.procedures_defnoreturn = {
         // Render a v-icon for adding parameters
         const fieldImageCollapse = new Blockly.FieldImage(
             dropdown_path,
-            16,
-            16,
+            32,
+            32,
             'v',
             () => this.setCollapsed(true),
             false,

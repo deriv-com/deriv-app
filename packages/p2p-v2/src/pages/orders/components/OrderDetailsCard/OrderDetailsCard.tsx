@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
-import { Divider } from '@deriv-com/ui';
+import { Divider, useDevice } from '@deriv-com/ui';
 import { OrderDetailsCardFooter } from './OrderDetailsCardFooter';
 import { OrderDetailsCardHeader } from './OrderDetailsCardHeader';
 import { OrderDetailsCardInfo } from './OrderDetailsCardInfo';
@@ -12,6 +12,7 @@ type TOrderDetailsCardProps = {
 };
 
 const OrderDetailsCard = ({ orderDetails }: TOrderDetailsCardProps) => {
+    const { isDesktop } = useDevice();
     return (
         <div className='p2p-v2-order-details-card'>
             <OrderDetailsCardHeader orderDetails={orderDetails} />
@@ -19,7 +20,7 @@ const OrderDetailsCard = ({ orderDetails }: TOrderDetailsCardProps) => {
             <OrderDetailsCardInfo orderDetails={orderDetails} />
             <Divider color='#f2f3f4' />
             <OrderDetailsCardReview orderDetails={orderDetails} />
-            <OrderDetailsCardFooter orderDetails={orderDetails} />
+            {isDesktop && <OrderDetailsCardFooter orderDetails={orderDetails} />}
         </div>
     );
 };

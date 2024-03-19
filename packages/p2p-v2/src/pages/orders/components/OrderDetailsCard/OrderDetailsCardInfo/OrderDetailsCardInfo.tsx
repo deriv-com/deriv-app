@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { ActiveOrderInfo } from './ActiveOrderInfo';
 
 type TOrderDetailsCardInfoProps = {
@@ -19,6 +19,7 @@ const OrderDetailsCardInfo = ({ orderDetails }: TOrderDetailsCardInfoProps) => {
         purchaseTime,
         rateAmount,
     } = orderDetails;
+    const { isMobile } = useDevice();
 
     const clientDetails = [
         { text: labels.counterpartyNicknameLabel, value: name },
@@ -37,10 +38,10 @@ const OrderDetailsCardInfo = ({ orderDetails }: TOrderDetailsCardInfoProps) => {
             <div className='grid grid-cols-2 grid-rows-3 gap-y-6 p-[1.6rem]'>
                 {clientDetails.map(detail => (
                     <div className='flex flex-col' key={detail.text}>
-                        <Text color='less-prominent' size='xs' weight='500'>
+                        <Text color='less-prominent' size={isMobile ? 'sm' : 'xs'} weight='500'>
                             {detail.text}
                         </Text>
-                        <Text size='sm'>{detail.value}</Text>
+                        <Text size={isMobile ? 'md' : 'sm'}>{detail.value}</Text>
                     </div>
                 ))}
             </div>

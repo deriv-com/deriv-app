@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
 import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
-import { Button, Text } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import IcCashierBankTransfer from '../../../../../../public/ic-cashier-bank-transfer.svg';
 import IcCashierEwallet from '../../../../../../public/ic-cashier-ewallet.svg';
 import IcCashierOther from '../../../../../../public/ic-cashier-other.svg';
@@ -20,11 +20,14 @@ const PaymentMethodAccordion = ({
 }: TPaymentMethodAccordionProps) => {
     const [expandedIds, setExpandedIds] = useState<string[]>([]);
     const paymentMethodKeys = paymentMethodDetails ? Object.keys(paymentMethodDetails) : [];
+    const { isMobile } = useDevice();
+    const bigTextSize = isMobile ? 'md' : 'sm';
+    const smallTextSize = isMobile ? 'sm' : 'xs';
 
     return (
         <div className='flex flex-col p-[1.6rem] gap-2'>
             <div className='flex items-center justify-between'>
-                <Text size='sm' weight='bold'>
+                <Text size={bigTextSize} weight='bold'>
                     {paymentDetails}
                 </Text>
                 {paymentMethodKeys.length > 0 && (
@@ -34,7 +37,7 @@ const PaymentMethodAccordion = ({
                             if (expandedIds.length !== paymentMethodKeys.length) setExpandedIds(paymentMethodKeys);
                             else setExpandedIds([]);
                         }}
-                        textSize='xs'
+                        textSize={smallTextSize}
                         variant='ghost'
                     >
                         {expandedIds.length === paymentMethodKeys.length ? 'Collapse all' : 'Expand all'}
@@ -42,7 +45,7 @@ const PaymentMethodAccordion = ({
                 )}
             </div>
             {paymentMethodKeys.length === 0 ? (
-                <Text size='sm'>{paymentInfo}</Text>
+                <Text size={bigTextSize}>{paymentInfo}</Text>
             ) : (
                 <>
                     {paymentMethodKeys.map(key => {
@@ -64,7 +67,7 @@ const PaymentMethodAccordion = ({
                                             {paymentMethodType === 'ewallet' && <IcCashierEwallet />}
                                             {paymentMethodType === 'bank' && <IcCashierBankTransfer />}
                                             {paymentMethodType === 'other' && <IcCashierOther height={16} width={16} />}
-                                            <Text size='sm'>{paymentMethodDetails[key].display_name}</Text>
+                                            <Text size={bigTextSize}>{paymentMethodDetails[key].display_name}</Text>
                                         </div>
                                         <LabelPairedChevronRightSmRegularIcon />
                                     </div>
@@ -74,10 +77,10 @@ const PaymentMethodAccordion = ({
                                                 const field = paymentMethodFields[fieldKey];
                                                 return (
                                                     <div className='flex flex-col py-4' key={fieldKey}>
-                                                        <Text color='less-prominent' size='xs'>
+                                                        <Text color='less-prominent' size={smallTextSize}>
                                                             {field.display_name}
                                                         </Text>
-                                                        <Text size='xs'>{field.value}</Text>
+                                                        <Text size={smallTextSize}>{field.value || '-'}</Text>
                                                     </div>
                                                 );
                                             })}

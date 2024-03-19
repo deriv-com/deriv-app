@@ -1,0 +1,19 @@
+.p2p-v2-order-details {
+    position: absolute;
+    top: 4rem;
+    height: calc(100vh - 7.4rem);
+
+    & .p2p-v2-mobile-wrapper {
+        &__header {
+            background: #fff;
+        }
+
+        &__body {
+            overflow-y: scroll;
+        }
+
+        &__footer {
+            padding: 0;
+        }
+    }
+}

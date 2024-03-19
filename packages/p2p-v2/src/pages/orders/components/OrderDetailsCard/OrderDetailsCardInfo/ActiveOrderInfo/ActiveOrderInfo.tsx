@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
-import { Divider, Text } from '@deriv-com/ui';
+import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodAccordion } from '../PaymentMethodAccordion';
 
 type TActiveOrderInfoProps = {
@@ -16,10 +16,12 @@ const ActiveOrderInfo = ({ orderDetails }: TActiveOrderInfoProps) => {
         payment_info: paymentInfo,
         payment_method_details: paymentMethodDetails,
     } = orderDetails;
+    const { isMobile } = useDevice();
+    const textSize = isMobile ? 'md' : 'sm';
 
     const adDetails = [
-        { text: labels.paymentDetails, value: contactInfo },
-        { text: labels.instructions, value: description },
+        { text: labels.paymentDetails, value: contactInfo || '-' },
+        { text: labels.instructions, value: description || '-' },
     ];
 
     if (isActiveOrder)
@@ -35,10 +37,10 @@ const ActiveOrderInfo = ({ orderDetails }: TActiveOrderInfoProps) => {
                 {adDetails.map((detail, key) => (
                     <>
                         <div className='flex flex-col p-[1.6rem] gap-2' key={detail.text}>
-                            <Text size='sm' weight='bold'>
+                            <Text size={textSize} weight='bold'>
                                 {detail.text}
                             </Text>
-                            <Text size='sm'>{detail.value}</Text>
+                            <Text size={textSize}>{detail.value}</Text>
                         </div>
                         {key === 0 && <Divider color='#f2f3f4' />}
                     </>

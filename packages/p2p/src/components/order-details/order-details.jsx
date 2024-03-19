@@ -146,7 +146,8 @@ const OrderDetails = observer(() => {
             !is_buy_order_for_user &&
             status_string !== 'Expired' &&
             status_string !== 'Under dispute' &&
-            order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+            order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS &&
+            !order_store.is_verifying_email
         ) {
             showModal({ key: 'EmailLinkExpiredModal' }, { should_stack_modal: isMobile() });
         }

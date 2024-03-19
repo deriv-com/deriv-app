@@ -25,7 +25,7 @@ const useRegulationFlags = () => {
         const isNonEURegulation = regulation === Regulation.NonEU;
 
         const isEU = isEUCountry || isEURegulation;
-        const isNonEU = isNonEURegulation;
+        const isNonEU = isHighRisk || isNonEURegulation;
 
         const isRealAccount = !activeTradingAccount?.is_virtual || accountType === 'real';
 

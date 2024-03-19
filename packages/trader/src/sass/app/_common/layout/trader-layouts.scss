@@ -44,7 +44,6 @@
         .top-widgets-portal {
             position: absolute;
             top: 0px;
-            width: 100%;
             display: flex;
             align-items: center;
             flex-wrap: wrap;
@@ -53,7 +52,7 @@
             .recent-trade-info {
                 min-width: 8rem;
                 line-height: 2.4rem;
-                margin-left: 0.8rem;
+                margin-left: 1.6rem;
             }
         }
         .cq-chart-title {

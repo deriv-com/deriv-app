@@ -3,10 +3,11 @@ import { render, screen } from '@testing-library/react';
 import WalletsUpgradeModal from '../wallets-upgrade-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
-import { useWalletMigrationContext } from '../../../../providers/WalletMigrationProvider';
+import { useWalletMigration } from '@deriv/hooks';
 
-jest.mock('../../../../providers/WalletMigrationProvider', () => ({
-    useWalletMigrationContext: jest.fn(() => ({
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useWalletMigration: jest.fn(() => ({
         is_eligible: true,
     })),
 }));
@@ -58,7 +59,7 @@ describe('<WalletsUpgradeModal />', () => {
             },
         });
 
-        (useWalletMigrationContext as jest.Mock).mockImplementationOnce(() => ({
+        (useWalletMigration as jest.Mock).mockImplementationOnce(() => ({
             is_eligible: false,
         }));
 

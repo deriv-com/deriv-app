@@ -6,7 +6,7 @@ import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useWalletMigrationContext } from '../../providers/WalletMigrationProvider';
+import { useWalletMigration } from '@deriv/hooks';
 
 const RealWalletsUpgrade = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
@@ -171,9 +171,9 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 };
 
 const ModalManager = () => {
-    const { is_eligible } = useWalletMigrationContext();
+    const { is_eligible } = useWalletMigration();
     const store = useStores();
-    const { common, client, modules, traders_hub, ui } = store;
+    const { common, client, modules, traders_hub, ui, is_wallet_migration_eligible } = store;
     const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
     const { platform } = common;
     const {

@@ -1,5 +1,5 @@
-import Bowser from 'bowser';
-import moment from 'moment';
+import UaParser from 'ua-parser-js';
+import dayjs from 'dayjs';
 import useAuthorize from '@deriv/api-v2/src/hooks/useAuthorize';
 import useQuery from '@deriv/api-v2/src/useQuery';
 
@@ -12,14 +12,15 @@ type TData = {
     status: string;
 }[];
 
-type TUserAgent =
-    | (Bowser.Parser.Details & {
-          app?: string;
-      })
-    | undefined;
+// type TUserAgent =
+//     | (Bowser.Parser.Details & {
+//           app?: string;
+//       })
+//     | undefined;
 
 export const useLoginHistoryData = (limit_value: number) => {
     const { isSuccess } = useAuthorize();
+
     const {
         data: LoginHistoryData,
         isLoading,
@@ -60,18 +61,21 @@ function fetch(FetchLimit, datas, LoginHistoryData) {
         );
         const dates = environemntSplit[0];
         const time = environemntSplit[1].replace('GMT', ' GMT');
+        const parser = new UaParser();
+        const parsed = parser.getBrowser();
 
-        datas[i].date = `${moment(dates, 'DD-MMM-YY').format('YYYY-MM-DD')} and ${time}`;
+        datas[i].date = `${dayjs(dates, 'DD-MMM-YY').format('YYYY-MM-DD')} and ${time}`;
 
         datas[i].action = LoginHistoryData?.login_history[i].action === 'login' ? 'Login' : 'Logout';
 
-        const UserAgentString = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
+        // const UserAgentString = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
 
-        const UserAgent: TUserAgent = MobileAppUa
-            ? MobileAppUa.groups
-            : Bowser.getParser(UserAgentString)?.getBrowser();
+        // const UserAgent: TUserAgent = MobileAppUa
+        //     ? MobileAppUa.groups
+        //     : Bowser.getParser(UserAgentString)?.getBrowser();
 
-        datas[i].browser = UserAgent ? `${UserAgent.name} ${UserAgent.app ?? ''} v${UserAgent.version}` : 'Unknown';
+        // datas[i].browser = UserAgent ? `${UserAgent.name} ${UserAgent.app ?? ''} v${UserAgent.version}` : 'Unknown';
+        datas[i].browser = `${parsed.name} ${parsed.version}`;
 
         datas[i].ip = environemntSplit[2].split('=')[1];
 

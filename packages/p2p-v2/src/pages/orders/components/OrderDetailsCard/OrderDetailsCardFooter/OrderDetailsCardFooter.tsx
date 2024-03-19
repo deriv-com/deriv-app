@@ -7,6 +7,7 @@ type TOrderDetailsCardFooterProps = {
     orderDetails: ExtendedOrderDetails;
 };
 
+// TODO: Implement functionality for each button when integrating with the API
 const OrderDetailsCardFooter = ({ orderDetails }: TOrderDetailsCardFooterProps) => {
     const {
         shouldShowCancelAndPaidButton,
@@ -19,7 +20,7 @@ const OrderDetailsCardFooter = ({ orderDetails }: TOrderDetailsCardFooterProps) 
 
     if (shouldShowCancelAndPaidButton)
         return (
-            <div className='p2p-v2-order-details-card-footer justify-end'>
+            <div className='p2p-v2-order-details-card-footer justify-end gap-3'>
                 <Button className='border-2' color='black' size='lg' textSize={textSize} variant='outlined'>
                     Cancel order
                 </Button>
@@ -32,7 +33,7 @@ const OrderDetailsCardFooter = ({ orderDetails }: TOrderDetailsCardFooterProps) 
     if (shouldShowComplainAndReceivedButton)
         return (
             <div className='p2p-v2-order-details-card-footer justify-between'>
-                <Button className='border-2' size='lg' textSize={textSize} variant='ghost'>
+                <Button className='border-2' color='primary-light' size='lg' textSize={textSize} variant='ghost'>
                     Complain
                 </Button>
                 <Button size='lg' textSize={textSize}>
@@ -44,7 +45,7 @@ const OrderDetailsCardFooter = ({ orderDetails }: TOrderDetailsCardFooterProps) 
     if (shouldShowOnlyComplainButton)
         return (
             <div className='p2p-v2-order-details-card-footer justify-end'>
-                <Button className='border-2' size='lg' textSize={textSize} variant='ghost'>
+                <Button className='border-2' color='primary-light' size='lg' textSize={textSize} variant='ghost'>
                     Complain
                 </Button>
             </div>

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Control, Controller, FieldValues, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { TAdvertiserPaymentMethods, TAdvertType } from 'types';
@@ -59,7 +59,7 @@ const BuySellForm = ({
     onRequestClose,
     paymentMethods,
 }: TBuySellFormProps) => {
-    const { mutate } = p2p.order.useCreate();
+    const { data: orderCreatedInfo, isSuccess, mutate } = p2p.order.useCreate();
     const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<number[]>([]);
 
     const {
@@ -132,8 +132,6 @@ const BuySellForm = ({
         }
 
         mutate(payload);
-        history.push(`${BASE_URL}/orders?order_id=${id}`);
-        onRequestClose();
     };
 
     const calculatedRate = removeTrailingZeros(roundOffDecimal(effectiveRate, setDecimalPlaces(effectiveRate, 6)));
@@ -146,6 +144,13 @@ const BuySellForm = ({
             setSelectedPaymentMethods([...selectedPaymentMethods, paymentMethodId]);
         }
     };
+
+    useEffect(() => {
+        if (isSuccess && orderCreatedInfo) {
+            history.push(`${BASE_URL}/orders?order_id=${orderCreatedInfo.id}`);
+            onRequestClose();
+        }
+    }, [isSuccess, orderCreatedInfo, history, onRequestClose]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

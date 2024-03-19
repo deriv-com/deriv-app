@@ -13,7 +13,11 @@ export const AccountClosureConfirmModal = ({
     handleSubmit,
     isModalOpen,
 }: TAccountClosureConfirmModalProps) => (
+<<<<<<< HEAD
     <Modal className='p-24 md:w-[440px] sm:w-[312px]' isOpen={isModalOpen}>
+=======
+    <Modal className='p-24 w-[440px] sm:w-[312px]' isOpen={isModalOpen}>
+>>>>>>> b05e4b4dcb ([account-v2]/likhith/COJ-667/Create account-closure-form and modal (#14208))
         <Modal.Body className='flex flex-col'>
             <StandaloneTriangleExclamationRegularIcon className='self-center fill-status-light-danger' iconSize='2xl' />
             <Text align='center' as='h4' size='md' weight='bold'>

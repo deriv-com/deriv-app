@@ -20,7 +20,7 @@ const Orders = () => {
         isFetching,
         isLoading,
         loadMoreOrders,
-    } = p2p.order.useGetList({ active: currentTab === ORDERS_STATUS.ACTIVE_ORDERS ? 1 : 0 });
+    } = p2p.order.useGetList({ active: currentTab === ORDERS_STATUS.ACTIVE_ORDERS ? 1 : 0 }, { enabled: !orderId });
 
     if (orderId) return <OrderDetails orderId={orderId} />;
 

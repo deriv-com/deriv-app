@@ -4,6 +4,7 @@ import { Divider } from '@deriv-com/ui';
 import { OrderDetailsCardFooter } from './OrderDetailsCardFooter';
 import { OrderDetailsCardHeader } from './OrderDetailsCardHeader';
 import { OrderDetailsCardInfo } from './OrderDetailsCardInfo';
+import { OrderDetailsCardReview } from './OrderDetailsCardReview';
 import './OrderDetailsCard.scss';
 
 type TOrderDetailsCardProps = {
@@ -17,6 +18,7 @@ const OrderDetailsCard = ({ orderDetails }: TOrderDetailsCardProps) => {
             <Divider color='#f2f3f4' />
             <OrderDetailsCardInfo orderDetails={orderDetails} />
             <Divider color='#f2f3f4' />
+            <OrderDetailsCardReview orderDetails={orderDetails} />
             <OrderDetailsCardFooter orderDetails={orderDetails} />
         </div>
     );

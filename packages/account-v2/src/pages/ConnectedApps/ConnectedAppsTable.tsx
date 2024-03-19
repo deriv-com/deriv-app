@@ -1,7 +1,7 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { Button, Table } from '@deriv-com/ui';
-import { CONNECTED_APPS_HEADER, CONNECTED_APPS_HEADER_ORDER } from '../../constants/connectedAppsConstants';
+import { CONNECTED_APPS_HEADER } from '../../constants/connectedAppsConstants';
 import { getFormattedAppScopes } from '../../utils/connectedAppsUtils';
 
 type TConnectedAppsTable = {
@@ -9,10 +9,6 @@ type TConnectedAppsTable = {
 };
 
 export const ConnectedAppsTable = ({ connectedApps }: TConnectedAppsTable) => {
-    const connectedAppsColumns = CONNECTED_APPS_HEADER_ORDER.map(header_name => ({
-        header: CONNECTED_APPS_HEADER[header_name],
-    }));
-
     const connectedAppsRows = connectedApps?.map(connectedApp => ({
         lastLogin: connectedApp?.last_used,
         name: connectedApp?.name,
@@ -21,7 +17,7 @@ export const ConnectedAppsTable = ({ connectedApps }: TConnectedAppsTable) => {
 
     return (
         <Table
-            columns={connectedAppsColumns}
+            columns={CONNECTED_APPS_HEADER}
             data={connectedAppsRows ?? []}
             isFetching={false}
             // eslint-disable-next-line @typescript-eslint/no-empty-function

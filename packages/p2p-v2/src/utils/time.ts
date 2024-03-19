@@ -136,3 +136,15 @@ export const getDistanceToServerTime = (compareTime: number, serverTime?: Moment
     const distance = time.diff(serverTime, 'milliseconds');
     return distance;
 };
+
+/**
+ * Formats milliseconds into a string according to the specified format.
+ * @param {Number} miliseconds miliseconds
+ * @param {String} strFormat formatting using moment e.g - YYYY-MM-DD HH:mm
+ */
+export const formatMilliseconds = (miliseconds: moment.MomentInput, strFormat: string, isLocalTime = false) => {
+    if (isLocalTime) {
+        return moment(miliseconds).format(strFormat);
+    }
+    return moment.utc(miliseconds).format(strFormat);
+};

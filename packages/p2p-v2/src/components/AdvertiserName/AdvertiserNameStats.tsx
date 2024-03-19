@@ -63,7 +63,7 @@ const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: TAdvertiser
                                     ({ratingAverage})
                                 </Text>
                             )}
-                            <StarRating isReadonly ratingValue={ratingAverage} />
+                            <StarRating allowHalfIcon isReadonly ratingValue={ratingAverage} />
                             <Text color='less-prominent' size='sm'>
                                 ({ratingCount} ratings)
                             </Text>

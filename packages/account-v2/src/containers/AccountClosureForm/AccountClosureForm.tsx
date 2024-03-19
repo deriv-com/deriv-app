@@ -110,7 +110,7 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                                     });
                                 }}
                                 role='textarea'
-                                textSize={'sm'}
+                                textSize='sm'
                             />
                             <Field
                                 aria-label='What could we do to improve?'
@@ -126,7 +126,7 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                                     });
                                 }}
                                 role='textarea'
-                                textSize={'sm'}
+                                textSize='sm'
                             />
                         </section>
                         <section className='mt-24 flex gap-x-16 justify-end'>

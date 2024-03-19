@@ -28,13 +28,15 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     const { data } = useRemoteConfig();
 
+    const { tracking_datadog, tracking_rudderstack, marketing_growthbook } = data;
+
     React.useEffect(() => {
-        initDatadog(data.tracking_datadog);
+        initDatadog(tracking_datadog);
         if (process.env.RUDDERSTACK_KEY) {
             const config = {
-                growthbookKey: data.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
-                growthbookDecryptionKey: data.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
-                rudderstackKey: process.env.RUDDERSTACK_KEY,
+                growthbookKey: marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
+                growthbookDecryptionKey: marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
+                rudderstackKey: tracking_rudderstack ? process.env.RUDDERSTACK_KEY : undefined,
             };
             Analytics.initialise(config);
             Analytics.setAttributes({

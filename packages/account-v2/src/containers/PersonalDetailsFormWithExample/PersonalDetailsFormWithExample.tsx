@@ -1,13 +1,12 @@
-import React, { lazy, Suspense, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
-import { Checkbox, InlineMessage, Loader, Text } from '@deriv-com/ui';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
+import { Checkbox, InlineMessage, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
 import { FormInputField } from '../../components/FormFields';
 import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
 import { validateField } from '../../utils/validation';
-
-const ExampleImage = lazy(() => import('../../assets/proof-of-identity/personal-details-example.svg'));
 
 type TPersonalDetailsFormWithExampleValues = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
 
@@ -84,9 +83,7 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                     <Text as='p' className='mt-2 mb-4' size='xs' weight='bold'>
                         Example:
                     </Text>
-                    <Suspense fallback={<Loader isFullScreen={false} />}>
-                        <ExampleImage />
-                    </Suspense>
+                    <DerivLightNameDobPoiIcon />
                 </div>
             </div>
             <div>

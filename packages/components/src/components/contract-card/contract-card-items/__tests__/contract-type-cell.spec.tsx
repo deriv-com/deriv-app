@@ -5,63 +5,53 @@ import ContractTypeCell from '../contract-type-cell';
 
 jest.mock('../../../icon-trade-types', () => jest.fn(({ type }) => <div>{`Icon trade type: ${type}`}</div>));
 
+const mock_props: React.ComponentProps<typeof ContractTypeCell> = {
+    displayed_trade_param: '',
+    getContractTypeDisplay,
+    is_high_low: false,
+    is_multipliers: false,
+    is_turbos: false,
+    type: CONTRACT_TYPES.VANILLA.CALL,
+};
+
 describe('<ContractTypeCell />', () => {
-    let mock_props: React.ComponentProps<typeof ContractTypeCell>;
-
-    beforeEach(() => {
-        mock_props = {
-            displayed_trade_param: '',
-            getContractTypeDisplay,
-            is_high_low: false,
-            is_multipliers: false,
-            is_turbos: false,
-            type: CONTRACT_TYPES.VANILLA.CALL,
-        };
-    });
-
-    it('should render correct icon and contract type display name', () => {
+    it('should render correct icon and contract type display name for passed type', () => {
         render(<ContractTypeCell {...mock_props} />);
 
         expect(screen.getByText(/vanillalongcall/i)).toBeInTheDocument();
         expect(screen.getByText('Call')).toBeInTheDocument();
     });
 
-    it('should render specific icon postfix _barrier if is_high_low === true and it is not Vanilla contract', () => {
-        mock_props.is_high_low = true;
-        mock_props.type = CONTRACT_TYPES.LB_CALL;
-        render(<ContractTypeCell {...mock_props} />);
+    it('should render specific icon with postfix "_barrier" if is_high_low === true and it is not Vanilla contract', () => {
+        render(<ContractTypeCell {...mock_props} is_high_low type={CONTRACT_TYPES.LB_CALL} />);
 
-        expect(screen.getByText(/lbfloatcall_barrier/i)).toBeInTheDocument();
+        expect(screen.getByText(/_barrier/i)).toBeInTheDocument();
     });
 
     it('should render specific contract type display name for Multipliers', () => {
-        mock_props.type = CONTRACT_TYPES.MULTIPLIER.DOWN;
-        mock_props.is_multipliers = true;
-        render(<ContractTypeCell {...mock_props} />);
+        render(<ContractTypeCell {...mock_props} is_multipliers type={CONTRACT_TYPES.MULTIPLIER.DOWN} />);
 
         expect(screen.getByText('Multipliers')).toBeInTheDocument();
+        expect(screen.queryByText('Up')).not.toBeInTheDocument();
     });
 
     it('should render specific contract type display name for Turbos', () => {
-        mock_props.type = CONTRACT_TYPES.TURBOS.LONG;
-        mock_props.is_turbos = true;
-        render(<ContractTypeCell {...mock_props} />);
+        render(<ContractTypeCell {...mock_props} is_turbos type={CONTRACT_TYPES.TURBOS.LONG} />);
 
         expect(screen.getByText('Turbos')).toBeInTheDocument();
+        expect(screen.queryByText('Up')).not.toBeInTheDocument();
     });
 
     it('should not render contract type display name if type is unknown', () => {
         const mock_trade_type = 'MysteriousType';
-        mock_props.type = mock_trade_type;
-        render(<ContractTypeCell {...mock_props} />);
+        render(<ContractTypeCell {...mock_props} type={mock_trade_type} />);
 
         expect(screen.queryByText(mock_trade_type)).not.toBeInTheDocument();
     });
 
-    it('should render displayed trade parameters if displayed_trade_param was passed', () => {
+    it('should render displayed trade parameters content if displayed_trade_param was passed', () => {
         const mock_trade_param = 'Displayed trade parameters';
-        mock_props.displayed_trade_param = mock_trade_param;
-        render(<ContractTypeCell {...mock_props} />);
+        render(<ContractTypeCell {...mock_props} displayed_trade_param={mock_trade_param} />);
 
         expect(screen.getByText(mock_trade_param)).toBeInTheDocument();
     });

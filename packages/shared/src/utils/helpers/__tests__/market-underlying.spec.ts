@@ -67,13 +67,13 @@ describe('market-underlying', () => {
             expect(getTradeTypeName(CONTRACT_TYPES.VANILLA.CALL, false, false, true)).toBe('Vanillas');
             expect(getTradeTypeName(CONTRACT_TYPES.MULTIPLIER.DOWN, false, false, true)).toBe('Multipliers');
         });
-        it('should not return main title for contracts which have not such field if show_main_title is true', () => {
-            expect(getTradeTypeName(CONTRACT_TYPES.FALL, false, false, true)).toBeFalsy;
-        });
         it('should not return main title for contracts which have such field but show_main_title is false', () => {
-            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, false, false, false)).toBeFalsy;
-            expect(getTradeTypeName(CONTRACT_TYPES.VANILLA.CALL, false, false, false)).toBeFalsy;
-            expect(getTradeTypeName(CONTRACT_TYPES.MULTIPLIER.DOWN, false, false, false)).toBeFalsy;
+            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, false, false, false)).not.toBe('Turbos');
+            expect(getTradeTypeName(CONTRACT_TYPES.VANILLA.CALL, false, false, false)).not.toBe('Vanillas');
+            expect(getTradeTypeName(CONTRACT_TYPES.MULTIPLIER.DOWN, false, false, false)).not.toBe('Multipliers');
+        });
+        it('should not return main title for contracts which have not such field if show_main_title is true', () => {
+            expect(getTradeTypeName(CONTRACT_TYPES.FALL, false, false, true)).toBeFalsy();
         });
     });
 });

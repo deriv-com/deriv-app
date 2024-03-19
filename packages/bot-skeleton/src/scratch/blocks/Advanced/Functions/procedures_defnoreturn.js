@@ -6,6 +6,7 @@ Blockly.Blocks.procedures_defnoreturn = {
     init() {
         this.arguments = [];
         this.argument_var_models = [];
+        this.is_adding = false;
 
         this.jsonInit(this.definition());
 
@@ -93,9 +94,10 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     onAddClick() {
-        if (this.workspace.options.readOnly || this.isInFlyout) {
+        if (this.is_adding || this.workspace.options.readOnly || this.isInFlyout) {
             return;
         }
+        this.is_adding = true;
 
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
         setTimeout(() => {
@@ -118,6 +120,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                     }
                 }
             });
+            this.is_adding = false;
         }, 200);
     },
     /**

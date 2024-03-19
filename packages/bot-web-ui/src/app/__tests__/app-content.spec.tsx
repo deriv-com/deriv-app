@@ -17,6 +17,7 @@ const mock_data = {
     },
 };
 const mock_unsubscribe = jest.fn();
+jest.mock('react-toastify/dist/ReactToastify.css', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),

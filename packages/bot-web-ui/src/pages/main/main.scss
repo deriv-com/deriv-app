@@ -556,21 +556,6 @@
     }
 }
 
-.bot-notification {
-    .dc-toast__message {
-        background: var(--text-prominent);
-        font-size: 1.2rem;
-        position: absolute;
-        top: -5rem;
-        left: 20rem;
-
-        @include mobile {
-            top: -12rem;
-            left: 10rem;
-        }
-    }
-}
-
 @keyframes blink {
     0%,
     100% {
@@ -590,25 +575,4 @@
     height: 2.5rem !important;
     width: 2.5rem !important;
     padding: 0.2rem 0;
-}
-
-.import-notification {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    right: 0;
-    bottom: 7rem;
-
-    .dc-toast {
-        width: 100%;
-
-        &__message {
-            background: var(--text-prominent);
-            color: var(--general-main-1);
-        }
-    }
-
-    @include mobile {
-        bottom: 10rem;
-    }
 }

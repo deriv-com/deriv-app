@@ -1,6 +1,6 @@
 import { useKycAuthStatus } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
-import useManualForm from '../useManualForm';
+import { useManualForm } from '../useManualForm';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),

@@ -14,8 +14,8 @@ type TProps = {
 
 const numberWithinRange = (number: number, min: number, max: number): number => Math.min(Math.max(number, min), max);
 
-// scale based on the width difference between active wallet (288px) and inactive wallets (240px)
-const TRANSITION_FACTOR_SCALE = 1 - 24 / 28.8;
+// scale based on the width difference between active wallet (288px) and inactive wallets + padding (240px + 16px)
+const TRANSITION_FACTOR_SCALE = 1 - 25.6 / 28.8;
 
 /**
  * carousel component

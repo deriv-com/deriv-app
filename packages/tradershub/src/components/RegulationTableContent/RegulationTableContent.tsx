@@ -12,7 +12,7 @@ const RegulationTableContent = () => (
                 <th className='sticky z-10 border-solid border-r-1 border-b-1 border-system-light-active-background start-0 min-h-40 bg-system-light-primary-background' />
                 {RegulationTitle.map(title => (
                     <th
-                        className='p-10 border-solid min-h-40 border-r-1 border-y-1 border-system-light-active-background'
+                        className='p-10 text-center border-solid min-h-40 border-r-1 border-y-1 border-system-light-active-background'
                         key={title}
                     >
                         <Text size='sm' weight='bold'>

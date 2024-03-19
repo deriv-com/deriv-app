@@ -1,14 +1,5 @@
 import React from 'react';
 import { TImageTestID, TWalletsImagesListKey, WalletsImageProps } from './image-types';
-import HowItWorks from './how-it-works.svg';
-import IntroducingWallets from './introducing-wallets.svg';
-import IntroducingWalletsEU from './introducing-wallets-eu.svg';
-import ReadyDesktopEuImage from './wallets-ready-desktop-eu.svg';
-import ReadyDesktopImage from './wallets-ready-desktop.svg';
-import ReadyMobileEuImage from './wallets-ready-mobile-eu.svg';
-import ReadyMobileImage from './wallets-ready-mobile.svg';
-import TradingAccounts from './trading-accounts.svg';
-import TradingAccountsEU from './trading-accounts-eu.svg';
 import UpgradeDesktopImage from './wallets-upgrade-desktop.svg';
 import UpgradeMobileImage from './wallets-upgrade-mobile.svg';
 import EnableWalletsModalDesktop from './enable-wallets-modal-desktop.svg';
@@ -31,15 +22,6 @@ export const WalletsImagesList = {
     wallets_upgrade_unsuccessful_mobile: WalletsUpgradeUnsuccessfulMobile,
     upgrade_desktop: UpgradeDesktopImage,
     upgrade_mobile: UpgradeMobileImage,
-    how_it_works: HowItWorks,
-    introducing_wallets: IntroducingWallets,
-    introducing_wallets_eu: IntroducingWalletsEU,
-    ready_desktop: ReadyDesktopImage,
-    ready_desktop_eu: ReadyDesktopEuImage,
-    ready_mobile: ReadyMobileImage,
-    ready_mobile_eu: ReadyMobileEuImage,
-    trading_accounts: TradingAccounts,
-    trading_accounts_eu: TradingAccountsEU,
 } as const;
 
 const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKey>) => {

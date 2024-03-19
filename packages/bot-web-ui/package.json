@@ -95,6 +95,11 @@
         "react-rnd": "^10.4.1",
         "react-transition-group": "4.4.2",
         "scratch-blocks": "^1.0.7",
-        "yup": "^0.32.11"
+        "yup": "^0.32.11",
+        "react-toastify": "^9.1.3",
+        "moment": "^2.29.2",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/react-router-dom": "^5.1.6",
+        "react-router-dom": "^5.2.0"
     }
 }

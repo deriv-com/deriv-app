@@ -20,13 +20,15 @@ const MT5CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonPr
 
     const isLoading = tradingPlatformPasswordChangeLoading || createMT5AccountLoading;
     const isDisabled = !password || isLoading;
-    useEffect(() => {
-        if (doesNotMeetPasswordPolicy) openModal('MT5ChangePasswordModal');
-    }, [doesNotMeetPasswordPolicy, openModal]);
+useEffect(() => {
+    if (doesNotMeetPasswordPolicy) {
+        openModal('MT5ChangePasswordModal');
+    }
 
-    useEffect(() => {
-        if (createMT5AccountStatus === 'success') openModal('MT5SuccessModal');
-    }, [createMT5AccountStatus, openModal]);
+    if (createMT5AccountStatus === 'success') {
+        openModal('MT5SuccessModal');
+    }
+}, [doesNotMeetPasswordPolicy, createMT5AccountStatus, openModal]);
 
     return (
         <Button disabled={isDisabled} isLoading={isLoading} onClick={() => handleSubmit(password)}>

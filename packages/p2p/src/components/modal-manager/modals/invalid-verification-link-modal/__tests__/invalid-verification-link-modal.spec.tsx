@@ -7,6 +7,7 @@ import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
 const mocked_store_values: DeepPartial<ReturnType<typeof useStores>> = {
     order_store: {
         confirmOrderRequest: jest.fn(),
+        setIsVerifyingEmail: jest.fn(),
     },
 };
 
@@ -55,5 +56,6 @@ describe('<InvalidVerificationLinkModal />', () => {
         ok_button.click();
         expect(mock_modal_manager.hideModal).toHaveBeenCalledTimes(1);
         expect(mocked_store_values.order_store.confirmOrderRequest).toHaveBeenCalledTimes(1);
+        expect(mocked_store_values.order_store.setIsVerifyingEmail).toHaveBeenCalledTimes(1);
     });
 });

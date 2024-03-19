@@ -1,0 +1,26 @@
+@import '../skeletonLoader.scss';
+
+.total-asset-skeleton-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 0.4rem;
+
+    &__title {
+        height: 2rem;
+        border-radius: $BORDER_RADIUS_2;
+        width: 7.5rem;
+        @include mobile {
+            display: none;
+        }
+    }
+    &__description {
+        height: 3.6rem;
+        border-radius: $BORDER_RADIUS_2;
+        width: 17.6rem;
+
+        @include mobile {
+            height: 3rem;
+        }
+    }
+}

@@ -5,7 +5,7 @@ import Dropzone from '../Dropzone';
 
 describe('Dropzone', () => {
     const textPlainText = 'text/plain';
-    const dropZoneInputTestId = 'dt_dropzone-input';
+    const dropZoneInputTestId = 'dt_dropzone_input';
 
     beforeAll(() => {
         global.URL.createObjectURL = jest.fn();
@@ -17,7 +17,7 @@ describe('Dropzone', () => {
 
     it('should open file explorer when clicking on the button', async () => {
         const file = new File(['foo'], 'foo.txt', { type: textPlainText });
-        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
+        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone_icon'>icon</i>} />);
         const input: HTMLInputElement = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             userEvent.upload(input, file);
@@ -30,10 +30,10 @@ describe('Dropzone', () => {
             <Dropzone
                 buttonText='Find file'
                 defaultFile={new File([''], 'filename')}
-                icon={<i data-testid='dt_dropzone-icon'>icon</i>}
+                icon={<i data-testid='dt_dropzone_icon'>icon</i>}
             />
         );
-        const removeButton = screen.getByTestId('dt_remove-button');
+        const removeButton = screen.getByTestId('dt_remove_button');
         removeButton.click();
         expect(screen.queryByText('filename')).not.toBeInTheDocument();
     });
@@ -44,7 +44,7 @@ describe('Dropzone', () => {
             <Dropzone
                 buttonText='Find file'
                 fileFormats={'images/*'}
-                icon={<i data-testid='dt_dropzone-icon'>icon</i>}
+                icon={<i data-testid='dt_dropzone_icon'>icon</i>}
             />
         );
         const input = screen.getByTestId(dropZoneInputTestId);
@@ -61,7 +61,7 @@ describe('Dropzone', () => {
             <Dropzone
                 buttonText='Find file'
                 defaultFile={file}
-                icon={<i data-testid='dt_dropzone-icon'>icon</i>}
+                icon={<i data-testid='dt_dropzone_icon'>icon</i>}
                 onFileChange={onFileChange}
             />
         );
@@ -74,7 +74,7 @@ describe('Dropzone', () => {
 
     it('should show error message if file size is invalid', async () => {
         const file = new File(['foo'], 'foo.txt', { type: textPlainText });
-        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} maxSize={1} />);
+        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone_icon'>icon</i>} maxSize={1} />);
         const input = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             userEvent.upload(input, file);
@@ -84,7 +84,7 @@ describe('Dropzone', () => {
 
     it('should show hover message when dragging the file', async () => {
         const file = new File(['foo'], 'foo.txt', { type: textPlainText });
-        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
+        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone_icon'>icon</i>} />);
         const input: HTMLInputElement = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             Object.defineProperty(input, 'files', {
@@ -98,7 +98,7 @@ describe('Dropzone', () => {
 
     it('should be able to drop the file', async () => {
         const file = new File(['foo'], 'foo.txt', { type: textPlainText });
-        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
+        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone_icon'>icon</i>} />);
         const input: HTMLInputElement = screen.getByTestId(dropZoneInputTestId);
         await waitFor(() => {
             Object.defineProperty(input, 'files', {

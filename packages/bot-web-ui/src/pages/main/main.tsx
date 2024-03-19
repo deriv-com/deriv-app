@@ -13,7 +13,6 @@ import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../../components/run-panel';
-import StrategyNotification from '../../components/strategy-notification';
 import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
@@ -208,7 +207,6 @@ const AppWrapper = observer(() => {
             >
                 {message}
             </Dialog>
-            <StrategyNotification />
         </React.Fragment>
     );
 });

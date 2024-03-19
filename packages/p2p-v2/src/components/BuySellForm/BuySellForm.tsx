@@ -1,29 +1,37 @@
 /* eslint-disable camelcase */
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import Modal from 'react-modal';
-import { TAdvertType } from 'types';
-import { BUY_SELL, RATE_TYPE } from '@/constants';
-import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from '@/utils';
+import React, { useState } from 'react';
+import { Control, Controller, FieldValues, useForm } from 'react-hook-form';
+import { TAdvertiserPaymentMethods, TAdvertType } from 'types';
+import { BUY_SELL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
+import {
+    getPaymentMethodObjects,
+    getTextFieldError,
+    removeTrailingZeros,
+    roundOffDecimal,
+    setDecimalPlaces,
+} from '@/utils';
 import { p2p } from '@deriv/api-v2';
-import { Divider, InlineMessage, Text, useDevice } from '@deriv-com/ui';
-import { BuySellAmount } from '../BuySellAmount';
-import { BuySellData } from '../BuySellData';
-import { BuySellFormFooter } from '../BuySellFormFooter';
-import { BuySellFormHeader } from '../BuySellFormHeader';
-import { customStyles } from '../Modals/helpers';
+import { Divider, InlineMessage, Text, TextArea, useDevice } from '@deriv-com/ui';
+import { BuySellAmount } from './BuySellAmount';
+import { BuySellData } from './BuySellData';
+import BuySellFormDisplayWrapper from './BuySellFormDisplayWrapper';
+import { BuySellPaymentSection } from './BuySellPaymentSection';
 import './BuySellForm.scss';
 
+type TPayload = Omit<Parameters<ReturnType<typeof p2p.order.useCreate>['mutate']>[0], 'payment_method_ids'> & {
+    payment_method_ids?: number[];
+};
 type TBuySellFormProps = {
     advert: TAdvertType;
     advertiserBuyLimit: number;
+    advertiserPaymentMethods: TAdvertiserPaymentMethods;
     advertiserSellLimit: number;
     balanceAvailable: number;
     displayEffectiveRate: string;
     effectiveRate: number;
     isModalOpen: boolean;
     onRequestClose: () => void;
-    paymentMethods: ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data'];
+    paymentMethods: ReturnType<typeof p2p.paymentMethods.useGet>['data'];
 };
 
 const getAdvertiserMaxLimit = (
@@ -41,6 +49,7 @@ const getAdvertiserMaxLimit = (
 const BuySellForm = ({
     advert,
     advertiserBuyLimit,
+    advertiserPaymentMethods,
     advertiserSellLimit,
     balanceAvailable,
     displayEffectiveRate,
@@ -50,6 +59,8 @@ const BuySellForm = ({
     paymentMethods,
 }: TBuySellFormProps) => {
     const { mutate } = p2p.order.useCreate();
+    const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<number[]>([]);
+
     const {
         account_currency,
         advertiser_details,
@@ -65,7 +76,21 @@ const BuySellForm = ({
         type,
     } = advert;
 
+    const avertiserPaymentMethodObjects = getPaymentMethodObjects(advertiserPaymentMethods);
+
+    const paymentMethodObjects = getPaymentMethodObjects(paymentMethods);
+
+    const availablePaymentMethods = payment_method_names?.map(paymentMethod => {
+        const isAvailable = advertiserPaymentMethods?.some(method => method.display_name === paymentMethod);
+        return {
+            ...(isAvailable ? avertiserPaymentMethodObjects[paymentMethod] : paymentMethodObjects[paymentMethod]),
+            isAvailable,
+        };
+    });
+
+    const { isMobile } = useDevice();
     const isBuy = type === BUY_SELL.BUY;
+
     const shouldDisableField =
         !isBuy &&
         (parseFloat(balanceAvailable.toString()) === 0 ||
@@ -79,50 +104,65 @@ const BuySellForm = ({
     } = useForm({
         defaultValues: {
             amount: min_order_amount_limit ?? 1,
+            bank_details: '',
+            contact_details: '',
         },
-        mode: 'onChange',
+        mode: 'all',
     });
-    const { isMobile } = useDevice();
 
     const onSubmit = () => {
         //TODO: error handling after implementation of exchange rate
         const rateValue = rate_type === RATE_TYPE.FIXED ? null : effectiveRate;
-        const payload = {
+        const payload: TPayload = {
             advert_id: id,
             amount: Number(getValues('amount')),
         };
         if (rateValue) {
             payload.rate = rateValue;
         }
+
+        if (isBuy && selectedPaymentMethods.length) {
+            payload.payment_method_ids = selectedPaymentMethods;
+        }
+
+        if (isBuy && !selectedPaymentMethods.length) {
+            payload.payment_info = getValues('bank_details');
+        }
+
         mutate(payload);
     };
 
     const calculatedRate = removeTrailingZeros(roundOffDecimal(effectiveRate, setDecimalPlaces(effectiveRate, 6)));
     const initialAmount = removeTrailingZeros((min_order_amount_limit * Number(calculatedRate)).toString());
 
+    const onSelectPaymentMethodCard = (paymentMethodId: number) => {
+        if (selectedPaymentMethods.includes(paymentMethodId)) {
+            setSelectedPaymentMethods(selectedPaymentMethods.filter(method => method !== paymentMethodId));
+        } else {
+            setSelectedPaymentMethods([...selectedPaymentMethods, paymentMethodId]);
+        }
+    };
+
     return (
-        <Modal
-            className='p2p-v2-buy-sell-form'
-            isOpen={isModalOpen}
-            onRequestClose={onRequestClose}
-            style={{ ...customStyles, overlay: { ...customStyles.overlay, top: `${isMobile ? '16rem' : 0}` } }}
-        >
-            <BuySellFormHeader
-                currency={account_currency}
-                onClickBack={isMobile ? onRequestClose : undefined}
-                type={type}
-            />
-            <Divider />
-            {rate_type === RATE_TYPE.FLOAT && !shouldDisableField && (
-                <div className='px-[2.4rem] mt-[2.4rem]'>
-                    <InlineMessage variant='info'>
-                        <Text size={isMobile ? 'xs' : '2xs'}>
-                            {`If the market rate changes from the rate shown here, we won't be able to process your order.`}
-                        </Text>
-                    </InlineMessage>
-                </div>
-            )}
-            <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <BuySellFormDisplayWrapper
+                accountCurrency={account_currency}
+                isBuy={isBuy}
+                isModalOpen={isModalOpen}
+                isValid={isValid}
+                onRequestClose={onRequestClose}
+                onSubmit={onSubmit}
+            >
+                {rate_type === RATE_TYPE.FLOAT && !shouldDisableField && (
+                    <div className='px-[2.4rem] mt-[2.4rem]'>
+                        <InlineMessage variant='info'>
+                            <Text size={isMobile ? 'xs' : '2xs'}>
+                                If the market rate changes from the rate shown here, we won’t be able to process your
+                                order.
+                            </Text>
+                        </InlineMessage>
+                    </div>
+                )}
                 <BuySellData
                     accountCurrency={account_currency}
                     expiryPeriod={order_expiry_period ?? 3600}
@@ -135,12 +175,18 @@ const BuySellForm = ({
                     rate={displayEffectiveRate}
                 />
                 <Divider />
+                {isBuy && payment_method_names?.length > 0 && (
+                    <BuySellPaymentSection
+                        availablePaymentMethods={availablePaymentMethods}
+                        onSelectPaymentMethodCard={onSelectPaymentMethodCard}
+                        selectedPaymentMethodIds={selectedPaymentMethods}
+                    />
+                )}
                 <BuySellAmount
                     accountCurrency={account_currency}
                     amount={initialAmount}
                     calculatedRate={calculatedRate}
-                    control={control}
-                    effectiveRate={effectiveRate}
+                    control={control as unknown as Control<FieldValues, unknown, FieldValues>}
                     isBuy={isBuy}
                     isDisabled={shouldDisableField}
                     localCurrency={local_currency}
@@ -152,10 +198,69 @@ const BuySellForm = ({
                     )}
                     minLimit={min_order_amount_limit_display}
                 />
-                <Divider />
-                <BuySellFormFooter isDisabled={!isValid} onClickCancel={onRequestClose} onSubmit={onSubmit} />
-            </form>
-        </Modal>
+                {isBuy && !payment_method_names?.length && (
+                    <Controller
+                        control={control}
+                        name='bank_details'
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => {
+                            return (
+                                <div className='px-[2.4rem] mb-[3.5rem] pt-[1.8rem]'>
+                                    <TextArea
+                                        hint={error ? error.message : 'Bank name, account number, beneficiary name'}
+                                        isInvalid={!!error}
+                                        label='Your bank details'
+                                        maxLength={300}
+                                        onBlur={onBlur}
+                                        onChange={onChange}
+                                        shouldShowCounter
+                                        textSize='sm'
+                                        value={value}
+                                    />
+                                </div>
+                            );
+                        }}
+                        rules={{
+                            pattern: {
+                                message: getTextFieldError('Bank details'),
+                                value: VALID_SYMBOLS_PATTERN,
+                            },
+                            required: 'Bank details is required',
+                        }}
+                    />
+                )}
+                {isBuy && (
+                    <>
+                        <Divider />
+                        <Controller
+                            control={control}
+                            name='contact_details'
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                                <div className='px-[2.4rem] mb-[3.5rem] pt-[1.8rem]'>
+                                    <TextArea
+                                        hint={error ? error.message : ''}
+                                        isInvalid={!!error}
+                                        label='Your contact details'
+                                        maxLength={300}
+                                        onBlur={onBlur}
+                                        onChange={onChange}
+                                        shouldShowCounter
+                                        textSize='sm'
+                                        value={value}
+                                    />
+                                </div>
+                            )}
+                            rules={{
+                                pattern: {
+                                    message: getTextFieldError('Contact details'),
+                                    value: VALID_SYMBOLS_PATTERN,
+                                },
+                                required: 'Contact details is required',
+                            }}
+                        />
+                    </>
+                )}
+            </BuySellFormDisplayWrapper>
+        </form>
     );
 };
 

@@ -36,7 +36,7 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
             case CFD_PLATFORMS.DXTRADE:
                 return 'https://onelink.to/grmtyx';
             case CFD_PLATFORMS.CTRADER:
-                return 'https://onelink.to/hyqpv7';
+                return 'https://onelink.to/5jgj8z';
             default:
                 return 'https://onelink.to/grmtyx';
         }

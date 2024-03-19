@@ -5,8 +5,8 @@ import { useWalletMigration } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import WalletsUpgradeModal from '../wallets-upgrade-modal';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
     useWalletMigration: jest.fn(() => ({
         is_eligible: true,
     })),

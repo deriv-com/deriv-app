@@ -95,7 +95,6 @@ const TradeChart = observer((props: TTradeChartProps) => {
     const max_ticks = granularity === 0 ? 8 : 24;
 
     if (!symbol || !active_symbols.length) return null;
-
     return (
         <SmartChart
             barriers={barriers}

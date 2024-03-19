@@ -1,5 +1,4 @@
 import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
-import { getMarketType } from '../../../helpers';
 import { THooks } from '../../../hooks/types';
 
 type TGetCurrencyConfig = ReturnType<typeof useCurrencyConfig>['getConfig'];
@@ -7,19 +6,7 @@ type TGetCurrencyConfig = ReturnType<typeof useCurrencyConfig>['getConfig'];
 const sortedMT5Accounts = (accounts: THooks.TransferAccounts, getConfig: TGetCurrencyConfig) => {
     return [
         ...accounts
-            .filter(account => account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'synthetic')
-            .map(account => ({
-                ...account,
-                currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-            })),
-        ...accounts
-            .filter(account => account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'financial')
-            .map(account => ({
-                ...account,
-                currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-            })),
-        ...accounts
-            .filter(account => account.account_type === 'mt5' && getMarketType(account.mt5_group) === 'all')
+            .filter(account => account.account_type === 'mt5')
             .map(account => ({
                 ...account,
                 currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
@@ -65,7 +52,7 @@ const sortedCryptoDerivAccounts = (accounts: THooks.TransferAccounts, getConfig:
             currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
         }))
         .sort((prev, next) => {
-            if (prev.currency && next.currency) return prev.currency.localeCompare(next.currency);
+            return prev.currency && next.currency ? prev.currency.localeCompare(next.currency) : 0;
         });
 };
 

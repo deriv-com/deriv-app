@@ -29,7 +29,7 @@ describe('AdFormInput', () => {
     });
     it('should handle the input change', () => {
         render(<AdFormInput {...mockProps} />);
-        const input = screen.getByRole('textbox');
+        const input = screen.getByPlaceholderText('label');
         expect(input).toBeInTheDocument();
         expect(input).toHaveValue('');
         userEvent.type(input, 'test');

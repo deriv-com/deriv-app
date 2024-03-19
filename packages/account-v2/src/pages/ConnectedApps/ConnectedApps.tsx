@@ -1,6 +1,6 @@
 import React from 'react';
+import { useFetchConnectedApps } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import { useFetchConnectedApps } from '../../hooks';
 import { ConnectedAppsTable } from './ConnectedAppsTable';
 
 export const ConnectedApps = () => {

@@ -230,7 +230,7 @@ export type TAppLinks = {
 export const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     ctrader: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
-        ios: 'https://apps.apple.com/us/app/deriv-ctrader',
+        ios: 'https://apps.apple.com/us/app/deriv-ctrader/id6466996509',
     },
     dxtrade: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',

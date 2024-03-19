@@ -77,3 +77,4 @@ export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletsList } from './useWalletsList';
 export { default as useGrowthbookFeatureFlag } from './useGrowthbookFeatureFlag';
+export { default as useResidenceSelfDeclaration } from './useResidenceSelfDeclaration';

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, ReactNode } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { getValidationRules } from '@/utils';
 import { Input, Text } from '@deriv-com/ui';
@@ -7,11 +7,10 @@ type TAdFormInputProps = ComponentProps<typeof Input> & {
     currency?: string;
     label: string;
     name: string;
+    rightPlaceholder: ReactNode;
 };
 
-const RightPlaceholder = ({ value = '' }: { value?: string }) => <Text color='less-prominent'>{value}</Text>;
-
-const AdFormInput = ({ currency, label, name, ...props }: TAdFormInputProps) => {
+const AdFormInput = ({ label, name, rightPlaceholder, ...props }: TAdFormInputProps) => {
     const { control, getValues } = useFormContext();
     return (
         <Controller
@@ -25,7 +24,7 @@ const AdFormInput = ({ currency, label, name, ...props }: TAdFormInputProps) => 
                         message={error ? error?.message : ''}
                         onBlur={onBlur}
                         onChange={onChange}
-                        rightPlaceholder={<RightPlaceholder value={currency} />}
+                        rightPlaceholder={rightPlaceholder}
                         value={value}
                         wrapperClassName='w-full'
                         {...props}

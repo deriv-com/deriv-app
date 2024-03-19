@@ -3,6 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { RadioGroup } from '@/components';
 import { BUY_SELL, MY_ADS_URL, RATE_TYPE } from '@/constants';
+import { Text } from '@deriv-com/ui';
 import { AdFormController } from '../AdFormController';
 import { AdFormInput } from '../AdFormInput';
 import { AdFormTextArea } from '../AdFormTextArea';
@@ -87,13 +88,29 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                 rules={{ required: true }}
             />
             <div className='flex flex-col lg:flex-row'>
-                <AdFormInput currency={currency} label='Total amount' name='amount' />
+                <AdFormInput
+                    label='Total amount'
+                    name='amount'
+                    rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                />
                 {/* TODO: Add FLOATING type component */}
-                <AdFormInput currency={localCurrency} label='Fixed rate' name='rate-type' />
+                <AdFormInput
+                    label='Fixed rate'
+                    name='rate-type'
+                    rightPlaceholder={<Text color='less-prominent'>{localCurrency}</Text>}
+                />
             </div>
             <div className='flex flex-col lg:flex-row'>
-                <AdFormInput currency={currency} label='Min order' name='min-order' />
-                <AdFormInput currency={currency} label='Max order' name='max-order' />
+                <AdFormInput
+                    label='Min order'
+                    name='min-order'
+                    rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                />
+                <AdFormInput
+                    label='Max order'
+                    name='max-order'
+                    rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                />
             </div>
             {isSell && (
                 <AdFormTextArea field='Contact details' label='Your contact details' name='contact-details' required />

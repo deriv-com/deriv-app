@@ -27,7 +27,7 @@ const CreateAd = () => {
     const { data: p2pSettings } = p2p.settings.useGetSettings();
 
     const onSubmit = () => {
-        // handle submit after all the steps are completed
+        // TODO: handle submit after all the steps are completed
     };
     return (
         <FormProvider {...methods}>

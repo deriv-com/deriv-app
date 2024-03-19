@@ -56,5 +56,5 @@ export type TStep = {
     header: {
         title: string;
     };
-    subStepCount: number;
+    subStepCount?: number;
 };

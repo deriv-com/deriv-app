@@ -8,11 +8,6 @@
         flex-direction: column;
         justify-content: center;
         margin-bottom: 3.2rem;
-
-        & > h2 {
-            text-transform: none;
-            margin: 2rem 0 0;
-        }
     }
     &__step {
         align-items: center;
@@ -25,14 +20,17 @@
 
         & .p2p-v2-identifier {
             border-radius: 50%;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 24px;
+            height: 24px;
             background-color: #999999;
-            border: 1px solid #999999;
+            border: 1px solid #f2f3f4;
+            z-index: 1;
 
             &--active {
                 background-color: #ff444f;
-                border: 1px solid #ff444f;
             }
         }
     }

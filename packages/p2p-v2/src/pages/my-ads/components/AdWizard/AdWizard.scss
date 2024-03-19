@@ -9,20 +9,18 @@
             align-items: center;
             column-gap: 1rem;
             padding: 0.8rem 2rem;
-            background-color: var(--general-section-1);
+            background-color: #f2f3f4;
 
             > div {
                 flex: 1;
             }
-
-            svg:last-child {
-                align-self: flex-start;
-                margin-top: 1.5rem;
-                width: 4rem;
-            }
         }
     }
 
+    &__button {
+        // stylelint-disable-next-line declaration-no-important
+        background-color: transparent !important;
+    }
     .p2p-v2-wizard__main-step {
         @include mobile {
             padding: 1.6rem;
@@ -30,7 +28,7 @@
     }
 
     .p2p-v2-form-progress {
-        background-color: var(--general-section-1);
+        background-color: #f2f3f4;
         margin-top: 2rem;
 
         &__step {
@@ -38,7 +36,6 @@
         }
 
         &__steps {
-            margin-top: 0;
             margin-bottom: 1.6rem;
         }
     }

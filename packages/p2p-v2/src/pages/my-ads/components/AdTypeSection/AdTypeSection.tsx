@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect } from 'react';
+import React, { MouseEventHandler, useCallback, useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { RadioGroup } from '@/components';
@@ -21,7 +21,7 @@ type TAdTypeSectionProps = {
 const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeSectionProps) => {
     const {
         control,
-        formState: { isDirty, isValid },
+        formState: { dirtyFields, isDirty, isValid },
         getValues,
         setValue,
         trigger,
@@ -31,10 +31,16 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
     const history = useHistory();
     const isSell = watch('ad-type') === BUY_SELL.SELL;
 
-    // Trigger validation for all fields when any field changes
+    const values = getValues();
+    const triggerValidation = useCallback(() => {
+        const editedFields = Object.keys(dirtyFields);
+        trigger(editedFields);
+    }, [trigger]);
+
+    // Trigger validation for dirty fields when form values change
     useEffect(() => {
-        trigger();
-    }, [getValues()]); // Trigger whenever getValues() changes
+        triggerValidation();
+    }, [values, triggerValidation]);
 
     const onChangeAdTypeHandler = (userInput: 'buy' | 'sell') => {
         setValue('ad-type', userInput);
@@ -49,7 +55,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
 
     const onCancel = () => {
         if (isDirty) {
-            // display cancel modal
+            //TODO:  display cancel modal
         } else history.push(MY_ADS_URL);
     };
 
@@ -90,16 +96,9 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                 <AdFormInput currency={currency} label='Max order' name='max-order' />
             </div>
             {isSell && (
-                <AdFormTextArea
-                    control={control}
-                    field='Contact details'
-                    label='Your contact details'
-                    name='contact-details'
-                    required
-                />
+                <AdFormTextArea field='Contact details' label='Your contact details' name='contact-details' required />
             )}
             <AdFormTextArea
-                control={control}
                 field='Instructions'
                 hint='This information will be visible to everyone'
                 label='Instructions(optional)'

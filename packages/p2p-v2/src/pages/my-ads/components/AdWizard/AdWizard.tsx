@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { TStep } from 'types';
 import { FormProgress, Wizard } from '@/components';
-import { Text, useDevice } from '@deriv-com/ui';
+import { LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { AdProgressBar } from '../AdProgressBar';
 import { AdTypeSection } from '../AdTypeSection';
 import './AdWizard.scss';
@@ -14,7 +15,7 @@ type TAdWizardNav = {
 };
 
 const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) => {
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
     const [currentStep, setCurrentStep] = useState(0);
 
     return (
@@ -23,26 +24,29 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
             initialStep={0}
             nav={
                 <div>
-                    {isDesktop ? (
+                    {!isMobile ? (
                         <FormProgress currentStep={currentStep} steps={steps} />
                     ) : (
-                        <div>
+                        <div className='flex items-center justify-around'>
                             <AdProgressBar currentStep={currentStep} steps={steps} />
                             <div>
-                                <Text size='xs' weight='bold'>
-                                    {`${steps[currentStep].header.title}`}
-                                </Text>
+                                <Text weight='bold'>{`${steps[currentStep].header.title}`}</Text>
                                 {steps[currentStep + 1] ? (
-                                    <Text as='div' color='less-prominent' size='xs'>
+                                    <Text as='div' color='less-prominent'>
                                         {`Next: ${steps[currentStep + 1].header.title}`}
                                     </Text>
                                 ) : (
-                                    <Text as='div' color='less-prominent' size='xs'>
+                                    <Text as='div' color='less-prominent'>
                                         Last step
                                     </Text>
                                 )}
                             </div>
-                            {/* <Icon icon='IcCross' /> */}
+                            <Button
+                                className='p2p-v2-ad-wizard__button'
+                                color='white'
+                                icon={<LabelPairedXmarkLgBoldIcon />}
+                                variant='contained'
+                            />
                         </div>
                     )}
                 </div>

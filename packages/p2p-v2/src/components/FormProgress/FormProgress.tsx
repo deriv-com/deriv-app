@@ -21,7 +21,7 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
 
     const animateCompleteBar = () => {
         const subStepsCount = steps[currentStep]?.subStepCount || null;
-        const elFirstIdentifier = (document.querySelector('.identifier') as HTMLSpanElement) || {
+        const elFirstIdentifier = (document.querySelector('.p2p-v2-identifier') as HTMLSpanElement) || {
             clientWidth: 1,
             offsetLeft: 0,
         };
@@ -42,9 +42,6 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
             {isDesktop ? (
                 <div className='p2p-v2-form-progress'>
                     <div className='p2p-v2-form-progress__header'>
-                        <Text as='h2' color='prominent' weight='bold'>
-                            {steps[currentStep].header.title}
-                        </Text>
                         <div className='p2p-v2-form-progress__steps'>
                             <div
                                 className='p2p-v2-form-progress__steps--before'
@@ -59,7 +56,7 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
                                         <Text
                                             align='center'
                                             className={clsx('p2p-v2-identifier', {
-                                                'identifier--active': idx <= currentStep,
+                                                'p2p-v2-identifier--active': idx <= currentStep,
                                             })}
                                             color='white'
                                             size='xs'
@@ -71,7 +68,7 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
                                             align='center'
                                             as='p'
                                             color={active ? 'error' : 'prominent'}
-                                            size='2xs'
+                                            size='xs'
                                             weight={active ? 'bold' : 'unset'}
                                         >
                                             {item.header.title}

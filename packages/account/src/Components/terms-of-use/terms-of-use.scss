@@ -13,7 +13,9 @@
 
     &__checkbox {
         margin-top: 1.6rem;
-
+        .dc-checkbox {
+            align-items: unset;
+        }
         &:last-of-type {
             margin-bottom: 5rem;
         }
@@ -48,12 +50,12 @@
 
     @include mobile {
         & .dc-checkbox__box {
-            width: 2.4rem;
-            height: 2.4rem;
+            width: 1.6rem;
+            height: 1.6rem;
 
             .dc-icon {
-                width: 2.4rem;
-                height: 2.4rem;
+                width: 1.6rem;
+                height: 1.6rem;
             }
         }
     }

@@ -1,6 +1,6 @@
 import { reaction } from 'mobx';
+import { ProposalOpenContract } from '@deriv/api-types';
 import { TCoreStores, TStores } from '@deriv/stores/types';
-import { TContractInfo } from 'Components/summary/summary-card.types';
 import { TStatistics } from 'Components/transaction-details/transaction-details.types';
 import RootStore from 'Stores/root-store';
 
@@ -36,22 +36,12 @@ const GTM = (() => {
     const init = (_root_store: RootStore & TStores & TCoreStores & { core: TGTM['core'] }): void => {
         try {
             root_store = _root_store;
-
             const { run_panel, transactions } = root_store;
             const run_statistics = transactions.statistics;
-            const active_loginid = getLoginId();
 
             reaction(
                 () => run_panel.is_running,
                 () => run_panel.is_running && onRunBot(run_statistics)
-            );
-
-            reaction(
-                () => transactions.elements,
-                () => {
-                    const contract_data = transactions?.elements?.[active_loginid][0]?.data;
-                    onTransactionClosed(contract_data);
-                }
             );
         } catch (error) {
             // eslint-disable-next-line no-console
@@ -80,14 +70,12 @@ const GTM = (() => {
         }
     };
 
-    const onTransactionClosed = (contract: TContractInfo): void => {
-        if (contract && contract.is_completed) {
-            const data = {
-                event: 'dbot_run_transaction',
-                reference_id: contract.contract_id,
-            };
-            pushDataLayer(data);
-        }
+    const onTransactionClosed = (contract: ProposalOpenContract): void => {
+        const data = {
+            event: 'dbot_run_transaction',
+            reference_id: contract.contract_id,
+        };
+        pushDataLayer(data);
     };
 
     return {

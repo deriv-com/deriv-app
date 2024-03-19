@@ -1,21 +1,22 @@
 import { computed, makeObservable, observable, reaction, runInAction } from 'mobx';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Buy } from '@deriv/api-types';
+import { Buy, ProposalOpenContract } from '@deriv/api-types';
 import { error_types, message_types, observer, TErrorTypes, unrecoverable_errors } from '@deriv/bot-skeleton';
 import { isSafari, mobileOSDetect, routes } from '@deriv/shared';
-import { TNotificationMessage, TStores } from '@deriv/stores/types';
+import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { contract_stages, TContractStage } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
+import GTM from 'Utils/gtm';
 import { helpers } from 'Utils/store-helpers';
 import { TDbot } from 'Types';
 import RootStore from './root-store';
 
 export type TContractState = {
-    buy: Buy;
+    buy?: Buy;
+    contract?: ProposalOpenContract;
     data: number;
     id: string;
 };
@@ -600,7 +601,7 @@ export default class RunPanelStore implements IRunPanelStore {
                 const { buy } = contract_status;
                 const { is_virtual } = this.core.client;
 
-                if (!is_virtual) {
+                if (!is_virtual && buy) {
                     this.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
                 }
 
@@ -609,6 +610,7 @@ export default class RunPanelStore implements IRunPanelStore {
             case 'contract.sold': {
                 this.is_sell_requested = false;
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
+                if (contract_status.contract) GTM.onTransactionClosed(contract_status.contract);
                 break;
             }
             default:

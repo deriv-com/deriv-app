@@ -51,3 +51,37 @@ export type TCurrencyListItem = {
 export type TServerTime = ReturnType<typeof useServerTime>['data'];
 
 export type TOrders = NonNullable<ReturnType<typeof p2p.order.useGetList>['data']>;
+
+const prefix = '/cashier/p2p-v2';
+
+export type TRoutes = `${typeof prefix}/cashier/p2p-v2` | `${typeof prefix}`;
+
+// eslint-disable-next-line  @typescript-eslint/no-namespace
+export namespace THooks {
+    // eslint-disable-next-line  @typescript-eslint/no-namespace
+    export namespace Advert {
+        export type Get = ReturnType<typeof p2p.advert.useGet>['data'];
+        export type GetList = ReturnType<typeof p2p.advert.useGetList>['data'];
+        export type Create = ReturnType<typeof p2p.advert.useCreate>['data'];
+        export type Update = ReturnType<typeof p2p.advert.useUpdate>['data'];
+        export type Delete = ReturnType<typeof p2p.advert.useDelete>['data'];
+    }
+    // eslint-disable-next-line  @typescript-eslint/no-namespace
+    export namespace Advertiser {
+        export type GetInfo = ReturnType<typeof p2p.advertiser.useGetInfo>['data'];
+        export type GetList = ReturnType<typeof p2p.advertiser.useGetList>['data'];
+        export type Create = ReturnType<typeof p2p.advertiser.useCreate>['data'];
+        export type Update = ReturnType<typeof p2p.advertiser.useUpdate>['data'];
+    }
+}
+
+// export * from './advert';
+// export * from './advertiser';
+// export * from './counterparty';
+// export * from './order-dispute';
+// export * from './order';
+// export * from './payment-method';
+// export * from './settings';
+
+// export * as advert from './p2p-advert';
+// export * as advertiserAdverts from './p2p-advertiser-adverts';

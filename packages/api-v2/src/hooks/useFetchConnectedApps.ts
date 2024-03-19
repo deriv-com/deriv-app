@@ -1,4 +1,5 @@
-import { useAuthorize, useQuery } from '@deriv/api-v2';
+import useQuery from '../useQuery';
+import useAuthorize from './useAuthorize';
 
 /** A custom hook to get list of all used OAuth applications */
 const useFetchConnectedApps = () => {

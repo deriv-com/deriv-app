@@ -15,7 +15,7 @@ const WalletsUpgradeLogoutModal = observer(() => {
             className='wallets-upgrade-logout-modal'
             confirm_button_text={localize('Log out')}
             onConfirm={() => {
-                localStorage.setItem('wallets_upgrade_complete', 'true');
+                localStorage.setItem('should_show_wallets_upgrade_completed_modal', 'true');
                 logout().then(() => redirectToLogin(false, getLanguage(), false));
             }}
             is_closed_on_confirm

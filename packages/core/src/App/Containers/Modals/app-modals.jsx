@@ -18,6 +18,7 @@ import NeedRealAccountForCashierModal from './need-real-account-for-cashier-moda
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
+import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
@@ -130,6 +131,10 @@ const AppModals = observer(() => {
 
     const { has_wallet } = useStoreWalletAccountsList();
 
+    const should_show_wallets_upgrade_completed_modal = localStorage.getItem(
+        'should_show_wallets_upgrade_completed_modal'
+    );
+
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {
@@ -198,6 +203,10 @@ const AppModals = observer(() => {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
     } else if (isUrlUnavailableModalVisible) {
         ComponentToLoad = <UrlUnavailableModal />;
+    }
+
+    if (has_wallet && should_show_wallets_upgrade_completed_modal) {
+        ComponentToLoad = <WalletsUpgradeCompletedModal />;
     }
 
     if (!has_wallet && is_migrated) {

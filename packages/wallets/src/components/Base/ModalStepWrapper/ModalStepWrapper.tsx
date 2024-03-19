@@ -44,11 +44,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
 
     const Footer = () =>
         hasRenderFooter ? (
-            <div
-                className='wallets-modal-step-wrapper__footer'
-                data-testid='dt_modal_step_wrapper_footer'
-                style={{ display: shouldHideFooter ? 'none' : 'inlineBlock' }}
-            >
+            <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
                 {renderFooter()}
             </div>
         ) : null;
@@ -58,6 +54,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             className={classNames('wallets-modal-step-wrapper', {
                 'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
                 'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
+                'wallets-modal-step-wrapper--no-footer': shouldHideFooter,
                 'wallets-modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
                 'wallets-modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
             })}

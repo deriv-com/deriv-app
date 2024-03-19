@@ -1,7 +1,7 @@
 import React, { ComponentProps, ReactNode } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { getValidationRules } from '@/utils';
-import { Input, Text } from '@deriv-com/ui';
+import { Input } from '@deriv-com/ui';
 
 type TAdFormInputProps = ComponentProps<typeof Input> & {
     currency?: string;

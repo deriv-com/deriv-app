@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Form, Formik } from 'formik';
 import {
     useActiveTradingAccount,
@@ -44,6 +44,7 @@ export const PersonalDetailsForm = () => {
             enableReinitialize
             initialValues={initialValues}
             /*eslint-disable @typescript-eslint/no-empty-function */
+            //TODO: replace it with empty function first. Will work on the functions later on
             onSubmit={() => {}}
             validationSchema={validationSchema}
         >
@@ -54,18 +55,18 @@ export const PersonalDetailsForm = () => {
                     <FormSubHeader>Tax information</FormSubHeader>
                     <TaxInformation />
                     {!isVirtual && (
-                        <React.Fragment>
+                        <Fragment>
                             <FormSubHeader>Address</FormSubHeader>
                             <div className='lg:max-w-[400px]'>
                                 <AddressFields />
                             </div>
-                        </React.Fragment>
+                        </Fragment>
                     )}
                     {isSupportProfessionalClient && (
-                        <React.Fragment>
+                        <Fragment>
                             <FormSubHeader>Professional Client</FormSubHeader>
                             <SupportProfessionalClient />
-                        </React.Fragment>
+                        </Fragment>
                     )}
                     <FormSubHeader>Email preference</FormSubHeader>
                     <Checkbox
@@ -77,6 +78,7 @@ export const PersonalDetailsForm = () => {
                         }
                         name='emailConsent'
                         /*eslint-disable @typescript-eslint/no-empty-function */
+                        //TODO: replace it with empty function first. Will work on the functions later on
                         onChange={() => {}}
                     />
                 </Form>

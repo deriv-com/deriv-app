@@ -6,6 +6,6 @@ describe('FormSubHeader', () => {
     it('should render FormSubHeader', () => {
         const children = 'Test Details';
         render(<FormSubHeader>{children}</FormSubHeader>);
-        expect(screen.getByText('Test Details')).toBeInTheDocument();
+        expect(screen.getByText(children)).toBeInTheDocument();
     });
 });

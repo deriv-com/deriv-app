@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveTradingAccount, useAuthentication } from '@deriv/api-v2';
-import { Checkbox, InlineMessage, Text } from '@deriv-com/ui';
+import { Checkbox, Divider, InlineMessage, Text } from '@deriv-com/ui';
 import { AUTH_STATUS_CODES } from '../../constants/constants';
 
 export const SupportProfessionalClient = () => {
@@ -12,23 +12,20 @@ export const SupportProfessionalClient = () => {
 
     const isAccountVerified = isPoaVerified && isPoiVerified;
     const isVirtual = activeAccount?.is_virtual;
+    const supportProfessionalClientInfo = [
+        'By default, all Deriv.com clients are retail clients but anyone can request to be treated as a professional client.',
+        'A professional client receives a lower degree of client protection due to the following.',
+        'We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved.',
+        'We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.',
+    ];
     return (
         <div className='lg:max-w-[400px]'>
-            <div className='py-10'>
-                <Text as='p' className='py-10' size='sm'>
-                    By default, all Deriv.com clients are retail clients but anyone can request to be treated as a
-                    professional client.
-                </Text>
-                <Text as='p' className='py-10' size='sm'>
-                    A professional client receives a lower degree of client protection due to the following.
-                </Text>
-                <Text as='p' className='py-10' size='sm'>
-                    We presume that you possess the experience, knowledge, and expertise to make your own investment
-                    decisions and properly assess the risk involved.
-                </Text>
-                <Text as='p' className='py-10' size='sm'>
-                    We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.
-                </Text>
+            <div className='flex flex-col gap-10 py-10'>
+                {supportProfessionalClientInfo.map((value, key) => (
+                    <Text as='p' key={key} size='sm'>
+                        {value}
+                    </Text>
+                ))}
             </div>
             {isAccountVerified ? (
                 <Checkbox
@@ -41,17 +38,18 @@ export const SupportProfessionalClient = () => {
                     }
                     name='requestProfessionalStatus'
                     /*eslint-disable @typescript-eslint/no-empty-function */
+                    //TODO: temperory replace with empty funciton. Will implement the functionality later
                     onChange={() => {}}
                 />
             ) : (
                 <InlineMessage className='items-start' variant='info'>
                     <Text as='p' className='text-sm lg:text-default'>
                         You’ll need to authenticate your account before requesting to become a professional client.
-                        <span className='text-red-400'>Authenticate my account</span>
+                        <Text className='text-red-400'>Authenticate my account</Text>
                     </Text>
                 </InlineMessage>
             )}
-            <div className='border-solid-grey-5 border-solid border-t-1 my-16' />
+            <Divider className='my-16' color='#d6dadb' />
         </div>
     );
 };

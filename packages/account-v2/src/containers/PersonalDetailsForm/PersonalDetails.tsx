@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Field, FieldProps } from 'formik';
 import { useActiveTradingAccount, useGetAccountStatus, useSettings } from '@deriv/api-v2';
 import { CountrySelector } from '../../components/CountrySelector';
@@ -20,7 +20,7 @@ export const PersonalDetails = () => {
     return (
         <div className='lg:max-w-[400px] grid pt-8 space-y-12 grid-col-1'>
             {!isVirtual && (
-                <React.Fragment>
+                <Fragment>
                     <div className='lg:flex gap-6'>
                         <FormInputField
                             disabled={isFieldDisabled('first_name')}
@@ -62,7 +62,7 @@ export const PersonalDetails = () => {
                         )}
                     </Field>
                     <CountrySelector disabled={isFieldDisabled('citizen')} label='Citizenship' name='citizen' />
-                </React.Fragment>
+                </Fragment>
             )}
             <CountrySelector disabled={isFieldDisabled('residence')} label='Country of residence*' name='residence' />
             {isSocialSignup && (

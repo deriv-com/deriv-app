@@ -5,10 +5,9 @@ import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown } from '@deriv-com/ui';
 import { CountrySelector } from '../../components/CountrySelector';
 import { FormInputField } from '../../components/FormFields';
-import { getEmploymentIndustryList } from '../../constants/financialInformationList';
+import { employmentIndustryList } from '../../constants/financialInformationList';
 
 export const TaxInformation = () => {
-    const employmentIndustryList = getEmploymentIndustryList();
     const { data: accountSettings } = useSettings();
     const { values }: FormikProps<FormikValues> = useFormikContext();
 

@@ -44,6 +44,6 @@ describe('OnfidoView', () => {
     it('should render correctly if onfido not enabled', () => {
         render(<OnfidoView {...defaultProps} isOnfidoEnabled={false} isOnfidoInitialized={true} />);
         const onfidoElement = screen.getByTestId(onfidoElementTestId);
-        expect(onfidoElement).toHaveClass('opacity-12 pointer-events-none');
+        expect(onfidoElement).toHaveClass('opacity-48 pointer-events-none');
     });
 });

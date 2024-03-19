@@ -8,13 +8,13 @@ import {
     TopUpModal,
     TradeModal,
 } from '@/features/cfd/modals';
-import MT5SuccessModal from '@/features/cfd/modals/MT5PasswordModal/MT5SuccessModal';
 import { ChangePassword } from '@/features/cfd/screens';
 import { RealAccountCreation } from '@/flows';
-import MT5ChangePasswordModal from './MT5ChangePasswordModal/MT5ChangePasswordModal';
 import { AccountSelector } from './AccountSelector';
 import { AddOrManageAccount } from './AddOrManageAccount';
 import { DummyComponentModal } from './DummyComponentModal';
+import { MT5ChangePasswordModal } from './MT5ChangePasswordModal';
+import { MT5SuccessModal } from './MT5SuccessModal';
 import { RegulationModal } from './RegulationModal';
 
 /**

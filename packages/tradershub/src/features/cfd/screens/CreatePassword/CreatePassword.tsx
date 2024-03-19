@@ -33,19 +33,12 @@ const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) =>
                 } account`}</Text>
             </Modal.Header>
             <Modal.Body>
-                <div className='inline-flex flex-col items-center w-full gap-24 rounded-default bg-system-light-primary-background lg:w-[360px]'>
-                    {isDesktop && <MT5PasswordIcon />}
-                    <div className='flex flex-col items-center justify-center text-center lg:gap-8'>
-                        <Text weight='bold'>Create a {title} password</Text>
-                        <Text size='sm'>You can use this password for all your {title} accounts.</Text>
-                    </div>
-                    <PasswordInput
-                        isFullWidth
-                        label={`${title} password`}
-                        onChange={onPasswordChange}
-                        value={password}
-                    />
+                {isDesktop && <MT5PasswordIcon />}
+                <div className='flex flex-col items-center justify-center text-center lg:gap-8'>
+                    <Text weight='bold'>Create a {title} password</Text>
+                    <Text size='sm'>You can use this password for all your {title} accounts.</Text>
                 </div>
+                <PasswordInput isFullWidth label={`${title} password`} onChange={onPasswordChange} value={password} />
             </Modal.Body>
             <Modal.Footer>
                 <MT5PasswordFooter password={password} />

@@ -1,1 +1,1 @@
-export { default as MT5ChangePassword } from './MT5ChangePasswordModal';
+export { default as MT5ChangePasswordModal } from './MT5ChangePasswordModal';

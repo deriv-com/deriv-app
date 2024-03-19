@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQueryParams, useRegulationFlags } from '@/hooks';
+import { useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import {
     Category,
@@ -11,14 +11,12 @@ import {
 } from '@cfd/constants';
 import { CFDSuccess } from '@cfd/screens';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api-v2';
-import { Modal } from '@deriv-com/ui';
 import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 
 const MT5SuccessModal = () => {
     const { isEU } = useRegulationFlags();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
-    const { closeModal, isModalOpen } = useQueryParams();
 
     const isDemo = activeTrading?.is_virtual;
 
@@ -44,21 +42,15 @@ const MT5SuccessModal = () => {
     const SuccessTitle = `Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`;
 
     return (
-        <Modal ariaHideApp={false} isOpen={isModalOpen('MT5SuccessModal')} onRequestClose={closeModal}>
-            <Modal.Body>
-                <CFDSuccess
-                    description={SuccessDescription}
-                    displayBalance={
-                        mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'
-                    }
-                    landingCompany={selectedJurisdiction}
-                    marketType={marketType}
-                    platform={PlatformDetails.mt5.platform}
-                    renderButtons={SuccessButtonGroup}
-                    title={SuccessTitle}
-                />
-            </Modal.Body>
-        </Modal>
+        <CFDSuccess
+            description={SuccessDescription}
+            displayBalance={mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'}
+            landingCompany={selectedJurisdiction}
+            marketType={marketType}
+            platform={PlatformDetails.mt5.platform}
+            renderButtons={SuccessButtonGroup}
+            title={SuccessTitle}
+        />
     );
 };
 

@@ -19,7 +19,8 @@ const DxtradePasswordInput = ({ password, setPassword }: TDxtradePasswordInputPr
     const { cfdState, setCfdState } = useCFDContext();
     const { openModal } = useQueryParams();
 
-    const { marketType = MarketType.ALL, platform } = cfdState;
+    const marketType = MarketType.ALL;
+    const { platform } = cfdState;
 
     const isDxtradePasswordNotSet = accountStatus?.is_dxtrade_password_not_set;
     const { createDxtradeAccountError, createDxtradeAccountLoading, createOtherCFDAccountSuccess, handleSubmit } =
@@ -52,6 +53,7 @@ const DxtradePasswordInput = ({ password, setPassword }: TDxtradePasswordInputPr
     return (
         <EnterPassword
             isLoading={createDxtradeAccountLoading}
+            marketType={marketType}
             onPasswordChange={e => setPassword(e.target.value)}
             onPrimaryClick={() => handleSubmit(password)}
             onSecondaryClick={() => {
@@ -60,6 +62,7 @@ const DxtradePasswordInput = ({ password, setPassword }: TDxtradePasswordInputPr
             }}
             password={password}
             passwordError={createDxtradeAccountError?.error?.code === 'PasswordError'}
+            platform={platform}
         />
     );
 };

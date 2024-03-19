@@ -22,6 +22,7 @@ jest.mock('react-hook-form', () => ({
     useFormContext: () => ({
         control: 'mockedControl',
         formState: {
+            dirtyFields: { amount: true },
             isDirty: false,
             isValid: true,
         },

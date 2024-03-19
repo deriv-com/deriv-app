@@ -34,7 +34,7 @@ describe('<TransferAccountIcon />', () => {
             />
         );
 
-        expect(screen.getByText('TradingAppIcon-DMT5_FINANCIAL-md')).toBeInTheDocument();
+        expect(screen.getByText('MT5')).toBeInTheDocument();
     });
 
     it('should display the correct Deriv X icon for Deriv X app', () => {

@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { FullPageMobileWrapper, PageReturn } from '@/components';
 import { useExtendedOrderDetails } from '@/hooks';
 import { p2p, useActiveAccount, useServerTime } from '@deriv/api-v2';
-import { InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
+import { Button, InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
+import ChatIcon from '../../../../public/ic-chat.svg';
 import { OrderDetailsCard } from '../../components/OrderDetailsCard';
 import { OrderDetailsCardFooter } from '../../components/OrderDetailsCard/OrderDetailsCardFooter';
 import { OrdersChatSection } from '../OrdersChatSection';
@@ -15,7 +16,7 @@ type TOrderDetailsProps = {
 };
 
 const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
-    const [isChatLoading, setIsChatLoading] = useState(false);
+    const [showChat, setShowChat] = useState(false);
 
     const history = useHistory();
     const { data: orderInfo, isLoading } = p2p.order.useGet(orderId);
@@ -35,6 +36,18 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     if (isLoading) return <Loader isFullScreen />;
 
     if (isMobile) {
+        if (showChat) {
+            return (
+                <OrdersChatSection
+                    id={orderId}
+                    isInactive={!!orderDetails?.isInactiveOrder}
+                    otherUserDetails={orderDetails?.otherUserDetails}
+                    setShowChat={setShowChat}
+                    showChat={showChat}
+                />
+            );
+        }
+
         return (
             <OrderDetailsProvider orderDetails={orderDetails}>
                 <FullPageMobileWrapper
@@ -42,8 +55,16 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
                     onBack={onReturn}
                     renderFooter={() => <OrderDetailsCardFooter />}
                     renderHeader={() => (
-                        <Text size='lg' weight='bold'>
+                        <Text as='div' className='w-full flex items-center justify-between' size='lg' weight='bold'>
                             {headerText}
+                            <Button
+                                className='h-full p-0'
+                                color='white'
+                                onClick={() => setShowChat(true)}
+                                variant='contained'
+                            >
+                                <ChatIcon className='mt-2' />
+                            </Button>
                         </Text>
                     )}
                 >
@@ -75,7 +96,6 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
                         id={orderId}
                         isInactive={!!orderDetails?.isInactiveOrder}
                         otherUserDetails={orderDetails?.otherUserDetails}
-                        setIsChatLoading={setIsChatLoading}
                     />
                 </div>
             </div>

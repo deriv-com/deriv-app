@@ -1,16 +1,93 @@
-import React from 'react';
-import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
-import { error_types, message_types, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
+import { computed, makeObservable, observable, reaction, runInAction } from 'mobx';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Buy } from '@deriv/api-types';
+import { error_types, message_types, observer, TErrorTypes, unrecoverable_errors } from '@deriv/bot-skeleton';
 import { isSafari, mobileOSDetect, routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { TNotificationMessage, TStores } from '@deriv/stores/types';
+import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
-import { contract_stages } from 'Constants/contract-stage';
+import { contract_stages, TContractStage } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
+import { helpers } from 'Utils/store-helpers';
+import { TDbot } from 'Types';
+import RootStore from './root-store';
 
-export default class RunPanelStore {
-    constructor(root_store, core) {
+export type TContractState = {
+    buy: Buy;
+    data: number;
+    id: string;
+};
+
+export interface IRunPanelStore {
+    active_index: number;
+    contract_stage: TContractStage;
+    dialog_options: object;
+    has_open_contract: boolean;
+    is_running: boolean;
+    is_statistics_info_modal_open: boolean;
+    is_drawer_open: boolean;
+    is_dialog_open: boolean;
+    is_sell_requested: boolean;
+    run_id: string;
+    error_type: string | undefined;
+    show_bot_stop_message: boolean;
+    is_stop_button_visible: boolean;
+    is_stop_button_disabled: boolean;
+    is_clear_stat_disabled: boolean;
+    onStopButtonClick: () => void;
+    onStopBotClick: () => void;
+    stopBot: () => void;
+    onClearStatClick: () => void;
+    clearStat: () => void;
+    toggleStatisticsInfoModal: () => void;
+    toggleDrawer: (is_open: boolean) => void;
+    setActiveTabIndex: (index: number) => void;
+    onCloseDialog: () => void;
+    performSelfExclusionCheck: () => void;
+    showStopMultiplierContractDialog: () => void;
+    showLoginDialog: () => void;
+    showRealAccountDialog: () => void;
+    showClearStatDialog: () => void;
+    showIncompatibleStrategyDialog: () => void;
+    showContractUpdateErrorDialog: (message: string) => void;
+    onBotSellEvent: () => void;
+    onBotStopEvent: () => void;
+    onBotReadyEvent: () => void;
+    onBotTradeAgain: (is_trade_again: boolean) => void;
+    onContractStatusEvent: (contract_status: TContractState) => void;
+    onClickSell: () => void;
+    onBotContractEvent: (data: object) => void;
+    onError: (data: { error: any }) => void;
+    showErrorMessage: (data: string | Error) => void;
+    switchToJournal: () => void;
+    setContractStage: (contract_stage: TContractStage) => void;
+    setHasOpenContract: (has_open_contract: boolean) => void;
+    setIsRunning: (is_running: boolean) => void;
+    onMount: () => void;
+    onUnmount: () => void;
+    handleInvalidToken: () => void;
+    onRunButtonClick: () => void;
+    registerBotListeners: () => void;
+    registerReactions: () => () => void;
+    onBotRunningEvent: () => void;
+    unregisterBotListeners: () => void;
+    clear: () => void;
+    preloadAudio: () => void;
+    stopMyBot: () => void;
+    closeMultiplierContract: () => void;
+    setShowBotStopMessage: (show_bot_stop_message: boolean) => void;
+}
+
+export default class RunPanelStore implements IRunPanelStore {
+    root_store: RootStore;
+    dbot: TDbot;
+    core: TStores;
+    disposeReactionsFn: () => void;
+    timer: NodeJS.Timeout | null;
+
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             active_index: observable,
             contract_stage: observable,
@@ -24,52 +101,9 @@ export default class RunPanelStore {
             run_id: observable,
             error_type: observable,
             show_bot_stop_message: observable,
-            statistics: computed,
             is_stop_button_visible: computed,
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
-            onStopButtonClick: action.bound,
-            onStopBotClick: action.bound,
-            stopBot: action.bound,
-            onClearStatClick: action.bound,
-            clearStat: action.bound,
-            toggleStatisticsInfoModal: action.bound,
-            toggleDrawer: action.bound,
-            setActiveTabIndex: action.bound,
-            onCloseDialog: action.bound,
-            performSelfExclusionCheck: action.bound,
-            showStopMultiplierContractDialog: action.bound,
-            showLoginDialog: action.bound,
-            showRealAccountDialog: action.bound,
-            showClearStatDialog: action.bound,
-            showIncompatibleStrategyDialog: action.bound,
-            showContractUpdateErrorDialog: action.bound,
-            onBotSellEvent: action.bound,
-            onBotStopEvent: action.bound,
-            onBotReadyEvent: action.bound,
-            onBotTradeAgain: action.bound,
-            onContractStatusEvent: action.bound,
-            onClickSell: action.bound,
-            onBotContractEvent: action.bound,
-            onError: action.bound,
-            showErrorMessage: action.bound,
-            switchToJournal: action.bound,
-            setContractStage: action.bound,
-            setHasOpenContract: action.bound,
-            setIsRunning: action.bound,
-            setShowBotStopMessage: action.bound,
-            onMount: action.bound,
-            onUnmount: action.bound,
-            handleInvalidToken: action.bound,
-            onRunButtonClick: action.bound,
-            registerBotListeners: action.bound,
-            registerReactions: action.bound,
-            onBotRunningEvent: action.bound,
-            unregisterBotListeners: action.bound,
-            clear: action.bound,
-            preloadAudio: action.bound,
-            stopMyBot: action.bound,
-            closeMultiplierContract: action.bound,
         });
 
         this.root_store = root_store;
@@ -80,7 +114,7 @@ export default class RunPanelStore {
     }
 
     active_index = 0;
-    contract_stage = contract_stages.NOT_RUNNING;
+    contract_stage: TContractStage = contract_stages.NOT_RUNNING;
     dialog_options = {};
     has_open_contract = false;
     is_running = false;
@@ -91,51 +125,22 @@ export default class RunPanelStore {
     show_bot_stop_message = false;
 
     run_id = '';
+    onOkButtonClick: (() => void) | null = null;
+    onCancelButtonClick: (() => void) | null = null;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
     // otherwise we keep opening new contracts and set the ContractStage to PURCHASE_SENT
-    error_type = undefined;
-
-    get statistics() {
-        let total_runs = 0;
-        const { transactions } = this.root_store.transactions;
-        const statistics = transactions.reduce(
-            (stats, { data: trx }) => {
-                if (trx.is_completed) {
-                    if (trx.profit > 0) {
-                        stats.won_contracts += 1;
-                        stats.total_payout += trx.payout;
-                    } else {
-                        stats.lost_contracts += 1;
-                    }
-
-                    stats.total_profit += trx.profit;
-                    stats.total_stake += trx.buy_price;
-                    total_runs += 1;
-                }
-
-                return stats;
-            },
-            {
-                lost_contracts: 0,
-                number_of_runs: 0,
-                total_profit: 0,
-                total_payout: 0,
-                total_stake: 0,
-                won_contracts: 0,
-            }
-        );
-        statistics.number_of_runs = total_runs;
-        return statistics;
-    }
+    error_type: TErrorTypes | undefined = undefined;
 
     get is_stop_button_visible() {
         return this.is_running || this.has_open_contract;
     }
 
     get is_stop_button_disabled() {
-        return [contract_stages.PURCHASE_SENT, contract_stages.IS_STOPPING].includes(this.contract_stage);
+        return [contract_stages.PURCHASE_SENT as number, contract_stages.IS_STOPPING as number].includes(
+            this.contract_stage
+        );
     }
 
     get is_clear_stat_disabled() {
@@ -148,21 +153,21 @@ export default class RunPanelStore {
         );
     }
 
-    setShowBotStopMessage(value) {
-        this.show_bot_stop_message = value;
-        if (value)
+    setShowBotStopMessage = (show_bot_stop_message: boolean) => {
+        this.show_bot_stop_message = show_bot_stop_message;
+        if (show_bot_stop_message)
             botNotification(notification_message.bot_stop, {
                 label: localize('Reports'),
                 onClick: () => (window.location.href = routes.reports),
             });
-    }
+    };
 
-    async performSelfExclusionCheck() {
+    performSelfExclusionCheck = async () => {
         const { self_exclusion } = this.root_store;
         await self_exclusion.checkRestriction();
-    }
+    };
 
-    async onRunButtonClick() {
+    onRunButtonClick = async () => {
         let timer_counter = 1;
         if (window.sendRequestsStatistic) {
             performance.clearMeasures();
@@ -171,7 +176,7 @@ export default class RunPanelStore {
                 window.sendRequestsStatistic(true);
                 performance.clearMeasures();
                 if (timer_counter === 12) {
-                    clearInterval(this.timer);
+                    clearInterval(this.timer as NodeJS.Timeout);
                 } else {
                     timer_counter++;
                 }
@@ -223,9 +228,9 @@ export default class RunPanelStore {
             this.dbot.runBot();
         });
         this.setShowBotStopMessage(false);
-    }
+    };
 
-    onStopButtonClick() {
+    onStopButtonClick = () => {
         const { is_multiplier } = this.root_store.summary_card;
 
         if (is_multiplier) {
@@ -233,9 +238,9 @@ export default class RunPanelStore {
         } else {
             this.stopBot();
         }
-    }
+    };
 
-    onStopBotClick() {
+    onStopBotClick = () => {
         const { is_multiplier } = this.root_store.summary_card;
         const { summary_card } = this.root_store;
 
@@ -246,9 +251,9 @@ export default class RunPanelStore {
             summary_card.clear();
             this.setShowBotStopMessage(true);
         }
-    }
+    };
 
-    stopBot() {
+    stopBot = () => {
         const { ui } = this.core;
 
         this.dbot.stopBot();
@@ -258,7 +263,7 @@ export default class RunPanelStore {
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
             this.setContractStage(contract_stages.NOT_RUNNING);
-            ui.setAccountSwitcherDisabledMessage(false);
+            ui.setAccountSwitcherDisabledMessage();
             this.setIsRunning(false);
         } else if (this.has_open_contract) {
             // when user click stop button when bot is running
@@ -267,7 +272,7 @@ export default class RunPanelStore {
             // when user click stop button before bot start running
             this.setContractStage(contract_stages.NOT_RUNNING);
             this.unregisterBotListeners();
-            ui.setAccountSwitcherDisabledMessage(false);
+            ui.setAccountSwitcherDisabledMessage();
             this.setIsRunning(false);
         }
 
@@ -282,13 +287,13 @@ export default class RunPanelStore {
             window.sendRequestsStatistic(true);
             performance.clearMeasures();
         }
-    }
+    };
 
-    onClearStatClick() {
+    onClearStatClick = () => {
         this.showClearStatDialog();
-    }
+    };
 
-    clearStat() {
+    clearStat = () => {
         const { summary_card, journal, transactions } = this.root_store;
 
         this.setIsRunning(false);
@@ -298,29 +303,29 @@ export default class RunPanelStore {
         summary_card.clear();
         transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
-    }
+    };
 
-    toggleStatisticsInfoModal() {
+    toggleStatisticsInfoModal = () => {
         this.is_statistics_info_modal_open = !this.is_statistics_info_modal_open;
-    }
+    };
 
-    toggleDrawer(is_open) {
+    toggleDrawer = (is_open: boolean) => {
         this.is_drawer_open = is_open;
-    }
+    };
 
-    setActiveTabIndex(index) {
+    setActiveTabIndex = (index: number) => {
         this.active_index = index;
 
         if (this.active_index !== 1) {
             this.root_store.transactions.setActiveTransactionId(null);
         }
-    }
+    };
 
-    onCloseDialog() {
+    onCloseDialog = () => {
         this.is_dialog_open = false;
-    }
+    };
 
-    stopMyBot() {
+    stopMyBot = () => {
         const { summary_card, quick_strategy } = this.root_store;
         const { ui } = this.core;
         const { toggleStopBotDialog } = quick_strategy;
@@ -337,9 +342,9 @@ export default class RunPanelStore {
             window.sendRequestsStatistic(true);
             performance.clearMeasures();
         }
-    }
+    };
 
-    closeMultiplierContract() {
+    closeMultiplierContract = () => {
         const { quick_strategy } = this.root_store;
         const { toggleStopBotDialog } = quick_strategy;
 
@@ -347,9 +352,9 @@ export default class RunPanelStore {
         this.stopBot();
         this.onCloseDialog();
         toggleStopBotDialog();
-    }
+    };
 
-    showStopMultiplierContractDialog() {
+    showStopMultiplierContractDialog = () => {
         const { summary_card } = this.root_store;
         const { ui } = this.core;
 
@@ -373,47 +378,34 @@ export default class RunPanelStore {
         };
         this.dialog_options = {
             title: localize('Keep your current contract?'),
-            message: (
-                <Localize
-                    i18n_default_text='Would you like to keep your current contract or close it? If you decide to keep it running, you can check and close it later on the <0>Reports</0> page.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='/reports/positions'
-                        />,
-                    ]}
-                />
-            ),
+            message: helpers.keep_current_contract,
             ok_button_text: localize('Keep my contract'),
             cancel_button_text: localize('Close my contract'),
         };
         this.is_dialog_open = true;
-    }
+    };
 
-    showLoginDialog() {
+    showLoginDialog = () => {
         this.onOkButtonClick = this.onCloseDialog;
-        this.onCancelButtonClick = undefined;
+        this.onCancelButtonClick = null;
         this.dialog_options = {
             title: localize('Please log in'),
             message: localize('You need to log in to run the bot.'),
         };
         this.is_dialog_open = true;
-    }
+    };
 
-    showRealAccountDialog() {
+    showRealAccountDialog = () => {
         this.onOkButtonClick = this.onCloseDialog;
-        this.onCancelButtonClick = undefined;
+        this.onCancelButtonClick = null;
         this.dialog_options = {
             title: localize("Deriv Bot isn't quite ready for real accounts"),
             message: localize('Please switch to your demo account to run your Deriv Bot.'),
         };
         this.is_dialog_open = true;
-    }
+    };
 
-    showClearStatDialog() {
+    showClearStatDialog = () => {
         this.onOkButtonClick = () => {
             this.clearStat();
             this.onCloseDialog();
@@ -426,29 +418,29 @@ export default class RunPanelStore {
             ),
         };
         this.is_dialog_open = true;
-    }
+    };
 
-    showIncompatibleStrategyDialog() {
+    showIncompatibleStrategyDialog = () => {
         this.onOkButtonClick = this.onCloseDialog;
-        this.onCancelButtonClick = undefined;
+        this.onCancelButtonClick = null;
         this.dialog_options = {
             title: localize('Import error'),
             message: localize('This strategy is currently not compatible with Deriv Bot.'),
         };
         this.is_dialog_open = true;
-    }
+    };
 
-    showContractUpdateErrorDialog(message) {
+    showContractUpdateErrorDialog = (message?: string) => {
         this.onOkButtonClick = this.onCloseDialog;
-        this.onCancelButtonClick = undefined;
+        this.onCancelButtonClick = null;
         this.dialog_options = {
             title: localize('Contract Update Error'),
-            message: localize(message),
+            message,
         };
         this.is_dialog_open = true;
-    }
+    };
 
-    registerBotListeners() {
+    registerBotListeners = () => {
         const { summary_card, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
@@ -462,14 +454,15 @@ export default class RunPanelStore {
         observer.register('bot.contract', summary_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('Error', this.onError);
-    }
+    };
 
-    registerReactions() {
+    registerReactions = () => {
         const { client, common, notifications } = this.core;
+        let disposeIsSocketOpenedListener: (() => void) | undefined, disposeLogoutListener: (() => void) | undefined;
 
         const registerIsSocketOpenedListener = () => {
             if (common.is_socket_opened) {
-                this.disposeIsSocketOpenedListener = reaction(
+                disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     loginid => {
                         if (loginid && this.is_running) {
@@ -479,19 +472,19 @@ export default class RunPanelStore {
                         this.unregisterBotListeners();
                     }
                 );
-            } else if (typeof this.disposeLogoutListener === 'function') {
-                this.disposeLogoutListener();
+            } else if (typeof disposeLogoutListener === 'function') {
+                disposeLogoutListener();
             }
         };
 
         registerIsSocketOpenedListener();
 
-        this.disposeLogoutListener = reaction(
+        disposeLogoutListener = reaction(
             () => common.is_socket_opened,
             () => registerIsSocketOpenedListener()
         );
 
-        this.disposeStopBotListener = reaction(
+        const disposeStopBotListener = reaction(
             () => !this.is_running,
             () => {
                 if (!this.is_running) this.setContractStage(contract_stages.NOT_RUNNING);
@@ -499,21 +492,21 @@ export default class RunPanelStore {
         );
 
         return () => {
-            if (typeof this.disposeIsSocketOpenedListener === 'function') {
-                this.disposeIsSocketOpenedListener();
+            if (typeof disposeIsSocketOpenedListener === 'function') {
+                disposeIsSocketOpenedListener();
             }
 
-            if (typeof this.disposeLogoutListener === 'function') {
-                this.disposeLogoutListener();
+            if (typeof disposeLogoutListener === 'function') {
+                disposeLogoutListener();
             }
 
-            if (typeof this.disposeStopBotListener === 'function') {
-                this.disposeStopBotListener();
+            if (typeof disposeStopBotListener === 'function') {
+                disposeStopBotListener();
             }
         };
-    }
+    };
 
-    onBotRunningEvent() {
+    onBotRunningEvent = () => {
         this.setHasOpenContract(true);
 
         // prevent new version update
@@ -527,19 +520,19 @@ export default class RunPanelStore {
                 this.onStopButtonClick();
             }
         }
-    }
+    };
 
-    onBotSellEvent() {
+    onBotSellEvent = () => {
         this.is_sell_requested = true;
-    }
+    };
 
-    onBotStopEvent() {
+    onBotStopEvent = () => {
         const { self_exclusion, summary_card } = this.root_store;
         const { ui } = this.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
             this.setContractStage(contract_stages.NOT_RUNNING);
-            ui.setAccountSwitcherDisabledMessage(false);
+            ui.setAccountSwitcherDisabledMessage();
             this.unregisterBotListeners();
             self_exclusion.resetSelfExclusion();
         };
@@ -567,7 +560,7 @@ export default class RunPanelStore {
             this.error_type = undefined;
             this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
-            ui.setAccountSwitcherDisabledMessage(false);
+            ui.setAccountSwitcherDisabledMessage();
             this.unregisterBotListeners();
             self_exclusion.resetSelfExclusion();
         }
@@ -579,20 +572,20 @@ export default class RunPanelStore {
         // listen for new version update
         const listen_new_version = new Event('ListenPWAUpdate');
         document.dispatchEvent(listen_new_version);
-    }
+    };
 
-    onBotReadyEvent() {
+    onBotReadyEvent = () => {
         this.setIsRunning(false);
         observer.unregisterAll('bot.bot_ready');
-    }
+    };
 
-    onBotTradeAgain(is_trade_again) {
+    onBotTradeAgain = (is_trade_again: boolean) => {
         if (!is_trade_again) {
             this.stopBot();
         }
-    }
+    };
 
-    onContractStatusEvent(contract_status) {
+    onContractStatusEvent = (contract_status: TContractState) => {
         switch (contract_status.id) {
             case 'contract.purchase_sent': {
                 this.setContractStage(contract_stages.PURCHASE_SENT);
@@ -621,9 +614,9 @@ export default class RunPanelStore {
             default:
                 break;
         }
-    }
+    };
 
-    onClickSell() {
+    onClickSell = () => {
         const { is_multiplier } = this.root_store.summary_card;
 
         if (is_multiplier) {
@@ -631,20 +624,20 @@ export default class RunPanelStore {
         }
 
         this.dbot.interpreter.bot.getInterface().sellAtMarket();
-    }
+    };
 
     clear = () => {
         observer.emit('statistics.clear');
     };
 
-    onBotContractEvent(data) {
+    onBotContractEvent = (data: { is_sold?: boolean }) => {
         if (data?.is_sold) {
             this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
         }
-    }
+    };
 
-    onError(data) {
+    onError = (data: { error: any }) => {
         // data.error for API errors, data for code errors
         const error = data.error || data;
         if (unrecoverable_errors.includes(error.code)) {
@@ -656,9 +649,9 @@ export default class RunPanelStore {
 
         const error_message = error?.message;
         this.showErrorMessage(error_message);
-    }
+    };
 
-    showErrorMessage(data) {
+    showErrorMessage = (data: string | Error) => {
         const { journal } = this.root_store;
         const { notifications, ui } = this.core;
         journal.onError(data);
@@ -667,12 +660,12 @@ export default class RunPanelStore {
             this.setActiveTabIndex(run_panel.JOURNAL);
             ui.setPromptHandler(false);
         } else {
-            notifications.addNotificationMessage(journalError(this.switchToJournal));
+            notifications.addNotificationMessage(journalError(this.switchToJournal) as TNotificationMessage);
             notifications.removeNotificationMessage({ key: 'bot_error' });
         }
-    }
+    };
 
-    switchToJournal() {
+    switchToJournal = () => {
         const { journal } = this.root_store;
         const { notifications } = this.core;
         journal.journal_filters.push(message_types.ERROR);
@@ -680,7 +673,7 @@ export default class RunPanelStore {
         this.toggleDrawer(true);
         notifications.toggleNotificationsModal();
         notifications.removeNotificationByKey({ key: 'bot_error' });
-    }
+    };
 
     unregisterBotListeners = () => {
         observer.unregisterAll('bot.running');
@@ -692,27 +685,27 @@ export default class RunPanelStore {
         observer.unregisterAll('Error');
     };
 
-    setContractStage(contract_stage) {
+    setContractStage = (contract_stage: TContractStage) => {
         this.contract_stage = contract_stage;
-    }
+    };
 
-    setHasOpenContract(has_open_contract) {
+    setHasOpenContract = (has_open_contract: boolean) => {
         this.has_open_contract = has_open_contract;
-    }
+    };
 
-    setIsRunning(is_running) {
+    setIsRunning = (is_running: boolean) => {
         this.is_running = is_running;
-    }
+    };
 
-    onMount() {
+    onMount = () => {
         const { journal } = this.root_store;
         observer.register('ui.log.error', this.showErrorMessage);
         observer.register('ui.log.notify', journal.onNotify);
         observer.register('ui.log.success', journal.onLogSuccess);
         observer.register('client.invalid_token', this.handleInvalidToken);
-    }
+    };
 
-    onUnmount() {
+    onUnmount = () => {
         const { journal, summary_card, transactions } = this.root_store;
 
         if (!this.is_running) {
@@ -727,20 +720,20 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
         observer.unregisterAll('client.invalid_token');
-    }
+    };
 
-    async handleInvalidToken() {
+    handleInvalidToken = async () => {
         const { client } = this.core;
         await client.logout();
         this.setActiveTabIndex(run_panel.SUMMARY);
-    }
+    };
 
-    preloadAudio() {
-        const strategy_sounds = this.dbot.getStrategySounds();
+    preloadAudio = () => {
+        const strategy_sounds = this.dbot.getStrategySounds() as string[];
 
-        strategy_sounds.forEach(sound => {
-            const audioElement = document.getElementById(sound);
-
+        strategy_sounds.forEach((sound: string) => {
+            const audioElement = document.getElementById(sound) as HTMLAudioElement | null;
+            if (!audioElement) return;
             audioElement.muted = true;
             audioElement.play().catch(() => {
                 // suppressing abort error, thrown on immediate .pause()
@@ -748,5 +741,5 @@ export default class RunPanelStore {
             audioElement.pause();
             audioElement.muted = false;
         });
-    }
+    };
 }

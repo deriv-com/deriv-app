@@ -51,6 +51,38 @@ export default class TransactionsStore {
         );
     }
 
+    get statistics() {
+        let total_runs = 0;
+        const statistics = this.transactions.reduce(
+            (stats, { data: trx }) => {
+                if (trx.is_completed) {
+                    if (trx.profit > 0) {
+                        stats.won_contracts += 1;
+                        stats.total_payout += trx.payout;
+                    } else {
+                        stats.lost_contracts += 1;
+                    }
+
+                    stats.total_profit += trx.profit;
+                    stats.total_stake += trx.buy_price;
+                    total_runs += 1;
+                }
+
+                return stats;
+            },
+            {
+                lost_contracts: 0,
+                number_of_runs: 0,
+                total_profit: 0,
+                total_payout: 0,
+                total_stake: 0,
+                won_contracts: 0,
+            }
+        );
+        statistics.number_of_runs = total_runs;
+        return statistics;
+    }
+
     toggleTransactionDetailsModal(is_open) {
         this.is_transaction_details_modal_open = is_open;
     }

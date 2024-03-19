@@ -26,6 +26,8 @@ export const message_types = Object.freeze({
     SUCCESS: 'success',
 });
 
+export type TErrorTypes = 'recoverable_errors' | 'unrecoverable_errors';
+
 export const error_types = Object.freeze({
     RECOVERABLE_ERRORS: 'recoverable_errors',
     UNRECOVERABLE_ERRORS: 'unrecoverable_errors',

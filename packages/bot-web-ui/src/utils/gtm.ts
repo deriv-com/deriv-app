@@ -1,8 +1,8 @@
-import RootStore from 'Stores/root-store';
 import { reaction } from 'mobx';
-import { TStores, TCoreStores } from '@deriv/stores/types';
-import { TStatistics } from 'Components/transaction-details/transaction-details.types';
+import { TCoreStores, TStores } from '@deriv/stores/types';
 import { TContractInfo } from 'Components/summary/summary-card.types';
+import { TStatistics } from 'Components/transaction-details/transaction-details.types';
+import RootStore from 'Stores/root-store';
 
 type TGTM = {
     core: {
@@ -38,7 +38,7 @@ const GTM = (() => {
             root_store = _root_store;
 
             const { run_panel, transactions } = root_store;
-            const run_statistics = run_panel.statistics;
+            const run_statistics = transactions.statistics;
             const active_loginid = getLoginId();
 
             reaction(

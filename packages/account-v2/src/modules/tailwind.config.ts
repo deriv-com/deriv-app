@@ -2,7 +2,8 @@ import type { Config } from 'tailwindcss';
 
 export default {
     presets: [require('../../tailwind.config.ts')],
-    content: ['./dist/js/*.js', './src/**/*.{js,jsx,ts,tsx}'],
+    content: ['../**/*.{jsx,tsx}'],
+    purge: ['../**/*.{jsx,tsx}'],
     theme: {
         extend: {},
     },

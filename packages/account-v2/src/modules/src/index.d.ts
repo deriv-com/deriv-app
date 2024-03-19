@@ -1,6 +1,6 @@
 /* eslint-disable one-var */
 import React from 'react';
-import { useResidenceList } from '@deriv/api';
+import { useResidenceList } from '@deriv/api-v2';
 
 type TManualForm = {
     document_expiry: string;

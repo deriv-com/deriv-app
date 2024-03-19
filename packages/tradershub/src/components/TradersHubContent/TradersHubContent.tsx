@@ -9,8 +9,8 @@ const TradersHubContent = () => {
 
     return (
         <div className={twMerge('flex gap-24 flex-col', isEU && 'flex-col-reverse')}>
-            <POAFormContainer />
             <OptionsAndMultipliersSection />
+            <POAFormContainer />
             <CFDSection />
         </div>
     );

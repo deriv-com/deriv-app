@@ -1,6 +1,5 @@
 import path from 'path';
 import CopyPlugin from 'copy-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 const entries = require('./webpack-entries.json');
 
 const isRelease =
@@ -12,13 +11,13 @@ export default () => ({
     externals: [
         {
             '@deriv/quill-icons': '@deriv/quill-icons',
-            '@deriv/api': '@deriv/api',
+            '@deriv/api-v2': '@deriv/api-v2',
             react: true,
             'react-dom': true,
             'react-router-dom': true,
         },
     ],
-    mode: 'development',
+    mode: isRelease ? 'production' : 'development',
     module: {
         rules: [
             {
@@ -49,7 +48,7 @@ export default () => ({
             {
                 test: /\.(sc|sa|c)ss$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    'style-loader',
                     {
                         loader: 'css-loader',
                         options: {
@@ -140,10 +139,6 @@ export default () => ({
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: 'css/[name].css',
-            chunkFilename: '[id].css',
-        }),
         new CopyPlugin({
             patterns: [
                 {

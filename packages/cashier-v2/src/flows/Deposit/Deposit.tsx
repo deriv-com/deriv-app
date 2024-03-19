@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useActiveAccount } from '@deriv/api-v2';
 import { CashierBreadcrumb, PageContainer } from '../../components';
 import { CashierOnboardingModule, DepositCryptoModule, DepositFiatModule } from '../../lib';
-import { DummyComponent } from '@deriv-lib/account-v2-lib';
 
 const Deposit = () => {
     const { data: activeAccount } = useActiveAccount();
@@ -12,7 +11,6 @@ const Deposit = () => {
     if (isDeposit) {
         return (
             <PageContainer>
-                <DummyComponent />
                 <CashierBreadcrumb isCrypto={isCrypto} setIsDeposit={setIsDeposit} />
                 {isCrypto ? <DepositCryptoModule /> : <DepositFiatModule />}
             </PageContainer>
@@ -21,7 +19,6 @@ const Deposit = () => {
 
     return (
         <PageContainer>
-            <DummyComponent />
             <CashierOnboardingModule setIsDeposit={setIsDeposit} />
         </PageContainer>
     );

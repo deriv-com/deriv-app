@@ -103,7 +103,7 @@ export default class JournalStore {
     unfiltered_messages: TMessage[] = [];
 
     restoreStoredJournals() {
-        const { loginid } = this.core?.client;
+        const { loginid } = this.core?.client ?? {};
         this.journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
         this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
     }
@@ -223,7 +223,10 @@ export default class JournalStore {
         const disposeJournalMessageListener = reaction(
             () => client?.loginid,
             async loginid => {
-                await when(() => !!client.account_list?.find(account => account.loginid === loginid)?.title ?? false);
+                await when(() => {
+                    const has_account = client.account_list?.find(account => account.loginid === loginid)?.title;
+                    return !!has_account;
+                });
                 this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
                 if (this.unfiltered_messages.length === 0) {
                     this.pushMessage(log_types.WELCOME, message_types.SUCCESS, 'journal__text');

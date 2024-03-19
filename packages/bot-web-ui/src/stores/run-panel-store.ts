@@ -660,7 +660,7 @@ export default class RunPanelStore implements IRunPanelStore {
             this.setActiveTabIndex(run_panel.JOURNAL);
             ui.setPromptHandler(false);
         } else {
-            notifications.addNotificationMessage(journalError(this.switchToJournal) as TNotificationMessage);
+            notifications.addNotificationMessage(journalError(this.switchToJournal));
             notifications.removeNotificationMessage({ key: 'bot_error' });
         }
     };

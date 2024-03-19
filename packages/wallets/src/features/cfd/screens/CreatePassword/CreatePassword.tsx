@@ -7,7 +7,7 @@ import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 
 type TProps = {
-    Icon: ReactNode;
+    icon: ReactNode;
     isLoading?: boolean;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
@@ -16,7 +16,7 @@ type TProps = {
 };
 
 const CreatePassword: React.FC<TProps> = ({
-    Icon,
+    icon,
     isLoading,
     onPasswordChange,
     onPrimaryClick,
@@ -28,7 +28,7 @@ const CreatePassword: React.FC<TProps> = ({
 
     return (
         <div className='wallets-create-password'>
-            {Icon}
+            {icon}
             <div className='wallets-create-password__text'>
                 <WalletText align='center' lineHeight='xl' weight='bold'>
                     Create a {title} password

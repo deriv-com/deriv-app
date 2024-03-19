@@ -213,7 +213,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isMT5PasswordNotSet)
             return (
                 <CreatePassword
-                    Icon={<MT5PasswordIcon />}
+                    icon={<MT5PasswordIcon />}
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}

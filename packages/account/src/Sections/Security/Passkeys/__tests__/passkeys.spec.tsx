@@ -1,6 +1,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
@@ -198,7 +198,9 @@ describe('Passkeys', () => {
         const try_again_button = screen.getByRole('button', { name: /try again/i });
         expect(screen.getByText('registration test error')).toBeInTheDocument();
         userEvent.click(try_again_button);
-        expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
+        });
     });
     it('renders passkeys list error modal and triggers closing', async () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
@@ -219,6 +221,8 @@ describe('Passkeys', () => {
         const try_again_button = screen.getByRole('button', { name: /try again/i });
         expect(screen.getByText('list test error')).toBeInTheDocument();
         userEvent.click(try_again_button);
-        expect(mockReloadPasskeysList).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(mockReloadPasskeysList).toBeCalledTimes(1);
+        });
     });
 });

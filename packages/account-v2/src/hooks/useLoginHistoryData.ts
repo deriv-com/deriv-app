@@ -12,12 +12,6 @@ type TData = {
     status: string;
 }[];
 
-// type TUserAgent =
-//     | (Bowser.Parser.Details & {
-//           app?: string;
-//       })
-//     | undefined;
-
 export const useLoginHistoryData = (limit_value: number) => {
     const { isSuccess } = useAuthorize();
 
@@ -68,13 +62,6 @@ function fetch(FetchLimit, datas, LoginHistoryData) {
 
         datas[i].action = LoginHistoryData?.login_history[i].action === 'login' ? 'Login' : 'Logout';
 
-        // const UserAgentString = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
-
-        // const UserAgent: TUserAgent = MobileAppUa
-        //     ? MobileAppUa.groups
-        //     : Bowser.getParser(UserAgentString)?.getBrowser();
-
-        // datas[i].browser = UserAgent ? `${UserAgent.name} ${UserAgent.app ?? ''} v${UserAgent.version}` : 'Unknown';
         datas[i].browser = `${parsed.name} ${parsed.version}`;
 
         datas[i].ip = environemntSplit[2].split('=')[1];

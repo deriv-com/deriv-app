@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
+import { useExtendedOrderDetails } from '@/hooks';
 import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import IcCashierBankTransfer from '../../../../../../public/ic-cashier-bank-transfer.svg';
@@ -10,7 +10,7 @@ import './PaymentMethodAccordion.scss';
 type TPaymentMethodAccordionProps = {
     paymentDetails: string;
     paymentInfo: string;
-    paymentMethodDetails: ExtendedOrderDetails['payment_method_details'];
+    paymentMethodDetails: ReturnType<typeof useExtendedOrderDetails>['data']['payment_method_details'];
 };
 
 const PaymentMethodAccordion = ({

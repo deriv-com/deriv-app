@@ -6,6 +6,7 @@
     border: 8px solid #f2f3f4;
     border-radius: 8px;
     width: 45.6rem;
+    height: fit-content;
 
     @include mobile {
         width: 100%;

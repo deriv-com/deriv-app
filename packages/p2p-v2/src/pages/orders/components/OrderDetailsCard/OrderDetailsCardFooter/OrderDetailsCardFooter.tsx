@@ -1,14 +1,11 @@
 import React from 'react';
-import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
+import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
 import { Button, useDevice } from '@deriv-com/ui';
 import './OrderDetailsCardFooter.scss';
 
-type TOrderDetailsCardFooterProps = {
-    orderDetails: ExtendedOrderDetails;
-};
-
 // TODO: Implement functionality for each button when integrating with the API
-const OrderDetailsCardFooter = ({ orderDetails }: TOrderDetailsCardFooterProps) => {
+const OrderDetailsCardFooter = () => {
+    const orderDetails = useOrderDetails();
     const {
         shouldShowCancelAndPaidButton,
         shouldShowComplainAndReceivedButton,

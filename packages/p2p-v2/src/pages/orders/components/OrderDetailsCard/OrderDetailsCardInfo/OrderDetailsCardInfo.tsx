@@ -1,13 +1,10 @@
 import React from 'react';
-import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
+import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
 import { Text, useDevice } from '@deriv-com/ui';
 import { ActiveOrderInfo } from './ActiveOrderInfo';
 
-type TOrderDetailsCardInfoProps = {
-    orderDetails: ExtendedOrderDetails;
-};
-
-const OrderDetailsCardInfo = ({ orderDetails }: TOrderDetailsCardInfoProps) => {
+const OrderDetailsCardInfo = () => {
+    const orderDetails = useOrderDetails();
     const {
         account_currency: accountCurrency,
         advertiser_details: { name },
@@ -45,7 +42,7 @@ const OrderDetailsCardInfo = ({ orderDetails }: TOrderDetailsCardInfoProps) => {
                     </div>
                 ))}
             </div>
-            <ActiveOrderInfo orderDetails={orderDetails} />
+            <ActiveOrderInfo />
         </div>
     );
 };

@@ -1,15 +1,13 @@
 import React from 'react';
-import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
+import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
 import { getDistanceToServerTime } from '@/utils';
 import { useServerTime } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { OrderTimer } from '../../OrderTimer';
 
-type TOrderDetailsCardProps = {
-    orderDetails: ExtendedOrderDetails;
-};
+const OrderDetailsCardHeader = () => {
+    const orderDetails = useOrderDetails();
 
-const OrderDetailsCardHeader = ({ orderDetails }: TOrderDetailsCardProps) => {
     const {
         displayPaymentAmount,
         hasTimerExpired,

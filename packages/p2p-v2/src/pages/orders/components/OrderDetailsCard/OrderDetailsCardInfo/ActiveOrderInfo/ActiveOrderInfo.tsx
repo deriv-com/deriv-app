@@ -1,13 +1,10 @@
 import React from 'react';
-import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
+import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
 import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodAccordion } from '../PaymentMethodAccordion';
 
-type TActiveOrderInfoProps = {
-    orderDetails: ExtendedOrderDetails;
-};
-
-const ActiveOrderInfo = ({ orderDetails }: TActiveOrderInfoProps) => {
+const ActiveOrderInfo = () => {
+    const orderDetails = useOrderDetails();
     const {
         advert_details: { description },
         contact_info: contactInfo,

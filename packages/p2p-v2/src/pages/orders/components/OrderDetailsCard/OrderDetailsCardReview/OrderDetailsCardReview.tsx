@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StarRating } from '@/components';
-import { ExtendedOrderDetails } from '@/hooks/useExtendedOrderDetails';
+import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
 import { getDateAfterHours } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import {
@@ -10,11 +10,8 @@ import {
 } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 
-type TOrderDetailsCardReviewProps = {
-    orderDetails: ExtendedOrderDetails;
-};
-
-const OrderDetailsCardReview = ({ orderDetails }: TOrderDetailsCardReviewProps) => {
+const OrderDetailsCardReview = () => {
+    const orderDetails = useOrderDetails();
     const {
         completion_time: completionTime,
         hasReviewDetails,

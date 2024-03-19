@@ -13,7 +13,7 @@ import {
 type TUserDetails = TOrder['advertiser_details'] | TOrder['client_details'];
 
 type TObject = Record<string, string>;
-export interface ExtendedOrderDetails extends TOrder {
+interface ExtendedOrderDetails extends TOrder {
     counterpartyAdStatusString: TObject;
     displayPaymentAmount: string;
     hasReviewDetails: boolean;

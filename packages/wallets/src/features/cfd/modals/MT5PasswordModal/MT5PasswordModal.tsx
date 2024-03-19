@@ -8,10 +8,9 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api-v2';
-import { SentEmailContent, WalletError } from '../../../../components';
+import { SentEmailContent, WalletError, WalletSuccessResetMT5Password } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import WalletSuccessResetMT5Password from '../../../../components/WalletsResetMT5Password/WalletSuccessResetMT5Password';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';

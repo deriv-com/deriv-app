@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useManualForm } from '../../../hooks';
+import { useManualForm } from '../../../../hooks';
 import { ManualUpload } from '../ManualUpload';
 
 jest.mock('@deriv-com/ui', () => ({

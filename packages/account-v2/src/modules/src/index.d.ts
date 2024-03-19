@@ -1,6 +1,6 @@
 /* eslint-disable one-var */
 import React from 'react';
-import { useResidenceList } from '@deriv/api-v2';
+import type { TSupportedDocuments } from '../../types';
 
 type TManualForm = {
     document_expiry: string;
@@ -15,21 +15,29 @@ type TManualFormProps = {
 };
 
 type TIDVFormProps = {
+    allowDefaultValue?: boolean;
     allowIDVSkip?: boolean;
-    selectedCountry: Exclude<
-        NonNullable<NonNullable<ReturnType<typeof useResidenceList>['data'][0]['identity']>['services']>['idv'],
-        undefined
-    >;
+    countryCode: string;
+    supportedDocuments: TSupportedDocuments;
+};
+
+type TOnfidoContainer = {
+    countryCode?: string;
+    isEnabledByDefault?: boolean;
+    onOnfidoSubmit?: () => void;
+    selectedDocument?: TManualDocumentTypes;
 };
 
 export declare const ManualForm: ({ onSubmit, selectedDocument }: TManualFormProps) => React.JSX.Element;
 
 export declare const POAFormContainer: () => React.JSX.Element | null;
 
-export declare const IDVForm: ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => React.JSX.Element;
+export declare const IDVForm: (props: TIDVFormProps) => React.JSX.Element;
 
 export declare const AddressFields: () => React.JSX.Element;
 
-export declare const DummyComponent: () => React.JSX.Element;
+export declare const IDVService: () => React.JSX.Element;
+
+export declare const OnfidoContainer: (props: TOnfidoContainer) => React.JSX.Element;
 
 export {};

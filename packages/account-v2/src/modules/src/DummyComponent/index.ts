@@ -1,1 +1,0 @@
-export { DummyComponent } from './DummyComponent';

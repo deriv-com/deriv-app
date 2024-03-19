@@ -3,9 +3,9 @@ import * as routerDOM from 'react-router-dom';
 import { useActiveTradingAccount, useAuthorize } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../../constants/routes';
-import { usePOAInfo } from '../../../hooks/usePOAInfo';
-import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../../utils/platform';
+import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../../../constants/routes';
+import { usePOAInfo } from '../../../../hooks/usePOAInfo';
+import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../../../utils/platform';
 import { POAFormContainer } from '../POAFormContainer';
 
 jest.mock('@deriv/quill-design', () => ({

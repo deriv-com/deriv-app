@@ -29,7 +29,6 @@ export const personal_details_config = ({
     residence_list,
     account_settings,
     real_account_signup_target,
-    is_high_risk_client_for_mt5,
 }: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
         return {};
@@ -212,7 +211,7 @@ export const personal_details_config = ({
 
     // Need to check if client is high risk (only have SVG i.e. China & Russia)
     // No need to get additinal details when client is high risk
-    if (!is_high_risk_client_for_mt5 && real_account_signup_target !== 'maltainvest') {
+    if (real_account_signup_target !== 'maltainvest') {
         const properties_to_update: (keyof typeof config)[] = [
             'place_of_birth',
             'tax_residence',

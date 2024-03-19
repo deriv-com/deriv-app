@@ -3,10 +3,7 @@ import debounce from 'lodash.debounce';
 
 export const useDebounce = (callback: () => void, timeout: number) => {
     const debouncedCallback = React.useMemo(
-        () =>
-            debounce(() => {
-                callback();
-            }, timeout),
+        () => debounce(callback, timeout),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );

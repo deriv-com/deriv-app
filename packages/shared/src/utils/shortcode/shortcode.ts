@@ -101,6 +101,5 @@ export const isForwardStarting = (shortcode: string, purchase_time?: number) => 
 
 export const hasForwardContractStarted = (shortcode: string) => {
     const start_time = getStartTime(shortcode);
-
     return start_time && Date.now() / 1000 > Number(start_time.slice(0, -1));
 };

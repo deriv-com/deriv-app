@@ -46,13 +46,13 @@ const DataListRow = ({
     is_dynamic_height,
     ...other_props
 }: TDataListRow) => {
-    const [show_desc, setShowDesc] = React.useState(false);
+    const [show_description, setShowDescription] = React.useState(false);
     const isMounted = useIsMounted();
-    const debouncedHideDetails = useDebounce(() => setShowDesc(false), 5000);
+    const debouncedHideDetails = useDebounce(() => setShowDescription(false), 5000);
 
     const toggleDetails = () => {
         if (action_desc) {
-            setShowDesc(!show_desc);
+            setShowDescription(!show_description);
             debouncedHideDetails();
         }
     };
@@ -65,7 +65,7 @@ const DataListRow = ({
         if (isMounted() && is_dynamic_height) {
             measure?.();
         }
-    }, [show_desc, is_dynamic_height, measure]);
+    }, [show_description, is_dynamic_height, measure]);
 
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
@@ -90,12 +90,12 @@ const DataListRow = ({
                 >
                     {action_desc ? (
                         <div
-                            className={'data-list__item'}
+                            className='data-list__item'
                             onClick={toggleDetailsDecorator}
                             onKeyDown={toggleDetailsDecorator}
                         >
-                            {show_desc ? (
-                                <div className={'data-list__desc--wrapper'}>
+                            {show_description ? (
+                                <div className='data-list__desc--wrapper'>
                                     {action_desc.component && <div>{action_desc.component}</div>}
                                 </div>
                             ) : (

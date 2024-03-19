@@ -82,11 +82,13 @@ export const getValidationRules = (
                 validation_2: value => !isNaN(Number(value)) || 'Only numbers are allowed',
                 validation_3: value => decimalPointValidation(value),
                 validation_4: value =>
-                    (getValues('amount') && Number(value) <= Number(getValues('amount'))) ||
-                    'Min limit should not exceed Amount',
+                    getValues('amount')
+                        ? Number(value) <= Number(getValues('amount')) || 'Min limit should not exceed Amount'
+                        : '',
                 validation_5: value =>
-                    (getValues('max-order') && Number(value) <= Number(getValues('max-order'))) ||
-                    'Min limit should not exceed Max limit',
+                    getValues('max-order')
+                        ? Number(value) <= Number(getValues('max-order')) || 'Min limit should not exceed Max limit'
+                        : '',
             };
         case 'max-order':
             return {
@@ -94,11 +96,13 @@ export const getValidationRules = (
                 validation_2: value => !isNaN(Number(value)) || 'Only numbers are allowed',
                 validation_3: value => decimalPointValidation(value),
                 validation_4: value =>
-                    (getValues('amount') && Number(value) <= Number(getValues('amount'))) ||
-                    'Max limit should not exceed Amount',
+                    getValues('amount')
+                        ? Number(value) <= Number(getValues('amount')) || 'Max limit should not exceed Amount'
+                        : '',
                 validation_5: value =>
-                    (getValues('min-order') && Number(value) >= Number(getValues('min-order'))) ||
-                    'Max limit should not be below Min limit',
+                    getValues('min-order')
+                        ? Number(value) >= Number(getValues('min-order')) || 'Max limit should not be below Min limit'
+                        : '',
             };
         default:
             return {};

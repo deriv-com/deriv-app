@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useForm, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { VALID_SYMBOLS_PATTERN } from '@/constants';
 import { getTextFieldError } from '@/utils';
 import { TextArea } from '@deriv-com/ui';

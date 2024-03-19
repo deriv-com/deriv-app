@@ -4,12 +4,12 @@ import { getValidationRules } from '@/utils';
 import { Input, Text } from '@deriv-com/ui';
 
 type TAdFormInputProps = ComponentProps<typeof Input> & {
-    currency: string;
+    currency?: string;
     label: string;
     name: string;
 };
 
-const RightPlaceholder = ({ value }: { value: string }) => <Text color='less-prominent'>{value}</Text>;
+const RightPlaceholder = ({ value = '' }: { value?: string }) => <Text color='less-prominent'>{value}</Text>;
 
 const AdFormInput = ({ currency, label, name, ...props }: TAdFormInputProps) => {
     const { control, getValues } = useFormContext();

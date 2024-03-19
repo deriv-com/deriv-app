@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { RadioGroup } from '@/components';
@@ -6,6 +6,7 @@ import { BUY_SELL, MY_ADS_URL, RATE_TYPE } from '@/constants';
 import { AdFormController } from '../AdFormController';
 import { AdFormInput } from '../AdFormInput';
 import { AdFormTextArea } from '../AdFormTextArea';
+import './AdTypeSection.scss';
 
 type TAdTypeSectionProps = {
     currency: string;
@@ -13,7 +14,7 @@ type TAdTypeSectionProps = {
     getTotalSteps: () => number;
     goToNextStep: MouseEventHandler<HTMLButtonElement>;
     goToPreviousStep: MouseEventHandler<HTMLButtonElement>;
-    localCurrency: string;
+    localCurrency?: string;
     rateType: string;
 };
 
@@ -21,12 +22,19 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
     const {
         control,
         formState: { isDirty, isValid },
+        getValues,
         setValue,
+        trigger,
         watch,
     } = useFormContext();
 
     const history = useHistory();
     const isSell = watch('ad-type') === BUY_SELL.SELL;
+
+    // Trigger validation for all fields when any field changes
+    useEffect(() => {
+        trigger();
+    }, [getValues()]); // Trigger whenever getValues() changes
 
     const onChangeAdTypeHandler = (userInput: 'buy' | 'sell') => {
         setValue('ad-type', userInput);
@@ -46,7 +54,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
     };
 
     return (
-        <div>
+        <div className='p2p-v2-ad-type-section'>
             <Controller
                 control={control}
                 defaultValue={BUY_SELL.BUY}

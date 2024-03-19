@@ -8,13 +8,13 @@ import './AdWizard.scss';
 type TStep = { header: { title: string }; subStepCount: number };
 type TAdWizardNav = {
     currency: string;
-    localCurrency: string;
+    localCurrency?: string;
     rateType: string;
     steps: TStep[];
 };
 
 const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const [currentStep, setCurrentStep] = useState(0);
 
     return (
@@ -22,8 +22,8 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
             className='p2p-v2-ad-wizard'
             initialStep={0}
             nav={
-                <>
-                    {!isMobile ? (
+                <div>
+                    {isDesktop ? (
                         <FormProgress currentStep={currentStep} steps={steps} />
                     ) : (
                         <div>
@@ -45,9 +45,9 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
                             {/* <Icon icon='IcCross' /> */}
                         </div>
                     )}
-                </>
+                </div>
             }
-            onStepChange={step => setCurrentStep(step.active_step - 1)}
+            onStepChange={step => setCurrentStep(step.activeStep - 1)}
         >
             <AdTypeSection currency={currency} localCurrency={localCurrency} rateType={rateType} />
         </Wizard>

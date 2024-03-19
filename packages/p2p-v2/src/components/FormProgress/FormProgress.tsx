@@ -18,7 +18,7 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
         animateCompleteBar();
     });
 
-    const elCompoletedBar = useRef<HTMLDivElement | null>(null);
+    const elCompletedBar = useRef<HTMLDivElement | null>(null);
 
     const animateCompleteBar = () => {
         const subStepsCount = steps[currentStep]?.subStepCount || null;
@@ -28,9 +28,9 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
         };
         const each = 100 / steps.length;
         const subDivisions = subStepsCount ? Math.ceil(each / subStepsCount) : 0;
-        if (elCompoletedBar.current) {
-            elCompoletedBar.current.style.width = `${currentStep * each + subSectionIndex * subDivisions}%`;
-            elCompoletedBar.current.style.transform = `translateX(${
+        if (elCompletedBar.current) {
+            elCompletedBar.current.style.width = `${currentStep * each + subSectionIndex * subDivisions}%`;
+            elCompletedBar.current.style.transform = `translateX(${
                 elFirstIdentifier.offsetLeft + elFirstIdentifier.clientWidth / 2
             }px)`;
         }
@@ -80,13 +80,13 @@ const FormProgress = ({ currentStep, steps = [], subSectionIndex = 0 }: TFormPro
                                     </div>
                                 </div>
                             ))}
-                            <div className='p2p-v2-form-progress__steps--after' ref={elCompoletedBar} />
+                            <div className='p2p-v2-form-progress__steps--after' ref={elCompletedBar} />
                         </div>
                     </div>
                 </div>
             ) : (
                 <div>
-                    <div className='p2p-v2-form-progress__steps--after' ref={elCompoletedBar} />
+                    <div className='p2p-v2-form-progress__steps--after' ref={elCompletedBar} />
                     <div className='p2p-v2-form-progress--initial' />
                 </div>
             )}

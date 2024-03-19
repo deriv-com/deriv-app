@@ -1,22 +1,19 @@
-import React, { ComponentProps, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import { useTradingPlatformPasswordChange } from '@deriv/api-v2';
+import { TSocketError } from '@deriv/api-v2/types';
 import {
-    ModalStepWrapper,
     WalletButton,
     WalletButtonGroup,
     WalletPasswordFieldLazy,
-    WalletsActionScreen,
     WalletText,
     WalletTextField,
 } from '../../../../components';
 import PasswordViewerIcon from '../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
-import { useModal } from '../../../../components/ModalProvider';
 import { passwordRequirements } from '../../../../constants/password';
 import useDevice from '../../../../hooks/useDevice';
-import MT5SuccessPasswordReset from '../../../../public/images/mt5-success-password-reset.svg';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
+import { TPlatformPasswordChange } from '../../modals/MT5PasswordModal/MT5PasswordModal';
 import './MT5ResetPasswordModal.scss';
 
 type TFormInitialValues = {
@@ -25,80 +22,30 @@ type TFormInitialValues = {
 };
 
 type TProps = {
-    onClickSuccess: () => void;
+    formError: TSocketError<'trading_platform_password_change'> | null;
+    isLoading: boolean;
+    onClickSubmitPasswordChange: (values: TPlatformPasswordChange) => void;
     sendEmailVerification: () => void;
-    setPassword: Dispatch<SetStateAction<string>>;
-    successButtonLoading: boolean;
 };
 
-const SuccessButton = ({ isFullWidth, isLoading, onClick }: ComponentProps<typeof WalletButton>) => (
-    <WalletButton isFullWidth={isFullWidth} isLoading={isLoading} onClick={onClick} size='lg'>
-        Next
-    </WalletButton>
-);
-
 const MT5ResetPasswordModal: React.FC<TProps> = ({
-    onClickSuccess,
+    formError,
+    isLoading,
+    onClickSubmitPasswordChange,
     sendEmailVerification,
-    setPassword,
-    successButtonLoading,
 }) => {
-    const { error, isLoading, isSuccess, mutateAsync: tradingPasswordChange } = useTradingPlatformPasswordChange();
-
-    const { platform, title } = PlatformDetails.mt5;
+    const { title } = PlatformDetails.mt5;
     const { isDesktop, isMobile } = useDevice();
-    const { hide, show } = useModal();
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
 
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
     const formikRef = useRef<FormikProps<TFormInitialValues> | null>(null);
 
-    const handleSuccessButtonClick = () => {
-        onClickSuccess();
-        hide();
-    };
-
-    const successButtonProps = {
-        isFullWidth: isMobile,
-        isLoading: successButtonLoading,
-        onClick: handleSuccessButtonClick,
-    };
-
-    if (isSuccess) {
-        show(
-            <ModalStepWrapper
-                renderFooter={() => (isMobile ? <SuccessButton {...successButtonProps} /> : null)}
-                shouldFixedFooter={isMobile}
-                shouldHideFooter={isDesktop}
-                shouldHideHeader={isDesktop}
-            >
-                <div className='wallets-success-modal'>
-                    <WalletsActionScreen
-                        description={`You have a new ${title} password to log in to your ${title} accounts on the web and mobile apps.`}
-                        descriptionSize='sm'
-                        icon={<MT5SuccessPasswordReset />}
-                        renderButtons={() => (isDesktop ? <SuccessButton {...successButtonProps} /> : null)}
-                        title='Success'
-                    />
-                </div>
-            </ModalStepWrapper>
-        );
-    }
-
-    const onFormSubmitHandler = (values: TFormInitialValues) => {
-        tradingPasswordChange({
-            new_password: values.newPassword,
-            old_password: values.currentPassword,
-            platform,
-        });
-        setPassword(values.newPassword);
-    };
-
     useEffect(() => {
-        if (error) {
-            formikRef.current?.setErrors({ currentPassword: error.error?.message });
+        if (formError) {
+            formikRef.current?.setErrors({ currentPassword: formError.error?.message });
         }
-    }, [error]);
+    }, [formError]);
 
     const validateCurrentPassword = (value: string) => {
         if (!value) return 'The field is required';
@@ -113,7 +60,16 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                     </WalletText>
                 </div>
             )}
-            <Formik initialValues={initialValues} innerRef={formikRef} onSubmit={onFormSubmitHandler}>
+            <Formik
+                initialValues={initialValues}
+                innerRef={formikRef}
+                onSubmit={values =>
+                    onClickSubmitPasswordChange({
+                        currentPassword: values.currentPassword,
+                        newPassword: values.newPassword,
+                    })
+                }
+            >
                 {({ errors, handleChange, values }) => (
                     <Form>
                         <div className='wallets-mt5-reset__container'>

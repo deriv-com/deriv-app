@@ -55,7 +55,7 @@ const MT5ChangePassword = () => {
                     onChange={e => setNewPassword(e.target.value)}
                     value={newPassword}
                 />
-                <ol className='w-full list-disc list-inside gap-y-8'>
+                <ol className='w-full list-disc list-inside space-y-8'>
                     {passwordValidationChecklist.map(item => (
                         <Text as='li' key={item} size='xs'>
                             {item}

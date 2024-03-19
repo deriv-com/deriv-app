@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import PaymentAgentDepositCardDetails from '../PaymentAgentDepositCardDetails';
+import PaymentAgentCardDetails from '../PaymentAgentCardDetails';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-describe('PaymentAgentDepositCardDetails', () => {
-    let mockedProps: React.ComponentProps<typeof PaymentAgentDepositCardDetails>;
+describe('PaymentAgentCardDetails', () => {
+    let mockedProps: React.ComponentProps<typeof PaymentAgentCardDetails>;
 
     beforeEach(() => {
         mockedProps = {
@@ -25,7 +25,7 @@ describe('PaymentAgentDepositCardDetails', () => {
     });
 
     it('should render proper payment agent details', () => {
-        render(<PaymentAgentDepositCardDetails {...mockedProps} />);
+        render(<PaymentAgentCardDetails {...mockedProps} />);
 
         expect(screen.getByText('Phone number')).toBeInTheDocument();
         expect(screen.getByText(/375291234567/)).toBeInTheDocument();

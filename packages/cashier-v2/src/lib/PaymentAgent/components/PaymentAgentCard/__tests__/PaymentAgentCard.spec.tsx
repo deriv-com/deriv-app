@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import PaymentAgentDepositCard from '../PaymentAgentDepositCard';
+import PaymentAgentCard from '../PaymentAgentCard';
 
-jest.mock('../../../../../../../components', () => ({
+jest.mock('../../../../../components', () => ({
     ExpansionPanel: jest.fn(() => <div>ExpansionPanel</div>),
 }));
 
-describe('PaymentAgentDepositCard', () => {
-    let mockedProps: React.ComponentProps<typeof PaymentAgentDepositCard>;
+describe('PaymentAgentCard', () => {
+    let mockedProps: React.ComponentProps<typeof PaymentAgentCard>;
 
     beforeEach(() => {
         mockedProps = {
@@ -23,8 +23,8 @@ describe('PaymentAgentDepositCard', () => {
         };
     });
 
-    it('should render PaymentAgentDepositCard', () => {
-        render(<PaymentAgentDepositCard {...mockedProps} />);
+    it('should render PaymentAgentCard', () => {
+        render(<PaymentAgentCard {...mockedProps} />);
 
         expect(screen.getByTestId('dt_payment_agent_deposit_card')).toBeInTheDocument();
         expect(screen.getByText('ExpansionPanel')).toBeInTheDocument();

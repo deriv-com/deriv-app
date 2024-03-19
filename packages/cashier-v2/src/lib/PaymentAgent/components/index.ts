@@ -1,6 +1,4 @@
-import { PaymentAgentCardDescription } from './PaymentAgentCardDescription';
-import { PaymentAgentMethodsDropdown } from './PaymentAgentMethodsDropdown';
-import { PaymentAgentSearchBox } from './PaymentAgentSearchBox';
-import { PaymentAgentSearchWarning } from './PaymentAgentSearchWarning';
+import { PaymentAgentList } from './PaymentAgentList';
+import { PaymentAgentSearchContainer } from './PaymentAgentSearchContainer';
 
-export { PaymentAgentCardDescription, PaymentAgentMethodsDropdown, PaymentAgentSearchBox, PaymentAgentSearchWarning };
+export { PaymentAgentList, PaymentAgentSearchContainer };

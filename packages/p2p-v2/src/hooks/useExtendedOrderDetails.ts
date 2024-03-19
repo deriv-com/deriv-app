@@ -1,14 +1,21 @@
-import { TOrders, TServerTime } from 'types';
+import { TOrder, TServerTime } from 'types';
 import { BUY_SELL, ORDERS_STATUS } from '@/constants'; // Update your import path
-import { convertToMillis, getFormattedDateString, toMoment } from '@/utils';
-
-type TOrder = TOrders[number];
+import {
+    convertToMillis,
+    formatMoney,
+    getFormattedDateString,
+    removeTrailingZeros,
+    roundOffDecimal,
+    setDecimalPlaces,
+    toMoment,
+} from '@/utils';
 
 type TUserDetails = TOrder['advertiser_details'] | TOrder['client_details'];
 
 type TObject = Record<string, string>;
-interface ExtendedOrderDetails extends TOrder {
+export interface ExtendedOrderDetails extends TOrder {
     counterpartyAdStatusString: TObject;
+    displayPaymentAmount: string;
     hasReviewDetails: boolean;
     hasTimerExpired: boolean;
     isActiveOrder: boolean;
@@ -36,6 +43,7 @@ interface ExtendedOrderDetails extends TOrder {
     orderExpiryMilliseconds: number;
     otherUserDetails: TUserDetails;
     purchaseTime: string;
+    rateAmount: string;
     remainingSeconds: number;
     shouldHighlightAlert: boolean;
     shouldHighlightDanger: boolean;
@@ -78,6 +86,15 @@ const useExtendedOrderDetails = ({
                     : `You sold ${this.amount_display}${this.account_currency}`,
                 rightSendOrReceive: this.isBuyOrder ? 'Receive' : 'Send',
             };
+        },
+        get displayPaymentAmount() {
+            return removeTrailingZeros(
+                formatMoney(
+                    this.local_currency,
+                    Number(this.amount_display) * Number(roundOffDecimal(this.rate, setDecimalPlaces(this.rate, 6))),
+                    true
+                )
+            );
         },
         get hasReviewDetails() {
             return !!this.review_details;
@@ -181,6 +198,9 @@ const useExtendedOrderDetails = ({
                 false,
                 this.isInactiveOrder
             );
+        },
+        get rateAmount() {
+            return removeTrailingZeros(formatMoney(this.local_currency, this.rate, true, 6));
         },
         get remainingSeconds() {
             const serverTimeAmount = serverTime?.server_time_moment;

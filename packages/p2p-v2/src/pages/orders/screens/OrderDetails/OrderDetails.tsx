@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { FullPageMobileWrapper, PageReturn } from '@/components';
-import { BASE_URL } from '@/constants';
 import { useExtendedOrderDetails } from '@/hooks';
 import { p2p, useActiveAccount, useServerTime } from '@deriv/api-v2';
 import { InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
 import { OrderDetailsCard } from '../../components/OrderDetailsCard';
 import { OrderDetailsCardFooter } from '../../components/OrderDetailsCard/OrderDetailsCardFooter';
+import { OrdersChatSection } from '../OrdersChatSection';
 import './OrderDetails.scss';
 
 type TOrderDetailsProps = {
@@ -61,7 +61,14 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
                     <Text size='2xs'>{warningMessage}</Text>
                 </InlineMessage>
             )}
-            <OrderDetailsCard orderDetails={orderDetails} />
+            <div className='grid grid-cols-none lg:grid-cols-2'>
+                <OrderDetailsCard orderDetails={orderDetails} />
+                <OrdersChatSection
+                    id={orderId}
+                    isInactive={!!orderDetails?.isInactiveOrder}
+                    otherUserDetails={orderDetails?.otherUserDetails}
+                />
+            </div>
         </div>
     );
 };

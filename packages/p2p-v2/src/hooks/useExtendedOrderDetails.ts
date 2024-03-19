@@ -147,7 +147,7 @@ const useExtendedOrderDetails = ({
             return !!this.is_incoming;
         },
         get isMyAd() {
-            return this.advertiser_details.loginid === loginId;
+            return this.advertiser_details?.loginid === loginId;
         },
         get isOngoingOrder() {
             return this.isBuyerConfirmedOrder || this.isBuyerCancelledOrder;

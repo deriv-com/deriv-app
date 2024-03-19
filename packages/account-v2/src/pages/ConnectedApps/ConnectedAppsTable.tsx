@@ -1,28 +1,28 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { Button, Table } from '@deriv-com/ui';
-import { connectedAppsHeader, connectedAppsHeaderOrder, getConnectedAppsScopes } from '../../utils/connectedAppsUtils';
+import { CONNECTED_APPS_HEADER, CONNECTED_APPS_HEADER_ORDER } from '../../constants/connectedAppsConstants';
+import { getFormattedAppScopes } from '../../utils/connectedAppsUtils';
 
 type TConnectedAppsTable = {
-    connectedApps: OauthApps;
-    // handleToggleModal: (app_id: number) => void;
+    connectedApps: OauthApps | undefined;
 };
 
 export const ConnectedAppsTable = ({ connectedApps }: TConnectedAppsTable) => {
-    const connectedAppsColumns = connectedAppsHeaderOrder.map(header_name => ({
-        header: connectedAppsHeader[header_name],
+    const connectedAppsColumns = CONNECTED_APPS_HEADER_ORDER.map(header_name => ({
+        header: CONNECTED_APPS_HEADER[header_name],
     }));
 
-    const connectedAppsRows = connectedApps.map(connectedApp => ({
+    const connectedAppsRows = connectedApps?.map(connectedApp => ({
         lastLogin: connectedApp?.last_used,
-        name: connectedApp.name,
-        permission: getConnectedAppsScopes(connectedApp.scopes),
+        name: connectedApp?.name,
+        permission: getFormattedAppScopes(connectedApp?.scopes),
     }));
 
     return (
         <Table
             columns={connectedAppsColumns}
-            data={connectedAppsRows}
+            data={connectedAppsRows ?? []}
             isFetching={false}
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             loadMoreFunction={() => {}}

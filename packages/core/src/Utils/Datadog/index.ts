@@ -45,7 +45,12 @@ const getConfigValues = (environment: string) => {
  * @returns {void}
  * **/
 const initDatadog = (is_datadog_enabled: boolean) => {
-    if (!is_datadog_enabled) {
+    if (is_datadog_enabled) {
+        if (window.DD_RUM) {
+            datadogRum.setTrackingConsent('granted');
+            return;
+        }
+    } else {
         if (window.DD_RUM) {
             datadogRum.setTrackingConsent('not-granted');
         }

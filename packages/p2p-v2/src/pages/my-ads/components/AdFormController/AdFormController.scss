@@ -4,11 +4,7 @@
     column-gap: 0.8rem;
     border-top: 1px solid #f2f3f4;
     padding: 2rem 0;
-
-    @include desktop {
-        margin-top: 10rem;
-    }
-
+    margin-top: 10rem;
     @include mobile {
         margin-top: 3rem;
     }

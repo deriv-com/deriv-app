@@ -25,7 +25,9 @@ jest.mock('react-hook-form', () => ({
             isDirty: false,
             isValid: true,
         },
+        getValues: jest.fn(() => 'mockedValues'),
         setValue: mockSetFieldValue,
+        trigger: jest.fn(),
         watch: jest.fn(() => 'buy'),
     }),
 }));

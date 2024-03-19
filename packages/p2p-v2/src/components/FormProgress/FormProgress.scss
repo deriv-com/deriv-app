@@ -56,16 +56,15 @@
         &--after {
             border-top: 2px solid #ff444f;
             transition: width 0.3s ease;
+            position: absolute;
             @include desktop {
                 bottom: 0;
                 content: '';
                 left: 0;
                 margin: 0 auto; /* this centers the line to the full width specified */
-                position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
                 top: 1.7rem;
             }
             @include mobile {
-                position: absolute;
                 top: 0;
             }
         }

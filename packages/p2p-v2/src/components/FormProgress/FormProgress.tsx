@@ -1,10 +1,9 @@
 //TODO: Below component will be removed once deriv-com/ui form-progress is ready
 import React, { memo, useEffect, useRef } from 'react';
 import clsx from 'clsx';
+import { TStep } from 'types';
 import { Text, useDevice } from '@deriv-com/ui';
 import './FormProgress.scss';
-
-type TStep = { header: { title: string }; subStepCount: number };
 
 type TFormProgress = {
     currentStep: number;

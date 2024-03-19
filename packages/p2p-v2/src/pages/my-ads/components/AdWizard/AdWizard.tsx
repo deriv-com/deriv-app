@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { TStep } from 'types';
 import { FormProgress, Wizard } from '@/components';
 import { Text, useDevice } from '@deriv-com/ui';
 import { AdProgressBar } from '../AdProgressBar';
 import { AdTypeSection } from '../AdTypeSection';
 import './AdWizard.scss';
 
-type TStep = { header: { title: string }; subStepCount: number };
 type TAdWizardNav = {
     currency: string;
     localCurrency?: string;

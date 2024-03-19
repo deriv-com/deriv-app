@@ -1,7 +1,7 @@
 //TODO: Below component to replaced with progress bar from deriv-com/ui
 import React from 'react';
+import { TStep } from 'types';
 
-type TStep = { header: { title: string }; subStepCount: number };
 type TAdProgressBar = {
     currentStep: number;
     steps: TStep[];

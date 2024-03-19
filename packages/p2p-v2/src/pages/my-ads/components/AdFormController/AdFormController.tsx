@@ -22,12 +22,12 @@ const AdFormController = ({
     return (
         <div className='p2p-v2-ad-form-controller'>
             {getCurrentStep() === 1 && (
-                <Button color='black' onClick={onCancel} type='button' variant='outlined'>
+                <Button color='black' onClick={onCancel} variant='outlined'>
                     Cancel
                 </Button>
             )}
             {getCurrentStep() > 1 && (
-                <Button color='black' onClick={goToPreviousStep} type='button' variant='outlined'>
+                <Button color='black' onClick={goToPreviousStep} variant='outlined'>
                     Previous
                 </Button>
             )}

@@ -155,9 +155,12 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     );
 
     const renderTitle = useCallback(() => {
+        const accountAction = hasMT5Account ? 'Add' : 'Create';
+        const accountType = isDemo ? 'demo' : 'real';
+
         return updateMT5Password
             ? `${mt5Title} latest password requirements`
-            : `${hasMT5Account ? 'Add' : 'Create'} a ${isDemo ? 'demo' : 'real'} ${mt5Title} account`;
+            : `${accountAction} a ${accountType} ${mt5Title} account`;
     }, [hasMT5Account, isDemo, mt5Title, updateMT5Password]);
 
     const renderFooter = useCallback(() => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useWalletMigration } from '@deriv/api';
+import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
@@ -127,6 +128,8 @@ const AppModals = observer(() => {
 
     const { is_migrated } = useWalletMigration();
 
+    const { has_wallet } = useStoreWalletAccountsList();
+
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {
@@ -197,7 +200,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <UrlUnavailableModal />;
     }
 
-    if (is_migrated) {
+    if (!has_wallet && is_migrated) {
         ComponentToLoad = <WalletsUpgradeLogoutModal />;
     }
 

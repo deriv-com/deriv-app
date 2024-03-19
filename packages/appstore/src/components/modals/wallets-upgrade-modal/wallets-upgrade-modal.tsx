@@ -6,6 +6,8 @@ import { localize, Localize } from '@deriv/translations';
 import WalletsImage from 'Assets/svgs/wallets';
 import './wallets-upgrade-modal.scss';
 
+const MODAL_TRANSITION_TIMEOUT_MS = 250; // matching the default one
+
 const WalletsUpgradeModal = observer(() => {
     const { traders_hub, ui } = useStore();
     const { toggleWalletsUpgrade } = traders_hub;
@@ -26,6 +28,7 @@ const WalletsUpgradeModal = observer(() => {
             width='60rem'
             title=' '
             toggleModal={closeModal}
+            transition_timeout={MODAL_TRANSITION_TIMEOUT_MS}
         >
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
@@ -47,8 +50,9 @@ const WalletsUpgradeModal = observer(() => {
                     <Button
                         large={is_desktop}
                         onClick={() => {
-                            toggleWalletsUpgrade(true);
                             closeModal();
+                            // let this modal close before opening the next one
+                            setTimeout(() => toggleWalletsUpgrade(true), MODAL_TRANSITION_TIMEOUT_MS);
                         }}
                         primary
                         text={localize('Enable now')}

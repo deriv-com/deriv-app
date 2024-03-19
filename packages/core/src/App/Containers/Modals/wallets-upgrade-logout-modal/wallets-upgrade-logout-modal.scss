@@ -53,6 +53,7 @@
         inset: 0;
         background-image: url('../../../../public/images/app/wallet/wallets-upgrade-logout-desktop.svg');
         background-repeat: no-repeat;
+        background-position-y: bottom;
         z-index: -1;
 
         @include mobile {

@@ -83,7 +83,7 @@ export const PersonalDetails = () => {
                     disabled={isFieldDisabled(accountSettings, 'phone')}
                     isFullWidth
                     label='Phone*'
-                    name='phone'
+                    name='phoneNumber'
                 />
             )}
         </div>

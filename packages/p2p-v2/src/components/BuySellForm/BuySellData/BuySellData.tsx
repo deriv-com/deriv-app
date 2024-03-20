@@ -1,5 +1,5 @@
 import React from 'react';
-import { TAdvertiserPaymentMethods } from 'types';
+import { THooks } from 'types';
 import { formatTime } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
@@ -14,11 +14,11 @@ type TBuySellDataProps = {
     localCurrency: string;
     name: string;
     paymentMethodNames?: string[];
-    paymentMethods: ReturnType<typeof p2p.paymentMethods.useGet>['data'];
+    paymentMethods: THooks.PaymentMethods.Get;
     rate: string;
 };
 
-type TType = NonNullable<TAdvertiserPaymentMethods>[number]['type'];
+type TType = THooks.AdvertiserPaymentMethods.Get[number]['type'];
 const BuySellData = ({
     accountCurrency,
     expiryPeriod,

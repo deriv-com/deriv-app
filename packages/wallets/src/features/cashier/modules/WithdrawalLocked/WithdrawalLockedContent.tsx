@@ -32,35 +32,31 @@ export const getWithdrawalLimitReachedDesc = ({
         </WalletText>
     );
 
-    if (poiNeedsVerification && poiStatus === 'none') {
-        description = generateDescription(
-            'Please upload your <0>proof of identity</0> to lift the limit to continue your withdrawal.',
-            [<WalletLink href='/account/proof-of-identity' key={0} variant='bold' />]
-        );
-    }
-
-    if (poiNeedsVerification && poiStatus !== 'verified' && poiStatus !== 'none') {
-        description = generateDescription(
-            'Please check your <0>proof of identity</0> document verification status to lift the limit to continue your withdrawal.',
-            [<WalletLink href='/account/proof-of-identity' key={0} variant='bold' />]
-        );
-    }
-
-    if (poaNeedsVerification && poaStatus === 'none') {
-        description = generateDescription(
-            'Please upload your <0>proof of address</0> to lift the limit to continue your withdrawal.',
-            [<WalletLink href='/account/proof-of-address' key={0} variant='bold' />]
-        );
-    }
-
-    if (poaNeedsVerification && poaStatus !== 'verified' && poaStatus !== 'none') {
-        description = generateDescription(
-            'Please check your <0>proof of address</0> document verification status to lift the limit to continue your withdrawal.',
-            [<WalletLink href='/account/proof-of-address' key={0} variant='bold' />]
-        );
-    }
-
-    if (askFinancialRiskApproval) {
+    if (poiNeedsVerification) {
+        if (poiStatus === 'none') {
+            description = generateDescription(
+                'Please upload your <0>proof of identity</0> to lift the limit to continue your withdrawal.',
+                [<WalletLink href='/account/proof-of-identity' key={0} variant='bold' />]
+            );
+        } else if (poiStatus !== 'verified' && poiStatus !== 'none') {
+            description = generateDescription(
+                'Please check your <0>proof of identity</0> document verification status to lift the limit to continue your withdrawal.',
+                [<WalletLink href='/account/proof-of-identity' key={0} variant='bold' />]
+            );
+        }
+    } else if (poaNeedsVerification) {
+        if (poaStatus === 'none') {
+            description = generateDescription(
+                'Please upload your <0>proof of address</0> to lift the limit to continue your withdrawal.',
+                [<WalletLink href='/account/proof-of-address' key={0} variant='bold' />]
+            );
+        } else if (poaStatus !== 'verified' && poaStatus !== 'none') {
+            description = generateDescription(
+                'Please check your <0>proof of address</0> document verification status to lift the limit to continue your withdrawal.',
+                [<WalletLink href='/account/proof-of-address' key={0} variant='bold' />]
+            );
+        }
+    } else if (askFinancialRiskApproval) {
         description = generateDescription(
             'Please complete the <0>financial assessment form</0> to lift the limit to continue your withdrawal.',
             [<WalletLink href='/account/financial-assessment' key={0} variant='bold' />]
@@ -88,9 +84,7 @@ const getWithdrawalLockedDesc = ({
         description = generateDescription('Please complete the <0>financial assessment</0> to unlock withdrawals.', [
             <WalletLink href='/account/financial-assessment' key={0} variant='bold' />,
         ]);
-    }
-
-    if (askAuthenticate) {
+    } else if (askAuthenticate) {
         description = generateDescription(
             'Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and request for withdrawals.',
             [
@@ -98,16 +92,12 @@ const getWithdrawalLockedDesc = ({
                 <WalletLink href='/account/proof-of-address' key={1} variant='bold' />,
             ]
         );
-    }
-
-    if (askFixDetails) {
+    } else if (askFixDetails) {
         description = generateDescription(
             'Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable withdrawals.',
             [<WalletLink href='/account/personal-details' key={0} variant='bold' />]
         );
-    }
-
-    if (noWithdrawalOrTradingStatus || withdrawalLockedStatus) {
+    } else if (noWithdrawalOrTradingStatus || withdrawalLockedStatus) {
         description = generateDescription(
             'Unfortunately, you can only make deposits. Please contact us via <0>live chat</0> to enable withdrawals.',
             [

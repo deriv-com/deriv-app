@@ -3,7 +3,7 @@ import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetail
 import { Button, useDevice } from '@deriv-com/ui';
 import './OrderDetailsCardFooter.scss';
 
-// TODO: Implement functionality for each button when integrating with the API
+// TODO: Implement functionality for each button when integrating with the API and disable buttons while chat is loading
 const OrderDetailsCardFooter = () => {
     const orderDetails = useOrderDetails();
     const {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { CashierLocked, DepositCryptoModule, DepositFiatModule, DepositLocked } from '../../modules';
+import { CashierLocked, DepositCryptoModule, DepositFiatModule, DepositLocked, SystemMaintenance } from '../../modules';
 
 const WalletDeposit = () => {
     const { data } = useActiveWalletAccount();
@@ -8,20 +8,24 @@ const WalletDeposit = () => {
 
     if (isCrypto) {
         return (
-            <CashierLocked>
-                <DepositLocked>
-                    <DepositCryptoModule />
-                </DepositLocked>
-            </CashierLocked>
+            <SystemMaintenance isDeposit>
+                <CashierLocked>
+                    <DepositLocked>
+                        <DepositCryptoModule />
+                    </DepositLocked>
+                </CashierLocked>
+            </SystemMaintenance>
         );
     }
 
     return (
-        <CashierLocked>
-            <DepositLocked>
-                <DepositFiatModule />
-            </DepositLocked>
-        </CashierLocked>
+        <SystemMaintenance isDeposit>
+            <CashierLocked>
+                <DepositLocked>
+                    <DepositFiatModule />
+                </DepositLocked>
+            </CashierLocked>
+        </SystemMaintenance>
     );
 };
 

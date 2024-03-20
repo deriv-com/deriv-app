@@ -4,6 +4,7 @@ export * from './DepositFiat';
 export * from './DepositLocked';
 export * from './FiatOnRamp';
 export * from './ResetBalance';
+export * from './SystemMaintenance';
 export * from './Transactions';
 export * from './Transfer';
 export * from './WithdrawalCrypto';

@@ -3,6 +3,7 @@ import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import {
     CashierLocked,
+    SystemMaintenance,
     WithdrawalCryptoModule,
     WithdrawalFiatModule,
     WithdrawalLocked,
@@ -31,34 +32,40 @@ const WalletWithdrawal = () => {
         if (isCurrencyConfigSuccess && activeWallet?.currency) {
             if (getConfig(activeWallet?.currency)?.is_fiat) {
                 return (
-                    <CashierLocked>
-                        <WithdrawalLocked>
-                            <WithdrawalFiatModule verificationCode={verificationCode} />
-                        </WithdrawalLocked>
-                    </CashierLocked>
+                    <SystemMaintenance isWithdrawal>
+                        <CashierLocked>
+                            <WithdrawalLocked>
+                                <WithdrawalFiatModule verificationCode={verificationCode} />
+                            </WithdrawalLocked>
+                        </CashierLocked>
+                    </SystemMaintenance>
                 );
             }
             return (
-                <CashierLocked>
-                    <WithdrawalLocked>
-                        <WithdrawalCryptoModule
-                            onClose={() => {
-                                setVerificationCode('');
-                            }}
-                            verificationCode={verificationCode}
-                        />
-                    </WithdrawalLocked>
-                </CashierLocked>
+                <SystemMaintenance isWithdrawal>
+                    <CashierLocked>
+                        <WithdrawalLocked>
+                            <WithdrawalCryptoModule
+                                onClose={() => {
+                                    setVerificationCode('');
+                                }}
+                                verificationCode={verificationCode}
+                            />
+                        </WithdrawalLocked>
+                    </CashierLocked>
+                </SystemMaintenance>
             );
         }
         return <Loader />;
     }
     return (
-        <CashierLocked>
-            <WithdrawalLocked>
-                <WithdrawalVerificationModule />
-            </WithdrawalLocked>
-        </CashierLocked>
+        <SystemMaintenance isWithdrawal>
+            <CashierLocked>
+                <WithdrawalLocked>
+                    <WithdrawalVerificationModule />
+                </WithdrawalLocked>
+            </CashierLocked>
+        </SystemMaintenance>
     );
 };
 

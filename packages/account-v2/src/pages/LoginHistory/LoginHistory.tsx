@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useLoginHistoryData } from '@deriv/api-v2';
 import { Table } from '@deriv-com/ui';
-import { useLoginHistoryData } from '../../hooks/useLoginHistoryData';
 
 type TRowData = {
     action?: string;
@@ -22,7 +22,7 @@ const headers = {
 const columns = columnOrder.map(key => ({ header: headers[key] }));
 
 export const LoginHistory = () => {
-    const { data: loginData } = useLoginHistoryData(25);
+    const [histroydata, setHistorydata] = useState(useLoginHistoryData(25));
 
     return (
         <div className='flex flex-col '>

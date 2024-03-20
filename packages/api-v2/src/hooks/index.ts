@@ -1,3 +1,5 @@
+export { default as useLoginHistoryData } from './useLoginHistoryData';
+
 export { default as useAccountLimits } from './useAccountLimits';
 export { default as useAccountStatus } from './useAccountStatus';
 export { default as useAccountTypes } from './useAccountTypes';
@@ -23,7 +25,6 @@ export { default as useCashierFiatAddress } from './useCashierFiatAddress';
 // TODO: Export these into P2P entities
 export { default as useChatCreate } from './p2p/entity/chat/p2p-chat/useChatCreate';
 export { default as useOrderInfo } from './p2p/entity/order/p2p-order/useOrderInfo';
-
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
 export { default as useCreateWallet } from './useCreateWallet';

@@ -277,6 +277,9 @@ export default class LoadModalStore implements ILoadModalStore {
             }
         });
         this.is_open_button_loading = false;
+        const { toolbar } = this.root_store;
+        const { setImportButtonClick } = toolbar;
+        setImportButtonClick(false);
     };
 
     loadFileFromLocal = (): void => {
@@ -285,6 +288,9 @@ export default class LoadModalStore implements ILoadModalStore {
             this.readFile(false, {} as DragEvent, this.loaded_local_file);
         }
         this.is_open_button_loading = false;
+        const { toolbar } = this.root_store;
+        const { setImportButtonClick } = toolbar;
+        setImportButtonClick(false);
     };
 
     onActiveIndexChange = (): void => {

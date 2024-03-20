@@ -16,11 +16,7 @@ jest.mock('../useRegulationFlags', () => ({
 
 describe('useCurrencies', () => {
     const mockAuthorizeData = {
-        account_list: [
-            { currency: 'USD' },
-            { currency: 'EUR' },
-            // Add more mock account data as needed for your test cases
-        ],
+        account_list: [{ currency: 'USD' }, { currency: 'EUR' }],
         currency: 'USD',
     };
 

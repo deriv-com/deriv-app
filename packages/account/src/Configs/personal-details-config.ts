@@ -209,8 +209,6 @@ export const personal_details_config = ({
         },
     };
 
-    // Need to check if client is high risk (only have SVG i.e. China & Russia)
-    // No need to get additinal details when client is high risk
     if (real_account_signup_target !== 'maltainvest') {
         const properties_to_update: (keyof typeof config)[] = [
             'place_of_birth',

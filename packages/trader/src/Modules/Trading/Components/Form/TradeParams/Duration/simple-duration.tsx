@@ -54,7 +54,7 @@ const SimpleDuration = observer(
 
         return (
             <>
-                {duration_units_list.length > 1 && (
+                {filterMinutesAndTicks(duration_units_list).length > 1 && (
                     <ButtonToggle
                         id='dt_simple_duration_toggle'
                         buttons_arr={filterMinutesAndTicks(duration_units_list)}

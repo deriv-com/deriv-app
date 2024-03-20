@@ -110,7 +110,7 @@ const Duration = ({
                 action: 'change_parameter_value',
                 parameter_type: 'duration_type',
                 parameter_field_type: 'dropdown',
-                duration_type: duration_units_list.find(unit => unit.value === value)?.text?.toLowerCase() ?? '',
+                duration_type: value,
             });
         }
     };

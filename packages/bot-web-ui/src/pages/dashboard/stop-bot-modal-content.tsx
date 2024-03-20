@@ -46,23 +46,10 @@ const StopBotModalContent = ({
                     <>
                         <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
                             <Localize i18n_default_text='Close your contract now or keep it running. If you decide to keep it running, you can check and close it later on the ' />
-                            <Text as='span' line_height='s' size='xs'>
-                                <a
-                                    key={0}
-                                    style={{
-                                        color: 'var(--text-general)',
-                                        fontWeight: 'bold',
-                                        paddingInlineEnd: '0.4rem',
-                                        textDecoration: 'none',
-                                    }}
-                                    rel='noopener noreferrer'
-                                    target='_blank'
-                                    href={'/reports'}
-                                >
-                                    {localize('Reports')}
-                                </a>
+                            <Text weight='bold' as='span' line_height='s' size='xs'>
+                                <Localize i18n_default_text='Reports' />
                             </Text>
-                            {localize('page.')}
+                            <Localize i18n_default_text='page.' />
                         </Text>
                         <Text as='p' line_height='s' size='xs'>
                             <Localize i18n_default_text='The Quick Strategy you just created will be loaded to the workspace.' />
@@ -75,21 +62,12 @@ const StopBotModalContent = ({
                         </Text>
                         <Text as='p' line_height='s' size='xs'>
                             <Localize i18n_default_text='Any open contracts can be viewed on the ' />
-                            <a
-                                key={0}
-                                style={{
-                                    color: 'var(--text-general)',
-                                    fontWeight: 'bold',
-                                    paddingInlineEnd: '0.4rem',
-                                    textDecoration: 'none',
-                                }}
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href={'/reports'}
-                            >
-                                {localize('Reports')}
-                            </a>
-                            <Localize i18n_default_text='page.' />
+                            <Text weight='bold' as='span' line_height='s' size='xs'>
+                                <Localize i18n_default_text='Reports' />
+                            </Text>
+                            <Text as='span' line_height='s' size='xs' styles={{ paddingInlineStart: '0.4rem' }}>
+                                <Localize i18n_default_text='page.' />
+                            </Text>
                         </Text>
                     </>
                 )}

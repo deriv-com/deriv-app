@@ -28,6 +28,11 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
         history.push(routes.traders_hub);
     };
 
+    // TODO: Add redirection here
+    const handleManageFundsRedirect = async () => {
+        history.push(routes.wallets_transfer);
+    };
+
     const footer = (
         <div
             className='account-switcher-wallet-mobile__footer'
@@ -55,7 +60,13 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
         >
             <div className='account-switcher-wallet-mobile'>
                 <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
-                <Button className='account-switcher-wallet-mobile__button' has_effect primary large>
+                <Button
+                    className='account-switcher-wallet-mobile__button'
+                    has_effect
+                    primary
+                    large
+                    onClick={handleManageFundsRedirect}
+                >
                     <Localize i18n_default_text='Manage funds' />
                 </Button>
             </div>

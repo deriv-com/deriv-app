@@ -40,7 +40,6 @@ const useRegisterPasskey = () => {
                 });
                 if (passkeys_register_response?.passkeys_register?.properties?.name) {
                     setIsPasskeyRegistered(true);
-                    invalidate('passkeys_list');
                 }
             }
         } catch (e) {
@@ -48,6 +47,7 @@ const useRegisterPasskey = () => {
                 setPasskeyRegistrationError(e as TError);
             }
         } finally {
+            invalidate('passkeys_list');
             setPublicKey(null);
             setIsPasskeyRegistrationStarted(false);
         }

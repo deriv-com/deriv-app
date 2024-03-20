@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
-import { platformAuthenticatorIsAvailable } from '@simplewebauthn/browser';
+import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -2663,16 +2663,13 @@ export default class ClientStore extends BaseStore {
 
     async setIsPasskeySupported() {
         try {
-            // TODO: resolve issues with growthbook
-            // const is_passkeys_enabled_value = Analytics?.getFeatureValue('paskeys');
-            // const is_passkeys_enabled_isOn = Analytics?.getInstances().ab.isOn('paskeys');
-            // console.log('is_passkeys_enabled_value', is_passkeys_enabled_value);
-            // console.log('is_passkeys_enabled_isOn', is_passkeys_enabled_isOn);
-            const is_passkeys_enabled = true;
-            const result = await platformAuthenticatorIsAvailable();
-            this.is_passkey_supported = is_passkeys_enabled && result;
+            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
+            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
+            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
+            const is_supported_by_browser = await browserSupportsWebAuthn();
+            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser;
         } catch (e) {
-            //need error handling
+            //error handling needed
         }
     }
 }

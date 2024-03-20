@@ -1067,13 +1067,13 @@ export default class TradeStore extends BaseStore {
         const payload = {
             form_name: 'default',
             trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
+            ...options,
             ...(options.action === 'change_parameter_value' && options.duration_type
                 ? {
                       duration_type:
                           ANALYTICS_DURATIONS.find(value => value.startsWith(options.duration_type ?? '')) ?? '',
                   }
                 : {}),
-            ...options,
         } as TEvents['ce_contracts_set_up_form'];
         if (isDebounced) {
             this.debouncedSendTradeParamsAnalytics(payload);

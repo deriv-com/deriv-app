@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import PaymentAgentDepositList from '../PaymentAgentDepositList';
-import { usePaymentAgentContext } from '../../../../../provider';
+import PaymentAgentList from '../PaymentAgentList';
+import { usePaymentAgentContext } from '../../../provider';
 
 const mockUsePaymentAgentContext = usePaymentAgentContext as jest.MockedFunction<typeof usePaymentAgentContext>;
 
@@ -10,26 +10,26 @@ jest.mock('@deriv-com/ui', () => ({
     Loader: () => <div>Loader</div>,
 }));
 
-jest.mock('../../../../../provider', () => ({
+jest.mock('../../../provider', () => ({
     usePaymentAgentContext: jest.fn(() => ({
         isSearchLoading: false,
         paymentAgentList: [{ name: 'PaymentAgent-1' }, { name: 'PaymentAgent-2' }],
     })),
 }));
 
-jest.mock('../../PaymentAgentDepositCard', () => ({
-    PaymentAgentDepositCard: ({ name }: { name: string }) => <div key={name}>PaymentAgentDepositCard</div>,
+jest.mock('../../PaymentAgentCard', () => ({
+    PaymentAgentCard: ({ name }: { name: string }) => <div key={name}>PaymentAgentCard</div>,
 }));
 
-jest.mock('../../../../../components', () => ({
+jest.mock('../../PaymentAgentSearchWarning', () => ({
     PaymentAgentSearchWarning: () => <div>PaymentAgentSearchWarning</div>,
 }));
 
-describe('PaymentAgentDepositList', () => {
+describe('PaymentAgentList', () => {
     it('should show 2 payment agent cards', () => {
-        render(<PaymentAgentDepositList />);
+        render(<PaymentAgentList />);
 
-        expect(screen.getAllByText('PaymentAgentDepositCard').length).toBe(2);
+        expect(screen.getAllByText('PaymentAgentCard').length).toBe(2);
     });
 
     it('should show PaymentAgentSearchWarning when there are no payment agents', () => {
@@ -39,7 +39,7 @@ describe('PaymentAgentDepositList', () => {
             paymentAgentList: [],
         });
 
-        render(<PaymentAgentDepositList />);
+        render(<PaymentAgentList />);
 
         expect(screen.getByText('PaymentAgentSearchWarning')).toBeInTheDocument();
     });
@@ -51,7 +51,7 @@ describe('PaymentAgentDepositList', () => {
             paymentAgentList: [],
         });
 
-        render(<PaymentAgentDepositList />);
+        render(<PaymentAgentList />);
 
         expect(screen.getByText('Loader')).toBeInTheDocument();
     });

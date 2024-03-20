@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 import { Text, useDevice } from '@deriv-com/ui';
-import styles from './PaymentAgentDepositCardDetail.module.scss';
+import styles from './PaymentAgentCardDetail.module.scss';
 
 type TProps = {
     action?: string;
@@ -9,7 +9,7 @@ type TProps = {
     title: string;
 };
 
-const PaymentAgentDepositCardDetail: React.FC<TProps> = ({ action, children, icon: Icon, title }) => {
+const PaymentAgentCardDetail: React.FC<TProps> = ({ action, children, icon: Icon, title }) => {
     const { isMobile } = useDevice();
 
     return (
@@ -42,4 +42,4 @@ const PaymentAgentDepositCardDetail: React.FC<TProps> = ({ action, children, ico
     );
 };
 
-export default PaymentAgentDepositCardDetail;
+export default PaymentAgentCardDetail;

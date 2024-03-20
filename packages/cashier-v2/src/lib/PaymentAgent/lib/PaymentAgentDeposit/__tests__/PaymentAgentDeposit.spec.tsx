@@ -18,12 +18,8 @@ jest.mock('../../../provider', () => ({
 }));
 
 jest.mock('../../../components', () => ({
-    PaymentAgentMethodsDropdown: () => <div>PaymentAgentMethodsDropdown</div>,
-    PaymentAgentSearchBox: () => <div>PaymentAgentSearchBox</div>,
-}));
-
-jest.mock('../components', () => ({
-    PaymentAgentDepositList: () => <div>PaymentAgentDepositList</div>,
+    PaymentAgentList: () => <div>PaymentAgentList</div>,
+    PaymentAgentSearchContainer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 describe('PaymentAgentDeposit', () => {
@@ -33,9 +29,7 @@ describe('PaymentAgentDeposit', () => {
         expect(
             screen.getByText('Contact your preferred payment agent for payment instructions and make your deposit.')
         ).toBeInTheDocument();
-        expect(screen.getByText('PaymentAgentMethodsDropdown')).toBeInTheDocument();
-        expect(screen.getByText('PaymentAgentSearchBox')).toBeInTheDocument();
-        expect(screen.getByText('PaymentAgentDepositList')).toBeInTheDocument();
+        expect(screen.getByText('PaymentAgentList')).toBeInTheDocument();
     });
 
     it('should show Loader if isPaymentAgentListLoading is equal to true', () => {

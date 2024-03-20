@@ -1,42 +1,42 @@
 import React from 'react';
 import { Text, useDevice } from '@deriv-com/ui';
 import { FormatUtils } from '@deriv-com/utils';
-import TransferLimitIcon from '../../../../../../../../assets/images/ic-account-transfer.svg';
-import DepositIcon from '../../../../../../../../assets/images/ic-cashier-add.svg';
-import WithdrawalIcon from '../../../../../../../../assets/images/ic-cashier-minus.svg';
-import PhoneIcon from '../../../../../../../../assets/images/ic-phone.svg';
-import { THooks } from '../../../../../../../../hooks/types';
-import { TCurrency } from '../../../../../../../../types';
-import { PaymentAgentDepositCardDetail } from '../PaymentAgentDepositCardDetail';
-import styles from './PaymentAgentDepositCardDetails.module.scss';
+import TransferLimitIcon from '../../../../../../assets/images/ic-account-transfer.svg';
+import DepositIcon from '../../../../../../assets/images/ic-cashier-add.svg';
+import WithdrawalIcon from '../../../../../../assets/images/ic-cashier-minus.svg';
+import PhoneIcon from '../../../../../../assets/images/ic-phone.svg';
+import { THooks } from '../../../../../../hooks/types';
+import { TCurrency } from '../../../../../../types';
+import { PaymentAgentCardDetail } from '../PaymentAgentCardDetail';
+import styles from './PaymentAgentCardDetails.module.scss';
 
-type TPaymentAgentDepositCardDetailsProps = {
+type TPaymentAgentCardDetailsProps = {
     paymentAgent: THooks.PaymentAgentList[number];
 };
 
 type TPaymentAgentPhoneDetailsProps = {
-    phoneNumbers: TPaymentAgentDepositCardDetailsProps['paymentAgent']['phone_numbers'];
+    phoneNumbers: TPaymentAgentCardDetailsProps['paymentAgent']['phone_numbers'];
 };
 
 type TPaymentAgentTransferLimitDetailsProps = {
     currency: TCurrency;
-    maxWithdrawal: TPaymentAgentDepositCardDetailsProps['paymentAgent']['max_withdrawal'];
-    minWithdrawal: TPaymentAgentDepositCardDetailsProps['paymentAgent']['min_withdrawal'];
+    maxWithdrawal: TPaymentAgentCardDetailsProps['paymentAgent']['max_withdrawal'];
+    minWithdrawal: TPaymentAgentCardDetailsProps['paymentAgent']['min_withdrawal'];
 };
 
 type TPaymentAgentDepositCommissionDetailsProps = {
-    depositCommission: TPaymentAgentDepositCardDetailsProps['paymentAgent']['deposit_commission'];
+    depositCommission: TPaymentAgentCardDetailsProps['paymentAgent']['deposit_commission'];
 };
 
 type TPaymentAgentWithdrawalCommissionDetailsProps = {
-    withdrawalCommission: TPaymentAgentDepositCardDetailsProps['paymentAgent']['withdrawal_commission'];
+    withdrawalCommission: TPaymentAgentCardDetailsProps['paymentAgent']['withdrawal_commission'];
 };
 
 const PaymentAgentPhoneDetails: React.FC<TPaymentAgentPhoneDetailsProps> = ({ phoneNumbers }) => {
     return (
-        <PaymentAgentDepositCardDetail action='tel' icon={PhoneIcon} title='Phone number'>
+        <PaymentAgentCardDetail action='tel' icon={PhoneIcon} title='Phone number'>
             {phoneNumbers.map(phone => phone.phone_number)}
-        </PaymentAgentDepositCardDetail>
+        </PaymentAgentCardDetail>
     );
 };
 
@@ -47,13 +47,13 @@ const PaymentAgentTransferLimitDetails: React.FC<TPaymentAgentTransferLimitDetai
 }) => {
     const { isMobile } = useDevice();
     return (
-        <PaymentAgentDepositCardDetail icon={TransferLimitIcon} title='Transfer limit'>
+        <PaymentAgentCardDetail icon={TransferLimitIcon} title='Transfer limit'>
             <React.Fragment>
                 {`${FormatUtils.formatMoney(Number(minWithdrawal), { currency })} ${currency}`}
                 <Text size={isMobile ? 'md' : 'sm'}> - </Text>
                 {`${FormatUtils.formatMoney(Number(maxWithdrawal), { currency })} ${currency}`}
             </React.Fragment>
-        </PaymentAgentDepositCardDetail>
+        </PaymentAgentCardDetail>
     );
 };
 
@@ -61,9 +61,9 @@ const PaymentAgentDepositCommissionDetails: React.FC<TPaymentAgentDepositCommiss
     depositCommission,
 }) => {
     return (
-        <PaymentAgentDepositCardDetail icon={DepositIcon} title='Commission on deposits'>
+        <PaymentAgentCardDetail icon={DepositIcon} title='Commission on deposits'>
             {`${depositCommission}%`}
-        </PaymentAgentDepositCardDetail>
+        </PaymentAgentCardDetail>
     );
 };
 
@@ -71,13 +71,13 @@ const PaymentAgentWithdrawalCommissionDetails: React.FC<TPaymentAgentWithdrawalC
     withdrawalCommission,
 }) => {
     return (
-        <PaymentAgentDepositCardDetail icon={WithdrawalIcon} title='Commission on withdrawal'>
+        <PaymentAgentCardDetail icon={WithdrawalIcon} title='Commission on withdrawal'>
             {`${withdrawalCommission}%`}
-        </PaymentAgentDepositCardDetail>
+        </PaymentAgentCardDetail>
     );
 };
 
-const PaymentAgentDepositCardDetails: React.FC<TPaymentAgentDepositCardDetailsProps> = ({ paymentAgent }) => {
+const PaymentAgentCardDetails: React.FC<TPaymentAgentCardDetailsProps> = ({ paymentAgent }) => {
     const {
         currencies: currency,
         deposit_commission: depositCommission,
@@ -105,4 +105,4 @@ const PaymentAgentDepositCardDetails: React.FC<TPaymentAgentDepositCardDetailsPr
     );
 };
 
-export default PaymentAgentDepositCardDetails;
+export default PaymentAgentCardDetails;

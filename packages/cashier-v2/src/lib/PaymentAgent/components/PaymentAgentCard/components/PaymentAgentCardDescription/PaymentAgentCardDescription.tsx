@@ -2,16 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import type { IconTypes } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import type { THooks } from '../../../../hooks/types';
-import { capitalizeFirstLetter } from '../../../../utils';
-import { paymentMethodIcons } from '../../constants';
+import type { THooks } from '../../../../../../hooks/types';
+import { capitalizeFirstLetter } from '../../../../../../utils';
+import { paymentMethodIcons } from '../../../../constants';
 import styles from './PaymentAgentCardDescription.module.scss';
 
 type TProps = {
     paymentAgent: THooks.PaymentAgentList[number];
 };
 
-const PaymentAgentDepositCardDescription: React.FC<TProps> = ({ paymentAgent }) => {
+const PaymentAgentCardDescription: React.FC<TProps> = ({ paymentAgent }) => {
     const {
         further_information: furtherInformation,
         name,
@@ -66,4 +66,4 @@ const PaymentAgentDepositCardDescription: React.FC<TProps> = ({ paymentAgent }) 
     );
 };
 
-export default PaymentAgentDepositCardDescription;
+export default PaymentAgentCardDescription;

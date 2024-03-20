@@ -5,13 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { getNameDOBValidationSchema } from '../../../utils/personalDetailsUtils';
 import { PersonalDetailsFormWithExample } from '../PersonalDetailsFormWithExample';
 
-jest.mock('../../../assets/proof-of-identity/personal-details-example.svg', () => {
-    return {
-        __esModule: true,
-        default: jest.fn(() => <div>MockedLazyComponent</div>),
-    };
-});
-
 const renderComponent = () => {
     return render(
         <Formik initialValues={{}} onSubmit={jest.fn()} validationSchema={getNameDOBValidationSchema()}>

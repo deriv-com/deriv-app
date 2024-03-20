@@ -13,7 +13,7 @@
     "dependencies": {
         "@deriv-com/ui": "1.11.2",
         "@deriv/api-v2": "^1.0.0",
-        "@deriv/quill-icons": "^1.19.0",
+        "@deriv/quill-icons": "^1.19.5",
         "@deriv/api-types": "^1.0.118",
         "class-variance-authority": "^0.7.0",
         "formik": "^2.1.4",

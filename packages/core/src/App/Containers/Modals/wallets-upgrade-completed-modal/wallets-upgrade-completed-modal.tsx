@@ -34,7 +34,7 @@ const WalletsUpgradeCompletedModal = observer(() => {
 
     const Footer = () => (
         <Modal.Footer has_separator>
-            <Button primary large className='wallets-upgrade-completed-modal__button'>
+            <Button primary large className='wallets-upgrade-completed-modal__button' onClick={handleClose}>
                 <Localize i18n_default_text='Get started' />
             </Button>
         </Modal.Footer>

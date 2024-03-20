@@ -2,13 +2,8 @@ import React from 'react';
 
 import { localize } from '@deriv/translations';
 
-import {
-    shouldShowCancellation,
-    shouldShowExpiration,
-    TContractOptions,
-    CONTRACT_TYPES,
-    TRADE_TYPES,
-} from '../contract';
+import { shouldShowCancellation, shouldShowExpiration, CONTRACT_TYPES, TRADE_TYPES } from '../contract';
+import { TContractOptions } from '../contract/contract-types';
 import { cloneObject } from '../object';
 import { LocalStore } from '../storage';
 

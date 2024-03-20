@@ -3,7 +3,7 @@ import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
 import { useCFDContext } from '@/providers';
 import { Category, CFDPlatforms, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount } from '@deriv/api-v2';
-import { Modal, PasswordInput, Text, useDevice } from '@deriv-com/ui';
+import { Modal, PasswordInput, Text } from '@deriv-com/ui';
 import MT5PasswordFooter from '../../modals/MT5PasswordModal/MT5PasswordFooter';
 
 type TCreatePasswordProps = {
@@ -17,7 +17,6 @@ type TCreatePasswordProps = {
  * @param password
  */
 const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) => {
-    const { isDesktop } = useDevice();
     const { data: activeTrading } = useActiveTradingAccount();
     const { cfdState } = useCFDContext();
 
@@ -33,7 +32,9 @@ const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) =>
                 } account`}</Text>
             </Modal.Header>
             <Modal.Body>
-                {isDesktop && <MT5PasswordIcon />}
+                <div className='hidden lg:block'>
+                    <MT5PasswordIcon />
+                </div>
                 <div className='flex flex-col items-center justify-center text-center lg:gap-8'>
                     <Text weight='bold'>Create a {title} password</Text>
                     <Text size='sm'>You can use this password for all your {title} accounts.</Text>

@@ -17,13 +17,10 @@ const MT5SuccessModal = () => {
     const { isEU } = useRegulationFlags();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
-
-    const isDemo = activeTrading?.is_virtual;
-
     const { cfdState } = useCFDContext();
 
     const { platform, marketType: marketTypeState, selectedJurisdiction } = cfdState;
-
+    const isDemo = activeTrading?.is_virtual;
     const marketType = marketTypeState ?? MarketType.ALL;
 
     const marketTypeTitle =

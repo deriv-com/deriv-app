@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { passwordRegexDescription } from '@/constants';
 import { useMT5AccountHandler, useQueryParams } from '@/hooks';
 import { validPassword } from '@/utils';
 import { useTradingPlatformPasswordChange } from '@deriv/api-v2';
@@ -26,17 +27,9 @@ const MT5ChangePassword = () => {
         if (createMT5AccountStatus === 'success') openModal('MT5SuccessModal');
     }, [createMT5AccountStatus, openModal]);
 
-    const passwordValidationChecklist = [
-        '8 to 16 characters',
-        'A special character such as ( _ @ ? ! / # )',
-        'An uppercase letter',
-        'A lowercase letter',
-        'A number',
-    ];
-
     return (
         <React.Fragment>
-            <Modal.Body className='lg:p-24 lg:w-[525px]'>
+            <Modal.Body className='lg:p-24 lg:max-w-[525px]'>
                 <Text size='sm'>
                     To enhance your MT5 account security we have upgraded our password policy. Please update your
                     password accordingly.
@@ -55,8 +48,8 @@ const MT5ChangePassword = () => {
                     onChange={e => setNewPassword(e.target.value)}
                     value={newPassword}
                 />
-                <ol className='w-full list-disc list-inside space-y-8'>
-                    {passwordValidationChecklist.map(item => (
+                <ol className='w-full space-y-8 list-disc list-inside'>
+                    {passwordRegexDescription.map(item => (
                         <Text as='li' key={item} size='xs'>
                             {item}
                         </Text>

@@ -29,8 +29,8 @@ const EnterPassword = ({ onPasswordChange, password }: TEnterPasswordProps) => {
 
     const marketTypeDetails = MarketTypeDetails(isEU);
     const { marketType = MarketType.ALL, platform = CFDPlatforms.MT5 } = cfdState;
+    const { title } = PlatformDetails[platform];
     const accountType = data?.is_virtual ? Category.DEMO : Category.REAL;
-    const title = PlatformDetails[platform].title;
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : marketTypeDetails[marketType]?.title;
 

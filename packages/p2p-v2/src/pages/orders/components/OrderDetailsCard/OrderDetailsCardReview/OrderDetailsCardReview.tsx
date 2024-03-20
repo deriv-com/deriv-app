@@ -8,7 +8,7 @@ import {
     StandaloneThumbsDownRegularIcon,
     StandaloneThumbsUpRegularIcon,
 } from '@deriv/quill-icons';
-import { Button, Text } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const OrderDetailsCardReview = () => {
     const orderDetails = useOrderDetails();
@@ -21,8 +21,9 @@ const OrderDetailsCardReview = () => {
     } = orderDetails;
     const { data: p2pSettingsData } = p2p.settings.useGetSettings();
     const [remainingReviewTime, setRemainingReviewTime] = useState<string | null>(null);
-
     const ratingAverageDecimals = reviewDetails ? Number(Number(reviewDetails.rating).toFixed(1)) : 0;
+    const { isMobile } = useDevice();
+    const textSize = isMobile ? 'sm' : 'xs';
 
     useEffect(() => {
         if (completionTime && p2pSettingsData?.review_period) {
@@ -40,9 +41,9 @@ const OrderDetailsCardReview = () => {
                     icon={<StandaloneStarFillIcon fill='#FFAD3A' height={18} width={18} />}
                     variant='outlined'
                 >
-                    <Text size='xs'>{isReviewable ? 'Rate this transaction' : 'Not rated'}</Text>
+                    <Text size={textSize}>{isReviewable ? 'Rate this transaction' : 'Not rated'}</Text>
                 </Button>
-                <Text color='less-prominent' size='2xs'>
+                <Text color='less-prominent' size={isMobile ? 'xs' : '2xs'}>
                     {isReviewable
                         ? `You have until ${remainingReviewTime} GMT to rate this transaction.`
                         : 'You can no longer rate this transaction.'}
@@ -56,7 +57,7 @@ const OrderDetailsCardReview = () => {
                 <Text weight='bold'>Your transaction experience</Text>
                 <div className='flex justify-between w-4/5 ml-2'>
                     <StarRating isReadonly ratingValue={ratingAverageDecimals} starsScale={1.2} />
-                    <Text as='div' className='flex items-center gap-1' color='less-prominent' size='xs'>
+                    <Text as='div' className='flex items-center gap-1' color='less-prominent' size={textSize}>
                         {reviewDetails?.recommended !== null &&
                             (reviewDetails?.recommended ? (
                                 <>
@@ -69,11 +70,7 @@ const OrderDetailsCardReview = () => {
                                 </>
                             ) : (
                                 <>
-                                    <StandaloneThumbsDownRegularIcon
-                                        className='mb-[0.3rem]'
-                                        fill='#ec3f3f'
-                                        iconSize='sm'
-                                    />
+                                    <StandaloneThumbsDownRegularIcon fill='#ec3f3f' iconSize='sm' />
                                     Not Recommended
                                 </>
                             ))}

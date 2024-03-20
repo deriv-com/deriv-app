@@ -19,7 +19,7 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     const [showChat, setShowChat] = useState(false);
 
     const history = useHistory();
-    const { data: orderInfo, isLoading } = p2p.order.useGet(orderId);
+    const { data: orderInfo, failureReason, isError, isLoading } = p2p.order.useGet(orderId);
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
     const { data: orderDetails } = useExtendedOrderDetails({
@@ -34,6 +34,9 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     const warningMessage = 'Don’t risk your funds with cash transactions. Use bank transfers or e-wallets instead.';
 
     if (isLoading) return <Loader isFullScreen />;
+
+    // TODO: replace with proper error screen once design is ready
+    if (isError) return <Text>{failureReason?.error.message}</Text>;
 
     if (isMobile) {
         if (showChat) {

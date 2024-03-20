@@ -25,6 +25,8 @@ jest.mock('@deriv/api-v2', () => ({
         order: {
             useGet: jest.fn().mockReturnValue({
                 data: {},
+                failureReason: {},
+                isError: false,
                 isLoading: true,
             }),
         },
@@ -127,5 +129,18 @@ describe('<OrderDetails />', () => {
         render(<OrderDetails orderId='1' />);
 
         expect(screen.getByText('Sell USD order')).toBeInTheDocument();
+    });
+
+    it('should show error message if isError is true', () => {
+        mockUseGet.mockReturnValue({
+            data: {},
+            failureReason: { error: { message: 'error message' } },
+            isError: true,
+            isLoading: false,
+        });
+
+        render(<OrderDetails orderId='1' />);
+
+        expect(screen.getByText('error message')).toBeInTheDocument();
     });
 });

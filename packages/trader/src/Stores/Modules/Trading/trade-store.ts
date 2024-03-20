@@ -1022,12 +1022,14 @@ export default class TradeStore extends BaseStore {
                                         ? this.expiry_type
                                         : this.duration_units_list.find(({ value }) => value === this.duration_unit)
                                               ?.text ?? '';
+                                // eslint-disable-next-line no-console
+                                console.log('durationMode', durationMode);
                                 this.sendTradeParamsAnalytics({
                                     action: 'run_contract',
-                                    ...(this.duration_units_list.length > 1
+                                    ...(this.duration_units_list.length > 1 && durationMode
                                         ? { switcher_duration_mode_name: durationMode.toLowerCase() }
                                         : {}),
-                                    ...(this.basis_list.length > 1
+                                    ...(this.basis_list.length > 1 && this.basis
                                         ? { switcher_stakepayout_mode_name: this.basis }
                                         : {}),
                                 });

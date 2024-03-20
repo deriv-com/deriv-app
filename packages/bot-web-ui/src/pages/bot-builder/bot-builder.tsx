@@ -57,25 +57,20 @@ const BotBuilder = observer(() => {
 
     React.useEffect(() => {
         const workspace = window.Blockly?.derivWorkspace;
-        if (workspace && !is_blockly_listener_registered.current) {
+        if (workspace && is_running && !is_blockly_listener_registered.current) {
             is_blockly_listener_registered.current = true;
-            if (is_running) {
-                workspace.addChangeListener(handleBlockChangeOnBotRun);
-            }
-            workspace.addChangeListener(handleBlockDelete);
+            workspace.addChangeListener(handleBlockChangeOnBotRun);
         } else {
             removeBlockChangeListener();
-            removeBlockDeleteListener();
         }
 
         return () => {
             if (workspace && is_blockly_listener_registered.current) {
                 removeBlockChangeListener();
-                removeBlockDeleteListener();
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_running, active_tab]);
+    }, [is_running]);
 
     const handleBlockChangeOnBotRun = (e: Event) => {
         const { is_reset_button_clicked, setResetButtonState } = toolbar;
@@ -93,8 +88,24 @@ const BotBuilder = observer(() => {
         window.Blockly?.derivWorkspace?.removeChangeListener(handleBlockChangeOnBotRun);
     };
 
+    React.useEffect(() => {
+        const workspace = window.Blockly?.derivWorkspace;
+        if (workspace && !is_blockly_listener_registered.current && active_tab === DBOT_TABS.BOT_BUILDER) {
+            is_blockly_listener_registered.current = true;
+            workspace.addChangeListener(handleBlockDelete);
+        } else {
+            removeBlockDeleteListener();
+        }
+
+        return () => {
+            if (workspace && is_blockly_listener_registered.current) {
+                removeBlockDeleteListener();
+            }
+        };
+    }, [active_tab]);
+
     const handleBlockDelete = (e: Event) => {
-        if (e.type === 'delete' && active_tab === DBOT_TABS.BOT_BUILDER) {
+        if (e.type === 'delete') {
             botNotification(notification_message.block_delete, {
                 label: localize('Undo'),
                 onClick: () => {

@@ -261,7 +261,7 @@ describe('TradeStore', () => {
             action,
             parameter_type: 'duration_type',
             parameter_field_type: 'dropdown',
-            duration_type: 'minutes',
+            duration_type: 'm',
         } as Partial<TEvents['ce_contracts_set_up_form']>;
 
         it('should send form_name, trade type & provided payload with ce_contracts_set_up_form event', async () => {
@@ -274,6 +274,7 @@ describe('TradeStore', () => {
                     form_name: 'default',
                     trade_type_name: 'Rise/Fall',
                     ...payload,
+                    duration_type: 'minutes',
                 });
                 expect(spyDebouncedFunction).not.toHaveBeenCalled();
             });
@@ -288,6 +289,7 @@ describe('TradeStore', () => {
                     form_name: 'default',
                     trade_type_name: 'Rise/Fall',
                     ...payload,
+                    duration_type: 'minutes',
                 });
                 expect(spyDebouncedFunction).toHaveBeenCalled();
             });

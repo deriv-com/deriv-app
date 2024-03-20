@@ -112,7 +112,7 @@ export const getFinalPrice = (contract_info: TContractInfo) => contract_info.sel
 export const getIndicativePrice = (contract_info: TContractInfo) =>
     getFinalPrice(contract_info) && isEnded(contract_info)
         ? getFinalPrice(contract_info)
-        : Number(contract_info.bid_price) || null;
+        : Number(contract_info.bid_price);
 
 export const getCancellationPrice = (contract_info: TContractInfo) => {
     const { cancellation: { ask_price: cancellation_price = 0 } = {} } = contract_info;
@@ -274,9 +274,6 @@ export const getTimePercentage = (server_time: moment.Moment, start_time: number
 
     return Math.round(percentage);
 };
-
-export const getTickSizeBarrierPercentage = (tick_size_barrier: number) =>
-    `${(tick_size_barrier * 100 + Number.EPSILON).toFixed(5)}%`;
 
 export const getGrowthRatePercentage = (growth_rate: number) => growth_rate * 100;
 

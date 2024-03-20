@@ -106,7 +106,10 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
                                 primary
                                 data-testid='qs-run-button'
                                 type='submit'
-                                onClick={onRun}
+                                onClick={e => {
+                                    e.preventDefault();
+                                    onRun();
+                                }}
                                 disabled={!isValid}
                             >
                                 {localize('Run')}

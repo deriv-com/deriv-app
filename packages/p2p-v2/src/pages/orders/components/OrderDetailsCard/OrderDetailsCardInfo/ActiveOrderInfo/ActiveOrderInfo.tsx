@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
 import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodAccordion } from '../PaymentMethodAccordion';
@@ -32,7 +32,7 @@ const ActiveOrderInfo = () => {
                 />
                 <Divider color='#f2f3f4' />
                 {adDetails.map((detail, key) => (
-                    <React.Fragment key={detail.text}>
+                    <Fragment key={detail.text}>
                         <div className='flex flex-col p-[1.6rem] gap-2'>
                             <Text size={textSize} weight='bold'>
                                 {detail.text}
@@ -40,7 +40,7 @@ const ActiveOrderInfo = () => {
                             <Text size={textSize}>{detail.value}</Text>
                         </div>
                         {key === 0 && <Divider color='#f2f3f4' />}
-                    </React.Fragment>
+                    </Fragment>
                 ))}
             </>
         );

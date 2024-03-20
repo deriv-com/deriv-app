@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
+import { PaymentMethodWithIcon } from '@/components';
 import { useExtendedOrderDetails } from '@/hooks';
 import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
-import IcCashierBankTransfer from '../../../../../../public/ic-cashier-bank-transfer.svg';
-import IcCashierEwallet from '../../../../../../public/ic-cashier-ewallet.svg';
-import IcCashierOther from '../../../../../../public/ic-cashier-other.svg';
 import './PaymentMethodAccordion.scss';
 
 type TPaymentMethodAccordionProps = {
@@ -63,12 +61,11 @@ const PaymentMethodAccordion = ({
                                             else setExpandedIds([...expandedIds, key]);
                                         }}
                                     >
-                                        <div className='flex items-center gap-6'>
-                                            {paymentMethodType === 'ewallet' && <IcCashierEwallet />}
-                                            {paymentMethodType === 'bank' && <IcCashierBankTransfer />}
-                                            {paymentMethodType === 'other' && <IcCashierOther height={16} width={16} />}
-                                            <Text size={bigTextSize}>{paymentMethodDetails[key].display_name}</Text>
-                                        </div>
+                                        <PaymentMethodWithIcon
+                                            name={paymentMethodDetails[key].display_name}
+                                            textSize={bigTextSize}
+                                            type={paymentMethodType}
+                                        />
                                         <LabelPairedChevronRightSmRegularIcon />
                                     </div>
                                     {expandedIds.includes(key) && (

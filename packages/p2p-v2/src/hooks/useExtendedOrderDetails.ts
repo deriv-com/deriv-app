@@ -2,13 +2,13 @@ import { TOrder, TServerTime } from 'types';
 import { BUY_SELL, ORDERS_STATUS } from '@/constants'; // Update your import path
 import {
     convertToMillis,
-    formatMoney,
     getFormattedDateString,
     removeTrailingZeros,
     roundOffDecimal,
     setDecimalPlaces,
     toMoment,
 } from '@/utils';
+import { FormatUtils } from '@deriv-com/utils';
 
 type TUserDetails = TOrder['advertiser_details'] | TOrder['client_details'];
 
@@ -89,10 +89,9 @@ const useExtendedOrderDetails = ({
         },
         get displayPaymentAmount() {
             return removeTrailingZeros(
-                formatMoney(
-                    this.local_currency,
+                FormatUtils.formatMoney(
                     Number(this.amount_display) * Number(roundOffDecimal(this.rate, setDecimalPlaces(this.rate, 6))),
-                    true
+                    { currency: this.local_currency }
                 )
             );
         },
@@ -200,7 +199,12 @@ const useExtendedOrderDetails = ({
             );
         },
         get rateAmount() {
-            return removeTrailingZeros(formatMoney(this.local_currency, this.rate, true, 6));
+            return removeTrailingZeros(
+                FormatUtils.formatMoney(this.rate, {
+                    currency: this.local_currency,
+                    decimalPlaces: setDecimalPlaces(this.rate, 6),
+                })
+            );
         },
         get remainingSeconds() {
             const serverTimeAmount = serverTime?.server_time_moment;

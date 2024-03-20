@@ -7,11 +7,15 @@ import userEvent from '@testing-library/user-event';
 import OrderDetails from '../OrderDetails';
 
 const mockHistoryPush = jest.fn();
+let mockSearch = '';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
         goBack: mockHistoryPush,
+    }),
+    useLocation: () => ({
+        search: mockSearch,
     }),
 }));
 
@@ -50,6 +54,11 @@ jest.mock('@/hooks', () => ({
             shouldShowLostFundsBanner: true,
         },
     }),
+    useSendbird: () => ({
+        isOnline: true,
+        lastOnlineTime: 123546789,
+        nickname: 'John Doe',
+    }),
 }));
 
 jest.mock('../../../components/OrderDetailsCard', () => ({
@@ -58,8 +67,11 @@ jest.mock('../../../components/OrderDetailsCard', () => ({
 jest.mock('../../../components/OrderDetailsCard/OrderDetailsCardFooter', () => ({
     OrderDetailsCardFooter: () => <div>OrderDetailsCardFooter</div>,
 }));
-jest.mock('../../OrdersChatSection', () => ({
-    OrdersChatSection: () => <div>OrdersChatSection</div>,
+jest.mock('../../../components/ChatFooter', () => ({
+    ChatFooter: () => <div>ChatFooter</div>,
+}));
+jest.mock('../../../components/ChatMessages', () => ({
+    ChatMessages: () => <div>ChatMessages</div>,
 }));
 
 const mockUseDevice = useDevice as jest.Mock;
@@ -86,7 +98,8 @@ describe('<OrderDetails />', () => {
             screen.getByText('Don’t risk your funds with cash transactions. Use bank transfers or e-wallets instead.')
         ).toBeInTheDocument();
         expect(screen.getByText('OrderDetailsCard')).toBeInTheDocument();
-        expect(screen.getByText('OrdersChatSection')).toBeInTheDocument();
+        expect(screen.getByText('ChatMessages')).toBeInTheDocument();
+        expect(screen.getByText('ChatFooter')).toBeInTheDocument();
     });
 
     it('should call goBack when back button is clicked', () => {
@@ -105,7 +118,8 @@ describe('<OrderDetails />', () => {
 
         expect(screen.getByText('Buy USD order')).toBeInTheDocument();
         expect(screen.getByText('OrderDetailsCard')).toBeInTheDocument();
-        expect(screen.queryByText('OrdersChatSection')).not.toBeInTheDocument();
+        expect(screen.queryByText('ChatMessages')).not.toBeInTheDocument();
+        expect(screen.queryByText('ChatFooter')).not.toBeInTheDocument();
     });
 
     it('should show OrdersChatSection if Chat icon is clicked', () => {
@@ -114,8 +128,22 @@ describe('<OrderDetails />', () => {
         const chatButton = screen.getByTestId('dt_p2p_v2_order_details_chat_button');
         userEvent.click(chatButton);
 
-        expect(screen.getByText('OrdersChatSection')).toBeInTheDocument();
+        expect(screen.getByText('ChatMessages')).toBeInTheDocument();
+        expect(screen.getByText('ChatFooter')).toBeInTheDocument();
         expect(screen.queryByText('OrderDetailsCard')).not.toBeInTheDocument();
+    });
+
+    it('should call goBack when back button is clicked in mobile view and showChat is true in search param', () => {
+        mockSearch = '?showChat=true';
+
+        render(<OrderDetails orderId='1' />);
+
+        const backButton = screen.getByTestId('dt_p2p_v2_mobile_wrapper_button');
+        userEvent.click(backButton);
+
+        expect(mockHistoryPush).toHaveBeenCalled();
+
+        mockSearch = '';
     });
 
     it('should show Sell USD order if isBuyOrderForUser is false', () => {

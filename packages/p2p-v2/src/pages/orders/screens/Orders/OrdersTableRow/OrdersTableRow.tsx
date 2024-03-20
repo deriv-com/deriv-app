@@ -64,7 +64,10 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
                             <Button
                                 className='h-full p-0'
                                 color='white'
-                                onClick={() => history.push(`${BASE_URL}/orders?order=${id}`)}
+                                onClick={event => {
+                                    event.stopPropagation();
+                                    history.push(`${BASE_URL}/orders?order=${id}&showChat=true`);
+                                }}
                                 variant='contained'
                             >
                                 <ChatIcon />

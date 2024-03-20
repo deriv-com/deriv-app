@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { FullPageMobileWrapper, PageReturn } from '@/components';
 import { useExtendedOrderDetails } from '@/hooks';
 import { p2p, useActiveAccount, useServerTime } from '@deriv/api-v2';
@@ -16,9 +16,11 @@ type TOrderDetailsProps = {
 };
 
 const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
-    const [showChat, setShowChat] = useState(false);
-
     const history = useHistory();
+    const location = useLocation();
+    const showChatParam = new URLSearchParams(location.search).get('showChat');
+    const [showChat, setShowChat] = useState(!!showChatParam);
+
     const { data: orderInfo, failureReason, isError, isLoading } = p2p.order.useGet(orderId);
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
@@ -29,9 +31,15 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     });
     const { isBuyOrderForUser, shouldShowLostFundsBanner } = orderDetails;
     const { isMobile } = useDevice();
+
     const headerText = `${isBuyOrderForUser ? 'Buy' : 'Sell'} USD order`;
-    const onReturn = () => history.goBack();
     const warningMessage = 'Don’t risk your funds with cash transactions. Use bank transfers or e-wallets instead.';
+
+    const onReturn = () => history.goBack();
+    const onChatReturn = () => {
+        setShowChat(false);
+        if (showChatParam) onReturn();
+    };
 
     if (isLoading) return <Loader isFullScreen />;
 
@@ -44,9 +52,8 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
                 <OrdersChatSection
                     id={orderId}
                     isInactive={!!orderDetails?.isInactiveOrder}
+                    onReturn={onChatReturn}
                     otherUserDetails={orderDetails?.otherUserDetails}
-                    setShowChat={setShowChat}
-                    showChat={showChat}
                 />
             );
         }

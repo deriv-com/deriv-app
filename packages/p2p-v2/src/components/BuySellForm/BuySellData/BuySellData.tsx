@@ -1,9 +1,9 @@
 import React from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
+import { PaymentMethodWithIcon } from '@/components';
 import { formatTime } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
-import { PaymentMethodWithIcon } from '../../PaymentMethodWithIcon';
 import './BuySellData.scss';
 
 type TBuySellDataProps = {
@@ -64,6 +64,7 @@ const BuySellData = ({
                 {paymentMethodNames?.length
                     ? paymentMethodNames.map(method => (
                           <PaymentMethodWithIcon
+                              className='mb-[0.8rem]'
                               key={method}
                               name={method}
                               type={paymentMethodTypes?.[method] as TType}

@@ -147,7 +147,7 @@ const BuySellForm = ({
 
     useEffect(() => {
         if (isSuccess && orderCreatedInfo) {
-            history.push(`${BASE_URL}/orders?order_id=${orderCreatedInfo.id}`);
+            history.push(`${BASE_URL}/orders?order=${orderCreatedInfo.id}`);
             onRequestClose();
         }
     }, [isSuccess, orderCreatedInfo, history, onRequestClose]);

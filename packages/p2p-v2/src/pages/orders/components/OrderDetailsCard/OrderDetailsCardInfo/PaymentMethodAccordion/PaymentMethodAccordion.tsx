@@ -49,7 +49,7 @@ const PaymentMethodAccordion = ({
             ) : (
                 <>
                     {paymentMethodKeys.map(key => {
-                        if (paymentMethodDetails && paymentMethodDetails[key]) {
+                        if (paymentMethodDetails?.[key]) {
                             const paymentMethodType = paymentMethodDetails[key].type;
                             const paymentMethodFields = paymentMethodDetails[key].fields;
 

@@ -10,7 +10,7 @@ import { OrdersTableHeader } from './OrdersTableHeader';
 
 const Orders = () => {
     const location = useLocation();
-    const orderId = new URLSearchParams(location.search).get('order_id');
+    const orderId = new URLSearchParams(location.search).get('order');
     const { queryString } = useQueryString();
     const { isMobile } = useDevice();
     const currentTab = queryString.get('tab') ?? ORDERS_STATUS.ACTIVE_ORDERS;

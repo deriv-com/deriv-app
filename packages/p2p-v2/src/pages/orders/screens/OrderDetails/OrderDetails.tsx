@@ -60,6 +60,7 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
                             <Button
                                 className='h-full p-0'
                                 color='white'
+                                data-testid='dt_p2p_v2_order_details_chat_button'
                                 onClick={() => setShowChat(true)}
                                 variant='contained'
                             >

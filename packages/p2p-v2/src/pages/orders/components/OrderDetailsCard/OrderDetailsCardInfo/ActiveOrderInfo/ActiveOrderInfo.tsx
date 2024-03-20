@@ -17,7 +17,7 @@ const ActiveOrderInfo = () => {
     const textSize = isMobile ? 'md' : 'sm';
 
     const adDetails = [
-        { text: labels.paymentDetails, value: contactInfo || '-' },
+        { text: labels.contactDetails, value: contactInfo || '-' },
         { text: labels.instructions, value: description || '-' },
     ];
 

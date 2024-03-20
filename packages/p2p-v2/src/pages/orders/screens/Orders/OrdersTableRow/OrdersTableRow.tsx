@@ -43,7 +43,7 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     const isBuyOrderForUser = orderDetails.isBuyOrderForUser;
     const transactionAmount = `${Number(priceDisplay).toFixed(2)} ${localCurrency}`;
     const offerAmount = `${amountDisplay} ${accountCurrency}`;
-    const showOrderDetails = () => history.push(`${BASE_URL}/orders?order_id=${id}`);
+    const showOrderDetails = () => history.push(`${BASE_URL}/orders?order=${id}`);
 
     if (isMobile) {
         return (

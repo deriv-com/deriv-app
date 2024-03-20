@@ -53,17 +53,26 @@ const OrderDetailsCardReview = () => {
                 <div className='flex justify-between w-4/5 ml-2'>
                     <StarRating isReadonly ratingValue={ratingAverageDecimals} starsScale={1.2} />
                     <Text as='div' className='flex items-center gap-1' color='less-prominent' size='xs'>
-                        {reviewDetails?.recommended !== null && reviewDetails?.recommended ? (
-                            <>
-                                <StandaloneThumbsUpRegularIcon className='mb-[0.3rem]' fill='#4BB4B3' iconSize='sm' />
-                                Recommended
-                            </>
-                        ) : (
-                            <>
-                                <StandaloneThumbsDownRegularIcon className='mb-[0.3rem]' fill='#ec3f3f' iconSize='sm' />
-                                Not Recommended
-                            </>
-                        )}
+                        {reviewDetails?.recommended !== null &&
+                            (reviewDetails?.recommended ? (
+                                <>
+                                    <StandaloneThumbsUpRegularIcon
+                                        className='mb-[0.3rem]'
+                                        fill='#4BB4B3'
+                                        iconSize='sm'
+                                    />
+                                    Recommended
+                                </>
+                            ) : (
+                                <>
+                                    <StandaloneThumbsDownRegularIcon
+                                        className='mb-[0.3rem]'
+                                        fill='#ec3f3f'
+                                        iconSize='sm'
+                                    />
+                                    Not Recommended
+                                </>
+                            ))}
                     </Text>
                 </div>
             </div>

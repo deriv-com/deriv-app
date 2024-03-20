@@ -1,0 +1,81 @@
+import React from 'react';
+import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { render, screen } from '@testing-library/react';
+import OrderDetailsCardFooter from '../OrderDetailsCardFooter';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: () => ({ isMobile: false }),
+}));
+
+jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
+    useOrderDetails: jest.fn().mockReturnValue({
+        shouldShowCancelAndPaidButton: true,
+        shouldShowComplainAndReceivedButton: false,
+        shouldShowOnlyComplainButton: false,
+        shouldShowOnlyReceivedButton: false,
+    }),
+}));
+
+const mockUseOrderDetails = useOrderDetails as jest.Mock;
+
+describe('<OrderDetailsCardFooter />', () => {
+    it('should render cancel and paid buttons', () => {
+        render(<OrderDetailsCardFooter />);
+        expect(screen.getByRole('button', { name: 'Cancel order' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'I’ve paid' })).toBeInTheDocument();
+    });
+
+    it('should render complain and received buttons', () => {
+        mockUseOrderDetails.mockReturnValue({
+            shouldShowCancelAndPaidButton: false,
+            shouldShowComplainAndReceivedButton: true,
+            shouldShowOnlyComplainButton: false,
+            shouldShowOnlyReceivedButton: false,
+        });
+
+        render(<OrderDetailsCardFooter />);
+
+        expect(screen.getByRole('button', { name: 'Complain' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'I’ve received payment' })).toBeInTheDocument();
+    });
+
+    it('should render only complain button', () => {
+        mockUseOrderDetails.mockReturnValue({
+            shouldShowCancelAndPaidButton: false,
+            shouldShowComplainAndReceivedButton: false,
+            shouldShowOnlyComplainButton: true,
+            shouldShowOnlyReceivedButton: false,
+        });
+
+        render(<OrderDetailsCardFooter />);
+
+        expect(screen.getByRole('button', { name: 'Complain' })).toBeInTheDocument();
+    });
+
+    it('should render only received button', () => {
+        mockUseOrderDetails.mockReturnValue({
+            shouldShowCancelAndPaidButton: false,
+            shouldShowComplainAndReceivedButton: false,
+            shouldShowOnlyComplainButton: false,
+            shouldShowOnlyReceivedButton: true,
+        });
+
+        render(<OrderDetailsCardFooter />);
+
+        expect(screen.getByRole('button', { name: 'I’ve received payment' })).toBeInTheDocument();
+    });
+
+    it('should not render any buttons', () => {
+        mockUseOrderDetails.mockReturnValue({
+            shouldShowCancelAndPaidButton: false,
+            shouldShowComplainAndReceivedButton: false,
+            shouldShowOnlyComplainButton: false,
+            shouldShowOnlyReceivedButton: false,
+        });
+
+        const { container } = render(<OrderDetailsCardFooter />);
+
+        expect(container).toBeEmptyDOMElement();
+    });
+});

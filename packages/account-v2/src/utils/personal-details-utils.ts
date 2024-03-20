@@ -1,4 +1,6 @@
 import * as Yup from 'yup';
+import { useSettings } from '@deriv/api-v2';
+import { GetSettings } from '@deriv/api-types';
 
 export const getPersonalDetailsBaseValidationSchema = () => {
     const characterLengthMessage = 'You should enter 2-50 characters.';
@@ -93,4 +95,8 @@ export const getPersonalDetailsValidationSchema = (isEu: boolean) => {
     );
 
     return isEu ? euPersonalValidationSchema : personalValidationSchema;
+};
+
+export const isFieldDisabled = (accountSettings: GetSettings, fieldName: string) => {
+    return accountSettings?.immutable_fields?.includes(fieldName);
 };

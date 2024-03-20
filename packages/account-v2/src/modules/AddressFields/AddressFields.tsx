@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuthorize, useSettings, useStatesList } from '@deriv/api-v2';
 import { FormDropDownField, FormInputField } from '../../components/FormFields';
 import { LANDING_COMPANY } from '../../constants/constants';
+import { isFieldDisabled } from '../../utils/personal-details-utils';
 import { addressDetailValidations } from './validations';
 
 export const AddressFields = () => {
@@ -25,28 +26,24 @@ export const AddressFields = () => {
         addressState: addressStateSchema,
     } = addressDetailValidations(settings.country_code ?? '', isSvg);
 
-    const isFieldDisabled = (fieldName: string) => {
-        return settings?.immutable_fields?.includes(fieldName);
-    };
-
     return (
         <div className='grid pt-8 space-y-12 grid-col-1'>
             <FormInputField
-                disabled={isFieldDisabled('address_line_1')}
+                disabled={isFieldDisabled(settings, 'address_line_1')}
                 isFullWidth
                 label='First line of address*'
                 name='addressLine1'
                 validationSchema={addressLine1Schema}
             />
             <FormInputField
-                disabled={isFieldDisabled('address_line_2')}
+                disabled={isFieldDisabled(settings, 'address_line_2')}
                 isFullWidth
                 label='Second line of address'
                 name='addressLine2'
                 validationSchema={addressLine2Schema}
             />
             <FormInputField
-                disabled={isFieldDisabled('address_city')}
+                disabled={isFieldDisabled(settings, 'address_city')}
                 isFullWidth
                 label='Town/City*'
                 name='addressCity'
@@ -54,7 +51,7 @@ export const AddressFields = () => {
             />
             {statesListFetched && statesList.length ? (
                 <FormDropDownField
-                    disabled={isFieldDisabled('address_state')}
+                    disabled={isFieldDisabled(settings, 'address_state')}
                     label='State/Province'
                     list={statesList}
                     name='addressState'
@@ -62,7 +59,7 @@ export const AddressFields = () => {
                 />
             ) : (
                 <FormInputField
-                    disabled={isFieldDisabled('address_state')}
+                    disabled={isFieldDisabled(settings, 'address_state')}
                     isFullWidth
                     label='State/Province'
                     name='addressState'
@@ -70,7 +67,7 @@ export const AddressFields = () => {
                 />
             )}
             <FormInputField
-                disabled={isFieldDisabled('address_postcode')}
+                disabled={isFieldDisabled(settings, 'address_postcode')}
                 isFullWidth
                 label='Postal/ZIP Code'
                 name='addressPostcode'

@@ -6,27 +6,24 @@ import { Dropdown } from '@deriv-com/ui';
 import { CountrySelector } from '../../components/CountrySelector';
 import { FormInputField } from '../../components/FormFields';
 import { employmentIndustryList } from '../../constants/financialInformationList';
+import { isFieldDisabled } from '../../utils/personal-details-utils';
 
 export const TaxInformation = () => {
     const { data: accountSettings } = useSettings();
     const { values }: FormikProps<FormikValues> = useFormikContext();
 
-    const isFieldDisabled = (fieldName: string) => {
-        return accountSettings?.immutable_fields?.includes(fieldName);
-    };
-
     return (
         <div className='lg:max-w-[400px] grid pt-8 space-y-12 grid-col-1'>
             {'taxResidence' in values && (
                 <CountrySelector
-                    disabled={isFieldDisabled('tax_residence')}
+                    disabled={isFieldDisabled(accountSettings, 'tax_residence')}
                     label='Tax residence*'
                     name='taxResidence'
                 />
             )}
             {'taxIdentificationNumber' in values && (
                 <FormInputField
-                    disabled={isFieldDisabled('tax_identification_number')}
+                    disabled={isFieldDisabled(accountSettings, 'tax_identification_number')}
                     isFullWidth
                     label='Tax identification number*'
                     name='taxIdentificationNumber'

@@ -6,7 +6,7 @@ import AdWizard from '../AdWizard';
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn().mockReturnValue({
-        isMobile: false,
+        isDesktop: true,
     }),
 }));
 
@@ -37,9 +37,9 @@ describe('AdWizard', () => {
         render(<AdWizard {...mockProps} />);
         expect(screen.getByText('FormProgress')).toBeInTheDocument();
     });
-    it('should render the AdProgressBar component', () => {
+    it('should render the AdProgressBar component in responsive view', () => {
         mockUseDevice.mockReturnValue({
-            isMobile: true,
+            isDesktop: false,
         });
         render(<AdWizard {...mockProps} />);
         expect(screen.getByText('AdProgressBar')).toBeInTheDocument();

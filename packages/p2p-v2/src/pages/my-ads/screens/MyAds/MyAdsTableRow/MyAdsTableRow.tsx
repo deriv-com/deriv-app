@@ -60,6 +60,8 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
         visibility_status: visibilityStatus = [],
     } = rest;
 
+    const isFloatingRate = rateType === RATE_TYPE.FLOAT;
+
     useEffect(() => {
         subscribe({
             base_currency: BASE_CURRENCY,
@@ -155,9 +157,7 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                     <Text color='success' weight='bold'>
                         <div className='display-layout'>
                             {displayEffectiveRate} {localCurrency}
-                            {rateType === RATE_TYPE.FLOAT && (
-                                <AdType adPauseColor={adPauseColor} floatRate={rateDisplay} />
-                            )}
+                            {isFloatingRate && <AdType adPauseColor={adPauseColor} floatRate={rateDisplay} />}
                         </div>
                     </Text>
                 </div>
@@ -191,7 +191,7 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
             </Text>
             <Text className='p2p-v2-my-ads-table-row__rate' size='sm'>
                 {displayEffectiveRate} {localCurrency}
-                {rateType === RATE_TYPE.FLOAT && <AdType adPauseColor={adPauseColor} floatRate={rateDisplay} />}
+                {isFloatingRate && <AdType adPauseColor={adPauseColor} floatRate={rateDisplay} />}
             </Text>
             <Text className='p2p-v2-my-ads-table-row__available' size='sm'>
                 <ProgressIndicator

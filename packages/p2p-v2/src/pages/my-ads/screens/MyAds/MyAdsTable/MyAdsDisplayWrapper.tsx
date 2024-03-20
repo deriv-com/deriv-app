@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FullPageMobileWrapper } from '@/components';
-import { BASE_URL } from '@/constants';
+import { MY_ADS_URL } from '@/constants';
 import { Button, useDevice } from '@deriv-com/ui';
 import { MyAdsToggle } from '../MyAdsToggle';
 
@@ -17,12 +17,7 @@ const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChi
         return (
             <FullPageMobileWrapper
                 renderFooter={() => (
-                    <Button
-                        isFullWidth
-                        onClick={() => history.push(`${BASE_URL}/my-ads/create`)}
-                        size='lg'
-                        textSize='md'
-                    >
+                    <Button isFullWidth onClick={() => history.push(`${MY_ADS_URL}/create`)} size='lg' textSize='md'>
                         Create new ad
                     </Button>
                 )}
@@ -37,7 +32,7 @@ const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChi
     return (
         <>
             <div className='flex items-center justify-between my-[1.6rem]'>
-                <Button onClick={() => history.push(`${BASE_URL}/my-ads/create`)} size='lg' textSize='sm'>
+                <Button onClick={() => history.push(`${MY_ADS_URL}/create`)} size='lg' textSize='sm'>
                     Create new ad
                 </Button>
                 <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />

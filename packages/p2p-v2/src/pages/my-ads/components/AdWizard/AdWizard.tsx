@@ -15,7 +15,7 @@ type TAdWizardNav = {
 };
 
 const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const [currentStep, setCurrentStep] = useState(0);
 
     return (
@@ -24,7 +24,7 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
             initialStep={0}
             nav={
                 <div>
-                    {!isMobile ? (
+                    {isDesktop ? (
                         <FormProgress currentStep={currentStep} steps={steps} />
                     ) : (
                         <div className='flex items-center justify-around'>

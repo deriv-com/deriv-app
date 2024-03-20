@@ -15,6 +15,7 @@ const OrderDetailsCardReview = () => {
     const {
         completion_time: completionTime,
         hasReviewDetails,
+        is_reviewable: isReviewable,
         isCompletedOrder,
         review_details: reviewDetails,
     } = orderDetails;
@@ -35,13 +36,16 @@ const OrderDetailsCardReview = () => {
                 <Button
                     className='border-[1px] gap-[0.2rem] pl-4 pr-[1.4rem] w-fit'
                     color='black'
+                    disabled={!isReviewable}
                     icon={<StandaloneStarFillIcon fill='#FFAD3A' height={18} width={18} />}
                     variant='outlined'
                 >
-                    <Text size='xs'>Rate this transaction</Text>
+                    <Text size='xs'>{isReviewable ? 'Rate this transaction' : 'Not rated'}</Text>
                 </Button>
                 <Text color='less-prominent' size='2xs'>
-                    You have until {remainingReviewTime} GMT to rate this transaction.
+                    {isReviewable
+                        ? `You have until ${remainingReviewTime} GMT to rate this transaction.`
+                        : 'You can no longer rate this transaction.'}
                 </Text>
             </div>
         );

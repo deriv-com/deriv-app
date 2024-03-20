@@ -17,6 +17,7 @@ jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
         completion_time: 1710897035,
         hasReviewDetails: false,
+        is_reviewable: true,
         isCompletedOrder: true,
         review_details: undefined,
     }),
@@ -30,6 +31,21 @@ describe('<OrderDetailsCardReview />', () => {
 
         expect(screen.getByRole('button', { name: 'Rate this transaction' })).toBeInTheDocument();
         expect(screen.getByText('You have until 21 Mar 2024, 01:10 GMT to rate this transaction.')).toBeInTheDocument();
+    });
+
+    it('should prompt the user that they cannot rate the order if is_reviewable is false', () => {
+        mockUseOrderDetails.mockReturnValue({
+            ...mockUseOrderDetails(),
+            is_reviewable: false,
+        });
+
+        render(<OrderDetailsCardReview />);
+
+        const notRatedButton = screen.getByRole('button', { name: 'Not rated' });
+
+        expect(notRatedButton).toBeInTheDocument();
+        expect(notRatedButton).toBeDisabled();
+        expect(screen.getByText('You can no longer rate this transaction.')).toBeInTheDocument();
     });
 
     it('should show review details if hasReviewDetails is true with recommended text of recommended is true', () => {

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { getContractTypeDisplay, CONTRACT_TYPES } from '@deriv/shared';
 import ContractTypeCell from '../contract-type-cell';
 
-jest.mock('../../../icon-trade-types', () => jest.fn(({ type }) => <div>{`Icon trade type: ${type}`}</div>));
+jest.mock('../../../icon-trade-types', () => jest.fn(({ type }) => <div>Icon trade type: {type}</div>));
 
 const mock_props: React.ComponentProps<typeof ContractTypeCell> = {
     displayed_trade_param: '',
@@ -42,8 +42,8 @@ describe('<ContractTypeCell />', () => {
         expect(screen.queryByText('Up')).not.toBeInTheDocument();
     });
 
-    it('should not render contract type display name if type is unknown', () => {
-        const mock_trade_type = 'MysteriousType';
+    it('should not render contract type display name if type is invalid', () => {
+        const mock_trade_type = 'invalid';
         render(<ContractTypeCell {...mock_props} type={mock_trade_type} />);
 
         expect(screen.queryByText(mock_trade_type)).not.toBeInTheDocument();

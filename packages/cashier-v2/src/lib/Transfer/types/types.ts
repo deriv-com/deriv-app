@@ -1,6 +1,6 @@
-import { THooks } from '../../../hooks/types';
+import { useExtendedTransferAccounts } from '../hooks';
 
-export type TTransferableAccounts = THooks.CurrencyConfig & THooks.TransferAccounts;
+export type TTransferableAccounts = ReturnType<typeof useExtendedTransferAccounts>['accounts'];
 
 export type TTransferReceipt = {
     amount: string;

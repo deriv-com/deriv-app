@@ -8,11 +8,7 @@ export type TTransferContext = {
     activeAccount?: TTransferableAccounts[number];
     isLoading?: boolean;
     setTransferReceipt?: React.Dispatch<React.SetStateAction<TTransferReceipt | undefined>>;
-    transferReceipt?: {
-        amount: string;
-        fromAccount: ReturnType<typeof useExtendedTransferAccounts>['accounts'][number];
-        toAccount: ReturnType<typeof useExtendedTransferAccounts>['accounts'][number];
-    };
+    transferReceipt?: TTransferReceipt;
 };
 
 const TransferContext = createContext<TTransferContext | null>(null);

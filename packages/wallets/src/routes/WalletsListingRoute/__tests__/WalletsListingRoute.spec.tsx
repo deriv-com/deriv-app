@@ -1,15 +1,8 @@
 import React, { PropsWithChildren } from 'react';
-import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../components/ModalProvider';
 import useDevice from '../../../hooks/useDevice';
 import WalletsListingRoute from '../WalletsListingRoute';
-
-jest.mock('@deriv/api-v2', () => ({
-    useActiveWalletAccount: jest.fn(),
-    useAuthorize: jest.fn(),
-    useWalletAccountsList: jest.fn(),
-}));
 
 jest.mock('../../../hooks/useDevice', () => jest.fn());
 
@@ -25,15 +18,6 @@ jest.mock('../../../components/', () => {
 const wrapper = ({ children }: PropsWithChildren) => <ModalProvider>{children}</ModalProvider>;
 
 describe('WalletsListingRoute', () => {
-    let mockSwitchAccount: jest.Mock;
-
-    beforeEach(() => {
-        mockSwitchAccount = jest.fn();
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: null });
-        (useAuthorize as jest.Mock).mockReturnValue({ switchAccount: mockSwitchAccount });
-        (useWalletAccountsList as jest.Mock).mockReturnValue({ data: [{ loginid: '123' }] });
-    });
-
     it('renders DesktopWalletsList, WalletsAddMoreCarousel and WalletTourGuide correctly on desktop', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
 

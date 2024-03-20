@@ -50,7 +50,8 @@
             right: 8rem;
 
             @include mobile {
-                right: 0;
+                top: -2.6rem;
+                right: -5.35rem;
             }
         }
     }

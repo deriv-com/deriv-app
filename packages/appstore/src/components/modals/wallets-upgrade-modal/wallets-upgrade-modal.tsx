@@ -33,7 +33,8 @@ const WalletsUpgradeModal = observer(() => {
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
                     <WalletsImage
-                        image={`enable_wallets_modal_${is_mobile ? 'mobile' : 'desktop'}`}
+                        width={is_mobile ? 190 : 300}
+                        image={`wallets_upgrade_coins${is_mobile ? '_horizontal' : ''}`}
                         className='wallets-upgrade-modal__image'
                     />
                     <div className='wallets-upgrade-modal__description'>

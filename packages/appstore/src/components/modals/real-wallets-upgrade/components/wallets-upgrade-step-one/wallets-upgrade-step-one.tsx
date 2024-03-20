@@ -53,7 +53,7 @@ const WalletsUpgradeStepOneContent = () => {
     return (
         <div className='wallets-upgrade-step-one__content'>
             <div className='wallets-upgrade-step-one__image-container'>
-                <WalletsImage image={`wallets_upgrade_step_one_${is_mobile ? 'mobile' : 'desktop'}`} />
+                <WalletsImage image='wallets_upgrade_step_one' width={is_mobile ? 150 : 240} />
             </div>
             <Text
                 as='h1'

@@ -40,7 +40,8 @@ const WalletsBannerUpgrading = observer(() => {
                 />
             </div>
             <WalletsImage
-                image={`upgrade_${is_mobile ? 'mobile' : 'desktop'}`}
+                width={is_mobile ? 220 : 448}
+                image={`wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
                 className='wallets-banner-upgrading__image'
             />
         </div>

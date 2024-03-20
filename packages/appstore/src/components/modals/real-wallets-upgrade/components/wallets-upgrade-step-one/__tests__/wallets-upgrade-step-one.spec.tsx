@@ -24,7 +24,7 @@ describe('WalletsUpgradeStepOneContent', () => {
 
     it('should render icon', () => {
         checkContainerWhyWalletsComponent();
-        expect(screen.queryByTestId('dt_wallets_upgrade_step_one_desktop')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_wallets_upgrade_step_one')).toBeInTheDocument();
     });
 
     it('should render title, description and bullets', () => {

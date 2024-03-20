@@ -14,8 +14,8 @@ describe('<WalletsBanner />', () => {
     });
 
     describe('Should render properly with right banner if status is eligible: <WalletsBannerUpgrade />', () => {
-        const desktop: TImageTestID = 'dt_upgrade_desktop';
-        const mobile: TImageTestID = 'dt_upgrade_mobile';
+        const desktop: TImageTestID = 'dt_wallets_upgrade_coins_horizontal';
+        const mobile: TImageTestID = 'dt_wallets_upgrade_coins';
 
         it('Should render upgrade now button', async () => {
             render(<WalletsBannerUpgrade />, {
@@ -51,8 +51,8 @@ describe('<WalletsBanner />', () => {
     });
 
     describe('Should render properly with right banner if status is in_progress: <WalletsBannerUpgrading />', () => {
-        const desktop: TImageTestID = 'dt_upgrade_desktop';
-        const mobile: TImageTestID = 'dt_upgrade_mobile';
+        const desktop: TImageTestID = 'dt_wallets_upgrade_coins_horizontal';
+        const mobile: TImageTestID = 'dt_wallets_upgrade_coins';
 
         it('Should render right title', () => {
             render(<WalletsBannerUpgrading />, {
@@ -72,7 +72,7 @@ describe('<WalletsBanner />', () => {
             expect(loading_dots).toBeInTheDocument();
         });
 
-        it('Should render image properly for desktop for Non-EU', () => {
+        it('Should render image properly for desktop', () => {
             mockRootStore.ui.is_mobile = false;
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
@@ -84,7 +84,7 @@ describe('<WalletsBanner />', () => {
             expect(mobile_image).not.toBeInTheDocument();
         });
 
-        it('Should render image properly for mobile for Non-EU', () => {
+        it('Should render image properly for mobile', () => {
             mockRootStore.ui.is_mobile = true;
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,

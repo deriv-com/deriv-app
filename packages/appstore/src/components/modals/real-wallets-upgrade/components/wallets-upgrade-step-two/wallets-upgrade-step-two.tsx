@@ -24,7 +24,8 @@ const WalletsUpgradeStepTwoContent = observer(({ value, toggleCheckbox }: TWalle
         <div className='wallets-upgrade-step-two__content'>
             <WalletsImage
                 className='wallets-upgrade-step-two__image'
-                image={`wallets_upgrade_step_two_${is_mobile ? 'mobile' : 'desktop'}`}
+                image='wallets_upgrade_step_two'
+                width={is_mobile ? 150 : 240}
             />
             <div className='wallets-upgrade-step-two__text'>
                 <Text size={is_mobile ? 'xsm' : 'l'} align='center' weight='bold' line_height={is_mobile ? 'm' : 'xs'}>

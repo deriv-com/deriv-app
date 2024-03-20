@@ -3,14 +3,14 @@ import { Text, Button, Modal } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import WalletsImage from 'Assets/svgs/wallets';
-import { useWalletMigrationContext } from '../../../providers/WalletMigrationProvider';
+import { useWalletMigration } from '@deriv/hooks';
 import './wallets-upgrade-modal.scss';
 
 const WalletsUpgradeModal = () => {
     const { traders_hub, ui } = useStore();
     const { toggleWalletsUpgrade } = traders_hub;
     const { is_mobile, is_desktop } = ui;
-    const { is_eligible } = useWalletMigrationContext();
+    const { is_eligible } = useWalletMigration();
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
 

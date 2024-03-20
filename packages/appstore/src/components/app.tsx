@@ -2,7 +2,6 @@ import React from 'react';
 import CashierStoreProvider from '@deriv/cashier/src/cashier-providers';
 import CFDStoreProvider from '@deriv/cfd/src/cfd-providers';
 import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
-import { WalletMigrationProvider } from '../providers';
 import AppContent from './app-content';
 import './app.scss';
 
@@ -17,9 +16,7 @@ const App: React.FC<TProps> = ({ passthrough: { root_store } }) => (
         <CFDStoreProvider store={root_store}>
             <StoreProvider store={root_store}>
                 <ExchangeRatesProvider>
-                    <WalletMigrationProvider>
-                        <AppContent />
-                    </WalletMigrationProvider>
+                    <AppContent />
                 </ExchangeRatesProvider>
             </StoreProvider>
         </CFDStoreProvider>

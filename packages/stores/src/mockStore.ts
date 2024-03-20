@@ -300,6 +300,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             real_account_signup_form_step: 0,
             setRealAccountSignupFormData: jest.fn(),
             setRealAccountSignupFormStep: jest.fn(),
+            wallet_migration_state: 'ineligible',
+            startWalletMigration: jest.fn(),
+            resetWalletMigration: jest.fn(),
         },
         common: {
             error: common_store_error,

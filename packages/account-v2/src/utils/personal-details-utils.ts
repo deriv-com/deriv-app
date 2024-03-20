@@ -2,13 +2,34 @@ import * as Yup from 'yup';
 
 export const getPersonalDetailsBaseValidationSchema = () => {
     const characterLengthMessage = 'You should enter 2-50 characters.';
+    const addressLengthMessage = 'Should be less than 70 characters.';
     const phoneNumberLengthMessage = 'You should enter 9-35 numbers.';
 
     return Yup.object({
+        addressCity: Yup.string()
+            .required('Town/City is required.')
+            .max(70, addressLengthMessage)
+            .matches(
+                /^[A-Za-z]+(?:[.' -]*[A-Za-z]+){1,70}$/,
+                'Only letters, space, hyphen, period, and apostrophe are allowed.'
+            ),
+        addressLine1: Yup.string()
+            .trim()
+            .required('First line of address is required.')
+            .max(70, addressLengthMessage)
+            .matches(/^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u, 'Use only the following special characters: 70'),
+        addressLine2: Yup.string()
+            .trim()
+            .max(70, addressLengthMessage)
+            .matches(/^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u, 'Use only the following special characters: 70'),
+        addressPostcode: Yup.string()
+            .max(20, 'Please enter a Postal/ZIP code under 20 chatacters.')
+            .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, 'Only letters, numbers, space, and hyphen are allowed.'),
         accountOpeningReason: Yup.string().required('Account opening reason is required.'),
         citizenship: Yup.string().required('Citizenship is required.'),
         countryOfResidence: Yup.string().required('Country of residence is required.'),
         dateOfBirth: Yup.date().typeError('Please enter a valid date.').required('Date of birth is required.'),
+        employmentStatus: Yup.string().required('Employment status is required.'),
         firstName: Yup.string()
             .required('First name is required.')
             .min(2, characterLengthMessage)
@@ -54,4 +75,22 @@ export const getNameDOBValidationSchema = () => {
             lastName: '',
             nameDOBConfirmation: false,
         }));
+};
+
+export const getPersonalDetailsValidationSchema = (isEu: boolean) => {
+    const personalValidationSchema = getPersonalDetailsBaseValidationSchema().pick([
+        'addressCity',
+        'addressLine1',
+        'addressLine2',
+        'addressPostcode',
+        'firstName',
+        'lastName',
+        'phoneNumber',
+    ]);
+
+    const euPersonalValidationSchema = personalValidationSchema.concat(
+        getPersonalDetailsBaseValidationSchema().pick(['employmentStatus', 'taxIdentificationNumber', 'taxResidence'])
+    );
+
+    return isEu ? euPersonalValidationSchema : personalValidationSchema;
 };

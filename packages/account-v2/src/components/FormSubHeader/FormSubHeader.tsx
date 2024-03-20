@@ -2,7 +2,7 @@ import React from 'react';
 import { Divider, Text } from '@deriv-com/ui';
 
 export const FormSubHeader = ({ children }: React.PropsWithChildren) => (
-    <div className='flex justify-star'>
+    <div className='flex justify-start'>
         <Text as='p' className='pr-8 text-nowrap' size='sm' weight='bold'>
             {children}
         </Text>

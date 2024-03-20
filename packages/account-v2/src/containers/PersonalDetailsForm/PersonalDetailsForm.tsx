@@ -15,7 +15,8 @@ import { AddressFields } from '../../modules/AddressFields';
 import { PersonalDetails } from './PersonalDetails';
 import { SupportProfessionalClient } from './SupportProfessionalClient';
 import { TaxInformation } from './TaxInformation';
-import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema } from './validation';
+import { getPersonalDetailsInitialValues } from './utils';
+import { getPersonalDetailsValidationSchema } from '../../utils/personal-details-utils';
 
 export const PersonalDetailsForm = () => {
     const { data: activeAccount } = useActiveTradingAccount();

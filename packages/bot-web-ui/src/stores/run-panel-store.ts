@@ -1,6 +1,6 @@
 import { computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { Buy, ProposalOpenContract } from '@deriv/api-types';
-import { error_types, message_types, observer, TErrorTypes, unrecoverable_errors } from '@deriv/bot-skeleton';
+import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
 import { isSafari, mobileOSDetect, routes } from '@deriv/shared';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
@@ -132,7 +132,7 @@ export default class RunPanelStore implements IRunPanelStore {
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
     // otherwise we keep opening new contracts and set the ContractStage to PURCHASE_SENT
-    error_type: TErrorTypes | undefined = undefined;
+    error_type: ErrorTypes | undefined = undefined;
 
     get is_stop_button_visible() {
         return this.is_running || this.has_open_contract;
@@ -537,7 +537,7 @@ export default class RunPanelStore implements IRunPanelStore {
             this.unregisterBotListeners();
             self_exclusion.resetSelfExclusion();
         };
-        if (this.error_type === error_types.RECOVERABLE_ERRORS) {
+        if (this.error_type === ErrorTypes.RECOVERABLE_ERRORS) {
             // Bot should indicate it started in below cases:
             // - When error happens it's a recoverable error
             const { shouldRestartOnError, timeMachineEnabled } = this.dbot.interpreter.bot.tradeEngine.options;
@@ -550,7 +550,7 @@ export default class RunPanelStore implements IRunPanelStore {
                 this.setIsRunning(false);
                 indicateBotStopped();
             }
-        } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
+        } else if (this.error_type === ErrorTypes.UNRECOVERABLE_ERRORS) {
             // Bot should indicate it stopped in below cases:
             // - When error happens and it's an unrecoverable error
             this.setIsRunning(false);
@@ -644,9 +644,9 @@ export default class RunPanelStore implements IRunPanelStore {
         const error = data.error || data;
         if (unrecoverable_errors.includes(error.code)) {
             this.root_store.summary_card.clear();
-            this.error_type = error_types.UNRECOVERABLE_ERRORS;
+            this.error_type = ErrorTypes.UNRECOVERABLE_ERRORS;
         } else {
-            this.error_type = error_types.RECOVERABLE_ERRORS;
+            this.error_type = ErrorTypes.RECOVERABLE_ERRORS;
         }
 
         const error_message = error?.message;
@@ -657,7 +657,7 @@ export default class RunPanelStore implements IRunPanelStore {
         const { journal } = this.root_store;
         const { notifications, ui } = this.core;
         journal.onError(data);
-        if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
+        if (journal.journal_filters.some(filter => filter === MessageTypes.ERROR)) {
             this.toggleDrawer(true);
             this.setActiveTabIndex(run_panel.JOURNAL);
             ui.setPromptHandler(false);
@@ -670,7 +670,7 @@ export default class RunPanelStore implements IRunPanelStore {
     switchToJournal = () => {
         const { journal } = this.root_store;
         const { notifications } = this.core;
-        journal.journal_filters.push(message_types.ERROR);
+        journal.journal_filters.push(MessageTypes.ERROR);
         this.setActiveTabIndex(run_panel.JOURNAL);
         this.toggleDrawer(true);
         notifications.toggleNotificationsModal();

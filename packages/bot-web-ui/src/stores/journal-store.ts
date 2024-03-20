@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, reaction, when } from 'mobx';
-import { log_types, message_types } from '@deriv/bot-skeleton';
+import { LogTypes, MessageTypes } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { formatDate } from '@deriv/shared';
 import { TStores } from '@deriv/stores/types';
@@ -15,41 +15,41 @@ type TExtra = {
     profit?: number;
 };
 
-type TMessage = {
-    date?: string;
-    time?: string;
-    message: string | Error;
-    message_type: string;
-    className?: string;
-    unique_id: string;
-    extra: TExtra;
-};
-
 type TlogSuccess = {
     log_type: string;
     extra: TExtra;
 };
 
-type TNotifyData = {
-    message: string;
-    className?: string;
+type TMessage = {
+    message: string | Error;
     message_type: string;
+    className?: string;
+};
+
+type TMessageItem = {
+    date?: string;
+    time?: string;
+    unique_id: string;
+    extra: TExtra;
+} & TMessage;
+
+type TNotifyData = {
     sound: string;
     block_id?: string;
     variable_name?: string;
-};
+} & TMessage;
 
 export interface IJournalStore {
     is_filter_dialog_visible: boolean;
     journal_filters: string[];
     filters: { id: string; label: string }[];
-    unfiltered_messages: TMessage[];
+    unfiltered_messages: TMessageItem[];
     toggleFilterDialog: () => void;
     onLogSuccess: (message: TlogSuccess) => void;
     onError: (message: Error | string) => void;
     onNotify: (data: TNotifyData) => void;
     pushMessage: (message: string, message_type: string, className: string, extra?: TExtra) => void;
-    filtered_messages: TMessage[];
+    filtered_messages: TMessageItem[];
     getServerTime: () => Date;
     playAudio: (sound: string) => void;
     checked_filters: string[];
@@ -95,12 +95,12 @@ export default class JournalStore {
     is_filter_dialog_visible = false;
 
     filters = [
-        { id: message_types.ERROR, label: localize('Errors') },
-        { id: message_types.NOTIFY, label: localize('Notifications') },
-        { id: message_types.SUCCESS, label: localize('System') },
+        { id: MessageTypes.ERROR, label: localize('Errors') },
+        { id: MessageTypes.NOTIFY, label: localize('Notifications') },
+        { id: MessageTypes.SUCCESS, label: localize('System') },
     ];
     journal_filters: string[] = [];
-    unfiltered_messages: TMessage[] = [];
+    unfiltered_messages: TMessageItem[] = [];
 
     restoreStoredJournals() {
         const { loginid } = this.core?.client ?? {};
@@ -125,11 +125,11 @@ export default class JournalStore {
 
     onLogSuccess(message: TlogSuccess) {
         const { log_type, extra } = message;
-        this.pushMessage(log_type, message_types.SUCCESS, '', extra);
+        this.pushMessage(log_type, MessageTypes.SUCCESS, '', extra);
     }
 
     onError(message: Error | string) {
-        this.pushMessage(message, message_types.ERROR);
+        this.pushMessage(message, MessageTypes.ERROR);
     }
 
     onNotify(data: TNotifyData) {
@@ -142,13 +142,13 @@ export default class JournalStore {
                 run_panel.showErrorMessage,
                 () => dbot.centerAndHighlightBlock(block_id as string, true),
                 (parsed_message: string) =>
-                    this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
+                    this.pushMessage(parsed_message, message_type || MessageTypes.NOTIFY, className)
             )
         ) {
             this.playAudio(sound);
             return;
         }
-        this.pushMessage(message, message_type || message_types.NOTIFY, className);
+        this.pushMessage(message, message_type || MessageTypes.NOTIFY, className);
         this.playAudio(sound);
     }
 
@@ -164,7 +164,7 @@ export default class JournalStore {
         if (loginid) {
             const current_account = account_list?.find(account => account?.loginid === loginid);
             extra.current_currency = current_account?.is_virtual ? 'Demo' : current_account?.title;
-        } else if (message === log_types.WELCOME) {
+        } else if (message === LogTypes.WELCOME) {
             return;
         }
 
@@ -229,9 +229,9 @@ export default class JournalStore {
                 });
                 this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
                 if (this.unfiltered_messages.length === 0) {
-                    this.pushMessage(log_types.WELCOME, message_types.SUCCESS, 'journal__text');
+                    this.pushMessage(LogTypes.WELCOME, MessageTypes.SUCCESS, 'journal__text');
                 } else if (this.unfiltered_messages.length > 0) {
-                    this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text');
+                    this.pushMessage(LogTypes.WELCOME_BACK, MessageTypes.SUCCESS, 'journal__text');
                 }
             },
             { fireImmediately: true } // For initial welcome message

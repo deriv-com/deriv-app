@@ -7,10 +7,10 @@ import {
     getGrowthRatePercentage,
     isAccumulatorContract,
     isSmartTraderContract,
-    isLookBacksContract,
     isBot,
     isMobile,
     isTurbosContract,
+    isMultiplierContract,
     getLocalizedTurbosSubtype,
 } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell';
@@ -70,8 +70,7 @@ const ContractCardHeader = ({
     const is_smarttrader_contract = isSmartTraderContract(contract_type);
     const is_mobile = isMobile();
     const is_turbos = isTurbosContract(contract_type);
-    const is_lookbacks = isLookBacksContract(contract_type);
-    const is_multipliers = !!multiplier && !is_lookbacks;
+    const is_multipliers = isMultiplierContract(contract_type);
     const is_high_low = isHighLow({ shortcode });
 
     const contract_type_list_info = React.useMemo(

@@ -45,7 +45,7 @@ const TradeCategoriesGIF = ({
         case TRADE_TYPES.MATCH_DIFF:
             return <ImageMatchDiff />;
         case TRADE_TYPES.MULTIPLIER:
-            return <ContractTypeDescriptionVideo selected_contract_type='multiplier' />;
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.OVER_UNDER:
             return <ImageOverUnder />;
         case TRADE_TYPES.RESET:

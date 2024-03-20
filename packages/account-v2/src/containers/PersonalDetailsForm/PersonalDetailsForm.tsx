@@ -16,7 +16,7 @@ import { PersonalDetails } from './PersonalDetails';
 import { SupportProfessionalClient } from './SupportProfessionalClient';
 import { TaxInformation } from './TaxInformation';
 import { getPersonalDetailsInitialValues } from './utils';
-import { getPersonalDetailsValidationSchema } from '../../utils/personal-details-utils';
+import { getPersonalDetailsValidationSchema } from '../../utils/personalDetailsUtils';
 
 export const PersonalDetailsForm = () => {
     const { data: activeAccount } = useActiveTradingAccount();

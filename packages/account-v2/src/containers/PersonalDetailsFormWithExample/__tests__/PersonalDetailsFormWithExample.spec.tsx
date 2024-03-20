@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getNameDOBValidationSchema } from '../../../utils/personal-details-utils';
+import { getNameDOBValidationSchema } from '../../../utils/personalDetailsUtils';
 import { PersonalDetailsFormWithExample } from '../PersonalDetailsFormWithExample';
 
 jest.mock('../../../assets/proof-of-identity/personal-details-example.svg', () => {

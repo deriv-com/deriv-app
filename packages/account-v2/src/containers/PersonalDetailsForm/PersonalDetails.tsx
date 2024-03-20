@@ -4,7 +4,7 @@ import { useActiveTradingAccount, useGetAccountStatus, useSettings } from '@deri
 import { CountrySelector } from '../../components/CountrySelector';
 import { DatePicker } from '../../components/DatePicker';
 import { FormInputField } from '../../components/FormFields';
-import { isFieldDisabled } from '../../utils/personal-details-utils';
+import { isFieldDisabled } from '../../utils/personalDetailsUtils';
 
 export const PersonalDetails = () => {
     const { data: activeAccount } = useActiveTradingAccount();

@@ -1,4 +1,4 @@
-import { getPersonalDetailsValidationSchema } from '../personal-details-utils';
+import { getPersonalDetailsValidationSchema } from '../personalDetailsUtils';
 
 describe('Personal Details Validation Schema', () => {
     let validationSchema: ReturnType<typeof getPersonalDetailsValidationSchema>;

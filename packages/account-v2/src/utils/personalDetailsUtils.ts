@@ -7,6 +7,7 @@ export const getPersonalDetailsBaseValidationSchema = () => {
     const phoneNumberLengthMessage = 'You should enter 9-35 numbers.';
 
     return Yup.object({
+        accountOpeningReason: Yup.string().required('Account opening reason is required.'),
         addressCity: Yup.string()
             .required('Town/City is required.')
             .max(70, addressLengthMessage)
@@ -26,7 +27,6 @@ export const getPersonalDetailsBaseValidationSchema = () => {
         addressPostcode: Yup.string()
             .max(20, 'Please enter a Postal/ZIP code under 20 chatacters.')
             .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, 'Only letters, numbers, space, and hyphen are allowed.'),
-        accountOpeningReason: Yup.string().required('Account opening reason is required.'),
         citizenship: Yup.string().required('Citizenship is required.'),
         countryOfResidence: Yup.string().required('Country of residence is required.'),
         dateOfBirth: Yup.date().typeError('Please enter a valid date.').required('Date of birth is required.'),

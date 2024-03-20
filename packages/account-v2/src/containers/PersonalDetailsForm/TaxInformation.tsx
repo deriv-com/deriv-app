@@ -6,7 +6,7 @@ import { Dropdown } from '@deriv-com/ui';
 import { CountrySelector } from '../../components/CountrySelector';
 import { FormInputField } from '../../components/FormFields';
 import { employmentIndustryList } from '../../constants/financialInformationList';
-import { isFieldDisabled } from '../../utils/personal-details-utils';
+import { isFieldDisabled } from '../../utils/personalDetailsUtils';
 
 export const TaxInformation = () => {
     const { data: accountSettings } = useSettings();

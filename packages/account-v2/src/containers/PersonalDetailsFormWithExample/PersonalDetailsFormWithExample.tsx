@@ -4,7 +4,7 @@ import { InferType } from 'yup';
 import { Checkbox, InlineMessage, Loader, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
 import { FormInputField } from '../../components/FormFields';
-import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
+import { getNameDOBValidationSchema } from '../../utils/personalDetailsUtils';
 import { validateField } from '../../utils/validation';
 
 const ExampleImage = lazy(() => import('../../assets/proof-of-identity/personal-details-example.svg'));

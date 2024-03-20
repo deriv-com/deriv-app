@@ -30,7 +30,7 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
                         <div className='flex items-center justify-around'>
                             <AdProgressBar currentStep={currentStep} steps={steps} />
                             <div>
-                                <Text weight='bold'>{`${steps[currentStep].header.title}`}</Text>
+                                <Text weight='bold'>{steps[currentStep].header.title}</Text>
                                 {steps[currentStep + 1] ? (
                                     <Text as='div' color='less-prominent'>
                                         {`Next: ${steps[currentStep + 1].header.title}`}

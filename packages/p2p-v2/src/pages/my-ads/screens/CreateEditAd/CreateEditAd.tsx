@@ -10,7 +10,7 @@ const STEPS = [
     { header: { title: 'Set ad conditions' } },
 ];
 
-const CreateAd = () => {
+const CreateEditAd = () => {
     const methods = useForm({
         defaultValues: {
             'ad-type': 'buy',
@@ -43,4 +43,4 @@ const CreateAd = () => {
     );
 };
 
-export default CreateAd;
+export default CreateEditAd;

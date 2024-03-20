@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import Checkmark from '@/assets/svgs/checkmark.svg';
 import { ActionScreen, ButtonGroup, IconComponent } from '@/components';
 import { CUSTOM_STYLES } from '@/helpers';
+import { useQueryParams } from '@/hooks';
 import { useRealAccountCreationContext } from '@/providers';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
@@ -27,9 +28,11 @@ const AccountOpeningSuccessModal = () => {
     const { isDesktop } = useDevice();
     const { state } = useRealAccountCreationContext();
     const history = useHistory();
+    const { closeModal } = useQueryParams();
 
     const handleNavigateToDeposit = () => {
         reset();
+        closeModal();
         history.push('/cashier/deposit');
     };
 
@@ -57,7 +60,13 @@ const AccountOpeningSuccessModal = () => {
                 icon={<SelectedCurrencyIcon />}
                 renderButtons={() => (
                     <ButtonGroup className='flex-col lg:flex-row sm:w-full'>
-                        <Button color='black' isFullWidth={!isDesktop} onClick={reset} size='md' variant='outlined'>
+                        <Button
+                            color='black'
+                            isFullWidth={!isDesktop}
+                            onClick={closeModal}
+                            size='md'
+                            variant='outlined'
+                        >
                             Maybe later
                         </Button>
                         <Button isFullWidth={!isDesktop} onClick={handleNavigateToDeposit} size='md'>

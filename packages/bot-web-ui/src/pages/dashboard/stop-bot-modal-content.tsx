@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
 export type TStopBotModalContent = {
     is_running: boolean;
@@ -45,31 +45,51 @@ const StopBotModalContent = ({
                 {is_running && is_multiplier ? (
                     <>
                         <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
-                            {localize(
-                                'Close your contract now or keep it running. If you decide to keep it running, you can check and close it later on the '
-                            )}
+                            <Localize i18n_default_text='Close your contract now or keep it running. If you decide to keep it running, you can check and close it later on the ' />
                             <Text as='span' line_height='s' size='xs'>
-                                <strong>{localize('Reports')}</strong>
+                                <a
+                                    key={0}
+                                    style={{
+                                        color: 'var(--text-general)',
+                                        fontWeight: 'bold',
+                                        paddingInlineEnd: '0.4rem',
+                                        textDecoration: 'none',
+                                    }}
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                    href={'/reports'}
+                                >
+                                    {localize('Reports')}
+                                </a>
                             </Text>
-                            {localize(' page.')}
+                            {localize('page.')}
                         </Text>
                         <Text as='p' line_height='s' size='xs'>
-                            {localize('The Quick Strategy you just created will be loaded to the workspace.')}
+                            <Localize i18n_default_text='The Quick Strategy you just created will be loaded to the workspace.' />
                         </Text>
                     </>
                 ) : (
                     <>
                         <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
-                            {localize(
-                                'Stopping the current bot will load the Quick Strategy you just created to the workspace.'
-                            )}
+                            <Localize i18n_default_text='Stopping the current bot will load the Quick Strategy you just created to the workspace.' />
                         </Text>
                         <Text as='p' line_height='s' size='xs'>
-                            {localize(' Any open contracts can be viewed on the ')}
-                            <Text as='span' line_height='s' size='xs'>
-                                <strong>{localize('Reports')}</strong>
-                            </Text>
-                            {localize(' page.')}
+                            <Localize i18n_default_text='Any open contracts can be viewed on the ' />
+                            <a
+                                key={0}
+                                style={{
+                                    color: 'var(--text-general)',
+                                    fontWeight: 'bold',
+                                    paddingInlineEnd: '0.4rem',
+                                    textDecoration: 'none',
+                                }}
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href={'/reports'}
+                            >
+                                {localize('Reports')}
+                            </a>
+                            <Localize i18n_default_text='page.' />
                         </Text>
                     </>
                 )}

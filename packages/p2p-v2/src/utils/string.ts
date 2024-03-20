@@ -21,3 +21,12 @@ export const getShortNickname = (nickname: string): string => nickname?.substrin
  */
 export const getTextFieldError = (fieldName: string): string =>
     `${fieldName} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;`;
+
+/**
+ * Validates that a string represents a decimal number.
+ * It checks if the string contains only digits and at most one decimal point.
+ *
+ * @param {String} value - The string to validate as a decimal number.
+ * @returns {boolean} A boolean indicating the string is a valid decimal number.
+ */
+export const decimalValidator = (value: string): boolean => /^(\d+\.)?\d+$/.test(value);

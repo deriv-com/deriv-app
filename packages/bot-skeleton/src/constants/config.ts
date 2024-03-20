@@ -266,9 +266,9 @@ export const config = {
         [localize('MACD'), '1'],
         [localize('Signal'), '2'],
     ],
-    gd: {
-        scope: 'https://www.googleapis.com/auth/drive.file',
-        discovery_docs: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
+    GOOGLE_DRIVE: {
+        SCOPE: 'https://www.googleapis.com/auth/drive.file',
+        DISCOVERY_DOCS: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
     },
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,

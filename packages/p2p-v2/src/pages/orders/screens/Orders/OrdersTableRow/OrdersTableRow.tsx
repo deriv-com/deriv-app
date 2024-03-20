@@ -15,7 +15,7 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     const { isMobile } = useDevice();
     const { queryString } = useQueryString();
     const history = useHistory();
-    const isPast = queryString.get('tab') === ORDERS_STATUS.PAST_ORDERS;
+    const isPast = queryString.tab === ORDERS_STATUS.PAST_ORDERS;
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
     const { data: orderDetails } = useExtendedOrderDetails({

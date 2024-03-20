@@ -352,7 +352,7 @@ export default class NotificationStore extends BaseStore {
                 authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
                 cashier_validation,
-            } = account_status || {};
+            } = account_status;
 
             const {
                 cashier_locked,

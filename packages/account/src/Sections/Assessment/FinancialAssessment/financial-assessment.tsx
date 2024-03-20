@@ -488,7 +488,10 @@ const FinancialAssessment = observer(() => {
                                                     name='employment_status'
                                                     list={getEmploymentStatusList()}
                                                     value={values.employment_status}
-                                                    onChange={handleChange}
+                                                    onChange={e => {
+                                                        setFieldValue('occupation', '', true);
+                                                        handleChange(e);
+                                                    }}
                                                     handleBlur={handleBlur}
                                                     error={touched.employment_status && errors.employment_status}
                                                 />
@@ -505,6 +508,7 @@ const FinancialAssessment = observer(() => {
                                                     }
                                                     onChange={e => {
                                                         setFieldTouched('employment_status', true);
+                                                        setFieldValue('occupation', '', true);
                                                         handleChange(e);
                                                     }}
                                                 />

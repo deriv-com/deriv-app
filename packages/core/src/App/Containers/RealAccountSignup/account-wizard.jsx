@@ -56,6 +56,9 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
 
 const AccountWizard = observer(props => {
     const { client, notifications, ui, traders_hub } = useStore();
+
+    const { is_eu_user } = traders_hub;
+
     const modifiedProps = {
         ...props,
         account_settings: client.account_settings,
@@ -315,6 +318,11 @@ const AccountWizard = observer(props => {
     };
 
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
+        // This is to sync clearing of value on change of Employment status personal details and occupation in financial assessment
+        if (is_eu_user && index === 1) {
+            state_items[4].form_value = { ...state_items[4].form_value, occupation: value.occupation };
+            setStateItems(state_items);
+        }
         saveFormData(index, value);
         clearError();
 
@@ -333,8 +341,11 @@ const AccountWizard = observer(props => {
 
     const saveFormData = (index, value) => {
         const cloned_items = Object.assign([], state_items);
+        // This is to sync clearing of value on change of Employment status personal details and occupation in financial assessment
+        delete value?.occupation;
         cloned_items[index].form_value = value;
         setStateItems(cloned_items);
+
         setRealAccountSignupFormData(cloned_items);
     };
 

@@ -185,6 +185,7 @@
         &__type-and-status {
             display: flex;
             margin-bottom: 0.8rem;
+            align-items: center;
 
             span:first-child {
                 flex: 1;
@@ -257,7 +258,7 @@
             width: 2.4rem;
 
             &--display {
-                border: 0;
+                border: 0 !important;
             }
 
             .dc-list {

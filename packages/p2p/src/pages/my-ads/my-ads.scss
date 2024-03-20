@@ -65,6 +65,7 @@
     }
 
     &__data-list {
+        height: 100% !important;
         flex: 1;
 
         &__data-list-body {
@@ -73,6 +74,14 @@
 
         .data-list__body-wrapper {
             flex: 1;
+        }
+
+        .dc-themed-scrollbars {
+            height: 100% !important;
+        }
+
+        .ReactVirtualized__Grid__innerScrollContainer {
+            overflow: visible !important;
         }
     }
 

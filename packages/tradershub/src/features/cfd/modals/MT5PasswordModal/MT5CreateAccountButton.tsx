@@ -24,6 +24,7 @@ const MT5CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonPr
     useEffect(() => {
         if (doesNotMeetPasswordPolicy) {
             openModal('MT5ChangePasswordModal');
+            return;
         }
 
         if (createMT5AccountStatus === 'success') {

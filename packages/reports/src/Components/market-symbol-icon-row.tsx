@@ -25,13 +25,14 @@ const MarketSymbolIconRow = ({
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
     const is_high_low = isHighLow({ shortcode_info: info_from_shortcode });
-    const category_label = getTradeTypeName(info_from_shortcode.category, is_high_low, has_full_contract_title);
-    const hover_message = `${getTradeTypeName(
-        info_from_shortcode.category,
-        is_high_low,
-        false,
-        true
-    )} ${category_label}`.trim();
+    const category_label = getTradeTypeName(info_from_shortcode.category, {
+        isHighLow: is_high_low,
+        showButtonName: has_full_contract_title,
+    });
+    const hover_message = `${getTradeTypeName(info_from_shortcode.category, {
+        isHighLow: is_high_low,
+        showMainTitle: true,
+    })} ${category_label}`.trim();
 
     if (should_show_category_icon && info_from_shortcode) {
         return (

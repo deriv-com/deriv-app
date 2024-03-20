@@ -77,7 +77,9 @@ const ContractCardHeader = ({
         () => [
             {
                 is_param_displayed: is_multipliers,
-                displayed_param: `${getContractTypeDisplay(contract_type ?? '', is_high_low)} x${multiplier}`.trim(),
+                displayed_param: `${getContractTypeDisplay(contract_type ?? '', {
+                    isHighLow: is_high_low,
+                })} x${multiplier}`.trim(),
             },
             {
                 is_param_displayed: is_accumulator,

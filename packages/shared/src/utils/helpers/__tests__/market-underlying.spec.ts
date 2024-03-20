@@ -48,32 +48,32 @@ describe('market-underlying', () => {
             expect(getTradeTypeName(CONTRACT_TYPES.ACCUMULATOR)).toBe('Accumulators');
         });
         it('should return the correct Higher or Lower contract type display name when is_how_low === true', () => {
-            expect(getTradeTypeName(position.contract_type, true)).toBe('Higher');
-            expect(getTradeTypeName(CONTRACT_TYPES.PUT, true)).toBe('Lower');
+            expect(getTradeTypeName(position.contract_type, { isHighLow: true })).toBe('Higher');
+            expect(getTradeTypeName(CONTRACT_TYPES.PUT, { isHighLow: true })).toBe('Lower');
         });
         it('should return the correct Rise or Fall contract type display name when is_how_low === false', () => {
             expect(getTradeTypeName(position.contract_type)).toBe('Rise');
             expect(getTradeTypeName(CONTRACT_TYPES.PUT)).toBe('Fall');
         });
         it('should return the correct Up or Down contract type display name when show_button_name is true', () => {
-            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, false, true)).toBe('Up');
-            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.SHORT, false, true)).toBe('Down');
+            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, { showButtonName: true })).toBe('Up');
+            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.SHORT, { showButtonName: true })).toBe('Down');
         });
         it('should return null if an incorrect contract_type is provided', () => {
             expect(getTradeTypeName(TRADE_TYPES.RISE_FALL)).toBe(null);
         });
         it('should return main title for contracts which have such field if show_main_title is true', () => {
-            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, false, false, true)).toBe('Turbos');
-            expect(getTradeTypeName(CONTRACT_TYPES.VANILLA.CALL, false, false, true)).toBe('Vanillas');
-            expect(getTradeTypeName(CONTRACT_TYPES.MULTIPLIER.DOWN, false, false, true)).toBe('Multipliers');
+            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, { showMainTitle: true })).toBe('Turbos');
+            expect(getTradeTypeName(CONTRACT_TYPES.VANILLA.CALL, { showMainTitle: true })).toBe('Vanillas');
+            expect(getTradeTypeName(CONTRACT_TYPES.MULTIPLIER.DOWN, { showMainTitle: true })).toBe('Multipliers');
         });
         it('should not return main title for contracts which have such field but show_main_title is false', () => {
-            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, false, false, false)).not.toBe('Turbos');
-            expect(getTradeTypeName(CONTRACT_TYPES.VANILLA.CALL, false, false, false)).not.toBe('Vanillas');
-            expect(getTradeTypeName(CONTRACT_TYPES.MULTIPLIER.DOWN, false, false, false)).not.toBe('Multipliers');
+            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG)).not.toBe('Turbos');
+            expect(getTradeTypeName(CONTRACT_TYPES.VANILLA.CALL)).not.toBe('Vanillas');
+            expect(getTradeTypeName(CONTRACT_TYPES.MULTIPLIER.DOWN)).not.toBe('Multipliers');
         });
         it('should not return main title for contracts which have not such field if show_main_title is true', () => {
-            expect(getTradeTypeName(CONTRACT_TYPES.FALL, false, false, true)).toBeFalsy();
+            expect(getTradeTypeName(CONTRACT_TYPES.FALL, { showMainTitle: true })).toBeFalsy();
         });
     });
 });

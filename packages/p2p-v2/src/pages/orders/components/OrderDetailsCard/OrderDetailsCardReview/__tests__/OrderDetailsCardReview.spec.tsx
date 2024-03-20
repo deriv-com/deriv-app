@@ -3,6 +3,11 @@ import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetail
 import { render, screen } from '@testing-library/react';
 import OrderDetailsCardReview from '../OrderDetailsCardReview';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: () => ({ isMobile: false }),
+}));
+
 jest.mock('@deriv/api-v2', () => ({
     p2p: {
         settings: {

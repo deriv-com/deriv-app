@@ -4,14 +4,12 @@ import { THooks } from '../../../hooks/types';
 type TGetCurrencyConfig = ReturnType<typeof useCurrencyConfig>['getConfig'];
 
 const sortedMT5Accounts = (accounts: THooks.TransferAccounts, getConfig: TGetCurrencyConfig) => {
-    return [
-        ...accounts
-            .filter(account => account.account_type === 'mt5')
-            .map(account => ({
-                ...account,
-                currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
-            })),
-    ];
+    return accounts
+        .filter(account => account.account_type === 'mt5')
+        .map(account => ({
+            ...account,
+            currencyConfig: account?.currency ? getConfig(account.currency) : undefined,
+        }));
 };
 
 const derivCTrader = (accounts: THooks.TransferAccounts, getConfig: TGetCurrencyConfig) => {

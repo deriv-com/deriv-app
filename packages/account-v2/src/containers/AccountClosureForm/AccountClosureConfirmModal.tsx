@@ -13,7 +13,7 @@ export const AccountClosureConfirmModal = ({
     handleSubmit,
     isModalOpen,
 }: TAccountClosureConfirmModalProps) => (
-    <Modal className='p-24 w-[440px] sm:w-[312px]' isOpen={isModalOpen}>
+    <Modal className='p-24 md:w-[440px] sm:w-[312px]' isOpen={isModalOpen}>
         <Modal.Body className='flex flex-col'>
             <StandaloneTriangleExclamationRegularIcon className='self-center fill-status-light-danger' iconSize='2xl' />
             <Text align='center' as='h4' size='md' weight='bold'>

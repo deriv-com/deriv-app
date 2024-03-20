@@ -13,7 +13,7 @@ import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
-import AppContents from './Containers/Layout/app-contents.jsx';
+import AppContents from './Containers/Layout/app-ontents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header';
 import AppModals from './Containers/Modals';
@@ -27,16 +27,15 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const store = useStore();
 
     const { data } = useRemoteConfig();
-
-    const { tracking_datadog, tracking_rudderstack, marketing_growthbook } = data;
+    const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);
-        if (process.env.RUDDERSTACK_KEY) {
+        if (process.env.RUDDERSTACK_KEY && tracking_rudderstack) {
             const config = {
-                growthbookKey: marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
+                growthbookKey: data.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
                 growthbookDecryptionKey: marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
-                rudderstackKey: tracking_rudderstack ? process.env.RUDDERSTACK_KEY : undefined,
+                rudderstackKey: process.env.RUDDERSTACK_KEY,
             };
             Analytics.initialise(config);
             Analytics.setAttributes({

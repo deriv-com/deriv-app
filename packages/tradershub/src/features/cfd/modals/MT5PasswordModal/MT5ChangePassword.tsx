@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { passwordRegexDescription } from '@/constants';
 import { useMT5AccountHandler, useQueryParams } from '@/hooks';
 import { validPassword } from '@/utils';
@@ -28,7 +28,7 @@ const MT5ChangePassword = () => {
     }, [createMT5AccountStatus, openModal]);
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Modal.Body className='lg:p-24 lg:max-w-[525px]'>
                 <Text size='sm'>
                     To enhance your MT5 account security we have upgraded our password policy. Please update your
@@ -68,7 +68,7 @@ const MT5ChangePassword = () => {
                     Change my password
                 </Button>
             </Modal.Footer>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

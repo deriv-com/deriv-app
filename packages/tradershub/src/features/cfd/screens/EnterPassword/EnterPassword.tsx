@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, Fragment } from 'react';
 import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { Category, CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
@@ -35,7 +35,7 @@ const EnterPassword = ({ onPasswordChange, password }: TEnterPasswordProps) => {
         platform === PlatformDetails.dxtrade.platform ? accountType : marketTypeDetails[marketType]?.title;
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Modal.Header onRequestClose={closeModal}>
                 <Text weight='bold'>{`Enter your ${title} password`}</Text>
             </Modal.Header>
@@ -55,7 +55,7 @@ const EnterPassword = ({ onPasswordChange, password }: TEnterPasswordProps) => {
             <Modal.Footer>
                 <MT5PasswordFooter password={password} />
             </Modal.Footer>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

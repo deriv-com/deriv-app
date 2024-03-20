@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, Fragment } from 'react';
 import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
 import { useCFDContext } from '@/providers';
 import { Category, CFDPlatforms, PlatformDetails } from '@cfd/constants';
@@ -25,7 +25,7 @@ const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) =>
     const { title } = PlatformDetails[platform];
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Modal.Header>
                 <Text weight='bold'>{`Create a ${isDemo ? Category.DEMO : Category.REAL} ${
                     PlatformDetails.mt5.title
@@ -44,7 +44,7 @@ const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) =>
             <Modal.Footer>
                 <MT5PasswordFooter password={password} />
             </Modal.Footer>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

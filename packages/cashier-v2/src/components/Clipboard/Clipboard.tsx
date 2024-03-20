@@ -26,6 +26,7 @@ const Clipboard: React.FC<TProps> = ({ popoverAlignment, textCopy }) => {
 
     useEffect(() => {
         return () => clearTimeout(timeoutClipboard);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

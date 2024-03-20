@@ -101,7 +101,8 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
     >;
 
     const mobileRowRenderer: React.ComponentProps<typeof DataList>['rowRenderer'] = ({ row, is_footer }) => {
-        const duration_type = /^(MULTUP|MULTDOWN)/.test(row?.shortcode) ? '' : row?.duration_type;
+        const duration_type = row?.duration_type;
+        const formatted_duration_type = duration_type ? duration_type[0].toUpperCase() + duration_type.slice(1) : '';
         const duration_classname = duration_type ? `duration-type__${duration_type.toLowerCase()}` : '';
 
         if (is_footer) {
@@ -128,7 +129,7 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
                     <DataList.Cell row={row} column={columns_map.action_type as TDataListCell['column']} />
                     <div className={classNames('duration-type', duration_classname)}>
                         <div className={classNames('duration-type__background', `${duration_classname}__background`)} />
-                        <span className={`${duration_classname}__label`}>{localize(duration_type)}</span>
+                        <span className={`${duration_classname}__label`}>{formatted_duration_type}</span>
                     </div>
                 </div>
                 <div className='data-list__row'>

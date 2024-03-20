@@ -1,5 +1,5 @@
 import React from 'react';
-import { useModal } from '@/providers';
+import { useQueryParams } from '@/hooks';
 import { usePOA, usePOI } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 
@@ -16,7 +16,7 @@ const reasons = ['Document details do not match profile details', 'Expired docum
  */
 
 const VerificationFailed = () => {
-    const { hide } = useModal();
+    const { closeModal } = useQueryParams();
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
 
@@ -43,7 +43,7 @@ const VerificationFailed = () => {
                 Click <strong>Resubmit documents</strong> to find out more and submit your documents again.
             </Text>
             <div className='flex justify-end gap-8'>
-                <Button color='black' onClick={() => hide()} variant='outlined'>
+                <Button color='black' onClick={() => closeModal()} variant='outlined'>
                     Maybe later
                 </Button>
                 <Button>Resubmit documents</Button>

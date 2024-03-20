@@ -3,6 +3,14 @@ import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import OrdersTableRow from '../OrdersTableRow';
 
+jest.mock('use-query-params', () => ({
+    ...jest.requireActual('use-query-params'),
+    useQueryParams: jest.fn().mockReturnValue([
+        {},
+        jest.fn(), // setQuery
+    ]),
+}));
+
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: () => ({ isMobile: false }),

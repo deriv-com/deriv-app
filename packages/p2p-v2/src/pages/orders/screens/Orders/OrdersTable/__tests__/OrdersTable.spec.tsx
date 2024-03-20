@@ -4,6 +4,14 @@ import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import OrdersTable from '../OrdersTable';
 
+jest.mock('use-query-params', () => ({
+    ...jest.requireActual('use-query-params'),
+    useQueryParams: jest.fn().mockReturnValue([
+        {},
+        jest.fn(), // setQuery
+    ]),
+}));
+
 const mockProps = {
     data: [],
     isActive: true,

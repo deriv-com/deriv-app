@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import { useSettings } from '@deriv/api-v2';
 import { GetSettings } from '@deriv/api-types';
 
 export const getPersonalDetailsBaseValidationSchema = () => {

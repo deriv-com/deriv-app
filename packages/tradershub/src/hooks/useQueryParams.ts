@@ -17,6 +17,7 @@ type ModalId =
     | 'RealAccountCreation'
     | 'RegulationModal'
     | 'SentEmailContentModal'
+    | 'Signup'
     | 'TopUpModal'
     | 'TradeModal'
     | 'VerificationFailedModal';

@@ -6,7 +6,7 @@
     overflow-y: auto;
 
     @include mobile {
-        height: unset;
+        height: 100%;
     }
     &__date {
         margin-top: 1.6rem;

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { Regulation } from '@/constants';
 import { useUIContext } from '@/providers';
 import { useActiveTradingAccount, useAuthorize, useIsDIELEnabled, useTradingAccountsList } from '@deriv/api-v2';
+import useQueryParams from './useQueryParams';
+import useRegulationFlags from './useRegulationFlags';
 
 const accountTypes = [
     { label: 'Demo', value: 'demo' },
@@ -29,6 +31,9 @@ const useAccountSwitcher = () => {
     const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
     const { data: isDIEL } = useIsDIELEnabled();
 
+    const { isEU } = useRegulationFlags();
+    const { openModal } = useQueryParams();
+
     useEffect(() => {
         if (isDIEL && activeAccountType === accountTypes[0].value) {
             setUIState({
@@ -55,8 +60,13 @@ const useAccountSwitcher = () => {
             if (loginId) {
                 switchAccount(loginId);
             }
+
+            // Open the RealAccountCreation modal if the user is in the EU and is switching to a real account
+            if (isEU && openModal && account.value === 'real') {
+                openModal('RealAccountCreation');
+            }
         },
-        [demoLoginId, firstRealLoginId, setUIState, switchAccount]
+        [demoLoginId, firstRealLoginId, isEU, openModal, setUIState, switchAccount]
     );
 
     return {

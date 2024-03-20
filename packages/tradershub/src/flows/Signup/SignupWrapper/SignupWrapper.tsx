@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
 import ReactModal from 'react-modal';
 import { CUSTOM_STYLES } from '@/helpers';
+import { useQueryParams } from '@/hooks';
 import { signup } from '@/utils';
 import { SignupScreens } from '../SignupScreens';
 
@@ -12,8 +13,8 @@ export type TSignupFormValues = {
 };
 
 const SignupWrapper = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [step, setStep] = useState(1);
+    const { openModal, isModalOpen } = useQueryParams();
 
     const initialValues = {
         country: '',
@@ -23,13 +24,18 @@ const SignupWrapper = () => {
 
     const handleSubmit = () => {
         // logic will be added later
-        setIsOpen(false);
+        openModal('RealAccountCreation');
     };
 
     const customStyles = { ...CUSTOM_STYLES, content: { ...CUSTOM_STYLES.content, overflow: 'unset' } };
 
     return (
-        <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={customStyles}>
+        <ReactModal
+            ariaHideApp={false}
+            isOpen={isModalOpen('Signup')}
+            shouldCloseOnOverlayClick={false}
+            style={customStyles}
+        >
             <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signup}>
                 <Form>
                     <SignupScreens setStep={setStep} step={step} />

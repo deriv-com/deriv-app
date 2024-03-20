@@ -38,23 +38,27 @@ const Switcher = ({ is_deriv_platform }: TSwitcherProps) => {
     return <CurrencySwitcherCard />;
 };
 
-const ListingContainer = ({
-    title,
-    description,
-    is_deriv_platform = false,
-    is_outside_grid_container,
-    children,
-    className,
-}: TListingContainerProps & Omit<HTMLAttributes<HTMLDivElement>, 'title'>) => {
-    return (
-        <div className={classNames('listing-container', className)}>
-            <div className='listing-container__top-container'>
-                <Options title={title} description={description} is_deriv_platform={is_deriv_platform} />
-                <Switcher is_deriv_platform={is_deriv_platform} />
+const ListingContainer = React.memo(
+    ({
+        title,
+        description,
+        is_deriv_platform = false,
+        is_outside_grid_container,
+        children,
+        className,
+    }: TListingContainerProps & Omit<HTMLAttributes<HTMLDivElement>, 'title'>) => {
+        return (
+            <div className={classNames('listing-container', className)}>
+                <div className='listing-container__top-container'>
+                    <Options title={title} description={description} is_deriv_platform={is_deriv_platform} />
+                    <Switcher is_deriv_platform={is_deriv_platform} />
+                </div>
+                {is_outside_grid_container ? children : <GridContainer>{children}</GridContainer>}
             </div>
-            {is_outside_grid_container ? children : <GridContainer>{children}</GridContainer>}
-        </div>
-    );
-};
+        );
+    }
+);
+
+ListingContainer.displayName = 'ListingContainer';
 
 export default ListingContainer;

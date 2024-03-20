@@ -2,7 +2,6 @@ import { renderHook, cleanup } from '@testing-library/react-hooks';
 import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import useExtendedTransferBetweenAccounts from '../useExtendedTransferAccounts';
 import { THooks } from '../../../../hooks/types';
-import { getMarketType } from '../../../../helpers';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),

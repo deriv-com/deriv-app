@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { THooks } from '../../../hooks/types';
 
@@ -61,33 +62,39 @@ const sortedCryptoDerivAccounts = (accounts: THooks.TransferAccounts, getConfig:
     - sorts the crypto accounts alphabetically
 */
 const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccounts) => {
-    // console.log('=> hook - accounts', accounts);
     const { data: activeAccount, isLoading: isActiveAccountLoading } = useActiveAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     const isLoading = !accounts || isActiveAccountLoading || isCurrencyConfigLoading;
 
-    const extendedTransferableAccounts = !isLoading
-        ? [
-              ...sortedMT5Accounts(accounts, getConfig),
-              ...derivCTrader(accounts, getConfig),
-              ...derivXAccount(accounts, getConfig),
-              ...fiatDerivAccounts(accounts, getConfig),
-              ...sortedCryptoDerivAccounts(accounts, getConfig),
-          ]
-        : [];
+    const extendedTransferableAccounts = useMemo(
+        () =>
+            !isLoading
+                ? [
+                      ...sortedMT5Accounts(accounts, getConfig),
+                      ...derivCTrader(accounts, getConfig),
+                      ...derivXAccount(accounts, getConfig),
+                      ...fiatDerivAccounts(accounts, getConfig),
+                      ...sortedCryptoDerivAccounts(accounts, getConfig),
+                  ]
+                : [],
+        [accounts, isLoading, getConfig]
+    );
 
-    const transferableActiveAccount =
-        !!extendedTransferableAccounts || !isLoading
-            ? extendedTransferableAccounts?.find((account: typeof extendedTransferableAccounts[number]) => {
-                  if (account.loginid === activeAccount?.loginid) {
-                      return {
-                          ...activeAccount,
-                          currencyConfig: activeAccount?.currency ? getConfig(activeAccount.currency) : undefined,
-                      };
-                  }
-              })
-            : undefined;
+    const transferableActiveAccount = useMemo(
+        () =>
+            !!extendedTransferableAccounts || !isLoading
+                ? extendedTransferableAccounts?.find((account: typeof extendedTransferableAccounts[number]) => {
+                      if (account.loginid === activeAccount?.loginid) {
+                          return {
+                              ...activeAccount,
+                              currencyConfig: activeAccount?.currency ? getConfig(activeAccount.currency) : undefined,
+                          };
+                      }
+                  })
+                : undefined,
+        [activeAccount, extendedTransferableAccounts, getConfig, isLoading]
+    );
 
     return {
         accounts: extendedTransferableAccounts,

@@ -3,9 +3,59 @@ import { config, importExternal } from '@deriv/bot-skeleton';
 import { getLanguage, localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { button_status } from 'Constants/button-status';
+import RootStore from './root-store';
 
-export default class GoogleDriveStore {
-    constructor(root_store) {
+export type TErrorWithStatus = Error & { status?: number };
+
+export type TFileOptions = {
+    content: string;
+    mimeType: string;
+    name: string;
+};
+
+export type TPickerCallbackResponse = {
+    action: string;
+    docs: { id: string; name: string }[];
+};
+
+export interface IGoogleDriveStore {
+    is_authorised: boolean;
+    updateSigninStatus: (is_signed_in: boolean) => void;
+    saveFile: (options: { content: string; mimeType: string; name: string }) => Promise<void>;
+    loadFile: () => Promise<unknown>;
+    setKey: () => void;
+    initialise: () => void;
+    signIn: () => void;
+    signOut: () => void;
+    getPickerLanguage: () => string;
+    checkFolderExists: () => Promise<void>;
+    createSaveFilePicker: (
+        mime_type: string,
+        title: string,
+        options: { content: string; mimeType: string; name: string }
+    ) => Promise<void>;
+    createLoadFilePicker: (mime_type: string, title: string) => Promise<unknown>;
+    showGoogleDriveFilePicker: (
+        is_save: boolean,
+        mime_type: string,
+        title: string,
+        callback: (data: TPickerCallbackResponse) => void
+    ) => void;
+}
+
+export default class GoogleDriveStore implements IGoogleDriveStore {
+    root_store: RootStore;
+    bot_folder_name: string;
+    client_id: string | undefined;
+    app_id: string | undefined;
+    api_key: string | undefined;
+    scope: string | undefined;
+    discovery_docs = '';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    client: any;
+    access_token: string;
+
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             is_authorised: observable,
             updateSigninStatus: action.bound,
@@ -24,10 +74,9 @@ export default class GoogleDriveStore {
 
         this.root_store = root_store;
         this.bot_folder_name = `Binary Bot - ${localize('Strategies')}`;
-        this.google_auth = null;
         this.setKey();
         this.client = null;
-        this.access_token = localStorage.getItem('google_access_token') || '';
+        this.access_token = localStorage.getItem('google_access_token') ?? '';
         importExternal('https://accounts.google.com/gsi/client').then(() => this.initialiseClient());
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
@@ -35,12 +84,12 @@ export default class GoogleDriveStore {
     is_authorised = !!localStorage.getItem('google_access_token');
 
     setKey = () => {
-        const { scope, discovery_docs } = config.gd;
+        const { SCOPE, DISCOVERY_DOCS } = config.GOOGLE_DRIVE;
         this.client_id = process.env.GD_CLIENT_ID;
         this.app_id = process.env.GD_APP_ID;
         this.api_key = process.env.GD_API_KEY;
-        this.scope = scope;
-        this.discovery_docs = discovery_docs;
+        this.scope = SCOPE;
+        this.discovery_docs = DISCOVERY_DOCS;
     };
 
     initialise = () => {
@@ -51,7 +100,7 @@ export default class GoogleDriveStore {
         this.client = google.accounts.oauth2.initTokenClient({
             client_id: this.client_id,
             scope: this.scope,
-            callback: response => {
+            callback: (response: { access_token: string; error?: TErrorWithStatus }) => {
                 if (response?.access_token && !response?.error) {
                     this.access_token = response.access_token;
                     this.updateSigninStatus(true);
@@ -61,20 +110,20 @@ export default class GoogleDriveStore {
         });
     };
 
-    updateSigninStatus(is_signed_in) {
+    updateSigninStatus(is_signed_in: boolean) {
         this.is_authorised = is_signed_in;
     }
 
-    signIn() {
+    async signIn() {
         if (!this.is_authorised) {
-            this.client.requestAccessToken();
+            await this.client.requestAccessToken();
         }
     }
 
-    signOut() {
+    async signOut() {
         if (this.access_token) {
-            gapi.client.setToken('');
-            google.accounts.oauth2.revoke(this.access_token);
+            await gapi.client.setToken({ access_token: '' });
+            await google.accounts.oauth2.revoke(this.access_token);
             localStorage.removeItem('google_access_token');
             this.access_token = '';
         }
@@ -93,14 +142,14 @@ export default class GoogleDriveStore {
         return language;
     }
 
-    async saveFile(options) {
+    async saveFile(options: TFileOptions) {
         try {
             await this.signIn();
             if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
             await this.checkFolderExists();
             await this.createSaveFilePicker('application/vnd.google-apps.folder', localize('Select a folder'), options);
         } catch (err) {
-            if (err.status === 401) {
+            if ((err as TErrorWithStatus).status === 401) {
                 this.signOut();
             }
         }
@@ -116,18 +165,19 @@ export default class GoogleDriveStore {
                 fields: 'files(id, name)',
             });
         } catch (err) {
-            if (err?.status === 401) {
+            if ((err as TErrorWithStatus)?.status === 401) {
                 await this.signOut();
-                setTimeout(() => {
-                    const picker = document.getElementsByClassName('picker-dialog-content')[0];
-                    picker.parentNode.removeChild(picker);
-                    const pickerBackground = document.getElementsByClassName('picker-dialog-bg');
-                    if (pickerBackground.length) {
-                        for (let i = 0; i < pickerBackground.length; i++) {
-                            pickerBackground[i].style.display = 'none';
-                        }
+                const picker = document.getElementsByClassName('picker-dialog-content')[0] as HTMLElement;
+                picker?.parentNode?.removeChild(picker);
+                const pickerBackground = document.getElementsByClassName(
+                    'picker-dialog-bg'
+                ) as HTMLCollectionOf<HTMLElement>;
+
+                if (pickerBackground.length) {
+                    for (let i = 0; i < pickerBackground.length; i++) {
+                        pickerBackground[i].style.display = 'none';
                     }
-                }, 500);
+                }
             }
         }
 
@@ -143,7 +193,7 @@ export default class GoogleDriveStore {
         const { files } = gapi.client.drive;
         const response = await files.list({ q: 'trashed=false' });
         const mime_type = 'application/vnd.google-apps.folder';
-        const folder = response.result.files.find(file => file.mimeType === mime_type);
+        const folder = response.result.files?.find(file => file.mimeType === mime_type);
 
         if (folder) {
             return;
@@ -153,15 +203,15 @@ export default class GoogleDriveStore {
             resource: {
                 name: this.bot_folder_name,
                 mimeType: mime_type,
-                fields: 'id',
             },
+            fields: 'id',
         });
     }
 
-    createSaveFilePicker(mime_type, title, options) {
+    createSaveFilePicker(mime_type: string, title: string, options: TFileOptions) {
         const { setButtonStatus } = this.root_store.save_modal;
-        return new Promise(resolve => {
-            const savePickerCallback = data => {
+        return new Promise<void>(resolve => {
+            const savePickerCallback = (data: TPickerCallbackResponse) => {
                 if (data.action === google.picker.Action.PICKED) {
                     const folder_id = data.docs[0].id;
                     const strategy_file = new Blob([options.content], { type: options.mimeType });
@@ -197,9 +247,9 @@ export default class GoogleDriveStore {
         });
     }
 
-    createLoadFilePicker(mime_type, title) {
+    createLoadFilePicker(mime_type: string, title: string) {
         return new Promise(resolve => {
-            const loadPickerCallback = async data => {
+            const loadPickerCallback = async (data: TPickerCallbackResponse) => {
                 if (data.action === google.picker.Action.PICKED) {
                     const file = data.docs[0];
                     const file_name = file.name;
@@ -210,7 +260,6 @@ export default class GoogleDriveStore {
                     const response = await files.get({
                         alt: 'media',
                         fileId,
-                        mimeType: 'text/plain',
                     });
 
                     resolve({ xml_doc: response.body, file_name });
@@ -222,7 +271,12 @@ export default class GoogleDriveStore {
         });
     }
 
-    showGoogleDriveFilePicker(is_save, mime_type, title, callback) {
+    showGoogleDriveFilePicker(
+        is_save: boolean,
+        mime_type: string,
+        title: string,
+        callback: (data: TPickerCallbackResponse) => void
+    ) {
         const docs_view = new google.picker.DocsView();
         docs_view.setIncludeFolders(true);
         docs_view.setMimeTypes(mime_type);

@@ -6,7 +6,7 @@ import { OrdersEmpty } from '../OrdersEmpty';
 import { OrdersTableRow } from '../OrdersTableRow';
 import './OrdersTable.scss';
 
-type TOrdersTableRowRendererProps = THooks.Order.GetList[0];
+type TOrdersTableRowRendererProps = THooks.Order.GetList[number];
 
 const OrdersTableRowRenderer = memo((values: TOrdersTableRowRendererProps) => <OrdersTableRow {...values} />);
 OrdersTableRowRenderer.displayName = 'OrdersTableRowRenderer';

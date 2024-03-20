@@ -13,7 +13,6 @@ module.exports = {
     plugins: ['eslint-plugin-local-rules', 'simple-import-sort', 'sort-destructure-keys', 'typescript-sort-keys'],
     root: true,
     rules: {
-        '@typescript-eslint/no-namespace': 'off',
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': 'error',

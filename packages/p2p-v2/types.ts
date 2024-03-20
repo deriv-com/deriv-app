@@ -28,7 +28,7 @@ export type TSelectedPaymentMethod = Partial<{
     method: THooks.AdvertiserPaymentMethods.Get[number]['method'];
 }>;
 
-export type TAdvertsTableRowRenderer = Partial<THooks.Advert.GetList[0]>;
+export type TAdvertsTableRowRenderer = Partial<THooks.Advert.GetList[number]>;
 
 type NonUndefinedValues<T> = {
     [K in keyof T]-?: Exclude<T[K], undefined>;

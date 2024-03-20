@@ -62,6 +62,7 @@ export default class ToolbarStore implements IToolbarStore {
     };
 
     onResetOkButtonClick = (): void => {
+        this.setResetButtonState(true);
         runGroupedEvents(
             false,
             () => {
@@ -70,11 +71,6 @@ export default class ToolbarStore implements IToolbarStore {
             'reset'
         );
         this.is_dialog_open = false;
-        const { run_panel } = this.root_store;
-        const { is_running } = run_panel;
-        if (is_running) {
-            this.is_reset_button_clicked = true;
-        }
     };
 
     resetDefaultStrategy = async () => {
@@ -90,6 +86,7 @@ export default class ToolbarStore implements IToolbarStore {
             showIncompatibleStrategyDialog: null,
         });
         workspace.strategy_to_load = workspace.cached_xml.main;
+        this.setResetButtonState(false);
     };
 
     onSortClick = () => {

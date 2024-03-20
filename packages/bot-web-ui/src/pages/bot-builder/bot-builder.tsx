@@ -17,11 +17,13 @@ import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
     const { ui } = useStore();
-    const { dashboard, app, run_panel, toolbar, quick_strategy } = useDBotStore();
+    const { dashboard, app, run_panel, toolbar, quick_strategy, blockly_store } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy;
     const { is_running } = run_panel;
+    const { is_loading } = blockly_store;
     const is_blockly_listener_registered = React.useRef(false);
+    const is_blockly_delete_listener_registered = React.useRef(false);
     const { is_mobile } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
@@ -73,12 +75,11 @@ const BotBuilder = observer(() => {
     }, [is_running]);
 
     const handleBlockChangeOnBotRun = (e: Event) => {
-        const { is_reset_button_clicked, setResetButtonState } = toolbar;
+        const { is_reset_button_clicked } = toolbar;
         if (e.type !== 'ui' && !is_reset_button_clicked) {
             botNotification(notification_message.workspace_change);
             removeBlockChangeListener();
         } else if (is_reset_button_clicked) {
-            setResetButtonState(false);
             removeBlockChangeListener();
         }
     };
@@ -90,22 +91,24 @@ const BotBuilder = observer(() => {
 
     React.useEffect(() => {
         const workspace = window.Blockly?.derivWorkspace;
-        if (workspace && !is_blockly_listener_registered.current && active_tab === DBOT_TABS.BOT_BUILDER) {
-            is_blockly_listener_registered.current = true;
+        if (workspace && !is_blockly_delete_listener_registered.current) {
+            is_blockly_delete_listener_registered.current = true;
             workspace.addChangeListener(handleBlockDelete);
-        } else {
-            removeBlockDeleteListener();
         }
 
         return () => {
-            if (workspace && is_blockly_listener_registered.current) {
+            if (workspace && is_blockly_delete_listener_registered.current) {
                 removeBlockDeleteListener();
             }
         };
-    }, [active_tab]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_loading, active_tab]);
 
     const handleBlockDelete = (e: Event) => {
-        if (e.type === 'delete') {
+        if (active_tab !== DBOT_TABS.BOT_BUILDER) return;
+        const { is_reset_button_clicked } = toolbar;
+
+        if (e.type === 'delete' && !is_reset_button_clicked) {
             botNotification(notification_message.block_delete, {
                 label: localize('Undo'),
                 onClick: () => {
@@ -116,7 +119,7 @@ const BotBuilder = observer(() => {
     };
 
     const removeBlockDeleteListener = () => {
-        is_blockly_listener_registered.current = false;
+        is_blockly_delete_listener_registered.current = false;
         window.Blockly?.derivWorkspace?.removeChangeListener(handleBlockDelete);
     };
 

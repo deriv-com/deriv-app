@@ -4,7 +4,6 @@ import {
     useActiveWalletAccount,
     useAvailableMT5Accounts,
     useCreateMT5Account,
-    useMT5AccountsList,
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api-v2';
@@ -48,15 +47,15 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const { data: accountStatusData } = useAccountStatus();
     const { data: activeWalletData } = useActiveWalletAccount();
     const { data: availableMT5AccountsData } = useAvailableMT5Accounts();
+    const { data: accountStatus } = useAccountStatus();
     const { isMobile } = useDevice();
-    const { data: mt5AccountsListData } = useMT5AccountsList();
     const { getModalState, hide, show } = useModal();
     const { data: settingsData } = useSettings();
 
     const [password, setPassword] = useState('');
 
     const isMT5PasswordNotSet = accountStatusData?.is_mt5_password_not_set;
-    const hasMT5Account = mt5AccountsListData?.find(account => account.login);
+    const hasMT5Account = accountStatus?.is_mt5_password_not_set;
     const isDemo = activeWalletData?.is_virtual;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
     const { platform: mt5Platform, title: mt5Title } = PlatformDetails.mt5;

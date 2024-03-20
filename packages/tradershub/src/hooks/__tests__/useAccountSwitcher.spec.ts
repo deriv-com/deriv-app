@@ -12,7 +12,17 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 jest.mock('@/providers', () => ({
-    useUIContext: jest.fn(),
+    useUIContext: jest.fn().mockReturnValue({ setUIState: jest.fn(), uiState: {} }),
+}));
+
+jest.mock('../useRegulationFlags', () => ({
+    __esModule: true,
+    default: jest.fn().mockReturnValue({ isEU: false }),
+}));
+
+jest.mock('../useQueryParams', () => ({
+    __esModule: true,
+    default: jest.fn().mockReturnValue({ openModal: jest.fn() }),
 }));
 
 describe('useAccountSwitcher', () => {

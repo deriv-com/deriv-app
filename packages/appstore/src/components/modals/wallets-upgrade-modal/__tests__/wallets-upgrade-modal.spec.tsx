@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useWalletMigration } from '@deriv/api';
+import { useWalletMigration } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import WalletsUpgradeModal from '../wallets-upgrade-modal';
 

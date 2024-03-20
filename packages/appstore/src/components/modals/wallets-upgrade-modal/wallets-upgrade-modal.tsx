@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWalletMigration } from '@deriv/api';
+import { useWalletMigration } from '@deriv/hooks';
 import { Text, Button, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';

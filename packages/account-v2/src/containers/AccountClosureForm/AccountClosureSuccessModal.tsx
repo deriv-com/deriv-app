@@ -9,10 +9,14 @@ type TAccountClosureSuccessModalProps = {
 export const AccountClosureSuccessModal = ({ handleClose, isModalOpen }: TAccountClosureSuccessModalProps) => (
     <Modal
 <<<<<<< HEAD
+<<<<<<< HEAD
         className='p-24 md:w-[440px] sm:w-[312px]'
 =======
         className='p-24 w-[440px] sm:w-[312px]'
 >>>>>>> b05e4b4dcb ([account-v2]/likhith/COJ-667/Create account-closure-form and modal (#14208))
+=======
+        className='p-24 md:w-[440px] sm:w-[312px]'
+>>>>>>> c55632cbd1 ([account-v2]/likhith/chore: updated quill package and incorporated the changes (#14246))
         isOpen={isModalOpen}
         onRequestClose={handleClose}
         shouldCloseOnEsc

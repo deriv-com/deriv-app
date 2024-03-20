@@ -57,15 +57,19 @@ describe('useExtendedTransferBetweenAccounts', () => {
     });
     afterEach(cleanup);
 
-    it('should return the all the accounts in the correct order', async () => {
-        const { result } = await renderHook(() => useExtendedTransferBetweenAccounts(mockUnorderedTransferAccounts));
+    it('should return the correct authorized account', () => {
+        const { result } = renderHook(() => useExtendedTransferBetweenAccounts(mockUnorderedTransferAccounts));
+        expect(result.current.activeAccount?.loginid).toEqual('CR4');
+    });
+
+    it('should return the all the accounts in the correct order', () => {
+        const { result } = renderHook(() => useExtendedTransferBetweenAccounts(mockUnorderedTransferAccounts));
         const order = ['CR1', 'CR2', 'CR3', 'CR4', 'CR5', 'CR6'];
-        console.log('=>', result.current.accounts);
         expect(result.current.accounts.map(account => account.loginid)).toEqual(order);
     });
 
-    it('should check if all the accounts contain the correct currency config data', async () => {
-        const { result } = await renderHook(() => useExtendedTransferBetweenAccounts(mockUnorderedTransferAccounts));
+    it('should check if all the accounts contain the correct currency config data', () => {
+        const { result } = renderHook(() => useExtendedTransferBetweenAccounts(mockUnorderedTransferAccounts));
         const mockExpectedTransferAccounts = [
             {
                 account_type: 'mt5',
@@ -128,7 +132,6 @@ describe('useExtendedTransferBetweenAccounts', () => {
                 },
             },
         ];
-        console.log('=>', result.current.accounts);
         expect(result.current.accounts).toEqual(mockExpectedTransferAccounts);
     });
 });

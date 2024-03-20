@@ -67,34 +67,21 @@ const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccounts) =
 
     const isLoading = !accounts || isActiveAccountLoading || isCurrencyConfigLoading;
 
-    const extendedTransferableAccounts = useMemo(
-        () =>
-            !isLoading
-                ? [
-                      ...sortedMT5Accounts(accounts, getConfig),
-                      ...derivCTrader(accounts, getConfig),
-                      ...derivXAccount(accounts, getConfig),
-                      ...fiatDerivAccounts(accounts, getConfig),
-                      ...sortedCryptoDerivAccounts(accounts, getConfig),
-                  ]
-                : [],
-        [accounts, isLoading, getConfig]
-    );
+    const extendedTransferableAccounts = useMemo(() => {
+        if (isLoading) return [];
 
-    const transferableActiveAccount = useMemo(
-        () =>
-            !!extendedTransferableAccounts || !isLoading
-                ? extendedTransferableAccounts?.find((account: typeof extendedTransferableAccounts[number]) => {
-                      if (account.loginid === activeAccount?.loginid) {
-                          return {
-                              ...activeAccount,
-                              currencyConfig: activeAccount?.currency ? getConfig(activeAccount.currency) : undefined,
-                          };
-                      }
-                  })
-                : undefined,
-        [activeAccount, extendedTransferableAccounts, getConfig, isLoading]
-    );
+        return [
+            ...sortedMT5Accounts(accounts, getConfig),
+            ...derivCTrader(accounts, getConfig),
+            ...derivXAccount(accounts, getConfig),
+            ...fiatDerivAccounts(accounts, getConfig),
+            ...sortedCryptoDerivAccounts(accounts, getConfig),
+        ];
+    }, [accounts, isLoading, getConfig]);
+
+    const transferableActiveAccount = useMemo(() => {
+        return extendedTransferableAccounts.find(account => account.loginid === activeAccount?.loginid);
+    }, [activeAccount, extendedTransferableAccounts]);
 
     return {
         accounts: extendedTransferableAccounts,

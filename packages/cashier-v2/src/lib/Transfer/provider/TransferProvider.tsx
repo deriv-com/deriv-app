@@ -31,12 +31,10 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     const {
         accounts: transferAccounts,
         activeAccount: transferActiveAccount,
-        isLoading: isExtendedTransferAccountsLoading,
+        isLoading,
     } = useExtendedTransferAccounts(accounts);
 
     const [transferReceipt, setTransferReceipt] = useState<TTransferReceipt>();
-
-    const isLoading = isExtendedTransferAccountsLoading;
 
     return (
         <TransferContext.Provider

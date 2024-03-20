@@ -81,6 +81,10 @@
                         display: flex;
                         flex-direction: column;
                         align-items: flex-start;
+
+                        li::marker {
+                            color: var(--text-general);
+                        }
                     }
                 }
             }

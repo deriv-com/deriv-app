@@ -6,16 +6,14 @@ import WalletsUpgradeCoins from './wallets-upgrade-coins.svg';
 import WalletsUpgradeStepOne from './wallets-upgrade-step-one.svg';
 import WalletsUpgradeStepTwo from './wallets-upgrade-step-two.svg';
 
-import WalletsUpgradeUnsuccessfulDesktop from './wallets-upgrade-unsuccessful-desktop.svg';
-import WalletsUpgradeUnsuccessfulMobile from './wallets-upgrade-unsuccessful-mobile.svg';
+import WalletsUpgradeUnsuccessful from './wallets-upgrade-unsuccessful.svg';
 
 export const WalletsImagesList = {
     wallets_upgrade_coins: WalletsUpgradeCoins,
     wallets_upgrade_coins_horizontal: WalletsUpgradeCoinsHorizontal,
     wallets_upgrade_step_one: WalletsUpgradeStepOne,
     wallets_upgrade_step_two: WalletsUpgradeStepTwo,
-    wallets_upgrade_unsuccessful_desktop: WalletsUpgradeUnsuccessfulDesktop,
-    wallets_upgrade_unsuccessful_mobile: WalletsUpgradeUnsuccessfulMobile,
+    wallets_upgrade_unsuccessful: WalletsUpgradeUnsuccessful,
 } as const;
 
 const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKey>) => {

@@ -120,7 +120,8 @@
             right: 8rem;
 
             @include mobile {
-                right: 0;
+                top: -2.6rem;
+                right: -5.35rem;
             }
         }
     }
@@ -143,8 +144,13 @@
 
         &__image {
             position: absolute;
-            right: 0;
-            top: 0;
+            right: 7.5rem;
+            top: 2.2rem;
+
+            @include mobile {
+                right: -3rem;
+                top: 1.5rem;
+            }
         }
     }
 }

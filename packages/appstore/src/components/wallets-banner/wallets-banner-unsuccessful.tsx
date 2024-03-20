@@ -42,7 +42,8 @@ const WalletBannerUnsuccessful = observer(() => {
                 </div>
             </div>
             <WalletsImage
-                image={`wallets_upgrade_unsuccessful_${is_mobile ? 'mobile' : 'desktop'}`}
+                width={is_mobile ? 192 : 272}
+                image='wallets_upgrade_unsuccessful'
                 className='wallets-banner-unsuccessful__image'
             />
         </div>

@@ -3,9 +3,6 @@ import { useGetAccountStatus, useSubscription } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PCompletedOrdersNotification from '../useP2PCompletedOrdersNotification';
-import useIsP2PEnabled from '../useIsP2PEnabled';
-
-jest.mock('../useIsP2PEnabled');
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -50,19 +47,12 @@ describe('useP2PCompletedOrdersNotification', () => {
         const mock = mockStore({
             client: {
                 is_authorize: true,
+                is_p2p_enabled: false,
                 currency: 'EUR',
             },
             notifications: {
                 p2p_completed_orders: [],
             },
-        });
-
-        (useIsP2PEnabled as jest.Mock).mockImplementation(() => {
-            return {
-                is_p2p_enabled: false,
-                is_p2p_enabled_loading: false,
-                is_p2p_enabled_success: false,
-            };
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
@@ -86,19 +76,12 @@ describe('useP2PCompletedOrdersNotification', () => {
         const mock = mockStore({
             client: {
                 is_authorize: true,
+                is_p2p_enabled: true,
                 currency: 'USD',
             },
             notifications: {
                 p2p_completed_orders: [],
             },
-        });
-
-        (useIsP2PEnabled as jest.Mock).mockImplementation(() => {
-            return {
-                is_p2p_enabled: true,
-                is_p2p_enabled_loading: false,
-                is_p2p_enabled_success: false,
-            };
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
@@ -130,19 +113,12 @@ describe('useP2PCompletedOrdersNotification', () => {
         const mock = mockStore({
             client: {
                 is_authorize: true,
+                is_p2p_enabled: true,
                 currency: 'USD',
             },
             notifications: {
                 p2p_completed_orders: [],
             },
-        });
-
-        (useIsP2PEnabled as jest.Mock).mockImplementation(() => {
-            return {
-                is_p2p_enabled: true,
-                is_p2p_enabled_loading: false,
-                is_p2p_enabled_success: false,
-            };
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
@@ -238,14 +214,6 @@ describe('useP2PCompletedOrdersNotification', () => {
             },
             subscribe: jest.fn(),
             unsubscribe: jest.fn(),
-        });
-
-        (useIsP2PEnabled as jest.Mock).mockImplementation(() => {
-            return {
-                is_p2p_enabled: true,
-                is_p2p_enabled_loading: false,
-                is_p2p_enabled_success: false,
-            };
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

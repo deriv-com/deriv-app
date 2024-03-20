@@ -37,8 +37,9 @@ const WalletCard: React.FC<TProps> = ({
                     type='card'
                 >
                     <div
-                        className={classNames('wallets-card__details', {
+                        className={classNames({
                             'wallets-card__carousel-content-details': isCarouselContent,
+                            'wallets-card__details': !isCarouselContent,
                         })}
                         data-testid='dt_wallet_card_details'
                     >

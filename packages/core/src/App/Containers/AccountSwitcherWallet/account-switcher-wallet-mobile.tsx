@@ -28,8 +28,8 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
         history.push(routes.traders_hub);
     };
 
-    // TODO: Add redirection here
-    const handleManageFundsRedirect = async () => {
+    const handleManageFundsRedirect = () => {
+        closeAccountsDialog();
         history.push(routes.wallets_transfer);
     };
 

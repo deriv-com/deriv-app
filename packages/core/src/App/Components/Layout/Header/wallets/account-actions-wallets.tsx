@@ -25,7 +25,7 @@ const AccountActionsWallets = observer(() => {
 
     const history = useHistory();
 
-    const handleManageFundsRedirect = async () => {
+    const handleManageFundsRedirect = () => {
         history.push(routes.wallets_transfer);
     };
 

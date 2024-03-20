@@ -14,7 +14,7 @@ describe('PaymentAgentCardDescription', () => {
             paymentAgent: {
                 further_information: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
                 name: 'Payment agent name',
-                supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Ethereum' }],
+                supported_payment_methods: [{ payment_method: 'Card' }, { payment_method: 'Diamondbank' }],
                 urls: [{ url: 'https://url1.com' }, { url: 'https://url2.com' }],
             },
         };

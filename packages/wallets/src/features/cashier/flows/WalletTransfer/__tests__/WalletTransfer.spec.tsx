@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import { CashierLocked, SystemMaintenance } from '../../../modules';
+import { CashierLocked } from '../../../modules';
 import WalletTransfer from '../WalletTransfer';
 
 jest.mock('../../../../../components', () => ({
@@ -41,11 +41,7 @@ const mockUseTransferBetweenAccounts = useTransferBetweenAccounts as jest.Mocked
     typeof useTransferBetweenAccounts
 >;
 
-const wrapper = ({ children }: PropsWithChildren) => (
-    <SystemMaintenance>
-        <CashierLocked>{children}</CashierLocked>
-    </SystemMaintenance>
-);
+const wrapper = ({ children }: PropsWithChildren) => <CashierLocked>{children}</CashierLocked>;
 
 describe('WalletTransfer', () => {
     it('should show the loader if the API response has not yet arrived', () => {

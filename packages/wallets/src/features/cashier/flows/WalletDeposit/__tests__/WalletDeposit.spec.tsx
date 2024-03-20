@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import { CashierLocked, DepositLocked, SystemMaintenance } from '../../../modules';
+import { CashierLocked, DepositLocked } from '../../../modules';
 import WalletDeposit from '../WalletDeposit';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -17,11 +17,9 @@ jest.mock('../../../modules', () => ({
 }));
 
 const wrapper = ({ children }: PropsWithChildren) => (
-    <SystemMaintenance>
-        <CashierLocked>
-            <DepositLocked>{children}</DepositLocked>
-        </CashierLocked>
-    </SystemMaintenance>
+    <CashierLocked>
+        <DepositLocked>{children}</DepositLocked>
+    </CashierLocked>
 );
 
 describe('WalletDeposit', () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { CashierLocked, FiatOnRampModule, SystemMaintenance } from '../../modules';
+import { CashierLocked, FiatOnRampModule } from '../../modules';
 
 const WalletFiatOnRamp = () => {
     const { data } = useActiveWalletAccount();
@@ -17,11 +17,9 @@ const WalletFiatOnRamp = () => {
     }, [history, isCrypto]);
 
     return (
-        <SystemMaintenance isDeposit>
-            <CashierLocked>
-                <FiatOnRampModule />
-            </CashierLocked>
-        </SystemMaintenance>
+        <CashierLocked module='deposit'>
+            <FiatOnRampModule />
+        </CashierLocked>
     );
 };
 

@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import { CashierLocked, SystemMaintenance } from '../../../modules';
+import { CashierLocked } from '../../../modules';
 import WalletFiatOnRamp from '../WalletFiatOnRamp';
 
 jest.mock('../../../modules', () => ({
@@ -22,11 +22,7 @@ jest.mock('react-router-dom', () => ({
 const mockUseActiveWalletAccount = useActiveWalletAccount as jest.Mock;
 const mockUseHistory = useHistory as jest.Mock;
 
-const wrapper = ({ children }: PropsWithChildren) => (
-    <SystemMaintenance>
-        <CashierLocked>{children}</CashierLocked>
-    </SystemMaintenance>
-);
+const wrapper = ({ children }: PropsWithChildren) => <CashierLocked>{children}</CashierLocked>;
 
 describe('WalletFiatOnRamp', () => {
     beforeEach(() => {

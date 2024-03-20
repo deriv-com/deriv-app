@@ -13,7 +13,7 @@ const Orders = () => {
     const orderId = new URLSearchParams(location.search).get('order');
     const { queryString } = useQueryString();
     const { isMobile } = useDevice();
-    const currentTab = queryString.get('tab') ?? ORDERS_STATUS.ACTIVE_ORDERS;
+    const currentTab = queryString.tab ?? ORDERS_STATUS.ACTIVE_ORDERS;
 
     const {
         data = [],

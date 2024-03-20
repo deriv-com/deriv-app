@@ -12,10 +12,10 @@ import ChatIcon from '../../../../../public/ic-chat.svg';
 import './OrdersTableRow.scss';
 
 const OrdersTableRow = ({ ...props }: TOrders[number]) => {
-    const history = useHistory();
     const { isMobile } = useDevice();
     const { queryString } = useQueryString();
-    const isPast = queryString.get('tab') === ORDERS_STATUS.PAST_ORDERS;
+    const history = useHistory();
+    const isPast = queryString.tab === ORDERS_STATUS.PAST_ORDERS;
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
     const { data: orderDetails } = useExtendedOrderDetails({

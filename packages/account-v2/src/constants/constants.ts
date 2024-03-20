@@ -20,3 +20,5 @@ export const POI_SERVICE = {
     manual: 'manual',
     onfido: 'onfido',
 } as const;
+
+export const ACCOUNT_MODAL_REF = '#account_modal';

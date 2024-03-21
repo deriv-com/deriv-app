@@ -27,15 +27,15 @@ const DepositCrypto: React.FC = observer(() => {
             // side notes for consistency and then we can remove unnecessary components from the children.
             right={is_mobile ? undefined : <DepositCryptoSideNotes />}
         >
-            {/* <DepositCryptoCurrencyDetails />
+            <DepositCryptoCurrencyDetails />
             <DepositCryptoWalletAddress />
-            <Divider /> */}
-            {/* {is_mobile && <DepositCryptoSideNotes />}
-            {is_mobile && <Divider />} */}
+            <Divider />
+            {is_mobile && <DepositCryptoSideNotes />}
+            {is_mobile && <Divider />}
             {/* This should be in the side notes, Need to talk to the design team to change it */}
-            {/* <div style={{ alignSelf: is_mobile ? 'unset' : 'center' }}>
+            <div style={{ alignSelf: is_mobile ? 'unset' : 'center' }}>
                 <DepositCryptoSideNoteTryFiatOnRamp />
-            </div> */}
+            </div>
         </PageContainer>
     );
 });

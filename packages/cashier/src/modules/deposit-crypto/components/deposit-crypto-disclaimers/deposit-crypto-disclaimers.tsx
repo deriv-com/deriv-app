@@ -22,8 +22,6 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
     const { is_mobile } = ui;
     const currency_config = useCurrentCurrencyConfig();
 
-    if (!currency_config) return null;
-
     const minimum_deposit_disclaimer = currency_config?.is_tUSDT ? (
         <Localize
             i18n_default_text='A minimum deposit value of <0>{{minimum_deposit}}</0> {{currency}} is required. Otherwise, a fee is applied.'

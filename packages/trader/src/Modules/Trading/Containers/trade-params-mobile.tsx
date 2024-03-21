@@ -78,11 +78,10 @@ const reducer = (state: TReducer, payload: Partial<TReducer>) => {
     };
 };
 
-const makeGetDefaultDuration = (trade_duration: number, trade_duration_unit: string) => (duration_unit: string) => {
-    return trade_duration_unit === duration_unit
+const makeGetDefaultDuration = (trade_duration: number, trade_duration_unit: string) => (duration_unit: string) =>
+    trade_duration_unit === duration_unit
         ? trade_duration
         : DEFAULT_DURATION[duration_unit as keyof typeof DEFAULT_DURATION];
-};
 
 const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradeParamsModal) => {
     const { client } = useStore();
@@ -239,11 +238,7 @@ const TradeParamsMobile = observer(
             const selected_duration_tab_idx = duration_units_list.findIndex(d => d.value === selected_duration_unit);
             const defaultDuration = makeGetDefaultDuration(0, 'default')(duration_unit);
 
-            if (has_duration_error) {
-                setSelectedDuration(duration_unit, defaultDuration);
-            } else {
-                setSelectedDuration(duration_unit, duration_value);
-            }
+            setSelectedDuration(duration_unit, has_duration_error ? defaultDuration : duration_value);
             if (toggled_duration_tab_idx === -1) setSelectedDuration(selected_duration_unit, defaultDuration);
             setDurationTabIdx(toggled_duration_tab_idx === -1 ? selected_duration_tab_idx : toggled_duration_tab_idx);
         }, [duration_unit]);

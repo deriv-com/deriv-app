@@ -27,7 +27,7 @@ const TradersHubRoute = () => {
 
     return (
         <AppContainer className='flex p-16 lg:p-40 gap-24 align-middle flex-col'>
-            <div className='flex justify-between flex-wrap gap-24 lg:gap-0'>
+            <div className='flex justify-between flex-wrap lg:gap-0'>
                 <TradersHubHeader />
                 {isSwitcherVisible && (isDesktop ? <RegulationSwitcherDesktop /> : <RegulationSwitcherMobile />)}
                 {isTotalAssetsVisible && <TotalAssets />}

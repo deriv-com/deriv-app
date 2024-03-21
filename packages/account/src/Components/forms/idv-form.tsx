@@ -109,8 +109,8 @@ const IDVForm = ({
         setFieldValue('document_type', item, true);
         setSelectedDoc(item?.id);
         if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {
-            setFieldValue('document_number', '', true);
-            setFieldValue('document_additional', '', true);
+            setFieldValue('document_number', '', false);
+            setFieldValue('document_additional', '', false);
         }
     };
 

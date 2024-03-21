@@ -45,6 +45,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     const [is_state_loading, setIsStateLoading] = React.useState(false);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
+
     const {
         client,
         notifications,

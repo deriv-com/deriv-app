@@ -6,11 +6,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup Environment variables
-      run: |
-        echo "REMOTE_CONFIG_URL=${{ inputs.REMOTE_CONFIG_URL }}" >> "$GITHUB_ENV"
-      shell: bash
     - name: Download remote config backup
+      env:
+        REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
       run: |
         echo "Downloading remote config backup"
         curl $REMOTE_CONFIG_URL > packages/api/src/remote_config.json

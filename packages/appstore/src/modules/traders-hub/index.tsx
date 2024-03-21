@@ -12,6 +12,49 @@ import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
 
+const GetOrderedPlatformSections = observer(({ isDesktop = false }: { isDesktop?: boolean }) => {
+    const { traders_hub, client } = useStore();
+    const { is_mt5_allowed } = client;
+    const { selected_platform_type } = traders_hub;
+
+    if (is_mt5_allowed) {
+        return isDesktop ? (
+            <OrderedPlatformSections />
+        ) : (
+            <OrderedPlatformSections
+                is_cfd_visible={selected_platform_type === 'cfd'}
+                is_options_and_multipliers_visible={selected_platform_type === 'options'}
+            />
+        );
+    }
+    return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
+});
+
+const OrderedPlatformSections = observer(
+    ({
+        is_cfd_visible = true,
+        is_options_and_multipliers_visible = true,
+    }: {
+        is_cfd_visible?: boolean;
+        is_options_and_multipliers_visible?: boolean;
+    }) => {
+        const { traders_hub } = useStore();
+        const { is_eu_user } = traders_hub;
+
+        return (
+            <div
+                data-testid='dt_traders_hub'
+                className={classNames('traders-hub__main-container', {
+                    'traders-hub__main-container-reversed': is_eu_user,
+                })}
+            >
+                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
+                {is_cfd_visible && <CFDsListing />}
+            </div>
+        );
+    }
+);
+
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const {
@@ -99,34 +142,6 @@ const TradersHub = observer(() => {
     };
     if (!is_logged_in) return null;
 
-    const OrderedPlatformSections = ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }) => {
-        return (
-            <div
-                data-testid='dt_traders_hub'
-                className={classNames('traders-hub__main-container', {
-                    'traders-hub__main-container-reversed': is_eu_user,
-                })}
-            >
-                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
-                {is_cfd_visible && <CFDsListing />}
-            </div>
-        );
-    };
-
-    const getOrderedPlatformSections = (isDesktop = false) => {
-        if (is_mt5_allowed) {
-            return isDesktop ? (
-                <OrderedPlatformSections />
-            ) : (
-                <OrderedPlatformSections
-                    is_cfd_visible={selected_platform_type === 'cfd'}
-                    is_options_and_multipliers_visible={selected_platform_type === 'options'}
-                />
-            );
-        }
-        return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
-    };
-
     return (
         <React.Fragment>
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
@@ -140,7 +155,9 @@ const TradersHub = observer(() => {
                     ref={traders_hub_ref}
                 >
                     <MainTitleBar />
-                    <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
+                    <DesktopWrapper>
+                        <GetOrderedPlatformSections isDesktop />
+                    </DesktopWrapper>
                     <MobileWrapper>
                         {is_mt5_allowed &&
                             (is_landing_company_loaded ? (
@@ -163,7 +180,7 @@ const TradersHub = observer(() => {
                                 </Text>
                             </div>
                         )}
-                        {getOrderedPlatformSections()}
+                        <GetOrderedPlatformSections />
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Text } from '@deriv-com/ui';
 import { isNavigationFromDerivGO } from '../../utils/platform';
 
-export const AccountClosureSteps = () => {
+export const AccountClosureSteps = ({ handleOnSubmit }: { handleOnSubmit: () => void }) => {
     const shouldDisplayCancelButton = !isNavigationFromDerivGO();
     return (
         <div>
@@ -45,11 +45,18 @@ export const AccountClosureSteps = () => {
             </section>
             <section className='mt-24 flex gap-x-16 justify-end'>
                 {shouldDisplayCancelButton && (
-                    <Button color='black' rounded='sm' size='md' variant='outlined'>
+                    <Button color='black' rounded='sm' size='md' type='button' variant='outlined'>
                         Cancel
                     </Button>
                 )}
-                <Button color='primary' rounded='sm' size='md' variant='contained'>
+                <Button
+                    color='primary'
+                    onClick={handleOnSubmit}
+                    rounded='sm'
+                    size='md'
+                    type='button'
+                    variant='contained'
+                >
                     Close my account
                 </Button>
             </section>

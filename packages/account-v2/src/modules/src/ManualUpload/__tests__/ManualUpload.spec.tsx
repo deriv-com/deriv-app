@@ -9,8 +9,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: () => ({ isMobile: false }),
 }));
 
-jest.mock('../../../hooks', () => ({
-    ...jest.requireActual('../../../hooks'),
+jest.mock('../../../../hooks', () => ({
+    ...jest.requireActual('../../../../hooks'),
     useManualForm: jest.fn().mockReturnValue({
         isExpiryDateRequired: true,
         isLoading: false,

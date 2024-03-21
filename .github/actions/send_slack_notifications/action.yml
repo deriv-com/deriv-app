@@ -10,11 +10,16 @@ inputs:
 runs:
   using: composite
   steps:
+  - name: Setup Environment variables
+    run: |
+      echo "SLACK_WEBHOOK_URL=${{ inputs.SLACK_WEBHOOK_URL }}" >> "$GITHUB_ENV"
+      echo "MESSAGE=${{ inputs.MESSAGE }}" >> "$GITHUB_ENV"
+    shell: bash
   - name: Send Slack Notification
     run: |
         curl -X POST -H 'Content-type: application/json' \
         --data '{
-        "text": "${{ inputs.MESSAGE }}"
+        "text": "$MESSAGE"
         }' \
-          ${{ inputs.SLACK_WEBHOOK_URL }}
+          $SLACK_WEBHOOK_URL
     shell: bash

@@ -61,7 +61,7 @@ const CardColumn = ({
 const IconContainer = ({ message, icon }: { message: string; icon: ReactElement }) => (
     <div className={classNames(`${PARENT_CLASS}__table-cell`, `${PARENT_CLASS}__table-cell__icon-wrapper`)}>
         {message && (
-            <Popover alignment={isDbotRTL() ? 'left' : 'right'} message={message} zIndex={'7'}>
+            <Popover alignment={isDbotRTL() ? 'left' : 'right'} message={message} zIndex='7'>
                 {icon}
             </Popover>
         )}

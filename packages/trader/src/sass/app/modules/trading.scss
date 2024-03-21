@@ -146,6 +146,9 @@
                 justify-content: space-between;
                 align-items: center;
                 gap: 0.8rem;
+                @include rtl {
+                    direction: rtl;
+                }
                 .dc-popover__target {
                     height: 1.8rem;
                     border-bottom: 1px dotted var(--text-general);

@@ -33,7 +33,7 @@ const TableHeader = ({ columns }: { columns: TColumn[] }) => (
 
 const IconWrapper = ({ message, icon }: { message: string; icon: ReactElement }) => (
     <div className={`${PARENT_CLASS}__icon-wrapper`}>
-        <Popover alignment={isDbotRTL() ? 'right' : 'left'} message={message} zIndex={'9999'}>
+        <Popover alignment={isDbotRTL() ? 'right' : 'left'} message={message} zIndex='9999'>
             {icon}
         </Popover>
     </div>

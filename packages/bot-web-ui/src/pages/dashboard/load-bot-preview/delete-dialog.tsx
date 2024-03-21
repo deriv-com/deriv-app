@@ -5,6 +5,7 @@ import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderstackDashboardDeleteYourBot } from '../analytics/rudderstack-dashboard';
@@ -62,7 +63,6 @@ const DeleteDialog = observer(() => {
     const onHandleChange = (type: string, param: boolean) => {
         if (type === 'confirm') {
             removeBotStrategy(selected_strategy_id);
-            setOpenSettings('delete', true);
             rudderstackDashboardDeleteYourBot({ delete_popup_respond: 'yes' });
         } else {
             rudderstackDashboardDeleteYourBot({ delete_popup_respond: 'no' });
@@ -78,7 +78,7 @@ const DeleteDialog = observer(() => {
                 confirm_button_text={localize('Yes, delete')}
                 onConfirm={() => {
                     onHandleChange('confirm', false);
-                    setOpenSettings('delete', true);
+                    setOpenSettings(NOTIFICATION_TYPE.BOT_DELETE);
                 }}
                 cancel_button_text={localize('No')}
                 onCancel={() => {

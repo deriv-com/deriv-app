@@ -4,7 +4,11 @@ import * as Yup from 'yup';
 import { Input } from '@deriv-com/ui';
 import { validateField } from '../../utils/validation';
 
-type FormInputFieldProps = Omit<ComponentProps<typeof Input>, 'isFullWidth' | 'label' | 'message' | 'name'> & {
+type FormInputFieldProps = Omit<
+    ComponentProps<typeof Input>,
+    'disabled' | 'isFullWidth' | 'label' | 'message' | 'name'
+> & {
+    disabled?: boolean;
     isFullWidth?: boolean;
     label: string;
     message?: string;

@@ -1,16 +1,20 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import { Input, Text, useDevice } from '@deriv-com/ui';
 import ChatFooterIcon from '../ChatFooterIcon/ChatFooterIcon';
-import './ChatFooter.scss';
+import { TextAreaWithIcon } from '../TextAreaWithIcon';
 
 type TChatFooterProps = {
     isClosed: boolean;
+    sendFile: (file: File) => void;
+    sendMessage: (message: string) => void;
 };
-const ChatFooter = ({ isClosed }: TChatFooterProps) => {
+const ChatFooter = ({ isClosed, sendFile, sendMessage }: TChatFooterProps) => {
     const { isMobile } = useDevice();
     const [value, setValue] = useState('');
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const textInputRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(event.target.value);
     };
     if (isClosed) {
@@ -20,18 +24,76 @@ const ChatFooter = ({ isClosed }: TChatFooterProps) => {
             </div>
         );
     }
+
+    const sendChatMessage = () => {
+        const elTarget = textInputRef.current;
+        const shouldRestoreFocus = document.activeElement === elTarget;
+
+        if (elTarget?.value) {
+            sendMessage(elTarget.value);
+            elTarget.value = '';
+            setValue('');
+
+            if (shouldRestoreFocus) {
+                elTarget.focus();
+            }
+        }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Enter' && !isMobile) {
+            if (event.ctrlKey || event.metaKey) {
+                const element = event.currentTarget;
+                const { value } = element;
+
+                if (typeof element.selectionStart === 'number' && typeof element.selectionEnd === 'number') {
+                    element.value = `${value.slice(0, element.selectionStart)}\n${value.slice(element.selectionEnd)}`;
+                } else if (document.selection?.createRange) {
+                    element.focus();
+
+                    const range = document.selection.createRange();
+
+                    range.text = '\r\n';
+                    range.collapse(false);
+                    range.select();
+                }
+            } else {
+                event.preventDefault();
+                sendChatMessage();
+            }
+        }
+    };
+
     return (
-        <div className='px-[2.4rem] pt-[1.6rem] pb-[2.8rem]'>
-            <Input
-                isFullWidth
-                label='Enter message'
+        <div className='px-[2.4rem] pt-[1.6rem] pb-[2.8rem] w-full'>
+            <TextAreaWithIcon
+                icon={
+                    <ChatFooterIcon
+                        length={value.length}
+                        onClick={() => (value.length > 0 ? sendChatMessage() : fileInputRef.current?.click())}
+                    />
+                }
                 maxLength={5000}
-                message={`${value.length}/5000`}
                 onChange={onChange}
-                //TODO: handle send message
-                rightPlaceholder={<ChatFooterIcon length={value.length} onClick={() => undefined} />}
-                wrapperClassName='p2p-v2-chat-footer__input'
+                onKeyDown={handleKeyDown}
+                placeholder='Enter message'
+                ref={ref => (textInputRef.current = ref)}
+                shouldShowCounter
+                value={value}
             />
+            <div className='hidden'>
+                <Input
+                    data-testid='dt_p2p_v2_file_input'
+                    name='file'
+                    onChange={e => {
+                        if (e.target.files?.[0]) {
+                            sendFile(e.target.files[0]);
+                        }
+                    }}
+                    ref={el => (fileInputRef.current = el)}
+                    type='file'
+                />
+            </div>
         </div>
     );
 };

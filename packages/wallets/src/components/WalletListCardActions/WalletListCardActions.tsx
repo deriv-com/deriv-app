@@ -36,7 +36,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
     // Filter out the "Withdraw" button when is_demo is true
     const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
 
-    const orderForDemo = ['transfer', 'transactions', 'reset-balance'];
+    const orderForDemo = ['reset-balance', 'transfer', 'transactions'];
 
     const sortedButtons = isDemo
         ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))

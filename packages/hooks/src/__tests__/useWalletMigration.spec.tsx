@@ -6,8 +6,8 @@ import useWalletMigration from '../useWalletMigration';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
-    useRequest: jest.fn(() => ({ mutate: jest.fn() })),
+    useQuery: jest.fn(),
+    useMutation: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 
 const mockUseFetch = useQuery as jest.MockedFunction<typeof useQuery<'wallet_migration'>>;

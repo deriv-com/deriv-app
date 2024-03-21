@@ -1,6 +1,7 @@
 import path from 'path';
+// @ts-ignore
 import CopyPlugin from 'copy-webpack-plugin';
-const entries = require('./webpack-entries.json');
+import entries from './scripts/webpack-entries.json';
 
 const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
@@ -11,6 +12,13 @@ export default () => ({
     externals: [
         {
             '@deriv/quill-icons': '@deriv/quill-icons',
+            '@deriv-com/ui': '@deriv-com/ui',
+            'react-calendar': 'react-calendar',
+            moment: 'moment',
+            yup: 'yup',
+            formik: 'formik',
+            'react-dropzone': 'react-dropzone',
+            'tailwind-merge': 'tailwind-merge',
             '@deriv/api-v2': '@deriv/api-v2',
             react: true,
             'react-dom': true,

@@ -14,10 +14,4 @@ glob.sync(`${basePath}/**/*.tsx`, { ignore: [`${basePath}/**/__tests__/**`, `${b
     }
 );
 
-// Write the Webpack entry configuration to a file (optional)
-// You can import this in your webpack.config.js
 fs.writeFileSync(path.join(__dirname, 'webpack-entries.json'), JSON.stringify(entries, null, 2), 'utf8');
-
-// Update the barrel file
-// fs.writeFileSync(outputFile, barrelExports.join('\n') + '\n', 'utf8');
-console.log('Updated Webpack entries and barrel file.');

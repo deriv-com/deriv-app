@@ -26,12 +26,12 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
 
     const handleTradersHubRedirect = () => {
         closeAccountsDialog();
-        history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+        history.push(routes.traders_hub);
     };
 
     const handleManageFundsRedirect = () => {
         closeAccountsDialog();
-        history.push(routes.wallets_transfer);
+        history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
     };
 
     const footer = (

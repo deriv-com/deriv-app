@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, Text } from '@deriv/components';
+import { Dialog, Icon, Text } from '@deriv/components';
 import { redirectToLogin } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, localize, Localize } from '@deriv/translations';
@@ -23,7 +23,7 @@ const WalletsUpgradeLogoutModal = observer(() => {
             dismissable={false}
             has_close_icon={false}
         >
-            <div className='wallets-upgrade-logout-modal__pic' />
+            <Icon className='wallets-upgrade-logout-modal__pic' icon='IcWalletUpgradeLogout' />
             <div className='wallets-upgrade-logout-modal__content'>
                 <Localize
                     i18n_default_text="<0>You're almost there!</0>"

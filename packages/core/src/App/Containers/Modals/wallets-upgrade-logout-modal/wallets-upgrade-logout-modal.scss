@@ -57,10 +57,6 @@
     }
 
     &__pic {
-        background-image: url('../../../../public/images/app/wallet/wallets-upgrade-logout.svg');
-        background-repeat: no-repeat;
-        background-position: center;
-
         @include desktop {
             position: absolute;
             right: -3rem;

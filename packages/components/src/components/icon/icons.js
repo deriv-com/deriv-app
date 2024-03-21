@@ -1057,5 +1057,7 @@ import './wallet/ic-wallet-payment-agent-light.svg';
 import './wallet/ic-wallet-success-message.svg';
 import './wallet/ic-wallet-tether-dark.svg';
 import './wallet/ic-wallet-tether-light.svg';
+import './wallet/ic-wallet-upgrade-completed.svg';
+import './wallet/ic-wallet-upgrade-logout.svg';
 import './wallet/ic-wallet-usd-coin-dark.svg';
 import './wallet/ic-wallet-usd-coin-light.svg';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, MobileDialog, Modal, Text } from '@deriv/components';
+import { Button, Icon, MobileDialog, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import './wallets-upgrade-completed-modal.scss';
@@ -43,7 +43,7 @@ const WalletsUpgradeCompletedModal = observer(() => {
     return (
         <Wrapper footer={<Footer />}>
             <div className='wallets-upgrade-completed-modal'>
-                <div className='wallets-upgrade-completed-modal__pic' />
+                <Icon icon='IcWalletUpgradeCompleted' className='wallets-upgrade-completed-modal__pic' />
                 <div className='wallets-upgrade-completed-modal__text-container'>
                     <Localize
                         i18n_default_text='<0>Your Wallets are ready!</0>'

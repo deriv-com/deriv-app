@@ -22,7 +22,6 @@ type TPersonalDetailsConfig = {
     };
     residence: string;
     account_status: GetAccountStatus;
-    is_high_risk_client_for_mt5?: boolean;
 };
 
 export const personal_details_config = ({
@@ -237,7 +236,6 @@ const personalDetailsConfig = <T>(
         account_settings,
         account_status,
         residence,
-        is_high_risk_client_for_mt5,
     }: TPersonalDetailsConfig,
     PersonalDetails: T,
     is_appstore = false
@@ -248,7 +246,6 @@ const personalDetailsConfig = <T>(
         real_account_signup_target,
         residence,
         account_status,
-        is_high_risk_client_for_mt5,
     });
     const disabled_items = account_settings.immutable_fields;
     return {

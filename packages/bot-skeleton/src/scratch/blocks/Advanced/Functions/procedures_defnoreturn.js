@@ -7,6 +7,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         this.arguments = [];
         this.argument_var_models = [];
         this.is_adding = false;
+        this.timeout_id;
 
         this.jsonInit(this.definition());
 
@@ -97,10 +98,12 @@ Blockly.Blocks.procedures_defnoreturn = {
         if (this.is_adding || this.workspace.options.readOnly || this.isInFlyout) {
             return;
         }
+
         this.is_adding = true;
+        clearTimeout(this.timeout_id);
 
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
-        setTimeout(() => {
+        this.timeout_id = setTimeout(() => {
             const promptMessage = localize('Specify a parameter name:');
             Blockly.prompt(promptMessage, '', paramName => {
                 if (paramName) {

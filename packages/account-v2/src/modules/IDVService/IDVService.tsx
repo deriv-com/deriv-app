@@ -4,7 +4,7 @@ import { Button, Divider, Text } from '@deriv-com/ui';
 import { PersonalDetailsFormWithExample } from '../../containers';
 import { TSupportedDocuments } from '../../types';
 import { getIDVFormValidationSchema } from '../../utils/idvFormUtils';
-import { getNameDOBValidationSchema } from '../../utils/personalDetailsUtils';
+import { getNameDOBValidationSchema } from '../../utils';
 import { IDVForm } from '../IDVForm';
 
 type TIDVServiceProps = {

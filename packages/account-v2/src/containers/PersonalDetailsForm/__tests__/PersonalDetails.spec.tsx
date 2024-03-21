@@ -1,19 +1,22 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import { APIProvider, AuthProvider, useActiveTradingAccount, useGetAccountStatus, useSettings } from '@deriv/api-v2';
+import { APIProvider, AuthProvider, useSettings } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import { usePersonalDetails } from '../../../hooks/usePersonalDetails';
 import { PersonalDetails } from '../PersonalDetails';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useActiveTradingAccount: jest.fn(),
-    useGetAccountStatus: jest.fn(),
     useSettings: jest.fn(),
 }));
 
+jest.mock('../../../hooks/usePersonalDetails', () => ({
+    ...jest.requireActual('../../../hooks/usePersonalDetails'),
+    usePersonalDetails: jest.fn(),
+}));
+
 beforeEach(() => {
-    (useActiveTradingAccount as jest.Mock).mockReturnValue({ data: { is_virtual: false } });
-    (useGetAccountStatus as jest.Mock).mockReturnValue({ data: { status: [] } });
+    (usePersonalDetails as jest.Mock).mockReturnValue({ data: { isVirtual: false }, isSocialSignup: false });
     (useSettings as jest.Mock).mockReturnValue({ data: { immutable_fields: [] } });
 });
 
@@ -43,7 +46,7 @@ describe('PersonalDetails', () => {
     });
 
     it('should only render residence input field if isVirtual is true', () => {
-        (useActiveTradingAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true } });
+        (usePersonalDetails as jest.Mock).mockReturnValue({ data: { isVirtual: true } });
         renderComponent(<PersonalDetails />);
         inputFieldNames.forEach(inputFieldName =>
             expect(screen.queryByRole('textbox', { name: inputFieldName })).not.toBeInTheDocument()
@@ -53,7 +56,7 @@ describe('PersonalDetails', () => {
     });
 
     it('should render email input field if isSocialSignup is true', () => {
-        (useGetAccountStatus as jest.Mock).mockReturnValue({ data: { status: ['social_signup'] } });
+        (usePersonalDetails as jest.Mock).mockReturnValue({ data: { isVirtual: false }, isSocialSignup: true });
         renderComponent(<PersonalDetails />);
         expect(screen.getByRole('textbox', { name: 'Email address*' })).toBeInTheDocument();
     });

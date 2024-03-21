@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getNameDOBValidationSchema } from '../../../utils/personalDetailsUtils';
+import { getNameDOBValidationSchema } from '../../../utils';
 import { PersonalDetailsFormWithExample } from '../PersonalDetailsFormWithExample';
 
 const renderComponent = () => {

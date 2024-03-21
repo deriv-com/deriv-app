@@ -9,7 +9,7 @@ import { ErrorMessage } from '../../components/ErrorMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { OnfidoView, PersonalDetailsFormWithExample } from '../../containers';
-import { getNameDOBValidationSchema } from '../../utils/personalDetailsUtils';
+import { getNameDOBValidationSchema } from '../../utils';
 
 // TODO: Remove optional and default props when POI is ready
 type TOnfidoContainer = {

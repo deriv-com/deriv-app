@@ -1,18 +1,22 @@
 import React, { Fragment } from 'react';
-import { Field, FieldProps } from 'formik';
-import { useActiveTradingAccount, useGetAccountStatus, useSettings } from '@deriv/api-v2';
+import { Field, FieldProps, useFormikContext } from 'formik';
+import { useSettings } from '@deriv/api-v2';
 import { CountrySelector } from '../../components/CountrySelector';
 import { DatePicker } from '../../components/DatePicker';
 import { FormInputField } from '../../components/FormFields';
-import { isFieldDisabled } from '../../utils/personalDetailsUtils';
+import { usePersonalDetails } from '../../hooks/usePersonalDetails';
+import { isFieldDisabled } from '../../utils';
 
 export const PersonalDetails = () => {
-    const { data: activeAccount } = useActiveTradingAccount();
-    const { data: accountStatus } = useGetAccountStatus();
-    const { data: accountSettings } = useSettings();
+    const formik = useFormikContext();
 
-    const isSocialSignup = accountStatus?.status?.includes('social_signup');
-    const isVirtual = activeAccount?.is_virtual;
+    if (!formik) {
+        throw new Error('PersonalDetails must be used within a Formik component');
+    }
+    const { data: accountSettings } = useSettings();
+    const { data: personalDetails, isSocialSignup } = usePersonalDetails();
+
+    const { isVirtual } = personalDetails;
 
     return (
         <div className='lg:max-w-[400px] grid pt-8 space-y-12 grid-col-1'>

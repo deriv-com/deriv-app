@@ -6,9 +6,15 @@ import { Dropdown } from '@deriv-com/ui';
 import { CountrySelector } from '../../components/CountrySelector';
 import { FormInputField } from '../../components/FormFields';
 import { employmentIndustryList } from '../../constants/financialInformationList';
-import { isFieldDisabled } from '../../utils/personalDetailsUtils';
+import { isFieldDisabled } from '../../utils';
 
 export const TaxInformation = () => {
+    const formik = useFormikContext();
+
+    if (!formik) {
+        throw new Error('PersonalDetails must be used within a Formik component');
+    }
+
     const { data: accountSettings } = useSettings();
     const { values }: FormikProps<FormikValues> = useFormikContext();
 

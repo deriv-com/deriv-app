@@ -1,20 +1,19 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import { APIProvider, AuthProvider, useActiveTradingAccount, useAuthentication } from '@deriv/api-v2';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import { AUTH_STATUS_CODES } from '../../../constants/constants';
+import { usePersonalDetails } from '../../../hooks/usePersonalDetails';
 import { SupportProfessionalClient } from '../SupportProfessionalClient';
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
-    useActiveTradingAccount: jest.fn(),
-    useAuthentication: jest.fn(),
+jest.mock('../../../hooks/usePersonalDetails', () => ({
+    ...jest.requireActual('../../../hooks/usePersonalDetails'),
+    usePersonalDetails: jest.fn(),
 }));
 
 beforeEach(() => {
-    (useActiveTradingAccount as jest.Mock).mockReturnValue({ data: { is_virtual: false } });
-    (useAuthentication as jest.Mock).mockReturnValue({
-        data: { poa_status: AUTH_STATUS_CODES.NONE, poi_status: AUTH_STATUS_CODES.NONE },
+    (usePersonalDetails as jest.Mock).mockReturnValue({
+        accountAuthStatus: { isAccountVerified: false },
+        data: { isVirtual: false },
     });
 });
 
@@ -59,8 +58,9 @@ describe('PersonalDetails', () => {
     });
 
     it('should render checkbox if client account is verified', () => {
-        (useAuthentication as jest.Mock).mockReturnValue({
-            data: { poa_status: AUTH_STATUS_CODES.VERIFIED, poi_status: AUTH_STATUS_CODES.VERIFIED },
+        (usePersonalDetails as jest.Mock).mockReturnValue({
+            accountAuthStatus: { isAccountVerified: true },
+            data: { isVirtual: false },
         });
         renderComponent(<SupportProfessionalClient />);
         expect(
@@ -69,10 +69,10 @@ describe('PersonalDetails', () => {
     });
 
     it('should disable checkbox if isVirtual account', () => {
-        (useAuthentication as jest.Mock).mockReturnValue({
-            data: { poa_status: AUTH_STATUS_CODES.VERIFIED, poi_status: AUTH_STATUS_CODES.VERIFIED },
+        (usePersonalDetails as jest.Mock).mockReturnValue({
+            accountAuthStatus: { isAccountVerified: true },
+            data: { isVirtual: true },
         });
-        (useActiveTradingAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true } });
         renderComponent(<SupportProfessionalClient />);
         const checkbox = screen.getByRole('checkbox', { name: 'I would like to be treated as a professional client.' });
         expect(checkbox).toBeDisabled();

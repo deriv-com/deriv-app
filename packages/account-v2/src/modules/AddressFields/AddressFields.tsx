@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuthorize, useSettings, useStatesList } from '@deriv/api-v2';
 import { FormDropDownField, FormInputField } from '../../components/FormFields';
 import { LANDING_COMPANY } from '../../constants/constants';
-import { isFieldDisabled } from '../../utils/personalDetailsUtils';
+import { isFieldDisabled } from '../../utils';
 import { addressDetailValidations } from './validations';
 
 export const AddressFields = () => {

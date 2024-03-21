@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import { APIProvider, AuthProvider, useActiveTradingAccount } from '@deriv/api-v2';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import { useCurrentLandingCompany } from '../../../hooks/useCurrentLandingCompany';
+import { usePersonalDetails } from '../../../hooks/usePersonalDetails';
 import { PersonalDetailsForm } from '../PersonalDetailsForm';
 
 jest.mock('../PersonalDetails', () => ({
@@ -25,19 +25,15 @@ jest.mock('../../../modules/AddressFields', () => ({
     AddressFields: () => <div>Address Fields Container</div>,
 }));
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
-    useActiveTradingAccount: jest.fn(),
-}));
-
-jest.mock('../../../hooks/useCurrentLandingCompany', () => ({
-    ...jest.requireActual('../../../hooks/useCurrentLandingCompany'),
-    useCurrentLandingCompany: jest.fn(),
+jest.mock('../../../hooks/usePersonalDetails', () => ({
+    ...jest.requireActual('../../../hooks/usePersonalDetails'),
+    usePersonalDetails: jest.fn(),
 }));
 
 beforeEach(() => {
-    (useActiveTradingAccount as jest.Mock).mockReturnValue({ data: { is_virtual: false } });
-    (useCurrentLandingCompany as jest.Mock).mockReturnValue({ data: { support_professional_client: 1 } });
+    (usePersonalDetails as jest.Mock).mockReturnValue({
+        data: { isSupportProfessionalClient: true, isVirtual: false },
+    });
 });
 
 describe('PersonalDetailsForm', () => {
@@ -72,7 +68,9 @@ describe('PersonalDetailsForm', () => {
     });
 
     it('should not render Address Fields Container and Email preference is enabled if isVirtual account', () => {
-        (useActiveTradingAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true } });
+        (usePersonalDetails as jest.Mock).mockReturnValue({
+            data: { isVirtual: true },
+        });
         renderComponent(<PersonalDetailsForm />);
         const checkbox = screen.getByRole('checkbox', {
             name: 'Get updates about Deriv products, services and events.',
@@ -82,7 +80,9 @@ describe('PersonalDetailsForm', () => {
     });
 
     it('should not render Professional Client Container when support_professional_client is 0', () => {
-        (useCurrentLandingCompany as jest.Mock).mockReturnValue({ data: { support_professional_client: 0 } });
+        (usePersonalDetails as jest.Mock).mockReturnValue({
+            data: { isSupportProfessionalClient: false },
+        });
         renderComponent(<PersonalDetailsForm />);
         expect(screen.queryByText('Support Professional Client Container')).not.toBeInTheDocument();
     });

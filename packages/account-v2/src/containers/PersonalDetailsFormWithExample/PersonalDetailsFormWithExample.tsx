@@ -5,7 +5,7 @@ import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { Checkbox, InlineMessage, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
 import { FormInputField } from '../../components/FormFields';
-import { getNameDOBValidationSchema } from '../../utils/personalDetailsUtils';
+import { getNameDOBValidationSchema } from '../../utils';
 import { validateField } from '../../utils/validation';
 
 type TPersonalDetailsFormWithExampleValues = InferType<ReturnType<typeof getNameDOBValidationSchema>>;

@@ -3,7 +3,6 @@ import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import './wallets-upgrade-step-one.scss';
-import WalletsImage from 'Assets/svgs/wallets';
 
 type TWalletsUpgradeStepOneFooter = {
     handleClose: VoidFunction;
@@ -53,7 +52,11 @@ const WalletsUpgradeStepOneContent = () => {
     return (
         <div className='wallets-upgrade-step-one__content'>
             <div className='wallets-upgrade-step-one__image-container'>
-                <WalletsImage image='wallets_upgrade_step_one' width={is_mobile ? 150 : 240} />
+                <Icon
+                    icon='IcAppstoreWalletsUpgradeStepOne'
+                    width={is_mobile ? 150 : 240}
+                    data_testid='dt_wallets_upgrade_step_one'
+                />
             </div>
             <Text
                 as='h1'

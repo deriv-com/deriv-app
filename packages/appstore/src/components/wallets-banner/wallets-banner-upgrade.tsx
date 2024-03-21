@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import WalletsImage from 'Assets/svgs/wallets';
 
 const WalletsBannerUpgrade = observer(() => {
     const { traders_hub, ui } = useStore();
@@ -29,10 +28,11 @@ const WalletsBannerUpgrade = observer(() => {
                     onClick={() => toggleWalletsUpgrade(true)}
                 />
             </div>
-            <WalletsImage
+            <Icon
+                icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? '' : 'Horizontal'}`}
                 width={is_mobile ? 220 : 448}
-                image={`wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
                 className='wallets-banner-upgrade__image'
+                data_testid={`dt_wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
             />
         </div>
     );

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import WalletsImage from 'Assets/svgs/wallets';
 
 const WalletBannerUnsuccessful = observer(() => {
     const { traders_hub, ui } = useStore();
@@ -41,10 +40,11 @@ const WalletBannerUnsuccessful = observer(() => {
                     />
                 </div>
             </div>
-            <WalletsImage
+            <Icon
+                icon='IcAppstoreWalletsUpgradeUnsuccessful'
                 width={is_mobile ? 192 : 272}
-                image='wallets_upgrade_unsuccessful'
                 className='wallets-banner-unsuccessful__image'
+                data_testid='dt_wallets_upgrade_unsuccessful'
             />
         </div>
     );

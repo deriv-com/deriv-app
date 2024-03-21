@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Checkbox, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import WalletsImage from 'Assets/svgs/wallets';
 import './wallets-upgrade-step-two.scss';
 
 type TWalletsUpgradeStepTwoContent = {
@@ -22,10 +21,11 @@ const WalletsUpgradeStepTwoContent = observer(({ value, toggleCheckbox }: TWalle
 
     return (
         <div className='wallets-upgrade-step-two__content'>
-            <WalletsImage
-                className='wallets-upgrade-step-two__image'
-                image='wallets_upgrade_step_two'
+            <Icon
+                icon='IcAppstoreWalletsUpgradeStepTwo'
                 width={is_mobile ? 150 : 240}
+                className='wallets-upgrade-step-two__image'
+                data_testid='dt_wallets_upgrade_step_two'
             />
             <div className='wallets-upgrade-step-two__text'>
                 <Text size={is_mobile ? 'xsm' : 'l'} align='center' weight='bold' line_height={is_mobile ? 'm' : 'xs'}>

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import WalletsImage from 'Assets/svgs/wallets';
 
 const WalletsBannerUpgrading = observer(() => {
     const { ui } = useStore();
@@ -39,10 +38,11 @@ const WalletsBannerUpgrading = observer(() => {
                     ]}
                 />
             </div>
-            <WalletsImage
+            <Icon
+                icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? '' : 'Horizontal'}`}
                 width={is_mobile ? 220 : 448}
-                image={`wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
                 className='wallets-banner-upgrading__image'
+                data_testid={`dt_wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
             />
         </div>
     );

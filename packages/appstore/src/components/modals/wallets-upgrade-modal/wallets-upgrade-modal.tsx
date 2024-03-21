@@ -1,9 +1,8 @@
 import React from 'react';
 import { useWalletMigration } from '@deriv/hooks';
-import { Text, Button, Modal } from '@deriv/components';
+import { Button, Icon, Text, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import WalletsImage from 'Assets/svgs/wallets';
 import './wallets-upgrade-modal.scss';
 
 const MODAL_TRANSITION_TIMEOUT_MS = 250; // matching the default one
@@ -32,10 +31,11 @@ const WalletsUpgradeModal = observer(() => {
         >
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
-                    <WalletsImage
+                    <Icon
+                        icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? 'Horizontal' : ''}`}
                         width={is_mobile ? 190 : 300}
-                        image={`wallets_upgrade_coins${is_mobile ? '_horizontal' : ''}`}
                         className='wallets-upgrade-modal__image'
+                        data_testid={`dt_wallets_upgrade_coins${is_mobile ? '_horizontal' : ''}`}
                     />
                     <div className='wallets-upgrade-modal__description'>
                         <Text align={is_mobile ? 'center' : 'left'} size={is_mobile ? 's' : 'm'} weight='bold'>

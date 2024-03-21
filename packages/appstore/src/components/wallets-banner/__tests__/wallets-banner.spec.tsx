@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { TImageTestID } from 'Assets/svgs/wallets/image-types';
 import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 import WalletsBannerUpgrading from '../wallets-banner-upgrading';
 
@@ -14,8 +13,8 @@ describe('<WalletsBanner />', () => {
     });
 
     describe('Should render properly with right banner if status is eligible: <WalletsBannerUpgrade />', () => {
-        const desktop: TImageTestID = 'dt_wallets_upgrade_coins_horizontal';
-        const mobile: TImageTestID = 'dt_wallets_upgrade_coins';
+        const desktop_test_id = 'dt_wallets_upgrade_coins_horizontal';
+        const mobile_test_id = 'dt_wallets_upgrade_coins';
 
         it('Should render upgrade now button', async () => {
             render(<WalletsBannerUpgrade />, {
@@ -30,8 +29,8 @@ describe('<WalletsBanner />', () => {
             render(<WalletsBannerUpgrade />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
-            const desktop_image = screen.queryByTestId(desktop);
-            const mobile_image = screen.queryByTestId(mobile);
+            const desktop_image = screen.queryByTestId(desktop_test_id);
+            const mobile_image = screen.queryByTestId(mobile_test_id);
 
             expect(desktop_image).toBeInTheDocument();
             expect(mobile_image).not.toBeInTheDocument();
@@ -42,8 +41,8 @@ describe('<WalletsBanner />', () => {
             render(<WalletsBannerUpgrade />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
-            const desktop_image = screen.queryByTestId(desktop);
-            const mobile_image = screen.queryByTestId(mobile);
+            const desktop_image = screen.queryByTestId(desktop_test_id);
+            const mobile_image = screen.queryByTestId(mobile_test_id);
 
             expect(mobile_image).toBeInTheDocument();
             expect(desktop_image).not.toBeInTheDocument();
@@ -51,8 +50,8 @@ describe('<WalletsBanner />', () => {
     });
 
     describe('Should render properly with right banner if status is in_progress: <WalletsBannerUpgrading />', () => {
-        const desktop: TImageTestID = 'dt_wallets_upgrade_coins_horizontal';
-        const mobile: TImageTestID = 'dt_wallets_upgrade_coins';
+        const desktop_test_id = 'dt_wallets_upgrade_coins_horizontal';
+        const mobile_test_id = 'dt_wallets_upgrade_coins';
 
         it('Should render right title', () => {
             render(<WalletsBannerUpgrading />, {
@@ -77,8 +76,8 @@ describe('<WalletsBanner />', () => {
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
-            const desktop_image = screen.queryByTestId(desktop);
-            const mobile_image = screen.queryByTestId(mobile);
+            const desktop_image = screen.queryByTestId(desktop_test_id);
+            const mobile_image = screen.queryByTestId(mobile_test_id);
 
             expect(desktop_image).toBeInTheDocument();
             expect(mobile_image).not.toBeInTheDocument();
@@ -89,8 +88,8 @@ describe('<WalletsBanner />', () => {
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
-            const desktop_image = screen.queryByTestId(desktop);
-            const mobile_image = screen.queryByTestId(mobile);
+            const desktop_image = screen.queryByTestId(desktop_test_id);
+            const mobile_image = screen.queryByTestId(mobile_test_id);
 
             expect(mobile_image).toBeInTheDocument();
             expect(desktop_image).not.toBeInTheDocument();

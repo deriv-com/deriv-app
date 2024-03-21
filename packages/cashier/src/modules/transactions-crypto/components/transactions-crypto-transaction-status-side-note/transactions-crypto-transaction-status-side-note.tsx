@@ -35,8 +35,8 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                 <div className='transactions-crypto-transaction-status-side-note__content'>
                     <Text size={'xxs'}>
                         {is_deposit
-                            ? localize('Deposit {{currency}}', { currency: currency_config.display_code })
-                            : localize('Withdrawal {{currency}}', { currency: currency_config.display_code })}
+                            ? localize('Deposit {{currency}}', { currency: currency_config?.display_code })
+                            : localize('Withdrawal {{currency}}', { currency: currency_config?.display_code })}
                     </Text>
                     <Text
                         size={'xxxs'}
@@ -45,7 +45,7 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                     >
                         {localize('{{amount}} {{currency}} on {{date}}', {
                             amount,
-                            currency: currency_config.display_code,
+                            currency: currency_config?.display_code,
                             date: submit_date_display,
                         })}
                     </Text>

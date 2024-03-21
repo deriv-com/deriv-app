@@ -51,8 +51,8 @@ describe('MultiplierCardBody', () => {
     });
 
     const testCardContent = () => {
-        expect(screen.getByText(getCardLabels().BUY_PRICE)).toBeInTheDocument();
-        expect(screen.getByText(getCardLabels().CURRENT_STAKE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CONTRACT_COST)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().DEAL_CANCEL_FEE)).toBeInTheDocument();
         expect(screen.queryByText(getCardLabels().NOT_AVAILABLE)).not.toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STAKE)).toBeInTheDocument();

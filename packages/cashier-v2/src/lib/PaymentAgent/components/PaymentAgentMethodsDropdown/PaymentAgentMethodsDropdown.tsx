@@ -1,10 +1,16 @@
 import React from 'react';
 import { Dropdown } from '@deriv-com/ui';
 import ChevronIcon from '../../../../assets/images/chevron-icon.svg';
+import { usePaymentAgentContext } from '../../provider';
 import styles from './PaymentAgentMethodsDropdown.module.scss';
 
 const PaymentAgentMethodsDropdown = () => {
-    const supportedPaymentMethodsList = [{ text: 'All payment methods', value: '0' }];
+    const { onSelectPaymentMethodHandler, selectedPaymentMethod, supportedPaymentMethods } = usePaymentAgentContext();
+
+    const supportedPaymentMethodsList = [
+        { text: 'All payment methods', value: '0' },
+        ...supportedPaymentMethods.map(paymentMethod => ({ text: paymentMethod, value: paymentMethod })),
+    ];
 
     return (
         <div className={styles.container}>
@@ -14,8 +20,8 @@ const PaymentAgentMethodsDropdown = () => {
                 list={supportedPaymentMethodsList}
                 listHeight='sm'
                 name='payment_methods'
-                onSelect={() => undefined}
-                value={'0'}
+                onSelect={onSelectPaymentMethodHandler}
+                value={selectedPaymentMethod}
                 variant='comboBox'
             />
         </div>

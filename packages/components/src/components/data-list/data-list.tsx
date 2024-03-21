@@ -12,7 +12,7 @@ import {
     ListRowProps,
     IndexRange,
 } from 'react-virtualized';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { isMobile, isDesktop, isForwardStartingBuyTransaction } from '@deriv/shared';
 import DataListCell from './data-list-cell';
 import DataListRow, { TRowRenderer } from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
@@ -102,7 +102,19 @@ const DataList = React.memo(
 
         const rowRenderer = ({ style, index, key, parent }: ListRowProps) => {
             const { getRowAction, passthrough, row_gap } = other_props;
-            const row = data_source[index];
+            let row = data_source[index];
+            if (
+                isForwardStartingBuyTransaction(
+                    row.action_type,
+                    row.shortcode,
+                    row.purchase_time || row.transaction_time
+                )
+            ) {
+                const is_sold = !!data_source?.find(
+                    transaction => transaction.action_type === 'sell' && transaction.id === row?.id
+                );
+                row = { ...row, is_sold };
+            }
             const action = getRowAction && getRowAction(row);
             const destination_link = typeof action === 'string' ? action : undefined;
             const action_desc = typeof action === 'object' ? action : undefined;

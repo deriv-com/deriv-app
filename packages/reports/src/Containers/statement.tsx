@@ -88,6 +88,11 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         const contract_type = extractInfoFromShortcode(row_obj.shortcode)?.category?.toUpperCase();
         const unsupportedContractConfig = getUnsupportedContracts()[contract_type as TUnsupportedContractType];
+        const shouldShowForwardStartingNotification =
+            isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time) &&
+            !hasForwardContractStarted(row_obj.shortcode) &&
+            row_obj.action_type !== 'sell' &&
+            !row_obj?.is_sold;
         action = unsupportedContractConfig
             ? {
                   message: '',
@@ -101,10 +106,7 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
                   ),
               }
             : getContractPath(row_obj.id);
-        if (
-            isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time) &&
-            !hasForwardContractStarted(row_obj.shortcode)
-        )
+        if (shouldShowForwardStartingNotification)
             action = {
                 message: '',
                 component: <Localize i18n_default_text="You'll see these details once the contract starts." />,

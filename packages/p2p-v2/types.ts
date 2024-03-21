@@ -53,3 +53,10 @@ export type TServerTime = ReturnType<typeof useServerTime>['data'];
 export type TOrders = NonNullable<ReturnType<typeof p2p.order.useGetList>['data']>;
 
 export type TOrder = NonNullable<ReturnType<typeof p2p.order.useGet>['data']>;
+
+export type TStep = {
+    header: {
+        title: string;
+    };
+    subStepCount?: number;
+};

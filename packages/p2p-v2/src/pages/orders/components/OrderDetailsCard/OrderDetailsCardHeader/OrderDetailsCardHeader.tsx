@@ -6,7 +6,7 @@ import { Text, useDevice } from '@deriv-com/ui';
 import { OrderTimer } from '../../OrderTimer';
 
 const OrderDetailsCardHeader = () => {
-    const orderDetails = useOrderDetails();
+    const { orderDetails } = useOrderDetails();
 
     const {
         displayPaymentAmount,

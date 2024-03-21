@@ -9,21 +9,23 @@ jest.mock('@deriv-com/ui', () => ({
 
 jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
-        account_currency: 'USD',
-        advertiser_details: { name: 'Johnny123' },
-        amount_display: '100',
-        displayPaymentAmount: '110',
-        labels: {
-            counterpartyNicknameLabel: 'Seller’s nickname',
-            counterpartyRealNameLabel: 'Seller’s real name',
-            leftSendOrReceive: 'Send',
-            paymentDetails: 'Payment details',
-            rightSendOrReceive: 'Receive',
+        orderDetails: {
+            account_currency: 'USD',
+            advertiser_details: { name: 'Johnny123' },
+            amount_display: '100',
+            displayPaymentAmount: '110',
+            labels: {
+                counterpartyNicknameLabel: 'Seller’s nickname',
+                counterpartyRealNameLabel: 'Seller’s real name',
+                leftSendOrReceive: 'Send',
+                paymentDetails: 'Payment details',
+                rightSendOrReceive: 'Receive',
+            },
+            local_currency: 'IDR',
+            otherUserDetails: { first_name: 'John', last_name: 'Doe' },
+            purchaseTime: '2021-09-01 12:00:00',
+            rateAmount: '10',
         },
-        local_currency: 'IDR',
-        otherUserDetails: { first_name: 'John', last_name: 'Doe' },
-        purchaseTime: '2021-09-01 12:00:00',
-        rateAmount: '10',
     }),
 }));
 

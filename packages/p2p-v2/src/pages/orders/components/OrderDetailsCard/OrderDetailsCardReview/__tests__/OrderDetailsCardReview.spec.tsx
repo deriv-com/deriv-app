@@ -20,11 +20,13 @@ jest.mock('@deriv/api-v2', () => ({
 
 jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
-        completion_time: 1710897035,
-        hasReviewDetails: false,
-        is_reviewable: true,
-        isCompletedOrder: true,
-        review_details: undefined,
+        orderDetails: {
+            completion_time: 1710897035,
+            hasReviewDetails: false,
+            is_reviewable: true,
+            isCompletedOrder: true,
+            review_details: undefined,
+        },
     }),
 }));
 
@@ -40,8 +42,7 @@ describe('<OrderDetailsCardReview />', () => {
 
     it('should prompt the user that they cannot rate the order if is_reviewable is false', () => {
         mockUseOrderDetails.mockReturnValue({
-            ...mockUseOrderDetails(),
-            is_reviewable: false,
+            orderDetails: { ...mockUseOrderDetails().orderDetails, is_reviewable: false },
         });
 
         render(<OrderDetailsCardReview />);
@@ -55,11 +56,13 @@ describe('<OrderDetailsCardReview />', () => {
 
     it('should show review details if hasReviewDetails is true with recommended text of recommended is true', () => {
         mockUseOrderDetails.mockReturnValue({
-            ...mockUseOrderDetails(),
-            hasReviewDetails: true,
-            review_details: {
-                rating: 5,
-                recommended: true,
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                hasReviewDetails: true,
+                review_details: {
+                    rating: 5,
+                    recommended: true,
+                },
             },
         });
 
@@ -71,11 +74,13 @@ describe('<OrderDetailsCardReview />', () => {
 
     it('should show review details if hasReviewDetails is true with recommended text of Not Recommended is false', () => {
         mockUseOrderDetails.mockReturnValue({
-            ...mockUseOrderDetails(),
-            hasReviewDetails: true,
-            review_details: {
-                rating: 5,
-                recommended: false,
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                hasReviewDetails: true,
+                review_details: {
+                    rating: 5,
+                    recommended: false,
+                },
             },
         });
 
@@ -87,9 +92,7 @@ describe('<OrderDetailsCardReview />', () => {
 
     it('should return null if isCompletedOrder is false and hasReviewDetails is false', () => {
         mockUseOrderDetails.mockReturnValue({
-            ...mockUseOrderDetails(),
-            hasReviewDetails: false,
-            isCompletedOrder: false,
+            orderDetails: { ...mockUseOrderDetails().orderDetails, hasReviewDetails: false, isCompletedOrder: false },
         });
 
         const { container } = render(<OrderDetailsCardReview />);

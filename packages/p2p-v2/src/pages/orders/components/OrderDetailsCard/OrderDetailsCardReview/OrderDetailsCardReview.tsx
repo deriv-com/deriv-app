@@ -11,7 +11,7 @@ import {
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 const OrderDetailsCardReview = () => {
-    const orderDetails = useOrderDetails();
+    const { orderDetails } = useOrderDetails();
     const {
         completion_time: completionTime,
         hasReviewDetails,

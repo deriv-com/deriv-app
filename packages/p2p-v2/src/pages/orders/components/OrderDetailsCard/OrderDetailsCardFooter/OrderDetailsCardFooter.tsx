@@ -5,7 +5,7 @@ import './OrderDetailsCardFooter.scss';
 
 // TODO: Implement functionality for each button when integrating with the API and disable buttons while chat is loading
 const OrderDetailsCardFooter = () => {
-    const orderDetails = useOrderDetails();
+    const { orderDetails } = useOrderDetails();
     const {
         shouldShowCancelAndPaidButton,
         shouldShowComplainAndReceivedButton,

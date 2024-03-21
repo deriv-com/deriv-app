@@ -4,7 +4,7 @@ import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodAccordion } from '../PaymentMethodAccordion';
 
 const ActiveOrderInfo = () => {
-    const orderDetails = useOrderDetails();
+    const { orderDetails } = useOrderDetails();
     const {
         advert_details: { description },
         contact_info: contactInfo,

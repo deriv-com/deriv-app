@@ -10,10 +10,12 @@ jest.mock('@deriv-com/ui', () => ({
 
 jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
-        shouldShowCancelAndPaidButton: true,
-        shouldShowComplainAndReceivedButton: false,
-        shouldShowOnlyComplainButton: false,
-        shouldShowOnlyReceivedButton: false,
+        orderDetails: {
+            shouldShowCancelAndPaidButton: true,
+            shouldShowComplainAndReceivedButton: false,
+            shouldShowOnlyComplainButton: false,
+            shouldShowOnlyReceivedButton: false,
+        },
     }),
 }));
 
@@ -28,10 +30,11 @@ describe('<OrderDetailsCardFooter />', () => {
 
     it('should render complain and received buttons', () => {
         mockUseOrderDetails.mockReturnValue({
-            shouldShowCancelAndPaidButton: false,
-            shouldShowComplainAndReceivedButton: true,
-            shouldShowOnlyComplainButton: false,
-            shouldShowOnlyReceivedButton: false,
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                shouldShowCancelAndPaidButton: false,
+                shouldShowComplainAndReceivedButton: true,
+            },
         });
 
         render(<OrderDetailsCardFooter />);
@@ -42,10 +45,11 @@ describe('<OrderDetailsCardFooter />', () => {
 
     it('should render only complain button', () => {
         mockUseOrderDetails.mockReturnValue({
-            shouldShowCancelAndPaidButton: false,
-            shouldShowComplainAndReceivedButton: false,
-            shouldShowOnlyComplainButton: true,
-            shouldShowOnlyReceivedButton: false,
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                shouldShowComplainAndReceivedButton: false,
+                shouldShowOnlyComplainButton: true,
+            },
         });
 
         render(<OrderDetailsCardFooter />);
@@ -55,10 +59,11 @@ describe('<OrderDetailsCardFooter />', () => {
 
     it('should render only received button', () => {
         mockUseOrderDetails.mockReturnValue({
-            shouldShowCancelAndPaidButton: false,
-            shouldShowComplainAndReceivedButton: false,
-            shouldShowOnlyComplainButton: false,
-            shouldShowOnlyReceivedButton: true,
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                shouldShowOnlyComplainButton: false,
+                shouldShowOnlyReceivedButton: true,
+            },
         });
 
         render(<OrderDetailsCardFooter />);
@@ -68,10 +73,10 @@ describe('<OrderDetailsCardFooter />', () => {
 
     it('should not render any buttons', () => {
         mockUseOrderDetails.mockReturnValue({
-            shouldShowCancelAndPaidButton: false,
-            shouldShowComplainAndReceivedButton: false,
-            shouldShowOnlyComplainButton: false,
-            shouldShowOnlyReceivedButton: false,
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                shouldShowOnlyReceivedButton: false,
+            },
         });
 
         const { container } = render(<OrderDetailsCardFooter />);

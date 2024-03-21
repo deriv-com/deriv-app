@@ -4,7 +4,7 @@ import { Text, useDevice } from '@deriv-com/ui';
 import { ActiveOrderInfo } from './ActiveOrderInfo';
 
 const OrderDetailsCardInfo = () => {
-    const orderDetails = useOrderDetails();
+    const { orderDetails } = useOrderDetails();
     const {
         account_currency: accountCurrency,
         advertiser_details: { name },

@@ -3,6 +3,7 @@
         height: 0;
         padding: 0;
 
+        // TODO: Remove hover effect once deriv-com/ui Buttons allows removing hover styles
         &:hover {
             background-color: transparent;
 

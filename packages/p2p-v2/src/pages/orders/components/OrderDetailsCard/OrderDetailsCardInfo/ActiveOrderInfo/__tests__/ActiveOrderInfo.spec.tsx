@@ -11,37 +11,39 @@ jest.mock('@deriv-com/ui', () => ({
 
 jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
-        advert_details: {
-            description: 'This is my description',
-        },
-        contact_info: 'This is my contact info',
-        isActiveOrder: true,
-        labels: {
-            contactDetails: 'Seller’s contact details',
-            instructions: 'Seller’s instructions',
-            paymentDetails: 'Seller’s payment details',
-        },
-        payment_info: 'This is my payment info',
-        payment_method_details: {
-            '1': {
-                display_name: 'Alipay',
-                fields: {
-                    account: {
-                        display_name: 'Alipay ID',
-                        required: 1,
-                        type: 'text',
-                        value: '12345',
+        orderDetails: {
+            advert_details: {
+                description: 'This is my description',
+            },
+            contact_info: 'This is my contact info',
+            isActiveOrder: true,
+            labels: {
+                contactDetails: 'Seller’s contact details',
+                instructions: 'Seller’s instructions',
+                paymentDetails: 'Seller’s payment details',
+            },
+            payment_info: 'This is my payment info',
+            payment_method_details: {
+                '1': {
+                    display_name: 'Alipay',
+                    fields: {
+                        account: {
+                            display_name: 'Alipay ID',
+                            required: 1,
+                            type: 'text',
+                            value: '12345',
+                        },
+                        instructions: {
+                            display_name: 'Instructions',
+                            required: 0,
+                            type: 'memo',
+                            value: 'Alipay instructions',
+                        },
                     },
-                    instructions: {
-                        display_name: 'Instructions',
-                        required: 0,
-                        type: 'memo',
-                        value: 'Alipay instructions',
-                    },
+                    is_enabled: 1,
+                    method: 'alipay',
+                    type: 'ewallet',
                 },
-                is_enabled: 1,
-                method: 'alipay',
-                type: 'ewallet',
             },
         },
     }),
@@ -85,28 +87,30 @@ describe('<ActiveOrderInfo />', () => {
 
     it('should show expanded view of payment method details when clicks on expand all and hide it when clicking again', () => {
         mockUseOrderDetails.mockReturnValue({
-            ...mockUseOrderDetails(),
-            payment_method_details: {
-                ...mockUseOrderDetails().payment_method_details,
-                '2': {
-                    display_name: 'Bank transfer',
-                    fields: {
-                        account: {
-                            display_name: 'Account Number',
-                            required: 1,
-                            type: 'text',
-                            value: '54321',
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                payment_method_details: {
+                    ...mockUseOrderDetails().orderDetails.payment_method_details,
+                    '2': {
+                        display_name: 'Bank transfer',
+                        fields: {
+                            account: {
+                                display_name: 'Account Number',
+                                required: 1,
+                                type: 'text',
+                                value: '54321',
+                            },
+                            instructions: {
+                                display_name: 'Bank Name',
+                                required: 0,
+                                type: 'memo',
+                                value: 'test bank',
+                            },
                         },
-                        instructions: {
-                            display_name: 'Bank Name',
-                            required: 0,
-                            type: 'memo',
-                            value: 'test bank',
-                        },
+                        is_enabled: 1,
+                        method: 'alipay',
+                        type: 'ewallet',
                     },
-                    is_enabled: 1,
-                    method: 'alipay',
-                    type: 'ewallet',
                 },
             },
         });
@@ -144,8 +148,7 @@ describe('<ActiveOrderInfo />', () => {
 
     it('should return null if isActiveOrder is false', () => {
         mockUseOrderDetails.mockReturnValue({
-            ...mockUseOrderDetails(),
-            isActiveOrder: false,
+            orderDetails: { ...mockUseOrderDetails().orderDetails, isActiveOrder: false },
         });
 
         const { container } = render(<ActiveOrderInfo />);

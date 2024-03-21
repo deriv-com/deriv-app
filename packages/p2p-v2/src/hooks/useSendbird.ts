@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { p2p, useChatCreate, useOrderInfo, useSendbirdServiceToken, useServerTime } from '@deriv/api-v2';
+import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { p2p, useChatCreate, useSendbirdServiceToken, useServerTime } from '@deriv/api-v2';
 import SendbirdChat, { BaseChannel, User } from '@sendbird/chat';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
 import { BaseMessage, MessageType, MessageTypeFilter } from '@sendbird/chat/message';
@@ -89,7 +90,7 @@ const useSendbird = (orderId: string) => {
     const { data: advertiserInfo, isSuccess: isSuccessAdvertiserInfo } = p2p.advertiser.useGetInfo();
     //TODO: p2p_chat_create endpoint to be removed once chat_channel_url is created from p2p_order_create
     const { isError: isErrorChatCreate, mutate: createChat } = useChatCreate();
-    const { data: orderInfo, isError: isErrorOrderInfo } = useOrderInfo(orderId);
+    const { isErrorOrderInfo, orderDetails } = useOrderDetails();
     const { data: serverTime, isError: isErrorServerTime } = useServerTime();
 
     const getUser = async (userId: string, token: string) => {
@@ -239,11 +240,11 @@ const useSendbird = (orderId: string) => {
                 const user = await getUser(advertiserInfo.chat_user_id, token || '');
                 if (!user) {
                     setIsChatError(true);
-                } else if (orderInfo?.chat_channel_url) {
+                } else if (orderDetails?.chat_channel_url) {
                     setUser(user);
                     // if there is no chat_channel_url, it needs to be created using useCreateChat hook first
                     // 2. Retrieve the P2P channel for the specific order
-                    const channel = await getChannel(orderInfo.chat_channel_url);
+                    const channel = await getChannel(orderDetails.chat_channel_url);
                     if (!channel) {
                         setIsChatError(true);
                     } else {
@@ -264,7 +265,7 @@ const useSendbird = (orderId: string) => {
         isSuccessAdvertiserInfo,
         sendbirdServiceToken,
         advertiserInfo?.chat_user_id,
-        orderInfo?.chat_channel_url,
+        orderDetails?.chat_channel_url,
         getMessages,
     ]);
 
@@ -275,14 +276,14 @@ const useSendbird = (orderId: string) => {
 
     useEffect(() => {
         // if the user has not created a chat URL for the order yet, create one using p2p_create_chat endpoint
-        if (!orderInfo?.chat_channel_url) {
+        if (!orderDetails?.chat_channel_url) {
             createChat({
                 order_id: orderId,
             });
         } else {
             initialiseChat();
         }
-    }, [orderId, orderInfo?.chat_channel_url]);
+    }, [orderId, orderDetails?.chat_channel_url]);
 
     return {
         activeChatChannel: chatChannel,

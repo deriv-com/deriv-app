@@ -21,7 +21,7 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     const showChatParam = new URLSearchParams(location.search).get('showChat');
     const [showChat, setShowChat] = useState(!!showChatParam);
 
-    const { data: orderInfo, failureReason, isError, isLoading } = p2p.order.useGet(orderId);
+    const { data: orderInfo, failureReason, isError: isErrorOrderInfo, isLoading } = p2p.order.useGet(orderId);
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
     const { data: orderDetails } = useExtendedOrderDetails({
@@ -44,73 +44,75 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     if (isLoading) return <Loader isFullScreen />;
 
     // TODO: replace with proper error screen once design is ready
-    if (isError) return <Text>{failureReason?.error.message}</Text>;
+    if (isErrorOrderInfo) return <Text>{failureReason?.error.message}</Text>;
 
     if (isMobile) {
-        if (showChat) {
-            return (
-                <OrdersChatSection
-                    id={orderId}
-                    isInactive={!!orderDetails?.isInactiveOrder}
-                    onReturn={onChatReturn}
-                    otherUserDetails={orderDetails?.otherUserDetails}
-                />
-            );
-        }
-
         return (
-            <OrderDetailsProvider orderDetails={orderDetails}>
-                <FullPageMobileWrapper
-                    className='p2p-v2-order-details'
-                    onBack={onReturn}
-                    renderFooter={() => <OrderDetailsCardFooter />}
-                    renderHeader={() => (
-                        <Text as='div' className='w-full flex items-center justify-between' size='lg' weight='bold'>
-                            {headerText}
-                            <Button
-                                className='h-full p-0'
-                                color='white'
-                                data-testid='dt_p2p_v2_order_details_chat_button'
-                                onClick={() => setShowChat(true)}
-                                variant='contained'
+            <OrderDetailsProvider value={{ isErrorOrderInfo, orderDetails }}>
+                {showChat ? (
+                    <OrdersChatSection
+                        id={orderId}
+                        isInactive={!!orderDetails?.isInactiveOrder}
+                        onReturn={onChatReturn}
+                        otherUserDetails={orderDetails?.otherUserDetails}
+                    />
+                ) : (
+                    <FullPageMobileWrapper
+                        className='p2p-v2-order-details'
+                        onBack={onReturn}
+                        renderFooter={() => <OrderDetailsCardFooter />}
+                        renderHeader={() => (
+                            <Text as='div' className='w-full flex items-center justify-between' size='lg' weight='bold'>
+                                {headerText}
+                                <Button
+                                    className='h-full p-0'
+                                    color='white'
+                                    data-testid='dt_p2p_v2_order_details_chat_button'
+                                    onClick={() => setShowChat(true)}
+                                    variant='contained'
+                                >
+                                    <ChatIcon className='mt-2' />
+                                </Button>
+                            </Text>
+                        )}
+                    >
+                        {shouldShowLostFundsBanner && (
+                            <InlineMessage
+                                className='w-fit mx-[1.6rem] mt-[1.6rem]'
+                                iconPosition='top'
+                                variant='warning'
                             >
-                                <ChatIcon className='mt-2' />
-                            </Button>
-                        </Text>
-                    )}
-                >
-                    {shouldShowLostFundsBanner && (
-                        <InlineMessage className='w-fit mx-[1.6rem] mt-[1.6rem]' iconPosition='top' variant='warning'>
-                            <Text size='xs'>{warningMessage}</Text>
-                        </InlineMessage>
-                    )}
-                    <OrderDetailsCard />
-                </FullPageMobileWrapper>
+                                <Text size='xs'>{warningMessage}</Text>
+                            </InlineMessage>
+                        )}
+                        <OrderDetailsCard />
+                    </FullPageMobileWrapper>
+                )}
             </OrderDetailsProvider>
         );
     }
 
     return (
-        <div className='w-full'>
-            <PageReturn onClick={onReturn} pageTitle={headerText} weight='bold' />
-            <div className='p2p-v2-order-details'>
-                {shouldShowLostFundsBanner && (
-                    <InlineMessage className='w-fit mb-6' variant='warning'>
-                        <Text size='2xs'>{warningMessage}</Text>
-                    </InlineMessage>
-                )}
-                <div className='grid grid-cols-none lg:grid-cols-2 lg:gap-14'>
-                    <OrderDetailsProvider orderDetails={orderDetails}>
+        <OrderDetailsProvider value={{ isErrorOrderInfo, orderDetails }}>
+            <div className='w-full'>
+                <PageReturn onClick={onReturn} pageTitle={headerText} weight='bold' />
+                <div className='p2p-v2-order-details'>
+                    {shouldShowLostFundsBanner && (
+                        <InlineMessage className='w-fit mb-6' variant='warning'>
+                            <Text size='2xs'>{warningMessage}</Text>
+                        </InlineMessage>
+                    )}
+                    <div className='grid grid-cols-none lg:grid-cols-2 lg:gap-14'>
                         <OrderDetailsCard />
-                    </OrderDetailsProvider>
-                    <OrdersChatSection
-                        id={orderId}
-                        isInactive={!!orderDetails?.isInactiveOrder}
-                        otherUserDetails={orderDetails?.otherUserDetails}
-                    />
+                        <OrdersChatSection
+                            id={orderId}
+                            isInactive={!!orderDetails?.isInactiveOrder}
+                            otherUserDetails={orderDetails?.otherUserDetails}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
+        </OrderDetailsProvider>
     );
 };
 

@@ -4,14 +4,14 @@ import { OrderDetailsProvider, useOrderDetails } from '../OrderDetailsProvider';
 
 describe('useOrderDetails', () => {
     it('should return the orderDetails from context', () => {
-        const mockOrderDetails = { orderDetails: 'mockOrderDetails' };
+        const mockValues = { isErrorOrderInfo: false, orderDetails: 'mockOrderDetails' };
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <OrderDetailsProvider orderDetails={mockOrderDetails}>{children}</OrderDetailsProvider>
+            <OrderDetailsProvider value={mockValues}>{children}</OrderDetailsProvider>
         );
 
         const { result } = renderHook(() => useOrderDetails(), { wrapper });
 
-        expect(result.current).toEqual(mockOrderDetails);
+        expect(result.current).toEqual(mockValues);
     });
 });

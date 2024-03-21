@@ -34,6 +34,7 @@ const WalletsUpgradeModal = observer(() => {
                     <Icon
                         icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? 'Horizontal' : ''}`}
                         width={is_mobile ? 190 : 300}
+                        height={is_mobile ? 80 : 300}
                         className='wallets-upgrade-modal__image'
                         data_testid={`dt_wallets_upgrade_coins${is_mobile ? '_horizontal' : ''}`}
                     />

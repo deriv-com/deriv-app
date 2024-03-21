@@ -24,6 +24,7 @@ const WalletsUpgradeStepTwoContent = observer(({ value, toggleCheckbox }: TWalle
             <Icon
                 icon='IcAppstoreWalletsUpgradeStepTwo'
                 width={is_mobile ? 150 : 240}
+                height={is_mobile ? 170 : 270}
                 className='wallets-upgrade-step-two__image'
                 data_testid='dt_wallets_upgrade_step_two'
             />

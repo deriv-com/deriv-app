@@ -55,6 +55,7 @@ const WalletsUpgradeStepOneContent = () => {
                 <Icon
                     icon='IcAppstoreWalletsUpgradeStepOne'
                     width={is_mobile ? 150 : 240}
+                    height={is_mobile ? 170 : 270}
                     data_testid='dt_wallets_upgrade_step_one'
                 />
             </div>

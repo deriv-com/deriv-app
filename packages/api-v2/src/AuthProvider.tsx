@@ -23,21 +23,24 @@ type LoginToken = {
     token: string;
 };
 
-// Create the context
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
 type AuthProviderProps = {
     children: React.ReactNode;
     cookieTimeout?: number;
     loginIDKey?: string;
-    selectDefaultAccount?: (loginids: string[]) => string;
+    selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string;
 };
 
+type AuthProviderPropsWithoutChildren = Omit<AuthProviderProps, 'children'>;
+
+// Create the context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 function waitForLoginAndTokenWithTimeout(
-    loginIDKey?: string,
-    cookieTimeout = 10000,
-    selectDefaultAccount?: (accounts: any[]) => string
+    props: AuthProviderPropsWithoutChildren = {
+        cookieTimeout: 10000,
+    }
 ) {
+    const { cookieTimeout, loginIDKey, selectDefaultAccount } = props;
     // Default timeout of 10 seconds
     let timeoutHandle: NodeJS.Timeout | undefined,
         cookieTimeoutHandle: NodeJS.Timeout | undefined, // Handle for the cookieTimeout
@@ -55,7 +58,7 @@ function waitForLoginAndTokenWithTimeout(
             clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
             resolve({ loginId, token });
         } else if (selectDefaultAccount && storedAccounts && Object.keys(storedAccounts).length > 0) {
-            const selectedLoginId = selectDefaultAccount(storedAccounts as any);
+            const selectedLoginId = selectDefaultAccount(storedAccounts);
             clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
             clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
             resolve({ loginId: selectedLoginId, token: getToken(selectedLoginId) || '' });
@@ -133,7 +136,11 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
         setIsLoading(true);
         setIsSuccess(false);
 
-        const { promise, cleanup } = waitForLoginAndTokenWithTimeout(loginIDKey, cookieTimeout, selectDefaultAccount);
+        const { promise, cleanup } = waitForLoginAndTokenWithTimeout({
+            cookieTimeout,
+            loginIDKey,
+            selectDefaultAccount,
+        });
 
         let isMounted = true;
 

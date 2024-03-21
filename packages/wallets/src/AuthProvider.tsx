@@ -7,14 +7,13 @@ const WalletsAuthProvider = ({ children, ...rest }: Omit<ComponentProps<typeof A
     <AuthProvider
         {...rest}
         loginIDKey={WALLETS_LOGINID_LOCALSTORAGE_KEY}
-        selectDefaultAccount={(accountsObject: any) => {
+        selectDefaultAccount={accountsObject => {
             const loginIds = Object.keys(accountsObject);
             const result = loginIds.filter((loginId: string) => {
                 const { account_category, account_type, currency } = accountsObject[loginId];
                 const isWallet = account_category == 'wallet';
-                const isVirtual = account_type == 'virtual';
-                const isUsd = currency == 'USD';
-                return isWallet && !isVirtual && isUsd;
+                const isFiat = account_type == 'doughflow';
+                return isWallet && isFiat;
             })[0];
 
             return result;

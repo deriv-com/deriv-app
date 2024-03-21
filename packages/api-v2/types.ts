@@ -2146,6 +2146,12 @@ type TPrivateSocketEndpoints = {
     };
 };
 
+type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
+
+interface extendedAccountListResponse extends AccountListResponse {
+    account_list?: TAccountList[];
+}
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -2153,7 +2159,7 @@ type TSocketEndpoints = {
     };
     account_list: {
         request: AccountListRequest;
-        response: AccountListResponse;
+        response: extendedAccountListResponse;
     };
     api_token: {
         request: APITokenRequest;

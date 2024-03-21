@@ -145,11 +145,10 @@
         &__image {
             position: absolute;
             right: 7.5rem;
-            top: 2.2rem;
+            top: 0;
 
             @include mobile {
                 right: -3rem;
-                top: 1.5rem;
             }
         }
     }

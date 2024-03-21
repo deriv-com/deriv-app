@@ -43,6 +43,7 @@ const WalletBannerUnsuccessful = observer(() => {
             <Icon
                 icon='IcAppstoreWalletsUpgradeUnsuccessful'
                 width={is_mobile ? 192 : 272}
+                height='100%'
                 className='wallets-banner-unsuccessful__image'
                 data_testid='dt_wallets_upgrade_unsuccessful'
             />

@@ -1116,6 +1116,7 @@ type TTradersHubStore = {
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
+    handleTabItemClick: (idx: number) => void;
 };
 
 type TContractReplay = {

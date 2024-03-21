@@ -9,6 +9,9 @@ type TError = { code?: string; name?: string; message: string };
 const useRegisterPasskey = () => {
     const invalidate = useInvalidateQuery();
 
+    // the errors are connected with terminating the registration process or setting up the unlock method from user side
+    const excluded_error_names = ['NotAllowedError', 'AbortError', 'NotReadableError', 'UnknownError'];
+
     const [is_passkey_registration_started, setIsPasskeyRegistrationStarted] = React.useState(false);
     const [is_passkey_registered, setIsPasskeyRegistered] = React.useState(false);
     const [passkey_registration_error, setPasskeyRegistrationError] = React.useState<TError | null>(null);
@@ -39,17 +42,17 @@ const useRegisterPasskey = () => {
                     publicKeyCredential: authenticator_response,
                 });
                 if (passkeys_register_response?.passkeys_register?.properties?.name) {
+                    invalidate('passkeys_list');
                     setIsPasskeyRegistered(true);
                 }
             }
         } catch (e) {
-            if ((e as TError).name !== 'NotAllowedError') {
+            if (!excluded_error_names.some(name => name === (e as TError).name)) {
                 setPasskeyRegistrationError(e as TError);
             }
         } finally {
-            invalidate('passkeys_list');
-            setPublicKey(null);
             setIsPasskeyRegistrationStarted(false);
+            setPublicKey(null);
         }
     };
 

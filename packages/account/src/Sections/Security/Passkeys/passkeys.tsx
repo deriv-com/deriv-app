@@ -83,8 +83,8 @@ const Passkeys = observer(() => {
         if (error) {
             onCloseModal(onCloseError);
         } else {
-            setIsModalOpen(false);
             createPasskey();
+            setIsModalOpen(false);
         }
     };
 

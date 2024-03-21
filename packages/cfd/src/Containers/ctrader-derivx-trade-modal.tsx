@@ -60,12 +60,13 @@ const PlatformIconsAndDescriptions = (
                         ]}
                     />
                 </Text>
-                {(ctrader_derivx_trade_account as TTradingPlatformAccounts)?.display_login &&
-                    platform !== CFD_PLATFORMS.CTRADER && (
+                {((ctrader_derivx_trade_account as TTradingPlatformAccounts)?.display_login &&
+                    platform === CFD_PLATFORMS.DXTRADE) ||
+                    (platform === CFD_PLATFORMS.CTRADER && is_demo && (
                         <Text color='less-prominent' size='xxxs' line_height='xxxs'>
                             {(ctrader_derivx_trade_account as TTradingPlatformAccounts)?.display_login}
                         </Text>
-                    )}
+                    ))}
             </div>
         </React.Fragment>
     );
@@ -193,7 +194,9 @@ const CTraderDerivXTradeModal = ({
                 {PlatformIconsAndDescriptions(platform, is_demo, ctrader_derivx_trade_account)}
                 {ctrader_derivx_trade_account?.display_balance && (
                     <div className='cfd-trade-modal__balance'>
-                        {platform === CFD_PLATFORMS.CTRADER && <Text size='xxs'>{localize('Total balance:')}</Text>}
+                        {platform === CFD_PLATFORMS.CTRADER && is_real && (
+                            <Text size='xxs'>{localize('Total balance:')}</Text>
+                        )}
                         <Text
                             size='xs'
                             color={platform !== CFD_PLATFORMS.CTRADER ? 'profit-success' : 'prominent'}
@@ -249,23 +252,25 @@ const CTraderDerivXTradeModal = ({
                     </React.Fragment>
                 )}
 
-                {platform === CFD_PLATFORMS.CTRADER && (
+                {platform === CFD_PLATFORMS.CTRADER && is_real && (
                     <React.Fragment>
-                        {ctrader_accounts_list.map(ctrader_account => {
-                            return (
-                                <div key={ctrader_account.login} className='cfd-trade-modal__list-of-accounts'>
-                                    <Text size='xxs'>{ctrader_account.login}</Text>
-                                    <Text size='xxs' weight='bold'>
-                                        <Money
-                                            amount={ctrader_account.balance}
-                                            currency={ctrader_account.currency}
-                                            has_sign={!!ctrader_account.balance && ctrader_account.balance < 0}
-                                            show_currency
-                                        />
-                                    </Text>
-                                </div>
-                            );
-                        })}
+                        {ctrader_accounts_list
+                            .filter(all_ctrader_accounts => all_ctrader_accounts.account_type === 'real')
+                            .map(ctrader_account => {
+                                return (
+                                    <div key={ctrader_account.login} className='cfd-trade-modal__list-of-accounts'>
+                                        <Text size='xxs'>{ctrader_account.login}</Text>
+                                        <Text size='xxs' weight='bold'>
+                                            <Money
+                                                amount={ctrader_account.balance}
+                                                currency={ctrader_account.currency}
+                                                has_sign={!!ctrader_account.balance && ctrader_account.balance < 0}
+                                                show_currency
+                                            />
+                                        </Text>
+                                    </div>
+                                );
+                            })}
                         {(trading_platform_available_accounts[0]?.available_count ?? 1) > 0 && (
                             <div className='cfd-trade-modal__get-more-accounts'>
                                 <Button

@@ -205,7 +205,7 @@ const TradingAppCard = ({
                             action_type === 'get' || is_deriv_platform ? 'dt_platform-description' : 'dt_account-id'
                         }
                     >
-                        {app_desc}
+                        {platform === CFD_PLATFORMS.CTRADER && is_real ? '' : app_desc}
                     </Text>
                     {mt5_acc_auth_status && (
                         <StatusBadge

@@ -12,7 +12,7 @@ const TotalAssets = () => {
     if (!isSuccess) return <TotalAssetsLoader />;
 
     return (
-        <div className='relative inline-block w-auto text-center lg:text-right basis-2/3 lg:basis-auto'>
+        <div className='relative inline-block w-auto text-center lg:text-right basis-2/3 md:basis-1/3 lg:basis-auto'>
             <div className='d-none lg:block'>
                 <Text size='sm'>Total assets</Text>
             </div>

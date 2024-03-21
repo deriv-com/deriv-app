@@ -78,7 +78,7 @@ export const ManualUploadContainer = ({
     // [TODO]: Integrate country selector
     return (
         <OnfidoContainer
-            countryCode='ng'
+            countryCode={countryCode}
             isEnabledByDefault
             onOnfidoSubmit={() => {
                 // [TODO]: Implement onfido submit

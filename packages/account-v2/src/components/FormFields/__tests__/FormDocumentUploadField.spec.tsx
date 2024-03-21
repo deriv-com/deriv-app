@@ -4,15 +4,15 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormDocumentUploadField } from '../FormDocumentUploadField';
 
-beforeAll(() => {
-    global.URL.createObjectURL = jest.fn();
-});
-
-afterAll(() => {
-    jest.clearAllMocks();
-});
-
 describe('FormDocumentUploadField', () => {
+    beforeAll(() => {
+        global.URL.createObjectURL = jest.fn();
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     it('renders without errors', () => {
         render(
             <Formik initialValues={{ document: null }} onSubmit={jest.fn()}>

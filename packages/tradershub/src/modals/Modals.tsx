@@ -9,7 +9,7 @@ import {
     TradeModal,
 } from '@/features/cfd/modals';
 import { ChangePassword } from '@/features/cfd/screens';
-import { RealAccountCreation } from '@/flows';
+import { RealAccountCreation, Signup } from '@/flows';
 import { AccountSelector } from './AccountSelector';
 import { AddOrManageAccount } from './AddOrManageAccount';
 import { DummyComponentModal } from './DummyComponentModal';
@@ -36,6 +36,7 @@ const Modals = () => {
             <RegulationModal />
             <CTraderSuccessModal />
             <MT5PasswordModal />
+            <Signup />
         </Fragment>
     );
 };

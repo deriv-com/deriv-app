@@ -225,6 +225,18 @@ describe('ProofOfIdentityContainer', () => {
         });
     });
 
+    it('should render  POI submission section when account status is poi_expiring_soon', async () => {
+        populateVerificationStatus.mockReturnValue({
+            poi_expiring_soon: true,
+            identity_status: identity_status_codes.verified,
+            is_age_verified: true,
+            idv: { submissions_left: 3, status: identity_status_codes.verified },
+        });
+        renderComponent({});
+        await waitFor(() => {});
+        expect(await screen.findByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
+    });
+
     it('should render POI submission section when status is none', async () => {
         populateVerificationStatus.mockReturnValue({
             identity_status: identity_status_codes.none,

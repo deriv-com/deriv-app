@@ -27,7 +27,8 @@ type TAuthenticationStatus = Record<
     | 'needs_poa'
     | 'needs_poi'
     | 'poa_address_mismatch'
-    | 'resubmit_poa',
+    | 'resubmit_poa'
+    | 'poa_expiring_soon',
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
@@ -45,6 +46,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         document_status: undefined,
         is_age_verified: false,
         poa_address_mismatch: false,
+        poa_expiring_soon: false,
     });
 
     const { client, notifications, common, ui } = useStore();
@@ -69,6 +71,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poa,
                         needs_poi,
                         poa_address_mismatch,
+                        poa_expiring_soon,
                     } = populateVerificationStatus(get_account_status);
 
                     setAuthenticationStatus(authentication_status => ({
@@ -81,6 +84,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poa,
                         needs_poi,
                         poa_address_mismatch,
+                        poa_expiring_soon,
                     }));
                     setIsLoading(false);
                     refreshNotifications();
@@ -112,6 +116,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         has_submitted_poa,
         is_age_verified,
         poa_address_mismatch,
+        poa_expiring_soon,
     } = authentication_status;
 
     const from_platform = getPlatformRedirect(app_routing_history);
@@ -135,6 +140,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     );
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (poa_expiring_soon) return <ProofOfAddressForm onSubmit={onSubmitDocument} />;
     if (
         !allow_document_upload ||
         (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)

@@ -18,6 +18,12 @@ type TWithdrawalLockedDescProps = {
     withdrawalLockedStatus?: boolean;
 };
 
+const generateDescription = (description: string, components?: JSX.Element[]) => (
+    <WalletText align='center'>
+        <Trans components={components} defaults={`You have reached the withdrawal limit. ${description}`} />
+    </WalletText>
+);
+
 export const getWithdrawalLimitReachedDesc = ({
     askFinancialRiskApproval,
     poaNeedsVerification,
@@ -26,11 +32,6 @@ export const getWithdrawalLimitReachedDesc = ({
     poiStatus,
 }: TWithdrawalLimitReachedDescProps) => {
     let description = null;
-    const generateDescription = (description: string, components?: JSX.Element[]) => (
-        <WalletText align='center'>
-            <Trans components={components} defaults={`You have reached the withdrawal limit. ${description}`} />
-        </WalletText>
-    );
 
     if (poiNeedsVerification) {
         if (poiStatus === 'none') {
@@ -74,11 +75,6 @@ const getWithdrawalLockedDesc = ({
     withdrawalLockedStatus,
 }: TWithdrawalLockedDescProps) => {
     let description = null;
-    const generateDescription = (description: string, components?: JSX.Element[]) => (
-        <WalletText align='center'>
-            <Trans components={components} defaults={`You have reached the withdrawal limit. ${description}`} />
-        </WalletText>
-    );
 
     if (financialAssessmentRequired) {
         description = generateDescription('Please complete the <0>financial assessment</0> to unlock withdrawals.', [

@@ -97,18 +97,7 @@ const getCashierLockedDesc = ({
         description = generateDescription(
             'The identification documents you submitted have expired. Please submit valid identity documents to unlock your {{currency}} Wallet.'
         );
-    } else if (cashierLockedStatus) {
-        description = generateDescription(
-            'Please contact us via <0>live chat</0> to enable deposits and withdrawals again.',
-            [
-                <button
-                    className='wallets-link wallets-link__variant--bold'
-                    key={0}
-                    onClick={() => window.LC_API.open_chat_window()}
-                />,
-            ]
-        );
-    } else if (disabledStatus) {
+    } else if (cashierLockedStatus || disabledStatus) {
         description = generateDescription(
             'Please contact us via <0>live chat</0> to enable deposits and withdrawals again.',
             [

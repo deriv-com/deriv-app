@@ -54,7 +54,7 @@ runs:
       shell: bash
     - name: Pushing Image to docker hub 🐳
       run: |
-        echo $DOCKERHUB_PASSWORD | docker login -u ${env.DOCKERHUB_USERNAME} --password-stdin
+        echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
         docker push ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION}
         docker push ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }}
       shell: bash

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Icon, Popover } from '@deriv/components';
-import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { routes } from '@deriv/shared';
 import { LoginButton } from '../login-button.jsx';
 import { SignupButton } from '../signup-button.jsx';
 import { BinaryLink } from '../../../Routes/index.js';
@@ -26,7 +26,7 @@ const AccountActionsWallets = observer(() => {
     const history = useHistory();
 
     const handleManageFundsRedirect = () => {
-        history.push(routes.wallets_transfer);
+        history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
     };
 
     if (!is_logged_in) {

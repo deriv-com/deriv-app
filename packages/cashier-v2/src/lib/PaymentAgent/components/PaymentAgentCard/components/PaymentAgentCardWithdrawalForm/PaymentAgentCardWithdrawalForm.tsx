@@ -29,6 +29,7 @@ const WithdrawalLimits: React.FC<TWithdrawalLimitsProps> = ({ currency, maxWithd
 
 const PaymentAgentCardWithdrawalForm: React.FC<TPaymentAgentCardWithdrawalFormProps> = ({ paymentAgent }) => {
     const { currencies, max_withdrawal: maxWithdrawalLimit, min_withdrawal: minWithdrawalLimit } = paymentAgent;
+    const onSubmitHandler = () => undefined;
 
     return (
         <div className={styles.container}>
@@ -39,7 +40,7 @@ const PaymentAgentCardWithdrawalForm: React.FC<TPaymentAgentCardWithdrawalFormPr
                 initialValues={{
                     amount: '',
                 }}
-                onSubmit={() => undefined}
+                onSubmit={onSubmitHandler}
             >
                 {({ errors, isSubmitting, isValid, touched, values }) => {
                     return (

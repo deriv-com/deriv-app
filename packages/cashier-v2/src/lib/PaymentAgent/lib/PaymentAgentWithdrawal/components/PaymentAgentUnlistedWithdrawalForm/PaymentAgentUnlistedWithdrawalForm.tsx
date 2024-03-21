@@ -7,6 +7,7 @@ import styles from './PaymentAgentUnlistedWithdrawalForm.module.scss';
 
 const PaymentAgentUnlistedWithdrawalForm = () => {
     const { data: activeAccount } = useActiveAccount();
+    const onSubmitHandler = () => undefined;
 
     return (
         <div className={styles.container}>
@@ -21,7 +22,7 @@ const PaymentAgentUnlistedWithdrawalForm = () => {
                     accountNumber: '',
                     amount: '',
                 }}
-                onSubmit={() => undefined}
+                onSubmit={onSubmitHandler}
             >
                 {({ errors, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const isFormEmpty = !Object.values(values).some(Boolean);

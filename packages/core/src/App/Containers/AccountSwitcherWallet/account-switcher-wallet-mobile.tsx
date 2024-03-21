@@ -29,13 +29,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
     };
 
     const footer = (
-        <div
-            className='account-switcher-wallet-mobile__footer'
-            onClick={handleTradersHubRedirect}
-            // SonarLint offers to add handler for onKeyDown event and a role if we have onClick event handler
-            role='button'
-            onKeyDown={handleTradersHubRedirect}
-        >
+        <div className='account-switcher-wallet-mobile__footer' onClick={handleTradersHubRedirect} role='button'>
             <Text weight='normal' size='xs'>
                 <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
             </Text>

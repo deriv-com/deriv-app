@@ -146,7 +146,7 @@ export const getProfitTableColumnsTemplate = (currency: string, items_count: num
         },
     },
     {
-        title: localize('Buy price'),
+        title: localize('Stake'),
         col_index: 'buy_price',
         renderCellContent: ({ cell_value, is_footer }: TCellContentProps) => {
             if (is_footer) return '';
@@ -164,7 +164,7 @@ export const getProfitTableColumnsTemplate = (currency: string, items_count: num
         },
     },
     {
-        title: localize('Sell price'),
+        title: localize('Contract value'),
         col_index: 'sell_price',
         renderCellContent: ({ cell_value, is_footer }: TCellContentProps) => {
             if (is_footer) return '';
@@ -173,7 +173,7 @@ export const getProfitTableColumnsTemplate = (currency: string, items_count: num
         },
     },
     {
-        title: localize('Profit / Loss'),
+        title: localize('Total profit/loss'),
         col_index: 'profit_loss',
         renderCellContent: ({ cell_value }: TCellContentProps) => (
             <ProfitLossCell value={cell_value}>
@@ -211,12 +211,12 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         ),
     },
     {
-        title: localize('Buy price'),
+        title: localize('Stake'),
         col_index: 'purchase',
         renderCellContent: ({ cell_value }: TCellContentProps) => <Money amount={cell_value} currency={currency} />,
     },
     {
-        title: localize('Payout limit'),
+        title: localize('Potential payout'),
         col_index: 'payout',
         renderHeader: ({ title, is_vanilla }: THeaderProps) => <span>{is_vanilla ? localize('Strike') : title}</span>,
         renderCellContent: ({ cell_value, row_obj, is_vanilla }: TCellContentProps) => {
@@ -225,7 +225,7 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         },
     },
     {
-        title: localize('Indicative profit/loss'),
+        title: localize('Total profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             const { profit_loss, contract_info } = row_obj ?? {};
@@ -246,17 +246,23 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         },
     },
     {
-        title: localize('Indicative price'),
+        title: localize('Contract value'),
         col_index: 'indicative',
-        renderCellContent: ({ cell_value, row_obj, is_footer }: TCellContentProps) => (
-            <IndicativeCell
-                amount={+cell_value}
-                currency={currency}
-                contract_info={row_obj.contract_info}
-                is_sell_requested={row_obj.is_sell_requested}
-                is_footer={is_footer}
-            />
-        ),
+        renderCellContent: ({ cell_value, row_obj, is_footer }: TCellContentProps) => {
+            const { profit_loss, contract_info } = row_obj ?? {};
+            const profit = profit_loss ?? contract_info.profit;
+
+            return (
+                <IndicativeCell
+                    amount={+cell_value}
+                    currency={currency}
+                    contract_info={row_obj.contract_info}
+                    is_sell_requested={row_obj.is_sell_requested}
+                    is_footer={is_footer}
+                    profit={profit}
+                />
+            );
+        },
     },
     {
         title: localize('Remaining time'),
@@ -299,7 +305,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         ),
     },
     {
-        title: localize('Stake'),
+        title: localize('Contract cost'),
         col_index: 'buy_price',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             if (row_obj.contract_info) {
@@ -324,11 +330,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         },
     },
     {
-        title: isMobile() ? (
-            <Localize i18n_default_text='Total buy price' />
-        ) : (
-            <Localize i18n_default_text='Buy price' />
-        ),
+        title: <Localize i18n_default_text='Stake' />,
         col_index: 'purchase',
         renderCellContent: ({ cell_value }: TCellContentProps) => <Money amount={cell_value} currency={currency} />,
     },
@@ -362,7 +364,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         },
     },
     {
-        title: localize('Current stake'),
+        title: localize('Contract value'),
         col_index: 'bid_price',
         renderCellContent: ({ row_obj, is_footer }: TCellContentProps) => {
             if (is_footer) {
@@ -380,6 +382,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                     })}
                 >
                     <Money amount={row_obj.contract_info.bid_price} currency={currency} />
+                    <ArrowIndicator className='open-positions__bid_price--movement' value={total_profit} />
                 </div>
             );
         },
@@ -473,7 +476,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         ),
     },
     {
-        title: isMobile() ? localize('Total stake') : localize('Initial stake'),
+        title: localize('Stake'),
         col_index: isMobile() ? 'purchase' : 'buy_price',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             if (row_obj.contract_info) {
@@ -499,7 +502,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         },
     },
     {
-        title: localize('Current stake'),
+        title: localize('Contract value'),
         col_index: 'bid_price',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             if (!row_obj.contract_info || !row_obj.contract_info.bid_price) return '-';
@@ -513,6 +516,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
                     })}
                 >
                     <Money amount={row_obj.contract_info.bid_price} currency={currency} />
+                    <ArrowIndicator className='open-positions__bid_price--movement' value={total_profit} />
                 </div>
             );
         },

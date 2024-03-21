@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, Icon, Text } from '@deriv/components';
-import { redirectToLogin } from '@deriv/shared';
+import { redirectToLogin, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import './wallets-upgrade-logout-modal.scss';
@@ -16,7 +16,10 @@ const WalletsUpgradeLogoutModal = observer(() => {
             confirm_button_text={localize('Log out')}
             onConfirm={() => {
                 localStorage.setItem('should_show_wallets_upgrade_completed_modal', 'true');
-                logout().then(() => redirectToLogin(false, getLanguage(), false));
+                logout().then(() => {
+                    window.location.href = routes.wallets;
+                    redirectToLogin(false, getLanguage());
+                });
             }}
             is_closed_on_confirm
             is_visible

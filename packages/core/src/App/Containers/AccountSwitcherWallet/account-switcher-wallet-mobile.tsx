@@ -25,7 +25,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
 
     const handleTradersHubRedirect = async () => {
         closeAccountsDialog();
-        history.push(routes.traders_hub);
+        history.push(routes.wallets);
     };
 
     const footer = (

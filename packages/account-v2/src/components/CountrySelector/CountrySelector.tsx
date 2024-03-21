@@ -5,11 +5,12 @@ import { Dropdown } from '@deriv-com/ui';
 
 type TCountrySelector = {
     errorMessage?: React.ReactNode;
+    handleSelect: (value: string) => void;
     label: string;
     name: string;
 };
 
-export const CountrySelector = ({ errorMessage, label, name }: TCountrySelector) => {
+export const CountrySelector = ({ errorMessage, handleSelect, label, name }: TCountrySelector) => {
     const { data: residenceList } = useResidenceList();
 
     return (
@@ -19,8 +20,7 @@ export const CountrySelector = ({ errorMessage, label, name }: TCountrySelector)
             label={label}
             list={residenceList}
             name={name}
-            /*eslint-disable @typescript-eslint/no-empty-function */
-            onSelect={() => {}}
+            onSelect={handleSelect}
             variant='prompt'
         />
     );

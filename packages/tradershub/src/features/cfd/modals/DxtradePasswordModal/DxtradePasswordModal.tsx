@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useQueryParams } from '@/hooks';
-import { Modal, useDevice } from '@deriv-com/ui';
-import DxtradePasswordFooter from './DxtradePasswordFooter';
+import { Modal } from '@deriv-com/ui';
+// import DxtradePasswordFooter from './DxtradePasswordFooter';
 import DxtradePasswordInput from './DxtradePasswordInput';
 
 const DxtradePasswordModal = () => {
-    const { isDesktop } = useDevice();
+    // const { isDesktop } = useDevice();
     const [password, setPassword] = useState('');
     const { isModalOpen, closeModal } = useQueryParams();
 
@@ -15,15 +15,7 @@ const DxtradePasswordModal = () => {
             isOpen={isModalOpen('DxtradePasswordModal')}
             onRequestClose={closeModal}
         >
-            <Modal.Header hideBorder={isDesktop} onRequestClose={closeModal} />
-            <Modal.Body className='pb-24'>
-                <DxtradePasswordInput password={password} setPassword={setPassword} />
-            </Modal.Body>
-            {!isDesktop && (
-                <Modal.Footer>
-                    <DxtradePasswordFooter password={password} />
-                </Modal.Footer>
-            )}
+            <DxtradePasswordInput password={password} setPassword={setPassword} />
         </Modal>
     );
 };

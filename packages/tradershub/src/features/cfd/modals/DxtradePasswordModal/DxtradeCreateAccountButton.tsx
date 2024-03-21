@@ -14,11 +14,10 @@ const DxtradeCreateAccountButton = ({ buttonText, password }: TCreateAccountButt
 
     return (
         <Button
+            className='inline-block'
             disabled={isDisabled}
-            isFullWidth
             isLoading={isLoading}
             onClick={() => handleSubmit(password)}
-            size='lg'
         >
             {buttonText}
         </Button>

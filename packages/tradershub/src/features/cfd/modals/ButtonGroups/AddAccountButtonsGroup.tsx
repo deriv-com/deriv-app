@@ -17,8 +17,13 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     const { openModal } = useQueryParams();
 
     return (
-        <ButtonGroup className='justify-end w-full'>
-            <Button color='black' onClick={() => openModal('SentEmailContentModal')} variant='outlined'>
+        <ButtonGroup className='flex justify-end w-full'>
+            <Button
+                className='inline-block'
+                color='black'
+                onClick={() => openModal('SentEmailContentModal')}
+                variant='outlined'
+            >
                 Forgot password?
             </Button>
             {platform === PlatformDetails.dxtrade.platform && (

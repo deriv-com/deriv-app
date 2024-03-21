@@ -29,7 +29,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
     };
 
     const footer = (
-        <button className='account-switcher-wallet-mobile__footer' onClick={handleTradersHubRedirect}>
+        <button className='account-switcher-wallet-mobile__footer' onClick={handleTradersHubRedirect} type='button'>
             <Text weight='normal' size='xs'>
                 <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
             </Text>

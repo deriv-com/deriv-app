@@ -53,7 +53,11 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
             <ThemedScrollbars height={450}>
                 <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
             </ThemedScrollbars>
-            <button className='account-switcher-wallet__looking-for-cfds' onClick={handleTradersHubRedirect}>
+            <button
+                className='account-switcher-wallet__looking-for-cfds'
+                onClick={handleTradersHubRedirect}
+                type='button'
+            >
                 <Text size='xs' line_height='xl'>
                     <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
                 </Text>

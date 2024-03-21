@@ -29,6 +29,7 @@ const ALL_LANGUAGES = Object.freeze({
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
+        AR: 'العربية',
         ES: 'Español',
         DE: 'Deutsch',
         KO: '한국어',

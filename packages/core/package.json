@@ -94,7 +94,7 @@
         "@babel/polyfill": "^7.4.4",
         "@datadog/browser-rum": "^5.11.0",
         "@deriv-com/analytics": "1.4.13",
-        "@deriv-com/utils": "latest",
+        "@deriv-com/utils": "^0.0.11",
         "@deriv/account": "^1.0.0",
         "@deriv/account-v2": "^1.0.0",
         "@deriv/api": "^1.0.0",

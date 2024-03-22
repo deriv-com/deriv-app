@@ -91,7 +91,6 @@ const BotBuilder = observer(() => {
 
     React.useEffect(() => {
         const workspace = window.Blockly?.derivWorkspace;
-
         if (workspace && !is_blockly_delete_listener_registered.current) {
             is_blockly_delete_listener_registered.current = true;
             workspace.addChangeListener(handleBlockDelete);
@@ -101,9 +100,8 @@ const BotBuilder = observer(() => {
     }, [is_loading, active_tab]);
 
     const handleBlockDelete = (e: Event) => {
-        if (active_tab !== DBOT_TABS.BOT_BUILDER) return;
+        if (active_tab !== 1) return;
         const { is_reset_button_clicked, is_import_button_click } = toolbar;
-
         if (e.type === 'delete' && !is_reset_button_clicked && !is_import_button_click) {
             botNotification(notification_message.block_delete, {
                 label: localize('Undo'),

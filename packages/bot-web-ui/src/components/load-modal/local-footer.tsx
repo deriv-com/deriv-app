@@ -23,11 +23,11 @@ const LocalFooter = observer(() => {
             <Button
                 text={localize('Open')}
                 onClick={() => {
+                    setImportButtonClick(true);
                     loadFileFromLocal();
                     toggleLoadModal();
                     setPreviewOnPopup(false);
                     setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
-                    setImportButtonClick(true);
                 }}
                 is_loading={is_open_button_loading}
                 has_effect

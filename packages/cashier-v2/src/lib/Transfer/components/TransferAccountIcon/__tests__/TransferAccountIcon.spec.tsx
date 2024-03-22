@@ -18,6 +18,7 @@ jest.mock('../../../../../components', () => ({
 
 describe('<TransferAccountIcon />', () => {
     it('should display the correct currency icon for deriv accounts', () => {
+        //@ts-expect-error since this is a mock, we only need partial properties of accounts data
         render(<TransferAccountIcon account={{ account_type: 'binary', currency: 'BTC' }} />);
 
         expect(screen.getByText('CurrencyIcon-BTC-md')).toBeInTheDocument();
@@ -26,6 +27,7 @@ describe('<TransferAccountIcon />', () => {
     it('should display the correct MT5 icon for MT5 app', () => {
         render(
             <TransferAccountIcon
+                //@ts-expect-error since this is a mock, we only need partial properties of accounts data
                 account={{
                     account_type: 'mt5',
                     currency: 'USD',
@@ -40,6 +42,7 @@ describe('<TransferAccountIcon />', () => {
     it('should display the correct Deriv X icon for Deriv X app', () => {
         render(
             <TransferAccountIcon
+                //@ts-expect-error since this is a mock, we only need partial properties of accounts data
                 account={{
                     account_type: 'dxtrade',
                     currency: 'USD',

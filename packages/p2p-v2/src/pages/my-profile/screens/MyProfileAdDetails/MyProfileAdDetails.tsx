@@ -4,9 +4,10 @@ import { useDevice, useQueryString } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 import { Button, Loader } from '@deriv-com/ui';
 import './MyProfileAdDetails.scss';
+import { THooks } from 'types';
 
 type TMYProfileAdDetailsTextAreaProps = {
-    advertiserInfo: NonNullable<ReturnType<typeof p2p.advertiser.useGetInfo>>['data'];
+    advertiserInfo: THooks.Advertiser.GetInfo;
     setAdvertDescription: React.Dispatch<React.SetStateAction<string>>;
     setContactInfo: React.Dispatch<React.SetStateAction<string>>;
 };

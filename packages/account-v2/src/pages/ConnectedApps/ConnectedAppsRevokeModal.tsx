@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv-com/ui';
+import TrashIcon from '../../assets/connectedApps/ic-account-trash-can.svg';
 
 type TConnectedAppsRevokeModalProps = {
     handleRevokeAccess: () => void;
@@ -12,17 +13,29 @@ export const ConnectedAppsRevokeModal = ({
     handleToggleModal,
     isModalOpen,
 }: TConnectedAppsRevokeModalProps) => (
-    <Modal isOpen={isModalOpen} onRequestClose={() => handleToggleModal()} shouldCloseOnOverlayClick>
-        <Modal.Body>
-            <Text as='p' color='prominent' weight='bold'>
+    <Modal className='p-24 md:w-[440px] sm:w-[328px] h-auto rounded-default' isOpen={isModalOpen}>
+        <Modal.Body className='flex flex-col justify-center items-center'>
+            {/* TODO: Replace this svg with trashIcon when quill-icons is updated */}
+            <TrashIcon height={128} width={128} />
+            <Text align='center' as='p' weight='bold'>
                 Confirm revoke access
             </Text>
         </Modal.Body>
-        <Modal.Footer hideBorder>
-            <Button color='black' onClick={() => handleToggleModal()}>
+        <Modal.Footer className='mt-24 p-0 min-h-0 flex gap-x-8 justify-center' hideBorder>
+            <Button
+                className='px-16 py-10 h-40'
+                color='black'
+                onClick={() => handleToggleModal()}
+                rounded='sm'
+                size='md'
+                type='button'
+                variant='outlined'
+            >
                 Back
             </Button>
-            <Button onClick={handleRevokeAccess}>Confirm</Button>
+            <Button className='px-16 py-10 h-40' color='primary' onClick={handleRevokeAccess} rounded='sm' size='md'>
+                Confirm
+            </Button>
         </Modal.Footer>
     </Modal>
 );

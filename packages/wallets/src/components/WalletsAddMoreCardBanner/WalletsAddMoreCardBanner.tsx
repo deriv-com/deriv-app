@@ -6,22 +6,18 @@ import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageCl
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
-import { THooks } from '../../types';
+import { TWalletCarouselItem } from '../../types';
 import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 import { WalletError } from '../WalletError';
-import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 
-type TProps = THooks.AllWalletAccounts;
-
-const WalletsAddMoreCardBanner: React.FC<TProps> = ({
+const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     currency,
     is_added: isAdded,
     is_crypto: isCrypto,
-    landing_company_name: landingCompanyName,
-}: TProps) => {
+}) => {
     const switchWalletAccount = useWalletAccountSwitcher();
 
     const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
@@ -88,7 +84,6 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 <span className='wallets-add-more__banner-logo'>
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
-                <WalletListCardBadge label={landingCompanyName} />
             </div>
             <WalletButton
                 color='white'

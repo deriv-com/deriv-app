@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
@@ -11,12 +11,8 @@ type TGetConvertedAmountParams =
     | TGetCryptoFiatConverterValidationSchema['fromAccount']
     | TGetCryptoFiatConverterValidationSchema['toAccount'];
 
-const getConvertedAmount = (
-    amount: number | string,
-    source: TGetConvertedAmountParams,
-    target: TGetConvertedAmountParams
-) => {
-    const value = typeof amount === 'string' ? parseFloat(amount) : amount;
+const getConvertedAmount = (amount: string, source: TGetConvertedAmountParams, target: TGetConvertedAmountParams) => {
+    const value = Number(amount);
 
     if (!value) return '';
 
@@ -25,7 +21,7 @@ const getConvertedAmount = (
 
     const convertedValue =
         // eslint-disable-next-line sonarjs/prefer-immediate-return
-        !Number.isNaN(value) ? ((value * toRate) / fromRate).toFixed(target.fractionalDigits) : '';
+        ((value * toRate) / fromRate).toFixed(target.fractionalDigits);
 
     return convertedValue;
 };
@@ -36,7 +32,19 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
     const { isMobile } = useDevice();
     const [isFromInputActive, setIsFromInputActive] = useState(true);
 
-    const { errors, setValues } = useFormikContext<TContext>();
+    const { errors, setFieldValue, setValues } = useFormikContext<TContext>();
+
+    useEffect(() => {
+        if (errors.toAmount && !isFromInputActive) {
+            setFieldValue('fromAmount', '');
+        }
+    }, [errors.toAmount, isFromInputActive, setFieldValue]);
+
+    useEffect(() => {
+        if (errors.fromAmount && isFromInputActive) {
+            setFieldValue('toAmount', '');
+        }
+    }, [errors.fromAmount, isFromInputActive, setFieldValue]);
 
     const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const convertedValue = getConvertedAmount(e.target.value, fromAccount, toAccount);
@@ -44,7 +52,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
         setValues(currentValues => ({
             ...currentValues,
             fromAmount: e.target.value,
-            toAmount: !errors.fromAmount && isFromInputActive ? convertedValue : currentValues.toAmount ?? '',
+            toAmount: convertedValue,
         }));
     };
 
@@ -53,7 +61,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
 
         setValues(currentValues => ({
             ...currentValues,
-            fromAmount: !errors.toAmount && !isFromInputActive ? convertedValue : currentValues.fromAmount ?? '',
+            fromAmount: convertedValue,
             toAmount: e.target.value,
         }));
     };

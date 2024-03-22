@@ -1,6 +1,8 @@
 import React, { PropsWithChildren } from 'react';
+import { useHistory } from 'react-router-dom';
 import { FullPageMobileWrapper } from '@/components';
-import { Button, Text, useDevice } from '@deriv-com/ui';
+import { MY_ADS_URL } from '@/constants';
+import { Button, useDevice } from '@deriv-com/ui';
 import { MyAdsToggle } from '../MyAdsToggle';
 
 type TMyAdsDisplayWrapperProps = {
@@ -8,24 +10,18 @@ type TMyAdsDisplayWrapperProps = {
     onClickToggle: () => void;
 };
 
-const MyAdsButton = () => {
-    const { isMobile } = useDevice();
-
-    return (
-        <Button isFullWidth={isMobile} size='lg'>
-            <Text lineHeight='6xl' size={isMobile ? 'md' : 'sm'} weight='bold'>
-                Create new ad
-            </Text>
-        </Button>
-    );
-};
-
 const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChildren<TMyAdsDisplayWrapperProps>) => {
     const { isMobile } = useDevice();
+    const history = useHistory();
+
     if (isMobile) {
         return (
             <FullPageMobileWrapper
-                renderFooter={() => <MyAdsButton />}
+                renderFooter={() => (
+                    <Button isFullWidth onClick={() => history.push(`${MY_ADS_URL}/create`)} size='lg' textSize='md'>
+                        Create new ad
+                    </Button>
+                )}
                 renderHeader={() => <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />}
                 shouldShowBackIcon={false}
             >
@@ -37,7 +33,9 @@ const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChi
     return (
         <>
             <div className='flex items-center justify-between my-[1.6rem]'>
-                <MyAdsButton />
+                <Button onClick={() => history.push(`${MY_ADS_URL}/create`)} size='lg' textSize='sm'>
+                    Create new ad
+                </Button>
                 <MyAdsToggle isPaused={isPaused} onClickToggle={onClickToggle} />
             </div>
             {children}

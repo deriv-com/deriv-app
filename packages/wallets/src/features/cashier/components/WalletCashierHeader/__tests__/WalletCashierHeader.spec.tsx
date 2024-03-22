@@ -1,6 +1,7 @@
 import React from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../AuthProvider';
 import WalletCashierHeader from '../WalletCashierHeader';
 
 const DISPLAY_BALANCE = 'RM42';
@@ -21,9 +22,9 @@ describe('<WalletCashierHeader/>', () => {
     it('renders', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCashierHeader hideWalletDetails={false} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -34,9 +35,9 @@ describe('<WalletCashierHeader/>', () => {
     it('displays balance', () => {
         render(
             <APIProvider>
-                <AuthProvider>
+                <WalletsAuthProvider>
                     <WalletCashierHeader hideWalletDetails={false} />
-                </AuthProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 

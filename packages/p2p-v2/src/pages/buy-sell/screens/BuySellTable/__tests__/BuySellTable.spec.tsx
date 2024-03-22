@@ -44,6 +44,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
+jest.mock('../../BuySellHeader/BuySellHeader', () => jest.fn(() => <div>BuySellHeader</div>));
+
 describe('<BuySellTable.spec />', () => {
     beforeEach(() => {
         Object.defineProperty(window, 'location', {
@@ -56,7 +58,7 @@ describe('<BuySellTable.spec />', () => {
     it('should render the BuySellHeader component and loader component if isLoading is true', () => {
         render(<BuySellTable />, { wrapper });
 
-        expect(screen.getByTestId('dt_p2p_v2_buy_sell_header')).toBeInTheDocument();
+        expect(screen.getByText('BuySellHeader')).toBeInTheDocument();
         expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 

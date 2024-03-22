@@ -1,4 +1,5 @@
 import { ERROR_CODES } from '@/constants';
+import { countDecimalPlaces, decimalValidator } from './string';
 
 /**
  * Determines whether to show a tooltip icon based on the visibility status.
@@ -37,4 +38,91 @@ export const getVisibilityErrorCodes = (
     if (enableActionPoint && !updatedVisibilityStatus.includes(ERROR_CODES.ADVERT_INACTIVE))
         updatedVisibilityStatus = [...updatedVisibilityStatus, ERROR_CODES.ADVERT_INACTIVE];
     return updatedVisibilityStatus;
+};
+
+type ValidationRules = {
+    [key: string]: (value: string) => boolean | string;
+};
+
+const requiredValidation = (value: string, field: string) => !!value || `${field} is required`;
+const decimalPointValidation = (value: string) =>
+    (Number(value) > 0 && decimalValidator(value) && countDecimalPlaces(value) <= 2) ||
+    'Only up to 2 decimals are allowed.';
+export const getValidationRules = (
+    fieldName: string,
+    getValues: (fieldName: string) => number | string
+): ValidationRules => {
+    switch (fieldName) {
+        case 'amount':
+            return {
+                validation_1: value => requiredValidation(value, 'Amount'),
+                validation_2: value => !isNaN(Number(value)) || 'Enter a valid amount',
+                validation_3: value => decimalPointValidation(value),
+                validation_4: value => {
+                    const minOrder = getValues('min-order');
+                    if (minOrder && Number(value) < Number(minOrder)) {
+                        return 'Amount should not be below Min limit';
+                    }
+                    return '';
+                },
+                validation_5: value => {
+                    const maxOrder = getValues('max-order');
+                    if (maxOrder && Number(value) > Number(maxOrder)) {
+                        return 'Amount should not exceed Max limit';
+                    }
+                    return '';
+                },
+            };
+        case 'rate-type':
+            //TODO: validations to be changed considering float as well
+            return {
+                validation_1: value => requiredValidation(value, 'Fixed rate'),
+                validation_2: value => !isNaN(Number(value)) || 'Enter a valid amount',
+                validation_3: value => decimalPointValidation(value),
+                validation_4: value =>
+                    (Number(value) >= 0 && Number(value) <= 100) || 'Rate should be between 0 and 100',
+            };
+        case 'min-order':
+            return {
+                validation_1: value => requiredValidation(value, 'Min limit'),
+                validation_2: value => !isNaN(Number(value)) || 'Only numbers are allowed',
+                validation_3: value => decimalPointValidation(value),
+                validation_4: value => {
+                    const amount = getValues('amount');
+                    if (getValues('amount') && Number(value) > Number(amount)) {
+                        return 'Min limit should not exceed Amount';
+                    }
+                    return '';
+                },
+                validation_5: value => {
+                    const maxOrder = getValues('max-order');
+                    if (maxOrder && Number(value) > Number(maxOrder)) {
+                        return 'Min limit should not exceed Max limit';
+                    }
+                    return '';
+                },
+            };
+        case 'max-order':
+            return {
+                validation_1: value => requiredValidation(value, 'Max limit'),
+                validation_2: value => !isNaN(Number(value)) || 'Only numbers are allowed',
+                validation_3: value => decimalPointValidation(value),
+                validation_4: value => {
+                    const amount = getValues('amount');
+                    if (amount && Number(value) > Number(amount)) {
+                        return 'Max limit should not exceed Amount';
+                    }
+                    return '';
+                },
+                validation_5: value => {
+                    const minOrder = getValues('min-order');
+                    if (minOrder && Number(value) < Number(minOrder)) {
+                        return 'Amount should not be below Min limit';
+                    }
+                    return '';
+                },
+            };
+        default:
+            return {};
+    }
 };

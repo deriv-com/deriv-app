@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { TGenericSizes } from '@/utils';
 import { LabelPairedArrowLeftLgBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import './PageReturn.scss';
@@ -11,7 +12,7 @@ type TPageReturnProps = {
     pageTitle: string;
     rightPlaceHolder?: JSX.Element;
     shouldHideBackButton?: boolean;
-    size?: string;
+    size?: TGenericSizes;
     weight?: string;
 };
 

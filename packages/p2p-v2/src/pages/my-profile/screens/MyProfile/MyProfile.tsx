@@ -20,7 +20,7 @@ const MyProfile = () => {
     const { isP2PPoaRequired, isPoaVerified, isPoiVerified } = data || {};
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState<boolean | undefined>(false);
 
-    const currentTab = queryString.get('tab');
+    const currentTab = queryString.tab;
 
     const tabs = [
         { component: <MyProfileStats />, title: 'Stats' },

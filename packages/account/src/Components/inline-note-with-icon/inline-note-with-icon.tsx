@@ -4,8 +4,8 @@ import { Icon, Text } from '@deriv/components';
 type TInlineNoteWithIconExtend = {
     icon?: string;
     font_size?: string;
-    message: React.ReactElement;
-    title: React.ReactElement;
+    message: React.ReactNode;
+    title: React.ReactNode;
 };
 
 const InlineNoteWithIcon = ({ icon, message, font_size = 'xxxs', title }: TInlineNoteWithIconExtend) => {

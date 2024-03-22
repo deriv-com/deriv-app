@@ -8,6 +8,8 @@ jobs:
   test_slack_notification:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Test Slack Notification
       uses: "./.github/actions/send_slack_notifications"
       with:

@@ -5,59 +5,11 @@ on:
     - master
 
 jobs:
-  build_and_test:
-    name: Build And Test
-    runs-on: Runner_8cores_Deriv-app
-    environment: Preview
+  test_slack_notification:
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-    - name: Setup Node
-      uses: "./.github/actions/setup_node"
-    - name: Check imports
-      run: npm run check-imports
-    - name: Install dependencies
-      uses: "./.github/actions/npm_install_from_cache"
-    # - name: Invalidate NPM Cache
-    #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    #   uses: "./.github/actions/invalidate_npm_cache"
-    - name: Build
-      uses: "./.github/actions/build"
-    - name: Check TypeScript for @deriv/api
-      run: npx tsc --project packages/api/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/api-v2
-      run: npx tsc --project packages/api-v2/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/hooks
-      run: npx tsc --project packages/hooks/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/utils
-      run: npx tsc --project packages/utils/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/stores
-      run: npx tsc --project packages/stores/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/wallets
-      run: npx tsc --project packages/wallets/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/tradershub
-      run: npx tsc --project packages/tradershub/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/account-v2
-      run: npx tsc --project packages/account-v2/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/cashier-v2
-      run: npx tsc --project packages/cashier-v2/tsconfig.json -noEmit
-    - name: Check ESLint for @deriv/wallets
-      run: npx eslint --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
-    - name: Check ESLint for @deriv/tradershub
-      run: npx eslint --fix --ignore-path packages/tradershub/.eslintignore --config packages/tradershub/.eslintrc.js packages/tradershub
-    - name: Check ESLint for @deriv/account-v2
-      run: npx eslint --fix --ignore-path packages/account-v2/.eslintignore --config packages/account-v2/.eslintrc.js packages/account-v2
-    - name: Check ESLint for @deriv/cashier-v2
-      run: npx eslint --fix --ignore-path packages/cashier-v2/.eslintignore --config packages/cashier-v2/.eslintrc.js packages/cashier-v2
-    - name: Check Stylelint for @deriv/wallets
-      run: npx stylelint packages/wallets/**/*.scss
-    - name: Check Stylelint for @deriv/account-v2
-      run: npx stylelint packages/account-v2/**/*.scss
-    - name: Check Stylelint for @deriv/cashier-v2
-      run: npx stylelint packages/cashier-v2/**/*.scss
-    - name: Check tests for @deriv/hooks
-      run: bash ./scripts/check-tests.sh packages/hooks/src
-    - name: Check tests for @deriv/utils
-      run: bash ./scripts/check-tests.sh packages/utils/src
-    - name: Run tests
-      run: npm run test:ci
+    - name: Test Slack Notification
+      uses: "./.github/actions/send_slack_notifications"
+      with:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        MESSAGE: "[TEST] Slack Notification Test"

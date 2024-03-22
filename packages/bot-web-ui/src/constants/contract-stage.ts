@@ -1,3 +1,5 @@
+export type TContractStage = 0 | 1 | 2 | 3 | 4 | 5;
+
 export const contract_stages = Object.freeze({
     NOT_RUNNING: 0,
     STARTING: 1,

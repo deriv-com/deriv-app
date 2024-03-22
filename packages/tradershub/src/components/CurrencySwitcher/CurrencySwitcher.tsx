@@ -1,12 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { CurrencySwitcherLoader, Modal, TradingAccountsList } from '@/components';
+import { CurrencySwitcherLoader } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
-import { useRegulationFlags } from '@/hooks';
-import { AddOrManageAccount } from '@/modals';
-import { useModal } from '@/providers';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { THooks } from '@/types';
-import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
+import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api-v2';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
 import { DemoCurrencySwitcherAccountInfo, RealCurrencySwitcherAccountInfo } from './CurrencySwitcherAccountInfo';
@@ -28,6 +26,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 
     return (
         <Button
+            color='black'
             onClick={() => {
                 if (isDemo) {
                     resetVirtualBalance();
@@ -43,13 +42,11 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 };
 
 const CurrencySwitcher = () => {
-    const [isManageAccountOpen, setIsManageAccountOpen] = useState(false);
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
-    const { show, hide } = useModal();
+    const { openModal } = useQueryParams();
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
-    const onManageAccountClose = useCallback(() => setIsManageAccountOpen(false), []);
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
@@ -79,30 +76,10 @@ const CurrencySwitcher = () => {
                 <StandaloneChevronDownBoldIcon
                     className='flex-none cursor-pointer'
                     onClick={() => {
-                        show(
-                            <Modal>
-                                <Modal.Header title='Select account' titleClassName='text-[14px] lg:text-[16px]' />
-                                <Modal.Content>
-                                    <TradingAccountsList />
-                                </Modal.Content>
-                                <Modal.Footer className='grid-cols-1'>
-                                    <Button
-                                        isFullWidth
-                                        onClick={() => {
-                                            setIsManageAccountOpen(true);
-                                            hide();
-                                        }}
-                                        variant='outlined'
-                                    >
-                                        Add or manage account
-                                    </Button>
-                                </Modal.Footer>
-                            </Modal>
-                        );
+                        openModal('AccountSelector');
                     }}
                 />
             )}
-            <AddOrManageAccount isOpen={isManageAccountOpen} onClose={onManageAccountClose} />
         </div>
     );
 };

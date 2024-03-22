@@ -3,8 +3,8 @@ import ImportantIcon from '@/assets/svgs/ic-important.svg';
 import { useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
-import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
+import { MarketType, MarketTypeDetails, PlatformDetails, DesktopLinks } from '@cfd/constants';
+import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
@@ -63,12 +63,12 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
 
     return (
         <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>
-            <div className='flex flex-col gap-16 p-24 border-b-100 border-system-light-secondary-background'>
+            <div className='flex flex-col gap-16 p-24 border-b-3 border-system-light-secondary-background'>
                 <div className='flex items-center justify-between w-full'>
                     <div className='flex items-center'>
                         <div className='mr-8'>{platformIcon}</div>
                         <div className='flex flex-col'>
-                            <div className='flex flex-row items-center gap-300'>
+                            <div className='flex flex-row items-center gap-6'>
                                 <Text size='sm'>
                                     {platform === mt5Platform
                                         ? marketTypeDetails[marketType ?? MarketType.ALL]?.title
@@ -91,7 +91,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                         </Text>
                     </div>
                 </div>
-                <div className='flex flex-col gap-100'>
+                <div className='flex flex-col gap-4'>
                     {platform === mt5Platform && (
                         <Fragment>
                             <TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
@@ -114,6 +114,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                     )}
                     {platform === ctraderPlatform && (
                         <TradeDetailsItem
+                            className='rounded-t-sm'
                             value=' Use your Deriv account email and password to login into the cTrader platform.'
                             variant='info'
                         />
@@ -125,7 +126,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                         width={platform === mt5Platform ? 16 : 20}
                     />
                     <Text color='less-prominent' size='2xs'>
-                        {serviceMaintenanceMessages[(platform || mt5Platform) as TPlatforms.All]}
+                        {serviceMaintenanceMessages[(platform ?? mt5Platform) as TPlatforms.All]}
                     </Text>
                 </div>
             </div>
@@ -133,29 +134,31 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                 {platform === mt5Platform && (
                     <Fragment>
                         <TradeLink
-                            app='web'
+                            app={DesktopLinks.MT5_WEB}
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
                         {isDesktop && (
                             <Fragment>
-                                <TradeLink app='windows' platform={mt5Platform} />
-                                <TradeLink app='macos' platform={mt5Platform} />
-                                <TradeLink app='linux' platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_WINDOWS} platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_MACOS} platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_LINUX} platform={mt5Platform} />
                             </Fragment>
                         )}
                     </Fragment>
                 )}
                 {platform === dxtradePlatform && (
-                    <TradeLink isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
+                    <TradeLink
+                        app={DesktopLinks.DXTRADE_WEB}
+                        isDemo={activeAccount?.is_virtual}
+                        platform={dxtradePlatform}
+                    />
                 )}
-                {platform === ctraderPlatform && (
+                {platform === ctraderPlatform && isDesktop && (
                     <Fragment>
-                        <TradeLink platform={ctraderPlatform} />
-                        <TradeLink
-                            app={ctraderPlatform as keyof typeof AppToContentMapper}
-                            platform={ctraderPlatform}
-                        />
+                        <TradeLink app={DesktopLinks.CTRADER_WEB} platform={ctraderPlatform} />
+                        <TradeLink app={DesktopLinks.CTRADER_WINDOWS} platform={ctraderPlatform} />
+                        <TradeLink app={DesktopLinks.CTRADER_MAC} platform={ctraderPlatform} />
                     </Fragment>
                 )}
             </div>

@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
-import { useRegulationFlags } from '@/hooks';
-import { useCFDContext, useModal } from '@/providers';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
+import { useCFDContext } from '@/providers';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { URLUtils } from '@deriv-com/utils';
 import {
     GetADerivAccountDialog,
@@ -12,7 +12,6 @@ import {
     TradingAccountCardLightButton,
 } from '../../../../../../components';
 import { PlatformDetails } from '../../../../constants';
-import { DxtradePasswordModal } from '../../../../modals/DxtradePasswordModal';
 
 const { getDerivStaticURL } = URLUtils;
 
@@ -29,7 +28,7 @@ const LeadingIcon = () => (
 
 const AvailableDxtradeAccountsList = () => {
     const { hasActiveDerivAccount } = useRegulationFlags();
-    const { show } = useModal();
+    const { openModal } = useQueryParams();
     const { setCfdState } = useCFDContext();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
@@ -44,7 +43,7 @@ const AvailableDxtradeAccountsList = () => {
         if (!hasActiveDerivAccount) {
             setIsDerivedAccountModalOpen(true);
         } else {
-            show(<DxtradePasswordModal />);
+            openModal('DxtradePasswordModal');
         }
     };
     return (

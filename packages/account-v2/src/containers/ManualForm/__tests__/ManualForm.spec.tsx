@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MANUAL_DOCUMENT_TYPES } from '../../../constants/manualFormConstants';
@@ -22,7 +22,9 @@ describe('ManualForm', () => {
     const renderComponent = (props = mockProps) => {
         render(
             <APIProvider>
-                <ManualForm {...props} />
+                <AuthProvider>
+                    <ManualForm {...props} />
+                </AuthProvider>
             </APIProvider>
         );
     };
@@ -34,7 +36,7 @@ describe('ManualForm', () => {
     });
 
     it('should render the header texts correctly for the document Passport', () => {
-        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.PASSPORT };
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.passport };
         renderComponent(newProps);
         expect(screen.getByText(/First, enter your Passport number and the expiry date./)).toBeInTheDocument();
         expect(
@@ -43,14 +45,14 @@ describe('ManualForm', () => {
     });
 
     it('should render the header texts correctly for the document Identity card', () => {
-        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD };
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.nationalIdentityCard };
         renderComponent(newProps);
         expect(screen.getByText(/First, enter your Identity card number and the expiry date./)).toBeInTheDocument();
         expect(screen.getByText(/Next, upload the front and back of your identity card./)).toBeInTheDocument();
     });
 
     it('should render the header texts correctly for the document NIMC slip', () => {
-        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.NIMC_SLIP };
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.nimcSlip };
         renderComponent(newProps);
         expect(screen.getByText(/First, enter your NIMC slip number./)).toBeInTheDocument();
         expect(
@@ -59,7 +61,7 @@ describe('ManualForm', () => {
     });
 
     it('should display the error message if the document number is empty', async () => {
-        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.PASSPORT };
+        const newProps = { ...mockProps, selectedDocument: MANUAL_DOCUMENT_TYPES.passport };
         renderComponent(newProps);
         userEvent.type(screen.getByRole('textbox', { name: 'Passport number*' }), '');
         userEvent.tab();
@@ -67,7 +69,7 @@ describe('ManualForm', () => {
     });
 
     it('should display the error message if the document expiry date is empty', async () => {
-        const newProps = { ...mockProps, isExpiryDateRequired: true, selectedDocument: MANUAL_DOCUMENT_TYPES.PASSPORT };
+        const newProps = { ...mockProps, isExpiryDateRequired: true, selectedDocument: MANUAL_DOCUMENT_TYPES.passport };
         renderComponent(newProps);
         userEvent.type(screen.getByRole('textbox', { name: 'Expiry date*' }), '');
         userEvent.tab();

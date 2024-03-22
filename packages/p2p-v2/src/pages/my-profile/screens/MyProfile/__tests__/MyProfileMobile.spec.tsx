@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MyProfileMobile from '../MyProfileMobile';
 
-jest.mock('../../MyProfileContent', () => ({
-    MyProfileContent: jest.fn(() => <div>MyProfileContent</div>),
+jest.mock('@/components/ProfileContent', () => ({
+    ProfileContent: jest.fn(() => <div>ProfileContent</div>),
 }));
 jest.mock('../../MyProfileStats/MyProfileStatsMobile', () => ({
     __esModule: true,
@@ -21,18 +21,14 @@ jest.mock('../../PaymentMethods', () => ({
 }));
 
 function resetMockedData() {
-    mockQueryString = new Map(
-        Object.entries({
-            tab: 'default',
-        })
-    );
+    mockQueryString = {
+        tab: 'default',
+    };
 }
 
-let mockQueryString = new Map(
-    Object.entries({
-        tab: 'default',
-    })
-);
+let mockQueryString = {
+    tab: 'default',
+};
 
 const mockSetQueryString = jest.fn();
 jest.mock('@/hooks', () => ({
@@ -48,7 +44,7 @@ describe('MyProfileMobile', () => {
     });
     it('should render the default tab', () => {
         render(<MyProfileMobile />);
-        expect(screen.getByText('MyProfileContent')).toBeInTheDocument();
+        expect(screen.getByText('ProfileContent')).toBeInTheDocument();
     });
     it('should render the appropriate screens', () => {
         render(<MyProfileMobile />);
@@ -61,11 +57,9 @@ describe('MyProfileMobile', () => {
             expect(mockSetQueryString).toBeCalledWith({
                 tab,
             });
-            mockQueryString = new Map(
-                Object.entries({
-                    tab,
-                })
-            );
+            mockQueryString = {
+                tab,
+            };
             render(<MyProfileMobile />);
         };
 

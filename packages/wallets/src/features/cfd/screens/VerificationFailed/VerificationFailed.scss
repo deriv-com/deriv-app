@@ -6,19 +6,37 @@
     border-radius: 0.8rem;
     background-color: var(--system-light-8-primary-background, #fff);
     width: 44rem;
-    height: 34.4rem;
 
     @include mobile {
         width: 32rem;
-        height: 30rem;
         padding: 1.6rem;
         gap: 1.6rem;
+    }
+
+    & ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+
+        @include mobile {
+            gap: 0.4rem;
+        }
     }
 
     & li {
         left: 1rem;
         position: relative;
         list-style-type: disc;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        @include mobile {
+            gap: 1rem;
+        }
     }
 
     &__footer {

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, HTMLAttributes, PropsWithChildren, useEffect, useState } from 'react';
+import React, { ChangeEvent, ComponentProps, HTMLAttributes, PropsWithChildren, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/ui';
 import './RadioGroup.scss';
@@ -20,6 +20,7 @@ type TRadioGroup = TItemWrapper & {
     onToggle: (e: ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
     selected: string;
+    textSize?: ComponentProps<typeof Text>['size'];
 };
 
 const ItemWrapper = ({ children, shouldWrapItems }: PropsWithChildren<TItemWrapper>) => {
@@ -38,6 +39,7 @@ const RadioGroup = ({
     required,
     selected,
     shouldWrapItems,
+    textSize = 'lg',
 }: PropsWithChildren<TRadioGroup>) => {
     const [selectedOption, setSelectedOption] = useState(selected);
 
@@ -85,7 +87,7 @@ const RadioGroup = ({
                                         'p2p-v2-radio-group__label--disabled': item.props.disabled,
                                         'p2p-v2-radio-group__label--error': item.props.hasError,
                                     })}
-                                    size='lg'
+                                    size={textSize}
                                 >
                                     {item.props.label}
                                 </Text>

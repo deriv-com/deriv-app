@@ -10,7 +10,7 @@ import {
     TTM5FilterLandingCompany,
 } from '@cfd/constants';
 import { CFDSuccess } from '@cfd/screens';
-import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api-v2';
 import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 
 const MT5SuccessModal = () => {

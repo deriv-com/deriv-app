@@ -1,4 +1,4 @@
-import { useAuthorize } from '@deriv/api';
+import { useAuthorize } from '@deriv/api-v2';
 
 type TCurrency = NonNullable<ReturnType<typeof useAuthorize>['data']['currency']>;
 type TPreferredLanguage = ReturnType<typeof useAuthorize>['data']['preferred_language'];

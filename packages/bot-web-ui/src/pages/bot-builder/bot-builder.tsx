@@ -1,10 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv-com/analytics'; //BotTAction will add ones that PR gets merged
+import { useRemoteConfig } from '@deriv/api';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
-import BotSnackbar from 'Components/bot-snackbar';
+import { Analytics } from '@deriv-com/analytics';
+import { botNotification } from 'Components/bot-notification/bot-notification';
+import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import initDatadogLogs from 'Utils/datadog-logs';
 import LoadModal from '../../components/load-modal';
 import { useDBotStore } from '../../stores/useDBotStore';
 import SaveModal from '../dashboard/load-bot-preview/save-modal';
@@ -19,10 +21,15 @@ const BotBuilder = observer(() => {
     const { is_open } = quick_strategy;
     const { is_running } = run_panel;
     const is_blockly_listener_registered = React.useRef(false);
-    const [show_snackbar, setShowSnackbar] = React.useState(false);
     const { is_mobile } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+    const { data: remote_config_data } = useRemoteConfig();
+
+    React.useEffect(() => {
+        initDatadogLogs(remote_config_data.tracking_datadog);
+        window.is_datadog_logging_enabled = remote_config_data.tracking_datadog; // This will be used in the middleware inside of bot-skeleton to check if datadog is enabled before logging
+    }, [remote_config_data.tracking_datadog]);
 
     React.useEffect(() => {
         const is_bot_builder = active_tab === DBOT_TABS.BOT_BUILDER;
@@ -53,7 +60,6 @@ const BotBuilder = observer(() => {
             is_blockly_listener_registered.current = true;
             workspace.addChangeListener(handleBlockChangeOnBotRun);
         } else {
-            setShowSnackbar(false);
             removeBlockChangeListener();
         }
 
@@ -68,7 +74,7 @@ const BotBuilder = observer(() => {
     const handleBlockChangeOnBotRun = (e: Event) => {
         const { is_reset_button_clicked, setResetButtonState } = toolbar;
         if (e.type !== 'ui' && !is_reset_button_clicked) {
-            setShowSnackbar(true);
+            botNotification(notification_message.workspace_change);
             removeBlockChangeListener();
         } else if (is_reset_button_clicked) {
             setResetButtonState(false);
@@ -83,11 +89,6 @@ const BotBuilder = observer(() => {
 
     return (
         <>
-            <BotSnackbar
-                is_open={show_snackbar}
-                message={<Localize i18n_default_text='Changes you make will not affect your running bot.' />}
-                handleClose={() => setShowSnackbar(false)}
-            />
             <div
                 className={classNames('bot-builder', {
                     'bot-builder--active': active_tab === 1 && !is_preview_on_popup,

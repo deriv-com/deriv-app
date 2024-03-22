@@ -1,20 +1,21 @@
 import React from 'react';
-import { Modal } from '@/components';
-import { useRegulationFlags } from '@/hooks';
-import { THooks, TPlatforms } from '@/types';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
+import { useCFDContext } from '@/providers';
+import { THooks } from '@/types';
 import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
-import { useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
-import { Button, Text } from '@deriv-com/ui';
+import { useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api-v2';
+import { Button, Modal, Text } from '@deriv-com/ui';
 
-type TTopUpModalProps = {
-    account: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
-    platform: TPlatforms.All;
-};
-
-const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
+const TopUpModal = () => {
     const { isEU } = useRegulationFlags();
     const { mutateAsync: MT5Deposit } = useMT5Deposit();
     const { mutateAsync: OtherCFDPlatformsDeposit } = useOtherCFDPlatformsDeposit();
+    const { cfdState } = useCFDContext();
+    const { isModalOpen, closeModal } = useQueryParams();
+
+    const { account, platform } = cfdState;
+
+    if (!account || !platform) return null;
 
     const topUpVirtual = async () => {
         if (platform === CFDPlatforms.MT5) {
@@ -40,9 +41,11 @@ const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
             : account?.display_balance;
 
     return (
-        <Modal className='max-w-[330px] md:max-w-[440px]'>
-            <Modal.Header title='Fund top up' />
-            <Modal.Content className='flex flex-col items-center justify-center p-24 space-y-24 sm:p-24'>
+        <Modal isOpen={isModalOpen('TopUpModal')} onRequestClose={closeModal}>
+            <Modal.Header onRequestClose={closeModal}>
+                <Text weight='bold'>Fund top up</Text>
+            </Modal.Header>
+            <Modal.Body className='flex flex-col items-center justify-center p-24 space-y-24 max-w-[440px] '>
                 <Text weight='bold'>{title} Demo account</Text>
                 <div className='text-center'>
                     <Text size='sm' weight='bold'>
@@ -65,7 +68,7 @@ const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
                         Top up 10,000 USD
                     </Button>
                 </div>
-            </Modal.Content>
+            </Modal.Body>
         </Modal>
     );
 };

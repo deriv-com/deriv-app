@@ -1,68 +1,63 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
-import { useResidenceList } from '@deriv/api';
-import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
-import { Dropdown, Input, useDevice } from '@deriv-com/ui';
-import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
+import { useFormikContext } from 'formik';
+import { InferType } from 'yup';
+import { FormDropDownField, FormInputField } from '../../components/FormFields';
+import { TSupportedDocuments } from '../../types';
 import { getIDVNotApplicableOption } from '../../utils/defaultOptions';
-import { getExampleFormat, getSelectedDocumentConfigData, TDocument } from '../../utils/idvFormUtils';
+import {
+    generatePlaceholderText,
+    getExampleFormat,
+    getIDVFormValidationSchema,
+    getSelectedDocumentConfigData,
+    TDocument,
+} from '../../utils/idvFormUtils';
 
 type TIDVFormProps = {
     allowDefaultValue?: boolean;
     allowIDVSkip?: boolean;
-    selectedCountry: Exclude<
-        NonNullable<NonNullable<ReturnType<typeof useResidenceList>['data'][0]['identity']>['services']>['idv'],
-        undefined
-    >;
+    countryCode: string;
+    supportedDocuments: TSupportedDocuments;
 };
 
-type TIDVFormValues = {
-    document_additional?: string;
-    document_number: string;
-    document_type: string;
-};
+type TIDVFormValues = InferType<ReturnType<typeof getIDVFormValidationSchema>>;
 
 type TDropDownList = {
     text: string;
     value: string;
 };
 
-export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TIDVFormProps) => {
-    const formik: FormikProps<TIDVFormValues> = useFormikContext();
+export const IDVForm = ({ allowDefaultValue, allowIDVSkip, countryCode, supportedDocuments }: TIDVFormProps) => {
+    const formik = useFormikContext<TIDVFormValues>();
 
     const [documentList, setDocumentList] = useState<TDropDownList[]>([]);
 
     const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
 
-    const { isMobile } = useDevice();
-
-    const { documents_supported } = selectedCountry;
-
-    const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
+    const idvNotApplicableOption = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
     const defaultDocument = {
-        example_format: '',
+        exampleFormat: '',
         id: '',
         text: '',
         value: '',
     };
 
     useEffect(() => {
-        if (documents_supported && Object.keys(documents_supported)?.length) {
-            const docList = Object.keys(documents_supported).map((key: string) => {
+        if (supportedDocuments && Object.keys(supportedDocuments)?.length) {
+            const docList = Object.keys(supportedDocuments).map((key: string) => {
                 return {
-                    text: documents_supported[key].display_name,
+                    text: supportedDocuments[key].display_name,
                     value: key,
                 };
             });
 
             if (allowDefaultValue) {
-                setDocumentList([...docList, IDV_NOT_APPLICABLE_OPTION] as TDropDownList[]);
+                setDocumentList([...docList, idvNotApplicableOption] as TDropDownList[]);
             } else {
                 setDocumentList([...docList] as TDropDownList[]);
             }
         }
-    }, [documents_supported, IDV_NOT_APPLICABLE_OPTION, allowDefaultValue]);
+    }, [supportedDocuments, idvNotApplicableOption, allowDefaultValue]);
 
     if (!formik) {
         throw new Error('IDVForm must be used within a Formik component');
@@ -70,69 +65,54 @@ export const IDVForm = ({ allowDefaultValue, allowIDVSkip, selectedCountry }: TI
 
     const { setFieldValue, values } = formik;
 
+    const validationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments, values);
+
     const bindDocumentData = (item: string) => {
-        setFieldValue('document_type', item, true);
-        setSelectedDocument(getSelectedDocumentConfigData(item, DOCUMENT_LIST));
-        if (item === IDV_NOT_APPLICABLE_OPTION.value) {
-            setFieldValue('document_number', '', true);
-            setFieldValue('document_additional', '', true);
+        setFieldValue('documentType', item, true);
+        const documentConfig = getSelectedDocumentConfigData(countryCode, item, supportedDocuments);
+        setSelectedDocument(documentConfig);
+        if (item === idvNotApplicableOption.value) {
+            setFieldValue('documentNumber', '', true);
+            setFieldValue('additionalDocument', '', true);
         }
     };
 
     const handleSelect = (item: string) => {
         if (item === 'No results found') {
-            setFieldValue('document_type', defaultDocument, true);
+            setFieldValue('documentType', defaultDocument, true);
         } else {
             bindDocumentData(item);
         }
     };
 
     return (
-        <section className='flex flex-col gap-75'>
-            <Field name='document_type'>
-                {({ field, meta }: FieldProps) => (
-                    <Dropdown
-                        aria-label='Choose the document type'
-                        dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
-                        errorMessage={meta.touched && meta.error}
-                        isRequired
-                        label='Choose the document type'
-                        list={documentList}
-                        name={field.name}
-                        onSearch={field.onChange} // [TODO] - To be removed once prop is renamed to onChange
-                        onSelect={values => handleSelect(values as string)} // Need to override the Type Error. Will be fixed when Dropdown component is updated
-                        value={field.value}
-                        variant={isMobile ? 'comboBox' : 'prompt'}
-                    />
-                )}
-            </Field>
-            {values?.document_type !== IDV_NOT_APPLICABLE_OPTION.value && (
-                <Field name='document_number'>
-                    {({ field, meta }: FieldProps) => (
-                        <Input
-                            {...field}
-                            aria-label='Enter your document number'
-                            disabled={!values.document_type}
-                            error={meta.touched && Boolean(meta.error)}
-                            label='Enter your document number'
-                            message={meta.error ?? getExampleFormat(selectedDocument?.example_format)}
-                        />
-                    )}
-                </Field>
+        <section className='flex flex-col gap-16'>
+            <FormDropDownField
+                handleSelect={handleSelect}
+                label='Choose the document type'
+                list={documentList}
+                name='documentType'
+                validationSchema={validationSchema.fields.documentType}
+            />
+            {values?.documentType !== idvNotApplicableOption.value && (
+                <FormInputField
+                    disabled={!values?.documentType}
+                    isFullWidth
+                    label={generatePlaceholderText(values?.documentType)}
+                    message={getExampleFormat(selectedDocument?.exampleFormat)}
+                    name='documentNumber'
+                    validationSchema={validationSchema.fields.documentNumber}
+                />
             )}
-            {selectedDocument?.additional?.display_name && (
-                <Field name='document_additional'>
-                    {({ field, meta }: FieldProps) => (
-                        <Input
-                            {...field}
-                            aria-label='Enter additional document number'
-                            disabled={!selectedDocument?.additional}
-                            error={meta.touched && Boolean(meta.error)}
-                            label='Enter additional document number'
-                            message={meta.error ?? getExampleFormat(selectedDocument?.additional?.example_format)}
-                        />
-                    )}
-                </Field>
+            {selectedDocument?.additional?.displayName && (
+                <FormInputField
+                    disabled={!values?.documentNumber}
+                    isFullWidth
+                    label='Enter additional document number'
+                    message={getExampleFormat(selectedDocument?.additional?.exampleFormat)}
+                    name='additionalDocument'
+                    validationSchema={validationSchema.fields.additionalDocument}
+                />
             )}
         </section>
     );

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Formik } from 'formik';
 import { useCFDContext } from '@/providers';
-import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
+import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
 import { Button, Input, Text, useDevice } from '@deriv-com/ui';
 import { ActionScreen } from '../../../../../components';
 import { validPassword } from '../../../../../utils/password';

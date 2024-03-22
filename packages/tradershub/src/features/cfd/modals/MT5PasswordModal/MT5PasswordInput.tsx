@@ -1,11 +1,11 @@
 import React from 'react';
 import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
-import { ActionScreen, SentEmailContent } from '@/components';
-import { useMT5AccountHandler } from '@/hooks';
-import { useCFDContext, useModal } from '@/providers';
+import { ActionScreen } from '@/components';
+import { useMT5AccountHandler, useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { MarketType, QueryStatus } from '@cfd/constants';
 import { CreatePassword, EnterPassword } from '@cfd/screens';
-import { useAccountStatus } from '@deriv/api';
+import { useAccountStatus } from '@deriv/api-v2';
 import MT5SuccessModal from './MT5SuccessModal';
 
 type TMT5PasswordInputProps = {
@@ -15,8 +15,8 @@ type TMT5PasswordInputProps = {
 
 const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
-    const { show } = useModal();
-    const { cfdState } = useCFDContext();
+    const { cfdState, setCfdState } = useCFDContext();
+    const { openModal } = useQueryParams();
 
     const { platform, marketType: marketTypeState } = cfdState;
 
@@ -61,7 +61,10 @@ const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => 
             marketType={marketType}
             onPasswordChange={e => setPassword(e.target.value)}
             onPrimaryClick={() => handleSubmit(password)}
-            onSecondaryClick={() => show(<SentEmailContent platform={platform} />)}
+            onSecondaryClick={() => {
+                setCfdState({ platform });
+                openModal('SentEmailContentModal');
+            }}
             password={password}
             passwordError={isCreateMT5AccountError?.error?.code === 'PasswordError'}
             platform={platform}

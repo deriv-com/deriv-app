@@ -20,9 +20,9 @@ import {
     PaymentMethodUsdCoinBrandDarkIcon,
     PaymentMethodUsdCoinBrandIcon,
 } from '@deriv/quill-icons';
-import type { TOnboardingIconsType } from '../types';
+import type { TIconTypes } from '../../../types';
 
-export const onboardingFiatCardIcons: TOnboardingIconsType = {
+export const onboardingFiatCardIcons: TIconTypes.TIcons = {
     dark: [
         { icon: PaymentMethodCreditDebitBrandDarkIcon, key: 'PaymentMethodCreditDebitBrandDarkIcon' },
         { icon: PaymentMethodInstantBankTransferBrandDarkIcon, key: 'PaymentMethodInstantBankTransferBrandDarkIcon' },
@@ -37,7 +37,7 @@ export const onboardingFiatCardIcons: TOnboardingIconsType = {
     ],
 };
 
-export const onboardingCryptoCardIcons: TOnboardingIconsType = {
+export const onboardingCryptoCardIcons: TIconTypes.TIcons = {
     dark: [
         { icon: PaymentMethodBitcoinBrandDarkIcon, key: 'PaymentMethodBitcoinBrandDarkIcon' },
         { icon: PaymentMethodEthereumBrandIcon, key: 'PaymentMethodEthereumBrandIcon' },
@@ -54,7 +54,7 @@ export const onboardingCryptoCardIcons: TOnboardingIconsType = {
     ],
 };
 
-export const onboardingOnrampIcons: TOnboardingIconsType = {
+export const onboardingOnrampIcons: TIconTypes.TIcons = {
     dark: [{ icon: PaymentMethodBanxaBrandDarkIcon, key: 'PaymentMethodBanxaBrandDarkIcon' }],
     light: [{ icon: PaymentMethodBanxaBrandIcon, key: 'PaymentMethodBanxaBrandIcon' }],
 };

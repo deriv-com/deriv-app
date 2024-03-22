@@ -66,7 +66,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                     const selected_item = list?.find(item => item?.value === field?.value);
                     if (is_mobile) {
                         return (
-                            <ul className='qs__form__field__list' data-testid='dt-qs-contract-types'>
+                            <ul className='qs__form__field__list' data-testid='dt_qs_contract_types'>
                                 {list.map(item => {
                                     const is_active = selected_item?.value === item?.value;
                                     return (
@@ -93,7 +93,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                             {...field}
                             readOnly
                             inputMode='none'
-                            data-testid='qs_autocomplete_contract_type'
+                            data-testid='dt_qs_autocomplete_contract_type'
                             autoComplete='off'
                             className='qs__select contract-type'
                             value={selected_item?.text || ''}

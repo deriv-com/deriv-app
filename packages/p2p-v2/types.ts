@@ -96,3 +96,11 @@ export namespace THooks {
         export type Get = NonNullable<ReturnType<typeof p2p.settings.useGetSettings>['data']>;
     }
 }
+export type TOrders = NonNullable<ReturnType<typeof p2p.order.useGetList>['data']>;
+
+export type TStep = {
+    header: {
+        title: string;
+    };
+    subStepCount?: number;
+};

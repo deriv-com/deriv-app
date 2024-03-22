@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Control, Controller, FieldValues, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
-import { TAdvertiserPaymentMethods, TAdvertType } from 'types';
+import { TAdvertType, THooks } from 'types';
 import { BASE_URL, BUY_SELL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
 import {
     getPaymentMethodObjects,
@@ -22,17 +22,18 @@ import './BuySellForm.scss';
 type TPayload = Omit<Parameters<ReturnType<typeof p2p.order.useCreate>['mutate']>[0], 'payment_method_ids'> & {
     payment_method_ids?: number[];
 };
+
 type TBuySellFormProps = {
     advert: TAdvertType;
     advertiserBuyLimit: number;
-    advertiserPaymentMethods: TAdvertiserPaymentMethods;
+    advertiserPaymentMethods: THooks.AdvertiserPaymentMethods.Get;
     advertiserSellLimit: number;
     balanceAvailable: number;
     displayEffectiveRate: string;
     effectiveRate: number;
     isModalOpen: boolean;
     onRequestClose: () => void;
-    paymentMethods: ReturnType<typeof p2p.paymentMethods.useGet>['data'];
+    paymentMethods: THooks.PaymentMethods.Get;
 };
 
 const getAdvertiserMaxLimit = (

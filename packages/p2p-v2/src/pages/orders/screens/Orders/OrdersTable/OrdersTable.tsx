@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
-import { TOrders } from 'types';
+import { THooks } from 'types';
 import { Loader, Table, useDevice } from '@deriv-com/ui';
 import { OrdersEmpty } from '../OrdersEmpty';
 import { OrdersTableRow } from '../OrdersTableRow';
 import './OrdersTable.scss';
 
-type TOrdersTableRowRendererProps = TOrders[0];
+type TOrdersTableRowRendererProps = THooks.Order.GetList[number];
 
 const OrdersTableRowRenderer = memo((values: TOrdersTableRowRendererProps) => <OrdersTableRow {...values} />);
 OrdersTableRowRenderer.displayName = 'OrdersTableRowRenderer';
@@ -62,7 +62,7 @@ const columnsPast = [
 ];
 
 type TOrdersTableProps = {
-    data: TOrders;
+    data: THooks.Order.GetList;
     isActive: boolean;
     isFetching: boolean;
     isLoading: boolean;

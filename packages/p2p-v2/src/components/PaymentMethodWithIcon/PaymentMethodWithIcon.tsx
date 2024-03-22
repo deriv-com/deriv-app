@@ -1,6 +1,6 @@
 import React, { ComponentType, SVGAttributes } from 'react';
 import clsx from 'clsx';
-import { TAdvertiserPaymentMethods } from 'types';
+import { THooks } from 'types';
 import { TGenericSizes } from '@/utils';
 import { Text } from '@deriv-com/ui';
 import IcCashierBankTransfer from '../../public/ic-cashier-bank-transfer.svg';
@@ -11,7 +11,7 @@ type TPaymentMethodWithIconProps = {
     className: string;
     name: string;
     textSize?: TGenericSizes;
-    type: NonNullable<TAdvertiserPaymentMethods>[number]['type'];
+    type: THooks.AdvertiserPaymentMethods.Get[number]['type'];
 };
 const PaymentMethodWithIcon = ({ className, name, textSize = 'sm', type }: TPaymentMethodWithIconProps) => {
     let Icon: ComponentType<SVGAttributes<SVGElement>> = IcCashierOther;

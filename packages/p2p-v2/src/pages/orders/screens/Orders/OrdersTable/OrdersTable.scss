@@ -6,8 +6,7 @@
 
         &__content {
             @include mobile {
-                // stylelint-disable-next-line declaration-no-important
-                height: calc(100vh - 19.5rem) !important;
+                height: calc(100vh - 19.5rem);
             }
 
             &__row {

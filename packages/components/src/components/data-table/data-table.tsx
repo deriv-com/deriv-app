@@ -100,12 +100,13 @@ const DataTable = ({
 
     const rowRenderer = ({ style, index, key, parent }: TRowRenderer) => {
         let item = data_source?.[index];
+        const { action_type, shortcode, purchase_time, transaction_time } = item || {};
         if (
             item &&
             isForwardStartingBuyTransaction(
-                item.action_type as string,
-                item.shortcode as string,
-                (item.purchase_time as number) || (item.transaction_time as number)
+                action_type as string,
+                shortcode as string,
+                (purchase_time as number) || (transaction_time as number)
             )
         ) {
             const is_sold = !!data_source?.find(

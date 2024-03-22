@@ -85,12 +85,13 @@ type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof Dat
 
 const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
+    const { shortcode, purchase_time, transaction_time } = row_obj;
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-        const contract_type = extractInfoFromShortcode(row_obj.shortcode)?.category?.toUpperCase();
+        const contract_type = extractInfoFromShortcode(shortcode)?.category?.toUpperCase();
         const unsupportedContractConfig = getUnsupportedContracts()[contract_type as TUnsupportedContractType];
         const shouldShowForwardStartingNotification =
-            isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time) &&
-            !hasForwardContractStarted(row_obj.shortcode) &&
+            isForwardStarting(shortcode, purchase_time || transaction_time) &&
+            !hasForwardContractStarted(shortcode) &&
             row_obj.action_type !== 'sell' &&
             !row_obj?.is_sold;
         action = unsupportedContractConfig

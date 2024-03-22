@@ -12,8 +12,8 @@ export const SupportProfessionalClient = () => {
     return (
         <div className='lg:max-w-[400px]'>
             <div className='flex flex-col gap-10 py-10'>
-                {supportProfessionalClientInfo.map((value, key) => (
-                    <Text as='p' key={key} size='sm'>
+                {supportProfessionalClientInfo.map(value => (
+                    <Text as='p' key={value} size='sm'>
                         {value}
                     </Text>
                 ))}

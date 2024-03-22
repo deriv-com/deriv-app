@@ -13,7 +13,7 @@ describe('Personal Details Validation Schema', () => {
             addressLine1: 'Cyberjaya',
             firstName: 'John',
             lastName: 'Doe',
-            phoneNumber: '0123456789',
+            phoneNumber: '+0123456789',
         };
 
         await expect(validationSchema.validate(validData)).resolves.toBe(validData);
@@ -43,7 +43,7 @@ describe('Personal Details Validation Schema', () => {
             employmentStatus: 'Manager',
             firstName: 'John',
             lastName: 'Doe',
-            phoneNumber: '0123456789',
+            phoneNumber: '+0123456789',
         };
 
         await expect(validationSchema.validate(validData)).resolves.toBe(validData);

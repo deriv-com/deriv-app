@@ -15,6 +15,11 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
     const history = useHistory();
     const { hide } = useModal();
 
+    const handleOnClickReal = () => {
+        hide();
+        history.push('/wallets/cashier/transfer');
+    };
+
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
@@ -30,13 +35,7 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
             <WalletButton onClick={hide} size='lg' variant='outlined'>
                 Maybe later
             </WalletButton>
-            <WalletButton
-                onClick={() => {
-                    hide();
-                    history.push('/wallets/cashier/transfer');
-                }}
-                size='lg'
-            >
+            <WalletButton onClick={() => handleOnClickReal()} size='lg'>
                 Transfer funds
             </WalletButton>
         </WalletButtonGroup>

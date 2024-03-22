@@ -51,6 +51,13 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
         if (!value) return 'The field is required';
     };
 
+    const handleOnSubmit = (values: TFormInitialValues) => {
+        onClickSubmitPasswordChange({
+            currentPassword: values.currentPassword,
+            newPassword: values.newPassword,
+        });
+    };
+
     return (
         <div className='wallets-mt5-reset'>
             {isDesktop && (
@@ -60,16 +67,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                     </WalletText>
                 </div>
             )}
-            <Formik
-                initialValues={initialValues}
-                innerRef={formikRef}
-                onSubmit={values =>
-                    onClickSubmitPasswordChange({
-                        currentPassword: values.currentPassword,
-                        newPassword: values.newPassword,
-                    })
-                }
-            >
+            <Formik initialValues={initialValues} innerRef={formikRef} onSubmit={values => handleOnSubmit(values)}>
                 {({ errors, handleChange, values }) => (
                     <Form>
                         <div className='wallets-mt5-reset__container'>

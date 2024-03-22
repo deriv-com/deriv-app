@@ -1,14 +1,26 @@
+import { ValidationConstants } from '@deriv-com/utils';
 import { passwordKeys } from '../utils/password-validation';
 
+const {
+    between8and16Characters,
+    between8and25Characters,
+    lowercase,
+    number,
+    password,
+    specialCharacter,
+    tradingPlatformInvestorPassword,
+    uppercase,
+} = ValidationConstants.patterns;
+
 export const passwordRegex = {
-    hasLowerCase: /[a-z]/,
-    hasNumber: /\d/,
-    hasSymbol: /\W/,
-    hasUpperCase: /[A-Z]/,
-    isLengthValid: /^.{8,25}$/,
-    isMT5LengthValid: /^.{8,16}$/,
-    isMT5PasswordValid: /^(?=.*[!@#$%^&*()+\-=[\]{};':"|,.<>/?_~])[ -~]{8,16}$/,
-    isPasswordValid: /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}$/,
+    hasLowerCase: lowercase,
+    hasNumber: number,
+    hasSymbol: specialCharacter,
+    hasUpperCase: uppercase,
+    isLengthValid: between8and25Characters,
+    isMT5LengthValid: between8and16Characters,
+    isMT5PasswordValid: tradingPlatformInvestorPassword,
+    isPasswordValid: password,
 };
 
 export const passwordValues = {

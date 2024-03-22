@@ -58,6 +58,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const [isTouched, setIsTouched] = useState(false);
 
     const { errorMessage, score } = useMemo(() => validatePassword(password, mt5Policy), [password, mt5Policy]);
+    const passwordValidation = mt5Policy ? !validPasswordMT5(password) : !validPassword(password);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,9 +90,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
             <WalletTextField
                 autoComplete={autoComplete}
                 errorMessage={isTouched && (passwordError ? passwordErrorMessage.PasswordError : errorMessage)}
-                isInvalid={
-                    (!(mt5Policy ? validPasswordMT5(password) : validPassword(password)) && isTouched) || passwordError
-                }
+                isInvalid={(passwordValidation && isTouched) || passwordError}
                 label={label}
                 message={getMessage()}
                 messageVariant={errorMessage ? 'warning' : undefined}

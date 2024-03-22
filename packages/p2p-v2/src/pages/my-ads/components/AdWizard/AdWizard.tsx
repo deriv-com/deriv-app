@@ -3,6 +3,7 @@ import { TStep } from 'types';
 import { FormProgress, Wizard } from '@/components';
 import { LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
+import { AdPaymentDetailsSection } from '../AdPaymentDetailsSection';
 import { AdProgressBar } from '../AdProgressBar';
 import { AdTypeSection } from '../AdTypeSection';
 import './AdWizard.scss';
@@ -54,6 +55,7 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
             onStepChange={step => setCurrentStep(step.activeStep - 1)}
         >
             <AdTypeSection currency={currency} localCurrency={localCurrency} rateType={rateType} />
+            <AdPaymentDetailsSection currency={currency} localCurrency={localCurrency} rateType={rateType} />
         </Wizard>
     );
 };

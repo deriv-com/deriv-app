@@ -22,6 +22,10 @@
         background-color: transparent !important;
     }
     .p2p-v2-wizard__main-step {
+        @include desktop {
+            max-height: calc(100vh - 35rem);
+            overflow-y: auto;
+        }
         @include mobile {
             padding: 1.6rem;
         }

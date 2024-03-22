@@ -27,10 +27,14 @@ export const sortPaymentMethods = (paymentMethodsList: TAdvertiserPaymentMethods
  * @returns The payment method objects.
  * eg. { 'Bank Transfer': { method: 'bank_transfer', ... }, ... }
  */
-export const getPaymentMethodObjects = (paymentMethodsList: TAdvertiserPaymentMethods | TPaymentMethods) =>
+export const getPaymentMethodObjects = (
+    paymentMethodsList: TAdvertiserPaymentMethods | TPaymentMethods,
+    field = 'display_name'
+) =>
     paymentMethodsList?.reduce((acc: TAccumulatedPaymentMethods, curr) => {
-        if (curr.display_name) {
-            acc[curr.display_name] = curr;
+        const displayName = curr[field];
+        if (displayName) {
+            acc[displayName] = curr;
         }
         return acc;
     }, {}) ?? {};

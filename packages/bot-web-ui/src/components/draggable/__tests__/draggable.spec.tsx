@@ -85,21 +85,13 @@ describe('Draggable', () => {
 
     it('should onCloseDraggable() be invoked by start drag', () => {
         const mock_close = jest.fn();
-        render(
-            <div role='button'>
-                <Draggable is_visible={true} onCloseDraggable={mock_close} header_title='' />
-            </div>,
-            { wrapper }
-        );
-
-        const parentElement = document.createElement('div');
-        parentElement.setAttribute('role', 'button');
-
-        const rndComponent = screen.getByTestId('react-rnd-wrapper');
-
-        Object.defineProperty(rndComponent, 'parentElement', { value: parentElement });
-
-        userEvent.click(rndComponent);
+        const { container } = render(<Draggable is_visible={true} onCloseDraggable={mock_close} header_title='' />, {
+            wrapper,
+        });
+        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+        const svg = container.getElementsByTagName('use')[0];
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+        userEvent.click(svg);
 
         expect(mock_close).toBeCalled();
     });

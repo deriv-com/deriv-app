@@ -77,7 +77,7 @@ export const DBOT_ONBOARDING = [
                 step_index={4}
             />
         ),
-        placement: 'right',
+        placement: isDbotRTL() ? 'left' : 'right',
         ...joyride_props,
         disableOverlay: false,
     },

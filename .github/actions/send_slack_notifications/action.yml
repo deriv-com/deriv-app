@@ -17,7 +17,7 @@ runs:
     run: |
         curl -X POST -H 'Content-type: application/json' \
         --data '{
-        "text": "$MESSAGE"
+        "text": "'"$MESSAGE"'"
         }' \
           $SLACK_WEBHOOK_URL
     shell: bash

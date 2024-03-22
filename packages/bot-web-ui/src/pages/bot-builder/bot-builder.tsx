@@ -97,10 +97,11 @@ const BotBuilder = observer(() => {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_loading, active_tab]);
+    }, [is_loading]);
 
     const handleBlockDelete = (e: Event) => {
-        if (active_tab !== 1) return;
+        const url = window.location.hash.substring(1);
+        if (url !== 'bot_builder') return;
         const { is_reset_button_clicked, is_import_button_click } = toolbar;
         if (e.type === 'delete' && !is_reset_button_clicked && !is_import_button_click) {
             botNotification(notification_message.block_delete, {

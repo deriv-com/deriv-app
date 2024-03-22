@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { render, screen } from '@testing-library/react';
 import OrderDetailsCardReview from '../OrderDetailsCardReview';
 
@@ -18,7 +18,7 @@ jest.mock('@deriv/api-v2', () => ({
     },
 }));
 
-jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
+jest.mock('@/providers/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
         orderDetails: {
             completion_time: 1710897035,

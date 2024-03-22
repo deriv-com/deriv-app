@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { PaymentMethodAccordion } from '../PaymentMethodAccordion';
 

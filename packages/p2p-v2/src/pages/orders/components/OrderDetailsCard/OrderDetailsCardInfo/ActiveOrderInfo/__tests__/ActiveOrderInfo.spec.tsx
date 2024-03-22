@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ActiveOrderInfo from '../ActiveOrderInfo';
@@ -9,7 +9,7 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: () => ({ isMobile: false }),
 }));
 
-jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
+jest.mock('@/providers/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
         orderDetails: {
             advert_details: {
@@ -66,7 +66,7 @@ describe('<ActiveOrderInfo />', () => {
         expect(screen.getByText('This is my description')).toBeInTheDocument();
     });
 
-    it('should show expanded view of payment method details when clicks on payment method and hide it when clicking again', () => {
+    it('should show the expanded view of payment method details after clicking on a payment method and hide it after clicking on it again', () => {
         render(<ActiveOrderInfo />);
 
         const alipayMethod = screen.getByText('Alipay');
@@ -85,7 +85,7 @@ describe('<ActiveOrderInfo />', () => {
         expect(screen.queryByText('Alipay instructions')).not.toBeInTheDocument();
     });
 
-    it('should show expanded view of payment method details when clicks on expand all and hide it when clicking again', () => {
+    it('should show the expanded view of payment method details after clicking on expand all and hide it after clicking the button again', () => {
         mockUseOrderDetails.mockReturnValue({
             orderDetails: {
                 ...mockUseOrderDetails().orderDetails,

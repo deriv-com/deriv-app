@@ -7,7 +7,7 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: () => ({ isMobile: false }),
 }));
 
-jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
+jest.mock('@/providers/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
         orderDetails: {
             account_currency: 'USD',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { Button, useDevice } from '@deriv-com/ui';
 import './OrderDetailsCardFooter.scss';
 

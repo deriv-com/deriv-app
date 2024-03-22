@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { getDistanceToServerTime } from '@/utils';
 import { useServerTime } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';

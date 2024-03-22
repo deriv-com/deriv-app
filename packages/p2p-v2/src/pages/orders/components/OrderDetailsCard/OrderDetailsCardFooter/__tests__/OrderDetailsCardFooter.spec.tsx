@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { render, screen } from '@testing-library/react';
 import OrderDetailsCardFooter from '../OrderDetailsCardFooter';
 
@@ -8,7 +8,7 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: () => ({ isMobile: false }),
 }));
 
-jest.mock('@/pages/orders/screens/OrderDetails/OrderDetailsProvider', () => ({
+jest.mock('@/providers/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
         orderDetails: {
             shouldShowCancelAndPaidButton: true,

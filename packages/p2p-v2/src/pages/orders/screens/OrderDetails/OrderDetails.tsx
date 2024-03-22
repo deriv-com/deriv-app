@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FullPageMobileWrapper, PageReturn } from '@/components';
 import { useExtendedOrderDetails } from '@/hooks';
+import { OrderDetailsProvider } from '@/providers/OrderDetailsProvider';
 import { p2p, useActiveAccount, useServerTime } from '@deriv/api-v2';
 import { Button, InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
 import ChatIcon from '../../../../public/ic-chat.svg';
 import { OrderDetailsCard } from '../../components/OrderDetailsCard';
 import { OrderDetailsCardFooter } from '../../components/OrderDetailsCard/OrderDetailsCardFooter';
 import { OrdersChatSection } from '../OrdersChatSection';
-import { OrderDetailsProvider } from './OrderDetailsProvider';
 import './OrderDetails.scss';
 
 type TOrderDetailsProps = {

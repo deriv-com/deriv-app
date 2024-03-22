@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StarRating } from '@/components';
-import { useOrderDetails } from '@/pages/orders/screens/OrderDetails/OrderDetailsProvider';
+import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { getDateAfterHours } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import {

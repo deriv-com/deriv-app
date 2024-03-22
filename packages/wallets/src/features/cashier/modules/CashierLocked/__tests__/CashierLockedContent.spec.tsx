@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import getCashierLockedDesc from '../CashierLockedContent';
+import getCashierLockedDesc, { getSystemMaintenanceContent } from '../CashierLockedContent';
 
 window.LC_API = {
     on_chat_ended: jest.fn(),
@@ -7,7 +7,19 @@ window.LC_API = {
 };
 
 describe('CashierLockedContent', () => {
-    it('should render title and description as undefined when cashier is not locked', () => {
+    it('should render title and description as null when not system maintenance', () => {
+        const result = getSystemMaintenanceContent({
+            currency: 'USD',
+            isCashierLocked: false,
+            isCrypto: false,
+            isDepositLocked: false,
+            isWithdrawalLocked: false,
+        });
+
+        expect(result).toBeFalsy();
+    });
+
+    it('should render description as null when cashier is not locked', () => {
         const result = getCashierLockedDesc({
             askAuthenticate: false,
             askCurrency: false,
@@ -25,7 +37,69 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        expect(result?.description).toBeUndefined();
+        expect(result).toBeFalsy();
+    });
+
+    it('should render correct message when system maintenance and cashier is locked', () => {
+        const result = getSystemMaintenanceContent({
+            currency: 'USD',
+            isCashierLocked: true,
+            isCrypto: false,
+            isDepositLocked: false,
+            isWithdrawalLocked: false,
+        });
+
+        if (result) render(result.description);
+        expect(
+            screen.getByText(
+                'Due to system maintenance, deposits and withdrawals with your USD Wallet are unavailable at the moment. Please try again later.'
+            )
+        ).toBeInTheDocument();
+
+        if (result) render(result.title);
+        expect(
+            screen.getByText('USD Wallet deposits and withdrawals are temporarily unavailable.')
+        ).toBeInTheDocument();
+    });
+
+    it('should render correct message when system maintenance and deposit is locked for crypto account', () => {
+        const result = getSystemMaintenanceContent({
+            currency: 'BTC',
+            isCashierLocked: false,
+            isCrypto: true,
+            isDepositLocked: true,
+            isWithdrawalLocked: false,
+        });
+
+        if (result) render(result.description);
+        expect(
+            screen.getByText(
+                'Due to system maintenance, deposits into your BTC Wallet are unavailable at the moment. Please try again later.'
+            )
+        ).toBeInTheDocument();
+
+        if (result) render(result.title);
+        expect(screen.getByText('BTC Wallet deposits are temporarily unavailable.')).toBeInTheDocument();
+    });
+
+    it('should render correct message when system maintenance and withdrawal is locked for crypto account', () => {
+        const result = getSystemMaintenanceContent({
+            currency: 'BTC',
+            isCashierLocked: false,
+            isCrypto: true,
+            isDepositLocked: false,
+            isWithdrawalLocked: true,
+        });
+
+        if (result) render(result.description);
+        expect(
+            screen.getByText(
+                'Due to system maintenance, withdrawals from your BTC Wallet are unavailable at the moment. Please try again later.'
+            )
+        ).toBeInTheDocument();
+
+        if (result) render(result.title);
+        expect(screen.getByText('BTC Wallet withdrawals are temporarily unavailable.')).toBeInTheDocument();
     });
 
     it('should render correct message when noResidence status received', () => {
@@ -46,7 +120,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/You've not set your country of residence/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Personal details section' })).toBeInTheDocument();
     });
@@ -69,7 +143,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/The identification documents you submitted have expired/)).toBeInTheDocument();
         expect(
             screen.getByText(/Please submit valid identity documents to unlock your USD Wallet/)
@@ -94,7 +168,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
@@ -120,7 +194,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
@@ -146,7 +220,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(
             screen.getByText(/Please set your account currency to enable deposits and withdrawals/)
         ).toBeInTheDocument();
@@ -170,7 +244,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: true,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Please submit your/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
     });
@@ -193,7 +267,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: true,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Your account has not been authenticated. Please submit your/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of address' })).toBeInTheDocument();
@@ -217,7 +291,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Please complete the/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Appropriateness Test' })).toBeInTheDocument();
     });
@@ -240,7 +314,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Please complete the/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment' })).toBeInTheDocument();
     });
@@ -263,7 +337,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/You have not provided your tax identification number/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Personal details' })).toBeInTheDocument();
     });
@@ -286,7 +360,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(
             screen.getByText(
                 /Your access to USD Wallet has been temporarily disabled as you have not set your 30-day turnover limit/
@@ -313,7 +387,7 @@ describe('CashierLockedContent', () => {
             poiNeedsVerification: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(
             screen.getByText(
                 /Please go to your account settings and complete your personal details to enable deposits and withdrawals/

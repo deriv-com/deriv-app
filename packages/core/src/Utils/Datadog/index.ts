@@ -29,7 +29,7 @@ const getConfigValues = (environment: string) => {
         return {
             serviceName: 'staging-app.deriv.com',
             dataDogVersion: `deriv-app-staging-v${process.env.REF_NAME}`,
-            dataDogSessionReplaySampleRate: 100,
+            dataDogSessionReplaySampleRate: 0,
             dataDogSessionSampleRate: 100,
             dataDogEnv: 'staging',
         };
@@ -45,9 +45,14 @@ const getConfigValues = (environment: string) => {
  * @returns {void}
  * **/
 const initDatadog = (is_datadog_enabled: boolean) => {
-    if (!is_datadog_enabled) {
+    if (is_datadog_enabled) {
         if (window.DD_RUM) {
-            window.DD_RUM = undefined;
+            datadogRum.setTrackingConsent('granted');
+            return;
+        }
+    } else {
+        if (window.DD_RUM) {
+            datadogRum.setTrackingConsent('not-granted');
         }
         return;
     }
@@ -80,7 +85,6 @@ const initDatadog = (is_datadog_enabled: boolean) => {
             trackLongTasks: true,
             defaultPrivacyLevel: 'mask-user-input',
             version: dataDogVersion,
-            trackFrustrations: true,
             enableExperimentalFeatures: ['clickmap'],
             beforeSend: event => {
                 if (event.type === 'resource') {
@@ -98,6 +102,9 @@ const initDatadog = (is_datadog_enabled: boolean) => {
                         );
                     }
                 }
+                /* We must return true to resolve the related TS error. true means the event is not discarded, and false means the event is discarded. 
+                See https://docs.datadoghq.com/real_user_monitoring/guide/browser-sdk-upgrade/#beforesend-return-type */
+                return true;
             },
         });
     }

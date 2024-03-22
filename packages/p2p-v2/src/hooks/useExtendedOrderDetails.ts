@@ -1,8 +1,8 @@
-import { TOrders, TServerTime } from 'types';
+import { THooks, TServerTime } from 'types';
 import { BUY_SELL, ORDERS_STATUS } from '@/constants'; // Update your import path
 import { convertToMillis, getFormattedDateString, toMoment } from '@/utils';
 
-type TOrder = TOrders[number];
+type TOrder = THooks.Order.GetList[number];
 
 type TUserDetails = TOrder['advertiser_details'] | TOrder['client_details'];
 

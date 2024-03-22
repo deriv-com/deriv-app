@@ -20,24 +20,24 @@ export const unrecoverable_errors = [
     'PriceMoved',
 ];
 
-export const message_types = Object.freeze({
-    ERROR: 'error',
-    NOTIFY: 'notify',
-    SUCCESS: 'success',
-});
+export enum MessageTypes {
+    ERROR = 'error',
+    NOTIFY = 'notify',
+    SUCCESS = 'success',
+}
 
-export const error_types = Object.freeze({
-    RECOVERABLE_ERRORS: 'recoverable_errors',
-    UNRECOVERABLE_ERRORS: 'unrecoverable_errors',
-});
+export enum ErrorTypes {
+    RECOVERABLE_ERRORS = 'recoverable_errors',
+    UNRECOVERABLE_ERRORS = 'unrecoverable_errors',
+}
 
-export const log_types = Object.freeze({
-    LOAD_BLOCK: 'load_block',
-    PURCHASE: 'purchase',
-    SELL: 'sell',
-    NOT_OFFERED: 'not_offered',
-    PROFIT: 'profit',
-    LOST: 'lost',
-    WELCOME_BACK: 'welcome_back',
-    WELCOME: 'welcome',
-});
+export enum LogTypes {
+    LOAD_BLOCK = 'load_block',
+    PURCHASE = 'purchase',
+    SELL = 'sell',
+    NOT_OFFERED = 'not_offered',
+    PROFIT = 'profit',
+    LOST = 'lost',
+    WELCOME_BACK = 'welcome_back',
+    WELCOME = 'welcome',
+}

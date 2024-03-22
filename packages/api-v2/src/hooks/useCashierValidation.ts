@@ -31,6 +31,7 @@ const useCashierValidation = () => {
             ask_fix_details: cashier_validation.has('ASK_FIX_DETAILS'),
             ask_uk_funds_protection: cashier_validation.has('ASK_UK_FUNDS_PROTECTION'),
             pa_commision_withdrawal_limit: cashier_validation.has('PACommisionWithdrawalLimit'),
+            system_maintenance: cashier_validation.has('system_maintenance'),
         };
     }, [get_account_status_data?.cashier_validation]);
 

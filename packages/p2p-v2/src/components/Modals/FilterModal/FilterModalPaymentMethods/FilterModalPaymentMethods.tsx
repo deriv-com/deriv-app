@@ -3,21 +3,20 @@ import { Search } from '@/components/Search';
 import { p2p } from '@deriv/api-v2';
 import { Checkbox, Text } from '@deriv-com/ui';
 import './FilterModalPaymentMethods.scss';
+import { THooks } from 'types';
 
 type TFilterModalPaymentMethodsProps = {
     selectedPaymentMethods: string[];
     setSelectedPaymentMethods: (value: string[]) => void;
 };
 
-type TPaymentMethodData = ReturnType<typeof p2p.paymentMethods.useGet>['data'];
-
 const FilterModalPaymentMethods = ({
     selectedPaymentMethods,
     setSelectedPaymentMethods,
 }: TFilterModalPaymentMethodsProps) => {
-    const { data } = p2p.paymentMethods.useGet();
+    const { data = [] } = p2p.paymentMethods.useGet();
     const [searchedPaymentMethod, setSearchedPaymentMethod] = useState<string>('');
-    const [searchedPaymentMethods, setSearchedPaymentMethods] = useState<TPaymentMethodData>(data);
+    const [searchedPaymentMethods, setSearchedPaymentMethods] = useState<THooks.PaymentMethods.Get>(data);
 
     const onSearch = (value: string) => {
         if (!value) {

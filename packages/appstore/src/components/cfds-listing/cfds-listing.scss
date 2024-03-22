@@ -506,10 +506,16 @@
 
             .dc-btn:hover {
                 text-decoration: underline;
+                text-decoration-color: var(--text-general);
+                -webkit-text-decoration: underline var(--text-general); // these are required for Safari ! (stackoverflow https://bit.ly/3UTe9C7
+                -webkit-text-decoration-color: var(--text-general);
             }
         }
         &-action {
-            text-decoration: underline;
+            text-decoration: underline var(--text-general);
+            text-decoration-color: var(--text-general);
+            -webkit-text-decoration: underline var(--text-general); // these are required for Safari ! (stackoverflow https://bit.ly/3UTe9C7
+            -webkit-text-decoration-color: var(--text-general);
             padding-right: 0;
             height: 2.1rem;
         }

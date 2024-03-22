@@ -13,7 +13,7 @@ const RegulationSwitcherMobile = () => {
     const activeRegulation = uiState.regulation;
 
     return (
-        <div className='flex items-center gap-8 w-[49%] lg:w-auto justify-end '>
+        <div className='flex items-center gap-8 w-[50%] lg:w-auto justify-end '>
             <InfoIcon className='w-16 h-auto' onClick={() => openModal('RegulationModal')} />
             <Tabs
                 TitleFontSize='sm'

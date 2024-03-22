@@ -1045,14 +1045,7 @@ const FinancialAssessment = observer(() => {
                                         'dc-btn--green': is_submit_success,
                                     })}
                                     onClick={() => onClickSubmit(handleSubmit)}
-                                    is_disabled={
-                                        isSubmitting || !dirty || is_btn_loading || !isValid
-                                        // Object.keys(errors).length > 0 ||
-                                        // !!(
-                                        //     values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
-                                        //     values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
-                                        // )
-                                    }
+                                    is_disabled={isSubmitting || !dirty || is_btn_loading || !isValid}
                                     has_effect
                                     is_loading={is_btn_loading}
                                     is_submit_success={is_submit_success}

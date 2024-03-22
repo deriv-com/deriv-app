@@ -10,9 +10,9 @@ const WalletsAuthProvider = ({ children, ...rest }: Omit<ComponentProps<typeof A
         selectDefaultAccount={accountsObject => {
             const loginIds = Object.keys(accountsObject);
             const result = loginIds.filter((loginId: string) => {
-                const { account_category, account_type, currency } = accountsObject[loginId];
-                const isWallet = account_category == 'wallet';
-                const isFiat = account_type == 'doughflow';
+                const { account_category: accountCategory, account_type: accountType } = accountsObject[loginId];
+                const isWallet = accountCategory == 'wallet';
+                const isFiat = accountType == 'doughflow';
                 return isWallet && isFiat;
             })[0];
 

@@ -4,7 +4,7 @@ import {
     DerivLightIcCroppedDocumentIcon,
     DerivLightIcDocumentAddressMismatchIcon,
     DerivLightIcDocumentNameMismatchIcon,
-    DerivLightIcEnvelopIcon,
+    DerivLightIcEnvelopeIcon,
     DerivLightIcOldIssuedDocumentIcon,
 } from '@deriv/quill-icons';
 
@@ -35,6 +35,6 @@ export const getExampleImagesConfig = () => [
     },
     {
         description: 'An envelope with your name and address.',
-        image: <DerivLightIcEnvelopIcon />,
+        image: <DerivLightIcEnvelopeIcon />,
     },
 ];

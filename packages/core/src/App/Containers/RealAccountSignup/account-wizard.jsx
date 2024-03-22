@@ -10,7 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
+import { useIsClientHighRiskForMT5, useResidenceSelfDeclaration } from '@deriv/hooks';
 import 'Sass/details-form.scss';
 import { Analytics } from '@deriv-com/analytics';
 
@@ -100,6 +100,7 @@ const AccountWizard = observer(props => {
     const [state_items, setStateItems] = React.useState(real_account_signup_form_data ?? []);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
+    const { is_residence_self_declaration_required } = useResidenceSelfDeclaration();
 
     const trackEvent = React.useCallback(
         payload => {
@@ -295,6 +296,10 @@ const AccountWizard = observer(props => {
         delete clone?.agreed_tos;
         delete clone?.confirmation_checkbox;
         delete clone?.crs_confirmation;
+
+        if (is_residence_self_declaration_required && clone?.resident_self_declaration)
+            clone.resident_self_declaration = 1;
+        else delete clone.resident_self_declaration;
 
         // BE does not accept empty strings for TIN
         // so we remove it from the payload if it is empty in case of optional TIN field

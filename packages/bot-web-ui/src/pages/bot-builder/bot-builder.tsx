@@ -27,7 +27,7 @@ const BotBuilder = observer(() => {
     React.useEffect(() => {
         initDatadogLogs(remote_config_data.tracking_datadog);
         window.is_datadog_logging_enabled = remote_config_data.tracking_datadog; // This will be used in the middleware inside of bot-skeleton to check if datadog is enabled before logging
-    }, [remote_config_data]);
+    }, [remote_config_data.tracking_datadog]);
 
     React.useEffect(() => {
         onMount();

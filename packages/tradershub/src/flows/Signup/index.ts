@@ -1,3 +1,1 @@
-import { SignupWrapper as Signup } from './SignupWrapper';
-
-export default Signup;
+export { SignupWrapper as Signup } from './SignupWrapper';

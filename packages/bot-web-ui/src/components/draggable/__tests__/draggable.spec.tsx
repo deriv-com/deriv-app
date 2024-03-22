@@ -88,7 +88,7 @@ describe('Draggable', () => {
         const { container } = render(<Draggable is_visible={true} onCloseDraggable={mock_close} header_title='' />, {
             wrapper,
         });
-        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access,
         const svg = container.getElementsByTagName('use')[0];
         // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         userEvent.click(svg);

@@ -29,7 +29,7 @@ const CTraderTransferModal = observer(() => {
                     .map(ctrader_account => {
                         return (
                             <button
-                                key={ctrader_account.name}
+                                key={ctrader_account.login}
                                 className='ctrader-transfer-modal__accounts-list'
                                 onClick={() => {
                                     toggleCTraderTransferModal();

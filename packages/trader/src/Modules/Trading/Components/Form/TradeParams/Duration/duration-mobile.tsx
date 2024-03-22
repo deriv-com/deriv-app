@@ -88,12 +88,7 @@ const DurationMobile = observer(
 
         return (
             <div>
-                <Tabs
-                    active_index={duration_tab_idx}
-                    onTabItemClick={num => onTabChange(num)}
-                    single_tab_has_no_label
-                    top
-                >
+                <Tabs active_index={duration_tab_idx} onTabItemClick={onTabChange} single_tab_has_no_label top>
                     {duration_units_list.map(duration_unit_option => {
                         switch (duration_unit_option.value) {
                             case 't':

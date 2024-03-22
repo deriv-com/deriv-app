@@ -47,11 +47,10 @@ const PaymentMethodModal = ({
                             onConfirm();
                         }}
                         size='lg'
+                        textSize='md'
                         variant='outlined'
                     >
-                        <Text lineHeight='6xl' weight='bold'>
-                            {secondaryButtonLabel}
-                        </Text>
+                        {secondaryButtonLabel}
                     </Button>
                     <Button
                         onClick={e => {
@@ -59,10 +58,9 @@ const PaymentMethodModal = ({
                             onReject();
                         }}
                         size='lg'
+                        textSize='md'
                     >
-                        <Text lineHeight='6xl' weight='bold'>
-                            {primaryButtonLabel}
-                        </Text>
+                        {primaryButtonLabel}
                     </Button>
                 </div>
             </div>

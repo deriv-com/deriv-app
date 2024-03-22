@@ -1,10 +1,13 @@
 .p2p-v2-payment-method-form {
     max-width: 100%;
     min-width: 67.2rem;
+    padding-bottom: 2.4rem;
 
     @include mobile {
         width: 100%;
         min-width: 36rem;
+        position: absolute;
+        top: 4rem;
     }
 
     &__button {
@@ -38,6 +41,12 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+
+        @include mobile {
+            overflow: auto;
+            height: calc(100vh - 14rem);
+            padding-bottom: 8rem;
+        }
     }
 
     .deriv-input--right-content {
@@ -56,12 +65,6 @@
         cursor: pointer;
         color: #ffffff;
         font-size: large;
-    }
-
-    &__fields {
-        @include mobile {
-            min-height: calc(100vh - 25.5rem);
-        }
     }
 
     &__field {

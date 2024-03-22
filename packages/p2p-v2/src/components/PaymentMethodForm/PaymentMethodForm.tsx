@@ -182,7 +182,6 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                         actionType={actionType}
                         handleGoBack={handleGoBack}
                         isDirty={isDirty}
-                        isFloating={!selectedPaymentMethod}
                         isSubmitting={isSubmitting}
                         isValid={isValid}
                     />

@@ -1,7 +1,7 @@
 .p2p-v2-my-profile {
     display: flex;
     flex-direction: column;
-    padding: 2.4rem 0;
+    padding-top: 2.4rem;
 
     @include mobile {
         overflow-y: scroll;

@@ -4,7 +4,7 @@ import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
 import { useDevice, useQueryString } from '@/hooks';
 import { TFormState } from '@/reducers/types';
 import AddNewButton from './AddNewButton';
-import PaymentMethodsListContent from './PaymentMethodsListContent';
+import { PaymentMethodsListContent } from './PaymentMethodsListContent';
 import './PaymentMethodsList.scss';
 
 type TPaymentMethodsListProps = {
@@ -36,6 +36,7 @@ const PaymentMethodsList = ({
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                className='p2p-v2-payment-methods-list__mobile-wrapper'
                 onBack={() =>
                     setQueryString({
                         tab: 'default',

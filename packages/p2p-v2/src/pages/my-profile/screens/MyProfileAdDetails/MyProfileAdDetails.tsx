@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FullPageMobileWrapper, TextArea } from '@/components';
 import { useDevice, useQueryString } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
-import { Button, Loader, Text } from '@deriv-com/ui';
+import { Button, Loader } from '@deriv-com/ui';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
@@ -67,6 +67,7 @@ const MyProfileAdDetails = () => {
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                className='p2p-v2-my-profile-ad-details__mobile-wrapper'
                 onBack={() =>
                     setQueryString({
                         tab: 'default',
@@ -97,10 +98,8 @@ const MyProfileAdDetails = () => {
                 setContactInfo={setContactInfo}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
-            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg'>
-                <Text lineHeight='6xl' size='sm' weight='bold'>
-                    Save
-                </Text>
+            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg' textSize='sm'>
+                Save
             </Button>
         </div>
     );

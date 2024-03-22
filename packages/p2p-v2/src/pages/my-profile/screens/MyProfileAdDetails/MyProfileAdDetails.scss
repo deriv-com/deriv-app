@@ -16,4 +16,10 @@
     &__border {
         border-top: 2px solid #f2f3f4;
     }
+
+    &__mobile-wrapper {
+        position: absolute;
+        top: 4rem;
+        height: calc(100vh - 8rem);
+    }
 }

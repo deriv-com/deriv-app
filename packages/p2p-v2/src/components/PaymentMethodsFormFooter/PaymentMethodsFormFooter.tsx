@@ -1,7 +1,6 @@
 import React from 'react';
-import clsx from 'clsx';
 import { TFormState } from '@/reducers/types';
-import { Button, Text, useDevice } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import './PaymentMethodsFormFooter.scss';
 
 type TPaymentMethodsFormFooterProps = {
@@ -11,15 +10,6 @@ type TPaymentMethodsFormFooterProps = {
     isFloating?: boolean;
     isSubmitting: boolean;
     isValid: boolean;
-};
-
-const ButtonText = ({ text }: { text: string }) => {
-    const { isMobile } = useDevice();
-    return (
-        <Text lineHeight='6xl' size={isMobile ? 'lg' : 'sm'} weight='bold'>
-            {text}
-        </Text>
-    );
 };
 
 /**
@@ -37,33 +27,33 @@ const PaymentMethodsFormFooter = ({
     actionType,
     handleGoBack,
     isDirty,
-    isFloating = false,
     isSubmitting,
     isValid,
-}: TPaymentMethodsFormFooterProps) => (
-    <div
-        className={clsx('p2p-v2-payment-methods-form-footer', { 'absolute bottom-0': isFloating })}
-        role='payment-methods-form-footer'
-    >
-        <Button
-            className='border-2'
-            color='black'
-            onClick={e => {
-                e.preventDefault();
-                e.stopPropagation();
+}: TPaymentMethodsFormFooterProps) => {
+    const { isMobile } = useDevice();
+    return (
+        <div className='p2p-v2-payment-methods-form-footer' role='payment-methods-form-footer'>
+            <Button
+                className='border-2'
+                color='black'
+                onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                handleGoBack();
-            }}
-            size='lg'
-            variant='outlined'
-        >
-            <ButtonText text='Cancel' />
-        </Button>
-        {/* TODO: Remember to translate these */}
-        <Button disabled={isSubmitting || !isValid || !isDirty} size='lg'>
-            <ButtonText text={actionType === 'ADD' ? 'Add' : 'Save'} />
-        </Button>
-    </div>
-);
+                    handleGoBack();
+                }}
+                size='lg'
+                textSize={isMobile ? 'lg' : 'sm'}
+                variant='outlined'
+            >
+                Cancel
+            </Button>
+            {/* TODO: Remember to translate these */}
+            <Button disabled={isSubmitting || !isValid || !isDirty} size='lg' textSize={isMobile ? 'lg' : 'sm'}>
+                {actionType === 'ADD' ? 'Add' : 'Save'}
+            </Button>
+        </div>
+    );
+};
 
 export default PaymentMethodsFormFooter;

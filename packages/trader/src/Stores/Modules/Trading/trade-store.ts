@@ -1063,15 +1063,18 @@ export default class TradeStore extends BaseStore {
         })();
     };
 
-    sendTradeParamsAnalytics = (options: Partial<TEvents['ce_contracts_set_up_form']>, isDebounced?: boolean) => {
+    sendTradeParamsAnalytics = (
+        options: Partial<TEvents['ce_contracts_set_up_form']> & { durationUnit?: string },
+        isDebounced?: boolean
+    ) => {
+        const { durationUnit, ...passThrough } = options;
         const payload = {
+            ...passThrough,
             form_name: 'default',
             trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
-            ...options,
-            ...(options.action === 'change_parameter_value' && options.duration_type
+            ...(durationUnit
                 ? {
-                      duration_type:
-                          ANALYTICS_DURATIONS.find(value => value.startsWith(options.duration_type ?? '')) ?? '',
+                      duration_type: ANALYTICS_DURATIONS.find(value => value.startsWith(durationUnit ?? '')) ?? '',
                   }
                 : {}),
         } as TEvents['ce_contracts_set_up_form'];

@@ -108,9 +108,9 @@ const Duration = ({
         if (name === 'advanced_duration_unit') {
             sendTradeParamsAnalytics({
                 action: 'change_parameter_value',
-                parameter_type: 'duration_type',
+                durationUnit: value,
                 parameter_field_type: 'dropdown',
-                duration_type: value,
+                parameter_type: 'duration_type',
             });
         }
     };

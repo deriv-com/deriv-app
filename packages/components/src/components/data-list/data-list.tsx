@@ -103,10 +103,10 @@ const DataList = React.memo(
         const rowRenderer = ({ style, index, key, parent }: ListRowProps) => {
             const { getRowAction, passthrough, row_gap } = other_props;
             let row = data_source[index];
-            const { action_type, shortcode, purchase_time, transaction_time } = row;
+            const { action_type, shortcode, purchase_time, transaction_time, id } = row;
             if (isForwardStartingBuyTransaction(action_type, shortcode, purchase_time || transaction_time)) {
                 const is_sold = !!data_source?.find(
-                    transaction => transaction.action_type === 'sell' && transaction.id === row?.id
+                    transaction => transaction.action_type === 'sell' && transaction.id === id
                 );
                 row = { ...row, is_sold };
             }

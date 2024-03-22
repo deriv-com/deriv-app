@@ -85,15 +85,16 @@ type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof Dat
 
 const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
-    const { shortcode, purchase_time, transaction_time } = row_obj;
-    if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
+    const { action_type, desc, id, is_sold, longcode, purchase_time, shortcode, transaction_time, withdrawal_details } =
+        row_obj;
+    if (id && ['buy', 'sell'].includes(action_type)) {
         const contract_type = extractInfoFromShortcode(shortcode)?.category?.toUpperCase();
         const unsupportedContractConfig = getUnsupportedContracts()[contract_type as TUnsupportedContractType];
         const shouldShowForwardStartingNotification =
             isForwardStarting(shortcode, purchase_time || transaction_time) &&
             !hasForwardContractStarted(shortcode) &&
-            row_obj.action_type !== 'sell' &&
-            !row_obj?.is_sold;
+            action_type !== 'sell' &&
+            !is_sold;
         action = unsupportedContractConfig
             ? {
                   message: '',
@@ -106,31 +107,31 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
                       />
                   ),
               }
-            : getContractPath(row_obj.id);
+            : getContractPath(id);
         if (shouldShowForwardStartingNotification)
             action = {
                 message: '',
                 component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
             };
-    } else if (row_obj.action_type === 'withdrawal') {
-        if (row_obj.withdrawal_details && row_obj.longcode) {
+    } else if (action_type === 'withdrawal') {
+        if (withdrawal_details && longcode) {
             action = {
-                message: `${row_obj.withdrawal_details} ${row_obj.longcode}`,
+                message: `${withdrawal_details} ${longcode}`,
             };
         } else {
             action = {
-                message: row_obj.desc,
+                message: desc,
             };
         }
-    } else if (row_obj.desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)) {
+    } else if (desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(action_type)) {
         action = {
-            message: row_obj.desc,
+            message: desc,
         };
     }
 
     // add typeof check because action can be object or string
     if (typeof action === 'object' && action?.message) {
-        action.component = <DetailsComponent message={action.message} action_type={row_obj.action_type} />;
+        action.component = <DetailsComponent message={action.message} action_type={action_type} />;
     }
 
     return action;

@@ -12,7 +12,7 @@ export const useCurrentLandingCompany = () => {
                 const companyVariables = landingCompanies[company as keyof typeof landingCompanies];
 
                 if (companyVariables && typeof companyVariables === 'object' && 'shortcode' in companyVariables) {
-                    companyVariables?.shortcode === activeAccount?.landing_company_name;
+                    return companyVariables?.shortcode === activeAccount?.landing_company_name;
                 }
             });
 

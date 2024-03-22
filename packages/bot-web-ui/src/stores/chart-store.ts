@@ -1,5 +1,4 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import {
     ActiveSymbolsRequest,
     ServerTimeRequest,

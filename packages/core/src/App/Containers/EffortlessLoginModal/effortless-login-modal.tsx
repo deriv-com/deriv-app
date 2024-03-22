@@ -12,7 +12,7 @@ import './effortless-login-modal.scss';
 
 const EffortlessLoginModal = () => {
     const [is_learn_more_opened, setIsLearnMoreOpened] = React.useState(false);
-    const portal_element = document.getElementById('modal_root');
+    const portal_element = document.getElementById('effortless_modal_root');
     const history = useHistory();
 
     const onClickHandler = (route: string) => {

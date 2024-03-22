@@ -11,7 +11,7 @@ import { getModalContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passke
 import './passkeys.scss';
 
 const Passkeys = observer(() => {
-    const { ui, client } = useStore();
+    const { ui, client, common } = useStore();
     const { is_mobile } = ui;
     const { is_passkey_supported } = client;
     let timeout: ReturnType<typeof setTimeout>;
@@ -57,7 +57,7 @@ const Passkeys = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error, is_passkey_registration_started]);
 
-    if (is_passkeys_list_loading) {
+    if (is_passkeys_list_loading || common.network_status.class !== 'online') {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
     if (!should_show_passkeys) {

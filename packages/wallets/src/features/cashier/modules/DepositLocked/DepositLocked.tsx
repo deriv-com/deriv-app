@@ -44,23 +44,21 @@ const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
         return (
             <div className='wallets-deposit-locked'>
                 <WalletsActionScreen
-                    description={
-                        getDepositLockedDesc({
-                            askFixDetails,
-                            clientTncStatus,
-                            excludedUntil,
-                            financialInformationNotComplete,
-                            isMFAccount,
-                            poaNeedsVerification,
-                            poaStatus,
-                            poiNeedsVerification,
-                            poiStatus,
-                            selfExclusion,
-                            tradingExperienceNotComplete,
-                            unwelcomeStatus,
-                            websiteTncVersion,
-                        })?.description
-                    }
+                    description={getDepositLockedDesc({
+                        askFixDetails,
+                        clientTncStatus,
+                        excludedUntil,
+                        financialInformationNotComplete,
+                        isMFAccount,
+                        poaNeedsVerification,
+                        poaStatus,
+                        poiNeedsVerification,
+                        poiStatus,
+                        selfExclusion,
+                        tradingExperienceNotComplete,
+                        unwelcomeStatus,
+                        websiteTncVersion,
+                    })}
                     title={
                         <Trans
                             defaults='Deposits into your {{currency}} Wallet are temporarily locked.'

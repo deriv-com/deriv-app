@@ -1,5 +1,5 @@
 import React, { ComponentType, SVGAttributes } from 'react';
-import { TAdvertiserPaymentMethods } from 'types';
+import { THooks } from 'types';
 import { FlyoutMenu } from '@/components';
 import { LabelPairedEllipsisVerticalXlRegularIcon } from '@deriv/quill-icons';
 import { Button, Checkbox } from '@deriv-com/ui';
@@ -17,7 +17,7 @@ type TPaymentMethodCardHeaderProps = {
     onEditPaymentMethod?: () => void;
     onSelectPaymentMethod?: () => void;
     small?: boolean;
-    type: NonNullable<TAdvertiserPaymentMethods>[number]['type'];
+    type: THooks.AdvertiserPaymentMethods.Get[number]['type'];
 };
 
 const PaymentMethodCardHeader = ({

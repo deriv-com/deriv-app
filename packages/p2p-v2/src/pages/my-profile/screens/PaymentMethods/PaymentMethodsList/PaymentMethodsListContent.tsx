@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
+import { THooks, TSelectedPaymentMethod } from 'types';
 import { PaymentMethodCard } from '@/components';
 import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
 import { PAYMENT_METHOD_CATEGORIES } from '@/constants';
@@ -12,7 +12,7 @@ import AddNewButton from './AddNewButton';
 type TPaymentMethodsGroup = Record<
     string,
     {
-        paymentMethods: TAdvertiserPaymentMethods;
+        paymentMethods: THooks.AdvertiserPaymentMethods.Get;
         title: string;
     }
 >;
@@ -24,7 +24,7 @@ type TPaymentMethodsListContentProps = {
     onDelete: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onEdit: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onResetFormState: () => void;
-    p2pAdvertiserPaymentMethods: TAdvertiserPaymentMethods;
+    p2pAdvertiserPaymentMethods: THooks.AdvertiserPaymentMethods.Get;
 };
 
 /**

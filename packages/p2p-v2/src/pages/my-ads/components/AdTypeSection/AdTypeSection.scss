@@ -1,0 +1,6 @@
+.p2p-v2-ad-type-section {
+    @include mobile {
+        overflow: auto;
+        max-height: calc(100vh - 25rem);
+    }
+}

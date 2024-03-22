@@ -5,7 +5,8 @@ import { TRealWalletsUpgradeSteps } from 'Types';
 import WalletSteps from '../wallet_steps';
 
 const DesktopRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWalletsUpgradeSteps) => {
-    const { traders_hub: is_real_wallets_upgrade_on } = useStore();
+    const { traders_hub } = useStore();
+    const { is_real_wallets_upgrade_on } = traders_hub;
 
     const wallet_steps = WalletSteps(wallet_upgrade_steps);
     const { current_step, handleClose } = wallet_upgrade_steps;

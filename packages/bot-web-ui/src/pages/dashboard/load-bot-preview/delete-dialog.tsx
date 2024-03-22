@@ -54,17 +54,10 @@ const DeleteDialog = observer(() => {
             (strategy_from_workspace: TStrategy) => strategy_from_workspace.id !== strategy_id
         );
         setDashboardStrategies(updated_workspaces);
+        // TODO: Need to move this to skeleton
         localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(updated_workspaces)));
         await resetStrategiesAfterDelete(strategy_id, updated_workspaces);
         onToggleDeleteDialog(false);
-    };
-
-    const onHandleChange = (type: string, param: boolean) => {
-        if (type === 'confirm') {
-            removeBotStrategy(selected_strategy_id);
-            setOpenSettings('delete', true);
-        }
-        onToggleDeleteDialog(param);
     };
 
     return (
@@ -74,12 +67,13 @@ const DeleteDialog = observer(() => {
                 is_visible={is_delete_modal_open}
                 confirm_button_text={localize('Yes, delete')}
                 onConfirm={() => {
-                    onHandleChange('confirm', false);
+                    removeBotStrategy(selected_strategy_id);
+                    onToggleDeleteDialog(false);
                     setOpenSettings(NOTIFICATION_TYPE.BOT_DELETE);
                 }}
                 cancel_button_text={localize('No')}
                 onCancel={() => {
-                    onHandleChange('cancel', false);
+                    onToggleDeleteDialog(false);
                 }}
                 is_mobile_full_width={false}
                 className={'dc-dialog__delete-strategy--delete'}

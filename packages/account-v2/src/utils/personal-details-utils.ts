@@ -45,7 +45,16 @@ export const getPersonalDetailsBaseValidationSchema = () => {
     });
 };
 
-export const getNameDOBValidationSchema = () => {
+export const getNameDOBValidationSchema = (skipConfirmation: boolean) => {
+    if (skipConfirmation) {
+        return getPersonalDetailsBaseValidationSchema()
+            .pick(['dateOfBirth', 'firstName', 'lastName'])
+            .default(() => ({
+                dateOfBirth: '',
+                firstName: '',
+                lastName: '',
+            }));
+    }
     return getPersonalDetailsBaseValidationSchema()
         .pick(['dateOfBirth', 'firstName', 'lastName', 'nameDOBConfirmation'])
         .default(() => ({
@@ -54,4 +63,12 @@ export const getNameDOBValidationSchema = () => {
             lastName: '',
             nameDOBConfirmation: false,
         }));
+};
+
+export const generateNameDOBPayloadData = (values: Yup.InferType<typeof getNameDOBValidationSchema>) => {
+    return {
+        date_of_birth: values.dateOfBirth,
+        first_name: values.firstName.trim(),
+        last_name: values.lastName.trim(),
+    };
 };

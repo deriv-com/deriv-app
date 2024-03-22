@@ -7,13 +7,14 @@ import { IDVService, ManualUpload, OnfidoContainer } from '../../modules';
 
 type TPOIFlowContainerProps = {
     countryCode: string;
+    onCancel: () => void;
 };
 
 type TSupportedDocuments = DeepNonNullable<
     ReturnType<typeof useKycAuthStatus>['kyc_auth_status']
 >['identity']['supported_documents']['idv'];
 
-export const POIFlowContainer = ({ countryCode }: TPOIFlowContainerProps) => {
+export const POIFlowContainer = ({ countryCode, onCancel }: TPOIFlowContainerProps) => {
     const { isLoading, kycAuthStatus } = usePOIInfo({ country: countryCode });
 
     if (isLoading || !kycAuthStatus) {
@@ -32,6 +33,7 @@ export const POIFlowContainer = ({ countryCode }: TPOIFlowContainerProps) => {
             return (
                 <IDVService
                     countryCode={countryCode}
+                    onCancel={onCancel}
                     supportedDocuments={supportedDocuments?.idv as TSupportedDocuments}
                 />
             );

@@ -11,10 +11,14 @@ import { validateField } from '../../utils/validation';
 type TPersonalDetailsFormWithExampleValues = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
 
 type TPersonalDetailsFormWithExampleProps = {
-    onConfirm: () => void;
+    onConfirm?: () => void;
+    skipConfirmation?: boolean;
 };
 
-export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFormWithExampleProps) => {
+export const PersonalDetailsFormWithExample = ({
+    onConfirm,
+    skipConfirmation,
+}: TPersonalDetailsFormWithExampleProps) => {
     const formik = useFormikContext<TPersonalDetailsFormWithExampleValues>();
 
     if (!formik) {
@@ -22,6 +26,8 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
     }
 
     const { errors, values } = formik;
+
+    console.log('Values: ', values);
 
     const isDisabled = useMemo(() => {
         return (
@@ -34,10 +40,10 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
         );
     }, [values, errors]);
 
-    const validationSchema = getNameDOBValidationSchema();
+    const validationSchema = getNameDOBValidationSchema(true);
 
     return (
-        <section className='p-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
+        <section className='p-16 outline outline-1 outline-system-light-active-background rounded-default'>
             <InlineMessage className='items-start mb-16' variant='warning'>
                 <Text as='p' className='text-sm lg:text-default'>
                     To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
@@ -86,29 +92,31 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                     <DerivLightNameDobPoiIcon height='200px' />
                 </div>
             </div>
-            <div>
-                <Field
-                    name='nameDOBConfirmation'
-                    type='checkbox'
-                    validate={validateField(validationSchema.fields.nameDOBConfirmation)}
-                >
-                    {({ field, form, meta: { error, touched } }: FieldProps) => (
-                        <Checkbox
-                            {...field}
-                            data-testid='dt_poi_confirm_with_example'
-                            disabled={isDisabled}
-                            error={Boolean(error && touched)}
-                            label='I confirm that the name and date of birth above match my chosen identity document.'
-                            onChange={value => {
-                                form.setFieldValue(field.name, value.target.checked);
-                                if (value.target.checked) {
-                                    onConfirm();
-                                }
-                            }}
-                        />
-                    )}
-                </Field>
-            </div>
+            {!skipConfirmation && (
+                <div>
+                    <Field
+                        name='nameDOBConfirmation'
+                        type='checkbox'
+                        validate={validateField(validationSchema.fields.nameDOBConfirmation)}
+                    >
+                        {({ field, form, meta: { error, touched } }: FieldProps) => (
+                            <Checkbox
+                                {...field}
+                                data-testid='dt_poi_confirm_with_example'
+                                disabled={isDisabled}
+                                error={Boolean(error && touched)}
+                                label='I confirm that the name and date of birth above match my chosen identity document.'
+                                onChange={value => {
+                                    form.setFieldValue(field.name, value.target.checked);
+                                    if (value.target.checked) {
+                                        onConfirm();
+                                    }
+                                }}
+                            />
+                        )}
+                    </Field>
+                </div>
+            )}
         </section>
     );
 };

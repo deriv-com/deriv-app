@@ -1,10 +1,10 @@
 import React from 'react';
-import { TAdvertiserPaymentMethods } from 'types';
+import { THooks } from 'types';
 import { Text } from '@deriv-com/ui';
 import './PaymentMethodCardBody.scss';
 
 type TPaymentMethodCardBodyProps = {
-    paymentMethod: NonNullable<TAdvertiserPaymentMethods>[number];
+    paymentMethod: THooks.AdvertiserPaymentMethods.Get[number];
     shouldShowPaymentMethodDisplayName?: boolean;
 };
 

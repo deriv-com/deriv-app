@@ -1,15 +1,14 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
+import DashboardStore from 'Stores/dashboard-store';
+import GoogleDriveStore from 'Stores/google-drive-store';
+import LoadModalStore from 'Stores/load-modal-store';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import SaveModal from '../save-modal';
-import DashboardStore from 'Stores/dashboard-store';
-import LoadModalStore from 'Stores/load-modal-store';
-import GoogleDriveStore from 'Stores/google-drive-store';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

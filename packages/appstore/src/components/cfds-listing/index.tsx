@@ -49,10 +49,11 @@ const CFDsListing = observer(() => {
 
     const { setAccountType, toggleCTraderTransferModal } = cfd;
     const {
-        is_landing_company_loaded,
-        real_account_creation_unlock_date,
         account_status,
+        ctrader_accounts_list,
+        is_landing_company_loaded,
         is_populating_mt5_account_list,
+        real_account_creation_unlock_date,
     } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, setIsMT5VerificationFailedModal } = ui;
@@ -70,6 +71,12 @@ const CFDsListing = observer(() => {
 
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
+
+    const total_balance =
+        ctrader_accounts_list &&
+        ctrader_accounts_list
+            .filter(ctrader_account => ctrader_account.account_type === 'real')
+            .reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0);
 
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
         if (jurisdiction) {
@@ -289,7 +296,7 @@ const CFDsListing = observer(() => {
                                   sub_title={account.name}
                                   name={`${formatMoney(
                                       existing_account.currency,
-                                      existing_account.display_balance,
+                                      is_demo ? existing_account.display_balance : total_balance,
                                       true
                                   )} ${existing_account.currency}`}
                                   description={existing_account.display_login}

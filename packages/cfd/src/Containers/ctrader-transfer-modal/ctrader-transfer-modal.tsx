@@ -24,30 +24,36 @@ const CTraderTransferModal = observer(() => {
             title={localize('Choose a cTrader account to transfer')}
         >
             <div className='ctrader-transfer-modal'>
-                {ctrader_accounts_list.map(ctrader_account => {
-                    return (
-                        <button
-                            key={ctrader_account.name}
-                            className='ctrader-transfer-modal__accounts-list'
-                            onClick={() => {
-                                toggleCTraderTransferModal();
-                                toggleAccountTransferModal();
-                                setSelectedAccount(ctrader_account);
-                            }}
-                        >
-                            <Text size='xxs'>{ctrader_account.login}</Text>
-                            <Text size='xxs' weight='bold' className='ctrader-transfer-modal__accounts-list--balance'>
-                                <Money
-                                    amount={ctrader_account.balance}
-                                    currency={ctrader_account.currency}
-                                    has_sign={!!ctrader_account.balance && ctrader_account.balance < 0}
-                                    show_currency
-                                />
-                                <Icon icon='IcChevronRight' />
-                            </Text>
-                        </button>
-                    );
-                })}
+                {ctrader_accounts_list
+                    .filter(ctrader_account => ctrader_account.account_type === 'real')
+                    .map(ctrader_account => {
+                        return (
+                            <button
+                                key={ctrader_account.name}
+                                className='ctrader-transfer-modal__accounts-list'
+                                onClick={() => {
+                                    toggleCTraderTransferModal();
+                                    toggleAccountTransferModal();
+                                    setSelectedAccount(ctrader_account);
+                                }}
+                            >
+                                <Text size='xxs'>{ctrader_account.login}</Text>
+                                <Text
+                                    size='xxs'
+                                    weight='bold'
+                                    className='ctrader-transfer-modal__accounts-list--balance'
+                                >
+                                    <Money
+                                        amount={ctrader_account.balance}
+                                        currency={ctrader_account.currency}
+                                        has_sign={!!ctrader_account.balance && ctrader_account.balance < 0}
+                                        show_currency
+                                    />
+                                    <Icon icon='IcChevronRight' />
+                                </Text>
+                            </button>
+                        );
+                    })}
             </div>
         </Modal>
     );

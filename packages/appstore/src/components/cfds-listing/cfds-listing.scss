@@ -574,10 +574,6 @@
         display: flex;
         flex-direction: column;
         gap: 0.1rem;
-        :first-child {
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
         &-item {
             display: flex;
             padding: 0.5rem 0.8rem;
@@ -763,10 +759,10 @@
 
 .ctrader-transfer-modal {
     &__accounts-list {
-        width: 100%;
+        width: 95%;
         display: flex;
-        padding: 0.5rem 2rem;
-        margin: 1.6rem 0;
+        margin: 1rem;
+        padding: 1rem;
         justify-content: space-between;
         border: none;
         background: none;
@@ -778,8 +774,8 @@
 
         &:hover {
             cursor: pointer;
-            background-color: var(--general-hover);
             border-radius: $BORDER_RADIUS;
+            background-color: var(--general-hover);
         }
     }
 }

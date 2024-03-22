@@ -45,7 +45,7 @@ const PlatformIconsAndDescriptions = (
         <React.Fragment>
             <Icon icon={`IcRebranding${platform.charAt(0).toUpperCase()}${platform.slice(1)}Dashboard`} size={24} />
             <div className='cfd-trade-modal__desc'>
-                <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
+                <Text size='xs' line_height='l' weight='bold' className='cfd-trade-modal__desc-heading'>
                     <Localize
                         i18n_default_text='Deriv {{platform}} <0>{{is_demo}}</0>'
                         values={{
@@ -97,13 +97,15 @@ const CTraderDerivXTradeModal = ({
     const { openDerivRealAccountNeededModal } = ui;
     const { selected_account_type, no_CR_account, is_real, has_any_real_account, getAccount } = traders_hub;
 
-    const total_balance = ctrader_accounts_list
-        ? ctrader_accounts_list.reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0)
-        : 0;
+    const total_balance =
+        ctrader_accounts_list &&
+        ctrader_accounts_list
+            .filter(ctrader_account => ctrader_account.account_type === 'real')
+            .reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0);
 
     const message = {
         header: (
-            <Text as='h2' weight='bold' className='cfd-trade-modal__expansion-panel--header'>
+            <Text as='h2' size='xs' weight='bold' className='cfd-trade-modal__expansion-panel--header'>
                 {localize('See important notes')}
             </Text>
         ),
@@ -195,16 +197,18 @@ const CTraderDerivXTradeModal = ({
                 {ctrader_derivx_trade_account?.display_balance && (
                     <div className='cfd-trade-modal__balance'>
                         {platform === CFD_PLATFORMS.CTRADER && is_real && (
-                            <Text size='xxs'>{localize('Total balance:')}</Text>
+                            <Text size='xxs' align='right'>
+                                {localize('Total balance:')}
+                            </Text>
                         )}
                         <Text
-                            size='xs'
+                            size='s'
                             color={platform !== CFD_PLATFORMS.CTRADER ? 'profit-success' : 'prominent'}
                             className='cfd-trade-modal__desc-balance'
                             weight='bold'
                         >
                             <Money
-                                amount={total_balance}
+                                amount={is_real ? total_balance : ctrader_derivx_trade_account.display_balance}
                                 currency={ctrader_derivx_trade_account.currency}
                                 has_sign={
                                     !!ctrader_derivx_trade_account.balance && ctrader_derivx_trade_account.balance < 0

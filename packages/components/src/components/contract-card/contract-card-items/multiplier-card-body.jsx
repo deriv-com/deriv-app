@@ -35,8 +35,8 @@ const MultiplierCardBody = ({
     const is_valid_to_sell = isValidToSell(contract_info);
     const total_profit = getTotalProfit(contract_info);
     const {
-        BUY_PRICE,
-        CURRENT_STAKE,
+        CONTRACT_COST,
+        CONTRACT_VALUE,
         DEAL_CANCEL_FEE,
         NOT_AVAILABLE,
         STAKE,
@@ -54,10 +54,10 @@ const MultiplierCardBody = ({
                     'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
                 })}
             >
-                <ContractCardItem header={STAKE} className='dc-contract-card__stake'>
+                <ContractCardItem header={CONTRACT_COST} className='dc-contract-card__stake'>
                     <Money amount={buy_price - cancellation_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
+                <ContractCardItem header={CONTRACT_VALUE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
                             'dc-contract-card--profit': total_profit > 0,
@@ -66,6 +66,9 @@ const MultiplierCardBody = ({
                     >
                         <Money amount={bid_price} currency={currency} />
                     </div>
+                    {!is_sold && (
+                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={total_profit} />
+                    )}
                 </ContractCardItem>
                 <ContractCardItem header={DEAL_CANCEL_FEE} className='dc-contract-card__deal-cancel-fee'>
                     {cancellation_price ? (
@@ -76,7 +79,7 @@ const MultiplierCardBody = ({
                         </React.Fragment>
                     )}
                 </ContractCardItem>
-                <ContractCardItem header={BUY_PRICE} className='dc-contract-card__buy-price'>
+                <ContractCardItem header={STAKE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
                 {has_progress_slider && is_mobile && !is_sold && (

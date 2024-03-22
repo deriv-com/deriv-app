@@ -18,13 +18,13 @@ const RegulationSwitcherMobile = () => {
             <Tabs
                 TitleFontSize='sm'
                 activeTab={activeRegulation}
-                className='flex rounded-xs p-4 w-[120px] h-40'
+                className='flex p-4 w-[120px] h-40'
                 key={activeRegulation}
                 onChange={index => handleButtonClick(buttons[index].label)}
                 variant='secondary'
             >
                 {buttons.map(button => (
-                    <Tab className='rounded-xs' key={button.label} title={button.label} />
+                    <Tab key={button.label} title={button.label} />
                 ))}
             </Tabs>
         </div>

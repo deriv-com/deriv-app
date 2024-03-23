@@ -78,10 +78,7 @@ const reducer = (state: TReducer, payload: Partial<TReducer>) => {
     };
 };
 
-const makeGetDefaultDuration = (trade_duration: number, trade_duration_unit: string) => (duration_unit: string) =>
-    trade_duration_unit === duration_unit
-        ? trade_duration
-        : DEFAULT_DURATION[duration_unit as keyof typeof DEFAULT_DURATION];
+const getDefaultDuration = (duration_unit: string) => DEFAULT_DURATION[duration_unit as keyof typeof DEFAULT_DURATION];
 
 const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradeParamsModal) => {
     const { client } = useStore();
@@ -89,11 +86,10 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradePa
     const { amount, form_components, duration, duration_unit, duration_units_list } = useTraderStore();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
-
+    const initial_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
     const [state, dispatch] = React.useReducer(reducer, {
         trade_param_tab_idx: tab_index,
-        duration_tab_idx: undefined,
+        duration_tab_idx: initial_duration_tab_idx,
         amount_tab_idx: undefined,
         has_amount_error: false,
         has_duration_error: false,
@@ -114,16 +110,11 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradePa
 
     React.useEffect(() => {
         setSelectedDuration(duration_unit, duration);
-        setDurationTabIdx();
-        // duration and duration_unit can be changed in trade-store when contract type is changed
     }, [duration, duration_unit]);
 
     const setTradeParamTabIdx = (trade_param_tab_idx: number) => dispatch({ trade_param_tab_idx });
 
     const setDurationTabIdx = (duration_tab_idx?: number) => {
-        if (state.has_duration_error) {
-            setSelectedDuration(state.curr_duration_unit, getDefaultDuration(state.curr_duration_unit));
-        }
         dispatch({ duration_tab_idx });
     };
 
@@ -235,24 +226,46 @@ const TradeParamsMobile = observer(
             expiry_epoch,
             is_turbos,
             is_vanilla,
-            duration_unit: selected_duration_unit,
+            duration_unit: store_duration_unit,
         } = useTraderStore();
 
         React.useEffect(() => {
             const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
-            const selected_duration_tab_idx = duration_units_list.findIndex(d => d.value === selected_duration_unit);
-            const defaultDuration = makeGetDefaultDuration(0, 'default')(duration_unit);
+            const default_duration_tab_idx = duration_units_list.findIndex(d => d.value === store_duration_unit);
+            const defaultDuration = getDefaultDuration(duration_unit);
 
+            // reset to default value and timeframe when previously chosen timeframe doesnt exist in new trade type
+            if (toggled_duration_tab_idx === -1) {
+                const defaultDuration = getDefaultDuration(store_duration_unit);
+                setSelectedDuration(store_duration_unit, defaultDuration);
+            }
             setSelectedDuration(duration_unit, has_duration_error ? defaultDuration : duration_value);
-            if (toggled_duration_tab_idx === -1) setSelectedDuration(selected_duration_unit, defaultDuration);
-            setDurationTabIdx(toggled_duration_tab_idx === -1 ? selected_duration_tab_idx : toggled_duration_tab_idx);
+            setDurationTabIdx(toggled_duration_tab_idx === -1 ? default_duration_tab_idx : toggled_duration_tab_idx);
+
+            return () => {
+                setSelectedDuration(duration_unit, !has_duration_error ? defaultDuration : duration_value);
+            };
         }, [duration_unit]);
 
         const getDurationText = () => {
-            const duration = duration_units_list.find(d => d.value === duration_unit);
-            return `${duration_value} ${
-                duration && (duration_value > 1 ? localize(duration.text) : localize(duration.text.slice(0, -1)))
-            }`;
+            const default_duration_obj = duration_units_list.find(d => d.value === store_duration_unit);
+            const toggled_duration_obj = duration_units_list.find(d => d.value === duration_unit);
+            const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
+            const defaultDuration = getDefaultDuration(store_duration_unit);
+            const default_timeframe =
+                default_duration_obj &&
+                (defaultDuration > 1
+                    ? localize(default_duration_obj.text)
+                    : localize(default_duration_obj.text.slice(0, -1)));
+            const toggled_duration_text =
+                toggled_duration_obj &&
+                (duration_value > 1
+                    ? localize(toggled_duration_obj.text)
+                    : localize(toggled_duration_obj.text.slice(0, -1)));
+
+            return toggled_duration_tab_idx === -1
+                ? `${defaultDuration} ${default_timeframe}`
+                : `${duration_value} ${toggled_duration_text}`;
         };
 
         const getAmountText = () => {

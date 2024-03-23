@@ -1,5 +1,5 @@
 import { reaction } from 'mobx';
-import { api_base } from '@vinuderiv/bot-trade-engine/api/api-base';
+import { api_base } from '@deriv/bot-trade-engine/api/api-base';
 
 class DBotStoreInterface {
     // TODO here we are suppose to define an interface and implement fields of DBotStore.

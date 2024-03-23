@@ -1,5 +1,5 @@
 import DBotStore from '../dbot-store';
-import PendingPromise from '@vinuderiv/bot-trade-engine/tradeEngine/utils/pending-promise';
+import PendingPromise from '@deriv/bot-trade-engine/tradeEngine/utils/pending-promise';
 
 Blockly.Workspace.prototype.wait_events = [];
 

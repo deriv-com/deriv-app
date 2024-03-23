@@ -1,9 +1,9 @@
 import { save_types } from '../constants';
 import { config } from '../constants/config';
-import { api_base } from '@vinuderiv/bot-trade-engine/api/api-base';
-import ApiHelpers from '@vinuderiv/bot-trade-engine/api/api-helpers';
-import Interpreter from '@vinuderiv/bot-trade-engine/tradeEngine/utils/interpreter';
-import { compareXml, observer as globalObserver } from '@vinuderiv/bot-trade-engine/tradeEngine/utils/observer';
+import { api_base } from '@deriv/bot-trade-engine/api/api-base';
+import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
+import Interpreter from '@deriv/bot-trade-engine/tradeEngine/utils/interpreter';
+import { compareXml, observer as globalObserver } from '@deriv/bot-trade-engine/tradeEngine/utils/observer';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 
 import main_xml from './xml/main.xml';

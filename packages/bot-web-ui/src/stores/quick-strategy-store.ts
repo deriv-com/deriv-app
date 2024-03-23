@@ -1,7 +1,7 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { config as qs_config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import ApiHelpers from '@vinuderiv/bot-trade-engine/api/api-helpers';
+import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
 import { addDynamicBlockToDOM } from 'Utils/xml-dom-quick-strategy';
 import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
 import { TFormData } from '../pages/bot-builder/quick-strategy/types';

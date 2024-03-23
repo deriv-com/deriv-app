@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUUID } from '@vinuderiv/bot-trade-engine/tradeEngine/utils/helpers';
+import { getUUID } from '@deriv/bot-trade-engine/tradeEngine/utils/helpers';
 import { Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 

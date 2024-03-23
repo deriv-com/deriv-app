@@ -69,7 +69,7 @@
     "dependencies": {
         "@datadog/browser-logs": "^4.36.0",
         "@deriv/bot-skeleton": "^1.0.0",
-        "@vinuderiv/bot-trade-engine": "^1.0.4",
+        "@deriv/bot-trade-engine": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-charts": "^2.0.5",
         "@deriv/shared": "^1.0.0",

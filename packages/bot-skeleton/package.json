@@ -36,7 +36,7 @@
     },
     "dependencies": {
         "@deriv/deriv-api": "^1.0.15",
-        "@vinuderiv/bot-trade-engine": "^1.0.4",
+        "@deriv/bot-trade-engine": "^1.0.0",
         "@deriv/indicators": "^1.0.0",
         "@deriv/js-interpreter": "^3.0.0",
         "@deriv/shared": "^1.0.0",

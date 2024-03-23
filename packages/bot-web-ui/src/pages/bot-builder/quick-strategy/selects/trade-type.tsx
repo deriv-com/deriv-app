@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
-import ApiHelpers from '@vinuderiv/bot-trade-engine/api/api-helpers';
+import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
 import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';

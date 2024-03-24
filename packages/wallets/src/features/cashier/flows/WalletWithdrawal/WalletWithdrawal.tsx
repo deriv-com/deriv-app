@@ -10,7 +10,7 @@ import {
 } from '../../modules';
 
 const WalletWithdrawal = () => {
-    const { getConfig, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
+    const { isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
     const { data: activeWallet } = useActiveWalletAccount();
     const [verificationCode, setVerificationCode] = useState('');
 
@@ -27,34 +27,32 @@ const WalletWithdrawal = () => {
         }
     }, []);
 
+    const isCrypto = activeWallet?.currency_config?.is_crypto;
+
     if (verificationCode) {
         if (isCurrencyConfigSuccess && activeWallet?.currency) {
-            if (getConfig(activeWallet?.currency)?.is_fiat) {
-                return (
-                    <CashierLocked>
-                        <WithdrawalLocked>
-                            <WithdrawalFiatModule verificationCode={verificationCode} />
-                        </WithdrawalLocked>
-                    </CashierLocked>
-                );
-            }
             return (
-                <CashierLocked>
+                <CashierLocked module='withdrawal'>
                     <WithdrawalLocked>
-                        <WithdrawalCryptoModule
-                            onClose={() => {
-                                setVerificationCode('');
-                            }}
-                            verificationCode={verificationCode}
-                        />
+                        {isCrypto ? (
+                            <WithdrawalCryptoModule
+                                onClose={() => {
+                                    setVerificationCode('');
+                                }}
+                                verificationCode={verificationCode}
+                            />
+                        ) : (
+                            <WithdrawalFiatModule verificationCode={verificationCode} />
+                        )}
                     </WithdrawalLocked>
                 </CashierLocked>
             );
         }
         return <Loader />;
     }
+
     return (
-        <CashierLocked>
+        <CashierLocked module='withdrawal'>
             <WithdrawalLocked>
                 <WithdrawalVerificationModule />
             </WithdrawalLocked>

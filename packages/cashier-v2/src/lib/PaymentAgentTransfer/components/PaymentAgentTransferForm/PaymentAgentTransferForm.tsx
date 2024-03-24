@@ -42,7 +42,7 @@ const PaymentAgentTransferForm: React.FC<TProps> = ({
                 }
                 validationSchema={validationSchema}
             >
-                {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
+                {({ errors, isSubmitting, isValid, touched, values }) => {
                     const isFormEmpty = !Object.values(values).some(Boolean);
                     return (
                         <Form className={styles.form} noValidate>
@@ -58,7 +58,6 @@ const PaymentAgentTransferForm: React.FC<TProps> = ({
                                         label='Client account number'
                                         maxLength={20}
                                         message={touched.loginid && errors.loginid}
-                                        onChange={handleChange}
                                         required
                                         type='text'
                                     />
@@ -76,7 +75,6 @@ const PaymentAgentTransferForm: React.FC<TProps> = ({
                                         label='Amount'
                                         maxLength={30}
                                         message={touched.amount && errors.amount}
-                                        onChange={handleChange}
                                         required
                                         rightPlaceholder={
                                             <Text as='span' size='sm'>
@@ -98,7 +96,6 @@ const PaymentAgentTransferForm: React.FC<TProps> = ({
                                         isInvalid={Boolean(errors.description)}
                                         label='Description'
                                         maxLength={250}
-                                        onChange={handleChange}
                                         shouldShowCounter
                                         textSize='sm'
                                     />

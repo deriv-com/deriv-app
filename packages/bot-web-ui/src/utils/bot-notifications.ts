@@ -1,4 +1,5 @@
 import { platform_name } from '@deriv/shared';
+import { TNotificationMessage } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 
 export const switch_account_notification = {
@@ -11,7 +12,7 @@ export const switch_account_notification = {
     is_persistent: true,
 };
 
-export const journalError = onClick => {
+export const journalError = (onClick: () => void): TNotificationMessage => {
     return {
         key: 'bot_error',
         header: localize('The bot encountered an error while running.'),
@@ -20,7 +21,7 @@ export const journalError = onClick => {
             onClick,
         },
         type: 'danger',
-        platform: [platform_name.DBot],
+        platform: platform_name.DBot,
         is_disposable: true,
     };
 };

@@ -9,6 +9,7 @@ import { ad_type } from 'Constants/floating-rate';
 import OrderTimeSelection from 'Pages/my-ads/order-time-selection';
 import { useStores } from 'Stores';
 import { TAdvertProps } from 'Types';
+import CopyAdvertFormTrailingIcon from './copy-advert-from-trailing-icon';
 
 type TCopyAdvertFormProps = {
     advert: TAdvertProps;
@@ -18,7 +19,6 @@ type TCopyAdvertFormProps = {
 const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
     const {
         client: { currency, local_currency_config },
-        ui: is_desktop,
     } = useStore();
     const local_currency = local_currency_config.currency;
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
@@ -98,9 +98,6 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                             <Text as='div' className='copy-advert-form__field' size='xs'>
                                 {type === buy_sell.BUY ? localize('Buy') : localize('Sell')}
                             </Text>
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize i18n_default_text='Total amount' />
-                            </Text>
                             <Field name='offer_amount'>
                                 {({ field }: FieldProps) => (
                                     <Input
@@ -109,21 +106,12 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                         data-lpignore='true'
                                         type='text'
                                         error={touched.offer_amount && errors.offer_amount}
-                                        trailing_icon={
-                                            <Text
-                                                color={is_desktop ? 'less-prominent' : 'prominent'}
-                                                size={is_desktop ? 'xxs' : 's'}
-                                            >
-                                                {currency}
-                                            </Text>
-                                        }
+                                        label={localize('Total amount')}
+                                        trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
                                         is_relative_hint
                                     />
                                 )}
                             </Field>
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize i18n_default_text='Rate' />
-                            </Text>
                             <Field name='rate_type'>
                                 {({ field }: FieldProps) =>
                                     rate_type === ad_type.FLOAT ? (
@@ -151,14 +139,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                             data-lpignore='true'
                                             type='text'
                                             error={touched.rate_type && errors.rate_type}
-                                            trailing_icon={
-                                                <Text
-                                                    color={is_desktop ? 'less-prominent' : 'prominent'}
-                                                    size={is_desktop ? 'xxs' : 's'}
-                                                >
-                                                    {local_currency}
-                                                </Text>
-                                            }
+                                            trailing_icon={<CopyAdvertFormTrailingIcon label={local_currency} />}
                                             required
                                         />
                                     )
@@ -173,14 +154,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                         label={localize('Min order')}
                                         type='text'
                                         error={touched.min_transaction && errors.min_transaction}
-                                        trailing_icon={
-                                            <Text
-                                                color={is_desktop ? 'less-prominent' : 'prominent'}
-                                                size={is_desktop ? 'xxs' : 's'}
-                                            >
-                                                {currency}
-                                            </Text>
-                                        }
+                                        trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
                                         required
                                     />
                                 )}
@@ -194,14 +168,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                         label={localize('Max order')}
                                         type='text'
                                         error={touched.max_transaction && errors.max_transaction}
-                                        trailing_icon={
-                                            <Text
-                                                color={is_desktop ? 'less-prominent' : 'prominent'}
-                                                size={is_desktop ? 'xxs' : 's'}
-                                            >
-                                                {currency}
-                                            </Text>
-                                        }
+                                        trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
                                         required
                                     />
                                 )}

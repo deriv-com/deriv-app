@@ -42,14 +42,18 @@ describe('<AdCancelModal/>', () => {
     it('should render the AdCancelModal', () => {
         render(
             <AdCancelModal
-                confirm_label="Don't cancel"
-                message='If you choose to cancel, the edited details will be lost.'
-                title='Cancel your edits?'
+                confirm_label='Go back'
+                message="If you choose to cancel, the details you've entered will be lost."
+                title='Cancel ad creation?'
             />
         );
 
-        expect(screen.getByText('Cancel your edits?')).toBeInTheDocument();
-        expect(screen.getByText('If you choose to cancel, the edited details will be lost.')).toBeInTheDocument();
+        const confirm_button = screen.getByRole('button', { name: 'Go back' });
+        expect(confirm_button).toBeInTheDocument();
+        expect(screen.getByText('Cancel ad creation?')).toBeInTheDocument();
+        expect(
+            screen.getByText("If you choose to cancel, the details you've entered will be lost.")
+        ).toBeInTheDocument();
     });
     it('should close modal on clicking cancel button', () => {
         render(

@@ -4,10 +4,18 @@ import { Icon, StaticUrl, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { DEEP_LINK, WEBTRADER_URL, getMobileAppInstallerURL } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
-import { isSafariBrowser, mt5_help_centre_url } from '@deriv/shared';
+import { isSafariBrowser } from '@deriv/shared';
 
 type TMT5MobileRedirectOptionProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        display_login?: string;
+        white_label_links: {
+            webtrader_url: string;
+            android: string;
+            ios: string;
+            windows: string;
+        };
+    };
 };
 const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
     let mobile_url;

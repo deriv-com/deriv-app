@@ -20,7 +20,15 @@ export type TCFDStore = {
         real: string;
     };
     mt5_trade_account: Required<
-        DetailsOfEachMT5Loginid & { market_type?: TTradingPlatformAvailableAccount['market_type'] | 'synthetic' }
+        DetailsOfEachMT5Loginid & { market_type?: TTradingPlatformAvailableAccount['market_type'] | 'synthetic' } & {
+            display_login?: string;
+            white_label_links: {
+                webtrader_url: string;
+                android: string;
+                ios: string;
+                windows: string;
+            };
+        }
     >;
     real_synthetic_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     real_swapfree_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];

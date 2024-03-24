@@ -8,7 +8,15 @@ import './mt5-mobile-redirect-option.scss';
 
 type TMT5DesktopRedirectOptionProps = {
     account_title: string;
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        display_login?: string;
+        white_label_links: {
+            webtrader_url: string;
+            android: string;
+            ios: string;
+            windows: string;
+        };
+    };
 };
 
 const MT5DesktopRedirectOption = ({ account_title, mt5_trade_account }: TMT5DesktopRedirectOptionProps) => {

@@ -32,11 +32,25 @@ const DerivAppsGetAccount: React.FC = () => {
 
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
+    const createTradingAccount = () => {
+        if (!activeWallet?.is_virtual) {
+            createNewRealAccount({
+                payload: {
+                    currency: activeWallet?.currency_config?.display_code,
+                    date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
+                    first_name: firstName,
+                    last_name: lastName,
+                    residence: countryCode || '',
+                },
+            });
+        }
+    };
+
     useEffect(() => {
         if (newTradingAccountData && isAccountCreationSuccess) {
             addTradingAccountToLocalStorage(newTradingAccountData);
         }
-        if (isAccountCreationSuccess) {
+        if (isAccountCreationSuccess && activeLinkedToTradingAccount?.loginid) {
             show(
                 <ModalStepWrapper
                     renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
@@ -55,19 +69,12 @@ const DerivAppsGetAccount: React.FC = () => {
                 }
             );
         }
-    }, [addTradingAccountToLocalStorage, newTradingAccountData, isAccountCreationSuccess]);
-
-    const createTradingAccount = () => {
-        createNewRealAccount({
-            payload: {
-                currency: activeWallet?.currency_config?.display_code,
-                date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
-                first_name: firstName,
-                last_name: lastName,
-                residence: countryCode || '',
-            },
-        });
-    };
+    }, [
+        addTradingAccountToLocalStorage,
+        newTradingAccountData,
+        isAccountCreationSuccess,
+        activeLinkedToTradingAccount?.loginid,
+    ]);
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>

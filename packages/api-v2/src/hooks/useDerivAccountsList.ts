@@ -8,15 +8,11 @@ import { displayMoney } from '../utils';
 /** A custom hook that returns the list of accounts for the current user. */
 const useDerivAccountsList = () => {
     const { data: authorize_data, isSuccess } = useAuthorize();
+    const { data: account_list_data, ...rest } = useQuery('account_list', {
+        options: { enabled: isSuccess },
+    });
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
-
-    const { data: account_list_data, ...rest } = useQuery('account_list', {
-        options: {
-            enabled: isSuccess,
-            refetchOnWindowFocus: false,
-        },
-    });
 
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {

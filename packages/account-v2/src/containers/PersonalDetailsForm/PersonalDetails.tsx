@@ -25,7 +25,6 @@ export const PersonalDetails = () => {
                     <div className='lg:flex gap-6'>
                         <FormInputField
                             disabled={isFieldDisabled(accountSettings, 'first_name')}
-                            id='firstName'
                             isFullWidth
                             label='First name*'
                             name='firstName'

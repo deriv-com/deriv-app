@@ -1,13 +1,22 @@
 import React from 'react';
 import { Checkbox, Divider, InlineMessage, Text } from '@deriv-com/ui';
+import { ACCOUNT_V2_ROUTES } from '../../constants/routes';
 import { supportProfessionalClientInfo } from '../../constants/supportProfessionalClientConstants';
 import { usePersonalDetails } from '../../hooks/usePersonalDetails';
 
 export const SupportProfessionalClient = () => {
     const { accountAuthStatus, data: personalDetails } = usePersonalDetails();
 
-    const { isAccountVerified } = accountAuthStatus;
+    const { isAccountVerified, isPoaVerified, isPoiVerified } = accountAuthStatus;
     const { isVirtual } = personalDetails;
+
+    const getRedirectionLink = () => {
+        if (!isPoiVerified) {
+            return ACCOUNT_V2_ROUTES.ProofOfIdentity;
+        } else if (!isPoaVerified) {
+            return ACCOUNT_V2_ROUTES.ProofOfAddress;
+        }
+    };
 
     return (
         <div className='lg:max-w-[400px]'>
@@ -35,8 +44,15 @@ export const SupportProfessionalClient = () => {
             ) : (
                 <InlineMessage className='items-start' variant='info'>
                     <Text as='p' className='text-sm lg:text-default'>
-                        You’ll need to authenticate your account before requesting to become a professional client.
-                        <Text className='text-red-400'>Authenticate my account</Text>
+                        You’ll need to authenticate your account before requesting to become a professional client.{' '}
+                        <a
+                            className='text-solid-red-0 font-bold'
+                            href={getRedirectionLink()}
+                            rel='noopener noreferrer'
+                            target='_blank'
+                        >
+                            Authenticate my account
+                        </a>
                     </Text>
                 </InlineMessage>
             )}

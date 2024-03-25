@@ -58,6 +58,7 @@ const OrderDetailsCardReview = () => {
                 <div className='flex justify-between w-4/5 ml-2'>
                     <StarRating isReadonly ratingValue={ratingAverageDecimals} starsScale={1.2} />
                     <Text as='div' className='flex items-center gap-1' color='less-prominent' size={textSize}>
+                        {/* Renders 'Recommended' or 'Not Recommended' with respective icons if `reviewDetails?.recommended` is not null, otherwise renders nothing. */}
                         {reviewDetails?.recommended !== null &&
                             (reviewDetails?.recommended ? (
                                 <>

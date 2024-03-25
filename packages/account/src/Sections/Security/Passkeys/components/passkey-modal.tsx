@@ -25,7 +25,7 @@ const PasskeyModal = ({
     toggleModal,
 }: TPasskeyModal) => (
     <Modal
-        portalId='modal_root_absolute'
+        portalId='modal_root'
         transition_timeout={transition_timeout}
         header={header}
         is_open={is_modal_open}

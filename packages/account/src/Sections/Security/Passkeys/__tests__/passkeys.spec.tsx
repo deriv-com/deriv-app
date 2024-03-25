@@ -44,7 +44,11 @@ jest.mock('@deriv/components', () => ({
 }));
 
 describe('Passkeys', () => {
-    const mock_store = mockStore({ ui: { is_mobile: true }, client: { is_passkey_supported: true } });
+    const mock_store = mockStore({
+        ui: { is_mobile: true },
+        client: { is_passkey_supported: true },
+        common: { network_status: { class: 'online' } },
+    });
     const create_passkey = 'Create passkey';
 
     let modal_root_el: HTMLElement;

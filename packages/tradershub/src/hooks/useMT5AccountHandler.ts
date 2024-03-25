@@ -54,8 +54,6 @@ const useMT5AccountHandler = () => {
         createMT5Account({
             payload: {
                 account_type: categoryAccountType,
-                address: settings?.address_line_1 ?? '',
-                city: settings?.address_city ?? '',
                 company: selectedJurisdiction,
                 country: settings?.country_code ?? '',
                 email: settings?.email ?? '',
@@ -75,9 +73,6 @@ const useMT5AccountHandler = () => {
                           })),
                 ...(marketType === MarketType.ALL && { sub_account_category: 'swap_free' }),
                 name: settings?.first_name ?? '',
-                phone: settings?.phone ?? '',
-                state: settings?.address_state ?? '',
-                zipCode: settings?.address_postcode ?? '',
             },
         });
 

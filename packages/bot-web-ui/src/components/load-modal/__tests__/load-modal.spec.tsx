@@ -86,18 +86,22 @@ describe('LoadModal', () => {
         expect(screen.getByRole('button', { name: 'Open' })).toBeInTheDocument();
     });
 
-    it('should render load modal preview and on click of close should close the preview', () => {
+    it('should render load modal preview on file upload and on click of close should close the preview', () => {
         mock_store.ui.is_mobile = false;
         render(<LoadModal />, { wrapper });
         mock_DBot_store?.load_modal.setActiveTabIndex(1);
+
         mock_DBot_store?.load_modal.setLoadedLocalFile(new File([''], 'test-name', { type: 'text/xml' }));
+
         const close_button = screen.getByTestId('dt_load-strategy__local-preview-close');
         expect(close_button).toBeInTheDocument();
+
         fireEvent.click(close_button);
+
         expect(close_button).not.toBeInTheDocument();
     });
 
-    it('should upload file when we drop a file on the dropzone', () => {
+    it('should upload file on the load modal preview when we drop a file on the dropzone', () => {
         mock_store.ui.is_mobile = false;
         mock_DBot_store?.load_modal.setActiveTabIndex(1);
         render(<LoadModal />, { wrapper });
@@ -108,14 +112,17 @@ describe('LoadModal', () => {
         fireEvent.drop(dropzoneArea, {
             dataTransfer: { files: [new File(['hello'], 'hello.xml', { type: 'text/xml' })] },
         });
+
         zoom_icons.forEach(icon => expect(screen.getByTestId(icon)).toBeInTheDocument());
     });
 
-    it('should open and upload a file from local on load preview', () => {
+    it('should open and upload a file when we select a file from local on load modal preview', () => {
         mock_store.ui.is_mobile = false;
         mock_DBot_store?.load_modal.setActiveTabIndex(1);
         render(<LoadModal />, { wrapper });
+
         mock_DBot_store?.load_modal.setLoadedLocalFile(null);
+
         //open file upload
         const get_file_input = screen.getByTestId('dt_load-strategy__local-upload');
         userEvent.click(get_file_input);
@@ -132,8 +139,10 @@ describe('LoadModal', () => {
     it('should close preview if close is clicked', () => {
         mock_store.ui.is_mobile = true;
         render(<LoadModal />, { wrapper });
+
         const close_button = screen.getByTestId('dt_page_overlay_header_close');
         userEvent.click(close_button);
+
         expect(mock_DBot_store?.dashboard.is_preview_on_popup).toBeFalsy();
     });
 });

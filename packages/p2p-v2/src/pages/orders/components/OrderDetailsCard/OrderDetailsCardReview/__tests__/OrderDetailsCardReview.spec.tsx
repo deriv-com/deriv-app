@@ -90,6 +90,24 @@ describe('<OrderDetailsCardReview />', () => {
         expect(screen.getByText('Not Recommended')).toBeInTheDocument();
     });
 
+    it('should not show recommended status if recommended is null', () => {
+        mockUseOrderDetails.mockReturnValue({
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                hasReviewDetails: true,
+                review_details: {
+                    rating: 5,
+                    recommended: null,
+                },
+            },
+        });
+
+        render(<OrderDetailsCardReview />);
+
+        expect(screen.queryByText('Recommended')).not.toBeInTheDocument();
+        expect(screen.queryByText('Not Recommended')).not.toBeInTheDocument();
+    });
+
     it('should return null if isCompletedOrder is false and hasReviewDetails is false', () => {
         mockUseOrderDetails.mockReturnValue({
             orderDetails: { ...mockUseOrderDetails().orderDetails, hasReviewDetails: false, isCompletedOrder: false },

@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ProposalOpenContract } from '@deriv/api-types';
 import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { useNewRowTransition } from '@deriv/shared';

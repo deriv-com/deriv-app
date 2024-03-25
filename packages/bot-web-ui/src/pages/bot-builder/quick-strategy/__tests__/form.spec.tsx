@@ -1,7 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { fireEvent, render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';

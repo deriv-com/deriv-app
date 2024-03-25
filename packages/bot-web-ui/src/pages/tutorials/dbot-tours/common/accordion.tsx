@@ -3,10 +3,6 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import {
-    rudderStackSendQsLearnMoreCollapseEvent,
-    rudderStackSendQsLearnMoreExpansionEvent,
-} from '../../../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 
 type TContentData = {
     header: string;
@@ -65,18 +61,6 @@ const Accordion = ({
                             setExpandedSubtitlesStorage({
                                 ...expanded_subtitles_storage,
                                 [accordion_subtitle]: !should_be_expanded,
-                            });
-                        }
-
-                        if (!should_be_expanded) {
-                            rudderStackSendQsLearnMoreExpansionEvent({
-                                selected_strategy,
-                                learn_more_title: header,
-                            });
-                        } else {
-                            rudderStackSendQsLearnMoreCollapseEvent({
-                                selected_strategy,
-                                learn_more_title: header,
                             });
                         }
                     }}

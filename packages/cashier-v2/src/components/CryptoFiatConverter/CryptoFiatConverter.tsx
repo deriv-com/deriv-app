@@ -16,8 +16,9 @@ const getConvertedAmount = (amount: string, source: TGetConvertedAmountParams, t
 
     if (!value) return '';
 
+    // TODO: replace these temporary values with exchange rate
     const fromRate = 1;
-    const toRate = 1;
+    const toRate = 0.5;
 
     const convertedValue =
         // eslint-disable-next-line sonarjs/prefer-immediate-return
@@ -73,6 +74,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                     <Input
                         {...field}
                         autoComplete='off'
+                        data-testid='dt_crypto_fiat_converter_from_amount_field'
                         error={Boolean(errors.fromAmount)}
                         isFullWidth={fromAccount.currency !== toAccount.currency}
                         label={`Amount (${fromAccount.currency})`}
@@ -98,6 +100,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                             <Input
                                 {...field}
                                 autoComplete='off'
+                                data-testid='dt_crypto_fiat_converter_to_amount_field'
                                 error={Boolean(errors.toAmount)}
                                 isFullWidth
                                 label={`Amount (${toAccount.currency})`}

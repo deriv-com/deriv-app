@@ -1,11 +1,11 @@
 import React from 'react';
 import { PageContainer } from '../../components';
-import { Transfer } from '../../lib';
+import { TransferModule } from '../../lib';
 
 const AccountTransfer = () => {
     return (
         <PageContainer>
-            <Transfer />
+            <TransferModule />
         </PageContainer>
     );
 };

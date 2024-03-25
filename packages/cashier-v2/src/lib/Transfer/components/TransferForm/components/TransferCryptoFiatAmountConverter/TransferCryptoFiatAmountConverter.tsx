@@ -12,12 +12,13 @@ type DeepNonNullable<T> = NonNullable<
         : NonNullable<T>
 >;
 
-const TransferCryptoFiatConverter = () => {
+const TransferCryptoFiatAmountConverter = () => {
     const { values } = useFormikContext<DeepNonNullable<TTransferFormikContext>>();
 
     const modifiedFromAccount = {
         balance: parseFloat(values.fromAccount.balance),
         currency: values.fromAccount.currency as TCurrency,
+        fractionalDigits: values.fromAccount.currencyConfig?.fractional_digits,
         limits: {
             max: 100,
             min: 1,
@@ -32,4 +33,4 @@ const TransferCryptoFiatConverter = () => {
     return <CryptoFiatConverter fromAccount={modifiedFromAccount} toAccount={modifiedToAccount} />;
 };
 
-export default TransferCryptoFiatConverter;
+export default TransferCryptoFiatAmountConverter;

@@ -86,7 +86,7 @@ describe('LoadModal', () => {
         expect(screen.getByRole('button', { name: 'Open' })).toBeInTheDocument();
     });
 
-    it('should render <LoadModal /> and click of close should close preview', () => {
+    it('should render load modal preview and on click of close should close the preview', () => {
         mock_store.ui.is_mobile = false;
         render(<LoadModal />, { wrapper });
         mock_DBot_store?.load_modal.setActiveTabIndex(1);

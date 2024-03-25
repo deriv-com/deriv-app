@@ -93,4 +93,15 @@ describe('<BotStopped />', () => {
         userEvent.type(close_button, '{Enter}');
         expect(mockEventListener).toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter', code: 'Enter' }));
     });
+
+    it('should render onClickClose on press of enter keydown', async () => {
+        const mockEventListener = jest.fn();
+        document.addEventListener('keydown', mockEventListener);
+        render(<BotStopped />, {
+            wrapper,
+        });
+        const close_button = screen.getByTestId('data-close-button');
+        userEvent.type(close_button, '{Esc}');
+        expect(mockEventListener).not.toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter', code: 'Enter' }));
+    });
 });

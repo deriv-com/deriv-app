@@ -58,12 +58,17 @@ describe('Recent component of load modal', () => {
     it("on click of Why can't I see my recent bots the accordion should close and open", () => {
         mock_DBot_store?.load_modal.setRecentStrategies([]);
         render(<Recent />, { wrapper });
-        const explanation_list = screen.getByTestId('dt-load-strategy__recent__empty-expand');
-        explanation_list.focus();
+        const accordion = screen.getByTestId('dt-load-strategy__recent__empty-expand');
+        accordion.focus();
 
         userEvent.keyboard('[Enter]');
 
-        const list_visible = screen.getByTestId('dt-empty-explanation-list--open');
-        expect(list_visible).toBeInTheDocument();
+        const is_empty_explanation_list_visible = screen.getByTestId('dt-empty-explanation-list--open');
+        expect(is_empty_explanation_list_visible).toBeInTheDocument();
+
+        userEvent.keyboard('[Enter]');
+
+        const is_empty_explanation_list_hidden = screen.getByTestId('dt-empty-explanation-list--close');
+        expect(is_empty_explanation_list_hidden).toBeInTheDocument();
     });
 });

@@ -461,18 +461,15 @@ $side-padding: 1.2em;
         /* icon refId currency buy_time buy_price sell_time sell_price profit/loss */
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
-            minmax(120px, 0.6fr) minmax(130px, 1fr) minmax(85px, 1fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
-            minmax(85px, 1.2fr) minmax(95px, 1fr) minmax(130px, 1fr);
+            minmax(105px, 0.6fr) minmax(130px, 1fr) minmax(85px, 1fr) minmax(85px, 1fr) minmax(85px, 1fr)
+            minmax(85px, 1.2fr) minmax(105px, 1.2fr) minmax(130px, 1fr);
     }
     .buy_price,
     .sell_price,
     .profit_loss {
+        justify-content: center;
         @include desktop {
-            justify-content: flex-end;
             text-align: right;
-        }
-        @include mobile {
-            justify-content: center;
         }
     }
     .sell_time,
@@ -997,8 +994,24 @@ $side-padding: 1.2em;
             }
         }
         &__bid_price {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-weight: bold;
 
+            &--movement {
+                width: 1.6rem;
+                height: 1.6rem;
+
+                &-complete,
+                &-complete:after {
+                    display: none;
+                }
+                &:after {
+                    content: '';
+                    width: 1.6rem;
+                }
+            }
             &--negative {
                 color: var(--text-loss-danger);
             }

@@ -8,7 +8,6 @@ import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -88,10 +87,6 @@ const AppWrapper = observer(() => {
 
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
-            Analytics.trackEvent('ce_bot_builder_form', {
-                action: 'open',
-                form_source: 'bot_header_form',
-            });
             if (is_drawer_open) {
                 isDbotRTL() ? initTrashCan(140, -260) : initTrashCan(400, -748);
             } else {

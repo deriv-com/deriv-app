@@ -11,10 +11,13 @@ type ModalId =
     | 'GetADerivAccountDialog'
     | 'JurisdictionModal'
     | 'MT5AccountTypeModal'
+    | 'MT5ChangePasswordModal'
     | 'MT5PasswordModal'
+    | 'MT5SuccessModal'
     | 'RealAccountCreation'
     | 'RegulationModal'
     | 'SentEmailContentModal'
+    | 'Signup'
     | 'TopUpModal'
     | 'TradeModal'
     | 'VerificationFailedModal';

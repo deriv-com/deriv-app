@@ -2,10 +2,10 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import BotStopped from 'Components/bot-stopped';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import BotStopped from '../../../components/bot-stopped';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -81,5 +81,16 @@ describe('<BotStopped />', () => {
         await waitFor(() => {
             expect(global.location.reload).toHaveBeenCalled();
         });
+    });
+
+    it('should render onClickClose on press of enter keydown', async () => {
+        const mockEventListener = jest.fn();
+        document.addEventListener('keydown', mockEventListener);
+        render(<BotStopped />, {
+            wrapper,
+        });
+        const close_button = screen.getByTestId('data-close-button');
+        userEvent.type(close_button, '{Enter}');
+        expect(mockEventListener).toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter', code: 'Enter' }));
     });
 });

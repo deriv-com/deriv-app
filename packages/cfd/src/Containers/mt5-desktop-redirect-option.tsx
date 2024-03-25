@@ -10,7 +10,7 @@ type TMT5DesktopRedirectOptionProps = {
     account_title: string;
     mt5_trade_account: DetailsOfEachMT5Loginid & {
         display_login?: string;
-        white_label_links: {
+        white_label_links?: {
             webtrader_url: string;
             android: string;
             ios: string;

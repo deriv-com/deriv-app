@@ -63,6 +63,7 @@ describe('Recent component of load modal', () => {
 
         userEvent.keyboard('[Enter]');
 
-        screen.getByTestId('dt-empty-explanation-list--open');
+        const list_visible = screen.getByTestId('dt-empty-explanation-list--open');
+        expect(list_visible).toBeInTheDocument();
     });
 });

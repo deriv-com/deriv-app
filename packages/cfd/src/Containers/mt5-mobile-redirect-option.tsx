@@ -7,15 +7,7 @@ import './mt5-mobile-redirect-option.scss';
 import { isSafariBrowser } from '@deriv/shared';
 
 type TMT5MobileRedirectOptionProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid & {
-        display_login?: string;
-        white_label_links?: {
-            webtrader_url: string;
-            android: string;
-            ios: string;
-            windows: string;
-        };
-    };
+    mt5_trade_account: DetailsOfEachMT5Loginid;
 };
 const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
     let mobile_url;

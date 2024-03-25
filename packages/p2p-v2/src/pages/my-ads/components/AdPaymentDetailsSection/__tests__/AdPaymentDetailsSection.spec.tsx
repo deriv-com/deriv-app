@@ -3,15 +3,20 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AdPaymentDetailsSection from '../AdPaymentDetailsSection';
 
+const mockGetValues = {
+    'ad-type': 'buy',
+    amount: '100',
+    'payment-method': ['alipay'],
+    'rate-value': '1.2',
+};
+
+const mockFn = jest.fn();
 jest.mock('react-hook-form', () => ({
     ...jest.requireActual('react-hook-form'),
     useFormContext: () => ({
         formState: { errors: {}, isValid: true },
-        getValues: () => ({
-            'ad-type': 'buy',
-            amount: '100',
-            'rate-value': '1.2',
-        }),
+        getValues: name => mockGetValues[name],
+        setValue: mockFn,
     }),
 }));
 
@@ -31,7 +36,7 @@ jest.mock('@deriv/api-v2', () => ({
                             },
                             bank_name: { display_name: 'Bank Transfer', required: 1, type: 'text', value: 'Bank Name' },
                         },
-                        id: 'test1',
+                        id: 'bank_transfer',
                         is_enabled: 0,
                         method: '',
                         type: 'bank',
@@ -76,5 +81,12 @@ describe('AdPaymentDetailsSection', () => {
         render(<AdPaymentDetailsSection {...mockProps} />);
         userEvent.click(screen.getByPlaceholderText('Add'));
         userEvent.click(screen.getByText('Bank Transfer'));
+        expect(mockFn).toHaveBeenCalledWith('payment-method', ['alipay', 'bank_transfer']);
+    });
+    it('should handle unselection of payment method', () => {
+        mockGetValues['payment-method'] = ['bank_transfer'];
+        render(<AdPaymentDetailsSection {...mockProps} />);
+        userEvent.click(screen.getByTestId('dt_p2p_v2_payment_delete_icon'));
+        expect(mockFn).toHaveBeenCalledWith('payment-method', []);
     });
 });

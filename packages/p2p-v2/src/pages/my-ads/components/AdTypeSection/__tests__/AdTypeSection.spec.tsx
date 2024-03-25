@@ -40,6 +40,11 @@ jest.mock('react-router-dom', () => ({
     useHistory: () => mockUseHistory,
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isMobile: false }),
+}));
+
 const mockProps = {
     currency: 'usd',
     getCurrentStep: jest.fn(() => 1),

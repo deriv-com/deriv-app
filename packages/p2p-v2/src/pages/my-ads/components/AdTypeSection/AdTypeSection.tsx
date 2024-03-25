@@ -3,6 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { RadioGroup } from '@/components';
 import { BUY_SELL, MY_ADS_URL, RATE_TYPE } from '@/constants';
+import { useDevice } from '@/hooks';
 import { Text } from '@deriv-com/ui';
 import { AdFormController } from '../AdFormController';
 import { AdFormInput } from '../AdFormInput';
@@ -20,6 +21,7 @@ type TAdTypeSectionProps = {
 };
 
 const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeSectionProps) => {
+    const { isMobile } = useDevice();
     const {
         control,
         formState: { isDirty, isValid },
@@ -34,6 +36,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
 
     const onChangeAdTypeHandler = (userInput: 'buy' | 'sell') => {
         setValue('ad-type', userInput);
+        setValue('payment-method', []);
         if (rateType === RATE_TYPE.FLOAT) {
             if (userInput === BUY_SELL.SELL) {
                 setValue('rate-value', '+0.01');
@@ -77,7 +80,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                                 }}
                                 required
                                 selected={value}
-                                textSize='sm'
+                                textSize={isMobile ? 'md' : 'sm'}
                             >
                                 <RadioGroup.Item label='Buy USD' value={BUY_SELL.BUY} />
                                 <RadioGroup.Item label='Sell USD' value={BUY_SELL.SELL} />

@@ -94,7 +94,7 @@ describe('BuyAdPaymentSelection', () => {
     it('should render the delete button for each selected payment method', () => {
         render(<BuyAdPaymentSelection {...mockProps} selectedPaymentMethods={['test']} />);
         expect(screen.getByText('PaymentMethodWithIcon')).toBeInTheDocument();
-        const button = screen.getByRole('button');
+        const button = screen.getByTestId('dt_p2p_v2_payment_delete_icon');
         userEvent.click(button);
         expect(mockProps.onSelectPaymentMethod).toHaveBeenCalledWith('test', 'delete');
     });

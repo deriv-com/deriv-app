@@ -18,7 +18,7 @@ const AdFormInput = ({ label, name, rightPlaceholder, triggerValidationFunction,
             control={control}
             name={name}
             render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                <div className='px-[2.4rem] mb-[3.5rem] w-full'>
+                <div className='px-[1.6rem] mb-[3.5rem] w-full lg:px-[2.4rem]'>
                     <Input
                         error={!!error?.message}
                         label={label}

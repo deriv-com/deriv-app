@@ -36,7 +36,7 @@ const BuyAdPaymentSelection = ({ onSelectPaymentMethod, selectedPaymentMethods }
                                 onClick={() => onSelectPaymentMethod(method, 'delete')}
                                 variant='contained'
                             >
-                                <LabelPairedTrashCaptionBoldIcon />
+                                <LabelPairedTrashCaptionBoldIcon data-testid='dt_p2p_v2_payment_delete_icon' />
                             </Button>
                         </div>
                     );

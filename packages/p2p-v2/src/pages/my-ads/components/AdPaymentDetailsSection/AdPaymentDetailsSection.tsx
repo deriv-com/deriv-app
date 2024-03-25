@@ -20,16 +20,23 @@ const AdPaymentDetailsSection = ({ currency, localCurrency, rateType, ...props }
     const {
         formState: { errors, isValid },
         getValues,
+        setValue,
     } = useFormContext();
 
-    const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<(number | string)[]>([]);
+    const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<(number | string)[]>(
+        getValues('payment-method') ?? []
+    );
     const isSellAdvert = getValues('ad-type') === BUY_SELL.SELL;
 
     const onSelectPaymentMethod = (paymentMethod: number | string) => {
         if (selectedPaymentMethods.includes(paymentMethod)) {
+            const newSelectedPaymentMethods = selectedPaymentMethods.filter(method => method !== paymentMethod);
             setSelectedPaymentMethods(selectedPaymentMethods.filter(method => method !== paymentMethod));
+            setValue('payment-method', newSelectedPaymentMethods);
         } else {
+            const newSelectedPaymentMethods = [...selectedPaymentMethods, paymentMethod];
             setSelectedPaymentMethods([...selectedPaymentMethods, paymentMethod]);
+            setValue('payment-method', newSelectedPaymentMethods);
         }
     };
 

@@ -1,9 +1,6 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, within } from '@testing-library/react';
 import FlyoutImage from '../flyout-img';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import '@testing-library/jest-dom/extend-expect';
 
 describe('FlyoutImage', () => {
     const mocked_props = {

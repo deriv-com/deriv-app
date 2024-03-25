@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { toast } from 'react-toastify';
 import { notification_style, TAction, TNotificationContent, TNotificationStyle } from './bot-notification-utils';
 

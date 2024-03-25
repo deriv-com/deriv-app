@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import { contract_stages } from 'Constants/contract-stage';
 import ContractStageText from '../contract-stage-text';

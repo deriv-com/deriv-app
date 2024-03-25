@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
@@ -83,6 +83,53 @@ describe('LoadModal', () => {
         mock_DBot_store?.load_modal.setRecentStrategies(recent_strategies);
         render(<LoadModal />, { wrapper });
         expect(screen.getByRole('button', { name: 'Open' })).toBeInTheDocument();
+    });
+
+    it('should render <LoadModal /> and click of close should close preview', () => {
+        mock_store.ui.is_mobile = false;
+        render(<LoadModal />, { wrapper });
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
+        mock_DBot_store?.load_modal.setLoadedLocalFile(new File([''], 'test-name', { type: 'text/xml' }));
+        const close_button = screen.getByTestId('dt_load-strategy__local-preview-close');
+        expect(close_button).toBeInTheDocument();
+        fireEvent.click(close_button);
+        expect(close_button).not.toBeInTheDocument();
+    });
+
+    it('should upload file when we drop a file on the dropzone', () => {
+        mock_store.ui.is_mobile = false;
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
+        render(<LoadModal />, { wrapper });
+        mock_DBot_store?.load_modal.setLoadedLocalFile(null);
+        const dropEvent = {
+            preventDefault: jest.fn(),
+            dataTransfer: {
+                files: [new File([''], 'test-name', { type: 'text/xml' })],
+            },
+        };
+
+        const dropzoneArea = screen.getByTestId('dt__local-dropzone-area');
+        expect(dropzoneArea).toBeInTheDocument();
+        fireEvent.drop(dropzoneArea, dropEvent);
+    });
+
+    it('should open and upload a file on load preview', () => {
+        mock_store.ui.is_mobile = false;
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
+        render(<LoadModal />, { wrapper });
+        //open file upload
+        const get_file_input = screen.getByTestId('dt_load-strategy__local-upload');
+        userEvent.click(get_file_input);
+
+        //simulate behaviour of file upload
+        const fileInput = screen.getByTestId('dt-load-strategy-file-input');
+        const file = new File(['file content'], 'file.xml', { type: 'application/xml' });
+        fireEvent.change(fileInput, { target: { files: [file] } });
+
+        const zoom_in_icon = screen.getByTestId('zoom-in');
+        const zoom_out_icon = screen.getByTestId('zoom-out');
+        expect(zoom_in_icon).toBeInTheDocument();
+        expect(zoom_out_icon).toBeInTheDocument();
     });
 
     // [Important] Close Modal should be at the end

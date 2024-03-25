@@ -1,11 +1,12 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Recent from '../recent';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
@@ -54,5 +55,17 @@ describe('Recent component of load modal', () => {
         const strategy_previw = screen.getByText('Preview');
         expect(strategy_previw).toBeInTheDocument();
         expect(container).toBeInTheDocument();
+    });
+
+    it("on click of Why can't I see my recent bots the accordion should close and open", () => {
+        mock_DBot_store?.load_modal.setRecentStrategies([]);
+        render(<Recent />, { wrapper });
+        const explanation_list = screen.getByTestId('dt-load-strategy__recent__empty-expand');
+        explanation_list.focus();
+
+        fireEvent.keyDown(explanation_list, {
+            key: 'Enter',
+        });
+        screen.getByTestId('dt-empty-explanation-list--open');
     });
 });

@@ -11,7 +11,7 @@ import {
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '../../../../../../components';
-import { PlatformDetails } from '../../../../constants';
+import { CFDPlatforms, PlatformDetails } from '../../../../constants';
 
 const { getDerivStaticURL } = URLUtils;
 
@@ -39,10 +39,10 @@ const AvailableDxtradeAccountsList = () => {
     const title = getCfdsAccountTitle(PlatformDetails.dxtrade.title, activeTradingAccount?.is_virtual);
 
     const trailingButtonClick = () => {
-        setCfdState({ platform: PlatformDetails.dxtrade.platform });
         if (!hasActiveDerivAccount) {
             setIsDerivedAccountModalOpen(true);
         } else {
+            setCfdState({ platform: CFDPlatforms.DXTRADE });
             openModal('DxtradePasswordModal');
         }
     };

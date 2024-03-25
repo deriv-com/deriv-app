@@ -25,8 +25,8 @@ const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) =>
 
     return (
         <React.Fragment>
-            <Modal.Body>
-                <div className='hidden lg:block'>
+            <Modal.Body className='lg:pt-24 lg:px-24 lg:space-y-16'>
+                <div className='justify-center w-full lg:flex d-none lg:gap-8'>
                     {platform === CFDPlatforms.MT5 ? <MT5PasswordIcon /> : <DxtradePasswordIcon />}
                 </div>
 
@@ -36,7 +36,7 @@ const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) =>
                 </div>
                 <PasswordInput isFullWidth label={`${title} password`} onChange={onPasswordChange} value={password} />
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className='flex justify-center' hideBorder>
                 {platform === CFDPlatforms.DXTRADE ? (
                     <DxtradePasswordFooter password={password} />
                 ) : (

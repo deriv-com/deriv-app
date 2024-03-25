@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import ContentLoader from 'react-content-loader';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ProposalOpenContract } from '@deriv/api-types';
 import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';

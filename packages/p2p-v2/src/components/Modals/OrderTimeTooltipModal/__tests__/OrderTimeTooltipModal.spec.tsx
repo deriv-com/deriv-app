@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import OrderTimeTooltipModal from '../OrderTimeTooltipModal';
 
 const mockProps = {
-    orderTimeInfoMessage: 'this is the tooltip message',
     isModalOpen: true,
     onRequestClose: jest.fn(),
 };
@@ -12,7 +11,7 @@ const mockProps = {
 describe('<RatingModal />', () => {
     it('should render just the star rating initially', () => {
         render(<OrderTimeTooltipModal {...mockProps} />);
-        expect(screen.getByText('this is the tooltip message')).toBeInTheDocument();
+        expect(screen.getByText('Orders will expire if they aren’t completed within this time.')).toBeInTheDocument();
     });
     it('should handle the onclick for ok button', () => {
         render(<OrderTimeTooltipModal {...mockProps} />);

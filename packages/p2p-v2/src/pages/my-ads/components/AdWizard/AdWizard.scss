@@ -26,9 +26,6 @@
             max-height: calc(100vh - 35rem);
             overflow-y: auto;
         }
-        @include mobile {
-            padding: 1.6rem;
-        }
     }
 
     .p2p-v2-form-progress {

@@ -23,7 +23,11 @@ const OrderTimeSelection = () => {
                             onClick={isMobile ? () => setIsModalOpen(true) : () => undefined}
                             variant='contained'
                         >
-                            <LabelPairedCircleInfoCaptionRegularIcon height={24} width={24} />
+                            <LabelPairedCircleInfoCaptionRegularIcon
+                                data-testid='dt_p2p_v2_order_info_icon'
+                                height={24}
+                                width={24}
+                            />
                         </Button>
                     </Tooltip>
                 </Text>

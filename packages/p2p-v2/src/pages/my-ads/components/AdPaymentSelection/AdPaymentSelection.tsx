@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, useDevice } from '@deriv-com/ui';
-import BuyAdPaymentSelection from '../BuyAdPaymentSelection/BuyAdPaymentSelection';
+import { BuyAdPaymentSelection } from '../BuyAdPaymentSelection';
 import { SellAdPaymentSelection } from '../SellAdPaymentSelection';
 
 type TAdPaymentSectionProps = {

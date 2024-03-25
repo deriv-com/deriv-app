@@ -1,5 +1,5 @@
 import React from 'react';
-import { PaymentMethodWithIcon } from '@/components/PaymentMethodWithIcon';
+import { PaymentMethodWithIcon } from '@/components';
 import { getPaymentMethodObjects } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import { LabelPairedTrashCaptionBoldIcon } from '@deriv/quill-icons';
@@ -26,7 +26,7 @@ const BuyAdPaymentSelection = ({ onSelectPaymentMethod, selectedPaymentMethods }
         <>
             {selectedPaymentMethods?.length > 0 &&
                 selectedPaymentMethods.map(method => {
-                    const { display_name: name, type } = paymentMethodObjects[method];
+                    const { display_name: name, type } = paymentMethodObjects[method] ?? {};
                     return (
                         <div className='p2p-v2-buy-ad-payment-selection' key={method}>
                             <PaymentMethodWithIcon name={name} type={type} />

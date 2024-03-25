@@ -13,7 +13,7 @@ const SellAdPaymentSelection = ({ onSelectPaymentMethod, selectedPaymentMethodId
     const { data: advertiserPaymentMethods } = p2p.advertiserPaymentMethods.useGet();
 
     return (
-        <div className='inline-flex flex-wrap'>
+        <div className='p2p-v2-sell-ad-payment-selection__card'>
             {advertiserPaymentMethods?.map(paymentMethod => {
                 const isDisabled =
                     selectedPaymentMethodIds.length >= 3 &&
@@ -29,7 +29,7 @@ const SellAdPaymentSelection = ({ onSelectPaymentMethod, selectedPaymentMethodId
                     />
                 );
             })}
-            <div className='p2p-v2-sell-ad-payment-selection'>
+            <div className='p2p-v2-sell-ad-payment-selection__button'>
                 <Button
                     className='flex items-center justify-center w-[3.2rem] h-[3.2rem] mb-[0.8rem] rounded-full bg-[#ff444f]'
                     onClick={() => undefined} //TODO: show add payment method modal

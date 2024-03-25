@@ -56,15 +56,12 @@ const AdSummary = ({
         displayPriceRate = marketFeed ? roundOffDecimal(percentOf(marketFeed, priceRate), 6) : priceRate;
     }
 
-    if (offerAmount && priceRate) {
-        displayTotal = FormatUtils.formatMoney(
-            Number(offerAmount) * Number(marketFeed ? displayPriceRate : priceRate),
-            { currency: localCurrency }
-        );
-    }
-
     if (offerAmount) {
         if (priceRate) {
+            displayTotal = FormatUtils.formatMoney(
+                Number(offerAmount) * Number(marketFeed ? displayPriceRate : priceRate),
+                { currency: localCurrency }
+            );
             const formattedPriceRate = FormatUtils.formatMoney(Number(displayPriceRate), {
                 currency: localCurrency,
                 decimalPlaces: setDecimalPlaces(Number(displayPriceRate), 6),

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { Table } from '@/components';
 import { p2p } from '@deriv/api-v2';
-import { Loader, Text } from '@deriv-com/ui';
+import { Loader, Table, Text } from '@deriv-com/ui';
 import { MyProfileCounterpartiesEmpty } from '../MyProfileCounterpartiesEmpty';
 import { MyProfileCounterpartiesTableRow } from '../MyProfileCounterpartiesTableRow';
 import './MyProfileCounterpartiesTable.scss';

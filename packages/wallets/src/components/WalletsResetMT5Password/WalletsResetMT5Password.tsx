@@ -66,6 +66,7 @@ const WalletsResetMT5Password = ({
         } else if (isChangePasswordError) {
             hide();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, title, actionParams, isChangePasswordSuccess, isChangePasswordError]);
 
     useEffect(() => {
@@ -75,6 +76,7 @@ const WalletsResetMT5Password = ({
         } else if (isChangeInvestorPasswordError) {
             hide();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
     const renderFooter = () => {

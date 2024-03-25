@@ -108,6 +108,7 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
                 />
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [createAccountError, isAccountCreated, isDemo, walletCurrencyType]);
 
     const onClickAdd = () => {

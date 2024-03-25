@@ -46,6 +46,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
                 />
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accountType, activeWallet?.wallet_currency_type, error?.error?.message, status]);
 
     return (

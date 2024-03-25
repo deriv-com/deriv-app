@@ -36,11 +36,10 @@ type AuthProviderPropsWithoutChildren = Omit<AuthProviderProps, 'children'>;
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function waitForLoginAndTokenWithTimeout(
-    props: AuthProviderPropsWithoutChildren = {
-        cookieTimeout: 10000,
-    }
+    cookieTimeout = 10000,
+    loginIDKey?: string,
+    selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string
 ) {
-    const { cookieTimeout, loginIDKey, selectDefaultAccount } = props;
     // Default timeout of 10 seconds
     let timeoutHandle: NodeJS.Timeout | undefined,
         cookieTimeoutHandle: NodeJS.Timeout | undefined, // Handle for the cookieTimeout
@@ -136,11 +135,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
         setIsLoading(true);
         setIsSuccess(false);
 
-        const { promise, cleanup } = waitForLoginAndTokenWithTimeout({
-            cookieTimeout,
-            loginIDKey,
-            selectDefaultAccount,
-        });
+        const { promise, cleanup } = waitForLoginAndTokenWithTimeout(cookieTimeout, loginIDKey, selectDefaultAccount);
 
         let isMounted = true;
 

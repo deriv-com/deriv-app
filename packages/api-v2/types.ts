@@ -2148,7 +2148,7 @@ type TPrivateSocketEndpoints = {
 
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
 
-interface extendedAccountListResponse extends AccountListResponse {
+interface IExtendedAccountListResponse extends AccountListResponse {
     account_list?: TAccountList[];
 }
 
@@ -2159,7 +2159,7 @@ type TSocketEndpoints = {
     };
     account_list: {
         request: AccountListRequest;
-        response: extendedAccountListResponse;
+        response: IExtendedAccountListResponse;
     };
     api_token: {
         request: APITokenRequest;

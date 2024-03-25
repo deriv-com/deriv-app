@@ -1,3 +1,4 @@
-import { PaymentAgentCardDescription } from './PaymentAgentCardDescription';
+import { PaymentAgentList } from './PaymentAgentList';
+import { PaymentAgentSearchContainer } from './PaymentAgentSearchContainer';
 
-export { PaymentAgentCardDescription };
+export { PaymentAgentList, PaymentAgentSearchContainer };

@@ -1,8 +1,7 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { localize } from '@deriv/translations';
 import { render } from '@testing-library/react';
 import { messageWithButton } from 'Components/notify-item';
 import { isCustomJournalMessage } from '../journal-notifications';
-import { localize } from '@deriv/translations';
 
 describe('isCustomJournalMessage', () => {
     const centerAndHighlightBlock = jest.fn();

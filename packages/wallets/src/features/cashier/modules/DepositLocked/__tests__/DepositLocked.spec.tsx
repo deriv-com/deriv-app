@@ -54,8 +54,7 @@ describe('DepositLocked', () => {
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockLockedStatusData });
 
-        const mockLockedState = { description: 'Locked Description' };
-        (getDepositLockedDesc as jest.Mock).mockReturnValueOnce(mockLockedState);
+        (getDepositLockedDesc as jest.Mock).mockReturnValueOnce('Locked Description');
 
         render(
             <DepositLocked>

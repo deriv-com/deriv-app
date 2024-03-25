@@ -9,7 +9,7 @@ jest.mock('../../../utils/platform', () => ({
 
 describe('AccountClosureSteps', () => {
     it('should render the AccountClosureSteps component', () => {
-        render(<AccountClosureSteps />);
+        render(<AccountClosureSteps handleOnSubmit={jest.fn()} />);
 
         expect(screen.getAllByRole('listitem')).toHaveLength(4);
         expect(screen.getAllByRole('button')).toHaveLength(2);
@@ -18,7 +18,7 @@ describe('AccountClosureSteps', () => {
 
     it('should render only one button if isNavigationFromDerivGO returns true', () => {
         (isNavigationFromDerivGO as jest.Mock).mockReturnValue(true);
-        render(<AccountClosureSteps />);
+        render(<AccountClosureSteps handleOnSubmit={jest.fn()} />);
 
         expect(screen.getByRole('button', { name: /close my account/i })).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: /cancel/i })).not.toBeInTheDocument();

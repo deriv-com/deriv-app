@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
-import { TOrders } from 'types';
+import { THooks } from 'types';
 import { BASE_URL, ORDERS_STATUS } from '@/constants';
 import { useExtendedOrderDetails, useQueryString } from '@/hooks';
 import { OrderRatingButton, OrderStatusTag, OrderTimer } from '@/pages/orders/components';
@@ -11,11 +11,11 @@ import { Button, Text, useDevice } from '@deriv-com/ui';
 import ChatIcon from '../../../../../public/ic-chat.svg';
 import './OrdersTableRow.scss';
 
-const OrdersTableRow = ({ ...props }: TOrders[number]) => {
+const OrdersTableRow = ({ ...props }: THooks.Order.GetList[number]) => {
     const { isMobile } = useDevice();
     const { queryString } = useQueryString();
     const history = useHistory();
-    const isPast = queryString.get('tab') === ORDERS_STATUS.PAST_ORDERS;
+    const isPast = queryString.tab === ORDERS_STATUS.PAST_ORDERS;
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
     const { data: orderDetails } = useExtendedOrderDetails({

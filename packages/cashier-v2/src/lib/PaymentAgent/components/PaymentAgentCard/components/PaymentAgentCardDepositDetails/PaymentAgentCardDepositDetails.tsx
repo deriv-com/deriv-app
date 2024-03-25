@@ -5,31 +5,31 @@ import TransferLimitIcon from '../../../../../../assets/images/ic-account-transf
 import DepositIcon from '../../../../../../assets/images/ic-cashier-add.svg';
 import WithdrawalIcon from '../../../../../../assets/images/ic-cashier-minus.svg';
 import PhoneIcon from '../../../../../../assets/images/ic-phone.svg';
-import { THooks } from '../../../../../../hooks/types';
+import type { THooks } from '../../../../../../hooks/types';
 import { TCurrency } from '../../../../../../types';
 import { PaymentAgentCardDetail } from '../PaymentAgentCardDetail';
-import styles from './PaymentAgentCardDetails.module.scss';
+import styles from './PaymentAgentCardDepositDetails.module.scss';
 
-type TPaymentAgentCardDetailsProps = {
+type TPaymentAgentCardDepositDetailsProps = {
     paymentAgent: THooks.PaymentAgentList[number];
 };
 
 type TPaymentAgentPhoneDetailsProps = {
-    phoneNumbers: TPaymentAgentCardDetailsProps['paymentAgent']['phone_numbers'];
+    phoneNumbers: THooks.PaymentAgentList[number]['phone_numbers'];
 };
 
 type TPaymentAgentTransferLimitDetailsProps = {
     currency: TCurrency;
-    maxWithdrawal: TPaymentAgentCardDetailsProps['paymentAgent']['max_withdrawal'];
-    minWithdrawal: TPaymentAgentCardDetailsProps['paymentAgent']['min_withdrawal'];
+    maxWithdrawal: THooks.PaymentAgentList[number]['max_withdrawal'];
+    minWithdrawal: THooks.PaymentAgentList[number]['min_withdrawal'];
 };
 
 type TPaymentAgentDepositCommissionDetailsProps = {
-    depositCommission: TPaymentAgentCardDetailsProps['paymentAgent']['deposit_commission'];
+    depositCommission: THooks.PaymentAgentList[number]['deposit_commission'];
 };
 
 type TPaymentAgentWithdrawalCommissionDetailsProps = {
-    withdrawalCommission: TPaymentAgentCardDetailsProps['paymentAgent']['withdrawal_commission'];
+    withdrawalCommission: THooks.PaymentAgentList[number]['withdrawal_commission'];
 };
 
 const PaymentAgentPhoneDetails: React.FC<TPaymentAgentPhoneDetailsProps> = ({ phoneNumbers }) => {
@@ -77,7 +77,7 @@ const PaymentAgentWithdrawalCommissionDetails: React.FC<TPaymentAgentWithdrawalC
     );
 };
 
-const PaymentAgentCardDetails: React.FC<TPaymentAgentCardDetailsProps> = ({ paymentAgent }) => {
+const PaymentAgentCardDepositDetails: React.FC<TPaymentAgentCardDepositDetailsProps> = ({ paymentAgent }) => {
     const {
         currencies: currency,
         deposit_commission: depositCommission,
@@ -105,4 +105,4 @@ const PaymentAgentCardDetails: React.FC<TPaymentAgentCardDetailsProps> = ({ paym
     );
 };
 
-export default PaymentAgentCardDetails;
+export default PaymentAgentCardDepositDetails;

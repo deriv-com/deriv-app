@@ -3,12 +3,9 @@ import { StarRating } from '@/components';
 import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { getDateAfterHours } from '@/utils';
 import { p2p } from '@deriv/api-v2';
-import {
-    StandaloneStarFillIcon,
-    StandaloneThumbsDownRegularIcon,
-    StandaloneThumbsUpRegularIcon,
-} from '@deriv/quill-icons';
+import { StandaloneStarFillIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
+import { RecommendationStatus } from './RecommendationStatus';
 
 const OrderDetailsCardReview = () => {
     const { orderDetails } = useOrderDetails();
@@ -23,7 +20,6 @@ const OrderDetailsCardReview = () => {
     const [remainingReviewTime, setRemainingReviewTime] = useState<string | null>(null);
     const ratingAverageDecimals = reviewDetails ? Number(Number(reviewDetails.rating).toFixed(1)) : 0;
     const { isMobile } = useDevice();
-    const textSize = isMobile ? 'sm' : 'xs';
 
     useEffect(() => {
         if (completionTime && p2pSettingsData?.review_period) {
@@ -41,7 +37,7 @@ const OrderDetailsCardReview = () => {
                     icon={<StandaloneStarFillIcon fill='#FFAD3A' height={18} width={18} />}
                     variant='outlined'
                 >
-                    <Text size={textSize}>{isReviewable ? 'Rate this transaction' : 'Not rated'}</Text>
+                    <Text size={isMobile ? 'sm' : 'xs'}>{isReviewable ? 'Rate this transaction' : 'Not rated'}</Text>
                 </Button>
                 <Text color='less-prominent' size={isMobile ? 'xs' : '2xs'}>
                     {isReviewable
@@ -57,25 +53,7 @@ const OrderDetailsCardReview = () => {
                 <Text weight='bold'>Your transaction experience</Text>
                 <div className='flex justify-between w-4/5 ml-2'>
                     <StarRating isReadonly ratingValue={ratingAverageDecimals} starsScale={1.2} />
-                    <Text as='div' className='flex items-center gap-1' color='less-prominent' size={textSize}>
-                        {/* Renders 'Recommended' or 'Not Recommended' with respective icons if `reviewDetails?.recommended` is not null, otherwise renders nothing. */}
-                        {reviewDetails?.recommended !== null &&
-                            (reviewDetails?.recommended ? (
-                                <>
-                                    <StandaloneThumbsUpRegularIcon
-                                        className='mb-[0.3rem]'
-                                        fill='#4BB4B3'
-                                        iconSize='sm'
-                                    />
-                                    Recommended
-                                </>
-                            ) : (
-                                <>
-                                    <StandaloneThumbsDownRegularIcon fill='#ec3f3f' iconSize='sm' />
-                                    Not Recommended
-                                </>
-                            ))}
-                    </Text>
+                    <RecommendationStatus />
                 </div>
             </div>
         );

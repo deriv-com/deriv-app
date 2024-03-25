@@ -6,7 +6,7 @@ import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
-import { log_types } from '../../constants/messages';
+import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
 
 export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
@@ -202,7 +202,7 @@ export const load = async ({
         });
 
         if (workspace === Blockly.derivWorkspace) {
-            globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+            globalObserver.emit('ui.log.success', { log_type: LogTypes.LOAD_BLOCK });
         }
     } catch (e) {
         console.error(e); // eslint-disable-line

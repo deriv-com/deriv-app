@@ -458,7 +458,10 @@ const PersonalDetailsForm = props => {
                                                 name='employment_status'
                                                 list={getEmploymentStatusList()}
                                                 value={values.employment_status}
-                                                onChange={handleChange}
+                                                onChange={e => {
+                                                    setFieldValue('occupation', '', true);
+                                                    handleChange(e);
+                                                }}
                                                 handleBlur={handleBlur}
                                                 error={touched.employment_status && errors.employment_status}
                                                 disabled={isFieldImmutable('employment_status', editable_fields)}
@@ -478,6 +481,7 @@ const PersonalDetailsForm = props => {
                                                 error={touched.employment_status && errors.employment_status}
                                                 onChange={e => {
                                                     setFieldTouched('employment_status', true);
+                                                    setFieldValue('occupation', '', true);
                                                     handleChange(e);
                                                 }}
                                                 disabled={isFieldImmutable('employment_status', editable_fields)}

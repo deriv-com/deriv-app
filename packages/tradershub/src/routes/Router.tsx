@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { TradersHub } from '@/components';
 import { CompareAccountsScreen } from '@cfd/screens';
-import { TradersHubRoute } from './TradersHubRoute';
 
 const prefix = '/traders-hub';
 
@@ -20,7 +20,7 @@ const Router = () => {
     return (
         <Switch>
             <Route component={CompareAccountsScreen} path={`${prefix}/compare-accounts`} />
-            <Route component={TradersHubRoute} path={prefix} />
+            <Route component={TradersHub} path={prefix} />
         </Switch>
     );
 };

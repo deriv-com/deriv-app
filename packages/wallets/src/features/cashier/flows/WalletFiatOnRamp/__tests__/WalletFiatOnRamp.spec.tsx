@@ -8,6 +8,7 @@ import WalletFiatOnRamp from '../WalletFiatOnRamp';
 jest.mock('../../../modules', () => ({
     CashierLocked: jest.fn(({ children }) => <>{children}</>),
     FiatOnRampModule: jest.fn(() => <div>MockedFiatOnRampModule</div>),
+    SystemMaintenance: jest.fn(({ children }) => <>{children}</>),
 }));
 
 jest.mock('@deriv/api-v2', () => ({

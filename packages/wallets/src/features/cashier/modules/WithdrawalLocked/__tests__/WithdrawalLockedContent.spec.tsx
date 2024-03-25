@@ -16,7 +16,7 @@ describe('WithdrawalLockedContent', () => {
             poiStatus: 'none',
         });
 
-        expect(result?.description).toBeUndefined();
+        expect(result).toBeFalsy();
     });
 
     it('should render title and description as undefined when withdrawal is not locked', () => {
@@ -28,7 +28,7 @@ describe('WithdrawalLockedContent', () => {
             withdrawalLockedStatus: false,
         });
 
-        expect(result?.description).toBeUndefined();
+        expect(result).toBeFalsy();
     });
 
     it('should render correct message when withdrawal limit is reached and POI has not been uploaded', () => {
@@ -40,7 +40,7 @@ describe('WithdrawalLockedContent', () => {
             poiStatus: 'none',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/You have reached the withdrawal limit. Please upload/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
     });
@@ -54,7 +54,7 @@ describe('WithdrawalLockedContent', () => {
             poiStatus: 'pending',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/You have reached the withdrawal limit. Please check/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
     });
@@ -68,7 +68,7 @@ describe('WithdrawalLockedContent', () => {
             poiStatus: 'none',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/You have reached the withdrawal limit. Please upload/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of address' })).toBeInTheDocument();
     });
@@ -82,7 +82,7 @@ describe('WithdrawalLockedContent', () => {
             poiStatus: 'none',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/You have reached the withdrawal limit. Please check/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of address' })).toBeInTheDocument();
     });
@@ -96,7 +96,7 @@ describe('WithdrawalLockedContent', () => {
             poiStatus: 'none',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/You have reached the withdrawal limit. Please complete/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment form' })).toBeInTheDocument();
     });
@@ -110,7 +110,7 @@ describe('WithdrawalLockedContent', () => {
             withdrawalLockedStatus: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Please complete the/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment' })).toBeInTheDocument();
     });
@@ -124,7 +124,7 @@ describe('WithdrawalLockedContent', () => {
             withdrawalLockedStatus: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Your account has not been authenticated. Please submit/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of address' })).toBeInTheDocument();
@@ -139,7 +139,7 @@ describe('WithdrawalLockedContent', () => {
             withdrawalLockedStatus: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(
             screen.getByText(
                 /Please go to your account settings and complete your personal details to enable withdrawals/
@@ -157,7 +157,7 @@ describe('WithdrawalLockedContent', () => {
             withdrawalLockedStatus: false,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Unfortunately, you can only make deposits. Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
@@ -174,7 +174,7 @@ describe('WithdrawalLockedContent', () => {
             withdrawalLockedStatus: true,
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Unfortunately, you can only make deposits. Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();

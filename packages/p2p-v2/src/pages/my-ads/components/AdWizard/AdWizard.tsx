@@ -42,12 +42,7 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
                                     </Text>
                                 )}
                             </div>
-                            <Button
-                                className='p2p-v2-ad-wizard__button'
-                                color='white'
-                                icon={<LabelPairedXmarkLgBoldIcon />}
-                                variant='contained'
-                            />
+                            <Button color='white' icon={<LabelPairedXmarkLgBoldIcon />} variant='contained' />
                         </div>
                     )}
                 </div>

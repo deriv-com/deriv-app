@@ -13,14 +13,16 @@
 
             > div {
                 flex: 1;
+
+                @include mobile {
+                    & .deriv-button {
+                        background-color: transparent;
+                    }
+                }
             }
         }
     }
 
-    &__button {
-        // stylelint-disable-next-line declaration-no-important
-        background-color: transparent !important;
-    }
     .p2p-v2-wizard__main-step {
         @include desktop {
             max-height: calc(100vh - 35rem);

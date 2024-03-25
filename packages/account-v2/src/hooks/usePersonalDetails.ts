@@ -9,7 +9,7 @@ import {
     useStatesList,
 } from '@deriv/api-v2';
 import { AUTH_STATUS_CODES } from '../constants';
-import { getPersonalDetailsInitialValues } from '../containers/PersonalDetailsForm/utils';
+import { getPersonalDetailsInitialValues } from '../utils';
 import { useCurrentLandingCompany } from './useCurrentLandingCompany';
 
 export const usePersonalDetails = () => {

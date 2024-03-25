@@ -313,7 +313,7 @@ type TMarkerContentConfig = TContentConfig & {
     status?: string;
 };
 
-type TNotificationMessage = {
+export type TNotificationMessage = {
     action?: TActionProps;
     className?: string;
     cta_btn?: TButtonProps;
@@ -325,7 +325,7 @@ type TNotificationMessage = {
     is_persistent?: boolean;
     key: string;
     message_popup?: string;
-    message: string | JSX.Element;
+    message?: string | JSX.Element;
     platform?: string;
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
@@ -837,7 +837,7 @@ type TUiStore = {
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
-    setAccountSwitcherDisabledMessage: () => void;
+    setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
 };
 

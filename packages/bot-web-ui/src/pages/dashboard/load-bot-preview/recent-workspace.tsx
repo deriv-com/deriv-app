@@ -5,18 +5,11 @@ import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { waitForDomElement } from 'Utils/dom-observer';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
 import { useComponentVisibility } from '../../../hooks';
-import {
-    rudderstackDashboardChooseYourBot,
-    rudderstackDashboardDeleteYourBot,
-    rudderstackDashboardEditYourBot,
-    rudderstackDashboardSaveYourBot,
-} from '../analytics/rudderstack-dashboard';
 import './index.scss';
 
 type TRecentWorkspace = {
@@ -92,19 +85,11 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                 previewRecentStrategy(workspace.id);
             });
         }
-        Analytics.trackEvent('ce_bot_builder_form', {
-            action: 'open',
-            form_source: 'bot_dashboard_form-open',
-        });
     };
 
     const handleEdit = async () => {
         await loadFileFromRecent();
         setActiveTab(DBOT_TABS.BOT_BUILDER);
-        Analytics.trackEvent('ce_bot_builder_form', {
-            action: 'close',
-            form_source: 'bot_dashboard_form-edit',
-        });
     };
 
     const handleSave = () => {
@@ -119,43 +104,23 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             case STRATEGY.INIT:
                 // Fires for desktop preview
                 handleInit();
-                rudderstackDashboardChooseYourBot({
-                    bot_name: workspace?.name,
-                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
-                });
                 break;
 
             case STRATEGY.PREVIEW_LIST:
                 // Fires for mobile preview
                 handlePreviewList();
-                rudderstackDashboardChooseYourBot({
-                    bot_name: workspace?.name,
-                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
-                });
                 break;
 
             case STRATEGY.EDIT:
                 await handleEdit();
-                rudderstackDashboardEditYourBot({
-                    bot_name: workspace?.name,
-                });
                 break;
 
             case STRATEGY.SAVE:
                 handleSave();
-                rudderstackDashboardSaveYourBot({
-                    bot_name: workspace?.name,
-                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
-                    bot_status: dashboard_strategies?.[0]?.save_type,
-                });
                 break;
 
             case STRATEGY.DELETE:
                 onToggleDeleteDialog(true);
-                rudderstackDashboardDeleteYourBot({
-                    bot_name: workspace?.name,
-                    delete_popup_respond: 'yes',
-                });
                 break;
 
             default:

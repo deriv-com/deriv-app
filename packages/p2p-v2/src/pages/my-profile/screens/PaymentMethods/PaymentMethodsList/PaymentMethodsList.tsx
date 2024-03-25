@@ -1,5 +1,5 @@
 import React from 'react';
-import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
+import { THooks, TSelectedPaymentMethod } from 'types';
 import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
 import { useDevice, useQueryString } from '@/hooks';
 import { TFormState } from '@/reducers/types';
@@ -13,7 +13,7 @@ type TPaymentMethodsListProps = {
     onDelete: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onEdit: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onResetFormState: () => void;
-    p2pAdvertiserPaymentMethods: TAdvertiserPaymentMethods;
+    p2pAdvertiserPaymentMethods: THooks.AdvertiserPaymentMethods.Get;
 };
 
 /**

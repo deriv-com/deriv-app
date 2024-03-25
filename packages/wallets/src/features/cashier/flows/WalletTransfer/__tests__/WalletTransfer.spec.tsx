@@ -12,6 +12,7 @@ jest.mock('../../../../../components', () => ({
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
     CashierLocked: jest.fn(({ children }) => <>{children}</>),
+    SystemMaintenance: jest.fn(({ children }) => <>{children}</>),
     TransferModule: jest.fn(({ accounts }) => (
         <>
             <div>TransferModule</div>

@@ -36,18 +36,18 @@ const PaymentMethodModal = ({
             style={customStyles}
         >
             <div className='p2p-v2-payment-method-modal__wrapper'>
-                <Text color='prominent' weight='bold'>
-                    {title}
-                </Text>
-                <Text color='prominent'>{description}</Text>
+                <Text weight='bold'>{title}</Text>
+                <Text>{description}</Text>
                 <div className='p2p-v2-payment-method-modal__buttons'>
                     <Button
-                        className='p2p-v2-payment-method-modal__buttons--cancel'
+                        className='border-2'
+                        color='black'
                         onClick={e => {
                             e.currentTarget.setAttribute('disabled', 'disabled');
                             onConfirm();
                         }}
                         size='lg'
+                        textSize='md'
                         variant='outlined'
                     >
                         {secondaryButtonLabel}
@@ -58,6 +58,7 @@ const PaymentMethodModal = ({
                             onReject();
                         }}
                         size='lg'
+                        textSize='md'
                     >
                         {primaryButtonLabel}
                     </Button>

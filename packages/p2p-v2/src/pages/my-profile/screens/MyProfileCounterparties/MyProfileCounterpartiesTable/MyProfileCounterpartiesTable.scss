@@ -1,10 +1,12 @@
 .p2p-v2-my-profile-counterparties-table {
-    max-height: 16rem;
+    max-height: 22.4rem;
 
     @include mobile {
-        height: 100%;
+        // stylelint-disable-next-line declaration-no-important
+        height: calc(100vh - 30rem) !important;
         max-height: 100%;
     }
+
     &__row {
         &:last-child {
             position: relative;

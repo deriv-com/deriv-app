@@ -1,6 +1,6 @@
 import React from 'react';
 import { LabelPairedArrowLeftLgBoldIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import './PaymentMethodsHeader.scss';
 
 type TPaymentMethodsHeaderProps = {
@@ -15,21 +15,24 @@ type TPaymentMethodsHeaderProps = {
  * @returns {JSX.Element}
  * @example <PaymentMethodsHeader onGoBack={onGoBack} title={title} />
  * **/
-const PaymentMethodsHeader = ({ onGoBack, title }: TPaymentMethodsHeaderProps) => (
-    <div className='p2p-v2-payment-method-form__header'>
-        <div className='p2p-v2-payment-method-form__back-button'>
-            {onGoBack && (
-                <LabelPairedArrowLeftLgBoldIcon
-                    data-testid='dt_p2p_v2_payment_methods_header_left_arrow_icon'
-                    onClick={onGoBack}
-                />
-            )}
+const PaymentMethodsHeader = ({ onGoBack, title }: TPaymentMethodsHeaderProps) => {
+    const { isMobile } = useDevice();
+    return (
+        <div className='p2p-v2-payment-method-form__header'>
+            <div className='p2p-v2-payment-method-form__back-button'>
+                {onGoBack && (
+                    <LabelPairedArrowLeftLgBoldIcon
+                        data-testid='dt_p2p_v2_payment_methods_header_left_arrow_icon'
+                        onClick={onGoBack}
+                    />
+                )}
+            </div>
+            {/* TODO: Remember to translate this */}
+            <Text size={isMobile ? 'lg' : 'sm'} weight='bold'>
+                {title}
+            </Text>
         </div>
-        {/* TODO: Remember to translate this */}
-        <Text size='sm' weight='bold'>
-            {title}
-        </Text>
-    </div>
-);
+    );
+};
 
 export default PaymentMethodsHeader;

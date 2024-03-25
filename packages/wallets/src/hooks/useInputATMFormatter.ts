@@ -8,7 +8,7 @@ type TOptions = {
     maxDigits?: number;
 };
 
-const separatorRegex = /[,.]/; // locale-agnostic
+const separatorRegex = /[,.]/g; // locale-agnostic
 
 const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initial?: number, options?: TOptions) => {
     const input = inputRef.current;

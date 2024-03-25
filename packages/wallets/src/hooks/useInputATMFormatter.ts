@@ -123,7 +123,11 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
                 isPasting.current = false;
                 if (!isRewriting.current) return;
 
-                const pastedValue = Number(unFormatLocaleString(clipboardContent.current, locale));
+                const pastedValueUnformatted = unFormatLocaleString(clipboardContent.current, locale);
+                const pastedValue =
+                    fractionDigits > 2 && !separatorRegex.test(pastedValueUnformatted) // allow pasting integer values as fractions in case of crypto
+                        ? Number(pastedValueUnformatted) / Math.pow(10, fractionDigits)
+                        : Number(pastedValueUnformatted);
                 const pastedValueFormatted = `${pastedValue.toLocaleString(locale, {
                     minimumFractionDigits: fractionDigits,
                 })}`;

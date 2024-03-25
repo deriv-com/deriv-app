@@ -89,8 +89,8 @@ describe('LoadModal', () => {
     it('should render load modal preview on file upload and on click of close should close the preview', () => {
         mock_store.ui.is_mobile = false;
         render(<LoadModal />, { wrapper });
-        mock_DBot_store?.load_modal.setActiveTabIndex(1);
 
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
         mock_DBot_store?.load_modal.setLoadedLocalFile(new File([''], 'test-name', { type: 'text/xml' }));
 
         const close_button = screen.getByTestId('dt_load-strategy__local-preview-close');
@@ -103,12 +103,12 @@ describe('LoadModal', () => {
 
     it('should upload file on the load modal preview when we drop a file on the dropzone', () => {
         mock_store.ui.is_mobile = false;
-        mock_DBot_store?.load_modal.setActiveTabIndex(1);
         render(<LoadModal />, { wrapper });
+
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
         mock_DBot_store?.load_modal.setLoadedLocalFile(null);
 
         const dropzoneArea = screen.getByTestId('dt__local-dropzone-area');
-
         fireEvent.drop(dropzoneArea, {
             dataTransfer: { files: [new File(['hello'], 'hello.xml', { type: 'text/xml' })] },
         });
@@ -118,9 +118,9 @@ describe('LoadModal', () => {
 
     it('should open and upload a file when we select a file from local on load modal preview', () => {
         mock_store.ui.is_mobile = false;
-        mock_DBot_store?.load_modal.setActiveTabIndex(1);
         render(<LoadModal />, { wrapper });
 
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
         mock_DBot_store?.load_modal.setLoadedLocalFile(null);
 
         //open file upload

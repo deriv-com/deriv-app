@@ -33,30 +33,14 @@ export const getWithdrawalLimitReachedDesc = ({
 }: TWithdrawalLimitReachedDescProps) => {
     let description = null;
 
-    if (poiNeedsVerification) {
-        if (poiStatus === 'none') {
-            description = generateDescription(
-                'Please upload your <0>proof of identity</0> to lift the limit to continue your withdrawal.',
-                [<WalletLink href='/account/proof-of-identity' key={0} variant='bold' />]
-            );
-        } else if (poiStatus !== 'verified' && poiStatus !== 'none') {
-            description = generateDescription(
-                'Please check your <0>proof of identity</0> document verification status to lift the limit to continue your withdrawal.',
-                [<WalletLink href='/account/proof-of-identity' key={0} variant='bold' />]
-            );
-        }
-    } else if (poaNeedsVerification) {
-        if (poaStatus === 'none') {
-            description = generateDescription(
-                'Please upload your <0>proof of address</0> to lift the limit to continue your withdrawal.',
-                [<WalletLink href='/account/proof-of-address' key={0} variant='bold' />]
-            );
-        } else if (poaStatus !== 'verified' && poaStatus !== 'none') {
-            description = generateDescription(
-                'Please check your <0>proof of address</0> document verification status to lift the limit to continue your withdrawal.',
-                [<WalletLink href='/account/proof-of-address' key={0} variant='bold' />]
-            );
-        }
+    if (poiNeedsVerification || poaNeedsVerification || poaStatus !== 'verified' || poiStatus !== 'verified') {
+        description = generateDescription(
+            'Please check your <0>proof of identity</0> and <1>address</1> document verification status to lift the limit to continue your withdrawal.',
+            [
+                <WalletLink href='/account/proof-of-identity' key={0} variant='bold' />,
+                <WalletLink href='/account/proof-of-address' key={1} variant='bold' />,
+            ]
+        );
     } else if (askFinancialRiskApproval) {
         description = generateDescription(
             'Please complete the <0>financial assessment form</0> to lift the limit to continue your withdrawal.',

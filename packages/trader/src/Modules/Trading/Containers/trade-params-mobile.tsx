@@ -227,34 +227,36 @@ const TradeParamsMobile = observer(
             is_vanilla,
             duration_unit: store_duration_unit,
         } = useTraderStore();
+
+        const resetToDefaultDuration = () => {
+            const default_store_duration = getDefaultDuration(store_duration_unit);
+            setSelectedDuration(store_duration_unit, default_store_duration);
+        };
+
         React.useEffect(() => {
             const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
             const default_duration_tab_idx = duration_units_list.findIndex(d => d.value === store_duration_unit);
-            const defaultDuration = getDefaultDuration(duration_unit);
+            const default_duration = getDefaultDuration(duration_unit);
 
             // reset to default value and timeframe when previously chosen timeframe doesnt exist in new trade type
-            if (toggled_duration_tab_idx === -1) {
-                const defaultDuration = getDefaultDuration(store_duration_unit);
-                setSelectedDuration(store_duration_unit, defaultDuration);
-            }
-            setSelectedDuration(duration_unit, has_duration_error ? defaultDuration : duration_value);
+            if (toggled_duration_tab_idx === -1) resetToDefaultDuration();
+
+            setSelectedDuration(duration_unit, has_duration_error ? default_duration : duration_value);
             setDurationTabIdx(toggled_duration_tab_idx === -1 ? default_duration_tab_idx : toggled_duration_tab_idx);
 
             return () => {
-                setSelectedDuration(duration_unit, has_duration_error ? defaultDuration : duration_value);
+                setSelectedDuration(duration_unit, has_duration_error ? default_duration : duration_value);
             };
         }, [duration_unit]);
 
         React.useEffect(() => {
-            const defaultDuration = getDefaultDuration(duration_unit);
+            const default_duration = getDefaultDuration(duration_unit);
             const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
 
-            if (toggled_duration_tab_idx === -1) {
-                const defaultDuration = getDefaultDuration(store_duration_unit);
-                setSelectedDuration(store_duration_unit, defaultDuration);
-            }
+            if (toggled_duration_tab_idx === -1) resetToDefaultDuration();
+
             return () => {
-                setSelectedDuration(duration_unit, has_duration_error ? defaultDuration : duration_value);
+                setSelectedDuration(duration_unit, has_duration_error ? default_duration : duration_value);
             };
         }, [duration_value]);
 
@@ -262,10 +264,10 @@ const TradeParamsMobile = observer(
             const default_duration_obj = duration_units_list.find(d => d.value === store_duration_unit);
             const toggled_duration_obj = duration_units_list.find(d => d.value === duration_unit);
             const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
-            const defaultDuration = getDefaultDuration(store_duration_unit);
+            const default_store_duration = getDefaultDuration(store_duration_unit);
             const default_timeframe =
                 default_duration_obj &&
-                (defaultDuration > 1
+                (default_store_duration > 1
                     ? localize(default_duration_obj.text)
                     : localize(default_duration_obj.text.slice(0, -1)));
             const toggled_duration_text =
@@ -275,7 +277,7 @@ const TradeParamsMobile = observer(
                     : localize(toggled_duration_obj.text.slice(0, -1)));
 
             return toggled_duration_tab_idx === -1
-                ? `${defaultDuration} ${default_timeframe}`
+                ? `${default_store_duration} ${default_timeframe}`
                 : `${duration_value} ${toggled_duration_text}`;
         };
 

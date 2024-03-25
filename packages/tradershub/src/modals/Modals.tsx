@@ -13,6 +13,8 @@ import { RealAccountCreation, Signup } from '@/flows';
 import { AccountSelector } from './AccountSelector';
 import { AddOrManageAccount } from './AddOrManageAccount';
 import { DummyComponentModal } from './DummyComponentModal';
+import { MT5ChangePasswordModal } from './MT5ChangePasswordModal';
+import { MT5SuccessModal } from './MT5SuccessModal';
 import { RegulationModal } from './RegulationModal';
 
 /**
@@ -35,7 +37,9 @@ const Modals = () => {
             <MT5AccountTypeModal />
             <RegulationModal />
             <CTraderSuccessModal />
+            <MT5SuccessModal />
             <MT5PasswordModal />
+            <MT5ChangePasswordModal />
             <Signup />
         </Fragment>
     );

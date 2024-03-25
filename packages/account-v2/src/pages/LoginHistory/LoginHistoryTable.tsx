@@ -31,11 +31,11 @@ export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryData) => {
                 renderHeader={header => <span>{header}</span>}
                 rowRender={data => (
                     <div className='grid grid-flow-col text-default'>
-                        <span>{data.action}</span>
                         <span>{data.date}</span>
+                        <span>{data.action}</span>
                         <span>{data.browser}</span>
-                        <span>{data.status}</span>
                         <span>{data.ip}</span>
+                        <span>{data.status}</span>
                     </div>
                 )}
             />

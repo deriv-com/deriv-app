@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { useQueryParams } from '@/hooks';
+import { useAccountStatus } from '@deriv/api-v2';
 import { Modal } from '@deriv-com/ui';
-import DxtradePasswordInput from './DxtradePasswordInput';
+import { CreatePassword, EnterPassword } from '../../screens';
 
 const DxtradePasswordModal = () => {
     const [password, setPassword] = useState('');
-    const { isModalOpen, closeModal } = useQueryParams();
+    const { data: accountStatus } = useAccountStatus();
+    const { closeModal, isModalOpen } = useQueryParams();
+
+    const isDxtradePasswordNotSet = accountStatus?.is_dxtrade_password_not_set;
+
+    const PasswordComponent = isDxtradePasswordNotSet ? CreatePassword : EnterPassword;
 
     return (
-        <Modal
-            className='p-24 lg:w-auto lg:h-auto bg-system-light-primary-background'
-            isOpen={isModalOpen('DxtradePasswordModal')}
-            onRequestClose={closeModal}
-        >
-            <DxtradePasswordInput password={password} setPassword={setPassword} />
+        <Modal ariaHideApp={false} isOpen={isModalOpen('DxtradePasswordModal')} onRequestClose={closeModal}>
+            <PasswordComponent onPasswordChange={e => setPassword(e.target.value)} password={password} />
         </Modal>
     );
 };

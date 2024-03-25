@@ -15,12 +15,13 @@ const MT5ChangePassword = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
 
-    const changePasswordAndCreateAccountHandler = async () => {
-        await tradingPasswordChange({
+    const changePasswordAndCreateAccountHandler = () => {
+        tradingPasswordChange({
             new_password: newPassword,
             old_password: currentPassword,
             platform: CFDPlatforms.MT5,
-        }).then(() => createMT5Account(newPassword));
+        });
+        createMT5Account(newPassword);
     };
 
     useEffect(() => {

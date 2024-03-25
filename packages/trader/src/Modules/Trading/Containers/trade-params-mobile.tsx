@@ -113,9 +113,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradePa
 
     const setTradeParamTabIdx = (trade_param_tab_idx: number) => dispatch({ trade_param_tab_idx });
 
-    const setDurationTabIdx = (duration_tab_idx?: number) => {
-        dispatch({ duration_tab_idx });
-    };
+    const setDurationTabIdx = (duration_tab_idx?: number) => dispatch({ duration_tab_idx });
 
     const setAmountTabIdx = (amount_tab_idx?: number) => dispatch({ amount_tab_idx });
 

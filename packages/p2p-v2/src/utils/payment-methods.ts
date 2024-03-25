@@ -24,6 +24,7 @@ export const sortPaymentMethods = (paymentMethodsList: THooks.AdvertiserPaymentM
 /**
  * Retrieves the payment method objects.
  * @param paymentMethodsList - The list of payment methods.
+ * @param field - The field to be used as the key.
  * @returns The payment method objects.
  * eg. { 'Bank Transfer': { method: 'bank_transfer', ... }, ... }
  */

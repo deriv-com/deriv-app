@@ -50,7 +50,7 @@ const PaymentMethodsFormFooter = ({
             </Button>
             {/* TODO: Remember to translate these */}
             <Button disabled={isSubmitting || !isValid || !isDirty} size='lg' textSize={isMobile ? 'lg' : 'sm'}>
-                {actionType === 'ADD' ? 'Add' : 'Save'}
+                {actionType === 'ADD' ? 'Add' : 'Save changes'}
             </Button>
         </div>
     );

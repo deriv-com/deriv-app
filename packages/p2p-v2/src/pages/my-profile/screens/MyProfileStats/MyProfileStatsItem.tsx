@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import { Text, useDevice } from '@deriv-com/ui';
 import './MyProfileStatsItem.scss';
 

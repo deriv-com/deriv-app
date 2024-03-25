@@ -1,8 +1,9 @@
 import React from 'react';
 import { THooks, TSelectedPaymentMethod } from 'types';
 import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
-import { useDevice, useQueryString } from '@/hooks';
+import { useQueryString } from '@/hooks';
 import { TFormState } from '@/reducers/types';
+import { useDevice } from '@deriv-com/ui';
 import AddNewButton from './AddNewButton';
 import { PaymentMethodsListContent } from './PaymentMethodsListContent';
 import './PaymentMethodsList.scss';

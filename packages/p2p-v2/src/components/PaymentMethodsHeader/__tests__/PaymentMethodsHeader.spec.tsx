@@ -2,6 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PaymentMethodsHeader from '../PaymentMethodsHeader';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: () => ({ isMobile: false }),
+}));
+
 describe('PaymentMethodsHeader', () => {
     it('should render the component correctly', () => {
         render(<PaymentMethodsHeader title='Payment Methods' />);

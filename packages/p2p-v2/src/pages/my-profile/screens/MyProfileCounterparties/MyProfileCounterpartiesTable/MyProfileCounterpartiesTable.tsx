@@ -14,16 +14,16 @@ type TMyProfileCounterpartiesTableProps = {
 
 type TMyProfileCounterpartiesTableRowRendererProps = {
     id?: string;
-    isBlocked: boolean;
+    is_blocked: boolean;
     name?: string;
 };
 
 const MyProfileCounterpartiesTableRowRenderer = ({
     id,
-    isBlocked,
+    is_blocked: isBlocked,
     name,
 }: TMyProfileCounterpartiesTableRowRendererProps) => (
-    <MyProfileCounterpartiesTableRow id={id!} isBlocked={isBlocked} nickname={name!} />
+    <MyProfileCounterpartiesTableRow id={id!} is_blocked={isBlocked} nickname={name!} />
 );
 
 //TODO: rewrite the implementation in accordance with @deriv-com/ui table component

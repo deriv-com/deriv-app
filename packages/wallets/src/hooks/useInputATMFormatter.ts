@@ -8,8 +8,10 @@ type TOptions = {
     maxDigits?: number;
 };
 
+// function-wrapped because of SonarCloud warnings. More context for why: https://stackoverflow.com/questions/1520800/why-does-a-regexp-with-global-flag-give-wrong-results
+const separatorRegex = () => /[,.]/g; // locale-agnostic
+
 const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initial?: number, options?: TOptions) => {
-    const separatorRegex = /[,.]/g; // locale-agnostic
     const input = inputRef.current;
 
     // helper values for pasting
@@ -39,7 +41,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             const indexBeforeCaret = formattedValue.length - 1 - caret;
 
             // if before a comma or period, prefer positioning the caret to the left of it
-            const newCaretPosition = separatorRegex.test(formattedValue[indexBeforeCaret])
+            const newCaretPosition = separatorRegex().test(formattedValue[indexBeforeCaret])
                 ? indexBeforeCaret
                 : indexBeforeCaret + 1;
 
@@ -53,8 +55,8 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             if (!input) return true;
 
             // drop the changes if the number of digits is not decreasing and it has exceeded maxDigits
-            const inputDigitsCount = input.value.replace(separatorRegex, '').replace(/^0+/, '').length;
-            const changeDigitsCount = newValue.replace(separatorRegex, '').replace(/^0+/, '').length ?? 0;
+            const inputDigitsCount = input.value.replace(separatorRegex(), '').replace(/^0+/, '').length;
+            const changeDigitsCount = newValue.replace(separatorRegex(), '').replace(/^0+/, '').length ?? 0;
             return maxDigits && changeDigitsCount >= inputDigitsCount && changeDigitsCount > maxDigits;
         },
         [input, maxDigits]
@@ -70,7 +72,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
 
             const hasNoChangeInDigits =
                 input.value.length + 1 === prevFormattedValue.length &&
-                input.value.replaceAll(separatorRegex, '') === prevFormattedValue.replaceAll(separatorRegex, '');
+                input.value.replaceAll(separatorRegex(), '') === prevFormattedValue.replaceAll(separatorRegex(), '');
             if (hasNoChangeInDigits) return;
 
             const unformatted = unFormatLocaleString(newValue, locale);
@@ -124,7 +126,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
 
                 const pastedValueUnformatted = unFormatLocaleString(clipboardContent.current, locale);
                 const pastedValue =
-                    fractionDigits > 2 && !separatorRegex.test(pastedValueUnformatted) // allow pasting integer values as fractions in case of crypto
+                    fractionDigits > 2 && !separatorRegex().test(pastedValueUnformatted) // allow pasting integer values as fractions in case of crypto
                         ? Number(pastedValueUnformatted) / Math.pow(10, fractionDigits)
                         : Number(pastedValueUnformatted);
                 const pastedValueFormatted = `${pastedValue.toLocaleString(locale, {

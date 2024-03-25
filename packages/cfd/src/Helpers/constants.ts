@@ -158,7 +158,7 @@ const getDesktopDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: T
             icon: 'IcRebrandingMt5Logo',
             text: 'MetaTrader 5 web',
             button_text: 'Open',
-            href: WEBTRADER_URL,
+            href: WEBTRADER_URL({ mt5_trade_account }),
         },
         {
             icon: 'IcWindowsLogo',

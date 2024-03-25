@@ -86,8 +86,9 @@ const BotBuilder = observer(() => {
         if (e.type === 'delete' && !is_reset_button_clicked && !is_import_button_click) {
             botNotification(notification_message.block_delete, {
                 label: localize('Undo'),
-                onClick: () => {
+                onClick: closeToast => {
                     window.Blockly.derivWorkspace.undo();
+                    closeToast?.();
                 },
             });
         }

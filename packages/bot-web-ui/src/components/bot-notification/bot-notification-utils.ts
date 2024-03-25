@@ -4,11 +4,12 @@ import { localize } from '@deriv/translations';
 export type TNotificationContent = {
     message: string;
     primary_action?: TAction;
+    closeToast?: () => void;
 };
 
 export type TAction = {
     label: string;
-    onClick: () => void;
+    onClick: (closeToast?: () => void) => void;
 };
 
 export type TNotificationStyle = {

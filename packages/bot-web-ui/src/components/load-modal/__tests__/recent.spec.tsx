@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Recent from '../recent';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
@@ -60,9 +61,8 @@ describe('Recent component of load modal', () => {
         const explanation_list = screen.getByTestId('dt-load-strategy__recent__empty-expand');
         explanation_list.focus();
 
-        fireEvent.keyDown(explanation_list, {
-            key: 'Enter',
-        });
+        userEvent.keyboard('[Enter]');
+
         screen.getByTestId('dt-empty-explanation-list--open');
     });
 });

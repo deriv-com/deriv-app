@@ -96,7 +96,7 @@ describe('LoadModal', () => {
         const close_button = screen.getByTestId('dt_load-strategy__local-preview-close');
         expect(close_button).toBeInTheDocument();
 
-        fireEvent.click(close_button);
+        userEvent.click(close_button);
 
         expect(close_button).not.toBeInTheDocument();
     });
@@ -130,7 +130,7 @@ describe('LoadModal', () => {
         //simulate behaviour of file upload
         const fileInput = screen.getByTestId('dt-load-strategy-file-input');
         const file = new File(['file content'], 'file.xml', { type: 'application/xml' });
-        fireEvent.change(fileInput, { target: { files: [file] } });
+        userEvent.upload(fileInput, file);
 
         zoom_icons.forEach(icon => expect(screen.getByTestId(icon)).toBeInTheDocument());
     });

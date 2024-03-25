@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { CFDSection, OptionsAndMultipliersSection } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 
-const TradersHubContent = () => {
+const TradersHubDesktopContent = () => {
     const { isEU } = useRegulationFlags();
 
     return (
@@ -14,4 +14,4 @@ const TradersHubContent = () => {
     );
 };
 
-export default TradersHubContent;
+export default TradersHubDesktopContent;

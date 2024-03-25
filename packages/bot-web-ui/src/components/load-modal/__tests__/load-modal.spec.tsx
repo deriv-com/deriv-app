@@ -29,6 +29,8 @@ const recent_strategies = [
     { ...strategy, name: 'oscar_grind', id: '3' },
 ];
 
+const zoom_icons = ['zoom-in', 'zoom-out'];
+
 describe('LoadModal', () => {
     let modal_root_el: HTMLElement,
         wrapper: ({ children }: { children: JSX.Element }) => JSX.Element,
@@ -100,22 +102,20 @@ describe('LoadModal', () => {
         mock_DBot_store?.load_modal.setActiveTabIndex(1);
         render(<LoadModal />, { wrapper });
         mock_DBot_store?.load_modal.setLoadedLocalFile(null);
-        const dropEvent = {
-            preventDefault: jest.fn(),
-            dataTransfer: {
-                files: [new File([''], 'test-name', { type: 'text/xml' })],
-            },
-        };
 
         const dropzoneArea = screen.getByTestId('dt__local-dropzone-area');
-        expect(dropzoneArea).toBeInTheDocument();
-        fireEvent.drop(dropzoneArea, dropEvent);
+
+        fireEvent.drop(dropzoneArea, {
+            dataTransfer: { files: [new File(['hello'], 'hello.xml', { type: 'text/xml' })] },
+        });
+        zoom_icons.forEach(icon => expect(screen.getByTestId(icon)).toBeInTheDocument());
     });
 
-    it('should open and upload a file on load preview', () => {
+    it('should open and upload a file from local on load preview', () => {
         mock_store.ui.is_mobile = false;
         mock_DBot_store?.load_modal.setActiveTabIndex(1);
         render(<LoadModal />, { wrapper });
+        mock_DBot_store?.load_modal.setLoadedLocalFile(null);
         //open file upload
         const get_file_input = screen.getByTestId('dt_load-strategy__local-upload');
         userEvent.click(get_file_input);
@@ -125,10 +125,7 @@ describe('LoadModal', () => {
         const file = new File(['file content'], 'file.xml', { type: 'application/xml' });
         fireEvent.change(fileInput, { target: { files: [file] } });
 
-        const zoom_in_icon = screen.getByTestId('zoom-in');
-        const zoom_out_icon = screen.getByTestId('zoom-out');
-        expect(zoom_in_icon).toBeInTheDocument();
-        expect(zoom_out_icon).toBeInTheDocument();
+        zoom_icons.forEach(icon => expect(screen.getByTestId(icon)).toBeInTheDocument());
     });
 
     // [Important] Close Modal should be at the end

@@ -1,9 +1,9 @@
 import React from 'react';
 import { THooks, TSelectedPaymentMethod } from 'types';
-import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
+import { FullPageMobileWrapper } from '@/components';
 import { useQueryString } from '@/hooks';
 import { TFormState } from '@/reducers/types';
-import { useDevice } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import AddNewButton from './AddNewButton';
 import { PaymentMethodsListContent } from './PaymentMethodsListContent';
 import './PaymentMethodsList.scss';
@@ -45,7 +45,11 @@ const PaymentMethodsList = ({
                 }
                 renderFooter={() => <AddNewButton isMobile={isMobile} onAdd={onAdd} />}
                 // TODO: Remember to translate the title
-                renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
+                renderHeader={() => (
+                    <Text size='lg' weight='bold'>
+                        Payment methods
+                    </Text>
+                )}
             >
                 {!!p2pAdvertiserPaymentMethods?.length && (
                     <PaymentMethodsListContent

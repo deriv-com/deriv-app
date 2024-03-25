@@ -1,5 +1,5 @@
 import React from 'react';
-import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
+import { FullPageMobileWrapper } from '@/components';
 import { useQueryString } from '@/hooks';
 import { DerivLightIcPaymentMethodsWalletIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
@@ -28,7 +28,11 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
                         tab: 'default',
                     });
                 }}
-                renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
+                renderHeader={() => (
+                    <Text size='lg' weight='bold'>
+                        Payment Methods
+                    </Text>
+                )}
             >
                 <div className='p2p-v2-payment-methods-empty'>
                     <DerivLightIcPaymentMethodsWalletIcon height='16rem' />

@@ -153,7 +153,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                                 });
                                             }
                                         }}
-                                        size='xs'
+                                        size='sm'
                                         textSize='xs'
                                         variant='ghost'
                                     >

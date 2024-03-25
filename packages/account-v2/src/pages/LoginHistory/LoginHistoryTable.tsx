@@ -26,7 +26,8 @@ export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryData) => {
                 columns={columns}
                 data={useFormattedLoginHistoryData(loginHistory) ?? []}
                 isFetching={false}
-                // loadMoreFunction={() => {}}
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                loadMoreFunction={() => {}}
                 renderHeader={header => <span>{header}</span>}
                 rowRender={data => (
                     <div className='grid grid-flow-col text-default'>

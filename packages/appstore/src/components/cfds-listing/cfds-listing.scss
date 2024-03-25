@@ -450,10 +450,16 @@
 
             .dc-btn:hover {
                 text-decoration: underline;
+                text-decoration-color: var(--text-general);
+                -webkit-text-decoration: underline var(--text-general); // these are required for Safari ! (stackoverflow https://bit.ly/3UTe9C7
+                -webkit-text-decoration-color: var(--text-general);
             }
         }
         &-action {
-            text-decoration: underline;
+            text-decoration: underline var(--text-general);
+            text-decoration-color: var(--text-general);
+            -webkit-text-decoration: underline var(--text-general); // these are required for Safari ! (stackoverflow https://bit.ly/3UTe9C7
+            -webkit-text-decoration-color: var(--text-general);
             padding-right: 0;
             height: 2.1rem;
         }
@@ -590,8 +596,7 @@
                 &-container {
                     display: flex;
                     flex-direction: column;
-                    margin-top: 4rem;
-                    margin-bottom: 6rem;
+                    margin: 4rem 1.6rem 6rem;
                     @include mobile {
                         margin-top: 5rem;
                         margin-bottom: 0;
@@ -603,7 +608,8 @@
                 }
             }
 
-            &--windows {
+            &--windows,
+            &--macos {
                 display: flex;
                 gap: 1.6rem;
                 align-items: center;

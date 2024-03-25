@@ -5,9 +5,9 @@ import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderstackDashboardDeleteYourBot } from '../analytics/rudderstack-dashboard';
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
@@ -54,20 +54,10 @@ const DeleteDialog = observer(() => {
             (strategy_from_workspace: TStrategy) => strategy_from_workspace.id !== strategy_id
         );
         setDashboardStrategies(updated_workspaces);
+        // TODO: Need to move this to skeleton
         localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(updated_workspaces)));
         await resetStrategiesAfterDelete(strategy_id, updated_workspaces);
         onToggleDeleteDialog(false);
-    };
-
-    const onHandleChange = (type: string, param: boolean) => {
-        if (type === 'confirm') {
-            removeBotStrategy(selected_strategy_id);
-            setOpenSettings('delete', true);
-            rudderstackDashboardDeleteYourBot({ delete_popup_respond: 'yes' });
-        } else {
-            rudderstackDashboardDeleteYourBot({ delete_popup_respond: 'no' });
-        }
-        onToggleDeleteDialog(param);
     };
 
     return (
@@ -77,12 +67,13 @@ const DeleteDialog = observer(() => {
                 is_visible={is_delete_modal_open}
                 confirm_button_text={localize('Yes, delete')}
                 onConfirm={() => {
-                    onHandleChange('confirm', false);
-                    setOpenSettings('delete', true);
+                    removeBotStrategy(selected_strategy_id);
+                    onToggleDeleteDialog(false);
+                    setOpenSettings(NOTIFICATION_TYPE.BOT_DELETE);
                 }}
                 cancel_button_text={localize('No')}
                 onCancel={() => {
-                    onHandleChange('cancel', false);
+                    onToggleDeleteDialog(false);
                 }}
                 is_mobile_full_width={false}
                 className={'dc-dialog__delete-strategy--delete'}

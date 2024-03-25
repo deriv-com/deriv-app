@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, SelectNative } from '@deriv/components';
+import { TListItem } from '@deriv/components/src/components/dropdown/utility';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import SearchInput from './common/search-input';
-import { TContent } from './constants';
+import { TTutorialsTabItem } from './tutorials';
 
 type TTutorialsTabMobile = {
-    tutorial_tabs: TContent;
+    tutorial_tabs: TTutorialsTabItem[];
     prev_active_tutorials: number;
 };
 
@@ -17,19 +18,22 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
         dashboard;
 
     const search = faq_search_value?.toLowerCase();
-    const initialSelectedTab = { label: '', content: '' };
+    const initialSelectedTab: TTutorialsTabItem = { label: '', content: undefined };
     const [selectedTab, setSelectedTab] = React.useState(initialSelectedTab);
     const [showSearchBar, setShowSearchBar] = React.useState(false);
 
     React.useEffect(() => {
         if (search) setShowSearchBar(true);
         setSelectedTab(tutorial_tabs[active_tab_tutorials] || {});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tutorial_tabs]);
 
     const onFocusSearch = () => setActiveTabTutorial(3);
 
     const onChangeHandle = React.useCallback(
-        ({ target }) => setActiveTabTutorial(tutorial_tabs.findIndex(i => i.label === target.value)),
+        ({ target }: React.ChangeEvent<HTMLSelectElement>) =>
+            setActiveTabTutorial(tutorial_tabs.findIndex(i => i.label === target.value)),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [active_tab_tutorials]
     );
 
@@ -53,7 +57,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
     };
 
     React.useEffect(() => {
-        const selectElement = document.getElementById('dt_components_select-native_select-tag');
+        const selectElement = document.getElementById('dt_components_select-native_select-tag') as HTMLSelectElement;
 
         if (selectElement) {
             selectElement.removeChild(selectElement?.options[3]);
@@ -95,11 +99,13 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
                 <SelectNative
                     data_testid='id-tutorials-select'
                     className='dc-tabs__wrapper__group__search-input--active'
-                    list_items={tutorial_tabs.map(({ label }, idx) => ({
-                        id: idx,
-                        value: label,
-                        text: label,
-                    }))}
+                    list_items={
+                        tutorial_tabs.map(({ label }, idx) => ({
+                            id: idx,
+                            value: label,
+                            text: label,
+                        })) as TListItem[]
+                    }
                     value={selectedTab.label}
                     label=''
                     should_show_empty_option={false}

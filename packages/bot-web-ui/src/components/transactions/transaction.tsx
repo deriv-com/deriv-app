@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import ContentLoader from 'react-content-loader';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ProposalOpenContract } from '@deriv/api-types';
 import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';
@@ -166,7 +165,7 @@ const Transaction = observer(({ contract }: TTransaction) => {
             message={contract && <PopoverContent contract={contract} />}
         >
             <div
-                data-testid='dt-transactions-item'
+                data-testid='dt_transactions_item'
                 className='transactions__item'
                 onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
             >

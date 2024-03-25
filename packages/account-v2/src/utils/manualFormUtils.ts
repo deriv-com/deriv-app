@@ -1,4 +1,3 @@
-import { FormikValues } from 'formik';
 import * as Yup from 'yup';
 import {
     MANUAL_DOCUMENT_SELFIE,
@@ -26,15 +25,15 @@ export const getManualFormValidationSchema = (
     const uploadConfig = getUploadConfig(selectedDocument);
 
     const documentExpiryValidation = Yup.object({
-        document_expiry: Yup.string().required(fieldsConfig.documentExpiry.errorMessage),
-    }).default(() => ({ document_expiry: '' }));
+        documentExpiry: Yup.string().required(fieldsConfig.documentExpiry.errorMessage).default(''),
+    });
 
     const documentUploadValidation = Object.fromEntries(
-        uploadConfig.map(item => [item.pageType, Yup.string().required(item.error).default(null)])
+        uploadConfig.map(item => [item.pageType, Yup.mixed<File | null>().required(item.error).default(null)])
     );
 
     const baseSchema = Yup.object({
-        document_number: Yup.string().required(fieldsConfig.documentNumber.errorMessage),
+        documentNumber: Yup.string().required(fieldsConfig.documentNumber.errorMessage).default(''),
         ...documentUploadValidation,
     });
 
@@ -53,12 +52,4 @@ export const getSelfieValidationSchema = () => {
             })
             .required(),
     }).default(() => ({ [MANUAL_DOCUMENT_SELFIE]: null }));
-};
-
-export const setInitialValues = (fields: string[]) => {
-    const values: FormikValues = {};
-    fields.forEach((field: string) => {
-        values[field] = '';
-    });
-    return values;
 };

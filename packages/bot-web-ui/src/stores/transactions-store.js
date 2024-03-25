@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { log_types } from '@deriv/bot-skeleton';
+import { LogTypes } from '@deriv/bot-skeleton';
 import { formatDate, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
@@ -49,6 +49,38 @@ export default class TransactionsStore {
                 element => element.type === transaction_elements.CONTRACT
             ) ?? []
         );
+    }
+
+    get statistics() {
+        let total_runs = 0;
+        const statistics = this.transactions.reduce(
+            (stats, { data: trx }) => {
+                if (trx.is_completed) {
+                    if (trx.profit > 0) {
+                        stats.won_contracts += 1;
+                        stats.total_payout += trx.payout;
+                    } else {
+                        stats.lost_contracts += 1;
+                    }
+
+                    stats.total_profit += trx.profit;
+                    stats.total_stake += trx.buy_price;
+                    total_runs += 1;
+                }
+
+                return stats;
+            },
+            {
+                lost_contracts: 0,
+                number_of_runs: 0,
+                total_profit: 0,
+                total_payout: 0,
+                total_stake: 0,
+                won_contracts: 0,
+            }
+        );
+        statistics.number_of_runs = total_runs;
+        return statistics;
     }
 
     toggleTransactionDetailsModal(is_open) {
@@ -215,7 +247,7 @@ export default class TransactionsStore {
                 this.recovered_completed_transactions.push(contract.contract_id);
 
                 journal.onLogSuccess({
-                    log_type: profit > 0 ? log_types.PROFIT : log_types.LOST,
+                    log_type: profit > 0 ? LogTypes.PROFIT : LogTypes.LOST,
                     extra: { currency, profit },
                 });
             }

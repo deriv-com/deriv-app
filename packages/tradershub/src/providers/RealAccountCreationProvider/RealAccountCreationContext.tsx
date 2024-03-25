@@ -41,12 +41,16 @@ export const RealAccountCreationContext = createContext<TRealAccountCreationCont
     setIsWizardOpen: /* noop */ () => {
         /* noop */
     },
+    setTotalSteps: /* noop */ () => {
+        /* noop */
+    },
     state: {
         currency: '',
     },
     reset: /* noop */ () => {
         /* noop */
     },
+    totalSteps: 0,
 });
 
 export const useRealAccountCreationContext = () => {
@@ -67,7 +71,8 @@ export const useRealAccountCreationContext = () => {
 export const RealAccountCreationProvider = ({ children }: TRealAccountCreationProvider) => {
     const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-    const [currentStep, helpers] = useStep(4);
+    const [totalSteps, setTotalSteps] = useState(0);
+    const [currentStep, helpers] = useStep(totalSteps);
     const [state, dispatch] = useReducer(valuesReducer, {
         currency: '',
     });
@@ -92,8 +97,10 @@ export const RealAccountCreationProvider = ({ children }: TRealAccountCreationPr
             setIsWizardOpen,
             state,
             reset,
+            setTotalSteps,
+            totalSteps,
         }),
-        [currentStep, helpers, isSuccessModalOpen, isWizardOpen, reset, state]
+        [currentStep, helpers, isSuccessModalOpen, isWizardOpen, reset, state, totalSteps]
     );
 
     return <RealAccountCreationContext.Provider value={contextState}>{children}</RealAccountCreationContext.Provider>;

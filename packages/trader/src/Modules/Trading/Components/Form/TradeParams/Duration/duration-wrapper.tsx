@@ -29,6 +29,7 @@ const DurationWrapper = observer(({ is_minimized }: TDurationWrapper) => {
         expiry_date,
         expiry_epoch,
         expiry_time,
+        sendTradeParamsAnalytics,
         start_date,
         onChange,
         onChangeMultiple,
@@ -54,6 +55,7 @@ const DurationWrapper = observer(({ is_minimized }: TDurationWrapper) => {
         onChange,
         onChangeMultiple,
         onChangeUiStore,
+        sendTradeParamsAnalytics,
         simple_duration_unit,
         start_date,
     };

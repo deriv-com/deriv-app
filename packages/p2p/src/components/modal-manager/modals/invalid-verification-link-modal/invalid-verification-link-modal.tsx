@@ -12,10 +12,18 @@ type TInvalidVerificationLinkModalProps = {
 const InvalidVerificationLinkModal = ({ error_message, order_id }: TInvalidVerificationLinkModalProps) => {
     const { order_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
-    const { confirmOrderRequest } = order_store;
+    const { confirmOrderRequest, setIsVerifyingEmail } = order_store;
 
     return (
-        <Modal has_close_icon is_open={is_modal_open} toggleModal={hideModal} width='440px'>
+        <Modal
+            has_close_icon
+            is_open={is_modal_open}
+            toggleModal={() => {
+                hideModal();
+                setIsVerifyingEmail(false);
+            }}
+            width='440px'
+        >
             <Modal.Body className='invalid-verification-link-modal'>
                 <Icon icon='IcEmailVerificationLinkInvalid' size='128' />
                 <Text className='invalid-verification-link-modal__text' color='prominent' weight='bold'>
@@ -32,6 +40,7 @@ const InvalidVerificationLinkModal = ({ error_message, order_id }: TInvalidVerif
                     onClick={() => {
                         hideModal();
                         confirmOrderRequest(order_id);
+                        setIsVerifyingEmail(false);
                     }}
                 >
                     <Localize i18n_default_text='Get new link' />

@@ -1,7 +1,7 @@
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
-import { AccountClosure, ConnectedApps, LoginHistoryFinal } from '../pages';
+import { AccountClosure, ConnectedApps, LoginHistory } from '../pages';
 import { DummyRoute } from './components/DummyRoute';
 
 export const routes = [
@@ -61,7 +61,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.AccountLimits,
     },
     {
-        routeComponent: LoginHistoryFinal,
+        routeComponent: LoginHistory,
         routeName: 'Login history',
         routePath: ACCOUNT_V2_ROUTES.LoginHistory,
     },

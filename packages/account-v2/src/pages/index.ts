@@ -1,4 +1,4 @@
 export { AccountClosure } from './AccountClosure/AccountClosure';
 export { ConnectedApps } from './ConnectedApps/ConnectedApps';
-export { LoginHistoryFinal } from './LoginHistory/LoginHistoryFinal';
+export { LoginHistory } from './LoginHistory/LoginHistory';
 export { ManualUploadContainer } from './ManualUploadContainer/ManualUploadContainer';

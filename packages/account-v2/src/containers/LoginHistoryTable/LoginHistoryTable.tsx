@@ -4,7 +4,7 @@ import { Table } from '@deriv-com/ui';
 import { useFormattedLoginHistoryData } from '../../hooks/useFormattedLoginHistoryData';
 
 type TLoginHistoryData = {
-    loginHistory: LoginHistory | undefined;
+    loginHistory: LoginHistory;
 };
 
 const headers = {

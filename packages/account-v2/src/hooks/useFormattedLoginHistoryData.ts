@@ -26,13 +26,20 @@ export const useFormattedLoginHistoryData = loginhistorydata => {
 
         const environment = loginhistorydata[i].environment;
         const environemntSplit = environment.split(' ');
+        const mobileAppUA = environment.match(
+            /(?<date>[0-9a-zA-Z-]+\s[0-9:]+GMT)[\s](IP=)(?<ip>[\w:.]+)\sIP_COUNTRY=(?<country>([a-zA-Z]{2}))\s(User_AGENT=)(\w.*)(?<name>iPhone|Android)([\W\w]+)\s(?<app>Deriv P2P|Deriv GO)(?<version>[\w\W]+)\s(LANG=)([\w]{2})/
+        );
+        const userAgentString = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
 
         const dates = environemntSplit[0];
-        const time = environemntSplit[1].replace('GMT', ' GMT');
-        const parser = new UAParser();
-        const userAgent = parser.getBrowser();
+        const time = environemntSplit[1].replace('GMT', '  GMT');
 
-        data[i].date = `${dayjs(dates, 'DD-MMM-YY').format('YYYY-MM-DD')} and ${time}`;
+        const parser = new UAParser(userAgentString);
+        const parserAgent = parser.getBrowser();
+
+        const userAgent = mobileAppUA ? mobileAppUA.groups : parserAgent;
+
+        data[i].date = `${dayjs(dates, 'DD-MMM-YY').format('YYYY-MM-DD')}  ${time}`;
 
         data[i].action = loginhistorydata[i].action === 'login' ? 'Login' : 'Logout';
 

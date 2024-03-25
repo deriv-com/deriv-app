@@ -85,7 +85,6 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradePa
     const { currency } = client;
     const { amount, form_components, duration, duration_unit, duration_units_list } = useTraderStore();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const initial_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
     const [state, dispatch] = React.useReducer(reducer, {
         trade_param_tab_idx: tab_index,

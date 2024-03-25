@@ -54,7 +54,7 @@ import {
 } from '@deriv/quill-icons';
 import type { TIconTypes } from '../../../types';
 
-type TPaymentMethodIcons = Record<string, { dark: TIconTypes.TIcon; light: TIconTypes.TIcon; variants: string[] }>;
+type TPaymentMethodIcons = Record<string, { dark: TIconTypes.TIcon; light: TIconTypes.TIcon }>;
 
 export const paymentMethodIcons: TPaymentMethodIcons = {
     Alipay: {
@@ -66,7 +66,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodAlipayBrandIcon,
             key: 'PaymentMethodAlipayBrandIcon',
         },
-        variants: ['alipay'],
     },
     Bank: {
         dark: {
@@ -77,18 +76,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodInstantBankTransferBlackIcon,
             key: 'PaymentMethodInstantBankTransferBlackIcon',
         },
-        variants: [
-            'bank',
-            'bankdeposit',
-            'banks',
-            'banktransfer',
-            'bankwire',
-            'bankwiretransfer',
-            'localbankwire',
-            'localbank',
-            'localbanks',
-            'localbanktransfer',
-        ],
     },
     Bankbri: {
         dark: {
@@ -99,7 +86,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodBankRakyatIndonesiaBriBrandIcon,
             key: 'PaymentMethodBankRakyatIndonesiaBriBrandIcon',
         },
-        variants: ['bri', 'bankbri'],
     },
     Bca: {
         dark: {
@@ -110,7 +96,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodBankCentralAsiaBcaBrandIcon,
             key: 'PaymentMethodBankCentralAsiaBcaBrandIcon',
         },
-        variants: ['bca', 'grupbca'],
     },
     Bch: {
         dark: {
@@ -121,7 +106,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodBitcoinCashBrandIcon,
             key: 'PaymentMethodBitcoinCashBrandIcon',
         },
-        variants: ['bch'],
     },
     Bitcoin: {
         dark: {
@@ -132,7 +116,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodBitcoinBrandIcon,
             key: 'PaymentMethodBitcoinBrandIcon',
         },
-        variants: ['bitcoin', 'btc'],
     },
     Bni: {
         dark: {
@@ -143,7 +126,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodBankNegaraIndonesiaBniBrandIcon,
             key: 'PaymentMethodBankNegaraIndonesiaBniBrandIcon',
         },
-        variants: ['bni'],
     },
     Card: {
         dark: {
@@ -154,7 +136,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodCreditDebitBrandIcon,
             key: 'PaymentMethodCreditDebitBrandIcon',
         },
-        variants: ['card', 'cards', 'visa', 'mastercard'],
     },
     Cimbniaga: {
         dark: {
@@ -165,7 +146,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodCimbniagaBrandIcon,
             key: 'PaymentMethodCimbniagaBrandIcon',
         },
-        variants: ['cimbniaga'],
     },
     Crypto: {
         dark: {
@@ -176,7 +156,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodCryptosBrandIcon,
             key: 'PaymentMethodCryptosBrandIcon',
         },
-        variants: ['crypto', 'cryptos', 'cryptocurrencies', 'cryptocurrency', 'weacceptcrypto'],
     },
     Dai: {
         dark: {
@@ -187,7 +166,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodDaiBrandIcon,
             key: 'PaymentMethodDaiBrandIcon',
         },
-        variants: ['dai'],
     },
     Diamondbank: {
         dark: {
@@ -198,7 +176,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodDiamondBankBrandIcon,
             key: 'PaymentMethodDiamondBankBrandIcon',
         },
-        variants: ['diamondbank'],
     },
     Eth: {
         dark: {
@@ -209,7 +186,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodEthereumBrandIcon,
             key: 'PaymentMethodEthereumBrandIcon',
         },
-        variants: ['eth', 'ethd', 'ethereum'],
     },
     Ewallet: {
         dark: {
@@ -220,7 +196,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodEWalletBrandIcon,
             key: 'PaymentMethodEWalletBrandIcon',
         },
-        variants: ['ewallet', 'ewallets', 'ewalletpayment', 'skrill'],
     },
     Firstbank: {
         dark: {
@@ -231,7 +206,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodFirstBankBrandIcon,
             key: 'PaymentMethodFirstBankBrandIcon',
         },
-        variants: ['firstbank'],
     },
     Gtbank: {
         dark: {
@@ -242,7 +216,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodGuaranteeTrustBankGtcoBrandIcon,
             key: 'PaymentMethodGuaranteeTrustBankGtcoBrandIcon',
         },
-        variants: ['gtbank'],
     },
     Icbc: {
         dark: {
@@ -253,7 +226,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodIcbcBankBrandIcon,
             key: 'PaymentMethodIcbcBankBrandIcon',
         },
-        variants: ['icbc'],
     },
     Libertyreserve: {
         dark: {
@@ -264,7 +236,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodLibertyReserveBrandIcon,
             key: 'PaymentMethodLibertyReserveBrandIcon',
         },
-        variants: ['libertyreserve'],
     },
     LiteCoin: {
         dark: {
@@ -275,7 +246,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodLitecoinBrandIcon,
             key: 'PaymentMethodLitecoinBrandIcon',
         },
-        variants: ['ltc', 'litecoin'],
     },
     Mandiri: {
         dark: {
@@ -286,7 +256,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodMandiriBrandIcon,
             key: 'PaymentMethodMandiriBrandIcon',
         },
-        variants: ['mandiri'],
     },
     Mandirisyariah: {
         dark: {
@@ -297,7 +266,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodMandiriSyariahBrandIcon,
             key: 'PaymentMethodMandiriSyariahBrandIcon',
         },
-        variants: ['mandirisyariah'],
     },
     Moneygram: {
         dark: {
@@ -308,7 +276,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodMoneygramBrandIcon,
             key: 'PaymentMethodMoneygramBrandIcon',
         },
-        variants: ['moneygram'],
     },
     Paypal: {
         dark: {
@@ -319,7 +286,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodPaypalBrandIcon,
             key: 'PaymentMethodPaypalBrandIcon',
         },
-        variants: ['paypal'],
     },
     PerfectMoney: {
         dark: {
@@ -330,7 +296,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodPerfectMoneyBrandIcon,
             key: 'PaymentMethodPerfectMoneyBrandIcon',
         },
-        variants: ['perfectmoneyandwebmoney', 'perfectmoney'],
     },
     Permatabank: {
         dark: {
@@ -341,7 +306,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodPermataBankBrandIcon,
             key: 'PaymentMethodPermataBankBrandIcon',
         },
-        variants: ['permatabank'],
     },
     Tether: {
         dark: {
@@ -352,7 +316,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodTetherUsdtBrandIcon,
             key: 'PaymentMethodTetherUsdtBrandIcon',
         },
-        variants: ['tether'],
     },
     Verve: {
         dark: {
@@ -363,7 +326,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodVerveBrandIcon,
             key: 'PaymentMethodVerveBrandIcon',
         },
-        variants: ['verve'],
     },
     WebMoney: {
         dark: {
@@ -374,7 +336,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodWebmoneyBrandIcon,
             key: 'PaymentMethodWebmoneyBrandIcon',
         },
-        variants: ['perfectmoneyandwebmoney', 'webmoney'],
     },
     Wechatpay: {
         dark: {
@@ -385,7 +346,6 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodWechatPayBrandIcon,
             key: 'PaymentMethodWechatPayBrandIcon',
         },
-        variants: ['wechatpay'],
     },
     Zenithbank: {
         dark: {
@@ -396,6 +356,5 @@ export const paymentMethodIcons: TPaymentMethodIcons = {
             icon: PaymentMethodZenithBankBrandIcon,
             key: 'PaymentMethodZenithBankBrandIcon',
         },
-        variants: ['zenithbank'],
     },
 };

@@ -16,6 +16,7 @@ const useMT5AccountHandler = () => {
         error: isCreateMT5AccountError,
         isLoading: createMT5AccountLoading,
         isSuccess: isCreateMT5AccountSuccess,
+        status: createMT5AccountStatus,
         mutate: createMT5Account,
     } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutateAsync: tradingPasswordChange } =
@@ -23,28 +24,32 @@ const useMT5AccountHandler = () => {
     const { data: activeTrading } = useActiveTradingAccount();
     const { data: settings } = useSettings();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
-    const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
-
     const { cfdState } = useCFDContext();
+
     const { marketType: marketTypeState, selectedJurisdiction } = cfdState;
     const marketType = marketTypeState ?? MarketType.ALL;
+    const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
 
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
     const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;
+
+    const doesNotMeetPasswordPolicy =
+        isCreateMT5AccountError?.error?.code === 'InvalidTradingPlatformPasswordFormat' ||
+        isCreateMT5AccountError?.error?.code === 'IncorrectMT5PasswordFormat';
+
+    // in order to create account, we need to set a password through trading_platform_password_change endpoint first
+    // then only mt5_create_account can be called, otherwise it will response an error for password required
     const handleSubmit = (password: string) => {
-        // in order to create account, we need to set a password through trading_platform_password_change endpoint first
-        // then only mt5_create_account can be called, otherwise it will response an error for password required
         if (isMT5PasswordNotSet) {
-            return tradingPasswordChange({
+            tradingPasswordChange({
                 new_password: password,
                 platform: CFDPlatforms.MT5,
-            }).then(() => {
-                return createPassword(password);
             });
         }
 
         createPassword(password);
     };
+
     const createPassword = (password: string) =>
         createMT5Account({
             payload: {
@@ -78,10 +83,12 @@ const useMT5AccountHandler = () => {
 
     return {
         createMT5AccountLoading,
+        doesNotMeetPasswordPolicy,
         handleSubmit,
         isCreateMT5AccountError,
         isCreateMT5AccountSuccess,
         status,
+        createMT5AccountStatus,
         tradingPlatformPasswordChangeLoading,
     };
 };

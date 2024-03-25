@@ -90,9 +90,7 @@ const DerivAppsGetAccount: React.FC = () => {
                         Options
                     </WalletText>
                     <WalletText size={isDesktop ? '2xs' : 'xs'}>
-                        {activeWallet?.is_malta_wallet
-                            ? 'Trade options on multiple platforms with a single account regulated by MFSA.'
-                            : 'Trade options on multiple platforms with a single account. '}
+                        Trade options on multiple platforms with a single account.
                     </WalletText>
                 </div>
                 <WalletButton color='primary-light' onClick={createTradingAccount}>

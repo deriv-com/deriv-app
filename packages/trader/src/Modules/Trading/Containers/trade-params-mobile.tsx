@@ -115,6 +115,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradePa
     const setTradeParamTabIdx = (trade_param_tab_idx: number) => dispatch({ trade_param_tab_idx });
 
     const setDurationTabIdx = (duration_tab_idx?: number) => {
+        // if (state.has_duration_error) setSelectedDuration(duration_unit, getDefaultDuration(duration_unit));
         dispatch({ duration_tab_idx });
     };
 
@@ -228,7 +229,6 @@ const TradeParamsMobile = observer(
             is_vanilla,
             duration_unit: store_duration_unit,
         } = useTraderStore();
-
         React.useEffect(() => {
             const toggled_duration_tab_idx = duration_units_list.findIndex(d => d.value === duration_unit);
             const default_duration_tab_idx = duration_units_list.findIndex(d => d.value === store_duration_unit);
@@ -243,9 +243,16 @@ const TradeParamsMobile = observer(
             setDurationTabIdx(toggled_duration_tab_idx === -1 ? default_duration_tab_idx : toggled_duration_tab_idx);
 
             return () => {
-                setSelectedDuration(duration_unit, !has_duration_error ? defaultDuration : duration_value);
+                setSelectedDuration(duration_unit, has_duration_error ? defaultDuration : duration_value);
             };
         }, [duration_unit]);
+
+        React.useEffect(() => {
+            const defaultDuration = getDefaultDuration(duration_unit);
+            return () => {
+                setSelectedDuration(duration_unit, has_duration_error ? defaultDuration : duration_value);
+            };
+        }, [duration_value]);
 
         const getDurationText = () => {
             const default_duration_obj = duration_units_list.find(d => d.value === store_duration_unit);

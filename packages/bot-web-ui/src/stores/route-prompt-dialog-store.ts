@@ -1,7 +1,23 @@
 import { action, makeObservable, observable } from 'mobx';
+import { TStores } from '@deriv/stores/types';
+import RootStore from './root-store';
 
-export default class RoutePromptDialogStore {
-    constructor(root_store, core) {
+export interface IRoutePromptDialogStore {
+    should_show: boolean;
+    is_confirmed: boolean;
+    last_location: Location | null;
+    shouldNavigateAfterPrompt: (next_location: Location) => boolean;
+    setShoudShow: (should_show: boolean) => void;
+    onConfirm: () => void;
+    onCancel: () => void;
+    continueRoute: () => void;
+}
+
+export default class RoutePromptDialogStore implements IRoutePromptDialogStore {
+    root_store: RootStore;
+    core: TStores;
+
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             should_show: observable,
             is_confirmed: observable,
@@ -19,9 +35,9 @@ export default class RoutePromptDialogStore {
 
     should_show = false;
     is_confirmed = false;
-    last_location = null;
+    last_location: Location | null = null;
 
-    shouldNavigateAfterPrompt(next_location) {
+    shouldNavigateAfterPrompt(next_location: Location) {
         if (!this.is_confirmed) {
             this.last_location = next_location;
             if (next_location.pathname !== '/bot') this.should_show = true;
@@ -31,7 +47,7 @@ export default class RoutePromptDialogStore {
         return true;
     }
 
-    setShoudShow(should_show) {
+    setShoudShow(should_show: boolean) {
         this.should_show = should_show;
     }
 

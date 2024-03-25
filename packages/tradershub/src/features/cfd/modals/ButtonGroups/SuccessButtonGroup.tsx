@@ -12,15 +12,11 @@ const SuccessButtonGroup = () => {
     const history = useHistory();
 
     if (isDemo) {
-        return (
-            <Button onClick={closeModal} size='lg'>
-                OK
-            </Button>
-        );
+        return <Button onClick={closeModal}>OK</Button>;
     }
     return (
         <ButtonGroup className='justify-center w-full'>
-            <Button color='black' onClick={closeModal} size='lg' variant='outlined'>
+            <Button color='black' onClick={closeModal} variant='outlined'>
                 Maybe later
             </Button>
             <Button
@@ -28,7 +24,6 @@ const SuccessButtonGroup = () => {
                     closeModal();
                     history.push('/cashier/transfer');
                 }}
-                size='lg'
             >
                 Transfer funds
             </Button>

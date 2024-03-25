@@ -26,9 +26,7 @@ export const useFormattedLoginHistoryData = loginhistorydata => {
 
         const environment = loginhistorydata[i].environment;
         const environemntSplit = environment.split(' ');
-        const MobileAppUa = environment.match(
-            /(?<date>[0-9]+[a-zA-Z]+[0-9]\s[0-9:]+GMT)[\s](IP=)(?<ip>[\w:.]+)\sIP_COUNTRY=(?<country>([a-zA-Z]{2}))\s(User_AGENT=)(\w.*)(?<name>iPhone|Android)([\W\w]+)\s(?<app>Deriv P2P|Deriv GO)(?<version>[\w\W]+)\s(LANG=)([\w]{2})/
-        );
+
         const dates = environemntSplit[0];
         const time = environemntSplit[1].replace('GMT', ' GMT');
         const parser = new UAParser();

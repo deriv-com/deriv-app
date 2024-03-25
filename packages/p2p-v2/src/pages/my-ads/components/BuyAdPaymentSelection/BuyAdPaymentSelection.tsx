@@ -31,7 +31,6 @@ const BuyAdPaymentSelection = ({ onSelectPaymentMethod, selectedPaymentMethods }
                         <div className='p2p-v2-buy-ad-payment-selection' key={method}>
                             <PaymentMethodWithIcon name={name} type={type} />
                             <Button
-                                className='p2p-v2-buy-ad-payment-selection__button'
                                 color='white'
                                 onClick={() => onSelectPaymentMethod(method, 'delete')}
                                 variant='contained'

@@ -17,7 +17,7 @@ const WalletFiatOnRamp = () => {
     }, [history, isCrypto]);
 
     return (
-        <CashierLocked>
+        <CashierLocked module='deposit'>
             <FiatOnRampModule />
         </CashierLocked>
     );

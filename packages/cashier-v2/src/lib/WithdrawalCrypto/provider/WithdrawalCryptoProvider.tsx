@@ -8,7 +8,7 @@ import {
     usePOA,
     usePOI,
 } from '@deriv/api-v2';
-import { THooks } from '../../../hooks/types';
+import type { THooks } from '../../../hooks/types';
 import { TWithdrawalReceipt } from '../types';
 
 export type TWithdrawalCryptoContext = {

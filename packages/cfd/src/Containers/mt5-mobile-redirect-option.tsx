@@ -52,18 +52,11 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                 </div>
             </a>
 
-            <Text as='p' size='xxxs'>
+            <Text as='p' size='xxxxs'>
                 <Localize
                     i18n_default_text="Note: Don't have the MT5 app? Tap the <0>Trade with MT5 mobile app</0> button to download. Once you have
                 installed the app, return to this screen and hit the same button to log in."
                     components={[<strong key={0} />]}
-                />
-            </Text>
-
-            <Text as='p' align='center' size='xxs'>
-                <Localize
-                    i18n_default_text='For MT5 login issues, visit our <0>Help Centre</0>.'
-                    components={[<StaticUrl key={0} className='help-center-link' href={mt5_help_centre_url} />]}
                 />
             </Text>
         </div>

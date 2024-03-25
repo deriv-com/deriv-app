@@ -7,7 +7,6 @@ type TPaymentMethodsFormFooterProps = {
     actionType: TFormState['actionType'];
     handleGoBack: () => void;
     isDirty: boolean;
-    isFloating?: boolean;
     isSubmitting: boolean;
     isValid: boolean;
 };
@@ -17,7 +16,6 @@ type TPaymentMethodsFormFooterProps = {
  * @param actionType - The type of action to be performed (ADD or EDIT)
  * @param handleGoBack - The function to be called when the back / cancel button is clicked
  * @param isDirty - The state of the form (whether it has been modified or not)
- * @param isFloating - Makes the footer float at the bottom of the screen
  * @param isSubmitting - The state of the form (whether it is being submitted or not)
  * @param isValid - The state of the form (whether it is valid or not)
  * @returns {JSX.Element}

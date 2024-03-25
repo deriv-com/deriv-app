@@ -69,7 +69,11 @@ const QuickStrategyForm = observer(() => {
                             // Generic or common fields
                             case 'number': {
                                 if (!field.name) return null;
-                                const { should_have = [], hide_without_should_have = false } = field;
+                                const {
+                                    should_have = [],
+                                    hide_without_should_have = false,
+                                    should_show_currency = false,
+                                } = field;
                                 const should_enable = shouldEnable(should_have);
                                 const initial_stake = 1;
                                 let min = 1;
@@ -110,6 +114,7 @@ const QuickStrategyForm = observer(() => {
                                             onChange={onChange}
                                             min={min}
                                             max={max}
+                                            should_show_currency={should_show_currency}
                                         />
                                     );
                                 }
@@ -121,6 +126,7 @@ const QuickStrategyForm = observer(() => {
                                         name={field.name as string}
                                         min={min}
                                         max={max}
+                                        should_show_currency={should_show_currency}
                                     />
                                 );
                             }

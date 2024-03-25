@@ -345,6 +345,24 @@
                     margin-bottom: 0;
                 }
             }
+
+            .dc-input__bottom-label {
+                position: relative;
+                margin: 0;
+                padding: 0;
+                top: -3.4rem;
+                right: 6rem;
+                display: flex;
+                flex-direction: row-reverse;
+
+                @include mobile() {
+                    top: -2.8rem;
+                }
+
+                .dc-text {
+                    color: var(--text-general) !important;
+                }
+            }
         }
     }
 

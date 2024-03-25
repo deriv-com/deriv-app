@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 import { ValidationConstants } from '@deriv-com/utils';
 
-type initialValues = {
+type TInitialValues = {
     addressCity?: string;
     addressLine1?: string;
     addressLine2?: string;
@@ -36,7 +36,7 @@ export const getPersonalDetailsInitialValues = (
     statesList: StatesList,
     isSocialSignup?: boolean
 ) => {
-    const initialValues: initialValues = {
+    const initialValues: TInitialValues = {
         addressCity: accountSettings.address_city,
         addressLine1: accountSettings.address_line_1,
         addressLine2: accountSettings.address_line_2 ?? '',

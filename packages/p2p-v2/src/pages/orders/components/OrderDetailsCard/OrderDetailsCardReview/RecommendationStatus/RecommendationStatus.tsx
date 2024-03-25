@@ -8,6 +8,7 @@ const RecommendationStatus = () => {
     const { orderDetails } = useOrderDetails();
     const { review_details: reviewDetails } = orderDetails;
 
+    // If the user doesn't select any recommendation, we don't show the recommendation status
     if (reviewDetails?.recommended === null) return null;
 
     return (

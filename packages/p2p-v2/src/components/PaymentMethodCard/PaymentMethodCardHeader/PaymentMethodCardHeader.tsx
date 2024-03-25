@@ -63,7 +63,6 @@ const PaymentMethodCardHeader = ({
                     renderIcon={() => <LabelPairedEllipsisVerticalXlRegularIcon />}
                 />
             )}
-            {/*TODO: wire up logic for the selectable payment method cards here*/}
             {isSelectable && (
                 <div data-testid='p2p_v2_payment_method_card_header_checkbox'>
                     <Checkbox

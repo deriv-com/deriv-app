@@ -31,11 +31,11 @@ const AdPaymentDetailsSection = ({ currency, localCurrency, rateType, ...props }
     const onSelectPaymentMethod = (paymentMethod: number | string) => {
         if (selectedPaymentMethods.includes(paymentMethod)) {
             const newSelectedPaymentMethods = selectedPaymentMethods.filter(method => method !== paymentMethod);
-            setSelectedPaymentMethods(selectedPaymentMethods.filter(method => method !== paymentMethod));
+            setSelectedPaymentMethods(newSelectedPaymentMethods);
             setValue('payment-method', newSelectedPaymentMethods);
         } else {
             const newSelectedPaymentMethods = [...selectedPaymentMethods, paymentMethod];
-            setSelectedPaymentMethods([...selectedPaymentMethods, paymentMethod]);
+            setSelectedPaymentMethods(newSelectedPaymentMethods);
             setValue('payment-method', newSelectedPaymentMethods);
         }
     };

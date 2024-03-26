@@ -12,22 +12,48 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     unHighlightAllBlocks: jest.fn(),
 }));
 
+const mockOnResetClick = jest.fn();
+const mockOnSortClick = jest.fn();
+const mockOnUndoClick = jest.fn();
+const mockOnZoomInOutClick = jest.fn();
+const mockToggleLoadModal = jest.fn();
+const mockToggleSaveModal = jest.fn();
+
 describe('WorkspaceGroup', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
-    const mock_props = {
-        has_redo_stack: true,
-        has_undo_stack: true,
-        onResetClick: jest.fn(),
-        onSortClick: jest.fn(),
-        onUndoClick: jest.fn(),
-        onZoomInOutClick: jest.fn(),
-        toggleLoadModal: jest.fn(),
-        toggleSaveModal: jest.fn(),
-    };
 
     beforeAll(() => {
         const mock_store = mockStore({});
-        const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        let mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        mock_DBot_store = {
+            ...mock_DBot_store,
+            toolbar: {
+                ...mock_DBot_store.toolbar,
+                has_redo_stack: true,
+                has_undo_stack: true,
+                onResetClick: mockOnResetClick,
+                onSortClick: mockOnSortClick,
+                onUndoClick: mockOnUndoClick,
+                onZoomInOutClick: mockOnZoomInOutClick,
+            },
+            save_modal: {
+                ...mock_DBot_store.save_modal,
+                toggleSaveModal: mockToggleSaveModal,
+            },
+            load_modal: {
+                ...mock_DBot_store.load_modal,
+                toggleLoadModal: mockToggleLoadModal,
+                preview_workspace: null,
+                selected_strategy: {
+                    id: '',
+                    name: '',
+                    save_type: '',
+                    timestamp: 0,
+                    xml: '',
+                },
+                tab_name: '',
+            },
+        };
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
@@ -39,81 +65,81 @@ describe('WorkspaceGroup', () => {
     });
 
     it('should render WorkspaceGroup', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         expect(screen.getByTestId('dt_toolbar_group_btn')).toBeInTheDocument();
     });
 
     it('should call reset function on clicking reset icon', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         const reset_button = screen.getByTestId('dt_toolbar_reset_button');
         userEvent.click(reset_button);
-        expect(mock_props.onResetClick).toBeCalledTimes(1);
+        expect(mockOnResetClick).toBeCalledTimes(1);
     });
 
     it('should call toggleLoadModal function on clicking import icon', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         const import_button = screen.getByTestId('dt_toolbar_import_button');
         userEvent.click(import_button);
-        expect(mock_props.toggleLoadModal).toBeCalledTimes(1);
+        expect(mockToggleLoadModal).toBeCalledTimes(1);
     });
 
     it('should call toggleSaveModal function on clicking save icon', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         const save_button = screen.getByTestId('dt_toolbar_save_button');
         userEvent.click(save_button);
-        expect(mock_props.toggleSaveModal).toBeCalledTimes(1);
+        expect(mockToggleSaveModal).toBeCalledTimes(1);
     });
 
     it('should call onSortClick function on clicking sort icon', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         const sort_button = screen.getByTestId('dt_toolbar_sort_button');
         userEvent.click(sort_button);
-        expect(mock_props.onSortClick).toBeCalledTimes(1);
+        expect(mockOnSortClick).toBeCalledTimes(1);
     });
 
     it('should call onUndoClick function with false on clicking undo icon', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         const undo_button = screen.getByTestId('dt_toolbar_undo_button');
         userEvent.click(undo_button);
-        expect(mock_props.onUndoClick).toBeCalledWith(false);
+        expect(mockOnUndoClick).toBeCalledWith(false);
     });
 
     it('should call onUndoClick function with true on clicking redo icon', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         const undo_button = screen.getByTestId('dt_toolbar_redo_button');
         userEvent.click(undo_button);
-        expect(mock_props.onUndoClick).toBeCalledWith(true);
+        expect(mockOnUndoClick).toBeCalledWith(true);
     });
 
     it('should call onZoomInOutClick function with true on clicking zoomIn icon', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         const zoom_button = screen.getByTestId('dt_toolbar_zoom_in_button');
         userEvent.click(zoom_button);
-        expect(mock_props.onZoomInOutClick).toBeCalledWith(true);
+        expect(mockOnZoomInOutClick).toBeCalledWith(true);
     });
 
     it('should call onZoomInOutClick function with false on clicking zoomOut icon', () => {
-        render(<WorkspaceGroup {...mock_props} />, {
+        render(<WorkspaceGroup />, {
             wrapper,
         });
         const zoom_button = screen.getByTestId('dt_toolbar_zoom_out_button');
         userEvent.click(zoom_button);
-        expect(mock_props.onZoomInOutClick).toBeCalledWith(false);
+        expect(mockOnZoomInOutClick).toBeCalledWith(false);
     });
 });

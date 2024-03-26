@@ -7,9 +7,10 @@ import { getManualUploadDocumentList } from '../../constants/manualDocument';
 type TDocumentSelection = {
     countryCode: string;
     handleOnClick: (value: string) => void;
+    onCancel: () => void;
 };
 
-export const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelection) => {
+export const DocumentSelection = ({ countryCode, handleOnClick, onCancel }: TDocumentSelection) => {
     const { isMobile } = useDevice();
 
     const documentList = getManualUploadDocumentList(countryCode === 'ng');
@@ -42,7 +43,15 @@ export const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelec
             </section>
             <section className='flex flex-col justify-end gap-8'>
                 <Divider />
-                <Button className='flex self-end' color='black' rounded='sm' size='lg' type='button' variant='outlined'>
+                <Button
+                    className='flex self-end'
+                    color='black'
+                    onClick={onCancel}
+                    rounded='sm'
+                    size='lg'
+                    type='button'
+                    variant='outlined'
+                >
                     Back
                 </Button>
             </section>

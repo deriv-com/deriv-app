@@ -41,7 +41,7 @@ export const POIFlowContainer = ({ countryCode, onCancel, onComplete }: TPOIFlow
             );
         }
         default: {
-            return <ManualUpload countryCode={countryCode} />;
+            return <ManualUpload countryCode={countryCode} onCancel={onCancel} />;
         }
     }
 };

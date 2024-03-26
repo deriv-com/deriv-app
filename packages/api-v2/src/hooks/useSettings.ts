@@ -12,14 +12,14 @@ type TSetSettingsPayload = NonNullable<
 const useSettings = () => {
     const { isSuccess } = useAuthorize();
     const { data, ...rest } = useQuery('get_settings', { options: { enabled: isSuccess } });
-    const { mutate, mutateAsync, ...mutate_rest } = useMutation('set_settings', {
+    const { mutate, ...mutate_rest } = useMutation('set_settings', {
         onSuccess: () => invalidate('get_settings'),
     });
     const invalidate = useInvalidateQuery();
 
     const update = useCallback((payload: TSetSettingsPayload) => mutate({ payload }), [mutate]);
 
-    const updateAsync = useCallback((payload: TSetSettingsPayload) => mutateAsync({ payload }), [mutateAsync]);
+    // const updateAsync = useCallback((payload: TSetSettingsPayload) => mutateAsync({ payload }), [mutateAsync]);
 
     // Add additional information to the settings response.
     const modified_settings = useMemo(() => {
@@ -42,7 +42,7 @@ const useSettings = () => {
         data: modified_settings,
         /** Function to update user settings */
         update,
-        updateAsync,
+        // updateAsync,
         /** The mutation related information */
         mutation: mutate_rest,
         ...rest,

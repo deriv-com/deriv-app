@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { DocumentSelection } from '../../containers/DocumentSelection';
 import { ManualUploadContainer } from '../../pages/ManualUploadContainer/ManualUploadContainer';
 
-type TManualUploadProps = { countryCode: string };
+type TManualUploadProps = { countryCode: string; onCancel: () => void };
 
-export const ManualUpload = ({ countryCode }: TManualUploadProps) => {
+export const ManualUpload = ({ countryCode, onCancel }: TManualUploadProps) => {
     const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
 
     if (selectedDocument) {
@@ -16,5 +16,5 @@ export const ManualUpload = ({ countryCode }: TManualUploadProps) => {
             />
         );
     }
-    return <DocumentSelection countryCode={countryCode} handleOnClick={setSelectedDocument} />;
+    return <DocumentSelection countryCode={countryCode} handleOnClick={setSelectedDocument} onCancel={onCancel} />;
 };

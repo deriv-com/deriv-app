@@ -37,7 +37,9 @@ export const getManualFormValidationSchema = (
         ...documentUploadValidation,
     });
 
-    return isExpiryDateRequired ? baseSchema.concat(documentExpiryValidation) : baseSchema;
+    const combinedSchema = baseSchema.concat(documentExpiryValidation);
+
+    return isExpiryDateRequired ? combinedSchema : baseSchema;
 };
 
 export const getSelfieValidationSchema = () => {

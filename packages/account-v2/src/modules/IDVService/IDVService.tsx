@@ -26,8 +26,12 @@ type TIDVServiceProps = {
 type TErrorData = TSocketError<'identity_verification_document_add' | 'set_settings'>;
 
 export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDocuments }: TIDVServiceProps) => {
-    const { data: personalInfo, isLoading, updateAsync } = useSettings();
-    const { submitIDVDocumentsAsync } = useIdentityDocumentVerificationAdd();
+    const {
+        data: personalInfo,
+        isLoading,
+        mutation: { mutateAsync: updateAsync },
+    } = useSettings();
+    const { mutateAsync: submitIDVDocumentsAsync } = useIdentityDocumentVerificationAdd();
 
     const idvValidationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments, {});
     const personalDetailsValidationSchema = getNameDOBValidationSchema(true);
@@ -53,9 +57,9 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
         const personalDetailsPayload = generateNameDOBPayloadData(values);
 
         try {
-            await updateAsync(personalDetailsPayload);
+            await updateAsync({ payload: personalDetailsPayload });
             const idvPayloadData = { ...generateIDVPayloadData(values), issuing_country: countryCode };
-            await submitIDVDocumentsAsync(idvPayloadData);
+            await submitIDVDocumentsAsync({ payload: idvPayloadData });
             setSubmitting(false);
             handleComplete();
         } catch (error) {

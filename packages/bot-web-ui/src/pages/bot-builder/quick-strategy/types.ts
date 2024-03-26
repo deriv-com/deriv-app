@@ -44,7 +44,7 @@ export type TConfigItem = Partial<{
         multiple?: Array<string>;
     }[];
     hide_without_should_have: boolean;
-    should_show_currency: boolean;
+    has_currency_unit: boolean;
 }>;
 
 export type TDescriptionItem = Partial<{

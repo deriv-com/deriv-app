@@ -18,7 +18,7 @@ type TQSInput = {
     disabled?: boolean;
     min?: number;
     max?: number;
-    should_show_currency?: boolean;
+    has_currency_unit?: boolean;
 };
 
 const QSInput: React.FC<TQSInput> = observer(
@@ -30,7 +30,7 @@ const QSInput: React.FC<TQSInput> = observer(
         disabled = false,
         min,
         max,
-        should_show_currency = false,
+        has_currency_unit = false,
     }: TQSInput) => {
         const {
             ui: { is_mobile },
@@ -85,7 +85,7 @@ const QSInput: React.FC<TQSInput> = observer(
                 {({ field, meta }: FieldProps) => {
                     const { error } = meta;
                     const has_error = error;
-                    const is_exclusive_field = should_show_currency;
+                    const is_exclusive_field = has_currency_unit;
                     return (
                         <div
                             className={classNames('qs__form__field qs__form__field__input', {

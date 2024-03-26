@@ -72,7 +72,7 @@ const QuickStrategyForm = observer(() => {
                                 const {
                                     should_have = [],
                                     hide_without_should_have = false,
-                                    should_show_currency = false,
+                                    has_currency_unit = false,
                                 } = field;
                                 const should_enable = shouldEnable(should_have);
                                 const initial_stake = 1;
@@ -114,7 +114,7 @@ const QuickStrategyForm = observer(() => {
                                             onChange={onChange}
                                             min={min}
                                             max={max}
-                                            should_show_currency={should_show_currency}
+                                            has_currency_unit={has_currency_unit}
                                         />
                                     );
                                 }
@@ -126,7 +126,7 @@ const QuickStrategyForm = observer(() => {
                                         name={field.name as string}
                                         min={min}
                                         max={max}
-                                        should_show_currency={should_show_currency}
+                                        has_currency_unit={has_currency_unit}
                                     />
                                 );
                             }

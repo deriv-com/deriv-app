@@ -82,7 +82,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                     offer_amount: amount_display,
                     order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
                     payment_method_names,
-                    rate_type: rate_display,
+                    rate_type: '',
                     type,
                 }}
                 onSubmit={onSubmit}
@@ -139,6 +139,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                             data-lpignore='true'
                                             type='text'
                                             error={touched.rate_type && errors.rate_type}
+                                            label={localize('Fixed Rate')}
                                             trailing_icon={<CopyAdvertFormTrailingIcon label={local_currency} />}
                                             required
                                         />

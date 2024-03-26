@@ -16,6 +16,14 @@ const WalletsAuthProvider = ({ children, ...rest }: Omit<ComponentProps<typeof A
                 return isWallet && isFiat;
             })[0];
 
+            if (!result) {
+                const result = loginIds.filter((loginId: string) => {
+                    const { account_category: accountCategory } = accountsObject[loginId];
+                    const isWallet = accountCategory == 'wallet';
+                    return isWallet;
+                })[0];
+                return result;
+            }
             return result;
         }}
     >

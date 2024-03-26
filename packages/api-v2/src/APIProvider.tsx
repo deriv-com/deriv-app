@@ -45,32 +45,6 @@ const getWebSocketURL = () => {
 };
 
 const APIContext = createContext<APIContextData | null>(null);
-const connections: Record<string, WebSocket> = {};
-
-/**
- * Retrieves or initializes a WebSocket instance based on the provided URL.
- * @param {string} wss_url - The WebSocket URL.
- * @returns {WebSocket} The WebSocket instance associated with the provided URL.
- */
-const getWebsocketInstance = (wss_url: string, onWSClose: () => void, onOpen?: () => void) => {
-    const existingWebsocketInstance = connections[wss_url];
-    if (
-        !existingWebsocketInstance ||
-        !(existingWebsocketInstance instanceof WebSocket) ||
-        [2, 3].includes(existingWebsocketInstance.readyState)
-    ) {
-        connections[wss_url] = new WebSocket(wss_url);
-        connections[wss_url].addEventListener('close', () => {
-            if (typeof onWSClose === 'function') onWSClose();
-        });
-
-        connections[wss_url].addEventListener('open', () => {
-            if (typeof onOpen === 'function') onOpen();
-        });
-    }
-
-    return connections[wss_url];
-};
 
 /**
  * Initializes a derivAPIRef instance for the global window. This enables a standalone connection
@@ -79,9 +53,17 @@ const getWebsocketInstance = (wss_url: string, onWSClose: () => void, onOpen?: (
  */
 const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
     const wss_url = getWebSocketURL();
-    const websocketConnection = getWebsocketInstance(wss_url, onWSClose, onOpen);
 
-    const result = new DerivAPIBasic({ connection: websocketConnection });
+    const connection = new WebSocket(wss_url);
+    connection.addEventListener('close', () => {
+        if (typeof onWSClose === 'function') onWSClose();
+    });
+
+    connection.addEventListener('open', () => {
+        if (typeof onOpen === 'function') onOpen();
+    });
+
+    const result = new DerivAPIBasic({ connection });
 
     return result;
 };
@@ -112,19 +94,16 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
 
-    useEffect(() => {
-        return () => {
-            // use object.keys to iterate
-            const urls = Object.keys(connections);
-            for (let i = 0; i < urls.length; i++) {
-                connections[urls[i]].close();
-            }
-        };
-    }, []);
-
+    // have to be here and not inside useEffect as there are places in code expecting this to be available
     if (!derivAPIRef.current) {
         derivAPIRef.current = initializeDerivAPI(() => setReconnect(true));
     }
+
+    useEffect(() => {
+        return () => {
+            derivAPIRef.current.disconnect();
+        };
+    }, []);
 
     const setOnReconnected = useCallback((onReconnected: () => void) => {
         onReconnectedRef.current = onReconnected;

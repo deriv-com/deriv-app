@@ -1,55 +1,91 @@
 import React from 'react';
-import { unix } from 'dayjs';
-import { Form, Formik } from 'formik';
-import { useSettings } from '@deriv/api-v2';
-import { Button, Divider, Loader, Text } from '@deriv-com/ui';
+import { Form, Formik, FormikHelpers } from 'formik';
+import { InferType } from 'yup';
+import { useIdentityDocumentVerificationAdd, useKycAuthStatus, useSettings } from '@deriv/api-v2';
+import { TSocketError } from '@deriv/api-v2/types';
+import { Button, Divider, InlineMessage, Loader, Text } from '@deriv-com/ui';
+import { API_ERROR_CODES, ERROR_MESSAGE } from '../../constants';
 import { PersonalDetailsFormWithExample } from '../../containers';
 import { TSupportedDocuments } from '../../types';
-import { getIDVFormValidationSchema } from '../../utils/idvFormUtils';
-import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
+import {
+    generateIDVPayloadData,
+    generateNameDOBFormData,
+    generateNameDOBPayloadData,
+    getIDVFormValidationSchema,
+    getNameDOBValidationSchema,
+} from '../../utils';
 import { IDVForm } from '../IDVForm';
 
 type TIDVServiceProps = {
     countryCode: string;
+    handleComplete: () => void;
     onCancel: () => void;
     supportedDocuments: TSupportedDocuments;
 };
 
-export const IDVService = ({ countryCode, onCancel, supportedDocuments }: TIDVServiceProps) => {
-    const { data: personalInfo, isLoading, update } = useSettings();
+type TErrorData = TSocketError<'identity_verification_document_add' | 'set_settings'>;
+
+export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDocuments }: TIDVServiceProps) => {
+    const { data: personalInfo, isLoading, updateAsync } = useSettings();
+    const { submitIDVDocumentsAsync } = useIdentityDocumentVerificationAdd();
 
     const idvValidationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments, {});
     const personalDetailsValidationSchema = getNameDOBValidationSchema(true);
+    const idvServiceSchema = personalDetailsValidationSchema.concat(idvValidationSchema);
 
     if (isLoading) {
         return <Loader />;
     }
 
-    const { date_of_birth, first_name, last_name } = personalInfo;
+    const initialValues = {
+        ...idvServiceSchema.getDefault(),
+        ...generateNameDOBFormData(personalInfo),
+    };
 
-    const castPersonalDetailValues = getNameDOBValidationSchema(true).cast({
-        ...personalDetailsValidationSchema.getDefault(),
-        dateOfBirth: unix(date_of_birth as number).format('YYYY-MM-DD'),
-        firstName: first_name,
-        lastName: last_name,
-    });
+    type TIDVServiceValues = InferType<typeof idvServiceSchema>;
 
-    const initialValues = { ...idvValidationSchema.getDefault(), ...castPersonalDetailValues };
+    const setErrorMessage = (error: TErrorData['error']) => {
+        const { code, message } = error ?? {};
+        switch (code) {
+            case API_ERROR_CODES.DUPLICATE_ACCOUNT:
+                return ERROR_MESSAGE.DUPLICATE_ACCOUNT;
+            case API_ERROR_CODES.CLAIMED_DOCUMENT:
+                return ERROR_MESSAGE.CLAIMED_DOCUMENT;
+            default:
+                return message ?? ERROR_MESSAGE.GENERIC;
+        }
+    };
 
-    type TIDVServiceValues = InferType<typeof initialValues>;
+    const handleSubmit = async (
+        values: TIDVServiceValues,
+        { setStatus, setSubmitting }: FormikHelpers<TIDVServiceValues>
+    ) => {
+        setSubmitting(true);
+        const personalDetailsPayload = generateNameDOBPayloadData(values);
 
-    const handleSubmit = (values: TIDVServiceValues) => {};
+        try {
+            await updateAsync(personalDetailsPayload);
+            const idvPayloadData = { ...generateIDVPayloadData(values), issuing_country: countryCode };
+            await submitIDVDocumentsAsync(idvPayloadData);
+            setSubmitting(false);
+            handleComplete();
+        } catch (error) {
+            const responseError = setErrorMessage((error as TErrorData)?.error);
+            setStatus({ error: responseError });
+            setSubmitting(false);
+        }
+    };
 
     return (
         <Formik
-            initialValues={initialValues}
-            onSubmit={() => {
-                // [TODO]: Implement submit
-            }}
+            initialStatus={{ error: '' }}
+            initialValues={initialValues as TIDVServiceValues}
+            onSubmit={handleSubmit}
             validateOnMount
         >
-            {({ isValid }) => (
+            {({ isSubmitting, isValid, status }) => (
                 <Form className='grid h-full'>
+                    {status?.error && <InlineMessage variant='error'>{status.error}</InlineMessage>}
                     <div className='grid items-center gap-8 mb-16 grid-cols-[auto_1fr]'>
                         <Text as='h4' size='md' weight='bold'>
                             Identity verification
@@ -81,8 +117,8 @@ export const IDVService = ({ countryCode, onCancel, supportedDocuments }: TIDVSe
                             >
                                 Back
                             </Button>
-                            <Button disabled={!isValid} rounded='sm' size='lg' type='submit'>
-                                Verify
+                            <Button disabled={!isValid || isSubmitting} rounded='sm' size='lg' type='submit'>
+                                {isSubmitting ? <Loader /> : 'Verify'}
                             </Button>
                         </div>
                     </section>

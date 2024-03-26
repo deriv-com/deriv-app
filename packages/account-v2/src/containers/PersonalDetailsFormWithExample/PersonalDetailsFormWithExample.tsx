@@ -27,8 +27,6 @@ export const PersonalDetailsFormWithExample = ({
 
     const { errors, values } = formik;
 
-    console.log('Values: ', values);
-
     const isDisabled = useMemo(() => {
         return (
             !values?.firstName ||

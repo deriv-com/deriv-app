@@ -1,4 +1,6 @@
+import { unix } from 'dayjs';
 import * as Yup from 'yup';
+import { TGetSettingsResponse } from '../types';
 
 export const getPersonalDetailsBaseValidationSchema = () => {
     const characterLengthMessage = 'You should enter 2-50 characters.';
@@ -8,7 +10,7 @@ export const getPersonalDetailsBaseValidationSchema = () => {
         accountOpeningReason: Yup.string().required('Account opening reason is required.'),
         citizenship: Yup.string().required('Citizenship is required.'),
         countryOfResidence: Yup.string().required('Country of residence is required.'),
-        dateOfBirth: Yup.date().typeError('Please enter a valid date.').required('Date of birth is required.'),
+        dateOfBirth: Yup.string().required('Date of birth is required.'),
         firstName: Yup.string()
             .required('First name is required.')
             .min(2, characterLengthMessage)
@@ -65,10 +67,14 @@ export const getNameDOBValidationSchema = (skipConfirmation: boolean) => {
         }));
 };
 
-export const generateNameDOBPayloadData = (values: Yup.InferType<typeof getNameDOBValidationSchema>) => {
-    return {
-        date_of_birth: values.dateOfBirth,
-        first_name: values.firstName.trim(),
-        last_name: values.lastName.trim(),
-    };
-};
+export const generateNameDOBPayloadData = (values: Yup.InferType<ReturnType<typeof getNameDOBValidationSchema>>) => ({
+    date_of_birth: values.dateOfBirth.toString(),
+    first_name: values.firstName.trim(),
+    last_name: values.lastName.trim(),
+});
+
+export const generateNameDOBFormData = (values: TGetSettingsResponse) => ({
+    dateOfBirth: values.date_of_birth ? unix(values.date_of_birth as number).format('YYYY-MM-DD') : '',
+    firstName: values.first_name,
+    lastName: values.last_name,
+});

@@ -28,3 +28,8 @@ export const POI_SUBMISSION_STATUS = {
     SELECTING: 'selecting',
     SUBMITTING: 'submitting',
 } as const;
+
+export const API_ERROR_CODES = Object.freeze({
+    CLAIMED_DOCUMENT: 'ClaimedDocument',
+    DUPLICATE_ACCOUNT: 'DuplicateAccount',
+});

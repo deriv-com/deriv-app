@@ -11,6 +11,7 @@ import { validateField } from '../../utils/validation';
 type TPersonalDetailsFormWithExampleValues = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
 
 type TPersonalDetailsFormWithExampleProps = {
+    error?: string;
     onConfirm?: () => void;
     skipConfirmation?: boolean;
 };
@@ -107,7 +108,7 @@ export const PersonalDetailsFormWithExample = ({
                                 onChange={value => {
                                     form.setFieldValue(field.name, value.target.checked);
                                     if (value.target.checked) {
-                                        onConfirm();
+                                        onConfirm?.();
                                     }
                                 }}
                             />

@@ -46,7 +46,7 @@ export const ManualForm = ({
         >
             {({ dirty, isSubmitting, isValid }) => (
                 <Form>
-                    <div className='flex flex-col min-h-screen w-full'>
+                    <div className='flex flex-col w-full'>
                         <div className='flex flex-col gap-24'>
                             <ManualFormInputs
                                 isExpiryDateRequired={isExpiryDateRequired}
@@ -57,6 +57,7 @@ export const ManualForm = ({
                         </div>
                         <div className='sticky bottom-0 flex justify-end gap-16 px-8 py-16 border-t-solid-grey-2 bg-solid-slate-0 border-solid border-t-2'>
                             <Button
+                                color='black'
                                 disabled={isSubmitting}
                                 onClick={onCancel}
                                 size='lg'

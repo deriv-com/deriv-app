@@ -47,7 +47,7 @@ export const getPersonalDetailsBaseValidationSchema = () => {
     });
 };
 
-export const getNameDOBValidationSchema = (skipConfirmation: boolean) => {
+export const getNameDOBValidationSchema = (skipConfirmation = false) => {
     if (skipConfirmation) {
         return getPersonalDetailsBaseValidationSchema()
             .pick(['dateOfBirth', 'firstName', 'lastName'])

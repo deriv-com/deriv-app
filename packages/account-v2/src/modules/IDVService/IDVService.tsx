@@ -1,10 +1,9 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { InferType } from 'yup';
-import { useIdentityDocumentVerificationAdd, useKycAuthStatus, useSettings } from '@deriv/api-v2';
+import { useIdentityDocumentVerificationAdd, useSettings } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
 import { Button, Divider, InlineMessage, Loader, Text } from '@deriv-com/ui';
-import { API_ERROR_CODES, ERROR_MESSAGE } from '../../constants';
 import { PersonalDetailsFormWithExample } from '../../containers';
 import { TSupportedDocuments } from '../../types';
 import {
@@ -13,6 +12,7 @@ import {
     generateNameDOBPayloadData,
     getIDVFormValidationSchema,
     getNameDOBValidationSchema,
+    setErrorMessage,
 } from '../../utils';
 import { IDVForm } from '../IDVForm';
 
@@ -44,22 +44,11 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
 
     type TIDVServiceValues = InferType<typeof idvServiceSchema>;
 
-    const setErrorMessage = (error: TErrorData['error']) => {
-        const { code, message } = error ?? {};
-        switch (code) {
-            case API_ERROR_CODES.DUPLICATE_ACCOUNT:
-                return ERROR_MESSAGE.DUPLICATE_ACCOUNT;
-            case API_ERROR_CODES.CLAIMED_DOCUMENT:
-                return ERROR_MESSAGE.CLAIMED_DOCUMENT;
-            default:
-                return message ?? ERROR_MESSAGE.GENERIC;
-        }
-    };
-
     const handleSubmit = async (
         values: TIDVServiceValues,
         { setStatus, setSubmitting }: FormikHelpers<TIDVServiceValues>
     ) => {
+        setStatus({ error: '' });
         setSubmitting(true);
         const personalDetailsPayload = generateNameDOBPayloadData(values);
 
@@ -118,7 +107,7 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
                                 Back
                             </Button>
                             <Button disabled={!isValid || isSubmitting} rounded='sm' size='lg' type='submit'>
-                                {isSubmitting ? <Loader /> : 'Verify'}
+                                Verify
                             </Button>
                         </div>
                     </section>

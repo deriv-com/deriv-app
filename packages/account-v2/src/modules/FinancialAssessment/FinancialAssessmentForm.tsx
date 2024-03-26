@@ -1,10 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import { Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { ACCOUNT_MODAL_REF } from 'src/constants';
 import { shouldHideOccupation } from 'src/utils/financialAssessmentUtils';
 import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
 import { DerivLightIcPoaLockIcon, StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
-import { ActionScreen, Button, InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
+import { ActionScreen, Button, InlineMessage, Loader, Modal, Text, useDevice } from '@deriv-com/ui';
 import IcSuccess from '../../assets/status-message/ic-success.svg';
 import { DemoMessage } from '../../components/DemoMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE, ACCOUNT_V2_ROUTES, DERIV_GO_URL, P2P_URL } from '../../constants/routes';
@@ -21,6 +22,8 @@ export const FinancialAssessmentForm = () => {
     const history = useHistory();
 
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+    Modal.setAppElement(ACCOUNT_MODAL_REF);
 
     const redirect = isNavigationFromDerivGO() || isNavigationFromP2P();
     const redirectPlatformName = isNavigationFromDerivGO() ? 'Deriv GO' : 'Deriv P2P';
@@ -89,7 +92,7 @@ export const FinancialAssessmentForm = () => {
 
     type TFinancialAssessmentFormValues = typeof initialValues;
 
-    const onSubmit = (handleSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void) => () => {
+    const onSubmit = (handleSubmit: (e?: React.FormEvent<HTMLFormElement>) => void) => () => {
         if (hasTradingExperience && isTradingExperienceNotComplete) {
             setIsConfirmModalOpen(true);
         } else {
@@ -135,7 +138,7 @@ export const FinancialAssessmentForm = () => {
     if (fetchError)
         return <ActionScreen icon={<DerivLightIcPoaLockIcon width={128} />} title={fetchError.error.message} />;
 
-    if (isMobile && isAuthenticated && !isEUCountry && isFinancialAssessmentUpdateSuccess)
+    if (isMobile && !isAuthenticated && !isEUCountry && isFinancialAssessmentUpdateSuccess)
         return (
             <ActionScreen
                 actionButtons={
@@ -210,6 +213,7 @@ export const FinancialAssessmentForm = () => {
                                     isLoading={isFinancialAssessmentUpdating}
                                     onClick={onSubmit(handleSubmit)}
                                     size='lg'
+                                    type='button'
                                 >
                                     Submit
                                 </Button>

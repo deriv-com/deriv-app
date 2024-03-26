@@ -38,7 +38,7 @@ export const FinancialAssessmentConfirmModal = ({
             <Button color='black' onClick={handleCancel} rounded='sm' size='md' type='button' variant='outlined'>
                 Decline
             </Button>
-            <Button color='primary' onClick={handleSubmit} rounded='sm' size='md'>
+            <Button color='primary' onClick={handleSubmit} rounded='sm' size='md' type='button'>
                 Accept
             </Button>
         </Modal.Footer>

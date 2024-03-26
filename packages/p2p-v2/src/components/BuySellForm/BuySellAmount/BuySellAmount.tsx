@@ -42,7 +42,7 @@ const BuySellAmount = ({
 
     return (
         <div className='flex flex-col gap-[2rem] py-[2.4rem]'>
-            <Text className='px-[2.4rem]' color='less-prominent' size={labelSize}>
+            <Text className='px-[2.4rem]' color='less-prominent' size='sm'>
                 {`Enter ${isBuy ? 'sell' : 'buy'} amount`}
             </Text>
             <div className='p2p-v2-buy-sell-amount__input-wrapper'>
@@ -93,10 +93,10 @@ const BuySellAmount = ({
                         required: 'Enter a valid amount',
                     }}
                 />
-                {isMobile && <Divider />}
+                {isMobile && <Divider color='#f2f3f4' />}
                 <div className='flex flex-col w-full px-[2.4rem]'>
                     <Text color='less-prominent' size={labelSize}>{`You'll ${isBuy ? 'receive' : 'send'}`}</Text>
-                    <Text size={labelSize} weight='bold'>
+                    <Text size={isMobile ? 'md' : 'sm'} weight='bold'>
                         {buySellAmount} {localCurrency}
                     </Text>
                 </div>

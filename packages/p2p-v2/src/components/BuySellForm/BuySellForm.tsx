@@ -184,7 +184,7 @@ const BuySellForm = ({
                     paymentMethods={paymentMethods}
                     rate={displayEffectiveRate}
                 />
-                <Divider />
+                <Divider color='#f2f3f4' />
                 {isBuy && payment_method_names?.length > 0 && (
                     <BuySellPaymentSection
                         availablePaymentMethods={availablePaymentMethods}
@@ -240,7 +240,7 @@ const BuySellForm = ({
                 )}
                 {isBuy && (
                     <>
-                        <Divider />
+                        <Divider color='#f2f3f4' />
                         <Controller
                             control={control}
                             name='contact_details'

@@ -70,7 +70,7 @@ const BuySellPaymentSection = ({
                     ))}
                 </div>
             </div>
-            <Divider />
+            <Divider color='#f2f3f4' />
         </>
     );
 };

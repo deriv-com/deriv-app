@@ -543,7 +543,12 @@ export default class ClientStore extends BaseStore {
     }
 
     get has_fiat() {
-        return Object.values(this.accounts).some(item => item.currency_type === 'fiat' && !item.is_virtual);
+        return Object.values(this.accounts).some(
+            item =>
+                item.currency_type === 'fiat' &&
+                !item.is_virtual &&
+                item.landing_company_shortcode === this.landing_company_shortcode
+        );
     }
 
     get current_fiat_currency() {

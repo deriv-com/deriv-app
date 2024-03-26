@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from '@deriv-com/ui';
+import { Button } from '@deriv-com/ui';
 
 type TAddNewButtonProps = {
     isMobile: boolean;
@@ -14,11 +14,9 @@ type TAddNewButtonProps = {
  * @example <AddNewButton isMobile={isMobile} onAdd={onAdd} />
  * **/
 const AddNewButton = ({ isMobile, onAdd }: TAddNewButtonProps) => (
-    <Button isFullWidth={isMobile} onClick={() => onAdd()} size='lg'>
+    <Button isFullWidth={isMobile} onClick={() => onAdd()} size='lg' textSize={isMobile ? 'md' : 'sm'}>
         {/*  TODO Remember to translate this*/}
-        <Text lineHeight='6xl' size={isMobile ? 'md' : 'sm'} weight='bold'>
-            Add new
-        </Text>
+        Add new
     </Button>
 );
 

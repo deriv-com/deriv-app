@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, useDevice } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import './FilterModalFooter.scss';
 
 type TFilterModalFooterProps = {

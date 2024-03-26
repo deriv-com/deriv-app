@@ -5,8 +5,6 @@ import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
-import { setRsDropdownTextToLocalStorage } from '../analytics/utils';
 import { TApiHelpersInstance, TFormData, TTradeType } from '../types';
 
 type TTradeTypeOption = {
@@ -51,10 +49,6 @@ const TradeTypeSelect: React.FC = () => {
                     await setFieldValue?.('tradetype', trade_types?.[0].value || '');
                     await validateForm();
                     setValue('tradetype', trade_types?.[0].value);
-                    setRsDropdownTextToLocalStorage(trade_types?.[0]?.text, 'tradetype');
-                } else {
-                    const selected_item = trade_types?.find(trade_types => trade_types?.value === selected);
-                    setRsDropdownTextToLocalStorage(selected_item?.text ?? '', 'tradetype');
                 }
             };
             debounce(async () => {
@@ -96,12 +90,6 @@ const TradeTypeSelect: React.FC = () => {
                                 if (value && text) {
                                     setFieldValue?.('tradetype', value);
                                     setValue('tradetype', value);
-                                    rudderStackSendQsParameterChangeEvent({
-                                        parameter_type: 'tradetype',
-                                        parameter_value: text,
-                                        parameter_field_type: 'dropdown',
-                                    });
-                                    setRsDropdownTextToLocalStorage(text, 'tradetype');
                                 }
                             }}
                             leading_icon={

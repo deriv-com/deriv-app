@@ -4,12 +4,9 @@ import classNames from 'classnames';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsOpenEvent } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
-import { rudderstackDashboardChooseShortcut } from './analytics/rudderstack-dashboard';
 import GoogleDrive from './load-bot-preview/google-drive';
 import Recent from './load-bot-preview/recent';
 
@@ -39,20 +36,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     } = dashboard;
     const { handleFileChange, loadFileFromLocal } = load_modal;
     const { setFormVisibility } = quick_strategy;
-
-    //this is to check on click of which icon the user has come to bot builder
-    const sentToRudderStackTabChange = (type: string) => {
-        Analytics.trackEvent('ce_bot_builder_form', {
-            shortcut_name: type,
-            form_source: 'bot_dashboard_form-shortcut',
-            action: 'choose_shortcut',
-        });
-    };
-
-    const sendToRudderStackOnQuickStrategyIconClick = () => {
-        // send to rs if quick strategy is opened from dashbaord
-        rudderStackSendQsOpenEvent();
-    };
 
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
@@ -86,7 +69,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             content: localize('Bot Builder'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
-                sentToRudderStackTabChange('bot-builder');
             },
         },
         {
@@ -96,8 +78,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
-                sentToRudderStackTabChange('quick-strategy');
-                sendToRudderStackOnQuickStrategyIconClick();
             },
         },
     ];
@@ -116,7 +96,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                     id='tab__dashboard__table__tiles'
                 >
                     {actions.map(icons => {
-                        const { icon, content, method, type } = icons;
+                        const { icon, content, method } = icons;
                         return (
                             <div
                                 key={content}
@@ -134,7 +114,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                     id={icon}
                                     onClick={() => {
                                         method();
-                                        rudderstackDashboardChooseShortcut({ shortcut_name: type });
                                     }}
                                 />
                                 <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>
@@ -188,6 +167,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                 <Recent is_file_supported={is_file_supported} />
             </div>
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [is_dialog_open, has_dashboard_strategies]
     );
 });

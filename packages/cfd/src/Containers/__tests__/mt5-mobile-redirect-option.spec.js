@@ -53,7 +53,7 @@ describe('<MT5MobileRedirectOption/>', () => {
         const link = await findByText('MetaTrader5 web terminal');
         expect(isSafariBrowser()).toBe(false);
         expect(link.closest('a').getAttribute('href')).toBe(
-            `${mock_props.mt5_trade_account.white_label_links.webtrader_url}&login=${mock_props.mt5_trade_account.display_login}&server=${mock_props.mt5_trade_account.server_info.environment}`
+            `${mock_props.mt5_trade_account.white_label_links.webtrader_url}?login=${mock_props.mt5_trade_account.display_login}&server=${mock_props.mt5_trade_account.server_info.environment}`
         );
     });
 

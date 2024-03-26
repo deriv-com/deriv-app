@@ -44,7 +44,7 @@ const DEEP_LINK = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5
     `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
 const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) =>
-    `${mt5_trade_account.white_label_links?.webtrader_url}&login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
+    `${mt5_trade_account.white_label_links?.webtrader_url}?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';

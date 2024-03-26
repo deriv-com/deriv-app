@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuthorize, useCashierFiatAddress } from '@deriv/api-v2';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import DepositFiat from '../DepositFiat';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -10,7 +10,7 @@ jest.mock('@deriv/api-v2', () => ({
 
 describe('DepositFiat', () => {
     beforeEach(() => {
-        (useAuthorize as jest.Mock).mockReturnValueOnce({ isSuccess: true });
+        (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: true });
     });
 
     afterEach(() => {
@@ -47,7 +47,7 @@ describe('DepositFiat', () => {
         expect(screen.queryByTestId('dt_deposit-fiat-iframe')).not.toBeInTheDocument();
     });
 
-    it('should render iframe after loading is completed and iframe url is received', async () => {
+    it('should render iframe with correct iframe url', () => {
         (useCashierFiatAddress as jest.Mock).mockReturnValueOnce({
             data: 'https://iframe_url',
             error: null,
@@ -56,13 +56,26 @@ describe('DepositFiat', () => {
             mutate: jest.fn(),
         });
 
-        await act(async () => {
-            render(<DepositFiat />);
-            await waitFor(() => {
-                expect(screen.queryByTestId('dt_wallets_loader')).not.toBeInTheDocument();
-            });
-            const iframe = screen.getByTestId('dt_deposit-fiat-iframe');
-            expect(iframe).toHaveAttribute('src', 'https://iframe_url');
+        render(<DepositFiat />);
+        const iframe = screen.getByTestId('dt_deposit-fiat-iframe');
+        expect(iframe).toHaveAttribute('src', 'https://iframe_url');
+    });
+
+    it('should display iframe correctly after onLoad event', () => {
+        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+            data: 'https://iframe_url',
+            error: null,
+            isError: false,
+            isLoading: false,
+            mutate: jest.fn(),
         });
+
+        render(<DepositFiat />);
+
+        const iframe = screen.getByTestId('dt_deposit-fiat-iframe');
+        expect(iframe).toHaveStyle({ display: 'none' });
+
+        fireEvent.load(iframe);
+        expect(iframe).toHaveStyle({ display: 'block' });
     });
 });

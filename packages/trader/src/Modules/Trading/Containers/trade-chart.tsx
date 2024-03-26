@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { ActiveSymbols } from '@deriv/api-types';
 import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -31,7 +31,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
         updateChartType,
         updateGranularity,
     } = contract_trade;
-    const ref = useRef<{ hasPredictionIndicators(): void; triggerPopup(arg: () => void): void }>(null);
+    const ref = React.useRef<{ hasPredictionIndicators(): void; triggerPopup(arg: () => void): void }>(null);
     const { all_positions } = portfolio;
     const { is_chart_countdown_visible, is_chart_layout_default, is_dark_mode_on, is_mobile, is_positions_drawer_on } =
         ui;
@@ -76,12 +76,12 @@ const TradeChart = observer((props: TTradeChartProps) => {
         [is_accumulator]
     );
 
-    useEffect(() => {
+    React.useEffect(() => {
         if ((is_accumulator || show_digits_stats) && ref.current?.hasPredictionIndicators()) {
             const cancelCallback = () => onChange({ target: { name: 'contract_type', value: prev_contract_type } });
             ref.current?.triggerPopup(cancelCallback);
         }
-    }, [is_accumulator, show_digits_stats]);
+    }, [is_accumulator, onChange, prev_contract_type, show_digits_stats]);
 
     const getMarketsOrder = (active_symbols: ActiveSymbols): string[] => {
         const synthetic_index = 'synthetic_index';

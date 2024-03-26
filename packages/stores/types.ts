@@ -313,7 +313,7 @@ type TMarkerContentConfig = TContentConfig & {
     status?: string;
 };
 
-type TNotificationMessage = {
+export type TNotificationMessage = {
     action?: TActionProps;
     className?: string;
     cta_btn?: TButtonProps;
@@ -325,7 +325,7 @@ type TNotificationMessage = {
     is_persistent?: boolean;
     key: string;
     message_popup?: string;
-    message: string | JSX.Element;
+    message?: string | JSX.Element;
     platform?: string;
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
@@ -731,7 +731,6 @@ type TUiStore = {
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
-    is_unsupported_contract_modal_visible: boolean;
     isUrlUnavailableModalVisible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
@@ -795,7 +794,6 @@ type TUiStore = {
     should_show_account_success_modal: boolean;
     should_trigger_tour_guide: boolean;
     toggleCancellationWarning: (state_change?: boolean) => void;
-    toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
@@ -834,7 +832,7 @@ type TUiStore = {
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
-    setAccountSwitcherDisabledMessage: () => void;
+    setAccountSwitcherDisabledMessage: (message?: string) => void;
 };
 
 type TPortfolioStore = {

@@ -321,7 +321,8 @@ export const getIncomeSourceList = () => [
 ];
 
 export const getFormattedOccupationList = (employment_status?: TEmploymentStatus) =>
-    employment_status && employment_status === EMPLOYMENT_VALUES.EMPLOYED
+    employment_status &&
+    [EMPLOYMENT_VALUES.EMPLOYED, EMPLOYMENT_VALUES.SELF_EMPLOYED].some(status => status === employment_status)
         ? getOccupationList().filter(item => item.value !== EMPLOYMENT_VALUES.UNEMPLOYED)
         : getOccupationList();
 

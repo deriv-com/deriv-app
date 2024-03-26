@@ -53,7 +53,7 @@ const useWalletAccountsList = () => {
                 is_malta_wallet: wallet.landing_company_name === 'maltainvest',
             } as const;
         });
-    }, [filtered_accounts]);
+    }, [filtered_accounts, getConfig]);
 
     // Add balance to each wallet account
     const modified_accounts_with_balance = useMemo(

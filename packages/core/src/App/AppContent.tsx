@@ -37,7 +37,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
             };
             Analytics.initialise(config);
-            const ppc =
+            const ppc_campaign_cookies =
                 Cookies.getJSON('utm_data') === 'null'
                     ? {
                           utm_source: 'no source',
@@ -55,9 +55,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
                 country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
-                utm_source: ppc?.utm_source,
-                utm_medium: ppc?.utm_medium,
-                utm_campaign: ppc?.utm_campaign,
+                utm_source: ppc_campaign_cookies?.utm_source,
+                utm_medium: ppc_campaign_cookies?.utm_medium,
+                utm_campaign: ppc_campaign_cookies?.utm_campaign,
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

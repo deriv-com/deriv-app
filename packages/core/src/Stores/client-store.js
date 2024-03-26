@@ -1776,7 +1776,7 @@ export default class ClientStore extends BaseStore {
         const is_virtual = account.is_virtual;
         const account_type = !is_virtual && currency ? currency : this.account_title;
 
-        const ppc =
+        const ppc_campaign_cookies =
             Cookies.getJSON('utm_data') === 'null'
                 ? {
                       utm_source: 'no source',
@@ -1796,9 +1796,9 @@ export default class ClientStore extends BaseStore {
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
                 country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
-                utm_source: ppc?.utm_source,
-                utm_medium: ppc?.utm_medium,
-                utm_campaign: ppc?.utm_campaign,
+                utm_source: ppc_campaign_cookies?.utm_source,
+                utm_medium: ppc_campaign_cookies?.utm_medium,
+                utm_campaign: ppc_campaign_cookies?.utm_campaign,
             });
         }, 4);
 

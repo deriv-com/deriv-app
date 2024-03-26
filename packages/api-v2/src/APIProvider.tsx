@@ -27,7 +27,6 @@ type TUnsubscribeFunction = (id: string) => void;
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
     send: TSendFunction;
-    standalone: boolean;
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
     queryClient: QueryClient;
@@ -35,14 +34,6 @@ type APIContextData = {
 };
 
 const APIContext = createContext<APIContextData | null>(null);
-
-declare global {
-    interface Window {
-        ReactQueryClient?: QueryClient;
-        DerivAPI?: Record<string, DerivAPIBasic>;
-        WSConnections?: Record<string, WebSocket>;
-    }
-}
 
 /**
  * Retrieves the WebSocket URL based on the current environment.
@@ -108,13 +99,16 @@ const queryClient = new QueryClient({
     },
 });
 
+/**
+ * TODO: standlone no longer exists, as its always standalone,
+ * but I do not want to remove it from all packages withint this PR, so needs to be cleaned up in subsequent PRs
+ */
 type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
 };
 
-const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
-    const WS = useWS();
+const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
     const standaloneDerivAPI = useRef<DerivAPIBasic>();
     const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();
@@ -133,8 +127,9 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
         };
     }, []);
 
-    if (!standaloneDerivAPI.current)
-        standaloneDerivAPI.current = standalone ? initializeDerivAPI(() => setReconnect(true)) : null;
+    if (!standaloneDerivAPI.current) {
+        standaloneDerivAPI.current = initializeDerivAPI(() => setReconnect(true));
+    }
 
     const setOnReconnected = useCallback((onReconnected: () => void) => {
         onReconnectedRef.current = onReconnected;
@@ -181,14 +176,12 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     }, []);
 
     useEffect(() => {
-        let interval_id: ReturnType<typeof setInterval>;
-
-        if (standalone) {
-            interval_id = setInterval(() => standaloneDerivAPI.current?.send({ ping: 1 }), 10000);
-        }
-
+        const interval_id: ReturnType<typeof setInterval> = setInterval(
+            () => standaloneDerivAPI.current?.send({ ping: 1 }),
+            10000
+        );
         return () => clearInterval(interval_id);
-    }, [standalone]);
+    }, []);
 
     useEffect(() => {
         let reconnectTimerId: NodeJS.Timeout;
@@ -212,9 +205,8 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     return (
         <APIContext.Provider
             value={{
-                derivAPI: standalone ? standaloneDerivAPI.current : WS,
+                derivAPI: standaloneDerivAPI.current,
                 send,
-                standalone,
                 subscribe,
                 unsubscribe,
                 queryClient,

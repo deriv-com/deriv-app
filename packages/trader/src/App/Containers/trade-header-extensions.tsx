@@ -1,6 +1,5 @@
 import React from 'react';
 import { when } from 'mobx';
-import { MobileWrapper } from '@deriv/components';
 import { isMobile, routes, WS } from '@deriv/shared';
 import PopulateHeader from './populate-header';
 import { observer, useStore } from '@deriv/stores';
@@ -23,11 +22,9 @@ const TradeHeaderExtensions = observer(({ store }: TradeHeaderExtensionsProps) =
 
     const populateHeaderfunction = React.useCallback(() => {
         const header_items = show_component ? (
-            <MobileWrapper>
-                <TraderProviders store={store}>
-                    <PopulateHeader />
-                </TraderProviders>
-            </MobileWrapper>
+            <TraderProviders store={store}>
+                <PopulateHeader />
+            </TraderProviders>
         ) : null;
 
         populateHeaderExtensions(header_items);

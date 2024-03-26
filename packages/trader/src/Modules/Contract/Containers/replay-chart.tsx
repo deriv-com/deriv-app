@@ -1,12 +1,13 @@
 import React from 'react';
 import { usePrevious } from '@deriv/components';
-import { getDurationPeriod, getDurationUnitText, getEndTime, getPlatformRedirect, isDesktop } from '@deriv/shared';
+import { getDurationPeriod, getDurationUnitText, getEndTime, getPlatformRedirect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';
 import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/reset-contract-chart-elements';
 import { SmartChart } from 'Modules/SmartChart';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
+import { useDevice } from '@deriv/hooks';
 
 const ReplayChart = observer(
     ({
@@ -20,13 +21,14 @@ const ReplayChart = observer(
     }) => {
         const trade = useTraderStore();
         const { contract_replay, common, ui } = useStore();
+        const { isMobile } = useDevice();
         const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
         const { contract_config, is_digit_contract, barriers_array, getContractsArray, markers_array, contract_info } =
             contract_store;
         const { underlying: symbol, audit_details, barrier_count } = contract_info;
         const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
         const { app_routing_history, current_language, is_socket_opened } = common;
-        const { is_chart_layout_default, is_chart_countdown_visible, is_mobile } = ui;
+        const { is_chart_layout_default, is_chart_countdown_visible } = ui;
         const { end_epoch, chart_type, start_epoch, granularity } = contract_config || {};
         const is_dark_theme = is_dark_theme_prop || ui.is_dark_mode_on;
 
@@ -51,16 +53,16 @@ const ReplayChart = observer(
         const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
 
         const isBottomWidgetVisible = () => {
-            return isDesktop() && is_digit_contract;
+            return !isMobile && is_digit_contract;
         };
 
         const getChartYAxisMargin = () => {
             const chart_margin = {
-                top: is_mobile ? 96 : 148,
+                top: isMobile ? 96 : 148,
                 bottom: isBottomWidgetVisible() ? 128 : 112,
             };
 
-            if (is_mobile) {
+            if (isMobile) {
                 chart_margin.bottom = 48;
                 chart_margin.top = 48;
             }
@@ -80,15 +82,15 @@ const ReplayChart = observer(
                 chartType={chart_type}
                 endEpoch={end_epoch}
                 margin={margin}
-                isMobile={is_mobile}
-                enabledNavigationWidget={isDesktop()}
+                isMobile={isMobile}
+                enabledNavigationWidget={!isMobile}
                 enabledChartFooter={false}
                 granularity={granularity}
                 requestAPI={wsSendRequest}
                 requestForget={wsForget}
                 requestForgetStream={wsForgetStream}
-                crosshair={is_mobile ? 0 : undefined}
-                maxTick={is_mobile ? 8 : undefined}
+                crosshair={isMobile ? 0 : undefined}
+                maxTick={isMobile ? 8 : undefined}
                 requestSubscribe={wsSubscribe}
                 settings={settings}
                 startEpoch={start_epoch}
@@ -105,7 +107,7 @@ const ReplayChart = observer(
                 shouldFetchTradingTimes={false}
                 should_zoom_out_on_yaxis={is_accumulator_contract}
                 yAxisMargin={getChartYAxisMargin()}
-                anchorChartToLeft={is_mobile}
+                anchorChartToLeft={isMobile}
                 shouldFetchTickHistory={
                     getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' ||
                     contract_info.status === 'open'

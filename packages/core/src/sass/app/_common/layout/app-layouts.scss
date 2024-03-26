@@ -168,7 +168,7 @@
         margin: 0 !important;
         height: inherit;
     }
-    @include mobile {
+    @include new-mobile {
         // no footer:
         margin-bottom: 0;
         height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
@@ -321,13 +321,6 @@
 .no-scroll {
     overflow: hidden;
     max-height: 100vh;
-}
-
-/** @define desktop-only */
-.desktop-only {
-    @media (max-width: 768px) {
-        display: none !important;
-    }
 }
 
 /** @define mobile-only */

@@ -7,6 +7,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import CancelDealInfo from './cancel-deal-info';
 import ValueMovement from './value-movement';
 import { TProposalTypeInfo } from 'Types';
+import { useDevice } from '@deriv/hooks';
 
 type TContractInfo = Pick<
     ReturnType<typeof useTraderStore>,
@@ -33,6 +34,8 @@ const ContractInfo = ({
     should_fade,
     type,
 }: TContractInfo) => {
+    const { isMobile } = useDevice();
+
     const localized_basis = getLocalizedBasis();
     const vanilla_payout_text = is_vanilla_fx ? localized_basis.payout_per_pip : localized_basis.payout_per_point;
     const turbos_payout_message = (
@@ -150,18 +153,16 @@ const ContractInfo = ({
                     )
                 )}
             </div>
-            {!is_multiplier && !is_accumulator && (
-                <DesktopWrapper>
-                    <Popover
-                        alignment='left'
-                        icon='info'
-                        id={`dt_purchase_${type.toLowerCase()}_info`}
-                        is_bubble_hover_enabled
-                        margin={216}
-                        message={has_error_or_not_loaded ? '' : setHintMessage()}
-                        relative_render
-                    />
-                </DesktopWrapper>
+            {!is_multiplier && !is_accumulator && !isMobile && (
+                <Popover
+                    alignment='left'
+                    icon='info'
+                    id={`dt_purchase_${type.toLowerCase()}_info`}
+                    is_bubble_hover_enabled
+                    margin={216}
+                    message={has_error_or_not_loaded ? '' : setHintMessage()}
+                    relative_render
+                />
             )}
         </div>
     );

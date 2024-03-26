@@ -4,6 +4,7 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { ChartTitle } from 'Modules/SmartChart';
 import { useTraderStore } from 'Stores/useTraderStores';
 import RecentTradeInfo from './recent-trade-info';
+import { useDevice } from '@deriv/hooks';
 
 type TTopWidgets = {
     InfoBox?: React.ReactNode;
@@ -52,11 +53,19 @@ const TopWidgets = ({
         document.getElementById('app_contents') as Element | DocumentFragment
     );
 
+    if (is_mobile) {
+        return (
+            <React.Fragment>
+                {InfoBox}
+                {portal}
+            </React.Fragment>
+        );
+    }
+
     return (
         <React.Fragment>
             {InfoBox}
-            <MobileWrapper>{portal}</MobileWrapper>
-            <DesktopWrapper>{ChartTitleLocal}</DesktopWrapper>
+            {ChartTitleLocal}
         </React.Fragment>
     );
 };

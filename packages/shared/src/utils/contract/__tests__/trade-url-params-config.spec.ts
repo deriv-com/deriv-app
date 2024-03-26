@@ -122,6 +122,12 @@ describe('setTradeURLParams', () => {
         jest.clearAllMocks();
     });
 
+    it('should not set any query params into URL when called with empty object', async () => {
+        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
+        setTradeURLParams({});
+        expect(spyHistoryReplaceState).not.toBeCalled();
+    });
+
     it('should set interval query param into URL based on the received granularity value', async () => {
         const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setTradeURLParams({
@@ -134,25 +140,24 @@ describe('setTradeURLParams', () => {
         setTradeURLParams({
             chartType: areaChartType.value,
         });
-        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?chart_type=${areaChartType.text}`);
+        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?interval=1t&chart_type=area`);
     });
     it('should set symbol query param into URL based on the received symbol value', async () => {
         const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setTradeURLParams({
             symbol,
         });
-        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?symbol=${symbol}`);
+        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?interval=1t&chart_type=area&symbol=R_100`);
     });
     it('should set trade_type query param into URL based on the received contract_type value', async () => {
         const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setTradeURLParams({
             contractType: TRADE_TYPES.ACCUMULATOR,
         });
-        expect(spyHistoryReplaceState).toBeCalledWith({}, document.title, `/?trade_type=${TRADE_TYPES.ACCUMULATOR}`);
-    });
-    it('should not set any query params into URL when called with empty object', async () => {
-        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
-        setTradeURLParams({});
-        expect(spyHistoryReplaceState).not.toBeCalled();
+        expect(spyHistoryReplaceState).toBeCalledWith(
+            {},
+            document.title,
+            `/?interval=1t&chart_type=area&symbol=R_100&trade_type=accumulator`
+        );
     });
 });

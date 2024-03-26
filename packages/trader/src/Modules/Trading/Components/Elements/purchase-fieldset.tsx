@@ -6,6 +6,7 @@ import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
+import { useDevice } from '@deriv/hooks';
 
 type TPurchaseFieldset = {
     basis: string;
@@ -59,6 +60,7 @@ const PurchaseFieldset = ({
     type,
 }: TPurchaseFieldset) => {
     const [should_fade, setShouldFade] = React.useState(false);
+    const { isMobile } = useDevice();
 
     React.useEffect(() => {
         setShouldFade(true);
@@ -66,11 +68,7 @@ const PurchaseFieldset = ({
 
     const purchase_button = (
         <React.Fragment>
-            {is_multiplier && has_cancellation && (
-                <MobileWrapper>
-                    <CancelDealInfo proposal_info={info} />
-                </MobileWrapper>
-            )}
+            {is_multiplier && has_cancellation && isMobile && <CancelDealInfo proposal_info={info} />}
             <PurchaseButton
                 buy_info={buy_info}
                 currency={currency}
@@ -104,7 +102,7 @@ const PurchaseFieldset = ({
                 'purchase-container__option--turbos': is_turbos,
             })}
         >
-            <DesktopWrapper>
+            {!isMobile && (
                 <div
                     className={classNames('trade-container__fieldset-wrapper', {
                         'trade-container__fieldset-wrapper--disabled': is_proposal_error || is_disabled,
@@ -177,11 +175,13 @@ const PurchaseFieldset = ({
                         )}
                     </div>
                 </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                {is_proposal_error && <div className='btn-purchase__error'>{info.message}</div>}
-                {purchase_button}
-            </MobileWrapper>
+            )}
+            {isMobile && (
+                <React.Fragment>
+                    {is_proposal_error && <div className='btn-purchase__error'>{info.message}</div>}
+                    {purchase_button}
+                </React.Fragment>
+            )}
         </Fieldset>
     );
 };

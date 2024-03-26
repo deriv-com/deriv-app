@@ -139,7 +139,6 @@ const validatePersonalDetails = ({
 
     const validations: { [key: string]: ((v: string) => boolean | RegExpMatchArray | null)[] } = {
         citizen: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
-        // tax_residence: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
         account_opening_reason: [
             (v: string) => !!v,
             (v: string) => account_opening_reason.map(i => i.value).includes(v),

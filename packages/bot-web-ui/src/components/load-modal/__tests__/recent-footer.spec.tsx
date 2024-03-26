@@ -1,8 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { mock_ws } from 'Utils/mock';

@@ -1,4 +1,5 @@
+import { PaymentAgentCardDepositDetails } from './PaymentAgentCardDepositDetails';
 import { PaymentAgentCardDescription } from './PaymentAgentCardDescription';
-import { PaymentAgentCardDetails } from './PaymentAgentCardDetails';
+import { PaymentAgentCardWithdrawalForm } from './PaymentAgentCardWithdrawalForm';
 
-export { PaymentAgentCardDescription, PaymentAgentCardDetails };
+export { PaymentAgentCardDepositDetails, PaymentAgentCardDescription, PaymentAgentCardWithdrawalForm };

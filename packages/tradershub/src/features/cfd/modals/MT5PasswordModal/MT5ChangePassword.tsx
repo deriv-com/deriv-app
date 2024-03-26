@@ -58,7 +58,7 @@ const MT5ChangePassword = () => {
                 </ol>
             </Modal.Body>
             <Modal.Footer>
-                <Button color='black' isLoading={tradingPlatformPasswordChangeLoading} variant='outlined'>
+                <Button color='black' disabled={tradingPlatformPasswordChangeLoading} variant='outlined'>
                     Forgot password
                 </Button>
                 <Button

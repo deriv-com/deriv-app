@@ -11,7 +11,7 @@ import {
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '../../../../../../components';
-import { CFDPlatforms, PlatformDetails } from '../../../../constants';
+import { PlatformDetails } from '../../../../constants';
 
 const { getDerivStaticURL } = URLUtils;
 
@@ -42,7 +42,7 @@ const AvailableDxtradeAccountsList = () => {
         if (!hasActiveDerivAccount) {
             setIsDerivedAccountModalOpen(true);
         } else {
-            setCfdState({ platform: CFDPlatforms.DXTRADE });
+            setCfdState({ platform: PlatformDetails.dxtrade.platform });
             openModal('DxtradePasswordModal');
         }
     };

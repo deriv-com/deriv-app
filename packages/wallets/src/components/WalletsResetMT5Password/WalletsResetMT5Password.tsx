@@ -4,7 +4,7 @@ import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordRese
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
-import { validPassword } from '../../utils/password';
+import { validPassword } from '../../utils/password-validation';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';

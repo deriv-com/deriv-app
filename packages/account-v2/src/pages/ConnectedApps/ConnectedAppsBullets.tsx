@@ -8,7 +8,7 @@ type TConnectedAppsBullets = {
 };
 
 export const ConnectedAppsBullets = ({ color, style }: TConnectedAppsBullets) => (
-    <Text as='ol' className={style} color={color}>
+    <Text as='ol' className={style} color={color} size='sm'>
         {CONNECTED_APPS_INFO_BULLETS.map((bullet, i) => (
             <li key={i}>{bullet}</li>
         ))}

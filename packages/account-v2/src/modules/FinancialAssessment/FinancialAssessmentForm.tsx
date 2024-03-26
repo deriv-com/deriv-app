@@ -12,7 +12,6 @@ import { FinancialAssessmentConfirmModal } from '../../containers/FinancialAsses
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
 import { FinancialAssessmentFields } from '../FinancialAssessmentFields';
 import { TradingExperienceFields } from '../TradingExperienceFields';
-import type { TFinancialAssessmentPayload } from '../types';
 
 export const FinancialAssessmentForm = () => {
     const { data: activeAccount } = useActiveTradingAccount();
@@ -64,7 +63,7 @@ export const FinancialAssessmentForm = () => {
         other_instruments_trading_experience: otherInstrumentsTradingExperience,
         other_instruments_trading_frequency: otherInstrumentsTradingFrequency,
         source_of_wealth: sourceOfWealth,
-    } = financialAssessment as TFinancialAssessmentPayload;
+    } = financialAssessment;
 
     const initialValues = {
         accountTurnover,
@@ -186,7 +185,7 @@ export const FinancialAssessmentForm = () => {
                                 {hasTradingExperience && (
                                     <>
                                         <div className='flex mb-12 h-24 gap-8 self-stretch lg:self-auto justify-center items-center lg:gap-[11px]'>
-                                            <Text weight='bold'>Trading Experience</Text>
+                                            <Text weight='bold'>Trading experience</Text>
                                             <Text size='xs'>(All fields are required)</Text>
                                             <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 lg:flex-shrink-0' />
                                         </div>

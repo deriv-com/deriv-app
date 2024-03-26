@@ -3,7 +3,7 @@ import useQuery from '../useQuery';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useMutation from '../useMutation';
 
-type TSetFinancialAssessmentPayload = NonNullable<
+type TFinancialAssessmentPayload = NonNullable<
     NonNullable<
         NonNullable<Parameters<ReturnType<typeof useMutation<'set_financial_assessment'>>['mutate']>>[0]
     >['payload']
@@ -17,13 +17,13 @@ const useFinancialAssessment = () => {
         onSuccess: () => invalidate('get_financial_assessment'),
     });
 
-    const update = useCallback((payload: TSetFinancialAssessmentPayload) => mutate({ payload }), [mutate]);
+    const update = useCallback((payload: TFinancialAssessmentPayload) => mutate({ payload }), [mutate]);
 
     // Add additional information to the financial_assessment response.
     const modified_financial_assessment = useMemo(() => {
         return {
             ...data?.get_financial_assessment,
-        };
+        } as TFinancialAssessmentPayload;
     }, [data?.get_financial_assessment]);
 
     return {

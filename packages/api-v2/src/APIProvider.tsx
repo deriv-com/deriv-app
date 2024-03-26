@@ -97,24 +97,19 @@ export const getActiveWebsocket = () => {
     return window?.WSConnections?.[wss_url];
 };
 
+let derivApi: DerivAPIBasic;
+
 /**
  * Initializes a DerivAPI instance for the global window. This enables a standalone connection
  * without causing race conditions with deriv-app core stores.
  * @returns {DerivAPIBasic} The initialized DerivAPI instance.
  */
 const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
-    if (!window.DerivAPI) {
-        window.DerivAPI = {};
-    }
-
     const wss_url = getWebSocketURL();
     const websocketConnection = getWebsocketInstance(wss_url, onWSClose, onOpen);
 
-    if (!window.DerivAPI?.[wss_url] || window.DerivAPI?.[wss_url].isConnectionClosed()) {
-        window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: websocketConnection });
-    }
-
-    return window.DerivAPI?.[wss_url];
+    derivApi = new DerivAPIBasic({ connection: websocketConnection });
+    return derivApi;
 };
 
 const queryClient = new QueryClient({

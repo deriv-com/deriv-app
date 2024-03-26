@@ -1,6 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Recent from '../recent';
@@ -55,7 +55,7 @@ describe('Recent component of load modal', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it("on click of Why can't I see my recent bots the accordion should close and open", () => {
+    it("should close and open the accordion on click of 'Why can't I see my recent bots'", () => {
         mock_DBot_store?.load_modal.setRecentStrategies([]);
         render(<Recent />, { wrapper });
         const accordion = screen.getByTestId('dt-load-strategy__recent__empty-expand');

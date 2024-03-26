@@ -33,8 +33,6 @@ type APIContextData = {
     setOnReconnected: (onReconnected: () => void) => void;
 };
 
-const APIContext = createContext<APIContextData | null>(null);
-
 /**
  * Retrieves the WebSocket URL based on the current environment.
  * @returns {string} The WebSocket URL.
@@ -43,13 +41,12 @@ const getWebSocketURL = () => {
     const endpoint = getSocketURL();
     const app_id = getAppId();
     const language = localStorage.getItem('i18n_language');
-    const brand = 'deriv';
-    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
-
-    return wss_url;
+    return `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=deriv`;
 };
 
+const APIContext = createContext<APIContextData | null>(null);
 const connections: Record<string, WebSocket> = {};
+
 /**
  * Retrieves or initializes a WebSocket instance based on the provided URL.
  * @param {string} wss_url - The WebSocket URL.
@@ -75,19 +72,18 @@ const getWebsocketInstance = (wss_url: string, onWSClose: () => void, onOpen?: (
     return connections[wss_url];
 };
 
-let derivApi: DerivAPIBasic;
-
 /**
- * Initializes a DerivAPI instance for the global window. This enables a standalone connection
+ * Initializes a derivAPIRef instance for the global window. This enables a standalone connection
  * without causing race conditions with deriv-app core stores.
- * @returns {DerivAPIBasic} The initialized DerivAPI instance.
+ * @returns {derivAPIRefBasic} The initialized derivAPIRef instance.
  */
 const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
     const wss_url = getWebSocketURL();
     const websocketConnection = getWebsocketInstance(wss_url, onWSClose, onOpen);
 
-    derivApi = new DerivAPIBasic({ connection: websocketConnection });
-    return derivApi;
+    const result = new DerivAPIBasic({ connection: websocketConnection });
+
+    return result;
 };
 
 const queryClient = new QueryClient({
@@ -110,8 +106,8 @@ type TAPIProviderProps = {
 
 const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
-    const standaloneDerivAPI = useRef<DerivAPIBasic>();
-    const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();
+    const derivAPIRef = useRef<DerivAPIBasic>();
+    const subscriptionsRef = useRef<Record<string, DerivAPIBasic['subscribe']>>();
 
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
@@ -120,15 +116,14 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         return () => {
             // use object.keys to iterate
             const urls = Object.keys(connections);
-            for (const i = 0; i < urls.length; i++) {
-                const url = urls[i];
-                connections[url].close();
+            for (let i = 0; i < urls.length; i++) {
+                connections[urls[i]].close();
             }
         };
     }, []);
 
-    if (!standaloneDerivAPI.current) {
-        standaloneDerivAPI.current = initializeDerivAPI(() => setReconnect(true));
+    if (!derivAPIRef.current) {
+        derivAPIRef.current = initializeDerivAPI(() => setReconnect(true));
     }
 
     const setOnReconnected = useCallback((onReconnected: () => void) => {
@@ -136,48 +131,48 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     }, []);
 
     const send: TSendFunction = (name, payload) => {
-        return standaloneDerivAPI.current?.send({ [name]: 1, ...payload });
+        return derivAPIRef.current?.send({ [name]: 1, ...payload });
     };
 
     const subscribe: TSubscribeFunction = async (name, payload) => {
         const id = await hashObject({ name, payload });
-        const matchingSubscription = subscriptions.current?.[id];
+        const matchingSubscription = subscriptionsRef.current?.[id];
         if (matchingSubscription) return { id, subscription: matchingSubscription };
 
         const { payload: _payload } = payload ?? {};
 
-        const subscription = standaloneDerivAPI.current?.subscribe({
+        const subscription = derivAPIRef.current?.subscribe({
             [name]: 1,
             subscribe: 1,
             ...(_payload ?? {}),
         });
 
-        subscriptions.current = { ...(subscriptions.current ?? {}), ...{ [id]: subscription } };
+        subscriptionsRef.current = { ...(subscriptionsRef.current ?? {}), ...{ [id]: subscription } };
         return { id, subscription };
     };
 
     const unsubscribe: TUnsubscribeFunction = id => {
-        const matchingSubscription = subscriptions.current?.[id];
+        const matchingSubscription = subscriptionsRef.current?.[id];
         if (matchingSubscription) matchingSubscription.unsubscribe();
     };
 
     useEffect(() => {
-        const currentDerivApi = standaloneDerivAPI.current;
-        const currentSubscriptions = subscriptions.current;
+        const currentderivAPIRef = derivAPIRef.current;
+        const currentsubscriptionsRef = subscriptionsRef.current;
 
         return () => {
-            if (currentSubscriptions) {
-                Object.keys(currentSubscriptions).forEach(key => {
-                    currentSubscriptions[key].unsubscribe();
+            if (currentsubscriptionsRef) {
+                Object.keys(currentsubscriptionsRef).forEach(key => {
+                    currentsubscriptionsRef[key].unsubscribe();
                 });
             }
-            if (currentDerivApi && currentDerivApi.connection.readyState === 1) currentDerivApi.disconnect();
+            if (currentderivAPIRef && currentderivAPIRef.connection.readyState === 1) currentderivAPIRef.disconnect();
         };
     }, []);
 
     useEffect(() => {
         const interval_id: ReturnType<typeof setInterval> = setInterval(
-            () => standaloneDerivAPI.current?.send({ ping: 1 }),
+            () => derivAPIRef.current?.send({ ping: 1 }),
             10000
         );
         return () => clearInterval(interval_id);
@@ -186,7 +181,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     useEffect(() => {
         let reconnectTimerId: NodeJS.Timeout;
         if (reconnect) {
-            standaloneDerivAPI.current = initializeDerivAPI(
+            derivAPIRef.current = initializeDerivAPI(
                 () => {
                     reconnectTimerId = setTimeout(() => setReconnect(true), 500);
                 },
@@ -205,7 +200,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     return (
         <APIContext.Provider
             value={{
-                derivAPI: standaloneDerivAPI.current,
+                derivAPI: derivAPIRef.current,
                 send,
                 subscribe,
                 unsubscribe,

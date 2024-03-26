@@ -21,7 +21,7 @@ const AppContents = observer(({ children }) => {
         gtm: { pushDataLayer },
         ui,
     } = useStore();
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
 
     const { is_eu_country, is_logged_in, is_logging_in } = client;
     const {
@@ -124,7 +124,11 @@ const AppContents = observer(({ children }) => {
                         {children}
                     </ThemedScrollbars>
                 ) : (
-                    <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal refSetter={child_ref}>
+                    <ThemedScrollbars
+                        height={isDesktop ? 'calc(100vh - 84px)' : undefined}
+                        has_horizontal
+                        refSetter={child_ref}
+                    >
                         {children}
                     </ThemedScrollbars>
                 ))}

@@ -168,7 +168,7 @@
         margin: 0 !important;
         height: inherit;
     }
-    @include new-mobile {
+    @include new-not-desktop {
         // no footer:
         margin-bottom: 0;
         height: calc(100% - #{$MOBILE_HEADER_HEIGHT});

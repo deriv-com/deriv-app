@@ -395,10 +395,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
     }
+
     @include new-mobile {
         flex-direction: column;
-        min-height: calc(100vh - 48px);
         padding: 0;
+    }
+
+    @include new-not-desktop {
+        min-height: calc(100vh - 48px);
     }
 }
 

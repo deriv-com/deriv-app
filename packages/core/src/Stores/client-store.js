@@ -274,7 +274,6 @@ export default class ClientStore extends BaseStore {
             is_age_verified: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
-            is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
@@ -777,12 +776,6 @@ export default class ClientStore extends BaseStore {
 
     get landing_company() {
         return this.landing_companies;
-    }
-
-    get is_valid_login() {
-        if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MF|MFW|VRTC|VRW|MLT|CR|CRW)[0-9]+$', 'i');
-        return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
     get is_logged_in() {
@@ -1589,7 +1582,7 @@ export default class ClientStore extends BaseStore {
                 );
 
                 if (has_action) {
-                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
+                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action', 'loginid']);
                     if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
                         // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
                         window.location.replace(`/redirect?${query_string}`);

@@ -1,15 +1,17 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getExampleImagesConfig } from '../../CommonMistakeExample/CommonMistakeExampleConfig';
+import { getExampleImagesConfig } from '../../CommonMistakeExample';
 import { DocumentSubmission } from '../DocumentSubmission';
 
 jest.mock('../../../../components/FormFields', () => ({
+    ...jest.requireActual('../../../../components/FormFields'),
     FormDocumentUploadField: () => <div>FormDocumentUploadField</div>,
 }));
 
 jest.mock('../../CommonMistakeExample', () => ({
+    ...jest.requireActual('../../CommonMistakeExample'),
     CommonMistakesExamples: ({ description }: { description: string }) => (
-        <div data-testid='dt_common-mistake-example'>{description}</div>
+        <div data-testid='dt_common_mistake_example'>{description}</div>
     ),
 }));
 
@@ -48,7 +50,7 @@ describe('DocumentSubmission', () => {
     it('renders the Common Mistake', () => {
         expect(screen.getByText('Common Mistakes')).toBeInTheDocument();
         const commonMistakeExamples = getExampleImagesConfig();
-        const examples = screen.getAllByTestId('dt_common-mistake-example');
+        const examples = screen.getAllByTestId('dt_common_mistake_example');
         commonMistakeExamples.forEach((example, index) => {
             expect(examples[index]).toHaveTextContent(example.description);
         });

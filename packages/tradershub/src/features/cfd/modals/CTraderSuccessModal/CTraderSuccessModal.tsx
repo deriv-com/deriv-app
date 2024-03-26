@@ -1,30 +1,31 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { ButtonGroup, Modal } from '@/components';
-import { useModal } from '@/providers';
+import { ButtonGroup } from '@/components';
+import { useQueryParams } from '@/hooks';
+import { useUIContext } from '@/providers';
 import { PlatformDetails } from '@cfd/constants';
 import { CFDSuccess } from '@cfd/screens';
-import { Button } from '@deriv-com/ui';
+import { Button, Modal } from '@deriv-com/ui';
 
-type TCTraderSuccessModal = {
-    isDemo: boolean;
-};
-
-const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
+const CTraderSuccessModal = () => {
     const history = useHistory();
-    const { hide } = useModal();
+    const { uiState } = useUIContext();
+    const { isModalOpen, closeModal } = useQueryParams();
+
+    const isDemo = uiState.accountType === 'demo';
 
     const renderButtons = useCallback(
         () =>
             isDemo ? (
-                <Button className='rounded-xs' onClick={() => hide()} size='lg'>
+                <Button className='rounded-xs' onClick={closeModal} size='lg'>
                     Continue
                 </Button>
             ) : (
                 <ButtonGroup>
                     <Button
                         className='border-2 rounded-xs border-system-light-less-prominent'
-                        onClick={() => hide()}
+                        color='black'
+                        onClick={closeModal}
                         size='lg'
                         variant='outlined'
                     >
@@ -33,7 +34,7 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
                     <Button
                         className='rounded-xs'
                         onClick={() => {
-                            hide();
+                            closeModal();
                             history.push('/cashier/transfer');
                         }}
                         size='lg'
@@ -42,7 +43,7 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
                     </Button>
                 </ButtonGroup>
             ),
-        [hide, history, isDemo]
+        [closeModal, history, isDemo]
     );
 
     const description = isDemo
@@ -50,12 +51,14 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
         : `Congratulations, you have successfully created your real ${PlatformDetails.ctrader.title} CFDs account. To start trading, transfer funds from your Deriv account into this account.`;
 
     return (
-        <Modal className='max-w-[330px] p-16 md:max-w-[440px] md:p-24'>
-            <CFDSuccess
-                description={description}
-                platform={PlatformDetails.ctrader.platform}
-                renderButtons={renderButtons}
-            />
+        <Modal isOpen={isModalOpen('CTraderSuccessModal')} onRequestClose={closeModal}>
+            <Modal.Body className='max-w-[330px] p-16 md:max-w-[440px] md:p-24'>
+                <CFDSuccess
+                    description={description}
+                    platform={PlatformDetails.ctrader.platform}
+                    renderButtons={renderButtons}
+                />
+            </Modal.Body>
         </Modal>
     );
 };

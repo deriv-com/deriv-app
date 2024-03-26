@@ -1,0 +1,38 @@
+@import '../../components/SkeletonLoader/SkeletonLoader.scss';
+
+.wallets-carousel-header {
+    background: var(--system-light-8-primary-background, #fff);
+    border-bottom: 1px solid var(--general-section-1, #f2f3f4);
+    display: flex;
+    height: 6.1rem;
+    justify-content: space-between;
+    padding: 1rem 1.6rem 1rem 0.8rem;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    opacity: 1;
+    transition: all 0.3s ease-in;
+
+    &--hidden {
+        z-index: -1;
+        opacity: 0;
+    }
+
+    &__balance-loader {
+        padding: 0.7rem;
+        width: 8rem;
+        background-color: #f8f5f542;
+        border-radius: 0.5rem;
+    }
+
+    &__content {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+    }
+}

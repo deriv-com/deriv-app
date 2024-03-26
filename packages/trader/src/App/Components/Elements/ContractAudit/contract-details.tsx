@@ -322,7 +322,7 @@ const ContractDetails = ({
                         icon={<Icon icon='IcContractEntrySpot' size={24} />}
                         label={localize('Entry spot')}
                         value={entry_spot_display_value ? addComma(entry_spot_display_value) : ' - '}
-                        value2={toGMTFormat(epochToMoment(Number(entry_tick_time))) || ' - '}
+                        value2={entry_tick_time ? toGMTFormat(epochToMoment(entry_tick_time)) : ' - '}
                         additional_info={
                             isTicksContract(contract_type) &&
                             localize('The entry spot is the first tick for High/Low Ticks.')

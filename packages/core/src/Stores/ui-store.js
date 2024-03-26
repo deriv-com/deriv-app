@@ -39,7 +39,6 @@ export default class UIStore extends BaseStore {
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
     is_services_error_visible = false;
-    is_unsupported_contract_modal_visible = false;
     is_new_account = localStorage.getItem('isNewAccount') || false;
     is_account_signup_modal_visible = false;
     is_link_expired_modal_visible = false;
@@ -221,7 +220,6 @@ export default class UIStore extends BaseStore {
             is_ready_to_deposit_modal_visible: observable,
             is_need_real_account_for_cashier_modal_visible: observable,
             is_services_error_visible: observable,
-            is_unsupported_contract_modal_visible: observable,
             is_new_account: observable,
             is_account_signup_modal_visible: observable,
             is_link_expired_modal_visible: observable,
@@ -423,7 +421,6 @@ export default class UIStore extends BaseStore {
             toggleSetResidenceModal: action.bound,
             toggleSettingsModal: action.bound,
             toggleLanguageSettingsModal: action.bound,
-            toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
             toggleAccountSuccessModal: action.bound,
             toggleAdditionalKycInfoModal: action.bound,
@@ -740,10 +737,6 @@ export default class UIStore extends BaseStore {
         this.has_only_forward_starting_contracts = has_only_forward_starting_contracts;
     }
 
-    toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
-        this.is_unsupported_contract_modal_visible = state_change;
-    }
-
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
     }
@@ -996,8 +989,8 @@ export default class UIStore extends BaseStore {
         this.is_mt5_migration_modal_enabled = value;
     }
 
-    toggleMT5MigrationModal() {
-        this.is_mt5_migration_modal_open = !this.is_mt5_migration_modal_open;
+    toggleMT5MigrationModal(value) {
+        this.is_mt5_migration_modal_open = value;
     }
 
     toggleUrlUnavailableModal(value) {

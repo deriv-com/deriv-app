@@ -15,8 +15,8 @@ const MT5ChangePassword = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
 
-    const changePasswordAndCreateAccountHandler = () => {
-        tradingPasswordChange({
+    const changePasswordAndCreateAccountHandler = async () => {
+        await tradingPasswordChange({
             new_password: newPassword,
             old_password: currentPassword,
             platform: CFDPlatforms.MT5,

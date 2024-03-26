@@ -39,15 +39,15 @@ const useMT5AccountHandler = () => {
 
     // in order to create account, we need to set a password through trading_platform_password_change endpoint first
     // then only mt5_create_account can be called, otherwise it will response an error for password required
-    const handleSubmit = (password: string) => {
+    const handleSubmit = async (password: string) => {
         if (isMT5PasswordNotSet) {
-            tradingPasswordChange({
+            await tradingPasswordChange({
                 new_password: password,
                 platform: CFDPlatforms.MT5,
             });
         }
 
-        createPassword(password);
+        await createPassword(password);
     };
 
     const createPassword = (password: string) =>

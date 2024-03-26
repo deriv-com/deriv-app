@@ -44,22 +44,6 @@ declare global {
     }
 }
 
-// This is a temporary workaround to share a single `QueryClient` instance between all the packages.
-const getSharedQueryClientContext = (): QueryClient => {
-    if (!window.ReactQueryClient) {
-        window.ReactQueryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    refetchOnWindowFocus: false,
-                    refetchOnReconnect: false,
-                },
-            },
-        });
-    }
-
-    return window.ReactQueryClient;
-};
-
 /**
  * Retrieves the WebSocket URL based on the current environment.
  * @returns {string} The WebSocket URL.
@@ -133,7 +117,14 @@ const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAP
     return window.DerivAPI?.[wss_url];
 };
 
-const queryClient = getSharedQueryClientContext();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+        },
+    },
+});
 
 type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */

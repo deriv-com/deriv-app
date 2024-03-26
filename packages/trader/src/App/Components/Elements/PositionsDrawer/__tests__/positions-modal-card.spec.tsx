@@ -40,12 +40,10 @@ const default_mock_props: React.ComponentProps<typeof PositionsModalCard> = {
     indicative: 23.45,
     is_loading: false,
     is_sell_requested: false,
-    is_unsupported: true,
     onClickSell: jest.fn(),
     profit_loss: 3,
     onClickCancel: jest.fn(),
     togglePositions: jest.fn(),
-    toggleUnsupportedContractModal: jest.fn(),
 };
 
 const default_mock_store = {
@@ -111,13 +109,8 @@ describe('<PositionsModalCard />', () => {
         );
     };
 
-    it('should render loader if underlying in contract_info is falsy and contract is unsupported', () => {
-        render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
-
-        expect(screen.getByText(positions_card_loader)).toBeInTheDocument();
-    });
     it('should render loader if underlying in contract_info is falsy and contract is supported', () => {
-        render(mockPositionsModalCard(mockStore(default_mock_store), { ...default_mock_props, is_unsupported: false }));
+        render(mockPositionsModalCard(mockStore(default_mock_store), { ...default_mock_props }));
 
         expect(screen.getByText(positions_card_loader)).toBeInTheDocument();
     });

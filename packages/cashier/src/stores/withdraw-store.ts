@@ -265,7 +265,7 @@ export default class WithdrawStore {
 
     get is_withdrawal_locked() {
         const { client } = this.root_store;
-        const { authentication } = client.account_status;
+        const { authentication } = client?.account_status || {};
 
         if (!client.account_status?.status) return false;
         const need_poi = authentication?.needs_verification.includes('identity');

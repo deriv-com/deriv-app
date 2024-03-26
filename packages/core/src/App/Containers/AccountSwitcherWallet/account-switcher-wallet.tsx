@@ -59,7 +59,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
                 type='button'
             >
                 <Text size='xs' line_height='xl'>
-                    <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
+                    <Localize i18n_default_text='Looking for CFDs? Go to Trader’s Hub' />
                 </Text>
                 <Icon
                     data_testid='dt_go_to_arrow'

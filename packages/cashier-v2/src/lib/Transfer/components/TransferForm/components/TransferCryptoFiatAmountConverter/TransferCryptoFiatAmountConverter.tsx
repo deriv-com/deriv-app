@@ -1,16 +1,8 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { CryptoFiatConverter } from '../../../../../../components';
-import { TCurrency } from '../../../../../../types';
+import { DeepNonNullable, TCurrency } from '../../../../../../types';
 import { TTransferFormikContext } from '../../../../types';
-
-type DeepNonNullable<T> = NonNullable<
-    T extends object
-        ? {
-              [K in keyof T]-?: DeepNonNullable<T[K]>;
-          }
-        : NonNullable<T>
->;
 
 const TransferCryptoFiatAmountConverter = () => {
     const { values } = useFormikContext<DeepNonNullable<TTransferFormikContext>>();

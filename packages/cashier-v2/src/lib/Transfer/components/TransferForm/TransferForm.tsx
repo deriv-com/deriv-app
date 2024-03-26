@@ -74,10 +74,6 @@ const TransferForm = () => {
                         <Text className={styles.title} weight='bold'>
                             Transfer between your accounts in Deriv
                         </Text>
-                        {/* <TransferFormAccountSelection setValidationSchema={setValidationSchema} /> */}
-                        {/*                         {values.fromAccount &&
-                            values.toAccount &&
-                            values.fromAccount.currency !== values.toAccount.currency && <TransferPercentageSelector />} */}
                         <TransferCryptoFiatAmountConverter />
                         <div className={styles['button-group']}>
                             <Button

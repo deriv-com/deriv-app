@@ -349,7 +349,7 @@ export default class NotificationStore extends BaseStore {
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
             const {
-                authentication: { document, identity, income, needs_verification, ownership },
+                authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
                 cashier_validation,
             } = account_status;

@@ -1,12 +1,9 @@
 import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import debounce from 'lodash.debounce';
 import { Input, Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
 
 type TQSInput = {
     name: string;
@@ -31,41 +28,17 @@ const QSInput: React.FC<TQSInput> = observer(
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        const debounceInputChange = React.useCallback(
-            // Need the useCallback to stop the debounce function from being recreated on every render
-            debounce(rudderStackSendQsParameterChangeEvent, DEBOUNCE_INTERVAL_TIME, {
-                trailing: true,
-                leading: false,
-            }),
-            []
-        );
-
         const handleButtonInputChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
             onChange(name, value);
             setFieldTouched(name, true, true);
             setFieldValue(name, value);
-            debounceInputChange({
-                parameter_type: name,
-                parameter_value: value,
-                parameter_field_type: 'number',
-                manual_parameter_input: 'no',
-                plus_minus_push: 'yes',
-            });
         };
 
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const input_value = e.target.value;
             const value = is_number ? Number(input_value) : input_value;
             onChange(name, value);
-            debounceInputChange({
-                parameter_type: name,
-                parameter_value: value,
-                parameter_field_type: 'number',
-                manual_parameter_input: 'yes',
-                plus_minus_push: 'no',
-            });
         };
 
         return (

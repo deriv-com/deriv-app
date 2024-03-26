@@ -25,7 +25,7 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
     } = client;
     const { closeModal, selected_region, openFailedVerificationModal } = traders_hub;
     const { openRealAccountSignup, toggleSetCurrencyModal } = ui;
-    const { authentication } = account_status;
+    const { authentication } = account_status || {};
 
     const mf_account_status = useMFAccountStatus();
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(

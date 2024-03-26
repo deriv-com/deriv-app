@@ -6,6 +6,10 @@ jest.mock('../../../../../components', () => ({
     SearchBox: jest.fn(() => <div>SearchBox</div>),
 }));
 
+jest.mock('../../../provider', () => ({
+    usePaymentAgentContext: jest.fn(() => ({ onChangeSearchTermHandler: jest.fn() })),
+}));
+
 describe('PaymentAgentSearchBox', () => {
     it('should render PaymentAgentSearchBox', () => {
         render(<PaymentAgentSearchBox />);

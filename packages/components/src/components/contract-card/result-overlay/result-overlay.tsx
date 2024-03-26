@@ -14,9 +14,7 @@ type TResultOverlayProps = {
     getContractPath?: TGetContractPath;
     is_multiplier?: boolean;
     is_positions?: boolean;
-    is_unsupported?: boolean;
     is_visible: boolean;
-    onClick: () => void;
     onClickRemove?: (contract_id?: number) => void;
     payout_info: number;
     result: string;
@@ -45,20 +43,11 @@ const ResultOverlay = ({
     getCardLabels,
     getContractPath,
     is_positions,
-    is_unsupported,
     is_visible,
-    onClick,
     onClickRemove,
     payout_info,
     result,
 }: TResultOverlayProps) => {
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (is_unsupported) {
-            e.preventDefault();
-            onClick();
-        }
-    };
-
     const is_contract_won = result === 'won';
 
     return (
@@ -91,11 +80,7 @@ const ResultOverlay = ({
                         />
                     )}
                     {getContractPath && (
-                        <NavLink
-                            className='dc-result__caption-wrapper'
-                            to={getContractPath(contract_id)}
-                            onClick={handleClick}
-                        />
+                        <NavLink className='dc-result__caption-wrapper' to={getContractPath(contract_id)} />
                     )}
                     <div className='dc-result__content'>
                         <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />

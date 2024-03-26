@@ -30,7 +30,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
 
     React.useEffect(() => {
-        initDatadog(tracking_datadog);
         if (process.env.RUDDERSTACK_KEY && tracking_rudderstack) {
             const config = {
                 growthbookKey: marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
@@ -49,7 +48,11 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data]);
+    }, [data.marketing_growthbook]);
+
+    React.useEffect(() => {
+        initDatadog(data.tracking_datadog);
+    }, [data.tracking_datadog]);
 
     return (
         <PlatformContainer>

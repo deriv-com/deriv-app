@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Control, Controller, FieldValues, useForm } from 'react-hook-form';
-import { TAdvertiserPaymentMethods, TAdvertType } from 'types';
-import { BUY_SELL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
+import { useHistory } from 'react-router-dom';
+import { TAdvertType, THooks } from 'types';
+import { BASE_URL, BUY_SELL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
 import {
     getPaymentMethodObjects,
     getTextFieldError,
@@ -21,17 +22,18 @@ import './BuySellForm.scss';
 type TPayload = Omit<Parameters<ReturnType<typeof p2p.order.useCreate>['mutate']>[0], 'payment_method_ids'> & {
     payment_method_ids?: number[];
 };
+
 type TBuySellFormProps = {
     advert: TAdvertType;
     advertiserBuyLimit: number;
-    advertiserPaymentMethods: TAdvertiserPaymentMethods;
+    advertiserPaymentMethods: THooks.AdvertiserPaymentMethods.Get;
     advertiserSellLimit: number;
     balanceAvailable: number;
     displayEffectiveRate: string;
     effectiveRate: number;
     isModalOpen: boolean;
     onRequestClose: () => void;
-    paymentMethods: ReturnType<typeof p2p.paymentMethods.useGet>['data'];
+    paymentMethods: THooks.PaymentMethods.Get;
 };
 
 const getAdvertiserMaxLimit = (
@@ -58,7 +60,7 @@ const BuySellForm = ({
     onRequestClose,
     paymentMethods,
 }: TBuySellFormProps) => {
-    const { mutate } = p2p.order.useCreate();
+    const { data: orderCreatedInfo, isSuccess, mutate } = p2p.order.useCreate();
     const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<number[]>([]);
 
     const {
@@ -88,6 +90,7 @@ const BuySellForm = ({
         };
     });
 
+    const history = useHistory();
     const { isMobile } = useDevice();
     const isBuy = type === BUY_SELL.BUY;
 
@@ -142,6 +145,13 @@ const BuySellForm = ({
             setSelectedPaymentMethods([...selectedPaymentMethods, paymentMethodId]);
         }
     };
+
+    useEffect(() => {
+        if (isSuccess && orderCreatedInfo) {
+            history.push(`${BASE_URL}/orders?order=${orderCreatedInfo.id}`);
+            onRequestClose();
+        }
+    }, [isSuccess, orderCreatedInfo, history, onRequestClose]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

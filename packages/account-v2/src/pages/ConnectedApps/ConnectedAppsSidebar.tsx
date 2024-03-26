@@ -6,11 +6,11 @@ export const ConnectedAppsSidebar = () => {
         window.open(
             'https://community.deriv.com/t/api-tokens-managing-access-on-third-party-applications-and-mobile-apps/29159',
             '_blank',
-            'noopener'
+            'noopener noreferrer'
         );
     };
     const openDerivAPIWebsite = () => {
-        window.open('https://api.deriv.com/', '_blank', 'noopener');
+        window.open('https://api.deriv.com/', '_blank', 'noopener noreferrer');
     };
     return (
         <div className='flex flex-col items-center gap-16'>

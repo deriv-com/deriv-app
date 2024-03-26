@@ -5,6 +5,7 @@ import { ConnectedAppsTable } from './ConnectedAppsTable';
 import { ErrorMessage } from '../../components/ErrorMessage';
 import { ConnectedAppsSidebar } from './ConnectedAppsSidebar';
 import { ConnectedAppsInfo } from './ConnectedAppsInfo';
+import { ConnectedAppsEmpty } from './ConnectedAppsEmpty';
 
 export const ConnectedApps = () => {
     const { data: connectedApps, isError, isLoading } = useFetchConnectedApps();
@@ -17,11 +18,13 @@ export const ConnectedApps = () => {
         <div className='grid grid-cols-[auto,256px] gap-24'>
             <section>
                 {isError && <ErrorMessage />}
-                {connectedApps?.length && (
+                {connectedApps?.length ? (
                     <div className='flex flex-col gap-24'>
                         <ConnectedAppsInfo />
                         <ConnectedAppsTable connectedApps={connectedApps} />
                     </div>
+                ) : (
+                    <ConnectedAppsEmpty />
                 )}
             </section>
             <section>

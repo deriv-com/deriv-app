@@ -8,7 +8,6 @@ const default_mocked_props = {
     getCardLabels: () => ({ CLOSED: 'Closed' }),
     getContractPath: jest.fn(),
     is_positions: true,
-    is_unsupported: false,
     is_visible: true,
     onClick: jest.fn(),
     onClickRemove: jest.fn(),

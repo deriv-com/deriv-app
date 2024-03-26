@@ -6,9 +6,9 @@ import {
     extractInfoFromShortcode,
     formatDate,
     getContractPath,
-    getSupportedContracts,
     getUnsupportedContracts,
     isForwardStarting,
+    hasForwardContractStarted,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -21,8 +21,8 @@ import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
-import { TSupportedContractType, TUnsupportedContractType } from 'Types';
-import { TSource } from '@deriv/components/src/components/data-table/data-table';
+import { TUnsupportedContractType } from 'Types';
+import { TSource } from '@deriv/components/src/components/data-table/table-row';
 import { TRow } from '@deriv/components/src/components/types/common.types';
 
 type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
@@ -85,43 +85,53 @@ type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof Dat
 
 const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
-    if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-        const contract_type = extractInfoFromShortcode(row_obj.shortcode)?.category?.toUpperCase();
-        action =
-            getSupportedContracts()[contract_type as TSupportedContractType] &&
-            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
-                ? getContractPath(row_obj.id)
-                : {
-                      message: '',
-                      component: (
-                          <Localize
-                              i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
-                              values={{
-                                  trade_type_name:
-                                      getUnsupportedContracts()[contract_type as TUnsupportedContractType]?.name,
-                              }}
-                          />
-                      ),
-                  };
-    } else if (row_obj.action_type === 'withdrawal') {
-        if (row_obj.withdrawal_details && row_obj.longcode) {
+    const { action_type, desc, id, is_sold, longcode, purchase_time, shortcode, transaction_time, withdrawal_details } =
+        row_obj;
+    if (id && ['buy', 'sell'].includes(action_type)) {
+        const contract_type = extractInfoFromShortcode(shortcode)?.category?.toUpperCase();
+        const unsupportedContractConfig = getUnsupportedContracts()[contract_type as TUnsupportedContractType];
+        const shouldShowForwardStartingNotification =
+            isForwardStarting(shortcode, purchase_time || transaction_time) &&
+            !hasForwardContractStarted(shortcode) &&
+            action_type !== 'sell' &&
+            !is_sold;
+        action = unsupportedContractConfig
+            ? {
+                  message: '',
+                  component: (
+                      <Localize
+                          i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
+                          values={{
+                              trade_type_name: unsupportedContractConfig?.name,
+                          }}
+                      />
+                  ),
+              }
+            : getContractPath(id);
+        if (shouldShowForwardStartingNotification)
             action = {
-                message: `${row_obj.withdrawal_details} ${row_obj.longcode}`,
+                message: '',
+                component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
+            };
+    } else if (action_type === 'withdrawal') {
+        if (withdrawal_details && longcode) {
+            action = {
+                message: `${withdrawal_details} ${longcode}`,
             };
         } else {
             action = {
-                message: row_obj.desc,
+                message: desc,
             };
         }
-    } else if (row_obj.desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)) {
+    } else if (desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(action_type)) {
         action = {
-            message: row_obj.desc,
+            message: desc,
         };
     }
 
     // add typeof check because action can be object or string
     if (typeof action === 'object' && action?.message) {
-        action.component = <DetailsComponent message={action.message} action_type={row_obj.action_type} />;
+        action.component = <DetailsComponent message={action.message} action_type={action_type} />;
     }
 
     return action;

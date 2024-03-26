@@ -51,8 +51,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [data.marketing_growthbook]);
 
     React.useEffect(() => {
-        initDatadog(data.tracking_datadog);
-    }, [data.tracking_datadog]);
+        initDatadog(tracking_datadog);
+    }, [tracking_datadog]);
 
     return (
         <PlatformContainer>

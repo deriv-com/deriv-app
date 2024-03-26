@@ -84,16 +84,6 @@ const getWebsocketInstance = (wss_url: string, onWSClose: () => void, onOpen?: (
     return connections[wss_url];
 };
 
-/**
- * Retrieves the active WebSocket instance.
- * @returns {WebSocket} The WebSocket instance associated with the provided URL.
- */
-export const getActiveWebsocket = () => {
-    const wss_url = getWebSocketURL();
-
-    return window?.WSConnections?.[wss_url];
-};
-
 let derivApi: DerivAPIBasic;
 
 /**

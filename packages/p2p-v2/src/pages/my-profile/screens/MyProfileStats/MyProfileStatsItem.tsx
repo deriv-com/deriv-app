@@ -29,6 +29,7 @@ const MyProfileStatsItem = ({
         onClickLifetime?.(showLifetime);
     };
 
+    // TODO: Replace the button components below with Button once you can remove hover effect from Button
     return (
         <div className='p2p-v2-my-profile-stats__item' data-testid={testId}>
             <div>

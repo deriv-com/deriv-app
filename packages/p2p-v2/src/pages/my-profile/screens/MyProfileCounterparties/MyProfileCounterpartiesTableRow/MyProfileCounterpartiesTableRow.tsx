@@ -7,15 +7,11 @@ import './MyProfileCounterpartiesTableRow.scss';
 
 type TMyProfileCounterpartiesTableRowProps = {
     id: string;
-    is_blocked: boolean;
+    isBlocked: boolean;
     nickname: string;
 };
 
-const MyProfileCounterpartiesTableRow = ({
-    id,
-    is_blocked: isBlocked,
-    nickname,
-}: TMyProfileCounterpartiesTableRowProps) => {
+const MyProfileCounterpartiesTableRow = ({ id, isBlocked, nickname }: TMyProfileCounterpartiesTableRowProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { isMobile } = useDevice();
 

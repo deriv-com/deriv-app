@@ -24,26 +24,34 @@ const PaymentMethodFormModalRenderer = ({
     setIsModalOpen,
     updateError,
 }: TPaymentMethodFormModalRendererProps) => {
-    const isAdd = actionType === 'ADD' && (!isCreateSuccessful || !createError) && isModalOpen;
-    const isEdit = actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && isModalOpen;
-
-    if (isAdd || isEdit) {
+    if (actionType === 'ADD' && (!isCreateSuccessful || !createError) && isModalOpen) {
         return (
-            // TODO: Remember to translate these strings
             <PaymentMethodModal
-                description={
-                    isAdd
-                        ? 'If you choose to cancel, the changes you’ve made will be lost.'
-                        : 'If you choose to cancel, the details you’ve entered will be lost.'
-                }
+                description='If you choose to cancel, the changes you’ve made will be lost.'
                 isModalOpen={isModalOpen}
                 onConfirm={onResetFormState}
                 onReject={() => {
                     setIsModalOpen(false);
                 }}
-                primaryButtonLabel={isAdd ? 'Go back' : "Don't cancel"}
+                primaryButtonLabel='Go back'
                 secondaryButtonLabel='Cancel'
-                title={isAdd ? 'Cancel adding this payment method?' : 'Cancel your edits?'}
+                title='Cancel adding this payment method?'
+            />
+        );
+    }
+
+    if (actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && isModalOpen) {
+        return (
+            <PaymentMethodModal
+                description='If you choose to cancel, the details you’ve entered will be lost.'
+                isModalOpen={isModalOpen}
+                onConfirm={onResetFormState}
+                onReject={() => {
+                    setIsModalOpen(false);
+                }}
+                primaryButtonLabel="Don't cancel"
+                secondaryButtonLabel='Cancel'
+                title='Cancel your edits?'
             />
         );
     }

@@ -29,6 +29,8 @@ const PaymentMethodsFormFooter = ({
     isValid,
 }: TPaymentMethodsFormFooterProps) => {
     const { isMobile } = useDevice();
+    const textSize = isMobile ? 'lg' : 'sm';
+
     return (
         <div className='p2p-v2-payment-methods-form-footer' role='payment-methods-form-footer'>
             <Button
@@ -41,13 +43,13 @@ const PaymentMethodsFormFooter = ({
                     handleGoBack();
                 }}
                 size='lg'
-                textSize={isMobile ? 'lg' : 'sm'}
+                textSize={textSize}
                 variant='outlined'
             >
                 Cancel
             </Button>
             {/* TODO: Remember to translate these */}
-            <Button disabled={isSubmitting || !isValid || !isDirty} size='lg' textSize={isMobile ? 'lg' : 'sm'}>
+            <Button disabled={isSubmitting || !isValid || !isDirty} size='lg' textSize={textSize}>
                 {actionType === 'ADD' ? 'Add' : 'Save changes'}
             </Button>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import { supportProfessionalClientInfo } from '../../../constants/supportProfessionalClientConstants';
 import { usePersonalDetails } from '../../../hooks/usePersonalDetails';
 import { SupportProfessionalClient } from '../SupportProfessionalClient';
 
@@ -30,19 +31,9 @@ describe('PersonalDetails', () => {
         );
     };
 
-    const description1 =
-        'By default, all Deriv.com clients are retail clients but anyone can request to be treated as a professional client.';
-    const description2 = 'A professional client receives a lower degree of client protection due to the following.';
-    const description3 =
-        'We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved.';
-    const description4 =
-        'We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.';
-
-    const professionalClientDescriptions = [description1, description2, description3, description4];
-
     it('should render SupportProfessionalClient component', () => {
         renderComponent(<SupportProfessionalClient />);
-        professionalClientDescriptions.forEach(professionalClientDescription =>
+        supportProfessionalClientInfo.forEach(professionalClientDescription =>
             expect(screen.getByText(professionalClientDescription)).toBeInTheDocument()
         );
     });

@@ -58,33 +58,30 @@ const getWebSocketURL = () => {
     return wss_url;
 };
 
+const connections: Record<string, WebSocket> = {};
 /**
  * Retrieves or initializes a WebSocket instance based on the provided URL.
  * @param {string} wss_url - The WebSocket URL.
  * @returns {WebSocket} The WebSocket instance associated with the provided URL.
  */
 const getWebsocketInstance = (wss_url: string, onWSClose: () => void, onOpen?: () => void) => {
-    if (!window.WSConnections) {
-        window.WSConnections = {};
-    }
-
-    const existingWebsocketInstance = window.WSConnections[wss_url];
+    const existingWebsocketInstance = connections[wss_url];
     if (
         !existingWebsocketInstance ||
         !(existingWebsocketInstance instanceof WebSocket) ||
         [2, 3].includes(existingWebsocketInstance.readyState)
     ) {
-        window.WSConnections[wss_url] = new WebSocket(wss_url);
-        window.WSConnections[wss_url].addEventListener('close', () => {
+        connections[wss_url] = new WebSocket(wss_url);
+        connections[wss_url].addEventListener('close', () => {
             if (typeof onWSClose === 'function') onWSClose();
         });
 
-        window.WSConnections[wss_url].addEventListener('open', () => {
+        connections[wss_url].addEventListener('open', () => {
             if (typeof onOpen === 'function') onOpen();
         });
     }
 
-    return window.WSConnections[wss_url];
+    return connections[wss_url];
 };
 
 /**
@@ -134,6 +131,17 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
 
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
+
+    useEffect(() => {
+        return () => {
+            // use object.keys to iterate
+            const urls = Object.keys(connections);
+            for (const i = 0; i < urls.length; i++) {
+                const url = urls[i];
+                connections[url].close();
+            }
+        };
+    }, []);
 
     if (!standaloneDerivAPI.current)
         standaloneDerivAPI.current = standalone ? initializeDerivAPI(() => setReconnect(true)) : null;

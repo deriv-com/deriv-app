@@ -17,13 +17,11 @@ export const ConnectedApps = () => {
         <div className='grid grid-cols-[auto,256px] gap-24'>
             <section>
                 {isError && <ErrorMessage />}
-                {connectedApps?.length ? (
-                    <div>
+                {connectedApps?.length && (
+                    <div className='flex flex-col gap-24'>
                         <ConnectedAppsInfo />
                         <ConnectedAppsTable connectedApps={connectedApps} />
                     </div>
-                ) : (
-                    <span>helo</span>
                 )}
             </section>
             <section>

@@ -15,7 +15,7 @@ export const ConnectedAppsSidebar = () => {
     return (
         <div className='flex flex-col items-center gap-16'>
             <SideNote
-                actionClassName='mb-8 mt-16'
+                actionClassName='mt-16'
                 actionClick={() => openAPIManagingWebsite()}
                 actionLabel='Learn more'
                 className='w-auto text-sm'
@@ -24,7 +24,7 @@ export const ConnectedAppsSidebar = () => {
                 Go to our Deriv community and learn about APIs, API tokens, ways to use Deriv APIs, and more.
             </SideNote>
             <SideNote
-                actionClassName='mb-8 mt-16'
+                actionClassName='mt-16'
                 actionClick={() => openDerivAPIWebsite()}
                 actionLabel='Learn more'
                 className='w-auto text-sm'

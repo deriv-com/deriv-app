@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { LoginHistory } from '@deriv/api-types';
 import { Table } from '@deriv-com/ui';
-import { useFormattedLoginHistoryData } from '../../hooks/useFormattedLoginHistoryData';
+import { formattedLoginHistoryData } from '../../pages/LoginHistory/formattedLoginHistoryData';
 
 type TLoginHistoryData = {
     loginHistory: LoginHistory;
@@ -18,13 +18,14 @@ const headers = {
 const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as const;
 
 export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryData) => {
+    const formattedLoginHistory = useMemo(() => formattedLoginHistoryData(loginHistory), [loginHistory]);
     const columns = columnOrder.map(key => ({ header: headers[key] }));
+
     return (
-        // formatedUtils
         <div className='flex flex-col'>
             <Table
                 columns={columns}
-                data={useFormattedLoginHistoryData(loginHistory) ?? []}
+                data={formattedLoginHistory}
                 isFetching={false}
                 // eslint-disable-next-line @typescript-eslint/no-empty-function
                 loadMoreFunction={() => {}}

@@ -11,11 +11,11 @@ type TSetFinancialAssessmentPayload = NonNullable<
 
 /** A custom hook to get and update the user financial assessment. */
 const useFinancialAssessment = () => {
+    const invalidate = useInvalidateQuery();
     const { data, ...rest } = useQuery('get_financial_assessment');
     const { mutate, ...mutate_rest } = useMutation('set_financial_assessment', {
         onSuccess: () => invalidate('get_financial_assessment'),
     });
-    const invalidate = useInvalidateQuery();
 
     const update = useCallback((payload: TSetFinancialAssessmentPayload) => mutate({ payload }), [mutate]);
 

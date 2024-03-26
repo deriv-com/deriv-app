@@ -1,18 +1,18 @@
 import React, { Fragment, useState } from 'react';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { shouldHideOccupation } from 'src/utils/financialAssessmentUtils';
+import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
 import { DerivLightIcPoaLockIcon, StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { ActionScreen, Button, InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
-import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
-import { DemoMessage } from '../../components/DemoMessage';
 import IcSuccess from '../../assets/status-message/ic-success.svg';
-import { ACCOUNT_V2_DEFAULT_ROUTE, ACCOUNT_V2_ROUTES } from '../../constants/routes';
-import { shouldHideOccupation } from '../../utils/financialAssessmentUtils';
+import { DemoMessage } from '../../components/DemoMessage';
+import { ACCOUNT_V2_DEFAULT_ROUTE, ACCOUNT_V2_ROUTES, DERIV_GO_URL, P2P_URL } from '../../constants/routes';
+import { FinancialAssessmentConfirmModal } from '../../containers/FinancialAssessmentConfirmModal';
+import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
 import { FinancialAssessmentFields } from '../FinancialAssessmentFields';
 import { TradingExperienceFields } from '../TradingExperienceFields';
 import type { TFinancialAssessmentPayload } from '../types';
-import { FinancialAssessmentConfirmModal } from '../../containers/FinancialAssessmentConfirmModal';
-import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
 
 export const FinancialAssessmentForm = () => {
     const { data: activeAccount } = useActiveTradingAccount();
@@ -21,14 +21,17 @@ export const FinancialAssessmentForm = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
 
-    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(true);
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
     const redirect = isNavigationFromDerivGO() || isNavigationFromP2P();
     const redirectPlatformName = isNavigationFromDerivGO() ? 'Deriv GO' : 'Deriv P2P';
-    const redirectUrl = isNavigationFromDerivGO() ? 'https://app.deriv.com' : '';
+    const redirectUrl = isNavigationFromDerivGO() ? DERIV_GO_URL : P2P_URL;
 
-    const { is_authenticated: isAuthenticated, is_trading_experience_not_complete: isTradingExperienceNotComplete } =
-        accountStatus;
+    const {
+        is_authenticated: isAuthenticated,
+        is_financial_information_not_complete: isFinancialInformationNotComplete,
+        is_trading_experience_not_complete: isTradingExperienceNotComplete,
+    } = accountStatus || {};
     const hasTradingExperience = isEUCountry || isTradingExperienceNotComplete;
 
     const {
@@ -38,9 +41,9 @@ export const FinancialAssessmentForm = () => {
         mutation: {
             error: financialAssessmentUpdateError,
             isLoading: isFinancialAssessmentUpdating,
-            mutateAsync: updateFinancialAssessment,
-            success: isFinancialAssessmentUpdateSuccess,
+            isSuccess: isFinancialAssessmentUpdateSuccess,
         },
+        update: updateFinancialAssessment,
     } = useFinancialAssessment();
 
     const {
@@ -95,39 +98,28 @@ export const FinancialAssessmentForm = () => {
         }
     };
 
-    const handleFormSubmit = async (
-        values: TFinancialAssessmentFormValues,
-        { setStatus }: FormikHelpers<TFinancialAssessmentFormValues>
-    ) => {
-        try {
-            await updateFinancialAssessment({
-                payload: {
-                    account_turnover: values.accountTurnover,
-                    education_level: values.educationLevel,
-                    employment_industry: values.employmentIndustry,
-                    employment_status: values.employmentStatus,
-                    estimated_worth: values.estimatedWorth,
-                    income_source: values.incomeSource,
-                    net_income: values.netIncome,
-                    source_of_wealth: values.sourceOfWealth,
-                    ...(shouldHideOccupation(values.employmentStatus ?? '') ? {} : { occupation: values.occupation }),
-                    ...(hasTradingExperience && {
-                        binary_options_trading_experience: values.binaryOptionsTradingExperience,
-                        binary_options_trading_frequency: values.binaryOptionsTradingFrequency,
-                        cfd_trading_experience: values.cfdTradingExperience,
-                        cfd_trading_frequency: values.cfdTradingFrequency,
-                        forex_trading_experience: values.forexTradingExperience,
-                        forex_trading_frequency: values.forexTradingFrequency,
-                        other_instruments_trading_experience: values.otherInstrumentsTradingExperience,
-                        other_instruments_trading_frequency: values.otherInstrumentsTradingFrequency,
-                    }),
-                } as TFinancialAssessmentPayload,
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                setStatus({ message: error.message });
-            }
-        }
+    const handleFormSubmit = async (values: TFinancialAssessmentFormValues) => {
+        updateFinancialAssessment({
+            account_turnover: values.accountTurnover,
+            education_level: values.educationLevel,
+            employment_industry: values.employmentIndustry,
+            employment_status: values.employmentStatus,
+            estimated_worth: values.estimatedWorth,
+            income_source: values.incomeSource,
+            net_income: values.netIncome,
+            source_of_wealth: values.sourceOfWealth,
+            ...(shouldHideOccupation(values.employmentStatus) ? {} : { occupation: values.occupation }),
+            ...(hasTradingExperience && {
+                binary_options_trading_experience: values.binaryOptionsTradingExperience,
+                binary_options_trading_frequency: values.binaryOptionsTradingFrequency,
+                cfd_trading_experience: values.cfdTradingExperience,
+                cfd_trading_frequency: values.cfdTradingFrequency,
+                forex_trading_experience: values.forexTradingExperience,
+                forex_trading_frequency: values.forexTradingFrequency,
+                other_instruments_trading_experience: values.otherInstrumentsTradingExperience,
+                other_instruments_trading_frequency: values.otherInstrumentsTradingFrequency,
+            }),
+        });
     };
 
     const onSuccessActionButton = () => {
@@ -138,6 +130,11 @@ export const FinancialAssessmentForm = () => {
     };
 
     if (activeAccount?.is_virtual) return <DemoMessage />;
+
+    if (isFinancialAssessmentLoading) return <Loader />;
+
+    if (fetchError)
+        return <ActionScreen icon={<DerivLightIcPoaLockIcon width={128} />} title={fetchError.error.message} />;
 
     if (isMobile && isAuthenticated && !isEUCountry && isFinancialAssessmentUpdateSuccess)
         return (
@@ -152,11 +149,6 @@ export const FinancialAssessmentForm = () => {
                 title='Financial assessment submitted successfully'
             />
         );
-
-    if (isFinancialAssessmentLoading) return <Loader />;
-
-    if (fetchError)
-        return <ActionScreen icon={<DerivLightIcPoaLockIcon width={128} />} title={fetchError.error.message} />;
 
     return (
         <Fragment>
@@ -176,6 +168,13 @@ export const FinancialAssessmentForm = () => {
             <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
                 {({ dirty, handleSubmit, isSubmitting, isValid }) => (
                     <Form>
+                        {isEUCountry && isFinancialInformationNotComplete && !isFinancialAssessmentUpdateSuccess && (
+                            <InlineMessage type='filled' variant='warning'>
+                                {isMobile
+                                    ? 'To enable withdrawals, please complete your financial assessment.'
+                                    : 'You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.'}
+                            </InlineMessage>
+                        )}
                         <div className='flex flex-col w-full min-h-screen space-y-16 lg:w-auto'>
                             <div className='m-0 overflow-y-auto'>
                                 <div className='flex mb-12 h-24 gap-8 self-stretch lg:self-auto justify-center items-center lg:gap-[11px]'>

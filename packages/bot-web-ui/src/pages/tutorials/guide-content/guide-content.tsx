@@ -181,6 +181,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                     </Dialog>
                 </div>
             ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [guide_tab_content, video_tab_content, is_dialog_open]
     );
 };

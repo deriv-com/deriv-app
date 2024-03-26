@@ -44,6 +44,8 @@ describe('Personal Details Validation Schema', () => {
             firstName: 'John',
             lastName: 'Doe',
             phoneNumber: '+0123456789',
+            taxIdentificationNumber: '123123123',
+            taxResidence: 'Indonesia',
         };
 
         await expect(validationSchema.validate(validData)).resolves.toBe(validData);

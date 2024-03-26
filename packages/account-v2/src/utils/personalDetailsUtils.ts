@@ -135,7 +135,13 @@ export const getPersonalDetailsBaseValidationSchema = () => {
             .min(9, phoneNumberLengthMessage)
             .max(35, phoneNumberLengthMessage),
         placeOfBirth: Yup.string().required('Place of birth is required.'),
-        taxIdentificationNumber: Yup.string(),
+        taxIdentificationNumber: Yup.string()
+            .required('TIN is required.')
+            .max(25, "Tax Identification Number can't be longer than 25 characters.")
+            .matches(
+                regexPattern.taxIdentificationNumber,
+                'Only letters, numbers, space, hyphen, period, and forward slash are allowed.'
+            ),
         taxInfoConfirmation: Yup.boolean().when(['taxIdentificationNumber', 'taxResidence'], {
             is: (taxIdentificationNumber: string, taxResidence: string) => taxIdentificationNumber && taxResidence,
             otherwise: Yup.boolean(),

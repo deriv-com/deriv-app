@@ -1,4 +1,4 @@
-import { observer as globalObserver } from './../tradeEngine/utils/observer';
+import { observer as globalObserver } from '../tradeEngine/utils/observer';
 import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
 
@@ -87,7 +87,7 @@ class APIBase {
 
     async subscribe() {
         await Promise.all([
-            doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 })),
+            doUntilDone(() => this.api.send({ balance: 1, account: 'all', subscribe: 1 })),
             doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 })),
             doUntilDone(() => this.api.send({ proposal_open_contract: 1, subscribe: 1 })),
         ]);

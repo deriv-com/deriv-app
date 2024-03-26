@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { ChartTitle } from 'Modules/SmartChart';
 import { useTraderStore } from 'Stores/useTraderStores';
 import RecentTradeInfo from './recent-trade-info';
-import { useDevice } from '@deriv/hooks';
 
 type TTopWidgets = {
     InfoBox?: React.ReactNode;

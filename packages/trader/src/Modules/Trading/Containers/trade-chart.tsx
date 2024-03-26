@@ -21,7 +21,7 @@ type TTradeChartProps = {
 const TradeChart = observer((props: TTradeChartProps) => {
     const { has_barrier, is_accumulator, topWidgets } = props;
     const { client, ui, common, contract_trade, portfolio } = useStore();
-    const { isDesktop, isMobile } = useDevice();
+    const { isMobile } = useDevice();
     const {
         accumulator_barriers_data,
         accumulator_contract_barriers_data,

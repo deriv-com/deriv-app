@@ -2658,9 +2658,10 @@ export default class ClientStore extends BaseStore {
         try {
             // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
             const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
+            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
             // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
             const is_supported_by_browser = await browserSupportsWebAuthn();
-            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser;
+            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
         } catch (e) {
             //error handling needed
         }

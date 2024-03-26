@@ -92,7 +92,7 @@ const AppModals = observer(() => {
         is_trading_experience_incomplete,
         mt5_login_list,
     } = client;
-    const { content_flag } = traders_hub;
+    const { content_flag, is_tour_open } = traders_hub;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -195,7 +195,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
     } else if (isUrlUnavailableModalVisible) {
         ComponentToLoad = <UrlUnavailableModal />;
-    } else if (show_effortless_login_modal) {
+    } else if (show_effortless_login_modal && !is_tour_open) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

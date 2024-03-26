@@ -1,12 +1,13 @@
 import { useQuery } from '@deriv/api';
-import useAuthorize from './useAuthorize';
+import { useStore } from '@deriv/stores';
 
-const useGetPasskeysList = (isFetchingAllowed: boolean) => {
-    const { isSuccess, isFetching } = useAuthorize();
+const useGetPasskeysList = () => {
+    const { client, ui } = useStore();
+    const { is_passkey_supported, is_logged_in } = client;
 
     const { data, error, isLoading, refetch, ...rest } = useQuery('passkeys_list', {
         options: {
-            enabled: isSuccess && !isFetching && isFetchingAllowed,
+            enabled: is_passkey_supported && is_logged_in,
         },
     });
 

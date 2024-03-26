@@ -24,7 +24,6 @@ describe('DepositFiat', () => {
             data: null,
             error: { error: serverError },
             isError: true,
-            isLoading: false,
             mutate: jest.fn(),
         });
 
@@ -32,13 +31,12 @@ describe('DepositFiat', () => {
         expect(screen.getByText('Server Error')).toBeInTheDocument();
     });
 
-    it('should render loader while loading', () => {
+    it('should render loader initially', () => {
         (useAuthorize as jest.Mock).mockReturnValueOnce({ isSuccess: false });
         (useCashierFiatAddress as jest.Mock).mockReturnValueOnce({
             data: null,
             error: null,
             isError: false,
-            isLoading: true,
             mutate: jest.fn(),
         });
 
@@ -47,32 +45,18 @@ describe('DepositFiat', () => {
         expect(screen.queryByTestId('dt_deposit-fiat-iframe')).not.toBeInTheDocument();
     });
 
-    it('should render iframe with correct iframe url', () => {
-        (useCashierFiatAddress as jest.Mock).mockReturnValueOnce({
-            data: 'https://iframe_url',
-            error: null,
-            isError: false,
-            isLoading: false,
-            mutate: jest.fn(),
-        });
-
-        render(<DepositFiat />);
-        const iframe = screen.getByTestId('dt_deposit-fiat-iframe');
-        expect(iframe).toHaveAttribute('src', 'https://iframe_url');
-    });
-
     it('should display iframe correctly after onLoad event', () => {
         (useCashierFiatAddress as jest.Mock).mockReturnValue({
             data: 'https://iframe_url',
             error: null,
             isError: false,
-            isLoading: false,
             mutate: jest.fn(),
         });
 
         render(<DepositFiat />);
 
         const iframe = screen.getByTestId('dt_deposit-fiat-iframe');
+        expect(iframe).toHaveAttribute('src', 'https://iframe_url');
         expect(iframe).toHaveStyle({ display: 'none' });
 
         fireEvent.load(iframe);

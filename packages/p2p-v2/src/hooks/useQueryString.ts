@@ -20,10 +20,12 @@ import { StringParam, useQueryParams } from 'use-query-params';
 function useQueryString() {
     const [query, setQuery] = useQueryParams({
         advertId: StringParam,
+        formAction: StringParam,
         modal: StringParam,
         paymentMethodId: StringParam,
         tab: StringParam,
     });
+
     /**
      * Removes the query string from the URL search string.
      * The rest of the query strings will be preserved.

@@ -63,17 +63,17 @@ export const getValidationRules = (
                     if (minOrder && Number(value) < Number(minOrder)) {
                         return 'Amount should not be below Min limit';
                     }
-                    return '';
+                    return true;
                 },
                 validation_5: value => {
                     const maxOrder = getValues('max-order');
-                    if (maxOrder && Number(value) > Number(maxOrder)) {
-                        return 'Amount should not exceed Max limit';
+                    if (maxOrder && Number(value) < Number(maxOrder)) {
+                        return 'Amount should not be below Max limit';
                     }
-                    return '';
+                    return true;
                 },
             };
-        case 'rate-type':
+        case 'rate-value':
             //TODO: validations to be changed considering float as well
             return {
                 validation_1: value => requiredValidation(value, 'Fixed rate'),
@@ -92,14 +92,14 @@ export const getValidationRules = (
                     if (getValues('amount') && Number(value) > Number(amount)) {
                         return 'Min limit should not exceed Amount';
                     }
-                    return '';
+                    return true;
                 },
                 validation_5: value => {
                     const maxOrder = getValues('max-order');
                     if (maxOrder && Number(value) > Number(maxOrder)) {
                         return 'Min limit should not exceed Max limit';
                     }
-                    return '';
+                    return true;
                 },
             };
         case 'max-order':
@@ -112,14 +112,14 @@ export const getValidationRules = (
                     if (amount && Number(value) > Number(amount)) {
                         return 'Max limit should not exceed Amount';
                     }
-                    return '';
+                    return true;
                 },
                 validation_5: value => {
                     const minOrder = getValues('min-order');
                     if (minOrder && Number(value) < Number(minOrder)) {
-                        return 'Amount should not be below Min limit';
+                        return 'Max limit should not be below Min limit';
                     }
-                    return '';
+                    return true;
                 },
             };
         default:

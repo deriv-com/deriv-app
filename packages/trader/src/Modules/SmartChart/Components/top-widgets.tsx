@@ -51,19 +51,10 @@ const TopWidgets = ({
         document.getElementById('app_contents') as Element | DocumentFragment
     );
 
-    if (is_mobile) {
-        return (
-            <React.Fragment>
-                {InfoBox}
-                {portal}
-            </React.Fragment>
-        );
-    }
-
     return (
         <React.Fragment>
             {InfoBox}
-            {ChartTitleLocal}
+            {is_mobile ? portal : ChartTitleLocal}
         </React.Fragment>
     );
 };

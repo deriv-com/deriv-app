@@ -21,7 +21,9 @@
 }
 
 .landscape-blocker {
-    display: none !important;
+    &--hidden {
+        display: none !important;
+    }
 }
 
 .app-contents {

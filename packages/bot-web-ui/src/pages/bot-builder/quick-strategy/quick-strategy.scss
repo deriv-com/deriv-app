@@ -578,9 +578,6 @@
     }
 
     &__checkbox {
-        height: var(--input-height);
-        background: var(--general-main-1);
-        border-radius: 0.4rem;
         @extend .x-center;
 
         &__container {
@@ -591,10 +588,17 @@
 
             .dc-checkbox {
                 margin-right: 1rem;
+                gap: 0.5rem;
 
-                .dc-text {
+                .dc-text:first-child {
                     font-weight: bold;
                 }
+            }
+
+            .dc-toggle-switch__label {
+                width: 4.6rem;
+                padding: 0 0.2rem;
+                background: var(--core-color-opacity-black-200, rgba(0, 0, 0, 0.16));
             }
         }
     }

@@ -185,6 +185,7 @@ const MAX_STAKE: TConfigItem = {
     name: 'max_stake',
     validation: ['number', 'required', 'ceil', 'min'],
     should_have: [{ key: 'boolean_max_stake', value: true }],
+    hide_without_should_have: true,
     attached: true,
     has_currency_unit: true,
 };

@@ -8,7 +8,7 @@ import TradeTypeSelect from './selects/trade-type';
 import ContractTypeSelect from './selects/contract-type';
 import DurationTypeSelect from './selects/duration-type';
 import QSInput from './inputs/qs-input';
-import QSCheckbox from './inputs/qs-checkbox';
+import QSCheckbox from './inputs/qs-toggle-switch';
 import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
 import { TConfigItem, TFormData, TShouldHave } from './types';

@@ -1,12 +1,12 @@
 import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 
-const useLoginHistory = (limit_value: number) => {
+const useLoginHistory = (limitValue: number) => {
     const { isSuccess } = useAuthorize();
 
     const { data, ...rest } = useQuery('login_history', {
         options: { enabled: isSuccess },
-        payload: { limit: limit_value },
+        payload: { limit: limitValue },
     });
 
     return {

@@ -9,36 +9,44 @@ import { WalletsActionScreen } from '../WalletsActionScreen';
 
 type WalletSuccessResetMT5PasswordProps = {
     isInvestorPassword?: boolean;
+    onClickSuccess?: () => void;
     title: string;
 };
 
 const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     isInvestorPassword = false,
+    onClickSuccess,
     title,
 }) => {
     const { hide } = useModal();
     const { isDesktop, isMobile } = useDevice();
 
+    const handleSuccess = useCallback(() => {
+        onClickSuccess?.();
+        hide();
+    }, [onClickSuccess, hide]);
+
     const renderFooter = useCallback(() => {
         return isMobile ? (
-            <WalletButton isFullWidth onClick={() => hide()} size='lg'>
+            <WalletButton isFullWidth onClick={handleSuccess} size='lg'>
                 <Trans defaults='Done' />
             </WalletButton>
         ) : null;
-    }, [isMobile, hide]);
+    }, [isMobile, handleSuccess]);
 
     const renderButtons = useCallback(() => {
         return isDesktop ? (
-            <WalletButton onClick={() => hide()} size='lg'>
+            <WalletButton onClick={handleSuccess} size='lg'>
                 <Trans defaults='Done' />
             </WalletButton>
         ) : null;
-    }, [isDesktop, hide]);
+    }, [isDesktop, handleSuccess]);
 
     return (
         <ModalStepWrapper
             renderFooter={isMobile ? renderFooter : undefined}
             shouldFixedFooter={isMobile}
+            shouldHideHeader={!isMobile}
             title={`Manage ${title} password`}
         >
             <div className='wallets-reset-mt5-password'>

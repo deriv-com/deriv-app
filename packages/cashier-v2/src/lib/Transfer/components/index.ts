@@ -1,2 +1,2 @@
-export * from './TransferAccountIcon';
+export * from './TransferForm';
 export * from './TransferReceipt';

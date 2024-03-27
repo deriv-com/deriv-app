@@ -94,9 +94,9 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                 descriptionSize='sm'
                 icon={
                     isDerivX ? (
-                        <DerivLightIcDxtradePasswordIcon height='120px' width='120px' />
+                        <DerivLightIcDxtradePasswordIcon height={120} width={120} />
                     ) : (
-                        <DerivLightDmt5PasswordIcon height='120px' width='120px' />
+                        <DerivLightDmt5PasswordIcon height={120} width={120} />
                     )
                 }
                 renderButtons={() => ChangePasswordScreens[activeScreen].button}

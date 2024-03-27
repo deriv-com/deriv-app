@@ -7,7 +7,6 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api-v2';
-import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { SentEmailContent, WalletError, WalletSuccessResetMT5Password } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -212,7 +211,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isMT5PasswordNotSet)
             return (
                 <CreatePassword
-                    icon={<DerivLightDmt5PasswordIcon height='120px' width='120px' />}
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}

@@ -6,7 +6,6 @@ import {
     useCreateOtherCFDAccount,
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
-import { DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -162,7 +161,6 @@ const DxtradeEnterPasswordModal = () => {
         if (!isSuccess && accountStatusSuccess) {
             return isDxtradePasswordNotSet ? (
                 <CreatePassword
-                    icon={<DerivLightIcDxtradePasswordIcon height='120px' width='120px' />}
                     isLoading={isLoading}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, FormikValues } from 'formik';
+import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import SelfieIcon from '../../assets/manual-upload/selfie-icon.svg';
@@ -30,8 +30,8 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
         >
-            {({ dirty, isValid, setFieldValue, values }) => (
-                <div className='flex flex-col gap-16'>
+            {({ isValid, setFieldValue, values }) => (
+                <Form className='flex flex-col gap-16'>
                     <Text>Upload your selfie</Text>
                     <Dropzone
                         buttonText={isMobile ? 'Tap here to upload' : 'Drop file or click here to upload'}
@@ -49,11 +49,11 @@ export const SelfieDocumentUpload = ({ formData, handleCancel, handleSubmit }: T
                         <Button onClick={handleCancel} type='button' variant='outlined'>
                             Back
                         </Button>
-                        <Button disabled={!isValid || !values[MANUAL_DOCUMENT_SELFIE] || !dirty}>
+                        <Button disabled={!isValid || !values[MANUAL_DOCUMENT_SELFIE]} type='submit'>
                             Confirm and upload
                         </Button>
                     </div>
-                </div>
+                </Form>
             )}
         </Formik>
     );

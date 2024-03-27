@@ -41,7 +41,10 @@ export const OnfidoContainer = ({
     type TNameDOBFormData = InferType<typeof validationSchema>;
     type TErrorData = TSocketError<'set_settings'>;
 
-    const { data: personalInfo, updateAsync } = useSettings();
+    const {
+        data: personalInfo,
+        mutation: { mutateAsync: updateAsync },
+    } = useSettings();
 
     const {
         data: { hasSubmitted, onfidoContainerId, onfidoRef },
@@ -88,7 +91,7 @@ export const OnfidoContainer = ({
         setSubmitting(true);
         const personalDetailsPayload = generateNameDOBPayloadData(values);
         try {
-            await updateAsync(personalDetailsPayload);
+            await updateAsync({ payload: personalDetailsPayload });
             setSubmitting(false);
             setIsOnfidoEnabled(true);
         } catch (error) {

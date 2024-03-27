@@ -6,13 +6,13 @@ import {
 } from '../constants/manualFormConstants';
 
 export const getTitleForFormInputs = (selectedDocument: TManualDocumentTypes) =>
-    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].inputSectionHeader;
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument]?.inputSectionHeader;
 
 export const getTitleForDocumentUpload = (selectedDocument: TManualDocumentTypes) =>
-    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].uploadSectionHeader;
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument]?.uploadSectionHeader;
 
 export const getFieldsConfig = (selectedDocument: TManualDocumentTypes) =>
-    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].fields;
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument]?.fields;
 
 export const getUploadConfig = (selectedDocument: TManualDocumentTypes) =>
     MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].uploads;
@@ -25,15 +25,15 @@ export const getManualFormValidationSchema = (
     const uploadConfig = getUploadConfig(selectedDocument);
 
     const documentExpiryValidation = Yup.object({
-        documentExpiry: Yup.string().required(fieldsConfig.documentExpiry.errorMessage).default(''),
+        documentExpiry: Yup.string().required(fieldsConfig?.documentExpiry?.errorMessage).default(''),
     });
 
     const documentUploadValidation = Object.fromEntries(
-        uploadConfig.map(item => [item.pageType, Yup.mixed<File | null>().required(item.error).default(null)])
+        uploadConfig.map(item => [item.pageType, Yup.mixed<File | null>().required(item?.error).default(null)])
     );
 
     const baseSchema = Yup.object({
-        documentNumber: Yup.string().required(fieldsConfig.documentNumber.errorMessage).default(''),
+        documentNumber: Yup.string().required(fieldsConfig?.documentNumber?.errorMessage).default(''),
         ...documentUploadValidation,
     });
 

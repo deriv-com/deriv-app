@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { DerivLightWaitingPoiIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { ACCOUNT_V2_ROUTES, AUTH_STATUS_CODES, POI_SERVICE } from '../../constants';
@@ -26,7 +27,7 @@ export const VerificationStatus = ({ isPOARequired, service, status }: TVerifica
         return (
             <IconWithMessage
                 actionButton={isPOARequired ? <ContinueToPOA /> : <ContinueTradingButton />}
-                icon={<DerivLightWaitingPoiIcon />}
+                icon={<DerivLightWaitingPoiIcon height='128px' />}
                 title='Your proof of identity was submitted successfully'
             >
                 <Text align='center' size='xs'>

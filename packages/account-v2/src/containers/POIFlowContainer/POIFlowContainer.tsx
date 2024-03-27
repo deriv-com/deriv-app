@@ -28,7 +28,7 @@ export const POIFlowContainer = ({ countryCode, onCancel, onComplete }: TPOIFlow
 
     switch (availableServices?.[0]) {
         case POI_SERVICE.onfido: {
-            return <OnfidoContainer countryCode={countryCode} />;
+            return <OnfidoContainer countryCode={countryCode} onOnfidoSubmit={onComplete} />;
         }
         case POI_SERVICE.idv: {
             return (
@@ -41,7 +41,7 @@ export const POIFlowContainer = ({ countryCode, onCancel, onComplete }: TPOIFlow
             );
         }
         default: {
-            return <ManualUpload countryCode={countryCode} onCancel={onCancel} />;
+            return <ManualUpload countryCode={countryCode} handleComplete={onComplete} onCancel={onCancel} />;
         }
     }
 };

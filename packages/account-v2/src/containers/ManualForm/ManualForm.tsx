@@ -66,7 +66,7 @@ export const ManualForm = ({
                             >
                                 Back
                             </Button>
-                            <Button disabled={!isValid || isSubmitting || !dirty} size='lg' type='submit'>
+                            <Button disabled={!isValid || isSubmitting} size='lg' type='submit'>
                                 Next
                             </Button>
                         </div>

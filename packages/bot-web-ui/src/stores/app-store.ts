@@ -264,6 +264,7 @@ export default class AppStore {
                                 });
                         });
                     }
+                    DBot.initializeInterpreter();
                 }
             }
         );

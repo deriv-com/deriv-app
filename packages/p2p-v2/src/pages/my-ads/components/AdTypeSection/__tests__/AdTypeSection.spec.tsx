@@ -4,14 +4,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AdTypeSection from '../AdTypeSection';
 
-jest.mock('../../AdFormInput', () => ({
-    AdFormInput: () => <div>AdFormInput</div>,
-}));
 jest.mock('../../AdFormTextArea', () => ({
     AdFormTextArea: () => <div>AdFormTextArea</div>,
 }));
 
 const mockSetFieldValue = jest.fn();
+const mockTriggerFunction = jest.fn();
 jest.mock('react-hook-form', () => ({
     ...jest.requireActual('react-hook-form'),
     Controller: ({ control, defaultValue, name, render }) =>
@@ -28,7 +26,7 @@ jest.mock('react-hook-form', () => ({
         },
         getValues: jest.fn(() => 'mockedValues'),
         setValue: mockSetFieldValue,
-        trigger: jest.fn(),
+        trigger: mockTriggerFunction,
         watch: jest.fn(() => 'buy'),
     }),
 }));
@@ -40,6 +38,11 @@ const mockUseHistory = {
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => mockUseHistory,
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isMobile: false }),
 }));
 
 const mockProps = {
@@ -55,7 +58,9 @@ const mockProps = {
 describe('AdTypeSection', () => {
     it('should render the ad type section component', () => {
         render(<AdTypeSection {...mockProps} />);
-        expect(screen.getAllByText('AdFormInput')).toHaveLength(4);
+        expect(screen.getByText('Total amount')).toBeInTheDocument();
+        expect(screen.getByText('Min order')).toBeInTheDocument();
+        expect(screen.getByText('Max order')).toBeInTheDocument();
         expect(screen.getByText('AdFormTextArea')).toBeInTheDocument();
     });
     it('should handle ad type change', () => {
@@ -69,5 +74,12 @@ describe('AdTypeSection', () => {
         const element = screen.getByRole('button', { name: 'Cancel' });
         userEvent.click(element);
         expect(mockUseHistory.push).toHaveBeenCalledWith(MY_ADS_URL);
+    });
+    it('should handle the trigger validation', () => {
+        render(<AdTypeSection {...mockProps} />);
+        userEvent.type(screen.getByPlaceholderText('Max order'), '200');
+        const element = screen.getByPlaceholderText('Total amount');
+        userEvent.type(element, '100');
+        expect(mockTriggerFunction).toHaveBeenCalled();
     });
 });

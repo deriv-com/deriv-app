@@ -26,23 +26,16 @@ export const ConnectedAppsRevokeModal = ({
             </Modal.Body>
             <Modal.Footer className='mt-24 p-0 min-h-0 flex gap-x-8 justify-center' hideBorder>
                 <Button
-                    className='px-16 py-10 h-40'
                     color='black'
                     onClick={handleToggleModal}
                     rounded='sm'
-                    size='md'
+                    size='lg'
                     type='button'
                     variant='outlined'
                 >
                     Back
                 </Button>
-                <Button
-                    className='px-16 py-10 h-40'
-                    color='primary'
-                    onClick={handleRevokeAccess}
-                    rounded='sm'
-                    size='md'
-                >
+                <Button color='primary' onClick={handleRevokeAccess} rounded='sm' size='lg'>
                     Confirm
                 </Button>
             </Modal.Footer>

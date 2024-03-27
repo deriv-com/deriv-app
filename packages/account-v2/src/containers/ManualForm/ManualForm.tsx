@@ -44,7 +44,7 @@ export const ManualForm = ({
             validateOnMount
             validationSchema={validationSchema}
         >
-            {({ isSubmitting, isValid }) => (
+            {({ isValid }) => (
                 <Form>
                     <div className='flex flex-col w-full'>
                         <div className='flex flex-col gap-24'>
@@ -56,17 +56,10 @@ export const ManualForm = ({
                             <ManualFormFooter />
                         </div>
                         <div className='sticky bottom-0 flex justify-end gap-16 px-8 py-16 border-t-solid-grey-2 bg-solid-slate-0 border-solid border-t-2'>
-                            <Button
-                                color='black'
-                                disabled={isSubmitting}
-                                onClick={onCancel}
-                                size='lg'
-                                type='button'
-                                variant='outlined'
-                            >
+                            <Button color='black' onClick={onCancel} size='lg' type='button' variant='outlined'>
                                 Back
                             </Button>
-                            <Button disabled={!isValid || isSubmitting} size='lg' type='submit'>
+                            <Button disabled={!isValid} size='lg' type='submit'>
                                 Next
                             </Button>
                         </div>

@@ -20,10 +20,17 @@ jest.mock('../../../hooks', () => ({
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
+    useDocumentUpload: jest.fn(() => ({
+        upload: jest.fn(),
+    })),
     useOnfido: jest.fn(() => ({
         data: {},
         isOnfidoInitialized: true,
         isServiceTokenLoading: false,
+    })),
+    useSettings: jest.fn(() => ({
+        data: {},
+        mutation: { mutateAsync: jest.fn() },
     })),
 }));
 
@@ -59,14 +66,16 @@ describe('ManualUpload', () => {
         expect(screen.getAllByRole('textbox')).toHaveLength(2);
     });
 
-    it('should disable Next button when form is not filled', () => {
+    it('should disable Next button when form is not filled', async () => {
         render(<ManualUpload countryCode='in' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         const elDocumentType = screen.getAllByTestId('dt_manual_document_types')[1];
         userEvent.click(elDocumentType);
 
-        const elNextButton = screen.getByRole('button', { name: /Next/ });
-        expect(elNextButton).toBeDisabled();
+        await waitFor(() => {
+            const elNextButton = screen.getByRole('button', { name: /Next/ });
+            expect(elNextButton).toBeDisabled();
+        });
     });
 
     it('should enable Next button when form is filled', async () => {

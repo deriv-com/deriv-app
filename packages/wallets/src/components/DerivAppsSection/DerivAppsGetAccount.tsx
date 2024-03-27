@@ -50,7 +50,7 @@ const DerivAppsGetAccount: React.FC = () => {
         if (newTradingAccountData && isAccountCreationSuccess) {
             addTradingAccountToLocalStorage(newTradingAccountData);
         }
-        if (isAccountCreationSuccess && activeLinkedToTradingAccount?.loginid) {
+        if (isAccountCreationSuccess) {
             show(
                 <ModalStepWrapper
                     renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
@@ -69,12 +69,8 @@ const DerivAppsGetAccount: React.FC = () => {
                 }
             );
         }
-    }, [
-        addTradingAccountToLocalStorage,
-        newTradingAccountData,
-        isAccountCreationSuccess,
-        activeLinkedToTradingAccount?.loginid,
-    ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addTradingAccountToLocalStorage, newTradingAccountData, isAccountCreationSuccess]);
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>

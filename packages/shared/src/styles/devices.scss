@@ -62,29 +62,29 @@ $desktop-width: 1024px;
 }
 
 /** Need to add new breakpoints for mixins */
-$new-max-mobile-width: 600px;
-$new-min-desktop-width: 1280px;
+$max-mobile-width: 600px;
+$min-desktop-width: 1280px;
 
-@mixin new-mobile {
-    @media (max-width: #{$new-max-mobile-width}) {
+@mixin mobile-screen {
+    @media (max-width: #{$max-mobile-width}) {
         @content;
     }
 }
 
-@mixin new-tablet {
-    @media (min-width: #{$new-max-mobile-width + 1}) and (max-width: #{$new-min-desktop-width - 1}) {
+@mixin tablet-screen {
+    @media (min-width: #{$max-mobile-width + 1}) and (max-width: #{$min-desktop-width - 1}) {
         @content;
     }
 }
 
-@mixin new-desktop {
-    @media (min-width: #{$new-min-desktop-width}) {
+@mixin desktop-screen {
+    @media (min-width: #{$min-desktop-width}) {
         @content;
     }
 }
 
-@mixin new-not-desktop {
-    @media (max-width: #{$new-min-desktop-width - 1}) {
+@mixin mobile-or-tablet-screen {
+    @media (max-width: #{$min-desktop-width - 1}) {
         @content;
     }
 }

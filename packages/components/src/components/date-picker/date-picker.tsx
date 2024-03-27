@@ -241,7 +241,6 @@ const DatePicker = React.memo((props: TDatePicker) => {
                     name={name}
                     onClick={handleVisibility}
                     onChangeInput={onChangeInput}
-                    // onClickClear={this.onClickClear}
                     is_placeholder_visible={is_placeholder_visible}
                     onBlur={onBlur}
                     required={required}

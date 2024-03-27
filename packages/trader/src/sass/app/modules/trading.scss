@@ -66,7 +66,7 @@
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
-        @include new-mobile {
+        @include mobile-screen {
             padding: 0;
             margin-bottom: 0.8rem;
             background-color: transparent;
@@ -267,7 +267,7 @@
             justify-self: left;
             align-items: center;
 
-            @include new-mobile {
+            @include mobile-screen {
                 color: var(--text-colored-background);
                 width: 100%;
                 justify-content: space-between;
@@ -323,7 +323,7 @@
                 opacity: 1;
                 transition: 0.3s;
 
-                @include new-mobile {
+                @include mobile-screen {
                     color: var(--text-colored-background);
                 }
             }
@@ -332,7 +332,7 @@
                 font-weight: normal;
                 @include typeface(--paragraph-left-normal-black);
                 color: var(--text-less-prominent);
-                @include new-mobile {
+                @include mobile-screen {
                     @include typeface(--xsmall-left-normal-black);
                     color: var(--text-colored-background);
                 }
@@ -363,7 +363,7 @@
     }
     &__price-info {
         &-currency {
-            @include new-mobile {
+            @include mobile-screen {
                 font-size: 0.9rem;
             }
         }
@@ -646,7 +646,7 @@
             background-color: var(--general-section-1);
             border-color: var(--general-section-1);
             color: var(--text-general);
-            @include new-mobile {
+            @include mobile-screen {
                 width: 45%;
                 padding: 0;
                 margin-bottom: 0rem;
@@ -675,7 +675,7 @@
             .trade-container__price-info-currency {
                 margin-left: -0.1rem;
             }
-            @include new-mobile {
+            @include mobile-screen {
                 padding: 0.4rem 0 0 !important;
                 margin-bottom: -0.5rem;
 
@@ -690,7 +690,7 @@
         .trade-container__price-info-currency {
             font-size: 1.2rem;
         }
-        @include new-mobile {
+        @include mobile-screen {
             padding: 0 0.4rem;
             min-height: 1.4rem;
             margin-bottom: 0.4rem;
@@ -832,7 +832,7 @@
                 }
             }
         }
-        @include new-mobile {
+        @include mobile-screen {
             padding: initial;
             position: relative;
 
@@ -871,7 +871,7 @@
         height: calc(100% + 2px);
         left: -2px;
     }
-    @include new-mobile {
+    @include mobile-screen {
         display: grid;
         grid-template-areas: 'a b';
         grid-column-gap: 0.5rem;
@@ -900,7 +900,7 @@
 .range-text-container {
     margin-top: 0.5rem;
 
-    @include new-mobile {
+    @include mobile-screen {
         margin: 0 0 0.8rem;
         position: relative;
         top: -0.8rem;
@@ -961,7 +961,7 @@
 /** @define market-unavailable-modal */
 @include mobile {
     .market-unavailable-modal {
-        @include new-mobile {
+        @include mobile-screen {
             align-items: flex-start;
             padding-top: 10rem;
 

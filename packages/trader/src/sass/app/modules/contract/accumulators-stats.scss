@@ -24,7 +24,7 @@
     border-radius: $BORDER_RADIUS * 2;
     min-width: 51.4rem;
 
-    @include new-not-desktop {
+    @include mobile-or-tablet-screen {
         position: absolute;
         top: -4.8rem;
         left: -0.8rem;
@@ -34,7 +34,7 @@
         padding-right: 3rem;
     }
 
-    @include new-tablet {
+    @include tablet-screen {
         width: unset;
     }
 
@@ -56,7 +56,7 @@
         position: relative;
         padding: 0.8rem;
 
-        @include new-not-desktop {
+        @include mobile-or-tablet-screen {
             width: 100%;
             height: 4rem;
             padding-right: 0;
@@ -70,7 +70,7 @@
         min-width: 7.8rem;
         padding-right: 1.6rem;
 
-        @include new-not-desktop {
+        @include mobile-or-tablet-screen {
             min-width: unset;
             flex-shrink: 1;
         }
@@ -94,7 +94,7 @@
         justify-content: flex-start;
         border-left: 1px solid $color-grey-5;
 
-        @include new-not-desktop {
+        @include mobile-or-tablet-screen {
             padding-right: 0;
             flex-wrap: wrap;
             overflow: hidden;
@@ -160,12 +160,12 @@
                     border-radius: 50%;
                     animation: 0.5s spot-emphasizer 0.2s;
 
-                    @include new-not-desktop {
+                    @include mobile-or-tablet-screen {
                         left: 0rem;
                     }
                 }
             }
-            @include new-not-desktop {
+            @include mobile-or-tablet-screen {
                 width: 3.9rem;
 
                 &:not(.accumulators-stats__history--expanded *) {
@@ -190,7 +190,7 @@
                 justify-content: space-between;
                 width: inherit;
             }
-            @include new-not-desktop {
+            @include mobile-or-tablet-screen {
                 background-color: var(--general-section-1);
                 border-radius: $BORDER_RADIUS * 2;
                 padding: 1.3rem 0.8rem;
@@ -221,7 +221,7 @@
         width: 56.3rem;
         height: 44.8rem;
 
-        @include new-not-desktop {
+        @include mobile-or-tablet-screen {
             width: 29.6rem;
             height: 30.3rem;
         }
@@ -229,7 +229,7 @@
             transform: scale(1);
         }
     }
-    @include new-not-desktop {
+    @include mobile-or-tablet-screen {
         height: calc(100% - 5.2rem);
     }
 }
@@ -237,12 +237,12 @@
 .dc-modal-header--accumulators-stats-manual-modal {
     height: 5.6rem;
 
-    @include new-not-desktop {
+    @include mobile-or-tablet-screen {
         height: 5.2rem;
     }
 }
 
-@include new-not-desktop {
+@include mobile-or-tablet-screen {
     .dc-mobile-dialog__accumulators-stats {
         padding: 1.1rem 1.6rem;
     }

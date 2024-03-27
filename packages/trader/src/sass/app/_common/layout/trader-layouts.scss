@@ -1,7 +1,7 @@
 /** @define app-contents; weak */
 .app-contents {
     &--show-positions-drawer:not(&--is-mobile) {
-        @include new-desktop {
+        @include desktop-screen {
             .trade-container {
                 .chart-container {
                     width: 100%;
@@ -110,7 +110,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
 
-            @include new-mobile {
+            @include mobile-screen {
                 z-index: 4;
                 height: auto;
                 border-bottom-right-radius: $BORDER_RADIUS;
@@ -320,7 +320,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         top: 75px;
                     }
                     .stx_jump_today {
-                        @include new-mobile {
+                        @include mobile-screen {
                             z-index: 15; // must be greater than z-index of mobile .stx-holder.stx-panel-chart
                         }
 
@@ -369,13 +369,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
 
-            @include new-mobile {
+            @include mobile-screen {
                 height: 100%;
                 width: calc(100% - 1.6rem);
                 margin-left: 0.8rem;
             }
         }
-        @include new-mobile {
+        @include mobile-screen {
             display: flex;
             flex-direction: column-reverse;
             height: 100%;
@@ -396,12 +396,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
         }
     }
 
-    @include new-mobile {
+    @include mobile-screen {
         flex-direction: column;
         padding: 0;
     }
 
-    @include new-not-desktop {
+    @include mobile-or-tablet-screen {
         min-height: calc(100vh - 48px);
     }
 }
@@ -565,7 +565,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 &.ciq-disabled {
                     display: none;
                 }
-                @include new-mobile {
+                @include mobile-screen {
                     top: 0.8rem;
                     left: 0.8rem;
                     min-width: 170px;
@@ -602,7 +602,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .sc-toolbar-widget {
             transition: transform 0.25s ease;
 
-            @include new-mobile {
+            @include mobile-screen {
                 background: transparent;
                 border-width: 0;
                 bottom: 2.8rem;
@@ -646,7 +646,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         background: transparent;
         min-height: 100%;
 
-        @include new-mobile {
+        @include mobile-screen {
             .flutter-chart {
                 height: calc(100% - 5px);
             }
@@ -698,7 +698,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 // TODO: improve handling of rendering markets dropdown via portals from smartcharts library
 /** @define smartcharts-portal; weak */
 .smartcharts-portal {
-    @include new-mobile {
+    @include mobile-screen {
         &--open {
             .smartcharts {
                 z-index: 9999;
@@ -744,7 +744,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 .smartcharts {
     &-dark,
     &-light {
-        @include new-mobile {
+        @include mobile-screen {
             /* postcss-bem-linter: ignore */
             .cq-menu-dropdown-enter-done {
                 margin-top: 0;

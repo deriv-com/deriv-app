@@ -10,7 +10,7 @@
         left: -3.5em;
     }
 
-    @include new-tablet {
+    @include tablet-screen {
         .bottom-widgets {
             left: 0;
         }

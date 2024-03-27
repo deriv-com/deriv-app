@@ -12,7 +12,8 @@ import {
     setDecimalPlaces,
 } from '@/utils';
 import { p2p } from '@deriv/api-v2';
-import { Divider, InlineMessage, Text, TextArea, useDevice } from '@deriv-com/ui';
+import { InlineMessage, Text, TextArea, useDevice } from '@deriv-com/ui';
+import { LightDivider } from '../LightDivider';
 import { BuySellAmount } from './BuySellAmount';
 import { BuySellData } from './BuySellData';
 import BuySellFormDisplayWrapper from './BuySellFormDisplayWrapper';
@@ -184,7 +185,7 @@ const BuySellForm = ({
                     paymentMethods={paymentMethods}
                     rate={displayEffectiveRate}
                 />
-                <Divider color='#f2f3f4' />
+                <LightDivider />
                 {isBuy && payment_method_names?.length > 0 && (
                     <BuySellPaymentSection
                         availablePaymentMethods={availablePaymentMethods}
@@ -240,7 +241,7 @@ const BuySellForm = ({
                 )}
                 {isBuy && (
                     <>
-                        <Divider color='#f2f3f4' />
+                        <LightDivider />
                         <Controller
                             control={control}
                             name='contact_details'

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { LightDivider } from '@/components';
 import { floatingPointValidator } from '@/utils';
-import { Divider, Input, Text, useDevice } from '@deriv-com/ui';
+import { Input, Text, useDevice } from '@deriv-com/ui';
 import { FormatUtils } from '@deriv-com/utils';
 import './BuySellAmount.scss';
 
@@ -93,7 +94,7 @@ const BuySellAmount = ({
                         required: 'Enter a valid amount',
                     }}
                 />
-                {isMobile && <Divider color='#f2f3f4' />}
+                {isMobile && <LightDivider />}
                 <div className='flex flex-col w-full px-[2.4rem]'>
                     <Text color='less-prominent' size={labelSize}>{`You'll ${isBuy ? 'receive' : 'send'}`}</Text>
                     <Text size={isMobile ? 'md' : 'sm'} weight='bold'>

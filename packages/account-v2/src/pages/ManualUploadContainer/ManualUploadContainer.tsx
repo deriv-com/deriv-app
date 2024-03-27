@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { InferType, object } from 'yup';
 import { useDocumentUpload } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
@@ -7,7 +6,7 @@ import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
 import { useManualForm } from '../../hooks';
 import { OnfidoContainer } from '../../modules/Onfido';
-import { getManualFormValidationSchema, getSelfieValidationSchema, getUploadConfig } from '../../utils';
+import { getUploadConfig, TManualDocumentUploadFormData } from '../../utils';
 
 type TManualUploadContainerProps = {
     countryCode: string;
@@ -27,21 +26,7 @@ export const ManualUploadContainer = ({
         selectedDocument as TManualDocumentTypes
     );
 
-    const documentUploadSchema = getManualFormValidationSchema(
-        selectedDocument as TManualDocumentTypes,
-        isExpiryDateRequired
-    );
-
-    const selfieUploadSchema = getSelfieValidationSchema();
-
-    const manualUploadSchema = object({
-        ...documentUploadSchema.fields,
-        ...selfieUploadSchema.fields,
-    });
-
-    type TManualUploadFormData = InferType<typeof manualUploadSchema>;
-
-    const [formData, setFormData] = useState<Partial<TManualUploadFormData>>({});
+    const [formData, setFormData] = useState<Partial<TManualDocumentUploadFormData>>({});
     const [shouldUploadSelfie, setShouldUploadSelfie] = useState(false);
     const { upload } = useDocumentUpload();
 
@@ -49,23 +34,23 @@ export const ManualUploadContainer = ({
         return <Loader />;
     }
 
-    const processDocuments = async (
-        values: TManualUploadFormData,
+    const processDocuments = (
+        values: TManualDocumentUploadFormData,
         item: ReturnType<typeof getUploadConfig>[number]
-    ) => {
+    ): Parameters<typeof upload>[0] => {
         const { documentType, pageType } = item;
         return {
             document_id: values.documentNumber,
             document_issuing_country: countryCode,
             document_type: documentType,
             expiration_date: values?.documentExpiry?.toString() ?? undefined,
-            file: documentType === MANUAL_DOCUMENT_SELFIE ? values[MANUAL_DOCUMENT_SELFIE] : values[pageType],
+            file: documentType === MANUAL_DOCUMENT_SELFIE ? (values.selfieWithID as File) : (values[pageType] as File),
             lifetime_valid: isExpiryDateRequired ? 0 : 1,
             page_type: documentType === MANUAL_DOCUMENT_SELFIE ? 'photo' : pageType,
         };
     };
 
-    const handleSubmit = async (values: TManualUploadFormData) => {
+    const handleSubmit = async (values: TManualDocumentUploadFormData) => {
         const uploadDocumentConfig = getUploadConfig(selectedDocument as TManualDocumentTypes);
 
         try {
@@ -87,7 +72,7 @@ export const ManualUploadContainer = ({
                 formData={formData}
                 handleCancel={() => setShouldUploadSelfie(false)}
                 handleSubmit={values => {
-                    handleSubmit({ ...formData, ...values });
+                    handleSubmit({ ...formData, ...values } as TManualDocumentUploadFormData);
                 }}
             />
         );

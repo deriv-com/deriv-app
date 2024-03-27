@@ -2,8 +2,9 @@ import * as Yup from 'yup';
 import {
     MANUAL_DOCUMENT_SELFIE,
     MANUAL_DOCUMENT_TYPES_DATA,
+    MANUAL_FORM_PAGE_TYPES,
     TManualDocumentTypes,
-} from '../constants/manualFormConstants';
+} from '../constants';
 
 export const getTitleForFormInputs = (selectedDocument: TManualDocumentTypes) =>
     MANUAL_DOCUMENT_TYPES_DATA[selectedDocument]?.inputSectionHeader;
@@ -44,7 +45,7 @@ export const getManualFormValidationSchema = (
 
 export const getSelfieValidationSchema = () => {
     return Yup.object({
-        [MANUAL_DOCUMENT_SELFIE]: Yup.mixed<File | null>()
+        selfieWithID: Yup.mixed<File | null>()
             .test({
                 message: 'File is required',
                 name: 'file',
@@ -55,4 +56,14 @@ export const getSelfieValidationSchema = () => {
             .required()
             .default(null),
     });
+};
+
+export type TManualPageTypes = typeof MANUAL_FORM_PAGE_TYPES[keyof typeof MANUAL_FORM_PAGE_TYPES];
+
+export type TManualDocumentUploadFormData = {
+    [key in TManualPageTypes]?: File | null;
+} & {
+    documentExpiry?: string;
+    documentNumber: string;
+    selfieWithID?: File | null;
 };

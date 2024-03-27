@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
-import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { getManualFormValidationSchema } from '../../utils/manualFormUtils';
 import { ManualFormDocumentUpload } from './ManualFormDocumentUpload';
 import { ManualFormFooter } from './ManualFormFooter';
@@ -31,8 +31,8 @@ export const ManualForm = ({
         const defaultValues = validationSchema.getDefault();
         const formValues = { ...defaultValues, ...formData };
         // Removing Selfie data from formValues as it is not part of this section of manual form
-        if (MANUAL_DOCUMENT_SELFIE in formValues) {
-            delete formValues[MANUAL_DOCUMENT_SELFIE];
+        if ('selfieWithID' in formValues) {
+            delete formValues.selfieWithID;
         }
         return formValues;
     }, [formData, validationSchema]);

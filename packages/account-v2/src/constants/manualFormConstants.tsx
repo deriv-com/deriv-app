@@ -22,7 +22,7 @@ export const MANUAL_DOCUMENT_TYPES = Object.freeze({
 
 export const MANUAL_DOCUMENT_SELFIE = 'selfie_with_id';
 
-const MANUAL_FORM_PAGE_TYPES = Object.freeze({
+export const MANUAL_FORM_PAGE_TYPES = Object.freeze({
     back: 'back',
     front: 'front',
     photo: 'photo',
@@ -51,7 +51,7 @@ type TManualDocumentConfig = {
             documentType: typeof MANUAL_DOCUMENT_TYPES[keyof typeof MANUAL_DOCUMENT_TYPES];
             error?: string;
             icon?: JSX.Element;
-            pageType: string;
+            pageType: typeof MANUAL_FORM_PAGE_TYPES[keyof typeof MANUAL_FORM_PAGE_TYPES];
             text?: string;
         }[];
     };

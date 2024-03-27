@@ -86,7 +86,6 @@ describe('PortfolioStore', () => {
             display_name: '',
             id: contracts[1].contract_id,
             indicative: 0,
-            is_unsupported: false,
             payout: contracts[1].payout,
             purchase: contracts[1].buy_price,
             reference: contracts[1].transaction_id,

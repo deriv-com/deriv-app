@@ -3,7 +3,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv/components';
-import { routes, useNewRowTransition, TRADE_TYPES, isTurbosContract, isVanillaContract } from '@deriv/shared';
+import {
+    routes,
+    useNewRowTransition,
+    TRADE_TYPES,
+    isTurbosContract,
+    isVanillaContract,
+    isContractSupportedAndStarted,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { filterByContractType } from './helpers';
@@ -19,7 +26,6 @@ type TUiStore = Pick<
     | 'setCurrentFocus'
     | 'should_show_cancellation_warning'
     | 'toggleCancellationWarning'
-    | 'toggleUnsupportedContractModal'
 >;
 type TPortfolioStore = Pick<
     ReturnType<typeof useStore>['portfolio'],
@@ -108,7 +114,6 @@ const PositionsDrawer = observer(({ ...props }) => {
         setCurrentFocus,
         should_show_cancellation_warning,
         toggleCancellationWarning,
-        toggleUnsupportedContractModal,
     } = ui;
     const drawer_ref = React.useRef(null);
     const list_ref = React.useRef<HTMLDivElement>(null);
@@ -125,8 +130,7 @@ const PositionsDrawer = observer(({ ...props }) => {
 
     const positions = all_positions.filter(
         p =>
-            p.contract_info &&
-            symbol === p.contract_info.underlying &&
+            isContractSupportedAndStarted(symbol, p.contract_info) &&
             (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
                 ? filterByContractType(
                       p.contract_info,
@@ -158,7 +162,6 @@ const PositionsDrawer = observer(({ ...props }) => {
                     setCurrentFocus={setCurrentFocus}
                     should_show_cancellation_warning={should_show_cancellation_warning}
                     toggleCancellationWarning={toggleCancellationWarning}
-                    toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                     {...args}
                     {...props}
                 />

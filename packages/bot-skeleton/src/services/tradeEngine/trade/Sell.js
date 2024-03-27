@@ -1,7 +1,7 @@
 import { DURING_PURCHASE } from './state/constants';
 import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
-import { log_types } from '../../../constants/messages';
+import { LogTypes } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import { api_base } from '../../api/api-base';
 
@@ -20,7 +20,7 @@ export default Engine =>
             }
 
             if (!this.isSellAtMarketAvailable()) {
-                log(log_types.NOT_OFFERED);
+                log(LogTypes.NOT_OFFERED);
                 return Promise.resolve();
             }
 
@@ -32,7 +32,7 @@ export default Engine =>
 
                     if (sell_response) {
                         const { sold_for } = sell_response.sell;
-                        log(log_types.SELL, { sold_for });
+                        log(LogTypes.SELL, { sold_for });
                     }
 
                     contractStatus('purchase.sold');

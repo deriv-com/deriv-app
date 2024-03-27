@@ -6,9 +6,9 @@ type TAdFormControllerProps = {
     getCurrentStep: () => number;
     getTotalSteps: () => number;
     goToNextStep: MouseEventHandler<HTMLButtonElement>;
-    goToPreviousStep: MouseEventHandler<HTMLButtonElement>;
+    goToPreviousStep: () => void;
     isNextButtonDisabled: boolean;
-    onCancel: () => void;
+    onCancel?: () => void;
 };
 
 const AdFormController = ({
@@ -21,17 +21,9 @@ const AdFormController = ({
 }: TAdFormControllerProps) => {
     return (
         <div className='p2p-v2-ad-form-controller'>
-            {getCurrentStep() === 1 && (
-                <Button color='black' onClick={onCancel} variant='outlined'>
-                    Cancel
-                </Button>
-            )}
-            {getCurrentStep() > 1 && (
-                <Button color='black' onClick={goToPreviousStep} variant='outlined'>
-                    Previous
-                </Button>
-            )}
-
+            <Button color='black' onClick={() => (onCancel ? onCancel() : goToPreviousStep())} variant='outlined'>
+                {onCancel ? 'Cancel' : 'Previous'}
+            </Button>
             {getCurrentStep() < getTotalSteps() ? (
                 <Button disabled={isNextButtonDisabled} onClick={goToNextStep} variant='contained'>
                     Next

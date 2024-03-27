@@ -36,11 +36,6 @@ export const ConnectedApps = () => {
                     <div className='flex flex-col gap-24'>
                         <ConnectedAppsInfo />
                         <ConnectedAppsTable connectedApps={connectedApps} handleToggleModal={handleToggleModal} />
-                        <ConnectedAppsRevokeModal
-                            handleRevokeAccess={handleRevokeAccess}
-                            handleToggleModal={handleToggleModal}
-                            isModalOpen={isModalOpen}
-                        />
                     </div>
                 ) : (
                     <ConnectedAppsEmpty />
@@ -49,6 +44,11 @@ export const ConnectedApps = () => {
             <section>
                 <ConnectedAppsSidebar />
             </section>
+            <ConnectedAppsRevokeModal
+                handleRevokeAccess={handleRevokeAccess}
+                handleToggleModal={handleToggleModal}
+                isModalOpen={isModalOpen}
+            />
         </div>
     );
 };

@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Checkbox, Popover } from '@deriv/components';
-import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
 import { TFormData } from '../types';
 
 type TQSCheckbox = {
@@ -17,11 +16,6 @@ const QSCheckbox: React.FC<TQSCheckbox> = ({ name, label, description, attached 
     const { values, setFieldValue, validateForm } = useFormikContext<TFormData>();
 
     const handleChange = () => {
-        rudderStackSendQsParameterChangeEvent({
-            parameter_type: name,
-            parameter_value: !values?.[name],
-            parameter_field_type: 'checkbox',
-        });
         setFieldValue(name, !values?.[name]).finally(() => {
             validateForm();
         });

@@ -9,9 +9,14 @@ import { formatDate, formatTime } from '@deriv/shared';
  * @returns {void}
  * **/
 const initDatadogLogs = (is_datadog_enabled: boolean) => {
-    if (!is_datadog_enabled) {
-        if (window.DD_RUM) {
-            window.DD_RUM = undefined;
+    if (is_datadog_enabled) {
+        if (window.DD_LOGS) {
+            datadogLogs.setTrackingConsent('granted');
+            return;
+        }
+    } else {
+        if (window.DD_LOGS) {
+            datadogLogs.setTrackingConsent('not-granted');
         }
         return;
     }

@@ -513,7 +513,7 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
 };
 
 export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
-    const { authentication } = account_status;
+    const { authentication } = account_status || {};
 
     if (authentication?.attempts?.latest?.service === 'idv') {
         if (authentication?.document?.status === 'pending') {

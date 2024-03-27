@@ -10,9 +10,6 @@ export default class OrderStore {
         makeObservable(this, {
             active_order: observable,
             api_error_message: observable,
-            cancellation_block_duration: observable,
-            cancellation_count_period: observable,
-            cancellation_limit: observable,
             date_from: observable,
             date_to: observable,
             error_code: observable,
@@ -39,7 +36,6 @@ export default class OrderStore {
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
             getP2POrderList: action.bound,
-            getWebsiteStatus: action.bound,
             handleDateChange: action.bound,
             handleRating: action.bound,
             hideDetails: action.bound,
@@ -54,9 +50,6 @@ export default class OrderStore {
             setShouldNavigateToBuySell: action.bound,
             setShouldNavigateToOrderDetails: action.bound,
             setApiErrorMessage: action.bound,
-            setCancellationBlockDuration: action.bound,
-            setCancellationCountPeriod: action.bound,
-            setCancellationLimit: action.bound,
             setErrorCode: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
@@ -92,9 +85,6 @@ export default class OrderStore {
 
     active_order = null;
     api_error_message = '';
-    cancellation_block_duration = 0;
-    cancellation_count_period = 0;
-    cancellation_limit = 0;
     date_from = null;
     date_to = null;
     error_code = '';
@@ -234,22 +224,6 @@ export default class OrderStore {
                     }
                 }
             }
-        });
-    }
-
-    getWebsiteStatus(should_show_cancel_modal) {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error.message);
-            } else {
-                const { p2p_config } = response.website_status;
-                this.setCancellationBlockDuration(p2p_config.cancellation_block_duration);
-                this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
-                this.setCancellationLimit(p2p_config.cancellation_limit);
-            }
-
-            if (should_show_cancel_modal)
-                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
         });
     }
 
@@ -562,18 +536,6 @@ export default class OrderStore {
 
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
-    }
-
-    setCancellationBlockDuration(cancellation_block_duration) {
-        this.cancellation_block_duration = cancellation_block_duration;
-    }
-
-    setCancellationCountPeriod(cancellation_count_period) {
-        this.cancellation_count_period = cancellation_count_period;
-    }
-
-    setCancellationLimit(cancellation_limit) {
-        this.cancellation_limit = cancellation_limit;
     }
 
     setShouldNavigateToBuySell(should_navigate_to_buy_sell) {

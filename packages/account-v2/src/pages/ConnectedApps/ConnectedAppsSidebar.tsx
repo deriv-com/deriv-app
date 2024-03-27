@@ -3,17 +3,12 @@ import { SideNote } from '@deriv-com/ui';
 import { API_MANAGING_WEBSITE, PRODUCT_API } from '../../constants/connectedAppsConstants';
 
 export const ConnectedAppsSidebar = () => {
-    const openAPIManagingWebsite = () => {
-        window.open(API_MANAGING_WEBSITE, '_blank', 'noopener noreferrer');
-    };
-    const openDerivAPIWebsite = () => {
-        window.open(PRODUCT_API, '_blank', 'noopener noreferrer');
-    };
+    const openWebsite = (websiteUrl: string) => window.open(websiteUrl, '_blank', 'noopener noreferrer');
     return (
         <div className='flex flex-col items-center gap-16'>
             <SideNote
                 actionClassName='mt-16'
-                actionClick={openAPIManagingWebsite}
+                actionClick={() => openWebsite(API_MANAGING_WEBSITE)}
                 actionLabel='Learn more'
                 className='w-auto text-sm'
                 title='Want to know more about APIs?'
@@ -22,7 +17,7 @@ export const ConnectedAppsSidebar = () => {
             </SideNote>
             <SideNote
                 actionClassName='mt-16'
-                actionClick={openDerivAPIWebsite}
+                actionClick={() => openWebsite(PRODUCT_API)}
                 actionLabel='Learn more'
                 className='w-auto text-sm'
                 title='Earn more with Deriv API'

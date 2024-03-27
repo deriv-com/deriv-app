@@ -24,7 +24,7 @@ type TPurchaseButton = {
     is_vanilla_fx?: boolean;
     is_vanilla: boolean;
     is_turbos: boolean;
-    onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
+    onClickPurchase: (proposal_id: string, price: string | number, type: string, isMobile: boolean) => void;
     purchased_states_arr: boolean[];
     should_fade: boolean;
     setPurchaseState: (index: number) => void;
@@ -128,7 +128,7 @@ const PurchaseButton = ({
                     setIsMFVericationPendingModal(true);
                 } else {
                     setPurchaseState(index);
-                    onClickPurchase(info.id, info.stake, type);
+                    onClickPurchase(info.id, info.stake, type, isMobile);
                 }
             }}
         >

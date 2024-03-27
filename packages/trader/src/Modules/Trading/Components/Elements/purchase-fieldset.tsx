@@ -27,7 +27,7 @@ type TPurchaseFieldset = {
     is_vanilla_fx?: boolean;
     is_vanilla: boolean;
     is_turbos: boolean;
-    onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
+    onClickPurchase: (proposal_id: string, price: string | number, type: string, isMobile: boolean) => void;
     onHoverPurchase: (is_over: boolean, contract_type: string) => void;
     purchased_states_arr: boolean[];
     setPurchaseState: (index: number) => void;

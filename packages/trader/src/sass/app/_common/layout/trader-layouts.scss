@@ -88,6 +88,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
         height: calc(100vh - 108px - #{$FLOATING_HEADER_HEIGHT + 12px});
         padding-bottom: 2.4rem;
 
+        @include tablet-screen {
+            padding: 2.4rem;
+            height: calc(100vh - 84px - #{$FLOATING_HEADER_HEIGHT + 12px});
+        }
+
         .contract-drawer {
             /* prettier-ignore */
             height: calc(100% + 2.4rem);

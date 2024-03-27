@@ -27,13 +27,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const store = useStore();
 
     const { data } = useRemoteConfig();
+    const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
 
     React.useEffect(() => {
-        initDatadog(data.tracking_datadog);
-        if (process.env.RUDDERSTACK_KEY) {
+        if (process.env.RUDDERSTACK_KEY && tracking_rudderstack) {
             const config = {
-                growthbookKey: data.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
-                growthbookDecryptionKey: data.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
+                growthbookKey: marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
+                growthbookDecryptionKey: marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
             };
             Analytics.initialise(config);
@@ -48,7 +48,11 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data]);
+    }, [data.marketing_growthbook]);
+
+    React.useEffect(() => {
+        initDatadog(tracking_datadog);
+    }, [tracking_datadog]);
 
     return (
         <PlatformContainer>

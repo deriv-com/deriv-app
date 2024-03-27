@@ -25,7 +25,7 @@ jobs:
 
       - name: Add Lighthouse progress comment
         id: generate_lighthouse_comment
-        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
+        uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{github.event.issue.number}}
@@ -78,7 +78,7 @@ jobs:
              core.setOutput("comment", comment);
 
       - name: Post Lighthouse report
-        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
+        uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: Lighthouse report
@@ -86,7 +86,7 @@ jobs:
           message: ${{steps.lighthouse_score.outputs.comment}}
 
       - name: Clear Lighthouse progress comment
-        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
+        uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{github.event.issue.number}}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, NavLink, Redirect, Route, Switch } from 'react-router-dom';
-import { defaultRoute, routes } from '../../../constants/routesConfig';
+import { defaultRoute, routes } from '../../routesConfig';
 
 export const RouteLinks = () => (
     <BrowserRouter>
@@ -19,17 +19,9 @@ export const RouteLinks = () => (
             </div>
             <div className='p-8'>
                 <Switch>
-                    {routes.map(route => {
-                        const Component = route.routeComponent;
-                        return (
-                            <Route
-                                exact
-                                key={route.routePath}
-                                path={route.routePath}
-                                render={() => <Component path={route.routePath} />}
-                            />
-                        );
-                    })}
+                    {routes.map(({ routeComponent: Component, routePath }) => (
+                        <Route exact key={routePath} path={routePath} render={() => <Component />} />
+                    ))}
                     <Redirect from='/' to={defaultRoute} />
                 </Switch>
             </div>

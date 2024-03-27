@@ -48,10 +48,10 @@ const JurisdictionModal = () => {
                 ariaHideApp={false}
                 className='w-screen h-screen lg:w-auto lg:h-auto bg-system-light-primary-background '
                 isOpen={isModalOpen('JurisdictionModal')}
-                onRequestClose={() => closeHandler()}
+                onRequestClose={closeHandler}
             >
                 {!isDynamicLeverageVisible ? (
-                    <Modal.Header onRequestClose={() => closeHandler()}>
+                    <Modal.Header onRequestClose={closeHandler}>
                         <Text weight='bold'>{jurisdictionTitle}</Text>
                     </Modal.Header>
                 ) : (

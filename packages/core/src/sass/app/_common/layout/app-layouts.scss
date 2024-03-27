@@ -7,7 +7,7 @@
     }
 }
 
-@include mobile {
+@include mobile-or-tablet-screen {
     /** disabling pull to refresh on iOS / Android browsers */
     /* postcss-bem-linter: ignore */
     body,

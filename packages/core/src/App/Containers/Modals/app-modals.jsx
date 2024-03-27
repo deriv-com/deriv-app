@@ -195,7 +195,9 @@ const AppModals = observer(() => {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
     } else if (isUrlUnavailableModalVisible) {
         ComponentToLoad = <UrlUnavailableModal />;
-    } else if (show_effortless_login_modal && !is_tour_open) {
+    }
+
+    if (show_effortless_login_modal && !is_tour_open) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

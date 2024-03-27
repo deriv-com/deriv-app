@@ -13,6 +13,7 @@ jest.mock('../../../modules', () => ({
     DepositCryptoModule: jest.fn(() => <div>MockedDepositCryptoModule</div>),
     DepositFiatModule: jest.fn(() => <div>MockedDepositFiatModule</div>),
     DepositLocked: jest.fn(({ children }) => <>{children}</>),
+    SystemMaintenance: jest.fn(({ children }) => <>{children}</>),
 }));
 
 const wrapper = ({ children }: PropsWithChildren) => (

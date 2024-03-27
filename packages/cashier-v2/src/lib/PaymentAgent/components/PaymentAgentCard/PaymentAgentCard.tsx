@@ -1,7 +1,11 @@
 import React from 'react';
 import { ExpansionPanel } from '../../../../components';
 import type { THooks } from '../../../../hooks/types';
-import { PaymentAgentCardDescription, PaymentAgentCardDetails } from './components';
+import {
+    PaymentAgentCardDepositDetails,
+    PaymentAgentCardDescription,
+    PaymentAgentCardWithdrawalForm,
+} from './components';
 import styles from './PaymentAgentCard.module.scss';
 
 type TProps = {
@@ -13,7 +17,13 @@ const PaymentAgentCard: React.FC<TProps> = ({ isDeposit, paymentAgent }) => {
     return (
         <div className={styles.container} data-testid='dt_payment_agent_deposit_card'>
             <ExpansionPanel
-                content={isDeposit ? <PaymentAgentCardDetails paymentAgent={paymentAgent} /> : <></>}
+                content={
+                    isDeposit ? (
+                        <PaymentAgentCardDepositDetails paymentAgent={paymentAgent} />
+                    ) : (
+                        <PaymentAgentCardWithdrawalForm paymentAgent={paymentAgent} />
+                    )
+                }
                 header={<PaymentAgentCardDescription paymentAgent={paymentAgent} />}
             />
         </div>

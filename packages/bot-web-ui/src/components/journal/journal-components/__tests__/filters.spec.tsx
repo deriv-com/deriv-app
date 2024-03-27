@@ -1,8 +1,8 @@
 import React from 'react';
-import Filters from '../filters';
+import { MessageTypes } from '@deriv/bot-skeleton';
 import { render, screen } from '@testing-library/react';
-import { message_types } from '@deriv/bot-skeleton';
 import userEvent from '@testing-library/user-event';
+import Filters from '../filters';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -12,9 +12,9 @@ jest.mock('@deriv/deriv-charts', () => ({
 }));
 
 const journal_filters = [
-    { id: message_types.ERROR, label: 'Errors' },
-    { id: message_types.NOTIFY, label: 'Notifications' },
-    { id: message_types.SUCCESS, label: 'System' },
+    { id: MessageTypes.ERROR, label: 'Errors' },
+    { id: MessageTypes.NOTIFY, label: 'Notifications' },
+    { id: MessageTypes.SUCCESS, label: 'System' },
 ];
 
 const mockFilterMessage = jest.fn();

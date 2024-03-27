@@ -3,8 +3,6 @@ import { Checkbox, Dialog } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { LOSS_THRESHOLD_WARNING_POPUP_CTA } from '../analytics/constants';
-import { rudderStackSendQsLossThresholdWarningEvent } from '../analytics/rudderstack-quick-strategy';
 import useQsSubmitHandler from '../form-wrappers/useQsSubmitHandler';
 import './loss-threshold-warning-dialog.scss';
 
@@ -16,25 +14,16 @@ const LossThresholdWarningDialog = observer(() => {
         quick_strategy;
     const { proceedFormSubmission } = useQsSubmitHandler();
 
-    const rudderStackEventHandler = (action: keyof typeof LOSS_THRESHOLD_WARNING_POPUP_CTA) => {
-        rudderStackSendQsLossThresholdWarningEvent({
-            dont_show_checkbox: !localStorage?.getItem('qs-dont-show-loss-threshold-warning') ? 'no' : 'yes',
-            cta_name: action,
-        });
-    };
-
     const handleAmountEdit = () => {
         setLossThresholdWarningData({
             show: false,
             highlight_field: ['loss'],
         });
-        rudderStackEventHandler(LOSS_THRESHOLD_WARNING_POPUP_CTA.edit_the_amount);
     };
 
     const handleContinueBot = () => {
         initializeLossThresholdWarningData();
         proceedFormSubmission();
-        rudderStackEventHandler(LOSS_THRESHOLD_WARNING_POPUP_CTA.yes_continue);
     };
 
     const handleDontShowAgain = () => {

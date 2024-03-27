@@ -1,11 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { message_types } from '@deriv/bot-skeleton';
+import { MessageTypes } from '@deriv/bot-skeleton';
 import { useNewRowTransition } from '@deriv/shared';
 import { TJournalItemExtra, TJournalItemProps } from '../journal.types';
-import FormatMessage from './format-message';
 import DateItem from './date-item';
+import FormatMessage from './format-message';
 
 const getJournalItemContent = (
     message: string | ((value: () => void) => string),
@@ -15,16 +15,16 @@ const getJournalItemContent = (
     measure: () => void
 ) => {
     switch (type) {
-        case message_types.SUCCESS: {
+        case MessageTypes.SUCCESS: {
             return <FormatMessage logType={message as string} extra={extra} className={className} />;
         }
-        case message_types.NOTIFY: {
+        case MessageTypes.NOTIFY: {
             if (typeof message === 'function') {
                 return <div className={classnames('journal__text', className)}>{message(measure)}</div>;
             }
             return <div className={classnames('journal__text', className)}>{message}</div>;
         }
-        case message_types.ERROR: {
+        case MessageTypes.ERROR: {
             return <div className='journal__text--error journal__text'>{message as string}</div>;
         }
         default:

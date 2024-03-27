@@ -5,7 +5,6 @@ import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
 import { TApiHelpersInstance, TDurationUnitItem, TFormData } from '../types';
 
 type TDurationUnit = {
@@ -79,11 +78,6 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
                                         validateForm();
                                     });
                                     setValue('duration', min);
-                                    rudderStackSendQsParameterChangeEvent({
-                                        parameter_type: 'durationtype',
-                                        parameter_value: value,
-                                        parameter_field_type: 'dropdown',
-                                    });
                                 }
                             }}
                         />

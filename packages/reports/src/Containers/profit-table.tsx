@@ -2,19 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, usePrevious } from '@deriv/components';
-import {
-    extractInfoFromShortcode,
-    formatDate,
-    getContractPath,
-    getSupportedContracts,
-    getUnsupportedContracts,
-    isForwardStarting,
-} from '@deriv/shared';
+import { extractInfoFromShortcode, formatDate, getContractPath, getUnsupportedContracts } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import { TSupportedContractType, TUnsupportedContractType } from 'Types';
+import { TUnsupportedContractType } from 'Types';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
@@ -34,10 +27,8 @@ const getRowAction = (row_obj: { [key: string]: unknown }) => {
     const contract_type = extractInfoFromShortcode(row_obj?.shortcode as string)
         ?.category?.toString()
         .toUpperCase();
-    return getSupportedContracts()[contract_type as TSupportedContractType] &&
-        !isForwardStarting(row_obj.shortcode as string, Number(row_obj.purchase_time_unix))
-        ? getContractPath(Number(row_obj.contract_id))
-        : {
+    return getUnsupportedContracts()[contract_type as TUnsupportedContractType]
+        ? {
               component: (
                   <Localize
                       i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
@@ -46,7 +37,8 @@ const getRowAction = (row_obj: { [key: string]: unknown }) => {
                       }}
                   />
               ),
-          };
+          }
+        : getContractPath(Number(row_obj.contract_id));
 };
 
 const ProfitTable = observer(({ component_icon }: TProfitTable) => {

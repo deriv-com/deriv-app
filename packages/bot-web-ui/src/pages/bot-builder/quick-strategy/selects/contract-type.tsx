@@ -6,8 +6,6 @@ import { Autocomplete, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
-import { setRsDropdownTextToLocalStorage } from '../analytics/utils';
 import { TApiHelpersInstance, TDropdownItems, TFormData } from '../types';
 
 type TContractTypes = {
@@ -35,10 +33,6 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                 if (!has_selected) {
                     setFieldValue?.(name, categories?.[0]?.value);
                     setValue(name, categories?.[0]?.value);
-                    setRsDropdownTextToLocalStorage(categories?.[0]?.text, name);
-                } else {
-                    const curzrent_selected = categories?.find(contract => contract.value === selected);
-                    setRsDropdownTextToLocalStorage(curzrent_selected?.text ?? '', name);
                 }
             };
             getContractTypes();
@@ -46,15 +40,9 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [symbol, tradetype, selected]);
 
-    const handleChange = (value: string, text: string) => {
+    const handleChange = (value: string) => {
         setFieldValue?.(name, value);
         setValue(name, value);
-        rudderStackSendQsParameterChangeEvent({
-            parameter_type: name,
-            parameter_value: text,
-            parameter_field_type: 'dropdown',
-        });
-        setRsDropdownTextToLocalStorage(text, name);
     };
 
     const key = `qs-contract-type-${name}`;
@@ -76,7 +64,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                                                 'qs__form__field__list__item--active': is_active,
                                             })}
                                             onClick={() => {
-                                                handleChange(item?.value, item?.text);
+                                                handleChange(item?.value);
                                             }}
                                         >
                                             <Text size='xs' color='prominent' weight={is_active ? 'bold ' : 'normal'}>
@@ -99,9 +87,9 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                             value={selected_item?.text || ''}
                             list_items={list}
                             onItemSelection={(item: TItem) => {
-                                const { value, text } = item as TDropdownItems;
+                                const { value } = item as TDropdownItems;
                                 if (value) {
-                                    handleChange(value, text);
+                                    handleChange(value);
                                 }
                             }}
                         />

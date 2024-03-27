@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Popover, Text, ToggleSwitch } from '@deriv/components';
-import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
 import { TFormData } from '../types';
 import { localize } from '@deriv/translations';
 
@@ -19,11 +18,6 @@ const QSToggleSwitch: React.FC<TQSToggleSwitch> = ({ name, label, description, a
     const [is_enabled, setIsEnabled] = React.useState(false);
 
     const handleChange = () => {
-        rudderStackSendQsParameterChangeEvent({
-            parameter_type: name,
-            parameter_value: !values?.[name],
-            parameter_field_type: 'checkbox',
-        });
         setFieldValue(name, !values?.[name]);
         setIsEnabled(!is_enabled);
     };

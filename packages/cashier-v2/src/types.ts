@@ -50,3 +50,11 @@ export namespace TIconTypes {
         light: TIcon[];
     };
 }
+
+export type DeepNonNullable<T> = NonNullable<
+    T extends object
+        ? {
+              [K in keyof T]-?: DeepNonNullable<T[K]>;
+          }
+        : NonNullable<T>
+>;

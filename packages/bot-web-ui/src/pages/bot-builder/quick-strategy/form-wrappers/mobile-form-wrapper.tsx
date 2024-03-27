@@ -5,12 +5,6 @@ import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv/components'
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import {
-    rudderStackSendQsRunStrategyEvent,
-    rudderStackSendQsSelectedTabEvent,
-    rudderStackSendQsStrategyChangeEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormValues } from '../types';
 import FormTabs from './form-tabs';
@@ -25,7 +19,7 @@ type TMobileFormWrapper = {
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, active_tab_ref }) => {
     const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { isValid, validateForm, values } = useFormikContext<TFormValues>();
+    const { isValid, validateForm } = useFormikContext<TFormValues>();
     const { quick_strategy } = useDBotStore();
     const { selected_strategy, setSelectedStrategy } = quick_strategy;
     const { handleSubmit } = useQsSubmitHandler();
@@ -38,22 +32,13 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
-        rudderStackSendQsStrategyChangeEvent({
-            selected_strategy,
-        });
     };
 
     const handleTabChange = (tab: string) => {
         setActiveTab(tab);
-        rudderStackSendQsSelectedTabEvent({ strategy_switcher_mode: getQsActiveTabString(tab) });
     };
 
     const onRun = () => {
-        rudderStackSendQsRunStrategyEvent({
-            form_values: values,
-            selected_strategy,
-            strategy_switcher_mode: getQsActiveTabString(active_tab),
-        });
         handleSubmit();
     };
 

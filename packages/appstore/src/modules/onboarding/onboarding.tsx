@@ -7,7 +7,6 @@ import TradingPlatformIcon from 'Assets/svgs/trading-platform';
 import './onboarding.scss';
 
 const Onboarding = observer(() => {
-
     const { traders_hub, client, ui } = useStore();
     const { is_landing_company_loaded, is_logged_in, setPrevAccountType } = client;
     const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
@@ -26,7 +25,7 @@ const Onboarding = observer(() => {
             setPrevAccountType('demo');
         }
 
-        return <Redirect to={routes.traders_hub} />
+        return <Redirect to={routes.traders_hub} />;
     }
 
     return (

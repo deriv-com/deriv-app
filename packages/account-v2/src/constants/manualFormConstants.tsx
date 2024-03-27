@@ -33,7 +33,31 @@ const documentExpiry = {
     label: 'Expiry date',
 };
 
-export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
+type TManualDocumentConfig = {
+    [key in TManualDocumentTypes]: {
+        fields: {
+            documentExpiry?: {
+                errorMessage: string;
+                label: string;
+            };
+            documentNumber?: {
+                errorMessage: string;
+                label: string;
+            };
+        };
+        inputSectionHeader: string;
+        uploadSectionHeader: string;
+        uploads: {
+            documentType: typeof MANUAL_DOCUMENT_TYPES[keyof typeof MANUAL_DOCUMENT_TYPES];
+            error?: string;
+            icon?: JSX.Element;
+            pageType: string;
+            text?: string;
+        }[];
+    };
+};
+
+export const MANUAL_DOCUMENT_TYPES_DATA: TManualDocumentConfig = Object.freeze({
     [MANUAL_DOCUMENT_TYPES.drivingLicence]: {
         fields: {
             documentExpiry,

@@ -52,6 +52,7 @@ export const getSelfieValidationSchema = () => {
                     return !!value && value instanceof File;
                 },
             })
-            .required(),
-    }).default(() => ({ [MANUAL_DOCUMENT_SELFIE]: null }));
+            .required()
+            .default(null),
+    });
 };

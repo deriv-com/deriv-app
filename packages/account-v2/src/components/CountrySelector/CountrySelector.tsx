@@ -6,7 +6,7 @@ import { Dropdown } from '@deriv-com/ui';
 type TCountrySelector = {
     disabled?: boolean;
     errorMessage?: React.ReactNode;
-    handleSelect: (value: string) => void;
+    handleSelect?: (value: string) => void;
     label: string;
     name: string;
 };
@@ -24,7 +24,7 @@ export const CountrySelector = ({ disabled, errorMessage, handleSelect, label, n
             label={label}
             list={residenceList}
             name={name}
-            onSelect={handleSelect}
+            onSelect={value => handleSelect?.(value as string)}
             variant='prompt'
         />
     );

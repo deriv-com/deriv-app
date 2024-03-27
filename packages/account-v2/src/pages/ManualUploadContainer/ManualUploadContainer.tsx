@@ -49,7 +49,7 @@ export const ManualUploadContainer = ({
         return <Loader />;
     }
 
-    const processeDocuments = async (
+    const processDocuments = async (
         values: TManualUploadFormData,
         item: ReturnType<typeof getUploadConfig>[number]
     ) => {
@@ -71,7 +71,7 @@ export const ManualUploadContainer = ({
         try {
             await uploadDocumentConfig.reduce(async (promise, item) => {
                 await promise;
-                const payload = await processeDocuments(values, item);
+                const payload = await processDocuments(values, item);
                 await upload(payload);
             }, Promise.resolve());
             onDocumentSubmit();
@@ -99,11 +99,9 @@ export const ManualUploadContainer = ({
                 formData={formData}
                 isExpiryDateRequired={isExpiryDateRequired}
                 onCancel={() => {
-                    // TODO: Implement manual cancel
                     setSelectedDocument(null);
                 }}
                 onSubmit={values => {
-                    // TODO: Implement manual submit
                     setFormData(prev => ({ ...prev, ...values }));
                     setShouldUploadSelfie(true);
                 }}
@@ -111,14 +109,11 @@ export const ManualUploadContainer = ({
             />
         );
     }
-    // [TODO]: Integrate country selector
     return (
         <OnfidoContainer
             countryCode={countryCode}
             isEnabledByDefault
-            onOnfidoSubmit={() => {
-                // [TODO]: Implement onfido submit
-            }}
+            onOnfidoSubmit={onDocumentSubmit}
             selectedDocument={selectedDocument as TManualDocumentTypes}
         />
     );

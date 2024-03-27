@@ -37,20 +37,20 @@ describe('ManualUpload', () => {
     });
 
     it('should render DocumentSelection when no document is selected', () => {
-        render(<ManualUpload countryCode='in' />);
+        render(<ManualUpload countryCode='in' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         expect(screen.getByText('Please upload one of the following documents:')).toBeInTheDocument();
         expect(screen.getAllByTestId('dt_manual_document_types')).toHaveLength(3);
     });
 
     it('should render 4 documents for Nigeria', () => {
-        render(<ManualUpload countryCode='ng' />);
+        render(<ManualUpload countryCode='ng' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         expect(screen.getAllByTestId('dt_manual_document_types')).toHaveLength(4);
     });
 
     it('should render ManualUploadContainer when a document is selected', () => {
-        render(<ManualUpload countryCode='in' />);
+        render(<ManualUpload countryCode='in' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         const elDocumentType = screen.getAllByTestId('dt_manual_document_types')[0];
         userEvent.click(elDocumentType);
@@ -60,7 +60,7 @@ describe('ManualUpload', () => {
     });
 
     it('should disable Next button when form is not filled', () => {
-        render(<ManualUpload countryCode='in' />);
+        render(<ManualUpload countryCode='in' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         const elDocumentType = screen.getAllByTestId('dt_manual_document_types')[1];
         userEvent.click(elDocumentType);
@@ -75,7 +75,7 @@ describe('ManualUpload', () => {
             isLoading: false,
             poiService: 'manual',
         });
-        render(<ManualUpload countryCode='ng' />);
+        render(<ManualUpload countryCode='ng' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         const elDocumentType = screen.getAllByTestId('dt_manual_document_types')[0];
         userEvent.click(elDocumentType);
@@ -99,7 +99,7 @@ describe('ManualUpload', () => {
             isLoading: false,
             poiService: 'manual',
         });
-        render(<ManualUpload countryCode='ng' />);
+        render(<ManualUpload countryCode='ng' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         const elDocumentType = screen.getAllByTestId('dt_manual_document_types')[0];
         userEvent.click(elDocumentType);
@@ -122,7 +122,7 @@ describe('ManualUpload', () => {
     });
 
     it('should render DocumentSelection when back button is clicked', () => {
-        render(<ManualUpload countryCode='in' />);
+        render(<ManualUpload countryCode='in' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         const elDocumentType = screen.getAllByTestId('dt_manual_document_types')[0];
         userEvent.click(elDocumentType);
@@ -141,7 +141,7 @@ describe('ManualUpload', () => {
             isLoading: false,
             poiService: 'onfido',
         });
-        render(<ManualUpload countryCode='ng' />);
+        render(<ManualUpload countryCode='ng' handleComplete={jest.fn()} onCancel={jest.fn()} />);
 
         const elDocumentType = screen.getAllByTestId('dt_manual_document_types')[3];
         userEvent.click(elDocumentType);

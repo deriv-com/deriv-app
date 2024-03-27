@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { DerivLightWaitingPoiIcon } from '@deriv/quill-icons';
+import { DerivLightApprovedPoiIcon, DerivLightWaitingPoiIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { ACCOUNT_V2_ROUTES, AUTH_STATUS_CODES, POI_SERVICE } from '../../constants';

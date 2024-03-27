@@ -5,7 +5,7 @@ import { ACCOUNT_MODAL_REF } from '../../constants';
 
 type TConnectedAppsRevokeModalProps = {
     handleRevokeAccess: () => void;
-    handleToggleModal: (appId?: number | null) => void;
+    handleToggleModal: () => void;
     isModalOpen: boolean;
 };
 
@@ -28,7 +28,7 @@ export const ConnectedAppsRevokeModal = ({
                 <Button
                     className='px-16 py-10 h-40'
                     color='black'
-                    onClick={() => handleToggleModal()}
+                    onClick={handleToggleModal}
                     rounded='sm'
                     size='md'
                     type='button'

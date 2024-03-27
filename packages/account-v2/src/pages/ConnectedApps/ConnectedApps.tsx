@@ -11,8 +11,8 @@ export const ConnectedApps = () => {
     const [selectedAppId, setSelectedAppId] = useState<number | null>(null);
 
     const handleToggleModal = useCallback((appId: number | null = null) => {
-        setIsModalOpen(isModalOpen => !isModalOpen);
         setSelectedAppId(appId);
+        setIsModalOpen(isModalOpen => !isModalOpen);
     }, []);
 
     const handleRevokeAccess = useCallback(() => {

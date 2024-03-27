@@ -22,11 +22,11 @@ const CreatePasswordIcon = {
 
 const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrimaryClick, password, platform }) => {
     const { isDesktop } = useDevice();
-    const { title } = PlatformDetails[platform];
+    const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
 
     return (
         <div className='wallets-create-password'>
-            {CreatePasswordIcon[platform]}
+            {CreatePasswordIcon[platform as keyof typeof CreatePasswordIcon]}
             <div className='wallets-create-password__text'>
                 <WalletText align='center' lineHeight='xl' weight='bold'>
                     Create a {title} password

@@ -61,7 +61,7 @@ const sortedCryptoDerivAccounts = (accounts: THooks.TransferAccounts, getConfig:
     - sorts the mt5 accounts based on group type
     - sorts the crypto accounts alphabetically
 */
-const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccounts) => {
+const useExtendedTransferAccounts = (accounts: THooks.TransferAccounts) => {
     const { data: activeAccount, isLoading: isActiveAccountLoading } = useActiveAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
@@ -90,4 +90,4 @@ const useExtendedTransferBetweenAccounts = (accounts: THooks.TransferAccounts) =
     };
 };
 
-export default useExtendedTransferBetweenAccounts;
+export default useExtendedTransferAccounts;

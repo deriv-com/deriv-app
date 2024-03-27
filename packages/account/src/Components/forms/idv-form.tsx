@@ -81,11 +81,7 @@ const IDVForm = ({
                 };
             });
 
-            if (is_for_mt5) {
-                setDocumentList([...new_document_list]);
-            } else {
-                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
-            }
+            setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
         }
     }, [document_data, selected_country, IDV_NOT_APPLICABLE_OPTION, is_for_mt5]);
 
@@ -113,8 +109,8 @@ const IDVForm = ({
         setFieldValue('document_type', item, true);
         setSelectedDoc(item?.id);
         if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {
-            setFieldValue('document_number', '', true);
-            setFieldValue('document_additional', '', true);
+            setFieldValue('document_number', '', false);
+            setFieldValue('document_additional', '', false);
         }
     };
 

@@ -6,6 +6,7 @@ import {
     formatIDVFormValues,
     formatIDVError,
     isIDVReportNotAvailable,
+    getIDVNotApplicableOption,
 } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import Unsupported from '../../../Components/poi/status/unsupported';
@@ -35,25 +36,24 @@ const POISubmissionForMT5 = observer(
         const { refreshNotifications } = notifications;
         const { is_eu_user } = traders_hub;
         const is_report_not_available = isIDVReportNotAvailable(idv);
+        const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+        const shouldSkipIdv = document_id => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+
+        const attempts = account_status?.authentication?.attempts;
+
+        const { service } = attempts?.latest ?? {};
+        const { submissions_left: idv_submissions_left, last_rejected, status } = idv;
+        const { submissions_left: onfido_submissions_left } = onfido;
+
+        const is_idv_supported =
+            service === service_code.idv || isVerificationServiceSupported(residence_list, account_settings, 'idv');
+        const is_onfido_supported =
+            service === service_code.onfido ||
+            (account_settings?.citizen !== 'ng' &&
+                isVerificationServiceSupported(residence_list, account_settings, 'onfido'));
 
         React.useEffect(() => {
             if (citizen_data) {
-                const {
-                    authentication: { attempts },
-                } = account_status;
-
-                const { service } = attempts?.latest ?? {};
-                const { submissions_left: idv_submissions_left, last_rejected, status } = idv;
-                const { submissions_left: onfido_submissions_left } = onfido;
-
-                const is_idv_supported =
-                    service === service_code.idv ||
-                    isVerificationServiceSupported(residence_list, account_settings, 'idv');
-                const is_onfido_supported =
-                    service === service_code.onfido ||
-                    (account_settings?.citizen !== 'ng' &&
-                        isVerificationServiceSupported(residence_list, account_settings, 'onfido'));
-
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                     setSubmissionService(service_code.idv);
                     if (
@@ -72,7 +72,11 @@ const POISubmissionForMT5 = observer(
                 }
                 setSubmissionStatus(submission_status_code.submitting);
             }
-        }, [citizen_data, account_status]);
+        }, [citizen_data]);
+
+        const handleSelectionNext = () => {
+            setSubmissionService(service_code.manual);
+        };
 
         const handlePOIComplete = () => {
             if (onStateChange && typeof onStateChange === 'function') {
@@ -84,6 +88,10 @@ const POISubmissionForMT5 = observer(
         };
 
         const handleIdvSubmit = async (values, { setSubmitting, setErrors }) => {
+            if (shouldSkipIdv(values?.document_type?.id)) {
+                handleSelectionNext?.(true);
+                return;
+            }
             setSubmitting(true);
 
             const request = makeSettingsRequest(values, [...getChangeableFields()]);
@@ -130,6 +138,7 @@ const POISubmissionForMT5 = observer(
                             is_from_external={is_from_external}
                             handleSubmit={handlePOIComplete}
                             latest_status={identity_last_attempt}
+                            handleSelectionNext={handleSelectionNext}
                         />
                     ) : (
                         <IdvDocSubmitOnSignup

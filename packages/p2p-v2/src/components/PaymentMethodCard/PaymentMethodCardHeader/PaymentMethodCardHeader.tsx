@@ -1,5 +1,5 @@
 import React, { ComponentType, SVGAttributes } from 'react';
-import { TAdvertiserPaymentMethods } from 'types';
+import { THooks } from 'types';
 import { FlyoutMenu } from '@/components';
 import { LabelPairedEllipsisVerticalXlRegularIcon } from '@deriv/quill-icons';
 import { Button, Checkbox } from '@deriv-com/ui';
@@ -9,6 +9,7 @@ import IcCashierOther from '../../../public/ic-cashier-other.svg';
 import './PaymentMethodCardHeader.scss';
 
 type TPaymentMethodCardHeaderProps = {
+    isDisabled?: boolean;
     isEditable?: boolean;
     isSelectable?: boolean;
     isSelected?: boolean;
@@ -17,10 +18,11 @@ type TPaymentMethodCardHeaderProps = {
     onEditPaymentMethod?: () => void;
     onSelectPaymentMethod?: () => void;
     small?: boolean;
-    type: NonNullable<TAdvertiserPaymentMethods>[number]['type'];
+    type: THooks.AdvertiserPaymentMethods.Get[number]['type'];
 };
 
 const PaymentMethodCardHeader = ({
+    isDisabled = false,
     isEditable = false,
     isSelectable = false,
     isSelected = false,
@@ -61,10 +63,14 @@ const PaymentMethodCardHeader = ({
                     renderIcon={() => <LabelPairedEllipsisVerticalXlRegularIcon />}
                 />
             )}
-            {/*TODO: wire up logic for the selectable payment method cards here*/}
             {isSelectable && (
                 <div data-testid='p2p_v2_payment_method_card_header_checkbox'>
-                    <Checkbox checked={isSelected} name='payment-method-checkbox' onChange={onSelectPaymentMethod} />
+                    <Checkbox
+                        checked={isSelected}
+                        disabled={isDisabled}
+                        name='payment-method-checkbox'
+                        onChange={onSelectPaymentMethod}
+                    />
                 </div>
             )}
         </div>

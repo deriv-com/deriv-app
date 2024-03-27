@@ -225,7 +225,7 @@ const StatisticsInfoModal = ({
 };
 
 const RunPanel = observer(() => {
-    const { run_panel, dashboard } = useDBotStore();
+    const { run_panel, dashboard, transactions } = useDBotStore();
     const {
         client,
         ui: { is_mobile },
@@ -243,8 +243,8 @@ const RunPanel = observer(() => {
         setActiveTabIndex,
         toggleDrawer,
         toggleStatisticsInfoModal,
-        statistics,
     } = run_panel;
+    const { statistics } = transactions;
     const { active_tour, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
     const { BOT_BUILDER, CHART } = DBOT_TABS;
@@ -258,6 +258,7 @@ const RunPanel = observer(() => {
         if (is_mobile) {
             toggleDrawer(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const content = (

@@ -8,14 +8,14 @@ export const RATE_TYPE = Object.freeze({
     FLOAT: 'float',
 });
 
-export const AD_ACTION = Object.freeze({
+export const AD_ACTION = {
     ACTIVATE: 'activate',
     CREATE: 'create',
     DEACTIVATE: 'deactivate',
     DELETE: 'delete',
     EDIT: 'edit',
     SHARE: 'share',
-});
+} as const;
 
 export const ADVERT_TYPE = Object.freeze({
     BUY: 'Buy',

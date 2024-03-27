@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import useQuery from '../../../../../useQuery';
 import useAuthorize from '../../../../useAuthorize';
 
+// TODO: Convert this to use useSubscribe as it is a subscribable endpoint
 /** This custom hook that returns information about the given order ID */
 const useOrderInfo = (id: string) => {
     const { isSuccess } = useAuthorize();
@@ -53,13 +54,15 @@ const useOrderInfo = (id: string) => {
             is_reviewable: Boolean(is_reviewable),
             /** Indicates if the latest order changes have been seen by the current client. */
             is_seen: Boolean(is_seen),
-            review_details: {
-                ...review_details,
-                /** Indicates if the advertiser is recommended or not. */
-                is_recommended: Boolean(review_details?.recommended),
-                /** Indicates that the advertiser has not been recommended yet. */
-                has_not_been_recommended: review_details?.recommended === null,
-            },
+            review_details: review_details
+                ? {
+                      ...review_details,
+                      /** Indicates if the advertiser is recommended or not. */
+                      is_recommended: Boolean(review_details?.recommended),
+                      /** Indicates that the advertiser has not been recommended yet. */
+                      has_not_been_recommended: review_details?.recommended === null,
+                  }
+                : undefined,
             /** Indicates that the seller in the process of confirming the order. */
             is_verification_pending: Boolean(verification_pending),
         };

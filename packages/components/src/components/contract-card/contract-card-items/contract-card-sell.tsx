@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isOpen, isValidToSell, hasContractEntered } from '@deriv/shared';
+import { isOpen, isValidToSell, hasContractEntered, isForwardStarting } from '@deriv/shared';
 import Button from '../../button';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables } from '../../types';
@@ -14,7 +14,10 @@ export type TContractCardSellProps = {
 
 const ContractCardSell = ({ contract_info, getCardLabels, is_sell_requested, onClickSell }: TContractCardSellProps) => {
     const is_valid_to_sell = isValidToSell(contract_info);
-    const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
+    const should_show_sell =
+        (hasContractEntered(contract_info) ||
+            isForwardStarting(contract_info?.shortcode ?? '', contract_info.purchase_time)) &&
+        isOpen(contract_info);
 
     const onClick = (ev: React.MouseEvent<HTMLButtonElement>) => {
         onClickSell?.(contract_info.contract_id);

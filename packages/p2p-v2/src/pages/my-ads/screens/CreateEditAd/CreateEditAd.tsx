@@ -11,6 +11,10 @@ const STEPS = [
 ];
 
 const CreateEditAd = () => {
+    const { rateType } = useFloatingRate();
+    const { data: activeAccount } = useActiveAccount();
+    const { data: p2pSettings } = p2p.settings.useGetSettings();
+    const { order_payment_period: orderPaymentPeriod } = p2pSettings ?? {};
     const methods = useForm({
         defaultValues: {
             'ad-type': 'buy',
@@ -18,13 +22,11 @@ const CreateEditAd = () => {
             instructions: '',
             'max-order': '',
             'min-order': '',
-            'rate-type': '-0.01',
+            'order-completion-time': `${orderPaymentPeriod ? (orderPaymentPeriod * 60).toString() : '3600'}`,
+            'rate-value': '-0.01',
         },
         mode: 'all',
     });
-    const { rateType } = useFloatingRate();
-    const { data: activeAccount } = useActiveAccount();
-    const { data: p2pSettings } = p2p.settings.useGetSettings();
 
     const onSubmit = () => {
         // TODO: handle submit after all the steps are completed

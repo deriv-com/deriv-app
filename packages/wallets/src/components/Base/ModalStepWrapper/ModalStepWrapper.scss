@@ -1,7 +1,7 @@
 .wallets-modal-step-wrapper {
     background: var(--general-main-2, #ffffff);
     border-radius: 0.8rem;
-    animation: popup 0.4s;
+    animation: fadein 0.6s ease backwards;
 
     @include mobile {
         animation: popup 0.2s;

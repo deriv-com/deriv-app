@@ -25,13 +25,13 @@ const ActiveOrderInfo = () => {
     if (isActiveOrder)
         return (
             <>
-                <LightDivider color='#f2f3f4' />
+                <LightDivider />
                 <PaymentMethodAccordion
                     paymentDetails={labels.paymentDetails}
                     paymentInfo={paymentInfo}
                     paymentMethodDetails={paymentMethodDetails}
                 />
-                <LightDivider color='#f2f3f4' />
+                <LightDivider />
                 {adDetails.map((detail, key) => (
                     <Fragment key={detail.text}>
                         <div className='flex flex-col p-[1.6rem] gap-2'>
@@ -40,7 +40,7 @@ const ActiveOrderInfo = () => {
                             </Text>
                             <Text size={textSize}>{detail.value}</Text>
                         </div>
-                        {key === 0 && <LightDivider color='#f2f3f4' />}
+                        {key === 0 && <LightDivider />}
                     </Fragment>
                 ))}
             </>

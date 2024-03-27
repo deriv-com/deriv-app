@@ -1,5 +1,5 @@
-import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
+import useQuery from '../useQuery';
 
 const useLoginHistory = (limitValue: number) => {
     const { isSuccess } = useAuthorize();

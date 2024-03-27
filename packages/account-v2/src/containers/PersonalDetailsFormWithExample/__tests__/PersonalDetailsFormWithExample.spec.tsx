@@ -7,7 +7,7 @@ import { PersonalDetailsFormWithExample } from '../PersonalDetailsFormWithExampl
 
 const renderComponent = () => {
     return render(
-        <Formik initialValues={{}} onSubmit={jest.fn()} validationSchema={getNameDOBValidationSchema(false)}>
+        <Formik initialValues={{}} onSubmit={jest.fn()} validationSchema={getNameDOBValidationSchema()}>
             <PersonalDetailsFormWithExample onConfirm={jest.fn()} />
         </Formik>
     );

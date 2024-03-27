@@ -162,16 +162,7 @@ export const getPersonalDetailsBaseValidationSchema = () => {
     });
 };
 
-export const getNameDOBValidationSchema = (skipConfirmation = false) => {
-    if (skipConfirmation) {
-        return getPersonalDetailsBaseValidationSchema()
-            .pick(['dateOfBirth', 'firstName', 'lastName'])
-            .default(() => ({
-                dateOfBirth: '',
-                firstName: '',
-                lastName: '',
-            }));
-    }
+export const getNameDOBValidationSchema = () => {
     return getPersonalDetailsBaseValidationSchema()
         .pick(['dateOfBirth', 'firstName', 'lastName', 'nameDOBConfirmation'])
         .default(() => ({

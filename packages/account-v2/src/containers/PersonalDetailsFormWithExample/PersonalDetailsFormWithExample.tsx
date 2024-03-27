@@ -13,13 +13,9 @@ type TPersonalDetailsFormWithExampleValues = InferType<ReturnType<typeof getName
 type TPersonalDetailsFormWithExampleProps = {
     error?: string;
     onConfirm?: () => void;
-    skipConfirmation?: boolean;
 };
 
-export const PersonalDetailsFormWithExample = ({
-    onConfirm,
-    skipConfirmation,
-}: TPersonalDetailsFormWithExampleProps) => {
+export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFormWithExampleProps) => {
     const formik = useFormikContext<TPersonalDetailsFormWithExampleValues>();
 
     if (!formik) {
@@ -39,7 +35,7 @@ export const PersonalDetailsFormWithExample = ({
         );
     }, [values, errors]);
 
-    const validationSchema = getNameDOBValidationSchema(true);
+    const validationSchema = getNameDOBValidationSchema();
 
     return (
         <section className='p-16 outline outline-1 outline-system-light-active-background rounded-default'>
@@ -91,31 +87,30 @@ export const PersonalDetailsFormWithExample = ({
                     <DerivLightNameDobPoiIcon height='200px' />
                 </div>
             </div>
-            {!skipConfirmation && (
-                <div>
-                    <Field
-                        name='nameDOBConfirmation'
-                        type='checkbox'
-                        validate={validateField(validationSchema.fields.nameDOBConfirmation)}
-                    >
-                        {({ field, form, meta: { error, touched } }: FieldProps) => (
-                            <Checkbox
-                                {...field}
-                                data-testid='dt_poi_confirm_with_example'
-                                disabled={isDisabled}
-                                error={Boolean(error && touched)}
-                                label='I confirm that the name and date of birth above match my chosen identity document.'
-                                onChange={value => {
-                                    form.setFieldValue(field.name, value.target.checked);
-                                    if (value.target.checked) {
-                                        onConfirm?.();
-                                    }
-                                }}
-                            />
-                        )}
-                    </Field>
-                </div>
-            )}
+
+            <div>
+                <Field
+                    name='nameDOBConfirmation'
+                    type='checkbox'
+                    validate={validateField(validationSchema.fields.nameDOBConfirmation)}
+                >
+                    {({ field, form, meta: { error, touched } }: FieldProps) => (
+                        <Checkbox
+                            {...field}
+                            data-testid='dt_poi_confirm_with_example'
+                            disabled={isDisabled}
+                            error={Boolean(error && touched)}
+                            label='I confirm that the name and date of birth above match my chosen identity document.'
+                            onChange={value => {
+                                form.setFieldValue(field.name, value.target.checked);
+                                if (value.target.checked) {
+                                    onConfirm?.();
+                                }
+                            }}
+                        />
+                    )}
+                </Field>
+            </div>
         </section>
     );
 };

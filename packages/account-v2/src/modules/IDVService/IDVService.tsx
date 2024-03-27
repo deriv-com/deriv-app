@@ -34,7 +34,7 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
     const { mutateAsync: submitIDVDocumentsAsync } = useIdentityDocumentVerificationAdd();
 
     const idvValidationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments, {});
-    const personalDetailsValidationSchema = getNameDOBValidationSchema(true);
+    const personalDetailsValidationSchema = getNameDOBValidationSchema();
     const idvServiceSchema = personalDetailsValidationSchema.concat(idvValidationSchema);
 
     if (isLoading) {
@@ -94,7 +94,7 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
                                 </Text>
                                 <Divider className='block w-full' />
                             </div>
-                            <PersonalDetailsFormWithExample skipConfirmation />
+                            <PersonalDetailsFormWithExample />
                         </section>
                     </section>
                     <section className='flex gap-8 flex-col justify-end'>

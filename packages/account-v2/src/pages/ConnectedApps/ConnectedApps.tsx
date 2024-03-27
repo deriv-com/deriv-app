@@ -1,11 +1,11 @@
 import React from 'react';
 import { useFetchConnectedApps } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import { ConnectedAppsTable } from './ConnectedAppsTable';
 import { ErrorMessage } from '../../components/ErrorMessage';
-import { ConnectedAppsSidebar } from './ConnectedAppsSidebar';
-import { ConnectedAppsInfo } from './ConnectedAppsInfo';
 import { ConnectedAppsEmpty } from './ConnectedAppsEmpty';
+import { ConnectedAppsInfo } from './ConnectedAppsInfo';
+import { ConnectedAppsSidebar } from './ConnectedAppsSidebar';
+import { ConnectedAppsTable } from './ConnectedAppsTable';
 
 export const ConnectedApps = () => {
     const { data: connectedApps, isError, isLoading } = useFetchConnectedApps();

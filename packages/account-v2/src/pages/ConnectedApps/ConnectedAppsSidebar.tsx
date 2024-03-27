@@ -1,22 +1,19 @@
 import React from 'react';
 import { SideNote } from '@deriv-com/ui';
+import { API_MANAGING_WEBSITE, PRODUCT_API } from '../../constants/connectedAppsConstants';
 
 export const ConnectedAppsSidebar = () => {
     const openAPIManagingWebsite = () => {
-        window.open(
-            'https://community.deriv.com/t/api-tokens-managing-access-on-third-party-applications-and-mobile-apps/29159',
-            '_blank',
-            'noopener noreferrer'
-        );
+        window.open(API_MANAGING_WEBSITE, '_blank', 'noopener noreferrer');
     };
     const openDerivAPIWebsite = () => {
-        window.open('https://api.deriv.com/', '_blank', 'noopener noreferrer');
+        window.open(PRODUCT_API, '_blank', 'noopener noreferrer');
     };
     return (
         <div className='flex flex-col items-center gap-16'>
             <SideNote
                 actionClassName='mt-16'
-                actionClick={() => openAPIManagingWebsite()}
+                actionClick={() => openAPIManagingWebsite}
                 actionLabel='Learn more'
                 className='w-auto text-sm'
                 title='Want to know more about APIs?'
@@ -25,7 +22,7 @@ export const ConnectedAppsSidebar = () => {
             </SideNote>
             <SideNote
                 actionClassName='mt-16'
-                actionClick={() => openDerivAPIWebsite()}
+                actionClick={() => openDerivAPIWebsite}
                 actionLabel='Learn more'
                 className='w-auto text-sm'
                 title='Earn more with Deriv API'

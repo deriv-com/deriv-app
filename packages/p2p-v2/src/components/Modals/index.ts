@@ -7,6 +7,7 @@ export * from './FilterModal';
 export * from './MyAdsDeleteModal';
 export * from './NicknameModal';
 export * from './OrderDetailsConfirmModal';
+export * from './OrderTimeTooltipModal';
 export * from './PaymentMethods';
 export * from './RadioGroupFilterModal';
 export * from './RatingModal';

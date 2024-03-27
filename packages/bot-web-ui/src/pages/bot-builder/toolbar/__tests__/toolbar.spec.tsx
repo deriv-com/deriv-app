@@ -1,6 +1,5 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import { useDBotStore } from 'Stores/useDBotStore';
 import Toolbar from '..';

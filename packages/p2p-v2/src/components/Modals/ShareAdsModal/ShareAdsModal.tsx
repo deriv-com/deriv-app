@@ -92,7 +92,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
                     onRequestClose={onRequestClose}
                     testId='dt_p2p_v2_share_ads_modal'
                 >
-                    <Modal.Header className='px-0 py-4 h-0' hideBorder onRequestClose={onRequestClose}>
+                    <Modal.Header className='px-0 py-4 lg:pb-16 h-0' hideBorder onRequestClose={onRequestClose}>
                         <Text weight='bold'>Share this ad</Text>
                     </Modal.Header>
                     <Modal.Body>

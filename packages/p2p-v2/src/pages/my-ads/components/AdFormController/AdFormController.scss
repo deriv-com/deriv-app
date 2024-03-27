@@ -4,8 +4,13 @@
     column-gap: 0.8rem;
     border-top: 1px solid #f2f3f4;
     padding: 2rem 0;
-    margin-top: 10rem;
+    margin-top: 2.4rem;
     @include mobile {
-        margin-top: 3rem;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        padding: 1.6rem;
+        background: #ffffff;
     }
 }

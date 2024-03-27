@@ -186,7 +186,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                 </div>
             </AccountInfoWrapper>
             {is_mobile ? (
-                <AccountSwitcherWalletMobile is_visible={is_dialog_on} toggle={toggleDialog} />
+                <AccountSwitcherWalletMobile is_visible={is_dialog_on} toggle={toggleDialog} loginid={loginid} />
             ) : (
                 <CSSTransition
                     in={is_dialog_on}

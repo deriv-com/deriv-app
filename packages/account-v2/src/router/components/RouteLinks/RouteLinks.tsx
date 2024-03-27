@@ -18,17 +18,9 @@ export const RouteLinks = () => (
                 ))}
             </div>
             <Switch>
-                {routes.map(route => {
-                    const Component = route.routeComponent;
-                    return (
-                        <Route
-                            exact
-                            key={route.routePath}
-                            path={route.routePath}
-                            render={() => <Component path={route.routePath} />}
-                        />
-                    );
-                })}
+                {routes.map(({ routeComponent: Component, routePath }) => (
+                    <Route exact key={routePath} path={routePath} render={() => <Component />} />
+                ))}
                 <Redirect from='/' to={defaultRoute} />
             </Switch>
         </div>

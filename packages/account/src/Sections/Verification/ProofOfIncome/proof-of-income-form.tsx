@@ -76,7 +76,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                         await WS.authorized.getAccountStatus();
 
                     const { income, needs_verification } =
-                        get_account_status_response.get_account_status.authentication;
+                        get_account_status_response?.get_account_status?.authentication || {};
                     const needs_poinc =
                         needs_verification.includes('income') &&
                         [income_status_codes.REJECTED, income_status_codes.NONE].some(

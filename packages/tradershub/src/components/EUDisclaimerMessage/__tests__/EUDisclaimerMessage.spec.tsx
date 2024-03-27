@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import EUDisclaimerMessage from '../EUDisclaimerMessage';
 
 describe('EUDisclaimerMessage component', () => {
-    it('renders the EU disclaimer message correctly', () => {
+    it('should render the EU disclaimer message correctly', () => {
         render(<EUDisclaimerMessage />);
 
         expect(screen.getByText(/EU statutory disclaimer/i)).toBeInTheDocument();

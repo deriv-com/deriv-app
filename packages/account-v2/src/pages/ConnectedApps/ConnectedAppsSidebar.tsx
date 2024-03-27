@@ -13,7 +13,7 @@ export const ConnectedAppsSidebar = () => {
         <div className='flex flex-col items-center gap-16'>
             <SideNote
                 actionClassName='mt-16'
-                actionClick={() => openAPIManagingWebsite}
+                actionClick={openAPIManagingWebsite}
                 actionLabel='Learn more'
                 className='w-auto text-sm'
                 title='Want to know more about APIs?'
@@ -22,7 +22,7 @@ export const ConnectedAppsSidebar = () => {
             </SideNote>
             <SideNote
                 actionClassName='mt-16'
-                actionClick={() => openDerivAPIWebsite}
+                actionClick={openDerivAPIWebsite}
                 actionLabel='Learn more'
                 className='w-auto text-sm'
                 title='Earn more with Deriv API'

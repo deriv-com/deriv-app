@@ -87,10 +87,6 @@ type TAPIProviderProps = {
     standalone?: boolean;
 };
 
-export const getActiveWebsocket = () => {
-    return connection;
-};
-
 const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
     const derivAPIRef = useRef<DerivAPIBasic>();

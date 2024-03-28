@@ -31,6 +31,7 @@ type APIContextData = {
     unsubscribe: TUnsubscribeFunction;
     queryClient: QueryClient;
     setOnReconnected: (onReconnected: () => void) => void;
+    setOnConnected: (onConnected: () => void) => void;
 };
 
 /**
@@ -94,10 +95,21 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
+    const onConnectedRef = useRef<() => void>();
+    const isOpenRef = useRef<boolean>(false);
 
     // have to be here and not inside useEffect as there are places in code expecting this to be available
     if (!derivAPIRef.current) {
-        derivAPIRef.current = initializeDerivAPI(() => setReconnect(true));
+        derivAPIRef.current = initializeDerivAPI(
+            () => setReconnect(true),
+            () => {
+                isOpenRef.current = true;
+                if (onConnectedRef.current) {
+                    onConnectedRef.current();
+                    onConnectedRef.current = undefined;
+                }
+            }
+        );
     }
 
     useEffect(() => {
@@ -108,6 +120,14 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
     const setOnReconnected = useCallback((onReconnected: () => void) => {
         onReconnectedRef.current = onReconnected;
+    }, []);
+
+    const setOnConnected = useCallback((onConnected: () => void) => {
+        if (isOpenRef.current) {
+            onConnected();
+        } else {
+            onConnectedRef.current = onConnected;
+        }
     }, []);
 
     const send: TSendFunction = (name, payload) => {
@@ -186,6 +206,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 unsubscribe,
                 queryClient,
                 setOnReconnected,
+                setOnConnected,
             }}
         >
             <QueryClientProvider client={queryClient}>

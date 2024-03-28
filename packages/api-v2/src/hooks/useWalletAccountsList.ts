@@ -38,9 +38,11 @@ const useWalletAccountsList = () => {
                 /** Date till client has excluded him/herself from the website, only present if client is self excluded. */
                 excluded_until: wallet.excluded_until ? new Date(wallet.excluded_until) : undefined,
                 /** Indicating whether the wallet account is the currently active account. */
-                is_active: wallet.loginid === authorize_data.loginid,
+                is_active: wallet.loginid === authorize_data?.loginid,
                 /** Indicating whether any linked account is active */
-                is_linked_account_active: wallet.linked_to?.some(account => account.loginid === authorize_data.loginid),
+                is_linked_account_active: wallet.linked_to?.some(
+                    account => account.loginid === authorize_data?.loginid
+                ),
                 /** indicating whether the account is marked as disabled or not. */
                 is_disabled: Boolean(wallet.is_disabled),
                 /** indicating whether the wallet account is a virtual-money account. */

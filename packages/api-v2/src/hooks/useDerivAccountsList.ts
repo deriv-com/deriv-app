@@ -29,10 +29,10 @@ const useDerivAccountsList = () => {
                 /** Date till client has excluded him/herself from the website, only present if client is self excluded. */
                 excluded_until: account.excluded_until ? new Date(account.excluded_until) : undefined,
                 /** Indicating whether the wallet is the currently active account. */
-                is_active: account.loginid === authorize_data.loginid,
+                is_active: account.loginid === authorize_data?.loginid,
                 /** Indicating whether any linked account is active */
                 is_linked_account_active: account.linked_to?.some(
-                    account => account.loginid === authorize_data.loginid
+                    account => account.loginid === authorize_data?.loginid
                 ),
                 /** indicating whether the account is marked as disabled or not. */
                 is_disabled: Boolean(account.is_disabled),
@@ -50,7 +50,7 @@ const useDerivAccountsList = () => {
                 is_mf: account.loginid?.startsWith('MF'),
             } as const;
         });
-    }, [account_list_data?.account_list, authorize_data.loginid, getConfig]);
+    }, [account_list_data?.account_list, authorize_data?.loginid, getConfig]);
 
     // Add balance to each account
     const modified_accounts_with_balance = useMemo(

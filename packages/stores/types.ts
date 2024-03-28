@@ -15,6 +15,7 @@ import type {
     LogOutResponse,
     Portfolio1,
     ProposalOpenContract,
+    ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
@@ -543,7 +544,7 @@ type TClientStore = {
         upload_file?: string;
         poi_state?: string;
     };
-    residence_list: TResidenceList; // TODO: replace this with ResidenceList from @deriv/api-types once account_opening_self_declaration_required is available
+    residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
     should_show_eu_content: boolean;
@@ -609,44 +610,6 @@ type TClientStore = {
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
 };
-
-// TODO: This is a temporary type. It should be replaced with the actual type from deriv/api-types
-type TResidenceList = {
-    account_opening_self_declaration_required?: boolean;
-    disabled?: string;
-    identity?: {
-        services?: {
-            idv?: {
-                documents_supported?: {
-                    [k: string]: {
-                        additional?: {
-                            display_name?: string;
-                            format?: string;
-                        };
-                        display_name?: string;
-                        format?: string;
-                    };
-                };
-                has_visual_sample?: 0 | 1;
-                is_country_supported?: 0 | 1;
-            };
-            onfido?: {
-                documents_supported?: {
-                    [k: string]: {
-                        display_name?: string;
-                        format?: string;
-                    };
-                };
-                is_country_supported?: 0 | 1;
-            };
-        };
-    };
-    phone_idd?: null | string;
-    selected?: string;
-    text?: string;
-    tin_format?: string[];
-    value?: string;
-}[];
 
 type TCommonStoreError = {
     header?: string | JSX.Element;

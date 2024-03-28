@@ -45,6 +45,7 @@ const getWebSocketURL = () => {
 };
 
 const APIContext = createContext<APIContextData | null>(null);
+let connection: WebSocket;
 
 /**
  * Initializes a derivAPIRef instance for the global window. This enables a standalone connection
@@ -54,7 +55,7 @@ const APIContext = createContext<APIContextData | null>(null);
 const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
     const wss_url = getWebSocketURL();
 
-    const connection = new WebSocket(wss_url);
+    connection = new WebSocket(wss_url);
     connection.addEventListener('close', () => {
         if (typeof onWSClose === 'function') onWSClose();
     });
@@ -84,6 +85,10 @@ const queryClient = new QueryClient({
 type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
+};
+
+export const getActiveWebsocket = () => {
+    return connection;
 };
 
 const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {

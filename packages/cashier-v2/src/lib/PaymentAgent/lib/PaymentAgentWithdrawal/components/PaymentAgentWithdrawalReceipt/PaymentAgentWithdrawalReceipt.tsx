@@ -87,7 +87,7 @@ const PaymentAgentWithdrawalReceipt = () => {
                 </div>
             </div>
             {paymentAgentName && (
-                <div className={styles['details-wrapper']}>
+                <div className={styles['details-wrapper']} data-testid='dt_details_section'>
                     <Text align='center' as='p' size='xs' weight='bold'>{`${paymentAgentName}'s contact details`}</Text>
                     <div className={styles.details}>
                         {paymentAgentPhoneNumbers.length > 0 && (

@@ -143,6 +143,14 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                 }
                             });
                         }
+                        if (should_validate && field.validation.includes('character_limit')) {
+                            const character_limit = 12;
+                            schema = Yup.string().max(
+                                character_limit,
+                                localize('Please enter a maximum of 12 characters')
+                            );
+                            sub_schema[field.name] = schema;
+                        }
                         sub_schema[field.name] = schema;
                     }
                 }

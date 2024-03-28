@@ -43,11 +43,11 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
     }, [fromAccount, toAccount]);
 
     useEffect(() => {
-        if (values.fromAmount && !errors.fromAmount && !errors.toAmount) {
+        if (areAccountCurrenciesDifferent && !errors.fromAmount && !errors.toAmount) {
             const value = Number(values.fromAmount);
             setPercentage(Math.round((value * 100) / fromAccount.balance));
         }
-    }, [errors.fromAmount, errors.toAmount, fromAccount.balance, values.fromAmount]);
+    }, [areAccountCurrenciesDifferent, errors.fromAmount, errors.toAmount, fromAccount.balance, values.fromAmount]);
 
     useEffect(() => {
         if (errors.toAmount && !isFromInputActive) {
@@ -61,7 +61,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
         }
     }, [errors.fromAmount, isFromInputActive, setFieldValue]);
 
-    const onChangePercentage = (per: number) => {
+    const handlePercentageChange = (per: number) => {
         const computedAmount = ((Number(fromAccount.balance) * per) / 100).toFixed(fromAccount.fractionalDigits) ?? 0;
         const convertedAmount = getConvertedAmount(computedAmount, fromAccount, toAccount);
 
@@ -97,14 +97,17 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
     return (
         <div className={styles.container}>
             {areAccountCurrenciesDifferent && (
-                <div className={styles['percentage-selector-container']}>
+                <div
+                    className={styles['percentage-selector-container']}
+                    data-testid='dt_crypto_fiat_converter_percentage_selector'
+                >
                     <PercentageSelector
-                        amount={Number(values.fromAmount) ?? 0}
-                        balance={Number(fromAccount.balance) ?? 0}
-                        onChangePercentage={onChangePercentage}
+                        amount={Number(values.fromAmount)}
+                        balance={Number(fromAccount.balance)}
+                        onChangePercentage={handlePercentageChange}
                     />
                     <Text color='less-prominent' size='xs'>
-                        {percentage}% of available balance ({fromAccount.balance})
+                        {percentage}% of available balance ({fromAccount.displayBalance})
                     </Text>
                 </div>
             )}
@@ -129,7 +132,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                 </Field>
                 {areAccountCurrenciesDifferent && (
                     <>
-                        <div className={styles['arrow-container']}>
+                        <div className={styles['arrow-container']} data-testid='dt_crypto_fiat_converter_arrow_icon'>
                             <StandaloneArrowDownBoldIcon
                                 className={clsx(styles['arrow-icon'], {
                                     [styles['arrow-icon--rtl']]: isFromInputActive,

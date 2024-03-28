@@ -9,22 +9,22 @@ const WalletsAuthProvider = ({ children, ...rest }: Omit<ComponentProps<typeof A
         loginIDKey={WALLETS_LOGINID_LOCALSTORAGE_KEY}
         selectDefaultAccount={accountsObject => {
             const loginIds = Object.keys(accountsObject);
-            const result = loginIds.filter((loginId: string) => {
+            const defaultFiatWallet = loginIds.filter((loginId: string) => {
                 const { account_category: accountCategory, account_type: accountType } = accountsObject[loginId];
                 const isWallet = accountCategory == 'wallet';
                 const isFiat = accountType == 'doughflow';
                 return isWallet && isFiat;
             })[0];
 
-            if (!result) {
-                const result = loginIds.filter((loginId: string) => {
+            if (!defaultFiatWallet) {
+                const defaultWallet = loginIds.filter((loginId: string) => {
                     const { account_category: accountCategory } = accountsObject[loginId];
                     const isWallet = accountCategory == 'wallet';
                     return isWallet;
                 })[0];
-                return result;
+                return defaultWallet;
             }
-            return result;
+            return defaultFiatWallet;
         }}
     >
         {children}

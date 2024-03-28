@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { LoginHistory } from '@deriv/api-types';
 import { Table } from '@deriv-com/ui';
-import { formattedLoginHistoryData } from '../../utils/formattedLoginHistoryData';
+import { formattedLoginHistoryUtils } from '../../utils/formattedLoginHistoryUtils';
 
 type TLoginHistoryProps = {
     loginHistory: LoginHistory;
@@ -18,7 +18,7 @@ const headers = {
 const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as const;
 
 export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
-    const formattedLoginHistory = useMemo(() => formattedLoginHistoryData(loginHistory), [loginHistory]);
+    const formattedLoginHistory = useMemo(() => formattedLoginHistoryUtils(loginHistory), [loginHistory]);
     const columns = columnOrder.map(key => ({ header: headers[key] }));
 
     return (
@@ -27,7 +27,8 @@ export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
                 columns={columns}
                 data={formattedLoginHistory}
                 isFetching={false}
-                //[TODO]: eslint-disable-next-line @typescript-eslint/no-empty-function
+                //[TODO]:
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 loadMoreFunction={() => {}}
                 renderHeader={header => <span>{header}</span>}
                 rowRender={data => (

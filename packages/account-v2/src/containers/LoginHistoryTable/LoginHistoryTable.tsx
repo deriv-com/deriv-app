@@ -27,7 +27,7 @@ export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
                 columns={columns}
                 data={formattedLoginHistory}
                 isFetching={false}
-                // [TODO] eslint-disable-next-line @typescript-eslint/no-empty-function
+                //eslint-disable-next-line @typescript-eslint/no-empty-function
                 loadMoreFunction={() => {}}
                 renderHeader={header => <span>{header}</span>}
                 rowRender={data => (

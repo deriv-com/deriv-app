@@ -83,7 +83,7 @@ export default () => ({
                         options: {
                             // Provide path to the file with resources
                             resources: [
-                                './src/index.css',
+                                './src/index.scss',
                                 // eslint-disable-next-line global-require, import/no-dynamic-require
                                 ...require('../../../shared/src/styles/index.js'),
                             ],

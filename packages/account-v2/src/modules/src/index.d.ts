@@ -1,5 +1,3 @@
-/* eslint-disable one-var */
-import React from 'react';
 import type { TSupportedDocuments } from '../../types';
 
 type TManualForm = {
@@ -28,16 +26,11 @@ type TOnfidoContainer = {
     selectedDocument?: TManualDocumentTypes;
 };
 
-export declare const ManualForm: ({ onSubmit, selectedDocument }: TManualFormProps) => React.JSX.Element;
+declare const ManualForm: ({ onSubmit, selectedDocument }: TManualFormProps) => JSX.Element,
+    POAFormContainer: () => JSX.Element | null,
+    IDVForm: (props: TIDVFormProps) => JSX.Element,
+    AddressFields: () => JSX.Element,
+    IDVService: () => JSX.Element,
+    OnfidoContainer: (props: TOnfidoContainer) => JSX.Element;
 
-export declare const POAFormContainer: () => React.JSX.Element | null;
-
-export declare const IDVForm: (props: TIDVFormProps) => React.JSX.Element;
-
-export declare const AddressFields: () => React.JSX.Element;
-
-export declare const IDVService: () => React.JSX.Element;
-
-export declare const OnfidoContainer: (props: TOnfidoContainer) => React.JSX.Element;
-
-export {};
+export { AddressFields, IDVForm, IDVService, ManualForm, OnfidoContainer, POAFormContainer };

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
+import ApiHelpers from '@vinuderiv/bot-trade-engine/api/api-helpers';
 import { Autocomplete, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { observer, useStore } from '@deriv/stores';

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
+import ApiHelpers from '@vinuderiv/bot-trade-engine/api/api-helpers';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useStore } from '@deriv/stores';

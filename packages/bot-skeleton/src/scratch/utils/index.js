@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import { saveAs } from '../shared';
 import BlockConversion from '../backward-compatibility';
 import { config } from '../../constants/config';
-import { observer as globalObserver } from '@deriv/bot-trade-engine/tradeEngine/utils/observer';
+import { observer as globalObserver } from '@vinuderiv/bot-trade-engine/tradeEngine/utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';

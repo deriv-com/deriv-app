@@ -1,9 +1,0 @@
-{
-  "index": "./src/index.ts",
-  "AddressFields": "./src/AddressFields/AddressFields.tsx",
-  "IDVForm": "./src/IDVForm/IDVForm.tsx",
-  "IDVService": "./src/IDVService/IDVService.tsx",
-  "ManualUpload": "./src/ManualUpload/ManualUpload.tsx",
-  "Onfido": "./src/Onfido/OnfidoContainer.tsx",
-  "POAForm": "./src/POAForm/POAFormContainer.tsx"
-}

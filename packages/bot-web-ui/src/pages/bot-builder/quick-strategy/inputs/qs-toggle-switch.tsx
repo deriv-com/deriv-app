@@ -7,7 +7,6 @@ import { localize } from '@deriv/translations';
 
 type TQSToggleSwitch = {
     name: string;
-    children?: React.ReactNode;
     label: string;
     description?: string;
     attached?: boolean;

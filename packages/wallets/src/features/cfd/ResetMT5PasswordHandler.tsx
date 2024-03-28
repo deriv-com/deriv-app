@@ -34,7 +34,8 @@ const ResetMT5PasswordHandler = () => {
                 );
             }
         }
-    }, [platformKey, resetTradingPlatformActionParams, show]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [platformKey, resetTradingPlatformActionParams]);
 
     return null;
 };

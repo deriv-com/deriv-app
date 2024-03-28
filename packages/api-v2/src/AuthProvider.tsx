@@ -30,8 +30,6 @@ type AuthProviderProps = {
     selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string;
 };
 
-type AuthProviderPropsWithoutChildren = Omit<AuthProviderProps, 'children'>;
-
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

@@ -6,10 +6,12 @@ import { getFormattedAppScopes } from '../../utils/connectedAppsUtils';
 
 type TConnectedAppsTable = {
     connectedApps: OauthApps | undefined;
+    handleToggleModal: (app_id: number) => void;
 };
 
-export const ConnectedAppsTable = ({ connectedApps }: TConnectedAppsTable) => {
+export const ConnectedAppsTable = ({ connectedApps, handleToggleModal }: TConnectedAppsTable) => {
     const connectedAppsRows = connectedApps?.map(connectedApp => ({
+        app_id: connectedApp?.app_id,
         lastLogin: connectedApp?.last_used,
         name: connectedApp?.name,
         permission: getFormattedAppScopes(connectedApp?.scopes),
@@ -28,7 +30,15 @@ export const ConnectedAppsTable = ({ connectedApps }: TConnectedAppsTable) => {
                     <span>{data.name}</span>
                     <span>{data.permission}</span>
                     <span>{data.lastLogin}</span>
-                    <Button color='black' rounded='sm' size='sm' textSize='sm' type='button' variant='outlined'>
+                    <Button
+                        color='black'
+                        onClick={() => handleToggleModal(data.app_id)}
+                        rounded='sm'
+                        size='sm'
+                        textSize='sm'
+                        type='button'
+                        variant='outlined'
+                    >
                         Revoke access
                     </Button>
                 </div>

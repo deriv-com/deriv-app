@@ -16,7 +16,7 @@ export const POICountrySelector = ({ errorStatus, handleNext, onCountrySelect }:
             <section className='flex flex-col gap-16'>
                 {errorStatus && (
                     <div>
-                        <Text className='text-xs lg:text-sm' weight='bold'>
+                        <Text weight='bold' size='sm'>
                             Your identity verification failed because:
                         </Text>
                         <InlineMessage type='filled' variant='error'>

@@ -74,7 +74,7 @@ export const OnfidoContainer = ({
     }, [isOnfidoEnabled]);
 
     const hasPersonalDetailsValidationError = ['MissingPersonalDetails', 'InvalidPostalCode'].includes(
-        serviceTokenError?.error.code ?? ''
+        serviceTokenError?.error?.code ?? ''
     );
     const showErrorMessage = onfidoInitializationError?.message ?? serviceTokenError?.error?.message;
 

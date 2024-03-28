@@ -46,7 +46,6 @@ const getWebSocketURL = () => {
 };
 
 const APIContext = createContext<APIContextData | null>(null);
-let connection: WebSocket;
 
 /**
  * Initializes a derivAPIRef instance for the global window. This enables a standalone connection
@@ -56,7 +55,7 @@ let connection: WebSocket;
 const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
     const wss_url = getWebSocketURL();
 
-    connection = new WebSocket(wss_url);
+    const connection = new WebSocket(wss_url);
     connection.addEventListener('close', () => {
         if (typeof onWSClose === 'function') onWSClose();
     });
@@ -69,15 +68,6 @@ const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAP
 
     return result;
 };
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
-        },
-    },
-});
 
 /**
  * TODO: standlone no longer exists, as its always standalone,
@@ -92,11 +82,23 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
     const derivAPIRef = useRef<DerivAPIBasic>();
     const subscriptionsRef = useRef<Record<string, DerivAPIBasic['subscribe']>>();
+    const reactQueryRef = useRef<QueryClient>();
 
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
     const onConnectedRef = useRef<() => void>();
     const isOpenRef = useRef<boolean>(false);
+
+    if (!reactQueryRef.current) {
+        reactQueryRef.current = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    refetchOnWindowFocus: false,
+                    refetchOnReconnect: false,
+                },
+            },
+        });
+    }
 
     // have to be here and not inside useEffect as there are places in code expecting this to be available
     if (!derivAPIRef.current) {
@@ -115,6 +117,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     useEffect(() => {
         return () => {
             derivAPIRef.current.disconnect();
+            reactQueryRef.current?.clear();
         };
     }, []);
 
@@ -204,12 +207,12 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 send,
                 subscribe,
                 unsubscribe,
-                queryClient,
+                queryClient: reactQueryRef.current,
                 setOnReconnected,
                 setOnConnected,
             }}
         >
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={reactQueryRef.current}>
                 {children}
                 {/* <ReactQueryDevtools /> */}
             </QueryClientProvider>

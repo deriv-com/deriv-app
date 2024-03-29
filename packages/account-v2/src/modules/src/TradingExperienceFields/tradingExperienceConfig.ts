@@ -7,7 +7,7 @@ import {
     forexTradingFrequencyList,
     otherInstrumentsTradingExperienceList,
     otherInstrumentsTradingFrequencyList,
-} from '../../constants/tradingInformationList';
+} from '../../../constants/tradingInformationList';
 import { tradingExperienceValidations } from './validations';
 
 export const tradingExperienceConfig = [

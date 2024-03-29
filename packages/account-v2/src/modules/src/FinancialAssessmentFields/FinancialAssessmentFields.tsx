@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useIsEuRegion } from '@deriv/api-v2';
-import { FormDropDownField } from '../../components/FormFields';
+import { FormDropDownField } from '../../../components/FormFields';
 import {
     accountTurnoverList,
     educationLevelList,
@@ -12,9 +12,9 @@ import {
     incomeSourceList,
     netIncomeList,
     sourceOfWealthList,
-} from '../../constants/financialInformationList';
-import { filterOccupationList, shouldHideOccupation } from '../../utils/financialAssessmentUtils';
-import type { TFinancialAssessmentFormValues } from '../types';
+} from '../../../constants/financialInformationList';
+import { filterOccupationList, shouldHideOccupation } from '../../../utils/financialAssessmentUtils';
+import type { TFinancialAssessmentFormValues } from '../../types';
 import { financialAssessmentValidations } from './validations';
 
 export const FinancialAssessmentFields = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormDropDownField } from '../../components/FormFields';
+import { FormDropDownField } from '../../../components/FormFields';
 import { tradingExperienceConfig } from './tradingExperienceConfig';
 
 export const TradingExperienceFields = () => (

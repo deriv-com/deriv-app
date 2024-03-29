@@ -15,7 +15,7 @@ jest.mock('../../PercentageSelector', () => ({
     ...jest.requireActual('../../PercentageSelector'),
     PercentageSelector: jest.fn(({ amount, balance, onChangePercentage }) => (
         <>
-            <div onClick={() => onChangePercentage(25)}>percentageSelector</div>
+            <button onClick={() => onChangePercentage(25)}>percentageSelector</button>
             <div>{`percentage=${(amount * 100) / balance}`}</div>
         </>
     )),

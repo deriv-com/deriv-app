@@ -23,8 +23,7 @@ describe('TwoMonthPicker', () => {
     it('should call onChange when a date is selected', () => {
         render(<TwoMonthPicker {...mockProps} />);
         const prevMonthDate = screen.getAllByText(moment().format('D'))[0];
-        const prevMonthFullDate = moment().subtract(1, 'month').format('YYYY-MM-DD');
-
+        const prevMonthFullDate = moment().subtract(2, 'month').format('YYYY-MM-DD');
         userEvent.click(prevMonthDate);
         expect(mockProps.onChange).toHaveBeenCalledWith(moment.utc(prevMonthFullDate, 'YYYY-MM-DD'));
     });

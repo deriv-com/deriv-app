@@ -1,0 +1,46 @@
+.book-banner-template {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.6rem;
+    margin-block-end: 2.4rem;
+    border-radius: 8px;
+    background: rgba(0, 136, 50, 0.08);
+
+    &__cancel {
+        cursor: pointer;
+    }
+    &__left {
+        display: flex;
+        flex-direction: row;
+    }
+    &__content {
+        display: flex;
+        flex-direction: row;
+        font-size: 1.4rem;
+        line-height: 2.2rem;
+
+        & label {
+            padding-inline: 0.8rem;
+        }
+        & a {
+            font-weight: bold;
+            text-decoration-line: underline;
+            color: $color-black-1;
+        }
+        @include mobile {
+            flex-direction: column;
+            align-content: start;
+            font-size: 1.2rem;
+            line-height: 1.8rem;
+
+            & label {
+                padding-inline: 0;
+                margin-block-end: 1.6rem;
+            }
+        }
+    }
+}
+.hidden {
+    display: none;
+}

@@ -20,8 +20,6 @@ export const MANUAL_DOCUMENT_TYPES = Object.freeze({
     selfieWithID: 'selfie_with_id',
 });
 
-export const MANUAL_DOCUMENT_SELFIE = 'selfie_with_id';
-
 export const MANUAL_FORM_PAGE_TYPES = Object.freeze({
     back: 'back',
     front: 'front',

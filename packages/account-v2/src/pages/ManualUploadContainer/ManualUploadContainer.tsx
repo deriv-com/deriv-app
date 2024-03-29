@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDocumentUpload } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import { MANUAL_DOCUMENT_SELFIE, TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
 import { useManualForm } from '../../hooks';
@@ -44,9 +44,12 @@ export const ManualUploadContainer = ({
             document_issuing_country: countryCode,
             document_type: documentType,
             expiration_date: values?.documentExpiry?.toString() ?? undefined,
-            file: documentType === MANUAL_DOCUMENT_SELFIE ? (values.selfieWithID as File) : (values[pageType] as File),
+            file:
+                documentType === MANUAL_DOCUMENT_TYPES.selfieWithID
+                    ? (values.selfieWithID as File)
+                    : (values[pageType] as File),
             lifetime_valid: isExpiryDateRequired ? 0 : 1,
-            page_type: documentType === MANUAL_DOCUMENT_SELFIE ? 'photo' : pageType,
+            page_type: documentType === MANUAL_DOCUMENT_TYPES.selfieWithID ? 'photo' : pageType,
         };
     };
 

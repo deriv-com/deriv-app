@@ -6,12 +6,8 @@ import { usePaymentAgentWithdrawalContext } from '../../provider';
 
 const PaymentAgentWithdrawalConfirm = () => {
     const { paymentAgentList } = usePaymentAgentContext();
-    const {
-        isWithdrawalRequestSubmitting,
-        requestPaymentAgentWithdrawal,
-        setIsTryWithdrawalSuccessful,
-        withdrawalConfirm,
-    } = usePaymentAgentWithdrawalContext();
+    const { isWithdrawalRequestSubmitting, requestPaymentAgentWithdrawal, setWithdrawalStatus, withdrawalConfirm } =
+        usePaymentAgentWithdrawalContext();
     const { amount, clientID, currency, paymentAgentID, paymentAgentName } = withdrawalConfirm;
     const selectedPaymentAgent = paymentAgentList?.find(
         paymentAgent => paymentAgent.paymentagent_loginid === paymentAgentID
@@ -44,7 +40,7 @@ const PaymentAgentWithdrawalConfirm = () => {
             checkboxLabel='I confirm that I have verified the client’s transfer information.'
             data={confirmData}
             isSubmitting={isWithdrawalRequestSubmitting}
-            onClickBack={() => setIsTryWithdrawalSuccessful(false)}
+            onClickBack={() => setWithdrawalStatus('idle')}
             onClickConfirm={onConfirmHandler}
             title='Check transfer information'
         />

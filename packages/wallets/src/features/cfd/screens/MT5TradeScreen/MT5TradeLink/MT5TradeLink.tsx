@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCtraderServiceToken } from '@deriv/api-v2';
+import {
+    DerivProductDerivXBrandDarkWordmarkIcon,
+    PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
+    PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
+    StandaloneLinuxIcon,
+    StandaloneMacosIcon,
+    StandaloneWindowsIcon,
+} from '@deriv/quill-icons';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
-import CTraderLabelIcon from '../../../../../public/images/ctrader-label.svg';
-import DerivXLabelIcon from '../../../../../public/images/derivx-label.svg';
-import LinuxIcon from '../../../../../public/images/ic-linux-logo.svg';
-import MacOSIcon from '../../../../../public/images/ic-macos-logo.svg';
-import MT5Icon from '../../../../../public/images/ic-mt5.svg';
-import WindowsIcon from '../../../../../public/images/ic-windows-logo.svg';
 import i18n from '../../../../../translations/i18n';
 import { THooks, TPlatforms } from '../../../../../types';
 import { PlatformDetails } from '../../../constants';
@@ -27,31 +29,31 @@ type AppToContentMapperType = {
 
 const AppToContentMapper: AppToContentMapperType = {
     ctrader: {
-        icon: <WindowsIcon />,
+        icon: <StandaloneWindowsIcon iconSize='md' />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
         text: i18n.t('Download'),
         title: i18n.t('CTrader Windows App'),
     },
     linux: {
-        icon: <LinuxIcon />,
+        icon: <StandaloneLinuxIcon iconSize='md' />,
         link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
         text: i18n.t('Learn more'),
         title: i18n.t('MetaTrader 5 Linux app'),
     },
     macos: {
-        icon: <MacOSIcon />,
+        icon: <StandaloneMacosIcon iconSize='md' />,
         link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 MacOS app'),
     },
     web: {
-        icon: <MT5Icon />,
+        icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
         link: '',
         text: i18n.t('Open'),
         title: i18n.t('MetaTrader 5 web'),
     },
     windows: {
-        icon: <WindowsIcon />,
+        icon: <StandaloneWindowsIcon iconSize='md' />,
         link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 Windows app'),
@@ -59,8 +61,8 @@ const AppToContentMapper: AppToContentMapperType = {
 };
 
 const PlatformToLabelIconMapper = {
-    ctrader: <CTraderLabelIcon />,
-    dxtrade: <DerivXLabelIcon />,
+    ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
+    dxtrade: <DerivProductDerivXBrandDarkWordmarkIcon height={10} width={35} />,
 };
 
 type TMT5TradeLinkProps = {

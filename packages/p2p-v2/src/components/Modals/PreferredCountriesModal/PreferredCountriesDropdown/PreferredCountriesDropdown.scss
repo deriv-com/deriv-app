@@ -1,0 +1,19 @@
+.p2p-v2-preferred-countries-dropdown {
+    &__content {
+        height: 37rem;
+        overflow-y: auto;
+
+        @include mobile {
+            height: unset;
+            max-height: calc(100vh - 24rem);
+        }
+
+        &--no-footer {
+            height: 44rem;
+            @include mobile {
+                height: 100vh;
+                max-height: unset;
+            }
+        }
+    }
+}

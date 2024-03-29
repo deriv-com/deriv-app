@@ -3,6 +3,7 @@ import { TStep } from 'types';
 import { FormProgress, Wizard } from '@/components';
 import { LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
+import { AdConditionsSection } from '../AdConditionsSection';
 import { AdPaymentDetailsSection } from '../AdPaymentDetailsSection';
 import { AdProgressBar } from '../AdProgressBar';
 import { AdTypeSection } from '../AdTypeSection';
@@ -15,7 +16,7 @@ type TAdWizardNav = {
     steps: TStep[];
 };
 
-const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) => {
+const AdWizard = ({ steps, ...rest }: TAdWizardNav) => {
     const { isDesktop } = useDevice();
     const [currentStep, setCurrentStep] = useState(0);
 
@@ -49,8 +50,9 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
             }
             onStepChange={step => setCurrentStep(step.activeStep - 1)}
         >
-            <AdTypeSection currency={currency} localCurrency={localCurrency} rateType={rateType} />
-            <AdPaymentDetailsSection currency={currency} localCurrency={localCurrency} rateType={rateType} />
+            {/* <AdTypeSection {...rest} /> */}
+            {/* <AdPaymentDetailsSection {...rest} /> */}
+            <AdConditionsSection {...rest} />
         </Wizard>
     );
 };

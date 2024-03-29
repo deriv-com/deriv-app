@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { DUMMY_COUNTRIES } from '@/constants';
 import { useFloatingRate } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { AdWizard } from '../../components/AdWizard';
@@ -23,6 +24,7 @@ const CreateEditAd = () => {
             'max-order': '',
             'min-order': '',
             'order-completion-time': `${orderPaymentPeriod ? (orderPaymentPeriod * 60).toString() : '3600'}`,
+            'preferred-countries': Object.keys(DUMMY_COUNTRIES),
             'rate-value': '-0.01',
         },
         mode: 'all',

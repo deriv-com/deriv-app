@@ -290,7 +290,6 @@ export default class TradeStore extends BaseStore {
         hasPredictionIndicators(): void;
         triggerPopup(arg: () => void): void;
     }> | null = null;
-    // { hasPredictionIndicators(): void; triggerPopup(arg: () => void): void } | null = null;
     // Turbos trade params
     long_barriers: TBarriersData = {};
     short_barriers: TBarriersData = {};

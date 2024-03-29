@@ -609,6 +609,9 @@ type TClientStore = {
     setRealAccountSignupFormStep: (step: number) => void;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
+    should_show_effortless_login_modal: boolean;
+    setShouldShowEffortlessLoginModal: (value: boolean) => void;
+    fetchShouldShowEffortlessLoginModal: () => void;
 };
 
 type TCommonStoreError = {

@@ -5,19 +5,23 @@ import FormFooter from '@deriv/account/src/Components/form-footer';
 import FormBody from '@deriv/account/src/Components/form-body';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { EffortLessLoginTips } from './effortless-login-tips';
 import { EffortlessLoginDescription } from './effortless-login-description';
 import './effortless-login-modal.scss';
 
-const EffortlessLoginModal = () => {
+const EffortlessLoginModal = observer(() => {
     const [is_learn_more_opened, setIsLearnMoreOpened] = React.useState(false);
     const portal_element = document.getElementById('effortless_modal_root');
     const history = useHistory();
+    const { client } = useStore();
+    const { setShouldShowEffortlessLoginModal } = client;
 
     const onClickHandler = (route: string) => {
         localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
         history.push(route);
+        setShouldShowEffortlessLoginModal(false);
     };
 
     if (!portal_element) return null;
@@ -64,6 +68,6 @@ const EffortlessLoginModal = () => {
         </div>,
         portal_element
     );
-};
+});
 
 export default EffortlessLoginModal;

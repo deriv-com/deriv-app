@@ -2,7 +2,6 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
-import { useShowEffortlessLoginModal } from '@deriv/hooks';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
@@ -91,6 +90,7 @@ const AppModals = observer(() => {
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
         mt5_login_list,
+        should_show_effortless_login_modal,
     } = client;
     const { content_flag, is_tour_open } = traders_hub;
     const {
@@ -117,8 +117,6 @@ const AppModals = observer(() => {
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
     const url_action_param = url_params.get('action');
-
-    const show_effortless_login_modal = useShowEffortlessLoginModal();
 
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
 
@@ -197,7 +195,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <UrlUnavailableModal />;
     }
 
-    if (show_effortless_login_modal && !is_tour_open) {
+    if (should_show_effortless_login_modal && !is_tour_open) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

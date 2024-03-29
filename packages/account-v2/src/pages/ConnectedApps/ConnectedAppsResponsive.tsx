@@ -1,8 +1,8 @@
 import React from 'react';
-import { formatDate, getFormattedAppScopes } from '../../utils/connectedAppsUtils';
 import { OauthApps } from '@deriv/api-types';
-import { ConnectedAppsResponsiveColumn } from './ConnectedAppsResponsiveColumn';
 import { Button } from '@deriv-com/ui';
+import { formatDate, getFormattedAppScopes } from '../../utils/connectedAppsUtils';
+import { ConnectedAppsResponsiveColumn } from './ConnectedAppsResponsiveColumn';
 
 type TConnectedAppsResponsive = {
     connectedApps: OauthApps;
@@ -13,7 +13,7 @@ export const ConnectedAppsResponsive = ({ connectedApps, handleToggleModal }: TC
     <div className='flex flex-col gap-8'>
         {connectedApps.map(connectedApp => (
             <div className='bg-solid-grey-2 rounded-default p-16' key={connectedApp.app_id}>
-                <div className='flex flex-row justify-between gap-16'>
+                <div className='flex justify-between gap-16'>
                     <ConnectedAppsResponsiveColumn description={connectedApp?.name} title='Name' />
                     <ConnectedAppsResponsiveColumn
                         description={formatDate(connectedApp?.last_used)}
@@ -21,7 +21,7 @@ export const ConnectedAppsResponsive = ({ connectedApps, handleToggleModal }: TC
                         title='Last Login'
                     />
                 </div>
-                <div className='flex flex-row justify-between gap-16'>
+                <div className='flex justify-between gap-16'>
                     <ConnectedAppsResponsiveColumn
                         description={getFormattedAppScopes(connectedApp.scopes)}
                         title='Permission'

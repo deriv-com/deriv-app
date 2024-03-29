@@ -2,7 +2,7 @@ import React from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { Button, Table } from '@deriv-com/ui';
 import { CONNECTED_APPS_HEADER } from '../../constants/connectedAppsConstants';
-import { getFormattedAppScopes } from '../../utils/connectedAppsUtils';
+import { formatDate, getFormattedAppScopes } from '../../utils/connectedAppsUtils';
 
 type TConnectedAppsTable = {
     connectedApps: OauthApps | undefined;
@@ -12,7 +12,7 @@ type TConnectedAppsTable = {
 export const ConnectedAppsTable = ({ connectedApps, handleToggleModal }: TConnectedAppsTable) => {
     const connectedAppsRows = connectedApps?.map(connectedApp => ({
         app_id: connectedApp?.app_id,
-        lastLogin: connectedApp?.last_used,
+        lastLogin: formatDate(connectedApp?.last_used),
         name: connectedApp?.name,
         permission: getFormattedAppScopes(connectedApp?.scopes),
     }));

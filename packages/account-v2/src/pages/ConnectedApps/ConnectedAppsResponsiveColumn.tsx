@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv-com/ui';
 
 type TConnectedAppsResponsiveColumn = {
-    description: string | null | undefined;
+    description?: string | null;
     style?: string;
     title: string;
 };

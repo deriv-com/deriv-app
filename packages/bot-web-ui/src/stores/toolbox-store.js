@@ -102,7 +102,7 @@ export default class ToolboxStore {
                     : toolbox_width - block_canvas_rect.left + 36;
                 scrollWorkspace(workspace, scroll_distance, true, false);
             }
-        }, 100);
+        }, 300);
     }
 
     toggleDrawer() {

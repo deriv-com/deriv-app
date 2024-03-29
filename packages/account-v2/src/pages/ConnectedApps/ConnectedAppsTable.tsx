@@ -5,16 +5,16 @@ import { CONNECTED_APPS_HEADER } from '../../constants/connectedAppsConstants';
 import { formatDate, getFormattedAppScopes } from '../../utils/connectedAppsUtils';
 
 type TConnectedAppsTable = {
-    connectedApps: OauthApps | undefined;
+    connectedApps: OauthApps;
     handleToggleModal: (app_id: number) => void;
 };
 
 export const ConnectedAppsTable = ({ connectedApps, handleToggleModal }: TConnectedAppsTable) => {
-    const connectedAppsRows = connectedApps?.map(connectedApp => ({
-        app_id: connectedApp?.app_id,
-        lastLogin: formatDate(connectedApp?.last_used),
-        name: connectedApp?.name,
-        permission: getFormattedAppScopes(connectedApp?.scopes),
+    const connectedAppsRows = connectedApps.map(connectedApp => ({
+        app_id: connectedApp.app_id,
+        lastLogin: formatDate(connectedApp.last_used),
+        name: connectedApp.name,
+        permission: getFormattedAppScopes(connectedApp.scopes),
     }));
 
     return (

@@ -14,9 +14,9 @@ export const ConnectedAppsResponsive = ({ connectedApps, handleToggleModal }: TC
         {connectedApps.map(connectedApp => (
             <div className='bg-solid-grey-2 rounded-default p-16' key={connectedApp.app_id}>
                 <div className='flex justify-between gap-16'>
-                    <ConnectedAppsResponsiveColumn description={connectedApp?.name} title='Name' />
+                    <ConnectedAppsResponsiveColumn description={connectedApp.name} title='Name' />
                     <ConnectedAppsResponsiveColumn
-                        description={formatDate(connectedApp?.last_used)}
+                        description={formatDate(connectedApp.last_used)}
                         style='w-80'
                         title='Last Login'
                     />

@@ -19,6 +19,7 @@ const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as 
 
 export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
     const formattedLoginHistory = useMemo(() => formattedLoginHistoryUtils(loginHistory), [loginHistory]);
+    const formattedLoginHistory = useMemo(() => formattedLoginHistoryUtils(loginHistory), [loginHistory]);
     const columns = columnOrder.map(key => ({ header: headers[key] }));
 
     return (

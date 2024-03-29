@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import UAParser from 'ua-parser-js';
 import { LoginHistory } from '@deriv/api-types';
 
-export const formattedLoginHistoryUtils = (loginHistory: LoginHistory) =>
+export const formattedLoginHistoryData = (loginHistory: LoginHistory) =>
     loginHistory.map(data => {
         const environment = data.environment;
         const environmentSplit = environment.split(' ');

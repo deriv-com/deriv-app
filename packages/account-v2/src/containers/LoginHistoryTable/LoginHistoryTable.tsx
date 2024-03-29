@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { LoginHistory } from '@deriv/api-types';
 import { Table } from '@deriv-com/ui';
-import { formattedLoginHistoryUtils } from '../../utils/formattedLoginHistoryUtils';
+import { formattedLoginHistoryData } from '../../utils/formattedLoginHistoryData';
 
 type TLoginHistoryProps = {
     loginHistory: LoginHistory;
@@ -18,7 +18,7 @@ const header = {
 const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as const;
 
 export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
-    const formattedLoginHistory = formattedLoginHistoryUtils(loginHistory);
+    const formattedLoginHistory = formattedLoginHistoryData(loginHistory);
     const columns = columnOrder.map(key => ({ header: header[key] }));
 
     return (

@@ -12,7 +12,7 @@ type TConnectedAppsTable = {
 export const ConnectedAppsTable = ({ connectedApps, handleToggleModal }: TConnectedAppsTable) => {
     const connectedAppsRows = connectedApps.map(connectedApp => ({
         app_id: connectedApp.app_id,
-        lastLogin: formatDate(connectedApp.last_used),
+        lastLogin: connectedApp.last_used && formatDate(connectedApp.last_used),
         name: connectedApp.name,
         permission: getFormattedAppScopes(connectedApp.scopes),
     }));

@@ -37,3 +37,5 @@ export namespace TMarketTypes {
 
 export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company'];
 export type TMT5MarketType = THooks.MT5AccountsList['market_type'];
+
+export type TGenericSizes = '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';

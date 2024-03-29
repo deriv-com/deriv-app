@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useFormikContext } from 'formik';
 import { useTransfer } from '../../../../provider';
 import { TTransferableAccounts, TTransferFormikContext } from '../../../../types';
-import { TransferAccountTile } from './components';
+import { TransferDropdown } from './components';
 import styles from './TransferAccountSelection.module.scss';
 
 const getInitialToAccount = (accounts: TTransferableAccounts, activeAccount: TTransferableAccounts[number]) => {
@@ -36,17 +36,15 @@ const getInitialToAccount = (accounts: TTransferableAccounts, activeAccount: TTr
 //     });
 // };
 
-const TransferFormAccountSelection = () => {
+const TransferAccountSelection = () => {
     const { setValues, values } = useFormikContext<TTransferFormikContext>();
     const { accounts, activeAccount, isLoading } = useTransfer();
 
     return (
         <div className={styles.container}>
-            {accounts.map((account, index) => (
-                <TransferAccountTile account={account} key={index} />
-            ))}
+            <TransferDropdown list={accounts} />
         </div>
     );
 };
 
-export default TransferFormAccountSelection;
+export default TransferAccountSelection;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui';
-import { CurrencyIcon, TradingAppIcon } from '../../../../../../../../components';
-import { TTransferableAccounts } from '../../../../../../types';
+import { CurrencyIcon, TradingAppIcon } from '../../../../../../../../../../components';
+import { TTransferableAccounts } from '../../../../../../../../types';
 import styles from './TransferAccountTile.module.scss';
 
 const getAccountName = (account: TTransferableAccounts[number]) => {

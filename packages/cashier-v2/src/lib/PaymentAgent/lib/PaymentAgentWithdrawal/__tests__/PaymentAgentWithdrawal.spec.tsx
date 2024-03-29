@@ -83,18 +83,18 @@ describe('PaymentAgentWithdrawal', () => {
         expect(screen.getByText('Loader')).toBeInTheDocument();
     });
 
-    it('should show PaymentAgentWithdrawalConfirm when isTryWithdrawalSuccessful equals to true', () => {
+    it('should show PaymentAgentWithdrawalConfirm when withdrawalStatus equals to `try_successful`', () => {
         //@ts-expect-error since this is a mock, we only need partial properties of data
-        mockedUsePaymentAgentWithdrawalContext.mockReturnValueOnce({ isTryWithdrawalSuccessful: true });
+        mockedUsePaymentAgentWithdrawalContext.mockReturnValueOnce({ withdrawalStatus: 'try_successful' });
 
         render(<PaymentAgentWithdrawal {...mockedProps} />);
 
         expect(screen.getByText('PaymentAgentWithdrawalConfirm')).toBeInTheDocument();
     });
 
-    it('should show PaymentAgentWithdrawalReceipt when isWithdrawalSuccessful equals to true', () => {
+    it('should show PaymentAgentWithdrawalReceipt when withdrawalStatus equals to `successful`', () => {
         //@ts-expect-error since this is a mock, we only need partial properties of data
-        mockedUsePaymentAgentWithdrawalContext.mockReturnValueOnce({ isWithdrawalSuccessful: true });
+        mockedUsePaymentAgentWithdrawalContext.mockReturnValueOnce({ withdrawalStatus: 'successful' });
 
         render(<PaymentAgentWithdrawal {...mockedProps} />);
 

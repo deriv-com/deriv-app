@@ -36,7 +36,7 @@ describe('PaymentAgentWithdrawalProvider', () => {
         </PaymentAgentWithdrawalProvider>
     );
 
-    it('should return proper confirmation and isTryWithdrawalSuccessful status when requestTryPaymentAgentWithdrawal was fired', async () => {
+    it('should return proper confirmation and `try_successful` status when requestTryPaymentAgentWithdrawal was fired', async () => {
         const { result } = renderHook(() => usePaymentAgentWithdrawalContext(), { wrapper });
 
         result.current.requestTryPaymentAgentWithdrawal({ amount: 100, paymentagent_loginid: 'CR1234567' });
@@ -50,11 +50,11 @@ describe('PaymentAgentWithdrawalProvider', () => {
                 paymentAgentName: 'Payment Agent Name',
             });
 
-            expect(result.current.isTryWithdrawalSuccessful).toBe(true);
+            expect(result.current.withdrawalStatus).toBe('try_successful');
         });
     });
 
-    it('should return proper receipt and isTryWithdrawalSuccessful, isWithdrawalSuccessful statuses when requestPaymentAgentWithdrawal was fired', async () => {
+    it('should return proper receipt and `successful` status when requestPaymentAgentWithdrawal was fired', async () => {
         //@ts-expect-error since this is a mock, we only need partial properties of data
         mockedUsePaymentAgentWithdrawal.mockReturnValueOnce({
             mutateAsync: jest.fn().mockResolvedValue({
@@ -82,8 +82,7 @@ describe('PaymentAgentWithdrawalProvider', () => {
                 paymentAgentPhoneNumbers: [{ phone_number: '375257225775' }],
                 paymentAgentUrls: [{ url: 'https;//mywebsite.com' }],
             });
-            expect(result.current.isTryWithdrawalSuccessful).toBe(false);
-            expect(result.current.isWithdrawalSuccessful).toBe(true);
+            expect(result.current.withdrawalStatus).toBe('successful');
         });
     });
 
@@ -107,7 +106,6 @@ describe('PaymentAgentWithdrawalProvider', () => {
             paymentAgentPhoneNumbers: [],
             paymentAgentUrls: [],
         });
-        expect(result.current.isWithdrawalSuccessful).toBe(false);
-        expect(result.current.isUnlistedWithdrawal).toBe(false);
+        expect(result.current.withdrawalStatus).toBe('idle');
     });
 });

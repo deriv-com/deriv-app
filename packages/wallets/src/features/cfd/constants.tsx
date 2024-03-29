@@ -5,12 +5,12 @@ import {
     AccountsDmt5FinancialIcon,
     AccountsDmt5SwfIcon,
     DerivProductDerivXBrandDarkWordmarkIcon,
+    LabelPairedLinuxXlIcon,
+    LabelPairedMacosXlIcon,
+    LabelPairedWindowsXlIcon,
     PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
     PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
-    StandaloneLinuxIcon,
-    StandaloneMacosIcon,
-    StandaloneWindowsIcon,
 } from '@deriv/quill-icons';
 import i18n from '../../translations/i18n';
 import { TPlatforms } from '../../types';
@@ -71,19 +71,19 @@ export const companyNamesAndUrls = {
 
 export const AppToContentMapper = {
     ctrader: {
-        icon: <StandaloneWindowsIcon iconSize='md' />,
+        icon: <LabelPairedWindowsXlIcon />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
         text: i18n.t('Download'),
         title: i18n.t('CTrader Windows App'),
     },
     linux: {
-        icon: <StandaloneLinuxIcon iconSize='md' />,
+        icon: <LabelPairedLinuxXlIcon />,
         link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
         text: i18n.t('Learn more'),
         title: i18n.t('MetaTrader 5 Linux app'),
     },
     macos: {
-        icon: <StandaloneMacosIcon iconSize='md' />,
+        icon: <LabelPairedMacosXlIcon />,
         link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 MacOS app'),
@@ -95,7 +95,7 @@ export const AppToContentMapper = {
         title: i18n.t('MetaTrader 5 web'),
     },
     windows: {
-        icon: <StandaloneWindowsIcon iconSize='md' />,
+        icon: <LabelPairedWindowsXlIcon />,
         link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 Windows app'),

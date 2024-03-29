@@ -6,7 +6,7 @@ import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
-import { MarketTypeDetails, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
+import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
@@ -22,12 +22,15 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeWalletData } = useActiveWalletAccount();
 
-    const mt5Platform = PlatformDetails.mt5.platform;
-    const dxtradePlatform = PlatformDetails.dxtrade.platform;
-    const ctraderPlatform = PlatformDetails.ctrader.platform;
+    const mt5Platform = CFD_PLATFORMS.MT5;
+    const dxtradePlatform = CFD_PLATFORMS.DXTRADE;
+    const ctraderPlatform = CFD_PLATFORMS.CTRADER;
 
     const marketType = getModalState('marketType');
     const platform = getModalState('platform') ?? mt5Platform;
+
+    const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform];
+    const { icon: marketTypeIcon, title: marketTypeTitle } = MarketTypeDetails[marketType ?? 'all'];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -95,15 +98,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
             <div className='wallets-mt5-trade-screen__details'>
                 <div className='wallets-mt5-trade-screen__details-description'>
                     <div className='wallets-mt5-trade-screen__details-description--left'>
-                        {platform === mt5Platform
-                            ? MarketTypeDetails[marketType ?? 'all'].icon
-                            : PlatformDetails[platform].icon}
+                        {platform === mt5Platform ? marketTypeIcon : platformIcon}
                         <div className='wallets-mt5-trade-screen__label'>
                             <div className='wallets-mt5-trade-screen__title'>
                                 <WalletText lineHeight='3xs' size='sm'>
-                                    {platform === mt5Platform
-                                        ? MarketTypeDetails[marketType ?? 'all'].title
-                                        : PlatformDetails[platform].title}{' '}
+                                    {platform === mt5Platform ? marketTypeTitle : platformTitle}
                                     {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </WalletText>
                                 {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}

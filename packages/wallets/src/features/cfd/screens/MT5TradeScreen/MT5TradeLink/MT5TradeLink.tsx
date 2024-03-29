@@ -4,7 +4,7 @@ import { useCtraderServiceToken } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
-import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
+import { AppToContentMapper, CFD_PLATFORMS, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
 import './MT5TradeLink.scss';
 
 type TMT5TradeLinkProps = {
@@ -15,22 +15,18 @@ type TMT5TradeLinkProps = {
 };
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform, webtraderUrl = '' }) => {
-    const content = AppToContentMapper[app];
     const { data: ctraderToken } = useCtraderServiceToken();
     const { t } = useTranslation();
-
-    const mt5Platform = PlatformDetails.mt5.platform;
-    const dxtradePlatform = PlatformDetails.dxtrade.platform;
-    const ctraderPlatform = PlatformDetails.ctrader.platform;
+    const { icon, link, text, title } = AppToContentMapper[app];
 
     const onClickWebTerminal = () => {
         const { isStaging, isTestLink } = getPlatformFromUrl();
         let url;
         switch (platform) {
-            case dxtradePlatform:
+            case CFD_PLATFORMS.DXTRADE:
                 url = isDemo ? 'https://dx-demo.deriv.com' : 'https://dx.deriv.com';
                 break;
-            case ctraderPlatform:
+            case CFD_PLATFORMS.CTRADER:
                 url = isTestLink || isStaging ? 'https://ct-uat.deriv.com' : 'https://ct.deriv.com';
                 if (ctraderToken) url += `?token=${ctraderToken}`;
                 break;
@@ -44,32 +40,32 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
     return (
         <div className='wallets-mt5-trade-link'>
             <div className='wallets-mt5-trade-link--left'>
-                {(platform === mt5Platform || app === ctraderPlatform) && (
+                {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
                     <React.Fragment>
-                        <div className='wallets-mt5-trade-link--left-icon'>{content.icon}</div>
-                        <WalletText size='sm'>{content.title}</WalletText>
+                        {icon}
+                        <WalletText size='sm'>{title}</WalletText>
                     </React.Fragment>
                 )}
-                {platform !== mt5Platform && app !== ctraderPlatform && (
+                {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
                     <WalletText size='sm'>
                         {t('Run {{platform}} on your browser', {
-                            platform: PlatformDetails[platform ?? dxtradePlatform].title,
+                            platform: PlatformDetails[platform ?? CFD_PLATFORMS.DXTRADE].title,
                         })}
                     </WalletText>
                 )}
             </div>
-            {(platform === mt5Platform || app === ctraderPlatform) && (
+            {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
                 <WalletButton
-                    onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
+                    onClick={() => window.open(app === 'web' ? webtraderUrl : link)}
                     size='sm'
                     variant='outlined'
                 >
-                    {content.text}
+                    {text}
                 </WalletButton>
             )}
-            {platform !== mt5Platform && app !== ctraderPlatform && (
+            {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
                 <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                    {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
+                    {PlatformToLabelIconMapper[platform ?? CFD_PLATFORMS.DXTRADE]}
                     <WalletText color='white' size='xs' weight='bold'>
                         {t('Web terminal')}
                     </WalletText>

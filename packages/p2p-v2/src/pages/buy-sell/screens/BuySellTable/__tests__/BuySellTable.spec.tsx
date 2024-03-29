@@ -16,6 +16,11 @@ let mockAdvertiserListData = {
     loadMoreAdverts: jest.fn(),
 };
 
+jest.mock('use-query-params', () => ({
+    ...jest.requireActual('use-query-params'),
+    useQueryParams: jest.fn().mockReturnValue([{}, jest.fn()]),
+}));
+
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     p2p: {

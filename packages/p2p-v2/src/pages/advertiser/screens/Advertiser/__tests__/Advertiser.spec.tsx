@@ -12,7 +12,7 @@ const mockUseHistory = {
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => mockUseHistory,
-    useLocation: jest.fn(() => ({ search: '?id=123' })),
+    useParams: () => ({ advertiserId: '123' }),
 }));
 
 jest.mock('@deriv-com/ui', () => ({

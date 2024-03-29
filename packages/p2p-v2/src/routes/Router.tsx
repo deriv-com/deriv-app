@@ -49,6 +49,7 @@ const Router: React.FC = () => {
                 ))}
                 {/* TODO: Add 404 page here once ready */}
                 <Redirect exact from={`${BASE_URL}/*`} to={BUY_SELL_URL} />
+                <Redirect exact from={BASE_URL} to={BUY_SELL_URL} />
             </Switch>
         </Suspense>
     );

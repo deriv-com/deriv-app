@@ -148,6 +148,7 @@ export default class ClientStore extends BaseStore {
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
+    is_p2p_enabled = false;
     real_account_signup_form_data = [];
     real_account_signup_form_step = 0;
 
@@ -215,6 +216,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
+            is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
             balance: computed,
@@ -274,7 +276,6 @@ export default class ClientStore extends BaseStore {
             is_age_verified: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
-            is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
@@ -389,6 +390,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
+            setIsP2PEnabled: action.bound,
             setRealAccountSignupFormData: action.bound,
             setRealAccountSignupFormStep: action.bound,
         });
@@ -779,12 +781,6 @@ export default class ClientStore extends BaseStore {
         return this.landing_companies;
     }
 
-    get is_valid_login() {
-        if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MF|MFW|VRTC|VRW|MLT|CR|CRW)[0-9]+$', 'i');
-        return this.all_loginids.every(id => valid_login_ids_regex.test(id));
-    }
-
     get is_logged_in() {
         return !!(
             !isEmptyObject(this.accounts) &&
@@ -1118,7 +1114,9 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+            ? deriv_urls.DERIV_HOST_NAME
+            : window.location.hostname;
 
         // eslint-disable-next-line max-len
         const {
@@ -1148,8 +1146,6 @@ export default class ClientStore extends BaseStore {
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
-            // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
-            Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
 
             this.has_cookie_account = true;
         } else {
@@ -2628,29 +2624,15 @@ export default class ClientStore extends BaseStore {
         this.is_already_attempted = status;
     }
 
+    setIsP2PEnabled(is_p2p_enabled) {
+        this.is_p2p_enabled = is_p2p_enabled;
+    }
+
     setRealAccountSignupFormData(data) {
         this.real_account_signup_form_data = data;
     }
 
     setRealAccountSignupFormStep(step) {
         this.real_account_signup_form_step = step;
-    }
-
-    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
-     *
-     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
-     *
-     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
-     * */
-    get is_p2p_enabled() {
-        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
-
-        const is_p2p_supported_currency = Boolean(
-            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
-        );
-
-        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
-
-        return is_p2p_visible;
     }
 }

@@ -8,7 +8,7 @@ type TAccountClosureSuccessModalProps = {
 
 export const AccountClosureSuccessModal = ({ handleClose, isModalOpen }: TAccountClosureSuccessModalProps) => (
     <Modal
-        className='p-24 md:w-[440px] sm:w-[312px]'
+        className='p-24 md:w-[440px] sm:w-[312px] h-auto rounded-default'
         isOpen={isModalOpen}
         onRequestClose={handleClose}
         shouldCloseOnEsc

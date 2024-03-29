@@ -5,7 +5,7 @@ import { AUTH_STATUS_CODES, POI_SUBMISSION_STATUS } from '../../constants';
 import { POICountrySelector, POIFlowContainer, VerificationStatus } from '../../containers';
 import { TPOIActions } from '../../utils';
 
-export const POI = () => {
+export const ProofOfIdentity = () => {
     const { isLoading, kyc_auth_status: kycAuthStatus } = useKycAuthStatus();
 
     const poiStatus = kycAuthStatus?.identity.status;

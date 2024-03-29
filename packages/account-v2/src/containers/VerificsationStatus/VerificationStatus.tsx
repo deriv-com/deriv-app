@@ -19,7 +19,7 @@ const ContinueToPOA = () => {
 
 const ContinueTradingButton = () => {
     const history = useHistory();
-    return <Button onClick={() => history.push('/')}>Submit proof of address</Button>;
+    return <Button onClick={() => history.push('/')}>Continue trading</Button>;
 };
 
 export const VerificationStatus = ({ isPOARequired, service, status }: TVerificationStatusProps) => {

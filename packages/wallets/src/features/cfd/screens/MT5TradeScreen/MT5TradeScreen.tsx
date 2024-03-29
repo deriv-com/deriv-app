@@ -29,8 +29,9 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const marketType = getModalState('marketType');
     const platform = getModalState('platform') ?? mt5Platform;
 
-    const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform];
-    const { icon: marketTypeIcon, title: marketTypeTitle } = MarketTypeDetails[marketType ?? 'all'];
+    const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
+    const { icon: marketTypeIcon, title: marketTypeTitle } =
+        MarketTypeDetails[(marketType as keyof typeof MarketTypeDetails) ?? 'all'];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -147,7 +148,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 <div className='wallets-mt5-trade-screen__details-maintenance'>
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
                     <WalletText color='less-prominent' size='2xs'>
-                        {serviceMaintenanceMessages[platform ?? PlatformDetails.mt5.platform]}
+                        {
+                            serviceMaintenanceMessages[
+                                (platform as keyof typeof serviceMaintenanceMessages) ?? PlatformDetails.mt5.platform
+                            ]
+                        }
                     </WalletText>
                 </div>
             </div>

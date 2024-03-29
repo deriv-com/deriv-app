@@ -49,7 +49,9 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                 {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
                     <WalletText size='sm'>
                         {t('Run {{platform}} on your browser', {
-                            platform: PlatformDetails[platform ?? CFD_PLATFORMS.DXTRADE].title,
+                            platform:
+                                PlatformDetails[(platform as keyof typeof PlatformDetails) ?? CFD_PLATFORMS.DXTRADE]
+                                    .title,
                         })}
                     </WalletText>
                 )}
@@ -65,7 +67,11 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
             )}
             {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
                 <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                    {PlatformToLabelIconMapper[platform ?? CFD_PLATFORMS.DXTRADE]}
+                    {
+                        PlatformToLabelIconMapper[
+                            (platform as keyof typeof PlatformToLabelIconMapper) ?? CFD_PLATFORMS.DXTRADE
+                        ]
+                    }
                     <WalletText color='white' size='xs' weight='bold'>
                         {t('Web terminal')}
                     </WalletText>

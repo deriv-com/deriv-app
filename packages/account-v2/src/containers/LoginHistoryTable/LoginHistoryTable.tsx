@@ -7,7 +7,7 @@ type TLoginHistoryProps = {
     loginHistory: LoginHistory;
 };
 
-const headers = {
+const header = {
     action: 'Action',
     browser: 'Browser',
     datetime: 'Date and Time',
@@ -19,7 +19,7 @@ const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as 
 
 export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
     const formattedLoginHistory = useMemo(() => formattedLoginHistoryUtils(loginHistory), [loginHistory]);
-    const columns = columnOrder.map(key => ({ header: headers[key] }));
+    const columns = columnOrder.map(key => ({ header: header[key] }));
 
     return (
         <div className='flex flex-col'>

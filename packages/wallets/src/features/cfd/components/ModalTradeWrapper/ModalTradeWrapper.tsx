@@ -33,6 +33,7 @@ const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     },
 };
 
+// TODO: Implement App Icon once icons are available.
 const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> = {
     android: InstallationGoogleIcon,
     huawei: InstallationHuaweiIcon,
@@ -40,12 +41,13 @@ const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SV
 };
 
 type TModalTradeWrapper = {
-    platform: TPlatforms.MT5 | TPlatforms.OtherAccounts;
+    platform: TPlatforms.All;
 };
 
 const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, platform }) => {
     const { isDesktop } = useDevice();
     const appOrder = ['ios', 'android', 'huawei'];
+    const { link, title } = PlatformDetails[platform];
 
     return (
         <ModalStepWrapper
@@ -53,8 +55,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>
                         <WalletText align='center' size='sm' weight='bold'>
-                            Download {PlatformDetails[platform].title} on your phone to trade with the{' '}
-                            {PlatformDetails[platform].title} account
+                            Download {title} on your phone to trade with the {title} account
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
@@ -70,9 +71,9 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                             </div>
                             {isDesktop && (
                                 <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
-                                    <QRCode size={80} value={PlatformDetails[platform].link} />
+                                    <QRCode size={80} value={link} />
                                     <WalletText align='center' size='xs'>
-                                        Scan the QR code to download {PlatformDetails[platform].title}
+                                        Scan the QR code to download {title}
                                     </WalletText>
                                 </div>
                             )}

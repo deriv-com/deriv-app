@@ -73,9 +73,11 @@
             }
         }
 
-        &-maintainance {
+        &-maintenance {
             display: grid;
-            grid-template-columns: 2.5rem auto;
+            grid-template-columns: 1.6rem auto;
+            align-items: start;
+            gap: 0.8rem;
         }
     }
 

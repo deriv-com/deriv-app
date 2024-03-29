@@ -1,26 +1,18 @@
 import React, { FC, Fragment, useMemo } from 'react';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
+import { LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import ImportantIcon from '../../../../public/images/ic-important.svg';
-import { THooks, TPlatforms } from '../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { THooks } from '../../../../types';
+import { MarketTypeDetails, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
 
 type MT5TradeScreenProps = {
     mt5Account?: THooks.MT5AccountsList;
-};
-
-const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
-    ctrader:
-        'Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.',
-    dxtrade:
-        'Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.',
-    mt5: 'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.',
 };
 
 const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
@@ -153,10 +145,10 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     )}
                 </div>
 
-                <div className='wallets-mt5-trade-screen__details-maintainance'>
-                    <ImportantIcon />
+                <div className='wallets-mt5-trade-screen__details-maintenance'>
+                    <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
                     <WalletText color='less-prominent' size='2xs'>
-                        {serviceMaintenanceMessages[platform || mt5Platform]}
+                        {serviceMaintenanceMessages[platform ?? PlatformDetails.mt5.platform]}
                     </WalletText>
                 </div>
             </div>

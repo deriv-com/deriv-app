@@ -9,7 +9,6 @@ interface IToolbarStore {
     has_undo_stack: boolean;
     has_redo_stack: boolean;
     is_reset_button_clicked: boolean;
-    is_import_button_click: boolean;
     onResetClick: () => void;
     closeResetDialog: () => void;
     onResetOkButtonClick: () => void;
@@ -19,7 +18,6 @@ interface IToolbarStore {
     resetDefaultStrategy: () => void;
     setHasUndoStack: () => void;
     setHasRedoStack: () => void;
-    setImportButtonClick: (is_import_button_click: boolean) => void;
 }
 
 export default class ToolbarStore implements IToolbarStore {
@@ -40,7 +38,6 @@ export default class ToolbarStore implements IToolbarStore {
             resetDefaultStrategy: action.bound,
             setHasUndoStack: action.bound,
             setHasRedoStack: action.bound,
-            setImportButtonClick: action.bound,
         });
 
         this.root_store = root_store;
@@ -52,11 +49,6 @@ export default class ToolbarStore implements IToolbarStore {
     has_undo_stack = false;
     has_redo_stack = false;
     is_reset_button_clicked = false;
-    is_import_button_click = false;
-
-    setImportButtonClick = (is_import_button_click: boolean) => {
-        this.is_import_button_click = is_import_button_click;
-    };
 
     setResetButtonState = (is_reset_button_clicked: boolean): void => {
         this.is_reset_button_clicked = is_reset_button_clicked;

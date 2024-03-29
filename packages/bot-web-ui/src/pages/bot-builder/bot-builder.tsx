@@ -70,28 +70,55 @@ const BotBuilder = observer(() => {
     };
 
     React.useEffect(() => {
+        window.addEventListener('keydown', handleKeydownBlockDelete);
+        window.addEventListener('mousedown', handleContextMenuBlockDelete);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeydownBlockDelete);
+            window.removeEventListener('mousedown', handleContextMenuBlockDelete);
+        };
+    }, []);
+
+    React.useEffect(() => {
         const workspace = window.Blockly?.derivWorkspace;
         if (workspace && !is_blockly_delete_listener_registered.current) {
             is_blockly_delete_listener_registered.current = true;
-            workspace.addChangeListener(handleBlockDelete);
+            workspace.addChangeListener(handleTrashcanBlockDelete);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_loading]);
 
-    const handleBlockDelete = (e: Event) => {
-        const url = window.location.hash.substring(1);
-        if (url !== 'bot_builder') return;
-        const { is_reset_button_clicked, is_import_button_click } = toolbar;
-        if (e.type === 'delete' && !is_reset_button_clicked && !is_import_button_click) {
-            botNotification(notification_message.block_delete, {
-                label: localize('Undo'),
-                onClick: closeToast => {
-                    window.Blockly.derivWorkspace.undo();
-                    closeToast?.();
-                },
-            });
+    let end_drag = false;
+    const handleTrashcanBlockDelete = (e: Event) => {
+        if (e.type === 'endDrag' && !end_drag) {
+            end_drag = true;
         }
+        if (e.type === 'delete' && end_drag) {
+            handleBlockDeleteNotification();
+            end_drag = false;
+        }
+    };
+
+    const handleContextMenuBlockDelete = (e: Event) => {
+        if (!e?.target?.innerText?.includes('Delete')) return;
+        handleBlockDeleteNotification();
+    };
+
+    const handleKeydownBlockDelete = (e: Event) => {
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+            handleBlockDeleteNotification();
+        }
+    };
+
+    const handleBlockDeleteNotification = () => {
+        botNotification(notification_message.block_delete, {
+            label: localize('Undo'),
+            onClick: closeToast => {
+                window.Blockly.derivWorkspace.undo();
+                closeToast?.();
+            },
+        });
     };
 
     return (

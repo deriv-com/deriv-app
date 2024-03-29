@@ -281,9 +281,6 @@ export default class LoadModalStore implements ILoadModalStore {
             }
         });
         this.is_open_button_loading = false;
-        const { toolbar } = this.root_store;
-        const { setImportButtonClick } = toolbar;
-        setImportButtonClick(false);
     };
 
     loadFileFromLocal = (): void => {
@@ -527,9 +524,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 load_options.file_name = file_name;
             }
             await load(load_options);
-            const { toolbar } = this.root_store;
-            const { setImportButtonClick } = toolbar;
-            setImportButtonClick(false);
         });
         reader.readAsText(file);
     };

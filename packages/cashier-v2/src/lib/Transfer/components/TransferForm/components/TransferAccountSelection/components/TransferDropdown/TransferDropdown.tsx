@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Text, useOnClickOutside } from '@deriv-com/ui';
@@ -8,23 +8,17 @@ import { TransferAccountTile, TransferDropdownList } from './components';
 import styles from './TransferDropdown.module.scss';
 
 type TProps = {
+    accounts: TTransferableAccounts;
     disabled: boolean;
-    icon?: React.ReactNode;
-    isRequired?: boolean;
     label?: string;
-    list: TTransferableAccounts;
-    listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     message?: string;
     onChange?: (inputValue: string) => void;
     onSelect: (value: string) => void;
-    typeVariant?: 'listcard' | 'normal';
     value: TTransferFormikContext['fromAccount'] | TTransferFormikContext['toAccount'];
-    variant?: 'comboBox' | 'prompt';
 };
 
-const TransferDropdown: React.FC<TProps> = ({ label, list, message, onSelect, value }) => {
+const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect, value }) => {
     const clickOutsideRef = useRef(null);
-    const [items, setItems] = useState(list);
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => setIsOpen(currentValue => !currentValue);
@@ -37,10 +31,6 @@ const TransferDropdown: React.FC<TProps> = ({ label, list, message, onSelect, va
         setIsOpen(false);
         return onSelect(value);
     };
-
-    useEffect(() => {
-        setItems(list);
-    }, [list]);
 
     return (
         <div className={styles.container} ref={clickOutsideRef}>
@@ -62,33 +52,33 @@ const TransferDropdown: React.FC<TProps> = ({ label, list, message, onSelect, va
             </button>
             {isOpen && (
                 <ul className={styles['items-container']}>
-                    {items.find(item => item.account_type === 'mt5') && (
+                    {accounts.find(account => account.account_type === 'mt5') && (
                         <TransferDropdownList
-                            accounts={items.filter(item => item.account_type === 'mt5')}
+                            accounts={accounts.filter(account => account.account_type === 'mt5')}
                             header='Deriv MT5 accounts'
                             onSelect={onSelectItem}
                             value={value}
                         />
                     )}
-                    {items.find(item => item.account_type === 'ctrader') && (
+                    {accounts.find(account => account.account_type === 'ctrader') && (
                         <TransferDropdownList
-                            accounts={items.filter(item => item.account_type === 'ctrader')}
+                            accounts={accounts.filter(account => account.account_type === 'ctrader')}
                             header='Deriv cTrader accounts'
                             onSelect={onSelectItem}
                             value={value}
                         />
                     )}
-                    {items.find(item => item.account_type === 'dxtrade') && (
+                    {accounts.find(account => account.account_type === 'dxtrade') && (
                         <TransferDropdownList
-                            accounts={items.filter(item => item.account_type === 'dxtrade')}
+                            accounts={accounts.filter(account => account.account_type === 'dxtrade')}
                             header='Deriv X accounts'
                             onSelect={onSelectItem}
                             value={value}
                         />
                     )}
-                    {items.find(item => item.account_type === 'binary') && (
+                    {accounts.find(account => account.account_type === 'binary') && (
                         <TransferDropdownList
-                            accounts={items.filter(item => item.account_type === 'binary')}
+                            accounts={accounts.filter(account => account.account_type === 'binary')}
                             header='Deriv accounts'
                             onSelect={onSelectItem}
                             value={value}

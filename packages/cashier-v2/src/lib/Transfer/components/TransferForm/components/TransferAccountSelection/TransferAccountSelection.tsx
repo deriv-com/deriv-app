@@ -42,7 +42,8 @@ const TransferAccountSelection = () => {
 
     return (
         <div className={styles.container}>
-            <TransferDropdown list={accounts} />
+            <TransferDropdown accounts={accounts} />
+            <TransferDropdown accounts={accounts} />
         </div>
     );
 };

@@ -101,7 +101,7 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
         if (isAccountCreated) {
             show(
                 <CTraderSuccessModal
-                    displayBalance={displayBalance || '10,000.00 USD'}
+                    displayBalance={displayBalance ?? '10,000.00 USD'}
                     isDemo={isDemo}
                     walletCurrencyType={walletCurrencyType ?? 'USD'}
                 />

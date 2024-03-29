@@ -12,7 +12,7 @@ const Advertiser = () => {
     const history = useHistory();
 
     return (
-        <div className='p2p-v2-advertiser lg:pl-8'>
+        <div className='p2p-v2-advertiser'>
             <PageReturn
                 className='lg:mt-0'
                 hasBorder={isMobile}

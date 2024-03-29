@@ -7,6 +7,9 @@ const OrderDetails = lazy(() =>
     import('@/pages/orders/screens/OrderDetails').then(module => ({ default: module.OrderDetails }))
 );
 const MyAds = lazy(() => import('@/pages/my-ads').then(module => ({ default: module.MyAds })));
+const CreateEditAd = lazy(() =>
+    import('@/pages/my-ads/screens/CreateEditAd').then(module => ({ default: module.CreateEditAd }))
+);
 const MyProfile = lazy(() => import('@/pages/my-profile').then(module => ({ default: module.MyProfile })));
 const Advertiser = lazy(() => import('@/pages/advertiser').then(module => ({ default: module.Advertiser })));
 
@@ -31,6 +34,12 @@ export const routes = [
         component: MyAds,
         name: 'My Ads',
         path: MY_ADS_URL,
+        routes: [
+            {
+                component: CreateEditAd,
+                path: `${MY_ADS_URL}/create`,
+            },
+        ],
     },
     {
         component: MyProfile,

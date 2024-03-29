@@ -39,10 +39,10 @@ const AppContent = () => {
     return (
         <>
             <CloseHeader />
-            <div className='p2p-v2-tab__wrapper overflow-hidden'>
+            <div className='p2p-v2-app-content'>
                 <Tabs
                     activeTab={activeTab}
-                    className='p2p-v2-tab__items-wrapper'
+                    className='p2p-v2-app-content__tabs'
                     onChange={index => {
                         setActiveTab(tabRoutesConfiguration[index].name);
                         history.push(tabRoutesConfiguration[index].path);

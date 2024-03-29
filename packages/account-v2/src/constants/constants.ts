@@ -24,12 +24,7 @@ export const POI_SERVICE = {
 export const ACCOUNT_MODAL_REF = '#account_modal';
 
 export const POI_SUBMISSION_STATUS = {
-    COMPLETE: 'complete',
-    SELECTING: 'selecting',
-    SUBMITTING: 'submitting',
+    complete: 'complete',
+    selecting: 'selecting',
+    submitting: 'submitting',
 } as const;
-
-export const API_ERROR_CODES = Object.freeze({
-    CLAIMED_DOCUMENT: 'ClaimedDocument',
-    DUPLICATE_ACCOUNT: 'DuplicateAccount',
-});

@@ -1,5 +1,5 @@
 import { TSocketEndpointNames, TSocketError } from '@deriv/api-v2/types';
-import { API_ERROR_CODES, ERROR_MESSAGE, POI_SUBMISSION_STATUS } from '../constants';
+import { API_ERROR_CODES, POI_SUBMISSION_STATUS } from '../constants';
 
 type TPOISubmissionStatus = typeof POI_SUBMISSION_STATUS[keyof typeof POI_SUBMISSION_STATUS];
 
@@ -10,11 +10,11 @@ export type TPOIActions =
 export const setErrorMessage = <T extends TSocketError<TSocketEndpointNames>['error']>(error: T) => {
     const { code, message } = error ?? { code: null, message: null };
     switch (code) {
-        case API_ERROR_CODES.DUPLICATE_ACCOUNT:
-            return ERROR_MESSAGE.DUPLICATE_ACCOUNT;
-        case API_ERROR_CODES.CLAIMED_DOCUMENT:
-            return ERROR_MESSAGE.CLAIMED_DOCUMENT;
+        case API_ERROR_CODES.duplicateAccount.code:
+            return API_ERROR_CODES.duplicateAccount.message;
+        case API_ERROR_CODES.claimedDocument.code:
+            return API_ERROR_CODES.claimedDocument.message;
         default:
-            return message ?? ERROR_MESSAGE.GENERIC;
+            return message ?? API_ERROR_CODES.generic.message;
     }
 };

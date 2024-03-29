@@ -35,7 +35,7 @@ export const ProofOfIdentity = () => {
             status => status === poiStatus
         );
         if (!isLoading && shouldDisplayStatus) {
-            dispatch({ payload: POI_SUBMISSION_STATUS.COMPLETE, type: 'setSubmissionStatus' });
+            dispatch({ payload: POI_SUBMISSION_STATUS.complete, type: 'setSubmissionStatus' });
         }
     }, [poiStatus, isLoading]);
 
@@ -44,15 +44,15 @@ export const ProofOfIdentity = () => {
     }
 
     switch (state.submissionStatus) {
-        case POI_SUBMISSION_STATUS.COMPLETE:
+        case POI_SUBMISSION_STATUS.complete:
             return <VerificationStatus isPOARequired={isPOARequired} service={service} status={poiStatus} />;
-        case POI_SUBMISSION_STATUS.SUBMITTING:
+        case POI_SUBMISSION_STATUS.submitting:
             return (
                 <POIFlowContainer
                     countryCode={state.selectedCountry}
-                    onCancel={() => dispatch({ payload: POI_SUBMISSION_STATUS.SELECTING, type: 'setSubmissionStatus' })}
+                    onCancel={() => dispatch({ payload: POI_SUBMISSION_STATUS.selecting, type: 'setSubmissionStatus' })}
                     onComplete={() =>
-                        dispatch({ payload: POI_SUBMISSION_STATUS.COMPLETE, type: 'setSubmissionStatus' })
+                        dispatch({ payload: POI_SUBMISSION_STATUS.complete, type: 'setSubmissionStatus' })
                     }
                 />
             );
@@ -60,7 +60,7 @@ export const ProofOfIdentity = () => {
             return (
                 <POICountrySelector
                     handleNext={() =>
-                        dispatch({ payload: POI_SUBMISSION_STATUS.SUBMITTING, type: 'setSubmissionStatus' })
+                        dispatch({ payload: POI_SUBMISSION_STATUS.submitting, type: 'setSubmissionStatus' })
                     }
                     onCountrySelect={value => {
                         dispatch({ payload: value, type: 'setSelectedCountry' });

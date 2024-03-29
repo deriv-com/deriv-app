@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import html2canvas from 'html2canvas';
 import Modal from 'react-modal';
 import { Clipboard } from '@/components';
-import { BUY_SELL, RATE_TYPE } from '@/constants';
+import { ADVERTISER_URL, BUY_SELL, RATE_TYPE } from '@/constants';
 import { useCopyToClipboard } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 import { Button, Divider, Text, useDevice } from '@deriv-com/ui';
@@ -23,7 +23,7 @@ type TShareAdsModalProps = {
     onRequestClose: () => void;
 };
 
-const websiteUrl = () => `${location.protocol}//${location.hostname}/`;
+const websiteUrl = () => `${location.protocol}//${location.hostname}`;
 
 const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps) => {
     const timeoutClipboardRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -34,7 +34,7 @@ const ShareAdsModal = ({ id, isModalOpen, onRequestClose }: TShareAdsModalProps)
     const { id: advertiserId } = advertiser_details ?? {};
 
     const divRef = useRef<HTMLDivElement | null>(null);
-    const advertUrl = `${websiteUrl()}cashier/p2p/advertiser?id=${advertiserId}&advert_id=${id}`;
+    const advertUrl = `${websiteUrl()}${ADVERTISER_URL}/${advertiserId}?advert_id=${id}`;
     const isBuyAd = type === BUY_SELL.BUY;
     const firstCurrency = isBuyAd ? local_currency : account_currency;
     const secondCurrency = isBuyAd ? account_currency : local_currency;

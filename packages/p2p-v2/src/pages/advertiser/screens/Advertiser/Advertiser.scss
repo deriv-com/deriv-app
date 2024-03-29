@@ -1,4 +1,9 @@
 .p2p-v2-advertiser {
+    position: absolute;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+
     @include mobile {
         height: calc(100vh - 8rem);
         overflow-y: scroll;

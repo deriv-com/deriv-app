@@ -1,6 +1,8 @@
 .p2p-v2-buy-sell-form {
     width: 44rem;
     height: unset;
+    border-radius: 8px;
+
     @include mobile {
         width: 100vw;
         height: 100vh;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { FullPageMobileWrapper, PageReturn } from '@/components';
 import { useExtendedOrderDetails } from '@/hooks';
 import { OrderDetailsProvider } from '@/providers/OrderDetailsProvider';
@@ -11,15 +11,13 @@ import { OrderDetailsCardFooter } from '../../components/OrderDetailsCard/OrderD
 import { OrdersChatSection } from '../OrdersChatSection';
 import './OrderDetails.scss';
 
-type TOrderDetailsProps = {
-    orderId: string;
-};
-
-const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
+const OrderDetails = () => {
     const history = useHistory();
     const location = useLocation();
     const showChatParam = new URLSearchParams(location.search).get('showChat');
     const [showChat, setShowChat] = useState(!!showChatParam);
+
+    const { orderId } = useParams<{ orderId: string }>();
 
     const { data: orderInfo, failureReason, isError: isErrorOrderInfo, isLoading } = p2p.order.useGet(orderId);
     const { data: activeAccount } = useActiveAccount();

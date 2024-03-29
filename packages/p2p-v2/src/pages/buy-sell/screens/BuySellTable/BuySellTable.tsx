@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { RadioGroupFilterModal } from '@/components/Modals';
-import { BUY_SELL, SORT_BY_LIST } from '@/constants';
+import { ADVERT_TYPE, BUY_SELL, SORT_BY_LIST } from '@/constants';
+import { useQueryString } from '@/hooks';
 import { TSortByValues } from '@/utils';
 import { p2p } from '@deriv/api-v2';
 import { BuySellHeader } from '../BuySellHeader';
 import { BuySellTableRenderer } from './BuySellTableRenderer';
 import './BuySellTable.scss';
 
+const TABS = [ADVERT_TYPE.BUY, ADVERT_TYPE.SELL];
+
 const BuySellTable = () => {
     const { data: p2pSettingsData } = p2p.settings.useGetSettings();
+    const { queryString, setQueryString } = useQueryString();
+    const activeTab = queryString.tab || ADVERT_TYPE.BUY;
 
-    const [activeTab, setActiveTab] = useState<string>('Buy');
     const [selectedCurrency, setSelectedCurrency] = useState<string>(p2pSettingsData?.localCurrency || '');
     const [sortDropdownValue, setSortDropdownValue] = useState<TSortByValues>('rate');
     const [searchValue, setSearchValue] = useState<string>('');
@@ -20,7 +24,7 @@ const BuySellTable = () => {
 
     const { data, isFetching, isLoading, loadMoreAdverts } = p2p.advert.useGetList({
         advertiser_name: searchValue,
-        counterparty_type: activeTab === 'Buy' ? BUY_SELL.BUY : BUY_SELL.SELL,
+        counterparty_type: activeTab === ADVERT_TYPE.BUY ? BUY_SELL.BUY : BUY_SELL.SELL,
         local_currency: selectedCurrency,
         payment_method: selectedPaymentMethods.length > 0 ? selectedPaymentMethods : undefined,
         sort_by: sortDropdownValue,
@@ -31,6 +35,18 @@ const BuySellTable = () => {
         setSortDropdownValue(value as TSortByValues);
         setIsFilterModalOpen(false);
     };
+
+    const setActiveTab = (index: number) => {
+        setQueryString({
+            tab: TABS[index],
+        });
+    };
+
+    // useEffect(() => {
+    //     setQueryString({
+    //         tab: 'Buy',
+    //     });
+    // }, []);
 
     useEffect(() => {
         if (p2pSettingsData?.localCurrency) setSelectedCurrency(p2pSettingsData.localCurrency);

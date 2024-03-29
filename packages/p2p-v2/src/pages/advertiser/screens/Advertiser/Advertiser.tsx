@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { PageReturn, ProfileContent } from '@/components';
 import { LabelPairedEllipsisVerticalLgRegularIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
@@ -8,10 +8,8 @@ import './Advertiser.scss';
 
 const Advertiser = () => {
     const { isMobile } = useDevice();
+    const { advertiserId } = useParams<{ advertiserId: string }>();
     const history = useHistory();
-    const location = useLocation();
-    const urlParams = new URLSearchParams(location.search);
-    const advertiserId = urlParams.get('id') ?? undefined;
 
     return (
         <div className='p2p-v2-advertiser lg:pl-8'>

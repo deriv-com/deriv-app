@@ -1,8 +1,7 @@
 .p2p-v2-filter-modal {
-    @include desktop {
-        height: 56rem;
-        width: 44rem;
-    }
+    height: 56rem;
+    width: 44rem;
+    border-radius: 8px;
 
     @include mobile {
         position: absolute;

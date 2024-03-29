@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { THooks } from 'types';
-import { BASE_URL, ORDERS_STATUS } from '@/constants';
+import { ORDERS_STATUS, ORDERS_URL } from '@/constants';
 import { useExtendedOrderDetails, useQueryString } from '@/hooks';
 import { OrderRatingButton, OrderStatusTag, OrderTimer } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
@@ -43,7 +43,7 @@ const OrdersTableRow = ({ ...props }: THooks.Order.GetList[number]) => {
     const isBuyOrderForUser = orderDetails.isBuyOrderForUser;
     const transactionAmount = `${Number(priceDisplay).toFixed(2)} ${localCurrency}`;
     const offerAmount = `${amountDisplay} ${accountCurrency}`;
-    const showOrderDetails = () => history.push(`${BASE_URL}/orders?order=${id}`);
+    const showOrderDetails = () => history.push(`${ORDERS_URL}/${id}`);
 
     if (isMobile) {
         return (
@@ -66,7 +66,7 @@ const OrdersTableRow = ({ ...props }: THooks.Order.GetList[number]) => {
                                 color='white'
                                 onClick={event => {
                                     event.stopPropagation();
-                                    history.push(`${BASE_URL}/orders?order=${id}&showChat=true`);
+                                    history.push(`${ORDERS_URL}/${id}?showChat=true`);
                                 }}
                                 variant='contained'
                             >

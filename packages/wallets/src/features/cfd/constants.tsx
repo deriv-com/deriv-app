@@ -38,7 +38,7 @@ export const MarketTypeDetails = {
 
 export const PlatformDetails = {
     ctrader: {
-        icon: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon />,
+        icon: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
         link: 'https://onelink.to/hyqpv7',
         platform: i18n.t('ctrader') as TPlatforms.OtherAccounts,
         title: i18n.t('Deriv cTrader'),

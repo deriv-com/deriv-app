@@ -98,22 +98,22 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         <div className='wallets-mt5-trade-screen'>
             <div className='wallets-mt5-trade-screen__details'>
                 <div className='wallets-mt5-trade-screen__details-description'>
-                    <div className='wallets-mt5-trade-screen__details-description--left'>
+                    <div className='wallets-mt5-trade-screen__details-description__icon'>
                         {platform === mt5Platform ? marketTypeIcon : platformIcon}
-                        <div className='wallets-mt5-trade-screen__label'>
-                            <div className='wallets-mt5-trade-screen__title'>
-                                <WalletText lineHeight='3xs' size='sm'>
-                                    {platform === mt5Platform ? marketTypeTitle : platformTitle}
-                                    {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
-                                </WalletText>
-                                {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
-                            </div>
-                            <WalletText color='less-prominent' size='xs'>
-                                {loginId}
-                            </WalletText>
-                        </div>
                     </div>
-                    <div className='wallets-mt5-trade-screen__details-description--right'>
+                    <div className='wallets-mt5-trade-screen__details-description__details'>
+                        <div className='wallets-mt5-trade-screen__label'>
+                            <WalletText lineHeight='3xs' size='sm'>
+                                {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
+                                {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
+                            </WalletText>
+                            {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
+                        </div>
+                        <WalletText color='less-prominent' size='xs'>
+                            {loginId}
+                        </WalletText>
+                    </div>
+                    <div className='wallets-mt5-trade-screen__details-description__balance'>
                         {shouldShowAccountBalance && <WalletText weight='bold'>{details?.display_balance}</WalletText>}
                         {migrationMessage}
                     </div>

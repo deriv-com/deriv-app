@@ -34,11 +34,11 @@ const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
 };
 
 // TODO: Implement App Icon once icons are available.
-const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> = {
+const AppToIconMapper = {
     android: InstallationGoogleIcon,
     huawei: InstallationHuaweiIcon,
     ios: InstallationAppleIcon,
-};
+} as const;
 
 type TModalTradeWrapper = {
     platform: TPlatforms.All;
@@ -62,7 +62,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                 {appOrder.map(app => {
                                     const AppsLinkMapper = LinksMapper[platform][app as keyof TAppLinks];
                                     if (AppsLinkMapper) {
-                                        const AppIcon = AppToIconMapper[app];
+                                        const AppIcon = AppToIconMapper[app as keyof typeof AppToIconMapper];
                                         const appLink = AppsLinkMapper;
                                         return <AppIcon key={app} onClick={() => window.open(appLink)} />;
                                     }

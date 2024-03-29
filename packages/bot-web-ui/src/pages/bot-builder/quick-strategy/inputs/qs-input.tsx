@@ -48,7 +48,14 @@ const QSInput: React.FC<TQSInput> = observer(
 
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const input_value = e.target.value;
-            const value = is_number ? Number(input_value) : input_value;
+            let value: number | string = 0;
+            const max_characters = 12;
+            if (max_characters && input_value.length >= max_characters) {
+                value = input_value.slice(0, max_characters);
+                value = is_number ? Number(value) : value;
+            } else {
+                value = is_number ? Number(input_value) : input_value;
+            }
             onChange(name, value);
         };
 
@@ -126,6 +133,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e)}
                                         placeholder={is_exclusive_field ? '0.00' : ''}
                                         bottom_label={is_exclusive_field ? currency : ''}
+                                        max_characters={2}
+                                        maxLength={2}
                                     />
                                 </Popover>
                             </div>

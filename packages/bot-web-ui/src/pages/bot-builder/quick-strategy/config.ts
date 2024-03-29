@@ -72,7 +72,7 @@ const LABEL_STAKE: TConfigItem = {
 const STAKE: TConfigItem = {
     type: 'number',
     name: 'stake',
-    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION, 'character_limit'],
+    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION],
     has_currency_unit: true,
 };
 
@@ -105,7 +105,7 @@ const LABEL_PROFIT: TConfigItem = {
 const PROFIT: TConfigItem = {
     type: 'number',
     name: 'profit',
-    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION, 'character_limit'],
+    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION],
     has_currency_unit: true,
 };
 
@@ -118,7 +118,7 @@ const LABEL_LOSS: TConfigItem = {
 const LOSS: TConfigItem = {
     type: 'number',
     name: 'loss',
-    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION, 'character_limit'],
+    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION],
     has_currency_unit: true,
 };
 
@@ -183,7 +183,7 @@ const CHECKBOX_MAX_STAKE: TConfigItem = {
 const MAX_STAKE: TConfigItem = {
     type: 'number',
     name: 'max_stake',
-    validation: ['number', 'required', 'ceil', 'min', 'character_limit'],
+    validation: ['number', 'required', 'ceil', 'min'],
     should_have: [{ key: 'boolean_max_stake', value: true }],
     hide_without_should_have: true,
     attached: true,

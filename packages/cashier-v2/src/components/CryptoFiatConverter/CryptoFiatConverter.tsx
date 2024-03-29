@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
@@ -32,51 +32,42 @@ const getConvertedAmount = (amount: string, source: TGetConvertedAmountParams, t
 
 const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = ({ fromAccount, toAccount }) => {
     const { isMobile } = useDevice();
-    const [isFromInputActive, setIsFromInputActive] = useState(true);
-    const [areAccountCurrenciesDifferent, setAreAccountCurrenciesDifferent] = useState<boolean>(true);
-    const [percentage, setPercentage] = useState<number>(0);
-
+    const [isFromInputField, setIsFromInputField] = useState<boolean>(true);
     const { errors, setFieldValue, setValues, values } = useFormikContext<TContext>();
 
-    useEffect(() => {
-        setAreAccountCurrenciesDifferent(fromAccount.currency !== toAccount.currency);
-    }, [fromAccount, toAccount]);
+    const areAccountCurrenciesDifferent = useMemo(() => {
+        return fromAccount.currency !== toAccount.currency;
+    }, [fromAccount.currency, toAccount.currency]);
 
     useEffect(() => {
-        if (areAccountCurrenciesDifferent && !errors.fromAmount && !errors.toAmount) {
-            const value = Number(values.fromAmount);
-            setPercentage(Math.round((value * 100) / fromAccount.balance));
-        }
-    }, [areAccountCurrenciesDifferent, errors.fromAmount, errors.toAmount, fromAccount.balance, values.fromAmount]);
-
-    useEffect(() => {
-        if (errors.toAmount && !isFromInputActive) {
+        if (areAccountCurrenciesDifferent && errors.toAmount && !isFromInputField) {
             setFieldValue('fromAmount', '');
         }
-    }, [errors.toAmount, isFromInputActive, setFieldValue]);
+    }, [areAccountCurrenciesDifferent, errors.toAmount, isFromInputField, setFieldValue]);
 
     useEffect(() => {
-        if (errors.fromAmount && isFromInputActive) {
+        if (areAccountCurrenciesDifferent && errors.fromAmount && isFromInputField) {
             setFieldValue('toAmount', '');
         }
-    }, [errors.fromAmount, isFromInputActive, setFieldValue]);
+    }, [areAccountCurrenciesDifferent, errors.fromAmount, isFromInputField, setFieldValue]);
 
-    const handlePercentageChange = (per: number) => {
-        const computedAmount = ((Number(fromAccount.balance) * per) / 100).toFixed(fromAccount.fractionalDigits) ?? 0;
-        const convertedAmount = getConvertedAmount(computedAmount, fromAccount, toAccount);
+    const handlePercentageChange = useCallback(
+        (per: number) => {
+            const computedAmount =
+                ((Number(fromAccount.balance) * per) / 100).toFixed(fromAccount.fractionalDigits) ?? 0;
+            const convertedAmount = getConvertedAmount(computedAmount, fromAccount, toAccount);
 
-        setPercentage(per);
-
-        setValues(currentValues => ({
-            ...currentValues,
-            fromAmount: computedAmount,
-            toAmount: convertedAmount,
-        }));
-    };
+            setValues(currentValues => ({
+                ...currentValues,
+                fromAmount: computedAmount,
+                toAmount: convertedAmount,
+            }));
+        },
+        [fromAccount, setValues, toAccount]
+    );
 
     const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const convertedValue = getConvertedAmount(e.target.value, fromAccount, toAccount);
-
         setValues(currentValues => ({
             ...currentValues,
             fromAmount: e.target.value,
@@ -102,12 +93,16 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                     data-testid='dt_crypto_fiat_converter_percentage_selector'
                 >
                     <PercentageSelector
-                        amount={Number(values.fromAmount)}
+                        amount={!errors.fromAmount ? Number(values.fromAmount) : 0}
                         balance={Number(fromAccount.balance)}
                         onChangePercentage={handlePercentageChange}
                     />
-                    <Text color='less-prominent' size='xs'>
-                        {percentage}% of available balance ({fromAccount.displayBalance})
+                    <Text as='div' color='less-prominent' size='xs'>
+                        {`${
+                            fromAccount.balance && Number(values.fromAmount) && !errors.fromAmount
+                                ? Math.round((Number(values.fromAmount) * 100) / fromAccount.balance)
+                                : 0
+                        }% of available balance (${fromAccount.displayBalance})`}
                     </Text>
                 </div>
             )}
@@ -124,7 +119,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                             message={errors.fromAmount}
                             onChange={handleFromAmountChange}
                             onFocus={() => {
-                                setIsFromInputActive(true);
+                                setIsFromInputField(true);
                             }}
                             type='text'
                         />
@@ -135,7 +130,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                         <div className={styles['arrow-container']} data-testid='dt_crypto_fiat_converter_arrow_icon'>
                             <StandaloneArrowDownBoldIcon
                                 className={clsx(styles['arrow-icon'], {
-                                    [styles['arrow-icon--rtl']]: isFromInputActive,
+                                    [styles['arrow-icon--rtl']]: isFromInputField,
                                 })}
                                 iconSize={isMobile ? 'sm' : 'md'}
                             />
@@ -152,7 +147,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                                     message={errors.toAmount}
                                     onChange={handleToAmountChange}
                                     onFocus={() => {
-                                        setIsFromInputActive(false);
+                                        setIsFromInputField(false);
                                     }}
                                     type='text'
                                 />

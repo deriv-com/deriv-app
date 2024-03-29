@@ -1,25 +1,10 @@
 import { GetSettings, ProfitTable, ResidenceList, Statement } from '@deriv/api-types';
-import {
-    getContractTypeFeatureFlag,
-    getUnsupportedContracts,
-    STATUS_CODES,
-    IDV_ERROR_STATUS,
-    ONFIDO_ERROR_STATUS,
-} from '../constants';
+import { getContractTypeFeatureFlag, STATUS_CODES, IDV_ERROR_STATUS, ONFIDO_ERROR_STATUS } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
 import { LocalStore } from '../storage';
 import { extractInfoFromShortcode, isHighLow } from '../shortcode';
-
-type TIsUnSupportedContract = {
-    contract_type?: string;
-    is_forward_starting?: 0 | 1;
-};
-
-const isUnSupportedContract = (portfolio_pos: TIsUnSupportedContract) =>
-    !!getUnsupportedContracts()[portfolio_pos.contract_type as keyof typeof getUnsupportedContracts] || // check unsupported contract type
-    !!portfolio_pos.is_forward_starting; // for forward start contracts
 
 export const filterDisabledPositions = (
     position:
@@ -58,7 +43,6 @@ export const formatPortfolioPosition = (
         purchase,
         reference: Number(transaction_id),
         type: portfolio_pos.contract_type,
-        is_unsupported: isUnSupportedContract(portfolio_pos),
         contract_update: portfolio_pos.limit_order,
     };
 };

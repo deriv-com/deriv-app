@@ -3,6 +3,7 @@ import { getAllowedLanguages } from '@deriv/translations';
 const languages = {
     EN: 'English',
     ES: 'Español',
+    BN: 'বাংলা',
     DE: 'Deutsch',
     FR: 'Français',
     ID: 'Indonesian',

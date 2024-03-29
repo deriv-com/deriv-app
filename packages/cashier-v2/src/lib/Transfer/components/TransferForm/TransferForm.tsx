@@ -6,7 +6,7 @@ import { getCryptoFiatConverterValidationSchema } from '../../../../components';
 import type { TCurrency } from '../../../../types';
 import { useTransfer } from '../../provider';
 import { TTransferFormikContext } from '../../types';
-import { TransferCryptoFiatAmountConverter } from './components';
+import { TransferAccountSelection, TransferCryptoFiatAmountConverter } from './components';
 import styles from './TransferForm.module.scss';
 
 const TransferForm = () => {
@@ -74,6 +74,7 @@ const TransferForm = () => {
                         <Text className={styles.title} weight='bold'>
                             Transfer between your accounts in Deriv
                         </Text>
+                        <TransferAccountSelection />
                         <TransferCryptoFiatAmountConverter />
                         <div className={styles['button-group']}>
                             <Button

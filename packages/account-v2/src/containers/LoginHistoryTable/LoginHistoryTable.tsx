@@ -13,7 +13,7 @@ const header = {
     datetime: 'Date and Time',
     ipAddress: 'IP Address',
     status: 'Status',
-};
+} as const;
 
 const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as const;
 

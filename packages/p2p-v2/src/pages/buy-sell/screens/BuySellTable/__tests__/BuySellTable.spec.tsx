@@ -1,6 +1,7 @@
 import React from 'react';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import BuySellTable from '../BuySellTable';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -8,6 +9,8 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
         <AuthProvider>{children}</AuthProvider>
     </APIProvider>
 );
+
+const mockPush = jest.fn();
 
 let mockAdvertiserListData = {
     data: [],
@@ -19,6 +22,13 @@ let mockAdvertiserListData = {
 jest.mock('use-query-params', () => ({
     ...jest.requireActual('use-query-params'),
     useQueryParams: jest.fn().mockReturnValue([{}, jest.fn()]),
+}));
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockPush,
+    }),
 }));
 
 jest.mock('@deriv/api-v2', () => ({
@@ -107,5 +117,14 @@ describe('<BuySellTable.spec />', () => {
             expect(screen.getByText('Bank transfer')).toBeInTheDocument();
             expect(screen.getByRole('button', { name: 'Buy USD' })).toBeInTheDocument();
         });
+    });
+
+    it('should call history.push when clicking on the table row', () => {
+        render(<BuySellTable />, { wrapper });
+
+        const usernameText = screen.getByText('John Doe');
+        userEvent.click(usernameText);
+
+        expect(mockPush).toHaveBeenCalledWith('/cashier/p2p-v2/advertiser/1');
     });
 });

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCtraderAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCtraderAccountsList } from '@deriv/api-v2';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -15,32 +15,40 @@ type TCTraderSuccessModal = {
 
 const CTraderSuccessModal = ({ isDemo, walletCurrencyType }: TCTraderSuccessModal) => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
+    const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
     const { hide } = useModal();
 
     const renderButtons = useCallback(
-        () => (
-            <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
-                    Maybe later
-                </WalletButton>
-                <WalletButton
-                    onClick={() => {
-                        hide();
-                        history.push('/wallets/cashier/transfer');
-                    }}
-                    size='lg'
-                >
-                    Transfer funds
-                </WalletButton>
-            </WalletButtonGroup>
-        ),
-        [hide, history]
+        () =>
+            isDemo ? (
+                <div className='wallets-success-btn'>
+                    <WalletButton isFullWidth onClick={hide} size='lg'>
+                        OK
+                    </WalletButton>
+                </div>
+            ) : (
+                <WalletButtonGroup isFlex isFullWidth>
+                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                        Maybe later
+                    </WalletButton>
+                    <WalletButton
+                        onClick={() => {
+                            hide();
+                            history.push('/wallets/cashier/transfer');
+                        }}
+                        size='lg'
+                    >
+                        Transfer funds
+                    </WalletButton>
+                </WalletButtonGroup>
+            ),
+        [hide, history, isDemo]
     );
 
     const description = isDemo
-        ? `Transfer virtual funds from your Demo Wallet to your ${PlatformDetails.ctrader.title} Demo account to practice trading.`
+        ? `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`
         : `Transfer funds from your ${walletCurrencyType} Wallet to your ${PlatformDetails.ctrader.title} account to start trading.`;
 
     if (isMobile) {

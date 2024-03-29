@@ -108,7 +108,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             : PlatformDetails[platform].icon}
                         <div className='wallets-mt5-trade-screen__label'>
                             <div className='wallets-mt5-trade-screen__title'>
-                                <WalletText lineHeight='3xs' size='sm'>
+                                <WalletText lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
                                     {platform === mt5Platform
                                         ? MarketTypeDetails[marketType ?? 'all'].title
                                         : PlatformDetails[platform].title}{' '}
@@ -117,7 +117,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
                             </div>
                             <WalletText color='less-prominent' size='xs'>
-                                {loginId}
+                                {platform !== ctraderPlatform && loginId}
                             </WalletText>
                         </div>
                     </div>
@@ -155,7 +155,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
                 <div className='wallets-mt5-trade-screen__details-maintainance'>
                     <ImportantIcon />
-                    <WalletText color='less-prominent' size='2xs'>
+                    <WalletText color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
                         {serviceMaintenanceMessages[platform || mt5Platform]}
                     </WalletText>
                 </div>

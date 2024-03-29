@@ -9,7 +9,7 @@ import { CFDSuccess } from '../../screens';
 import { CTraderSuccessModalButtons } from './components';
 
 type TCTraderSuccessModal = {
-    displayBalance: string;
+    displayBalance?: string;
     isDemo: boolean;
     walletCurrencyType: THooks.WalletAccountsList['wallet_currency_type'];
 };

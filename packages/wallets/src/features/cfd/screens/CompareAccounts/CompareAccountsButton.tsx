@@ -48,7 +48,6 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
     const { data: activeWallet } = useActiveWalletAccount();
 
     const {
-        display_balance: displayBalance,
         is_crypto: isCrypto,
         is_virtual: isDemo = false,
         wallet_currency_type: walletCurrencyType,
@@ -99,13 +98,7 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
 
     useEffect(() => {
         if (isAccountCreated) {
-            show(
-                <CTraderSuccessModal
-                    displayBalance={displayBalance ?? '10,000.00 USD'}
-                    isDemo={isDemo}
-                    walletCurrencyType={walletCurrencyType ?? 'USD'}
-                />
-            );
+            show(<CTraderSuccessModal isDemo={isDemo} walletCurrencyType={walletCurrencyType ?? 'USD'} />);
         }
         if (createAccountError) {
             show(

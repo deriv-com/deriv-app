@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 import { CloseHeader } from '@/components';
 import { Advertiser, BuySell, MyAds, MyProfile, Orders } from '@/pages';
@@ -28,6 +28,7 @@ const pathToTitleMapper = Object.fromEntries(tabRoutesConfiguration.map(route =>
 
 const AppContent = () => {
     const history = useHistory();
+    const location = useLocation();
     const { data: activeAccountData, isLoading } = useActiveAccount();
     const [activeTab, setActiveTab] = useState(() => pathToTitleMapper[getCurrentRoute() || DEFAULT_TAB]);
     const { subscribe } = p2p.settings.useGetSettings();
@@ -35,6 +36,11 @@ const AppContent = () => {
     useEffect(() => {
         if (activeAccountData) subscribe();
     }, [activeAccountData, subscribe]);
+
+    useEffect(() => {
+        const endPath = getCurrentRoute();
+        if (endPath) setActiveTab(pathToTitleMapper[endPath]);
+    }, [location]);
 
     useEventListener('switchTab', event => {
         setActiveTab(pathToTitleMapper[event.detail.tab]);

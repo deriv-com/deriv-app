@@ -74,7 +74,7 @@ jobs:
         
     - name: Leave comment
       if: always()
-      uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
+      uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
       with:
         header: Smoke tests status update
         number: ${{ github.event.issue.number }}

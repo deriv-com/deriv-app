@@ -12,7 +12,9 @@ export type TRealAccountCreationContext = {
     reset: VoidFunction;
     setIsSuccessModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setIsWizardOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setTotalSteps: React.Dispatch<React.SetStateAction<number>>;
     state: TState;
+    totalSteps: number;
 };
 
 export type TState = {

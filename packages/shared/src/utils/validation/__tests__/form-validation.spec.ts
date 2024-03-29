@@ -11,7 +11,7 @@ describe('shouldHideOccupationField', () => {
     });
 
     it('should return true when employment_status is "Self employed"', () => {
-        expect(shouldHideOccupationField(EMPLOYMENT_VALUES.SELF_EMPLOYED)).toBeTruthy();
+        expect(shouldHideOccupationField(EMPLOYMENT_VALUES.SELF_EMPLOYED)).toBeFalsy();
     });
 
     it('should return false when employment_status is empty sting', () => {

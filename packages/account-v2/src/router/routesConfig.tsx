@@ -1,6 +1,6 @@
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
-import { POI } from '../modules';
+import { ProofOfIdentity } from '../modules';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
 import { AccountClosure, ConnectedApps } from '../pages';
 import { LoginHistory } from '../pages/LoginHistory';
@@ -28,7 +28,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.FinancialAssessment,
     },
     {
-        routeComponent: POI,
+        routeComponent: ProofOfIdentity,
         routeName: 'Proof of identity',
         routePath: ACCOUNT_V2_ROUTES.ProofOfIdentity,
     },

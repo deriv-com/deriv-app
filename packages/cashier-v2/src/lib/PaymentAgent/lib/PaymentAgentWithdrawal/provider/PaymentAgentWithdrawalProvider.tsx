@@ -24,23 +24,24 @@ type TGetPaymentAgentWithdrawalValidationSchema = (
     minWithdrawal?: THooks.PaymentAgentList[number]['min_withdrawal']
 ) => ReturnType<typeof getPaymentAgentListedWithdrawalValidationSchema>;
 
+type TWithdrawalStatus = 'idle' | 'successful' | 'try_successful';
+
 type TPaymentAgentWithdrawalContext = {
     activeAccount?: THooks.ActiveAccount;
     getPaymentAgentWithdrawalValidationSchema: TGetPaymentAgentWithdrawalValidationSchema;
     isLoading: boolean;
-    isTryWithdrawalSuccessful: boolean;
     isUnlistedWithdrawal: boolean;
     isWithdrawalRequestSubmitting: boolean;
-    isWithdrawalSuccessful: boolean;
     requestPaymentAgentWithdrawal: (params: TRequestPaymentAgentWithdrawalParams) => void;
     requestTryPaymentAgentWithdrawal: (params: TRequestTryPaymentAgentWithdrawalParams) => void;
     resetPaymentAgentWithdrawal: VoidFunction;
-    setIsTryWithdrawalSuccessful: React.Dispatch<React.SetStateAction<boolean>>;
     setIsUnlistedWithdrawal: React.Dispatch<React.SetStateAction<boolean>>;
     setVerificationCode: React.Dispatch<React.SetStateAction<string>>;
+    setWithdrawalStatus: React.Dispatch<React.SetStateAction<TWithdrawalStatus>>;
     verificationCode: string;
     withdrawalConfirm: TConfirm;
     withdrawalReceipt: TReceipt;
+    withdrawalStatus: TWithdrawalStatus;
 };
 
 const PaymentAgentWithdrawalContext = createContext<TPaymentAgentWithdrawalContext | null>(null);
@@ -79,9 +80,8 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
 }) => {
     const { data: activeAccount, isLoading } = useActiveAccount();
     const { isLoading: isWithdrawalRequestSubmitting, mutateAsync } = usePaymentAgentWithdrawal();
+    const [withdrawalStatus, setWithdrawalStatus] = useState<TWithdrawalStatus>('idle');
     const [isUnlistedWithdrawal, setIsUnlistedWithdrawal] = useState(false);
-    const [isTryWithdrawalSuccessful, setIsTryWithdrawalSuccessful] = useState(false);
-    const [isWithdrawalSuccessful, setIsWithdrawalSuccessful] = useState(false);
     const currency = activeAccount?.currency as TCurrency;
 
     const [withdrawalConfirm, setWithdrawalConfirm] = useState(initialWithdrawalConfirmValues);
@@ -126,7 +126,7 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
                         paymentAgentID: paymentAgentLoginid,
                         paymentAgentName,
                     });
-                    setIsTryWithdrawalSuccessful(true);
+                    setWithdrawalStatus('try_successful');
                 }
             });
         },
@@ -159,8 +159,7 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
                         paymentAgentPhoneNumbers,
                         paymentAgentUrls,
                     });
-                    setIsTryWithdrawalSuccessful(false);
-                    setIsWithdrawalSuccessful(true);
+                    setWithdrawalStatus('successful');
                 }
             });
         },
@@ -170,7 +169,7 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
     const resetPaymentAgentWithdrawal = useCallback(() => {
         setWithdrawalConfirm(initialWithdrawalConfirmValues);
         setWithdrawalReceipt(initialWithdrawalReceiptValues);
-        setIsWithdrawalSuccessful(false);
+        setWithdrawalStatus('idle');
         setIsUnlistedWithdrawal(false);
     }, []);
 
@@ -180,19 +179,18 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
                 activeAccount,
                 getPaymentAgentWithdrawalValidationSchema,
                 isLoading,
-                isTryWithdrawalSuccessful,
                 isUnlistedWithdrawal,
                 isWithdrawalRequestSubmitting,
-                isWithdrawalSuccessful,
                 requestPaymentAgentWithdrawal,
                 requestTryPaymentAgentWithdrawal,
                 resetPaymentAgentWithdrawal,
-                setIsTryWithdrawalSuccessful,
                 setIsUnlistedWithdrawal,
                 setVerificationCode,
+                setWithdrawalStatus,
                 verificationCode,
                 withdrawalConfirm,
                 withdrawalReceipt,
+                withdrawalStatus,
             }}
         >
             {children}

@@ -14,8 +14,7 @@ import styles from './PaymentAgentWithdrawal.module.scss';
 
 const PaymentAgentWithdrawal = () => {
     const { isPaymentAgentListLoading } = usePaymentAgentContext();
-    const { isTryWithdrawalSuccessful, isUnlistedWithdrawal, isWithdrawalSuccessful, setIsUnlistedWithdrawal } =
-        usePaymentAgentWithdrawalContext();
+    const { isUnlistedWithdrawal, setIsUnlistedWithdrawal, withdrawalStatus } = usePaymentAgentWithdrawalContext();
 
     const showUnlistedWithdrawalForm = useCallback(
         (e?: React.KeyboardEvent<HTMLElement> | React.MouseEvent<HTMLElement>) => {
@@ -26,9 +25,9 @@ const PaymentAgentWithdrawal = () => {
 
     if (isPaymentAgentListLoading) return <Loader />;
 
-    if (isTryWithdrawalSuccessful) return <PaymentAgentWithdrawalConfirm />;
+    if (withdrawalStatus === 'try_successful') return <PaymentAgentWithdrawalConfirm />;
 
-    if (isWithdrawalSuccessful) return <PaymentAgentWithdrawalReceipt />;
+    if (withdrawalStatus === 'successful') return <PaymentAgentWithdrawalReceipt />;
 
     if (isUnlistedWithdrawal) return <PaymentAgentUnlistedWithdrawalForm />;
 

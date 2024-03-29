@@ -4,7 +4,13 @@ import {
     AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5SwfIcon,
+    DerivProductDerivXBrandDarkWordmarkIcon,
+    LabelPairedLinuxXlIcon,
+    LabelPairedMacosXlIcon,
+    LabelPairedWindowsXlIcon,
+    PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
     PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
+    PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import i18n from '../../translations/i18n';
 import { TPlatforms } from '../../types';
@@ -32,7 +38,7 @@ export const MarketTypeDetails = {
 
 export const PlatformDetails = {
     ctrader: {
-        icon: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon />,
+        icon: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
         link: 'https://onelink.to/hyqpv7',
         platform: i18n.t('ctrader') as TPlatforms.OtherAccounts,
         title: i18n.t('Deriv cTrader'),
@@ -61,6 +67,52 @@ export const companyNamesAndUrls = {
     },
     svg: { name: i18n.t('Deriv (SVG) LLC'), shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
     vanuatu: { name: i18n.t('Deriv (V) Ltd'), shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
+} as const;
+
+export const AppToContentMapper = {
+    ctrader: {
+        icon: <LabelPairedWindowsXlIcon />,
+        link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
+        text: i18n.t('Download'),
+        title: i18n.t('CTrader Windows App'),
+    },
+    linux: {
+        icon: <LabelPairedLinuxXlIcon />,
+        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
+        text: i18n.t('Learn more'),
+        title: i18n.t('MetaTrader 5 Linux app'),
+    },
+    macos: {
+        icon: <LabelPairedMacosXlIcon />,
+        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
+        text: i18n.t('Download'),
+        title: i18n.t('MetaTrader 5 MacOS app'),
+    },
+    web: {
+        icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
+        link: '',
+        text: i18n.t('Open'),
+        title: i18n.t('MetaTrader 5 web'),
+    },
+    windows: {
+        icon: <LabelPairedWindowsXlIcon />,
+        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
+        text: i18n.t('Download'),
+        title: i18n.t('MetaTrader 5 Windows app'),
+    },
+} as const;
+
+export const PlatformToLabelIconMapper = {
+    ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
+    dxtrade: <DerivProductDerivXBrandDarkWordmarkIcon height={10} width={35} />,
+} as const;
+
+export const serviceMaintenanceMessages = {
+    ctrader:
+        'Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.',
+    dxtrade:
+        'Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.',
+    mt5: 'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.',
 } as const;
 
 export const CFD_PLATFORMS = {

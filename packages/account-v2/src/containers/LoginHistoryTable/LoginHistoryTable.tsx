@@ -1,7 +1,8 @@
 import React from 'react';
 import { LoginHistory } from '@deriv/api-types';
 import { Table } from '@deriv-com/ui';
-import { formattedLoginHistoryData } from '../../utils/formattedLoginHistoryData';
+import { formattedLoginHistoryData } from '../../utils';
+import { LoginHistoryRow } from './LoginHistoryRow';
 
 type TLoginHistoryProps = {
     loginHistory: LoginHistory;
@@ -33,20 +34,11 @@ export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
                 columns={header}
                 data={formattedLoginHistory}
                 isFetching={false}
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 loadMoreFunction={() => {
-                    //[TODO]:
+                    //[TODO]: Add load more function
                 }}
                 renderHeader={header => <span>{header}</span>}
-                rowRender={data => (
-                    <div className='grid grid-flow-col text-default'>
-                        <span>{data.date}</span>
-                        <span>{data.action}</span>
-                        <span>{data.browser}</span>
-                        <span>{data.ip}</span>
-                        <span>{data.status}</span>
-                    </div>
-                )}
+                rowRender={LoginHistoryRow}
             />
         </div>
     );

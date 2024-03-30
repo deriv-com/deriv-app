@@ -4,10 +4,20 @@ import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import EffortlessLoginModal from '../effortless-login-modal';
 
 describe('EffortlessLoginModal', () => {
-    let modal_root_el: HTMLDivElement;
+    let modal_root_el: HTMLDivElement, mock_store: ReturnType<typeof mockStore>;
+
+    beforeEach(() => {
+        mock_store = mockStore({
+            client: {
+                setShouldShowEffortlessLoginModal: jest.fn(),
+            },
+        });
+    });
+
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'effortless_modal_root');
@@ -65,8 +75,22 @@ describe('EffortlessLoginModal', () => {
         expect(screen.getByText(tips_title)).toBeInTheDocument();
     };
 
+    const componentRender = () => {
+        const history = createBrowserHistory();
+
+        render(
+            <StoreProvider store={mock_store}>
+                <Router history={history}>
+                    <EffortlessLoginModal />
+                </Router>
+            </StoreProvider>
+        );
+
+        return { history_object: history };
+    };
+
     it('should render EffortlessLoginModal and show "learn more" page', () => {
-        render(<EffortlessLoginModal />);
+        componentRender();
 
         mainScreenCheck();
         const learn_more_link = screen.getByText(/here/i);
@@ -81,30 +105,19 @@ describe('EffortlessLoginModal', () => {
     });
 
     it('should leave EffortlessLoginModal', () => {
-        const history = createBrowserHistory();
-
-        render(
-            <Router history={history}>
-                <EffortlessLoginModal />
-            </Router>
-        );
+        const { history_object } = componentRender();
 
         mainScreenCheck();
         const maybe_later_link = screen.getByText(/maybe later/i);
         expect(maybe_later_link).toBeInTheDocument();
         userEvent.click(maybe_later_link);
-        expect(history.location.pathname).toBe(routes.traders_hub);
+        expect(history_object.location.pathname).toBe(routes.traders_hub);
+        expect(mock_store.client.setShouldShowEffortlessLoginModal).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalled();
     });
 
     it('should leave EffortlessLoginModal from "learn more" screen', () => {
-        const history = createBrowserHistory();
-
-        render(
-            <Router history={history}>
-                <EffortlessLoginModal />
-            </Router>
-        );
+        const { history_object } = componentRender();
 
         mainScreenCheck();
         const learn_more_link = screen.getByText(/here/i);
@@ -114,14 +127,15 @@ describe('EffortlessLoginModal', () => {
         const get_started_button = screen.getByRole('button', { name: /get started/i });
         expect(get_started_button).toBeInTheDocument();
         userEvent.click(get_started_button);
-        expect(history.location.pathname).toBe(routes.passkeys);
+        expect(history_object.location.pathname).toBe(routes.passkeys);
+        expect(mock_store.client.setShouldShowEffortlessLoginModal).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalled();
     });
 
     it('should not render EffortlessLoginModal if there is no portal', () => {
         modal_root_el.setAttribute('id', '');
 
-        render(<EffortlessLoginModal />);
+        componentRender();
 
         expect(screen.queryByText(title)).not.toBeInTheDocument();
         expect(screen.queryByText(learn_more)).not.toBeInTheDocument();

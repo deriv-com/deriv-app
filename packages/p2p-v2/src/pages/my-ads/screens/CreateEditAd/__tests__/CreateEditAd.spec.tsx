@@ -18,6 +18,14 @@ jest.mock('react-hook-form', () => ({
 
 jest.mock('@deriv/api-v2', () => ({
     p2p: {
+        advert: {
+            useCreate: () => ({
+                error: undefined,
+                isError: false,
+                isSuccess: false,
+                mutate: jest.fn(),
+            }),
+        },
         settings: {
             useGetSettings: () => ({
                 data: {

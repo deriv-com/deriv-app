@@ -1,11 +1,8 @@
 import React from 'react';
-import { AdConditionsModal } from '@/components/Modals';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AdConditionContentHeader from '../AdConditionContentHeader';
-
-// const mockAdConditionsModal = AdConditionsModal as jest.Mock;
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

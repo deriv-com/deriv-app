@@ -50,8 +50,8 @@ const AdWizard = ({ steps, ...rest }: TAdWizardNav) => {
             }
             onStepChange={step => setCurrentStep(step.activeStep - 1)}
         >
-            {/* <AdTypeSection {...rest} /> */}
-            {/* <AdPaymentDetailsSection {...rest} /> */}
+            <AdTypeSection {...rest} />
+            <AdPaymentDetailsSection {...rest} />
             <AdConditionsSection {...rest} />
         </Wizard>
     );

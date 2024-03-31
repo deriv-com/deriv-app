@@ -12,7 +12,6 @@ type TPreferredCountriesModalProps = {
     isModalOpen: boolean;
     onClickApply: () => void;
     onRequestClose: () => void;
-    onSelect: (value: string) => void;
     selectedCountries: string[];
     setSelectedCountries: (value: string[]) => void;
 };

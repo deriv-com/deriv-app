@@ -7,8 +7,6 @@ import { Text, useDevice } from '@deriv-com/ui';
 import { AdConditionContentHeader } from '../AdConditionContentHeader';
 
 type TPreferredCountriesSelectorProps = {
-    onClick: (value: number) => void;
-    selectedValues: string[];
     type: typeof AD_CONDITION_TYPES[keyof typeof AD_CONDITION_TYPES];
 };
 
@@ -28,20 +26,12 @@ const PreferredCountriesSelector = ({ type }: TPreferredCountriesSelectorProps) 
             : dummyCountries.map(country => country.value)
     );
 
-    const onSelectValues = (value: string) => {
-        if (selectedValues.includes(value)) {
-            setSelectedValues(selectedValues.filter(val => val !== value));
-        } else {
-            setSelectedValues([...selectedValues, value]);
-        }
-    };
-
     const getSelectedCountriesText = () => {
         const selectedCountries = getValues('preferred-countries');
         if (selectedCountries?.length === dummyCountries.length) {
             return 'All countries';
         }
-        return selectedCountries?.map(value => DUMMY_COUNTRIES[value]?.country_name).join(', ');
+        return selectedCountries?.map((value: string) => DUMMY_COUNTRIES[value]?.country_name).join(', ');
     };
 
     return (
@@ -66,10 +56,9 @@ const PreferredCountriesSelector = ({ type }: TPreferredCountriesSelectorProps) 
                     isModalOpen={isModalOpen}
                     onClickApply={() => {
                         setValue('preferred-countries', selectedValues);
-                        () => setIsModalOpen(false);
+                        setIsModalOpen(false);
                     }}
                     onRequestClose={() => setIsModalOpen(false)}
-                    onSelect={onSelectValues}
                     selectedCountries={selectedValues}
                     setSelectedCountries={setSelectedValues}
                 />

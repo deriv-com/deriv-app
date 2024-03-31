@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import AdConditionBlockSelector from '../AdConditionBlockSelector';
 
 jest.mock('@deriv-com/ui', () => ({
@@ -10,7 +11,7 @@ jest.mock('@deriv-com/ui', () => ({
 jest.mock('@/constants', () => ({
     ...jest.requireActual('@/constants'),
     AD_CONDITION_CONTENT: {
-        type: {
+        completionRates: {
             description: 'description',
             options: [
                 {
@@ -24,13 +25,13 @@ jest.mock('@/constants', () => ({
 }));
 describe('AdConditionBlockSelector', () => {
     it('should render the component as expected', () => {
-        render(<AdConditionBlockSelector onClick={jest.fn()} type='type' />);
+        render(<AdConditionBlockSelector onClick={jest.fn()} type='completionRates' />);
         expect(screen.getByText('title')).toBeInTheDocument();
     });
     it('should handle the onClick for AdConditionBlockElement', () => {
         const mockOnClick = jest.fn();
-        render(<AdConditionBlockSelector onClick={mockOnClick} type='type' />);
-        screen.getByRole('button', { name: 'label' }).click();
+        render(<AdConditionBlockSelector onClick={mockOnClick} type='completionRates' />);
+        userEvent.click(screen.getByText('label'));
         expect(mockOnClick).toHaveBeenCalledWith(1);
     });
 });

@@ -66,7 +66,7 @@ const AdConditionsSection = ({ currency, localCurrency, rateType, ...props }: TA
                 type={AD_CONDITION_TYPES.COMPLETION_RATE}
             />
             <PreferredCountriesSelector type={AD_CONDITION_TYPES.PREFERRED_COUNTRIES} />
-            <AdFormController {...props} />
+            <AdFormController {...props} isNextButtonDisabled={!!errors} />
         </div>
     );
 };

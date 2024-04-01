@@ -3,6 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { VALID_SYMBOLS_PATTERN } from '@/constants';
 import { getTextFieldError } from '@/utils';
 import { TextArea } from '@deriv-com/ui';
+import './AdFormTextArea.scss';
 
 type TAdFormTextAreaProps = {
     field: string;
@@ -18,7 +19,7 @@ const AdFormTextArea = ({ field, hint = '', label, name, required = false }: TAd
             control={control}
             name={name}
             render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                <div className='px-[2.4rem] mb-[3.5rem] pt-[1.8rem]'>
+                <div className='px-[1.6rem] mb-[2.4rem] lg:px-[2.4rem] p2p-v2-ad-form-textarea'>
                     <TextArea
                         hint={error ? error.message : hint}
                         isInvalid={!!error}

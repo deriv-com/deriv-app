@@ -1,44 +1,44 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { LoginHistory } from '@deriv/api-types';
 import { Table } from '@deriv-com/ui';
-import { formattedLoginHistoryData } from '../../utils/formattedLoginHistoryData';
+import { formattedLoginHistoryData } from '../../utils';
+import { LoginHistoryRow } from './LoginHistoryRow';
 
 type TLoginHistoryProps = {
     loginHistory: LoginHistory;
 };
 
-const headers = {
-    action: 'Action',
-    browser: 'Browser',
-    datetime: 'Date and Time',
-    ipAddress: 'IP Address',
-    status: 'Status',
-};
-
-const columnOrder = ['datetime', 'action', 'browser', 'ipAddress', 'status'] as const;
+const header = [
+    {
+        header: 'Date and Time',
+    },
+    {
+        header: 'Action',
+    },
+    {
+        header: 'Browser',
+    },
+    {
+        header: 'IP Address',
+    },
+    {
+        header: 'Status',
+    },
+];
 
 export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
-    const formattedLoginHistory = useMemo(() => formattedLoginHistoryData(loginHistory), [loginHistory]);
-    const columns = columnOrder.map(key => ({ header: headers[key] }));
-
+    const formattedLoginHistory = formattedLoginHistoryData(loginHistory);
     return (
         <div className='flex flex-col'>
             <Table
-                columns={columns}
+                columns={header}
                 data={formattedLoginHistory}
                 isFetching={false}
-                //[TODO]: eslint-disable-next-line @typescript-eslint/no-empty-function
-                loadMoreFunction={() => {}}
+                loadMoreFunction={() => {
+                    //[TODO]: Add load more function
+                }}
                 renderHeader={header => <span>{header}</span>}
-                rowRender={data => (
-                    <div className='grid grid-flow-col text-default'>
-                        <span>{data.date}</span>
-                        <span>{data.action}</span>
-                        <span>{data.browser}</span>
-                        <span>{data.ip}</span>
-                        <span>{data.status}</span>
-                    </div>
-                )}
+                rowRender={LoginHistoryRow}
             />
         </div>
     );

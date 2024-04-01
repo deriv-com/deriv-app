@@ -30,7 +30,7 @@
         "ua-parser-js": "^1.0.37",
         "usehooks-ts": "^2.7.0",
         "yup": "^0.32.11",
-        "dayjs": "^1.8.15"
+        "dayjs": "^1.11.10"
     },
     "devDependencies": {
         "@testing-library/react": "^12.0.0",

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useMap } from 'usehooks-ts';
-import useQueryString from './useQueryString';
+import { useEventListener, useMap } from 'usehooks-ts';
 import useDevice from './useDevice';
+import useQueryString from './useQueryString';
 
 type TUseModalManagerConfig = {
     shouldReinitializeModals?: boolean;
@@ -10,6 +10,8 @@ type TUseModalManagerConfig = {
 type TShowModalOptions = {
     shouldStackModals?: boolean;
 };
+
+const MODAL_QUERY_SEPARATOR = ',';
 
 /**
  * Hook to manage states for showing/hiding multiple modals
@@ -34,28 +36,41 @@ export default function useModalManager(config?: TUseModalManagerConfig) {
 
     const [isModalOpenScopes, actions] = useMap();
 
-    useEffect(() => {
+    const syncModalParams = () => {
+        if (!queryString.modal) actions.setAll([]);
+
         if (config?.shouldReinitializeModals !== undefined && config.shouldReinitializeModals === false) {
             deleteQueryString('modal');
         } else {
             // sync modal query string in the URL with the initial modal open scopes
-            const modalHash = queryString.get('modal');
+            const modalHash = queryString.modal;
             if (modalHash) {
-                const modalKeys = modalHash.split('+');
+                const modalKeys = modalHash.split(MODAL_QUERY_SEPARATOR);
                 const currentModal = modalKeys.slice(-1)[0];
+                actions.setAll([]);
                 modalKeys.forEach(modalKey => {
                     actions.set(modalKey, isMobile);
                 });
                 actions.set(currentModal, true);
             }
         }
+    };
+
+    useEffect(() => {
+        // only sync the modal open states with the URL params when initial mount...
+        syncModalParams();
     }, []);
 
+    // ...or when the user clicks the back button
+    useEventListener('popstate', () => {
+        syncModalParams();
+    });
+
     const hideModal = () => {
-        const modalHash = queryString.get('modal');
+        const modalHash = queryString.modal;
 
         if (modalHash) {
-            const modalIds = modalHash.split('+');
+            const modalIds = modalHash.split(MODAL_QUERY_SEPARATOR);
             const currentModalId = modalIds.pop();
             const previousModalId = modalIds.slice(-1)[0];
             if (previousModalId) {
@@ -68,27 +83,27 @@ export default function useModalManager(config?: TUseModalManagerConfig) {
                 deleteQueryString('modal');
             } else {
                 setQueryString({
-                    modal: modalIds.join('+'),
+                    modal: modalIds.join(MODAL_QUERY_SEPARATOR),
                 });
             }
         }
     };
 
     /**
-     * Keep the previous modal ids in the URL query strings separated by '+'
+     * Keep the previous modal ids in the URL query strings separated by ','
      * This way, when there is a new modal to be shown, we can track the previous modals from the query string based on the last 2 segments
      *
      * Example:
      * - ModalA is shown, URL becomes /...?modal=ModalA (current modal is ModalA, there is no previous modal)
-     * - ModalB is shown next, URL becomes /...?modal=ModalA+ModalB (current modal is ModalB, previous modal is ModalA)
-     * - ModalC is shown next, URL becomes /...?modal=ModalA+ModalB+ModalC (current modal is ModalC, previous modal is ModalB)
-     * - ModalC is closed, URL becomes becomes /...?modal=modalA+ModalB (current modal is ModalB, previous modal is ModalA)
+     * - ModalB is shown next, URL becomes /...?modal=ModalA,ModalB (current modal is ModalB, previous modal is ModalA)
+     * - ModalC is shown next, URL becomes /...?modal=ModalA,ModalB,ModalC (current modal is ModalC, previous modal is ModalB)
+     * - ModalC is closed, URL becomes becomes /...?modal=modalA,ModalB (current modal is ModalB, previous modal is ModalA)
      */
     const showModal = (modalId: string, options?: TShowModalOptions) => {
-        const modalHash = queryString.get('modal');
+        const modalHash = queryString.modal;
 
         if (modalHash) {
-            const modalIds = modalHash.split('+');
+            const modalIds = modalHash.split(MODAL_QUERY_SEPARATOR);
             const currentModalId = modalIds.slice(-1)[0];
             // set the previous modal open state to false if shouldStackModals is false, otherwise set it to true (default true for mobile)
             // set the new modal open state to true
@@ -97,7 +112,7 @@ export default function useModalManager(config?: TUseModalManagerConfig) {
             // push the state of the new modal to the hash
             modalIds.push(modalId);
             setQueryString({
-                modal: modalIds.join('+'),
+                modal: modalIds.join(MODAL_QUERY_SEPARATOR),
             });
         } else {
             actions.set(modalId, true);

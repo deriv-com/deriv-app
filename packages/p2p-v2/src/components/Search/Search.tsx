@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
-import { LabelPairedSearchMdRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedSearchMdRegularIcon, StandaloneCircleXmarkFillIcon } from '@deriv/quill-icons';
 import { Input } from '@deriv-com/ui';
 import './Search.scss';
 

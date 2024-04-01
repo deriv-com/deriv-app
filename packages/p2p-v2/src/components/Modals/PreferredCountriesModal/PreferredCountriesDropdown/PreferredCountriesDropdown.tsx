@@ -44,7 +44,7 @@ const PreferredCountriesDropdown = ({
                 />
             </div>
             <Divider className='w-full' color='#f2f3f4' />
-            <>
+            <div>
                 {searchResults?.length > 0 ? (
                     <div
                         className={clsx('p2p-v2-preferred-countries-dropdown__content', {
@@ -91,7 +91,7 @@ const PreferredCountriesDropdown = ({
                 ) : (
                     <NoSearchResults value={searchValue} />
                 )}
-            </>
+            </div>
         </div>
     );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { AdCreateEditErrorModal } from '@/components/Modals';
+import { AdCreateEditSuccessModal } from '@/components/Modals/AdCreateEditSuccessModal';
 import { DUMMY_COUNTRIES, MY_ADS_URL } from '@/constants';
 import { useFloatingRate } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
@@ -14,7 +15,8 @@ const STEPS = [
 ];
 
 const CreateEditAd = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const { rateType } = useFloatingRate();
     const { data: activeAccount } = useActiveAccount();
     const { data: p2pSettings } = p2p.settings.useGetSettings();
@@ -38,35 +40,46 @@ const CreateEditAd = () => {
         mode: 'all',
     });
 
+    const shouldNotShowArchiveMessageAgain = localStorage.getItem('should_not_show_auto_archive_message_again');
     const { getValues, handleSubmit } = methods;
     const onSubmit = () => {
         const payload = {
             amount: Number(getValues('amount')),
-            description: getValues('instructions'),
+            eligible_countries: getValues('preferred-countries'),
             max_order_amount: Number(getValues('max-order')),
             min_order_amount: Number(getValues('min-order')),
-            payment_method: getValues('payment-method'),
-            preferred_countries: getValues('preferred-countries'),
             rate: Number(getValues('rate-value')),
             type: getValues('ad-type') as 'buy' | 'sell',
         };
 
+        if (getValues('ad-type') === 'buy') {
+            payload.payment_method_names = getValues('payment-method');
+        } else {
+            payload.payment_method_ids = getValues('payment-method');
+        }
+        if (getValues('instructions')) {
+            payload.description = getValues('instructions');
+        }
         if (getValues('min-completion-rate')) {
             payload.min_completion_rate = Number(getValues('min-completion-rate'));
         }
         if (getValues('min-join-days')) {
             payload.min_join_days = Number(getValues('min-join-days'));
         }
-
         mutate(payload);
     };
 
     useEffect(() => {
         if (isSuccess) {
+            // TODO: Show success modal and other 2 visibility modals after modal manager implementation or update ad impelementation
             // Redirect to the ad list page
-            history.push(MY_ADS_URL);
+            if (shouldNotShowArchiveMessageAgain !== 'true') {
+                setIsSuccessModalOpen(true);
+            } else {
+                history.push(MY_ADS_URL);
+            }
         }
-    }, [isSuccess, history]);
+    }, [isSuccess, history, shouldNotShowArchiveMessageAgain]);
 
     if (isError) {
         setIsModalOpen(true);
@@ -86,9 +99,16 @@ const CreateEditAd = () => {
             </FormProvider>
             {isModalOpen && (
                 <AdCreateEditErrorModal
-                    errorCode={error?.error?.code}
+                    errorCode={'DuplicateAdvert'}
                     isModalOpen={isModalOpen}
                     onRequestClose={() => setIsModalOpen(false)}
+                />
+            )}
+            {isSuccessModalOpen && (
+                <AdCreateEditSuccessModal
+                    advertsArchivePeriod={orderPaymentPeriod}
+                    isModalOpen={isSuccessModalOpen}
+                    onRequestClose={() => setIsSuccessModalOpen(false)}
                 />
             )}
         </>

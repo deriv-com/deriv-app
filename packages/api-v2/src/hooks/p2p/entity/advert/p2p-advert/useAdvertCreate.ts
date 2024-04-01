@@ -26,6 +26,7 @@ const useAdvertCreate = () => {
         mutate: _mutate,
         ...rest
     } = useMutation('p2p_advert_create', {
+        retry: false,
         onSuccess: () => {
             invalidate('p2p_advert_list');
         },

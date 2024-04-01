@@ -15,7 +15,7 @@ const STEPS = [
 ];
 
 const CreateEditAd = () => {
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const { rateType } = useFloatingRate();
     const { data: activeAccount } = useActiveAccount();
@@ -99,7 +99,7 @@ const CreateEditAd = () => {
             </FormProvider>
             {isModalOpen && (
                 <AdCreateEditErrorModal
-                    errorCode={'DuplicateAdvert'}
+                    errorCode={error?.error?.code}
                     isModalOpen={isModalOpen}
                     onRequestClose={() => setIsModalOpen(false)}
                 />

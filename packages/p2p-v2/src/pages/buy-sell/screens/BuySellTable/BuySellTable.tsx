@@ -42,12 +42,6 @@ const BuySellTable = () => {
         });
     };
 
-    // useEffect(() => {
-    //     setQueryString({
-    //         tab: 'Buy',
-    //     });
-    // }, []);
-
     useEffect(() => {
         if (p2pSettingsData?.localCurrency) setSelectedCurrency(p2pSettingsData.localCurrency);
     }, [p2pSettingsData?.localCurrency]);

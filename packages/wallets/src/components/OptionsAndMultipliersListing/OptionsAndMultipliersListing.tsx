@@ -111,7 +111,7 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                             components={[
                                 <WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/' />,
                             ]}
-                            defaults='Buy and sell at a specific time for a specific price. <0>Learn more</0>'
+                            defaults='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
                         />
                     </WalletText>
                 </div>

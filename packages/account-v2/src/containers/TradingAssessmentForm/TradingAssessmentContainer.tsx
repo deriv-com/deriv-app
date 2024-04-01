@@ -3,14 +3,15 @@ import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Dropdown, Text } from '@deriv-com/ui';
 
 type TTradingAssessmentContainer = {
-    answerList: [{ text: string; value: string }];
+    answerList: { text: string; value: string }[];
+    key: React.Key;
     name: string;
     question: string;
 };
 
-export const TradingAssessmentContainer = ({ answerList, name, question }: TTradingAssessmentContainer) => {
+export const TradingAssessmentContainer = ({ answerList, key, name, question }: TTradingAssessmentContainer) => {
     return (
-        <div className='flex flex-col gap-16 py-10'>
+        <div className='flex flex-col gap-16' key={key}>
             <Text as='p' size='sm' weight='bold'>
                 {question}
             </Text>

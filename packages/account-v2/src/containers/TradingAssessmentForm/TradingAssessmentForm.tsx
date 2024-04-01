@@ -8,11 +8,28 @@ export const TradingAssessmentForm = () => {
     return (
         <div>
             <FormSubHeader>Trading assessment</FormSubHeader>
-            <TradingAssessmentContainer
-                answerList={[{ text: 'hello', value: 'hello' }]}
-                name='hello'
-                question='how are you?'
-            />
+            {tradingAssessmentQuestions.map(item => {
+                if (item.fieldType === 'radio') {
+                    return (
+                        <TradingAssessmentContainer
+                            answerList={item.answerOptions}
+                            key={item.formControl}
+                            name={item.formControl}
+                            question={item.questionText}
+                        />
+                    );
+                    // eslint-disable-next-line no-else-return
+                } else {
+                    return item?.questions?.map(question => (
+                        <TradingAssessmentContainer
+                            answerList={question.answerOptions}
+                            key={question.formControl}
+                            name={question.formControl}
+                            question={question.questionText}
+                        />
+                    ));
+                }
+            })}
         </div>
     );
 };

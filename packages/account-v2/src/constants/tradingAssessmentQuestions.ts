@@ -6,12 +6,12 @@ export const getTradingAssessmentQuestions = () => [
             { text: 'No', value: 'No' },
         ],
         fieldType: 'radio',
-        form_control: 'risk_tolerance',
+        formControl: 'risk_tolerance',
         questionText: 'Do you understand that you could potentially lose 100% of the money you use to trade?',
         section: 'risk_tolerance',
     },
     {
-        answer_options: [
+        answerOptions: [
             {
                 text: 'I have an academic degree, professional certification, and/or work experience related to financial services.',
                 value: 'I have an academic degree, professional certification, and/or work experience.',
@@ -33,15 +33,15 @@ export const getTradingAssessmentQuestions = () => [
                 value: 'I have no knowledge.',
             },
         ],
-        field_type: 'radio',
-        form_control: 'source_of_experience',
-        question_text: 'How much knowledge and experience do you have in relation to online trading?',
+        fieldType: 'radio',
+        formControl: 'source_of_experience',
+        questionText: 'How much knowledge and experience do you have in relation to online trading?',
         section: 'source_of_experience',
     },
     {
         questions: [
             {
-                answer_options: [
+                answerOptions: [
                     {
                         text: 'No experience',
                         value: 'No experience',
@@ -59,12 +59,12 @@ export const getTradingAssessmentQuestions = () => [
                         value: 'Over 3 years',
                     },
                 ],
-                field_type: 'dropdown',
-                form_control: 'cfd_experience',
-                question_text: 'How much experience do you have in CFD trading?',
+                fieldType: 'dropdown',
+                formControl: 'cfd_experience',
+                questionText: 'How much experience do you have in CFD trading?',
             },
             {
-                answer_options: [
+                answerOptions: [
                     {
                         text: 'None',
                         value: 'No transactions in the past 12 months',
@@ -86,12 +86,12 @@ export const getTradingAssessmentQuestions = () => [
                         value: '40 transactions or more in the past 12 months',
                     },
                 ],
-                field_type: 'dropdown',
-                form_control: 'cfd_frequency',
-                question_text: 'How many CFD trades have you placed in the past 12 months?',
+                fieldType: 'dropdown',
+                formControl: 'cfd_frequency',
+                questionText: 'How many CFD trades have you placed in the past 12 months?',
             },
             {
-                answer_options: [
+                answerOptions: [
                     {
                         text: 'No experience',
                         value: 'No experience',
@@ -109,12 +109,12 @@ export const getTradingAssessmentQuestions = () => [
                         value: 'Over 3 years',
                     },
                 ],
-                field_type: 'dropdown',
-                form_control: 'trading_experience_financial_instruments',
-                question_text: 'How much experience do you have with other financial instruments?',
+                fieldType: 'dropdown',
+                formControl: 'trading_experience_financial_instruments',
+                questionText: 'How much experience do you have with other financial instruments?',
             },
             {
-                answer_options: [
+                answerOptions: [
                     {
                         text: 'None',
                         value: 'No transactions in the past 12 months',
@@ -136,16 +136,15 @@ export const getTradingAssessmentQuestions = () => [
                         value: '40 transactions or more in the past 12 months',
                     },
                 ],
-                field_type: 'dropdown',
-                form_control: 'trading_frequency_financial_instruments',
-                question_text:
-                    'How many trades have you placed with other financial instruments in the past 12 months?',
+                fieldType: 'dropdown',
+                formControl: 'trading_frequency_financial_instruments',
+                questionText: 'How many trades have you placed with other financial instruments in the past 12 months?',
             },
         ],
         section: 'trading_experience',
     },
     {
-        answer_options: [
+        answerOptions: [
             {
                 text: 'Purchase commodities or shares of a company.',
                 value: 'Purchase shares of a company or physical commodities.',
@@ -163,13 +162,13 @@ export const getTradingAssessmentQuestions = () => [
                 value: 'Make a long-term investment.',
             },
         ],
-        field_type: 'radio',
-        form_control: 'cfd_trading_definition',
-        question_text: 'In your understanding, CFD trading allows you to',
+        fieldType: 'radio',
+        formControl: 'cfd_trading_definition',
+        questionText: 'In your understanding, CFD trading allows you to',
         section: 'trading_knowledge',
     },
     {
-        answer_options: [
+        answerOptions: [
             {
                 text: 'Leverage helps to mitigate risk.',
                 value: 'Leverage is a risk mitigation technique.',
@@ -184,13 +183,13 @@ export const getTradingAssessmentQuestions = () => [
                 value: "Leverage lets you open larger positions for a fraction of the trade's value.",
             },
         ],
-        field_type: 'radio',
-        form_control: 'leverage_impact_trading',
-        question_text: 'How does leverage affect CFD trading?',
+        fieldType: 'radio',
+        formControl: 'leverage_impact_trading',
+        questionText: 'How does leverage affect CFD trading?',
         section: 'trading_knowledge',
     },
     {
-        answer_options: [
+        answerOptions: [
             {
                 text: 'Cancel your trade at any time within a specified timeframe.',
                 value: 'Cancel your trade at any time within a chosen timeframe.',
@@ -208,14 +207,14 @@ export const getTradingAssessmentQuestions = () => [
                 value: 'Make a guaranteed profit on your trade.',
             },
         ],
-        field_type: 'radio',
-        form_control: 'leverage_trading_high_risk_stop_loss',
-        question_text:
+        fieldType: 'radio',
+        formControl: 'leverage_trading_high_risk_stop_loss',
+        questionText:
             "Leverage trading is high-risk, so it's a good idea to use risk management features such as stop loss. Stop loss allows you to",
         section: 'trading_knowledge',
     },
     {
-        answer_options: [
+        answerOptions: [
             {
                 text: 'When opening a leveraged CFD trade.',
                 value: 'When opening a Leveraged CFD trade.',
@@ -227,9 +226,9 @@ export const getTradingAssessmentQuestions = () => [
             },
             { text: 'All of the above.', value: 'All of the above.' },
         ],
-        field_type: 'radio',
-        form_control: 'required_initial_margin',
-        question_text: 'When are you required to pay an initial margin?',
+        fieldType: 'radio',
+        formControl: 'required_initial_margin',
+        questionText: 'When are you required to pay an initial margin?',
         section: 'trading_knowledge',
     },
 ];

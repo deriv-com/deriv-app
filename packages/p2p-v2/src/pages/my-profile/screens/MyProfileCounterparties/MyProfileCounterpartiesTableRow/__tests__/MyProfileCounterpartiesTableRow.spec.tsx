@@ -9,6 +9,15 @@ const mockProps = {
     isBlocked: false,
 };
 
+const mockPush = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockPush,
+    }),
+}));
+
 jest.mock('@/components/UserAvatar', () => ({
     UserAvatar: () => <div>UserAvatar</div>,
 }));
@@ -60,5 +69,12 @@ describe('MyProfileCounterpartiesTableRow', () => {
         await waitFor(() => {
             expect(screen.queryByText('Block nickname?')).not.toBeInTheDocument();
         });
+    });
+
+    it('should call history.push when clicking on the nickname', () => {
+        render(<MyProfileCounterpartiesTableRow {...mockProps} />);
+        const nickname = screen.getByText('nickname');
+        userEvent.click(nickname);
+        expect(mockPush).toHaveBeenCalledWith('/cashier/p2p-v2/advertiser/id1', { from: 'MyProfile' });
     });
 });

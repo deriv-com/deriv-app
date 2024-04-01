@@ -7,11 +7,12 @@ import { routes } from './routes-config';
 const prefix = '/cashier/p2p-v2';
 
 type TRoutes = `${typeof prefix}/cashier/p2p-v2` | `${typeof prefix}`;
+type TState = { from: string };
 
 declare module 'react-router-dom' {
     export function useHistory(): {
         goBack: () => void;
-        push: (path: TRoutes | string) => void;
+        push: (path: TRoutes | string, state?: TState) => void;
         replace(arg0: { pathname: string; search: string }): void;
     };
 

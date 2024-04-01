@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { Form, Formik } from 'formik';
 import { twMerge } from 'tailwind-merge';
 import { CurrencyTypes } from '@/constants';
-import { useAddNewCurrencyAccount } from '@/hooks';
+import { useAddNewCurrencyAccount, useQueryParams } from '@/hooks';
 import { TCurrencyConfig } from '@/hooks/useCurrencies';
 import CurrencyCard from '@/screens/CurrencySelector/CurrencyCard';
 import { useActiveTradingAccount, useAuthorize, useMutation } from '@deriv/api-v2';
@@ -46,6 +46,8 @@ const CurrenciesForm = ({
     const { data: activeDerivTradingAccount } = useActiveTradingAccount();
     const { mutateAsync: mutateAccountCurrencyAsync } = useMutation('set_account_currency');
     const { mutateAsync: mutateAddAccountAsync } = useAddNewCurrencyAccount();
+    const { closeModal } = useQueryParams();
+
     const initialValues = {
         currency: '',
     };
@@ -53,16 +55,18 @@ const CurrenciesForm = ({
     const handleAddAccount = useCallback(
         async (values: typeof initialValues) => {
             await mutateAddAccountAsync(values.currency);
+            closeModal();
         },
-        [mutateAddAccountAsync]
+        [closeModal, mutateAddAccountAsync]
     );
 
     const handleSwitchCurrency = useCallback(
         async (values: typeof initialValues) => {
             await mutateAccountCurrencyAsync({ payload: { set_account_currency: values.currency } });
             switchAccount(data.loginid ?? '', true);
+            closeModal();
         },
-        [data.loginid, mutateAccountCurrencyAsync, switchAccount]
+        [closeModal, data.loginid, mutateAccountCurrencyAsync, switchAccount]
     );
 
     return (

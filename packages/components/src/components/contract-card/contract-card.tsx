@@ -18,12 +18,10 @@ type TContractCardProps = {
     getContractPath?: TGetContractPath;
     is_multiplier: boolean;
     is_positions?: boolean;
-    is_unsupported?: boolean;
     onClickRemove?: (contract_id?: number) => void;
     profit_loss: number;
     result?: string;
     should_show_result_overlay: boolean;
-    toggleUnsupportedContractModal?: (is_unsupported_contract_modal_visible: boolean) => void;
 };
 
 const ContractCard = ({
@@ -33,12 +31,10 @@ const ContractCard = ({
     getContractPath,
     is_multiplier,
     is_positions,
-    is_unsupported,
     onClickRemove,
     profit_loss,
     result,
     should_show_result_overlay,
-    toggleUnsupportedContractModal,
 }: React.PropsWithChildren<TContractCardProps>) => {
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
     const payout_info = is_multiplier ? getTotalProfit(contract_info) : profit_loss;
@@ -51,11 +47,9 @@ const ContractCard = ({
                         currency={contract_info.currency}
                         getCardLabels={getCardLabels}
                         getContractPath={getContractPath}
-                        is_unsupported={is_unsupported}
                         is_multiplier={is_multiplier}
                         is_visible={!!contract_info.is_sold}
                         onClickRemove={onClickRemove}
-                        onClick={() => toggleUnsupportedContractModal?.(true)}
                         payout_info={payout_info}
                         result={result || fallback_result}
                         is_positions={is_positions}

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Icon, Popover } from '@deriv/components';
+import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
+import { Button, Icon, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { LoginButton } from '../login-button.jsx';
@@ -21,6 +22,12 @@ const AccountActionsWallets = observer(() => {
     const active_account = accounts?.[loginid ?? ''];
     const is_virtual = active_account?.is_virtual;
     const currency = active_account?.currency;
+
+    const history = useHistory();
+
+    const handleManageFundsRedirect = () => {
+        history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+    };
 
     if (!is_logged_in) {
         return (
@@ -84,9 +91,7 @@ const AccountActionsWallets = observer(() => {
                     className='acc-info__button'
                     has_effect
                     text={localize('Manage funds')}
-                    // this function will be described later
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    onClick={() => {}}
+                    onClick={handleManageFundsRedirect}
                     primary
                 />
             )}

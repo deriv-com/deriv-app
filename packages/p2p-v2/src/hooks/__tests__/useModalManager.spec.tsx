@@ -169,29 +169,29 @@ describe('useModalManager', () => {
         expect(result.current.isModalOpenFor('ModalA')).toBe(true);
         expect(result.current.isModalOpenFor('ModalB')).toBe(false);
 
-        // windowLocationSpy.mockImplementationOnce(() => ({
-        //     ...originalLocation,
-        //     href: 'http://localhost?modal=ModalA',
-        //     search: '?modal=ModalA',
-        // }));
-        // mockedUseQueryString.mockImplementationOnce(() => ({
-        //     queryString: {
-        //         modal: 'ModalA',
-        //         advertId: undefined,
-        //         formAction: undefined,
-        //         paymentMethodId: undefined,
-        //         tab: undefined,
-        //     },
-        //     setQueryString: jest.fn(),
-        //     deleteQueryString: jest.fn(),
-        // }));
-        // rerender();
+        windowLocationSpy.mockImplementationOnce(() => ({
+            ...originalLocation,
+            href: 'http://localhost?modal=ModalA',
+            search: '?modal=ModalA',
+        }));
+        mockedUseQueryString.mockImplementationOnce(() => ({
+            queryString: {
+                modal: 'ModalA',
+                advertId: undefined,
+                formAction: undefined,
+                paymentMethodId: undefined,
+                tab: undefined,
+            },
+            setQueryString: jest.fn(),
+            deleteQueryString: jest.fn(),
+        }));
+        rerender();
 
-        // act(() => {
-        //     result.current.hideModal();
-        // });
-        // expect(result.current.isModalOpenFor('ModalA')).toBe(false);
-        // expect(result.current.isModalOpenFor('ModalB')).toBe(false);
+        act(() => {
+            result.current.hideModal();
+        });
+        expect(result.current.isModalOpenFor('ModalA')).toBe(false);
+        expect(result.current.isModalOpenFor('ModalB')).toBe(false);
     });
     it('should show the modals when URL is initialized with default modal states', () => {
         const history = createMemoryHistory();

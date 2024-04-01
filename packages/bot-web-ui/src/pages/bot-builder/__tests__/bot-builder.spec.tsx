@@ -1,12 +1,9 @@
 import React from 'react';
 import { unmountComponentAtNode } from 'react-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserRouter } from 'react-router-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';

@@ -2,7 +2,7 @@ import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';
 import { getUUID, recoverFromError, doUntilDone, tradeOptionToBuy } from '../utils/helpers';
-import { log_types } from '../../../constants/messages';
+import { LogTypes } from '../../../constants/messages';
 import { api_base } from '../../api/api-base';
 
 let delayIndex = 0;
@@ -34,7 +34,7 @@ export default Engine =>
                 }
 
                 delayIndex = 0;
-                log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
+                log(LogTypes.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
                 info({
                     accountID: this.accountInfo.loginid,
                     totalRuns: this.updateAndReturnTotalRuns(),

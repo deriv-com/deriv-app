@@ -1,14 +1,14 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import { getCFDAccountKey, isMobile } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv/components';
-import { getCFDAccountKey, isMobile } from '@deriv/shared';
-import { TCFDDashboardContainer, TCFDsPlatformType, TTradingPlatformAccounts } from 'Components/props.types';
+import SpecBox from '../Components/specbox';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import PasswordBox from '../Components/passwordbox';
-import SpecBox from '../Components/specbox';
 import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
+import { TCFDDashboardContainer, TCFDsPlatformType, TTradingPlatformAccounts } from 'Components/props.types';
 import {
     CTRADER_DESKTOP_MAC_DOWNLOAD,
     CTRADER_DESKTOP_WINDOWS_DOWNLOAD,

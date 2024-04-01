@@ -32,7 +32,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         if (status === 'success') {
             show(
                 <CTraderSuccessModal
-                    displayBalance={activeWallet?.display_balance || '10,000.00 USD'}
+                    displayBalance={activeWallet?.display_balance || ''}
                     isDemo={accountType === 'demo'}
                     walletCurrencyType={activeWallet?.wallet_currency_type || 'USD'}
                 />

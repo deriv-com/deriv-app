@@ -10,13 +10,17 @@ type TCTraderSuccessModalButtons = {
 const CTraderSuccessModalButtons = ({ hide, isDemo }: TCTraderSuccessModalButtons) => {
     const history = useHistory();
 
-    return isDemo ? (
-        <div className='wallets-success-btn'>
-            <WalletButton isFullWidth onClick={hide} size='lg'>
-                OK
-            </WalletButton>
-        </div>
-    ) : (
+    if (isDemo) {
+        return (
+            <div className='wallets-success-btn'>
+                <WalletButton isFullWidth onClick={hide} size='lg'>
+                    OK
+                </WalletButton>
+            </div>
+        );
+    }
+
+    return (
         <WalletButtonGroup isFlex isFullWidth>
             <WalletButton onClick={hide} size='lg' variant='outlined'>
                 Maybe later

@@ -9,10 +9,11 @@ type TProps = {
     isActive?: boolean;
 };
 
+// TODO: replace with correct data once it is available in backend and this function is untested for now
 const getAccountName = (account: TTransferableAccounts[number]) => {
     if (!account.currency) return '';
 
-    return account.currency.toUpperCase();
+    return account.currency;
 };
 
 const getIcon = (account: TTransferableAccounts[number]) => {

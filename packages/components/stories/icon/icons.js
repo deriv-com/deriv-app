@@ -717,6 +717,7 @@ export const icons =
     'flag': [
         //change to arabic flag when there's any
         'IcFlagAr',
+        'IcFlagBn',
         'IcFlagDe',
         'IcFlagEn',
         'IcFlagEs',

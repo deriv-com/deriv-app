@@ -15,7 +15,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider, P2PSettingsProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import { withTranslation, useTranslation } from 'react-i18next';
 import { CFD_TEXT } from '../Constants/cfd-text';
@@ -106,7 +106,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                                 <POIProvider>
                                     <StoreProvider store={root_store}>
                                         <ExchangeRatesProvider>
-                                            <AppContent passthrough={platform_passthrough} />
+                                            <P2PSettingsProvider>
+                                                <AppContent passthrough={platform_passthrough} />
+                                            </P2PSettingsProvider>
                                         </ExchangeRatesProvider>
                                     </StoreProvider>
                                 </POIProvider>

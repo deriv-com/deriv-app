@@ -4,6 +4,7 @@ const languages = {
     AR: 'العربية',
     EN: 'English',
     ES: 'Español',
+    BN: 'বাংলা',
     DE: 'Deutsch',
     FR: 'Français',
     ID: 'Indonesian',

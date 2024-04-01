@@ -48,9 +48,9 @@ class APIBase {
         }
     }
 
-    createNewInstance(account_id) {
+    async createNewInstance(account_id) {
         if (this.account_id !== account_id) {
-            this.init(true);
+            await this.init(true);
         }
     }
 

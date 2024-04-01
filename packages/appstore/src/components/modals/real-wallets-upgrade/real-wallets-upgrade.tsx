@@ -7,7 +7,7 @@ const RealWalletsUpgrade = observer(() => {
     const { traders_hub, ui } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
     const { is_mobile } = ui;
-    const { startMigration, is_eligible } = useWalletMigration();
+    const { startMigration, is_eligible, is_migrating } = useWalletMigration();
 
     const [current_step, setCurrentStep] = React.useState(0);
     const [is_disabled, setIsDisabled] = React.useState(false);
@@ -45,6 +45,7 @@ const RealWalletsUpgrade = observer(() => {
         handleClose,
         handleNext,
         is_disabled,
+        is_migrating,
         toggleCheckbox,
         upgradeToWallets,
     };

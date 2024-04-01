@@ -12,6 +12,7 @@ type TWalletsUpgradeStepTwoContent = {
 type TWalletsUpgradeStepTwoFooter = {
     handleBack: VoidFunction;
     is_disabled: boolean;
+    is_migrating: boolean;
     upgradeToWallets: (value: boolean) => void;
 };
 
@@ -53,7 +54,12 @@ const WalletsUpgradeStepTwoContent = observer(({ value, toggleCheckbox }: TWalle
     );
 });
 
-const WalletsUpgradeStepTwoFooter = ({ handleBack, is_disabled, upgradeToWallets }: TWalletsUpgradeStepTwoFooter) => {
+const WalletsUpgradeStepTwoFooter = ({
+    handleBack,
+    is_disabled,
+    is_migrating,
+    upgradeToWallets,
+}: TWalletsUpgradeStepTwoFooter) => {
     const { ui } = useStore();
     const { is_desktop } = ui;
 
@@ -68,8 +74,9 @@ const WalletsUpgradeStepTwoFooter = ({ handleBack, is_disabled, upgradeToWallets
                 primary
                 large
                 className='wallets-upgrade-step-two__footer-button'
-                disabled={!is_disabled}
+                disabled={!is_disabled || is_migrating}
                 onClick={upgradeToWallets}
+                is_loading={is_migrating}
             >
                 <Localize i18n_default_text='Enable' />
             </Button>

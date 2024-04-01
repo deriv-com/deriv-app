@@ -17,7 +17,7 @@ const WalletSteps = ({
         footer: <WalletsUpgradeStepOneFooter handleClose={handleClose} handleNext={handleNext} />,
     },
     {
-        name: 'wallets_upgrade_step_one',
+        name: 'wallets_upgrade_step_two',
         content: <WalletsUpgradeStepTwoContent value={is_disabled} toggleCheckbox={toggleCheckbox} />,
         footer: (
             <WalletsUpgradeStepTwoFooter

@@ -8,7 +8,9 @@ const useWalletMigration = () => {
     const invalidate = useInvalidateQuery();
 
     /** Make a request to wallet_migration API and onSuccess it will invalidate the cached data  */
-    const { mutate } = useMutation('wallet_migration', { onSuccess: () => invalidate('wallet_migration') });
+    const { mutate, isLoading: is_migrating } = useMutation('wallet_migration', {
+        onSuccess: () => invalidate('wallet_migration'),
+    });
 
     /** Fetch the wallet_migration API and refetch it every second if the status is in_progress */
     const { data } = useQuery('wallet_migration', {
@@ -38,6 +40,8 @@ const useWalletMigration = () => {
         is_migrated: state === 'migrated',
         /** A boolean to check if the status is failed */
         is_failed: state === 'failed',
+        /** A boolean to check if migration is happening */
+        is_migrating,
         /** Sends a request to wallet_migration API to start the migration process */
         startMigration,
         /** Sends a request to wallet_migration API to reset the migration process */

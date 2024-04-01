@@ -11,7 +11,6 @@ import { SentEmailContent, WalletError, WalletSuccessResetMT5Password } from '..
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
@@ -212,7 +211,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isMT5PasswordNotSet)
             return (
                 <CreatePassword
-                    icon={<MT5PasswordIcon />}
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}

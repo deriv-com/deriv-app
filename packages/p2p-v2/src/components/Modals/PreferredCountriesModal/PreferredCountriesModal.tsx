@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FullPageMobileWrapper } from '@/components/FullPageMobileWrapper';
-import { useDevice } from '@/hooks';
-import { Modal } from '@deriv-com/ui';
+import { Modal, useDevice } from '@deriv-com/ui';
 import { PreferredCountriesDropdown } from './PreferredCountriesDropdown';
 import { PreferredCountriesFooter } from './PreferredCountriesFooter';
 import { PreferredCountriesHeader } from './PreferredCountriesHeader';

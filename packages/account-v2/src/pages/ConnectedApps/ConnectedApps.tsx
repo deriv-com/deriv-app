@@ -17,8 +17,8 @@ export const ConnectedApps = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedAppId, setSelectedAppId] = useState<number | null>(null);
 
-    const isLoading = useMemo(() => isFetchLoading || isRevokeLoading, [isFetchLoading, isRevokeLoading]);
-    const isError = useMemo(() => isFetchError || isRevokeError, [isFetchError, isRevokeError]);
+    const isLoading = isFetchLoading || isRevokeLoading;
+    const isError = isFetchError || isRevokeError;
 
     const handleToggleModal = useCallback((appId: number | null = null) => {
         setSelectedAppId(appId);

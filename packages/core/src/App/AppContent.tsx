@@ -41,7 +41,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                 Cookies.getJSON('utm_data') === 'null'
                     ? {
                           utm_source: 'no source',
-                          utm_medium: 'mo medium',
+                          utm_medium: 'no medium',
                           utm_campaign: 'no campaign',
                       }
                     : Cookies.getJSON('utm_data');

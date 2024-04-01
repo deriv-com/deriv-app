@@ -2,7 +2,7 @@ import { useStore } from '@deriv/stores';
 
 const useGetMFAccountStatus = () => {
     const { client } = useStore();
-    const { account_status } = client;
+    const { account_status } = client || {};
     const authentication = account_status?.authentication;
 
     const onfido_status = authentication?.identity?.services?.onfido?.status;

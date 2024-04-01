@@ -1,10 +1,16 @@
 import React from 'react';
-import { APIProvider, AuthProvider, useBalance } from '@deriv/api-v2';
+import { APIProvider, useBalance } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../AuthProvider';
 import WalletListCardBalance from '../WalletListCardBalance';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
+    useActiveWalletAccount: jest.fn(() => ({
+        data: {
+            display_balance: '100 USD',
+        },
+    })),
     useBalance: jest.fn(() => ({
         ...jest.requireActual('@deriv/api-v2').useBalance(),
         isLoading: false,
@@ -14,12 +20,12 @@ jest.mock('@deriv/api-v2', () => ({
 describe('WalletListCardBalance', () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
         <APIProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <WalletsAuthProvider>{children}</WalletsAuthProvider>
         </APIProvider>
     );
 
     it('should show account balance', () => {
-        render(<WalletListCardBalance balance={'100 USD'} />, { wrapper });
+        render(<WalletListCardBalance />, { wrapper });
         expect(screen.getByText('100 USD')).toBeInTheDocument();
     });
 
@@ -28,7 +34,7 @@ describe('WalletListCardBalance', () => {
             ...jest.requireActual('@deriv/api-v2').useBalance(),
             isLoading: true,
         }));
-        render(<WalletListCardBalance balance={'100 USD'} />, { wrapper });
+        render(<WalletListCardBalance />, { wrapper });
         expect(screen.queryByText('100 USD')).not.toBeInTheDocument();
         expect(screen.getByTestId('dt_wallet_list_card_balance_loader')).toBeInTheDocument();
     });

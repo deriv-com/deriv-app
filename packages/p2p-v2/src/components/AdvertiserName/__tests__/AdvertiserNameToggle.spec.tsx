@@ -1,26 +1,25 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AdvertiserNameToggle from '../AdvertiserNameToggle';
 
-const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-let mockUseAdvertiserStats = {
-    data: {
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
+const mockProps = {
+    advertiserInfo: {
         fullName: 'Jane Doe',
         show_name: 0,
     },
-    isLoading: true,
+    onToggle: jest.fn(),
 };
 const mockUseAdvertiserUpdateMutate = jest.fn();
 
-jest.mock('../../../hooks', () => ({
-    ...jest.requireActual('../../../hooks'),
-    useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
-}));
-
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     p2p: {
         advertiser: {
             useUpdate: jest.fn(() => ({
@@ -32,19 +31,11 @@ jest.mock('@deriv/api', () => ({
 
 describe('AdvertiserNameToggle', () => {
     it('should render full name in toggle', () => {
-        mockUseAdvertiserStats = {
-            ...mockUseAdvertiserStats,
-            isLoading: true,
-        };
-        render(<AdvertiserNameToggle />, { wrapper });
+        render(<AdvertiserNameToggle {...mockProps} />, { wrapper });
         expect(screen.getByText('Jane Doe')).toBeInTheDocument();
     });
     it('should switch full name settings', () => {
-        mockUseAdvertiserStats = {
-            ...mockUseAdvertiserStats,
-            isLoading: true,
-        };
-        render(<AdvertiserNameToggle />, { wrapper });
+        render(<AdvertiserNameToggle {...mockProps} />, { wrapper });
         const labelBtn = screen.getByRole('checkbox');
         userEvent.click(labelBtn);
 

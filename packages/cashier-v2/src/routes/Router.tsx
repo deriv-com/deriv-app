@@ -9,8 +9,8 @@ import OnRampIcon from '../assets/images/ic-cashier-on-ramp.svg';
 import PaymentAgentIcon from '../assets/images/ic-payment-agent.svg';
 import { DummyComponent, PageContainer } from '../components';
 import { Cashier } from '../containers';
-import { Deposit } from '../flows';
-import { WithdrawalVerificationModule } from '../lib';
+import { AccountTransfer, Deposit, PaymentAgentTransfer, Withdrawal } from '../flows';
+import { PaymentAgentDepositModule } from '../lib/PaymentAgent/lib/PaymentAgentDeposit';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -39,29 +39,29 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
             },
             {
                 path: cashierPathRoutes.cashierWithdrawal,
-                component: () => (
-                    <PageContainer>
-                        <WithdrawalVerificationModule />
-                    </PageContainer>
-                ),
+                component: Withdrawal,
                 icon: <WithdrawalIcon />,
                 title: 'Withdrawal',
             },
             {
                 path: cashierPathRoutes.cashierPaymentAgents,
-                component: DummyComponent,
+                component: () => (
+                    <PageContainer>
+                        <PaymentAgentDepositModule />
+                    </PageContainer>
+                ),
                 icon: <PaymentAgentIcon />,
                 title: 'Payment agents',
             },
             {
                 path: cashierPathRoutes.cashierAccountTransfer,
-                component: DummyComponent,
+                component: AccountTransfer,
                 icon: <TransferIcon />,
                 title: 'Transfer',
             },
             {
                 path: cashierPathRoutes.cashierPaymentAgentTransfer,
-                component: DummyComponent,
+                component: PaymentAgentTransfer,
                 icon: <TransferIcon />,
                 title: 'Transfer to client',
             },

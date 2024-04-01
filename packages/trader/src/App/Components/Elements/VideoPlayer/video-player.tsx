@@ -66,9 +66,9 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         if (e.type === 'mousedown') e.preventDefault();
         e.stopPropagation();
 
+        video_ref?.current?.pause();
         cancelAnimationFrame(animation_ref.current);
         debouncedRewind.cancel();
-        video_ref?.current?.pause();
         setIsPlaying(false);
         setIsAnimated(false);
         is_dragging.current = true;
@@ -153,8 +153,9 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
         if (!video_ref.current?.ended || !is_rewind_to_the_end) {
             setIsAnimated(true);
+            video_ref.current.currentTime = new_time_ref.current;
             animation_ref.current = requestAnimationFrame(repeat);
-            video_ref?.current?.play();
+            video_ref.current.play().catch(() => null);
             is_ended.current = false;
         }
     }, 500);
@@ -181,7 +182,6 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const repeat = () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
         if (should_check_time_ref.current && new_time_ref.current !== video_ref.current.currentTime) {
-            video_ref.current.currentTime = new_time_ref.current;
             animation_ref.current = requestAnimationFrame(repeat);
             return;
         }
@@ -219,7 +219,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             } else {
                 replay_animation_timeout.current = setTimeout(() => {
                     animation_ref.current = requestAnimationFrame(repeat);
-                    video_ref?.current?.play();
+                    video_ref?.current?.play().catch(() => null);
                 }, 500);
                 toggle_animation_timeout.current = setTimeout(() => {
                     setIsAnimated(true);

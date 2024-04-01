@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { passwordRegex } from '@/constants';
 
 export const personalDetails = Yup.object().shape({
     accountOpeningReason: Yup.string().required('Account opening reason is required.'),
@@ -52,4 +53,10 @@ export const termsOfUse = Yup.object().shape({
     fatcaDeclaration: Yup.string().required('FATCA declaration is required.'),
     pepConfirmation: Yup.boolean().oneOf([true], 'You must confirm that you are not a PEP.'),
     termsAndCondition: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions.'),
+});
+
+export const signup = Yup.object().shape({
+    citizenship: Yup.string(),
+    country: Yup.string(),
+    password: Yup.string().matches(passwordRegex?.isPasswordValid),
 });

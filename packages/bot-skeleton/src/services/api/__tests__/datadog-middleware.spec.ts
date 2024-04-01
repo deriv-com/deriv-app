@@ -43,6 +43,7 @@ describe('APIMiddleware', () => {
                 clearMarks,
             },
         });
+        Object.defineProperty(window, 'is_datadog_logging_enabled', { value: true });
 
         api_middleware = new APIMiddleware();
         process.env.DATADOG_CLIENT_TOKEN_LOGS = '123';
@@ -69,7 +70,6 @@ describe('APIMiddleware', () => {
         };
 
         const spyDatalogsInfo = jest.spyOn(datadogLogs.logger, 'info');
-
         api_middleware.log([datadog_logs], false);
 
         expect(spyDatalogsInfo).toHaveBeenCalledWith(datadog_logs.name, { ...measure_object });

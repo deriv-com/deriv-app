@@ -1,18 +1,15 @@
 import React from 'react';
 import { getLastOnlineLabel } from '@/utils';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 
 type TOnlineStatusLabelProps = {
-    isOnline: 0 | 1;
+    isOnline?: boolean;
     lastOnlineTime: number;
 };
 
-const OnlineStatusLabel = ({ isOnline, lastOnlineTime }: TOnlineStatusLabelProps) => {
-    const { isMobile } = useDevice();
-    const size = isMobile ? 'xs' : 'sm';
-
+const OnlineStatusLabel = ({ isOnline = false, lastOnlineTime }: TOnlineStatusLabelProps) => {
     return (
-        <Text color='less-prominent' size={size}>
+        <Text color='less-prominent' size='sm'>
             {getLastOnlineLabel(isOnline, lastOnlineTime)}
         </Text>
     );

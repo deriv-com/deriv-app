@@ -72,7 +72,7 @@ class DBot {
                             if (run_button) run_button.disabled = true;
 
                             that.interpreter.unsubscribeFromTicksService().then(async () => {
-                                await that.interpreter.bot.tradeEngine.watchTicks(symbol);
+                                await that.interpreter?.bot.tradeEngine.watchTicks(symbol);
                             });
                         }
                     } else if (name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
@@ -129,6 +129,11 @@ class DBot {
                 });
 
                 Blockly.derivWorkspace = this.workspace;
+
+                const varDB = new Blockly.Names('window');
+                varDB.variableMap_ = Blockly.derivWorkspace.getVariableMap();
+
+                Blockly.JavaScript.variableDB_ = varDB;
 
                 this.addBeforeRunFunction(this.unselectBlocks.bind(this));
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
@@ -221,6 +226,12 @@ class DBot {
         return this.before_run_funcs.every(func => !!func());
     }
 
+    async initializeInterpreter() {
+        if (this.interpreter) {
+            await this.interpreter.terminateSession();
+        }
+        this.interpreter = Interpreter();
+    }
     /**
      * Runs the bot. Does a sanity check before attempting to generate the
      * JavaScript code that's fed to the interpreter.

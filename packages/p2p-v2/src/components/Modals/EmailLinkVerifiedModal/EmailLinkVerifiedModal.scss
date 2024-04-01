@@ -1,0 +1,9 @@
+.p2p-v2-email-link-verified-modal {
+    height: auto;
+    width: 44rem;
+    border-radius: 8px;
+
+    @include mobile {
+        max-width: calc(100vw - 3.2rem);
+    }
+}

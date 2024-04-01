@@ -6,6 +6,7 @@ import tradingAssessmentConfig from '@deriv/account/src/Configs/trading-assessme
 import RiskToleranceWarningModal from '@deriv/account/src/Components/trading-assessment/risk-tolerance-warning-modal';
 import TradingExperienceModal from './trading-experience-modal.jsx';
 import { observer, useStore } from '@deriv/stores';
+import 'Sass/details-form.scss';
 
 const TradingAssessmentExistingUser = observer(() => {
     // Get the Trading assessment questions and initial_value

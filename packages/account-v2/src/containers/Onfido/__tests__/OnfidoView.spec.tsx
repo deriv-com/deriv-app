@@ -9,16 +9,12 @@ const defaultProps = {
     showStatusMessage: false,
 };
 
-jest.mock('@deriv/quill-design', () => ({
-    qtMerge: jest.fn((...args) => args.join(' ')),
-}));
-
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-const onfidoElementTestId = 'dt_onfido-element';
+const onfidoElementTestId = 'dt_onfido_element';
 
 describe('OnfidoView', () => {
     it('should render without errors', () => {
@@ -42,12 +38,12 @@ describe('OnfidoView', () => {
     it('should hide element if onfido not initialized', () => {
         render(<OnfidoView {...defaultProps} isOnfidoEnabled={true} isOnfidoInitialized={false} />);
         const onfidoElement = screen.getByTestId(onfidoElementTestId);
-        expect(onfidoElement).toHaveClass('[display:hidden]');
+        expect(onfidoElement).toHaveClass('hidden');
     });
 
     it('should render correctly if onfido not enabled', () => {
         render(<OnfidoView {...defaultProps} isOnfidoEnabled={false} isOnfidoInitialized={true} />);
         const onfidoElement = screen.getByTestId(onfidoElementTestId);
-        expect(onfidoElement).toHaveClass('opacity-600 pointer-events-none');
+        expect(onfidoElement).toHaveClass('opacity-48 pointer-events-none');
     });
 });

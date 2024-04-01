@@ -20,7 +20,6 @@ const mocked_props: React.ComponentProps<typeof ContractDrawerCard> = {
     is_mobile: false,
     is_multiplier: false,
     is_vanilla: false,
-    is_smarttrader_contract: false,
     is_sell_requested: false,
     is_turbos: false,
     onClickCancel: jest.fn(),
@@ -65,10 +64,10 @@ describe('<ContractDrawerCard />', () => {
         render(mockContractDrawerCard(mocked_props));
 
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
-        expect(screen.getByText(/Profit\/Loss/i)).toBeInTheDocument();
-        expect(screen.getByText(/Buy price/i)).toBeInTheDocument();
-        expect(screen.getByText(/Sell price/i)).toBeInTheDocument();
-        expect(screen.getByText(/Payout limit/i)).toBeInTheDocument();
+        expect(screen.getByText(/Total profit\/loss/i)).toBeInTheDocument();
+        expect(screen.getByText(/Stake/i)).toBeInTheDocument();
+        expect(screen.getByText(/Contract value/i)).toBeInTheDocument();
+        expect(screen.getByText(/Potential payout/i)).toBeInTheDocument();
     });
     it('should render Market Closed Contract Overlay if is_market_closed === true and getEndTime returns false', () => {
         const new_mock_props = { ...mocked_props, is_market_closed: true };
@@ -83,9 +82,9 @@ describe('<ContractDrawerCard />', () => {
         render(mockContractDrawerCard(mocked_props));
 
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
-        expect(screen.getByText(/Potential profit\/loss/i)).toBeInTheDocument();
-        expect(screen.getByText(/Buy price/i)).toBeInTheDocument();
-        expect(screen.getByText(/Indicative price/i)).toBeInTheDocument();
-        expect(screen.getByText(/Payout limit/i)).toBeInTheDocument();
+        expect(screen.getByText(/Total profit\/loss/i)).toBeInTheDocument();
+        expect(screen.getByText(/Contract value/i)).toBeInTheDocument();
+        expect(screen.getByText(/Stake/i)).toBeInTheDocument();
+        expect(screen.getByText(/Potential payout/i)).toBeInTheDocument();
     });
 });

@@ -1,18 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
+import { THooks, TSelectedPaymentMethod } from 'types';
 import { PaymentMethodCard } from '@/components';
-import { PaymentMethodModal } from '@/components/Modals';
+import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
 import { PAYMENT_METHOD_CATEGORIES } from '@/constants';
 import { TFormState } from '@/reducers/types';
 import { sortPaymentMethods } from '@/utils';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 import AddNewButton from './AddNewButton';
 
 type TPaymentMethodsGroup = Record<
     string,
     {
-        paymentMethods: TAdvertiserPaymentMethods;
+        paymentMethods: THooks.AdvertiserPaymentMethods.Get;
         title: string;
     }
 >;
@@ -24,7 +24,7 @@ type TPaymentMethodsListContentProps = {
     onDelete: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onEdit: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onResetFormState: () => void;
-    p2pAdvertiserPaymentMethods: TAdvertiserPaymentMethods;
+    p2pAdvertiserPaymentMethods: THooks.AdvertiserPaymentMethods.Get;
 };
 
 /**
@@ -48,10 +48,10 @@ const PaymentMethodsListContent = ({
     const {
         delete: deleteAdvertiserPaymentMethod,
         error: deleteError,
+        isError: isDeleteError,
         isSuccess: isDeleteSuccessful,
     } = p2p.advertiserPaymentMethods.useDelete();
-
-    const { actionType, selectedPaymentMethod } = formState || {};
+    const { actionType, selectedPaymentMethod } = formState;
     const groupedPaymentMethods = useMemo(() => {
         const groups: TPaymentMethodsGroup = {};
         const sortedPaymentMethods = sortPaymentMethods(p2pAdvertiserPaymentMethods);
@@ -69,10 +69,17 @@ const PaymentMethodsListContent = ({
     }, [p2pAdvertiserPaymentMethods]);
 
     useEffect(() => {
-        if (deleteError) {
+        if (isDeleteError) {
             setIsModalOpen(true);
         }
-    }, [isDeleteSuccessful, deleteError]);
+    }, [isDeleteError]);
+
+    useEffect(() => {
+        if (isDeleteSuccessful) {
+            setIsModalOpen(false);
+            onResetFormState();
+        }
+    }, [isDeleteSuccessful, onResetFormState]);
 
     return (
         <div className='p2p-v2-payment-methods-list'>
@@ -110,13 +117,23 @@ const PaymentMethodsListContent = ({
                     </div>
                 );
             })}
-            {actionType === 'DELETE' && (
+            {/* TODO: Remember to translate these strings */}
+            {actionType === 'DELETE' && isDeleteError && (
+                <PaymentMethodErrorModal
+                    errorMessage={String(deleteError?.error?.message)}
+                    isModalOpen={isModalOpen}
+                    onConfirm={() => {
+                        setIsModalOpen(false);
+                    }}
+                    title='Something’s not right'
+                />
+            )}
+            {actionType === 'DELETE' && !isDeleteError && (
                 <PaymentMethodModal
                     description='Are you sure you want to remove this payment method?'
                     isModalOpen={isModalOpen}
                     onConfirm={() => {
                         deleteAdvertiserPaymentMethod(Number(selectedPaymentMethod?.id));
-                        onResetFormState();
                     }}
                     onReject={() => {
                         setIsModalOpen(false);

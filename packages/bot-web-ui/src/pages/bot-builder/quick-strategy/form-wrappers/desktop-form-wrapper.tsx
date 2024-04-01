@@ -6,13 +6,6 @@ import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import {
-    rudderStackSendQsEditStrategyEvent,
-    rudderStackSendQsRunStrategyEvent,
-    rudderStackSendQsSelectedTabEvent,
-    rudderStackSendQsStrategyChangeEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormValues } from '../types';
 import FormTabs from './form-tabs';
@@ -28,7 +21,7 @@ type TDesktopFormWrapper = {
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClickClose, active_tab_ref }) => {
     const [activeTab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { submitForm, isValid, setFieldValue, validateForm, values } = useFormikContext<TFormValues>();
+    const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext<TFormValues>();
     const { quick_strategy } = useDBotStore();
     const { selected_strategy, setSelectedStrategy } = quick_strategy;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
@@ -41,30 +34,18 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
-        rudderStackSendQsStrategyChangeEvent({ selected_strategy });
     };
 
     const handleTabChange = (tab: string) => {
         setActiveTab(tab);
-        rudderStackSendQsSelectedTabEvent({ strategy_switcher_mode: getQsActiveTabString(tab) });
     };
 
     const onEdit = async () => {
-        rudderStackSendQsEditStrategyEvent({
-            form_values: values,
-            selected_strategy,
-            strategy_switcher_mode: getQsActiveTabString(activeTab),
-        });
         await setFieldValue('action', 'EDIT');
         submitForm();
     };
 
     const onRun = () => {
-        rudderStackSendQsRunStrategyEvent({
-            form_values: values,
-            selected_strategy,
-            strategy_switcher_mode: getQsActiveTabString(activeTab),
-        });
         handleSubmit();
     };
 
@@ -135,7 +116,15 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                             <Button secondary disabled={!isValid} onClick={onEdit}>
                                 {localize('Edit')}
                             </Button>
-                            <Button data-testid='qs-run-button' primary onClick={onRun} disabled={!isValid}>
+                            <Button
+                                data-testid='qs-run-button'
+                                primary
+                                onClick={e => {
+                                    e.preventDefault();
+                                    onRun();
+                                }}
+                                disabled={!isValid}
+                            >
                                 {localize('Run')}
                             </Button>
                         </div>

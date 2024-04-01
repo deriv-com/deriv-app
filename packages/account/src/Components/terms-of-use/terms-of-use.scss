@@ -13,11 +13,14 @@
 
     &__checkbox {
         margin-top: 1.6rem;
-
+        .dc-checkbox {
+            align-items: unset;
+        }
         &:last-of-type {
             margin-bottom: 5rem;
         }
     }
+
     &__hr {
         height: 2px;
         margin: 1.6rem 0 0;
@@ -30,27 +33,54 @@
             width: 100%;
         }
     }
+
     h4 {
         margin: 1rem 0;
         text-transform: none;
     }
+
     p {
-        @include typeface(--paragraph-left-normal-black);
         text-transform: none;
         color: var(--text-general);
     }
+
     input {
         display: none;
     }
+
     @include mobile {
         & .dc-checkbox__box {
-            width: 2.4rem;
-            height: 2.4rem;
+            width: 1.6rem;
+            height: 1.6rem;
 
             .dc-icon {
-                width: 2.4rem;
-                height: 2.4rem;
+                width: 1.6rem;
+                height: 1.6rem;
             }
+        }
+    }
+}
+
+.fatca-declaration {
+    &__layout {
+        display: flex;
+        gap: 1.6rem;
+        flex-direction: column;
+    }
+
+    &__points {
+        line-height: 2rem !important;
+
+        @include mobile {
+            line-height: 1.8rem !important;
+        }
+    }
+
+    &__agreement {
+        width: 32.8rem !important;
+
+        .dc-dropdown__container {
+            margin-bottom: 2rem;
         }
     }
 }

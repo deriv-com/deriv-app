@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useCashierFiatAddress } from '@deriv/api';
+import { useCashierFiatAddress } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { ErrorScreen } from '../../components';
 import { isServerError } from '../../utils';

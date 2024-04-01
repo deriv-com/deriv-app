@@ -23,6 +23,7 @@ import type {
     P2PAdvertiserInformationResponse,
     P2POrderListResponse,
     WebsiteStatus,
+    GetSelfExclusion,
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -313,7 +314,7 @@ type TMarkerContentConfig = TContentConfig & {
     status?: string;
 };
 
-type TNotificationMessage = {
+export type TNotificationMessage = {
     action?: TActionProps;
     className?: string;
     cta_btn?: TButtonProps;
@@ -325,7 +326,7 @@ type TNotificationMessage = {
     is_persistent?: boolean;
     key: string;
     message_popup?: string;
-    message: string | JSX.Element;
+    message?: string | JSX.Element;
     platform?: string;
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
@@ -414,6 +415,8 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
+    self_exclusion: Partial<GetSelfExclusion>;
+    getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
@@ -595,9 +598,10 @@ type TClientStore = {
     is_bot_allowed: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
-    setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
+    setAccounts: (accounts: Record<string, TActiveAccount>) => void;
     should_show_eu_error: boolean;
     is_options_blocked: boolean;
+    setIsP2PEnabled: (is_p2p_enabled: boolean) => void;
     real_account_signup_form_data: Array<Record<string, unknown>>;
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
@@ -691,7 +695,7 @@ type TUiStore = {
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
-    is_unsupported_contract_modal_visible: boolean;
+    isUrlUnavailableModalVisible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
     openRealAccountSignup: (
@@ -745,6 +749,7 @@ type TUiStore = {
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
+    toggleUrlUnavailableModal: (value: boolean) => void;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
@@ -753,7 +758,6 @@ type TUiStore = {
     should_show_account_success_modal: boolean;
     should_trigger_tour_guide: boolean;
     toggleCancellationWarning: (state_change?: boolean) => void;
-    toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
@@ -788,11 +792,11 @@ type TUiStore = {
     toggleAccountSuccessModal: () => void;
     setIsMFVericationPendingModal: (value: boolean) => void;
     setMT5MigrationModalEnabled: (value: boolean) => void;
-    toggleMT5MigrationModal: () => void;
+    toggleMT5MigrationModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
-    setAccountSwitcherDisabledMessage: () => void;
+    setAccountSwitcherDisabledMessage: (message?: string) => void;
 };
 
 type TPortfolioStore = {

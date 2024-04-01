@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import moment from 'moment';
-import 'moment/min/locales';
 
 type TExtendedMoment = typeof moment & {
     createFromInputFallback: (config: { _d: Date }) => void;
@@ -13,7 +12,13 @@ type TExtendedMoment = typeof moment & {
 };
 
 // Localize moment instance with specific object
-export const initMoment = (lang: string) => moment.locale(lang);
+export const initMoment = (lang: string) => {
+    const ignored_language = ['EN', 'BN'];
+    if (!lang || ignored_language.includes(lang)) return moment;
+    return import(`moment/locale/${lang.toLowerCase().replace('_', '-')}`)
+        .then(() => moment.locale(lang.toLocaleLowerCase().replace('_', '-')))
+        .catch(() => moment);
+};
 
 /**
  * Convert epoch to moment object

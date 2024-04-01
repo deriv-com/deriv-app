@@ -7,7 +7,7 @@ import { WalletsAppLinkedWithWalletIcon } from '../WalletsAppLinkedWithWalletIco
 import './AppCard.scss';
 
 type TProps = {
-    activeWalletCurrency: THooks.ActiveWalletAccount['currency'];
+    activeWalletCurrency?: THooks.ActiveWalletAccount['currency'];
     appIcon: React.ComponentProps<typeof WalletsAppLinkedWithWalletIcon>['appIcon'];
     appName?: string;
     balance?: string;

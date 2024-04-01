@@ -1,12 +1,8 @@
 import React from 'react';
-import { useOnfido } from '@deriv/api';
-import { render, screen } from '@testing-library/react';
+import { useOnfido } from '@deriv/api-v2';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { OnfidoContainer } from '../OnfidoContainer';
-
-jest.mock('@deriv/quill-design', () => ({
-    qtMerge: jest.fn((...args) => args.join(' ')),
-}));
 
 const mockPush = jest.fn();
 
@@ -20,8 +16,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useOnfido: jest.fn(() => ({
         data: {},
         isOnfidoInitialized: true,
@@ -112,16 +108,23 @@ describe('OnfidoContainer', () => {
         expect(safeTearDownMock).toHaveBeenCalled();
     });
 
-    it('enables Onfido when clicked', () => {
+    it('enables Onfido when clicked', async () => {
         (useOnfido as jest.Mock).mockReturnValue({
             data: { onfidoElement: 'onfido-element-id' },
             isOnfidoInitialized: true,
             isServiceTokenLoading: false,
         });
         render(<OnfidoContainer />);
+        const onfidoView = screen.getByTestId('dt_onfido_element');
+        expect(onfidoView).toHaveClass('opacity-48 pointer-events-none');
 
-        userEvent.click(screen.getByTestId('dt_poi-confirm-with-example'));
-        const onfidoView = screen.getByTestId('dt_onfido-element');
-        expect(onfidoView).not.toHaveClass('opacity-600 pointer-events-none');
+        userEvent.type(screen.getByLabelText(/First name/), 'John');
+        userEvent.type(screen.getByLabelText(/Last name/), 'Doe');
+        userEvent.type(screen.getByLabelText(/Date of birth/), '2020-11-11');
+
+        await waitFor(() => {
+            userEvent.click(screen.getByTestId('dt_poi_confirm_with_example'));
+        });
+        expect(onfidoView).not.toHaveClass('opacity-48 pointer-events-none');
     });
 });

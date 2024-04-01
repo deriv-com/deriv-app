@@ -1,5 +1,6 @@
 import React from 'react';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import OrdersTableRow from '../OrdersTableRow';
@@ -23,8 +24,12 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: () => ({ isMobile: false }),
+    useDevice: jest.fn().mockReturnValue({
+        isMobile: false,
+    }),
 }));
+
+const mockUseDevice = useDevice as jest.Mock;
 
 const mockProps = {
     account_currency: 'USD',
@@ -102,5 +107,24 @@ describe('OrdersTableRow', () => {
         const advertiserName = screen.getByText('client CR90000299');
         userEvent.click(advertiserName);
         expect(mockPush).toHaveBeenCalledWith('/cashier/p2p-v2/orders/8');
+    });
+
+    it('should call history.push when clicking chat icon on mobile view', () => {
+        mockUseDevice.mockReturnValue({
+            isMobile: true,
+        });
+
+        render(
+            <APIProvider>
+                <AuthProvider>
+                    <OrdersTableRow {...mockProps} />
+                </AuthProvider>
+            </APIProvider>
+        );
+
+        const chatIcon = screen.getByTestId('dt_p2p_v2_orders_table_row_chat_button');
+        userEvent.click(chatIcon);
+
+        expect(mockPush).toHaveBeenCalledWith('/cashier/p2p-v2/orders/8?showChat=true');
     });
 });

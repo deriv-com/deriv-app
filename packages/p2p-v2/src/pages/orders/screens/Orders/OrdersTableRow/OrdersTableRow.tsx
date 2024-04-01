@@ -64,6 +64,7 @@ const OrdersTableRow = ({ ...props }: THooks.Order.GetList[number]) => {
                             <Button
                                 className='h-full p-0'
                                 color='white'
+                                data-testid='dt_p2p_v2_orders_table_row_chat_button'
                                 onClick={event => {
                                     event.stopPropagation();
                                     history.push(`${ORDERS_URL}/${id}?showChat=true`);

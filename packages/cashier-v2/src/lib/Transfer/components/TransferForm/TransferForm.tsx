@@ -18,7 +18,7 @@ const TransferForm = () => {
     const getInitialToAccount = useMemo(() => {
         if (!accounts || !activeAccount) return;
 
-        if (activeAccount.loginid !== accounts[0].loginid) return accounts[0];
+        if (activeAccount !== accounts[0]) return accounts[0];
 
         return accounts[1];
     }, [accounts, activeAccount]);

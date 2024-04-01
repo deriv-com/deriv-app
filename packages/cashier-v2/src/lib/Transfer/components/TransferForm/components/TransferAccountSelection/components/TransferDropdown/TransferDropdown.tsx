@@ -2,19 +2,17 @@ import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Text, useOnClickOutside } from '@deriv-com/ui';
-import { TGenericSizes } from '../../../../../../../../hooks/types';
 import { TTransferableAccounts, TTransferFormikContext } from '../../../../../../types';
 import { TransferAccountTile, TransferDropdownList } from './components';
 import styles from './TransferDropdown.module.scss';
 
 type TProps = {
-    accounts: TTransferableAccounts;
-    disabled: boolean;
+    accounts?: TTransferableAccounts;
     label?: string;
     message?: string;
     onChange?: (inputValue: string) => void;
-    onSelect: (value: string) => void;
-    value: TTransferFormikContext['fromAccount'] | TTransferFormikContext['toAccount'];
+    onSelect: (account: TTransferableAccounts[number]) => void;
+    value: TTransferableAccounts[number] | TTransferFormikContext['fromAccount'] | TTransferFormikContext['toAccount'];
 };
 
 const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect, value }) => {
@@ -27,10 +25,12 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
         setIsOpen(false);
     });
 
-    const onSelectItem = (value: string) => {
+    const onSelectItem = (account: TTransferableAccounts[number]) => {
         setIsOpen(false);
-        return onSelect(value);
+        return onSelect(account);
     };
+
+    if (!accounts) return null;
 
     return (
         <div className={styles.container} ref={clickOutsideRef}>

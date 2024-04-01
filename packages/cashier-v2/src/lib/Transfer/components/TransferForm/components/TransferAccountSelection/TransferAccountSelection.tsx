@@ -1,17 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useFormikContext } from 'formik';
 import { useTransfer } from '../../../../provider';
 import { TTransferableAccounts, TTransferFormikContext } from '../../../../types';
 import { TransferDropdown } from './components';
 import styles from './TransferAccountSelection.module.scss';
-
-const getInitialToAccount = (accounts: TTransferableAccounts, activeAccount: TTransferableAccounts[number]) => {
-    if (!accounts || !activeAccount) return;
-
-    if (activeAccount.loginid !== accounts[0].loginid) return accounts[0];
-
-    return accounts[1];
-};
 
 // const getValidationSchema = (fromAccount: TTransferableAccounts[number], toAccount: TTransferableAccounts[number]) => {
 //     if (!fromAccount.currencyConfig) return;
@@ -38,12 +30,50 @@ const getInitialToAccount = (accounts: TTransferableAccounts, activeAccount: TTr
 
 const TransferAccountSelection = () => {
     const { setValues, values } = useFormikContext<TTransferFormikContext>();
-    const { accounts, activeAccount, isLoading } = useTransfer();
+    const { accounts, isLoading } = useTransfer();
+
+    const onSelectFromAccount = useCallback(
+        (account: TTransferableAccounts[number]) => {
+            if (account === values.toAccount)
+                setValues(currentValues => ({
+                    ...currentValues,
+                    fromAccount: currentValues.toAccount,
+                    toAccount: currentValues.fromAccount,
+                }));
+            else setValues(currentValues => ({ ...currentValues, fromAccount: account }));
+        },
+        [setValues, values.toAccount]
+    );
+
+    const onSelectToAccount = useCallback(
+        (account: TTransferableAccounts[number]) => {
+            if (account === values.fromAccount)
+                setValues(currentValues => ({
+                    ...currentValues,
+                    fromAccount: currentValues.toAccount,
+                    toAccount: currentValues.fromAccount,
+                }));
+            else setValues(currentValues => ({ ...currentValues, toAccount: account }));
+        },
+        [setValues, values.fromAccount]
+    );
+
+    if (isLoading) return null;
 
     return (
         <div className={styles.container}>
-            <TransferDropdown accounts={accounts} />
-            <TransferDropdown accounts={accounts} />
+            <TransferDropdown
+                accounts={accounts}
+                label='From'
+                onSelect={onSelectFromAccount}
+                value={values.fromAccount}
+            />
+            <TransferDropdown
+                accounts={accounts?.filter(account => account !== values.fromAccount)}
+                label='To'
+                onSelect={onSelectToAccount}
+                value={values.toAccount}
+            />
         </div>
     );
 };

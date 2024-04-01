@@ -4,6 +4,11 @@ import { CurrencyIcon, TradingAppIcon } from '../../../../../../../../../../comp
 import { TTransferableAccounts } from '../../../../../../../../types';
 import styles from './TransferAccountTile.module.scss';
 
+type TProps = {
+    account: TTransferableAccounts[number];
+    isActive?: boolean;
+};
+
 const getAccountName = (account: TTransferableAccounts[number]) => {
     if (!account.currency) return '';
 
@@ -20,19 +25,23 @@ const getIcon = (account: TTransferableAccounts[number]) => {
     if (account.account_type === 'mt5') return <TradingAppIcon name='DMT5_DERIVED' size='sm' />;
 };
 
-const TransferAccountTile = ({ account }: { account: TTransferableAccounts[number] }) => {
+const TransferAccountTile: React.FC<TProps> = ({ account, isActive }) => {
     return (
         <div className={styles.container}>
             <div className={styles.account}>
                 {getIcon(account)}
                 <div className={styles['account-info']}>
-                    <Text size='sm'>{getAccountName(account)}</Text>
+                    <Text size='sm' weight={isActive ? 'bold' : 'normal'}>
+                        {getAccountName(account)}
+                    </Text>
                     <Text color='less-prominent' size='2xs'>
                         {account.loginid}
                     </Text>
                 </div>
             </div>
-            <Text size='sm'>{account.displayBalance}</Text>
+            <Text size='sm' weight={isActive ? 'bold' : 'normal'}>
+                {account.displayBalance}
+            </Text>
         </div>
     );
 };

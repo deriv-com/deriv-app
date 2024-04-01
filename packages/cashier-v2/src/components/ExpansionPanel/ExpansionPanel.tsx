@@ -15,7 +15,7 @@ const ExpansionPanel: React.FC<TProps> = ({ content, header }) => {
 
     return (
         <div className={styles.container}>
-            <div>
+            <div className={styles.main}>
                 {header}
                 {isOpen && content}
             </div>

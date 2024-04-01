@@ -2,17 +2,19 @@ import React from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { Button, Table } from '@deriv-com/ui';
 import { CONNECTED_APPS_HEADER } from '../../constants/connectedAppsConstants';
-import { getFormattedAppScopes } from '../../utils/connectedAppsUtils';
+import { formatDate, getFormattedAppScopes } from '../../utils/connectedAppsUtils';
 
 type TConnectedAppsTable = {
-    connectedApps: OauthApps | undefined;
+    connectedApps: OauthApps;
+    handleToggleModal: (app_id: number) => void;
 };
 
-export const ConnectedAppsTable = ({ connectedApps }: TConnectedAppsTable) => {
-    const connectedAppsRows = connectedApps?.map(connectedApp => ({
-        lastLogin: connectedApp?.last_used,
-        name: connectedApp?.name,
-        permission: getFormattedAppScopes(connectedApp?.scopes),
+export const ConnectedAppsTable = ({ connectedApps, handleToggleModal }: TConnectedAppsTable) => {
+    const connectedAppsRows = connectedApps.map(connectedApp => ({
+        app_id: connectedApp.app_id,
+        lastLogin: connectedApp.last_used && formatDate(connectedApp.last_used),
+        name: connectedApp.name,
+        permission: getFormattedAppScopes(connectedApp.scopes),
     }));
 
     return (
@@ -28,7 +30,15 @@ export const ConnectedAppsTable = ({ connectedApps }: TConnectedAppsTable) => {
                     <span>{data.name}</span>
                     <span>{data.permission}</span>
                     <span>{data.lastLogin}</span>
-                    <Button color='black' rounded='sm' size='sm' textSize='sm' type='button' variant='outlined'>
+                    <Button
+                        color='black'
+                        onClick={() => handleToggleModal(data.app_id)}
+                        rounded='sm'
+                        size='sm'
+                        textSize='sm'
+                        type='button'
+                        variant='outlined'
+                    >
                         Revoke access
                     </Button>
                 </div>

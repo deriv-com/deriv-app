@@ -15,16 +15,16 @@ import { THooks } from '../../types';
 
 const currenciesIcon = {
     aud: <CurrencyAudIcon iconSize='md' />,
-    btc: <PaymentMethodBitcoinBrandIcon height={49} width={32} />,
-    eth: <PaymentMethodEthereumBrandIcon height={49} width={30} />,
+    btc: <PaymentMethodBitcoinBrandIcon height={40} width={64} />,
+    eth: <PaymentMethodEthereumBrandIcon height={40} width={64} />,
     eur: <CurrencyEurIcon iconSize='md' />,
-    eusdt: <PaymentMethodTetherUsdtBrandIcon height={49} width={32} />,
+    eusdt: <PaymentMethodTetherUsdtBrandIcon height={40} width={64} />,
     gbp: <CurrencyGbpIcon iconSize='md' />,
-    ltc: <PaymentMethodLitecoinBrandIcon height={49} width={32} />,
-    tusdt: <PaymentMethodTetherUsdtBrandIcon height={49} width={32} />,
+    ltc: <PaymentMethodLitecoinBrandIcon height={40} width={64} />,
+    tusdt: <PaymentMethodTetherUsdtBrandIcon height={40} width={64} />,
     usd: <CurrencyUsdIcon iconSize='md' />,
-    usdc: <PaymentMethodUsdCoinBrandIcon height={49} width={32} />,
-    ust: <PaymentMethodTetherUsdtBrandIcon height={49} width={32} />,
+    usdc: <PaymentMethodUsdCoinBrandIcon height={40} width={64} />,
+    ust: <PaymentMethodTetherUsdtBrandIcon height={40} width={64} />,
 };
 
 type TWalletCurrencyIconProps = {
@@ -32,9 +32,9 @@ type TWalletCurrencyIconProps = {
 };
 
 const WalletAddMoreCurrencyIcon: React.FC<TWalletCurrencyIconProps> = ({ currency }) => (
-    <div className='wallets-add-more-currency-icon'>
+    <React.Fragment>
         {currenciesIcon[currency as keyof typeof currenciesIcon] ?? <CurrencyPlaceholderIcon iconSize='lg' />}
-    </div>
+    </React.Fragment>
 );
 
 export default WalletAddMoreCurrencyIcon;

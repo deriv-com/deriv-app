@@ -1,25 +1,27 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { Analytics } from '@deriv-com/analytics';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 
-const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tutorials }) => {
+type TSearchInput = {
+    faq_value: string;
+    setFaqSearchContent: (value: string) => void;
+    prev_active_tutorials: number;
+};
+
+const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tutorials }: TSearchInput) => {
     const { dashboard } = useDBotStore();
     const input_ref = React.useRef(null);
     const { setActiveTabTutorial, filterTuotrialTab } = dashboard;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debounceChange = React.useCallback(
         debounce(
             value => {
                 filterTuotrialTab(value);
                 setActiveTabTutorial(3);
-                Analytics.trackEvent('ce_bot_tutorial_form', {
-                    action: 'search',
-                    search_string: value,
-                });
                 if (value === '') {
                     setActiveTabTutorial(prev_active_tutorials);
                 }
@@ -32,7 +34,7 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
         ),
         []
     );
-    const onSearch = event => {
+    const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFaqSearchContent(event.target.value);
         debounceChange(event.target.value);
     };
@@ -45,7 +47,7 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
                 type='text'
                 placeholder={localize('Search')}
                 className='dc-tabs__wrapper__group__search-input'
-                onChange={event => onSearch(event)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event)}
                 value={faq_value}
             />
         </>

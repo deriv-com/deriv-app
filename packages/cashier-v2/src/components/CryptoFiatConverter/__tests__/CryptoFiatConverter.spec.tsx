@@ -1,6 +1,5 @@
 import React from 'react';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { useDevice } from '@deriv-com/ui';
 import CryptoFiatConverter from '../CryptoFiatConverter';
 import { TCurrency } from '../../../types';

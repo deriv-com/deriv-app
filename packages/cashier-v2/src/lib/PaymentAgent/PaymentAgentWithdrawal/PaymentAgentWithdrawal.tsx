@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { Loader, Text } from '@deriv-com/ui';
-import { clickAndKeyEventHandler } from '../../../../utils';
-import { PaymentAgentList, PaymentAgentSearchContainer } from '../../components';
-import { PaymentAgentProvider, usePaymentAgentContext } from '../../provider';
+import { clickAndKeyEventHandler } from '../../../utils';
+import { PaymentAgentList, PaymentAgentSearchContainer } from '../components';
+import { PaymentAgentProvider, usePaymentAgentContext } from '../provider';
 import {
     PaymentAgentUnlistedWithdrawalForm,
     PaymentAgentWithdrawalConfirm,

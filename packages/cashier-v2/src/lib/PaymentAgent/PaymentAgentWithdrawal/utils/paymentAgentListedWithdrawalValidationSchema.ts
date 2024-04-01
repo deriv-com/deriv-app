@@ -1,11 +1,11 @@
 import * as Yup from 'yup';
-import type { TCurrency } from '../../../../../types';
+import type { TCurrency } from '../../../../types';
 import {
     betweenMinAndMaxValidator,
     decimalsValidator,
     insufficientBalanceValidator,
     numberValidator,
-} from '../../../../../utils';
+} from '../../../../utils';
 
 type TGetPaymentAgentListedWithdrawalValidationSchema = {
     balance: number;

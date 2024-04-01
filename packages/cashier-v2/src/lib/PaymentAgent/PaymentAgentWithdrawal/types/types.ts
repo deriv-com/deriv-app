@@ -1,5 +1,5 @@
-import { THooks } from '../../../../../hooks/types';
-import { TCurrency } from '../../../../../types';
+import { THooks } from '../../../../hooks/types';
+import { TCurrency } from '../../../../types';
 
 export type TReceipt = {
     amount: string;

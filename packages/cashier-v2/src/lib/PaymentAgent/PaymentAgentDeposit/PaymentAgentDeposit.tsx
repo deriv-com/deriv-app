@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loader, Text } from '@deriv-com/ui';
-import { PaymentAgentList, PaymentAgentSearchContainer } from '../../components';
-import { PaymentAgentProvider, usePaymentAgentContext } from '../../provider';
+import { PaymentAgentList, PaymentAgentSearchContainer } from '../components';
+import { PaymentAgentProvider, usePaymentAgentContext } from '../provider';
 import styles from './PaymentAgentDeposit.module.scss';
 
 const PaymentAgentDeposit = () => {

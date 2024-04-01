@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import { useActiveAccount, usePaymentAgentWithdrawal } from '@deriv/api-v2';
-import type { THooks } from '../../../../../hooks/types';
-import type { TCurrency } from '../../../../../types';
+import type { THooks } from '../../../../hooks/types';
+import type { TCurrency } from '../../../../types';
 import type { TConfirm, TPaymentAgentWithdrawalModuleProps, TReceipt } from '../types';
 import {
     getPaymentAgentListedWithdrawalValidationSchema,

@@ -4,7 +4,7 @@ import { Button, Input, Text } from '@deriv-com/ui';
 import { FormatUtils } from '@deriv-com/utils';
 import type { THooks } from '../../../../../../hooks/types';
 import type { TCurrency } from '../../../../../../types';
-import { usePaymentAgentWithdrawalContext } from '../../../../lib/PaymentAgentWithdrawal/provider';
+import { usePaymentAgentWithdrawalContext } from '../../../../PaymentAgentWithdrawal/provider';
 import styles from './PaymentAgentCardWithdrawalForm.module.scss';
 
 type TPaymentAgentCardWithdrawalFormProps = {

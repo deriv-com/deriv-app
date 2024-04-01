@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { decimalsValidator, insufficientBalanceValidator, numberValidator } from '../../../../../utils';
+import { decimalsValidator, insufficientBalanceValidator, numberValidator } from '../../../../utils';
 
 export const getPaymentAgentUnlistedWithdrawalValidationSchema = (balance: number, fractionalDigits: number) => {
     return Yup.object().shape({

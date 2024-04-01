@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormatUtils } from '@deriv-com/utils';
-import { TransferConfirmScreen } from '../../../../../../components';
-import { usePaymentAgentContext } from '../../../../provider';
+import { TransferConfirmScreen } from '../../../../../components';
+import { usePaymentAgentContext } from '../../../provider';
 import { usePaymentAgentWithdrawalContext } from '../../provider';
 
 const PaymentAgentWithdrawalConfirm = () => {

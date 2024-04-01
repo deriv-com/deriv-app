@@ -26,18 +26,7 @@ describe('AdConditionContentHeader', () => {
         render(<AdConditionContentHeader type='type' />);
         expect(screen.getByText('title')).toBeInTheDocument();
     });
-    it('should handle hovering over the tooltip', () => {
-        render(<AdConditionContentHeader type='type' />);
-        const element = screen.getByTestId('dt_p2p_v2_ad_condition_tooltip_icon');
-        userEvent.hover(element);
-        expect(screen.getByText('description')).toBeInTheDocument();
-    });
-    it('should not call setIsModalOpen when not on mobile', () => {
-        render(<AdConditionContentHeader type='type' />);
-        userEvent.click(screen.getByTestId('dt_p2p_v2_ad_condition_tooltip_icon'));
-        expect(screen.queryByRole('button', { name: 'OK' })).not.toBeInTheDocument();
-    });
-    it('should handle clicking the tooltip icon on mobile', () => {
+    it('should handle clicking the tooltip icon', () => {
         mockUseDevice.mockReturnValue({ isMobile: true });
         render(<AdConditionContentHeader type='type' />);
         userEvent.click(screen.getByTestId('dt_p2p_v2_ad_condition_tooltip_icon'));

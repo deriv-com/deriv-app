@@ -60,7 +60,7 @@ const PreferredCountriesModal = ({
             isOpen={isModalOpen}
             onRequestClose={onRequestClose}
         >
-            <Modal.Header>
+            <Modal.Header onRequestClose={onRequestClose}>
                 <PreferredCountriesHeader />
             </Modal.Header>
             <Modal.Body>

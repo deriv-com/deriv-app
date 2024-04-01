@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AdConditionsModal } from '@/components/Modals';
 import { AD_CONDITION_CONTENT, AD_CONDITION_TYPES } from '@/constants';
 import { LabelPairedCircleInfoCaptionRegularIcon } from '@deriv/quill-icons';
-import { Button, Text, Tooltip, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 
 type TAdConditionContentHeaderProps = {
     type: typeof AD_CONDITION_TYPES[keyof typeof AD_CONDITION_TYPES];
@@ -16,21 +16,14 @@ const AdConditionContentHeader = ({ type }: TAdConditionContentHeaderProps) => {
             <Text color='less-prominent' size={isMobile ? 'md' : 'sm'}>
                 {AD_CONDITION_CONTENT[type]?.title}
             </Text>
-            <Tooltip message={AD_CONDITION_CONTENT[type]?.description} position='top'>
-                <Button
-                    className='p-0 hover:bg-none'
-                    color='white'
-                    onClick={() => (isMobile ? setIsModalOpen(true) : undefined)}
-                    variant='outlined'
-                >
-                    <LabelPairedCircleInfoCaptionRegularIcon
-                        data-testid='dt_p2p_v2_ad_condition_tooltip_icon'
-                        fill='#999999'
-                        height={24}
-                        width={24}
-                    />
-                </Button>
-            </Tooltip>
+            <Button className='p-0 hover:bg-none' color='white' onClick={() => setIsModalOpen(true)} variant='outlined'>
+                <LabelPairedCircleInfoCaptionRegularIcon
+                    data-testid='dt_p2p_v2_ad_condition_tooltip_icon'
+                    fill='#999999'
+                    height={24}
+                    width={24}
+                />
+            </Button>
             {isModalOpen && (
                 <AdConditionsModal isModalOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} type={type} />
             )}

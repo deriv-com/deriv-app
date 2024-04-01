@@ -35,7 +35,7 @@ const PreferredCountriesDropdown = ({
     };
     return (
         <div className='p2p-v2-preferred-countries-dropdown'>
-            <div className='px-[1.6rem] py-4'>
+            <div className='px-[1.6rem] py-[0.8rem]'>
                 <Search
                     hideBorder
                     name='preferred-countries-search'

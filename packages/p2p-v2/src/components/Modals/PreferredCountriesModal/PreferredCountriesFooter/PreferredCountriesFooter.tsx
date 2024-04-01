@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 
 type TPreferredCountriesFooterProps = {
     isDisabled: boolean;
@@ -8,6 +8,8 @@ type TPreferredCountriesFooterProps = {
 };
 
 const PreferredCountriesFooter = ({ isDisabled, onClickApply, onClickClear }: TPreferredCountriesFooterProps) => {
+    const { isMobile } = useDevice();
+    const textSize = isMobile ? 'md' : 'sm';
     return (
         <div className='flex gap-[0.8rem] w-full'>
             <Button
@@ -16,7 +18,7 @@ const PreferredCountriesFooter = ({ isDisabled, onClickApply, onClickClear }: TP
                 isFullWidth
                 onClick={onClickClear}
                 size='lg'
-                textSize='sm'
+                textSize={textSize}
                 variant='outlined'
             >
                 Clear
@@ -26,7 +28,7 @@ const PreferredCountriesFooter = ({ isDisabled, onClickApply, onClickClear }: TP
                 isFullWidth
                 onClick={onClickApply}
                 size='lg'
-                textSize='sm'
+                textSize={textSize}
                 variant='contained'
             >
                 Apply

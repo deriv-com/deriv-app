@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
-import { AdCreateEditErrorModal } from '@/components/Modals';
-import { AdCreateEditSuccessModal } from '@/components/Modals/AdCreateEditSuccessModal';
+import { AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
 import { DUMMY_COUNTRIES, MY_ADS_URL } from '@/constants';
 import { useFloatingRate } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
-import { AdWizard } from '../../components/AdWizard';
+import { AdWizard } from '../../components';
 
 const STEPS = [
     { header: { title: 'Set ad type and amount' } },
@@ -78,12 +77,10 @@ const CreateEditAd = () => {
             } else {
                 history.push(MY_ADS_URL);
             }
+        } else if (isError) {
+            setIsModalOpen(true);
         }
-    }, [isSuccess, history, shouldNotShowArchiveMessageAgain]);
-
-    if (isError) {
-        setIsModalOpen(true);
-    }
+    }, [isSuccess, history, shouldNotShowArchiveMessageAgain, isError]);
 
     return (
         <>

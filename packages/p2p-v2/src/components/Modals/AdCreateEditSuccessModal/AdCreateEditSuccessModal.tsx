@@ -43,7 +43,7 @@ const AdCreateEditSuccessModal = ({
                 </Text>
                 <Checkbox
                     checked={isChecked}
-                    label={'Don’t show this message again.'}
+                    label='Don’t show this message again.'
                     name='ad-create-success-message'
                     onChange={onToggleCheckbox}
                 />

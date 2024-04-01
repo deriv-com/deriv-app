@@ -1,11 +1,20 @@
 .p2p-v2-preferred-countries-dropdown {
+    & .p2p-v2-search {
+        & .deriv-input {
+            &__container {
+                & .deriv-input__left-content {
+                    margin-left: -1rem;
+                }
+            }
+        }
+    }
     &__content {
         height: 37rem;
         overflow-y: auto;
 
         @include mobile {
             height: unset;
-            max-height: calc(100vh - 24rem);
+            max-height: calc(100vh - 28rem);
         }
 
         &--no-footer {

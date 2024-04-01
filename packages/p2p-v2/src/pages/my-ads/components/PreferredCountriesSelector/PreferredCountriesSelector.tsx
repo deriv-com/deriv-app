@@ -5,6 +5,7 @@ import { AD_CONDITION_TYPES, DUMMY_COUNTRIES } from '@/constants';
 import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
 import { AdConditionContentHeader } from '../AdConditionContentHeader';
+import './PreferredCountriesSelector.scss';
 
 type TPreferredCountriesSelectorProps = {
     type: typeof AD_CONDITION_TYPES[keyof typeof AD_CONDITION_TYPES];
@@ -35,14 +36,11 @@ const PreferredCountriesSelector = ({ type }: TPreferredCountriesSelectorProps) 
     };
 
     return (
-        <div className='flex flex-col gap-[0.8rem]'>
+        <div className='p2p-v2-preferred-countries-selector'>
             <AdConditionContentHeader type={type} />
-            <div
-                className='flex items-center justify-between w-[32.8rem] h-16 rounded-[4px] border border-solid border-[#d6dadb] px-[1.6rem] py-0.25 cursor-pointer'
-                onClick={() => setIsModalOpen(true)}
-            >
+            <div className='p2p-v2-preferred-countries-selector__field' onClick={() => setIsModalOpen(true)}>
                 <Text
-                    className='w-full overflow-hidden text-ellipsis whitespace-nowrap'
+                    className='p2p-v2-preferred-countries-selector__field__text'
                     color='less-prominent'
                     size={isMobile ? 'md' : 'sm'}
                 >

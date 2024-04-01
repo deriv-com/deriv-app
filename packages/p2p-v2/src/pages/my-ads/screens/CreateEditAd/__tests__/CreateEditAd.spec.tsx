@@ -45,6 +45,11 @@ jest.mock('../../../components/AdWizard', () => ({
     AdWizard: () => <div>AdWizard</div>,
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: () => ({ isMobile: false }),
+}));
+
 describe('CreateEditAd', () => {
     it('should render the create edit ad component', () => {
         render(<CreateEditAd />);

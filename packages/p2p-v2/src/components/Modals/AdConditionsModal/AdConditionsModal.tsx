@@ -1,6 +1,6 @@
 import React from 'react';
 import { AD_CONDITION_CONTENT } from '@/constants';
-import { Button, Modal, Text } from '@deriv-com/ui';
+import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
 import './AdConditionsModal.scss';
 
 type TAdConditionsModalProps = {
@@ -10,6 +10,7 @@ type TAdConditionsModalProps = {
 };
 
 const AdConditionsModal = ({ isModalOpen, onRequestClose, type }: TAdConditionsModalProps) => {
+    const { isMobile } = useDevice();
     return (
         <Modal
             ariaHideApp={false}
@@ -26,7 +27,7 @@ const AdConditionsModal = ({ isModalOpen, onRequestClose, type }: TAdConditionsM
                 </Text>
             </Modal.Body>
             <Modal.Footer hideBorder>
-                <Button onClick={onRequestClose} variant='contained'>
+                <Button onClick={onRequestClose} size='lg' textSize={isMobile ? 'md' : 'sm'} variant='contained'>
                     OK
                 </Button>
             </Modal.Footer>

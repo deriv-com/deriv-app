@@ -13,18 +13,18 @@ const RegulationSwitcherMobile = () => {
     const activeRegulation = uiState.regulation;
 
     return (
-        <div className='flex items-center gap-8'>
+        <div className='flex items-center gap-8 w-1/2 lg:w-auto justify-end '>
             <InfoIcon className='w-16 h-auto' onClick={() => openModal('RegulationModal')} />
             <Tabs
                 TitleFontSize='sm'
                 activeTab={activeRegulation}
-                className='flex rounded-xs p-4 w-[120px] h-40'
+                className='flex p-4 w-[120px] h-40'
                 key={activeRegulation}
                 onChange={index => handleButtonClick(buttons[index].label)}
                 variant='secondary'
             >
                 {buttons.map(button => (
-                    <Tab className='rounded-xs' key={button.label} title={button.label} />
+                    <Tab key={button.label} title={button.label} />
                 ))}
             </Tabs>
         </div>

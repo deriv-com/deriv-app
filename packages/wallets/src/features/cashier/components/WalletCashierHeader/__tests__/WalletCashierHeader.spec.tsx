@@ -7,8 +7,10 @@ import WalletCashierHeader from '../WalletCashierHeader';
 const DISPLAY_BALANCE = 'RM42';
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useActiveWalletBalance: jest.fn().mockReturnValue({
-        displayBalance: DISPLAY_BALANCE,
+    useActiveWalletAccount: jest.fn().mockReturnValue({
+        data: {
+            display_balance: DISPLAY_BALANCE,
+        },
     }),
 }));
 

@@ -11,11 +11,11 @@ describe('useResidenceSelfDeclaration', () => {
                 residence_list: [
                     {
                         value: 'es',
-                        account_opening_self_declaration_required: true,
+                        account_opening_self_declaration_required: 1,
                     },
                     {
                         value: 'id',
-                        account_opening_self_declaration_required: false,
+                        account_opening_self_declaration_required: 0,
                     },
                 ],
             },

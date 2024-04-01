@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
     useActiveLinkedToTradingAccount,
     useActiveWalletAccount,
     useCreateNewRealAccount,
     useSettings,
 } from '@deriv/api-v2';
-import { toMoment } from '../../../../shared/src/utils/date';
+import { toMoment } from '@deriv/utils';
+import { AccountsDerivAccountLightIcon } from '@deriv/quill-icons';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
-import { WalletResponsiveSvg } from '../WalletResponsiveSvg';
 import { DerivAppsSuccessFooter } from './DerivAppsSuccessFooter';
 
 const DerivAppsGetAccount: React.FC = () => {
@@ -32,57 +32,50 @@ const DerivAppsGetAccount: React.FC = () => {
 
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
-    const openSuccessModal = useCallback(() => {
-        show(
-            <ModalStepWrapper
-                renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
-                shouldHideDerivAppHeader
-                shouldHideHeader={isDesktop}
-            >
-                <CFDSuccess
-                    description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
-                    displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
-                    renderButton={() => <DerivAppsSuccessFooter />}
-                    title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
-                />
-            </ModalStepWrapper>,
-            {
-                defaultRootId: 'wallets_modal_root',
-            }
-        );
-    }, [
-        activeLinkedToTradingAccount?.display_balance,
-        activeWallet?.wallet_currency_type,
-        isDesktop,
-        landingCompanyName,
-        show,
-    ]);
+    const createTradingAccount = () => {
+        if (!activeWallet?.is_virtual) {
+            createNewRealAccount({
+                payload: {
+                    currency: activeWallet?.currency_config?.display_code,
+                    date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
+                    first_name: firstName,
+                    last_name: lastName,
+                    residence: countryCode || '',
+                },
+            });
+        }
+    };
 
     useEffect(() => {
         if (newTradingAccountData && isAccountCreationSuccess) {
             addTradingAccountToLocalStorage(newTradingAccountData);
         }
         if (isAccountCreationSuccess) {
-            openSuccessModal();
+            show(
+                <ModalStepWrapper
+                    renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
+                    shouldHideDerivAppHeader
+                    shouldHideHeader={isDesktop}
+                >
+                    <CFDSuccess
+                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
+                        displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
+                        renderButton={() => <DerivAppsSuccessFooter />}
+                        title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
+                    />
+                </ModalStepWrapper>,
+                {
+                    defaultRootId: 'wallets_modal_root',
+                }
+            );
         }
-    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess, newTradingAccountData, openSuccessModal]);
-
-    const createTradingAccount = () => {
-        createNewRealAccount({
-            payload: {
-                currency: activeWallet?.currency_config?.display_code,
-                date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
-                first_name: firstName,
-                last_name: lastName,
-                residence: countryCode || '',
-            },
-        });
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addTradingAccountToLocalStorage, newTradingAccountData, isAccountCreationSuccess]);
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
             <div className='wallets-deriv-apps-section__icon'>
-                <WalletResponsiveSvg icon='IcWalletOptionsLight' />
+                <AccountsDerivAccountLightIcon iconSize='lg' />
             </div>
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>

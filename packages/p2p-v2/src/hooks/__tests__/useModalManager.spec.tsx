@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { useDevice } from '@deriv-com/ui';
 import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import useDevice from '../useDevice';
 import useModalManager from '../useModalManager';
 import useQueryString from '../useQueryString';
 
@@ -28,9 +28,9 @@ jest.mock('@/hooks/useQueryString', () => ({
 }));
 
 const mockedUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
-jest.mock('@/hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockImplementation(() => ({
         isMobile: false,
     })),
 }));

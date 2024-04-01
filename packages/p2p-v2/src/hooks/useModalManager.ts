@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useEventListener, useMap } from 'usehooks-ts';
-import useDevice from './useDevice';
+import { useDevice } from '@deriv-com/ui';
 import useQueryString from './useQueryString';
 
 type TUseModalManagerConfig = {

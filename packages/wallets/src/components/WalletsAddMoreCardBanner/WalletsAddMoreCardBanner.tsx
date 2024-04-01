@@ -86,6 +86,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                 color='white'
                 disabled={isAdded}
                 icon={
+                    // TODO: Replace hex colors with values from Deriv UI
                     isAdded ? (
                         <LabelPairedCheckMdFillIcon fill='#333333' />
                     ) : (

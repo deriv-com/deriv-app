@@ -33,13 +33,15 @@
 
             &__icon {
                 & > svg {
-                    transform: scale(0.7) translateX(-0.7rem);
+                    width: 2.4rem;
+                    height: 2.4rem;
                 }
             }
 
             &__details {
                 display: flex;
                 flex-direction: column;
+                padding-left: 0.8rem;
             }
 
             &__balance {

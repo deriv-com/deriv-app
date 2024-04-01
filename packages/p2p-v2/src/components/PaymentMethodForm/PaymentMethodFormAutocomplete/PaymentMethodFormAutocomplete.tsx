@@ -5,7 +5,7 @@ import { TFormState } from '@/reducers/types';
 import { Button, Input, Text } from '@deriv-com/ui';
 import CloseCircle from '../../../public/ic-close-circle.svg';
 
-type TPaymentMethodFormInputProps = {
+type TPaymentMethodFormAutocompleteProps = {
     actionType: TFormState['actionType'];
     availablePaymentMethods?: THooks.PaymentMethods.Get;
     availablePaymentMethodsList: { text: string; value: string }[];
@@ -14,14 +14,14 @@ type TPaymentMethodFormInputProps = {
     selectedPaymentMethod: TFormState['selectedPaymentMethod'];
 };
 
-const PaymentMethodFormInput = ({
+const PaymentMethodFormAutocomplete = ({
     actionType,
     availablePaymentMethods,
     availablePaymentMethodsList,
     onAdd,
     reset,
     selectedPaymentMethod,
-}: TPaymentMethodFormInputProps) => {
+}: TPaymentMethodFormAutocompleteProps) => {
     if (selectedPaymentMethod) {
         // TODO: Remember to translate this
         return (
@@ -98,4 +98,4 @@ const PaymentMethodFormInput = ({
     );
 };
 
-export default PaymentMethodFormInput;
+export default PaymentMethodFormAutocomplete;

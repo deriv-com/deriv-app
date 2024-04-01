@@ -5,7 +5,7 @@ import { PageReturn, PaymentMethodField, PaymentMethodsFormFooter } from '@/comp
 import { TFormState } from '@/reducers/types';
 import { p2p } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
-import { PaymentMethodFormInput } from './PaymentMethodFormInput';
+import { PaymentMethodFormAutocomplete } from './PaymentMethodFormAutocomplete';
 import { PaymentMethodFormModalRenderer } from './PaymentMethodFormModalRenderer';
 import './PaymentMethodForm.scss';
 
@@ -89,7 +89,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
             >
                 <div className='p2p-v2-payment-method-form__fields'>
                     <div className='p2p-v2-payment-method-form__field-wrapper'>
-                        <PaymentMethodFormInput
+                        <PaymentMethodFormAutocomplete
                             actionType={actionType}
                             availablePaymentMethods={availablePaymentMethods}
                             availablePaymentMethodsList={availablePaymentMethodsList}

@@ -1,12 +1,21 @@
+import React from 'react';
+import {
+    AccountsDerivXIcon,
+    AccountsDmt5CfdsIcon,
+    AccountsDmt5DerivedIcon,
+    AccountsDmt5FinancialIcon,
+    AccountsDmt5SwfIcon,
+    PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
+} from '@deriv/quill-icons';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
 
 export const ACCOUNT_ICONS = {
-    [MARKET_TYPE.SYNTHETIC]: 'Derived',
-    [MARKET_TYPE.FINANCIAL]: 'Financial',
-    [MARKET_TYPE.ALL]: 'SwapFree',
-    [CFD_PLATFORMS.DXTRADE]: 'DerivX',
-    [CFD_PLATFORMS.CTRADER]: 'CTrader',
-    default: 'CFDs',
+    [MARKET_TYPE.SYNTHETIC]: <AccountsDmt5DerivedIcon iconSize='lg' />,
+    [MARKET_TYPE.FINANCIAL]: <AccountsDmt5FinancialIcon iconSize='lg' />,
+    [MARKET_TYPE.ALL]: <AccountsDmt5SwfIcon iconSize='lg' />,
+    [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
+    [CFD_PLATFORMS.CTRADER]: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
+    default: <AccountsDmt5CfdsIcon iconSize='lg' />,
 } as const;
 
 export const MARKET_TYPE_SHORTCODE = {

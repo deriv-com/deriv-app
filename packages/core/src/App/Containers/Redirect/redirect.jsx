@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
 import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
@@ -24,7 +24,7 @@ const Redirect = observer(() => {
     } = ui;
 
     const url_query_string = window.location.search;
-    const url_params = React.useMemo(() => new URLSearchParams(url_query_string), [url_query_string]);
+    const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
@@ -36,11 +36,8 @@ const Redirect = observer(() => {
         history.push(`${routes.root}?ext_platform_url=${url}`);
         redirected_to_route = true;
     };
-
-    useEffect(() => {
-        setVerificationCode(code_param, action_param);
-        setNewEmail(url_params.get('email'), action_param);
-    }, [action_param, code_param, setNewEmail, setVerificationCode, url_params]);
+    setVerificationCode(code_param, action_param);
+    setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
         case 'signup': {

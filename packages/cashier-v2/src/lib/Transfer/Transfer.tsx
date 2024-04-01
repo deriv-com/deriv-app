@@ -5,11 +5,7 @@ import TransferProvider from './provider/TransferProvider';
 import { TransferForm } from './components';
 
 const Transfer = () => {
-    return (
-        <div>
-            <TransferForm />
-        </div>
-    );
+    return <TransferForm />;
 };
 
 const TransferModule = () => {

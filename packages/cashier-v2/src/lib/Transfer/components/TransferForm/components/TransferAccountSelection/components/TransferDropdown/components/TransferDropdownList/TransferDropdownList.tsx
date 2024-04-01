@@ -15,14 +15,14 @@ type TProps = {
 const TransferDropdownList: React.FC<TProps> = ({ accounts, header, onSelect, value }) => {
     return (
         <div className={styles['items-list']}>
-            <li className={styles['item-header']}>
+            <div className={styles['item-header']}>
                 <Text size='sm' weight='bold'>
                     {header}
                 </Text>
-            </li>
+            </div>
             {accounts.map(account => {
                 return (
-                    <li
+                    <button
                         className={clsx(styles.item, {
                             [styles['item--selected']]: account.loginid === value?.loginid,
                         })}
@@ -30,7 +30,7 @@ const TransferDropdownList: React.FC<TProps> = ({ accounts, header, onSelect, va
                         onClick={() => onSelect(account)}
                     >
                         <TransferAccountTile account={account} isActive={account.loginid === value?.loginid} />
-                    </li>
+                    </button>
                 );
             })}
         </div>

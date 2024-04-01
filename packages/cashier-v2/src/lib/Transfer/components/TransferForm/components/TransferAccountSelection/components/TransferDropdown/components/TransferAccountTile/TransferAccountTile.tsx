@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { CurrencyIcon, TradingAppIcon } from '../../../../../../../../../../components';
 import { TTransferableAccounts } from '../../../../../../../../types';
 import styles from './TransferAccountTile.module.scss';
@@ -27,6 +27,7 @@ const getIcon = (account: TTransferableAccounts[number]) => {
 };
 
 const TransferAccountTile: React.FC<TProps> = ({ account, isActive }) => {
+    const { isMobile } = useDevice();
     return (
         <div className={styles.container}>
             <div className={styles.account}>
@@ -40,7 +41,7 @@ const TransferAccountTile: React.FC<TProps> = ({ account, isActive }) => {
                     </Text>
                 </div>
             </div>
-            <Text size='sm' weight={isActive ? 'bold' : 'normal'}>
+            <Text size={isMobile ? 'md' : 'sm'} weight={isActive ? 'bold' : 'normal'}>
                 {account.displayBalance}
             </Text>
         </div>

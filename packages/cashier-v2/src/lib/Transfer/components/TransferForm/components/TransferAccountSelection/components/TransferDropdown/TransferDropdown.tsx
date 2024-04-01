@@ -10,7 +10,6 @@ type TProps = {
     accounts?: TTransferableAccounts;
     label?: string;
     message?: string;
-    onChange?: (inputValue: string) => void;
     onSelect: (account: TTransferableAccounts[number]) => void;
     value: TTransferableAccounts[number] | TTransferFormikContext['fromAccount'] | TTransferFormikContext['toAccount'];
 };
@@ -36,7 +35,7 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
         <div className={styles.container} ref={clickOutsideRef}>
             <button className={styles['selection-container']} onClick={toggleMenu}>
                 <div className={styles['selection-label']}>
-                    <Text size='xs'>{label}</Text>
+                    <Text size='2xs'>{label}</Text>
                 </div>
                 <div className={styles['selection-content']}>
                     {value && <TransferAccountTile account={value} />}
@@ -51,7 +50,7 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
                 </Text>
             </button>
             {isOpen && (
-                <ul className={styles['items-container']}>
+                <div className={styles['items-container']}>
                     {accounts.find(account => account.account_type === 'mt5') && (
                         <TransferDropdownList
                             accounts={accounts.filter(account => account.account_type === 'mt5')}
@@ -84,7 +83,7 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
                             value={value}
                         />
                     )}
-                </ul>
+                </div>
             )}
         </div>
     );

@@ -15,7 +15,7 @@ const TransferForm = () => {
     const [validationSchema, setValidationSchema] =
         useState<ReturnType<typeof getCryptoFiatConverterValidationSchema>>();
 
-    const getInitialToAccount = useMemo(() => {
+    const initialToAccount = useMemo(() => {
         if (!accounts || !activeAccount) return;
 
         if (activeAccount !== accounts[0]) return accounts[0];
@@ -37,8 +37,8 @@ const TransferForm = () => {
                         },
                     },
                     toAccount: {
-                        currency: getInitialToAccount?.currency as TCurrency,
-                        fractionalDigits: getInitialToAccount?.currencyConfig?.fractional_digits,
+                        currency: initialToAccount?.currency as TCurrency,
+                        fractionalDigits: initialToAccount?.currencyConfig?.fractional_digits,
                     },
                 })
             );
@@ -47,16 +47,16 @@ const TransferForm = () => {
         activeAccount?.balance,
         activeAccount?.currency,
         activeAccount?.currencyConfig?.fractional_digits,
-        getInitialToAccount?.currency,
-        getInitialToAccount?.currencyConfig?.fractional_digits,
+        initialToAccount?.currency,
+        initialToAccount?.currencyConfig?.fractional_digits,
     ]);
 
-    if (!accounts || !activeAccount || isLoading || !getInitialToAccount) return <Loader />;
+    if (!accounts || !activeAccount || isLoading || !initialToAccount) return <Loader />;
 
     const initialValues: TTransferFormikContext = {
         fromAccount: activeAccount,
         fromAmount: '',
-        toAccount: getInitialToAccount,
+        toAccount: initialToAccount,
         toAmount: '',
     };
 

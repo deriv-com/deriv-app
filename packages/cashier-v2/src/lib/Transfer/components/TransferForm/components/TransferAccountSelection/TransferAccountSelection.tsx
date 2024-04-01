@@ -34,7 +34,7 @@ const TransferAccountSelection = () => {
 
     const onSelectFromAccount = useCallback(
         (account: TTransferableAccounts[number]) => {
-            if (account === values.toAccount)
+            if (account.loginid === values.toAccount.loginid)
                 setValues(currentValues => ({
                     ...currentValues,
                     fromAccount: currentValues.toAccount,
@@ -42,12 +42,12 @@ const TransferAccountSelection = () => {
                 }));
             else setValues(currentValues => ({ ...currentValues, fromAccount: account }));
         },
-        [setValues, values.toAccount]
+        [setValues, values.toAccount.loginid]
     );
 
     const onSelectToAccount = useCallback(
         (account: TTransferableAccounts[number]) => {
-            if (account === values.fromAccount)
+            if (account.loginid === values.fromAccount.loginid)
                 setValues(currentValues => ({
                     ...currentValues,
                     fromAccount: currentValues.toAccount,
@@ -55,7 +55,7 @@ const TransferAccountSelection = () => {
                 }));
             else setValues(currentValues => ({ ...currentValues, toAccount: account }));
         },
-        [setValues, values.fromAccount]
+        [setValues, values.fromAccount.loginid]
     );
 
     if (isLoading) return null;
@@ -69,7 +69,7 @@ const TransferAccountSelection = () => {
                 value={values.fromAccount}
             />
             <TransferDropdown
-                accounts={accounts?.filter(account => account !== values.fromAccount)}
+                accounts={accounts?.filter(account => account.loginid !== values.fromAccount.loginid)}
                 label='To'
                 onSelect={onSelectToAccount}
                 value={values.toAccount}

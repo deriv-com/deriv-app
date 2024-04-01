@@ -16,6 +16,13 @@ jest.mock('../../../../../../../../../../../components', () => ({
     )),
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({
+        isMobile: false,
+    })),
+}));
+
 const mockMT5Account = {
     account_type: 'mt5',
     currency: 'USD',

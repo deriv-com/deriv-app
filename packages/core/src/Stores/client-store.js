@@ -2676,7 +2676,7 @@ export default class ClientStore extends BaseStore {
                 const data = await WS.send({ passkeys_list: 1 });
                 const should_show_effortless_login_modal =
                     this.root_store.ui.is_mobile &&
-                    !data?.passkeys_list.length &&
+                    !data?.passkeys_list?.length &&
                     this.is_passkey_supported &&
                     show_effortless_login_modal &&
                     this.is_logged_in;

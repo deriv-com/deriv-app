@@ -27,14 +27,9 @@ type TRoutesWithSubRoutes = {
 const RouteWithSubRoutes = (route: TRoutesWithSubRoutes) => {
     return (
         <Switch>
-            {route.routes &&
-                route.routes.map(subRoute => (
-                    <Route
-                        key={subRoute.path}
-                        path={subRoute.path}
-                        render={props => <subRoute.component {...props} />}
-                    />
-                ))}
+            {route.routes?.map(subRoute => (
+                <Route key={subRoute.path} path={subRoute.path} render={props => <subRoute.component {...props} />} />
+            ))}
             <Route path={route.path} render={props => <route.component {...props} />} />
         </Switch>
     );

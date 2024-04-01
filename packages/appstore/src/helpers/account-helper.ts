@@ -1,6 +1,4 @@
 import { isCryptocurrency } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { TAccountType } from '../components/modals/account-type-modal/types';
 
 type TAccountProps = {
     a_currency: string;

@@ -154,7 +154,6 @@ module.exports = function (env) {
                       new CssMinimizerPlugin(),
                   ]
                 : [],
-            usedExports: true,
             splitChunks: {
                 chunks: 'all',
                 minSize: 102400,

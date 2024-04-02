@@ -23,7 +23,7 @@
         width: 14.4rem;
         padding: 1rem;
         @include mobile {
-            width: 13.6rem;
+            min-width: 13.6rem;
         }
     }
 

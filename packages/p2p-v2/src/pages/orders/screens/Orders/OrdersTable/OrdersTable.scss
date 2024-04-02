@@ -4,8 +4,14 @@
             grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 1.5fr;
         }
 
-        &__content__row {
-            border-bottom: 1px solid #f2f3f4;
+        &__content {
+            @include mobile {
+                height: calc(100vh - 19.5rem);
+            }
+
+            &__row {
+                border-bottom: 1px solid #f2f3f4;
+            }
         }
     }
 

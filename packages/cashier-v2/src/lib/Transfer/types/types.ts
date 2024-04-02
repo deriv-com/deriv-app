@@ -7,3 +7,10 @@ export type TTransferReceipt = {
     fromAccount: TTransferableAccounts[number];
     toAccount: TTransferableAccounts[number];
 };
+
+export type TTransferFormikContext = {
+    fromAccount: TTransferableAccounts[number];
+    fromAmount: string;
+    toAccount: TTransferableAccounts[number];
+    toAmount: string;
+};

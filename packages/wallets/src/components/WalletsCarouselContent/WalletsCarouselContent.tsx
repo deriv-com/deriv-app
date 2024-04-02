@@ -117,7 +117,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (activeWallet) {
             setSelectedLoginId(activeWallet?.loginid);
         }
-    }, [activeWallet]);
+    }, [activeWallet?.loginid]);
 
     // bind to embla events
     useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
-import { DUMMY_COUNTRIES, MY_ADS_URL } from '@/constants';
+import { MY_ADS_URL } from '@/constants';
 import { useFloatingRate } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { AdWizard } from '../../components';
@@ -16,6 +16,7 @@ const STEPS = [
 const CreateEditAd = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const { data: countryList = {} } = p2p.countryList.useGet();
     const { rateType } = useFloatingRate();
     const { data: activeAccount } = useActiveAccount();
     const { data: p2pSettings } = p2p.settings.useGetSettings();
@@ -33,7 +34,7 @@ const CreateEditAd = () => {
             'min-order': '',
             'order-completion-time': `${orderPaymentPeriod ? (orderPaymentPeriod * 60).toString() : '3600'}`,
             'payment-method': '',
-            'preferred-countries': Object.keys(DUMMY_COUNTRIES),
+            'preferred-countries': Object.keys(countryList),
             'rate-value': '-0.01',
         },
         mode: 'all',
@@ -87,6 +88,7 @@ const CreateEditAd = () => {
             <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <AdWizard
+                        countryList={countryList}
                         currency={activeAccount?.currency ?? 'USD'}
                         localCurrency={p2pSettings?.localCurrency}
                         rateType={rateType}

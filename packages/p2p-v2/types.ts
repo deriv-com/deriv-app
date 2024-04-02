@@ -95,6 +95,9 @@ export namespace THooks {
     export namespace Settings {
         export type Get = NonNullable<ReturnType<typeof p2p.settings.useGetSettings>['data']>;
     }
+    export namespace Country {
+        export type Get = NonNullable<ReturnType<typeof p2p.countryList.useGet>['data']>;
+    }
 }
 export type TOrders = NonNullable<ReturnType<typeof p2p.order.useGetList>['data']>;
 
@@ -104,3 +107,5 @@ export type TStep = {
     };
     subStepCount?: number;
 };
+
+export type TCountryListItem = NonNullable<THooks.Country.Get>;

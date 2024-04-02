@@ -18,6 +18,7 @@ const AdCreateEditSuccessModal = ({
     const { isMobile } = useDevice();
     const history = useHistory();
     const [isChecked, setIsChecked] = useState(false);
+    const textSize = isMobile ? 'md' : 'sm';
     const onToggleCheckbox = useCallback(() => {
         setIsChecked(prevState => !prevState);
     }, []);
@@ -38,7 +39,7 @@ const AdCreateEditSuccessModal = ({
                 <Text weight='bold'>You’ve created an ad</Text>
             </Modal.Header>
             <Modal.Body className='p2p-v2-ad-create-edit-success-modal__body'>
-                <Text color='prominent' size={isMobile ? 'md' : 'sm'}>
+                <Text color='prominent' size={textSize}>
                     {`If the ad doesn't receive an order for ${advertsArchivePeriod} days, it will be deactivated.`}
                 </Text>
                 <Checkbox
@@ -49,7 +50,7 @@ const AdCreateEditSuccessModal = ({
                 />
             </Modal.Body>
             <Modal.Footer hideBorder>
-                <Button onClick={onClickOk} size='lg' textSize='sm'>
+                <Button onClick={onClickOk} size='lg' textSize={textSize}>
                     Ok
                 </Button>
             </Modal.Footer>

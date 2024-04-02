@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { FullPageMobileWrapper } from '@/components/FullPageMobileWrapper';
-import { Modal, useDevice } from '@deriv-com/ui';
+import { Modal, Text, useDevice } from '@deriv-com/ui';
 import { PreferredCountriesDropdown } from './PreferredCountriesDropdown';
 import { PreferredCountriesFooter } from './PreferredCountriesFooter';
-import { PreferredCountriesHeader } from './PreferredCountriesHeader';
 import './PreferredCountriesModal.scss';
 
 type TPreferredCountriesModalProps = {
@@ -42,7 +41,7 @@ const PreferredCountriesModal = ({
                           )
                         : undefined
                 }
-                renderHeader={() => <PreferredCountriesHeader />}
+                renderHeader={() => <Text weight='bold'>Preferred countries</Text>}
             >
                 <PreferredCountriesDropdown
                     list={countryList}
@@ -59,9 +58,10 @@ const PreferredCountriesModal = ({
             className='p2p-v2-preferred-countries-modal__dialog'
             isOpen={isModalOpen}
             onRequestClose={onRequestClose}
+            shouldCloseOnOverlayClick={false}
         >
             <Modal.Header onRequestClose={onRequestClose}>
-                <PreferredCountriesHeader />
+                <Text weight='bold'>Preferred countries</Text>
             </Modal.Header>
             <Modal.Body>
                 <PreferredCountriesDropdown

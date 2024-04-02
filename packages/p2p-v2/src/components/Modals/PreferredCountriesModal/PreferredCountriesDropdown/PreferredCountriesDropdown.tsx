@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import { Search } from '@/components/Search';
+import { Search } from '@/components';
 import { Checkbox, Divider } from '@deriv-com/ui';
 import { NoSearchResults } from '../NoSearchResults';
 import './PreferredCountriesDropdown.scss';

@@ -16,7 +16,13 @@ const AdConditionContentHeader = ({ type }: TAdConditionContentHeaderProps) => {
             <Text color='less-prominent' size={isMobile ? 'md' : 'sm'}>
                 {AD_CONDITION_CONTENT[type]?.title}
             </Text>
-            <Button className='p-0 hover:bg-none' color='white' onClick={() => setIsModalOpen(true)} variant='outlined'>
+            <Button
+                className='p-0 hover:bg-none'
+                color='white'
+                onClick={() => setIsModalOpen(true)}
+                type='button'
+                variant='outlined'
+            >
                 <LabelPairedCircleInfoCaptionRegularIcon
                     data-testid='dt_p2p_v2_ad_condition_tooltip_icon'
                     fill='#999999'

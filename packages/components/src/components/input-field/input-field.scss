@@ -50,10 +50,12 @@ button.dc-input-wrapper {
         align-items: center;
 
         &--increment {
-            right: 2px #{'/* rtl:ignore */'};
+            /* rtl:ignore */
+            right: 2px;
         }
         &--decrement {
-            left: 2px #{'/* rtl:ignore */'};
+            /* rtl:ignore */
+            left: 2px;
         }
         &:hover {
             background: var(--state-hover);

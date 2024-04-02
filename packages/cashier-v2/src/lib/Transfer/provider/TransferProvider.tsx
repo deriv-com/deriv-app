@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
+import { getCryptoFiatConverterValidationSchema } from '../../../components';
 import { THooks } from '../../../hooks/types';
+import { TCurrency } from '../../../types';
 import { useExtendedTransferAccounts } from '../hooks';
 import { TTransferableAccounts, TTransferReceipt } from '../types';
 
@@ -8,7 +10,12 @@ export type TTransferContext = {
     activeAccount?: TTransferableAccounts[number];
     isLoading?: boolean;
     setTransferReceipt?: React.Dispatch<React.SetStateAction<TTransferReceipt | undefined>>;
+    setTransferValidationSchema: (
+        fromAccount: TTransferableAccounts[number],
+        toAccount: TTransferableAccounts[number]
+    ) => void;
     transferReceipt?: TTransferReceipt;
+    transferValidationSchema?: ReturnType<typeof getCryptoFiatConverterValidationSchema>;
 };
 
 const TransferContext = createContext<TTransferContext | null>(null);
@@ -33,8 +40,37 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
         activeAccount: transferActiveAccount,
         isLoading,
     } = useExtendedTransferAccounts(accounts);
+    const [validationSchema, setValidationSchema] =
+        useState<ReturnType<typeof getCryptoFiatConverterValidationSchema>>();
 
     const [transferReceipt, setTransferReceipt] = useState<TTransferReceipt>();
+
+    const setTransferValidationSchema = useCallback(
+        (fromAccount: TTransferableAccounts[number], toAccount: TTransferableAccounts[number]) => {
+            const modifiedFromAccounts = {
+                balance: parseFloat(fromAccount.balance ?? ''),
+                currency: fromAccount.currency as TCurrency,
+                fractionalDigits: fromAccount.currencyConfig?.fractional_digits,
+                limits: {
+                    max: 100,
+                    min: 1,
+                },
+            };
+
+            const modifiedToAccounts = {
+                currency: toAccount.currency as TCurrency,
+                fractionalDigits: toAccount.currencyConfig?.fractional_digits,
+            };
+
+            setValidationSchema(
+                getCryptoFiatConverterValidationSchema({
+                    fromAccount: modifiedFromAccounts,
+                    toAccount: modifiedToAccounts,
+                })
+            );
+        },
+        []
+    );
 
     return (
         <TransferContext.Provider
@@ -43,7 +79,9 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
                 activeAccount: transferActiveAccount,
                 isLoading,
                 setTransferReceipt,
+                setTransferValidationSchema,
                 transferReceipt,
+                transferValidationSchema: validationSchema,
             }}
         >
             {children}

@@ -8,17 +8,14 @@ import { render, screen } from '@testing-library/react';
 jest.mock('../../../../../../../components', () => ({
     ...jest.requireActual('../../../../../../../components'),
     CryptoFiatConverter: jest.fn(({ fromAccount, toAccount }) => (
-        <div>
-            {JSON.stringify(fromAccount)}
-            {JSON.stringify(toAccount)}
-        </div>
+        <span>{`${JSON.stringify(fromAccount)}${JSON.stringify(toAccount)}`}</span>
     )),
 }));
 
 const mockFromAccount = {
     balance: 1000,
     currency: 'USD' as TCurrency,
-    fractionalDigits: 2,
+    currencyConfig: { fractional_digits: 2 },
     limits: {
         max: 100,
         min: 1,
@@ -27,7 +24,7 @@ const mockFromAccount = {
 
 const mockToAccount = {
     currency: 'BTC' as TCurrency,
-    fractionalDigits: 8,
+    currencyConfig: { fractional_digits: 8 },
 };
 
 const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -46,9 +43,17 @@ const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 describe('<TransferCryptoFiatAmountConverter />', () => {
     it('should check if the CryptoFiatConverter is receiving the correct values passed as props', () => {
-        render(<CryptoFiatConverter fromAccount={mockFromAccount} toAccount={mockToAccount} />, { wrapper });
+        render(<TransferCryptoFiatAmountConverter />, { wrapper });
         expect(
-            screen.getByText(`${JSON.stringify(mockFromAccount)}${JSON.stringify(mockToAccount)}`)
+            screen.getByText(
+                `${JSON.stringify(mockFromAccount).replace(
+                    '"currencyConfig":{"fractional_digits":2}',
+                    '"fractionalDigits":2'
+                )}${JSON.stringify(mockToAccount).replace(
+                    '"currencyConfig":{"fractional_digits":8}',
+                    '"fractionalDigits":8'
+                )}`
+            )
         ).toBeInTheDocument();
     });
 });

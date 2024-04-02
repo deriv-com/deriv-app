@@ -653,7 +653,7 @@ export default class ClientStore extends BaseStore {
         if (this.selected_currency.length) {
             return this.selected_currency;
         } else if (this.is_logged_in) {
-            return this.accounts[this.loginid].currency;
+            return this.accounts[this.loginid]?.currency || this.default_currency;
         }
 
         return this.default_currency;
@@ -792,10 +792,11 @@ export default class ClientStore extends BaseStore {
 
     get is_logged_in() {
         return !!(
-            !isEmptyObject(this.accounts) &&
-            Object.keys(this.accounts).length > 0 &&
-            this.loginid &&
-            this.accounts[this.loginid].token
+            Cookies.get('authToken') ||
+            (!isEmptyObject(this.accounts) &&
+                Object.keys(this.accounts).length > 0 &&
+                this.loginid &&
+                this.accounts[this.loginid].token)
         );
     }
 
@@ -1564,15 +1565,19 @@ export default class ClientStore extends BaseStore {
             this.setIsLoggingIn(false);
             this.setInitialized(false);
             this.setSwitched('');
+            Cookies.remove('authToken');
             return false;
         }
 
         if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
-        else this.setLoginId(LocalStore.get('active_loginid'));
-        this.user_id = LocalStore.get('active_user_id');
-        this.setAccounts(LocalStore.getObject(storage_key));
+        else this.setLoginId(authorize_response.authorize.loginid);
+        this.user_id = authorize_response.authorize.user_id || LocalStore.get('active_user_id');
+        const accounts = {};
+        authorize_response.authorize.account_list.forEach(account => {
+            accounts[account.loginid] = account;
+        });
+        this.setAccounts(accounts);
         this.setSwitched('');
-        const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed
@@ -1585,7 +1590,7 @@ export default class ClientStore extends BaseStore {
                 });
             } else {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
-                await BinarySocket.authorize(client.token);
+                await BinarySocket.authorize(Cookies.get('authToken'));
             }
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
@@ -1754,8 +1759,9 @@ export default class ClientStore extends BaseStore {
      * @param loginid
      * @returns {string}
      */
-    getToken(loginid = this.loginid) {
-        return this.getAccount(loginid).token;
+    getToken() {
+        this.loginid;
+        return Cookies.get('authToken');
     }
 
     /**
@@ -2137,7 +2143,9 @@ export default class ClientStore extends BaseStore {
             history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
         }
 
-        const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
+        const is_client_logging_in = login_new_user
+            ? login_new_user.token1
+            : obj_params.token1 ?? Cookies.get('authToken');
 
         if (is_client_logging_in) {
             this.setIsLoggingIn(true);
@@ -2161,6 +2169,17 @@ export default class ClientStore extends BaseStore {
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.authorize(is_client_logging_in);
+
+            console.log('authorize_response', authorize_response);
+
+            localStorage.setItem('active_loginid', authorize_response.authorize.loginid);
+
+            const accounts = {};
+            authorize_response.authorize.account_list.forEach(account => {
+                accounts[account.loginid] = account;
+            });
+            this.setAccounts(accounts);
+            localStorage.setItem('client.accounts', JSON.stringify(accounts));
 
             if (is_social_signup_provider) {
                 const { get_account_status } = await WS.authorized.getAccountStatus();
@@ -2186,7 +2205,6 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
-
                 if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
                 } else {

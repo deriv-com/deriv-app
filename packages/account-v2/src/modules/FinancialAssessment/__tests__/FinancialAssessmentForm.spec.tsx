@@ -1,13 +1,17 @@
 import React from 'react';
-import { ACCOUNT_MODAL_REF } from 'src/constants';
 import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ACCOUNT_MODAL_REF } from 'src/constants';
 import { FinancialAssessmentForm } from '../FinancialAssessmentForm';
 
 jest.mock('../../../components/DemoMessage', () => ({
     DemoMessage: () => <div>DemoMessage</div>,
+}));
+
+jest.mock('src/components/LeaveConfirm', () => ({
+    LeaveConfirm: () => <div>LeaveConfirm</div>,
 }));
 
 jest.mock('@deriv/api-v2', () => ({

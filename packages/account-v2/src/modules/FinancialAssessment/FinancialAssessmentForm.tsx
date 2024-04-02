@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
 import { Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { ACCOUNT_MODAL_REF } from 'src/constants';
-import { shouldHideOccupation } from 'src/utils/financialAssessmentUtils';
 import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
 import { DerivLightIcPoaLockIcon, StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { ActionScreen, Button, InlineMessage, Loader, Modal, Text, useDevice } from '@deriv-com/ui';
+import { LeaveConfirm } from 'src/components/LeaveConfirm';
+import { ACCOUNT_MODAL_REF } from 'src/constants';
+import { shouldHideOccupation } from 'src/utils/financialAssessmentUtils';
 import IcSuccess from '../../assets/status-message/ic-success.svg';
 import { DemoMessage } from '../../components/DemoMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE, ACCOUNT_V2_ROUTES, DERIV_GO_URL, P2P_URL } from '../../constants/routes';
@@ -112,22 +113,10 @@ export const FinancialAssessmentForm = () => {
 
     return (
         <Fragment>
-            {isMobile && (
-                <div className='grid grid-cols-[auto_25px] items-center pb-6 mb-10 border-solid border-b-1 border-solid-grey-2'>
-                    <Text align='center' size='lg' weight='bold'>
-                        Financial Assessment
-                    </Text>
-                    <StandaloneXmarkBoldIcon
-                        iconSize='md'
-                        onClick={() => {
-                            history.push(ACCOUNT_V2_DEFAULT_ROUTE);
-                        }}
-                    />
-                </div>
-            )}
             <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
                 {({ dirty, isSubmitting, isValid }) => (
                     <Form>
+                        <LeaveConfirm />
                         {isEUCountry && isFinancialInformationNotComplete && !isFinancialAssessmentUpdateSuccess && (
                             <InlineMessage type='filled' variant='warning'>
                                 {isMobile

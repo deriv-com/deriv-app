@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useDocumentUpload, useInvalidateQuery, useSettings } from '@deriv/api-v2';
 import { DerivLightIcPoaLockIcon, StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
+import { LeaveConfirm } from 'src/components/LeaveConfirm';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
 import { AddressFields } from '../../modules/AddressFields';
@@ -101,6 +102,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
             <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
                 {({ dirty, isSubmitting, isValid, status }) => (
                     <Form>
+                        <LeaveConfirm />
                         <div className='flex flex-col w-full min-h-screen space-y-16 lg:w-auto'>
                             {(updateError || status || resubmitting) && (
                                 <InlineMessage type='filled' variant='error'>

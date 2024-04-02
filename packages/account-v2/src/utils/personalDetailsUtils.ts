@@ -41,7 +41,7 @@ export const getPersonalDetailsInitialValues = (
         addressLine1: accountSettings.address_line_1,
         addressLine2: accountSettings.address_line_2 ?? '',
         addressPostcode: accountSettings.address_postcode ?? '',
-        addressState: '',
+        addressState: accountSettings.address_state ?? '',
         dateOfBirth: accountSettings.date_of_birth,
         emailConsent: accountSettings.email_consent ?? 0,
         firstName: accountSettings.first_name,

@@ -30,6 +30,10 @@ jest.mock('../../../hooks/usePersonalDetails', () => ({
     usePersonalDetails: jest.fn(),
 }));
 
+jest.mock('src/components/LeaveConfirm', () => ({
+    LeaveConfirm: () => <div>LeaveConfirm</div>,
+}));
+
 beforeEach(() => {
     (usePersonalDetails as jest.Mock).mockReturnValue({
         data: { isSupportProfessionalClient: true, isVirtual: false },

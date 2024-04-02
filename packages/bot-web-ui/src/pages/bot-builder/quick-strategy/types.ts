@@ -129,3 +129,11 @@ export type TFormValues = Record<string, string | number | boolean> & {
     type?: string;
     duration?: string;
 };
+
+export type TBlocklyEvents = {
+    type: string;
+    element: string;
+    group: string;
+    oldValue: string;
+    blockId: string;
+};

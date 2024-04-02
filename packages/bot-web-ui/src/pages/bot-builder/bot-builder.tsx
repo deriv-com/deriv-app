@@ -10,6 +10,7 @@ import LoadModal from '../../components/load-modal';
 import { useDBotStore } from '../../stores/useDBotStore';
 import SaveModal from '../dashboard/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../tutorials/dbot-tours/bot-builder-tour';
+import { TBlocklyEvents } from './quick-strategy/types';
 import QuickStrategy1 from './quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 
@@ -26,6 +27,8 @@ const BotBuilder = observer(() => {
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     const { data: remote_config_data } = useRemoteConfig();
+    let end_drag_id: null | string = null;
+    let selection_id: null | string = null;
 
     React.useEffect(() => {
         initDatadogLogs(remote_config_data.tracking_datadog);
@@ -70,44 +73,25 @@ const BotBuilder = observer(() => {
     };
 
     React.useEffect(() => {
-        window.addEventListener('keydown', handleKeydownBlockDelete);
-        window.addEventListener('mousedown', handleContextMenuBlockDelete);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeydownBlockDelete);
-            window.removeEventListener('mousedown', handleContextMenuBlockDelete);
-        };
-    }, []);
-
-    React.useEffect(() => {
         const workspace = window.Blockly?.derivWorkspace;
         if (workspace && !is_blockly_delete_listener_registered.current) {
             is_blockly_delete_listener_registered.current = true;
-            workspace.addChangeListener(handleTrashcanBlockDelete);
+            workspace.addChangeListener(handleBlockDelete);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_loading]);
 
-    let end_drag = false;
-    const handleTrashcanBlockDelete = (e: Event) => {
-        if (e.type === 'endDrag' && !end_drag) {
-            end_drag = true;
+    const handleBlockDelete = (e: TBlocklyEvents) => {
+        if (e.type === 'ui' && e.element === 'selected' && !e.group?.includes('dbot-')) {
+            selection_id = e.oldValue;
         }
-        if (e.type === 'delete' && end_drag) {
-            handleBlockDeleteNotification();
-            end_drag = false;
+        if (e.type === 'endDrag' && !e.group?.includes('dbot-')) {
+            end_drag_id = e.group;
         }
-    };
-
-    const handleContextMenuBlockDelete = (e: Event) => {
-        if (!e?.target?.innerText?.includes('Delete')) return;
-        handleBlockDeleteNotification();
-    };
-
-    const handleKeydownBlockDelete = (e: Event) => {
-        if (e.key === 'Backspace' || e.key === 'Delete') {
+        if (e.type === 'delete' && (end_drag_id === e.group || selection_id === e.blockId)) {
             handleBlockDeleteNotification();
+            end_drag_id = null;
         }
     };
 

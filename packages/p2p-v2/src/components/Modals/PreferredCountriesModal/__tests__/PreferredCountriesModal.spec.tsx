@@ -29,7 +29,14 @@ describe('PreferredCountriesModal', () => {
         expect(screen.getByTestId('dt_p2p_v2_full_page_mobile_wrapper')).toBeInTheDocument();
         expect(screen.getByText('Preferred countries')).toBeInTheDocument();
     });
-    it('should handle onClickClear', () => {
+    it('should handle onClickClear in full page view', () => {
+        render(<PreferredCountriesModal {...mockProps} />);
+        const clearButton = screen.getByRole('button', { name: 'Clear' });
+        clearButton.click();
+        expect(mockProps.setSelectedCountries).toHaveBeenCalledWith([]);
+    });
+    it('should handle onClickClear in modal view', () => {
+        mockUseDevice.mockReturnValue({ isMobile: false });
         render(<PreferredCountriesModal {...mockProps} />);
         const clearButton = screen.getByRole('button', { name: 'Clear' });
         clearButton.click();

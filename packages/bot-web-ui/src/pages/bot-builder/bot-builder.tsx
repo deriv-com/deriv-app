@@ -6,11 +6,11 @@ import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import initDatadogLogs from 'Utils/datadog-logs';
+import { TBlocklyEvents } from 'Types';
 import LoadModal from '../../components/load-modal';
 import { useDBotStore } from '../../stores/useDBotStore';
 import SaveModal from '../dashboard/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../tutorials/dbot-tours/bot-builder-tour';
-import { TBlocklyEvents } from './quick-strategy/types';
 import QuickStrategy1 from './quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 

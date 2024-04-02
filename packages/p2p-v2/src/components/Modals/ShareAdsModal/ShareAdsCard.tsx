@@ -2,13 +2,12 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { ADVERT_TYPE, BUY_SELL, p2pLogo, RATE_TYPE } from '@/constants';
-import { p2p } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import './ShareAdsCard.scss';
+import { THooks } from 'types';
 
-type TAdvertProps = ReturnType<typeof p2p.advert.useGet>['data'];
 type TShareMyAdsCardProps = {
-    advert?: Partial<TAdvertProps>;
+    advert?: Partial<THooks.Advert.Get>;
     advertUrl: string;
 };
 

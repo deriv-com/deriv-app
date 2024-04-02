@@ -1,4 +1,4 @@
-import { THooks } from '../../../../hooks/types';
+import type { THooks } from '../../../../hooks/types';
 import { validateCryptoAddress, validateCryptoInput, validateFiatInput } from '../withdrawalCryptoValidators';
 
 describe('withdrawalCryptoValidator', () => {

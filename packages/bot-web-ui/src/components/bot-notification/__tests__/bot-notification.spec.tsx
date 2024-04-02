@@ -1,9 +1,7 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import RootStore from '../../../stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from '../../../stores/useDBotStore';
 import { NotificationContent } from '../bot-notification';

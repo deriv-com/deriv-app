@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
-import { Button } from '@deriv-com/ui';
 import { FormSubHeader } from '../../components/FormSubHeader';
 import { getTradingAssessmentQuestions } from '../../constants/tradingAssessmentQuestions';
 import { RiskToleranceWarningModal } from './RiskToleranceWarningModal';
+import { TestWarningModal } from './TestWarningModal';
 import { TradingAssessmentContainer } from './TradingAssessmentContainer';
 
 export const TradingAssessmentForm = () => {
     const [shouldShowRiskTolerence, setshouldShowRiskTolerence] = useState(false);
+    const [shouldShowTestWarningModal, setShouldShowTestWarningModal] = useState(false);
     const tradingAssessmentQuestions = getTradingAssessmentQuestions();
-
-    const handleSubmit = () => {
-        setshouldShowRiskTolerence(true);
-    };
 
     const handleAcceptRiskTolerence = () => {
         setshouldShowRiskTolerence(false);
@@ -24,8 +21,19 @@ export const TradingAssessmentForm = () => {
         );
     }
 
+    if (shouldShowTestWarningModal) {
+        return (
+            <TestWarningModal
+                handleSubmit={() => setShouldShowTestWarningModal(false)}
+                isModalOpen={shouldShowTestWarningModal}
+            />
+        );
+    }
+
     return (
-        <Formik initialValues={''} onSubmit={handleSubmit}>
+        //TODO: implement onSubmit function and implement initialValues when tradingAssessment hooks is ready
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        <Formik initialValues={{}} onSubmit={() => {}}>
             <Form>
                 <div>
                     <FormSubHeader>Trading assessment</FormSubHeader>
@@ -49,11 +57,6 @@ export const TradingAssessmentForm = () => {
                             />
                         ));
                     })}
-                </div>
-                <div className='sticky bottom-0 flex justify-end flex-shrink-0 w-full px-24 py-16 border-solid bg-solid-slate-0 border-t-1 border-solid-grey-2'>
-                    <Button disabled={false} isFullWidth={false} isLoading={false} size='lg' type='submit'>
-                        Submit
-                    </Button>
                 </div>
             </Form>
         </Formik>

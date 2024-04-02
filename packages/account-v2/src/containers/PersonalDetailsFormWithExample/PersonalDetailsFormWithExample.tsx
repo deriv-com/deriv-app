@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
 import { Checkbox, InlineMessage, Text } from '@deriv-com/ui';
@@ -23,6 +23,12 @@ export const PersonalDetailsFormWithExample = ({ errorStatus, onConfirm }: TPers
     }
 
     const { dirty, errors, values } = formik;
+
+    useEffect(() => {
+        if (values.nameDOBConfirmation && onConfirm) {
+            onConfirm();
+        }
+    }, [values, onConfirm]);
 
     const fieldsToDisplay = generateRequiredNameDOBFields(errorStatus);
 
@@ -98,19 +104,13 @@ export const PersonalDetailsFormWithExample = ({ errorStatus, onConfirm }: TPers
                     type='checkbox'
                     validate={validateField(validationSchema.fields.nameDOBConfirmation)}
                 >
-                    {({ field, form, meta: { error, touched } }: FieldProps) => (
+                    {({ field, meta: { error, touched } }: FieldProps) => (
                         <Checkbox
                             {...field}
                             data-testid='dt_poi_confirm_with_example'
-                            disabled={isDisabled || !dirty}
+                            disabled={isDisabled || (Boolean(errorStatus) && !dirty)}
                             error={Boolean(error && touched)}
                             label='I confirm that the name and date of birth above match my chosen identity document.'
-                            onChange={value => {
-                                form.setFieldValue(field.name, value.target.checked);
-                                if (value.target.checked) {
-                                    onConfirm?.();
-                                }
-                            }}
                         />
                     )}
                 </Field>

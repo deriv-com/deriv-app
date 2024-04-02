@@ -23,7 +23,7 @@ const mockResidenceListResponse = [
 
 describe('POICountrySelector', () => {
     it('should render component', () => {
-        render(<POICountrySelector handleNext={jest.fn()} onCountrySelect={jest.fn()} />);
+        render(<POICountrySelector errorStatus={null} handleNext={jest.fn()} onCountrySelect={jest.fn()} />);
         expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Next/ })).toBeDisabled();
     });
@@ -32,13 +32,13 @@ describe('POICountrySelector', () => {
         render(<POICountrySelector errorStatus='error' handleNext={jest.fn()} onCountrySelect={jest.fn()} />);
         expect(screen.getByText('Your identity verification failed because:')).toBeInTheDocument();
         expect(
-            screen.getByText('We were unable to verify the identity document with the details provided.')
+            screen.getByText('Sorry, an internal error occurred. Hit the above checkbox to try again.')
         ).toBeInTheDocument();
     });
 
     it('should enable Next button when country is selected', async () => {
         (useResidenceList as jest.Mock).mockReturnValue({ data: mockResidenceListResponse });
-        render(<POICountrySelector handleNext={jest.fn()} onCountrySelect={jest.fn()} />);
+        render(<POICountrySelector errorStatus={null} handleNext={jest.fn()} onCountrySelect={jest.fn()} />);
         const elCountrySelector = screen.getByRole('combobox', { name: /Country/ });
         const elNextButton = screen.getByRole('button', { name: /Next/ });
         expect(elNextButton).toBeDisabled();
@@ -56,7 +56,7 @@ describe('POICountrySelector', () => {
     it('should call onCountrySelect when country is selected', async () => {
         (useResidenceList as jest.Mock).mockReturnValue({ data: mockResidenceListResponse });
         const onCountrySelect = jest.fn();
-        render(<POICountrySelector handleNext={jest.fn()} onCountrySelect={onCountrySelect} />);
+        render(<POICountrySelector errorStatus={null} handleNext={jest.fn()} onCountrySelect={onCountrySelect} />);
         const elCountrySelector = screen.getByRole('combobox', { name: /Country/ });
 
         userEvent.click(elCountrySelector);
@@ -70,7 +70,7 @@ describe('POICountrySelector', () => {
     it('should call handleNext when Next button is clicked', async () => {
         (useResidenceList as jest.Mock).mockReturnValue({ data: mockResidenceListResponse });
         const handleNext = jest.fn();
-        render(<POICountrySelector handleNext={handleNext} onCountrySelect={jest.fn()} />);
+        render(<POICountrySelector errorStatus={null} handleNext={handleNext} onCountrySelect={jest.fn()} />);
         const elCountrySelector = screen.getByRole('combobox', { name: /Country/ });
         const elNextButton = screen.getByRole('button', { name: /Next/ });
 

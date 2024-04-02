@@ -106,9 +106,6 @@ const css_loaders = [
         loader: 'sass-loader',
         options: {
             sourceMap: !IS_RELEASE,
-            sassOptions: {
-                outputStyle: 'expanded',
-            },
         },
     },
     {

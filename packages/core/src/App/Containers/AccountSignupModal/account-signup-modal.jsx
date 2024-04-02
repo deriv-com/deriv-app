@@ -3,7 +3,7 @@ import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
-import { getLocation, SessionStore, shuffleArray } from '@deriv/shared';
+import { getLocation, SessionStore, setPerformanceValue, shuffleArray } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 
@@ -151,6 +151,8 @@ const AccountSignup = ({
             });
         }
     };
+
+    if (!is_loading) setPerformanceValue('signup_time');
 
     return (
         <div className='account-signup'>

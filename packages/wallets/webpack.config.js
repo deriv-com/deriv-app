@@ -1,7 +1,6 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_release =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
@@ -51,7 +50,6 @@ module.exports = function (env) {
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
-        plugins: [new BundleAnalyzerPlugin()],
         module: {
             rules: [
                 {

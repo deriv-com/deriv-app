@@ -72,8 +72,6 @@ declare module 'react-router-dom' {
 const Router: React.FC = () => {
     const { data: walletAccounts, isLoading } = useWalletAccountsList();
 
-    if (isLoading) return <WalletsCardLoader />;
-
     if ((!walletAccounts || !walletAccounts.length) && !isLoading)
         return (
             <Route

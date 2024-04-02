@@ -40,7 +40,8 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         setModalOptions({
             shouldHideDerivAppHeader,
         });
-    }, [shouldHideDerivAppHeader, setModalOptions]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shouldHideDerivAppHeader]);
 
     const Footer = () =>
         hasRenderFooter ? (

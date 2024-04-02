@@ -1,7 +1,7 @@
 .wallets-modal-step-wrapper {
     background: var(--general-main-2, #ffffff);
     border-radius: 0.8rem;
-    animation: popup 0.4s;
+    animation: fadein 0.6s ease backwards;
 
     @include mobile {
         animation: popup 0.2s;
@@ -36,7 +36,7 @@
     }
 
     &__header {
-        padding: 2rem;
+        padding: 1.6rem 2.4rem;
         border-bottom: 0.2rem solid #f2f3f4;
         display: flex;
         justify-content: space-between;

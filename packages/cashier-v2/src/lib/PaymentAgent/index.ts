@@ -1,4 +1,4 @@
-import { PaymentAgentDepositModule } from './lib/PaymentAgentDeposit';
-import { PaymentAgentWithdrawalModule } from './lib/PaymentAgentWithdrawal';
+import { PaymentAgentDepositModule } from './PaymentAgentDeposit';
+import { PaymentAgentWithdrawalModule } from './PaymentAgentWithdrawal';
 
 export { PaymentAgentDepositModule, PaymentAgentWithdrawalModule };

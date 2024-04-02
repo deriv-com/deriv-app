@@ -121,7 +121,9 @@ export const deepFreeze = (obj: any) => {
 };
 
 export const deepCopy = (value: any) => {
-    if (Array.isArray(value)) {
+    if (value === null) {
+        return null;
+    } else if (Array.isArray(value)) {
         const count = value.length;
         const arr = new Array(count);
         for (let i = 0; i < count; i++) {

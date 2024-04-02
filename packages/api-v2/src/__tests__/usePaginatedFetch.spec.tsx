@@ -1,6 +1,5 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
 import AuthProvider from '../AuthProvider';
 import usePaginatedFetch from '../usePaginatedFetch';

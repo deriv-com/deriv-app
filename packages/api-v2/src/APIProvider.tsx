@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { getAppId, getSocketURL, useWS } from '@deriv/shared';
+import { getAppId, getSocketURL } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
     TSocketEndpointNames,

@@ -1,16 +1,11 @@
 import React from 'react';
 import { Formik } from 'formik';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { mock_ws } from 'Utils/mock';
-
 import SymbolSelect from '../symbol';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());

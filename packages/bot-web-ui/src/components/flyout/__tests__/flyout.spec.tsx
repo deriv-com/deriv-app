@@ -1,15 +1,11 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Flyout from '../flyout';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/xml/main.xml', () => '<xml>sample</xml>');
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());

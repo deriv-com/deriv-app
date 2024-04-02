@@ -56,6 +56,7 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
+    ctrader_trading_platform_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
     is_switching = false;
@@ -166,6 +167,7 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
+            ctrader_trading_platform_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
@@ -372,6 +374,7 @@ export default class ClientStore extends BaseStore {
             responseMt5LoginList: action.bound,
             responseDxtradeTradingServers: action.bound,
             responseTradingPlatformAvailableAccounts: action.bound,
+            responseCTraderTradingPlatformAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
@@ -1626,7 +1629,7 @@ export default class ClientStore extends BaseStore {
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(
-                this.responseTradingPlatformAvailableAccounts
+                this.responseCTraderTradingPlatformAvailableAccounts
             );
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
@@ -2460,6 +2463,12 @@ export default class ClientStore extends BaseStore {
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
+        }
+    }
+
+    responseCTraderTradingPlatformAvailableAccounts(response) {
+        if (!response.error) {
+            this.ctrader_trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
     }
 

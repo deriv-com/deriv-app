@@ -91,7 +91,7 @@ const CTraderDerivXTradeModal = ({
         modules: { cfd },
     } = useStore();
 
-    const { ctrader_accounts_list, trading_platform_available_accounts } = client;
+    const { ctrader_accounts_list, ctrader_trading_platform_available_accounts } = client;
     const { setAccountType, toggleMT5TradeModal } = cfd;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal } = ui;
@@ -119,8 +119,8 @@ const CTraderDerivXTradeModal = ({
                     <Localize
                         i18n_default_text='Manage up to {{max_count}} Deriv cTrader accounts (up to {{ strategy_count }} strategy accounts and 1 non-strategy account for payouts and commissions).'
                         values={{
-                            max_count: trading_platform_available_accounts[0]?.max_count,
-                            strategy_count: Number(trading_platform_available_accounts[0]?.max_count) - 1,
+                            max_count: ctrader_trading_platform_available_accounts[0]?.max_count,
+                            strategy_count: Number(ctrader_trading_platform_available_accounts[0]?.max_count) - 1,
                         }}
                     />
                 </Text>
@@ -263,8 +263,8 @@ const CTraderDerivXTradeModal = ({
                             .map(ctrader_account => {
                                 return (
                                     <div key={ctrader_account.login} className='cfd-trade-modal__list-of-accounts'>
-                                        <Text size='xxs'>{ctrader_account.login}</Text>
-                                        <Text size='xxs' weight='bold'>
+                                        <Text size='xs'>{ctrader_account.login}</Text>
+                                        <Text size='xs' weight='bold'>
                                             <Money
                                                 amount={ctrader_account.balance}
                                                 currency={ctrader_account.currency}
@@ -275,7 +275,7 @@ const CTraderDerivXTradeModal = ({
                                     </div>
                                 );
                             })}
-                        {(trading_platform_available_accounts[0]?.available_count ?? 1) > 0 && (
+                        {(ctrader_trading_platform_available_accounts[0]?.available_count ?? 1) > 0 && (
                             <div className='cfd-trade-modal__get-more-accounts'>
                                 <Button
                                     onClick={() => {

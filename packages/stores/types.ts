@@ -412,6 +412,7 @@ type TClientStore = {
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    ctrader_trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;

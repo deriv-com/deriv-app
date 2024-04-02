@@ -1,6 +1,6 @@
 import React from 'react';
+import { DerivLightIcMt5PasswordUpdatedIcon } from '@deriv/quill-icons';
 import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
-import MT5PasswordUpdatedIcon from '../../../../../public/images/ic-mt5-password-updated.svg';
 
 type TProps = {
     setNextScreen?: VoidFunction;
@@ -15,7 +15,7 @@ const MT5ChangeInvestorPasswordSavedScreen: React.FC<TProps> = ({ setNextScreen 
                 </WalletText>
             }
             descriptionSize='sm'
-            icon={<MT5PasswordUpdatedIcon />}
+            icon={<DerivLightIcMt5PasswordUpdatedIcon height={120} width={120} />}
             renderButtons={() => (
                 <WalletButton onClick={setNextScreen} size='lg'>
                     Okay

@@ -210,7 +210,7 @@ const ProofOfAddressForm = observer(
 
                 const get_account_status_response = await WS.authorized.getAccountStatus();
 
-                if (get_account_status_response.error) {
+                if (!get_account_status_response || get_account_status_response.error) {
                     setAPIInitialLoadError(get_account_status_response.error.message);
                     setSubmitting(false);
                     return;

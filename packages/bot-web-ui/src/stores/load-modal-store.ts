@@ -507,7 +507,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
-            const ref = document.getElementById('load-strategy__blockly-container');
+            const ref = document?.getElementById('load-strategy__blockly-container');
             if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line

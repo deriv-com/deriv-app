@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useFetchConnectedApps, useRevokeConnectedApps } from '@deriv/api-v2';
 import { Loader, useDevice } from '@deriv-com/ui';
 import { ErrorMessage } from '../../components/ErrorMessage';
@@ -20,15 +20,15 @@ export const ConnectedApps = () => {
     const isLoading = isFetchLoading || isRevokeLoading;
     const isError = isFetchError || isRevokeError;
 
-    const handleToggleModal = useCallback((appId: number | null = null) => {
+    const handleToggleModal = (appId: number | null = null) => {
         setSelectedAppId(appId);
         setIsModalOpen(isModalOpen => !isModalOpen);
-    }, []);
+    };
 
-    const handleRevokeAccess = useCallback(() => {
+    const handleRevokeAccess = () => {
         setIsModalOpen(false);
         selectedAppId && revokeMutate(selectedAppId);
-    }, [revokeMutate, selectedAppId]);
+    };
 
     if (isLoading) {
         return (

@@ -14,6 +14,7 @@ import {
     CTRADER_DESKTOP_WINDOWS_DOWNLOAD,
     getTitle,
     platformsText,
+    STRATEGY_PROVIDER_NOTES,
 } from '../Helpers/constants';
 
 import { TCFDPasswordReset } from './props.types';
@@ -110,25 +111,32 @@ const CTraderDerivXTradeModal = ({
             </Text>
         ),
         content: (
-            <React.Fragment>
-                <Text size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
+            <ol className='cfd-trade-modal__expansion-panel--ordered-list'>
+                <Text as='li' size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
                     {localize('Use your Deriv account email and password to log in to cTrader.')}
                 </Text>
-                <div className='cfd-trade-modal__expansion-panel--divider' />
-                <Text size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
+                <Text as='li' size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
                     <Localize
-                        i18n_default_text='Manage up to {{max_count}} Deriv cTrader accounts (up to {{ strategy_count }} strategy accounts and 1 non-strategy account for payouts and commissions).'
+                        i18n_default_text='Manage up to {{max_count}} Deriv cTrader accounts. While you can convert any of your Deriv cTrader accounts into a strategy account, please take note of the following:'
                         values={{
                             max_count: ctrader_trading_platform_available_accounts[0]?.max_count,
-                            strategy_count: Number(ctrader_trading_platform_available_accounts[0]?.max_count) - 1,
                         }}
                     />
                 </Text>
-                <div className='cfd-trade-modal__expansion-panel--divider' />
-                <Text size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
-                    {localize('Keep 1 non-strategy account open to manage deposits, withdrawals, and commissions.')}
-                </Text>
-            </React.Fragment>
+                <ul className='cfd-trade-modal__expansion-panel--unordered-list'>
+                    {STRATEGY_PROVIDER_NOTES.map(note => (
+                        <Text
+                            key={note}
+                            as='li'
+                            size='xxs'
+                            line_height='l'
+                            className='cfd-trade-modal__expansion-panel--content'
+                        >
+                            {localize(note)}
+                        </Text>
+                    ))}
+                </ul>
+            </ol>
         ),
     };
 

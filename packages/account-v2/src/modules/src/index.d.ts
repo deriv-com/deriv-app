@@ -1,16 +1,11 @@
-import type { TSupportedDocuments } from '../../types';
+import { useKycAuthStatus } from '@deriv/api-v2';
 
-type TManualForm = {
-    document_expiry: string;
-    document_number: string;
-};
+export type TSupportedDocuments = Exclude<
+    Exclude<ReturnType<typeof useKycAuthStatus>['kyc_auth_status'], undefined>['identity']['supported_documents'],
+    undefined
+>['idv'];
 
 type TManualDocumentTypes = 'driving_licence' | 'national_identity_card' | 'nimc_slip' | 'passport';
-
-type TManualFormProps = {
-    onSubmit: (values: TManualForm) => void;
-    selectedDocument: TManualDocumentTypes;
-};
 
 type TIDVFormProps = {
     allowDefaultValue?: boolean;
@@ -26,11 +21,20 @@ type TOnfidoContainer = {
     selectedDocument?: TManualDocumentTypes;
 };
 
-declare const ManualForm: ({ onSubmit, selectedDocument }: TManualFormProps) => JSX.Element,
+declare const ManualUpload: ({ countryCode }: { countryCode: string }) => JSX.Element,
     POAFormContainer: () => JSX.Element | null,
     IDVForm: (props: TIDVFormProps) => JSX.Element,
     AddressFields: () => JSX.Element,
     IDVService: () => JSX.Element,
-    OnfidoContainer: (props: TOnfidoContainer) => JSX.Element;
+    OnfidoContainer: (props: TOnfidoContainer) => JSX.Element,
+    FinancialAssessmentFields: () => JSX.Element;
 
-export { AddressFields, IDVForm, IDVService, ManualForm, OnfidoContainer, POAFormContainer };
+export {
+    AddressFields,
+    FinancialAssessmentFields,
+    IDVForm,
+    IDVService,
+    ManualUpload,
+    OnfidoContainer,
+    POAFormContainer,
+};

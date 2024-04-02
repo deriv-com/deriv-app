@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { ACCOUNT_MODAL_REF } from 'src/constants';
@@ -9,10 +9,8 @@ import { ActionScreen, Button, InlineMessage, Loader, Modal, Text, useDevice } f
 import IcSuccess from '../../assets/status-message/ic-success.svg';
 import { DemoMessage } from '../../components/DemoMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE, ACCOUNT_V2_ROUTES, DERIV_GO_URL, P2P_URL } from '../../constants/routes';
-import { FinancialAssessmentConfirmModal } from '../../containers/FinancialAssessmentConfirmModal';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
 import { FinancialAssessmentFields } from '../FinancialAssessmentFields';
-import { TradingExperienceFields } from '../TradingExperienceFields';
 
 export const FinancialAssessmentForm = () => {
     const { data: activeAccount } = useActiveTradingAccount();
@@ -20,8 +18,6 @@ export const FinancialAssessmentForm = () => {
     const { isEUCountry } = useIsEuRegion();
     const { isMobile } = useDevice();
     const history = useHistory();
-
-    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
     Modal.setAppElement(ACCOUNT_MODAL_REF);
 
@@ -32,9 +28,7 @@ export const FinancialAssessmentForm = () => {
     const {
         is_authenticated: isAuthenticated,
         is_financial_information_not_complete: isFinancialInformationNotComplete,
-        is_trading_experience_not_complete: isTradingExperienceNotComplete,
     } = accountStatus || {};
-    const hasTradingExperience = isEUCountry || isTradingExperienceNotComplete;
 
     const {
         data: financialAssessment,
@@ -50,21 +44,13 @@ export const FinancialAssessmentForm = () => {
 
     const {
         account_turnover: accountTurnover,
-        binary_options_trading_experience: binaryOptionsTradingExperience,
-        binary_options_trading_frequency: binaryOptionsTradingFrequency,
-        cfd_trading_experience: cfdTradingExperience,
-        cfd_trading_frequency: cfdTradingFrequency,
         education_level: educationLevel,
         employment_industry: employmentIndustry,
         employment_status: employmentStatus,
         estimated_worth: estimatedWorth,
-        forex_trading_experience: forexTradingExperience,
-        forex_trading_frequency: forexTradingFrequency,
         income_source: incomeSource,
         net_income: netIncome,
         occupation,
-        other_instruments_trading_experience: otherInstrumentsTradingExperience,
-        other_instruments_trading_frequency: otherInstrumentsTradingFrequency,
         source_of_wealth: sourceOfWealth,
     } = financialAssessment;
 
@@ -78,27 +64,9 @@ export const FinancialAssessmentForm = () => {
         netIncome,
         occupation,
         sourceOfWealth,
-        ...(hasTradingExperience && {
-            binaryOptionsTradingExperience,
-            binaryOptionsTradingFrequency,
-            cfdTradingExperience,
-            cfdTradingFrequency,
-            forexTradingExperience,
-            forexTradingFrequency,
-            otherInstrumentsTradingExperience,
-            otherInstrumentsTradingFrequency,
-        }),
     };
 
     type TFinancialAssessmentFormValues = typeof initialValues;
-
-    const onSubmit = (handleSubmit: (e?: React.FormEvent<HTMLFormElement>) => void) => () => {
-        if (hasTradingExperience && isTradingExperienceNotComplete) {
-            setIsConfirmModalOpen(true);
-        } else {
-            handleSubmit();
-        }
-    };
 
     const handleFormSubmit = async (values: TFinancialAssessmentFormValues) => {
         updateFinancialAssessment({
@@ -111,16 +79,6 @@ export const FinancialAssessmentForm = () => {
             net_income: values.netIncome,
             source_of_wealth: values.sourceOfWealth,
             ...(shouldHideOccupation(values.employmentStatus) ? {} : { occupation: values.occupation }),
-            ...(hasTradingExperience && {
-                binary_options_trading_experience: values.binaryOptionsTradingExperience,
-                binary_options_trading_frequency: values.binaryOptionsTradingFrequency,
-                cfd_trading_experience: values.cfdTradingExperience,
-                cfd_trading_frequency: values.cfdTradingFrequency,
-                forex_trading_experience: values.forexTradingExperience,
-                forex_trading_frequency: values.forexTradingFrequency,
-                other_instruments_trading_experience: values.otherInstrumentsTradingExperience,
-                other_instruments_trading_frequency: values.otherInstrumentsTradingFrequency,
-            }),
         });
     };
 
@@ -168,7 +126,7 @@ export const FinancialAssessmentForm = () => {
                 </div>
             )}
             <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
-                {({ dirty, handleSubmit, isSubmitting, isValid }) => (
+                {({ dirty, isSubmitting, isValid }) => (
                     <Form>
                         {isEUCountry && isFinancialInformationNotComplete && !isFinancialAssessmentUpdateSuccess && (
                             <InlineMessage type='filled' variant='warning'>
@@ -185,16 +143,6 @@ export const FinancialAssessmentForm = () => {
                                     <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 lg:flex-shrink-0' />
                                 </div>
                                 <FinancialAssessmentFields />
-                                {hasTradingExperience && (
-                                    <>
-                                        <div className='flex mb-12 h-24 gap-8 self-stretch lg:self-auto justify-center items-center lg:gap-[11px]'>
-                                            <Text weight='bold'>Trading experience</Text>
-                                            <Text size='xs'>(All fields are required)</Text>
-                                            <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 lg:flex-shrink-0' />
-                                        </div>
-                                        <TradingExperienceFields />
-                                    </>
-                                )}
                             </div>
                             <div className='sticky bottom-0 flex justify-end flex-shrink-0 w-full px-24 py-16 border-solid bg-solid-slate-0 border-t-1 border-solid-grey-2'>
                                 {financialAssessmentUpdateError && (
@@ -211,19 +159,13 @@ export const FinancialAssessmentForm = () => {
                                     disabled={isSubmitting || !isValid || !dirty}
                                     isFullWidth={isMobile}
                                     isLoading={isFinancialAssessmentUpdating}
-                                    onClick={onSubmit(handleSubmit)}
                                     size='lg'
-                                    type='button'
+                                    type='submit'
                                 >
                                     Submit
                                 </Button>
                             </div>
                         </div>
-                        <FinancialAssessmentConfirmModal
-                            handleCancel={() => setIsConfirmModalOpen(false)}
-                            handleSubmit={handleSubmit}
-                            isModalOpen={isConfirmModalOpen}
-                        />
                     </Form>
                 )}
             </Formik>

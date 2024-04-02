@@ -1,17 +1,13 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv-com/ui';
 
-type TFinancialAssessmentConfirmModal = {
+type TAppropriatenessTestModal = {
     handleCancel: () => void;
     handleSubmit: () => void;
     isModalOpen: boolean;
 };
 
-export const FinancialAssessmentConfirmModal = ({
-    handleCancel,
-    handleSubmit,
-    isModalOpen,
-}: TFinancialAssessmentConfirmModal) => (
+export const AppropriatenessTestModal = ({ handleCancel, handleSubmit, isModalOpen }: TAppropriatenessTestModal) => (
     <Modal className='md:w-[440px] sm:w-[312px]' isOpen={isModalOpen}>
         <Modal.Header className='border-b-0'>
             <Text size='md' weight='bold'>

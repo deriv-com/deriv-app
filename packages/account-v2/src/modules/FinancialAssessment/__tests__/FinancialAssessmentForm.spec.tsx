@@ -6,10 +6,6 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FinancialAssessmentForm } from '../FinancialAssessmentForm';
 
-jest.mock('../../TradingExperienceFields', () => ({
-    TradingExperienceFields: () => <div>TradingExperienceFields</div>,
-}));
-
 jest.mock('../../../components/DemoMessage', () => ({
     DemoMessage: () => <div>DemoMessage</div>,
 }));
@@ -46,11 +42,6 @@ afterAll(() => {
 
 const mockUpdate = jest.fn();
 
-const tradingExperiencePayload = {
-    binary_options_trading_experience: '1 - 2 years',
-    binary_options_trading_frequency: '0-15 transactions in the past 12 months',
-};
-
 const financialAssessmentPayload = {
     account_turnover: 'Less than $50,000',
     education_level: 'Secondary',
@@ -68,7 +59,6 @@ beforeEach(() => {
     (useFinancialAssessment as jest.Mock).mockReturnValue({
         data: {
             ...financialAssessmentPayload,
-            ...tradingExperiencePayload,
             occupation: 'Developer',
         },
         error: undefined,
@@ -183,14 +173,6 @@ describe('FinancialAssessmentForm', () => {
         expect(screen.getByRole('combobox', { name: 'Source of wealth' })).toBeInTheDocument();
     });
 
-    it('renders Trading Experience form', () => {
-        (useAccountStatus as jest.Mock).mockReturnValue({ data: { is_trading_experience_not_complete: true } });
-        render(<FinancialAssessmentForm />);
-        expect(screen.getByText('Trading experience')).toBeInTheDocument();
-        expect(screen.getAllByText('(All fields are required)')).toHaveLength(2);
-        expect(screen.getByText('TradingExperienceFields')).toBeInTheDocument();
-    });
-
     it('calls update function with valid values on form submission', async () => {
         render(<FinancialAssessmentForm />);
 
@@ -238,40 +220,6 @@ describe('FinancialAssessmentForm', () => {
             expect(mockUpdate).toHaveBeenCalledWith({
                 ...financialAssessmentPayload,
                 employment_status: 'Unemployed',
-            });
-        });
-    });
-
-    it('calls update function with trading experience fields if hasTradingExperience on form submission', async () => {
-        (useAccountStatus as jest.Mock).mockReturnValue({ data: { is_trading_experience_not_complete: true } });
-        render(<FinancialAssessmentForm />);
-
-        act(() => {
-            const incomeSourceField = screen.getByRole('combobox', { name: 'Source of income' });
-            userEvent.type(incomeSourceField, 'Pension');
-        });
-
-        act(() => {
-            const pensionOption = screen.getByRole('option', { name: 'Pension' });
-            userEvent.click(pensionOption);
-        });
-
-        const submitButton = screen.getByRole('button', { name: 'Submit' });
-
-        userEvent.click(submitButton);
-
-        expect(screen.getByText('Appropriateness Test, WARNING:')).toBeInTheDocument();
-
-        const acceptButton = screen.getByRole('button', { name: 'Accept' });
-
-        userEvent.click(acceptButton);
-
-        await waitFor(() => {
-            expect(mockUpdate).toHaveBeenCalledWith({
-                ...financialAssessmentPayload,
-                ...tradingExperiencePayload,
-                income_source: 'Pension',
-                occupation: 'Developer',
             });
         });
     });

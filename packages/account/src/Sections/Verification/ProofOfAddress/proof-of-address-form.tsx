@@ -109,10 +109,6 @@ const ProofOfAddressForm = observer(
         const changeable_fields = getChangeableFields();
 
         const validateFields = (values: TFormInitialValues) => {
-            (Object.entries(values) as ObjectEntries<TFormInitialValues>).forEach(
-                ([key, value]) => (values[key] = value.trim())
-            );
-
             setFormState({ ...form_state, ...{ should_allow_submit: false } });
             const errors: FormikErrors<TFormInitialValues> = {};
             const validateValues = validate(errors, values);

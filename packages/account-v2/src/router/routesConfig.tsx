@@ -2,8 +2,7 @@ import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
 import { ProofOfIdentity } from '../modules';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
-import { AccountClosure, ConnectedApps } from '../pages';
-import { LoginHistory } from '../pages/LoginHistory';
+import { AccountClosure, ConnectedApps, LoginHistory } from '../pages';
 import { DummyRoute } from './components/DummyRoute';
 
 export const routes = [

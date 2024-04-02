@@ -44,7 +44,7 @@ describe('AccountSwitcherWalletComponent', () => {
         render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
         expect(screen.getByText('Deriv Apps accounts')).toBeInTheDocument();
         expect(screen.getByText('AccountSwitcherWalletList')).toBeInTheDocument();
-        expect(screen.getByText('Looking for CFDs? Go to Trader’s hub')).toBeInTheDocument();
+        expect(screen.getByText('Looking for CFDs? Go to Trader’s Hub')).toBeInTheDocument();
     });
 
     it('should render list items based on the number of wallets', () => {

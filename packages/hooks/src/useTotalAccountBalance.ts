@@ -14,7 +14,7 @@ type TUseTotalAccountBalance = {
 
 const useTotalAccountBalance = (accounts: TUseTotalAccountBalance[]) => {
     const total_assets_real_currency = useRealTotalAssetCurrency();
-    const { handleSubscription, getExchangeRate } = useExchangeRate();
+    const { handleSubscription, exchange_rates } = useExchangeRate();
 
     if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };
 
@@ -22,9 +22,11 @@ const useTotalAccountBalance = (accounts: TUseTotalAccountBalance[]) => {
         const new_base = account?.account_type === 'demo' ? 'USD' : total_assets_real_currency || '';
         const new_target = account.currency || total_assets_real_currency || '';
 
-        if (new_base !== new_target) handleSubscription(new_base, new_target);
+        let new_rate = 1;
+        if (new_base === '' || new_target === '') new_rate = 1;
+        else if (new_base !== new_target) handleSubscription(new_base, new_target);
 
-        const new_rate = getExchangeRate(new_base, new_target);
+        if (exchange_rates && exchange_rates[new_base]) new_rate = exchange_rates[new_base][new_target] || 1;
 
         return total + (account.balance || 0) / new_rate;
     }, 0);

@@ -33,7 +33,11 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
 
     return (
         <div className={styles.container} ref={clickOutsideRef}>
-            <button className={styles['selection-container']} onClick={toggleMenu}>
+            <button
+                className={styles['selection-container']}
+                data-testid='dt_transfer_dropdown_selection_toggle'
+                onClick={toggleMenu}
+            >
                 <div className={styles['selection-label']}>
                     <Text size='2xs'>{label}</Text>
                 </div>
@@ -50,7 +54,7 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
                 </Text>
             </button>
             {isOpen && (
-                <div className={styles['items-container']}>
+                <div className={styles['items-container']} data-testid='dt_transfer_dropdown_items'>
                     {accounts.find(account => account.account_type === 'mt5') && (
                         <TransferDropdownList
                             accounts={accounts.filter(account => account.account_type === 'mt5')}

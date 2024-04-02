@@ -26,7 +26,7 @@ const getIcon = (account: TTransferableAccounts[number]) => {
     if (account.account_type === 'mt5') return <TradingAppIcon name='DMT5_DERIVED' size='sm' />;
 };
 
-const TransferAccountTile: React.FC<TProps> = ({ account, isActive }) => {
+const TransferAccountTile: React.FC<TProps> = ({ account, isActive = false }) => {
     const { isMobile } = useDevice();
     return (
         <div className={styles.container}>

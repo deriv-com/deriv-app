@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer } from 'react';
 import { useKycAuthStatus } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import { AUTH_STATUS_CODES, POI_SUBMISSION_STATUS } from '../../constants';
+import { AUTH_STATUS_CODES, IDV_ERROR_CODES, POI_SUBMISSION_STATUS } from '../../constants';
 import { POICountrySelector, POIFlowContainer, VerificationStatus } from '../../containers';
-import { TPOIActions } from '../../utils';
+import { shouldSkipCountrySelector, TPOIActions } from '../../utils';
 
 export const ProofOfIdentity = () => {
     const { isLoading, kyc_auth_status: kycAuthStatus } = useKycAuthStatus();
@@ -11,6 +11,7 @@ export const ProofOfIdentity = () => {
     const poiStatus = kycAuthStatus?.identity.status;
     const service = kycAuthStatus?.identity.service;
     const isPOARequired = kycAuthStatus?.address.status === AUTH_STATUS_CODES.NONE;
+    const rejectedReasons = kycAuthStatus?.identity.last_rejected?.rejected_reasons;
 
     const initialState = {
         selectedCountry: '',
@@ -37,7 +38,11 @@ export const ProofOfIdentity = () => {
         if (!isLoading && shouldDisplayStatus) {
             dispatch({ payload: POI_SUBMISSION_STATUS.complete, type: 'setSubmissionStatus' });
         }
-    }, [poiStatus, isLoading]);
+
+        if (!isLoading && poiStatus === AUTH_STATUS_CODES.REJECTED && shouldSkipCountrySelector(rejectedReasons)) {
+            dispatch({ payload: POI_SUBMISSION_STATUS.submitting, type: 'setSubmissionStatus' });
+        }
+    }, [poiStatus, isLoading, rejectedReasons]);
 
     if (isLoading) {
         return <Loader />;
@@ -56,9 +61,11 @@ export const ProofOfIdentity = () => {
                     }
                 />
             );
-        default:
+        default: {
+            const errorStatus = poiStatus === AUTH_STATUS_CODES.EXPIRED ? IDV_ERROR_CODES.expired.code : null;
             return (
                 <POICountrySelector
+                    errorStatus={errorStatus}
                     handleNext={() =>
                         dispatch({ payload: POI_SUBMISSION_STATUS.submitting, type: 'setSubmissionStatus' })
                     }
@@ -67,5 +74,6 @@ export const ProofOfIdentity = () => {
                     }}
                 />
             );
+        }
     }
 };

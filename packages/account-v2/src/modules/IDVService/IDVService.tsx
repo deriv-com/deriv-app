@@ -1,31 +1,34 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
+import { twMerge } from 'tailwind-merge';
 import { InferType } from 'yup';
-import { useIdentityDocumentVerificationAdd, useSettings } from '@deriv/api-v2';
+import { useIdentityDocumentVerificationAdd, useKycAuthStatus, useSettings } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
 import { Button, Divider, InlineMessage, Loader, Text } from '@deriv-com/ui';
+import { POI_SERVICE } from '../../constants';
 import { PersonalDetailsFormWithExample } from '../../containers';
-import { TSupportedDocuments } from '../../types';
 import {
+    checkIDVErrorStatus,
     generateIDVPayloadData,
     generateNameDOBFormData,
     generateNameDOBPayloadData,
+    getButtonText,
     getIDVFormValidationSchema,
     getNameDOBValidationSchema,
     setErrorMessage,
+    translateErrorCode,
 } from '../../utils';
 import { IDVForm } from '../IDVForm';
 
 type TIDVServiceProps = {
-    countryCode: string;
+    countryCode?: string;
     handleComplete: () => void;
     onCancel: () => void;
-    supportedDocuments: TSupportedDocuments;
 };
 
 type TErrorData = TSocketError<'identity_verification_document_add' | 'set_settings'>;
 
-export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDocuments }: TIDVServiceProps) => {
+export const IDVService = ({ countryCode, handleComplete, onCancel }: TIDVServiceProps) => {
     const {
         data: personalInfo,
         isLoading,
@@ -33,20 +36,36 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
     } = useSettings();
     const { mutateAsync: submitIDVDocumentsAsync } = useIdentityDocumentVerificationAdd();
 
-    const idvValidationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments, {});
-    const personalDetailsValidationSchema = getNameDOBValidationSchema();
-    const idvServiceSchema = personalDetailsValidationSchema.concat(idvValidationSchema);
+    const payload = countryCode ? { country: countryCode } : undefined;
 
-    if (isLoading) {
+    const { isLoading: isLoadingKycAuthStatus, kyc_auth_status: kycAuthStatus } = useKycAuthStatus(payload);
+
+    if (isLoading || isLoadingKycAuthStatus) {
         return <Loader />;
     }
 
-    const initialValues = {
-        ...idvServiceSchema.getDefault(),
-        ...generateNameDOBFormData(personalInfo),
-    };
+    const supportedDocuments = kycAuthStatus?.identity?.supported_documents?.idv;
+    const errorStatus = checkIDVErrorStatus(kycAuthStatus?.identity?.last_rejected?.rejected_reasons);
 
-    type TIDVServiceValues = InferType<typeof idvServiceSchema>;
+    const personalDetailsValidationSchema = getNameDOBValidationSchema();
+
+    let initialValues = {};
+    let idvServiceSchema;
+
+    if (countryCode) {
+        const idvValidationSchema = getIDVFormValidationSchema(countryCode, supportedDocuments, {});
+        idvServiceSchema = personalDetailsValidationSchema.concat(idvValidationSchema);
+        initialValues = {
+            ...idvServiceSchema.getDefault(),
+            ...generateNameDOBFormData(personalInfo, errorStatus),
+        };
+    } else {
+        idvServiceSchema = personalDetailsValidationSchema;
+        initialValues = { ...generateNameDOBFormData(personalInfo, errorStatus) };
+    }
+
+    type TIDVServiceValues = InferType<ReturnType<typeof getIDVFormValidationSchema>> &
+        InferType<ReturnType<typeof getNameDOBValidationSchema>>;
 
     const handleSubmit = async (
         values: TIDVServiceValues,
@@ -54,12 +73,17 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
     ) => {
         setStatus({ error: '' });
         setSubmitting(true);
-        const personalDetailsPayload = generateNameDOBPayloadData(values);
+        const personalDetailsPayload = generateNameDOBPayloadData(values, errorStatus);
 
         try {
             await updateAsync({ payload: personalDetailsPayload });
-            const idvPayloadData = { ...generateIDVPayloadData(values), issuing_country: countryCode };
-            await submitIDVDocumentsAsync({ payload: idvPayloadData });
+            if (countryCode) {
+                const idvPayloadData = {
+                    ...generateIDVPayloadData(values),
+                    issuing_country: countryCode,
+                };
+                await submitIDVDocumentsAsync({ payload: idvPayloadData });
+            }
             setSubmitting(false);
             handleComplete();
         } catch (error) {
@@ -71,22 +95,39 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
 
     return (
         <Formik
-            initialStatus={{ error: '' }}
+            initialStatus={{ error: translateErrorCode(errorStatus, POI_SERVICE.idv) }}
             initialValues={initialValues as TIDVServiceValues}
             onSubmit={handleSubmit}
             validateOnMount
         >
             {({ isSubmitting, isValid, status }) => (
-                <Form className='grid h-full'>
-                    {status?.error && <InlineMessage variant='error'>{status.error}</InlineMessage>}
-                    <div className='grid items-center gap-8 mb-16 grid-cols-[auto_1fr]'>
-                        <Text as='h4' size='md' weight='bold'>
-                            Identity verification
-                        </Text>
-                        <Divider className='block w-full' />
-                    </div>
+                <Form className={twMerge('grid h-full', !countryCode && 'grid-rows-[auto_1fr_auto]')}>
+                    {status?.error && (
+                        <div className='flex flex-col gap-16 mb-16'>
+                            <Text as='h4' size='sm' weight='bold'>
+                                Your identity verification failed because:
+                            </Text>
+                            <InlineMessage variant='error'>
+                                <Text size='sm'>{status.error}</Text>
+                            </InlineMessage>
+                        </div>
+                    )}
+                    {countryCode && (
+                        <div className='grid items-center gap-8 mb-16 grid-cols-[auto_1fr]'>
+                            <Text as='h4' size='md' weight='bold'>
+                                Identity verification
+                            </Text>
+                            <Divider className='block w-full' />
+                        </div>
+                    )}
                     <section className='flex gap-24 flex-col'>
-                        <IDVForm allowDefaultValue countryCode={countryCode} supportedDocuments={supportedDocuments} />
+                        {countryCode && (
+                            <IDVForm
+                                allowDefaultValue
+                                countryCode={countryCode}
+                                supportedDocuments={supportedDocuments}
+                            />
+                        )}
                         <section>
                             <div className='flex items-center gap-8 mb-16'>
                                 <Text as='h4' size='md' weight='bold'>
@@ -94,24 +135,26 @@ export const IDVService = ({ countryCode, handleComplete, onCancel, supportedDoc
                                 </Text>
                                 <Divider className='block w-full' />
                             </div>
-                            <PersonalDetailsFormWithExample />
+                            <PersonalDetailsFormWithExample errorStatus={errorStatus} />
                         </section>
                     </section>
                     <section className='flex gap-8 flex-col justify-end'>
                         <Divider />
                         <div className='flex gap-8 justify-end'>
-                            <Button
-                                color='black'
-                                onClick={onCancel}
-                                rounded='sm'
-                                size='lg'
-                                type='button'
-                                variant='outlined'
-                            >
-                                Back
-                            </Button>
+                            {!errorStatus && (
+                                <Button
+                                    color='black'
+                                    onClick={onCancel}
+                                    rounded='sm'
+                                    size='lg'
+                                    type='button'
+                                    variant='outlined'
+                                >
+                                    Back
+                                </Button>
+                            )}
                             <Button disabled={!isValid || isSubmitting} rounded='sm' size='lg' type='submit'>
-                                Verify
+                                {getButtonText(errorStatus)}
                             </Button>
                         </div>
                     </section>

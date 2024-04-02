@@ -80,7 +80,7 @@ export const OnfidoContainer = ({
 
     const initialValues = {
         ...validationSchema.getDefault(),
-        ...generateNameDOBFormData(personalInfo),
+        ...generateNameDOBFormData(personalInfo, null),
     };
 
     const handlePersonalDetailsUpdate = async (

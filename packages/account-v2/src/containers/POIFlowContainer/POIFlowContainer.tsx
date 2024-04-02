@@ -1,5 +1,4 @@
 import React from 'react';
-import { useKycAuthStatus } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { POI_SERVICE } from '../../constants/constants';
 import { usePOIInfo } from '../../hooks';
@@ -11,19 +10,16 @@ type TPOIFlowContainerProps = {
     onComplete: () => void;
 };
 
-type TSupportedDocuments = DeepNonNullable<
-    ReturnType<typeof useKycAuthStatus>['kyc_auth_status']
->['identity']['supported_documents']['idv'];
-
 export const POIFlowContainer = ({ countryCode, onCancel, onComplete }: TPOIFlowContainerProps) => {
-    const { isLoading, kycAuthStatus } = usePOIInfo({ country: countryCode });
+    const payload = countryCode ? { country: countryCode } : undefined;
+    const { isLoading, kycAuthStatus } = usePOIInfo(payload);
 
     if (isLoading || !kycAuthStatus) {
         return <Loader />;
     }
 
     const {
-        identity: { available_services: availableServices, supported_documents: supportedDocuments },
+        identity: { available_services: availableServices },
     } = kycAuthStatus;
 
     switch (availableServices?.[0]) {
@@ -31,14 +27,7 @@ export const POIFlowContainer = ({ countryCode, onCancel, onComplete }: TPOIFlow
             return <OnfidoContainer countryCode={countryCode} onOnfidoSubmit={onComplete} />;
         }
         case POI_SERVICE.idv: {
-            return (
-                <IDVService
-                    countryCode={countryCode}
-                    handleComplete={onComplete}
-                    onCancel={onCancel}
-                    supportedDocuments={supportedDocuments?.idv as TSupportedDocuments}
-                />
-            );
+            return <IDVService countryCode={countryCode} handleComplete={onComplete} onCancel={onCancel} />;
         }
         default: {
             return <ManualUpload countryCode={countryCode} handleComplete={onComplete} onCancel={onCancel} />;

@@ -1,5 +1,5 @@
 import { TSocketEndpointNames, TSocketError } from '@deriv/api-v2/types';
-import { API_ERROR_CODES, POI_SUBMISSION_STATUS } from '../constants';
+import { API_ERROR_CODES, IDV_ERROR_CODES, ONFIDO_ERROR_CODES, POI_SERVICE, POI_SUBMISSION_STATUS } from '../constants';
 
 type TPOISubmissionStatus = typeof POI_SUBMISSION_STATUS[keyof typeof POI_SUBMISSION_STATUS];
 
@@ -17,4 +17,45 @@ export const setErrorMessage = <T extends TSocketError<TSocketEndpointNames>['er
         default:
             return message ?? API_ERROR_CODES.generic.message;
     }
+};
+
+export const translateErrorCode = (errorCode: string | null, service: typeof POI_SERVICE[keyof typeof POI_SERVICE]) => {
+    if (!errorCode) {
+        return '';
+    }
+    if (service === 'idv') {
+        return (
+            Object.values(IDV_ERROR_CODES).find(error => error.code === errorCode)?.message ??
+            IDV_ERROR_CODES.generic.message
+        );
+    }
+    return (
+        Object.values(ONFIDO_ERROR_CODES).find(error => error.code === errorCode)?.message ??
+        ONFIDO_ERROR_CODES.generic.message
+    );
+};
+
+export const checkIDVErrorStatus = (errors?: string[]) => {
+    if (!errors || !errors?.length) {
+        return null;
+    }
+    if (
+        errors.includes(IDV_ERROR_CODES.nameMismatch.code as string) &&
+        errors.includes(IDV_ERROR_CODES.dobMismatch.code as string)
+    ) {
+        return IDV_ERROR_CODES.nameDobMismatch.code;
+    }
+    return errors[0];
+};
+
+export const shouldSkipCountrySelector = (errors?: string[]) => {
+    if (!errors || !errors?.length) {
+        return false;
+    }
+    const errorStatus = checkIDVErrorStatus(errors);
+    return [
+        IDV_ERROR_CODES.dobMismatch.code,
+        IDV_ERROR_CODES.nameMismatch.code,
+        IDV_ERROR_CODES.nameDobMismatch.code,
+    ].includes(errorStatus);
 };

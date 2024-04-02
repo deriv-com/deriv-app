@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Button, Divider, InlineMessage, Text } from '@deriv-com/ui';
 import { CountrySelector } from '../../components/CountrySelector';
+import { IDV_ERROR_CODES, API_ERROR_CODES } from '../../constants';
 
 type TPOICountrySelectorProps = {
-    errorStatus?: string;
+    errorStatus: string | null;
     handleNext: () => void;
     onCountrySelect: (value: string) => void;
 };
@@ -15,14 +16,16 @@ export const POICountrySelector = ({ errorStatus, handleNext, onCountrySelect }:
         <div className='grid h-full'>
             <section className='flex flex-col gap-16'>
                 {errorStatus && (
-                    <div>
-                        <Text weight='bold' size='sm'>
+                    <Fragment>
+                        <Text weight='bold' size='md'>
                             Your identity verification failed because:
                         </Text>
                         <InlineMessage type='filled' variant='error'>
-                            We were unable to verify the identity document with the details provided.
+                            <Text size='sm'>
+                                {IDV_ERROR_CODES[errorStatus]?.message ?? API_ERROR_CODES.generic.message}
+                            </Text>
                         </InlineMessage>
-                    </div>
+                    </Fragment>
                 )}
                 <Text size='md' weight='bold'>
                     Proof of identity

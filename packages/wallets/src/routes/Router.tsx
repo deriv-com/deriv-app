@@ -1,7 +1,6 @@
 import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useWalletAccountsList } from '@deriv/api-v2';
-import WalletsCardLoader from '../components/SkeletonLoader/WalletsCardLoader/WalletsCardLoader';
 
 const LazyWalletsNotFoundState = lazy(
     () =>

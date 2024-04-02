@@ -38,11 +38,11 @@ describe('usePaginatedFetch', () => {
 
         await waitFor(() => result.current.isSuccess, { timeout: 10000 });
 
-        // const adverts_list = result.current.data?.p2p_advert_list?.list;
+        const adverts_list = result.current.data?.p2p_advert_list?.list;
 
-        // expect(adverts_list).toHaveLength(1);
-        // expect(adverts_list?.[0].amount).toBe(50);
-        // expect(adverts_list?.[0].account_currency).toBe('USD');
-        // expect(adverts_list?.[0].amount_display).toBe('50.00');
+        expect(adverts_list).toHaveLength(1);
+        expect(adverts_list?.[0].amount).toBe(50);
+        expect(adverts_list?.[0].account_currency).toBe('USD');
+        expect(adverts_list?.[0].amount_display).toBe('50.00');
     });
 });

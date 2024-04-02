@@ -13,8 +13,6 @@ type TPreferredCountriesSelectorProps = {
     type: typeof AD_CONDITION_TYPES[keyof typeof AD_CONDITION_TYPES];
 };
 
-//TODO: replace dummyCountries after creation and integration of the country list hook
-
 const PreferredCountriesSelector = ({ countryList, type }: TPreferredCountriesSelectorProps) => {
     const { isMobile } = useDevice();
     const { getValues, setValue } = useFormContext();

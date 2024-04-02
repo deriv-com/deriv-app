@@ -32,6 +32,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         if (status === 'success') {
             show(
                 <CTraderSuccessModal
+                    displayBalance={activeWallet?.display_balance || ''}
                     isDemo={accountType === 'demo'}
                     walletCurrencyType={activeWallet?.wallet_currency_type || 'USD'}
                 />
@@ -46,7 +47,8 @@ const AvailableCTraderAccountsList: React.FC = () => {
                 />
             );
         }
-    }, [accountType, activeWallet?.wallet_currency_type, error?.error?.message, hide, show, status]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accountType, activeWallet?.wallet_currency_type, error?.error?.message, status]);
 
     return (
         <div className='wallets-available-ctrader'>

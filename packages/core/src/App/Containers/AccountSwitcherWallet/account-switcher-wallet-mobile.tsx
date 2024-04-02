@@ -9,11 +9,12 @@ import { observer } from '@deriv/stores';
 import './account-switcher-wallet-mobile.scss';
 
 type TAccountSwitcherWalletMobile = {
+    loginid: string;
     is_visible: boolean;
     toggle: (value: boolean) => void;
 };
 
-export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAccountSwitcherWalletMobile) => {
+export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, loginid }: TAccountSwitcherWalletMobile) => {
     const history = useHistory();
     const { data: wallet_list } = useStoreWalletAccountsList();
 
@@ -23,24 +24,23 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
         toggle(false);
     }, [toggle]);
 
-    const handleTradersHubRedirect = async () => {
+    const handleTradersHubRedirect = () => {
         closeAccountsDialog();
-        history.push(routes.traders_hub);
+        history.push(routes.wallets);
+    };
+
+    const handleManageFundsRedirect = () => {
+        closeAccountsDialog();
+        history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
     };
 
     const footer = (
-        <div
-            className='account-switcher-wallet-mobile__footer'
-            onClick={handleTradersHubRedirect}
-            // SonarLint offers to add handler for onKeyDown event and a role if we have onClick event handler
-            role='button'
-            onKeyDown={handleTradersHubRedirect}
-        >
+        <button className='account-switcher-wallet-mobile__footer' onClick={handleTradersHubRedirect} type='button'>
             <Text weight='normal' size='xs'>
-                <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
+                <Localize i18n_default_text='Looking for CFDs? Go to Trader’s Hub' />
             </Text>
             <Icon icon='IcChevronRightBold' />
-        </div>
+        </button>
     );
 
     return (
@@ -55,7 +55,13 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
         >
             <div className='account-switcher-wallet-mobile'>
                 <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
-                <Button className='account-switcher-wallet-mobile__button' has_effect primary large>
+                <Button
+                    className='account-switcher-wallet-mobile__button'
+                    has_effect
+                    primary
+                    large
+                    onClick={handleManageFundsRedirect}
+                >
                     <Localize i18n_default_text='Manage funds' />
                 </Button>
             </div>

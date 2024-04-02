@@ -761,3 +761,28 @@ describe('isTicksContract', () => {
         expect(ContractUtils.isTicksContract('')).toBe(false);
     });
 });
+
+describe('isForwardStartingBuyTransaction', () => {
+    const forwardStartingShortcode = 'CALL_1HZ10V_19.54_1710485400F_1710486300_S0P_0';
+    const transactionTime = 12316253761253;
+
+    it('should return true if transaction type is buy and it is forward starting contract', () => {
+        expect(ContractUtils.isForwardStartingBuyTransaction('buy', forwardStartingShortcode, transactionTime)).toBe(
+            true
+        );
+    });
+    it('should return false if transaction type is not buy', () => {
+        expect(ContractUtils.isForwardStartingBuyTransaction('sell', forwardStartingShortcode, transactionTime)).toBe(
+            false
+        );
+    });
+    it('should return false if transaction type is buy and but it is not forward starting contract', () => {
+        expect(
+            ContractUtils.isForwardStartingBuyTransaction(
+                'buy',
+                'CALL_1HZ10V_19.54_1710485400_1710486300_S0P_0',
+                transactionTime
+            )
+        ).toBe(false);
+    });
+});

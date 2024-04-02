@@ -41,6 +41,7 @@ type TRoutes =
     | '/account/proof-of-ownership'
     | '/account/proof-of-income'
     | '/account/passwords'
+    | '/account/passkeys'
     | '/account/closing-account'
     | '/account/deactivate-account'
     | '/account-closed'
@@ -609,6 +610,11 @@ type TClientStore = {
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
     setRealAccountSignupFormStep: (step: number) => void;
+    is_passkey_supported: boolean;
+    setIsPasskeySupported: (value: boolean) => void;
+    should_show_effortless_login_modal: boolean;
+    setShouldShowEffortlessLoginModal: (value: boolean) => void;
+    fetchShouldShowEffortlessLoginModal: () => void;
 };
 
 type TCommonStoreError = {

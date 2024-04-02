@@ -15,6 +15,7 @@ import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
+import EffortlessLoginModal from '../EffortlessLoginModal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
@@ -89,8 +90,9 @@ const AppModals = observer(() => {
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
         mt5_login_list,
+        should_show_effortless_login_modal,
     } = client;
-    const { content_flag } = traders_hub;
+    const { content_flag, is_tour_open } = traders_hub;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -192,6 +194,11 @@ const AppModals = observer(() => {
     } else if (isUrlUnavailableModalVisible) {
         ComponentToLoad = <UrlUnavailableModal />;
     }
+
+    if (should_show_effortless_login_modal && !is_tour_open) {
+        ComponentToLoad = <EffortlessLoginModal />;
+    }
+
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;
     }

@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
+import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -153,6 +154,9 @@ export default class ClientStore extends BaseStore {
     real_account_signup_form_data = [];
     real_account_signup_form_step = 0;
 
+    is_passkey_supported = false;
+    should_show_effortless_login_modal = false;
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
@@ -221,6 +225,8 @@ export default class ClientStore extends BaseStore {
             is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
+            is_passkey_supported: observable,
+            should_show_effortless_login_modal: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -396,6 +402,9 @@ export default class ClientStore extends BaseStore {
             setIsP2PEnabled: action.bound,
             setRealAccountSignupFormData: action.bound,
             setRealAccountSignupFormStep: action.bound,
+            setIsPasskeySupported: action.bound,
+            setShouldShowEffortlessLoginModal: action.bound,
+            fetchShouldShowEffortlessLoginModal: action.bound,
         });
 
         reaction(
@@ -1648,6 +1657,8 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
+            await this.setIsPasskeySupported();
+            await this.fetchShouldShowEffortlessLoginModal();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2010,6 +2021,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
@@ -2646,5 +2658,47 @@ export default class ClientStore extends BaseStore {
 
     setRealAccountSignupFormStep(step) {
         this.real_account_signup_form_step = step;
+    }
+
+    async setIsPasskeySupported() {
+        try {
+            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
+            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
+            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
+            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
+            const is_supported_by_browser = await browserSupportsWebAuthn();
+            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
+        } catch (e) {
+            //error handling needed
+        }
+    }
+
+    setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
+        this.should_show_effortless_login_modal = should_show_effortless_login_modal;
+    }
+    async fetchShouldShowEffortlessLoginModal() {
+        if (this.is_passkey_supported) {
+            try {
+                const stored_value = localStorage.getItem('show_effortless_login_modal');
+                const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+                if (show_effortless_login_modal) {
+                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
+                }
+
+                const data = await WS.send({ passkeys_list: 1 });
+                const should_show_effortless_login_modal =
+                    this.root_store.ui.is_mobile &&
+                    !data?.passkeys_list?.length &&
+                    this.is_passkey_supported &&
+                    show_effortless_login_modal &&
+                    this.is_logged_in;
+
+                this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+            } catch (e) {
+                //error handling needed
+            }
+        } else {
+            this.setShouldShowEffortlessLoginModal(false);
+        }
     }
 }

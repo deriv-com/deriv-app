@@ -1,10 +1,25 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useWalletAccountsList } from '@deriv/api-v2';
-import { WalletNoWalletFoundState } from '../components';
-import { CashierModalRoute } from './CashierModalRoute';
-import { CompareAccountsRoute } from './CompareAccountsRoute';
-import { WalletsListingRoute } from './WalletsListingRoute';
+import WalletsCardLoader from '../components/SkeletonLoader/WalletsCardLoader/WalletsCardLoader';
+
+const LazyWalletsNotFoundState = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "wallets-not-found-route" */ '../components/WalletNoWalletFoundState/WalletNoWalletFoundState'
+        )
+);
+
+const LazyWalletsListingRoute = lazy(
+    () => import(/* webpackChunkName: "wallets-listing-route" */ './WalletsListingRoute/WalletsListingRoute')
+);
+const LazyCashierModalRoute = lazy(
+    () => import(/* webpackChunkName: "cashier-modal-route" */ './CashierModalRoute/CashierModalRoute')
+);
+
+const LazyCompareAccountsRoute = lazy(
+    () => import(/* webpackChunkName: "compare-accounts-route" */ './CompareAccountsRoute/CompareAccountsRoute')
+);
 
 const walletsPrefix = '/wallets';
 
@@ -57,14 +72,46 @@ declare module 'react-router-dom' {
 const Router: React.FC = () => {
     const { data: walletAccounts, isLoading } = useWalletAccountsList();
 
+    if (isLoading) return <WalletsCardLoader />;
+
     if ((!walletAccounts || !walletAccounts.length) && !isLoading)
-        return <Route component={WalletNoWalletFoundState} path={walletsPrefix} />;
+        return (
+            <Route
+                path={walletsPrefix}
+                render={() => (
+                    <React.Suspense fallback={null}>
+                        <LazyWalletsNotFoundState />
+                    </React.Suspense>
+                )}
+            />
+        );
 
     return (
         <Switch>
-            <Route component={CompareAccountsRoute} path={`${walletsPrefix}/compare-accounts`} />
-            <Route component={CashierModalRoute} path={`${walletsPrefix}/cashier`} />
-            <Route component={WalletsListingRoute} path={walletsPrefix} />
+            <Route
+                path={`${walletsPrefix}/compare-accounts`}
+                render={() => (
+                    <React.Suspense fallback={null}>
+                        <LazyCompareAccountsRoute />
+                    </React.Suspense>
+                )}
+            />
+            <Route
+                path={`${walletsPrefix}/cashier`}
+                render={() => (
+                    <React.Suspense fallback={null}>
+                        <LazyCashierModalRoute />
+                    </React.Suspense>
+                )}
+            />
+            <Route
+                path={walletsPrefix}
+                render={() => (
+                    <React.Suspense fallback={null}>
+                        <LazyWalletsListingRoute />
+                    </React.Suspense>
+                )}
+            />
         </Switch>
     );
 };

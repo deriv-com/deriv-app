@@ -1,6 +1,7 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_release =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
@@ -50,6 +51,7 @@ module.exports = function (env) {
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
+        plugins: [new BundleAnalyzerPlugin()],
         module: {
             rules: [
                 {
@@ -152,6 +154,7 @@ module.exports = function (env) {
                       new CssMinimizerPlugin(),
                   ]
                 : [],
+            usedExports: true,
             splitChunks: {
                 chunks: 'all',
                 minSize: 102400,
@@ -167,6 +170,12 @@ module.exports = function (env) {
                         minSize: 102400,
                         priority: -20,
                         reuseExistingChunk: true,
+                    },
+                    components: {
+                        test: module => {
+                            return module.resource && module.resource.includes('src/components/Base');
+                        },
+                        name: 'components',
                     },
                     defaultVendors: {
                         idHint: 'vendors',

@@ -1024,7 +1024,7 @@ export default class TradeStore extends BaseStore {
                                         : ANALYTICS_DURATIONS.find(value => value.startsWith(this.duration_unit)) ?? '';
                                 this.sendTradeParamsAnalytics({
                                     action: 'run_contract',
-                                    ...(this.duration_units_list.length > 1 && durationMode
+                                    ...(this.duration_units_list.length && durationMode
                                         ? { switcher_duration_mode_name: durationMode }
                                         : {}),
                                     ...(this.basis_list.length > 1 && this.basis

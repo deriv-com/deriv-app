@@ -197,6 +197,7 @@ module.exports = function (env) {
                 'react-dom': true,
                 classnames: true,
                 'react-router-dom': true,
+                moment: true,
             },
         ],
     };

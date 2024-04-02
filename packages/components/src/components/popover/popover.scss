@@ -63,6 +63,7 @@
             direction: ltr;
         }
         &--error {
+            direction: ltr;
             background-color: var(--status-danger);
         }
     }

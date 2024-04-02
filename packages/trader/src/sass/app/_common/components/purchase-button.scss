@@ -93,7 +93,7 @@
         display: flex;
         flex-grow: 1;
         align-items: center;
-        padding-left: 10px;
+        padding-inline-start: 10px;
         height: 56px;
     }
     &__info--left {
@@ -103,13 +103,13 @@
         z-index: 2;
 
         .btn-purchase__text_wrapper {
-            margin-left: 24px;
+            margin-inline-start: 24px;
             position: absolute;
         }
     }
     &__info--right {
         width: 45%;
-        padding-right: 1rem;
+        padding-inline-end: 1rem;
         background-color: transparent;
         display: flex;
         justify-content: flex-end;
@@ -319,7 +319,7 @@
             flex: none;
         }
         .btn-purchase__effect-detail--arrow {
-            left: 40px;
+            inset-inline-start: 40px;
         }
         &.btn-purchase--swoosh {
             .btn-purchase {
@@ -359,15 +359,15 @@
             &__info {
                 &--left {
                     width: 65%;
-                    padding-left: 1.6rem;
+                    padding-inline-start: 1.6rem;
                 }
                 &--right {
                     width: 30%;
-                    padding-right: 1.6rem;
+                    padding-inline-end: 1.6rem;
                 }
             }
             &__effect-detail--arrow {
-                left: 11rem;
+                inset-inline-start: 11rem;
             }
         }
         &.btn-purchase--swoosh {
@@ -403,7 +403,7 @@
             }
             &__effect-detail {
                 &--arrow {
-                    left: 12rem;
+                    inset-inline-start: 12rem;
                 }
             }
             @include mobile {

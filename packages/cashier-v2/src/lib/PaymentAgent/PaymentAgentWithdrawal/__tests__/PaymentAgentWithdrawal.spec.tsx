@@ -14,7 +14,7 @@ jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     Loader: jest.fn(() => <div>Loader</div>),
 }));
-jest.mock('../../../provider', () => ({
+jest.mock('../../provider', () => ({
     PaymentAgentProvider: jest.fn(({ children }) => <div>{children}</div>),
     usePaymentAgentContext: jest.fn(() => ({ isPaymentAgentListLoading: false })),
 }));
@@ -31,7 +31,7 @@ jest.mock('../provider', () => ({
     })),
 }));
 
-jest.mock('../../../components', () => ({
+jest.mock('../../components', () => ({
     PaymentAgentList: jest.fn(() => <div>PaymentAgentList</div>),
     PaymentAgentSearchContainer: jest.fn(() => <div>PaymentAgentSearchContainer</div>),
 }));

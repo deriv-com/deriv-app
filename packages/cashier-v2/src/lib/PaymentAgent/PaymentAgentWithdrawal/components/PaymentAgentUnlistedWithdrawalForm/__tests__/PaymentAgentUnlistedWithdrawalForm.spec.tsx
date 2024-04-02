@@ -10,7 +10,7 @@ jest.mock('@deriv/api-v2', () => ({
     useActiveAccount: jest.fn(() => ({ data: { currency_config: { display_code: 'USD' } } })),
 }));
 
-jest.mock('../../../../../lib/PaymentAgentWithdrawal/provider', () => ({
+jest.mock('../../../../PaymentAgentWithdrawal/provider', () => ({
     usePaymentAgentWithdrawalContext: jest.fn(() => ({
         requestTryPaymentAgentWithdrawal: mockedRequestTryPaymentAgentWithdrawal,
         getPaymentAgentWithdrawalValidationSchema: jest.fn(),

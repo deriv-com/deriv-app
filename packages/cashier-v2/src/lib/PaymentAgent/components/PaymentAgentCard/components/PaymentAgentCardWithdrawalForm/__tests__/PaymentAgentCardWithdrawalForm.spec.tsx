@@ -5,7 +5,7 @@ import PaymentAgentCardWithdrawalForm from '../PaymentAgentCardWithdrawalForm';
 
 const mockedRequestTryPaymentAgentWithdrawal = jest.fn();
 
-jest.mock('../../../../../lib/PaymentAgentWithdrawal/provider', () => ({
+jest.mock('../../../../../PaymentAgentWithdrawal/provider', () => ({
     usePaymentAgentWithdrawalContext: jest.fn(() => ({
         requestTryPaymentAgentWithdrawal: mockedRequestTryPaymentAgentWithdrawal,
         getPaymentAgentWithdrawalValidationSchema: jest.fn(),

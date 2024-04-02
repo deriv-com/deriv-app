@@ -17,7 +17,7 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('../../../../../lib/PaymentAgentWithdrawal/provider', () => ({
+jest.mock('../../../../PaymentAgentWithdrawal/provider', () => ({
     usePaymentAgentWithdrawalContext: jest.fn(() => ({
         resetPaymentAgentWithdrawal: mockedResetPaymentAgentWithdrawal,
         withdrawalReceipt: {

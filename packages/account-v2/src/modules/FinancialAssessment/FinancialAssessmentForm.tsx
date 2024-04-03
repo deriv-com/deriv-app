@@ -2,14 +2,14 @@ import React, { Fragment } from 'react';
 import { Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
-import { DerivLightIcPoaLockIcon, StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
+import { DerivLightIcPoaLockIcon } from '@deriv/quill-icons';
 import { ActionScreen, Button, InlineMessage, Loader, Modal, Text, useDevice } from '@deriv-com/ui';
 import { LeaveConfirm } from 'src/components/LeaveConfirm';
 import { ACCOUNT_MODAL_REF } from 'src/constants';
 import { shouldHideOccupation } from 'src/utils/financialAssessmentUtils';
 import IcSuccess from '../../assets/status-message/ic-success.svg';
 import { DemoMessage } from '../../components/DemoMessage';
-import { ACCOUNT_V2_DEFAULT_ROUTE, ACCOUNT_V2_ROUTES, DERIV_GO_URL, P2P_URL } from '../../constants/routes';
+import { ACCOUNT_V2_ROUTES, DERIV_GO_URL, P2P_URL } from '../../constants/routes';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
 import { FinancialAssessmentFields } from '../FinancialAssessmentFields';
 

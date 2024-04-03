@@ -70,7 +70,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                 name='ad-type'
                 render={({ field: { onChange, value } }) => {
                     return (
-                        <div className='px-[2.4rem] mb-[3.5rem]'>
+                        <div className='mb-[3.5rem]'>
                             <RadioGroup
                                 name='type'
                                 onToggle={event => {
@@ -89,7 +89,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                 }}
                 rules={{ required: true }}
             />
-            <div className='flex flex-col lg:flex-row'>
+            <div className='flex flex-col lg:flex-row lg:gap-[1.6rem]'>
                 <AdFormInput
                     label='Total amount'
                     name='amount'
@@ -103,7 +103,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                     rightPlaceholder={<Text color='less-prominent'>{localCurrency}</Text>}
                 />
             </div>
-            <div className='flex flex-col lg:flex-row'>
+            <div className='flex flex-col lg:flex-row lg:gap-[1.6rem]'>
                 <AdFormInput
                     label='Min order'
                     name='min-order'

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
-import { Loader, WalletsErrorScreen } from '../../../../components';
+import { Loader } from '../../../../components';
 import {
     CashierLocked,
     WithdrawalCryptoModule,
@@ -10,7 +10,7 @@ import {
 } from '../../modules';
 
 const WalletWithdrawal = () => {
-    const { error, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
+    const { isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const [verificationCode, setVerificationCode] = useState('');
@@ -57,7 +57,7 @@ const WalletWithdrawal = () => {
                     </WithdrawalLocked>
                 </CashierLocked>
             );
-        } else if (!isCurrencyConfigSuccess) return <WalletsErrorScreen message={error?.error.message} />;
+        }
         return <Loader />;
     }
 

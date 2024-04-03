@@ -8,7 +8,7 @@ type TConnectedAppsResponsiveColumn = {
 };
 
 export const ConnectedAppsResponsiveColumn = ({ description, style, title }: TConnectedAppsResponsiveColumn) => (
-    <div className={`flex flex-col gap-4 ${style}`}>
+    <div className={`flex flex-col gap-4 ${style}`} data-testid='dt_responsive_column'>
         <Text size='sm' weight='bold'>
             {title}
         </Text>

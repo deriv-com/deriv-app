@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
 import { optionsAndMultipliersContent } from '../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
@@ -85,7 +85,6 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
     onOptionsAndMultipliersLoaded,
 }) => {
     const { isMobile } = useDevice();
-    const { data: activeWalletAccount } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
     useEffect(() => {

@@ -16,33 +16,7 @@
             flex-shrink: 0;
         }
         &-header {
-            display: flex;
-            justify-content: space-between;
-        }
-        &-button {
-            background-color: #ffffff;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 1rem;
-            font-weight: 700;
-
-            @include mobile {
-                padding: 0.3rem 0.8rem;
-            }
-
-            &-icon {
-                margin-right: 0.5rem;
-            }
-
-            &--is-added {
-                opacity: 0.3;
-                cursor: default;
-            }
+            margin-right: auto;
         }
     }
 

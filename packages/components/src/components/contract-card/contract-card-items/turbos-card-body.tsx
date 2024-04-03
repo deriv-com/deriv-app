@@ -49,7 +49,7 @@ const TurbosCardBody = ({
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
     const contract_value = is_sold ? sell_price : bid_price;
-    const { BARRIER, CONTRACT_VALUE, ENTRY_SPOT, TAKE_PROFIT, TOTAL_PROFIT_LOSS, PURCHASE_PRICE } = getCardLabels();
+    const { BARRIER, CONTRACT_VALUE, ENTRY_SPOT, TAKE_PROFIT, TOTAL_PROFIT_LOSS, STAKE } = getCardLabels();
 
     return (
         <React.Fragment>
@@ -57,12 +57,25 @@ const TurbosCardBody = ({
                 <ContractCardItem
                     className='dc-contract-card__buy-price'
                     is_crypto={isCryptocurrency(currency)}
-                    header={PURCHASE_PRICE}
+                    header={STAKE}
                 >
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
                 <ContractCardItem header={CONTRACT_VALUE} className='dc-contract-card__contract-value'>
-                    <Money amount={contract_value} currency={currency} />
+                    <div
+                        className={classNames({
+                            'dc-contract-card--profit': Number(profit) > 0,
+                            'dc-contract-card--loss': Number(profit) < 0,
+                        })}
+                    >
+                        <Money amount={contract_value} currency={currency} />
+                    </div>
+                    {!is_sold && (
+                        <ArrowIndicator
+                            className='dc-contract-card__indicative--movement'
+                            value={sell_price || contract_value}
+                        />
+                    )}
                 </ContractCardItem>
                 <ContractCardItem
                     header={ENTRY_SPOT}

@@ -1,11 +1,9 @@
 import React from 'react';
+import { toMoment } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { screen, render } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { toMoment } from '@deriv/shared';
 import Journal from '../journal';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());

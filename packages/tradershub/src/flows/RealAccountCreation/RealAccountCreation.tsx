@@ -1,15 +1,28 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import ReactModal from 'react-modal';
-import { DesktopProgressBar, MobileProgressBar, TSteps } from '@/components';
+import { DesktopProgressBar, MobileProgressBar } from '@/components';
 import { CUSTOM_STYLES } from '@/helpers';
-import { useQueryParams } from '@/hooks';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
 import { AccountOpeningSuccessModal, ExitConfirmationDialog } from '@/modals';
 import { useRealAccountCreationContext } from '@/providers';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import WizardScreens from './WizardScreens/WizardScreens';
 
-const FORM_PROGRESS_STEPS: TSteps = ['Account currency', 'Personal details', 'Address', 'Terms of use'];
+/**
+ * @name getFormSteps
+ * @description The getFormSteps function is used to get the form steps based on the user's location.
+ * @param {boolean} isEU - A boolean value to check if the user is in the EU.
+ * @returns {string[]} - An array of strings representing the form steps.
+ */
+const getFormSteps = (isEU: boolean) => {
+    const commonSteps = ['Account currency', 'Personal details', 'Address', 'Terms of use'];
+
+    if (isEU) {
+        return [...commonSteps.slice(0, 3), 'Trading assessment', 'Financial assessment', ...commonSteps.slice(3)];
+    }
+    return commonSteps;
+};
 
 /**
  * @name RealAccountCreation
@@ -21,8 +34,19 @@ const FORM_PROGRESS_STEPS: TSteps = ['Account currency', 'Personal details', 'Ad
  */
 const RealAccountCreation = () => {
     const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
-    const { currentStep } = useRealAccountCreationContext();
+    const { currentStep, setTotalSteps } = useRealAccountCreationContext();
     const { isModalOpen } = useQueryParams();
+    const { isEU } = useRegulationFlags();
+
+    // Get the form steps based on the user's location
+    const FORM_PROGRESS_STEPS = useMemo(() => getFormSteps(isEU), [isEU]);
+
+    // Set the total steps in the progress bar based on the form steps
+    useEffect(() => {
+        if (FORM_PROGRESS_STEPS.length) {
+            return setTotalSteps(FORM_PROGRESS_STEPS.length);
+        }
+    }, [FORM_PROGRESS_STEPS.length, setTotalSteps]);
 
     return (
         <Fragment>

@@ -21,6 +21,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     renderFooter,
     shouldFixedFooter = true,
     shouldHideDerivAppHeader = false,
+    shouldHideFooter = false,
     shouldHideHeader = false,
     shouldPreventCloseOnEscape = false,
     title,
@@ -39,7 +40,8 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         setModalOptions({
             shouldHideDerivAppHeader,
         });
-    }, [shouldHideDerivAppHeader, setModalOptions]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shouldHideDerivAppHeader]);
 
     const Footer = () =>
         hasRenderFooter ? (
@@ -53,6 +55,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             className={classNames('wallets-modal-step-wrapper', {
                 'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
                 'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
+                'wallets-modal-step-wrapper--no-footer': shouldHideFooter,
                 'wallets-modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
                 'wallets-modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
             })}

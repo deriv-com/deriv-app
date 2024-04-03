@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
+import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -148,14 +149,22 @@ export default class ClientStore extends BaseStore {
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
+    is_p2p_enabled = false;
     real_account_signup_form_data = [];
     real_account_signup_form_step = 0;
+
+    is_passkey_supported = false;
+    should_show_effortless_login_modal = false;
+
+    subscriptions = {};
+    exchange_rates = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
+            exchange_rates: observable,
             loginid: observable,
             external_url_params: observable,
             setExternalParams: action.bound,
@@ -215,8 +224,11 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
+            is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
+            is_passkey_supported: observable,
+            should_show_effortless_login_modal: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -274,7 +286,6 @@ export default class ClientStore extends BaseStore {
             is_age_verified: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
-            is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
@@ -389,8 +400,16 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
+            setIsP2PEnabled: action.bound,
             setRealAccountSignupFormData: action.bound,
             setRealAccountSignupFormStep: action.bound,
+            setIsPasskeySupported: action.bound,
+            setShouldShowEffortlessLoginModal: action.bound,
+            fetchShouldShowEffortlessLoginModal: action.bound,
+            getExchangeRate: action.bound,
+            subscribeToExchangeRate: action.bound,
+            unsubscribeFromExchangeRate: action.bound,
+            unsubscribeFromAllExchangeRates: action.bound,
         });
 
         reaction(
@@ -779,12 +798,6 @@ export default class ClientStore extends BaseStore {
         return this.landing_companies;
     }
 
-    get is_valid_login() {
-        if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MF|MFW|VRTC|VRW|MLT|CR|CRW)[0-9]+$', 'i');
-        return this.all_loginids.every(id => valid_login_ids_regex.test(id));
-    }
-
     get is_logged_in() {
         return !!(
             !isEmptyObject(this.accounts) &&
@@ -1118,7 +1131,9 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+            ? deriv_urls.DERIV_HOST_NAME
+            : window.location.hostname;
 
         // eslint-disable-next-line max-len
         const {
@@ -1148,8 +1163,6 @@ export default class ClientStore extends BaseStore {
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
-            // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
-            Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
 
             this.has_cookie_account = true;
         } else {
@@ -1589,7 +1602,7 @@ export default class ClientStore extends BaseStore {
                 );
 
                 if (has_action) {
-                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
+                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action', 'loginid']);
                     if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
                         // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
                         window.location.replace(`/redirect?${query_string}`);
@@ -1646,6 +1659,8 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
+            await this.setIsPasskeySupported();
+            await this.fetchShouldShowEffortlessLoginModal();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2008,6 +2023,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
@@ -2628,6 +2644,10 @@ export default class ClientStore extends BaseStore {
         this.is_already_attempted = status;
     }
 
+    setIsP2PEnabled(is_p2p_enabled) {
+        this.is_p2p_enabled = is_p2p_enabled;
+    }
+
     setRealAccountSignupFormData(data) {
         this.real_account_signup_form_data = data;
     }
@@ -2636,21 +2656,131 @@ export default class ClientStore extends BaseStore {
         this.real_account_signup_form_step = step;
     }
 
-    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
-     *
-     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
-     *
-     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
-     * */
-    get is_p2p_enabled() {
-        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
-
-        const is_p2p_supported_currency = Boolean(
-            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
-        );
-
-        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
-
-        return is_p2p_visible;
+    async setIsPasskeySupported() {
+        try {
+            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
+            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
+            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
+            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
+            const is_supported_by_browser = await browserSupportsWebAuthn();
+            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
+        } catch (e) {
+            //error handling needed
+        }
     }
+
+    setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
+        this.should_show_effortless_login_modal = should_show_effortless_login_modal;
+    }
+    async fetchShouldShowEffortlessLoginModal() {
+        if (this.is_passkey_supported) {
+            try {
+                const stored_value = localStorage.getItem('show_effortless_login_modal');
+                const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+                if (show_effortless_login_modal) {
+                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
+                }
+
+                const data = await WS.send({ passkeys_list: 1 });
+                const should_show_effortless_login_modal =
+                    this.root_store.ui.is_mobile &&
+                    !data?.passkeys_list?.length &&
+                    this.is_passkey_supported &&
+                    show_effortless_login_modal &&
+                    this.is_logged_in;
+
+                this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+            } catch (e) {
+                //error handling needed
+            }
+        } else {
+            this.setShouldShowEffortlessLoginModal(false);
+        }
+    }
+
+    addSubscription(name, key, subscription, subscription_id) {
+        this.subscriptions[name] = this.subscriptions[name] ?? {};
+        this.subscriptions[name][key] = this.subscriptions[name][key] ?? { sub: undefined, id: undefined };
+        if (subscription) this.subscriptions[name][key].sub = subscription;
+        if (subscription_id) this.subscriptions[name][key].id = subscription_id;
+    }
+
+    setExchangeRates(rates) {
+        this.exchange_rates = { ...rates };
+    }
+
+    getExchangeRate = (base_currency, target_currency) => {
+        if (this.exchange_rates) {
+            return this.exchange_rates?.[base_currency]?.[target_currency] ?? 1;
+        }
+        return 1;
+    };
+
+    subscribeToEndpoint = async (name, payload) => {
+        const key = JSON.stringify({ name, payload });
+        const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
+        if (matchingSubscription) return { key, subscription: matchingSubscription };
+
+        const subscription = WS?.subscribe({
+            [name]: 1,
+            subscribe: 1,
+            ...(payload ?? {}),
+        });
+
+        this.addSubscription(name, key, subscription);
+        return { name, key, subscription };
+    };
+
+    unsubscribeByKey = async (name, key) => {
+        const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
+        if (matchingSubscription) {
+            await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
+            delete this.subscriptions?.[name]?.[key];
+        }
+    };
+
+    subscribeToExchangeRate = async (base_currency, target_currency) => {
+        if (base_currency === '' || target_currency === '' || base_currency === target_currency) return;
+        if (this.exchange_rates?.[base_currency]?.[target_currency]) return;
+
+        const { key, subscription } = await this.subscribeToEndpoint('exchange_rates', {
+            base_currency,
+            target_currency,
+        });
+
+        subscription.subscribe(response => {
+            const rates = response.exchange_rates?.rates;
+            const subscription_id = String(response.subscription?.id);
+
+            if (rates) {
+                this.addSubscription('exchange_rates', key, undefined, subscription_id);
+
+                const currentData = { ...this.exchange_rates };
+                if (currentData) {
+                    currentData[base_currency] = { ...currentData[base_currency], ...rates };
+                } else currentData = { [base_currency]: rates };
+
+                this.setExchangeRates(currentData);
+            }
+        });
+    };
+
+    unsubscribeFromExchangeRate = async (base_currency, target_currency) => {
+        if (base_currency && target_currency) {
+            const key = JSON.stringify({ name: 'exchange_rates', payload: { base_currency, target_currency } });
+            await this.unsubscribeByKey('exchange_rates', key);
+            delete this.subscriptions?.['exchange_rates']?.[key];
+
+            const currData = { ...this.exchange_rates };
+            delete currData[payload.base_currency];
+            this.setExchangeRates(currData);
+        }
+    };
+
+    unsubscribeFromAllExchangeRates = () => {
+        Object.keys(this.subscriptions?.exchange_rates ?? {})?.forEach(key => {
+            this.unsubscribeByKey('exchange_rates', key);
+        });
+        this.setExchangeRates({});
+    };
 }

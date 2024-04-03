@@ -13,7 +13,7 @@
         height: 3.4rem;
         padding: 0.8rem;
         border-radius: 0.8rem;
-        background-color: var(--general-section-2, #f2f3f4);
+        background-color: var(--general-section-4);
         text-decoration: none;
         .full-row {
             gap: 0.8rem;
@@ -31,10 +31,5 @@
         .title {
             color: var(--text-colored-background);
         }
-    }
-
-    .help-center-link {
-        color: var(--text-general);
-        font-weight: bold;
     }
 }

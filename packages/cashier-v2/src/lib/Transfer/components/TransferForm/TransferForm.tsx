@@ -1,9 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router';
 import { Button, Loader, Text } from '@deriv-com/ui';
-import { getCryptoFiatConverterValidationSchema } from '../../../../components';
-import type { TCurrency } from '../../../../types';
 import { useTransfer } from '../../provider';
 import { TTransferFormikContext } from '../../types';
 import { TransferAccountSelection, TransferCryptoFiatAmountConverter } from './components';
@@ -11,9 +9,7 @@ import styles from './TransferForm.module.scss';
 
 const TransferForm = () => {
     const history = useHistory();
-    const { accounts, activeAccount, isLoading } = useTransfer();
-    const [validationSchema, setValidationSchema] =
-        useState<ReturnType<typeof getCryptoFiatConverterValidationSchema>>();
+    const { accounts, activeAccount, isLoading, transferValidationSchema } = useTransfer();
 
     const initialToAccount = useMemo(() => {
         if (!accounts || !activeAccount) return;
@@ -22,34 +18,6 @@ const TransferForm = () => {
 
         return accounts[1];
     }, [accounts, activeAccount]);
-
-    useEffect(() => {
-        if (accounts)
-            setValidationSchema(
-                getCryptoFiatConverterValidationSchema({
-                    fromAccount: {
-                        balance: parseFloat(activeAccount?.balance ?? ''),
-                        currency: activeAccount?.currency as TCurrency,
-                        fractionalDigits: activeAccount?.currencyConfig?.fractional_digits,
-                        limits: {
-                            max: 100,
-                            min: 1,
-                        },
-                    },
-                    toAccount: {
-                        currency: initialToAccount?.currency as TCurrency,
-                        fractionalDigits: initialToAccount?.currencyConfig?.fractional_digits,
-                    },
-                })
-            );
-    }, [
-        accounts,
-        activeAccount?.balance,
-        activeAccount?.currency,
-        activeAccount?.currencyConfig?.fractional_digits,
-        initialToAccount?.currency,
-        initialToAccount?.currencyConfig?.fractional_digits,
-    ]);
 
     if (!accounts || !activeAccount || isLoading || !initialToAccount) return <Loader />;
 
@@ -66,7 +34,7 @@ const TransferForm = () => {
             onSubmit={() => {
                 return undefined;
             }}
-            validationSchema={validationSchema}
+            validationSchema={transferValidationSchema}
         >
             {() => {
                 return (

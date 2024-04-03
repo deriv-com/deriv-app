@@ -1,36 +1,20 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { useTransfer } from '../../../../provider';
 import { TTransferableAccounts, TTransferFormikContext } from '../../../../types';
 import { TransferDropdown } from './components';
 import styles from './TransferAccountSelection.module.scss';
 
-// const getValidationSchema = (fromAccount: TTransferableAccounts[number], toAccount: TTransferableAccounts[number]) => {
-//     if (!fromAccount.currencyConfig) return;
-
-//     const limits =
-//         fromAccount.currencyConfig.transfer_between_accounts[
-//             // eslint-disable-next-line sonarjs/no-nested-template-literals
-//             `limits${fromAccount.account_type !== 'binary' ? `_${fromAccount.account_type}` : ''}`
-//         ];
-
-//     return getTransferValidationSchema({
-//         fromAccount: {
-//             balance: parseFloat(fromAccount?.balance ?? '0'),
-//             currency: fromAccount?.currency as TCurrency,
-//             fractionalDigits: fromAccount?.currencyConfig?.fractional_digits,
-//             limits,
-//         },
-//         toAccount: {
-//             currency: toAccount?.currency as TCurrency,
-//             fractionalDigits: toAccount?.currencyConfig?.fractional_digits,
-//         },
-//     });
-// };
-
 const TransferAccountSelection = () => {
     const { setValues, values } = useFormikContext<TTransferFormikContext>();
-    const { accounts, isLoading } = useTransfer();
+    const { accounts, isLoading, setTransferValidationSchema } = useTransfer();
+
+    useEffect(() => {
+        if (!isLoading) {
+            setTransferValidationSchema(values.fromAccount, values.toAccount);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading, values.fromAccount, values.toAccount]);
 
     const onSelectFromAccount = useCallback(
         (account: TTransferableAccounts[number]) => {

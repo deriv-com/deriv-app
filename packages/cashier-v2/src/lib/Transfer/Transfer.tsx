@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import TransferProvider from './provider/TransferProvider';
 import { TransferForm } from './components';
+import { TransferProvider } from './provider';
 
 const Transfer = () => {
     return <TransferForm />;

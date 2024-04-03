@@ -18,6 +18,14 @@ jest.mock('react-hook-form', () => ({
 
 jest.mock('@deriv/api-v2', () => ({
     p2p: {
+        advert: {
+            useCreate: () => ({
+                error: undefined,
+                isError: false,
+                isSuccess: false,
+                mutate: jest.fn(),
+            }),
+        },
         settings: {
             useGetSettings: () => ({
                 data: {
@@ -35,6 +43,11 @@ jest.mock('@/hooks', () => ({
 
 jest.mock('../../../components/AdWizard', () => ({
     AdWizard: () => <div>AdWizard</div>,
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: () => ({ isMobile: false }),
 }));
 
 describe('CreateEditAd', () => {

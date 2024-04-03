@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
@@ -16,27 +16,27 @@ export const LeaveConfirm = ({ onCancel, onLeave }: TLeaveConfirm) => {
 
     const [showPrompt, setShowPrompt] = useState(false);
     const [currentPath, setCurrentPath] = useState('');
-
-    const unblock = history.block((prompt: { pathname: React.SetStateAction<string> }) => {
-        if (dirty) {
-            setCurrentPath(prompt.pathname);
-            setShowPrompt(true);
-        }
-        return !dirty;
-    });
+    const unblock = useRef<ReturnType<ReturnType<typeof useHistory>['block']>>();
 
     useEffect(() => {
+        unblock.current = history.block((prompt: { pathname: React.SetStateAction<string> }) => {
+            if (dirty) {
+                setCurrentPath(prompt.pathname);
+                setShowPrompt(true);
+            }
+            return !dirty;
+        });
         return () => {
-            unblock();
+            unblock.current();
         };
-    }, [unblock]);
+    }, [dirty, history]);
 
     const handleLeave = useCallback(() => {
         onLeave?.();
-        unblock();
+        unblock.current();
         setShowPrompt(false);
         history.push(currentPath);
-    }, [currentPath, history, onLeave, unblock]);
+    }, [currentPath, history, onLeave]);
 
     const handleCancel = useCallback(async () => {
         onCancel?.();

@@ -3,9 +3,8 @@ import { Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
 import { DerivLightIcPoaLockIcon } from '@deriv/quill-icons';
-import { ActionScreen, Button, InlineMessage, Loader, Modal, Text, useDevice } from '@deriv-com/ui';
+import { ActionScreen, Button, InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
 import { LeaveConfirm } from 'src/components/LeaveConfirm';
-import { ACCOUNT_MODAL_REF } from 'src/constants';
 import { shouldHideOccupation } from 'src/utils/financialAssessmentUtils';
 import IcSuccess from '../../assets/status-message/ic-success.svg';
 import { DemoMessage } from '../../components/DemoMessage';
@@ -19,8 +18,6 @@ export const FinancialAssessmentForm = () => {
     const { isEUCountry } = useIsEuRegion();
     const { isMobile } = useDevice();
     const history = useHistory();
-
-    Modal.setAppElement(ACCOUNT_MODAL_REF);
 
     const redirect = isNavigationFromDerivGO() || isNavigationFromP2P();
     const redirectPlatformName = isNavigationFromDerivGO() ? 'Deriv GO' : 'Deriv P2P';

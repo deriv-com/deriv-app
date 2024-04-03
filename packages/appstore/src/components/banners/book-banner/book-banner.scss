@@ -20,10 +20,10 @@
         font-size: 1.4rem;
         line-height: 2.2rem;
 
-        & label {
+        label {
             padding-inline: 0.8rem;
         }
-        & a {
+        a {
             font-weight: bold;
             text-decoration-line: underline;
             color: $color-black-1;
@@ -34,13 +34,10 @@
             font-size: 1.2rem;
             line-height: 1.8rem;
 
-            & label {
+            label {
                 padding-inline: 0;
                 margin-block-end: 1.6rem;
             }
         }
     }
-}
-.hidden {
-    display: none;
 }

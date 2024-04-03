@@ -6,37 +6,17 @@ import { observer, useStore } from '@deriv/stores';
 
 const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
     // * mt5_login_list returns these:
-    // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
+    // landing_company_short: "svg" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
     const has_vanuatu = mt5_login_list.some(item => item.landing_company_short === 'vanuatu');
     const has_labuan = mt5_login_list.some(item => item.landing_company_short === 'labuan');
 
     switch (landing_company_shortcode) {
-        case 'iom':
-            return (
-                <Localize
-                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account registered with {{legal_entity_name}}, having its registered office address at First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW, licensed and regulated respectively by (1) the Gambling Supervision Commission in the Isle of Man (current <0>licence</0> issued on 31 August 2017) and (2) the Gambling Commission in the UK (<1>licence no. 39172</1>).'
-                    components={[<strong key={0} />, <strong key={1} />]}
-                    values={{
-                        legal_entity_name: getLegalEntityName('mx'),
-                    }}
-                />
-            );
         case 'maltainvest':
             return localize(
                 'This policy, which may change from time to time, applies to your account registered with {{legal_entity_name}}.',
                 {
                     legal_entity_name: getLegalEntityName('maltainvest'),
                 }
-            );
-        case 'malta':
-            return (
-                <Localize
-                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name}}, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, <0>licence no. MGA/B2C/102/2000</0>, and for clients residing in the UK by the UK Gambling Commission (account number 39495).'
-                    components={[<strong key={0} />]}
-                    values={{
-                        legal_entity_name: getLegalEntityName('malta'),
-                    }}
-                />
             );
         default:
             if (has_vanuatu && has_labuan) {

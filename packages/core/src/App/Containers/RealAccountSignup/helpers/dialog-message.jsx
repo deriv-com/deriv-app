@@ -9,12 +9,7 @@ import { EXPERIAN } from './constants';
  * @param {String} landing_company_shortcode
  * @param {EXPERIAN} status
  */
-export const DialogMessage = ({
-    country_standpoint,
-    is_fully_authenticated,
-    landing_company_shortcode,
-    status = EXPERIAN.SUCCESS,
-}) => {
+export const DialogMessage = ({ is_fully_authenticated, landing_company_shortcode, status = EXPERIAN.SUCCESS }) => {
     let message = '';
     if (landing_company_shortcode === 'maltainvest') {
         if (is_fully_authenticated) {
@@ -25,28 +20,6 @@ export const DialogMessage = ({
         } else {
             message = (
                 <Localize i18n_default_text='We need proof of your identity and address before you can start trading.' />
-            );
-        }
-    } else if (landing_company_shortcode === 'malta') {
-        if (
-            (country_standpoint.is_united_kingdom && is_fully_authenticated) ||
-            country_standpoint.is_rest_of_eu ||
-            country_standpoint.is_belgium
-        ) {
-            message = (
-                <Localize
-                    i18n_default_text='You have added a real Options account.<0/>Make a deposit now to start trading.'
-                    components={[<br key={0} />]}
-                />
-            );
-        }
-    } else if (landing_company_shortcode === 'iom') {
-        if (country_standpoint.is_united_kingdom && is_fully_authenticated) {
-            message = (
-                <Localize
-                    i18n_default_text='You have added a real Gaming account.<0/>Make a deposit now to start trading.'
-                    components={[<br key={0} />]}
-                />
             );
         }
     } else {
@@ -92,10 +65,7 @@ export const DialogMessage = ({
 };
 
 DialogMessage.propTypes = {
-    country_standpoint: PropTypes.object,
-    currency: PropTypes.string,
     is_fully_authenticated: PropTypes.bool,
-    is_isle_of_man_residence: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     status: PropTypes.number,
 };

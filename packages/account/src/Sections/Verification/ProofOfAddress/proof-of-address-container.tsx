@@ -49,11 +49,9 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
 
     const { client, notifications, common, ui } = useStore();
     const { app_routing_history } = common;
-    const { landing_company_shortcode, has_restricted_mt5_account, is_switching } = client;
+    const { has_restricted_mt5_account, is_switching } = client;
     const { is_verification_modal_visible } = ui;
     const { refreshNotifications } = notifications;
-
-    const is_mx_mlt = landing_company_shortcode === 'iom' || landing_company_shortcode === 'malta';
 
     React.useEffect(() => {
         if (!is_switching) {
@@ -135,10 +133,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     );
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (
-        !allow_document_upload ||
-        (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
-    )
+    if (!allow_document_upload || (!is_age_verified && !allow_poa_resubmission && document_status === 'none'))
         return <NotRequired />;
     if (has_submitted_poa && !poa_address_mismatch)
         return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;

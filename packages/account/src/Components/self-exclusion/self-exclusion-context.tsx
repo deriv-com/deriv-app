@@ -14,8 +14,6 @@ export type TSelfExclusionContext = {
     is_app_settings?: boolean;
     is_eu?: boolean;
     is_uk?: boolean;
-    is_mlt?: boolean;
-    is_mx?: boolean;
     is_mf?: boolean;
     is_tablet?: boolean;
     is_wrapper_bypassed?: boolean;

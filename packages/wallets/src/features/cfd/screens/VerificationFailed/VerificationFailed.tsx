@@ -4,7 +4,6 @@ import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
-// import { Verification } from '../../flows';
 import './VerificationFailed.scss';
 
 const LazyVerification = lazy(

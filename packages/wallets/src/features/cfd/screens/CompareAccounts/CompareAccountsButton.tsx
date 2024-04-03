@@ -13,7 +13,6 @@ import { useModal } from '../../../../components/ModalProvider';
 import useWalletAccountSwitcher from '../../../../hooks/useWalletAccountSwitcher';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
-// import { Verification } from '../../flows';
 import { DxtradeEnterPasswordModal, MT5PasswordModal } from '../../modals';
 import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
 import {

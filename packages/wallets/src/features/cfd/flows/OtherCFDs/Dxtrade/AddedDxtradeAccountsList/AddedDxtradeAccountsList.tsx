@@ -18,15 +18,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                 <TradingAccountCard
                     key={account?.account_id}
                     leading={<div className='wallets-available-dxtrade__icon'>{PlatformDetails.dxtrade.icon}</div>}
-                    onClick={() =>
-                        show(
-                            <MT5TradeModal
-                                marketType={account.market_type ?? 'all'}
-                                mt5Account={account}
-                                platform={PlatformDetails.mt5.platform}
-                            />
-                        )
-                    }
+                    onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}
                     trailing={
                         <div className='wallets-available-dxtrade__icon'>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />

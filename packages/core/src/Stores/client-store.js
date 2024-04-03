@@ -2699,12 +2699,8 @@ export default class ClientStore extends BaseStore {
     }
 
     addSubscription(name, key, subscription, subscription_id) {
-        if (!this.subscriptions[name]) {
-            this.subscriptions[name] = {};
-        }
-        if (!this.subscriptions[name][key]) {
-            this.subscriptions[name][key] = { sub: undefined, id: undefined };
-        }
+        this.subscriptions[name] = this.subscriptions[name] ?? {};
+        this.subscriptions[name][key] = this.subscriptions[name][key] ?? { sub: undefined, id: undefined };
         if (subscription) this.subscriptions[name][key].sub = subscription;
         if (subscription_id) this.subscriptions[name][key].id = subscription_id;
     }
@@ -2785,7 +2781,6 @@ export default class ClientStore extends BaseStore {
         Object.keys(this.subscriptions?.exchange_rates ?? {})?.forEach(key => {
             this.unsubscribeByKey('exchange_rates', key);
         });
-        console.log('unsub from all');
         this.setExchangeRates({});
     };
 }

@@ -44,7 +44,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
         await setFieldValue('action', 'EDIT');
         validateForm();
         submitForm().then(form_data => {
-            if (isValid) {
+            if (isValid && form_data) {
                 onSubmit(form_data); // true to load and run the bot
             }
         });

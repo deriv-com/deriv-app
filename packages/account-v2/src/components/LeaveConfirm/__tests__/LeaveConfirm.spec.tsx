@@ -23,7 +23,7 @@ jest.mock('react-router-dom', () => ({
     })),
 }));
 
-const wrapper = ({ children }: { children: React.JSX.Element }) => {
+const wrapper = ({ children }: { children: JSX.Element }) => {
     return (
         <Formik initialValues={{ name: '' }} onSubmit={jest.fn()}>
             {({ handleBlur, handleChange, handleSubmit, values }) => (

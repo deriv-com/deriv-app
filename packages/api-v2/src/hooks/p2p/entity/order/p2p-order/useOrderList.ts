@@ -11,7 +11,16 @@ const useOrderList = (
     const { isSuccess } = useAuthorize();
     const { data: subscriptionData, subscribe, unsubscribe } = useSubscription('p2p_order_list');
 
-    // Fetch historical data
+    // Subscribe to the p2p_order_list endpoint to keep track of the order list updates
+    React.useEffect(() => {
+        if (isSuccess) subscribe();
+
+        return () => {
+            unsubscribe();
+        };
+    }, [isSuccess]);
+
+    // Fetch the order list data which handles pagination
     const {
         data: queryData,
         fetchNextPage,
@@ -21,20 +30,12 @@ const useOrderList = (
         payload: { ...payload, offset: payload?.offset, limit: payload?.limit },
         options: {
             getNextPageParam: (lastPage, pages) => {
-                if (!lastPage?.p2p_order_list?.list?.length) return;
+                if (lastPage?.p2p_order_list?.list?.length === 0) return;
                 return pages.length;
             },
-            // Subscribe to the endpoint if the request is successful to keep the data up-to-date
-            onSuccess: () => subscribe(),
-            enabled: isSuccess && (config?.enabled === undefined || config.enabled),
+            enabled: subscriptionData && (config?.enabled === undefined || config.enabled),
         },
     });
-
-    React.useEffect(() => {
-        return () => {
-            unsubscribe();
-        };
-    }, []);
 
     // Refetch the data when the subscription data changes
     React.useEffect(() => {
@@ -51,7 +52,7 @@ const useOrderList = (
     }, [queryData?.pages]);
 
     // Additional p2p_order_list data
-    const modified_data = React.useMemo(() => {
+    const modifiedData = React.useMemo(() => {
         if (!flattenedData) return undefined;
 
         return flattenedData.map(advert => ({
@@ -102,10 +103,9 @@ const useOrderList = (
 
     return {
         /** The 'p2p_order_list' response. */
-        data: modified_data,
+        data: modifiedData,
         /** Fetch the next page of orders. */
         loadMoreOrders: fetchNextPage,
-        unsubscribe,
         ...rest,
     };
 };

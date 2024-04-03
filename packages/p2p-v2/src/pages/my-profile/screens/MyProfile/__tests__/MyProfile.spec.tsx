@@ -64,9 +64,6 @@ jest.mock('@/hooks', () => ({
         failureReason: undefined,
         isLoading: false,
     }),
-    useDevice: jest.fn().mockReturnValue({
-        isMobile: false,
-    }),
     usePoiPoaStatus: jest.fn().mockReturnValue({
         data: {
             isP2PPoaRequired: false,

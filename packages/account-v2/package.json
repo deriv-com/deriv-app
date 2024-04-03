@@ -11,12 +11,13 @@
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
-        "@deriv-com/ui": "1.11.2",
-        "@deriv/api-v2": "^1.0.0",
+        "@deriv-com/ui": "^1.12.17",
         "@deriv-com/utils": "^0.0.11",
-        "@deriv/quill-icons": "^1.19.5",
         "@deriv/api-types": "^1.0.172",
+        "@deriv/api-v2": "^1.0.0",
+        "@deriv/quill-icons": "^1.19.5",
         "class-variance-authority": "^0.7.0",
+        "dayjs": "^1.11.10",
         "formik": "^2.1.4",
         "i18n-iso-countries": "^6.8.0",
         "i18next": "^22.4.6",
@@ -27,9 +28,9 @@
         "react-router-dom": "^5.2.0",
         "react-transition-group": "4.4.2",
         "tailwind-merge": "^1.14.0",
+        "ua-parser-js": "^1.0.37",
         "usehooks-ts": "^2.7.0",
-        "yup": "^0.32.11",
-        "dayjs": "^1.11.10"
+        "yup": "^0.32.11"
     },
     "devDependencies": {
         "@testing-library/react": "^12.0.0",
@@ -38,6 +39,7 @@
         "@types/react-dom": "^18.0.0",
         "@types/react-modal": "^3.16.3",
         "@types/react-router-dom": "^5.1.6",
+        "@types/ua-parser-js": "^0.7.39",
         "@types/webpack": "^5.28.5",
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",

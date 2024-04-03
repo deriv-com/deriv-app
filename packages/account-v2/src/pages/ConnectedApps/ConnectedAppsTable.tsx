@@ -22,8 +22,9 @@ export const ConnectedAppsTable = ({ connectedApps, handleToggleModal }: TConnec
             columns={CONNECTED_APPS_HEADER}
             data={connectedAppsRows ?? []}
             isFetching={false}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            loadMoreFunction={() => {}}
+            loadMoreFunction={() => {
+                //[TODO]: Add load more function
+            }}
             renderHeader={header => <span>{header}</span>}
             rowRender={data => (
                 <div className='grid grid-flow-col text-default'>

@@ -41,7 +41,7 @@ const AdPaymentDetailsSection = ({ currency, localCurrency, rateType, ...props }
     };
 
     return (
-        <div className='p-[1.6rem] w-full'>
+        <div className='p-[1.6rem] w-full lg:p-0'>
             <AdSummary
                 currency={currency}
                 localCurrency={localCurrency}

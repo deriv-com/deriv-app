@@ -24,10 +24,7 @@ type TFormInputFieldHelpers<T> = {
  */
 const FormInputField = ({ name, warn, ...rest }: FormInputFieldProps) => (
     <Field name={name}>
-        {({
-            field,
-            form: { errors, touched, setFieldTouched, setFieldValue },
-        }: TFormInputFieldHelpers<Record<string, string>>) => {
+        {({ field, form: { errors, touched, setFieldTouched } }: TFormInputFieldHelpers<Record<string, string>>) => {
             return (
                 <Input
                     {...field}
@@ -38,7 +35,6 @@ const FormInputField = ({ name, warn, ...rest }: FormInputFieldProps) => (
                     warn={warn}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         !touched[field.name] && setFieldTouched(field.name);
-                        // setFieldValue(field.name, e.target.value);
                         field.onChange(e);
                     }}
                 />

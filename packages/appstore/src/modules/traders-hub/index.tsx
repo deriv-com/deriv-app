@@ -128,16 +128,17 @@ const TradersHub = observer(() => {
     };
 
     return (
-        <>
-            <Div100vhContainer
-                className={classNames('traders-hub--mobile', {
-                    'traders-hub--mobile--eu-user': is_eu_user,
-                })}
-                height_offset='50px'
-                is_disabled={isDesktop()}
-            >
+        <React.Fragment>
+            <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
                 {can_show_notify && <Notifications />}
-                <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                <div
+                    id='traders-hub'
+                    className={classNames('traders-hub', {
+                        'traders-hub--eu-user': is_eu_user && is_mt5_allowed,
+                        'traders-hub--eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
+                    })}
+                    ref={traders_hub_ref}
+                >
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
                     <MobileWrapper>
@@ -173,9 +174,10 @@ const TradersHub = observer(() => {
                     <Text align='left' className='disclaimer-text' size={is_mobile ? 'xxxs' : 'xs'}>
                         <Localize i18n_default_text='The products offered on our website are complex derivative products that carry a significant risk of potential loss. CFDs are complex instruments with a high risk of losing money rapidly due to leverage. 70.1% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether you understand how these products work and whether you can afford to take the high risk of losing your money.' />
                     </Text>
+                    <div className='disclaimer__bottom-plug' />
                 </div>
             )}
-        </>
+        </React.Fragment>
     );
 });
 

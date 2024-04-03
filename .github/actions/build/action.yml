@@ -51,6 +51,9 @@ inputs:
   REMOTE_CONFIG_URL:
     description: 'Remote config backup URL'
     required: true
+  IS_GROWTHBOOK_ENABLED:
+    description: 'Is growthbook enabled'
+    required: true
 
 runs:
   using: composite
@@ -65,6 +68,7 @@ runs:
       DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
       DATADOG_SESSION_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE }}
       DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
+      IS_GROWTHBOOK_ENABLED: ${{ inputs.IS_GROWTHBOOK_ENABLED }}
       GD_API_KEY: ${{ inputs.GD_API_KEY }}
       GD_APP_ID: ${{ inputs.GD_APP_ID }}
       GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}

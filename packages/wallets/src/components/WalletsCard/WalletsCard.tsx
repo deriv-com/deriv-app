@@ -1,14 +1,27 @@
-import React, { useRef } from 'react';
-import { THooks } from '../../types';
+import React, { useEffect, useRef } from 'react';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import './WalletsCard.scss';
 
 type TProps = {
-    isDemo?: THooks.WalletAccountsList['is_virtual'];
     renderHeader: () => React.ReactNode;
 };
 
-const WalletsCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, isDemo = false, renderHeader }) => {
+const WalletsCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, renderHeader }) => {
+    const { data: activeWallet } = useActiveWalletAccount();
     const walletsCardRef = useRef<HTMLDivElement>(null);
+
+    const isDemo = activeWallet?.is_virtual;
+    const isOpen = activeWallet?.is_active;
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            if (isOpen && walletsCardRef?.current) {
+                walletsCardRef.current.style.scrollMarginTop = '24px';
+                walletsCardRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 300);
+        return () => clearTimeout(timeout);
+    }, [isOpen]);
 
     return (
         <div

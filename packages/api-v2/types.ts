@@ -1,6 +1,8 @@
 import type {
     AccountLimitsRequest,
     AccountLimitsResponse,
+    AccountListRequest,
+    AccountListResponse,
     AccountStatusRequest,
     AccountStatusResponse,
     ActiveSymbolsRequest,
@@ -231,139 +233,71 @@ import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-qu
 /**
  * Proof of Identity (POI) and Proof of Address (POA) authentication status details.
  */
-type KycAuthStatus =
-    | {
-          /**
-           * POA authentication status details.
-           */
-          address: {
-              /**
-               * Current POA status.
-               */
-              status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
-          };
-          /**
-           * POI authentication status details.
-           */
-          identity: {
-              /**
-               * Available services for the next POI attempt.
-               */
-              available_services?: string[];
-              /**
-               * Details on the rejected POI attempt.
-               */
-              last_rejected?: {
-                  /**
-                   * Document type of the rejected POI attempt (IDV only).
-                   */
-                  document_type?: null | string;
-                  /**
-                   * Reason(s) for the rejected POI attempt.
-                   */
-                  rejected_reasons?: string[];
-              };
-              /**
-               * Service used for the current POI status.
-               */
-              service?: 'none' | 'idv' | 'onfido' | 'manual';
-              /**
-               * Current POI status.
-               */
-              status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
-              /**
-               * Supported documents per service.
-               */
-              supported_documents?: {
-                  idv?: {
-                      [k: string]: {
-                          additional?: {
-                              display_name?: string;
-                              format?: string;
-                              [k: string]: unknown;
-                          };
-                          display_name?: string;
-                          format?: string;
-                          [k: string]: unknown;
-                      };
-                  };
-                  onfido?: {
-                      [k: string]: {
-                          display_name?: string;
-                          [k: string]: unknown;
-                      };
-                  };
-                  [k: string]: unknown;
-              };
-          };
-      }
-    | {
-          [k: string]: {
-              /**
-               * POA authentication status details.
-               */
-              address: {
-                  /**
-                   * Current POA status.
-                   */
-                  status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
-              };
-              /**
-               * POI authentication status details.
-               */
-              identity: {
-                  /**
-                   * Available services for the next POI attempt.
-                   */
-                  available_services?: string[];
-                  /**
-                   * Details on the rejected POI attempt.
-                   */
-                  last_rejected?: {
-                      /**
-                       * Document type of the rejected POI attempt (IDV only).
-                       */
-                      document_type?: null | string;
-                      /**
-                       * Reason(s) for the rejected POI attempt.
-                       */
-                      rejected_reasons?: string[];
-                  };
-                  /**
-                   * Service used for the current POI status.
-                   */
-                  service?: 'none' | 'idv' | 'onfido' | 'manual';
-                  /**
-                   * Current POI status.
-                   */
-                  status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
-                  /**
-                   * Supported documents per service.
-                   */
-                  supported_documents?: {
-                      idv?: {
-                          [k: string]: {
-                              additional?: {
-                                  display_name?: string;
-                                  format?: string;
-                                  [k: string]: unknown;
-                              };
-                              display_name?: string;
-                              format?: string;
-                              [k: string]: unknown;
-                          };
-                      };
-                      onfido?: {
-                          [k: string]: {
-                              display_name?: string;
-                              [k: string]: unknown;
-                          };
-                      };
-                      [k: string]: unknown;
-                  };
-              };
-          };
-      };
+type KycAuthStatus = {
+    /**
+     * POA authentication status details.
+     */
+    address: {
+        /**
+         * Current POA status.
+         */
+        status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
+    };
+    /**
+     * POI authentication status details.
+     */
+    identity: {
+        /**
+         * Available services for the next POI attempt.
+         */
+        available_services?: string[];
+        /**
+         * Details on the rejected POI attempt.
+         */
+        last_rejected?: {
+            /**
+             * Document type of the rejected POI attempt (IDV only).
+             */
+            document_type?: null | string;
+            /**
+             * Reason(s) for the rejected POI attempt.
+             */
+            rejected_reasons?: string[];
+        };
+        /**
+         * Service used for the current POI status.
+         */
+        service?: 'none' | 'idv' | 'onfido' | 'manual';
+        /**
+         * Current POI status.
+         */
+        status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
+        /**
+         * Supported documents per service.
+         */
+        supported_documents?: {
+            idv?: {
+                [k: string]: {
+                    additional?: {
+                        display_name?: string;
+                        format?: string;
+                        [k: string]: unknown;
+                    };
+                    display_name?: string;
+                    format?: string;
+                    [k: string]: unknown;
+                };
+            };
+            onfido?: {
+                [k: string]: {
+                    display_name?: string;
+                    [k: string]: unknown;
+                };
+            };
+            [k: string]: unknown;
+        };
+    };
+};
 
 type TPrivateSocketEndpoints = {
     available_accounts: {
@@ -1019,6 +953,154 @@ type TPrivateSocketEndpoints = {
              */
             req_id?: number;
             [k: string]: unknown;
+        };
+    };
+    p2p_settings: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            p2p_settings: 1;
+            /**
+             * [Optional] If set to `1`, will send updates whenever there is an update to P2P settings.
+             */
+            subscribe?: 1;
+            /**
+             * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+             */
+            loginid?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            p2p_settings?: {
+                /**
+                 * Maximum number of active ads allowed by an advertiser per currency pair and advert type (buy or sell).
+                 */
+                adverts_active_limit: number;
+                /**
+                 * Adverts will be deactivated if no activity occurs within this period, in days.
+                 */
+                adverts_archive_period?: number;
+                /**
+                 * Block trading settings
+                 */
+                block_trade: {
+                    /**
+                     * When 1, Block trading is unavailable.
+                     */
+                    disabled?: 0 | 1;
+                    /**
+                     * Maximum amount of a block trade advert, in USD.
+                     */
+                    maximum_advert_amount?: number;
+                };
+                /**
+                 * A buyer will be blocked for this duration after exceeding the cancellation limit, in hours.
+                 */
+                cancellation_block_duration: number;
+                /**
+                 * The period within which to count buyer cancellations, in hours.
+                 */
+                cancellation_count_period: number;
+                /**
+                 * A buyer may cancel an order within this period without negative consequences, in minutes after order creation.
+                 */
+                cancellation_grace_period: number;
+                /**
+                 * A buyer will be temporarily barred after marking this number of cancellations within cancellation_period.
+                 */
+                cancellation_limit: number;
+                /**
+                 * When 0, only exchanges in local currency are allowed for P2P advertiser.
+                 */
+                cross_border_ads_enabled: 0 | 1;
+                /**
+                 * When 1, the P2P service is unavailable.
+                 */
+                disabled: 0 | 1;
+                /**
+                 * Indicates the availbility of certain backend features.
+                 */
+                feature_level: number;
+                /**
+                 * Availability of fixed rate adverts.
+                 */
+                fixed_rate_adverts: 'disabled' | 'enabled' | 'list_only';
+                /**
+                 * Date on which fixed rate adverts will be deactivated.
+                 */
+                fixed_rate_adverts_end_date?: string;
+                /**
+                 * Availability of floating rate adverts.
+                 */
+                float_rate_adverts: 'disabled' | 'enabled' | 'list_only';
+                /**
+                 * Maximum rate offset for floating rate adverts.
+                 */
+                float_rate_offset_limit: number;
+                /**
+                 * Available local currencies for p2p_advert_list request.
+                 */
+                local_currencies: {
+                    /**
+                     * Local currency name
+                     */
+                    display_name: string;
+                    /**
+                     * Indicates that there are adverts available for this currency.
+                     */
+                    has_adverts: 0 | 1;
+                    /**
+                     * Indicates that this is local currency for the current country.
+                     */
+                    is_default?: 1;
+                    /**
+                     * Local currency symbol
+                     */
+                    symbol: string;
+                }[];
+                /**
+                 * Maximum amount of an advert, in USD.
+                 */
+                maximum_advert_amount: number;
+                /**
+                 * Maximum amount of an order, in USD.
+                 */
+                maximum_order_amount: number;
+                /**
+                 * Maximum number of orders a user may create per day.
+                 */
+                order_daily_limit: number;
+                /**
+                 * Time allowed for order payment, in minutes after order creation.
+                 */
+                order_payment_period: number;
+                /**
+                 * Local P2P exchange rate which should be used instead of those obtained from the `exchange_rates` call.
+                 */
+                override_exchange_rate?: string;
+                /**
+                 * Indicates if the payment methods feature is enabled.
+                 */
+                payment_methods_enabled: 0 | 1;
+                /**
+                 * Time after successful order completion during which reviews can be created, in hours.
+                 */
+                review_period: number;
+                /**
+                 * List of currencies for which P2P is available
+                 */
+                supported_currencies: string[];
+            };
         };
     };
     service_token: {
@@ -2064,10 +2146,20 @@ type TPrivateSocketEndpoints = {
     };
 };
 
+type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
+
+interface IExtendedAccountListResponse extends AccountListResponse {
+    account_list?: TAccountList[];
+}
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;
+    };
+    account_list: {
+        request: AccountListRequest;
+        response: IExtendedAccountListResponse;
     };
     api_token: {
         request: APITokenRequest;

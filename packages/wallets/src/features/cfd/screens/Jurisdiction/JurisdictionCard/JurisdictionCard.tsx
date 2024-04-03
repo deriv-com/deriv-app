@@ -117,8 +117,9 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                         {rows.map(row => {
                             return (
                                 <JurisdictionCardRow
+                                    className={`wallets-jurisdiction-card-row--${row.key}`}
                                     description={parseDescription(row)}
-                                    key={`wallets-jurisdiction-card--${row?.title}`}
+                                    key={`wallets-jurisdiction-card-row--${row.key}`}
                                     renderTag={() => {
                                         if (!row?.titleIndicators) return;
 

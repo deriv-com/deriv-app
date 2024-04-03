@@ -2,7 +2,7 @@ import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject, TRADE_TYPES } from '@deriv/shared';
+import { getGrowthRatePercentage, isEmptyObject, TRADE_TYPES } from '@deriv/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { observer } from '@deriv/stores';
@@ -14,7 +14,8 @@ type TRadioGroupOptionsModal = {
 };
 
 const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: TRadioGroupOptionsModal) => {
-    const { accumulator_range_list, growth_rate, onChange, tick_size_barrier, proposal_info } = useTraderStore();
+    const { accumulator_range_list, growth_rate, onChange, tick_size_barrier_percentage, proposal_info } =
+        useTraderStore();
 
     // Fix to prevent iOS from zooming in erratically on quick taps
     usePreventIOSZoom();
@@ -42,10 +43,10 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: 
                             contract_name={TRADE_TYPES.ACCUMULATOR}
                             current_value_object={{ name: 'growth_rate', value: growth_rate }}
                             info={localize(
-                                'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.',
+                                'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier_percentage}} from the previous spot price.',
                                 {
                                     growth_rate: getGrowthRatePercentage(growth_rate),
-                                    tick_size_barrier: getTickSizeBarrierPercentage(tick_size_barrier),
+                                    tick_size_barrier_percentage,
                                 }
                             )}
                             is_tooltip_disabled={has_error_or_not_loaded}

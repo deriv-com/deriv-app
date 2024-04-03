@@ -2,15 +2,19 @@ import React, { KeyboardEvent } from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { DBOT_TABS } from 'Constants/bot-contents';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from '../tutorials.types';
 
 type TFAQContent = {
     faq_list: TFAQList[];
+    handleTabChange: (active_number: number) => void;
 };
 
 type TFAQList = {
     title: string;
     description: TDescription[];
+    search_id?: string;
 };
 
 const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) => {
@@ -38,9 +42,29 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     }
 };
 
-const FAQContent = ({ faq_list }: TFAQContent) => {
+const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
+    const { dashboard } = useDBotStore();
+    const { faq_title, setFaqTitle } = dashboard;
+
+    const handleAccordionOpen = () => {
+        faq_list.forEach(data => {
+            if (data.search_id === faq_title) {
+                document.querySelectorAll('.faq__title').forEach((data, index) => {
+                    if (Number(faq_title.split('-')[1]) === index) {
+                        data.click();
+                        setFaqTitle('');
+                        handleTabChange(DBOT_TABS.TUTORIAL);
+                    }
+                });
+            }
+        });
+    };
+
+    React.useEffect(() => {
+        handleAccordionOpen();
+    }, []);
 
     const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);

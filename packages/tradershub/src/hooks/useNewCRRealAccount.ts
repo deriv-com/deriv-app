@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
-import { useSignupWizardContext } from '@/providers/SignupWizardProvider';
-import { useAuthorize, useCreateNewRealAccount, useSettings } from '@deriv/api';
+import { useRealAccountCreationContext } from '@/providers/RealAccountCreationProvider';
+import { useAuthorize, useCreateNewRealAccount, useSettings } from '@deriv/api-v2';
 import useSyncLocalStorageClientAccounts from './useSyncLocalStorageClientAccounts';
 
 /**
@@ -9,7 +9,7 @@ import useSyncLocalStorageClientAccounts from './useSyncLocalStorageClientAccoun
  * @returns {Object} Submit handler function, the new real CR account data and the status of the request.
  */
 const useNewCRRealAccount = () => {
-    const { setIsWizardOpen, state, setIsSuccessModalOpen } = useSignupWizardContext();
+    const { setIsWizardOpen, state, setIsSuccessModalOpen } = useRealAccountCreationContext();
 
     const { data: newTradingAccountData, mutate: createAccount, status, ...rest } = useCreateNewRealAccount();
     const { data: settingsData } = useSettings();

@@ -1,0 +1,22 @@
+.p2p-v2-advertiser-adverts-table {
+    & .derivs-secondary-tabs {
+        &__btn {
+            padding: 0.5rem 0;
+        }
+
+        .deriv-text {
+            font-size: 1.4rem;
+        }
+    }
+
+    & .p2p-v2-table {
+        &__header {
+            padding: 1.6rem;
+            border-bottom: 1px solid #f2f3f4;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        &__content {
+            overflow: auto;
+        }
+    }
+}

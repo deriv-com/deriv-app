@@ -153,7 +153,7 @@ const SaveModalForm = ({
                                 type='submit'
                                 is_loading={button_status === 1}
                                 is_submit_success={button_status === 2}
-                                text={localize('Continue')}
+                                text={localize('Save')}
                                 primary
                             />
                         </div>

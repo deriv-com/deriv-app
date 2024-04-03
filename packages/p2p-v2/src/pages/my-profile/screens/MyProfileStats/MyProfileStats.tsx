@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAdvertiserStats } from '@/hooks';
 import { numberToCurrencyText } from '@/utils';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveAccount } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import MyProfileStatsItem from './MyProfileStatsItem';
 import './MyProfileStats.scss';

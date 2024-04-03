@@ -50,4 +50,10 @@ describe('<ArrowButton/>', () => {
 
         expect(mockedDefaultProps.onClick).toHaveBeenCalled();
     });
+
+    it('should not render handle button if show_collapsible_button is false', () => {
+        render(<ArrowButton {...mockedDefaultProps} show_collapsible_button={false} />);
+
+        expect(screen.queryByTestId('icon_handle')).not.toBeInTheDocument();
+    });
 });

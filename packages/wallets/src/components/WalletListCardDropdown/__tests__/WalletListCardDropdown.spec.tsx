@@ -3,9 +3,15 @@ import { useWalletAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletListCardDropdown from '../WalletListCardDropdown';
 
+const mockSwitchAccount = jest.fn();
 jest.mock('@deriv/api-v2', () => ({
+    useActiveWalletAccount: jest.fn(() => ({
+        data: {
+            loginid: '1234567',
+        },
+    })),
     useAuthorize: jest.fn(() => ({
-        switchAccount: jest.fn(),
+        switchAccount: mockSwitchAccount,
     })),
     useWalletAccountsList: jest.fn(() => ({
         data: [
@@ -31,17 +37,13 @@ jest.mock('@deriv/api-v2', () => ({
 
 describe('WalletListCardDropdown', () => {
     it('should render with the correct data', async () => {
-        const onAccountSelectMock = jest.fn();
-
-        render(<WalletListCardDropdown loginid='1234567' onAccountSelect={onAccountSelectMock} />);
+        render(<WalletListCardDropdown />);
 
         expect(screen.getByDisplayValue('USD Wallet')).toBeInTheDocument();
     });
 
     it('should switch to selected account on click of the list item', async () => {
-        const onAccountSelectMock = jest.fn();
-
-        render(<WalletListCardDropdown loginid='1234567' onAccountSelect={onAccountSelectMock} />);
+        render(<WalletListCardDropdown />);
 
         expect(screen.getByDisplayValue('USD Wallet')).toBeInTheDocument();
 
@@ -51,18 +53,18 @@ describe('WalletListCardDropdown', () => {
         expect(screen.getByText('USD Demo Wallet')).toBeInTheDocument();
         fireEvent.click(screen.getByText('BTC Wallet'));
 
-        expect(onAccountSelectMock).toHaveBeenCalledWith('7654321');
+        expect(mockSwitchAccount).toHaveBeenCalledWith('7654321');
 
         fireEvent.click(screen.getByDisplayValue('BTC Wallet'));
         fireEvent.click(screen.getByText('USD Demo Wallet'));
 
-        expect(onAccountSelectMock).toHaveBeenCalledWith('55555');
+        expect(mockSwitchAccount).toHaveBeenCalledWith('55555');
     });
 
     it('should render dropdown without crashing when unable to fetch wallets', async () => {
         (useWalletAccountsList as jest.Mock).mockReturnValueOnce({ data: [] });
 
-        render(<WalletListCardDropdown loginid='1234567' onAccountSelect={jest.fn()} />);
+        render(<WalletListCardDropdown />);
 
         expect(screen.getByDisplayValue('')).toBeInTheDocument();
     });

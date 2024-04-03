@@ -1,18 +1,18 @@
 import React from 'react';
-import { useSettings, useVerifyEmail } from '@deriv/api';
+import { useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import WithdrawalVerification from '../WithdrawalVerification';
 import '@testing-library/jest-dom';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useSettings: jest.fn(() => ({ data: { email: null } })),
     useVerifyEmail: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 
 describe('WithdrawalVerification', () => {
     it('should render WithdrawalVerificationRequest initially', () => {
-        render(<WithdrawalVerification />);
+        render(<WithdrawalVerification withdrawalType='payment_withdraw' />);
         expect(screen.getByText('Please help us verify your withdrawal request.')).toBeInTheDocument();
     });
 
@@ -23,7 +23,7 @@ describe('WithdrawalVerification', () => {
             mutate: mockMutate,
         }));
 
-        render(<WithdrawalVerification />);
+        render(<WithdrawalVerification withdrawalType='payment_withdraw' />);
 
         fireEvent.click(screen.getByRole('button', { name: 'Send email' }));
 
@@ -42,7 +42,7 @@ describe('WithdrawalVerification', () => {
             mutate: mockMutate,
         }));
 
-        render(<WithdrawalVerification />);
+        render(<WithdrawalVerification withdrawalType='payment_withdraw' />);
 
         fireEvent.click(screen.getByRole('button', { name: 'Send email' }));
 

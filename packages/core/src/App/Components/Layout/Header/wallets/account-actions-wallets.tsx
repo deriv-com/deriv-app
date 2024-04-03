@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Icon, Popover } from '@deriv/components';
+import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
+import { Button, Icon, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { LoginButton } from '../login-button.jsx';
@@ -22,8 +23,23 @@ const AccountActionsWallets = observer(() => {
     const is_virtual = active_account?.is_virtual;
     const currency = active_account?.currency;
 
-    if (is_logged_in) {
-        return is_mobile ? (
+    const history = useHistory();
+
+    const handleManageFundsRedirect = () => {
+        history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+    };
+
+    if (!is_logged_in) {
+        return (
+            <React.Fragment>
+                <LoginButton className='acc-info__button' />
+                <SignupButton className='acc-info__button' />
+            </React.Fragment>
+        );
+    }
+
+    if (is_mobile) {
+        return (
             <React.Fragment>
                 <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
                 <div className='acc-info__wallets-notification-icon'>
@@ -35,56 +51,50 @@ const AccountActionsWallets = observer(() => {
                     />
                 </div>
             </React.Fragment>
-        ) : (
-            <React.Fragment>
-                <ToggleNotifications
-                    count={notifications_count}
-                    is_visible={is_notifications_visible}
-                    toggleDialog={toggleNotificationsModal}
-                    tooltip_message={<Localize i18n_default_text='View notifications' />}
-                    should_disable_pointer_events
-                />
-                <Popover
-                    classNameBubble='account-settings-toggle__tooltip'
-                    alignment='bottom'
-                    message={<Localize i18n_default_text='Manage account settings' />}
-                    should_disable_pointer_events
-                    zIndex='9999'
-                >
-                    <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
-                        <Icon icon='IcUserOutline' />
-                    </BinaryLink>
-                </Popover>
-                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-                {!is_virtual && !currency && (
-                    <div className='set-currency'>
-                        <Button
-                            onClick={() => openRealAccountSignup('set_currency')}
-                            has_effect
-                            type='button'
-                            text={localize('Set currency')}
-                            primary
-                        />
-                    </div>
-                )}
-                {currency && (
-                    <Button
-                        className='acc-info__button'
-                        has_effect
-                        text={localize('Manage funds')}
-                        // this function will be described later
-                        // eslint-disable-next-line @typescript-eslint/no-empty-function
-                        onClick={() => {}}
-                        primary
-                    />
-                )}
-            </React.Fragment>
         );
     }
+
     return (
         <React.Fragment>
-            <LoginButton className='acc-info__button' />
-            <SignupButton className='acc-info__button' />
+            <ToggleNotifications
+                count={notifications_count}
+                is_visible={is_notifications_visible}
+                toggleDialog={toggleNotificationsModal}
+                tooltip_message={<Localize i18n_default_text='View notifications' />}
+                should_disable_pointer_events
+            />
+            <Popover
+                classNameBubble='account-settings-toggle__tooltip'
+                alignment='bottom'
+                message={<Localize i18n_default_text='Manage account settings' />}
+                should_disable_pointer_events
+                zIndex='9999'
+            >
+                <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+                    <Icon icon='IcUserOutline' />
+                </BinaryLink>
+            </Popover>
+            <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+            {!is_virtual && !currency && (
+                <div className='set-currency'>
+                    <Button
+                        onClick={() => openRealAccountSignup('set_currency')}
+                        has_effect
+                        type='button'
+                        text={localize('Set currency')}
+                        primary
+                    />
+                </div>
+            )}
+            {currency && (
+                <Button
+                    className='acc-info__button'
+                    has_effect
+                    text={localize('Manage funds')}
+                    onClick={handleManageFundsRedirect}
+                    primary
+                />
+            )}
         </React.Fragment>
     );
 });

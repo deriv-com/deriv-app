@@ -1,11 +1,13 @@
 import React from 'react';
 import MT5MigrationBackSideContent from '../mt5-migration-back-side-content';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import userEvent from '@testing-library/user-event';
 import { useMT5MigrationModalContext } from '../mt5-migration-modal-context';
+import { Formik } from 'formik';
+import { WS } from '@deriv/shared';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -15,6 +17,22 @@ jest.mock('@deriv/hooks', () => ({
 jest.mock('../mt5-migration-modal-context', () => ({
     ...jest.requireActual('../mt5-migration-modal-context'),
     useMT5MigrationModalContext: jest.fn(),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    getErrorMessages: jest.fn().mockReturnValue({
+        password: jest.fn(),
+        password_warnings: '',
+    }),
+    WS: {
+        verifyEmail: jest.fn(),
+    },
+}));
+
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    PasswordMeter: jest.fn(({ children }) => <div>{children}</div>),
 }));
 
 const mock_store = mockStore({
@@ -42,7 +60,14 @@ describe('MT5MigrationBackSideContent', () => {
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <CFDStoreProvider>{children}</CFDStoreProvider>
+                <Formik
+                    initialValues={{
+                        password: '',
+                    }}
+                    onSubmit={jest.fn()}
+                >
+                    <CFDStoreProvider>{children}</CFDStoreProvider>
+                </Formik>
             </StoreProvider>
         );
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
@@ -70,65 +95,35 @@ describe('MT5MigrationBackSideContent', () => {
         };
     });
 
-    it('should render MT5MigrationBackSideContent for BVI migration account', () => {
+    it('should render the password input modal with all the details', async () => {
         renderComponent();
-        expect(screen.getByText(/what will happen to the funds in my existing account\(s\)\?/i)).toBeInTheDocument();
-        expect(screen.getByText(/if you have open positions/i)).toBeInTheDocument();
-        expect(screen.getAllByText(/your funds will remain in your existing mt5 account\(s\)\./i)).toHaveLength(2);
-        expect(
-            screen.getByText(
-                /you can continue to hold your current open positions in your existing mt5 account\(s\)\./i
-            )
-        ).toBeInTheDocument();
-        expect(
-            screen.getAllByText(/new mt5 account\(s\) under the bvi jurisdiction will be created for new trades\./i)
-        ).toHaveLength(2);
-        expect(screen.getByText(/if you don’t have open positions/i)).toBeInTheDocument();
-        expect(screen.getByRole('checkbox')).toBeInTheDocument();
-        expect(
-            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv bvi ltd’s/i)
-        ).toBeInTheDocument();
-        expect(screen.getByText(/terms and conditions/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
+        expect(screen.getByText('Enter your Deriv MT5 password to upgrade your account(s).')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Forgot password?' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Upgrade' })).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByLabelText('Deriv MT5 password')).toBeInTheDocument();
+        });
     });
 
-    it('should render MT5MigrationBackSideContent for Vanuatu migration account', () => {
-        response.eligible_account_to_migrate_label = 'vanuatu';
+    it('should trigger functions after clicking on Forgot password button', () => {
         renderComponent();
-        expect(
-            screen.getAllByText(/new mt5 account\(s\) under the vanuatu jurisdiction will be created for new trades\./i)
-        ).toHaveLength(2);
-        expect(
-            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv vanuatu ltd’s/i)
-        ).toBeInTheDocument();
-    });
-
-    it('should render MT5Context Function after clicking on Back button', () => {
-        renderComponent();
-        const back_button = screen.getByRole('button', { name: 'Back' });
-        userEvent.click(back_button);
-        expect(response_migration_context.setShowModalFrontSide).toBeCalled();
-    });
-
-    it('should enable Next Button after clicking on checkbox', () => {
-        renderComponent();
-        const checkbox = screen.getByRole('checkbox');
-        userEvent.click(checkbox);
-        const next_button = screen.getByRole('button', { name: 'Next' });
-        expect(next_button).toBeEnabled();
-    });
-
-    it('should trigger functions after clicking on Next button', () => {
-        renderComponent();
-        const checkbox = screen.getByRole('checkbox');
-        userEvent.click(checkbox);
-        const next_button = screen.getByRole('button', { name: 'Next' });
-        userEvent.click(next_button);
-        expect(mock_store.common.setAppstorePlatform).toBeCalled();
-        expect(mock_store.modules.cfd.setJurisdictionSelectedShortcode).toBeCalled();
+        const forgot_password_button = screen.getByRole('button', { name: 'Forgot password?' });
+        userEvent.click(forgot_password_button);
         expect(mock_store.ui.setMT5MigrationModalEnabled).toBeCalled();
         expect(mock_store.ui.toggleMT5MigrationModal).toBeCalled();
-        expect(mock_store.modules.cfd.enableCFDPasswordModal).toBeCalled();
+        expect(WS.verifyEmail).toBeCalled();
+        expect(mock_store.modules.cfd.setSentEmailModalStatus).toBeCalled();
+    });
+
+    it('should trigger the upgrade function after clicking on Upgrade button', async () => {
+        renderComponent();
+
+        const input_field = screen.getByLabelText('Deriv MT5 password');
+        userEvent.type(input_field, 'Abcd1234');
+        const upgrade_button = screen.getByRole('button', { name: 'Upgrade' });
+        userEvent.click(upgrade_button);
+        await waitFor(() => {
+            expect(mock_store.modules.cfd.submitMt5Password).toBeCalled();
+        });
     });
 });

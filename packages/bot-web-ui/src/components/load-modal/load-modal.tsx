@@ -32,7 +32,7 @@ const LoadModal = observer(() => {
             <MobileFullPageModal
                 is_modal_open={is_load_modal_open}
                 className='load-strategy__wrapper'
-                header={localize('Load strategy')}
+                header={header_text}
                 onClickClose={() => {
                     setPreviewOnPopup(false);
                     toggleLoadModal();
@@ -52,7 +52,7 @@ const LoadModal = observer(() => {
         );
     }
 
-    const has_loaded_file = loaded_local_file && tab_name === tabs_title.TAB_LOCAL;
+    const is_file_loaded = !!loaded_local_file && tab_name === tabs_title.TAB_LOCAL;
     const has_recent_strategies = recent_strategies.length > 0 && tab_name === tabs_title.TAB_RECENT;
 
     return (
@@ -84,7 +84,7 @@ const LoadModal = observer(() => {
                     <RecentFooter />
                 </Modal.Footer>
             )}
-            {has_loaded_file && (
+            {is_file_loaded && (
                 <Modal.Footer has_separator>
                     <LocalFooter />
                 </Modal.Footer>

@@ -1,0 +1,22 @@
+.p2p-v2-email-verification-modal {
+    height: auto;
+    width: 44rem;
+    border-radius: 8px;
+
+    @include mobile {
+        max-width: calc(100vw - 3.2rem);
+    }
+
+    // TODO: Remove this when Button allows to pass prop to prevent hover styles
+    &__button {
+        &:hover {
+            // stylelint-disable-next-line declaration-no-important
+            background-color: transparent !important;
+
+            & > span {
+                // stylelint-disable-next-line declaration-no-important
+                color: #ff444f !important;
+            }
+        }
+    }
+}

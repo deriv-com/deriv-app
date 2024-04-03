@@ -1,10 +1,13 @@
+import { IconTypes } from '@deriv/quill-icons';
+import { CurrencyConstants } from '@deriv-com/utils';
 import { cashierPathRoutes } from './routes/Router';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace TRouteTypes {
-    export type TRoutes = typeof cashierPathRoutes[keyof typeof cashierPathRoutes];
+    export type TRoutes = typeof cashierPathRoutes[keyof typeof cashierPathRoutes] | '/reports/statement';
     export interface IRouteConfig {
         component: React.ComponentType<Omit<IRouteConfig, 'component'>>;
+        icon?: React.ReactNode;
         path: string;
         routes?: IRouteConfig[];
         title: string;
@@ -35,3 +38,23 @@ declare module 'react-router-dom' {
 
     export function useRouteMatch(path: TRouteTypes.TRoutes): boolean;
 }
+
+export type TCurrency = CurrencyConstants.Currency;
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace TIconTypes {
+    export type TIcon = { icon: IconTypes; key: string };
+
+    export type TIcons = {
+        dark: TIcon[];
+        light: TIcon[];
+    };
+}
+
+export type DeepNonNullable<T> = NonNullable<
+    T extends object
+        ? {
+              [K in keyof T]-?: DeepNonNullable<T[K]>;
+          }
+        : NonNullable<T>
+>;

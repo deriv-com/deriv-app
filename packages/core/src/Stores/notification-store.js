@@ -3,6 +3,7 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
 import { StaticUrl } from '@deriv/components';
 import {
+    checkServerMaintenance,
     daysSince,
     extractInfoFromShortcode,
     formatDate,
@@ -20,7 +21,6 @@ import {
     isHighLow,
     isMobile,
     isMultiplierContract,
-    checkServerMaintenance,
     isTurbosContract,
     LocalStore,
     routes,
@@ -39,6 +39,7 @@ import {
     getStatusValidations,
     hasMissingRequiredField,
     maintenance_notifications,
+    poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 
@@ -200,11 +201,16 @@ export default class NotificationStore extends BaseStore {
         } = contract_info;
         const id = `${contract_id}_${status}`;
         if (this.trade_notifications.some(({ id: notification_id }) => notification_id === id)) return;
+        const contract_main_title = getTradeTypeName(contract_type, isHighLow({ shortcode }), false, true);
         this.trade_notifications.push({
             id,
             buy_price,
             contract_id,
-            contract_type: getTradeTypeName(contract_type, isHighLow({ shortcode }), isTurbosContract(contract_type)),
+            contract_type: `${contract_main_title} ${getTradeTypeName(
+                contract_type,
+                isHighLow({ shortcode }),
+                isTurbosContract(contract_type)
+            )}`.trim(),
             currency,
             profit: isMultiplierContract(contract_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit,
             status,
@@ -244,6 +250,11 @@ export default class NotificationStore extends BaseStore {
     filterNotificationMessages() {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
+        if (window.location.pathname === routes.proof_of_identity) {
+            this.notification_messages = this.notification_messages.filter(
+                notif => !poi_notifications.includes(notif.key)
+            );
+        }
         if (window.location.pathname === routes.personal_details) {
             this.notification_messages = this.notification_messages.filter(
                 notification =>
@@ -343,7 +354,7 @@ export default class NotificationStore extends BaseStore {
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
             const {
-                authentication: { document, identity, income, needs_verification, ownership },
+                authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
                 cashier_validation,
             } = account_status;

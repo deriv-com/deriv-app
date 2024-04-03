@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
-import { getContractTypes, isMajorPairsSymbol } from '../../../../Helpers/contract-type';
+import { getContractTypes } from '../../../../Helpers/contract-type';
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -31,9 +31,8 @@ const TABS = {
 type TSelectedTab = 'description' | 'glossary';
 
 const Info = observer(({ handleSelect, item, selected_value, list, info_banner }: TInfo) => {
-    const { cached_multiplier_cancellation_list, symbol } = useTraderStore();
+    const { cached_multiplier_cancellation_list } = useTraderStore();
     const {
-        active_symbols: { active_symbols },
         ui: { is_mobile },
         modules: {
             trade: { is_vanilla_fx },
@@ -53,8 +52,8 @@ const Info = observer(({ handleSelect, item, selected_value, list, info_banner }
         (i: { value: TContractType['value'] }) =>
             i.value !== RISE_FALL_EQUAL && i.value !== TURBOS.SHORT && i.value !== VANILLA.PUT
     );
-    const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(selected_contract_type);
-    const should_show_video = /accumulator|turboslong|vanilla/i.test(selected_contract_type);
+    const has_toggle_buttons = /accumulator|turbos|vanilla|multiplier/i.test(selected_contract_type);
+    const should_show_video = /accumulator|vanilla|high_low|rise_fall|touch/i.test(selected_contract_type);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION || !has_toggle_buttons;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY && has_toggle_buttons;
     const width = is_mobile ? '328' : '528';
@@ -131,7 +130,6 @@ const Info = observer(({ handleSelect, item, selected_value, list, info_banner }
                                 category={type.value}
                                 is_vanilla_fx={is_vanilla_fx}
                                 is_multiplier_fx={!cached_multiplier_cancellation_list?.length}
-                                is_major_pairs={isMajorPairsSymbol(symbol, active_symbols)}
                             />
                         )}
                     </div>

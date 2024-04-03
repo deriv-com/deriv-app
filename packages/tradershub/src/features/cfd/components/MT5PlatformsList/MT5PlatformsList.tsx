@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo } from 'react';
-import { TradingAppCardLoader, useUIContext } from '@/components';
+import { TradingAppCardLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
+import { useUIContext } from '@/providers';
 import { THooks } from '@/types';
 import { CFDPlatformLayout } from '@cfd/components';
 import { PlatformDetails } from '@cfd/constants';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '@cfd/flows';
 import { GetMoreMT5Accounts } from '@cfd/screens';
-import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import { useActiveTradingAccount, useSortedMT5Accounts } from '@deriv/api-v2';
 
 type TMT5PlatformsListProps = {
     onMT5PlatformListLoaded?: (value: boolean) => void;
 };
 
 const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) => {
-    const { isFetching } = useAuthorize();
     const { uiState } = useUIContext();
     const { accountType, regulation: activeRegulation } = uiState;
     const {
@@ -23,18 +23,10 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     } = useSortedMT5Accounts(activeRegulation ?? '');
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { isEU } = useRegulationFlags();
-    const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
         return sortedMt5Accounts?.some(MT5Account => MT5Account.is_added);
     }, [sortedMt5Accounts]);
-
-    // Check if we need to invalidate the query
-    useEffect(() => {
-        if (!isFetching) {
-            invalidate('mt5_login_list');
-        }
-    }, [invalidate, isFetching]);
 
     useEffect(() => {
         onMT5PlatformListLoaded?.(isFetchedAfterMount);

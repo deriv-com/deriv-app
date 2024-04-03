@@ -18,17 +18,19 @@ const MyAdsTableRowView = ({
     return (
         <>
             <MyAdsTableRow isListed={isListed} setIsModalOpen={setIsModalOpen} {...rest} />
-            <AdErrorTooltipModal
-                accountCurrency={account_currency}
-                advertType={type}
-                balanceAvailable={balanceAvailable}
-                dailyBuyLimit={dailyBuyLimit}
-                dailySellLimit={dailySellLimit}
-                isModalOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
-                remainingAmount={remaining_amount}
-                visibilityStatus={getVisibilityErrorCodes(visibility_status, true, isListed)}
-            />
+            {isModalOpen && (
+                <AdErrorTooltipModal
+                    accountCurrency={account_currency}
+                    advertType={type}
+                    balanceAvailable={balanceAvailable}
+                    dailyBuyLimit={dailyBuyLimit}
+                    dailySellLimit={dailySellLimit}
+                    isModalOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    remainingAmount={remaining_amount}
+                    visibilityStatus={getVisibilityErrorCodes(visibility_status, true, isListed)}
+                />
+            )}
         </>
     );
 };

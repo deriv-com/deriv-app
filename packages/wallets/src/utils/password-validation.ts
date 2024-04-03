@@ -66,6 +66,7 @@ export const calculateScore = (password: string) => {
 export const mt5Schema = Yup.string()
     .required(passwordErrorMessage.invalidLengthMT5)
     .matches(passwordRegex.isMT5LengthValid, passwordErrorMessage.invalidLengthMT5)
+    .matches(passwordRegex.isPasswordValid, passwordErrorMessage.missingCharacter)
     .matches(passwordRegex.isMT5PasswordValid, passwordErrorMessage.missingCharacterMT5);
 
 export const cfdSchema = Yup.string()

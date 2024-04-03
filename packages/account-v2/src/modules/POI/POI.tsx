@@ -3,7 +3,12 @@ import { useKycAuthStatus } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { AUTH_STATUS_CODES, IDV_ERROR_CODES, POI_SUBMISSION_STATUS } from '../../constants';
 import { POICountrySelector, POIFlowContainer, VerificationStatus } from '../../containers';
-import { shouldSkipCountrySelector, TPOIActions } from '../../utils';
+import { shouldSkipCountrySelector, TPOIActions, TPOISubmissionStatus } from '../../utils';
+
+type TPOIInitialState = {
+    selectedCountry: string;
+    submissionStatus: TPOISubmissionStatus;
+};
 
 export const ProofOfIdentity = () => {
     const { isLoading, kyc_auth_status: kycAuthStatus } = useKycAuthStatus();
@@ -13,12 +18,12 @@ export const ProofOfIdentity = () => {
     const isPOARequired = kycAuthStatus?.address.status === AUTH_STATUS_CODES.NONE;
     const rejectedReasons = kycAuthStatus?.identity.last_rejected?.rejected_reasons;
 
-    const initialState = {
+    const initialState: TPOIInitialState = {
         selectedCountry: '',
-        submissionStatus: '',
+        submissionStatus: POI_SUBMISSION_STATUS.selecting,
     };
 
-    const reducer = (state: typeof initialState, action: TPOIActions) => {
+    const reducer = (state: TPOIInitialState, action: TPOIActions) => {
         switch (action.type) {
             case 'setSelectedCountry':
                 return { ...state, selectedCountry: action.payload };

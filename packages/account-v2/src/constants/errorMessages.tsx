@@ -1,6 +1,6 @@
-type TErrorConfig = Record<string, { code: string | null; message: string }>;
+type TErrorConfig = Readonly<Record<string, Readonly<{ code: string | null; message: string }>>>;
 
-export const API_ERROR_CODES: TErrorConfig = Object.freeze({
+export const API_ERROR_CODES: TErrorConfig = {
     claimedDocument: {
         code: 'ClaimedDocument',
         message:
@@ -15,11 +15,11 @@ export const API_ERROR_CODES: TErrorConfig = Object.freeze({
         code: null,
         message: 'Sorry, an internal error occurred. Hit the above checkbox to try again.',
     },
-});
+};
 
 const documentRejectedMessage = 'We were unable to verify the identity document with the details provided.';
 
-export const IDV_ERROR_CODES: TErrorConfig = Object.freeze({
+export const IDV_ERROR_CODES: TErrorConfig = {
     deceased: {
         code: 'Deceased',
         message: 'The document’s owner is deceased.',
@@ -89,9 +89,9 @@ export const IDV_ERROR_CODES: TErrorConfig = Object.freeze({
         code: 'Underage',
         message: 'You’re under legal age.',
     },
-});
+};
 
-export const ONFIDO_ERROR_CODES: TErrorConfig = Object.freeze({
+export const ONFIDO_ERROR_CODES: TErrorConfig = {
     ageValidationMinimumAcceptAge: {
         code: 'AgeValidationMinimumAcceptedAge',
         message:
@@ -105,4 +105,4 @@ export const ONFIDO_ERROR_CODES: TErrorConfig = Object.freeze({
         code: null,
         message: 'Sorry, an internal error occurred. Click Save to try again.',
     },
-});
+};

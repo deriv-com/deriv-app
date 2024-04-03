@@ -34,6 +34,13 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn().mockReturnValue({ isMobile: false }),
 }));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: jest.fn(),
+    }),
+}));
+
 describe('POI', () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -62,9 +69,10 @@ describe('POI', () => {
             },
         });
         render(<ProofOfIdentity />);
-        await waitFor(() => {
-            expect(screen.getByText('ID verification passed')).toBeInTheDocument();
-        });
+        // await waitFor(() => {
+        //     expect(screen.getByText('ID verification passed')).toBeInTheDocument();
+        // });
+        expect(await screen.findByText('ID verification passed')).toBeInTheDocument();
     });
 
     it('should render VerificationStatus for IDV when status is pending', async () => {
@@ -81,11 +89,14 @@ describe('POI', () => {
             },
         });
         render(<ProofOfIdentity />);
-        await waitFor(() => {
-            expect(
-                screen.getByText("We'll review your documents and notify you of its status within 5 minutes.")
-            ).toBeInTheDocument();
-        });
+        // await waitFor(() => {
+        //     expect(
+        //         screen.getByText("We'll review your documents and notify you of its status within 5 minutes.")
+        //     ).toBeInTheDocument();
+        // });
+        expect(
+            await screen.findByText("We'll review your documents and notify you of its status within 5 minutes.")
+        ).toBeInTheDocument();
     });
 
     it('should render CountrySelector when component is mounted', async () => {

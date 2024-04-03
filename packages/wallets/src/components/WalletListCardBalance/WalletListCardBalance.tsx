@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import { useActiveWalletAccount, useBalance } from '@deriv/api-v2';
 import { WalletText } from '../Base';
 import './WalletListCardBalance.scss';
@@ -19,7 +18,7 @@ const WalletListCardBalance = () => {
                 />
             ) : (
                 <WalletText align='right' size='xl' weight='bold'>
-                    <Trans defaults={balance} />
+                    {balance}
                 </WalletText>
             )}
         </div>

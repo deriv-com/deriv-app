@@ -1,19 +1,21 @@
 import React from 'react';
 import clsx from 'clsx';
-import { TOrders } from 'types';
-import { ORDERS_STATUS } from '@/constants';
+import { useHistory } from 'react-router-dom';
+import { THooks } from 'types';
+import { BASE_URL, ORDERS_STATUS } from '@/constants';
 import { useExtendedOrderDetails, useQueryString } from '@/hooks';
 import { OrderRatingButton, OrderStatusTag, OrderTimer } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
 import { useActiveAccount, useServerTime } from '@deriv/api-v2';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import ChatIcon from '../../../../../public/ic-chat.svg';
 import './OrdersTableRow.scss';
 
-const OrdersTableRow = ({ ...props }: TOrders[number]) => {
+const OrdersTableRow = ({ ...props }: THooks.Order.GetList[number]) => {
     const { isMobile } = useDevice();
     const { queryString } = useQueryString();
-    const isPast = queryString.get('tab') === ORDERS_STATUS.PAST_ORDERS;
+    const history = useHistory();
+    const isPast = queryString.tab === ORDERS_STATUS.PAST_ORDERS;
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
     const { data: orderDetails } = useExtendedOrderDetails({
@@ -41,10 +43,11 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     const isBuyOrderForUser = orderDetails.isBuyOrderForUser;
     const transactionAmount = `${Number(priceDisplay).toFixed(2)} ${localCurrency}`;
     const offerAmount = `${amountDisplay} ${accountCurrency}`;
+    const showOrderDetails = () => history.push(`${BASE_URL}/orders?order=${id}`);
 
     if (isMobile) {
         return (
-            <div className='flex flex-col'>
+            <div className='flex flex-col' onClick={showOrderDetails}>
                 <div className='flex justify-between'>
                     <Text size='sm' weight='bold'>
                         <OrderStatusTag
@@ -58,7 +61,17 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
                     {!isPast && (
                         <div className='flex items-center gap-5'>
                             <OrderTimer distance={distance} />
-                            <ChatIcon />
+                            <Button
+                                className='h-full p-0'
+                                color='white'
+                                onClick={event => {
+                                    event.stopPropagation();
+                                    history.push(`${BASE_URL}/orders?order=${id}&showChat=true`);
+                                }}
+                                variant='contained'
+                            >
+                                <ChatIcon />
+                            </Button>
                         </div>
                     )}
                     {isCompletedOrder && <OrderRatingButton />}
@@ -76,7 +89,10 @@ const OrdersTableRow = ({ ...props }: TOrders[number]) => {
     }
 
     return (
-        <div className={clsx('p2p-v2-orders-table-row', { 'p2p-v2-orders-table-row--inactive': isPast })}>
+        <div
+            className={clsx('p2p-v2-orders-table-row', { 'p2p-v2-orders-table-row--inactive': isPast })}
+            onClick={showOrderDetails}
+        >
             {isPast && <Text size='sm'>{purchaseTime}</Text>}
             <Text size='sm'>{isBuyOrderForUser ? 'Buy' : 'Sell'}</Text>
             <Text size='sm'>{id}</Text>

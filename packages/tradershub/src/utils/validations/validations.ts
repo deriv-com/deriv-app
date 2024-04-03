@@ -58,5 +58,5 @@ export const termsOfUse = Yup.object().shape({
 export const signup = Yup.object().shape({
     citizenship: Yup.string(),
     country: Yup.string(),
-    password: Yup.string().matches(passwordRegex.isPasswordValid),
+    password: Yup.string().matches(passwordRegex?.isPasswordValid),
 });

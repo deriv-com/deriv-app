@@ -3,7 +3,7 @@ import { useCopyToClipboard, useHover } from 'usehooks-ts';
 import ClipboardIcon from '@/assets/svgs/clipboard.svg';
 import CheckmarkCircle from '@/assets/svgs/ic-checkmark-circle.svg';
 import { Tooltip } from '@/components';
-import { Button, useBreakpoint } from '@deriv/quill-design';
+import { Button, useDevice } from '@deriv-com/ui';
 
 type TClipboardProps = {
     textCopy: string;
@@ -21,7 +21,7 @@ type TClipboardProps = {
  */
 const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
     const [, copy] = useCopyToClipboard();
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const [isCopied, setIsCopied] = useState(false);
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
@@ -47,10 +47,10 @@ const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
     return (
         <Tooltip
             alignment={tooltip ?? 'bottom'}
-            isVisible={isHovered && !isMobile}
+            isVisible={isHovered && isDesktop}
             message={isCopied ? 'Copied!' : 'Copy'}
         >
-            <Button colorStyle='white' onClick={onClick} ref={hoverRef} size='sm' variant='tertiary'>
+            <Button color='white' onClick={onClick} size='sm' variant='ghost'>
                 {isCopied ? <CheckmarkCircle /> : <ClipboardIcon />}
             </Button>
         </Tooltip>

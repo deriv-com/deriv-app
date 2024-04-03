@@ -1,51 +1,69 @@
 {
+    "appclips": {
+        "apps": []
+    },
     "applinks": {
         "details": [
             {
                 "appID": "36S5Q8S4V5.com.deriv.app",
                 "paths": [
-                    "/redirect/derivgo"
+                    "/redirect"
                 ]
             },
             {
                 "appID": "36S5Q8S4V5.com.deriv.app.dev",
                 "paths": [
-                    "/redirect/derivgo"
+                    "/redirect"
                 ]
             },
             {
                 "appID": "36S5Q8S4V5.com.deriv.app.staging",
                 "paths": [
-                    "/redirect/derivgo"
+                    "/redirect"
                 ]
             },
             {
                 "appID": "36S5Q8S4V5.com.deriv.dp2p",
                 "paths": [
-                    "/cashier/p2p",
-                    "/cashier/p2p/advertiser",
-                    "/redirect",
-                    "/redirect/p2p"
+                    "/cashier/p2p"
+                ]
+            },
+            {
+                "appID": "36S5Q8S4V5.com.deriv.sample",
+                "paths": [
+                    "/redirect"
                 ]
             },
             {
                 "appID": "36S5Q8S4V5.com.deriv.blanc",
                 "paths": [
-                    "/redirect/dblanc"
+                    "/redirect"
                 ]
             },
             {
                 "appID": "36S5Q8S4V5.com.deriv.blanc.dev",
                 "paths": [
-                    "/redirect/dblanc"
+                    "/redirect"
                 ]
             },
             {
                 "appID": "36S5Q8S4V5.com.deriv.blanc.stg",
                 "paths": [
-                    "/redirect/dblanc"
+                    "/redirect"
                 ]
             }
+        ]
+    },
+    "webcredentials": {
+        "apps": [
+            "36S5Q8S4V5.com.deriv.app",
+            "36S5Q8S4V5.com.deriv.app.dev",
+            "36S5Q8S4V5.com.deriv.app.staging",
+            "36S5Q8S4V5.com.deriv.dp2p",
+            "36S5Q8S4V5.com.deriv.blanc",
+            "36S5Q8S4V5.com.deriv.blanc.dev",
+            "36S5Q8S4V5.com.deriv.blanc.stg",
+            "36S5Q8S4V5.com.deriv.sample"
         ]
     }
 }

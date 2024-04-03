@@ -19,11 +19,16 @@ const MyProfileCounterpartiesTableRow = ({ id, isBlocked, nickname }: TMyProfile
         <>
             <div className='p2p-v2-my-profile-counterparties-table-row'>
                 <div className='p2p-v2-my-profile-counterparties-table-row__nickname-wrapper'>
-                    <UserAvatar nickname={nickname} />
+                    <UserAvatar className='h-[3rem] w-[3rem]' nickname={nickname} size={65} textSize='sm' />
                     <Text size={isMobile ? 'md' : 'sm'}>{nickname}</Text>
                 </div>
                 {/* TODO: variant to be replaced after available in @deriv-com/ui */}
-                <Button onClick={() => setIsModalOpen(true)} variant={isBlocked ? 'outlined' : 'ghost'}>
+                <Button
+                    className='w-36 border-[1px]'
+                    color={isBlocked ? 'black' : 'primary'}
+                    onClick={() => setIsModalOpen(true)}
+                    variant='outlined'
+                >
                     {isBlocked ? 'Unblock' : 'Block'}
                 </Button>
             </div>

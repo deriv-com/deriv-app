@@ -1,11 +1,11 @@
 import React from 'react';
 
 const CurrencySwitcherLoader = () => (
-    <div className='flex items-center justify-between border-solid gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background w-full lg:w-auto'>
-        <div className='rounded-full animate-pulse bg-solid-slate-100 w-2000 h-2000 rounded-1500' />
-        <div className='grow space-y-500'>
-            <div className='animate-pulse bg-solid-slate-100 w-2500 h-500 rounded-200' />
-            <div className='animate-pulse bg-solid-slate-100 w-5000 h-500 rounded-200' />
+    <div className='flex items-center justify-between border-solid gap-16 h-[72px] p-16 rounded-default border-sm border-system-light-active-background w-full lg:w-auto'>
+        <div className='w-40 h-40 rounded-full animate-pulse bg-solid-slate-100' />
+        <div className='space-y-10 grow'>
+            <div className='h-2 animate-pulse bg-solid-slate-100 w-50 rounded-xs' />
+            <div className='animate-pulse bg-solid-slate-100 w-[100px] h-2 rounded-xs' />
         </div>
     </div>
 );

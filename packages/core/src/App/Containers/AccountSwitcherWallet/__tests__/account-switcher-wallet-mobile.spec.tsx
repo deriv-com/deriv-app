@@ -60,10 +60,10 @@ describe('AccountSwitcherWalletMobile', () => {
             },
         });
         render(<AccountSwitcherWalletMobile {...props} />, { wrapper: wrapper(store) });
-        expect(screen.getByText('Deriv Apps accounts')).toBeInTheDocument();
+        expect(screen.getByText('Options accounts')).toBeInTheDocument();
         expect(screen.getByText('AccountSwitcherWalletList')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Manage funds' })).toBeInTheDocument();
-        expect(screen.getByText('Looking for CFDs? Go to Trader’s hub')).toBeInTheDocument();
+        expect(screen.getByText('Looking for CFDs? Go to Trader’s Hub')).toBeInTheDocument();
     });
 
     it('should render list wallets', () => {
@@ -106,7 +106,7 @@ describe('AccountSwitcherWalletMobile', () => {
             },
         });
         render(<AccountSwitcherWalletMobile {...props} />, { wrapper: wrapper(store) });
-        const footer = screen.getByText('Looking for CFDs? Go to Trader’s hub');
+        const footer = screen.getByText('Looking for CFDs? Go to Trader’s Hub');
         userEvent.click(footer);
         expect(props.toggle).toHaveBeenCalledTimes(1);
     });

@@ -6,8 +6,8 @@ type TJurisdictionCardTagProps = {
 };
 
 const JurisdictionCardTag = ({ tag }: TJurisdictionCardTagProps) => (
-    <div className='absolute top-50 left-50 w-full p-400 text-center rounded-t-[13px] rounded-b-50 bg-system-light-text-info-blue-background'>
-        <Text className='text-random-blue text-50' weight='bold'>
+    <div className='absolute top-0 left-0 w-full p-8 text-center rounded-t-lg rounded-b-none bg-system-light-text-info-blue-background'>
+        <Text className='text-random-blue' size='sm' weight='bold'>
             {tag}
         </Text>
     </div>

@@ -18,7 +18,7 @@ const WalletsBannerUpgrade = observer(() => {
             <div className='wallets-banner__upgrade-banner-description'>
                 <div>
                     <Localize
-                        i18n_default_text='<0>Wallets</0><1> — the best way to organise your funds</1>'
+                        i18n_default_text='<0>Wallets</0><1> — A smarter way to manage your funds</1>'
                         components={[<Text key={0} weight='bold' size={size} />, <Text key={1} size={size} />]}
                     />
                 </div>
@@ -27,7 +27,10 @@ const WalletsBannerUpgrade = observer(() => {
                     text={localize('Upgrade now')}
                     primary
                     large
-                    onClick={() => toggleWalletsUpgrade(true)}
+                    onClick={() => {
+                        // TODO: Uncomment this when wallet migration modal ready
+                        // toggleWalletsUpgrade(true)
+                    }}
                 />
             </div>
             <WalletsImage image={image} className='wallets-banner__image' />

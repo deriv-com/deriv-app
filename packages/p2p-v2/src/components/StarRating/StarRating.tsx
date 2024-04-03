@@ -4,22 +4,32 @@ import { LabelPairedStarLgFillIcon, LabelPairedStarLgRegularIcon } from '@deriv/
 import './StarRating.scss';
 
 type TStarRatingProps = {
+    allowHalfIcon?: boolean;
+    allowHover?: boolean;
     initialValue?: number;
     isReadonly?: boolean;
-    onClick?: () => void;
+    onClick?: (rate: number) => void;
     ratingValue: number;
-    size?: number;
+    starsScale?: number;
 };
 
-const StarRating = ({ initialValue = 0, isReadonly = false, onClick, ratingValue }: TStarRatingProps) => {
+const StarRating = ({
+    allowHalfIcon = false,
+    allowHover = false,
+    initialValue = 0,
+    isReadonly = false,
+    onClick,
+    ratingValue,
+    starsScale = 1,
+}: TStarRatingProps) => {
     // Converts initial value to be in the form of x.0 or x.5
     // to show full and half stars only
     const fractionalizedValue = Math.round(initialValue * 2) / 2;
 
     return (
         <Rating
-            allowHalfIcon
-            allowHover={false}
+            allowHalfIcon={allowHalfIcon}
+            allowHover={allowHover}
             className='p2p-v2-star-rating'
             emptyIcon={<LabelPairedStarLgRegularIcon fill='#FFAD3A' />}
             fullIcon={<LabelPairedStarLgFillIcon fill='#FFAD3A' />}
@@ -29,6 +39,7 @@ const StarRating = ({ initialValue = 0, isReadonly = false, onClick, ratingValue
             ratingValue={fractionalizedValue}
             readonly={isReadonly}
             size={12}
+            style={{ transform: `scale(${starsScale})`, transformOrigin: 'left' }}
         />
     );
 };

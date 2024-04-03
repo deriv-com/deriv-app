@@ -1,12 +1,12 @@
 import React from 'react';
 
 const TradingAppCardLoader = () => (
-    <div className='flex flex-col gap-1200 py-75 px-50'>
-        <div className='flex flex-row gap-700 align-middle'>
-            <div className='animate-pulse bg-solid-slate-100 w-2500 h-2500 rounded-500' />
-            <div className='flex flex-col gap-500'>
-                <div className='animate-pulse bg-solid-slate-100 h-700 rounded-100 w-3000' />
-                <div className='animate-pulse bg-solid-slate-100 h-1200 rounder-100 w-[200px]' />
+    <div className='flex flex-col gap-24 py-1'>
+        <div className='flex flex-row align-middle gap-14'>
+            <div className='rounded-lg animate-pulse bg-system-light-hover-background w-50 h-50' />
+            <div className='flex flex-col gap-10'>
+                <div className='animate-pulse bg-system-light-hover-background h-14 rounded-xs w-60' />
+                <div className='animate-pulse bg-system-light-hover-background h-24 rounder-xs w-[200px]' />
             </div>
         </div>
     </div>

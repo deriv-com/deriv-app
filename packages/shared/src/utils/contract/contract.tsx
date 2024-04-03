@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { unique } from '../object';
 import { capitalizeFirstLetter } from '../string/string_util';
 import { TContractInfo, TContractStore, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
+import { isForwardStarting } from '../shortcode';
 
 type TGetAccuBarriersDTraderTimeout = (params: {
     barriers_update_timestamp: number;
@@ -112,7 +113,7 @@ export const getFinalPrice = (contract_info: TContractInfo) => contract_info.sel
 export const getIndicativePrice = (contract_info: TContractInfo) =>
     getFinalPrice(contract_info) && isEnded(contract_info)
         ? getFinalPrice(contract_info)
-        : Number(contract_info.bid_price) || null;
+        : Number(contract_info.bid_price);
 
 export const getCancellationPrice = (contract_info: TContractInfo) => {
     const { cancellation: { ask_price: cancellation_price = 0 } = {} } = contract_info;
@@ -159,9 +160,11 @@ export const isVanillaFxContract = (contract_type = '', symbol = '') =>
     isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as typeof VANILLA_FX_SYMBOLS[number]);
 
 export const isSmartTraderContract = (contract_type = '') =>
-    /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK/i.test(contract_type);
+    /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK|LB/i.test(contract_type);
 
 export const isAsiansContract = (contract_type = '') => /ASIAN/i.test(contract_type);
+
+export const isLookBacksContract = (contract_type = '') => /LB/i.test(contract_type);
 
 export const isTicksContract = (contract_type = '') => /TICK/i.test(contract_type);
 
@@ -273,9 +276,6 @@ export const getTimePercentage = (server_time: moment.Moment, start_time: number
     return Math.round(percentage);
 };
 
-export const getTickSizeBarrierPercentage = (tick_size_barrier: number) =>
-    `${(tick_size_barrier * 100 + Number.EPSILON).toFixed(5)}%`;
-
 export const getGrowthRatePercentage = (growth_rate: number) => growth_rate * 100;
 
 export const getDisplayStatus = (contract_info: TContractInfo) => {
@@ -316,9 +316,9 @@ export const getContractSubtype = (type = '') =>
 export const getLocalizedTurbosSubtype = (contract_type = '') => {
     if (!isTurbosContract(contract_type)) return '';
     return getContractSubtype(contract_type) === 'Long' ? (
-        <Localize i18n_default_text='Long' />
+        <Localize i18n_default_text='Up' />
     ) : (
-        <Localize i18n_default_text='Short' />
+        <Localize i18n_default_text='Down' />
     );
 };
 
@@ -337,11 +337,14 @@ export const clickAndKeyEventHandler = (
 };
 
 export const getSortedTradeTypes = (array: string[] = []) => {
-    if (array.includes(TRADE_TYPES.TURBOS.LONG)) {
-        return [TRADE_TYPES.TURBOS.LONG, ...array.filter(type => type !== TRADE_TYPES.TURBOS.LONG)];
+    if (array.includes(TRADE_TYPES.ACCUMULATOR)) {
+        return [TRADE_TYPES.ACCUMULATOR, ...array.filter(type => type !== TRADE_TYPES.ACCUMULATOR)];
     }
     if (array.includes(TRADE_TYPES.MULTIPLIER)) {
         return [TRADE_TYPES.MULTIPLIER, ...array.filter(type => type !== TRADE_TYPES.MULTIPLIER)];
     }
     return array;
 };
+
+export const isForwardStartingBuyTransaction = (transactionType: string, shortcode: string, transactionTime: number) =>
+    transactionType === 'buy' && !!isForwardStarting(shortcode, transactionTime);

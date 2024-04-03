@@ -1,15 +1,12 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
+import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
+import { ScrollToFieldError } from '@/helpers';
+import { useNewCRRealAccount } from '@/hooks';
 import { termsOfUse } from '@/utils';
-import { Text } from '@deriv-com/ui';
-import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
-import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
-import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
+import { Divider, Text } from '@deriv-com/ui';
 import FatcaDeclaration from './TermsOfUseSections/FatcaDeclaration';
 import PEPs from './TermsOfUseSections/PEPs';
-
-// Replace divider from deriv-com/ui once it is implemented
-const Divider = () => <hr className=' bg-system-light-primary-background' />;
 
 /**
  * @name TermsOfUse
@@ -18,30 +15,28 @@ const Divider = () => <hr className=' bg-system-light-primary-background' />;
  * @returns {React.ReactNode}
  */
 const TermsOfUse = () => {
-    const { dispatch, helpers, setIsWizardOpen } = useSignupWizardContext();
+    const { mutate, isLoading } = useNewCRRealAccount();
 
-    // Temporary function to handle form submission till we have the validations in place
-    const handleSubmit = () => {
-        dispatch({ type: ACTION_TYPES.RESET });
-        setIsWizardOpen(false);
-        helpers.setStep(1);
+    const initialValues = {
+        fatcaDeclaration: '',
+        pepConfirmation: false,
+        termsAndCondition: false,
+    };
+
+    const handleSubmit = (values: FormikValues, actions: FormikHelpers<typeof initialValues>) => {
+        actions.setSubmitting(true);
+        mutate();
+        actions.setSubmitting(false);
     };
 
     return (
         <WizardScreenWrapper heading='Terms of Use'>
-            <Formik
-                initialValues={{
-                    fatcaDeclaration: '',
-                    pepConfirmation: false,
-                    termsAndCondition: false,
-                }}
-                onSubmit={handleSubmit}
-                validationSchema={termsOfUse}
-            >
+            <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={termsOfUse}>
                 {({ isValid, values }) => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
-                            <div className='flex flex-col gap-800'>
+                        <ScrollToFieldError />
+                        <div className='flex-1 p-16 overflow-y-auto lg:p-24'>
+                            <div className='flex flex-col gap-16'>
                                 <Text size='sm' weight='bold'>
                                     Jurisdiction and choice of law
                                 </Text>
@@ -67,7 +62,8 @@ const TermsOfUse = () => {
                                 <PEPs />
                             </div>
                         </div>
-                        <Actions
+                        <WizardScreenActions
+                            isSubmitBtnLoading={isLoading}
                             submitDisabled={
                                 !values.pepConfirmation ||
                                 !values.termsAndCondition ||

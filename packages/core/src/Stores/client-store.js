@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
+import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -145,10 +146,15 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
-    p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
+    is_p2p_enabled = false;
+    real_account_signup_form_data = [];
+    real_account_signup_form_step = 0;
+
+    is_passkey_supported = false;
+    should_show_effortless_login_modal = false;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -212,9 +218,13 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
-            p2p_advertiser_info: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
+            is_p2p_enabled: observable,
+            real_account_signup_form_data: observable,
+            real_account_signup_form_step: observable,
+            is_passkey_supported: observable,
+            should_show_effortless_login_modal: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -272,7 +282,6 @@ export default class ClientStore extends BaseStore {
             is_age_verified: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
-            is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
@@ -385,9 +394,14 @@ export default class ClientStore extends BaseStore {
             updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-            setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
+            setIsP2PEnabled: action.bound,
+            setRealAccountSignupFormData: action.bound,
+            setRealAccountSignupFormStep: action.bound,
+            setIsPasskeySupported: action.bound,
+            setShouldShowEffortlessLoginModal: action.bound,
+            fetchShouldShowEffortlessLoginModal: action.bound,
         });
 
         reaction(
@@ -776,12 +790,6 @@ export default class ClientStore extends BaseStore {
         return this.landing_companies;
     }
 
-    get is_valid_login() {
-        if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MF|MFW|VRTC|VRW|MLT|CR|CRW)[0-9]+$', 'i');
-        return this.all_loginids.every(id => valid_login_ids_regex.test(id));
-    }
-
     get is_logged_in() {
         return !!(
             !isEmptyObject(this.accounts) &&
@@ -1115,7 +1123,9 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+            ? deriv_urls.DERIV_HOST_NAME
+            : window.location.hostname;
 
         // eslint-disable-next-line max-len
         const {
@@ -1145,8 +1155,6 @@ export default class ClientStore extends BaseStore {
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
-            // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
-            Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
 
             this.has_cookie_account = true;
         } else {
@@ -1586,7 +1594,7 @@ export default class ClientStore extends BaseStore {
                 );
 
                 if (has_action) {
-                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
+                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action', 'loginid']);
                     if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
                         // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
                         window.location.replace(`/redirect?${query_string}`);
@@ -1643,6 +1651,8 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
+            await this.setIsPasskeySupported();
+            await this.fetchShouldShowEffortlessLoginModal();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -1651,8 +1661,6 @@ export default class ClientStore extends BaseStore {
                 await this.fetchStatesList();
             }
             if (!this.is_virtual) await this.getLimits();
-
-            await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1693,10 +1701,6 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = response.landing_company;
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
-    }
-
-    setP2pAdvertiserInfo(response) {
-        this.p2p_advertiser_info = response.p2p_advertiser_info;
     }
 
     setStandpoint(landing_companies) {
@@ -2011,6 +2015,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
@@ -2143,7 +2148,9 @@ export default class ClientStore extends BaseStore {
             const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
 
             if (
-                (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
+                (redirect_url?.endsWith('/') ||
+                    redirect_url?.endsWith(routes.bot) ||
+                    /chart_type|interval|symbol|trade_type/.test(redirect_url)) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())
             ) {
                 window.history.replaceState({}, document.title, target_url);
@@ -2315,7 +2322,9 @@ export default class ClientStore extends BaseStore {
             })
             .finally(() => {
                 setTimeout(() => {
-                    const { event, analyticsData } = window.dataLayer.find(el => el.event === 'ce_questionnaire_form');
+                    const { event, analyticsData } = window.dataLayer.find(
+                        el => el.event === 'ce_questionnaire_form'
+                    ) ?? { event: 'unhandled', analyticsData: {} };
                     Analytics.trackEvent(event, analyticsData);
                 }, 10000);
             });
@@ -2627,21 +2636,62 @@ export default class ClientStore extends BaseStore {
         this.is_already_attempted = status;
     }
 
-    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
-     *
-     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
-     *
-     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
-     * */
-    get is_p2p_enabled() {
-        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
+    setIsP2PEnabled(is_p2p_enabled) {
+        this.is_p2p_enabled = is_p2p_enabled;
+    }
 
-        const is_p2p_supported_currency = Boolean(
-            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
-        );
+    setRealAccountSignupFormData(data) {
+        this.real_account_signup_form_data = data;
+    }
 
-        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
+    setRealAccountSignupFormStep(step) {
+        this.real_account_signup_form_step = step;
+    }
 
-        return is_p2p_visible;
+    async setIsPasskeySupported() {
+        try {
+            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
+            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
+            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
+            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
+            const is_supported_by_browser = await browserSupportsWebAuthn();
+            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
+        } catch (e) {
+            //error handling needed
+        }
+    }
+
+    setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
+        this.should_show_effortless_login_modal = should_show_effortless_login_modal;
+    }
+    async fetchShouldShowEffortlessLoginModal() {
+        if (this.is_passkey_supported) {
+            try {
+                const stored_value = localStorage.getItem('show_effortless_login_modal');
+                const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+                if (show_effortless_login_modal) {
+                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
+                }
+
+                const data = await WS.send({ passkeys_list: 1 });
+
+                if (data?.passkeys_list) {
+                    const should_show_effortless_login_modal =
+                        this.root_store.ui.is_mobile &&
+                        !data?.passkeys_list?.length &&
+                        this.is_passkey_supported &&
+                        show_effortless_login_modal &&
+                        this.is_logged_in;
+
+                    this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+                } else {
+                    this.setShouldShowEffortlessLoginModal(false);
+                }
+            } catch (e) {
+                //error handling needed
+            }
+        } else {
+            this.setShouldShowEffortlessLoginModal(false);
+        }
     }
 }

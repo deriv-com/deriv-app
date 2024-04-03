@@ -1,7 +1,7 @@
 import React, { FC, Fragment, useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useCountdown } from 'usehooks-ts';
-import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import ChangePassword from '../../public/images/change-password-email.svg';

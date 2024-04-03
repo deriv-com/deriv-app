@@ -1,0 +1,22 @@
+@import '../skeletonLoader.scss';
+
+.cfd-toggle-skeleton-loader {
+    display: none;
+    width: 100%;
+    gap: 0.4rem;
+    @include mobile {
+        display: block;
+    }
+    &__switcher {
+        width: 100%;
+        height: 4rem;
+        border-radius: 0.6rem;
+        margin-bottom: 1.2rem;
+    }
+    &__description {
+        width: 100%;
+        height: 1.2rem;
+        border-radius: $BORDER_RADIUS;
+        margin-bottom: 0.4rem;
+    }
+}

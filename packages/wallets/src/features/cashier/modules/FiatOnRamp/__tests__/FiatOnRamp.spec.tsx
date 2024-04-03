@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../AuthProvider';
 import FiatOnRamp from '../FiatOnRamp';
 
 jest.mock('react-router-dom', () => ({
@@ -43,7 +44,9 @@ describe('FiatOnRamp', () => {
     it('should render FiatOnRampDisclaimer on click of the button in the provider card', () => {
         render(
             <APIProvider>
-                <FiatOnRamp />
+                <WalletsAuthProvider>
+                    <FiatOnRamp />
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -55,7 +58,9 @@ describe('FiatOnRamp', () => {
     it('should handle disclaimer toggle correctly', () => {
         render(
             <APIProvider>
-                <FiatOnRamp />
+                <WalletsAuthProvider>
+                    <FiatOnRamp />
+                </WalletsAuthProvider>
             </APIProvider>
         );
 

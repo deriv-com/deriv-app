@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api-v2';
 import { optionsAndMultipliersContent } from '../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
@@ -62,8 +62,8 @@ const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
 
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
-    const { data } = useActiveWalletAccount();
-    if (data?.dtrade_loginid) {
+    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
+    if (activeLinkedToTradingAccount?.loginid) {
         return (
             <WalletButton
                 onClick={() => {
@@ -85,7 +85,8 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
     onOptionsAndMultipliersLoaded,
 }) => {
     const { isMobile } = useDevice();
-    const { data } = useActiveWalletAccount();
+    const { data: activeWalletAccount } = useActiveWalletAccount();
+    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
     useEffect(() => {
         onOptionsAndMultipliersLoaded?.(true);
@@ -95,36 +96,31 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
     return (
         <div
             className={classNames('wallets-options-and-multipliers-listing', {
-                'wallets-options-and-multipliers-listing--border': data?.is_crypto,
+                'wallets-options-and-multipliers-listing--border': activeWalletAccount?.is_crypto,
             })}
         >
             <section className='wallets-options-and-multipliers-listing__header'>
                 <div className='wallets-options-and-multipliers-listing__header-title'>
                     {!isMobile && (
                         <WalletText align='center' size='xl' weight='bold'>
-                            <Trans defaults='Options & Multipliers' />
+                            <Trans defaults='Options' />
                         </WalletText>
                     )}
-                    <div>
-                        <WalletText size={isMobile ? 'sm' : 'md'}>
-                            <Trans
-                                components={[
-                                    <WalletLink
-                                        key={0}
-                                        staticUrl='/trade-types/options/digital-options/up-and-down/'
-                                    />,
-                                    <WalletLink key={1} staticUrl='/trade-types/multiplier/' />,
-                                ]}
-                                defaults='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
-                            />
-                        </WalletText>
-                    </div>
+                    <WalletText size={isMobile ? 'sm' : 'md'}>
+                        <Trans
+                            components={[
+                                <WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/' />,
+                            ]}
+                            defaults='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
+                        />
+                    </WalletText>
                 </div>
                 <DerivAppsSection />
             </section>
             <div
                 className={classNames('wallets-options-and-multipliers-listing__content', {
-                    'wallets-options-and-multipliers-listing__content--without-trading-account': !data?.dtrade_loginid,
+                    'wallets-options-and-multipliers-listing__content--without-trading-account':
+                        !activeLinkedToTradingAccount?.loginid,
                 })}
             >
                 {optionsAndMultipliersContent.map(account => {
@@ -136,7 +132,11 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                             key={`trading-account-card-${title}`}
                             leading={
                                 <LinkTitle
-                                    icon={data?.dtrade_loginid || !isMobile ? account.icon : account.smallIcon}
+                                    icon={
+                                        activeLinkedToTradingAccount?.loginid || !isMobile
+                                            ? account.icon
+                                            : account.smallIcon
+                                    }
                                     title={title}
                                 />
                             }

@@ -62,8 +62,10 @@ const TradingAssessmentNewUser = observer(
         return (
             <TradingAssessmentForm
                 form_value={value}
+                getCurrentStep={getCurrentStep}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
+                onSave={onSave}
                 setSubSectionIndex={setSubSectionIndex}
                 disabled_items={disabled_items}
                 should_move_to_next={false}

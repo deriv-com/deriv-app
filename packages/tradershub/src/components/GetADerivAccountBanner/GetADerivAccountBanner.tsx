@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
-import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
+import { useQueryParams } from '@/hooks';
+import { Button, Text } from '@deriv-com/ui';
 
 /**
  * `GetADerivAccountBanner` is a functional component that displays a banner message
@@ -11,11 +10,11 @@ import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
  * @returns {React.ReactElement} A `div` element containing the banner message and the button.
  */
 const GetADerivAccountBanner = () => {
-    const { setIsWizardOpen } = useSignupWizardContext();
+    const { openModal } = useQueryParams();
     return (
-        <div className='flex items-center justify-center w-full p-800 gap-800 rounded-200 bg-system-light-secondary-background'>
+        <div className='flex items-center justify-center w-full gap-16 p-16 rounded-xs bg-system-light-secondary-background'>
             <Text weight='bold'>You need a Deriv account to create a CFD account.</Text>
-            <Button className='rounded-200' onClick={() => setIsWizardOpen(true)}>
+            <Button className='rounded-xs' onClick={() => openModal('RealAccountCreation')}>
                 Get a Deriv account
             </Button>
         </div>

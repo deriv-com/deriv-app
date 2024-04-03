@@ -18,15 +18,13 @@ import {
     isMultiplierContract,
     isTurbosContract,
     isVanillaContract,
-    isSmartTraderContract,
     isResetContract,
-    urlFor,
+    isLookBacksContract,
 } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
-import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
 import ReplayChart from './replay-chart';
 import { observer, useStore } from '@deriv/stores';
@@ -38,16 +36,8 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
     const { common, contract_replay, ui } = useStore();
     const [swipe_index, setSwipeIndex] = React.useState(0);
     const { contract_store } = contract_replay;
-    const {
-        is_market_closed,
-        is_sell_requested,
-        onClickCancel,
-        onClickSell,
-        onMount,
-        onUnmount,
-        is_chart_loading,
-        is_forward_starting,
-    } = contract_replay;
+    const { is_market_closed, is_sell_requested, onClickCancel, onClickSell, onMount, onUnmount, is_chart_loading } =
+        contract_replay;
     const { contract_info, contract_update, contract_update_history, is_digit_contract } = contract_store;
     const { routeBackInApp } = common;
     const {
@@ -102,8 +92,8 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
-    const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
     const is_reset_contract = isResetContract(contract_info.contract_type);
+    const is_lookbacks = isLookBacksContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -117,21 +107,12 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             is_turbos={is_turbos}
             is_sell_requested={is_sell_requested}
             is_vanilla={is_vanilla}
-            is_smarttrader_contract={is_smarttrader_contract}
+            is_lookbacks={is_lookbacks}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             toggleHistoryTab={toggleHistoryTab}
         />
     );
-
-    const unsupportedContractOnConfirm = () => {
-        history.goBack();
-    };
-
-    const unsupportedContractOnClose = () => {
-        const statementws_url = urlFor('user/statementws', { legacy: true });
-        window.open(statementws_url, '_blank');
-    };
 
     // TODO: Uncomment and update this when DTrader 2.0 development starts:
     // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am Contract Details page for DTrader 2.0.</Text>;
@@ -140,11 +121,6 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             <MobileWrapper>
                 <NotificationMessages />
             </MobileWrapper>
-            <UnsupportedContractModal
-                onConfirm={unsupportedContractOnConfirm}
-                onClose={unsupportedContractOnClose}
-                is_visible={is_forward_starting}
-            />
             <PageOverlay
                 id='dt_contract_replay_container'
                 header={<Localize i18n_default_text='Contract details' />}
@@ -161,6 +137,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                             className={classNames('contract-drawer__mobile-wrapper', {
                                 'contract-drawer__mobile-wrapper--is-multiplier': is_mobile && is_multiplier,
                             })}
+                            data-testid='dt_contract_drawer_mobile_wrapper'
                         >
                             {contract_drawer_el}
                         </div>
@@ -171,6 +148,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                 'replay-chart__container--is-multiplier': is_mobile && is_multiplier,
                                 'vanilla-trade-chart': is_vanilla,
                             })}
+                            data-testid='dt_replay_chart_container'
                         >
                             <DesktopWrapper>
                                 <NotificationMessages />
@@ -189,6 +167,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                         <InfoBoxWidget />
                                         <SwipeableWrapper
                                             className='replay-chart__container-swipeable-wrapper'
+                                            data-testid='dt_replay_chart_swipeable_wrapper'
                                             is_swipe_disabled={swipe_index === 1}
                                             onChange={
                                                 onChangeSwipeableIndex as React.ComponentProps<

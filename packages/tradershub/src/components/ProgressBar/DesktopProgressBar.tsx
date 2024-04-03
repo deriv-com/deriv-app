@@ -14,7 +14,7 @@ type TDesktopProgressBar = {
  */
 const DesktopProgressBar = ({ activeStep, steps = [] }: TDesktopProgressBar) => {
     return (
-        <div className='pl-100'>
+        <div className='pl-2'>
             {steps.map((step, index) => (
                 <Stepper
                     isActive={index + 1 <= activeStep}

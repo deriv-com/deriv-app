@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletButton, WalletLink, WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
@@ -34,7 +34,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                                         target='_blank'
                                     />,
                                 ]}
-                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
                             />
                         </WalletText>
                         <WalletButton
@@ -67,7 +67,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                         <WalletText size='md'>
                             <Trans
                                 components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
-                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
                             />
                         </WalletText>
                     </div>

@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes, useEffect } from 'react';
-import { useCashierFiatAddress } from '@deriv/api';
+import { useCashierFiatAddress } from '@deriv/api-v2';
 import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import './WithdrawalFiat.scss';

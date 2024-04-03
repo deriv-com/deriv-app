@@ -2,9 +2,9 @@ import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
-import { useSettings } from '@deriv/api';
+import { useSettings } from '@deriv/api-v2';
+import { DerivLightDobPoiIcon } from '@deriv/quill-icons';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../../../components';
-import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
 import unixToDateString from '../../../../../../utils/utils';
 import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../../../validations';
 import './IDVDocumentUploadDetails.scss';
@@ -92,7 +92,7 @@ const IDVDocumentUploadDetails = () => {
                     <WalletText size='xs' weight='bold'>
                         Example
                     </WalletText>
-                    <SideNote />
+                    <DerivLightDobPoiIcon height={195} width={288} />
                 </div>
             </div>
             <div

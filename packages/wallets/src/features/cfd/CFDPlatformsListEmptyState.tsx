@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../components/Base';
 import './CFDPlatformsList.scss';
 

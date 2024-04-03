@@ -2,11 +2,10 @@ import moment from 'moment';
 import { isEmptyObject } from '../object';
 import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';
-import { TickSpotData } from '@deriv/api-types';
+import { TickSpotData, WebsiteStatus } from '@deriv/api-types';
+import { getSupportedContracts } from '../constants/contract';
 
 type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start'>>;
-
-type TIsStarted = Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>;
 
 export const isContractElapsed = (contract_info: TContractInfo, tick?: null | TickSpotData) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
@@ -26,8 +25,8 @@ export const isEndedBeforeCancellationExpired = (contract_info: TContractInfo) =
 export const isSoldBeforeStart = (contract_info: TIsSoldBeforeStart) =>
     contract_info.sell_time && +contract_info.sell_time < +contract_info.date_start;
 
-export const isStarted = (contract_info: TIsStarted) =>
-    !contract_info.is_forward_starting || contract_info.current_spot_time > contract_info.date_start;
+export const hasContractStarted = (contract_info?: TContractInfo) =>
+    Number(contract_info?.current_spot_time) > Number(contract_info?.date_start);
 
 export const isUserCancelled = (contract_info: TContractInfo) => contract_info.status === 'cancelled';
 
@@ -60,7 +59,19 @@ export const getBuyPrice = (contract_store: TContractStore) => {
 };
 
 /**
- * Set contract update form initial values
- * @param {object} contract_update - contract_update response
- * @param {object} limit_order - proposal_open_contract.limit_order response
+ * Checks if the server is currently down or updating.
+ *
+ * @param {WebsiteStatusResponse} response - The response object containing the status of the website.
+ * @returns {boolean} True if the website status is 'down' or 'updating', false otherwise.
  */
+export const checkServerMaintenance = (website_status: WebsiteStatus | undefined | null) => {
+    const { site_status = '' } = website_status || {};
+    return site_status === 'down' || site_status === 'updating';
+};
+
+export const isContractSupportedAndStarted = (symbol: string, contract_info?: TContractInfo) =>
+    !!contract_info &&
+    symbol === contract_info.underlying &&
+    //Added check for unsupported and forward starting contracts, which have not started yet
+    !!getSupportedContracts()[contract_info?.contract_type as keyof ReturnType<typeof getSupportedContracts>] &&
+    hasContractStarted(contract_info);

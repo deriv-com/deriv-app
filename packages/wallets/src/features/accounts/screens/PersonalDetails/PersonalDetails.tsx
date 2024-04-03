@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useMemo } from 'react';
 import * as Yup from 'yup';
-import { useResidenceList, useSettings } from '@deriv/api';
+import { useResidenceList, useSettings } from '@deriv/api-v2';
 import { FlowTextField, Loader, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
 import './PersonalDetails.scss';

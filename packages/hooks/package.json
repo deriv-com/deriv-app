@@ -5,10 +5,13 @@
     "main": "src/index.ts",
     "dependencies": {
         "@binary-com/binary-document-uploader": "^2.4.8",
+        "@deriv-com/analytics": "1.4.13",
         "@deriv/api": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/utils": "^1.0.0",
         "@deriv/shared": "^1.0.0",
+        "@simplewebauthn/browser": "^8.3.4",
+        "@simplewebauthn/typescript-types": "^8.3.4",
         "react": "^17.0.2"
     },
     "devDependencies": {

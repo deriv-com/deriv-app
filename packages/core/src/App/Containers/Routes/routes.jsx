@@ -3,7 +3,6 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import { useP2PCompletedOrdersNotification } from '@deriv/hooks';
 import { urlForLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
@@ -24,8 +23,6 @@ const Routes = observer(({ history, location, passthrough }) => {
     const { error, has_error, setAppRouterHistory, addRouteHistoryItem, setInitialRouteHistoryItem } = common;
     const initial_route = React.useRef(null);
     const unlisten_to_change = React.useRef(null);
-
-    useP2PCompletedOrdersNotification();
 
     React.useEffect(() => {
         if (!unlisten_to_change.current && !initial_route.current) {

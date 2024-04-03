@@ -2,22 +2,21 @@ import React from 'react';
 import { TradingAppCardLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from '@cfd/components';
-import { useIsEuRegion } from '@deriv/api';
 
 const CFDContent = () => {
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
 
     const { isEU } = useRegulationFlags();
 
     if (!isRegulationAccessible)
         return (
-            <div className='pt-800 lg:pt-1200'>
+            <div className='pt-16 lg:pt-24'>
                 <TradingAppCardLoader />
             </div>
         );
 
     return (
-        <div className='space-y-800 pt-800 lg:space-y-1200 lg:pt-1200'>
+        <div className='pt-16 space-y-16 lg:space-y-24 lg:pt-24'>
             <MT5PlatformsList />
             {!isEU && <CTraderList />}
             {!isEU && <OtherCFDPlatformsList />}

@@ -8,14 +8,19 @@ type TOptions = {
     maxDigits?: number;
 };
 
-const separatorRegex = /[,.]/g; // locale-agnostic
+// function-wrapped because of SonarCloud warnings. More context for why: https://stackoverflow.com/questions/1520800/why-does-a-regexp-with-global-flag-give-wrong-results
+const separatorRegex = () => /[,.]/g; // locale-agnostic
 
 const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initial?: number, options?: TOptions) => {
     const input = inputRef.current;
 
+    // helper values for pasting
     const isPasting = useRef(false);
+    const isRewriting = useRef(false);
+    const clipboardContent = useRef('');
+
     const { onChange: onChangeDecimal, value } = useInputDecimalFormatter(undefined, options);
-    const { fractionDigits = 2, locale, maxDigits = 14 } = options || {};
+    const { fractionDigits = 2, locale, maxDigits = 14 } = options ?? {};
 
     const formattedValue = useMemo(
         () => `${Number(value).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
@@ -36,7 +41,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             const indexBeforeCaret = formattedValue.length - 1 - caret;
 
             // if before a comma or period, prefer positioning the caret to the left of it
-            const newCaretPosition = separatorRegex.test(formattedValue[indexBeforeCaret])
+            const newCaretPosition = separatorRegex().test(formattedValue[indexBeforeCaret])
                 ? indexBeforeCaret
                 : indexBeforeCaret + 1;
 
@@ -45,36 +50,35 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
         }
     }, [caret, formattedValue, caretNeedsRepositioning, input]);
 
-    const onChange = useCallback(
-        (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
+    const checkExceedsMaxDigits = useCallback(
+        (newValue: string) => {
+            if (!input) return true;
+
+            // drop the changes if the number of digits is not decreasing and it has exceeded maxDigits
+            const inputDigitsCount = input.value.replace(separatorRegex(), '').replace(/^0+/, '').length;
+            const changeDigitsCount = newValue.replace(separatorRegex(), '').replace(/^0+/, '').length ?? 0;
+            return maxDigits && changeDigitsCount >= inputDigitsCount && changeDigitsCount > maxDigits;
+        },
+        [input, maxDigits]
+    );
+
+    const handleNewValue = useCallback(
+        (newValue: string) => {
             if (!input) return;
 
             const newCaretPosition = input.value.length - (input.selectionStart ?? 0);
             setCaret(newCaretPosition);
             setCaretNeedsRepositioning(true);
 
-            // drop the changes if the number of digits is not decreasing and it has exceeded maxDigits
-            const inputDigitsCount = input.value.replace(separatorRegex, '').replace(/^0+/, '').length;
-            const changeDigitsCount = e.target?.value?.replace(separatorRegex, '').replace(/^0+/, '').length ?? 0;
-            if (maxDigits && changeDigitsCount >= inputDigitsCount && inputDigitsCount > maxDigits) return;
-
             const hasNoChangeInDigits =
                 input.value.length + 1 === prevFormattedValue.length &&
-                input.value.replaceAll(separatorRegex, '') === prevFormattedValue.replaceAll(separatorRegex, '');
+                input.value.replaceAll(separatorRegex(), '') === prevFormattedValue.replaceAll(separatorRegex(), '');
             if (hasNoChangeInDigits) return;
 
-            const newValue = e?.target?.value || '';
             const unformatted = unFormatLocaleString(newValue, locale);
             const shifted = (Number(unformatted) * 10).toFixed(fractionDigits);
             const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
             const unformattedFraction = unformatted.split('.')?.[1]?.length || fractionDigits;
-
-            // If the user is pasting, we don't need to shift the decimal point,
-            // We just need to format the value.
-            if (isPasting.current) {
-                isPasting.current = false;
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
 
             // The new value has one more decimal places than the fraction digits,
             // so we need to shift the decimal point to the left.
@@ -108,38 +112,67 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
 
             return onChangeDecimal({ target: { value: unformatted } });
         },
-        [input, maxDigits, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
+        [input, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
+    );
+
+    const onChange = useCallback(
+        (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
+            const newValue = e.target?.value;
+            if (typeof newValue === 'undefined') return;
+
+            if (isPasting.current) {
+                isPasting.current = false;
+                if (!isRewriting.current) return;
+
+                const pastedValueUnformatted = unFormatLocaleString(clipboardContent.current, locale);
+                const pastedValue =
+                    fractionDigits > 2 && !separatorRegex().test(pastedValueUnformatted) // allow pasting integer values as fractions in case of crypto
+                        ? Number(pastedValueUnformatted) / Math.pow(10, fractionDigits)
+                        : Number(pastedValueUnformatted);
+                const pastedValueFormatted = `${pastedValue.toLocaleString(locale, {
+                    minimumFractionDigits: fractionDigits,
+                })}`;
+                if (
+                    !isNaN(pastedValue) &&
+                    isFinite(pastedValue) &&
+                    pastedValue >= 0 &&
+                    !checkExceedsMaxDigits(pastedValueFormatted)
+                )
+                    return onChangeDecimal({ target: { value: unFormatLocaleString(pastedValueFormatted, locale) } });
+            } else {
+                if (checkExceedsMaxDigits(newValue)) return;
+                handleNewValue(newValue);
+            }
+        },
+        [checkExceedsMaxDigits, fractionDigits, handleNewValue, locale, onChangeDecimal]
     );
 
     const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
         e => {
             isPasting.current = e.type === 'paste';
-            if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
-                const pasted = (e.clipboardData || window.clipboardData).getData('Text');
-                const pastedValue = Number(unFormatLocaleString(pasted, locale));
-                if (!isNaN(pastedValue) && isFinite(pastedValue) && pastedValue >= 0)
-                    onChange({
-                        target: {
-                            value: `${pastedValue.toLocaleString(locale, {
-                                minimumFractionDigits: fractionDigits,
-                            })}`,
-                        },
-                    });
+            const pastedText = (e.clipboardData || window.clipboardData).getData('Text');
+            isRewriting.current =
+                Number(unFormatLocaleString(formattedValue, locale)) === 0 || pastedText === e.currentTarget.value;
+
+            if (isPasting.current && isRewriting.current) {
+                clipboardContent.current = pastedText;
             }
         },
-        [formattedValue, fractionDigits, locale, onChange]
+        [formattedValue, locale]
     );
 
     useEffect(() => {
         if (typeof initial === 'number') {
-            isPasting.current = true;
-            onChange({
+            return onChangeDecimal({
                 target: {
-                    value: `${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
+                    value: unFormatLocaleString(
+                        `${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
+                        locale
+                    ),
                 },
             });
         }
-    }, [fractionDigits, initial, locale, onChange]);
+    }, [fractionDigits, initial, locale, onChangeDecimal]);
 
     return { onChange, onPaste, value: formattedValue };
 };

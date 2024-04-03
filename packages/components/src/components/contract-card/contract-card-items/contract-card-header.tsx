@@ -7,6 +7,7 @@ import {
     getGrowthRatePercentage,
     isAccumulatorContract,
     isSmartTraderContract,
+    isLookBacksContract,
     isBot,
     isMobile,
     isTurbosContract,
@@ -63,17 +64,18 @@ const ContractCardHeader = ({
         tick_count,
         tick_passed,
     } = contract_info;
-    const { is_pathname_bot } = isBot();
+    const is_bot = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_type);
     const is_mobile = isMobile();
     const is_turbos = isTurbosContract(contract_type);
+    const is_lookbacks = isLookBacksContract(contract_type);
 
     const contract_type_list_info = React.useMemo(
         () => [
             {
-                is_param_displayed: multiplier,
+                is_param_displayed: multiplier && !is_lookbacks,
                 displayed_param: `x${multiplier}`,
             },
             {
@@ -85,7 +87,7 @@ const ContractCardHeader = ({
                 displayed_param: getLocalizedTurbosSubtype(contract_type),
             },
         ],
-        [multiplier, growth_rate, is_accumulator, is_turbos, contract_type]
+        [multiplier, growth_rate, is_accumulator, is_turbos, is_lookbacks, contract_type]
     );
 
     const displayed_trade_param =
@@ -96,7 +98,7 @@ const ContractCardHeader = ({
         <React.Fragment>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
-                    'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
+                    'dc-contract-card__grid-underlying-trade--trader': !is_bot,
                     'dc-contract-card__grid-underlying-trade--trader--accumulator': !is_mobile && is_accumulator,
                     [`dc-contract-card__grid-underlying-trade--trader--${
                         is_accumulator ? 'accumulator' : 'turbos'

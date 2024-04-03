@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useActiveWalletAccount } from '@deriv/api';
-import { TradingAccountCard, WalletButton } from '../../../../../components';
+import { useActiveWalletAccount } from '@deriv/api-v2';
+import { TradingAccountCard, WalletButton, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
@@ -54,8 +54,10 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             }
         >
             <div className='wallets-available-mt5__details'>
-                <p className='wallets-available-mt5__details-title'>{title}</p>
-                <p className='wallets-available-mt5__details-description'>{description}</p>
+                <WalletText size='sm' weight='bold'>
+                    {title}
+                </WalletText>
+                <WalletText size='xs'>{description}</WalletText>
             </div>
         </TradingAccountCard>
     );

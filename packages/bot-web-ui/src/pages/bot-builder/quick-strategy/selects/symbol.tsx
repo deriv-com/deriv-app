@@ -4,7 +4,6 @@ import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useStore } from '@deriv/stores';
-import { Analytics } from '@deriv-com/analytics';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
 
@@ -73,14 +72,6 @@ const SymbolSelect: React.FC = () => {
         }
     }, [symbols, values.symbol, setInputValue]);
 
-    const sendAssetValueToRudderStack = (item: string) => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'choose_asset',
-            asset_type: item,
-            form_source: 'ce_bot_quick_strategy_form',
-        });
-    };
-
     const handleFocus = () => {
         if (is_desktop && !is_input_started) {
             setIsInputStarted(true);
@@ -94,8 +85,7 @@ const SymbolSelect: React.FC = () => {
 
     const handleItemSelection = (item: TItem) => {
         if (item) {
-            const { value, text } = item as TSymbol;
-            sendAssetValueToRudderStack(text);
+            const { value } = item as TSymbol;
             setFieldValue('symbol', value);
             setValue('symbol', value);
             setIsInputStarted(false);

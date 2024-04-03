@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { useCtraderAccountsList } from '@deriv/api';
+import { useCtraderAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 
@@ -11,7 +11,7 @@ type TradingAccountCardProps = {
     trailing: ReactNode;
 };
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
 }));
 

@@ -72,7 +72,7 @@ class DBot {
                             if (run_button) run_button.disabled = true;
 
                             that.interpreter.unsubscribeFromTicksService().then(async () => {
-                                await that.interpreter.bot.tradeEngine.watchTicks(symbol);
+                                await that.interpreter?.bot.tradeEngine.watchTicks(symbol);
                             });
                         }
                     } else if (name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
@@ -129,6 +129,11 @@ class DBot {
                 });
 
                 Blockly.derivWorkspace = this.workspace;
+
+                const varDB = new Blockly.Names('window');
+                varDB.variableMap_ = Blockly.derivWorkspace.getVariableMap();
+
+                Blockly.JavaScript.variableDB_ = varDB;
 
                 this.addBeforeRunFunction(this.unselectBlocks.bind(this));
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
@@ -221,12 +226,21 @@ class DBot {
         return this.before_run_funcs.every(func => !!func());
     }
 
+    async initializeInterpreter() {
+        if (this.interpreter) {
+            await this.interpreter.terminateSession();
+        }
+        this.interpreter = Interpreter();
+    }
     /**
      * Runs the bot. Does a sanity check before attempting to generate the
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
+        if (api_base.is_stopping) return;
+
         try {
+            api_base.is_stopping = false;
             const code = this.generateCode();
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
@@ -325,6 +339,8 @@ class DBot {
      * that trade will be completed first to reflect correct contract status in UI.
      */
     async stopBot() {
+        if (api_base.is_stopping) return;
+
         api_base.setIsRunning(false);
 
         await this.interpreter.stop();

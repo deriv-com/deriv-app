@@ -1,0 +1,16 @@
+.p2p-v2-buy-sell-amount {
+    &__input-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+        }
+
+        .deriv-input__field {
+            font-size: 1.2rem;
+        }
+    }
+}

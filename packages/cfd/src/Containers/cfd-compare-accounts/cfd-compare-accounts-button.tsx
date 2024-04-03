@@ -1,6 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { routes, getAuthenticationStatusInfo, WS } from '@deriv/shared';
+import { getAuthenticationStatusInfo, WS } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -14,28 +13,17 @@ import {
     isCTraderAccountAdded,
 } from '../../Helpers/compare-accounts-config';
 import { CATEGORY, CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import useCompareAccountsButtonHandler from '../../hooks/useCompareAccountsButtonHandler';
 
 const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TCompareAccountsCard) => {
-    const history = useHistory();
-
     const market_type = getMarketType(trading_platforms);
     const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
     const {
         modules: { cfd },
-        common,
         client,
-        traders_hub,
     } = useStore();
 
-    const {
-        setAccountType,
-        setJurisdictionSelectedShortcode,
-        enableCFDPasswordModal,
-        toggleCFDVerificationModal,
-        current_list,
-    } = cfd;
-    const { getAccount } = traders_hub;
-    const { setAppstorePlatform } = common;
+    const { current_list } = cfd;
 
     const {
         account_status,
@@ -114,22 +102,12 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         is_demo
     );
 
-    const onClickAdd = () => {
-        setAppstorePlatform(trading_platforms.platform as string);
-        if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
-            setJurisdictionSelectedShortcode(trading_platforms.shortcode);
-            if (is_account_status_verified) {
-                setAccountType(type_of_account);
-                enableCFDPasswordModal();
-            } else {
-                toggleCFDVerificationModal();
-            }
-        } else {
-            setAccountType(type_of_account);
-            getAccount();
-        }
-        history.push(routes.traders_hub);
-    };
+    const { onClickAdd } = useCompareAccountsButtonHandler(
+        trading_platforms,
+        is_account_status_verified,
+        type_of_account
+    );
+
     return (
         <Button
             className='compare-cfd-account__button'

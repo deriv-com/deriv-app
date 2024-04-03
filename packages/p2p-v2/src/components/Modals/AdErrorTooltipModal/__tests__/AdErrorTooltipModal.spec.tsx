@@ -17,7 +17,7 @@ const mockProps = {
 
 let element: HTMLElement;
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useAuthorize: () => ({
         data: {
             local_currencies: ['USD'],

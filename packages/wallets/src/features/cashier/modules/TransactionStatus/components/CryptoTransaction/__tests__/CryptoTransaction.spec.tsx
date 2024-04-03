@@ -1,11 +1,11 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { useCancelCryptoTransaction } from '@deriv/api';
+import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';
 import CryptoTransaction from '../CryptoTransaction';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useCancelCryptoTransaction: jest.fn(),
 }));
 

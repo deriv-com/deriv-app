@@ -89,27 +89,6 @@
         }
     }
 
-    &__payment-method {
-        display: flex;
-        flex-wrap: wrap;
-
-        &--label {
-            align-items: center;
-            border-radius: 0.4rem;
-            border: 1px solid var(--border-normal);
-            display: flex;
-            flex-direction: row;
-            margin: 0.25rem;
-            padding: 0 0.8rem;
-            width: fit-content;
-
-            @include mobile {
-                height: 2.4rem;
-                margin: 0.25rem 0.5rem 0.25rem 0;
-            }
-        }
-    }
-
     &__actions {
         display: flex;
         align-items: center;

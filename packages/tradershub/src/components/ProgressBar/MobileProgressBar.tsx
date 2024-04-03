@@ -20,7 +20,7 @@ type TMobileProgressBar = {
 const MobileProgressBar = ({ activeStep, onClickClose, steps = [] }: TMobileProgressBar) => {
     return (
         <div>
-            <div className='flex items-center justify-between px-800 py-700'>
+            <div className='flex items-center justify-between px-16 bg-system-light-secondary-background py-14'>
                 <div>
                     <Text weight='bold'>
                         Step {activeStep}/{steps.length}:
@@ -29,7 +29,7 @@ const MobileProgressBar = ({ activeStep, onClickClose, steps = [] }: TMobileProg
                 </div>
                 <StandaloneXmarkBoldIcon className='cursor-pointer' onClick={onClickClose} />
             </div>
-            <div className='grid grid-flow-col gap-gap-2xs'>
+            <div className='grid grid-flow-col gap-2'>
                 {steps.map((step, index) => (
                     <StepConnector isActive={index + 1 <= activeStep} key={step} />
                 ))}

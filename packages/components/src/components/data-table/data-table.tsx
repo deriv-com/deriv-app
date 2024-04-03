@@ -12,6 +12,7 @@ import {
     CellMeasurerCache,
     Grid,
 } from 'react-virtualized';
+import { isForwardStartingBuyTransaction } from '@deriv/shared';
 import TableRow, { TSource } from './table-row';
 import ThemedScrollbars from '../themed-scrollbars';
 import { TTableRowItem } from '../types/common.types';
@@ -98,7 +99,21 @@ const DataTable = ({
     };
 
     const rowRenderer = ({ style, index, key, parent }: TRowRenderer) => {
-        const item = data_source?.[index];
+        let item = data_source?.[index];
+        const { action_type, shortcode, purchase_time, transaction_time } = item || {};
+        if (
+            item &&
+            isForwardStartingBuyTransaction(
+                action_type as string,
+                shortcode as string,
+                (purchase_time as number) || (transaction_time as number)
+            )
+        ) {
+            const is_sold = !!data_source?.find(
+                transaction => transaction.action_type === 'sell' && transaction.id === item?.id
+            );
+            item = { ...item, is_sold };
+        }
         const contract_id = (item?.contract_id || item?.id) as string;
         let action: TTableRowItem | undefined, row_key;
         if (item) {

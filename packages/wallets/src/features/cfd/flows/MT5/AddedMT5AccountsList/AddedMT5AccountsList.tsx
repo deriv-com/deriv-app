@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
+import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
 import { InlineMessage, WalletButton, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
@@ -113,9 +113,14 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 {t('Verification failed.')}{' '}
                                 <a
                                     onClick={() =>
-                                        show(<VerificationFailedModal />, {
-                                            defaultRootId: 'wallets_modal_root',
-                                        })
+                                        show(
+                                            <VerificationFailedModal
+                                                selectedJurisdiction={account.landing_company_short}
+                                            />,
+                                            {
+                                                defaultRootId: 'wallets_modal_root',
+                                            }
+                                        )
                                     }
                                 >
                                     {t('Why?')}

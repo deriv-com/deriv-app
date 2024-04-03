@@ -1,6 +1,5 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { fireEvent, render, screen } from '@testing-library/react';
 import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -106,7 +105,7 @@ describe('TransactionDetailsMobile', () => {
         render(<TransactionDetailsMobile />, {
             wrapper,
         });
-        const close_btn = screen.getByTestId('page_overlay_header_close');
+        const close_btn = screen.getByTestId('dt_page_overlay_header_close');
         fireEvent.click(close_btn);
         expect(mock_DBot_store?.transactions.is_transaction_details_modal_open).toBeFalsy();
     });

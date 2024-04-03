@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Modal from 'react-modal';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
 import './BlockUnblockUserModal.scss';
@@ -59,7 +59,14 @@ const BlockUnblockUserModal = ({
                 {getModalContent()}
             </Text>
             <div className='p2p-v2-block-unblock-user-modal__footer'>
-                <Button onClick={onRequestClose} size='lg' textSize='sm' variant='outlined'>
+                <Button
+                    className='border-2'
+                    color='black'
+                    onClick={onRequestClose}
+                    size='lg'
+                    textSize='sm'
+                    variant='outlined'
+                >
                     Cancel
                 </Button>
                 <Button onClick={onClickBlockUnblock} size='lg' textSize='sm'>

@@ -1,9 +1,9 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password';
+import { validPassword } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
@@ -34,6 +34,7 @@ const EnterPassword: React.FC<TProps> = ({
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : MarketTypeDetails[marketType].title;
+    const passwordErrorHints = `Hint: You may have entered your Deriv password, which is different from your ${title} password.`;
 
     return (
         <div className='wallets-enter-password'>
@@ -53,16 +54,10 @@ const EnterPassword: React.FC<TProps> = ({
                         label={`${title} password`}
                         onChange={onPasswordChange}
                         password={password}
-                        passwordError={passwordError}
                         shouldDisablePasswordMeter
                         showMessage={false}
                     />
-                    {passwordError && (
-                        <WalletText size='sm'>
-                            Hint: You may have entered your Deriv password, which is different from your {title}{' '}
-                            password.
-                        </WalletText>
-                    )}
+                    {passwordError && <WalletText size='sm'>{passwordErrorHints}</WalletText>}
                 </div>
             </div>
             {isDesktop && (

@@ -1,10 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import Journal from 'Components/journal';
 import SelfExclusion from 'Components/self-exclusion';
 import Summary from 'Components/summary';
@@ -161,7 +159,7 @@ const MobileDrawerFooter = () => {
     return (
         <div className='controls__section'>
             <div className='controls__buttons'>
-                <TradeAnimation className='controls__animation' should_show_overlay info_direction={'right'} />
+                <TradeAnimation className='controls__animation' should_show_overlay />
             </div>
         </div>
     );
@@ -227,7 +225,7 @@ const StatisticsInfoModal = ({
 };
 
 const RunPanel = observer(() => {
-    const { run_panel, dashboard } = useDBotStore();
+    const { run_panel, dashboard, transactions } = useDBotStore();
     const {
         client,
         ui: { is_mobile },
@@ -245,8 +243,8 @@ const RunPanel = observer(() => {
         setActiveTabIndex,
         toggleDrawer,
         toggleStatisticsInfoModal,
-        statistics,
     } = run_panel;
+    const { statistics } = transactions;
     const { active_tour, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
     const { BOT_BUILDER, CHART } = DBOT_TABS;
@@ -260,6 +258,7 @@ const RunPanel = observer(() => {
         if (is_mobile) {
             toggleDrawer(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const content = (

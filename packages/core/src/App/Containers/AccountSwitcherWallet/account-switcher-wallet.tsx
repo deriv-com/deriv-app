@@ -47,23 +47,26 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
         <div className='account-switcher-wallet' ref={wrapper_ref}>
             <div className='account-switcher-wallet__header'>
                 <Text as='h4' weight='bold' size='xs'>
-                    <Localize i18n_default_text='Deriv Apps accounts' />
+                    <Localize i18n_default_text='Options accounts' />
                 </Text>
             </div>
             <ThemedScrollbars height={450}>
                 <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
             </ThemedScrollbars>
-            <div className='account-switcher-wallet__looking-for-cfds'>
+            <button
+                className='account-switcher-wallet__looking-for-cfds'
+                onClick={handleTradersHubRedirect}
+                type='button'
+            >
                 <Text size='xs' line_height='xl'>
-                    <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
+                    <Localize i18n_default_text='Looking for CFDs? Go to Trader’s Hub' />
                 </Text>
                 <Icon
                     data_testid='dt_go_to_arrow'
                     icon='IcChevronDownBold'
                     className='account-switcher-wallet__arrow'
-                    onClick={handleTradersHubRedirect}
                 />
-            </div>
+            </button>
         </div>
     );
 });

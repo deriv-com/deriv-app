@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useWalletAccountsList } from '@deriv/api';
+import { useWalletAccountsList } from '@deriv/api-v2';
 import { WalletNoWalletFoundState } from '../components';
 import { CashierModalRoute } from './CashierModalRoute';
 import { CompareAccountsRoute } from './CompareAccountsRoute';

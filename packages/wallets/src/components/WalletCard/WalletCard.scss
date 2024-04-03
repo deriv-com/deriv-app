@@ -1,6 +1,9 @@
 @import '../../components/SkeletonLoader/SkeletonLoader.scss';
 
 .wallets-card {
+    border: none;
+    background: none;
+
     &__carousel-content {
         background-color: transparent;
         margin: 0 -0.4rem;

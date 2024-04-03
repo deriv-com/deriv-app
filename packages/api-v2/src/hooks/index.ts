@@ -83,3 +83,4 @@ export { default as useIsDIELEnabled } from './useIsDIELEnabled';
 export { default as useKycAuthStatus } from './useKycAuthStatus';
 export { default as useClientCountry } from './useClientCountry';
 export { default as useLoginHistory } from './useLoginHistory';
+export { default as useAuthorizedWebsiteStatus } from './useAuthorizedWebsiteStatus';

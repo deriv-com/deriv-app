@@ -108,4 +108,4 @@ export type TStep = {
     subStepCount?: number;
 };
 
-export type TCountryListItem = NonNullable<THooks.Country.Get>;
+export type TCountryListItem = THooks.Country.Get;

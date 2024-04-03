@@ -7,12 +7,12 @@ import { TestWarningModal } from './TestWarningModal';
 import { TradingAssessmentContainer } from './TradingAssessmentContainer';
 
 export const TradingAssessmentForm = () => {
-    const [shouldShowRiskTolerence, setshouldShowRiskTolerence] = useState(false);
+    const [shouldShowRiskTolerence, setShouldShowRiskTolerence] = useState(false);
     const [shouldShowTestWarningModal, setShouldShowTestWarningModal] = useState(false);
     const tradingAssessmentQuestions = getTradingAssessmentQuestions();
 
     const handleAcceptRiskTolerence = () => {
-        setshouldShowRiskTolerence(false);
+        setShouldShowRiskTolerence(false);
     };
 
     if (shouldShowRiskTolerence) {

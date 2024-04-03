@@ -2,7 +2,6 @@ import React from 'react';
 import { LoginHistory } from '@deriv/api-types';
 import { Text } from '@deriv-com/ui';
 import { formattedLoginHistoryData } from '../../utils';
-import { LoginHistoryRow } from './LoginHistoryRow';
 
 type TLoginHistoryProps = { loginHistory: LoginHistory };
 export const LoginHistoryTableCard = ({ loginHistory }: TLoginHistoryProps) => {

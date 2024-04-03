@@ -1,6 +1,6 @@
 .wallets-sent-email-content {
     display: inline-flex;
-    padding: 3.2rem;
+    padding: 6rem 3.2rem 3.2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -11,6 +11,8 @@
 
     @include mobile {
         width: 100%;
+        justify-content: flex-start;
+        border-radius: 0;
     }
 
     &__resend {

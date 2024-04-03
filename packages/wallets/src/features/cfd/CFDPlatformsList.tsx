@@ -7,7 +7,6 @@ import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
 import './CFDPlatformsList.scss';
-import { routes } from 'src/utils/routes';
 
 type TProps = {
     onMT5PlatformListLoaded?: (value: boolean) => void;

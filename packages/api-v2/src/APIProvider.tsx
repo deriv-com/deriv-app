@@ -57,11 +57,11 @@ const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAP
 
     const connection = new WebSocket(wss_url);
     connection.addEventListener('close', () => {
-        if (typeof onWSClose === 'function') onWSClose();
+        onWSClose?.();
     });
 
     connection.addEventListener('open', () => {
-        if (typeof onOpen === 'function') onOpen();
+        onOpen?.();
     });
 
     const result = new DerivAPIBasic({ connection });
@@ -160,16 +160,16 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     };
 
     useEffect(() => {
-        const currentderivAPIRef = derivAPIRef.current;
-        const currentsubscriptionsRef = subscriptionsRef.current;
+        const currentDerivAPIRef = derivAPIRef.current;
+        const currentSubscriptionsRef = subscriptionsRef.current;
 
         return () => {
-            if (currentsubscriptionsRef) {
-                Object.keys(currentsubscriptionsRef).forEach(key => {
-                    currentsubscriptionsRef[key].unsubscribe();
+            if (currentSubscriptionsRef) {
+                Object.keys(currentSubscriptionsRef).forEach(key => {
+                    currentSubscriptionsRef[key].unsubscribe();
                 });
             }
-            if (currentderivAPIRef && currentderivAPIRef.connection.readyState === 1) currentderivAPIRef.disconnect();
+            if (currentDerivAPIRef && currentDerivAPIRef.connection.readyState === 1) currentDerivAPIRef.disconnect();
         };
     }, []);
 

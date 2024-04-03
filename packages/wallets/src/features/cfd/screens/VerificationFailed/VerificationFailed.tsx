@@ -1,11 +1,15 @@
-import React, { FC } from 'react';
+import React, { Suspense, lazy, FC } from 'react';
 import { usePOA, usePOI } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
-import { Verification } from '../../flows/Verification';
+// import { Verification } from '../../flows';
 import './VerificationFailed.scss';
+
+const LazyVerification = lazy(
+    () => import(/* webpackChunkName: "verification-flow" */ '../../flows/Verification/Verification')
+);
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
     if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address documents';
@@ -56,7 +60,13 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                     Maybe later
                 </WalletButton>
                 <WalletButton
-                    onClick={() => show(<Verification selectedJurisdiction={selectedJurisdiction} />)}
+                    onClick={() =>
+                        show(
+                            <Suspense fallback={null}>
+                                <LazyVerification selectedJurisdiction={selectedJurisdiction} />
+                            </Suspense>
+                        )
+                    }
                     size={isMobile ? 'md' : 'lg'}
                 >
                     Resubmit documents

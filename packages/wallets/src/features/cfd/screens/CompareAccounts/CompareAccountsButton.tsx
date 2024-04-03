@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { Suspense, lazy, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     useActiveWalletAccount,
@@ -13,7 +13,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useWalletAccountSwitcher from '../../../../hooks/useWalletAccountSwitcher';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
-import { Verification } from '../../flows/Verification';
+// import { Verification } from '../../flows';
 import { DxtradeEnterPasswordModal, MT5PasswordModal } from '../../modals';
 import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
 import {
@@ -23,6 +23,10 @@ import {
 } from './compareAccountsConfig';
 import { JURISDICTION } from './constants';
 import './CompareAccountsButton.scss';
+
+const LazyVerification = lazy(
+    () => import(/* webpackChunkName: "verification-flow" */ '../../flows/Verification/Verification')
+);
 
 type TCompareAccountButton = {
     isAccountAdded: boolean;
@@ -121,7 +125,11 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
             if (isAccountStatusVerified) {
                 show(<MT5PasswordModal marketType={marketType ?? 'synthetic'} platform={platform} />);
             } else {
-                show(<Verification selectedJurisdiction={shortCode} />);
+                show(
+                    <Suspense fallback={null}>
+                        <LazyVerification selectedJurisdiction={shortCode} />
+                    </Suspense>
+                );
             }
         } else if (platform === CFD_PLATFORMS.DXTRADE) {
             show(<DxtradeEnterPasswordModal />);

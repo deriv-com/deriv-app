@@ -1,12 +1,22 @@
-import { useMemo } from 'react';
-import useQuery from '../../../../../useQuery';
-import useAuthorize from '../../../../useAuthorize';
+import { useCallback, useMemo } from 'react';
+import useSubscription from '../../../../../useSubscription';
+
+type TPayload = WithRequiredProperty<
+    NonNullable<Parameters<ReturnType<typeof useSubscription<'p2p_order_info'>>['subscribe']>>[0]['payload'],
+    'id'
+>;
 
 // TODO: Convert this to use useSubscribe as it is a subscribable endpoint
 /** This custom hook that returns information about the given order ID */
-const useOrderInfo = (id: string) => {
-    const { isSuccess } = useAuthorize();
-    const { data, ...rest } = useQuery('p2p_order_info', { payload: { id }, options: { enabled: isSuccess } });
+const useOrderInfo = () => {
+    const { data, subscribe: _subscribe, ...rest } = useSubscription('p2p_order_info');
+
+    const subscribe = useCallback(
+        (payload: TPayload) => {
+            _subscribe({ payload });
+        },
+        [_subscribe]
+    );
 
     // modify the data to add additional information
     const modified_data = useMemo(() => {
@@ -71,6 +81,7 @@ const useOrderInfo = (id: string) => {
     return {
         /** The 'p2p_order_info' response. */
         data: modified_data,
+        subscribe,
         ...rest,
     };
 };

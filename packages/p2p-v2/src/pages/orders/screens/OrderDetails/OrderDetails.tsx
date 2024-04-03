@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FullPageMobileWrapper, PageReturn } from '@/components';
 import { useExtendedOrderDetails } from '@/hooks';
 import { OrderDetailsProvider } from '@/providers/OrderDetailsProvider';
-import { p2p, useActiveAccount, useServerTime } from '@deriv/api-v2';
+import { p2p, useActiveAccount, useAuthorize, useServerTime } from '@deriv/api-v2';
 import { Button, InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
 import ChatIcon from '../../../../public/ic-chat.svg';
 import { OrderDetailsCard } from '../../components/OrderDetailsCard';
@@ -21,7 +21,8 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     const showChatParam = new URLSearchParams(location.search).get('showChat');
     const [showChat, setShowChat] = useState(!!showChatParam);
 
-    const { data: orderInfo, failureReason, isError: isErrorOrderInfo, isLoading } = p2p.order.useGet(orderId);
+    const { isSuccess } = useAuthorize();
+    const { data: orderInfo, error, isLoading, subscribe, unsubscribe } = p2p.order.useGet();
     const { data: activeAccount } = useActiveAccount();
     const { data: serverTime } = useServerTime();
     const { data: orderDetails } = useExtendedOrderDetails({
@@ -41,14 +42,26 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
         if (showChatParam) onReturn();
     };
 
-    if (isLoading) return <Loader isFullScreen />;
+    useEffect(() => {
+        if (isSuccess) {
+            subscribe({
+                id: orderId,
+            });
+        }
+
+        return () => {
+            unsubscribe();
+        };
+    }, [isSuccess, orderId]);
+
+    if (isLoading || (!orderInfo && !error)) return <Loader isFullScreen />;
 
     // TODO: replace with proper error screen once design is ready
-    if (isErrorOrderInfo) return <Text>{failureReason?.error.message}</Text>;
+    if (error) return <Text>{error?.message}</Text>;
 
     if (isMobile) {
         return (
-            <OrderDetailsProvider value={{ isErrorOrderInfo, orderDetails }}>
+            <OrderDetailsProvider value={{ isErrorOrderInfo: !!error, orderDetails }}>
                 {showChat ? (
                     <OrdersChatSection
                         id={orderId}
@@ -93,7 +106,7 @@ const OrderDetails = ({ orderId }: TOrderDetailsProps) => {
     }
 
     return (
-        <OrderDetailsProvider value={{ isErrorOrderInfo, orderDetails }}>
+        <OrderDetailsProvider value={{ isErrorOrderInfo: !!error, orderDetails }}>
             <div className='w-full'>
                 <PageReturn onClick={onReturn} pageTitle={headerText} weight='bold' />
                 <div className='p2p-v2-order-details'>

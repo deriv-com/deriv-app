@@ -22,8 +22,6 @@ export const POIFlowContainer = ({ countryCode, onCancel, onComplete }: TPOIFlow
         identity: { available_services: availableServices },
     } = kycAuthStatus;
 
-    console.log('POIFlowContainer: ', countryCode, availableServices);
-
     switch (availableServices?.[0]) {
         case POI_SERVICE.onfido: {
             return <OnfidoService countryCode={countryCode} handleComplete={onComplete} />;

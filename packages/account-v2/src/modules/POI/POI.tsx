@@ -20,8 +20,6 @@ export const ProofOfIdentity = () => {
     const isPOARequired = kycAuthStatus?.address.status === AUTH_STATUS_CODES.NONE;
     const rejectedReasons = kycAuthStatus?.identity.last_rejected?.rejected_reasons;
 
-    console.log('Service: ', service, rejectedReasons);
-
     const initialState: TPOIInitialState = {
         selectedCountry: '',
         submissionStatus: POI_SUBMISSION_STATUS.selecting,

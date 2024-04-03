@@ -8,22 +8,26 @@ type TAdFormInputProps = ComponentProps<typeof Input> & {
     label: string;
     name: string;
     rightPlaceholder: ReactNode;
+    triggerValidationFunction?: () => void;
 };
 
-const AdFormInput = ({ label, name, rightPlaceholder, ...props }: TAdFormInputProps) => {
+const AdFormInput = ({ label, name, rightPlaceholder, triggerValidationFunction, ...props }: TAdFormInputProps) => {
     const { control, getValues } = useFormContext();
     return (
         <Controller
             control={control}
             name={name}
             render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                <div className='px-[2.4rem] mb-[3.5rem] w-full'>
+                <div className='mb-[3.5rem] w-full'>
                     <Input
                         error={!!error?.message}
                         label={label}
                         message={error ? error?.message : ''}
                         onBlur={onBlur}
-                        onChange={onChange}
+                        onChange={event => {
+                            onChange(event);
+                            triggerValidationFunction?.();
+                        }}
                         rightPlaceholder={rightPlaceholder}
                         value={value}
                         wrapperClassName='w-full'

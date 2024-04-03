@@ -39,9 +39,7 @@ const POISubmissionForMT5 = observer(
         const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
         const shouldSkipIdv = document_id => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
-        const {
-            authentication: { attempts },
-        } = account_status;
+        const attempts = account_status?.authentication?.attempts;
 
         const { service } = attempts?.latest ?? {};
         const { submissions_left: idv_submissions_left, last_rejected, status } = idv;

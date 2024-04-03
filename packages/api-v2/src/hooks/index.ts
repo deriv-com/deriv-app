@@ -53,9 +53,11 @@ export { default as useOnfidoNotificationEvent } from './useOnfidoNotificationEv
 export { default as useOnfidoServiceToken } from './useOnfidoServiceToken';
 export { default as useOtherCFDPlatformsDeposit } from './useOtherCFDPlatformsDeposit';
 export { default as usePaymentAgentList } from './usePaymentAgentList';
+export { default as usePaymentAgentWithdrawal } from './usePaymentAgentWithdrawal';
 export { default as usePOA } from './usePOA';
 export { default as usePOI } from './usePOI';
 export { default as useResidenceList } from './useResidenceList';
+export { default as useRevokeConnectedApps } from './useRevokeConnectedApps';
 export { default as useSendbirdServiceToken } from './useSendbirdServiceToken';
 export { default as useServerTime } from './useServerTime';
 export { default as useSettings } from './useSettings';
@@ -82,3 +84,4 @@ export { default as useIsDIELEnabled } from './useIsDIELEnabled';
 export { default as useKycAuthStatus } from './useKycAuthStatus';
 export { default as useClientCountry } from './useClientCountry';
 export { default as useTwoFactorAuthentication } from './useTwoFactorAuthentication';
+export { default as useLoginHistory } from './useLoginHistory';

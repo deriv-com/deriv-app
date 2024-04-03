@@ -1,9 +1,9 @@
-import React, { MouseEventHandler, useCallback, useEffect } from 'react';
+import React, { MouseEventHandler } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { RadioGroup } from '@/components';
 import { BUY_SELL, MY_ADS_URL, RATE_TYPE } from '@/constants';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { AdFormController } from '../AdFormController';
 import { AdFormInput } from '../AdFormInput';
 import { AdFormTextArea } from '../AdFormTextArea';
@@ -20,9 +20,10 @@ type TAdTypeSectionProps = {
 };
 
 const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeSectionProps) => {
+    const { isMobile } = useDevice();
     const {
         control,
-        formState: { dirtyFields, isDirty, isValid },
+        formState: { isDirty, isValid },
         getValues,
         setValue,
         trigger,
@@ -32,24 +33,14 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
     const history = useHistory();
     const isSell = watch('ad-type') === BUY_SELL.SELL;
 
-    const values = getValues();
-    const triggerValidation = useCallback(() => {
-        const editedFields = Object.keys(dirtyFields);
-        trigger(editedFields);
-    }, [trigger]);
-
-    // Trigger validation for dirty fields when form values change
-    useEffect(() => {
-        triggerValidation();
-    }, [values, triggerValidation]);
-
     const onChangeAdTypeHandler = (userInput: 'buy' | 'sell') => {
         setValue('ad-type', userInput);
+        setValue('payment-method', []);
         if (rateType === RATE_TYPE.FLOAT) {
             if (userInput === BUY_SELL.SELL) {
-                setValue('rate-type', '+0.01');
+                setValue('rate-value', '+0.01');
             } else {
-                setValue('rate-type', '-0.01');
+                setValue('rate-value', '-0.01');
             }
         }
     };
@@ -60,6 +51,17 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
         } else history.push(MY_ADS_URL);
     };
 
+    const triggerValidation = (fieldNames: string[]) => {
+        // Loop through the provided field names
+        fieldNames.forEach(fieldName => {
+            // Check if the field has a value
+            if (getValues(fieldName)) {
+                // Trigger validation for the field
+                trigger(fieldName);
+            }
+        });
+    };
+
     return (
         <div className='p2p-v2-ad-type-section'>
             <Controller
@@ -68,7 +70,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                 name='ad-type'
                 render={({ field: { onChange, value } }) => {
                     return (
-                        <div className='px-[2.4rem] mb-[3.5rem]'>
+                        <div className='mb-[3.5rem]'>
                             <RadioGroup
                                 name='type'
                                 onToggle={event => {
@@ -77,7 +79,7 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                                 }}
                                 required
                                 selected={value}
-                                textSize='sm'
+                                textSize={isMobile ? 'md' : 'sm'}
                             >
                                 <RadioGroup.Item label='Buy USD' value={BUY_SELL.BUY} />
                                 <RadioGroup.Item label='Sell USD' value={BUY_SELL.SELL} />
@@ -87,29 +89,32 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                 }}
                 rules={{ required: true }}
             />
-            <div className='flex flex-col lg:flex-row'>
+            <div className='flex flex-col lg:flex-row lg:gap-[1.6rem]'>
                 <AdFormInput
                     label='Total amount'
                     name='amount'
                     rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                    triggerValidationFunction={() => triggerValidation(['min-order', 'max-order'])}
                 />
                 {/* TODO: Add FLOATING type component */}
                 <AdFormInput
                     label='Fixed rate'
-                    name='rate-type'
+                    name='rate-value'
                     rightPlaceholder={<Text color='less-prominent'>{localCurrency}</Text>}
                 />
             </div>
-            <div className='flex flex-col lg:flex-row'>
+            <div className='flex flex-col lg:flex-row lg:gap-[1.6rem]'>
                 <AdFormInput
                     label='Min order'
                     name='min-order'
                     rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                    triggerValidationFunction={() => triggerValidation(['amount', 'max-order'])}
                 />
                 <AdFormInput
                     label='Max order'
                     name='max-order'
                     rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                    triggerValidationFunction={() => triggerValidation(['amount', 'min-order'])}
                 />
             </div>
             {isSell && (

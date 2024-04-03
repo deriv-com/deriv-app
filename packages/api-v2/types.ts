@@ -1,6 +1,8 @@
 import type {
     AccountLimitsRequest,
     AccountLimitsResponse,
+    AccountListRequest,
+    AccountListResponse,
     AccountStatusRequest,
     AccountStatusResponse,
     ActiveSymbolsRequest,
@@ -2209,10 +2211,20 @@ type TPrivateSocketEndpoints = {
     };
 };
 
+type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
+
+interface IExtendedAccountListResponse extends AccountListResponse {
+    account_list?: TAccountList[];
+}
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;
+    };
+    account_list: {
+        request: AccountListRequest;
+        response: IExtendedAccountListResponse;
     };
     api_token: {
         request: APITokenRequest;

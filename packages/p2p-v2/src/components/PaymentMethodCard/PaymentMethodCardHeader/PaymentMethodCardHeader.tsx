@@ -9,6 +9,7 @@ import IcCashierOther from '../../../public/ic-cashier-other.svg';
 import './PaymentMethodCardHeader.scss';
 
 type TPaymentMethodCardHeaderProps = {
+    isDisabled?: boolean;
     isEditable?: boolean;
     isSelectable?: boolean;
     isSelected?: boolean;
@@ -21,6 +22,7 @@ type TPaymentMethodCardHeaderProps = {
 };
 
 const PaymentMethodCardHeader = ({
+    isDisabled = false,
     isEditable = false,
     isSelectable = false,
     isSelected = false,
@@ -58,13 +60,17 @@ const PaymentMethodCardHeader = ({
             {isEditable && (
                 <FlyoutMenu
                     listItems={flyoutMenuItems}
-                    renderIcon={() => <LabelPairedEllipsisVerticalXlRegularIcon />}
+                    renderIcon={() => <LabelPairedEllipsisVerticalXlRegularIcon className='cursor-pointer' />}
                 />
             )}
-            {/*TODO: wire up logic for the selectable payment method cards here*/}
             {isSelectable && (
                 <div data-testid='p2p_v2_payment_method_card_header_checkbox'>
-                    <Checkbox checked={isSelected} name='payment-method-checkbox' onChange={onSelectPaymentMethod} />
+                    <Checkbox
+                        checked={isSelected}
+                        disabled={isDisabled}
+                        name='payment-method-checkbox'
+                        onChange={onSelectPaymentMethod}
+                    />
                 </div>
             )}
         </div>

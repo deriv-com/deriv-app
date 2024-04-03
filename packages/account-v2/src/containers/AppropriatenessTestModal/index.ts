@@ -1,1 +1,0 @@
-export { AppropriatenessTestModal } from './AppropriatenessTestModal';

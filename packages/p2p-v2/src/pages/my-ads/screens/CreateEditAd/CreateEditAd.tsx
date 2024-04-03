@@ -40,8 +40,14 @@ const CreateEditAd = () => {
         mode: 'all',
     });
 
+    const { getValues, handleSubmit, setValue } = methods;
+    useEffect(() => {
+        if (Object.keys(countryList).length > 0 && getValues('preferred-countries').length === 0) {
+            setValue('preferred-countries', Object.keys(countryList));
+        }
+    }, [countryList, getValues, setValue]);
+
     const shouldNotShowArchiveMessageAgain = localStorage.getItem('should_not_show_auto_archive_message_again');
-    const { getValues, handleSubmit } = methods;
     const onSubmit = () => {
         const payload = {
             amount: Number(getValues('amount')),
@@ -49,6 +55,7 @@ const CreateEditAd = () => {
             max_order_amount: Number(getValues('max-order')),
             min_order_amount: Number(getValues('min-order')),
             rate: Number(getValues('rate-value')),
+            rate_type: 'float',
             type: getValues('ad-type') as 'buy' | 'sell',
         };
 

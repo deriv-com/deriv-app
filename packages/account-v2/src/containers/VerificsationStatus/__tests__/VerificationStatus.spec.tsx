@@ -2,6 +2,13 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { VerificationStatus } from '../VerificationStatus';
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: jest.fn(),
+    }),
+}));
+
 describe('VerificationStatus', () => {
     it('should render VerificationStatus for IDV when status is pending', () => {
         render(<VerificationStatus isPOARequired={true} service='idv' status='pending' />);

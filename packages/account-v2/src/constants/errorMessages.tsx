@@ -1,4 +1,4 @@
-export const API_ERROR_CODES = Object.freeze({
+export const API_ERROR_CODES = {
     claimedDocument: {
         code: 'ClaimedDocument',
         message:
@@ -13,4 +13,4 @@ export const API_ERROR_CODES = Object.freeze({
         code: null,
         message: 'Sorry, an internal error occurred. Hit the above checkbox to try again.',
     },
-});
+} as const;

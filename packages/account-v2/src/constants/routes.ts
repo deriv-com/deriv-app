@@ -16,6 +16,7 @@ export const ACCOUNT_V2_ROUTES = {
     ProofOfIdentity: `${ACCOUNT_V2_DEFAULT_ROUTE}/proof_of_identity`,
     ProofOfIncome: `${ACCOUNT_V2_DEFAULT_ROUTE}/proof_of_income`,
     ProofOfOwnership: `${ACCOUNT_V2_DEFAULT_ROUTE}/proof_of_ownership`,
+    root: '/',
     SelfExclusion: `${ACCOUNT_V2_DEFAULT_ROUTE}/self_exclusion`,
     TradingAssessment: `${ACCOUNT_V2_DEFAULT_ROUTE}/trading_assessment`,
     TwoFactorAuthentication: `${ACCOUNT_V2_DEFAULT_ROUTE}/two_factor_authentication`,

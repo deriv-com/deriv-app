@@ -6,30 +6,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 import { ModalProvider } from '../../../../../../components/ModalProvider';
 
-// type TradingAccountCardProps = {
-//     children: ReactNode;
-//     leading: ReactNode;
-//     trailing: ReactNode;
-// };
-
 jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
 }));
-
-// jest.mock('../../../../../../components/', () => ({
-//     TradingAccountCard: ({ children, leading, trailing }: TradingAccountCardProps) => (
-//         <div data-testid='dt_wallets_added_ctrader_card'>
-//             {leading}
-//             {children}
-//             {trailing}
-//         </div>
-//     ),
-// }));
-
-// const mockShow = jest.fn();
-// jest.mock('../../../../../../components/ModalProvider', () => ({
-//     useModal: () => ({ show: mockShow }),
-// }));
 
 jest.mock('../../../../modals', () => ({
     MT5TradeModal: () => <div>Mocked MT5 Trade Modal</div>,

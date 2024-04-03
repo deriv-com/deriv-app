@@ -121,20 +121,17 @@ class DBot {
 
                 this.workspace.cached_xml = { main: main_xml };
 
+                this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
+                this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
+                this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
+                    if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
                     if (event.type == Blockly.Events.BLOCK_CHANGE) {
                         const block = this.workspace.getBlockById(event.blockId);
                         if (block && event.element == 'collapsed') {
                             block.contextMenu = false;
                         }
                     }
-                });
-
-                this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
-                this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
-                this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
-                this.workspace.addChangeListener(event => {
-                    if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
                 });
 
                 Blockly.derivWorkspace = this.workspace;

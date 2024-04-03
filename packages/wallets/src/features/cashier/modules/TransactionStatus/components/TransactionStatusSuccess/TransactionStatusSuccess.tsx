@@ -39,7 +39,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                             isFullWidth
                             onClick={() => {
                                 // should navigate to transactions page with "Pending transactions" toggle on and filter set to `transactionType`
-                                history.push('/wallets/cashier/transactions', {
+                                history.push('/appstore/traders-hub/cashier/transactions', {
                                     showPending: true,
                                     transactionType,
                                 });

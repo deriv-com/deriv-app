@@ -26,14 +26,14 @@ test.describe('Wallets - Crypto withdrawal', () => {
             },
         });
 
-        await page.goto(`${baseURL}/wallets`);
+        await page.goto(`${baseURL}/appstore/traders-hub`);
 
         await page.click('.wallets-textfield__field--listcard');
         await page.click('#downshift-0-item-1');
     });
 
     test('render withdrawal form with all elements', async ({ baseURL, page }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // #cryptoAddress
         await expect(page.locator('#cryptoAddress')).toBeVisible();
@@ -57,7 +57,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
     });
 
     test('displays validation messages for address field', async ({ baseURL, page }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // given initial state, no validation message should be visible
         let validationMessage = await page.locator('text=This field is required.');
@@ -83,7 +83,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
     });
 
     test('balance meter is empty initially', async ({ baseURL, page }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // percentage selector, visible
         await expect(page.locator('.wallets-percentage-selector')).toBeVisible();
@@ -117,7 +117,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
         baseURL,
         page,
     }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // percentage selector, visible
         await expect(page.locator('.wallets-percentage-selector')).toBeVisible();
@@ -154,7 +154,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
         baseURL,
         page,
     }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // percentage selector, visible
         await expect(page.locator('.wallets-percentage-selector')).toBeVisible();
@@ -188,7 +188,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
     });
 
     test('balance meter displays still displays 100% when amount exceeds balance', async ({ baseURL, page }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // percentage selector, visible
         await expect(page.locator('.wallets-percentage-selector')).toBeVisible();
@@ -222,7 +222,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
     });
 
     test('validates crypto input against current balance and minimum withdrawal amount', async ({ baseURL, page }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // given initial state, no validation message should be shown
         await expect(
@@ -281,7 +281,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
     });
 
     test('converts fiat to crypto and vice versa', async ({ baseURL, page }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // given some amount of crypto being put to input, convert it to fiat
         await page.fill('#cryptoAmount', '10');
@@ -293,7 +293,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
     });
 
     test('submit button validity', async ({ baseURL, page }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // given initial state, submit button should be disabled
         await expect(page.locator('.wallets-withdrawal-crypto-form__submit button[type="submit"]')).toBeDisabled();
@@ -316,7 +316,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
     });
 
     test('spinner while submitting', async ({ baseURL, page }) => {
-        await page.goto(`${baseURL}/wallets/cashier/withdraw?verification=XXXX`);
+        await page.goto(`${baseURL}/appstore/traders-hub/cashier/withdraw?verification=XXXX`);
 
         // given initial state, submit button should be disabled
         await expect(page.locator('.wallets-withdrawal-crypto-form__submit button[type="submit"]')).toBeDisabled();

@@ -31,7 +31,7 @@ const realAccountTabs = [
     },
     {
         icon: <IcCashierTransfer />,
-        path: 'transfer',
+        path: 'account-transfer',
         text: i18n.t('Transfer'),
     },
     {
@@ -44,7 +44,7 @@ const realAccountTabs = [
 const virtualAccountTabs = [
     {
         icon: <IcCashierTransfer />,
-        path: 'transfer',
+        path: 'account-transfer',
         text: i18n.t('Transfer'),
     },
     {
@@ -121,23 +121,23 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             className={classNames('wallets-cashier-header__close-icon', {
                                 'wallets-cashier-header__close-icon--white': activeWallet?.is_virtual,
                             })}
-                            onClick={() => history.push('/wallets')}
+                            onClick={() => history.push('/appstore/traders-hub')}
                         />
                     </div>
                 </section>
                 <section className='wallets-cashier-header__tabs'>
                     {tabs.map(tab => {
                         const isActiveTab =
-                            location.pathname === `/wallets/cashier/on-ramp`
+                            location.pathname === `/appstore/traders-hub/cashier/on-ramp`
                                 ? tab.path === 'deposit'
-                                : location.pathname === `/wallets/cashier/${tab.path}`;
+                                : location.pathname === `/appstore/traders-hub/cashier/${tab.path}`;
                         return (
                             <button
                                 className={`wallets-cashier-header__tab ${
                                     isActiveTab ? 'wallets-cashier-header__tab--active' : ''
                                 }`}
                                 key={`cashier-tab-${tab.path}`}
-                                onClick={() => history.push(`/wallets/cashier/${tab.path}`)}
+                                onClick={() => history.push(`/appstore/traders-hub/cashier/${tab.path}`)}
                                 ref={isActiveTab ? activeTabRef : null}
                             >
                                 <div

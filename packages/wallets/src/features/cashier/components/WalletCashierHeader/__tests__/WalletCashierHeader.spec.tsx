@@ -17,7 +17,7 @@ jest.mock('@deriv/api-v2', () => ({
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ history: {} }),
-    useLocation: () => ({ pathname: '/wallets' }),
+    useLocation: () => ({ pathname: '/appstore/traders-hub' }),
 }));
 
 describe('<WalletCashierHeader/>', () => {

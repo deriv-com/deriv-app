@@ -17,7 +17,7 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
 
     const handleOnClickReal = () => {
         hide();
-        history.push('/wallets/cashier/transfer');
+        history.push('/appstore/traders-hub/cashier/account-transfer');
     };
 
     if (isDemo) {

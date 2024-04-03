@@ -234,7 +234,7 @@ describe('TransactionStatusSuccess', () => {
         expect(screen.getByText('View more')).toBeInTheDocument();
 
         fireEvent.click(screen.getByText('View more'));
-        expect(pushMock).toHaveBeenCalledWith('/wallets/cashier/transactions', {
+        expect(pushMock).toHaveBeenCalledWith('/appstore/traders-hub/cashier/transactions', {
             showPending: true,
             transactionType: 'withdrawal',
         });

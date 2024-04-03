@@ -104,7 +104,10 @@ const DefaultHeaderWallets = () => {
                                 <DerivBrandLogo />
                             </StaticUrl>
                         </div>
-                        <WalletsLogo className='header__menu-left-logo' onClick={() => history.push(routes.wallets)} />
+                        <WalletsLogo
+                            className='header__menu-left-logo'
+                            onClick={() => history.push(routes.traders_hub)}
+                        />
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             is_landing_company_loaded={is_landing_company_loaded}

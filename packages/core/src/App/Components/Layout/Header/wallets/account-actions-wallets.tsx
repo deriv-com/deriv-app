@@ -26,7 +26,7 @@ const AccountActionsWallets = observer(() => {
     const history = useHistory();
 
     const handleManageFundsRedirect = () => {
-        history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+        history.push(routes.cashier_acc_transfer, { toAccountLoginId: loginid });
     };
 
     if (!is_logged_in) {

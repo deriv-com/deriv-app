@@ -77,13 +77,6 @@ export const routes = {
     onboarding: '/appstore/onboarding',
     compare_cfds: '/appstore/cfd-compare-acccounts',
 
-    // Wallets
-    wallets: '/wallets',
-    wallets_cashier: '/wallets/cashier',
-    wallets_withdrawal: '/wallets/cashier/withdraw',
-    wallets_compare_accounts: '/wallets/compare-accounts',
-    wallets_transfer: '/wallets/cashier/transfer',
-
     // Traders Hub
     traders_hub_v2: '/traders-hub',
     compare_accounts: '/traders-hub/compare-accounts',

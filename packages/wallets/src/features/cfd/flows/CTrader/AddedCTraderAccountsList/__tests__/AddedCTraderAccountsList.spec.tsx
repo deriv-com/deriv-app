@@ -105,7 +105,7 @@ describe('AddedCTraderAccountsList', () => {
 
         const transferButton = screen.getAllByText('Transfer');
         fireEvent.click(transferButton[0]);
-        expect(history.location.pathname).toEqual('/wallets/cashier/transfer');
+        expect(history.location.pathname).toEqual('/appstore/traders-hub/cashier/account-transfer');
     });
 
     it('opens the MT5TradeModal when Open button is clicked', () => {

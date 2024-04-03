@@ -12,7 +12,7 @@ const DepositCryptoTryFiatOnRamp = () => {
                 Looking for a way to buy cryptocurrencies?&nbsp;
                 <a
                     className='link wallets-deposit-crypto-try-fiat-onramp__link'
-                    onClick={() => history.push('/wallets/cashier/on-ramp')}
+                    onClick={() => history.push('/appstore/traders-hub/cashier/on-ramp')}
                 >
                     Try Fiat onramp
                 </a>

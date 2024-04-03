@@ -22,7 +22,7 @@ const FiatOnRamp = () => {
                         <WalletButton
                             color='white'
                             icon={<BackArrow />}
-                            onClick={() => history.push('/wallets/cashier/deposit')}
+                            onClick={() => history.push('/appstore/traders-hub/cashier/deposit')}
                         >
                             Back
                         </WalletButton>

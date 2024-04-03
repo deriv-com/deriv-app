@@ -10,17 +10,17 @@ import { WalletWithdrawal } from '../../flows/WalletWithdrawal';
 const WalletCashierContent = () => {
     const history = useHistory();
 
-    const isDeposit = useRouteMatch('/wallets/cashier/deposit');
-    const isFiatOnRamp = useRouteMatch('/wallets/cashier/on-ramp');
-    const isResetBalance = useRouteMatch('/wallets/cashier/reset-balance');
-    const isTransfer = useRouteMatch('/wallets/cashier/transfer');
-    const isTransactions = useRouteMatch('/wallets/cashier/transactions');
-    const isWithdraw = useRouteMatch('/wallets/cashier/withdraw');
+    const isDeposit = useRouteMatch('/appstore/traders-hub/cashier/deposit');
+    const isFiatOnRamp = useRouteMatch('/appstore/traders-hub/cashier/on-ramp');
+    const isResetBalance = useRouteMatch('/appstore/traders-hub/cashier/reset-balance');
+    const isTransfer = useRouteMatch('/appstore/traders-hub/cashier/account-transfer');
+    const isTransactions = useRouteMatch('/appstore/traders-hub/cashier/transactions');
+    const isWithdraw = useRouteMatch('/appstore/traders-hub/cashier/withdraw');
 
     useEffect(() => {
         // redirect to deposit page if no other page is matched
         if (!isTransfer && !isDeposit && !isTransactions && !isWithdraw && !isResetBalance && !isFiatOnRamp) {
-            history.push('/wallets/cashier/deposit');
+            history.push('/appstore/traders-hub/cashier/deposit');
         }
     }, [isTransfer, isDeposit, isTransactions, isWithdraw, isResetBalance, isFiatOnRamp, history]);
 

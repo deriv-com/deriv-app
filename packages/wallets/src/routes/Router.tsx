@@ -6,25 +6,25 @@ import { CashierModalRoute } from './CashierModalRoute';
 import { CompareAccountsRoute } from './CompareAccountsRoute';
 import { WalletsListingRoute } from './WalletsListingRoute';
 
-const walletsPrefix = '/wallets';
+const walletsPrefix = '/appstore/traders-hub';
 
 type TWalletsRoute =
     | ''
     | '/cashier'
+    | '/cashier/account-transfer'
     | '/cashier/deposit'
     | '/cashier/on-ramp'
     | '/cashier/reset-balance'
     | '/cashier/transactions'
-    | '/cashier/transfer'
     | '/cashier/withdraw'
-    | '/compare-accounts';
+    | '/cfd-compare-acccounts';
 
 export type TRoute = '/endpoint' | `?${string}` | `${typeof walletsPrefix}${TWalletsRoute}`;
 
 // wallets routes which have their states
 interface WalletsRouteState {
+    '/cashier/account-transfer': { toAccountLoginId: string };
     '/cashier/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
-    '/cashier/transfer': { toAccountLoginId: string };
 }
 
 type TStatefulRoute = TRoute & `${typeof walletsPrefix}${keyof WalletsRouteState}`;
@@ -62,7 +62,7 @@ const Router: React.FC = () => {
 
     return (
         <Switch>
-            <Route component={CompareAccountsRoute} path={`${walletsPrefix}/compare-accounts`} />
+            <Route component={CompareAccountsRoute} path={`${walletsPrefix}/cfd-compare-acccounts`} />
             <Route component={CashierModalRoute} path={`${walletsPrefix}/cashier`} />
             <Route component={WalletsListingRoute} path={walletsPrefix} />
         </Switch>

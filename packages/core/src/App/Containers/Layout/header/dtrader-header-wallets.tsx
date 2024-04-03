@@ -52,7 +52,7 @@ const MenuLeft = observer(() => {
                         <DerivBrandLogo />
                     </StaticUrl>
                 </div>
-                <WalletsLogo className='header__menu-left-logo' onClick={() => history.push(routes.wallets)} />
+                <WalletsLogo className='header__menu-left-logo' onClick={() => history.push(routes.traders_hub)} />
                 <PlatformSwitcher
                     app_routing_history={app_routing_history}
                     platform_config={filterPlatformsForClients(platform_config)}

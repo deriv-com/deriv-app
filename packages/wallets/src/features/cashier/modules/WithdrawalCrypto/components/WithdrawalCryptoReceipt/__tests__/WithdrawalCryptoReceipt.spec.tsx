@@ -63,6 +63,6 @@ describe('WithdrawalCryptoReceipt', () => {
 
         fireEvent.click(screen.getByText('View transactions'));
 
-        expect(mockPush).toHaveBeenCalledWith('/wallets/cashier/transactions');
+        expect(mockPush).toHaveBeenCalledWith('/appstore/traders-hub/cashier/transactions');
     });
 });

@@ -53,7 +53,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <WalletButton
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
-                            history.push(`/wallets/cashier/transfer`, { toAccountLoginId: account.loginid });
+                            history.push(`/appstore/traders-hub/cashier/account-transfer`, {
+                                toAccountLoginId: account.loginid,
+                            });
                         }}
                         variant='outlined'
                     >

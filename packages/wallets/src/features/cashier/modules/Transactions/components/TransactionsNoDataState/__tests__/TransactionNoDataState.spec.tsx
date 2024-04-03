@@ -30,7 +30,7 @@ describe('TransactionsNoDataState', () => {
 
         fireEvent.click(screen.getByText('Transfer funds'));
 
-        expect(pushMock).toHaveBeenCalledWith('/wallets/cashier/transfer');
+        expect(pushMock).toHaveBeenCalledWith('/appstore/traders-hub/cashier/account-transfer');
     });
 
     test('should navigate to deposit page on click of "Deposit funds" button', () => {
@@ -41,6 +41,6 @@ describe('TransactionsNoDataState', () => {
 
         fireEvent.click(screen.getByText('Deposit funds'));
 
-        expect(pushMock).toHaveBeenCalledWith('/wallets/cashier/deposit');
+        expect(pushMock).toHaveBeenCalledWith('/appstore/traders-hub/cashier/deposit');
     });
 });

@@ -23,7 +23,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
         },
         {
             icon: <IcCashierTransfer />,
-            name: 'transfer',
+            name: 'account-transfer',
             text: 'Transfer',
         },
         {
@@ -36,7 +36,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
     // Filter out the "Withdraw" button when is_demo is true
     const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
 
-    const orderForDemo = ['reset-balance', 'transfer', 'transactions'];
+    const orderForDemo = ['reset-balance', 'account-transfer', 'transactions'];
 
     const sortedButtons = isDemo
         ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))
@@ -66,7 +66,7 @@ const WalletListCardActions = () => {
                                 icon={button.icon}
                                 isRound
                                 onClick={() => {
-                                    history.push(`/wallets/cashier/${button.name}`);
+                                    history.push(`/appstore/traders-hub/cashier/${button.name}`);
                                 }}
                                 size='lg'
                             />
@@ -85,7 +85,7 @@ const WalletListCardActions = () => {
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {
-                        history.push(`/wallets/cashier/${button.name}`);
+                        history.push(`/appstore/traders-hub/cashier/${button.name}`);
                     }}
                     rounded='md'
                     variant='outlined'

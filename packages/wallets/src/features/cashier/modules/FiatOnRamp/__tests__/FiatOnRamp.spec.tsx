@@ -31,14 +31,14 @@ describe('FiatOnRamp', () => {
         expect(screen.getByText('Fiat OnRamp Provider Card')).toBeInTheDocument();
     });
 
-    it('should navigate to /wallets/cashier/deposit on Back button click', () => {
+    it('should navigate to /appstore/traders-hub/cashier/deposit on Back button click', () => {
         const pushMock = jest.fn();
         mockUseHistory.mockReturnValue({ push: pushMock });
 
         render(<FiatOnRamp />);
 
         fireEvent.click(screen.getByText('Back'));
-        expect(pushMock).toHaveBeenCalledWith('/wallets/cashier/deposit');
+        expect(pushMock).toHaveBeenCalledWith('/appstore/traders-hub/cashier/deposit');
     });
 
     it('should render FiatOnRampDisclaimer on click of the button in the provider card', () => {

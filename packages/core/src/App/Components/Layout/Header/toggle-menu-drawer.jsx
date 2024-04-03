@@ -100,12 +100,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             }
             let primary_routes = [];
 
-            const location = window.location.pathname;
-
-            if (location === routes.traders_hub || is_trading_hub_category) {
-                primary_routes = [routes.account, routes.cashier];
-            } else if (location === routes.wallets || is_next_wallet_enabled) {
+            if (is_next_wallet_enabled) {
                 primary_routes = [routes.reports, routes.account];
+            } else if (is_trading_hub_category) {
+                primary_routes = [routes.account, routes.cashier];
             } else {
                 primary_routes = [routes.reports, routes.account, routes.cashier];
             }
@@ -310,7 +308,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {is_logged_in && (
                                     <MobileDrawer.Item>
                                         <MenuLink
-                                            link_to={is_next_wallet_enabled ? routes.wallets : routes.traders_hub}
+                                            link_to={routes.traders_hub}
                                             icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}

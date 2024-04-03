@@ -227,8 +227,8 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                         landingCompanyName={account.landing_company_name}
                         onClick={() =>
                             account.is_virtual
-                                ? history.push('/wallets/cashier/reset-balance')
-                                : history.push('/wallets/cashier/deposit')
+                                ? history.push('/appstore/traders-hub/cashier/reset-balance')
+                                : history.push('/appstore/traders-hub/cashier/deposit')
                         }
                     />
                 ))}

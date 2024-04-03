@@ -28,7 +28,7 @@ const CTraderSuccessModalButtons = ({ hide, isDemo }: TCTraderSuccessModalButton
             <WalletButton
                 onClick={() => {
                     hide();
-                    history.push('/wallets/cashier/transfer');
+                    history.push('/appstore/traders-hub/cashier/account-transfer');
                 }}
                 size='lg'
             >

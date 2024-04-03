@@ -100,6 +100,8 @@ const Cashier_V2 = React.lazy(() =>
 );
 
 const getModules = () => {
+    const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
+
     const modules = [
         {
             path: routes.bot,
@@ -282,15 +284,9 @@ const getModules = () => {
         },
         {
             path: routes.traders_hub,
-            component: AppStore,
+            component: is_next_wallet ? Wallets : AppStore,
             is_authenticated: true,
             getTitle: () => localize("Trader's Hub"),
-        },
-        {
-            path: routes.wallets,
-            component: Wallets,
-            is_authenticated: true,
-            getTitle: () => localize('Wallets'),
         },
         {
             path: routes.cashier_p2p_v2,

@@ -108,7 +108,7 @@ const TradersHubHeaderWallets = observer(() => {
                     </div>
                     <WalletsLogo
                         className='traders-hub-header-wallets__logo'
-                        onClick={() => history.push(routes.wallets)}
+                        onClick={() => history.push(routes.traders_hub)}
                     />
                 </DesktopWrapper>
                 <MenuLinks {...{ is_traders_hub_routes: true }} />

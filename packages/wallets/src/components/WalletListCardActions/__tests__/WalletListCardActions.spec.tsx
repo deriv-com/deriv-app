@@ -93,7 +93,7 @@ describe('WalletListCardActions', () => {
 
         render(<WalletListCardActions />, { wrapper });
         screen.getByRole('button', { name: 'deposit' }).click();
-        expect(history.location.pathname).toBe('/wallets/cashier/deposit');
+        expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/deposit');
     });
 
     it('should render the actions for mobile', () => {
@@ -112,31 +112,31 @@ describe('WalletListCardActions', () => {
             wrapper,
         });
         screen.getByRole('button', { name: 'deposit' }).click();
-        expect(history.location.pathname).toBe('/wallets/cashier/deposit');
+        expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/deposit');
     });
 
     it('should redirect to cashier page when clicking on deposit', () => {
         render(<WalletListCardActions />, { wrapper });
         screen.getByRole('button', { name: 'deposit' }).click();
-        expect(history.location.pathname).toBe('/wallets/cashier/deposit');
+        expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/deposit');
     });
 
     it('should redirect to cashier page when clicking on withdraw', () => {
         render(<WalletListCardActions />, { wrapper });
         screen.getByRole('button', { name: 'withdraw' }).click();
-        expect(history.location.pathname).toBe('/wallets/cashier/withdraw');
+        expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/withdraw');
     });
 
     it('should redirect to cashier page when clicking on transfer', () => {
         render(<WalletListCardActions />, { wrapper });
         screen.getByRole('button', { name: 'transfer' }).click();
-        expect(history.location.pathname).toBe('/wallets/cashier/transfer');
+        expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/account-transfer');
     });
 
     it('should redirect to cashier page when clicking on transactions', () => {
         render(<WalletListCardActions />, { wrapper });
         screen.getByRole('button', { name: 'transactions' }).click();
-        expect(history.location.pathname).toBe('/wallets/cashier/transactions');
+        expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/transactions');
     });
 
     it('should redirect to cashier page when clicking on reset balance', () => {
@@ -153,6 +153,6 @@ describe('WalletListCardActions', () => {
 
         render(<WalletListCardActions />, { wrapper });
         screen.getByRole('button', { name: 'reset-balance' }).click();
-        expect(history.location.pathname).toBe('/wallets/cashier/reset-balance');
+        expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/reset-balance');
     });
 });

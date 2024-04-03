@@ -50,7 +50,9 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
 
     const { location } = useHistory();
     const toAccountLoginId =
-        location.pathname === '/wallets/cashier/transfer' ? location.state?.toAccountLoginId : undefined;
+        location.pathname === '/appstore/traders-hub/cashier/account-transfer'
+            ? location.state?.toAccountLoginId
+            : undefined;
 
     useEffect(() => {
         const toAccount: TToAccount = Object.values(accounts)

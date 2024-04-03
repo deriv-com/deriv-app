@@ -95,7 +95,7 @@ const Redirect = observer(() => {
             if (redirect_to) {
                 let pathname = '';
                 let hash = '';
-                const main_screen_route = is_next_wallet ? routes.wallets : routes.traders_hub;
+                const main_screen_route = routes.traders_hub;
                 switch (redirect_to) {
                     case '1':
                         pathname = routes.traders_hub;
@@ -149,7 +149,7 @@ const Redirect = observer(() => {
                   2. pass loginid as a query param so that the withdrawal component knows what account is being withdrawn from
                 */
                 history.push(
-                    `${routes.wallets_withdrawal}?verification=${verification_code.payment_withdraw}${
+                    `${routes.cashier_withdrawal}?verification=${verification_code.payment_withdraw}${
                         client.loginid ? `&loginid=${client.loginid}` : ''
                     }`
                 );
@@ -201,7 +201,7 @@ const Redirect = observer(() => {
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
             if (is_next_wallet) {
                 history.push({
-                    pathname: routes.wallets,
+                    pathname: routes.traders_hub,
                     search: url_query_string,
                 });
             } else {

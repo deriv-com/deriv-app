@@ -24,10 +24,7 @@ const WalletsCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, rend
     }, [isOpen]);
 
     return (
-        <div
-            className={`wallets-card wallets-card ${isDemo ? 'wallets-card wallets-card--virtual' : ''}`}
-            ref={walletsCardRef}
-        >
+        <div className={`wallets-card ${isDemo ? 'wallets-card--virtual' : ''}`} ref={walletsCardRef}>
             <div
                 className={`wallets-card__header wallets-card__header ${
                     isDemo ? 'wallets-card__header wallets-card__header--virtual' : ''

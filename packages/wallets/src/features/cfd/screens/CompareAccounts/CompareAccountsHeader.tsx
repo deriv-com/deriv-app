@@ -26,7 +26,7 @@ const CompareAccountsHeader = ({ isDemo, isEuRegion }: TCompareAccountsHeader) =
             <CloseIcon
                 className='wallets-compare-accounts-header__close-icon'
                 onClick={() => {
-                    history.push('/wallets');
+                    history.push('/appstore/traders-hub');
                 }}
             />
         </div>

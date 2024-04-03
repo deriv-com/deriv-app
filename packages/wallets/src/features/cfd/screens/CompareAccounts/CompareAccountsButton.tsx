@@ -114,7 +114,7 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
     const onClickAdd = () => {
         if (isCrypto && USDSVGWallet) {
             switchWalletAccount(USDSVGWallet.loginid).then(() => {
-                history.push('/wallets');
+                history.push('/appstore/traders-hub');
             });
         }
         if (platform === CFD_PLATFORMS.MT5) {

@@ -37,7 +37,7 @@ const DerivAppsTradingAccount: React.FC = () => {
             <WalletButton
                 color='white'
                 onClick={() => {
-                    history.push('/wallets/cashier/transfer', {
+                    history.push('/appstore/traders-hub/cashier/account-transfer', {
                         toAccountLoginId: activeLinkedToTradingAccount?.loginid,
                     });
                 }}

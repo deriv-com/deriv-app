@@ -126,7 +126,7 @@ describe('MT5AccountAdded', () => {
         expect(transferFundsButton).toBeInTheDocument();
         expect(transferFundsButton).toBeEnabled();
         transferFundsButton.click();
-        expect(history.location.pathname).toEqual('/wallets/cashier/transfer');
+        expect(history.location.pathname).toEqual('/appstore/traders-hub/cashier/account-transfer');
     });
 
     it('should render the onfido verification pending message if document is not verified', () => {

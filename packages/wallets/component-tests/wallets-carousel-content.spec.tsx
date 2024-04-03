@@ -57,7 +57,7 @@ test.describe('Wallets - Mobile carousel', () => {
     });
 
     test.skip('renders cards for all wallets', async ({ baseURL }) => {
-        await mobilePage.goto(`${baseURL}/wallets`);
+        await mobilePage.goto(`${baseURL}/appstore/traders-hub`);
 
         // Ensure the carousel is loaded and visible
         await mobilePage.waitForSelector(CAROUSEL_SELECTOR);
@@ -90,7 +90,7 @@ test.describe('Wallets - Mobile carousel', () => {
     });
 
     test.skip('renders progress bar with active item and updates it when swiping', async ({ baseURL }) => {
-        await mobilePage.goto(`${baseURL}/wallets`);
+        await mobilePage.goto(`${baseURL}/appstore/traders-hub`);
         const activeProgressBarItem = mobilePage.locator('.wallets-progress-bar div:nth-child(1)');
         const progressBarItemClass = await activeProgressBarItem.getAttribute('class');
 
@@ -117,7 +117,7 @@ test.describe('Wallets - Mobile carousel', () => {
 
     test.skip('switches account when clicking on progress bar', async ({ baseURL }) => {
         // given
-        await mobilePage.goto(`${baseURL}/wallets`);
+        await mobilePage.goto(`${baseURL}/appstore/traders-hub`);
 
         const progressBarItem = mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
 

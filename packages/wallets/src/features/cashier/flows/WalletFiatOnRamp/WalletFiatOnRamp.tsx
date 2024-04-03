@@ -12,7 +12,7 @@ const WalletFiatOnRamp = () => {
 
     useEffect(() => {
         if (!isCrypto) {
-            history.push('/wallets/cashier/deposit');
+            history.push('/appstore/traders-hub/cashier/deposit');
         }
     }, [history, isCrypto]);
 

@@ -31,7 +31,9 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                 <WalletButton color='black' onClick={() => modal.hide()} variant='outlined'>
                     Maybe later
                 </WalletButton>
-                <WalletButton onClick={() => history.push('/wallets/cashier/deposit')}>Deposit now</WalletButton>
+                <WalletButton onClick={() => history.push('/appstore/traders-hub/cashier/deposit')}>
+                    Deposit now
+                </WalletButton>
             </div>
         ),
         [history] // eslint-disable-line react-hooks/exhaustive-deps
@@ -57,7 +59,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                         displayBalance={data?.display_balance ?? `0.00 ${data?.currency}`}
                         landingCompany={data?.landing_company_shortcode}
                         onPrimaryButtonClick={() => {
-                            history.push('/wallets/cashier/deposit');
+                            history.push('/appstore/traders-hub/cashier/deposit');
                             modal.hide();
                         }}
                         onSecondaryButtonClick={() => modal.hide()}

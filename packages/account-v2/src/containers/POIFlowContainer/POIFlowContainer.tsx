@@ -2,7 +2,7 @@ import React from 'react';
 import { Loader } from '@deriv-com/ui';
 import { POI_SERVICE } from '../../constants/constants';
 import { usePOIInfo } from '../../hooks';
-import { IDVService, ManualUpload, OnfidoContainer } from '../../modules';
+import { IDVService, ManualUpload, OnfidoService } from '../../modules';
 
 type TPOIFlowContainerProps = {
     countryCode: string;
@@ -22,9 +22,11 @@ export const POIFlowContainer = ({ countryCode, onCancel, onComplete }: TPOIFlow
         identity: { available_services: availableServices },
     } = kycAuthStatus;
 
+    console.log('POIFlowContainer: ', countryCode, availableServices);
+
     switch (availableServices?.[0]) {
         case POI_SERVICE.onfido: {
-            return <OnfidoContainer countryCode={countryCode} onOnfidoSubmit={onComplete} />;
+            return <OnfidoService countryCode={countryCode} handleComplete={onComplete} />;
         }
         case POI_SERVICE.idv: {
             return <IDVService countryCode={countryCode} handleComplete={onComplete} onCancel={onCancel} />;

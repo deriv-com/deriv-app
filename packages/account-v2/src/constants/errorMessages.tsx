@@ -18,6 +18,8 @@ export const API_ERROR_CODES: TErrorConfig = {
 };
 
 const documentRejectedMessage = 'We were unable to verify the identity document with the details provided.';
+const dataComparisonMessage = 'Your document type is not supported.';
+const dataValidationMessage = 'Some details on your document appear to be invalid, missing, or unclear.';
 
 export const IDV_ERROR_CODES: TErrorConfig = {
     deceased: {
@@ -101,8 +103,64 @@ export const ONFIDO_ERROR_CODES: TErrorConfig = {
         code: 'CompromisedDocument',
         message: 'Your document failed our verification checks.',
     },
+    dataComparisonDateOfBirth: {
+        code: 'DataComparisonDateOfBirth',
+        message: 'The date of birth on your document doesn’t match your profile.',
+    },
+    dataComparisonDateOfExpiry: {
+        code: 'DataComparisonDateOfExpiry',
+        message: 'Your document has expired.',
+    },
+    dataComparisonDocumentNumbers: {
+        code: 'DataComparisonDocumentNumbers',
+        message: dataComparisonMessage,
+    },
+    dataComparisonDocumentType: {
+        code: 'DataComparisonDocumentType',
+        message: dataComparisonMessage,
+    },
+    dataComparisonIssuingCountry: {
+        code: 'DataComparisonIssuingCountry',
+        message: 'The name on your document doesn’t match your profile.',
+    },
+    dataValidationDateOfBirth: {
+        code: 'DataValidationDateOfBirth',
+        message: dataValidationMessage,
+    },
+    dataValidationDocumentExpiration: {
+        code: 'DataValidationDocumentExpiration',
+        message: 'Your document has expired.',
+    },
+    dataValidationDocumentNumbers: {
+        code: 'DataValidationDocumentNumbers',
+        message: dataValidationMessage,
+    },
+    dataValidationExpiryDate: {
+        code: 'DataValidationExpiryDate',
+        message: dataValidationMessage,
+    },
+    dataValidationMrz: {
+        code: 'DataValidationMrz',
+        message: dataValidationMessage,
+    },
+    dataValidationNoDocumentNumbers: {
+        code: 'DataValidationNoDocumentNumbers',
+        message: 'The serial number of your document couldn’t be verified.',
+    },
+    duplicatedDocument: {
+        code: 'DuplicatedDocument',
+        message: 'Your verification documents were already used for another account.',
+    },
+    expired: {
+        code: 'expired',
+        message: 'Your identity document has expired.',
+    },
     generic: {
         code: null,
         message: 'Sorry, an internal error occurred. Click Save to try again.',
+    },
+    imageIntegrityColourPicture: {
+        code: 'ImageIntegrityColourPicture',
+        message: 'Your document appears to be in black and white. Please upload a colour photo of your document.',
     },
 };

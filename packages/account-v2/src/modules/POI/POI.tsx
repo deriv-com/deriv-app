@@ -3,6 +3,7 @@ import { useKycAuthStatus } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { AUTH_STATUS_CODES, POI_SUBMISSION_STATUS } from '../../constants';
 import { POICountrySelector, POIFlowContainer, VerificationStatus } from '../../containers';
+import { TPOIService } from '../../types';
 import { checkIDVErrorStatus, shouldSkipCountrySelector, TPOIActions, TPOISubmissionStatus } from '../../utils';
 
 type TPOIInitialState = {
@@ -18,6 +19,8 @@ export const ProofOfIdentity = () => {
     const service = kycAuthStatus?.identity.service;
     const isPOARequired = kycAuthStatus?.address.status === AUTH_STATUS_CODES.NONE;
     const rejectedReasons = kycAuthStatus?.identity.last_rejected?.rejected_reasons;
+
+    console.log('Service: ', service, rejectedReasons);
 
     const initialState: TPOIInitialState = {
         selectedCountry: '',
@@ -45,10 +48,14 @@ export const ProofOfIdentity = () => {
             dispatch({ payload: POI_SUBMISSION_STATUS.complete, type: 'setSubmissionStatus' });
         }
 
-        if (!isLoading && poiStatus === AUTH_STATUS_CODES.REJECTED && shouldSkipCountrySelector(rejectedReasons)) {
+        if (
+            !isLoading &&
+            poiStatus === AUTH_STATUS_CODES.REJECTED &&
+            shouldSkipCountrySelector(service as TPOIService, rejectedReasons)
+        ) {
             dispatch({ payload: POI_SUBMISSION_STATUS.submitting, type: 'setSubmissionStatus' });
         }
-    }, [poiStatus, isLoading, rejectedReasons]);
+    }, [poiStatus, isLoading, rejectedReasons, service]);
 
     if (isLoading) {
         return <Loader />;

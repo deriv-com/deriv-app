@@ -7,8 +7,7 @@ import {
     POI_SERVICE,
     POI_SUBMISSION_STATUS,
 } from '../constants';
-
-type TPOIStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+import { TPOIService, TPOIStatus } from '../types';
 
 export type TPOISubmissionStatus = typeof POI_SUBMISSION_STATUS[keyof typeof POI_SUBMISSION_STATUS];
 
@@ -28,7 +27,7 @@ export const setErrorMessage = <T extends TSocketError<TSocketEndpointNames>['er
     }
 };
 
-export const translateErrorCode = (errorCode: string | null, service: typeof POI_SERVICE[keyof typeof POI_SERVICE]) => {
+export const translateErrorCode = (errorCode: string | null, service: TPOIService) => {
     if (!errorCode) {
         return '';
     }
@@ -67,14 +66,19 @@ export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig) =
     return errors[0];
 };
 
-export const shouldSkipCountrySelector = (errors?: string[]) => {
-    if (!errors || !errors?.length) {
-        return false;
+export const shouldSkipCountrySelector = (service: TPOIService, errors?: string[]) => {
+    if (service === POI_SERVICE.idv) {
+        if (!errors || !errors?.length) {
+            return false;
+        }
+        const errorStatus = checkIDVErrorStatus({ errors });
+        return [
+            IDV_ERROR_CODES.dobMismatch.code,
+            IDV_ERROR_CODES.nameMismatch.code,
+            IDV_ERROR_CODES.nameDobMismatch.code,
+        ].includes(errorStatus);
+    } else if (service === POI_SERVICE.onfido) {
+        return true;
     }
-    const errorStatus = checkIDVErrorStatus({ errors });
-    return [
-        IDV_ERROR_CODES.dobMismatch.code,
-        IDV_ERROR_CODES.nameMismatch.code,
-        IDV_ERROR_CODES.nameDobMismatch.code,
-    ].includes(errorStatus);
+    return false;
 };

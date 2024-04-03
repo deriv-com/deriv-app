@@ -4,19 +4,16 @@ import { BASE_URL, BUY_SELL_URL } from '@/constants';
 import { Loader } from '@deriv-com/ui';
 import { routes } from './routes-config';
 
-const prefix = '/cashier/p2p-v2';
-
-type TRoutes = `${typeof prefix}/cashier/p2p-v2` | `${typeof prefix}`;
 type TState = { from: string };
 
 declare module 'react-router-dom' {
     export function useHistory(): {
         goBack: () => void;
-        push: (path: TRoutes | string, state?: TState) => void;
+        push: (path: string, state?: TState) => void;
         replace(arg0: { pathname: string; search: string }): void;
     };
 
-    export function useRouteMatch(path: TRoutes): boolean;
+    export function useRouteMatch(path: string): boolean;
 }
 
 type TRoutesWithSubRoutes = {

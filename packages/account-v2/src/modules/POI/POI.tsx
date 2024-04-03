@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer } from 'react';
 import { useKycAuthStatus } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import { AUTH_STATUS_CODES, IDV_ERROR_CODES, POI_SUBMISSION_STATUS } from '../../constants';
+import { AUTH_STATUS_CODES, POI_SUBMISSION_STATUS } from '../../constants';
 import { POICountrySelector, POIFlowContainer, VerificationStatus } from '../../containers';
-import { shouldSkipCountrySelector, TPOIActions, TPOISubmissionStatus } from '../../utils';
+import { checkIDVErrorStatus, shouldSkipCountrySelector, TPOIActions, TPOISubmissionStatus } from '../../utils';
 
 type TPOIInitialState = {
     selectedCountry: string;
@@ -14,6 +14,7 @@ export const ProofOfIdentity = () => {
     const { isLoading, kyc_auth_status: kycAuthStatus } = useKycAuthStatus();
 
     const poiStatus = kycAuthStatus?.identity.status;
+
     const service = kycAuthStatus?.identity.service;
     const isPOARequired = kycAuthStatus?.address.status === AUTH_STATUS_CODES.NONE;
     const rejectedReasons = kycAuthStatus?.identity.last_rejected?.rejected_reasons;
@@ -67,7 +68,7 @@ export const ProofOfIdentity = () => {
                 />
             );
         default: {
-            const errorStatus = poiStatus === AUTH_STATUS_CODES.EXPIRED ? IDV_ERROR_CODES.expired.code : null;
+            const errorStatus = checkIDVErrorStatus({ status: poiStatus });
             return (
                 <POICountrySelector
                     errorStatus={errorStatus}

@@ -93,7 +93,7 @@ describe('POI', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render CountrySelector when component is mounted', async () => {
+    it('should render IDV when the country supporting IDV is selected', async () => {
         (useKycAuthStatus as jest.Mock).mockReturnValue({
             isLoading: false,
             kyc_auth_status: {
@@ -124,5 +124,26 @@ describe('POI', () => {
         });
 
         expect(screen.getByText('Identity verification')).toBeInTheDocument();
+    });
+
+    it('should render CountrySelector with an error messag when status is rejected with Error code is expired', () => {
+        (useKycAuthStatus as jest.Mock).mockReturnValueOnce({
+            isLoading: false,
+            kyc_auth_status: {
+                address: {
+                    status: 'none',
+                },
+                identity: {
+                    service: 'idv',
+                    status: 'expired',
+                },
+            },
+        });
+        (useResidenceList as jest.Mock).mockReturnValueOnce({ data: [{ text: 'Country 1', value: 'country1' }] });
+
+        render(<ProofOfIdentity />);
+
+        expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
+        expect(screen.getByText('Your identity document has expired.')).toBeInTheDocument();
     });
 });

@@ -45,7 +45,7 @@ export const IDVService = ({ countryCode, handleComplete, onCancel }: TIDVServic
     }
 
     const supportedDocuments = kycAuthStatus?.identity?.supported_documents?.idv;
-    const errorStatus = checkIDVErrorStatus(kycAuthStatus?.identity?.last_rejected?.rejected_reasons);
+    const errorStatus = checkIDVErrorStatus({ errors: kycAuthStatus?.identity?.last_rejected?.rejected_reasons });
 
     const personalDetailsValidationSchema = getNameDOBValidationSchema();
 

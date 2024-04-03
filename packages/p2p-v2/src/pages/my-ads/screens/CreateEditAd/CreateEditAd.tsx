@@ -55,7 +55,7 @@ const CreateEditAd = () => {
             max_order_amount: Number(getValues('max-order')),
             min_order_amount: Number(getValues('min-order')),
             rate: Number(getValues('rate-value')),
-            rate_type: 'float',
+            rate_type: rateType as 'fixed' | 'float',
             type: getValues('ad-type') as 'buy' | 'sell',
         };
 

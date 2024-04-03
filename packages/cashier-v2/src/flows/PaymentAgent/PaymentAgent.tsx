@@ -3,7 +3,7 @@ import { PageContainer } from '../../components';
 import { PaymentAgentWithdrawalModule, WithdrawalVerificationModule } from '../../lib';
 
 const PaymentAgent = () => {
-    const [verificationCode, setVerificationCode] = useState('1');
+    const [verificationCode, setVerificationCode] = useState('');
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);

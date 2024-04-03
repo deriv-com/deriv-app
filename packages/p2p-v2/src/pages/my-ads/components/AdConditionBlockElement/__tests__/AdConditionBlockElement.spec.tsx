@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import AdConditionBlockElement from '../AdConditionBlockElement';
 
 jest.mock('@deriv-com/ui', () => ({
@@ -25,7 +26,7 @@ describe('AdConditionBlockElement', () => {
     it('should handle onClick for element', () => {
         render(<AdConditionBlockElement {...mockProps} />);
         const element = screen.getByText('title');
-        element.click();
+        userEvent.click(element);
         expect(mockProps.onClick).toHaveBeenCalledWith(1);
     });
     it('should render the component as selected with text color white', () => {

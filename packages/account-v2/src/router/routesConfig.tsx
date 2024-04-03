@@ -1,7 +1,7 @@
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { POICountrySelector } from '../containers/POICountrySelector';
 import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
-import { AccountClosure, ConnectedApps } from '../pages';
+import { AccountClosure, ConnectedApps, TwoFactorAuthentication } from '../pages';
 import { LoginHistory } from '../pages/LoginHistory';
 import { DummyRoute } from './components/DummyRoute';
 
@@ -77,7 +77,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.ConnectedApps,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: TwoFactorAuthentication,
         routeName: 'Two-factor authentication',
         routePath: ACCOUNT_V2_ROUTES.TwoFactorAuthentication,
     },

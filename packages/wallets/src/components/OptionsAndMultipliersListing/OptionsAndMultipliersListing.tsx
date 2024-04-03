@@ -94,11 +94,7 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
     }, [onOptionsAndMultipliersLoaded]);
 
     return (
-        <div
-            className={classNames('wallets-options-and-multipliers-listing', {
-                'wallets-options-and-multipliers-listing--border': activeWalletAccount?.is_crypto,
-            })}
-        >
+        <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
                 <div className='wallets-options-and-multipliers-listing__header-title'>
                     {!isMobile && (

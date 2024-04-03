@@ -22,31 +22,43 @@ export const LoginHistoryTableCard = ({ loginHistory }: TLoginHistoryProps) => {
                         <div className='justify-center flex flex-col items-start gap-8 row-span-3'>
                             {' '}
                             <div className='grid grid-row-2 gap-4'>
-                                <Text align='left' color='#333' fontStyle='IBM Plex Sans' size='lg' weight='bold'>
+                                <Text align='left' color='general' fontStyle='IBM Plex Sans' size='lg' weight='bold'>
                                     {' '}
                                     Date:{' '}
                                 </Text>{' '}
-                                <Text align='left' color='#333' fontStyle='IBM Plex Sans' size='lg' weight='normal'>
+                                <Text align='left' color='general' fontStyle='IBM Plex Sans' size='lg' weight='normal'>
                                     {' '}
                                     {item.date}{' '}
                                 </Text>
                             </div>
                             <div className='grid grid-row-2 gap-4'>
-                                <Text align='left' color='#333' fontStyle='IBM Plex Sans' size='lg' weight='bold'>
+                                <Text align='left' color='general' fontStyle='IBM Plex Sans' size='lg' weight='bold'>
                                     {' '}
                                     Browser:{' '}
                                 </Text>{' '}
-                                <Text align='center' color='#333' fontStyle='IBM Plex Sans' size='lg' weight='normal'>
+                                <Text
+                                    align='center'
+                                    color='general'
+                                    fontStyle='IBM Plex Sans'
+                                    size='lg'
+                                    weight='normal'
+                                >
                                     {' '}
                                     {item.browser}{' '}
                                 </Text>
                             </div>
                             <div className='grid grid-row-2 gap-4'>
-                                <Text align='left' color='#333' fontStyle='IBM Plex Sans' size='lg' weight='bold'>
+                                <Text align='left' color='general' fontStyle='IBM Plex Sans' size='lg' weight='bold'>
                                     {' '}
                                     IP:{' '}
                                 </Text>{' '}
-                                <Text align='center' color='#333' fontStyle='IBM Plex Sans' size='lg' weight='normal'>
+                                <Text
+                                    align='center'
+                                    color='general'
+                                    fontStyle='IBM Plex Sans'
+                                    size='lg'
+                                    weight='normal'
+                                >
                                     {' '}
                                     {item.ip}{' '}
                                 </Text>
@@ -55,11 +67,11 @@ export const LoginHistoryTableCard = ({ loginHistory }: TLoginHistoryProps) => {
                         {/* Browser and Action */}{' '}
                         <div className=' justify-center items-center col-span-1 flex flex-col items-centre gap-4 '>
                             {' '}
-                            <Text align='left' color='#333' fontStyle='IBM Plex Sans' size='lg' weight='bold'>
+                            <Text align='left' color='general' fontStyle='IBM Plex Sans' size='lg' weight='bold'>
                                 {' '}
                                 Action:{' '}
                             </Text>{' '}
-                            <Text align='center' color='#333' fontStyle='IBM Plex Sans' size='lg' weight='normal'>
+                            <Text align='center' color='general' fontStyle='IBM Plex Sans' size='lg' weight='normal'>
                                 {' '}
                                 {item.action}{' '}
                             </Text>

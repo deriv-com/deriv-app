@@ -29,7 +29,7 @@ const iconMapper: Record<string, IconTypes> = {
 
 type TProps = {
     currency: keyof typeof iconMapper;
-    size: 'lg' | 'md' | 'sm' | 'xl';
+    size: 'lg' | 'md' | 'sm' | 'xl' | 'xs';
 };
 
 const CurrencyIcon: React.FC<TProps> = ({ currency, size }) => {

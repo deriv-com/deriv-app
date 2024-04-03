@@ -6,6 +6,7 @@ import styles from './TransferAccountTile.module.scss';
 
 type TProps = {
     account: TTransferableAccounts[number];
+    iconSize?: React.ComponentProps<typeof CurrencyIcon>['size'] | React.ComponentProps<typeof TradingAppIcon>['size'];
     isActive?: boolean;
 };
 
@@ -16,22 +17,22 @@ const getAccountName = (account: TTransferableAccounts[number]) => {
     return account.currency;
 };
 
-const getIcon = (account: TTransferableAccounts[number]) => {
+const getIcon = (account: TTransferableAccounts[number], iconSize: NonNullable<TProps['iconSize']>) => {
     if (!account.currency) return null;
 
-    if (account.account_type === 'binary') return <CurrencyIcon currency={account.currency} size='sm' />;
+    if (account.account_type === 'binary') return <CurrencyIcon currency={account.currency} size={iconSize} />;
 
-    if (account.account_type === 'dxtrade') return <TradingAppIcon name='DERIVX' size='sm' />;
+    if (account.account_type === 'dxtrade') return <TradingAppIcon name='DERIVX' size={iconSize} />;
 
-    if (account.account_type === 'mt5') return <TradingAppIcon name='DMT5_DERIVED' size='sm' />;
+    if (account.account_type === 'mt5') return <TradingAppIcon name='DMT5_DERIVED' size={iconSize} />;
 };
 
-const TransferAccountTile: React.FC<TProps> = ({ account, isActive = false }) => {
+const TransferAccountTile: React.FC<TProps> = ({ account, iconSize = 'sm', isActive = false }) => {
     const { isMobile } = useDevice();
     return (
         <div className={styles.container}>
             <div className={styles.account}>
-                {getIcon(account)}
+                {getIcon(account, iconSize)}
                 <div className={styles['account-info']}>
                     <Text size='sm' weight={isActive ? 'bold' : 'normal'}>
                         {getAccountName(account)}

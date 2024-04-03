@@ -42,7 +42,7 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
                     <Text size='2xs'>{label}</Text>
                 </div>
                 <div className={styles['selection-content']}>
-                    {value && <TransferAccountTile account={value} />}
+                    {value && <TransferAccountTile account={value} iconSize='xs' />}
                     <LabelPairedChevronDownMdRegularIcon
                         className={clsx(styles.arrow, {
                             [styles['arrow--flip']]: isOpen,

@@ -18,7 +18,7 @@ const iconMapper: Record<string, IconTypes> = {
 
 type TProps = {
     name: keyof typeof iconMapper;
-    size: 'lg' | 'md' | 'sm' | 'xl';
+    size: 'lg' | 'md' | 'sm' | 'xl' | 'xs';
 };
 
 const TradingAppIcon: React.FC<TProps> = ({ name, size }) => {

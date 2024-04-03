@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useAuthorizedWebsiteStatus from './useAuthorizedWebsiteStatus';
+import useWebsiteStatus from './useWebsiteStatus';
 
 /** A custom hook that gets the client country. */
 const useClientCountry = () => {
-    const { data, ...rest } = useAuthorizedWebsiteStatus();
+    const { data, ...rest } = useWebsiteStatus();
 
     /** Modify the client country. */
     const modified_client_country = useMemo(() => {

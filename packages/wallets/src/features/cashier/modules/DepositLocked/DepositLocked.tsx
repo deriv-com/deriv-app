@@ -6,7 +6,7 @@ import {
     useAuthentication,
     useCashierValidation,
     useSettings,
-    useAuthorizedWebsiteStatus,
+    useWebsiteStatus,
 } from '@deriv/api-v2';
 import { WalletsActionScreen } from '../../../../components';
 import getDepositLockedDesc from './DepositLockedContent';
@@ -15,7 +15,7 @@ import './DepositLocked.scss';
 const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: settings } = useSettings();
-    const { data: websiteStatus } = useAuthorizedWebsiteStatus();
+    const { data: websiteStatus } = useWebsiteStatus();
     const { data: authentication } = useAuthentication();
     const { data: cashierValidation } = useCashierValidation();
     const { data: status } = useAccountStatus();

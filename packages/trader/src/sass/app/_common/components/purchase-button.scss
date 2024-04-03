@@ -134,7 +134,7 @@
         transform: rotate(45deg);
         height: 100%;
         background: var(--purchase-main-1);
-        left: 80px;
+        inset-inline-start: 80px;
         position: absolute;
         top: 0;
         bottom: 0;
@@ -154,6 +154,9 @@
         transform: none;
     }
     &__shadow-wrapper {
+        @include rtl {
+            direction: rtl;
+        }
         position: relative;
 
         .btn-purchase__box-shadow {

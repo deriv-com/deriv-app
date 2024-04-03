@@ -29,6 +29,7 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         landing_company_shortcode,
         should_allow_authentication,
         should_allow_poinc_authentication,
+        is_passkey_supported,
     } = client;
     const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
     const [available_routes, setAvailableRoutes] = React.useState(routes);
@@ -36,6 +37,7 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
     // subroutes of a route is structured as an array of arrays
     const subroutes = flatten(available_routes.map(i => i.subroutes));
     const selected_content = subroutes.find(r => matchRoute(r, location.pathname));
+    const should_remove_passkeys_route = is_desktop || (is_mobile && !is_passkey_supported);
 
     React.useEffect(() => {
         toggleAccountSettings(true);
@@ -62,6 +64,10 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
 
                 if (route.path === shared_routes.proof_of_income) {
                     route.is_disabled = !should_allow_poinc_authentication;
+                }
+
+                if (route.path === shared_routes.passkeys) {
+                    route.is_hidden = should_remove_passkeys_route;
                 }
             });
         }

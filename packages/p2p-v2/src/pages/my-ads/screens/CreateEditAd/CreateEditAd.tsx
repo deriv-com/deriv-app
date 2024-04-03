@@ -7,6 +7,20 @@ import { useFloatingRate } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { AdWizard } from '../../components';
 
+type FormValues = {
+    'ad-type': 'buy' | 'sell';
+    amount: string;
+    instructions: string;
+    'max-order': string;
+    'min-completion-rate': string;
+    'min-join-days': string;
+    'min-order': string;
+    'order-completion-time': string;
+    'payment-method': string[];
+    'preferred-countries': string[];
+    'rate-value': string;
+};
+
 const STEPS = [
     { header: { title: 'Set ad type and amount' } },
     { header: { title: 'Set payment details' } },
@@ -23,7 +37,7 @@ const CreateEditAd = () => {
     const { order_payment_period: orderPaymentPeriod } = p2pSettings ?? {};
     const { error, isError, isSuccess, mutate } = p2p.advert.useCreate();
     const history = useHistory();
-    const methods = useForm({
+    const methods = useForm<FormValues>({
         defaultValues: {
             'ad-type': 'buy',
             amount: '',
@@ -33,7 +47,7 @@ const CreateEditAd = () => {
             'min-join-days': '',
             'min-order': '',
             'order-completion-time': `${orderPaymentPeriod ? (orderPaymentPeriod * 60).toString() : '3600'}`,
-            'payment-method': '',
+            'payment-method': [],
             'preferred-countries': Object.keys(countryList),
             'rate-value': '-0.01',
         },
@@ -56,7 +70,7 @@ const CreateEditAd = () => {
             min_order_amount: Number(getValues('min-order')),
             rate: Number(getValues('rate-value')),
             rate_type: rateType,
-            type: getValues('ad-type') as 'buy' | 'sell',
+            type: getValues('ad-type'),
         };
 
         if (getValues('ad-type') === 'buy') {

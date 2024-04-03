@@ -63,13 +63,13 @@ jest.mock('../../../../../provider', () => ({
 jest.mock('../components', () => ({
     ...jest.requireActual('../components'),
     TransferDropdown: jest.fn(({ label, onSelect, value }) => (
-        <div
+        <button
             onClick={() => {
                 onSelect(mockOnClickAccount);
             }}
         >
             {label}-{value.loginid}
-        </div>
+        </button>
     )),
 }));
 

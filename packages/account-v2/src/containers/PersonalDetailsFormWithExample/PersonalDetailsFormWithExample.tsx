@@ -86,7 +86,6 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                     <DerivLightNameDobPoiIcon height='200px' />
                 </div>
             </div>
-
             <div>
                 <Field
                     name='nameDOBConfirmation'

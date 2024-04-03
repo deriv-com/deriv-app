@@ -6,14 +6,16 @@ import {
     useCreateMT5Account,
     useSettings,
     useTradingPlatformPasswordChange,
+    useVerifyEmail,
 } from '@deriv/api-v2';
 import { SentEmailContent, WalletError, WalletSuccessResetMT5Password } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
+import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
@@ -46,10 +48,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const { data: accountStatusData } = useAccountStatus();
     const { data: activeWalletData } = useActiveWalletAccount();
     const { data: availableMT5AccountsData } = useAvailableMT5Accounts();
+    const { mutate: mutateEmailVerification } = useVerifyEmail();
     const { data: accountStatus } = useAccountStatus();
     const { isMobile } = useDevice();
     const { getModalState, hide, show } = useModal();
     const { data: settingsData } = useSettings();
+
+    const { email } = settingsData;
 
     const [password, setPassword] = useState('');
 
@@ -63,6 +68,18 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         createMT5AccountStatus === 'error' &&
         (createMT5AccountError?.error?.code === 'InvalidTradingPlatformPasswordFormat' ||
             createMT5AccountError?.error?.code === 'IncorrectMT5PasswordFormat');
+
+    const onClickForgotPassword = useCallback(() => {
+        if (email) {
+            mutateEmailVerification({
+                type: 'trading_platform_mt5_password_reset',
+                url_parameters: {
+                    redirect_to: platformPasswordResetRedirectLink(CFD_PLATFORMS.MT5, activeWalletData?.is_virtual),
+                },
+                verify_email: email,
+            });
+        }
+    }, [email, mutateEmailVerification, activeWalletData]);
 
     const onSubmit = useCallback(async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
@@ -128,16 +145,14 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         tradingPasswordChangeMutateAsync,
     ]);
 
-    const sendEmailVerification = useCallback(
-        (platform: TPlatforms.All) => {
-            show(
-                <ModalStepWrapper>
-                    <SentEmailContent platform={platform} />
-                </ModalStepWrapper>
-            );
-        },
-        [show]
-    );
+    const sendEmailVerification = useCallback(() => {
+        onClickForgotPassword();
+        show(
+            <ModalStepWrapper>
+                <SentEmailContent platform={CFD_PLATFORMS.MT5} />
+            </ModalStepWrapper>
+        );
+    }, [onClickForgotPassword, show]);
 
     const onSubmitPasswordChange = useCallback(
         ({ currentPassword, newPassword }: TPlatformPasswordChange) => {
@@ -174,7 +189,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     }
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                     onPrimaryClick={onSubmit}
-                    onSecondaryClick={() => sendEmailVerification(platform)}
+                    onSecondaryClick={() => sendEmailVerification()}
                 />
             );
 
@@ -202,7 +217,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         mt5Title,
         onSubmit,
         password,
-        platform,
         sendEmailVerification,
         tradingPlatformPasswordChangeLoading,
     ]);
@@ -225,7 +239,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     formError={tradingPasswordChangeError}
                     isLoading={tradingPlatformPasswordChangeLoading}
                     onClickSubmitPasswordChange={onSubmitPasswordChange}
-                    sendEmailVerification={() => sendEmailVerification(platform)}
+                    sendEmailVerification={() => sendEmailVerification()}
                 />
             );
 
@@ -235,7 +249,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 marketType={marketType}
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
-                onSecondaryClick={() => sendEmailVerification(platform)}
+                onSecondaryClick={() => sendEmailVerification()}
                 password={password}
                 passwordError={createMT5AccountError?.error?.code === 'PasswordError'}
                 platform={mt5Platform}
@@ -250,7 +264,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         onSubmit,
         onSubmitPasswordChange,
         password,
-        platform,
         sendEmailVerification,
         updateMT5Password,
         tradingPasswordChangeError,

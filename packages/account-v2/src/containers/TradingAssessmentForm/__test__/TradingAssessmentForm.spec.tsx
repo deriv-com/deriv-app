@@ -2,6 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { TradingAssessmentForm } from '../TradingAssessmentForm';
 
+jest.mock('../../../components/FormFields/', () => ({
+    ...jest.requireActual('../../../components/FormFields'),
+    FormDropDownField: jest.fn(() => <div data-testid='dt_dropdown' />),
+}));
+
 describe('TradingAssessmentForm', () => {
     const questions = [
         'Do you understand that you could potentially lose 100% of the money you use to trade?',

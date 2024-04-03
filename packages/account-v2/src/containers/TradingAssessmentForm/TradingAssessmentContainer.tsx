@@ -1,6 +1,6 @@
 import React from 'react';
-import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
-import { Dropdown, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
+import { FormDropDownField } from '../../components/FormFields';
 
 type TTradingAssessmentContainer = {
     answerList: { text: string; value: string }[];
@@ -15,13 +15,7 @@ export const TradingAssessmentContainer = ({ answerList, key, name, question }: 
             <Text as='p' size='sm' weight='bold'>
                 {question}
             </Text>
-            <Dropdown
-                dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
-                list={answerList}
-                name={name}
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                onSelect={() => {}}
-            />
+            <FormDropDownField list={answerList} name={name} />
         </div>
     );
 };

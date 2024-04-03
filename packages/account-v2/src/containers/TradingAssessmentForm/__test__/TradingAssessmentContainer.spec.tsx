@@ -1,7 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { TradingAssessmentContainer } from '../TradingAssessmentContainer';
+
+jest.mock('../../../components/FormFields/', () => ({
+    ...jest.requireActual('../../../components/FormFields'),
+    FormDropDownField: jest.fn(() => <div data-testid='dt_dropdown' />),
+}));
 
 describe('TradingAssessmentContainer', () => {
     const answerList = [
@@ -18,29 +22,7 @@ describe('TradingAssessmentContainer', () => {
 
         expect(screen.getByText(question)).toBeInTheDocument();
 
-        const dropdownIcon = screen.getByRole('combobox');
+        const dropdownIcon = screen.getByTestId('dt_dropdown');
         expect(dropdownIcon).toBeInTheDocument();
-
-        userEvent.click(dropdownIcon);
-
-        expect(screen.getByText('Option 1')).toBeInTheDocument();
-        expect(screen.getByText('Option 2')).toBeInTheDocument();
-        expect(screen.getByText('Option 3')).toBeInTheDocument();
-    });
-
-    it('should correctly select a value', () => {
-        render(<TradingAssessmentContainer answerList={answerList} key={key} name={name} question={question} />);
-
-        expect(screen.getByText(question)).toBeInTheDocument();
-
-        const dropdownIcon = screen.getByRole('combobox');
-        expect(dropdownIcon).toBeInTheDocument();
-
-        userEvent.click(dropdownIcon);
-
-        const option1 = screen.getByText('Option 1');
-        userEvent.click(option1);
-
-        expect(dropdownIcon).toHaveValue('Option 1');
     });
 });

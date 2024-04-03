@@ -28,4 +28,10 @@
     position: relative;
     touch-action: none;
     overflow: hidden;
+
+    @include mobile {
+        inset-inline-start: 48px;
+        inset-block-start: 56px;
+        z-index: 2;
+    }
 }

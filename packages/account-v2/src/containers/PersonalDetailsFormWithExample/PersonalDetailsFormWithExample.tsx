@@ -97,7 +97,6 @@ export const PersonalDetailsFormWithExample = ({ errorStatus, onConfirm }: TPers
                     <SampleImage errorStatus={errorStatus} />
                 </div>
             </div>
-
             <div>
                 <Field
                     name='nameDOBConfirmation'

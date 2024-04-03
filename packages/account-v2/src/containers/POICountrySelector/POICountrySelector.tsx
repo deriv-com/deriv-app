@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Button, Divider, InlineMessage, Text } from '@deriv-com/ui';
 import { CountrySelector } from '../../components/CountrySelector';
-import { IDV_ERROR_CODES, API_ERROR_CODES } from '../../constants';
+import { API_ERROR_CODES, IDV_ERROR_CODES } from '../../constants';
 
 type TPOICountrySelectorProps = {
     errorStatus: string | null;
@@ -10,14 +10,14 @@ type TPOICountrySelectorProps = {
 };
 
 export const POICountrySelector = ({ errorStatus, handleNext, onCountrySelect }: TPOICountrySelectorProps) => {
-    const [isValid, setIsValid] = React.useState(false);
+    const [isValid, setIsValid] = useState(false);
 
     return (
         <div className='grid h-full'>
             <section className='flex flex-col gap-16'>
                 {errorStatus && (
                     <Fragment>
-                        <Text weight='bold' size='md'>
+                        <Text size='md' weight='bold'>
                             Your identity verification failed because:
                         </Text>
                         <InlineMessage type='filled' variant='error'>
@@ -44,11 +44,11 @@ export const POICountrySelector = ({ errorStatus, handleNext, onCountrySelect }:
                 <Divider />
                 <Button
                     className='flex self-end'
+                    disabled={!isValid}
                     onClick={handleNext}
                     rounded='sm'
                     size='lg'
                     type='button'
-                    disabled={!isValid}
                 >
                     Next
                 </Button>

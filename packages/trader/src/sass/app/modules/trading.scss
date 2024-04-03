@@ -100,9 +100,6 @@
             margin-right: 1.6rem;
         }
         &-wrapper {
-            @include rtl {
-                direction: rtl;
-            }
             &--disabled {
                 .btn-purchase__box-shadow {
                     opacity: 0;
@@ -341,8 +338,8 @@
                 }
             }
             &-currency {
-                margin-left: 4px;
-                margin-right: 1px;
+                margin-inline-start: 4px;
+                margin-inline-end: 1px;
                 display: inline-block;
                 position: relative;
                 font-weight: bold;
@@ -352,7 +349,7 @@
                 }
             }
             &-movement {
-                margin-left: 4px;
+                margin-inline-start: 4px;
                 width: 16px;
                 height: 16px;
                 bottom: 1px;
@@ -365,6 +362,9 @@
         }
     }
     &__price-info {
+        @include rtl {
+            direction: rtl;
+        }
         &-currency {
             @include mobile {
                 font-size: 0.9rem;

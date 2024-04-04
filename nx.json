@@ -1,5 +1,6 @@
 {
     "extends": "nx/presets/npm.json",
+    "skipNxCache": true,
     "tasksRunnerOptions": {
         "default": {
             "runner": "@nrwl/workspace/tasks-runners/default",

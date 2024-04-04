@@ -7,6 +7,7 @@ import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
 import PasskeysList from '../components/passkeys-list';
+import { beforeEach } from '@jest/globals';
 
 const passkey_name_1 = 'Test Passkey 1';
 const passkey_name_2 = 'Test Passkey 2';
@@ -44,18 +45,21 @@ jest.mock('@deriv/components', () => ({
 }));
 
 describe('Passkeys', () => {
-    const mock_store = mockStore({
-        ui: { is_mobile: true },
-        client: { is_passkey_supported: true },
-        common: { network_status: { class: 'online' } },
-    });
+    let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;
     const create_passkey = 'Create passkey';
 
-    let modal_root_el: HTMLElement;
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
+    });
+
+    beforeEach(() => {
+        mock_store = mockStore({
+            ui: { is_mobile: true },
+            client: { is_passkey_supported: true },
+            common: { network_status: { class: 'online' } },
+        });
     });
 
     afterAll(() => {
@@ -156,7 +160,20 @@ describe('Passkeys', () => {
             is_passkeys_list_loading: true,
         });
 
-        mock_store.client.is_passkey_supported = false;
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        expect(screen.getByText('MockLoading')).toBeInTheDocument();
+    });
+    it('renders loader if network_status is offline', () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            is_passkeys_list_loading: false,
+        });
+
+        mock_store.common.network_status.class = 'offline';
 
         render(
             <RenderWrapper>
@@ -171,6 +188,7 @@ describe('Passkeys', () => {
             is_passkeys_list_loading: false,
         });
         mock_store.client.is_passkey_supported = true;
+        // mock_store.common.network_status.class = 'online';
 
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             createPasskey: mockCreatePasskey,

@@ -1,14 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { FadeWrapper, Loading } from '@deriv/components';
-import {
-    deepCopy,
-    flatten,
-    matchRoute,
-    removeExactRouteFromRoutes,
-    routes as shared_routes,
-    TRoute as TSharedRoute,
-} from '@deriv/shared';
+import { flatten, matchRoute, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import PageOverlayWrapper from './page-overlay-wrapper';
 import { TRoute } from '../../Types';
@@ -40,27 +33,16 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
     } = client;
     const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
 
-    const [available_routes, setAvailableRoutes] = React.useState(routes);
-
-    React.useEffect(() => {
-        const should_remove_passkeys_route = is_desktop || (is_mobile && !is_passkey_supported);
-        if (should_remove_passkeys_route) {
-            const desktop_routes = removeExactRouteFromRoutes(deepCopy(routes) as TSharedRoute[], 'passkeys');
-            setAvailableRoutes(desktop_routes as TRoute[]);
-        } else {
-            setAvailableRoutes(routes);
-        }
-    }, [routes, is_desktop, is_mobile, is_passkey_supported]);
-
     // subroutes of a route is structured as an array of arrays
-    const subroutes = flatten(available_routes.map(i => i.subroutes));
+    const subroutes = flatten(routes.map(i => i.subroutes));
     const selected_content = subroutes.find(r => matchRoute(r, location.pathname));
+    const should_remove_passkeys_route = is_desktop || (is_mobile && !is_passkey_supported);
 
     React.useEffect(() => {
         toggleAccountSettings(true);
     }, [toggleAccountSettings]);
 
-    available_routes.forEach(menu_item => {
+    routes.forEach(menu_item => {
         if (menu_item?.subroutes?.length) {
             menu_item.subroutes.forEach(route => {
                 if (route.path === shared_routes.financial_assessment) {
@@ -82,6 +64,10 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
                 if (route.path === shared_routes.proof_of_income) {
                     route.is_disabled = !should_allow_poinc_authentication;
                 }
+
+                if (route.path === shared_routes.passkeys) {
+                    route.is_hidden = should_remove_passkeys_route;
+                }
             });
         }
     });
@@ -101,7 +87,7 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
             keyname='account-page-wrapper'
         >
             <div className='account'>
-                <PageOverlayWrapper routes={available_routes} subroutes={subroutes} />
+                <PageOverlayWrapper routes={routes} subroutes={subroutes} />
             </div>
         </FadeWrapper>
     );

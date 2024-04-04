@@ -28,6 +28,7 @@ const WalletsCarousel: React.FC = () => {
     useEventListener('touchmove', handleScroll, containerRef);
     useEventListener('touchend', handleScroll, containerRef);
     useEventListener('scroll', handleScroll, containerRef);
+    useEventListener('wheel', handleScroll, containerRef);
 
     useEffect(() => {
         let isMounted = true;

@@ -2,10 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
-import { DUMMY_COUNTRIES, MY_ADS_URL } from '@/constants';
+import { MY_ADS_URL } from '@/constants';
 import { useFloatingRate } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { AdWizard } from '../../components';
+
+type FormValues = {
+    'ad-type': 'buy' | 'sell';
+    amount: string;
+    instructions: string;
+    'max-order': string;
+    'min-completion-rate': string;
+    'min-join-days': string;
+    'min-order': string;
+    'order-completion-time': string;
+    'payment-method': string[];
+    'preferred-countries': string[];
+    'rate-value': string;
+};
 
 const STEPS = [
     { header: { title: 'Set ad type and amount' } },
@@ -16,13 +30,14 @@ const STEPS = [
 const CreateEditAd = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const { data: countryList = {} } = p2p.countryList.useGet();
     const { rateType } = useFloatingRate();
     const { data: activeAccount } = useActiveAccount();
     const { data: p2pSettings } = p2p.settings.useGetSettings();
     const { order_payment_period: orderPaymentPeriod } = p2pSettings ?? {};
     const { error, isError, isSuccess, mutate } = p2p.advert.useCreate();
     const history = useHistory();
-    const methods = useForm({
+    const methods = useForm<FormValues>({
         defaultValues: {
             'ad-type': 'buy',
             amount: '',
@@ -32,15 +47,21 @@ const CreateEditAd = () => {
             'min-join-days': '',
             'min-order': '',
             'order-completion-time': `${orderPaymentPeriod ? (orderPaymentPeriod * 60).toString() : '3600'}`,
-            'payment-method': '',
-            'preferred-countries': Object.keys(DUMMY_COUNTRIES),
+            'payment-method': [],
+            'preferred-countries': Object.keys(countryList),
             'rate-value': '-0.01',
         },
         mode: 'all',
     });
 
+    const { getValues, handleSubmit, setValue } = methods;
+    useEffect(() => {
+        if (Object.keys(countryList).length > 0 && getValues('preferred-countries').length === 0) {
+            setValue('preferred-countries', Object.keys(countryList));
+        }
+    }, [countryList, getValues, setValue]);
+
     const shouldNotShowArchiveMessageAgain = localStorage.getItem('should_not_show_auto_archive_message_again');
-    const { getValues, handleSubmit } = methods;
     const onSubmit = () => {
         const payload = {
             amount: Number(getValues('amount')),
@@ -48,7 +69,8 @@ const CreateEditAd = () => {
             max_order_amount: Number(getValues('max-order')),
             min_order_amount: Number(getValues('min-order')),
             rate: Number(getValues('rate-value')),
-            type: getValues('ad-type') as 'buy' | 'sell',
+            rate_type: rateType,
+            type: getValues('ad-type'),
         };
 
         if (getValues('ad-type') === 'buy') {
@@ -87,6 +109,7 @@ const CreateEditAd = () => {
             <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <AdWizard
+                        countryList={countryList}
                         currency={activeAccount?.currency ?? 'USD'}
                         localCurrency={p2pSettings?.localCurrency}
                         rateType={rateType}

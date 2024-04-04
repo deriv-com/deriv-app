@@ -1,37 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { Tab, Tabs } from '@deriv-com/ui';
 import { PageContainer } from '../../components';
-import { PaymentAgentWithdrawalModule, WithdrawalVerificationModule } from '../../lib';
+import { PaymentAgentDepositModule } from '../../lib';
+import { PaymentAgentWithdrawalContainer } from './components';
+import styles from './PaymentAgent.module.scss';
+
+type TPaymentAgentTabs = 'Deposit' | 'Withdrawal';
 
 const PaymentAgent = () => {
-    const [verificationCode, setVerificationCode] = useState('');
+    const queryParams = new URLSearchParams(location.search);
+    const verificationQueryParam = queryParams.get('verification');
+    const defaultTab: TPaymentAgentTabs = verificationQueryParam ? 'Withdrawal' : 'Deposit';
 
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const verificationQueryParam = queryParams.get('verification');
+    const [activeTab, setActiveTab] = useState<TPaymentAgentTabs>(defaultTab);
 
-        if (verificationQueryParam) {
-            setVerificationCode(verificationQueryParam);
-
-            const url = new URL(window.location.href);
-            url.searchParams.delete('verification'); // Remove the 'verification_code' query parameter
-            window.history.replaceState({}, document.title, url.toString());
-        }
-    }, []);
-
-    if (verificationCode) {
-        return (
-            <PageContainer>
-                <PaymentAgentWithdrawalModule
-                    setVerificationCode={setVerificationCode}
-                    verificationCode={verificationCode}
-                />
-            </PageContainer>
-        );
-    }
+    const onChangeTabHandler = (index: number) => {
+        setActiveTab(index === 0 ? 'Deposit' : 'Withdrawal');
+    };
 
     return (
         <PageContainer>
-            <WithdrawalVerificationModule withdrawalType='paymentagent_withdraw' />
+            <Tabs
+                activeTab={activeTab}
+                className={styles['tabs-container']}
+                onChange={onChangeTabHandler}
+                variant='secondary'
+            >
+                <Tab title='Deposit'>
+                    <PaymentAgentDepositModule />
+                </Tab>
+                <Tab title='Withdrawal'>
+                    <PaymentAgentWithdrawalContainer />
+                </Tab>
+            </Tabs>
         </PageContainer>
     );
 };

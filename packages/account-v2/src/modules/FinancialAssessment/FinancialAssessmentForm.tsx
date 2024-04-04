@@ -76,7 +76,7 @@ export const FinancialAssessmentForm = () => {
             income_source: values.incomeSource,
             net_income: values.netIncome,
             source_of_wealth: values.sourceOfWealth,
-            ...(shouldHideOccupation(values.employmentStatus) ? {} : { occupation: values.occupation }),
+            ...(!shouldHideOccupation(values.employmentStatus) && { occupation: values.occupation }),
         });
     };
 

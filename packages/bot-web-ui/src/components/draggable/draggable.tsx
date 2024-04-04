@@ -209,7 +209,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                     id='draggable-content__header'
                     data-testid='dt_react_draggable_handler'
                     className='draggable-content__header'
-                    role='button'
                     onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.MOVE)}
                     onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                         e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
@@ -218,7 +217,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                 >
                     <div className={`draggable-content__header__title`}>{header}</div>
                     <div
-                        role='button'
                         className={`draggable-content__header__close`}
                         data-testid='dt_react_draggable-close-modal'
                         onClick={onClose}
@@ -234,7 +232,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                         <div
                             className='resizable-handle__top'
                             data-testid='dt_resizable-handle__top'
-                            role='button'
                             onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
@@ -244,7 +241,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                         <div
                             className='resizable-handle__right'
                             data-testid='dt_resizable-handle__right'
-                            role='button'
                             onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
@@ -254,7 +250,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                         <div
                             className='resizable-handle__bottom'
                             data-testid='dt_resizable-handle__bottom'
-                            role='button'
                             onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
@@ -264,7 +259,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                         <div
                             className='resizable-handle__left'
                             data-testid='dt_resizable-handle__left'
-                            role='button'
                             onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
@@ -274,7 +268,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                         <div
                             className='resizable-handle__top-right'
                             data-testid='dt_resizable-handle__top-right'
-                            role='button'
                             onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
@@ -284,7 +277,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                         <div
                             className='resizable-handle__bottom-right'
                             data-testid='dt_resizable-handle__bottom-right'
-                            role='button'
                             onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
@@ -294,7 +286,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                         <div
                             className='resizable-handle__bottom-left'
                             data-testid='dt_resizable-handle__bottom-left'
-                            role='button'
                             onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
@@ -304,7 +295,6 @@ const Draggable: React.FC<TDraggableProps> = ({
                         <div
                             className='resizable-handle__top-left'
                             data-testid='dt_resizable-handle__top-left'
-                            role='button'
                             onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }

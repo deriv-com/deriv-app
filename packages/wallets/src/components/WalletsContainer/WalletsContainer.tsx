@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import './WalletsCard.scss';
+import './WalletsContainer.scss';
 
 type TProps = {
     renderHeader: () => React.ReactNode;
 };
 
-const WalletsCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, renderHeader }) => {
+const WalletsContainer: React.FC<React.PropsWithChildren<TProps>> = ({ children, renderHeader }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const walletsCardRef = useRef<HTMLDivElement>(null);
 
@@ -26,21 +26,21 @@ const WalletsCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, rend
 
     return (
         <div
-            className={classNames('wallets-cards', {
-                'wallets-cards--virtual': isDemo,
+            className={classNames('wallets-container', {
+                'wallets-container--virtual': isDemo,
             })}
             ref={walletsCardRef}
         >
             <div
-                className={classNames('wallets-cards__header', {
-                    'wallets-cards__header--virtual': isDemo,
+                className={classNames('wallets-container__header', {
+                    'wallets-container__header--virtual': isDemo,
                 })}
             >
                 {renderHeader()}
             </div>
-            <div className='wallets-cards__content wallets-cards__content--visible'>{children}</div>
+            <div className='wallets-container__content wallets-container__content--visible'>{children}</div>
         </div>
     );
 };
 
-export default WalletsCard;
+export default WalletsContainer;

@@ -34,7 +34,7 @@ const columns = [
         header: 'Limits',
     },
     {
-        header: 'Rate (1 BTC)',
+        header: 'Rate (1 USD)',
     },
     {
         header: 'Available amount',

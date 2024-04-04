@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
-import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
 import { IconButton, WalletButton, WalletText } from '../Base';
@@ -26,17 +25,12 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
             name: 'transfer',
             text: 'Transfer',
         },
-        {
-            icon: <IcCashierStatement />,
-            name: 'transactions',
-            text: 'Transactions',
-        },
     ] as const;
 
     // Filter out the "Withdraw" button when is_demo is true
     const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
 
-    const orderForDemo = ['reset-balance', 'transfer', 'transactions'];
+    const orderForDemo = ['reset-balance', 'transfer'];
 
     const sortedButtons = isDemo
         ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))

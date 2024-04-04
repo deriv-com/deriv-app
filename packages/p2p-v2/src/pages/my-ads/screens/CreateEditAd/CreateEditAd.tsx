@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { AdCancelCreateEditModal, AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
-import { DUMMY_COUNTRIES, MY_ADS_URL } from '@/constants';
+import { MY_ADS_URL } from '@/constants';
 import { useFloatingRate, useQueryString } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
@@ -17,6 +17,19 @@ const getSteps = (isEdit = false) => {
     ];
     return steps;
 };
+type FormValues = {
+    'ad-type': 'buy' | 'sell';
+    amount: string;
+    instructions: string;
+    'max-order': string;
+    'min-completion-rate': string;
+    'min-join-days': string;
+    'min-order': string;
+    'order-completion-time': string;
+    'payment-method': string[];
+    'preferred-countries': string[];
+    'rate-value': string;
+};
 
 const CreateEditAd = () => {
     const { queryString } = useQueryString();
@@ -26,6 +39,7 @@ const CreateEditAd = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+    const { data: countryList = {} } = p2p.countryList.useGet();
     const { rateType } = useFloatingRate();
     const { data: activeAccount } = useActiveAccount();
     const { data: p2pSettings } = p2p.settings.useGetSettings();
@@ -38,7 +52,7 @@ const CreateEditAd = () => {
         mutate: updateMutate,
     } = p2p.advert.useUpdate();
     const history = useHistory();
-    const methods = useForm({
+    const methods = useForm<FormValues>({
         defaultValues: {
             'ad-type': 'buy',
             amount: '',
@@ -48,14 +62,13 @@ const CreateEditAd = () => {
             'min-join-days': '',
             'min-order': '',
             'order-completion-time': `${orderPaymentPeriod ? (orderPaymentPeriod * 60).toString() : '3600'}`,
-            'payment-method': '',
-            'preferred-countries': Object.keys(DUMMY_COUNTRIES),
+            'payment-method': [],
+            'preferred-countries': Object.keys(countryList),
             'rate-value': '-0.01',
         },
         mode: 'all',
     });
 
-    const shouldNotShowArchiveMessageAgain = localStorage.getItem('should_not_show_auto_archive_message_again');
     const {
         formState: { isDirty },
         getValues,
@@ -63,6 +76,14 @@ const CreateEditAd = () => {
         reset,
         setValue,
     } = methods;
+    useEffect(() => {
+        if (Object.keys(countryList).length > 0 && getValues('preferred-countries').length === 0) {
+            setValue('preferred-countries', Object.keys(countryList));
+        }
+    }, [countryList, getValues, setValue]);
+
+    const shouldNotShowArchiveMessageAgain = localStorage.getItem('should_not_show_auto_archive_message_again');
+
     const onSubmit = () => {
         const payload = {
             amount: Number(getValues('amount')),
@@ -70,7 +91,8 @@ const CreateEditAd = () => {
             max_order_amount: Number(getValues('max-order')),
             min_order_amount: Number(getValues('min-order')),
             rate: Number(getValues('rate-value')),
-            type: getValues('ad-type') as 'buy' | 'sell',
+            rate_type: rateType,
+            type: getValues('ad-type'),
         };
 
         if (getValues('ad-type') === 'buy') {
@@ -121,7 +143,7 @@ const CreateEditAd = () => {
             setValue('min-order', advertInfo.min_order_amount);
             setValue('rate-value', advertInfo.rate);
             setValue('payment-method', advertInfo.payment_method_names);
-            setValue('preferred-countries', advertInfo.eligible_countries);
+            setValue('preferred-countries', advertInfo.eligible_countries ?? Object.keys(countryList));
             setValue('order-completion-time', `${advertInfo.order_expiry_period}`);
         }
     }, [advertInfo]);
@@ -140,6 +162,7 @@ const CreateEditAd = () => {
             <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <AdWizard
+                        countryList={countryList}
                         currency={activeAccount?.currency ?? 'USD'}
                         localCurrency={p2pSettings?.localCurrency}
                         onCancel={onClickCancel}

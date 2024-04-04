@@ -36,9 +36,7 @@ type TPaymentAgentWithdrawalContext = {
     requestTryPaymentAgentWithdrawal: (params: TRequestTryPaymentAgentWithdrawalParams) => void;
     resetPaymentAgentWithdrawal: VoidFunction;
     setIsUnlistedWithdrawal: React.Dispatch<React.SetStateAction<boolean>>;
-    setVerificationCode: React.Dispatch<React.SetStateAction<string>>;
     setWithdrawalStatus: React.Dispatch<React.SetStateAction<TWithdrawalStatus>>;
-    verificationCode: string;
     withdrawalConfirm: TConfirm;
     withdrawalReceipt: TReceipt;
     withdrawalStatus: TWithdrawalStatus;
@@ -171,7 +169,8 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
         setWithdrawalReceipt(initialWithdrawalReceiptValues);
         setWithdrawalStatus('idle');
         setIsUnlistedWithdrawal(false);
-    }, []);
+        setVerificationCode('');
+    }, [setVerificationCode]);
 
     return (
         <PaymentAgentWithdrawalContext.Provider
@@ -185,9 +184,7 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
                 requestTryPaymentAgentWithdrawal,
                 resetPaymentAgentWithdrawal,
                 setIsUnlistedWithdrawal,
-                setVerificationCode,
                 setWithdrawalStatus,
-                verificationCode,
                 withdrawalConfirm,
                 withdrawalReceipt,
                 withdrawalStatus,

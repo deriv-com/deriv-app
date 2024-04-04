@@ -30,8 +30,14 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 describe('PaymentAgentWithdrawalProvider', () => {
+    let mockedSetVerificationCode: jest.MockedFunction<typeof jest.fn>;
+
+    beforeEach(() => {
+        mockedSetVerificationCode = jest.fn();
+    });
+
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <PaymentAgentWithdrawalProvider setVerificationCode={jest.fn()} verificationCode='code'>
+        <PaymentAgentWithdrawalProvider setVerificationCode={mockedSetVerificationCode} verificationCode='code'>
             {children}
         </PaymentAgentWithdrawalProvider>
     );
@@ -107,5 +113,6 @@ describe('PaymentAgentWithdrawalProvider', () => {
             paymentAgentUrls: [],
         });
         expect(result.current.withdrawalStatus).toBe('idle');
+        expect(mockedSetVerificationCode).toHaveBeenCalledWith('');
     });
 });

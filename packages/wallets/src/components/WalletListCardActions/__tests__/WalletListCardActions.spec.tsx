@@ -39,7 +39,6 @@ describe('WalletListCardActions', () => {
         expect(screen.getByText('Deposit')).toBeInTheDocument();
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
         expect(screen.getByText('Transfer')).toBeInTheDocument();
-        expect(screen.getByText('Transactions')).toBeInTheDocument();
     });
 
     it('should show the actions texts if the demo wallet is active', () => {
@@ -57,7 +56,6 @@ describe('WalletListCardActions', () => {
         render(<WalletListCardActions />, { wrapper });
         expect(screen.getByText('Reset balance')).toBeInTheDocument();
         expect(screen.getByText('Transfer')).toBeInTheDocument();
-        expect(screen.getByText('Transactions')).toBeInTheDocument();
     });
 
     it("shouldn't show the actions texts if the real wallet is inactive", () => {
@@ -76,7 +74,6 @@ describe('WalletListCardActions', () => {
         expect(screen.queryByText('Deposit')).not.toBeInTheDocument();
         expect(screen.queryByText('Withdraw')).not.toBeInTheDocument();
         expect(screen.queryByText('Transfer')).not.toBeInTheDocument();
-        expect(screen.queryByText('Transactions')).not.toBeInTheDocument();
     });
 
     it('should switch account and redirect to the correct page when clicking on one of the actions and wallet is inactive', () => {
@@ -131,12 +128,6 @@ describe('WalletListCardActions', () => {
         render(<WalletListCardActions />, { wrapper });
         screen.getByRole('button', { name: 'transfer' }).click();
         expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/account-transfer');
-    });
-
-    it('should redirect to cashier page when clicking on transactions', () => {
-        render(<WalletListCardActions />, { wrapper });
-        screen.getByRole('button', { name: 'transactions' }).click();
-        expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/transactions');
     });
 
     it('should redirect to cashier page when clicking on reset balance', () => {

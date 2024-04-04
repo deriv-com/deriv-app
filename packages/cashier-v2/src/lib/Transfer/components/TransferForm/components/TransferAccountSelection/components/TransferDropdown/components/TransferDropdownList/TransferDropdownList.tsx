@@ -6,31 +6,41 @@ import { TransferAccountTile } from '../TransferAccountTile';
 import styles from './TransferDropdownList.module.scss';
 
 type TProps = {
-    accounts: TTransferableAccounts;
-    header: string;
+    accounts: Record<string, TTransferableAccounts>;
     onSelect: (account: TTransferableAccounts[number]) => void;
     value: TTransferFormikContext['fromAccount'] | TTransferFormikContext['toAccount'];
 };
 
-const TransferDropdownList: React.FC<TProps> = ({ accounts, header, onSelect, value }) => {
+const TransferDropdownList: React.FC<TProps> = ({ accounts, onSelect, value }) => {
     return (
-        <div className={styles['items-list']}>
-            <div className={styles['item-header']}>
-                <Text size='sm' weight='bold'>
-                    {header}
-                </Text>
-            </div>
-            {accounts.map(account => {
+        <div className={styles['items-container']} data-testid='dt_transfer_dropdown_items'>
+            {Object.entries(accounts).map(([headerTitle, accounts]) => {
+                if (!accounts.length) return null;
+
                 return (
-                    <button
-                        className={clsx(styles.item, {
-                            [styles['item--selected']]: account.loginid === value?.loginid,
+                    <div className={styles['items-list']} key={headerTitle}>
+                        <div className={styles['item-header']}>
+                            <Text size='sm' weight='bold'>
+                                {headerTitle}
+                            </Text>
+                        </div>
+                        {accounts.map(account => {
+                            return (
+                                <button
+                                    className={clsx(styles.item, {
+                                        [styles['item--selected']]: account.loginid === value?.loginid,
+                                    })}
+                                    key={account.loginid}
+                                    onClick={() => onSelect(account)}
+                                >
+                                    <TransferAccountTile
+                                        account={account}
+                                        isActive={account.loginid === value?.loginid}
+                                    />
+                                </button>
+                            );
                         })}
-                        key={account.loginid}
-                        onClick={() => onSelect(account)}
-                    >
-                        <TransferAccountTile account={account} isActive={account.loginid === value?.loginid} />
-                    </button>
+                    </div>
                 );
             })}
         </div>

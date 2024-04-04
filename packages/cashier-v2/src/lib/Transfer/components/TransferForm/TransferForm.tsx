@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
-import { useHistory } from 'react-router';
-import { Button, Loader, Text } from '@deriv-com/ui';
+import { useHistory } from 'react-router-dom';
+import { Button, Text } from '@deriv-com/ui';
 import { useTransfer } from '../../provider';
 import { TTransferFormikContext } from '../../types';
 import { TransferAccountSelection, TransferCryptoFiatAmountConverter } from './components';
@@ -9,22 +9,20 @@ import styles from './TransferForm.module.scss';
 
 const TransferForm = () => {
     const history = useHistory();
-    const { accounts, activeAccount, isLoading, transferValidationSchema } = useTransfer();
+    const { accounts, activeAccount, transferValidationSchema } = useTransfer();
 
-    const initialToAccount = useMemo(() => {
+    const getInitialAccount = () => {
         if (!accounts || !activeAccount) return;
 
         if (activeAccount !== accounts[0]) return accounts[0];
 
         return accounts[1];
-    }, [accounts, activeAccount]);
-
-    if (!accounts || !activeAccount || isLoading || !initialToAccount) return <Loader />;
+    };
 
     const initialValues: TTransferFormikContext = {
         fromAccount: activeAccount,
         fromAmount: '',
-        toAccount: initialToAccount,
+        toAccount: getInitialAccount(),
         toAmount: '',
     };
 

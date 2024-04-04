@@ -47,19 +47,3 @@
 .helper-message {
     margin-left: 1.2rem;
 }
-
-.items-container {
-    z-index: 2;
-    position: absolute;
-    transform: translateY(-0.8rem);
-    width: 36rem;
-    height: fit-content;
-    max-height: 36rem;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    box-shadow: 0px 32px 64px 0px rgba(14, 14, 14, 0.14);
-    border-radius: 4px;
-    background: $color-grey-2;
-}

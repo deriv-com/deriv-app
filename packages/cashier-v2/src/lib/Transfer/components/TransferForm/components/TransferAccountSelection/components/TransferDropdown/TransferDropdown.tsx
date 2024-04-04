@@ -7,8 +7,8 @@ import { TransferAccountTile, TransferDropdownList } from './components';
 import styles from './TransferDropdown.module.scss';
 
 type TProps = {
-    accounts?: TTransferableAccounts;
-    label?: string;
+    accounts: TTransferableAccounts;
+    label: string;
     message?: string;
     onSelect: (account: TTransferableAccounts[number]) => void;
     value: TTransferableAccounts[number] | TTransferFormikContext['fromAccount'] | TTransferFormikContext['toAccount'];
@@ -26,10 +26,17 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
 
     const onSelectItem = (account: TTransferableAccounts[number]) => {
         setIsOpen(false);
-        return onSelect(account);
+        onSelect(account);
     };
 
-    if (!accounts) return null;
+    const dropdownAccounts = {
+        'Deriv MT5 accounts': accounts.filter(account => account.account_type === 'mt5'),
+        // eslint-disable-next-line sort-keys
+        'Deriv cTrader accounts': accounts.filter(account => account.account_type === 'ctrader'),
+        'Deriv X accounts': accounts.filter(account => account.account_type === 'dxtrade'),
+        // eslint-disable-next-line sort-keys
+        'Deriv accounts': accounts.filter(account => account.account_type === 'binary'),
+    };
 
     return (
         <div className={styles.container} ref={clickOutsideRef}>
@@ -53,42 +60,7 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
                     {message}
                 </Text>
             </button>
-            {isOpen && (
-                <div className={styles['items-container']} data-testid='dt_transfer_dropdown_items'>
-                    {accounts.find(account => account.account_type === 'mt5') && (
-                        <TransferDropdownList
-                            accounts={accounts.filter(account => account.account_type === 'mt5')}
-                            header='Deriv MT5 accounts'
-                            onSelect={onSelectItem}
-                            value={value}
-                        />
-                    )}
-                    {accounts.find(account => account.account_type === 'ctrader') && (
-                        <TransferDropdownList
-                            accounts={accounts.filter(account => account.account_type === 'ctrader')}
-                            header='Deriv cTrader accounts'
-                            onSelect={onSelectItem}
-                            value={value}
-                        />
-                    )}
-                    {accounts.find(account => account.account_type === 'dxtrade') && (
-                        <TransferDropdownList
-                            accounts={accounts.filter(account => account.account_type === 'dxtrade')}
-                            header='Deriv X accounts'
-                            onSelect={onSelectItem}
-                            value={value}
-                        />
-                    )}
-                    {accounts.find(account => account.account_type === 'binary') && (
-                        <TransferDropdownList
-                            accounts={accounts.filter(account => account.account_type === 'binary')}
-                            header='Deriv accounts'
-                            onSelect={onSelectItem}
-                            value={value}
-                        />
-                    )}
-                </div>
-            )}
+            {isOpen && <TransferDropdownList accounts={dropdownAccounts} onSelect={onSelectItem} value={value} />}
         </div>
     );
 };

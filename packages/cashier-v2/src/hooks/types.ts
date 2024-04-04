@@ -18,6 +18,7 @@ export namespace THooks {
     export type ActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;
     export type CryptoWithdrawal = NonNullable<ReturnType<typeof useCryptoWithdrawal>['mutateAsync']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
+    export type GetCurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['getConfig']>;
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type TransferAccounts = NonNullable<

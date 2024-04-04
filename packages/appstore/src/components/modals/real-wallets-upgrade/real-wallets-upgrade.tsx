@@ -10,7 +10,6 @@ const RealWalletsUpgrade = observer(() => {
     const { startMigration, is_eligible, is_migrating } = useWalletMigration();
 
     const [current_step, setCurrentStep] = React.useState(0);
-    const [is_disabled, setIsDisabled] = React.useState(false);
 
     React.useEffect(() => {
         if (!is_eligible) {
@@ -21,7 +20,6 @@ const RealWalletsUpgrade = observer(() => {
     React.useEffect(() => {
         if (!is_real_wallets_upgrade_on) {
             setCurrentStep(0);
-            setIsDisabled(false);
         }
     }, [is_real_wallets_upgrade_on]);
 
@@ -35,18 +33,12 @@ const RealWalletsUpgrade = observer(() => {
         startMigration();
     };
 
-    const toggleCheckbox = () => {
-        setIsDisabled(prevDisabled => !prevDisabled);
-    };
-
     const wallet_upgrade_steps = {
         current_step,
         handleBack,
         handleClose,
         handleNext,
-        is_disabled,
         is_migrating,
-        toggleCheckbox,
         upgradeToWallets,
     };
 

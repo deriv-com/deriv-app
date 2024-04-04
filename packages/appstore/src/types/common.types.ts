@@ -28,7 +28,7 @@ export type TMarketType = 'financial' | 'synthetic' | 'all';
 export type TVisibilityChecker = (platform: TPlatform) => boolean;
 
 export type TMissingRealAccount = {
-    onClickSignup: () => void;
+    onClickSignup: VoidFunction;
 };
 
 export type TMt5StatusServerType = Record<'all' | 'platform' | 'server_number', number>;
@@ -225,15 +225,14 @@ export type TWalletButton = {
     name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
     text: string;
     icon: string;
-    action: () => void;
+    action: VoidFunction;
 };
 
 export type TWalletSteps = {
-    handleBack: () => void;
-    handleClose: () => void;
-    handleNext: () => void;
-    is_disabled: boolean;
-    toggleCheckbox: () => void;
+    handleBack: VoidFunction;
+    handleClose: VoidFunction;
+    handleNext: VoidFunction;
+    is_migrating: boolean;
     upgradeToWallets: (value: boolean) => void;
 };
 

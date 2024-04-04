@@ -1,7 +1,5 @@
 {
     "extends": "nx/presets/npm.json",
-    "skipNxCache": true,
-    "neverConnectToCloud": true,
     "tasksRunnerOptions": {
         "default": {
             "runner": "@nrwl/workspace/tasks-runners/default",

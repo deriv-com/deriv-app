@@ -8,6 +8,8 @@ declare global {
             create_dxtrade_account_time: number;
             create_mt5_account_time: number;
             load_cashier_time: number;
+            load_crypto_deposit_cashier_time: number;
+            load_fiat_deposit_cashier_time: number;
             login_time: number;
             redirect_from_deriv_com_time: number;
             signup_time: number;
@@ -26,6 +28,8 @@ export const startPerformanceEventTimer = (action: keyof typeof global.Window.pr
             create_dxtrade_account_time: 0,
             create_mt5_account_time: 0,
             load_cashier_time: 0,
+            load_crypto_deposit_cashier_time: 0,
+            load_fiat_deposit_cashier_time: 0,
             login_time: 0,
             redirect_from_deriv_com_time: 0,
             signup_time: 0,

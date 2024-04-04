@@ -131,7 +131,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const sendEmailVerification = useCallback(
         (platform: TPlatforms.All) => {
             show(
-                <ModalWrapper shouldFullscreen={isMobile}>
+                <ModalWrapper isFullscreen={isMobile}>
                     <SentEmailContent platform={platform} />
                 </ModalWrapper>
             );

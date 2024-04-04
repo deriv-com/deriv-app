@@ -121,7 +121,7 @@ describe('TransactionStatusSuccess', () => {
         );
 
         expect(screen.getByText('Withdrawal')).toBeInTheDocument();
-        expect(screen.getByText('0.0001')).toBeInTheDocument();
+        expect(screen.getByText('0.00010000')).toBeInTheDocument();
         expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.queryByText('View more')).not.toBeInTheDocument();
     });
@@ -164,7 +164,7 @@ describe('TransactionStatusSuccess', () => {
         );
 
         expect(screen.getByText('Deposit')).toBeInTheDocument();
-        expect(screen.getByText('0.0001')).toBeInTheDocument();
+        expect(screen.getByText('0.00010000')).toBeInTheDocument();
         expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.queryByText('View more')).not.toBeInTheDocument();
     });
@@ -230,7 +230,7 @@ describe('TransactionStatusSuccess', () => {
 
         expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.getAllByText('Withdrawal')[0]).toBeInTheDocument();
-        expect(screen.getAllByText('0.0001')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('0.00010000')[0]).toBeInTheDocument();
         expect(screen.getByText('View more')).toBeInTheDocument();
 
         fireEvent.click(screen.getByText('View more'));

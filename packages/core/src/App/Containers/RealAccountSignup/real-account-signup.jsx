@@ -96,7 +96,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     const setIsDeposit = modules.cashier.general_store.setIsDeposit;
     const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
     const is_belgium_residence = client.residence === 'be'; // TODO: [deriv-eu] refactor this once more residence checks are required
-    const is_isle_of_man_residence = client.residence === 'im'; // TODO: [deriv-eu] refactor this once more residence checks are required
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -637,7 +636,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                             has_fiat={has_fiat}
                                             is_belgium_residence={is_belgium_residence}
                                             is_eu={show_eu_related_content}
-                                            is_isle_of_man_residence={is_isle_of_man_residence}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
@@ -674,7 +672,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                             country_standpoint={country_standpoint}
                                             currency={currency}
                                             is_belgium_residence={is_belgium_residence}
-                                            is_isle_of_man_residence={is_isle_of_man_residence}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />

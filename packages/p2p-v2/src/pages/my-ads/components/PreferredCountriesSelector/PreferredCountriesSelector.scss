@@ -1,0 +1,23 @@
+.p2p-v2-preferred-countries-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    &__field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 32.8rem;
+        height: 4rem;
+        border: 1px solid #d6dadb;
+        padding: 1rem 1.6rem;
+        cursor: pointer;
+
+        &__text {
+            width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}

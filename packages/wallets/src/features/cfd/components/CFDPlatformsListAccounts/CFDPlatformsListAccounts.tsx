@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
 import {
     useActiveWalletAccount,
-    useAuthorize,
     useCtraderAccountsList,
     useDxtradeAccountsList,
-    useInvalidateQuery,
     useSortedMT5Accounts,
 } from '@deriv/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
@@ -24,16 +22,10 @@ type TProps = {
 };
 
 const CFDPlatformsListAccounts: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
-    const { isFetching } = useAuthorize();
-    const {
-        areAllAccountsCreated,
-        data: mt5AccountsList,
-        isFetchedAfterMount: isMT5FetchedAfterMount,
-    } = useSortedMT5Accounts();
+    const { areAllAccountsCreated, data: mt5AccountsList, isLoading: isMT5Loading } = useSortedMT5Accounts();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
-    const { data: dxtradeAccountsList, isFetchedAfterMount: isDxtradeFetchedAfterMount } = useDxtradeAccountsList();
+    const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
-    const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
         return mt5AccountsList?.some(account => account.is_added);
@@ -42,22 +34,15 @@ const CFDPlatformsListAccounts: React.FC<TProps> = ({ onMT5PlatformListLoaded })
     const hasDxtradeAccount = !!dxtradeAccountsList?.length;
 
     useEffect(() => {
-        if (!isFetching) {
-            invalidate('mt5_login_list');
-            invalidate('trading_platform_accounts');
-        }
-    }, [invalidate, isFetching]);
-
-    useEffect(() => {
-        onMT5PlatformListLoaded?.(isMT5FetchedAfterMount);
+        onMT5PlatformListLoaded?.(!isMT5Loading);
         return () => onMT5PlatformListLoaded?.(false);
-    }, [isMT5FetchedAfterMount, onMT5PlatformListLoaded]);
+    }, [isMT5Loading, onMT5PlatformListLoaded]);
 
     return (
         <div className='wallets-cfd-list-accounts__content'>
             {/* TODO: Update loader with updated skeleton loader design */}
-            {!isMT5FetchedAfterMount && <TradingAppCardLoader />}
-            {isMT5FetchedAfterMount &&
+            {isMT5Loading && <TradingAppCardLoader />}
+            {!isMT5Loading &&
                 mt5AccountsList?.map((account, index) => {
                     if (account.is_added)
                         return (
@@ -72,8 +57,7 @@ const CFDPlatformsListAccounts: React.FC<TProps> = ({ onMT5PlatformListLoaded })
                     );
                 })}
             {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
-            {isDxtradeFetchedAfterMount &&
-                (hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />)}
+            {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
             {hasMT5Account && !activeWallet?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
         </div>
     );

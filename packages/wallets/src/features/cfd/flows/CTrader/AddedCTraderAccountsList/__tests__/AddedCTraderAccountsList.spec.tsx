@@ -24,11 +24,8 @@ describe('AddedCTraderAccountsList', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        $root = document.createElement('div');
-        $root.id = 'root';
         $modalContainer = document.createElement('div');
         $modalContainer.id = 'wallets_modal_root';
-        document.body.appendChild($root);
         document.body.appendChild($modalContainer);
         (useCtraderAccountsList as jest.Mock).mockReturnValue({
             data: mockAccounts,
@@ -36,7 +33,6 @@ describe('AddedCTraderAccountsList', () => {
     });
 
     afterEach(() => {
-        document.body.removeChild($root);
         document.body.removeChild($modalContainer);
     });
 

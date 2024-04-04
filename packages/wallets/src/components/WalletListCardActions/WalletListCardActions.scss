@@ -68,7 +68,13 @@
         gap: 0.4rem;
 
         &-icon {
-            border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
+            border-radius: 1.2rem;
+            border: 0.1rem solid var(----text-general, #333333);
+
+            &--primary {
+                border-radius: 1.2rem;
+                border-collapse: collapse;
+            }
         }
     }
 }

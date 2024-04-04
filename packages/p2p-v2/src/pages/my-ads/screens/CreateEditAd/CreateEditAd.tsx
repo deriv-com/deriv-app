@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { AdCancelCreateEditModal, AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
 import { MY_ADS_URL } from '@/constants';
-import { useFloatingRate, useQueryString } from '@/hooks';
+import { useFloatingRate, useModalManager, useQueryString } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { AdWizard } from '../../components';
@@ -132,7 +132,7 @@ const CreateEditAd = () => {
     }, [isSuccess, history, shouldNotShowArchiveMessageAgain, isError, isUpdateSuccess, isUpdateError]);
 
     useEffect(() => {
-        if (advertInfo) {
+        if (advertInfo && isEdit) {
             reset();
             setValue('ad-type', advertInfo.type);
             setValue('amount', advertInfo.amount);
@@ -146,7 +146,7 @@ const CreateEditAd = () => {
             setValue('preferred-countries', advertInfo.eligible_countries ?? Object.keys(countryList));
             setValue('order-completion-time', `${advertInfo.order_expiry_period}`);
         }
-    }, [advertInfo]);
+    }, [advertInfo, countryList, isEdit, reset, setValue]);
 
     if (isLoading && isEdit) {
         return <Loader />;

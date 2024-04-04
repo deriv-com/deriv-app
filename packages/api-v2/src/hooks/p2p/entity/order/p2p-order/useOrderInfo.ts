@@ -9,13 +9,13 @@ type TPayload = WithRequiredProperty<
 // TODO: Convert this to use useSubscribe as it is a subscribable endpoint
 /** This custom hook that returns information about the given order ID */
 const useOrderInfo = () => {
-    const { data, subscribe: _subscribe, ...rest } = useSubscription('p2p_order_info');
+    const { data, subscribe: subscribeOrderInfo, ...rest } = useSubscription('p2p_order_info');
 
     const subscribe = useCallback(
         (payload: TPayload) => {
-            _subscribe({ payload });
+            subscribeOrderInfo({ payload });
         },
-        [_subscribe]
+        [subscribeOrderInfo]
     );
 
     // modify the data to add additional information

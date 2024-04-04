@@ -3,8 +3,8 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { useCtraderAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
-import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 import { ModalProvider } from '../../../../../../components/ModalProvider';
+import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 
 jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
@@ -15,7 +15,7 @@ jest.mock('../../../../modals', () => ({
 }));
 
 describe('AddedCTraderAccountsList', () => {
-    let $root: HTMLDivElement, $modalContainer: HTMLDivElement;
+    let $modalContainer: HTMLDivElement;
     const history = createMemoryHistory();
     const mockAccounts = [
         { formatted_balance: '1000', login: '123' },

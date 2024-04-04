@@ -7,8 +7,7 @@ const getDesktopSteps = (
     isDemoWallet: boolean,
     hasMT5Account: boolean,
     hasDerivAppsTradingAccount: boolean,
-    isAllWalletsAlreadyAdded: boolean,
-    walletNumber = 1
+    isAllWalletsAlreadyAdded: boolean
 ): Step[] => [
     // Wallet header
     {

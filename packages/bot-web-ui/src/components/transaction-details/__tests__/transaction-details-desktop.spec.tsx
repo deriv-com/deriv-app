@@ -10,7 +10,7 @@ import TransactionDetailsDesktop from '../transaction-details-desktop';
 let mockFunction: boolean | jest.Mock;
 
 jest.mock('lodash.debounce', () => (fn: jest.Mock) => {
-    if (!mockFunction) mockFunction = fn as jest.Mock;
+    if (!mockFunction) mockFunction = fn;
     return mockFunction;
 });
 

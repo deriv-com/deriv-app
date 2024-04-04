@@ -5,6 +5,8 @@ import {
     calculateWidth,
     calculateZindex,
     DRAGGABLE_CONSTANTS,
+    EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN,
+    SAFETY_MARGIN,
     TDraggableProps,
 } from './draggable-utils';
 import './draggable.scss';
@@ -117,8 +119,8 @@ const Draggable: React.FC<TDraggableProps> = ({
             }
 
             setPosition(prev => {
-                const maxY = Math.max(newY, topOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN);
-                const maxX = Math.max(newX, leftOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN);
+                const maxY = Math.max(newY, topOffset + SAFETY_MARGIN);
+                const maxX = Math.max(newX, leftOffset + SAFETY_MARGIN);
                 return { x: newWidth <= minWidth ? prev.x : maxX, y: newHeight <= minHeight ? prev.y : maxY };
             });
 
@@ -154,18 +156,18 @@ const Draggable: React.FC<TDraggableProps> = ({
             const newX = deltaX + initialX;
             const newY = deltaY + initialY;
             const boundedX = Math.min(
-                Math.max(newX, leftOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN),
+                Math.max(newX, leftOffset + SAFETY_MARGIN),
                 leftOffset +
                     (boundaryRect?.width ?? 0) -
                     size.width -
-                    (DRAGGABLE_CONSTANTS.SAFETY_MARGIN + DRAGGABLE_CONSTANTS.EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN * 2)
+                    (SAFETY_MARGIN + EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN * 2)
             );
             const boundedY = Math.min(
-                Math.max(newY, topOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN),
+                Math.max(newY, topOffset + SAFETY_MARGIN),
                 topOffset +
                     (boundaryRect?.height ?? 0) -
                     size.height -
-                    (DRAGGABLE_CONSTANTS.SAFETY_MARGIN + DRAGGABLE_CONSTANTS.EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN * 2)
+                    (SAFETY_MARGIN + EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN * 2)
             );
             setPosition({ x: boundedX, y: boundedY });
         };
@@ -195,6 +197,7 @@ const Draggable: React.FC<TDraggableProps> = ({
             onMouseDown={() => calculateZindex({ setZIndex })}
             onKeyDown={() => calculateZindex({ setZIndex })}
             data-testid='dt_react_draggable'
+            tabIndex={0}
         >
             <div
                 ref={draggableRef}
@@ -211,6 +214,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                     onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
                         e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                     }
+                    tabIndex={0}
                 >
                     <div className={`draggable-content__header__title`}>{header}</div>
                     <div
@@ -235,6 +239,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
                             onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.TOP)}
+                            tabIndex={0}
                         />
                         <div
                             className='resizable-handle__right'
@@ -244,6 +249,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
                             onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.RIGHT)}
+                            tabIndex={0}
                         />
                         <div
                             className='resizable-handle__bottom'
@@ -253,6 +259,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
                             onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.BOTTOM)}
+                            tabIndex={0}
                         />
                         <div
                             className='resizable-handle__left'
@@ -262,6 +269,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
                             onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.LEFT)}
+                            tabIndex={0}
                         />
                         <div
                             className='resizable-handle__top-right'
@@ -271,6 +279,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
                             onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.TOP_RIGHT)}
+                            tabIndex={0}
                         />
                         <div
                             className='resizable-handle__bottom-right'
@@ -280,6 +289,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
                             onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.BOTTOM_RIGHT)}
+                            tabIndex={0}
                         />
                         <div
                             className='resizable-handle__bottom-left'
@@ -289,6 +299,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
                             onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.BOTTOM_LEFT)}
+                            tabIndex={0}
                         />
                         <div
                             className='resizable-handle__top-left'
@@ -298,6 +309,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                                 e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
                             }
                             onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.TOP_LEFT)}
+                            tabIndex={0}
                         />
                     </>
                 )}

@@ -9,9 +9,9 @@ export enum DRAGGABLE_CONSTANTS {
     BOTTOM_LEFT = 'bottom-left',
     TOP_LEFT = 'top-left',
     BODY_REF = 'body',
-    SAFETY_MARGIN = 5,
-    EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN = 2,
 }
+export const SAFETY_MARGIN = 5;
+export const EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN = 2;
 
 export type TCalculateWidth = {
     prevWidth: number;
@@ -80,21 +80,22 @@ export const calculateWidth = ({
     clientX,
     self,
 }: TCalculateWidth) => {
-    const leftLimit = boundaryRect?.left ?? 0 + leftOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN;
-    const rightLimit =
-        (boundaryRect?.left ?? 0) +
-        (boundaryRect?.width ?? 0) -
-        (DRAGGABLE_CONSTANTS.SAFETY_MARGIN + DRAGGABLE_CONSTANTS.EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN);
+    const leftBoundary = boundaryRect?.left ?? 0;
+    const boundaryWidth = boundaryRect?.width ?? 0;
+    const leftLimit = leftBoundary + leftOffset + SAFETY_MARGIN;
+    const selfLeft = self?.left ?? 0;
+
+    const rightLimit = leftBoundary + boundaryWidth - (SAFETY_MARGIN + EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN);
     const calculatedPreviousWidth = rightLimit - leftLimit - (rightLimit - initialSelfRight);
+
     if (resize_direction.includes(DRAGGABLE_CONSTANTS.LEFT)) {
         if (newWidth >= minWidth && clientX > leftLimit) return newWidth;
-        if (clientX < leftLimit + DRAGGABLE_CONSTANTS.SAFETY_MARGIN * 2)
-            return calculatedPreviousWidth - DRAGGABLE_CONSTANTS.SAFETY_MARGIN * 2;
+        if (clientX < leftLimit + SAFETY_MARGIN * 2) return calculatedPreviousWidth - SAFETY_MARGIN * 2;
         return prevWidth;
     }
     if (resize_direction.includes(DRAGGABLE_CONSTANTS.RIGHT)) {
         if (newWidth >= minWidth && clientX < rightLimit) return newWidth;
-        if (clientX > rightLimit) return rightLimit - (self?.left ?? 0);
+        if (clientX > rightLimit) return rightLimit - selfLeft;
         return prevWidth;
     }
     return prevWidth;
@@ -111,21 +112,22 @@ export const calculateHeight = ({
     clientY,
     self,
 }: TCalculateHeight) => {
-    const topLimit = boundaryRect?.top ?? 0 + topOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN;
-    const bottomLimit =
-        (boundaryRect?.top ?? 0) +
-        (boundaryRect?.height ?? 0) -
-        (DRAGGABLE_CONSTANTS.SAFETY_MARGIN + DRAGGABLE_CONSTANTS.EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN);
+    const topBoundary = boundaryRect?.top ?? 0;
+    const boundaryHeight = boundaryRect?.height ?? 0;
+    const topLimit = topBoundary + topOffset + SAFETY_MARGIN;
+    const selfTop = self?.top ?? 0;
+
+    const bottomLimit = topBoundary + boundaryHeight - (SAFETY_MARGIN + EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN);
     const calculatedPreviousHeight = bottomLimit - topLimit - (bottomLimit - initialSelfBottom);
+
     if (resize_direction.includes(DRAGGABLE_CONSTANTS.TOP)) {
         if (newHeight >= minHeight && clientY > topLimit) return newHeight;
-        if (clientY < topLimit + DRAGGABLE_CONSTANTS.SAFETY_MARGIN * 2)
-            return calculatedPreviousHeight - DRAGGABLE_CONSTANTS.SAFETY_MARGIN * 2;
+        if (clientY < topLimit + SAFETY_MARGIN * 2) return calculatedPreviousHeight - SAFETY_MARGIN * 2;
         return prevHeight;
     }
     if (resize_direction.includes(DRAGGABLE_CONSTANTS.BOTTOM)) {
         if (newHeight >= minHeight && clientY < bottomLimit) return newHeight;
-        if (clientY > bottomLimit) return bottomLimit - (self?.top ?? 0);
+        if (clientY > bottomLimit) return bottomLimit - selfTop;
         return prevHeight;
     }
     return prevHeight;

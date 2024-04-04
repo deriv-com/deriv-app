@@ -29,7 +29,7 @@ const WalletCard: React.FC<TProps> = ({
     const { isLoading } = useBalance();
 
     return (
-        <div
+        <button
             className={classNames('wallets-card', { 'wallets-card__carousel-content': isCarouselContent })}
             onClick={onClick}
         >
@@ -84,7 +84,7 @@ const WalletCard: React.FC<TProps> = ({
                     </div>
                 </WalletGradientBackground>
             </div>
-        </div>
+        </button>
     );
 };
 

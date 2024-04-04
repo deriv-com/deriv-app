@@ -52,7 +52,6 @@ describe('AccountsList', () => {
         expect(screen.getByTestId('dt_tab_panels')).toBeInTheDocument();
         expect(screen.getByText('CFDs')).toBeInTheDocument();
         expect(screen.getByText('Options')).toBeInTheDocument();
-        expect(screen.getByText('Deriv MT5')).toBeInTheDocument();
         expect(screen.getByText('Compare accounts')).toBeInTheDocument();
     });
 

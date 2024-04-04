@@ -1,9 +1,22 @@
 import React from 'react';
+import { Modal } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ACCOUNT_MODAL_REF } from '../../../constants';
 import { RiskToleranceWarningModal } from '../RiskToleranceWarningModal';
 
 describe('RiskToleranceWarningModal', () => {
+    let elModalRoot: HTMLElement;
+    beforeAll(() => {
+        elModalRoot = document.createElement('div');
+        elModalRoot.setAttribute('id', ACCOUNT_MODAL_REF.replace('#', ''));
+        document.body.appendChild(elModalRoot);
+        Modal.setAppElement(ACCOUNT_MODAL_REF);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(elModalRoot);
+    });
     it('should renders correctly with the modal open', () => {
         const handleSubmit = jest.fn();
         const isModalOpen = true;

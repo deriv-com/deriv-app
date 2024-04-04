@@ -89,7 +89,7 @@ const WalletsResetMT5Password = ({
                           <Trans defaults='Cancel' />
                       </WalletButton>
                       <WalletButton
-                          disabled={!validPassword(password)}
+                          disabled={!isValidPassword}
                           isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                           onClick={handleSubmit}
                           size='lg'

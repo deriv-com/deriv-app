@@ -31,6 +31,10 @@ const recent_strategies = [
 
 const zoom_icons = ['zoom-in', 'zoom-out'];
 
+window.Blockly = {
+    derivWorkspace: { asyncClear: () => ({}) },
+};
+
 describe('LoadModal', () => {
     let modal_root_el: HTMLElement,
         wrapper: ({ children }: { children: JSX.Element }) => JSX.Element,

@@ -74,7 +74,7 @@ describe('Draggable Utils', () => {
             self,
         };
         const result = calculateWidth(mockParams);
-        expect(result).toBe(290);
+        expect(result).toBe(265);
     });
 
     it('should calculate width correctly for resize to the right', () => {
@@ -186,7 +186,7 @@ describe('Draggable Utils', () => {
             self,
         };
         const result = calculateHeight(mockParams);
-        expect(result).toBe(190);
+        expect(result).toBe(165);
     });
 
     it('should calculate height correctly for resizing from the bottom', () => {

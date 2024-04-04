@@ -6,13 +6,15 @@
     padding: 0.5rem 0.6rem;
     position: absolute;
     top: 0;
-    left: 23.2rem;
+    inset-inline-start: 23.2rem;
     background-color: var(--general-main-1);
 
     @include mobile {
         height: calc(100% - 6.4rem);
         left: 0;
         overflow-y: auto;
+        inset-inline-start: 0;
+        overflow-x: auto;
         width: 100%;
         padding: 0;
         &::-webkit-scrollbar {

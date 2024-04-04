@@ -108,7 +108,8 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
                 />
             );
         }
-    }, [createAccountError, isAccountCreated, isDemo, show, walletCurrencyType]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [createAccountError, isAccountCreated, isDemo, walletCurrencyType]);
 
     const onClickAdd = () => {
         if (isCrypto && USDSVGWallet) {

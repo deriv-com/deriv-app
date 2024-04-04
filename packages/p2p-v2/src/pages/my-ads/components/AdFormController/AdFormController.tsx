@@ -1,14 +1,14 @@
 import React, { MouseEventHandler } from 'react';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import './AdFormController.scss';
 
 type TAdFormControllerProps = {
     getCurrentStep: () => number;
     getTotalSteps: () => number;
     goToNextStep: MouseEventHandler<HTMLButtonElement>;
-    goToPreviousStep: MouseEventHandler<HTMLButtonElement>;
+    goToPreviousStep: () => void;
     isNextButtonDisabled: boolean;
-    onCancel: () => void;
+    onCancel?: () => void;
 };
 
 const AdFormController = ({
@@ -19,25 +19,33 @@ const AdFormController = ({
     isNextButtonDisabled,
     onCancel,
 }: TAdFormControllerProps) => {
+    const { isMobile } = useDevice();
+    const textSize = isMobile ? 'md' : 'sm';
     return (
         <div className='p2p-v2-ad-form-controller'>
-            {getCurrentStep() === 1 && (
-                <Button color='black' onClick={onCancel} variant='outlined'>
-                    Cancel
-                </Button>
-            )}
-            {getCurrentStep() > 1 && (
-                <Button color='black' onClick={goToPreviousStep} variant='outlined'>
-                    Previous
-                </Button>
-            )}
-
+            <Button
+                color='black'
+                onClick={() => (onCancel ? onCancel() : goToPreviousStep())}
+                size='lg'
+                textSize={textSize}
+                variant='outlined'
+            >
+                {onCancel ? 'Cancel' : 'Previous'}
+            </Button>
             {getCurrentStep() < getTotalSteps() ? (
-                <Button disabled={isNextButtonDisabled} onClick={goToNextStep} variant='contained'>
+                <Button
+                    disabled={isNextButtonDisabled}
+                    onClick={goToNextStep}
+                    size='lg'
+                    textSize={textSize}
+                    variant='contained'
+                >
                     Next
                 </Button>
             ) : (
-                <Button>Post ad</Button>
+                <Button size='lg' textSize={textSize}>
+                    Post ad
+                </Button>
             )}
         </div>
     );

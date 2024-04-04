@@ -35,6 +35,7 @@
     "author": "Binary.com",
     "license": "MIT",
     "devDependencies": {
+        "@testing-library/react": "^12.0.0",
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
         "@types/react": "^18.0.7",
@@ -67,10 +68,11 @@
         "webpack-cli": "^4.7.2"
     },
     "dependencies": {
-        "@datadog/browser-logs": "^4.36.0",
+        "@deriv/api-types": "^1.0.172",
+        "@datadog/browser-logs": "^5.11.0",
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-charts": "^2.1.7",
+        "@deriv/deriv-charts": "^2.1.11",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/api": "^1.0.0",
@@ -93,6 +95,11 @@
         "react-rnd": "^10.4.1",
         "react-transition-group": "4.4.2",
         "scratch-blocks": "^1.0.7",
-        "yup": "^0.32.11"
+        "yup": "^0.32.11",
+        "react-toastify": "^9.1.3",
+        "moment": "^2.29.2",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/react-router-dom": "^5.1.6",
+        "react-router-dom": "^5.2.0"
     }
 }

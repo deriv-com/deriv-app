@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
 import { Localize, localize } from '@deriv/translations';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
-import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import {
+    filterObjProperties,
+    toMoment,
+    removeEmptyPropertiesFromObject,
+    getIDVNotApplicableOption,
+} from '@deriv/shared';
 import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';
@@ -39,6 +44,10 @@ export const IdvDocSubmitOnSignup = ({
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;
+
+        if (shouldSkipIdv(document_type.id)) {
+            return errors;
+        }
         const needs_additional_document = !!document_type.additional;
 
         errors.document_type = isDocumentTypeValid(document_type);
@@ -65,6 +74,9 @@ export const IdvDocSubmitOnSignup = ({
 
         return removeEmptyPropertiesFromObject(errors);
     };
+
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+    const shouldSkipIdv = (document_id?: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
@@ -102,26 +114,25 @@ export const IdvDocSubmitOnSignup = ({
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
-                        <IDVForm
-                            selected_country={citizen_data}
-                            class_name='idv-layout'
-                            is_for_real_account_signup_modal
-                            is_for_mt5
-                        />
-                        <FormSubHeader title={localize('Identity verification')} />
-                        <PersonalDetailsForm
-                            class_name='account-form__poi-confirm-example_container'
-                            is_rendered_for_idv
-                            editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
-                            side_note={side_note_image}
-                            inline_note_text={
-                                <Localize
-                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-                                    components={[<strong key={0} />]}
+                        <IDVForm selected_country={citizen_data} class_name='idv-layout' is_for_mt5 />
+                        {!shouldSkipIdv(values?.document_type?.id) && (
+                            <Fragment>
+                                <FormSubHeader title={localize('Identity verification')} />
+                                <PersonalDetailsForm
+                                    class_name='account-form__poi-confirm-example_container'
+                                    is_rendered_for_idv
+                                    editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
+                                    side_note={side_note_image}
+                                    inline_note_text={
+                                        <Localize
+                                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                            components={[<strong key={0} />]}
+                                        />
+                                    }
+                                    residence_list={residence_list}
                                 />
-                            }
-                            residence_list={residence_list}
-                        />
+                            </Fragment>
+                        )}
                     </section>
                     <FormFooter className='proof-of-identity__footer'>
                         <Button

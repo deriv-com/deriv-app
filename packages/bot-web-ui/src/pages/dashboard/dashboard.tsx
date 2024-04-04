@@ -5,7 +5,6 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
-import { rudderstackDashboardClose, rudderstackDashboardOpen } from './analytics/rudderstack-dashboard';
 import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
@@ -22,26 +21,6 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const { is_mobile } = ui;
-    const get_first_strategy_info = React.useRef(false);
-
-    React.useEffect(() => {
-        if (!get_first_strategy_info.current) {
-            //on dashbord umount fire close event for rudderstack
-            get_first_strategy_info.current = true;
-            rudderstackDashboardOpen({
-                bot_name: dashboard_strategies?.[0]?.name,
-                preview_mode: dashboard_strategies?.length ? 'yes' : 'no',
-                bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
-            });
-        }
-        return () => {
-            rudderstackDashboardClose({
-                bot_name: dashboard_strategies?.[0]?.name,
-                preview_mode: dashboard_strategies?.length ? 'yes' : 'no',
-                bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
-            });
-        };
-    }, []);
 
     return (
         <React.Fragment>

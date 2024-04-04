@@ -398,7 +398,6 @@ type RealAccountSignupSettings = {
 type TCountryStandpoint = {
     is_belgium: boolean;
     is_france: boolean;
-    is_isle_of_man: boolean;
     is_other_eu: boolean;
     is_rest_of_eu: boolean;
     is_united_kingdom: boolean;

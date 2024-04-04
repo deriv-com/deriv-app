@@ -144,32 +144,13 @@ const addressDetailsConfig = (
         props: {
             validate: generateValidationFunction(
                 real_account_signup_target,
-                transformConfig(transformForResidence(config, residence), real_account_signup_target)
+                transformConfig(config, real_account_signup_target)
             ),
             disabled_items,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardAddress',
     };
-};
-
-/**
- * Transform general rules based on residence
- * @name transformForResidence
- * @param  rules - Original rules
- * @param residence - Client's residence
- * @return rules - Transformed rules
- */
-const transformForResidence = (rules: TSchema, residence: string) => {
-    // Isle of Man Clients do not need to fill out state since API states_list is empty.
-    if (residence === 'im') {
-        rules.address_state.rules?.shift();
-    }
-    // GB residence are required to fill in the post code.
-    if (/^(im|gb)$/.test(residence)) {
-        rules.address_postcode.rules?.splice(0, 0, ['req', localize('Postal/ZIP code is required')]);
-    }
-    return rules;
 };
 
 export const transformConfig = (config: TSchema, real_account_signup_target: string) => {

@@ -115,7 +115,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             country_standpoint: {
                 is_belgium: false,
                 is_france: false,
-                is_isle_of_man: false,
                 is_other_eu: false,
                 is_rest_of_eu: false,
                 is_united_kingdom: false,

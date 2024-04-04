@@ -3,7 +3,6 @@ import React from 'react';
 
 type TReportsMeta = {
     filter_component: React.ReactNode;
-    optional_component?: React.ReactNode;
     className?: string;
     is_statement?: boolean;
 };

@@ -25,6 +25,16 @@ jest.mock('@deriv/api-v2', () => ({
                 isSuccess: false,
                 mutate: jest.fn(),
             }),
+            useGet: () => ({
+                data: {},
+                isLoading: false,
+            }),
+            useUpdate: () => ({
+                error: undefined,
+                isError: false,
+                isSuccess: false,
+                mutate: jest.fn(),
+            }),
         },
         settings: {
             useGetSettings: () => ({
@@ -38,7 +48,9 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 jest.mock('@/hooks', () => ({
+    ...jest.requireActual('@/hooks'),
     useFloatingRate: () => ({ rateType: 'floating' }),
+    useQueryString: jest.fn().mockReturnValue({ queryString: { advertId: '' } }),
 }));
 
 jest.mock('../../../components/AdWizard', () => ({

@@ -31,18 +31,14 @@ jest.mock('react-hook-form', () => ({
     }),
 }));
 
-const mockUseHistory = {
-    push: jest.fn(),
-};
-
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: () => mockUseHistory,
-}));
-
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn().mockReturnValue({ isMobile: false }),
+}));
+
+jest.mock('@/hooks', () => ({
+    ...jest.requireActual('@/hooks'),
+    useQueryString: jest.fn().mockReturnValue({ queryString: { advertId: '' } }),
 }));
 
 const mockProps = {
@@ -52,6 +48,7 @@ const mockProps = {
     goToNextStep: jest.fn(),
     goToPreviousStep: jest.fn(),
     localCurrency: 'usd',
+    onCancel: jest.fn(),
     rateType: 'float',
 };
 
@@ -73,7 +70,7 @@ describe('AdTypeSection', () => {
         render(<AdTypeSection {...mockProps} />);
         const element = screen.getByRole('button', { name: 'Cancel' });
         userEvent.click(element);
-        expect(mockUseHistory.push).toHaveBeenCalledWith(MY_ADS_URL);
+        expect(mockProps.onCancel).toHaveBeenCalled();
     });
     it('should handle the trigger validation', () => {
         render(<AdTypeSection {...mockProps} />);

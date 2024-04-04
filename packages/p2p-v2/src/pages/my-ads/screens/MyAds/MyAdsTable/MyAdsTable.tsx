@@ -1,15 +1,16 @@
 import React, { memo, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { THooks } from 'types';
 import { Table } from '@/components';
 import { MyAdsDeleteModal } from '@/components/Modals';
 import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
-import { AD_ACTION } from '@/constants';
+import { AD_ACTION, MY_ADS_URL } from '@/constants';
 import { p2p } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { MyAdsEmpty } from '../../MyAdsEmpty';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
 import MyAdsDisplayWrapper from './MyAdsDisplayWrapper';
 import './MyAdsTable.scss';
-import { THooks } from 'types';
 
 export type TMyAdsTableRowRendererProps = Required<THooks.AdvertiserAdverts.Get>[0] & {
     balanceAvailable: number;
@@ -55,6 +56,7 @@ const MyAdsTable = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [advertId, setAdvertId] = useState('');
     const [isShareAdsModalOpen, setIsShareAdsModalOpen] = useState(false);
+    const history = useHistory();
 
     useEffect(() => {
         if (isSuccess) {
@@ -86,6 +88,10 @@ const MyAdsTable = () => {
             case AD_ACTION.SHARE: {
                 setAdvertId(id);
                 setIsShareAdsModalOpen(true);
+                break;
+            }
+            case AD_ACTION.EDIT: {
+                history.push(`${MY_ADS_URL}?formAction=edit&advertId=${id}`);
                 break;
             }
             default:

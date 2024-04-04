@@ -7,6 +7,7 @@ import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
+import { useHistory } from 'react-router-dom';
 
 type TProps = {
     onWalletSettled?: (value: boolean) => void;
@@ -25,6 +26,7 @@ const TRANSITION_FACTOR_SCALE = 1 - 25.6 / 28.8;
  */
 const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     const switchWalletAccount = useWalletAccountSwitcher();
+    const history = useHistory();
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
@@ -223,6 +225,11 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}
                         landingCompanyName={account.landing_company_name}
+                        onClick={() =>
+                            account.is_virtual
+                                ? history.push('/wallets/cashier/reset-balance')
+                                : history.push('/wallets/cashier/deposit')
+                        }
                     />
                 ))}
             </div>

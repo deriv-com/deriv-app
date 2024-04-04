@@ -497,7 +497,7 @@ export default class LoadModalStore implements ILoadModalStore {
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
         const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
-        reader.onload = action(e => {
+        reader.onload = action(async e => {
             const load_options = {
                 block_string: e?.target?.result,
                 drop_event,
@@ -507,7 +507,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
-            const ref = document.getElementById('load-strategy__blockly-container');
+            const ref = document?.getElementById('load-strategy__blockly-container');
             if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -523,7 +523,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 load_options.workspace = window.Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
-            load(load_options);
+            await load(load_options);
         });
         reader.readAsText(file);
     };

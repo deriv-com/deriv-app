@@ -48,7 +48,6 @@ describe('Passkeys', () => {
     let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;
     const create_passkey = 'Create passkey';
 
-    // let modal_root_el: HTMLElement;
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');

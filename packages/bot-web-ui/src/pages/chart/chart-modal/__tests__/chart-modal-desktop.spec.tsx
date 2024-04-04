@@ -1,10 +1,18 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
+import { TWebSocket } from 'Types';
 import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import ChartModalDesktop from '../chart-modal-desktop';
+
+let mockFunction: boolean | jest.Mock;
+
+jest.mock('lodash.debounce', () => (fn: jest.Mock) => {
+    if (!mockFunction) mockFunction = fn as jest.Mock;
+    return mockFunction;
+});
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
@@ -22,22 +30,18 @@ jest.mock('../../../chart', () => ({
     default: () => <div>Mocked Chart component</div>,
 }));
 
+jest.useFakeTimers();
+
 describe('ChartModalDesktop', () => {
-    beforeEach(() => {
-        jest.resetModules();
-    });
-
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
-
-    beforeAll(() => {
+    const mock_websocket = mock_ws as unknown as TWebSocket;
+    beforeEach(() => {
+        mockFunction = false;
         const mock_store = mockStore({});
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-
-        mock_DBot_store?.dashboard?.setChartModalVisibility();
-
+        mock_DBot_store = mockDBotStore(mock_store, mock_websocket);
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                <DBotStoreProvider ws={mock_websocket} mock={mock_DBot_store}>
                     {children}
                 </DBotStoreProvider>
             </StoreProvider>
@@ -45,40 +49,12 @@ describe('ChartModalDesktop', () => {
     });
 
     it('should render ChartModalDesktop', () => {
+        mock_DBot_store?.dashboard?.setChartModalVisibility();
         render(<ChartModalDesktop />, {
             wrapper,
         });
-
+        jest.advanceTimersByTime(400);
         const chart_modal_dialog = screen.queryByText('Mocked Chart component');
-
-        expect(chart_modal_dialog).toBeInTheDocument();
-    });
-
-    it('should show ChartModalDesktop modal after resizing screen', async () => {
-        const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
-
-        render(<ChartModalDesktop />, {
-            wrapper,
-        });
-
-        const resizeEvent = new Event('resize');
-        Object.defineProperty(window, 'innerWidth', { value: 80000 });
-        Object.defineProperty(window, 'innerHeight', { value: 6000 });
-
-        act(() => {
-            window.dispatchEvent(resizeEvent);
-        });
-
-        const draggable_element = await screen.findByTestId('react-rnd-wrapper');
-        const computedStyle = window.getComputedStyle(draggable_element);
-        const transformValue = computedStyle.getPropertyValue('transform');
-
-        expect(addEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function));
-        expect(transformValue).toBe('translate(0px,0px)');
-
-        addEventListenerSpy.mockRestore();
-
-        const chart_modal_dialog = screen.queryByTestId('chart-modal-dialog');
         expect(chart_modal_dialog).toBeInTheDocument();
     });
 });

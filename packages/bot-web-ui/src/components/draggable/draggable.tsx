@@ -1,108 +1,309 @@
-import React, { PropsWithChildren, useState } from 'react';
-import { Rnd } from 'react-rnd';
-import { CSSTransition } from 'react-transition-group';
+import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import {
+    calculateHeight,
+    calculateWidth,
+    calculateZindex,
+    DRAGGABLE_CONSTANTS,
+    TDraggableProps,
+} from './draggable-utils';
+import './draggable.scss';
 
-type DraggableProps = {
-    bounds?: string | Element;
-    dragHandleClassName?: string;
-    enableResizing?: boolean;
-    height?: number | string;
-    header_title: string;
-    is_visible: boolean;
-    minWidth?: number | string;
-    onCloseDraggable: () => void;
-    width?: number | string;
-    xaxis?: number;
-    yaxis?: number;
-};
-const PARENT_CLASS = 'react-rnd-wrapper';
-
-export default function Draggable({
-    bounds = 'window',
+const Draggable: React.FC<TDraggableProps> = ({
     children,
-    dragHandleClassName,
-    enableResizing = true,
-    header_title,
-    height = 'fit-content',
-    is_visible,
-    minWidth,
-    onCloseDraggable,
-    width = 'fit-content',
-    xaxis = 0,
-    yaxis = 0,
-}: PropsWithChildren<DraggableProps>) {
-    const [first_drag_x, setFirstDragX] = useState(xaxis);
-    const [first_drag_y, setFirstDragY] = useState(yaxis);
-    const [first_left, setFirstLeft] = useState(0);
-    const [first_top, setFirstTop] = useState(0);
+    boundary,
+    initialValues = {
+        width: 400,
+        height: 400,
+        xAxis: 0,
+        yAxis: 0,
+    },
+    minWidth = 100,
+    minHeight = 100,
+    enableResizing = false,
+    enableDragging = true,
+    header = '',
+    onClose,
+}) => {
+    const [position, setPosition] = useState({ x: initialValues.xAxis, y: initialValues.yAxis });
+    const [size, setSize] = useState({ width: initialValues.width, height: initialValues.height });
+    const [zIndex, setZIndex] = useState(100);
 
-    return is_visible ? (
-        <Rnd
-            bounds={bounds}
-            className='react-rnd-wrapper'
-            data-testid='react-rnd-wrapper'
-            default={{
-                x: xaxis,
-                y: yaxis,
-                width,
-                height,
-            }}
-            style={{
-                left: xaxis,
-                top: yaxis,
-            }}
-            dragHandleClassName={dragHandleClassName}
-            enableResizing={{ right: enableResizing, bottom: enableResizing, bottomRight: enableResizing }}
-            minHeight={height}
-            minWidth={minWidth}
-            onDrag={(e, data) => {
-                //we need these calculations since we no longer use the 'transform: translate(x, y)' property
-                //as it causes unexpected behaviour of Beta Chart styles & helps avoid bounce bug upon the first drag
-                data.node.style.left = `${data.lastX - first_drag_x + first_left + data.deltaX}px`;
-                data.node.style.top = `${data.lastY - first_drag_y + first_top + data.deltaY}px`;
-            }}
-            onDragStart={(e, data) => {
-                setFirstDragX(data.x);
-                setFirstDragY(data.y);
-                setFirstLeft(parseInt(data.node.style.left));
-                setFirstTop(parseInt(data.node.style.top));
-                // on responsive devices touch event is not triggering the close button action
-                // need to handle it manually
-                const parentElement = (e?.target as HTMLDivElement)?.parentElement;
-                if (parentElement?.role === 'button' || parentElement?.tagName === 'svg') {
-                    onCloseDraggable();
+    const isResizing = useRef(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const draggableRef = useRef<HTMLDivElement>(null);
+    const [boundaryRef, setBoundaryRef] = useState(
+        document.querySelector(boundary ?? DRAGGABLE_CONSTANTS.BODY_REF) as HTMLElement | null
+    );
+
+    useEffect(() => {
+        setSize({ width: initialValues.width, height: initialValues.height });
+        setPosition({ x: initialValues.xAxis, y: initialValues.yAxis });
+    }, [initialValues.height, initialValues.width, initialValues.xAxis, initialValues.yAxis]);
+
+    useEffect(() => {
+        const boundaryEl = document.querySelector(boundary ?? DRAGGABLE_CONSTANTS.BODY_REF) as HTMLElement | null;
+        setBoundaryRef(boundaryEl);
+        calculateZindex({ setZIndex });
+    }, [boundary]);
+
+    const handleMouseDown = (event: React.MouseEvent<HTMLElement, MouseEvent> | null, action: string) => {
+        event?.stopPropagation();
+        calculateZindex({ setZIndex });
+        if (!action) return;
+        const resize_direction = action;
+        isResizing.current = action !== DRAGGABLE_CONSTANTS.MOVE && enableResizing;
+        setIsDragging(action === DRAGGABLE_CONSTANTS.MOVE && enableDragging);
+
+        const boundaryRect = boundaryRef?.getBoundingClientRect();
+        const topOffset = boundaryRef?.offsetTop ?? 0;
+        const leftOffset = boundaryRef?.offsetLeft ?? 0;
+        const initialMouseX = event?.clientX ?? 0;
+        const initialMouseY = event?.clientY ?? 0;
+        const initialWidth = size?.width ?? initialValues.width;
+        const initialHeight = size?.height ?? initialValues.height;
+        const initialX = position?.x ?? 0;
+        const initialY = position?.y ?? 0;
+        const initialSelfRight = draggableRef.current?.getBoundingClientRect()?.right ?? size.width;
+        const initialSelfBottom = draggableRef.current?.getBoundingClientRect()?.bottom ?? size.height;
+
+        let previousStyle = {};
+        const draggableContentBody = draggableRef.current?.querySelector(
+            '#draggable-content-body'
+        ) as HTMLElement | null;
+
+        if (draggableContentBody) {
+            const { style } = draggableContentBody;
+            if (style && style.pointerEvents !== 'none') {
+                previousStyle = { ...style };
+                style.pointerEvents = 'none';
+            }
+        }
+
+        const handleMouseMove = (e: { clientX: number; clientY: number }) => {
+            if (!e) return;
+            const { clientX, clientY } = e;
+            const deltaX = clientX - initialMouseX;
+            const deltaY = clientY - initialMouseY;
+            try {
+                if (isResizing.current) {
+                    handleResize(deltaX, deltaY, clientX, clientY);
+                } else {
+                    handleDrag(deltaX, deltaY);
                 }
-            }}
+            } catch (error) {
+                handleMouseUp();
+            }
+        };
+
+        const handleResize = (deltaX: number, deltaY: number, clientX: number, clientY: number) => {
+            let newX = position?.x ?? 0;
+            let newY = position?.y ?? 0;
+            let newWidth = initialWidth;
+            let newHeight = initialHeight;
+
+            if (resize_direction.includes(DRAGGABLE_CONSTANTS.RIGHT)) {
+                newWidth += deltaX;
+            } else if (resize_direction.includes(DRAGGABLE_CONSTANTS.LEFT)) {
+                newX = deltaX + initialX;
+                newWidth -= deltaX;
+            }
+
+            if (resize_direction.includes(DRAGGABLE_CONSTANTS.BOTTOM)) {
+                newHeight += deltaY;
+            } else if (resize_direction.includes(DRAGGABLE_CONSTANTS.TOP)) {
+                newY = deltaY + initialY;
+                newHeight -= deltaY;
+            }
+
+            setPosition(prev => {
+                const maxY = Math.max(newY, topOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN);
+                const maxX = Math.max(newX, leftOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN);
+                return { x: newWidth <= minWidth ? prev.x : maxX, y: newHeight <= minHeight ? prev.y : maxY };
+            });
+
+            const self = draggableRef.current?.getBoundingClientRect();
+
+            setSize(prev => ({
+                width: calculateWidth({
+                    prevWidth: prev.width,
+                    leftOffset,
+                    boundaryRect,
+                    initialSelfRight,
+                    resize_direction,
+                    newWidth,
+                    minWidth,
+                    clientX,
+                    self,
+                }),
+                height: calculateHeight({
+                    prevHeight: prev.height,
+                    topOffset,
+                    boundaryRect,
+                    initialSelfBottom,
+                    resize_direction,
+                    newHeight,
+                    minHeight,
+                    clientY,
+                    self,
+                }),
+            }));
+        };
+
+        const handleDrag = (deltaX: number, deltaY: number) => {
+            const newX = deltaX + initialX;
+            const newY = deltaY + initialY;
+            const boundedX = Math.min(
+                Math.max(newX, leftOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN),
+                leftOffset +
+                    (boundaryRect?.width ?? 0) -
+                    size.width -
+                    (DRAGGABLE_CONSTANTS.SAFETY_MARGIN + DRAGGABLE_CONSTANTS.EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN * 2)
+            );
+            const boundedY = Math.min(
+                Math.max(newY, topOffset + DRAGGABLE_CONSTANTS.SAFETY_MARGIN),
+                topOffset +
+                    (boundaryRect?.height ?? 0) -
+                    size.height -
+                    (DRAGGABLE_CONSTANTS.SAFETY_MARGIN + DRAGGABLE_CONSTANTS.EXTRA_BOTTOM_RIGHT_SAFETY_MARGIN * 2)
+            );
+            setPosition({ x: boundedX, y: boundedY });
+        };
+
+        const handleMouseUp = () => {
+            setIsDragging(false);
+            isResizing.current = false;
+            if (draggableContentBody?.style) {
+                Object.assign(draggableContentBody.style, previousStyle);
+            }
+            if (boundaryRef) {
+                window.removeEventListener('mousemove', handleMouseMove);
+                window.removeEventListener('mouseup', handleMouseUp);
+            }
+        };
+
+        if (boundaryRef) {
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mouseup', handleMouseUp);
+        }
+    };
+
+    return (
+        <div
+            className={`draggable ${isDragging ? 'dragging' : ''}`}
+            style={{ position: 'absolute', top: position.y, left: position.x, zIndex }}
+            onMouseDown={() => calculateZindex({ setZIndex })}
+            onKeyDown={() => calculateZindex({ setZIndex })}
+            data-testid='dt_react_draggable'
         >
-            <CSSTransition
-                appear
-                in={is_visible}
-                timeout={50}
-                classNames={{
-                    appear: 'dc-dialog__wrapper--enter',
-                    enter: 'dc-dialog__wrapper--enter',
-                    enterDone: 'dc-dialog__wrapper--enter-done',
-                    exit: 'dc-dialog__wrapper--exit',
-                }}
-                unmountOnExit
+            <div
+                ref={draggableRef}
+                className='draggable-content'
+                data-testid='dt_react_draggable_content'
+                style={{ width: size.width, height: size.height }}
             >
-                <>
-                    <div className={`${PARENT_CLASS}-header`}>
-                        <div className={`${PARENT_CLASS}-header__title`}>{localize(header_title)}</div>
-                        <div
-                            role='button'
-                            className={`${PARENT_CLASS}-header__close`}
-                            data-testid='react-rnd-close-modal'
-                            onClick={onCloseDraggable}
-                        >
-                            <Icon icon='IcCross' />
-                        </div>
+                <div
+                    id='draggable-content__header'
+                    data-testid='dt_react_draggable_handler'
+                    className='draggable-content__header'
+                    role='button'
+                    onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.MOVE)}
+                    onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                        e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                    }
+                >
+                    <div className={`draggable-content__header__title`}>{header}</div>
+                    <div
+                        role='button'
+                        className={`draggable-content__header__close`}
+                        data-testid='dt_react_draggable-close-modal'
+                        onClick={onClose}
+                    >
+                        <Icon icon='IcCross' />
                     </div>
+                </div>
+                <span className='draggable-content__body' id='draggable-content-body'>
                     {children}
-                </>
-            </CSSTransition>
-        </Rnd>
-    ) : null;
-}
+                </span>
+                {enableResizing && (
+                    <>
+                        <div
+                            className='resizable-handle__top'
+                            data-testid='dt_resizable-handle__top'
+                            role='button'
+                            onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                                e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                            }
+                            onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.TOP)}
+                        />
+                        <div
+                            className='resizable-handle__right'
+                            data-testid='dt_resizable-handle__right'
+                            role='button'
+                            onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                                e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                            }
+                            onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.RIGHT)}
+                        />
+                        <div
+                            className='resizable-handle__bottom'
+                            data-testid='dt_resizable-handle__bottom'
+                            role='button'
+                            onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                                e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                            }
+                            onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.BOTTOM)}
+                        />
+                        <div
+                            className='resizable-handle__left'
+                            data-testid='dt_resizable-handle__left'
+                            role='button'
+                            onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                                e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                            }
+                            onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.LEFT)}
+                        />
+                        <div
+                            className='resizable-handle__top-right'
+                            data-testid='dt_resizable-handle__top-right'
+                            role='button'
+                            onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                                e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                            }
+                            onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.TOP_RIGHT)}
+                        />
+                        <div
+                            className='resizable-handle__bottom-right'
+                            data-testid='dt_resizable-handle__bottom-right'
+                            role='button'
+                            onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                                e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                            }
+                            onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.BOTTOM_RIGHT)}
+                        />
+                        <div
+                            className='resizable-handle__bottom-left'
+                            data-testid='dt_resizable-handle__bottom-left'
+                            role='button'
+                            onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                                e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                            }
+                            onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.BOTTOM_LEFT)}
+                        />
+                        <div
+                            className='resizable-handle__top-left'
+                            data-testid='dt_resizable-handle__top-left'
+                            role='button'
+                            onKeyDown={(e: React.KeyboardEvent<HTMLElement>) =>
+                                e.key === 'Enter' && handleMouseDown(null, DRAGGABLE_CONSTANTS.MOVE)
+                            }
+                            onMouseDown={e => handleMouseDown(e, DRAGGABLE_CONSTANTS.TOP_LEFT)}
+                        />
+                    </>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default Draggable;

@@ -122,8 +122,8 @@ Blockly.Blocks.procedures_defnoreturn = {
                         });
                     }
                 }
+                this.is_adding = false;
             });
-            this.is_adding = false;
         }, 200);
     },
     /**

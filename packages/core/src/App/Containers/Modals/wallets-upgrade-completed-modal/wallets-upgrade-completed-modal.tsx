@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import { Button, Icon, MobileDialog, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -14,7 +15,7 @@ const WalletsUpgradeCompletedModal = observer(() => {
 
     const handleClose = () => {
         setIsOpen(false);
-        localStorage.removeItem('should_show_wallets_upgrade_completed_modal');
+        Cookies.remove('recent_wallets_migration');
         history.push(routes.wallets);
     };
 

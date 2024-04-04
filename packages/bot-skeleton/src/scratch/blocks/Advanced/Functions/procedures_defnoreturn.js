@@ -124,7 +124,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                 }
                 this.is_adding = false;
             });
-        }, 200);
+        }, 0);
     },
     /**
      * Add or remove the statement block from this function definition.

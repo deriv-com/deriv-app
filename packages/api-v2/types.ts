@@ -2645,6 +2645,10 @@ export type TSocketError<T extends TSocketEndpointNames> = {
      * [Optional] Used to map request to response.
      */
     req_id?: number;
+    /**
+     * Error message from useSubscription response
+     */
+    message?: string;
 };
 
 export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<

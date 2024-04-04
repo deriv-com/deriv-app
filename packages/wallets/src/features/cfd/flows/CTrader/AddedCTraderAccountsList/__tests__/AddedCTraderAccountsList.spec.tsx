@@ -1,46 +1,21 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { useCtraderAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { ModalProvider } from '../../../../../../components/ModalProvider';
 import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
-
-type TradingAccountCardProps = {
-    children: ReactNode;
-    leading: ReactNode;
-    trailing: ReactNode;
-};
 
 jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
 }));
 
-jest.mock('../../../../../../components/', () => ({
-    TradingAccountCard: ({ children, leading, trailing }: TradingAccountCardProps) => (
-        <div>
-            {leading}
-            {children}
-            {trailing}
-        </div>
-    ),
+jest.mock('../../../../modals', () => ({
+    MT5TradeModal: () => <div>Mocked MT5 Trade Modal</div>,
 }));
-
-const mockShow = jest.fn();
-jest.mock('../../../../../../components/ModalProvider', () => ({
-    useModal: () => ({ show: mockShow }),
-}));
-
-jest.mock('../../../../../../helpers/urls', () => ({
-    getStaticUrl: () => 'https://deriv.com/deriv-ctrader',
-}));
-
-jest.mock('../../../../../../public/images/ctrader.svg', () => {
-    const MockedSvg = () => <div>CTrader</div>;
-    MockedSvg.displayName = 'MockedSvg';
-    return MockedSvg;
-});
 
 describe('AddedCTraderAccountsList', () => {
+    let $modalContainer: HTMLDivElement;
     const history = createMemoryHistory();
     const mockAccounts = [
         { formatted_balance: '1000', login: '123' },
@@ -48,15 +23,25 @@ describe('AddedCTraderAccountsList', () => {
     ];
 
     beforeEach(() => {
+        jest.clearAllMocks();
+        $modalContainer = document.createElement('div');
+        $modalContainer.id = 'wallets_modal_root';
+        document.body.appendChild($modalContainer);
         (useCtraderAccountsList as jest.Mock).mockReturnValue({
             data: mockAccounts,
         });
     });
 
+    afterEach(() => {
+        document.body.removeChild($modalContainer);
+    });
+
     it('renders TradingAccountCard with cTraderAccounts', () => {
         render(
             <Router history={history}>
-                <AddedCTraderAccountsList />
+                <ModalProvider>
+                    <AddedCTraderAccountsList />
+                </ModalProvider>
             </Router>
         );
 
@@ -66,57 +51,16 @@ describe('AddedCTraderAccountsList', () => {
         });
     });
 
-    it('renders the icon and opens the link when clicked', () => {
-        const mockWindowOpen = jest.fn();
-        window.open = mockWindowOpen;
-
+    it('should show modal on click of cTrader account', () => {
         render(
             <Router history={history}>
-                <AddedCTraderAccountsList />
+                <ModalProvider>
+                    <AddedCTraderAccountsList />
+                </ModalProvider>
             </Router>
         );
 
-        const icon = screen.getAllByText('CTrader');
-        fireEvent.click(icon[0]);
-        expect(mockWindowOpen).toHaveBeenCalledWith('https://deriv.com/deriv-ctrader');
-    });
-
-    it('opens the link when Enter key is pressed for sonarcloud', () => {
-        const mockWindowOpen = jest.fn();
-        window.open = mockWindowOpen;
-
-        render(
-            <Router history={history}>
-                <AddedCTraderAccountsList />
-            </Router>
-        );
-
-        const icon = screen.getAllByText('CTrader');
-        fireEvent.keyDown(icon[0], { code: 'Enter', key: 'Enter' });
-        expect(mockWindowOpen).toHaveBeenCalledWith('https://deriv.com/deriv-ctrader');
-    });
-
-    it('redirects to cashier transfer page when Transfer button is clicked', () => {
-        render(
-            <Router history={history}>
-                <AddedCTraderAccountsList />
-            </Router>
-        );
-
-        const transferButton = screen.getAllByText('Transfer');
-        fireEvent.click(transferButton[0]);
-        expect(history.location.pathname).toEqual('/appstore/traders-hub/cashier/account-transfer');
-    });
-
-    it('opens the MT5TradeModal when Open button is clicked', () => {
-        render(
-            <Router history={history}>
-                <AddedCTraderAccountsList />
-            </Router>
-        );
-
-        const openButton = screen.getAllByText('Open');
-        fireEvent.click(openButton[0]);
-        expect(mockShow).toHaveBeenCalled();
+        fireEvent.click(screen.getAllByTestId('dt_wallets_trading_account_card')[0]);
+        expect(screen.getByText('Mocked MT5 Trade Modal')).toBeInTheDocument();
     });
 });

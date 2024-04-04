@@ -1,60 +1,27 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 import { useCtraderAccountsList } from '@deriv/api-v2';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard } from '../../../../../components';
-import { WalletButton, WalletText } from '../../../../../components/Base';
+import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
-import { getStaticUrl } from '../../../../../helpers/urls';
-import CTrader from '../../../../../public/images/ctrader.svg';
 import { PlatformDetails } from '../../../constants';
 import { MT5TradeModal } from '../../../modals';
 import './AddedCTraderAccountsList.scss';
 
 const AddedCTraderAccountsList: React.FC = () => {
-    const history = useHistory();
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { show } = useModal();
-    const { t } = useTranslation();
 
     return (
-        <div className='wallets-added-ctrader'>
+        <React.Fragment>
             {cTraderAccounts?.map(account => (
                 <TradingAccountCard
                     key={`added-ctrader-${account.login}`}
-                    leading={
-                        <div
-                            className='wallets-added-ctrader__icon'
-                            onClick={() => {
-                                window.open(getStaticUrl('/deriv-ctrader'));
-                            }}
-                            // Fix sonarcloud issue
-                            onKeyDown={event => {
-                                if (event.key === 'Enter') {
-                                    window.open(getStaticUrl('/deriv-ctrader'));
-                                }
-                            }}
-                        >
-                            <CTrader />
-                        </div>
-                    }
+                    leading={<div className='wallets-added-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
+                    onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
                     trailing={
-                        <div className='wallets-added-ctrader__actions'>
-                            <WalletButton
-                                onClick={() => {
-                                    history.push(`/appstore/traders-hub/cashier/account-transfer`, {
-                                        toAccountLoginId: account.account_id,
-                                    });
-                                }}
-                                variant='outlined'
-                            >
-                                Transfer
-                            </WalletButton>
-                            <WalletButton
-                                onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
-                            >
-                                {t('Open')}
-                            </WalletButton>
+                        <div className='wallets-added-ctrader__icon'>
+                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
                         </div>
                     }
                 >
@@ -63,13 +30,13 @@ const AddedCTraderAccountsList: React.FC = () => {
                         <WalletText size='sm' weight='bold'>
                             {account?.formatted_balance}
                         </WalletText>
-                        <WalletText color='primary' size='sm' weight='bold'>
+                        <WalletText color='primary' size='xs' weight='bold'>
                             {account.login}
                         </WalletText>
                     </div>
                 </TradingAccountCard>
             ))}
-        </div>
+        </React.Fragment>
     );
 };
 

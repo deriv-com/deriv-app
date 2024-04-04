@@ -1,6 +1,6 @@
 .wallets-added-ctrader {
     &__icon {
-        cursor: pointer;
+        width: fit-content;
     }
 
     &__actions {
@@ -12,6 +12,7 @@
     &__details {
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
         flex-grow: 1;
     }
 }

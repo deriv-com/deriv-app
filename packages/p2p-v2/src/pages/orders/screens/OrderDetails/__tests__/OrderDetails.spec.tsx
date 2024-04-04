@@ -32,9 +32,10 @@ jest.mock('@deriv/api-v2', () => ({
         order: {
             useGet: jest.fn().mockReturnValue({
                 data: {},
-                failureReason: {},
-                isError: false,
+                error: undefined,
                 isLoading: true,
+                subscribe: jest.fn(),
+                unsubscribe: jest.fn(),
             }),
         },
     },
@@ -42,6 +43,9 @@ jest.mock('@deriv/api-v2', () => ({
         data: {
             currency: 'USD',
         },
+    })),
+    useAuthorize: jest.fn(() => ({
+        isSuccess: true,
     })),
     useServerTime: jest.fn(() => ({
         data: {
@@ -88,10 +92,22 @@ describe('<OrderDetails />', () => {
         expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
+    it('should show loading screen if orderInfo is undefined and error is undefined', () => {
+        mockUseGet.mockReturnValue({
+            ...mockUseGet(),
+            data: undefined,
+            isLoading: false,
+        });
+
+        render(<OrderDetails orderId='1' />);
+
+        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
+    });
+
     it('should render Desktop view if isMobile is false', () => {
         mockUseGet.mockReturnValue({
+            ...mockUseGet(),
             data: {},
-            isLoading: false,
         });
 
         render(<OrderDetails />);
@@ -151,6 +167,7 @@ describe('<OrderDetails />', () => {
 
     it('should show Sell USD order if isBuyOrderForUser is false', () => {
         mockUseExtendedOrderDetails.mockReturnValue({
+            ...mockUseGet(),
             data: {
                 isBuyOrderForUser: false,
                 shouldShowLostFundsBanner: true,
@@ -164,9 +181,9 @@ describe('<OrderDetails />', () => {
 
     it('should show error message if isError is true', () => {
         mockUseGet.mockReturnValue({
+            ...mockUseGet(),
             data: {},
-            failureReason: { error: { message: 'error message' } },
-            isError: true,
+            error: { message: 'error message' },
             isLoading: false,
         });
 

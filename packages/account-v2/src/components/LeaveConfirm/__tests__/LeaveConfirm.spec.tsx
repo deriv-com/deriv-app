@@ -23,25 +23,6 @@ jest.mock('react-router-dom', () => ({
     })),
 }));
 
-const wrapper = ({ children }: { children: JSX.Element }) => {
-    return (
-        <Formik initialValues={{ name: '' }} onSubmit={jest.fn()}>
-            {({ handleBlur, handleChange, handleSubmit, values }) => (
-                <form onSubmit={handleSubmit}>
-                    {children}
-                    <input
-                        aria-label='name'
-                        name='name'
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        value={values.name}
-                    />
-                </form>
-            )}
-        </Formik>
-    );
-};
-
 afterEach(() => {
     jest.clearAllMocks();
 });
@@ -49,6 +30,25 @@ afterEach(() => {
 describe('LeaveConfirm', () => {
     const onCancelMock = jest.fn();
     const onLeaveMock = jest.fn();
+
+    const wrapper = ({ children }: { children: JSX.Element }) => {
+        return (
+            <Formik initialValues={{ name: '' }} onSubmit={jest.fn()}>
+                {({ handleBlur, handleChange, handleSubmit, values }) => (
+                    <form onSubmit={handleSubmit}>
+                        {children}
+                        <input
+                            aria-label='name'
+                            name='name'
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.name}
+                        />
+                    </form>
+                )}
+            </Formik>
+        );
+    };
 
     const renderComponent = () => {
         render(<LeaveConfirm onCancel={onCancelMock} onLeave={onLeaveMock} />, { wrapper });

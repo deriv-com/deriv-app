@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
@@ -31,17 +31,17 @@ export const LeaveConfirm = ({ onCancel, onLeave }: TLeaveConfirm) => {
         };
     }, [dirty, history]);
 
-    const handleLeave = useCallback(() => {
+    const handleLeave = () => {
         onLeave?.();
         unblock.current();
         setShowPrompt(false);
         history.push(currentPath);
-    }, [currentPath, history, onLeave]);
+    };
 
-    const handleCancel = useCallback(async () => {
+    const handleCancel = () => {
         onCancel?.();
         setShowPrompt(false);
-    }, [onCancel]);
+    };
 
     return (
         <Modal className='w-[440px]' isOpen={showPrompt}>

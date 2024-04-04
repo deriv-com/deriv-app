@@ -94,7 +94,7 @@ const WalletListCardActions = () => {
                     onClick={() => {
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
-                    rounded='md'
+                    rounded='lg'
                     variant={button.variant}
                 >
                     {isActive ? button.text : ''}

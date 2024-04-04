@@ -5,7 +5,7 @@ import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletButton, WalletLink, WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
-import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
+import { CFDPlatformsListAccounts } from './components';
 import './CFDPlatformsList.scss';
 
 type TProps = {
@@ -34,7 +34,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                                         target='_blank'
                                     />,
                                 ]}
-                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
                             />
                         </WalletText>
                         <WalletButton
@@ -67,7 +67,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                         <WalletText size='md'>
                             <Trans
                                 components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
-                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
                             />
                         </WalletText>
                     </div>
@@ -76,11 +76,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
             {activeWallet?.currency_config?.is_crypto ? (
                 <CFDPlatformsListEmptyState />
             ) : (
-                <React.Fragment>
-                    <MT5PlatformsList onMT5PlatformListLoaded={onMT5PlatformListLoaded} />
-                    <CTraderList />
-                    <OtherCFDPlatformsList />
-                </React.Fragment>
+                <CFDPlatformsListAccounts onMT5PlatformListLoaded={onMT5PlatformListLoaded} />
             )}
         </div>
     );

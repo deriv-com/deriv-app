@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard } from '../../../../../../components';
-import { WalletButton, WalletText } from '../../../../../../components/Base';
+import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
-import { getStaticUrl } from '../../../../../../helpers/urls';
-import DerivX from '../../../../../../public/images/derivx.svg';
+import { PlatformDetails } from '../../../../constants';
 import { DxtradeEnterPasswordModal } from '../../../../modals';
 import './AvailableDxtradeAccountsList.scss';
 
@@ -14,27 +14,17 @@ const AvailableDxtradeAccountsList: React.FC = () => {
 
     return (
         <TradingAccountCard
-            leading={
-                <div
-                    className='wallets-available-dxtrade__icon'
-                    onClick={() => {
-                        window.open(getStaticUrl('/derivx'));
-                    }}
-                >
-                    <DerivX />
-                </div>
-            }
+            leading={<div className='wallets-available-dxtrade__icon'>{PlatformDetails.dxtrade.icon}</div>}
+            onClick={() => show(<DxtradeEnterPasswordModal />)}
             trailing={
-                <WalletButton color='primary-light' onClick={() => show(<DxtradeEnterPasswordModal />)}>
-                    {t('Get')}
-                </WalletButton>
+                <div className='wallets-available-dxtrade__icon'>
+                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                </div>
             }
         >
             <div className='wallets-available-dxtrade__details'>
                 <p className='wallets-available-dxtrade__details-title'>
-                    <WalletText size='sm' weight='bold'>
-                        {t('Deriv X')}
-                    </WalletText>
+                    <WalletText size='sm'>{t('Deriv X')}</WalletText>
                 </p>
                 <WalletText size='xs'>
                     {t('This account offers CFDs on a highly customisable CFD trading platform.')}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Icon, MobileDialog, Modal, Text } from '@deriv/components';
+import { redirectToLogin, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { getLanguage, Localize } from '@deriv/translations';
 import './wallets-upgrade-completed-modal.scss';
 
 const WalletsUpgradeCompletedModal = observer(() => {
@@ -12,6 +13,8 @@ const WalletsUpgradeCompletedModal = observer(() => {
     const handleClose = () => {
         setIsOpen(false);
         localStorage.removeItem('should_show_wallets_upgrade_completed_modal');
+        window.location.href = routes.wallets;
+        redirectToLogin(false, getLanguage());
     };
 
     const Wrapper = ({ children, footer }: React.PropsWithChildren & { footer: React.ReactNode }) =>

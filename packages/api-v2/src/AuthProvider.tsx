@@ -183,9 +183,6 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             }
             queryClient.cancelQueries();
 
-            queryClient.invalidateQueries();
-            queryClient.clear();
-
             setIsLoading(true);
 
             const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });

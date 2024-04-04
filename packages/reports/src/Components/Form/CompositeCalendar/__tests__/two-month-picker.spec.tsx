@@ -22,9 +22,10 @@ describe('TwoMonthPicker', () => {
     });
     it('should call onChange when a date is selected', () => {
         render(<TwoMonthPicker {...mockProps} />);
-        const prevMonthDate = screen.getAllByText(moment().format('D'))[0];
-        const prevMonthFullDate = moment().subtract(2, 'month').format('YYYY-MM-DD');
-        userEvent.click(prevMonthDate);
+        const prevMonthDate = moment().date(1).subtract(1, 'month');
+        const prevMonthDateElement = screen.getAllByText(prevMonthDate.date())[0];
+        const prevMonthFullDate = prevMonthDate.format('YYYY-MM-DD');
+        userEvent.click(prevMonthDateElement);
         expect(mockProps.onChange).toHaveBeenCalledWith(moment.utc(prevMonthFullDate, 'YYYY-MM-DD'));
     });
     it('should jump to current month from previous months upon clicking today button', () => {

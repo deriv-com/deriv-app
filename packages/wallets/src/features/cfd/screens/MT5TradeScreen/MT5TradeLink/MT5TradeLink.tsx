@@ -3,65 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { useCtraderServiceToken } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
-import CTraderLabelIcon from '../../../../../public/images/ctrader-label.svg';
-import DerivXLabelIcon from '../../../../../public/images/derivx-label.svg';
-import LinuxIcon from '../../../../../public/images/ic-linux-logo.svg';
-import MacOSIcon from '../../../../../public/images/ic-macos-logo.svg';
-import MT5Icon from '../../../../../public/images/ic-mt5.svg';
-import WindowsIcon from '../../../../../public/images/ic-windows-logo.svg';
-import i18n from '../../../../../translations/i18n';
 import { THooks, TPlatforms } from '../../../../../types';
-import { PlatformDetails } from '../../../constants';
+import { AppToContentMapper, CFD_PLATFORMS, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
 import './MT5TradeLink.scss';
-
-type TAppContent = {
-    icon: JSX.Element;
-    link: string;
-    text: string;
-    title: string;
-};
-
-type AppToContentMapperType = {
-    [key: string]: TAppContent;
-};
-
-const AppToContentMapper: AppToContentMapperType = {
-    ctrader: {
-        icon: <WindowsIcon />,
-        link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
-        text: i18n.t('Download'),
-        title: i18n.t('CTrader Windows App'),
-    },
-    linux: {
-        icon: <LinuxIcon />,
-        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
-        text: i18n.t('Learn more'),
-        title: i18n.t('MetaTrader 5 Linux app'),
-    },
-    macos: {
-        icon: <MacOSIcon />,
-        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
-        text: i18n.t('Download'),
-        title: i18n.t('MetaTrader 5 MacOS app'),
-    },
-    web: {
-        icon: <MT5Icon />,
-        link: '',
-        text: i18n.t('Open'),
-        title: i18n.t('MetaTrader 5 web'),
-    },
-    windows: {
-        icon: <WindowsIcon />,
-        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
-        text: i18n.t('Download'),
-        title: i18n.t('MetaTrader 5 Windows app'),
-    },
-};
-
-const PlatformToLabelIconMapper = {
-    ctrader: <CTraderLabelIcon />,
-    dxtrade: <DerivXLabelIcon />,
-};
 
 type TMT5TradeLinkProps = {
     app?: keyof typeof AppToContentMapper;
@@ -71,22 +15,18 @@ type TMT5TradeLinkProps = {
 };
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform, webtraderUrl = '' }) => {
-    const content = AppToContentMapper[app];
     const { data: ctraderToken } = useCtraderServiceToken();
     const { t } = useTranslation();
-
-    const mt5Platform = PlatformDetails.mt5.platform;
-    const dxtradePlatform = PlatformDetails.dxtrade.platform;
-    const ctraderPlatform = PlatformDetails.ctrader.platform;
+    const { icon, link, text, title } = AppToContentMapper[app];
 
     const onClickWebTerminal = () => {
         const { isStaging, isTestLink } = getPlatformFromUrl();
         let url;
         switch (platform) {
-            case dxtradePlatform:
+            case CFD_PLATFORMS.DXTRADE:
                 url = isDemo ? 'https://dx-demo.deriv.com' : 'https://dx.deriv.com';
                 break;
-            case ctraderPlatform:
+            case CFD_PLATFORMS.CTRADER:
                 url = isTestLink || isStaging ? 'https://ct-uat.deriv.com' : 'https://ct.deriv.com';
                 if (ctraderToken) url += `?token=${ctraderToken}`;
                 break;
@@ -100,32 +40,38 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
     return (
         <div className='wallets-mt5-trade-link'>
             <div className='wallets-mt5-trade-link--left'>
-                {(platform === mt5Platform || app === ctraderPlatform) && (
+                {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
                     <React.Fragment>
-                        <div className='wallets-mt5-trade-link--left-icon'>{content.icon}</div>
-                        <WalletText size='sm'>{content.title}</WalletText>
+                        {icon}
+                        <WalletText size='sm'>{title}</WalletText>
                     </React.Fragment>
                 )}
-                {platform !== mt5Platform && app !== ctraderPlatform && (
+                {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
                     <WalletText size='sm'>
                         {t('Run {{platform}} on your browser', {
-                            platform: PlatformDetails[platform ?? dxtradePlatform].title,
+                            platform:
+                                PlatformDetails[(platform as keyof typeof PlatformDetails) ?? CFD_PLATFORMS.DXTRADE]
+                                    .title,
                         })}
                     </WalletText>
                 )}
             </div>
-            {(platform === mt5Platform || app === ctraderPlatform) && (
+            {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
                 <WalletButton
-                    onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
+                    onClick={() => window.open(app === 'web' ? webtraderUrl : link)}
                     size='sm'
                     variant='outlined'
                 >
-                    {content.text}
+                    {text}
                 </WalletButton>
             )}
-            {platform !== mt5Platform && app !== ctraderPlatform && (
+            {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
                 <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                    {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
+                    {
+                        PlatformToLabelIconMapper[
+                            (platform as keyof typeof PlatformToLabelIconMapper) ?? CFD_PLATFORMS.DXTRADE
+                        ]
+                    }
                     <WalletText color='white' size='xs' weight='bold'>
                         {t('Web terminal')}
                     </WalletText>

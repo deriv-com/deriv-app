@@ -163,42 +163,42 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const renderFooter = useCallback(() => {
         if (createMT5AccountSuccess) return <SuccessModalFooter isDemo={isDemo} />;
 
-        if (hasMT5Account)
+        if (isMT5PasswordNotSet)
             return (
-                <MT5PasswordModalFooter
+                <WalletButton
                     disabled={
                         !password ||
                         createMT5AccountLoading ||
                         tradingPlatformPasswordChangeLoading ||
-                        !validPassword(password)
+                        !validPasswordMT5(password)
                     }
+                    isFullWidth
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                    onPrimaryClick={onSubmit}
-                    onSecondaryClick={() => sendEmailVerification(platform)}
-                />
+                    onClick={onSubmit}
+                    size='lg'
+                >
+                    Create {mt5Title} password
+                </WalletButton>
             );
 
         return (
-            <WalletButton
+            <MT5PasswordModalFooter
                 disabled={
                     !password ||
                     createMT5AccountLoading ||
                     tradingPlatformPasswordChangeLoading ||
-                    !validPasswordMT5(password)
+                    !validPassword(password)
                 }
-                isFullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                onClick={onSubmit}
-                size='lg'
-            >
-                Create {mt5Title} password
-            </WalletButton>
+                onPrimaryClick={onSubmit}
+                onSecondaryClick={() => sendEmailVerification(platform)}
+            />
         );
     }, [
         createMT5AccountLoading,
         createMT5AccountSuccess,
-        hasMT5Account,
         isDemo,
+        isMT5PasswordNotSet,
         mt5Title,
         onSubmit,
         password,

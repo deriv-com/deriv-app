@@ -21,9 +21,23 @@ jest.mock('../components', () => ({
             {account.account_type}-{account.loginid}
         </span>
     )),
-    TransferDropdownList: jest.fn(({ accounts, header }) => {
-        return <>{`-${header}-${accounts.map((account: typeof mockAccounts[number]) => account.loginid).join('_')}`}</>;
-    }),
+    TransferDropdownList: jest.fn(
+        ({
+            accounts,
+            onSelectItem,
+            value,
+        }: {
+            accounts: TTransferableAccounts;
+            onSelectItem: typeof mockOnSelect;
+            value: TTransferableAccounts[number];
+        }) => {
+            return (
+                <span data-testid='dt_transfer_dropdown_items'>
+                    {`accounts-${JSON.stringify(accounts)}_value-${JSON.stringify(value)}`}
+                </span>
+            );
+        }
+    ),
 }));
 
 describe('<TransferDropdown />', () => {
@@ -65,7 +79,16 @@ describe('<TransferDropdown />', () => {
 
         expect(
             within(transferDropdownItems).getByText(
-                '-Deriv MT5 accounts-CR1-Deriv cTrader accounts-CR2-Deriv X accounts-CR3-Deriv accounts-CR4_CR5_CR6'
+                `accounts-${JSON.stringify({
+                    'Deriv MT5 accounts': [{ account_type: 'mt5', loginid: 'CR1' }],
+                    'Deriv cTrader accounts': [{ account_type: 'ctrader', loginid: 'CR2' }],
+                    'Deriv X accounts': [{ account_type: 'dxtrade', loginid: 'CR3' }],
+                    'Deriv accounts': [
+                        { account_type: 'binary', loginid: 'CR4' },
+                        { account_type: 'binary', loginid: 'CR5' },
+                        { account_type: 'binary', loginid: 'CR6' },
+                    ],
+                })}_value-${JSON.stringify({ account_type: 'mt5', loginid: 'CR1' })}`
             )
         ).toBeInTheDocument();
     });

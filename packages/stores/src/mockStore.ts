@@ -189,8 +189,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 gaming_company: '',
                 maltainvest: false,
                 svg: false,
-                iom: false,
-                malta: false,
             },
             switchAccount: jest.fn(),
             verification_code: {

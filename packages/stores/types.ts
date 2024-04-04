@@ -172,7 +172,7 @@ type TAppRoutingHistory = {
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
-    landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
 };
@@ -222,7 +222,7 @@ type TRealAccount = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: string | number;
-    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
     linked_to?: { loginid: string; platform: string }[];
@@ -370,8 +370,6 @@ type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
 type TStandPoint = {
     financial_company: string;
     gaming_company: string;
-    iom: boolean;
-    malta: boolean;
     maltainvest: boolean;
     svg: boolean;
 };

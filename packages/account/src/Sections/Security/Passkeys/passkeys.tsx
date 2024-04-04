@@ -56,7 +56,7 @@ const Passkeys = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error, is_passkey_registration_started]);
 
-    if (is_passkeys_list_loading || common.network_status.class !== 'online') {
+    if (should_show_passkeys && (is_passkeys_list_loading || common.network_status.class !== 'online')) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
     if (!should_show_passkeys) {

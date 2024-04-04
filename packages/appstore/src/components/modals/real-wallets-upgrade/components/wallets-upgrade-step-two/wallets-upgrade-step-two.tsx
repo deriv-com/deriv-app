@@ -27,9 +27,11 @@ const WalletsUpgradeStepTwoContent = observer(() => {
                 <Text size={is_mobile ? 'xsm' : 'l'} align='center' weight='bold' line_height={is_mobile ? 'm' : 'xs'}>
                     <Localize i18n_default_text='Ready to enable Wallets' />
                 </Text>
-                <Text size={is_mobile ? 'xs' : 's'} align='center' line_height='m'>
-                    <Localize i18n_default_text='Wallets will become your dedicated fund management tool, allowing you to transfer funds between Wallets and trading accounts instantly.' />
-                </Text>
+                <div className='wallets-upgrade-step-two__description'>
+                    <Text size={is_mobile ? 'xs' : 's'} align='center' line_height='m'>
+                        <Localize i18n_default_text='Wallets will become your dedicated fund management tool, allowing you to transfer funds between Wallets and trading accounts instantly.' />
+                    </Text>
+                </div>
             </div>
             <div className='wallets-upgrade-step-two__info-section'>
                 <Icon className='wallets-upgrade-step-two__info-section-icon' icon='ic-info-blue' size={16} />

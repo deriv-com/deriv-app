@@ -3,7 +3,7 @@ import { Text, DesktopWrapper, Loading, MobileWrapper, Tabs, Icon } from '@deriv
 import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
@@ -16,12 +16,13 @@ const WalletsBanner = makeLazyLoader(
 )();
 
 const MainTitleBar = () => {
-    const { is_wallet_enabled } = useFeatureFlags();
     const { traders_hub, client } = useStore();
+    const { state: wallet_migration_state } = useWalletMigration();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
+    const show_wallets_banner = wallet_migration_state && wallet_migration_state !== 'ineligible';
 
     const [active_index, setActiveIndex] = React.useState(0);
     React.useEffect(() => {
@@ -30,7 +31,7 @@ const MainTitleBar = () => {
 
     return (
         <React.Fragment>
-            {is_wallet_enabled && <WalletsBanner />}
+            {show_wallets_banner && <WalletsBanner />}
             <DesktopWrapper>
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>

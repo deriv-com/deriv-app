@@ -133,8 +133,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     );
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (!allow_document_upload || (!is_age_verified && !allow_poa_resubmission && document_status === 'none'))
-        return <NotRequired />;
+    if (!allow_document_upload) return <NotRequired />;
     if (has_submitted_poa && !poa_address_mismatch)
         return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
     if (

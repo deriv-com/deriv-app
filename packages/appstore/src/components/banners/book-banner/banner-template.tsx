@@ -7,12 +7,13 @@ import { LabelPairedCircleChevronDownXlBoldIcon, LabelPairedXmarkLgBoldIcon } fr
 import { TEbooksUrl } from 'Components/banners/book-banner/book-banner';
 
 type TBookBannerTemplate = {
+    e_book_show_way: string;
     e_books_url: TEbooksUrl;
     e_book_from_landing: keyof TEbooksUrl;
     lang: ReturnType<typeof getAllowedLanguages>;
 };
 
-const BookBannerTemplate = ({ e_books_url, e_book_from_landing, lang }: TBookBannerTemplate) => {
+const BookBannerTemplate = ({ e_book_show_way, e_books_url, e_book_from_landing, lang }: TBookBannerTemplate) => {
     const [is_banner_shows, setIsBannerShows] = React.useState(true);
     const { traders_hub, client, common } = useStore();
     const { selected_account_type } = traders_hub;
@@ -34,24 +35,32 @@ const BookBannerTemplate = ({ e_books_url, e_book_from_landing, lang }: TBookBan
                 <div id='e-book-banner' className='book-banner-template'>
                     <div className='book-banner-template__left'>
                         <LabelPairedCircleChevronDownXlBoldIcon width='24' height='24' fill='#00822A' />
-                        <div className='book-banner-template__content'>
-                            <label>
-                                <Localize i18n_default_text='Your e-book has been emailed to you and is ready for download.' />
-                            </label>
-                            <a
-                                href={e_books_url[e_book_from_landing][lang] || e_books_url[e_book_from_landing].EN}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                onClick={() => {
-                                    Analytics.trackEvent('ce_tradershub_banner', {
-                                        action: 'click download',
-                                        ...analytics_data,
-                                    });
-                                }}
-                            >
-                                <Localize i18n_default_text='Download e-book' />
-                            </a>
-                        </div>
+                        {e_book_show_way === 'banner-with-link' ? (
+                            <div className='book-banner-template__content'>
+                                <label>
+                                    <Localize i18n_default_text='Your e-book has been emailed to you and is ready for download.' />
+                                </label>
+                                <a
+                                    href={e_books_url[e_book_from_landing][lang] || e_books_url[e_book_from_landing].EN}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    onClick={() => {
+                                        Analytics.trackEvent('ce_tradershub_banner', {
+                                            action: 'click download',
+                                            ...analytics_data,
+                                        });
+                                    }}
+                                >
+                                    <Localize i18n_default_text='Download e-book' />
+                                </a>
+                            </div>
+                        ) : (
+                            <div className='book-banner-template__content'>
+                                <label>
+                                    <Localize i18n_default_text='Your e-book is now ready for download. You can find it in your email inbox.' />
+                                </label>
+                            </div>
+                        )}
                     </div>
                     <LabelPairedXmarkLgBoldIcon
                         className='book-banner-template__cancel'

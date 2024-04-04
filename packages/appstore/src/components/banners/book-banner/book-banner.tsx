@@ -41,14 +41,21 @@ const e_books_url: TEbooksUrl = {
         ES: 'https://deriv.link/ebook-10charts-sp-lq',
     },
 };
-const e_book_show_way: unknown = Analytics.getFeatureValue('e_book', 'inactive');
+const e_book_show_way: string = Analytics.getFeatureValue('e_book', 'inactive');
 
 const BookBanner = () => {
     const e_book_from_landing: TEbooks = SessionStore.get('show_book');
     const lang = getLanguage();
 
-    if (e_book_from_landing && e_book_show_way === 'banner') {
-        return <BookBannerTemplate e_books_url={e_books_url} e_book_from_landing={e_book_from_landing} lang={lang} />;
+    if (e_book_from_landing && e_book_show_way?.includes('banner')) {
+        return (
+            <BookBannerTemplate
+                e_book_show_way={e_book_show_way}
+                e_books_url={e_books_url}
+                e_book_from_landing={e_book_from_landing}
+                lang={lang}
+            />
+        );
     }
     // Will be a part of upcoming a/b experiment
     // if (e_book && e_book_show_way === 'popup') return ( <BookPopupTemplate e_books_url={e_books_url} e_book={e_book} lang={lang} />)

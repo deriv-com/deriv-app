@@ -45,17 +45,17 @@ const useOrderList = (
     }, [subscriptionData, refetch]);
 
     // Flatten the data array
-    const flattenedData = React.useMemo(() => {
+    const flattened_data = React.useMemo(() => {
         if (!queryData?.pages?.length) return;
 
         return queryData?.pages?.flatMap(page => page?.p2p_order_list?.list);
     }, [queryData?.pages]);
 
     // Additional p2p_order_list data
-    const modifiedData = React.useMemo(() => {
-        if (!flattenedData) return undefined;
+    const modified_data = React.useMemo(() => {
+        if (!flattened_data) return undefined;
 
-        return flattenedData.map(advert => ({
+        return flattened_data.map(advert => ({
             ...advert,
             /** Details of the advert for this order. */
             advert_details: {
@@ -99,11 +99,11 @@ const useOrderList = (
             /** Indicates that the seller in the process of confirming the order. */
             is_verification_pending: Boolean(advert?.verification_pending),
         }));
-    }, [flattenedData]);
+    }, [flattened_data]);
 
     return {
         /** The 'p2p_order_list' response. */
-        data: modifiedData,
+        data: modified_data,
         /** Fetch the next page of orders. */
         loadMoreOrders: fetchNextPage,
         ...rest,

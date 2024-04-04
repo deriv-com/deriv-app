@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import './WalletsCard.scss';
 
@@ -25,17 +26,19 @@ const WalletsCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, rend
 
     return (
         <div
-            className={`wallets-card wallets-card ${isDemo ? 'wallets-card wallets-card--virtual' : ''}`}
+            className={classNames('wallets-cards', {
+                'wallets-cards--virtual': isDemo,
+            })}
             ref={walletsCardRef}
         >
             <div
-                className={`wallets-card__header wallets-card__header ${
-                    isDemo ? 'wallets-card__header wallets-card__header--virtual' : ''
-                }`}
+                className={classNames('wallets-cards__header', {
+                    'wallets-cards__header--virtual': isDemo,
+                })}
             >
                 {renderHeader()}
             </div>
-            <div className={`wallets-card__content wallets-card__content--visible`}>{children}</div>
+            <div className='wallets-cards__content wallets-cards__content--visible'>{children}</div>
         </div>
     );
 };

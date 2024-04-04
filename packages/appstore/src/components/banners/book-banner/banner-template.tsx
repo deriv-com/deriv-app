@@ -1,21 +1,32 @@
 import React from 'react';
+import { useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
+import { SessionStore } from '@deriv/shared';
 import { getAllowedLanguages, Localize } from '@deriv/translations';
 import { LabelPairedCircleChevronDownXlBoldIcon, LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { TEbooksUrl } from 'Components/banners/book-banner/book-banner';
-import { SessionStore } from '@deriv/shared';
 
 type TBookBannerTemplate = {
     e_books_url: TEbooksUrl;
     e_book_from_landing: keyof TEbooksUrl;
     lang: ReturnType<typeof getAllowedLanguages>;
 };
-const trackEbookBanner = (action: string, is_clicked: boolean) =>
-    Analytics.trackEvent('ce_ebook_banner', { action, link_was_opened: is_clicked ? 'yes' : 'no' });
 
 const BookBannerTemplate = ({ e_books_url, e_book_from_landing, lang }: TBookBannerTemplate) => {
-    const [is_clicked, setIsClicked] = React.useState(false);
     const [is_banner_shows, setIsBannerShows] = React.useState(true);
+    const { traders_hub, client, common } = useStore();
+    const { selected_account_type } = traders_hub;
+    const analytics_data: Parameters<typeof Analytics.trackEvent>[1] = {
+        banner_name: e_book_from_landing,
+        account_mode: selected_account_type,
+    };
+
+    React.useEffect(() => {
+        Analytics.trackEvent('ce_tradershub_banner', {
+            action: 'open',
+            ...analytics_data,
+        });
+    }, []);
 
     return (
         <React.Fragment>
@@ -32,8 +43,10 @@ const BookBannerTemplate = ({ e_books_url, e_book_from_landing, lang }: TBookBan
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 onClick={() => {
-                                    trackEbookBanner('open', is_clicked);
-                                    setIsClicked(true);
+                                    Analytics.trackEvent('ce_tradershub_banner', {
+                                        action: 'click download',
+                                        ...analytics_data,
+                                    });
                                 }}
                             >
                                 <Localize i18n_default_text='Download e-book' />
@@ -45,7 +58,10 @@ const BookBannerTemplate = ({ e_books_url, e_book_from_landing, lang }: TBookBan
                         width='24'
                         height='24'
                         onClick={() => {
-                            trackEbookBanner('close', is_clicked);
+                            Analytics.trackEvent('ce_tradershub_banner', {
+                                action: 'close',
+                                ...analytics_data,
+                            });
                             SessionStore.remove('show_book');
                             setIsBannerShows(false);
                         }}

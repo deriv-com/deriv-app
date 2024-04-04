@@ -54,21 +54,28 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         initDatadog(tracking_datadog);
     }, [tracking_datadog]);
 
+    const isWallets = window.location.pathname.startsWith('/wallets');
+
     return (
         <PlatformContainer>
             <Header />
-            <ErrorBoundary root_store={store}>
-                <AppContents>
-                    {/* TODO: [trader-remove-client-base] */}
-                    <Routes passthrough={passthrough} />
-                </AppContents>
-            </ErrorBoundary>
-            <DesktopWrapper>
-                <Footer />
-            </DesktopWrapper>
-            <ErrorBoundary root_store={store}>
-                <AppModals />
-            </ErrorBoundary>
+
+            {!isWallets && (
+                <>
+                    <ErrorBoundary root_store={store}>
+                        <AppContents>
+                            <Routes passthrough={passthrough} />
+                        </AppContents>
+                    </ErrorBoundary>
+                    <DesktopWrapper>
+                        <Footer />
+                    </DesktopWrapper>
+                    <ErrorBoundary root_store={store}>
+                        <AppModals />
+                    </ErrorBoundary>
+                </>
+            )}
+
             <SmartTraderIFrame />
             <BinaryBotIFrame />
             <AppToastMessages />

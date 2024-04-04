@@ -1,7 +1,7 @@
 import React from 'react';
 import WS from 'Services/ws-methods';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv/quill-design';
 import { APIProvider } from '@deriv/api';
@@ -23,6 +23,7 @@ import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
 import initHotjar from '../Utils/Hotjar';
 import 'Sass/app.scss';
+import LazyWalletsApp from '@deriv/wallets';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -99,23 +100,31 @@ const AppWithoutTranslation = ({ root_store }) => {
     return (
         <>
             {is_translation_loaded ? (
-                <Router basename={has_base ? `/${base}` : null}>
-                    <StoreProvider store={root_store}>
-                        <BreakpointProvider>
-                            <APIProvider>
-                                <POIProvider>
-                                    <StoreProvider store={root_store}>
-                                        <ExchangeRatesProvider>
-                                            <P2PSettingsProvider>
-                                                <AppContent passthrough={platform_passthrough} />
-                                            </P2PSettingsProvider>
-                                        </ExchangeRatesProvider>
-                                    </StoreProvider>
-                                </POIProvider>
-                            </APIProvider>
-                        </BreakpointProvider>
-                    </StoreProvider>
-                </Router>
+                <>
+                    <Router basename={has_base ? `/${base}` : null}>
+                        <StoreProvider store={root_store}>
+                            <BreakpointProvider>
+                                <APIProvider>
+                                    <POIProvider>
+                                        <StoreProvider store={root_store}>
+                                            <ExchangeRatesProvider>
+                                                <P2PSettingsProvider>
+                                                    <AppContent passthrough={platform_passthrough} />
+                                                </P2PSettingsProvider>
+                                            </ExchangeRatesProvider>
+                                        </StoreProvider>
+                                    </POIProvider>
+                                </APIProvider>
+                            </BreakpointProvider>
+                        </StoreProvider>
+                    </Router>
+
+                    <Router basename={has_base ? `/${base}` : null}>
+                        <Switch>
+                            <Route path='/wallets' render={() => <LazyWalletsApp />} />
+                        </Switch>
+                    </Router>
+                </>
             ) : (
                 <></>
             )}

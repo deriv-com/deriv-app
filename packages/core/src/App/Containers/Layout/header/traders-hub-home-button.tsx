@@ -19,7 +19,6 @@ const TradersHubHomeButton = observer(() => {
         if (is_next_tradershub_enabled) {
             return routes.traders_hub_v2;
         }
-
         return routes.traders_hub;
     };
 

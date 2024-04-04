@@ -12,7 +12,7 @@ import {
     usePaymentAgentTransferVisible,
     useP2PSettings,
 } from '@deriv/hooks';
-import { deepCopy, getStaticUrl, removeExactRouteFromRoutes, routes, whatsapp_url } from '@deriv/shared';
+import { getStaticUrl, routes, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -92,12 +92,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     React.useEffect(() => {
         const processRoutes = () => {
-            let routes_config = getRoutesConfig({});
-
-            const should_remove_passkeys_route = !is_mobile || !is_passkey_supported;
-            if (should_remove_passkeys_route) {
-                routes_config = removeExactRouteFromRoutes(deepCopy(routes_config), 'passkeys');
-            }
+            const routes_config = getRoutesConfig({});
             let primary_routes = [];
 
             if (is_next_wallet_enabled) {
@@ -164,6 +159,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         const has_subroutes = route_config.routes.some(route => route.subroutes);
+        const should_hide_passkeys_route = !is_mobile || !is_passkey_supported;
 
         const disableRoute = route_path => {
             if (/financial-assessment/.test(route_path)) {
@@ -179,6 +175,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             }
             return false;
         };
+
+        const hideRoute = route_path => {
+            if (/passkeys/.test(route_path)) {
+                return should_hide_passkeys_route;
+            }
+            return false;
+        };
+
         return (
             <MobileDrawer.SubMenu
                 key={idx}
@@ -227,6 +231,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         link_to={subroute.path}
                                         text={subroute.getTitle()}
                                         onClickLink={toggleDrawer}
+                                        is_hidden={hideRoute(subroute.path)}
                                     />
                                 ))}
                             </MobileDrawer.SubMenuSection>

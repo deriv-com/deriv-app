@@ -585,7 +585,6 @@
             @extend .x-center;
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;
-            padding: 0 2.4rem 0 1.6rem;
 
             .dc-checkbox {
                 margin-inline-end: 1rem;
@@ -600,6 +599,7 @@
                 width: 4.6rem;
                 padding: 0 0.2rem;
                 background: var(--core-color-opacity-black-200, rgba(0, 0, 0, 0.16));
+                margin-right: 0;
             }
         }
     }

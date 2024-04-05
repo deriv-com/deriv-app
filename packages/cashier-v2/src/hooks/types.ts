@@ -7,6 +7,7 @@ import {
     useCurrencyConfig,
     useMT5AccountsList,
     usePaymentAgentList,
+    useServiceToken,
     useSortedMT5Accounts,
     useTransferBetweenAccounts,
 } from '@deriv/api-v2';
@@ -19,11 +20,12 @@ export namespace THooks {
     export type CryptoWithdrawal = NonNullable<ReturnType<typeof useCryptoWithdrawal>['mutateAsync']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
+    export type PaymentAgentList = NonNullable<ReturnType<typeof usePaymentAgentList>['data']>;
+    export type ServiceToken = NonNullable<NonNullable<ReturnType<typeof useServiceToken>['data']>['service_token']>;
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type TransferAccounts = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >;
-    export type PaymentAgentList = NonNullable<ReturnType<typeof usePaymentAgentList>['data']>;
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace

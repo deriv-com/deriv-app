@@ -9,6 +9,15 @@ const mockProps = {
     nickname: 'nickname',
 };
 
+const mockPush = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockPush,
+    }),
+}));
+
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: () => ({ isMobile: false }),
@@ -65,5 +74,12 @@ describe('MyProfileCounterpartiesTableRow', () => {
         await waitFor(() => {
             expect(screen.queryByText('Block nickname?')).not.toBeInTheDocument();
         });
+    });
+
+    it('should call history.push when clicking on the nickname', () => {
+        render(<MyProfileCounterpartiesTableRow {...mockProps} />);
+        const nickname = screen.getByText('nickname');
+        userEvent.click(nickname);
+        expect(mockPush).toHaveBeenCalledWith('/cashier/p2p-v2/advertiser/id1', { from: 'MyProfile' });
     });
 });

@@ -99,7 +99,7 @@ describe('ShareAdsModal', () => {
         });
 
         expect(mockCopyFn).toHaveBeenCalledWith(
-            `${window.location.href}cashier/p2p/advertiser?id=${mockUseGet.data.advertiser_details.id}&advert_id=${mockProps.id}`
+            `${window.location.href}cashier/p2p-v2/advertiser/${mockUseGet.data.advertiser_details.id}?advert_id=${mockProps.id}`
         );
     });
     it('should call html2canvas function when clicking on Download this QR code button', async () => {

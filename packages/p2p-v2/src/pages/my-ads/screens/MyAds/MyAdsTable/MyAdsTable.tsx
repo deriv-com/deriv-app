@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
+import { THooks } from 'types';
 import { Table } from '@/components';
 import { MyAdsDeleteModal } from '@/components/Modals';
 import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
@@ -9,7 +10,6 @@ import { MyAdsEmpty } from '../../MyAdsEmpty';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
 import MyAdsDisplayWrapper from './MyAdsDisplayWrapper';
 import './MyAdsTable.scss';
-import { THooks } from 'types';
 
 export type TMyAdsTableRowRendererProps = Required<THooks.AdvertiserAdverts.Get>[0] & {
     balanceAvailable: number;
@@ -33,7 +33,7 @@ const columns = [
         header: 'Limits',
     },
     {
-        header: 'Rate (1 BTC)',
+        header: 'Rate (1 USD)',
     },
     {
         header: 'Available amount',

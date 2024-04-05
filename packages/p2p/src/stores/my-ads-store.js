@@ -11,6 +11,7 @@ import { generateErrorDialogTitle } from 'Utils/adverts';
 import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyAdsStore extends BaseStore {
+    ad_form_values = null;
     advert_details = null;
     adverts = [];
     adverts_archive_period = null;
@@ -44,6 +45,7 @@ export default class MyAdsStore extends BaseStore {
         super(root_store);
 
         makeObservable(this, {
+            ad_form_values: observable,
             advert_details: observable,
             adverts: observable,
             adverts_archive_period: observable,
@@ -85,6 +87,7 @@ export default class MyAdsStore extends BaseStore {
             restrictLength: action.bound,
             restrictDecimalPlace: action.bound,
             showQuickAddModal: action.bound,
+            setAdFormValues: action.bound,
             setAdvertDetails: action.bound,
             setAdverts: action.bound,
             setAdvertsArchivePeriod: action.bound,
@@ -487,6 +490,10 @@ export default class MyAdsStore extends BaseStore {
     showQuickAddModal(advert) {
         this.setSelectedAdId(advert);
         this.root_store.general_store.showModal({ key: 'QuickAddModal', props: { advert } });
+    }
+
+    setAdFormValues(ad_form_values) {
+        this.ad_form_values = ad_form_values;
     }
 
     setAdvertDetails(advert_details) {

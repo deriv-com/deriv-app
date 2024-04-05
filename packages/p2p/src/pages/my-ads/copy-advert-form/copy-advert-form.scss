@@ -41,21 +41,21 @@
         margin: 0.4rem 0 1.5rem;
 
         @include mobile {
-            height: 3.8rem;
+            height: 6.8rem;
         }
 
         .floating-rate {
             &__field {
                 display: block;
 
-                @include mobile {
-                    margin-top: 0;
-                }
-
                 &--prefix {
                     display: flex;
                     justify-content: center;
                     margin-bottom: 2rem;
+
+                    @include mobile {
+                        margin-top: 2rem;
+                    }
                 }
             }
 

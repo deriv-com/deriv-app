@@ -123,7 +123,11 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         if (!general_store.is_barred) showModal({ key: 'ShareMyAdsModal', props: { advert } });
     };
     const onClickCopy = () => {
-        my_ads_store.onClickCopy(id, is_desktop);
+        if (floating_rate_store.rate_type === rate_type) {
+            my_ads_store.onClickCopy(id, is_desktop);
+        } else {
+            onClickSwitchAd();
+        }
     };
     const onClickSwitchAd = () => {
         if (!general_store.is_barred) {
@@ -365,7 +369,13 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                         </div>
                     )}
-                    <Popover alignment='top' message={localize('Manage ad')}>
+                    <Popover
+                        alignment='top'
+                        arrow_styles={{ bottom: '-0.5rem' }}
+                        classNameBubble='my-ads-table__status-bubble'
+                        classNameTarget='my-ads-table__status-target'
+                        message={localize('Manage ad')}
+                    >
                         <MyAdsRowDropdown
                             is_advert_active={is_advert_active}
                             is_disabled={general_store.is_barred}

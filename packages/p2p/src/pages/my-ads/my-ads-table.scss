@@ -254,10 +254,13 @@
         }
 
         &-more {
-            min-width: 2.4rem;
-            width: 2.4rem;
+            min-width: 3.2rem;
+            width: 3.2rem;
+            height: 3.2rem;
+            margin-left: 0;
 
             &--display {
+                background-color: transparent !important;
                 border: 0 !important;
             }
 
@@ -266,7 +269,22 @@
             }
 
             .suffix-icon {
-                left: 0;
+                top: 0.8rem;
+                left: 0.8rem;
+            }
+        }
+
+        &-bubble {
+            top: 0.5rem;
+        }
+
+        &-target {
+            border-radius: 0.4rem;
+            width: 3.2rem;
+            height: 3.2rem;
+
+            &:hover {
+                background-color: var(--general-active);
             }
         }
     }

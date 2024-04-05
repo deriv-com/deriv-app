@@ -33,13 +33,17 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         rate_type,
         type,
     } = advert;
-    const onClickCancel = () => {
+    const onClickCancel = values => {
+        my_ads_store.setAdFormValues(values);
         general_store.showModal({
             key: 'AdCancelModal',
             props: {
                 confirm_label: localize('Go back'),
                 message: localize("If you choose to cancel, the details you've entered will be lost."),
-                onConfirm: onCancel,
+                onConfirm: () => {
+                    my_ads_store.setAdFormValues(null);
+                    onCancel();
+                },
                 title: localize('Cancel ad creation?'),
             },
         });
@@ -74,22 +78,24 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                 type='information'
             />
             <Formik
-                initialValues={{
-                    contact_info,
-                    default_advert_description: description,
-                    max_transaction: '',
-                    min_transaction: '',
-                    offer_amount: amount_display,
-                    order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
-                    payment_method_names,
-                    rate_type: '',
-                    type,
-                }}
+                initialValues={
+                    my_ads_store.ad_form_values ?? {
+                        contact_info,
+                        default_advert_description: description,
+                        max_transaction: '',
+                        min_transaction: '',
+                        offer_amount: amount_display,
+                        order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
+                        payment_method_names,
+                        rate_type: floating_rate_store.rate_type === ad_type.FLOAT ? rate_display : '',
+                        type,
+                    }
+                }
                 onSubmit={onSubmit}
                 validate={my_ads_store.validateCreateAdForm}
                 validateOnMount
             >
-                {({ errors, handleChange, isSubmitting, isValid, touched }) => {
+                {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
                     return (
                         <Form noValidate>
                             <Text color='less-prominent' size='xxs'>
@@ -105,7 +111,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                         data-testid='offer_amount'
                                         data-lpignore='true'
                                         type='text'
-                                        error={touched.offer_amount && errors.offer_amount}
+                                        error={errors.offer_amount}
                                         label={localize('Total amount')}
                                         trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
                                         is_relative_hint
@@ -202,7 +208,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                 {payment_method_names.join(', ')}
                             </Text>
                             <div className='copy-advert-form__container'>
-                                <Button type='button' has_effect onClick={onClickCancel} secondary large>
+                                <Button type='button' has_effect onClick={() => onClickCancel(values)} secondary large>
                                     <Localize i18n_default_text='Cancel' />
                                 </Button>
                                 <Button has_effect is_disabled={isSubmitting || !isValid} primary large>

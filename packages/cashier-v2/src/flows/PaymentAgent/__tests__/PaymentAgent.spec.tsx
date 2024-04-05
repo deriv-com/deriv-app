@@ -1,16 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import PaymentAgent from '../PaymentAgent';
 
-jest.mock('../../../lib', () => ({
-    ...jest.requireActual('../../../lib'),
-    PaymentAgentWithdrawalModule: jest.fn(() => <div>PaymentAgentWithdrawalModule</div>),
-    WithdrawalVerificationModule: jest.fn(() => <div>WithdrawalVerificationModule</div>),
+jest.mock('../../../components', () => ({
+    PageContainer: jest.fn(({ children }) => <div>{children}</div>),
 }));
 
-jest.mock('../../../components', () => ({
-    ...jest.requireActual('../../../components'),
-    PageContainer: jest.fn(({ children }) => <>{children}</>),
+jest.mock('../../../lib', () => ({
+    PaymentAgentDepositModule: jest.fn(() => <div>PaymentAgentDepositModule</div>),
+}));
+
+jest.mock('../components', () => ({
+    PaymentAgentWithdrawalContainer: jest.fn(() => <div>PaymentAgentWithdrawalContainer</div>),
 }));
 
 describe('<PaymentAgent />', () => {
@@ -18,7 +20,7 @@ describe('<PaymentAgent />', () => {
 
     beforeEach(() => {
         Object.defineProperty(window, 'location', {
-            value: new URL('http://localhost/redirect?verification=1234'),
+            value: new URL('http://localhost/cashier-v2/payment-agent'),
             writable: true,
         });
     });
@@ -30,26 +32,34 @@ describe('<PaymentAgent />', () => {
         });
     });
 
-    it('should remove the `verification` param from the window url', () => {
-        const replaceStateSpy = jest.spyOn(window.history, 'replaceState');
-
+    it('should render Deposit tab with proper content by default', () => {
         render(<PaymentAgent />);
 
-        expect(replaceStateSpy).toBeCalledWith({}, '', 'http://localhost/redirect');
+        expect(screen.getByText('PaymentAgentDepositModule')).toBeInTheDocument();
     });
 
-    it('should render withdrawal email verification page if no verification code found', () => {
+    it('should show proper content under the appropriate tab', () => {
+        render(<PaymentAgent />);
+
+        const depositTab = screen.getByRole('button', { name: 'Deposit' });
+        const withdrawalTab = screen.getByRole('button', { name: 'Withdrawal' });
+
+        userEvent.click(withdrawalTab);
+
+        expect(screen.getByText('PaymentAgentWithdrawalContainer')).toBeInTheDocument();
+
+        userEvent.click(depositTab);
+
+        expect(screen.getByText('PaymentAgentDepositModule')).toBeInTheDocument();
+    });
+
+    it('should render Withdrawal tab with proper content by default if there is a `verification` code in url params', () => {
         Object.defineProperty(window, 'location', {
-            value: new URL('http://localhost/redirect'),
+            value: new URL('http://localhost/redirect?verification=1234'),
             writable: true,
         });
 
         render(<PaymentAgent />);
-        expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
-    });
-
-    it('should render payment agent withdrawal module', () => {
-        render(<PaymentAgent />);
-        expect(screen.getByText('PaymentAgentWithdrawalModule')).toBeInTheDocument();
+        expect(screen.getByText('PaymentAgentWithdrawalContainer')).toBeInTheDocument();
     });
 });

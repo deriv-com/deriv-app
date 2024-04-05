@@ -2491,27 +2491,43 @@ export default class ClientStore extends BaseStore {
         this[`${platform}_accounts_list_error`] = null;
 
         if (!response.error) {
-            this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {
-                const display_login = account.error ? account.error.details.account_id : account.account_id;
-                if (account.error) {
-                    const { account_type, server } = account.error.details;
-                    if (platform === CFD_PLATFORMS.DXTRADE) {
-                        this.setCFDDisabledSignupTypes(platform, {
-                            [account_type]: true,
-                        });
+            this[`${platform}_accounts_list`] = response.trading_platform_accounts
+                .slice()
+                .sort((a, b) => {
+                    const loginA = a?.login;
+                    const loginB = b?.login;
+
+                    if (loginA && loginB) {
+                        if (loginA < loginB) {
+                            return -1;
+                        }
+                        if (loginA > loginB) {
+                            return 1;
+                        }
+                    }
+                    return 0;
+                })
+                .map(account => {
+                    const display_login = account.error ? account.error.details.account_id : account.account_id;
+                    if (account.error) {
+                        const { account_type, server } = account.error.details;
+                        if (platform === CFD_PLATFORMS.DXTRADE) {
+                            this.setCFDDisabledSignupTypes(platform, {
+                                [account_type]: true,
+                            });
+                        }
+                        return {
+                            account_type,
+                            display_login,
+                            has_error: true,
+                            server,
+                        };
                     }
                     return {
-                        account_type,
+                        ...account,
                         display_login,
-                        has_error: true,
-                        server,
                     };
-                }
-                return {
-                    ...account,
-                    display_login,
-                };
-            });
+                });
         } else {
             this[`${platform}_accounts_list_error`] = response.error;
         }

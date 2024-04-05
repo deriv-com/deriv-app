@@ -308,16 +308,20 @@ export default class CFDStore extends BaseStore {
             const response = await this.openCFDAccount(account_creation_values);
             if (!response.error) {
                 this.setError(false);
-                this.enableCFDPasswordModal();
-                this.setCFDSuccessDialog(true);
 
                 const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(
                     CFD_PLATFORMS.CTRADER
                 );
                 this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
                 WS.transferBetweenAccounts();
+                const trading_platform_available_accounts_list_response = await WS.tradingPlatformAvailableAccounts(
+                    CFD_PLATFORMS.CTRADER
+                );
+                this.root_store.client.responseCTraderTradingPlatformAvailableAccounts(
+                    trading_platform_available_accounts_list_response
+                );
+                this.setCFDSuccessDialog(true);
                 this.setIsAccountBeingCreated(false);
-                WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER);
             } else {
                 this.setError(true, response.error);
                 this.setIsAccountBeingCreated(false);

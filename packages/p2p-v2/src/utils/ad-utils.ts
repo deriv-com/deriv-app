@@ -1,3 +1,4 @@
+import { TCountryListItem } from 'types';
 import { ERROR_CODES } from '@/constants';
 import { countDecimalPlaces, decimalValidator } from './string';
 
@@ -125,4 +126,20 @@ export const getValidationRules = (
         default:
             return {};
     }
+};
+
+export const getFilteredCountryList = (countryList: TCountryListItem, paymentMethods?: string[]) => {
+    if (!paymentMethods || paymentMethods?.length === 0) return countryList;
+    return (
+        countryList &&
+        Object.keys(countryList)
+            .filter(key => {
+                const paymentMethodsKeys = Object.keys(countryList[key]?.payment_methods || {});
+                return paymentMethods.some(method => paymentMethodsKeys.includes(method));
+            })
+            .reduce((obj, key) => {
+                obj[key] = countryList[key];
+                return obj;
+            }, {})
+    );
 };

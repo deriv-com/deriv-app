@@ -7,7 +7,6 @@ import { WalletListCardBadge } from '../../../../components/WalletListCardBadge'
 import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
 import IcCashierDeposit from '../../../../public/images/ic-cashier-deposit.svg';
-import IcCashierStatement from '../../../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../../../public/images/ic-cashier-withdrawal.svg';
 import ResetBalance from '../../../../public/images/plus-thin.svg';
@@ -34,11 +33,6 @@ const realAccountTabs = [
         path: 'transfer',
         text: i18n.t('Transfer'),
     },
-    {
-        icon: <IcCashierStatement />,
-        path: 'transactions',
-        text: i18n.t('Transactions'),
-    },
 ] as const;
 
 const virtualAccountTabs = [
@@ -46,11 +40,6 @@ const virtualAccountTabs = [
         icon: <IcCashierTransfer />,
         path: 'transfer',
         text: i18n.t('Transfer'),
-    },
-    {
-        icon: <IcCashierStatement />,
-        path: 'transactions',
-        text: i18n.t('Transactions'),
     },
     {
         icon: <ResetBalance />,

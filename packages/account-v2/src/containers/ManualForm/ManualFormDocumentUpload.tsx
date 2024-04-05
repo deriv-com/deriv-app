@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 import { Text } from '@deriv-com/ui';
 import { FormDocumentUploadField } from '../../components/FormFields/FormDocumentUploadField';
-import { TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { TManualDocumentTypes } from '../../constants';
 import { getTitleForDocumentUpload, getUploadConfig } from '../../utils/manualFormUtils';
 
 type TManualFormDocumentUploadProps = { selectedDocument: TManualDocumentTypes };

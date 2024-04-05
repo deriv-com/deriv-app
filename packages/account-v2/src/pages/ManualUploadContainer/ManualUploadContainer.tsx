@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDocumentUpload } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../../constants';
 import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
 import { useManualForm } from '../../hooks';
-import { OnfidoContainer } from '../../modules';
+import { OnfidoContainer } from '../../modules/src/Onfido';
 import { getUploadConfig, TManualDocumentUploadFormData } from '../../utils';
 
 type TManualUploadContainerProps = {

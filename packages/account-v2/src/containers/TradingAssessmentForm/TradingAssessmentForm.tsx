@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
 import { FormSubHeader } from '../../components/FormSubHeader';
+import { getTradingAssessmentQuestions } from '../../modules/src/TradingAssessmentConfig/tradingAssessmentQuestions';
 import { RiskToleranceWarningModal } from './RiskToleranceWarningModal';
 import { TestWarningModal } from './TestWarningModal';
 import { TradingAssessmentContainer } from './TradingAssessmentContainer';
-import { getTradingAssessmentQuestions } from './tradingAssessmentQuestions';
 
 export const TradingAssessmentForm = () => {
     const [shouldShowRiskTolerance, setShouldShowRiskTolerance] = useState(false);

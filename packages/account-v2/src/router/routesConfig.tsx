@@ -1,9 +1,9 @@
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
 import { POICountrySelector } from '../containers/POICountrySelector';
+import { TradingAssessmentForm } from '../containers/TradingAssessmentForm';
 import { FinancialAssessmentForm } from '../modules/src/FinancialAssessment/FinancialAssessmentForm';
 import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';
-import { TradingAssessmentForm } from '../modules/TradingAssessmentForm';
 import { AccountClosure, ConnectedApps, LoginHistory } from '../pages';
 import { DummyRoute } from './components/DummyRoute';
 

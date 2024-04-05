@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { ProgressBar } from '../Base';
@@ -7,7 +8,6 @@ import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
-import { useHistory } from 'react-router-dom';
 
 type TProps = {
     onWalletSettled?: (value: boolean) => void;
@@ -49,6 +49,8 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             return slideNode.querySelector('.wallets-card__container') as HTMLElement;
         });
     }, []);
+
+    const isCrypto = activeWallet?.currency_config?.is_crypto;
 
     // function to set the transition factor based on the number of scroll snaps
     const setTransitionFactor = useCallback((walletsCarouselEmblaApi: EmblaCarouselType) => {
@@ -220,7 +222,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                     <WalletCard
                         balance={account.display_balance}
                         currency={account.currency || 'USD'}
-                        iconSize='xl'
+                        iconSize={isCrypto ? '2xl' : 'lg'}
                         isCarouselContent
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}

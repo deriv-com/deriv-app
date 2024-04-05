@@ -9,7 +9,7 @@ import { TWalletCarouselItem } from '../../types';
 import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
-import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
+import { WalletCurrencyIcons } from '../WalletCardIcon';
 import { WalletError } from '../WalletError';
 
 const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
@@ -80,7 +80,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>
-                <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
+                <WalletCurrencyIcons currency={currency} size={isCrypto ? 'xl' : 'md'} />
             </div>
             <WalletButton
                 color='white'

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Dropdown, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useP2PExchangeRate } from '@deriv/hooks';
+import { useP2PExchangeRate, useP2PSettings } from '@deriv/hooks';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
@@ -56,8 +56,9 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const {
         ui: { is_desktop },
     } = useStore();
-    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
+    const { p2p_settings } = useP2PSettings();
 
     const {
         account_currency,
@@ -83,7 +84,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [show_warning_icon, setShowWarningIcon] = React.useState(false);
     const amount_dealt = amount - remaining_amount;
-    const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
+    const enable_action_point = p2p_settings.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
     const advert_type = is_buy_advert ? <Localize i18n_default_text='Buy' /> : <Localize i18n_default_text='Sell' />;
     const exchange_rate = useP2PExchangeRate(local_currency);
@@ -104,7 +105,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
 
     const icon_disabled_color =
         (!general_store.is_listed || general_store.is_barred || !is_advert_active) && 'disabled';
-    const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
+    const is_activate_ad_disabled = p2p_settings.reached_target_date && enable_action_point;
 
     const onClickActivateDeactivate = () => {
         if (!is_activate_ad_disabled) {
@@ -123,7 +124,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         if (!general_store.is_barred) showModal({ key: 'ShareMyAdsModal', props: { advert } });
     };
     const onClickCopy = () => {
-        if (floating_rate_store.rate_type === rate_type) {
+        if (p2p_settings.rate_type === rate_type) {
             my_ads_store.onClickCopy(id, is_desktop);
         } else {
             onClickSwitchAd();
@@ -137,7 +138,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     };
 
     const handleOnEdit = () =>
-        enable_action_point && floating_rate_store.rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
+        enable_action_point && p2p_settings.rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
 
     const should_show_tooltip_icon =
         (visibility_status?.length === 1 &&
@@ -163,7 +164,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
 
     React.useEffect(() => {
         setShowWarningIcon(enable_action_point || should_show_tooltip_icon || !general_store.is_listed);
-    }, [enable_action_point, general_store.is_listed, should_show_tooltip_icon]);
+    }, [enable_action_point, general_store.is_listed, should_show_tooltip_icon, p2p_settings.rate_type]);
 
     const onClickTooltipIcon = () => {
         showModal({

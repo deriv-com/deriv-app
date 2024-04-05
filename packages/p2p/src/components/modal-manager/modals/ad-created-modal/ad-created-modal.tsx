@@ -5,7 +5,11 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { api_error_codes } from 'Constants/api-error-codes';
 import { useStores } from 'Stores';
 
-const AdCreatedModal = () => {
+type TAdCreatedModalProps = {
+    adverts_archive_period: number;
+};
+
+const AdCreatedModal = ({ adverts_archive_period }: TAdCreatedModalProps) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { general_store, my_ads_store } = useStores();
     const should_not_show_auto_archive_message_again = React.useRef(false);
@@ -48,7 +52,7 @@ const AdCreatedModal = () => {
                 <Text as='p' size='xs' color='prominent'>
                     <Localize
                         i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be deactivated."
-                        values={{ adverts_archive_period: my_ads_store.adverts_archive_period }}
+                        values={{ adverts_archive_period }}
                     />
                 </Text>
                 <br />

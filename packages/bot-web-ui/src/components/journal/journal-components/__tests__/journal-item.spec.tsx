@@ -1,6 +1,6 @@
 import React from 'react';
+import { LogTypes, MessageTypes } from '@deriv/bot-skeleton';
 import { render, screen } from '@testing-library/react';
-import { message_types, log_types } from '@deriv/bot-skeleton';
 import JournalItem from '../journal-item';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -32,26 +32,26 @@ const mockRowDataDefault = {
 
 const mockRowDataError = {
     ...mockRowData,
-    message_type: message_types.ERROR,
+    message_type: MessageTypes.ERROR,
     message: 'Error message',
 };
 
 const mockRowDataNotifier = {
     ...mockRowData,
-    message_type: message_types.NOTIFY,
+    message_type: MessageTypes.NOTIFY,
     message: 'Notify message',
 };
 
 const mockRowDataNotifierWithFunc = {
     ...mockRowData,
-    message_type: message_types.NOTIFY,
+    message_type: MessageTypes.NOTIFY,
     message: jest.fn(),
 };
 
 const mockRowDataSuccess = {
     ...mockRowData,
-    message_type: message_types.SUCCESS,
-    message: log_types.LOAD_BLOCK,
+    message_type: MessageTypes.SUCCESS,
+    message: LogTypes.LOAD_BLOCK,
 };
 
 describe('JournalItem', () => {

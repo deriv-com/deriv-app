@@ -6,21 +6,9 @@ const WalletDeposit = () => {
     const { data } = useActiveWalletAccount();
     const isCrypto = data?.currency_config?.is_crypto;
 
-    if (isCrypto) {
-        return (
-            <CashierLocked>
-                <DepositLocked>
-                    <DepositCryptoModule />
-                </DepositLocked>
-            </CashierLocked>
-        );
-    }
-
     return (
-        <CashierLocked>
-            <DepositLocked>
-                <DepositFiatModule />
-            </DepositLocked>
+        <CashierLocked module='deposit'>
+            <DepositLocked>{isCrypto ? <DepositCryptoModule /> : <DepositFiatModule />}</DepositLocked>
         </CashierLocked>
     );
 };

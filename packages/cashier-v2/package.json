@@ -12,14 +12,16 @@
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
-        "@deriv-com/ui": "1.11.2",
+       "@deriv-com/ui": "^1.12.17",
+        "@deriv-com/utils": "^0.0.11",
         "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
-        "@deriv/quill-icons": "^1.19.0",
+        "@deriv/quill-icons": "^1.21.0",
         "@deriv/utils": "^1.0.0",
         "clsx": "^2.0.0",
         "formik": "^2.1.4",
         "i18next": "^22.4.6",
+        "lodash.debounce": "^4.0.8",
         "qrcode.react": "^3.1.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

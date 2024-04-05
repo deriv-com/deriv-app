@@ -13,7 +13,7 @@ const MyAdsEmpty = () => {
             <ActionScreen
                 actionButtons={
                     <Button
-                        onClick={() => history.push(`${MY_ADS_URL}/create`)}
+                        onClick={() => history.push(`${MY_ADS_URL}/adForm?formAction=create`)}
                         size='lg'
                         textSize={isMobile ? 'md' : 'sm'}
                     >

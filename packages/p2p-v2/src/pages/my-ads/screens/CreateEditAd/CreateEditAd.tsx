@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
+import { THooks } from 'types';
 import { AdCancelCreateEditModal, AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
 import { MY_ADS_URL } from '@/constants';
 import { useFloatingRate, useQueryString } from '@/hooks';
@@ -140,7 +141,7 @@ const CreateEditAd = () => {
     }, [isSuccess, history, shouldNotShowArchiveMessageAgain, isError, isUpdateSuccess, isUpdateError]);
 
     const setFormValues = useCallback(
-        advertInfo => {
+        (advertInfo: THooks.Advert.Get) => {
             setValue('ad-type', advertInfo.type);
             setValue('amount', advertInfo.amount);
             setValue('instructions', advertInfo.description);
@@ -197,6 +198,7 @@ const CreateEditAd = () => {
             {isModalOpen && (
                 <AdCreateEditErrorModal
                     errorCode={error?.error?.code || updateError?.error?.code}
+                    errorMessage={(error?.error?.message || updateError?.error?.message) ?? 'Something’s not right'}
                     isModalOpen={isModalOpen}
                     onRequestClose={() => setIsModalOpen(false)}
                 />

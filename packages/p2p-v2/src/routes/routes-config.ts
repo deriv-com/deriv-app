@@ -37,11 +37,7 @@ export const routes = [
         routes: [
             {
                 component: CreateEditAd,
-                path: `${MY_ADS_URL}/create`,
-            },
-            {
-                component: CreateEditAd,
-                path: `${MY_ADS_URL}/edit`,
+                path: `${MY_ADS_URL}/adForm`,
             },
         ],
     },

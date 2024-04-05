@@ -49,6 +49,7 @@ const AdWizard = ({ countryList, onCancel, steps, ...rest }: TAdWizardNav) => {
                                 color='white'
                                 icon={<LabelPairedXmarkLgBoldIcon />}
                                 onClick={onCancel}
+                                type='button'
                                 variant='contained'
                             />
                         </div>

@@ -5,6 +5,7 @@ import './AdCreateEditErrorModal.scss';
 
 type TAdCreateEditErrorModalProps = {
     errorCode?: ErrorCodes;
+    errorMessage?: string;
     isModalOpen: boolean;
     onRequestClose: () => void;
 };
@@ -31,7 +32,12 @@ const errorContent: ErrorContent = {
     },
 };
 
-const AdCreateEditErrorModal = ({ errorCode, isModalOpen, onRequestClose }: TAdCreateEditErrorModalProps) => {
+const AdCreateEditErrorModal = ({
+    errorCode,
+    errorMessage,
+    isModalOpen,
+    onRequestClose,
+}: TAdCreateEditErrorModalProps) => {
     const { isMobile } = useDevice();
     const textSize = isMobile ? 'md' : 'sm';
     return (
@@ -45,13 +51,11 @@ const AdCreateEditErrorModal = ({ errorCode, isModalOpen, onRequestClose }: TAdC
                 <Text weight='bold'>{(errorCode && errorContent?.[errorCode]?.title) ?? 'Something’s not right'}</Text>
             </Modal.Header>
             <Modal.Body className='p2p-v2-ad-create-edit-error-modal__body'>
-                <Text size={textSize}>
-                    {(errorCode && errorContent?.[errorCode]?.description) ?? 'Something’s not right'}
-                </Text>
+                <Text size={textSize}>{(errorCode && errorContent?.[errorCode]?.description) ?? errorMessage}</Text>
             </Modal.Body>
             <Modal.Footer className='p2p-v2-ad-create-edit-error-modal__footer' hideBorder>
                 <Button onClick={onRequestClose} size='lg' textSize={textSize}>
-                    {errorCode ? 'Update ad' : 'Ok'}
+                    {errorCode && errorContent?.[errorCode]?.title ? 'Update ad' : 'Ok'}
                 </Button>
             </Modal.Footer>
         </Modal>

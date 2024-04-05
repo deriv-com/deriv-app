@@ -91,7 +91,7 @@ const MyAdsTable = () => {
                 break;
             }
             case AD_ACTION.EDIT: {
-                history.push(`${MY_ADS_URL}/edit?advertId=${id}`);
+                history.push(`${MY_ADS_URL}/adForm?formAction=edit&advertId=${id}`);
                 break;
             }
             default:

@@ -52,6 +52,11 @@ const virtualAccountTabs = [
         path: 'reset-balance',
         text: i18n.t('Reset Balance'),
     },
+    {
+        icon: <IcCashierStatement />,
+        path: 'transactions',
+        text: i18n.t('Transactions'),
+    },
 ] as const;
 
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {

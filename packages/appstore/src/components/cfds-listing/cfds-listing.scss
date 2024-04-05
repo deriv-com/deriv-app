@@ -438,6 +438,7 @@
         background-color: var(--general-section-5);
         padding: 1.6rem 2.4rem;
         border-radius: $BORDER_RADIUS * 2;
+        margin-top: 0.8rem;
 
         &--ordered-list {
             list-style-type: decimal;
@@ -451,6 +452,10 @@
 
         &--content {
             padding: 0.4rem 0;
+
+            &-bold {
+                font-weight: bold;
+            }
         }
 
         &--divider {

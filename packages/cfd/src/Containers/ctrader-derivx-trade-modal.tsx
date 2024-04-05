@@ -135,6 +135,12 @@ const CTraderDerivXTradeModal = ({
                             {localize(note)}
                         </Text>
                     ))}
+                    <Text as='li' size='xxs' line_height='l' className='cfd-trade-modal__expansion-panel--content'>
+                        <Localize
+                            i18n_default_text='To ensure you can always create and manage strategies with fees, <0>keep at least one account free from being a strategy provider.</0> This way, you’ll always have an account ready for collecting fees, allowing you to have up to four strategies where you may impose fees.'
+                            components={[<span key={0} className='cfd-trade-modal__expansion-panel--content-bold' />]}
+                        />
+                    </Text>
                 </ul>
             </ol>
         ),

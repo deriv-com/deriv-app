@@ -44,11 +44,11 @@ const DEEP_LINK = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5
     `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
 const STRATEGY_PROVIDER_NOTES = [
-    'If you are a strategy provider and you want to offer a “fee-based strategy”, you need an ‘account for fees’.',
-    'One ‘Account for fees’ can be used across multiple ‘fee-based’ strategies. Accounts for ‘fee-based strategies cannot be used as ‘Accounts for fees’.',
-    'Consider keeping at least one account unassigned to use as your ‘Account for fees’ for potential ‘fee-based’ strategies.',
-    '‘No-fee strategies’ do not require an ‘Account for fees’.',
-    'An account remains assigned to a strategy unless you disable the strategy for 30 days.',
+    'When setting up a strategy, you have the option to impose fees.',
+    'For strategies where you impose fees, you must assign one of your existing accounts to process these fees. The same ‘Account For Fees’ can support multiple fee-based strategies.',
+    'Free strategies do not require an ‘Account For Fees’.',
+    'An account designated as a strategy provider is irreversible unless it remains inactive for 30 days.',
+    'An account cannot simultaneously be a strategy provider and serve as an ‘Account For Fees’.',
 ];
 
 const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) =>

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Form, Formik, FormikValues } from 'formik';
 import { InferType } from 'yup';
 import { Button } from '@deriv-com/ui';
-import { TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { TManualDocumentTypes } from '../../constants';
 import { getManualFormValidationSchema } from '../../utils/manualFormUtils';
 import { ManualFormDocumentUpload } from './ManualFormDocumentUpload';
 import { ManualFormFooter } from './ManualFormFooter';

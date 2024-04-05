@@ -1,9 +1,10 @@
+import { DummyRoute } from '../router/components/DummyRoute/DummyRoute';
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
-import { ProofOfIdentity } from '../modules';
-import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
+import { ProofOfIdentity } from '../modules/src/POI/POI';
+import { FinancialAssessmentForm } from '../modules/src/FinancialAssessment/FinancialAssessmentForm';
+import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';
 import { AccountClosure, ConnectedApps, LoginHistory } from '../pages';
-import { DummyRoute } from './components/DummyRoute';
 
 export const routes = [
     {
@@ -22,7 +23,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.TradingAssessment,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: FinancialAssessmentForm,
         routeName: 'Financial assessment',
         routePath: ACCOUNT_V2_ROUTES.FinancialAssessment,
     },

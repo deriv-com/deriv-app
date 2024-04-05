@@ -1,30 +1,38 @@
 .wallets-trading-account-card {
     display: flex;
     align-items: center;
-    gap: 16px;
-    height: 88px;
+    gap: 1.6rem;
+    height: 8.8rem;
+    border: none;
+    background: none;
 
     @include desktop {
+        padding: 0 2.3rem 0 1.6rem;
         $columns: 3;
-        $grid-last-row-children: '&:nth-child(#{$columns}n+1):nth-last-child(-n+#{$columns})';
+        $grid-last-row-children: '&:nth-last-child(-n+#{$columns})';
         #{$grid-last-row-children} > &__content,
         #{$grid-last-row-children} ~ & > &__content {
             border-bottom: none;
         }
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--system-light-6-hover-background, #e6e9e9);
+            border-radius: 0.8rem;
+        }
     }
 
     @include mobile {
-        $columns: 1;
-        $grid-last-row-children: '&:nth-child(#{$columns}n+1):nth-last-child(-n+#{$columns})';
-        #{$grid-last-row-children} > &__content,
-        #{$grid-last-row-children} ~ & > &__content {
+        height: 8rem;
+        &:last-child > &__content,
+        &:last-child ~ & > &__content {
             border-bottom: none;
         }
     }
 
     &__content {
         display: flex;
-        gap: 16px;
+        gap: 1.6rem;
         align-items: center;
         flex-grow: 1;
         height: 100%;

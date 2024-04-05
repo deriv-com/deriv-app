@@ -1,5 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { TCountryListItem } from 'types';
 import { AD_CONDITION_TYPES } from '@/constants';
 import { Text, useDevice } from '@deriv-com/ui';
 import { AdConditionBlockSelector } from '../AdConditionBlockSelector';
@@ -8,6 +9,7 @@ import { AdSummary } from '../AdSummary';
 import { PreferredCountriesSelector } from '../PreferredCountriesSelector';
 
 type TAdConditionsSection = {
+    countryList: TCountryListItem;
     currency: string;
     getCurrentStep: () => number;
     getTotalSteps: () => number;
@@ -17,7 +19,7 @@ type TAdConditionsSection = {
     rateType: string;
 };
 
-const AdConditionsSection = ({ currency, localCurrency, rateType, ...props }: TAdConditionsSection) => {
+const AdConditionsSection = ({ countryList, currency, localCurrency, rateType, ...props }: TAdConditionsSection) => {
     const {
         formState: { errors },
         getValues,
@@ -65,7 +67,7 @@ const AdConditionsSection = ({ currency, localCurrency, rateType, ...props }: TA
                 selectedValue={minCompletionRate && Number(minCompletionRate)}
                 type={AD_CONDITION_TYPES.COMPLETION_RATE}
             />
-            <PreferredCountriesSelector type={AD_CONDITION_TYPES.PREFERRED_COUNTRIES} />
+            <PreferredCountriesSelector countryList={countryList} type={AD_CONDITION_TYPES.PREFERRED_COUNTRIES} />
             <AdFormController {...props} isNextButtonDisabled={!!errors} />
         </div>
     );

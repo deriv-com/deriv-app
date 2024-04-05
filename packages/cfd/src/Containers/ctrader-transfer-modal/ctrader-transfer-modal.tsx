@@ -37,9 +37,9 @@ const CTraderTransferModal = observer(() => {
                                     setSelectedAccount(ctrader_account);
                                 }}
                             >
-                                <Text size='xxs'>{ctrader_account.login}</Text>
+                                <Text size='xs'>{ctrader_account.login}</Text>
                                 <Text
-                                    size='xxs'
+                                    size='xs'
                                     weight='bold'
                                     className='ctrader-transfer-modal__accounts-list--balance'
                                 >

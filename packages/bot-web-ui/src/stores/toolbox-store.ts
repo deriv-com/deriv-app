@@ -1,9 +1,40 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
+import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
+import RootStore from './root-store';
 
-export default class ToolboxStore {
-    constructor(root_store, core) {
+interface IToolboxStore {
+    is_toolbox_open: boolean;
+    is_search_loading: boolean;
+    is_search_focus: boolean;
+    sub_category_index: number[];
+    toolbox_dom: Element[] | null;
+    toolbox_examples: Element | null;
+    onMount: (toolbox_ref: React.RefObject<HTMLDivElement>) => void;
+    onUnmount: () => void;
+    setWorkspaceOptions: () => void;
+    adjustWorkspace: () => void;
+    toggleDrawer: () => void;
+    onToolboxItemClick: (category: Element) => void;
+    onToolboxItemExpand: (index: number) => void;
+    getCategoryContents: (category: Element) => ChildNode[];
+    getAllCategories: () => Element[];
+    hasSubCategory: (category: Element[]) => boolean;
+    onSearch: ({ search }: { search: string }) => void;
+    onSearchBlur: () => void;
+    onSearchClear: (setFieldValue: (field: string, value: string) => void) => void;
+    onSearchKeyUp: (submitForm: () => void) => void;
+    showSearch: (search: string) => void;
+}
+
+export default class ToolboxStore implements IToolboxStore {
+    root_store: RootStore;
+    core: TStores;
+    disposeToolboxToggleReaction: (() => void) | null = null;
+    typing_timer: ReturnType<typeof setTimeout> | null = null;
+
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             is_toolbox_open: observable,
             is_search_loading: observable,
@@ -36,14 +67,14 @@ export default class ToolboxStore {
     is_search_loading = false;
     is_search_focus = false;
     sub_category_index = [];
-    toolbox_dom = null;
+    toolbox_dom: Element[] | null = null;
     toolbox_examples = null;
 
-    onMount(toolbox_ref) {
+    onMount(toolbox_ref: React.RefObject<HTMLDivElement>) {
         this.adjustWorkspace();
 
-        this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
-        this.toolbox_examples = [...this.toolbox_dom.childNodes].find(el => el.tagName === 'examples');
+        this.toolbox_dom = window.Blockly.Xml.textToDom(toolbox_ref?.current);
+        this.toolbox_examples = [...this.toolbox_dom?.childNodes].find(el => el.tagName === 'examples');
         this.setWorkspaceOptions();
         this.disposeToolboxToggleReaction = reaction(
             () => this.is_toolbox_open,
@@ -65,7 +96,7 @@ export default class ToolboxStore {
     }
 
     setWorkspaceOptions() {
-        const workspace = Blockly.derivWorkspace;
+        const workspace = window.Blockly.derivWorkspace;
         const readOnly = !!workspace.options.readOnly;
         let languageTree, hasCategories, hasCollapse, hasComments, hasDisable;
 
@@ -92,7 +123,7 @@ export default class ToolboxStore {
 
     // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
-        const workspace = Blockly.derivWorkspace;
+        const workspace = window.Blockly.derivWorkspace;
         const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
         const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
 
@@ -108,7 +139,7 @@ export default class ToolboxStore {
         this.is_toolbox_open = !this.is_toolbox_open;
     }
 
-    onToolboxItemClick(category) {
+    onToolboxItemClick(category: Element) {
         const { flyout } = this.root_store;
         const category_id = category.getAttribute('id');
         const flyout_content = this.getCategoryContents(category);
@@ -123,7 +154,7 @@ export default class ToolboxStore {
         }
     }
 
-    onToolboxItemExpand(index) {
+    onToolboxItemExpand(index: number) {
         if (this.sub_category_index.includes(index)) {
             const open_ids = this.sub_category_index.filter(open_id => open_id !== index);
             this.sub_category_index = open_ids;
@@ -133,8 +164,8 @@ export default class ToolboxStore {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    getCategoryContents(category) {
-        const workspace = Blockly.derivWorkspace;
+    getCategoryContents(category: Element) {
+        const workspace = window.Blockly.derivWorkspace;
         const dynamic = category.getAttribute('dynamic');
         let xml_list = Array.from(category.childNodes);
 
@@ -148,11 +179,12 @@ export default class ToolboxStore {
     }
 
     getAllCategories() {
-        const categories = [];
-        Array.from(this.toolbox_dom.childNodes).forEach(category => {
-            categories.push(category);
-            if (this.hasSubCategory(category.children)) {
-                Array.from(category.children).forEach(subCategory => {
+        const categories: Element[] = [];
+        Array.from(this.toolbox_dom?.childNodes).forEach(category => {
+            const categoryElement = category as Element; // Assert the type of 'category' to 'Element'
+            categories.push(categoryElement);
+            if (this.hasSubCategory(Array.from(categoryElement.children))) {
+                Array.from(categoryElement.children).forEach(subCategory => {
                     categories.push(subCategory);
                 });
             }
@@ -161,7 +193,7 @@ export default class ToolboxStore {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    hasSubCategory(category) {
+    hasSubCategory(category: Element[]) {
         // eslint-disable-next-line consistent-return
         const subCategory = Object.keys(category).filter(key => {
             if (category[key].tagName.toUpperCase() === 'CATEGORY') {
@@ -174,7 +206,7 @@ export default class ToolboxStore {
         return false;
     }
 
-    onSearch({ search }) {
+    onSearch({ search }: { search: string }) {
         this.is_search_focus = true;
         this.showSearch(search);
     }
@@ -183,15 +215,16 @@ export default class ToolboxStore {
         this.is_search_focus = false;
     }
 
-    onSearchClear(setFieldValue) {
+    onSearchClear(setFieldValue: (field: string, value: string) => void) {
         setFieldValue('search', '');
         this.showSearch('');
     }
 
-    onSearchKeyUp(submitForm) {
+    onSearchKeyUp(submitForm: () => void) {
         this.is_search_loading = true;
-
-        clearTimeout(this.typing_timer);
+        if (this.typing_timer && typeof this.typing_timer === 'number') {
+            clearTimeout(this.typing_timer);
+        }
         this.typing_timer = setTimeout(
             action(() => {
                 submitForm();
@@ -201,13 +234,13 @@ export default class ToolboxStore {
         );
     }
 
-    showSearch(search) {
-        const workspace = Blockly.derivWorkspace;
-        const flyout_content = [];
+    showSearch(search: string) {
+        const workspace = window.Blockly.derivWorkspace;
+        const flyout_content: Element[] = [];
         const search_term = search.replace(/\s+/g, ' ').trim().toUpperCase();
         const search_words = search_term.split(' ');
         const all_variables = workspace.getVariablesOfType('');
-        const all_procedures = Blockly.Procedures.allProcedures(workspace);
+        const all_procedures = window.Blockly.Procedures.allProcedures(workspace);
         const { flyout } = this.root_store;
 
         flyout.setVisibility(false);
@@ -234,28 +267,30 @@ export default class ToolboxStore {
 
         const all_categories = this.getAllCategories();
 
-        const block_contents = all_categories
-            .filter(category => !this.hasSubCategory(category.children))
-            .map(category => {
-                const contents = this.getCategoryContents(category);
+        const block_contents = Array.from(
+            all_categories
+                .filter(category => !this.hasSubCategory(Array.from(category.children)))
+                .map(category => {
+                    const contents = this.getCategoryContents(category);
 
-                const only_block_contents = Array.from(contents).filter(
-                    content => content.tagName.toUpperCase() === 'BLOCK'
-                );
-                return only_block_contents;
-            })
-            .flat();
+                    const only_block_contents = Array.from(contents).filter(
+                        content => content.tagName.toUpperCase() === 'BLOCK'
+                    );
+                    return only_block_contents;
+                })
+                .flat()
+        );
 
-        const pushIfNotExists = (array, element_to_push) => {
+        const pushIfNotExists = (array: Element[], element_to_push: ChildNode) => {
             if (!array.some(element => element === element_to_push)) {
                 array.push(element_to_push);
             }
         };
 
-        const pushBlockWithPriority = priority => {
+        const pushBlockWithPriority = (priority: string) => {
             block_contents.forEach(block_content => {
                 const block_type = block_content.getAttribute('type');
-                const block = Blockly.Blocks[block_type];
+                const block = window.Blockly.Blocks[block_type];
                 const block_meta = block.meta instanceof Function && block.meta();
                 const block_definitions = block.definition instanceof Function && block.definition();
                 const block_name = block_meta.display_name;
@@ -274,8 +309,8 @@ export default class ToolboxStore {
                     // when there's multiple search text and all the search text match block's name or block type
                     case 'match_words': {
                         if (
-                            search_words.every(word => block_name_terms.some(term => term.includes(word))) ||
-                            search_words.every(word => block_type_terms.some(term => term.includes(word)))
+                            search_words.every(word => block_name_terms.some((term: string) => term.includes(word))) ||
+                            search_words.every(word => block_type_terms.some((term: string) => term.includes(word)))
                         ) {
                             pushIfNotExists(flyout_content, block_content);
                         }
@@ -284,8 +319,8 @@ export default class ToolboxStore {
                     // when some of search word match block's name or block's type
                     case 'block_term': {
                         if (
-                            block_type_terms.some(term => search_words.some(word => term.includes(word))) ||
-                            block_name_terms.some(term => search_words.some(word => term.includes(word)))
+                            block_type_terms.some((term: string) => search_words.some(word => term.includes(word))) ||
+                            block_name_terms.some((term: string) => search_words.some(word => term.includes(word)))
                         ) {
                             pushIfNotExists(flyout_content, block_content);
                         }
@@ -329,7 +364,9 @@ export default class ToolboxStore {
                                     .replace(/[^\w\s]/gi, '')
                                     .split(' ');
 
-                                return search_words.some(word => block_meta_strings.some(meta => meta.includes(word)));
+                                return search_words.some(word =>
+                                    block_meta_strings.some((meta: string) => meta.includes(word))
+                                );
                             });
 
                         if (matched_meta && matched_meta.length) {
@@ -348,7 +385,9 @@ export default class ToolboxStore {
         priority_order.forEach(priority => pushBlockWithPriority(priority));
 
         // block_variable_name matched
-        const matched_variables = all_variables.filter(variable => variable.name.toUpperCase().includes(search_term));
+        const matched_variables = all_variables.filter((variable: { name: string }) =>
+            variable.name.toUpperCase().includes(search_term)
+        );
         const variables_blocks = Blockly.DataCategory.search(matched_variables);
         // eslint-disable-next-line consistent-return
         const unique_var_blocks = variables_blocks.filter(variable_block => {

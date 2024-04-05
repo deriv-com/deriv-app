@@ -1,11 +1,54 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { ProposalOpenContract } from '@deriv/api-types';
 import { LogTypes } from '@deriv/bot-skeleton';
 import { formatDate, isEnded } from '@deriv/shared';
+import { TStores } from '@deriv/stores/types';
+import { TContractInfo } from 'Components/summary/summary-card.types';
+import { TStatistics } from 'Components/transaction-details/transaction-details.types';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
+import RootStore from './root-store';
 
-export default class TransactionsStore {
-    constructor(root_store, core) {
+type TTransactionInfo = {
+    data: TContractInfo;
+    type: 'contract' | 'divider';
+    loginid?: string;
+};
+
+type TElements = {
+    [key: string]: TTransactionInfo[];
+};
+
+interface ITransactionsStore {
+    TRANSACTION_CACHE: string;
+    elements: TElements;
+    active_transaction_id: number | null;
+    recovered_completed_transactions: number[];
+    recovered_transactions: Array<number>;
+    is_called_proposal_open_contract: boolean;
+    is_transaction_details_modal_open: boolean;
+    transactions: TTransactionInfo[];
+    onBotContractEvent: (data: ProposalOpenContract) => void;
+    pushTransaction: (data: ProposalOpenContract) => void;
+    onClickOutsideTransaction: (event: MouseEvent) => void;
+    onMount: () => void;
+    onUnmount: () => void;
+    clear: () => void;
+    setActiveTransactionId: (transaction_id: number | null) => void;
+    registerReactions: () => void;
+    recoverPendingContracts: (contract?: ProposalOpenContract) => void;
+    updateResultsCompletedContract: (contract: ProposalOpenContract) => void;
+    sortOutPositionsBeforeAction: (positions: TContractInfo[], element_id?: string) => void;
+    recoverPendingContractsById: (contract_id: number, contract?: ProposalOpenContract) => void;
+    toggleTransactionDetailsModal: (is_open: boolean) => void;
+}
+
+export default class TransactionsStore implements ITransactionsStore {
+    root_store: RootStore;
+    core: TStores | null = null;
+    disposeReactionsFn;
+
+    constructor(root_store: RootStore, core: TStores | null) {
         makeObservable(this, {
             elements: observable,
             active_transaction_id: observable,
@@ -36,35 +79,38 @@ export default class TransactionsStore {
     }
     TRANSACTION_CACHE = 'transaction_cache';
 
-    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.core?.client?.loginid, []);
-    active_transaction_id = null;
-    recovered_completed_transactions = [];
-    recovered_transactions = [];
+    elements: TElements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.core?.client?.loginid, []);
+    active_transaction_id: number | null = null;
+    recovered_completed_transactions: number[] = [];
+    recovered_transactions: number[] = [];
     is_called_proposal_open_contract = false;
     is_transaction_details_modal_open = false;
 
     get transactions() {
-        return (
-            this.elements[this.core?.client?.loginid]?.filter(
-                element => element.type === transaction_elements.CONTRACT
-            ) ?? []
-        );
+        if (this.core?.client?.loginid) {
+            return (
+                this.elements[this.core?.client?.loginid]?.filter(
+                    (element: TTransactionInfo) => element.type === transaction_elements.CONTRACT
+                ) ?? []
+            );
+        }
+        return [];
     }
 
     get statistics() {
         let total_runs = 0;
         const statistics = this.transactions.reduce(
-            (stats, { data: trx }) => {
-                if (trx.is_completed) {
+            (stats: TStatistics, { data: trx }: { data: TContractInfo }) => {
+                if (trx.is_completed && trx.profit !== undefined) {
                     if (trx.profit > 0) {
                         stats.won_contracts += 1;
-                        stats.total_payout += trx.payout;
+                        stats.total_payout += trx.payout ?? 0;
                     } else {
                         stats.lost_contracts += 1;
                     }
 
                     stats.total_profit += trx.profit;
-                    stats.total_stake += trx.buy_price;
+                    stats.total_stake += trx.buy_price ?? 0;
                     total_runs += 1;
                 }
 
@@ -83,19 +129,19 @@ export default class TransactionsStore {
         return statistics;
     }
 
-    toggleTransactionDetailsModal(is_open) {
+    toggleTransactionDetailsModal(is_open: boolean) {
         this.is_transaction_details_modal_open = is_open;
     }
 
-    onBotContractEvent(data) {
+    onBotContractEvent(data: ProposalOpenContract) {
         this.pushTransaction(data);
     }
 
-    pushTransaction(data) {
+    pushTransaction(data: ProposalOpenContract) {
         const is_completed = isEnded(data);
         const { run_id } = this.root_store.run_panel;
-        const current_account = this.core?.client?.loginid;
-        const contract = {
+        const current_account = this.core?.client?.loginid ?? '';
+        const contract: TContractInfo = {
             barrier: data.barrier,
             buy_price: data.buy_price,
             contract_id: data.contract_id,
@@ -111,7 +157,7 @@ export default class TransactionsStore {
             is_completed,
             low_barrier: data.low_barrier,
             payout: data.payout,
-            profit: is_completed && data.profit,
+            profit: is_completed ? data.profit : 0,
             run_id,
             shortcode: data.shortcode,
             tick_count: data.tick_count,
@@ -120,17 +166,15 @@ export default class TransactionsStore {
         };
 
         if (!this.elements[current_account]) {
-            this.elements = {
-                ...this.elements,
-                [current_account]: [],
-            };
+            this.elements[current_account] = [];
         }
 
         const same_contract_index = this.elements[current_account]?.findIndex(
             c =>
                 c.type === transaction_elements.CONTRACT &&
+                typeof c.data !== 'string' &&
                 c.data.transaction_ids &&
-                c.data.transaction_ids.buy === data.transaction_ids.buy
+                c.data.transaction_ids.buy === data?.transaction_ids?.buy
         );
 
         if (same_contract_index === -1) {
@@ -143,7 +187,8 @@ export default class TransactionsStore {
                 if (is_new_run) {
                     this.elements[current_account]?.unshift({
                         type: transaction_elements.DIVIDER,
-                        data: contract.run_id,
+                        // Need to fix this data type as currently it's holding both string and object.
+                        data: contract.run_id as unknown as TContractInfo,
                     });
                 }
             }
@@ -163,7 +208,7 @@ export default class TransactionsStore {
         this.elements = { ...this.elements }; // force update
     }
 
-    setActiveTransactionId(transaction_id) {
+    setActiveTransactionId(transaction_id: number | null) {
         // Toggle transaction popover if passed transaction_id is the same.
         if (transaction_id && this.active_transaction_id === transaction_id) {
             this.active_transaction_id = null;
@@ -172,10 +217,10 @@ export default class TransactionsStore {
         }
     }
 
-    onClickOutsideTransaction(event) {
-        const path = event.path || (event.composedPath && event.composedPath());
-        const is_transaction_click = path.some(
-            el => el.classList && el.classList.contains('transactions__item-wrapper')
+    onClickOutsideTransaction(event: MouseEvent) {
+        const path = event.composedPath?.();
+        const is_transaction_click = path?.some(
+            (el: EventTarget | null) => el instanceof Element && el.classList?.contains('transactions__item-wrapper')
         );
         if (!is_transaction_click) {
             this.setActiveTransactionId(null);
@@ -192,21 +237,26 @@ export default class TransactionsStore {
     }
 
     clear() {
-        this.elements[this.core?.client?.loginid] = [];
+        if (this.core?.client?.loginid) {
+            this.elements[this.core?.client?.loginid] = [];
+        }
         this.recovered_completed_transactions = this.recovered_completed_transactions?.slice(0, 0);
         this.recovered_transactions = this.recovered_transactions?.slice(0, 0);
         this.is_transaction_details_modal_open = false;
     }
 
     registerReactions() {
-        const { client } = this.core;
+        if (!this?.core) return;
+        const { client } = this?.core;
 
         // Write transactions to session storage on each change in transaction elements.
         const disposeTransactionElementsListener = reaction(
-            () => this.elements[client?.loginid],
+            () => this.elements[client?.loginid ?? ''],
             elements => {
                 const stored_transactions = getStoredItemsByKey(this.TRANSACTION_CACHE, {});
-                stored_transactions[client.loginid] = elements?.slice(0, 5000) ?? [];
+                if (client?.loginid) {
+                    stored_transactions[client?.loginid] = elements?.slice(0, 5000) ?? [];
+                }
                 setStoredItemsByKey(this.TRANSACTION_CACHE, stored_transactions);
             }
         );
@@ -225,36 +275,40 @@ export default class TransactionsStore {
         };
     }
 
-    recoverPendingContracts(contract = null) {
-        this.transactions.forEach(({ data: trx }) => {
-            if (trx.is_completed || this.recovered_transactions.includes(trx.contract_id)) return;
-            this.recoverPendingContractsById(trx.contract_id, contract);
+    recoverPendingContracts(contract?: ProposalOpenContract) {
+        this.transactions.forEach(({ data: trx }: { data: TContractInfo }) => {
+            if (trx.is_completed) return;
+            if (trx.contract_id) {
+                if (this.recovered_transactions.includes(trx.contract_id)) return;
+                this.recoverPendingContractsById(trx.contract_id, contract);
+            }
         });
     }
 
-    updateResultsCompletedContract(contract) {
+    updateResultsCompletedContract(contract: ProposalOpenContract | null | undefined) {
+        if (!contract) return;
         const { journal, summary_card } = this.root_store;
         const { contract_info } = summary_card;
-        const { currency, profit } = contract;
+        const { currency, profit, contract_id } = contract;
 
-        if (contract.contract_id !== contract_info?.contract_id) {
+        if (contract_id !== contract_info?.contract_id) {
             this.onBotContractEvent(contract);
 
-            if (!this.recovered_transactions.includes(contract.contract_id)) {
-                this.recovered_transactions.push(contract.contract_id);
+            if (contract_id && !this.recovered_transactions?.includes(contract_id)) {
+                this.recovered_transactions.push(contract_id);
             }
-            if (!this.recovered_completed_transactions.includes(contract.contract_id) && isEnded(contract)) {
-                this.recovered_completed_transactions.push(contract.contract_id);
+            if (contract_id && !this.recovered_completed_transactions.includes(contract_id) && isEnded(contract)) {
+                this.recovered_completed_transactions.push(contract_id);
 
                 journal.onLogSuccess({
-                    log_type: profit > 0 ? LogTypes.PROFIT : LogTypes.LOST,
+                    log_type: Number(profit) > 0 ? LogTypes.PROFIT : LogTypes.LOST,
                     extra: { currency, profit },
                 });
             }
         }
     }
 
-    sortOutPositionsBeforeAction(positions, element_id = false) {
+    sortOutPositionsBeforeAction(positions: TContractInfo[], element_id?: string) {
         positions?.forEach(position => {
             if (!element_id || (element_id && position.id === element_id)) {
                 const contract_details = position.contract_info;
@@ -263,8 +317,8 @@ export default class TransactionsStore {
         });
     }
 
-    recoverPendingContractsById(contract_id, contract = null) {
-        const positions = this.core.portfolio.positions;
+    recoverPendingContractsById(contract_id: number, contract?: ProposalOpenContract) {
+        const positions = this.core?.portfolio.positions;
 
         if (contract) {
             this.is_called_proposal_open_contract = true;
@@ -273,14 +327,14 @@ export default class TransactionsStore {
             }
         }
 
-        if (!this.is_called_proposal_open_contract) {
-            const current_account = this.core?.client?.loginid;
+        if (!this.is_called_proposal_open_contract && positions?.length) {
+            const current_account = this.core?.client?.loginid ?? '';
             if (!this.elements[current_account]?.length) {
-                this.sortOutPositionsBeforeAction(positions);
+                this.sortOutPositionsBeforeAction(positions as unknown as TContractInfo[]);
             }
             if (this.elements[current_account]?.length && !this.elements[current_account]?.[0]?.data?.profit) {
                 const element_id = this.elements[current_account]?.[0].data.contract_id;
-                this.sortOutPositionsBeforeAction(positions, element_id);
+                this.sortOutPositionsBeforeAction(positions as unknown as TContractInfo[], element_id?.toString());
             }
         }
     }

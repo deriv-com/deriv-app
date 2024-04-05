@@ -1,7 +1,12 @@
 import { action, computed, makeObservable, observable } from 'mobx';
+import { TStores } from '@deriv/stores/types';
+import RootStore from './root-store';
 
 export default class SelfExclusionStore {
-    constructor(root_store, core) {
+    root_store: RootStore;
+    core: TStores;
+
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             api_max_losses: observable,
             run_limit: observable,
@@ -20,6 +25,7 @@ export default class SelfExclusionStore {
     }
 
     api_max_losses = 0;
+    form_max_losses = 0;
     run_limit = -1;
     is_restricted = false;
     get initial_values() {
@@ -37,15 +43,15 @@ export default class SelfExclusionStore {
         return true;
     }
 
-    setIsRestricted(is_restricted) {
+    setIsRestricted(is_restricted: boolean) {
         this.is_restricted = is_restricted;
     }
 
-    setApiMaxLosses(api_max_losses) {
+    setApiMaxLosses(api_max_losses: number) {
         this.api_max_losses = api_max_losses;
     }
 
-    setRunLimit(run_limit) {
+    setRunLimit(run_limit: number) {
         this.run_limit = run_limit;
     }
 

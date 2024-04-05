@@ -13,11 +13,12 @@ type TAdWizardNav = {
     countryList: TCountryListItem;
     currency: string;
     localCurrency?: string;
+    onCancel: () => void;
     rateType: string;
     steps: TStep[];
 };
 
-const AdWizard = ({ countryList, steps, ...rest }: TAdWizardNav) => {
+const AdWizard = ({ countryList, onCancel, steps, ...rest }: TAdWizardNav) => {
     const { isDesktop } = useDevice();
     const [currentStep, setCurrentStep] = useState(0);
 
@@ -44,14 +45,20 @@ const AdWizard = ({ countryList, steps, ...rest }: TAdWizardNav) => {
                                     </Text>
                                 )}
                             </div>
-                            <Button color='white' icon={<LabelPairedXmarkLgBoldIcon />} variant='contained' />
+                            <Button
+                                color='white'
+                                icon={<LabelPairedXmarkLgBoldIcon />}
+                                onClick={onCancel}
+                                type='button'
+                                variant='contained'
+                            />
                         </div>
                     )}
                 </div>
             }
             onStepChange={step => setCurrentStep(step.activeStep - 1)}
         >
-            <AdTypeSection {...rest} />
+            <AdTypeSection onCancel={onCancel} {...rest} />
             <AdPaymentDetailsSection {...rest} />
             <AdConditionsSection countryList={countryList} {...rest} />
         </Wizard>

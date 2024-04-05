@@ -9,11 +9,11 @@ type TProps = {
 
 const AlertComponent = ({ setIsModalOpen }: TProps) => (
     <div className='p2p-v2-alert-component'>
-        <Button onClick={() => setIsModalOpen(true)}>
-            <Tooltip message='Ad not listed' position='bottom'>
+        <Tooltip message='Ad not listed' position='bottom'>
+            <Button className='p-0 hover:bg-none' color='white' onClick={() => setIsModalOpen(true)} variant='outlined'>
                 <AlertIcon data-testid='dt_p2p_v2_alert_icon' />
-            </Tooltip>
-        </Button>
+            </Button>
+        </Tooltip>
     </div>
 );
 

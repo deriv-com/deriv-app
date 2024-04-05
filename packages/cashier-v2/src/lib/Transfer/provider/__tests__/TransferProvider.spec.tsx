@@ -1,0 +1,101 @@
+import React from 'react';
+import { act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
+import TransferProvider, { useTransfer } from '../TransferProvider';
+import { useExtendedTransferAccounts } from '../../hooks';
+import { getCryptoFiatConverterValidationSchema } from '../../../../components';
+import { THooks } from '../../../../hooks/types';
+import { TTransferableAccounts } from '../../types';
+import { waitFor } from '@testing-library/react';
+
+jest.mock('../../hooks', () => ({
+    ...jest.requireActual('../../hooks'),
+    useExtendedTransferAccounts: jest.fn(),
+}));
+
+const mockUseExtendedTransferAccounts = useExtendedTransferAccounts as jest.Mock;
+
+jest.mock('../../../../components', () => ({
+    ...jest.requireActual('../../../../components'),
+    getCryptoFiatConverterValidationSchema: jest.fn(params => {
+        return params;
+    }),
+}));
+
+const mockAccounts = [
+    {
+        account_type: 'mt5',
+        currency: 'USD',
+        loginid: 'CR1',
+    },
+    {
+        account_type: 'binary',
+        currency: 'BTC',
+        loginid: 'CR3',
+    },
+] as THooks.TransferAccounts;
+
+const mockExtendedAccounts = [
+    {
+        account_type: 'mt5',
+        balance: '100.00',
+        currency: 'USD',
+        currencyConfig: {
+            fractional_digits: 2,
+        },
+        loginid: 'CR1',
+    },
+    {
+        account_type: 'binary',
+        balance: '10.00000000',
+        currency: 'BTC',
+        currencyConfig: {
+            fractional_digits: 8,
+        },
+        loginid: 'CR3',
+    },
+] as TTransferableAccounts;
+
+const mockActiveAccount = {
+    account_type: 'mt5',
+    loginid: 'CR1',
+} as THooks.ActiveAccount;
+
+const mockGetConfig = jest.fn();
+
+const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
+    return (
+        <TransferProvider accounts={mockAccounts} activeAccount={mockActiveAccount} getConfig={mockGetConfig}>
+            {children}
+        </TransferProvider>
+    );
+};
+
+describe('<TransferProvider />', () => {
+    it('should test whether the correct validation schema is set', async () => {
+        mockUseExtendedTransferAccounts.mockReturnValue(mockExtendedAccounts);
+        const { result, rerender } = renderHook(useTransfer, { wrapper });
+
+        await act(async () => {
+            await result.current.setTransferValidationSchema(mockExtendedAccounts[0], mockExtendedAccounts[1]);
+        });
+
+        await waitFor(() => {
+            expect(result.current.transferValidationSchema).toEqual({
+                fromAccount: {
+                    balance: 100,
+                    currency: 'USD',
+                    fractionalDigits: 2,
+                    limits: {
+                        max: 100,
+                        min: 1,
+                    },
+                },
+                toAccount: {
+                    currency: 'BTC',
+                    fractionalDigits: 8,
+                },
+            });
+        });
+    });
+});

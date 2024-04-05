@@ -63,23 +63,21 @@ const WalletListCardActions = () => {
         return (
             <div className='wallets-mobile-actions__container'>
                 <div className='wallets-mobile-actions'>
-                    {getWalletHeaderButtons(isDemo).map(button => {
-                        return (
-                            <div className='wallets-mobile-actions-content' key={button.name}>
-                                <IconButton
-                                    aria-label={button.name}
-                                    className={button.className}
-                                    color={button.color}
-                                    icon={button.icon}
-                                    onClick={() => {
-                                        history.push(`/wallets/cashier/${button.name}`);
-                                    }}
-                                    size='lg'
-                                />
-                                <WalletText size='sm'>{button.text}</WalletText>
-                            </div>
-                        );
-                    })}
+                    {getWalletHeaderButtons(isDemo).map(button => (
+                        <div className='wallets-mobile-actions-content' key={button.name}>
+                            <IconButton
+                                aria-label={button.name}
+                                className={button.className}
+                                color={button.color}
+                                icon={button.icon}
+                                onClick={() => {
+                                    history.push(`/wallets/cashier/${button.name}`);
+                                }}
+                                size='lg'
+                            />
+                            <WalletText size='sm'>{button.text}</WalletText>
+                        </div>
+                    ))}
                 </div>
             </div>
         );

@@ -1,6 +1,7 @@
-import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api-v2';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
+import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
@@ -11,7 +12,7 @@ import { MT5PasswordModal } from '..';
 import './JurisdictionModal.scss';
 
 const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "verification-flow" */ '../../flows/Verification/Verification')
+    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
 );
 
 const JurisdictionModal = () => {
@@ -40,7 +41,7 @@ const JurisdictionModal = () => {
         }
 
         return (
-            <Suspense fallback={null}>
+            <Suspense fallback={<Loader />}>
                 <LazyVerification selectedJurisdiction={selectedJurisdiction} />
             </Suspense>
         );

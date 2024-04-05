@@ -1,13 +1,14 @@
-import React, { Suspense, lazy, FC } from 'react';
+import React, { FC, lazy, Suspense } from 'react';
 import { usePOA, usePOI } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../components/Base';
+import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import './VerificationFailed.scss';
 
 const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "verification-flow" */ '../../flows/Verification/Verification')
+    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
 );
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
@@ -61,7 +62,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                 <WalletButton
                     onClick={() =>
                         show(
-                            <Suspense fallback={null}>
+                            <Suspense fallback={<Loader />}>
                                 <LazyVerification selectedJurisdiction={selectedJurisdiction} />
                             </Suspense>
                         )

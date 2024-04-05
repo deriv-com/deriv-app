@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useWalletAccountsList } from '@deriv/api-v2';
+import { Loader } from '../components/Loader';
 
 const LazyWalletsNotFoundState = lazy(
     () =>
@@ -76,7 +77,7 @@ const Router: React.FC = () => {
             <Route
                 path={walletsPrefix}
                 render={() => (
-                    <React.Suspense fallback={null}>
+                    <React.Suspense fallback={<Loader />}>
                         <LazyWalletsNotFoundState />
                     </React.Suspense>
                 )}
@@ -88,7 +89,7 @@ const Router: React.FC = () => {
             <Route
                 path={`${walletsPrefix}/compare-accounts`}
                 render={() => (
-                    <React.Suspense fallback={null}>
+                    <React.Suspense fallback={<Loader />}>
                         <LazyCompareAccountsRoute />
                     </React.Suspense>
                 )}
@@ -96,7 +97,7 @@ const Router: React.FC = () => {
             <Route
                 path={`${walletsPrefix}/cashier`}
                 render={() => (
-                    <React.Suspense fallback={null}>
+                    <React.Suspense fallback={<Loader />}>
                         <LazyCashierModalRoute />
                     </React.Suspense>
                 )}
@@ -104,7 +105,7 @@ const Router: React.FC = () => {
             <Route
                 path={walletsPrefix}
                 render={() => (
-                    <React.Suspense fallback={null}>
+                    <React.Suspense fallback={<Loader />}>
                         <LazyWalletsListingRoute />
                     </React.Suspense>
                 )}

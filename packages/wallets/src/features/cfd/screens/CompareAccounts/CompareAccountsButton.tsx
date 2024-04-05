@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useMemo } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     useActiveWalletAccount,
@@ -9,6 +9,7 @@ import {
     useWalletAccountsList,
 } from '@deriv/api-v2';
 import { WalletButton, WalletError } from '../../../../components';
+import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import useWalletAccountSwitcher from '../../../../hooks/useWalletAccountSwitcher';
 import { THooks, TPlatforms } from '../../../../types';
@@ -24,7 +25,7 @@ import { JURISDICTION } from './constants';
 import './CompareAccountsButton.scss';
 
 const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "verification-flow" */ '../../flows/Verification/Verification')
+    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
 );
 
 type TCompareAccountButton = {
@@ -125,7 +126,7 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
                 show(<MT5PasswordModal marketType={marketType ?? 'synthetic'} platform={platform} />);
             } else {
                 show(
-                    <Suspense fallback={null}>
+                    <Suspense fallback={<Loader />}>
                         <LazyVerification selectedJurisdiction={shortCode} />
                     </Suspense>
                 );

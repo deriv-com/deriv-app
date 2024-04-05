@@ -7,6 +7,7 @@ import { TestWarningModal } from '../TestWarningModal';
 
 describe('TestWarningModal', () => {
     let elModalRoot: HTMLElement;
+
     beforeAll(() => {
         elModalRoot = document.createElement('div');
         elModalRoot.setAttribute('id', ACCOUNT_MODAL_REF.replace('#', ''));
@@ -17,34 +18,23 @@ describe('TestWarningModal', () => {
     afterAll(() => {
         document.body.removeChild(elModalRoot);
     });
+
+    const testWarningModalMessage = [
+        /Appropriateness Test Warning/,
+        /In providing our services to you, we are required to ask you for some information to assess if a given/,
+        /Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs/,
+        /Please note that by clicking ‘OK’, you may be exposing yourself to risks. You may not have the knowledge/,
+    ];
+
     it('renders correctly with the modal open', () => {
         const handleSubmit = jest.fn();
         const isModalOpen = true;
 
         render(<TestWarningModal handleSubmit={handleSubmit} isModalOpen={isModalOpen} />);
-
-        expect(screen.getByText('Appropriateness Test Warning')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                /In providing our services to you, we are required to ask you for some information to assess if a given/
-            )
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                /Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs/
-            )
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                /Please note that by clicking ‘OK’, you may be exposing yourself to risks. You may not have the knowledge/
-            )
-        ).toBeInTheDocument();
-
+        testWarningModalMessage.forEach(message => expect(screen.getByText(message)).toBeInTheDocument());
         const button = screen.getByRole('button', { name: 'OK' });
         expect(button).toBeInTheDocument();
-
         userEvent.click(button);
-
         expect(handleSubmit).toHaveBeenCalled();
     });
 
@@ -53,23 +43,7 @@ describe('TestWarningModal', () => {
         const isModalOpen = false;
 
         render(<TestWarningModal handleSubmit={handleSubmit} isModalOpen={isModalOpen} />);
-
-        expect(screen.queryByText('Appropriateness Test Warning')).not.toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                /In providing our services to you, we are required to ask you for some information to assess if a given/
-            )
-        ).not.toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                /Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs/
-            )
-        ).not.toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                /Please note that by clicking ‘OK’, you may be exposing yourself to risks. You may not have the knowledge/
-            )
-        ).not.toBeInTheDocument();
+        testWarningModalMessage.forEach(message => expect(screen.queryByText(message)).not.toBeInTheDocument());
         expect(screen.queryByRole('button', { name: 'OK' })).not.toBeInTheDocument();
     });
 });

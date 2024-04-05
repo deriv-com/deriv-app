@@ -7,17 +7,17 @@ import { TradingAssessmentContainer } from './TradingAssessmentContainer';
 import { getTradingAssessmentQuestions } from './tradingAssessmentQuestions';
 
 export const TradingAssessmentForm = () => {
-    const [shouldShowRiskTolerence, setShouldShowRiskTolerence] = useState(false);
+    const [shouldShowRiskTolerance, setShouldShowRiskTolerance] = useState(false);
     const [shouldShowTestWarningModal, setShouldShowTestWarningModal] = useState(false);
     const tradingAssessmentQuestions = getTradingAssessmentQuestions();
 
-    const handleAcceptRiskTolerence = () => {
-        setShouldShowRiskTolerence(false);
+    const handleAcceptRiskTolerance = () => {
+        setShouldShowRiskTolerance(false);
     };
 
-    if (shouldShowRiskTolerence) {
+    if (shouldShowRiskTolerance) {
         return (
-            <RiskToleranceWarningModal handleSubmit={handleAcceptRiskTolerence} isModalOpen={shouldShowRiskTolerence} />
+            <RiskToleranceWarningModal handleSubmit={handleAcceptRiskTolerance} isModalOpen={shouldShowRiskTolerance} />
         );
     }
 

@@ -7,6 +7,7 @@ import { RiskToleranceWarningModal } from '../RiskToleranceWarningModal';
 
 describe('RiskToleranceWarningModal', () => {
     let elModalRoot: HTMLElement;
+
     beforeAll(() => {
         elModalRoot = document.createElement('div');
         elModalRoot.setAttribute('id', ACCOUNT_MODAL_REF.replace('#', ''));
@@ -17,29 +18,22 @@ describe('RiskToleranceWarningModal', () => {
     afterAll(() => {
         document.body.removeChild(elModalRoot);
     });
+
+    const riskToleranceModalMessage = [
+        /Risk Tolerance Warning/,
+        /CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage/,
+        /To continue, you must confirm that you understand your capital is at risk/,
+    ];
+
     it('should renders correctly with the modal open', () => {
         const handleSubmit = jest.fn();
         const isModalOpen = true;
 
         render(<RiskToleranceWarningModal handleSubmit={handleSubmit} isModalOpen={isModalOpen} />);
-
-        expect(screen.getByText('Risk Tolerance Warning')).toBeInTheDocument();
-
-        expect(
-            screen.getByText(
-                /CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage/
-            )
-        ).toBeInTheDocument();
-
-        expect(
-            screen.getByText(/To continue, you must confirm that you understand your capital is at risk/)
-        ).toBeInTheDocument();
-
+        riskToleranceModalMessage.forEach(message => expect(screen.getByText(message)).toBeInTheDocument());
         const button = screen.getByRole('button', { name: 'Yes, I understand the risk.' });
         expect(button).toBeInTheDocument();
-
         userEvent.click(button);
-
         expect(handleSubmit).toHaveBeenCalled();
     });
 
@@ -48,14 +42,7 @@ describe('RiskToleranceWarningModal', () => {
         const isModalOpen = false;
 
         render(<RiskToleranceWarningModal handleSubmit={handleSubmit} isModalOpen={isModalOpen} />);
-
-        expect(screen.queryByText('Risk Tolerance Warning')).not.toBeInTheDocument();
-        expect(
-            screen.queryByText(/CFDs and other financial instruments come with a high risk/)
-        ).not.toBeInTheDocument();
-        expect(
-            screen.queryByText(/To continue, you must confirm that you understand your capital is at risk/)
-        ).not.toBeInTheDocument();
+        riskToleranceModalMessage.forEach(message => expect(screen.queryByText(message)).not.toBeInTheDocument());
         expect(screen.queryByRole('button', { name: 'Yes, I understand the risk.' })).not.toBeInTheDocument();
     });
 });

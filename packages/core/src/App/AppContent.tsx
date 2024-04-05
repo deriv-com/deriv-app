@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { DesktopWrapper } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
@@ -19,8 +19,16 @@ import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
 import data from '../../../api/src/remote_config.json';
+import { useLocation } from 'react-router-dom';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
+    const location = useLocation();
+    const [pathname, setPathname] = useState(location.pathname);
+
+    useEffect(() => {
+        setPathname(location.pathname);
+    }, [location]);
+
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
 
@@ -55,10 +63,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         <PlatformContainer>
             <Header />
             <ErrorBoundary root_store={store}>
-                <AppContents>
-                    {/* TODO: [trader-remove-client-base] */}
-                    <Routes passthrough={passthrough} />
-                </AppContents>
+                {!pathname.startsWith('/wallets') && (
+                    <AppContents>
+                        {/* TODO: [trader-remove-client-base] */}
+                        <Routes passthrough={passthrough} />
+                    </AppContents>
+                )}
             </ErrorBoundary>
             <DesktopWrapper>
                 <Footer />

@@ -51,12 +51,14 @@ const mockAccounts = [
 
 let mockOnClickAccount = mockAccounts[1];
 
+const mockSetTransferValidationSchema = jest.fn((fromAccount, toAccount) => {});
+
 jest.mock('../../../../../provider', () => ({
     ...jest.requireActual('../../../../../provider'),
     useTransfer: jest.fn(() => ({
         accounts: mockAccounts,
         isLoading: false,
-        setTransferValidationSchema: jest.fn(schema => {}),
+        setTransferValidationSchema: mockSetTransferValidationSchema,
     })),
 }));
 
@@ -95,6 +97,12 @@ describe('<TransferAccountSelection />', () => {
 
         expect(screen.getByText('From-CR1')).toBeInTheDocument();
         expect(screen.getByText('To-CR2')).toBeInTheDocument();
+    });
+
+    fit('should test if setTransferValidationSchema is called with correct fromAccount and toAccount', () => {
+        render(<TransferAccountSelection />, { wrapper });
+
+        expect(mockSetTransferValidationSchema).toBeCalledWith(mockAccounts[0], mockAccounts[1]);
     });
 
     it('should test if accounts swap when the user selects same fromAccount as selected in toAccount', async () => {

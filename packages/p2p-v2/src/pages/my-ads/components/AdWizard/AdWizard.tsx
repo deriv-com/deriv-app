@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TStep } from 'types';
+import { TCountryListItem, TStep } from 'types';
 import { FormProgress, Wizard } from '@/components';
 import { LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
@@ -10,13 +10,15 @@ import { AdTypeSection } from '../AdTypeSection';
 import './AdWizard.scss';
 
 type TAdWizardNav = {
+    countryList: TCountryListItem;
     currency: string;
     localCurrency?: string;
+    onCancel: () => void;
     rateType: string;
     steps: TStep[];
 };
 
-const AdWizard = ({ steps, ...rest }: TAdWizardNav) => {
+const AdWizard = ({ countryList, onCancel, steps, ...rest }: TAdWizardNav) => {
     const { isDesktop } = useDevice();
     const [currentStep, setCurrentStep] = useState(0);
 
@@ -43,16 +45,22 @@ const AdWizard = ({ steps, ...rest }: TAdWizardNav) => {
                                     </Text>
                                 )}
                             </div>
-                            <Button color='white' icon={<LabelPairedXmarkLgBoldIcon />} variant='contained' />
+                            <Button
+                                color='white'
+                                icon={<LabelPairedXmarkLgBoldIcon />}
+                                onClick={onCancel}
+                                type='button'
+                                variant='contained'
+                            />
                         </div>
                     )}
                 </div>
             }
             onStepChange={step => setCurrentStep(step.activeStep - 1)}
         >
-            <AdTypeSection {...rest} />
+            <AdTypeSection onCancel={onCancel} {...rest} />
             <AdPaymentDetailsSection {...rest} />
-            <AdConditionsSection {...rest} />
+            <AdConditionsSection countryList={countryList} {...rest} />
         </Wizard>
     );
 };

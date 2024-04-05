@@ -19,7 +19,7 @@ const useWalletMigration = () => {
         options: {
             refetchInterval: response => {
                 if (response?.wallet_migration?.state === 'in_progress') {
-                    const interval = 200 * Math.pow(2, retryCount);
+                    const interval = 500 * Math.pow(2, retryCount);
                     setRetryCount(prev => prev + 1);
                     return interval;
                 }

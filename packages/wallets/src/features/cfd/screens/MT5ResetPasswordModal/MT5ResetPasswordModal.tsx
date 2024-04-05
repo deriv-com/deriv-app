@@ -120,13 +120,17 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                         </div>
                         <div className='wallets-mt5-reset__footer'>
                             <WalletButtonGroup isFlex isFullWidth={isMobile}>
-                                <WalletButton onClick={sendEmailVerification} size='lg' variant='outlined'>
+                                <WalletButton
+                                    onClick={sendEmailVerification}
+                                    size={isMobile ? 'lg' : 'md'}
+                                    variant='outlined'
+                                >
                                     Forgot password?
                                 </WalletButton>
                                 <WalletButton
                                     disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={isLoading}
-                                    size='lg'
+                                    size={isMobile ? 'lg' : 'md'}
                                     type='submit'
                                 >
                                     Change my password

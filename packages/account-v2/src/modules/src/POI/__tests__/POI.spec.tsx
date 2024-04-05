@@ -25,7 +25,7 @@ jest.mock('@deriv/api-v2', () => ({
     useSettings: jest.fn().mockReturnValue({ data: {}, isLoading: false, mutation: { mutateAsync: jest.fn() } }),
 }));
 
-jest.mock('../../../hooks', () => ({
+jest.mock('../../../../hooks', () => ({
     usePOIInfo: jest.fn().mockReturnValue({ isLoading: false, kycAuthStatus: {} }),
 }));
 

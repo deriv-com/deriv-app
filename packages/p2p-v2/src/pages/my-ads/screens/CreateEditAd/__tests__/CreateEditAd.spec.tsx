@@ -62,6 +62,66 @@ jest.mock('@deriv/api-v2', () => ({
                 mutate: jest.fn(),
             }),
         },
+        paymentMethods: {
+            useGet: () => ({
+                data: [
+                    {
+                        display_name: 'Bank Transfer',
+                        fields: {
+                            account: {
+                                display_name: 'Account Number',
+                                required: 1,
+                                type: 'text',
+                                value: 'Account Number',
+                            },
+                            bank_name: { display_name: 'Bank Transfer', required: 1, type: 'text', value: 'Bank Name' },
+                        },
+                        id: 'test1',
+                        is_enabled: 0,
+                        method: '',
+                        type: 'bank',
+                        used_by_adverts: null,
+                        used_by_orders: null,
+                    },
+                    {
+                        display_name: 'Ali pay',
+                        fields: {
+                            account: {
+                                display_name: 'Account Number',
+                                required: 1,
+                                type: 'text',
+                                value: 'Account Number',
+                            },
+                            bank_name: { display_name: 'Ali pay', required: 1, type: 'text', value: 'Bank Name' },
+                        },
+                        id: 'test2',
+                        is_enabled: 0,
+                        method: '',
+                        type: 'wallet',
+                        used_by_adverts: null,
+                        used_by_orders: null,
+                    },
+                    {
+                        display_name: 'Skrill',
+                        fields: {
+                            account: {
+                                display_name: 'Account Number',
+                                required: 1,
+                                type: 'text',
+                                value: 'Account Number',
+                            },
+                            bank_name: { display_name: 'Skrill', required: 1, type: 'text', value: 'Bank Name' },
+                        },
+                        id: 'test3',
+                        is_enabled: 0,
+                        method: '',
+                        type: 'wallet',
+                        used_by_adverts: null,
+                        used_by_orders: null,
+                    },
+                ],
+            }),
+        },
         countryList: {
             useGet: () => ({
                 data: {

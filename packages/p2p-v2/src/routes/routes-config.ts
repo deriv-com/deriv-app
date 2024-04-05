@@ -41,7 +41,7 @@ export const routes = [
             },
             {
                 component: CreateEditAd,
-                path: `${MY_ADS_URL}/edit/:advertId`,
+                path: `${MY_ADS_URL}/edit`,
             },
         ],
     },

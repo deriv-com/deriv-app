@@ -61,31 +61,33 @@ const AdTypeSection = ({ currency, localCurrency, onCancel, rateType, ...props }
 
     return (
         <div className='p2p-v2-ad-type-section'>
-            <Controller
-                control={control}
-                defaultValue={BUY_SELL.BUY}
-                name='ad-type'
-                render={({ field: { onChange, value } }) => {
-                    return (
-                        <div className='mb-[3.5rem]'>
-                            <RadioGroup
-                                name='type'
-                                onToggle={event => {
-                                    onChangeAdTypeHandler(event.target.value as 'buy' | 'sell');
-                                    onChange(event);
-                                }}
-                                required
-                                selected={value}
-                                textSize={isMobile ? 'md' : 'sm'}
-                            >
-                                <RadioGroup.Item label='Buy USD' value={BUY_SELL.BUY} />
-                                <RadioGroup.Item label='Sell USD' value={BUY_SELL.SELL} />
-                            </RadioGroup>
-                        </div>
-                    );
-                }}
-                rules={{ required: true }}
-            />
+            {!isEdit && (
+                <Controller
+                    control={control}
+                    defaultValue={BUY_SELL.BUY}
+                    name='ad-type'
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <div className='mb-[3.5rem]'>
+                                <RadioGroup
+                                    name='type'
+                                    onToggle={event => {
+                                        onChangeAdTypeHandler(event.target.value as 'buy' | 'sell');
+                                        onChange(event);
+                                    }}
+                                    required
+                                    selected={value}
+                                    textSize={isMobile ? 'md' : 'sm'}
+                                >
+                                    <RadioGroup.Item label='Buy USD' value={BUY_SELL.BUY} />
+                                    <RadioGroup.Item label='Sell USD' value={BUY_SELL.SELL} />
+                                </RadioGroup>
+                            </div>
+                        );
+                    }}
+                    rules={{ required: true }}
+                />
+            )}
             <div className='flex flex-col lg:flex-row lg:gap-[1.6rem]'>
                 <AdFormInput
                     isDisabled={isEdit}

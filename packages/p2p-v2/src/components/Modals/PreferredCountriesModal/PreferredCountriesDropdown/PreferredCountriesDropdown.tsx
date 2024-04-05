@@ -33,6 +33,13 @@ const PreferredCountriesDropdown = ({
         setSearchValue(value);
         setSearchResults(list.filter(item => item.text.toLowerCase().includes(value.toLowerCase())));
     };
+
+    const getSortedResults = () => {
+        return [
+            ...searchResults.filter(item => selectedCountries.includes(item.value)),
+            ...searchResults.filter(item => !selectedCountries.includes(item.value)),
+        ];
+    };
     return (
         <div className='p2p-v2-preferred-countries-dropdown'>
             <div className='px-[1.6rem] py-[0.8rem]'>
@@ -69,7 +76,7 @@ const PreferredCountriesDropdown = ({
                         )}
                         <Divider className='w-full' color='#f2f3f4' />
 
-                        {searchResults?.map((item: TItem) => (
+                        {getSortedResults()?.map((item: TItem) => (
                             <div className='p-[1.6rem]' key={item.value}>
                                 <Checkbox
                                     checked={selectedCountries?.includes(item.value)}

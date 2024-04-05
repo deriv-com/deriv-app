@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { AdCancelCreateEditModal, AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
 import { MY_ADS_URL } from '@/constants';
-import { useFloatingRate, useModalManager, useQueryString } from '@/hooks';
+import { useFloatingRate, useQueryString } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { AdWizard } from '../../components';
@@ -20,13 +20,14 @@ const getSteps = (isEdit = false) => {
 type FormValues = {
     'ad-type': 'buy' | 'sell';
     amount: string;
+    'contact-details': string;
     instructions: string;
     'max-order': string;
     'min-completion-rate': string;
     'min-join-days': string;
     'min-order': string;
     'order-completion-time': string;
-    'payment-method': string[];
+    'payment-method': number[] | string[];
     'preferred-countries': string[];
     'rate-value': string;
 };
@@ -34,12 +35,16 @@ type FormValues = {
 const CreateEditAd = () => {
     const { queryString } = useQueryString();
     const { advertId = '' } = queryString;
-    const { data: advertInfo, isLoading } = p2p.advert.useGet({ id: advertId }, { enabled: !!advertId });
+    const { data: advertInfo, isLoading } = p2p.advert.useGet(
+        { id: advertId },
+        { enabled: !!advertId, refetchOnWindowFocus: false }
+    );
     const isEdit = !!advertId;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
     const { data: countryList = {} } = p2p.countryList.useGet();
+    const { data: paymentMethodList = [] } = p2p.paymentMethods.useGet();
     const { rateType } = useFloatingRate();
     const { data: activeAccount } = useActiveAccount();
     const { data: p2pSettings } = p2p.settings.useGetSettings();
@@ -56,6 +61,7 @@ const CreateEditAd = () => {
         defaultValues: {
             'ad-type': 'buy',
             amount: '',
+            'contact-details': '',
             instructions: '',
             'max-order': '',
             'min-completion-rate': '',
@@ -73,7 +79,6 @@ const CreateEditAd = () => {
         formState: { isDirty },
         getValues,
         handleSubmit,
-        reset,
         setValue,
     } = methods;
     useEffect(() => {
@@ -98,6 +103,7 @@ const CreateEditAd = () => {
         if (getValues('ad-type') === 'buy') {
             payload.payment_method_names = getValues('payment-method');
         } else {
+            payload.contact_info = getValues('contact-details');
             payload.payment_method_ids = getValues('payment-method');
         }
         if (getValues('instructions')) {
@@ -111,6 +117,8 @@ const CreateEditAd = () => {
         }
 
         if (isEdit) {
+            delete payload.amount;
+            delete payload.type;
             updateMutate({ id: advertId, ...payload });
             return;
         }
@@ -131,9 +139,8 @@ const CreateEditAd = () => {
         }
     }, [isSuccess, history, shouldNotShowArchiveMessageAgain, isError, isUpdateSuccess, isUpdateError]);
 
-    useEffect(() => {
-        if (advertInfo && isEdit) {
-            reset();
+    const setFormValues = useCallback(
+        advertInfo => {
             setValue('ad-type', advertInfo.type);
             setValue('amount', advertInfo.amount);
             setValue('instructions', advertInfo.description);
@@ -142,13 +149,29 @@ const CreateEditAd = () => {
             setValue('min-join-days', advertInfo.min_join_days);
             setValue('min-order', advertInfo.min_order_amount);
             setValue('rate-value', advertInfo.rate);
-            setValue('payment-method', advertInfo.payment_method_names);
             setValue('preferred-countries', advertInfo.eligible_countries ?? Object.keys(countryList));
             setValue('order-completion-time', `${advertInfo.order_expiry_period}`);
-        }
-    }, [advertInfo, countryList, isEdit, reset, setValue]);
+            if (advertInfo.type === 'sell') {
+                setValue('contact-details', advertInfo.contact_info);
+                setValue('payment-method', Object.keys(advertInfo.payment_method_details ?? {}).map(Number));
+            } else {
+                const paymentMethodNames = advertInfo?.payment_method_names;
+                const paymentMethodKeys = paymentMethodNames?.map(
+                    name => paymentMethodList.find(method => method.display_name === name)?.id
+                );
+                setValue('payment-method', paymentMethodKeys);
+            }
+        },
+        [setValue, countryList, paymentMethodList]
+    );
 
-    if (isLoading && isEdit) {
+    useEffect(() => {
+        if (advertInfo && isEdit) {
+            setFormValues(advertInfo);
+        }
+    }, [advertInfo, isEdit, setFormValues]);
+
+    if ((isLoading && isEdit) || (isEdit && !advertInfo)) {
         return <Loader />;
     }
 

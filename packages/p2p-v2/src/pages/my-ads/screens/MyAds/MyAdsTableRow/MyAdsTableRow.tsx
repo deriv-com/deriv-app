@@ -12,11 +12,11 @@ import './MyAdsTableRow.scss';
 
 const BASE_CURRENCY = 'USD';
 
-const list = [
+const getList = (isActive = false) => [
     { label: 'Edit', value: 'edit' },
     { label: 'Copy', value: 'copy' },
     { label: 'Share', value: 'share' },
-    { label: 'Deactivate', value: 'deactivate' },
+    { label: `${isActive ? 'Deactivate' : 'Activate'}`, value: `${isActive ? 'deactivate' : 'activate'}` },
     { label: 'Delete', value: 'delete' },
 ];
 
@@ -114,7 +114,7 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                         <AdStatus isActive={isAdActive} />
                         {showAlertIcon && <AlertComponent setIsModalOpen={setIsModalOpen} />}
                         <PopoverDropdown
-                            dropdownList={list}
+                            dropdownList={getList(isAdActive)}
                             onClick={value => onClickActionItem(value)}
                             tooltipMessage='Manage ad'
                         />
@@ -204,7 +204,7 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
             <div className='p2p-v2-my-ads-table-row__actions'>
                 <AdStatus isActive={isAdActive} />
                 <PopoverDropdown
-                    dropdownList={list}
+                    dropdownList={getList(isAdActive)}
                     onClick={value => onClickActionItem(value)}
                     tooltipMessage='Manage ad'
                 />

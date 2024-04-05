@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
@@ -17,17 +17,16 @@ type SentEmailContentProps = {
 const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPassword = false, platform }) => {
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
-    const mt5Platform = PlatformDetails.mt5.platform;
     const { isMobile } = useDevice();
-
     const { data: activeWallet } = useActiveWalletAccount();
-
-    const mt5ResetType = isInvestorPassword
-        ? 'trading_platform_investor_password_reset'
-        : 'trading_platform_mt5_password_reset';
+    const [hasSentEmail, sethasSentEmail] = useState(false);
 
     useEffect(() => {
-        if (data?.email) {
+        if (data?.email && !hasSentEmail) {
+            const mt5Platform = PlatformDetails.mt5.platform;
+            const mt5ResetType = isInvestorPassword
+                ? 'trading_platform_investor_password_reset'
+                : 'trading_platform_mt5_password_reset';
             verifyEmail({
                 type: platform === mt5Platform ? mt5ResetType : 'trading_platform_dxtrade_password_reset',
                 url_parameters: {
@@ -35,8 +34,9 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
                 },
                 verify_email: data?.email,
             });
+            sethasSentEmail(true);
         }
-    }, [data.email, activeWallet?.is_virtual, mt5Platform, mt5ResetType]);
+    }, [activeWallet?.is_virtual, data?.email, hasSentEmail, isInvestorPassword, platform, verifyEmail]);
 
     return (
         <div className='wallets-sent-email-content'>

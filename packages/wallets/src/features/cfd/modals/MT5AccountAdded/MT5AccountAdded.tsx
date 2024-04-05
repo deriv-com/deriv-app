@@ -67,7 +67,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                 </div>
             );
         },
-        [hide, history, addedAccount?.loginid]
+        [hide, history, addedAccount?.loginid, isMobile]
     );
 
     const renderMainContent = useMemo(() => {

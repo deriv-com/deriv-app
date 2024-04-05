@@ -126,6 +126,7 @@ const DxtradeEnterPasswordModal = () => {
         history,
         isDxtradePasswordNotSet,
         isLoading,
+        isMobile,
         isSuccess,
         onSubmit,
         password,

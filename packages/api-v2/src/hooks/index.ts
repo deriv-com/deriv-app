@@ -84,4 +84,5 @@ export { default as useIsDIELEnabled } from './useIsDIELEnabled';
 export { default as useKycAuthStatus } from './useKycAuthStatus';
 export { default as useClientCountry } from './useClientCountry';
 export { default as useTwoFactorAuthentication } from './useTwoFactorAuthentication';
+export { default as useFinancialAssessment } from './useFinancialAssessment';
 export { default as useLoginHistory } from './useLoginHistory';

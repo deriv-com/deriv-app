@@ -1,0 +1,17 @@
+.wallets-cfd-list-accounts {
+    &__content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-bottom: 2.4rem;
+
+        @include desktop {
+            gap: 1.6rem 4.8rem;
+        }
+
+        @include mobile {
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: auto;
+            padding-bottom: 1.6rem;
+        }
+    }
+}

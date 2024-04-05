@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import WS from 'Services/ws-methods';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch , useLocation } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv/quill-design';
-import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import {
@@ -24,11 +23,16 @@ import AppContent from './AppContent';
 import initHotjar from '../Utils/Hotjar';
 import 'Sass/app.scss';
 import LazyWalletsApp from '@deriv/wallets';
+import AppContentsNoStore from './Containers/Layout/app-contents-no-store';
 
 const AppWithoutTranslation = ({ root_store }) => {
-    const l = window.location;
-    const base = l.pathname.split('/')[1];
-    const has_base = /^\/(br_)/.test(l.pathname);
+    const location = useLocation();
+    const [pathname, setPathname] = useState(location.pathname);
+
+    useEffect(() => {
+        setPathname(location.pathname);
+    }, [location]);
+
     const [is_translation_loaded] = useOnLoadTranslation();
     const initCashierStore = () => {
         root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
@@ -101,30 +105,32 @@ const AppWithoutTranslation = ({ root_store }) => {
         <>
             {is_translation_loaded ? (
                 <>
-                    <Router basename={has_base ? `/${base}` : null}>
-                        <StoreProvider store={root_store}>
-                            <BreakpointProvider>
-                                <APIProvider>
-                                    <POIProvider>
-                                        <StoreProvider store={root_store}>
-                                            <ExchangeRatesProvider>
-                                                <P2PSettingsProvider>
-                                                    <AppContent passthrough={platform_passthrough} />
-                                                </P2PSettingsProvider>
-                                            </ExchangeRatesProvider>
-                                        </StoreProvider>
-                                    </POIProvider>
-                                </APIProvider>
-                            </BreakpointProvider>
-                        </StoreProvider>
+                    <StoreProvider store={root_store}>
+                        <BreakpointProvider>
+                            <POIProvider>
+                                <StoreProvider store={root_store}>
+                                    <ExchangeRatesProvider>
+                                        <P2PSettingsProvider>
+                                            <AppContent passthrough={platform_passthrough} />
+                                        </P2PSettingsProvider>
+                                    </ExchangeRatesProvider>
+                                </StoreProvider>
+                            </POIProvider>
+                        </BreakpointProvider>
+                    </StoreProvider>
 
+                    {pathname.startsWith('/wallets') && (
                         <Switch>
-                            <Route path='/wallets' render={() => <LazyWalletsApp />} />
+                            <AppContentsNoStore>
+                                <Route path='/wallets' render={() => <LazyWalletsApp />} />
+                            </AppContentsNoStore>
                         </Switch>
-                    </Router>
+                    )}
                 </>
             ) : (
-                <></>
+                <>
+                    <h1>TRANSLATIONS BEING LOADED!!!!</h1>
+                </>
             )}
         </>
     );

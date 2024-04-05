@@ -10,6 +10,7 @@ import initStore from 'App/initStore';
 import App from 'App/app.jsx';
 import { checkAndSetEndpointFromUrl } from '@deriv/shared';
 import AppNotificationMessages from './App/Containers/app-notification-messages.jsx';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 if (
     !!window?.localStorage.getItem?.('debug_service_worker') || // To enable local service worker related development
@@ -31,8 +32,18 @@ const has_endpoint_url = checkAndSetEndpointFromUrl();
 if (!has_endpoint_url) {
     const root_store = initStore(AppNotificationMessages);
 
+    const l = window.location;
+    const base = l.pathname.split('/')[1];
+    const has_base = /^\/(br_)/.test(l.pathname);
+
     const wrapper = document.getElementById('deriv_app');
     if (wrapper) {
-        ReactDOM.render(<App useSuspense={false} root_store={root_store} />, wrapper);
+        ReactDOM.render(
+            <Router basename={has_base ? `/${base}` : null}>
+                <App useSuspense={false} root_store={root_store} />
+            </Router>,
+
+            wrapper
+        );
     }
 }

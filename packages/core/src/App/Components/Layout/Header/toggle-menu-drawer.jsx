@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-import { useRemoteConfig } from '@deriv/api';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
     useAccountTransferVisible,
@@ -23,6 +22,7 @@ import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
 import MenuLink from './menu-link';
 import PlatformSwitcher from './platform-switcher';
+import data from "../../../../../../api/src/remote_config.json";
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
@@ -66,7 +66,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_trading_hub_category =
         route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
-    const { data } = useRemoteConfig();
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
     const liveChat = useLiveChat(false, loginid);

@@ -22,7 +22,7 @@ import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-them
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { useRemoteConfig } from '@deriv/api';
+import data from "../../../../../api/src/remote_config.json";
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -69,7 +69,6 @@ const TradingHubFooter = observer(() => {
     };
 
     const location = window.location.pathname;
-    const { data } = useRemoteConfig();
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
     return (
         <footer

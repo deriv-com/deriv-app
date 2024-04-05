@@ -1,16 +1,13 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { useRemoteConfig } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
 import { getAppId, LocalStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
-
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
-
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
@@ -21,12 +18,12 @@ import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
+import data from '../../../api/src/remote_config.json';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
 
-    const { data } = useRemoteConfig();
     const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
 
     React.useEffect(() => {

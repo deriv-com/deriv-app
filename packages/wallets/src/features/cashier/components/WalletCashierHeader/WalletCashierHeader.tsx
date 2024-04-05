@@ -48,14 +48,14 @@ const virtualAccountTabs = [
         text: i18n.t('Transfer'),
     },
     {
-        icon: <IcCashierStatement />,
-        path: 'transactions',
-        text: i18n.t('Transactions'),
-    },
-    {
         icon: <ResetBalance />,
         path: 'reset-balance',
         text: i18n.t('Reset Balance'),
+    },
+    {
+        icon: <IcCashierStatement />,
+        path: 'transactions',
+        text: i18n.t('Transactions'),
     },
 ] as const;
 

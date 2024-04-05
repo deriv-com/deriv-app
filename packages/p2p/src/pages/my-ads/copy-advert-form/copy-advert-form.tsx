@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Field, FieldProps, Form } from 'formik';
 import { Button, InlineMessage, Input, Text } from '@deriv/components';
+import { useP2PSettings } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
@@ -21,7 +22,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         client: { currency, local_currency_config },
     } = useStore();
     const local_currency = local_currency_config.currency;
-    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const {
         contact_info,
         description,
@@ -30,9 +31,12 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         payment_method_details,
         payment_method_names,
         rate_display,
-        rate_type,
+        rate_type: ad_rate_type,
         type,
     } = advert;
+    const {
+        p2p_settings: { adverts_archive_period, float_rate_offset_limit_string, rate_type },
+    } = useP2PSettings();
     const onClickCancel = values => {
         my_ads_store.setAdFormValues(values);
         general_store.showModal({
@@ -49,7 +53,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         });
     };
     const onSubmit = (values, { setSubmitting }) => {
-        my_ads_store.handleSubmit(values, { setSubmitting }, true);
+        my_ads_store.handleSubmit(values, { setSubmitting }, true, adverts_archive_period);
     };
 
     React.useEffect(() => {
@@ -82,12 +86,14 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                     my_ads_store.ad_form_values ?? {
                         contact_info,
                         default_advert_description: description,
+                        float_rate_offset_limit: float_rate_offset_limit_string,
                         max_transaction: '',
                         min_transaction: '',
                         offer_amount: amount_display,
                         order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
                         payment_method_names,
-                        rate_type: floating_rate_store.rate_type === ad_type.FLOAT ? rate_display : '',
+                        rate_type_string: rate_type,
+                        rate_type: rate_type === ad_type.FLOAT ? rate_display : '',
                         type,
                     }
                 }
@@ -120,7 +126,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                             </Field>
                             <Field name='rate_type'>
                                 {({ field }: FieldProps) =>
-                                    rate_type === ad_type.FLOAT ? (
+                                    ad_rate_type === ad_type.FLOAT ? (
                                         <FloatingRate
                                             className='copy-advert-form__floating-rate'
                                             data_testid='float_rate_type'
@@ -129,8 +135,8 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                             local_currency={local_currency}
                                             onChange={handleChange}
                                             offset={{
-                                                upper_limit: parseInt(floating_rate_store.float_rate_offset_limit),
-                                                lower_limit: parseInt(floating_rate_store.float_rate_offset_limit) * -1,
+                                                upper_limit: float_rate_offset_limit_string,
+                                                lower_limit: float_rate_offset_limit_string * -1,
                                             }}
                                             required
                                             change_handler={e => {

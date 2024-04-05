@@ -7,6 +7,8 @@ import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
 
+const NothingComponent = () => <></>;
+
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
@@ -54,13 +56,6 @@ const AppStore = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
-    })
-);
-
-const Wallets = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "wallets" */ '@deriv/wallets');
     })
 );
 
@@ -288,7 +283,7 @@ const getModules = () => {
         },
         {
             path: routes.wallets,
-            component: Wallets,
+            component: NothingComponent,
             is_authenticated: true,
             getTitle: () => localize('Wallets'),
         },

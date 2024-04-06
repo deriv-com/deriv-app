@@ -14,7 +14,7 @@ module.exports = function (env) {
 
     return {
         entry: {
-            index: path.resolve(__dirname, 'src/pages', 'app.jsx'),
+            index: path.resolve(__dirname, 'src/pages', 'index.tsx'),
         },
         mode: is_release ? 'production' : 'development',
         output: {

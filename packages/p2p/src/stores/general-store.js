@@ -433,7 +433,6 @@ export default class GeneralStore extends BaseStore {
     }
 
     onMount() {
-        this.setIsLoading(true);
         this.setIsBlocked(false);
         this.setIsHighRisk(false);
         this.setIsP2pBlockedForPa(false);

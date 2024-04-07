@@ -10,12 +10,12 @@
     background-color: var(--general-main-1);
 
     @include mobile {
-        height: calc(100% - 6.4rem);
-        left: 0;
+        height: fit-content;
+        position: absolute;
         overflow-y: auto;
-        inset-inline-start: 0;
+        inset-inline-start: 4rem;
         overflow-x: auto;
-        width: 100%;
+        width: fit-content;
         padding: 0;
         &::-webkit-scrollbar {
             display: none;
@@ -23,6 +23,7 @@
 
         -ms-overflow-style: none;
         scrollbar-width: none;
+        z-index: 0;
     }
     z-index: 1;
     &__btn {
@@ -35,9 +36,6 @@
             @include desktop {
                 width: 22rem;
                 margin-bottom: 1rem;
-            }
-            @include mobile {
-                margin: 1.6rem auto;
             }
 
             & .dc-btn__icon {
@@ -58,6 +56,10 @@
             flex-direction: row-reverse;
             height: 100%;
             column-gap: 1.6rem !important;
+            padding-top: 1.6rem;
+            padding-inline-start: 1.6rem;
+            padding-bottom: 0.8rem;
+            padding-inline-end: 0.8rem;
         }
 
         > * {
@@ -112,10 +114,12 @@
     }
     &__wrapper {
         @include mobile {
+            background-color: var(--general-main-1);
+            position: absolute;
+            top: 0;
             overflow-y: auto;
             scrollbar-width: none;
-            max-height: 100%;
-            height: fit-content;
+            height: calc(100% - 5rem);
             box-shadow: 0 1.2rem 1.6rem rgba(14, 14, 14, 0.08), 0 0.4rem 0.6rem rgba(14, 14, 14, 0.03);
         }
     }

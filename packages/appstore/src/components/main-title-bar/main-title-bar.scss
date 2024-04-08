@@ -5,6 +5,12 @@
     margin-bottom: 2.4rem;
     min-height: 6rem;
 
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     &__text {
         font-size: 1.9rem;
     }
@@ -19,7 +25,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-bottom: 2rem;
 
         &--regulator {
             display: flex;
@@ -39,7 +44,7 @@
             }
         }
 
-        &--account-type-dropdown {
+        &--account-type-active-tab {
             padding-top: 0.5rem;
         }
     }

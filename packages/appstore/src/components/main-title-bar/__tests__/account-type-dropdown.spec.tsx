@@ -1,5 +1,5 @@
 import React from 'react';
-import AccountTypeDropdown from '../account-type-dropdown';
+import AccountTypeDropdown from '../account-type-active-tab';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';

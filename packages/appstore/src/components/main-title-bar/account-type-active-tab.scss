@@ -1,0 +1,24 @@
+.account_type {
+    padding: 0.4rem;
+    border-radius: 0.8rem;
+    width: 12rem;
+    height: 4rem;
+    min-width: 12rem;
+    background-color: var(--general-section-1);
+    .dc-button-menu {
+        &__button {
+            background-color: var(--general-section-1);
+            span {
+                opacity: 0.7;
+            }
+
+            &--active {
+                background-color: var(--state-normal) !important;
+                border-radius: 0.4rem;
+                span {
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+}

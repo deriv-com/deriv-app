@@ -149,7 +149,7 @@ const TradersHub = observer(() => {
                                     className='traders-hub__button-toggle'
                                     has_rounded_button
                                     is_traders_hub={window.location.pathname === routes.traders_hub}
-                                    name='platforn_type'
+                                    name='platform_type'
                                     onChange={platformTypeChange}
                                     value={selected_platform_type}
                                 />

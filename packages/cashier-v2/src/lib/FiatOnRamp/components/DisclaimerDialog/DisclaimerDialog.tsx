@@ -1,5 +1,5 @@
 import React from 'react';
-import { useServiceToken } from '@deriv/api-v2';
+import { useMutation } from '@deriv/api-v2';
 import { Button, Dialog, Text } from '@deriv-com/ui';
 import { capitalizeFirstLetter } from '../../../../utils';
 import type { TFiatOnRampProvider } from '../../types';
@@ -12,7 +12,7 @@ type TProps = {
 };
 
 const DisclaimerDialog: React.FC<TProps> = ({ handleDisclaimerDialog, isOpen, providerServiceName }) => {
-    const { isLoading, mutateAsync } = useServiceToken();
+    const { isLoading, mutateAsync } = useMutation('service_token');
     const providerName = capitalizeFirstLetter(providerServiceName ?? '');
 
     const redirectToProvider = () => {

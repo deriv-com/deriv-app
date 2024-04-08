@@ -60,7 +60,6 @@ export { default as useResidenceList } from './useResidenceList';
 export { default as useRevokeConnectedApps } from './useRevokeConnectedApps';
 export { default as useSendbirdServiceToken } from './useSendbirdServiceToken';
 export { default as useServerTime } from './useServerTime';
-export { default as useServiceToken } from './useServiceToken';
 export { default as useSettings } from './useSettings';
 export { default as useSortedMT5Accounts } from './useSortedMT5Accounts';
 export { default as useMobileCarouselWalletsList } from './useMobileCarouselWalletsList';

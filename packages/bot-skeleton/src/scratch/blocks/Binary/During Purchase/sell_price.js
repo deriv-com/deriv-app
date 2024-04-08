@@ -27,7 +27,7 @@ Blockly.Blocks.sell_price = {
     restricted_parents: ['during_purchase'],
 };
 
-Blockly.JavaScript.sell_price = () => {
+Blockly.JavaScript.javascriptGenerator.forBlock['sell_price'] = () => {
     const code = 'Bot.getSellPrice()';
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

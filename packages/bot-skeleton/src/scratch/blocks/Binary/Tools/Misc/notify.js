@@ -57,7 +57,7 @@ Blockly.Blocks.notify = {
     },
 };
 
-Blockly.JavaScript.notify = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['notify'] = block => {
     const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
     const sound = block.getFieldValue('NOTIFICATION_SOUND');
     const message_block = block.getInputTargetBlock('MESSAGE');
@@ -69,7 +69,7 @@ Blockly.JavaScript.notify = block => {
     }
 
     const message =
-        Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) ||
+        Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'MESSAGE', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) ||
         `"${localize('<empty message>')}"`;
 
     const code = `Bot.notify({ className: 'journal__text--${notificationType}', message: ${message}, sound: '${sound}', block_id: '${block.id}', variable_name: '${variable_name}' });\n`;

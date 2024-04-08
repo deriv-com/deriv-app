@@ -1,3 +1,4 @@
+console.log('1')
 /**
  * Array making up the CSS content for Blockly.
  */
@@ -151,7 +152,7 @@ Blockly.Css.CONTENT = [
     'display: none;',
     'border: 1px solid;',
     'border-radius: 4px;',
-    `box-shadow: 0px 0px 8px 1px ${Blockly.Colours.dropDownShadow};`,
+    `box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, .3);`,
     'padding: 4px;',
     '-webkit-user-select: none;',
     'min-height: 15px',
@@ -186,11 +187,11 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyDropDownButtonHover {',
-    `box-shadow: 0px 0px 0px 4px ${Blockly.Colours.fieldShadow};`,
+    `box-shadow: 0px 0px 0px 4px rgba(0,0,0,0.1);`,
     '}',
 
     '.blocklyDropDownButton:active {',
-    `box-shadow: 0px 0px 0px 6px ${Blockly.Colours.fieldShadow};`,
+    `box-shadow: 0px 0px 0px 6px rgba(0,0,0,0.1);`,
     '}',
 
     '.blocklyDropDownButton > img {',
@@ -687,9 +688,9 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyAngleCircle {',
-    `stroke: ${Blockly.Colours.motion.tertiary};`,
+    `stroke: #3373CC;`,
     'stroke-width: 1;',
-    `fill: ${Blockly.Colours.motion.secondary};`,
+    `fill: #4280D7;`,
     '}',
 
     '.blocklyAngleCenterPoint {',
@@ -1172,8 +1173,8 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyFlyoutCheckbox.checked {',
-    `fill: ${Blockly.Colours.motion.primary};`,
-    `stroke: ${Blockly.Colours.motion.tertiary};`,
+    `fill: #4C97FF;`,
+    `stroke: #3373CC;`,
     '}',
 
     '.blocklyFlyoutCheckboxPath {',
@@ -1248,3 +1249,4 @@ Blockly.Css.CONTENT = [
     '}',
     '',
 ];
+console.log('1')

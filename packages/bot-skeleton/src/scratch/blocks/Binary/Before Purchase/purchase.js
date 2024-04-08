@@ -1,6 +1,10 @@
 import { localize } from '@deriv/translations';
 import { getContractTypeOptions } from '../../../shared';
 
+Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
+    return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
+};
+
 Blockly.Blocks.purchase = {
     init() {
         this.jsonInit(this.definition());
@@ -77,7 +81,7 @@ Blockly.Blocks.purchase = {
     restricted_parents: ['before_purchase'],
 };
 
-Blockly.JavaScript.purchase = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['purchase'] = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.purchase('${purchaseList}');\n`;

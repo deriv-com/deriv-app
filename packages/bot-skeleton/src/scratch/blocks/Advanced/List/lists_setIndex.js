@@ -80,12 +80,12 @@ Blockly.Blocks.lists_setIndex = {
     },
 };
 
-Blockly.JavaScript.lists_setIndex = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['lists_setIndex'] = block => {
     const mode = block.getFieldValue('MODE') || 'SET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
-    const value = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_ASSIGNMENT) || 'null';
+    const value = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TO', Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT) || 'null';
 
-    let list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_MEMBER) || '[]';
+    let list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'LIST', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER) || '[]';
 
     const cacheList = () => {
         if (list.match(/^\w+$/)) {
@@ -123,7 +123,7 @@ Blockly.JavaScript.lists_setIndex = block => {
             code = `${list}.splice(${at}, 0, ${value});\n`;
         }
     } else if (where === 'FROM_END') {
-        const at = Blockly.JavaScript.getAdjusted(block, 'AT', 1, false, Blockly.JavaScript.ORDER_SUBTRACTION);
+        const at = Blockly.JavaScript.getAdjusted(block, 'AT', 1, false, Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION);
         code = cacheList();
         if (mode === 'SET') {
             code = `${list}[${list}.length - ${at}] = ${value};\n`;

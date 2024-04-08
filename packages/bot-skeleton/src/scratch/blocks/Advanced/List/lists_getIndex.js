@@ -101,31 +101,31 @@ Blockly.Blocks.lists_getIndex = {
     },
 };
 
-Blockly.JavaScript.lists_getIndex = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['lists_getIndex'] = block => {
     const mode = block.getFieldValue('MODE') || 'GET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
-    const listOrder = where === 'RANDOM' ? Blockly.JavaScript.ORDER_COMMA : Blockly.JavaScript.ORDER_MEMBER;
-    const list = Blockly.JavaScript.valueToCode(block, 'VALUE', listOrder) || '[]';
+    const listOrder = where === 'RANDOM' ? Blockly.JavaScript.javascriptGenerator.ORDER_COMMA : Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+    const list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', listOrder) || '[]';
 
     let code, order;
 
     if (where === 'FIRST') {
         if (mode === 'GET') {
             code = `${list}[0]`;
-            order = Blockly.JavaScript.ORDER_MEMBER;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.shift()`;
-            order = Blockly.JavaScript.ORDER_MEMBER;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'REMOVE') {
             return `${list}.shift();\n`;
         }
     } else if (where === 'LAST') {
         if (mode === 'GET') {
             code = `${list}.slice(-1)[0]`;
-            order = Blockly.JavaScript.ORDER_MEMBER;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.pop()`;
-            order = Blockly.JavaScript.ORDER_MEMBER;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'REMOVE') {
             return `${list}.pop();\n`;
         }
@@ -133,10 +133,10 @@ Blockly.JavaScript.lists_getIndex = block => {
         const at = Blockly.JavaScript.getAdjusted(block, 'AT');
         if (mode === 'GET') {
             code = `${list}[${at}]`;
-            order = Blockly.JavaScript.ORDER_MEMBER;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.splice(${at}, 1)[0]`;
-            order = Blockly.JavaScript.ORDER_FUNCTION_CALL;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${list}.splice(${at}, 1);\n`;
         }
@@ -144,16 +144,16 @@ Blockly.JavaScript.lists_getIndex = block => {
         const at = Blockly.JavaScript.getAdjusted(block, 'AT', 1, true);
         if (mode === 'GET') {
             code = `${list}.slice(${at})[0]`;
-            order = Blockly.JavaScript.ORDER_FUNCTION_CALL;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.splice(${at}, 1)[0]`;
-            order = Blockly.JavaScript.ORDER_FUNCTION_CALL;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${list}.splice(${at}, 1);\n`;
         }
     } else if (where === 'RANDOM') {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = Blockly.JavaScript.provideFunction_('listsGetRandomItem', [
+        const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('listsGetRandomItem', [
             // eslint-disable-next-line no-underscore-dangle
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list, remove) {
                 var x = Math.floor(Math.random() * list.length);
@@ -168,7 +168,7 @@ Blockly.JavaScript.lists_getIndex = block => {
         code = `${functionName}(${list}, ${mode !== 'GET'})`;
 
         if (mode === 'GET' || mode === 'GET_REMOVE') {
-            order = Blockly.JavaScript.ORDER_FUNCTION_CALL;
+            order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${code};\n`;
         }

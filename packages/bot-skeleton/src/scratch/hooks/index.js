@@ -16,7 +16,7 @@ import './utils';
 import './icon';
 import './inject';
 import './procedures';
-import './trashcan';
+// import './trashcan';
 import './variable_map';
 import './variables';
 import './workspace';

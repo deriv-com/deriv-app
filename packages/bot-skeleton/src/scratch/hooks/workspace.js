@@ -1,6 +1,6 @@
 import DBotStore from '../dbot-store';
 import PendingPromise from '../../utils/pending-promise';
-
+console.log('22')
 Blockly.Workspace.prototype.wait_events = [];
 
 /**
@@ -41,7 +41,7 @@ Blockly.Workspace.prototype.fireChangeListener = function (event) {
     }
 
     // Copy listeners in case a listener attaches/detaches itself.
-    const current_listeners = this.listeners_.slice();
+    const current_listeners = this.listeners.slice();
 
     current_listeners.forEach(listener => {
         listener(event);
@@ -115,3 +115,4 @@ Blockly.Workspace.prototype.getAllFields = function (is_ordered) {
         return fields;
     }, []);
 };
+console.log('22')

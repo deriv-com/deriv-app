@@ -39,7 +39,7 @@ Blockly.DataCategory.search = function (variableModelList) {
             const setBlockText = `<xml><block type="variables_set" gap="${gap}">${generateVariableFieldXmlString(
                 firstVariable
             )}</block></xml>`;
-            const setBlock = Blockly.Xml.textToDom(setBlockText).firstChild;
+            const setBlock = Blockly.utils.xml.textToDom(setBlockText).firstChild;
             xmlList.push(setBlock);
         }
 
@@ -65,7 +65,7 @@ Blockly.DataCategory.search = function (variableModelList) {
                 const getBlockText = `<xml><block type="variables_get">${generateVariableFieldXmlString(
                     variable
                 )}</block></xml>`;
-                const getBlock = Blockly.Xml.textToDom(getBlockText).firstChild;
+                const getBlock = Blockly.utils.xml.textToDom(getBlockText).firstChild;
                 xmlList.push(getBlock);
             });
         }
@@ -117,3 +117,4 @@ Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
     xmlList.push(el_input_xml);
     xmlList.push(el_button_xml);
 };
+console.log('9')

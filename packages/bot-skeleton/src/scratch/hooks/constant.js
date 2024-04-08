@@ -31,3 +31,7 @@ Blockly.DRAG_RADIUS = 3;
  * larger than Blockly.DRAG_RADIUS so that the drag-direction is clearer.
  */
 Blockly.FLYOUT_DRAG_RADIUS = 1;
+
+Blockly.BlockSvg.SEP_SPACE_X = 8;
+
+console.log('7')

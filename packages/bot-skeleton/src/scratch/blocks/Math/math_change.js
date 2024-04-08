@@ -60,11 +60,11 @@ Blockly.Blocks.math_change = {
     },
 };
 
-Blockly.JavaScript.math_change = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['math_change'] = block => {
     const variable = block.getFieldValue('VAR');
     // eslint-disable-next-line no-underscore-dangle
     const argument0 = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'DELTA', Blockly.JavaScript.ORDER_ADDITION) || '0';
+    const argument1 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'DELTA', Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION) || '0';
     const code = `${argument0} = (typeof ${argument0} === 'number' ? ${argument0} : 0) + ${argument1};`;
 
     return code;

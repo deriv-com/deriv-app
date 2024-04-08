@@ -39,8 +39,8 @@ Blockly.Blocks.tick_analysis = {
     },
 };
 
-Blockly.JavaScript.tick_analysis = block => {
-    const stack = Blockly.JavaScript.statementToCode(block, 'TICKANALYSIS_STACK') || '';
+Blockly.JavaScript.javascriptGenerator.forBlock['tick_analysis'] = block => {
+    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TICKANALYSIS_STACK') || '';
     const code = `
     BinaryBotPrivateTickAnalysisList.push(function BinaryBotPrivateTickAnalysis() {
         ${stack}

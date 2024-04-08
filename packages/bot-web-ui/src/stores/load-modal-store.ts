@@ -215,7 +215,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const workspace = Blockly.derivWorkspace;
         if (workspace) {
             Blockly.derivWorkspace.asyncClear();
-            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
+            Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(workspace.cached_xml.main), workspace);
             Blockly.derivWorkspace.strategy_to_load = workspace.cached_xml.main;
         }
     };
@@ -252,7 +252,7 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!this.selected_strategy) {
             Blockly.derivWorkspace.asyncClear();
             Blockly.Xml.domToWorkspace(
-                Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                Blockly.utils.xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
                 Blockly.derivWorkspace
             );
             this.is_open_button_loading = false;
@@ -415,6 +415,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 },
                 readOnly: true,
                 scrollbars: true,
+                renderer: 'zelos',
             });
         }
         this.refreshStrategiesTheme();
@@ -513,6 +514,7 @@ export default class LoadModalStore implements ILoadModalStore {
                     },
                     readOnly: true,
                     scrollbars: true,
+                    renderer: 'zelos',
                 });
                 load_options.workspace = this.local_workspace;
             } else {

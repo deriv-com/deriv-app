@@ -7,6 +7,7 @@
  * @param {!Blockly.Workspace} ws The workspace to search for variables.
  * @return {!Array.<!Blockly.VariableModel>} Array of variable models.
  */
+console.log('21')
 Blockly.Variables.allUsedVarModels = function (ws) {
     const blocks = ws.getAllBlocks(false);
     const variableHash = Object.create(null);
@@ -54,3 +55,4 @@ Blockly.Variables.generateVariableFieldDom = function (variableModel) {
     field.appendChild(name);
     return field;
 };
+console.log('21')

@@ -53,12 +53,12 @@ Blockly.Blocks.controls_forEach = {
     },
 };
 
-Blockly.JavaScript.controls_forEach = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['controls_forEach'] = block => {
     // eslint-disable-next-line no-underscore-dangle
     const variable0 = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';
+    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'LIST', Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT) || '[]';
 
-    let branch = Blockly.JavaScript.statementToCode(block, 'DO');
+    let branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
     branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
 
     let code = '';

@@ -67,5 +67,5 @@ Blockly.Blocks.total_profit_string = {
     onchange: Blockly.Blocks.total_profit.onchange,
 };
 
-Blockly.JavaScript.total_profit = () => ['Bot.getTotalProfit(false)', Blockly.JavaScript.ORDER_ATOMIC];
-Blockly.JavaScript.total_profit_string = () => ['Bot.getTotalProfit(true)', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock['total_profit'] = () => ['Bot.getTotalProfit(false)', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock['total_profit_string'] = () => ['Bot.getTotalProfit(true)', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];

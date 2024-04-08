@@ -335,14 +335,14 @@ Blockly.Blocks.procedures_callnoreturn = {
     defType: 'procedures_defnoreturn',
 };
 
-Blockly.JavaScript.procedures_callnoreturn = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['procedures_callnoreturn'] = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
         Blockly.Procedures.NAME_TYPE
     );
     const args = block.arguments.map(
-        (arg, i) => Blockly.JavaScript.valueToCode(block, `ARG${i}`, Blockly.JavaScript.ORDER_COMMA) || 'null'
+        (arg, i) => Blockly.JavaScript.javascriptGenerator.valueToCode(block, `ARG${i}`, Blockly.JavaScript.javascriptGenerator.ORDER_COMMA) || 'null'
     );
 
     const code = `${functionName}(${args.join(', ')});\n`;

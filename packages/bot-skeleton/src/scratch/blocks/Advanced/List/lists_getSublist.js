@@ -86,8 +86,8 @@ Blockly.Blocks.lists_getSublist = {
     },
 };
 
-Blockly.JavaScript.lists_getSublist = block => {
-    const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_MEMBER) || '[]';
+Blockly.JavaScript.javascriptGenerator.forBlock['lists_getSublist'] = block => {
+    const list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'LIST', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER) || '[]';
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');
 
@@ -99,7 +99,7 @@ Blockly.JavaScript.lists_getSublist = block => {
         if (where1 === 'FROM_START') {
             at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
         } else if (where1 === 'FROM_END') {
-            at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.ORDER_SUBTRACTION);
+            at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION);
             at1 = `${list}.length - ${at1}`;
         } else if (where1 === 'FIRST') {
             at1 = '0';
@@ -108,7 +108,7 @@ Blockly.JavaScript.lists_getSublist = block => {
         if (where2 === 'FROM_START') {
             at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 1);
         } else if (where2 === 'FROM_END') {
-            at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.ORDER_SUBTRACTION);
+            at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION);
             at2 = `${list}.length - ${at2}`;
         } else if (where2 === 'LAST') {
             at2 = `${list}.length`;
@@ -140,7 +140,7 @@ Blockly.JavaScript.lists_getSublist = block => {
         const has_at2 = where2 === 'FROM_END' || where2 === 'FROM_START';
 
         // eslint-disable-next-line no-underscore-dangle
-        const function_name = Blockly.JavaScript.provideFunction_(
+        const function_name = Blockly.JavaScript.javascriptGenerator.provideFunction_(
             `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
             [
                 // eslint-disable-next-line no-underscore-dangle
@@ -158,5 +158,5 @@ Blockly.JavaScript.lists_getSublist = block => {
         code = `${function_name}(${list}${has_at1 ? `, ${at1}` : ''}${has_at2 ? `, ${at2}` : ''})`;
     }
 
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

@@ -35,9 +35,9 @@ Blockly.Blocks.logic_negate = {
     },
 };
 
-Blockly.JavaScript.logic_negate = block => {
-    const order = Blockly.JavaScript.ORDER_LOGICAL_NOT;
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'BOOL', order) || 'true';
+Blockly.JavaScript.javascriptGenerator.forBlock['logic_negate'] = block => {
+    const order = Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT;
+    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'true';
 
     const code = `!${argument0}`;
     return [code, order];

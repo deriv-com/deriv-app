@@ -4,6 +4,11 @@ import { localize } from '@deriv/translations';
  * Custom checkbox implementation.
  * @returns {Blockly.FieldImage} A Blockly.FieldImage pretending to be a checkbox.
  */
+
+Blockly.Field.prototype.setText = function (e) {
+    null !== e && (e = String(e)) !== this.text_ && (this.text_ = e,
+        this.forceRerender())
+}
 const FieldCheckbox = () => {
     const getAltText = is_checked => (is_checked ? localize('Y') : localize('N'));
     const onCheckboxClick = function () {
@@ -25,6 +30,7 @@ const FieldCheckbox = () => {
     // Custom setValue to support imported values, this allows us to bypass
     // adding domToMutation and mutationToDom logic to each block consuming this checkbox.
     icon.setValue = function (value) {
+        console.log('creating checkbox')
         const is_checked = value === true || value === 'TRUE';
         const old_value = this.getValue();
         this.src_ = is_checked ? 'TRUE' : 'FALSE';
@@ -34,7 +40,7 @@ const FieldCheckbox = () => {
             Array.from(el_field_group.children).forEach(child_node => el_field_group.removeChild(child_node));
 
             // Draw a rectangle which is coloured based on the host-block's colour.
-            Blockly.utils.createSvgElement(
+            Blockly.utils.dom.createSvgElement(
                 'rect',
                 {
                     fill: this.sourceBlock_.getColourSecondary(), // eslint-disable-line
@@ -49,7 +55,7 @@ const FieldCheckbox = () => {
 
             if (is_checked) {
                 // Draw checkmark.
-                Blockly.utils.createSvgElement(
+                Blockly.utils.dom.createSvgElement(
                     'path',
                     {
                         fill: 'var(--text-general)',
@@ -71,4 +77,5 @@ const FieldCheckbox = () => {
     return icon;
 };
 
-Blockly.Field.register('field_image_checkbox', FieldCheckbox());
+Blockly.fieldRegistry.register('field_image_checkbox', FieldCheckbox());
+console.log('11')

@@ -57,11 +57,11 @@ Blockly.Blocks.notify_telegram = {
     },
 };
 
-Blockly.JavaScript.notify_telegram = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['notify_telegram'] = block => {
     const access_token =
-        Blockly.JavaScript.valueToCode(block, 'TELEGRAM_ACCESS_TOKEN', Blockly.JavaScript.ORDER_ATOMIC) || '';
-    const chat_id = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_CHAT_ID', Blockly.JavaScript.ORDER_ATOMIC) || '';
-    const message = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) || '';
+        Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TELEGRAM_ACCESS_TOKEN', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '';
+    const chat_id = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TELEGRAM_CHAT_ID', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '';
+    const message = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TELEGRAM_MESSAGE', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '';
 
     if (!access_token || !chat_id || !message) {
         return '';

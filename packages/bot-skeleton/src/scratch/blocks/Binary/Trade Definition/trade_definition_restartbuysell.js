@@ -33,4 +33,4 @@ Blockly.Blocks.trade_definition_restartbuysell = {
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['TIME_MACHINE_ENABLED'],
 };
-Blockly.JavaScript.trade_definition_restartbuysell = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_restartbuysell'] = () => { };

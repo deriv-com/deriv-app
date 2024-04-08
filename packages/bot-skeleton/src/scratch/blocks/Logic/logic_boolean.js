@@ -34,7 +34,7 @@ Blockly.Blocks.logic_boolean = {
     },
 };
 
-Blockly.JavaScript.logic_boolean = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['logic_boolean'] = block => {
     const code = block.getFieldValue('BOOL') === 'TRUE' ? 'true' : 'false';
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

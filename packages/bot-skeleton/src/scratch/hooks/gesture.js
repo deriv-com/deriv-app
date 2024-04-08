@@ -31,3 +31,4 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout_ = function () {
     }
     return false;
 };
+console.log('14')

@@ -49,9 +49,9 @@ Blockly.Blocks.tick_string = {
     onchange: Blockly.Blocks.tick.onchange,
 };
 
-Blockly.JavaScript.tick = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['tick'] = block => {
     const parent = block.getParent();
     const type_list = ['notify', 'text_print'];
-    return [`Bot.getLastTick(false, ${type_list.includes(parent?.type)})`, Blockly.JavaScript.ORDER_ATOMIC];
+    return [`Bot.getLastTick(false, ${type_list.includes(parent?.type)})`, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };
-Blockly.JavaScript.tick_string = () => ['Bot.getLastTick(false, true)', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock['tick_string'] = () => ['Bot.getLastTick(false, true)', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];

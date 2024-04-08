@@ -83,15 +83,15 @@ Blockly.Blocks.math_number_property = {
     },
 };
 
-Blockly.JavaScript.math_number_property = block => {
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'NUMBER_TO_CHECK', Blockly.JavaScript.ORDER_MODULUS) || '0';
+Blockly.JavaScript.javascriptGenerator.forBlock['math_number_property'] = block => {
+    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'NUMBER_TO_CHECK', Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS) || '0';
     const property = block.getFieldValue('PROPERTY');
 
     let code;
 
     if (property === 'PRIME') {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = Blockly.JavaScript.provideFunction_('mathIsPrime', [
+        const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('mathIsPrime', [
             // eslint-disable-next-line no-underscore-dangle
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(n) {
                 // https://en.wikipedia.org/wiki/Primality_test#Naive_methods
@@ -115,7 +115,7 @@ Blockly.JavaScript.math_number_property = block => {
             }`,
         ]);
         code = `${functionName}(${argument0})`;
-        return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
     } else if (property === 'EVEN') {
         code = `${argument0} % 2 === 0`;
     } else if (property === 'ODD') {
@@ -127,9 +127,9 @@ Blockly.JavaScript.math_number_property = block => {
     } else if (property === 'NEGATIVE') {
         code = `${argument0} < 0`;
     } else if (property === 'DIVISIBLE_BY') {
-        const divisor = Blockly.JavaScript.valueToCode(block, 'DIVISOR', Blockly.JavaScript.ORDER_MODULUS) || '0';
+        const divisor = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'DIVISOR', Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS) || '0';
         code = `${argument0} % ${divisor} == 0`;
     }
 
-    return [code, Blockly.JavaScript.ORDER_EQUALITY];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY];
 };

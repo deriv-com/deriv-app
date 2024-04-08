@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
-import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
+// import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -92,9 +92,9 @@ const AppWrapper = observer(() => {
                 form_source: 'bot_header_form',
             });
             if (is_drawer_open) {
-                initTrashCan(400, -748);
+                // initTrashCan(400, -748);
             } else {
-                initTrashCan(20);
+                // initTrashCan(20);
             }
             setTimeout(() => {
                 window.dispatchEvent(new Event('resize')); // make the trash can work again after resize

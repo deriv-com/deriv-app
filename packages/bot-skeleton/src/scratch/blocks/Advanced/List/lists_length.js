@@ -35,9 +35,9 @@ Blockly.Blocks.lists_length = {
     },
 };
 
-Blockly.JavaScript.lists_length = block => {
-    const list = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || '[]';
+Blockly.JavaScript.javascriptGenerator.forBlock['lists_length'] = block => {
+    const list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER) || '[]';
 
     const code = `${list}.length`;
-    return [code, Blockly.JavaScript.ORDER_MEMBER];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER];
 };

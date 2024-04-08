@@ -30,4 +30,4 @@ Blockly.Blocks.slow_ema_period = {
     },
 };
 
-Blockly.JavaScript.slow_ema_period = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['slow_ema_period'] = () => {};

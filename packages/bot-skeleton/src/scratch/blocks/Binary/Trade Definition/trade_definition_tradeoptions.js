@@ -5,6 +5,16 @@ import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
+Blockly.Block.prototype.getChildByType = function (type) {
+    return this.getDescendants().find(child => child.type === type);
+};
+
+//
+Blockly.Field.prototype.setText = function (e) {
+    null !== e && (e = String(e)) !== this.text_ && (this.text_ = e,
+        this.forceRerender())
+}
+
 Blockly.Blocks.trade_definition_tradeoptions = {
     durations: [],
     init() {
@@ -76,8 +86,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 .forEach(input => {
                     const input_target = input.connection.targetBlock();
                     const value = input_target.getFieldValue('NUM');
-                    if (value?.startsWith('0')) {
-                        const new_value = value.includes('.') ? parseFloat(`${value}`) : parseInt(`${value}`);
+                    console.log(value, 'value')
+                    if (value) {
+                        const new_value = value;
                         input_target.setFieldValue(new_value.toString(), 'NUM');
                     }
                 });
@@ -256,7 +267,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 indentWorkspace: { x, y },
             },
         } = config;
-        Blockly.derivWorkspace.cleanUp(x, y);
+        window.Blockly.getMainWorkspace().cleanUp(x, y);
 
         if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
@@ -426,7 +437,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         });
     },
     enforceSingleBarrierType(barrier_input_name, should_force_distinct) {
-        const new_value = this.getFieldValue(barrier_input_name);
+        const new_value = this.getFieldValue(barrier_input_name ? barrier_input_name : '');
         const other_barrier_input_name =
             barrier_input_name === 'BARRIEROFFSETTYPE_LIST' ? 'SECONDBARRIEROFFSETTYPE_LIST' : 'BARRIEROFFSETTYPE_LIST';
         const other_barrier_field = this.getField(other_barrier_input_name);
@@ -531,11 +542,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
 Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_definition_tradeoptions;
 
-Blockly.JavaScript.trade_definition_tradeoptions = block => {
-    const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_tradeoptions'] = block => {
+    const amount = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'AMOUNT', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '0';
     const { currency } = DBotStore.instance.client;
     const duration_type = block.getFieldValue('DURATIONTYPE_LIST') || '0';
-    const duration_value = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const duration_value = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'DURATION', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '0';
 
     // Determine decimal places for rounding the stake, this is done so Martingale multipliers
     // are not affected by fractional values e.g. USD 12.232323 will become 12.23.
@@ -553,19 +564,19 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
     let prediction_value, barrier_offset_value, second_barrier_offset_value;
 
     if (block.getInput('PREDICTION')) {
-        prediction_value = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC) || '-1';
+        prediction_value = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'PREDICTION', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '-1';
     }
 
     if (block.getInput('BARRIEROFFSET')) {
         const barrier_offset_type = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-        const value = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+        const value = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '0';
         barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }
 
     if (block.getInput('SECONDBARRIEROFFSET')) {
         const barrier_offset_type = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
         const value =
-            Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '0';
         second_barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }
 
@@ -587,4 +598,4 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
     return code;
 };
 
-Blockly.JavaScript.trade_definition_tradeoptions_payout = Blockly.JavaScript.trade_definition_tradeoptions;
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_tradeoptions_payout'] = Blockly.JavaScript.trade_definition_tradeoptions;

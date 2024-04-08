@@ -43,7 +43,7 @@ Blockly.Block.prototype.getChildFieldValue = function (childType, childField) {
 
 Blockly.Block.prototype.childValueToCode = function (childType, childField) {
     const childBlock = this.getChildByType(childType);
-    return childBlock && Blockly.JavaScript.valueToCode(childBlock, childField, Blockly.JavaScript.ORDER_ATOMIC);
+    return childBlock && Blockly.JavaScript.javascriptGenerator.valueToCode(childBlock, childField, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC);
 };
 
 Blockly.Block.prototype.getBlocksInStatement = function (statementInputName) {
@@ -108,12 +108,12 @@ Blockly.Block.getDimensions = function (block_node) {
         return Blockly.Block.Dimensions[existing_dimensions_key];
     }
 
-    const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
+    const options = new Blockly.Options({ media: `${__webpack_public_path__}media/`, renderer: 'zelos', });
     const el_injection_div = document.createElement('div');
 
     // Create a headless workspace to calculate xmlList block dimensions
-    const svg = Blockly.createDom_(el_injection_div, options);
-    const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
+    //const svg = Blockly.WidgetDiv.createDom(el_injection_div, options);
+    const workspace = Blockly.inject(el_injection_div, options);
     const block = Blockly.Xml.domToBlock(block_node, workspace);
     const block_hw = block.getHeightWidth();
 
@@ -170,3 +170,5 @@ Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
 Blockly.Block.isDynamic = function (block_type) {
     return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
 };
+
+console.log('2')

@@ -45,10 +45,10 @@ Blockly.Blocks.math_modulo = {
     },
 };
 
-Blockly.JavaScript.math_modulo = block => {
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'DIVIDEND', Blockly.JavaScript.ORDER_MODULUS) || '0';
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'DIVISOR', Blockly.JavaScript.ORDER_MODULUS) || '0';
+Blockly.JavaScript.javascriptGenerator.forBlock['math_modulo'] = block => {
+    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'DIVIDEND', Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS) || '0';
+    const argument1 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'DIVISOR', Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS) || '0';
 
     const code = `${argument0} % ${argument1}`;
-    return [code, Blockly.JavaScript.ORDER_MODULUS];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS];
 };

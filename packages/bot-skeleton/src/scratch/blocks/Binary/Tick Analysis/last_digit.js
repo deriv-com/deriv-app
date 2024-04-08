@@ -24,4 +24,4 @@ Blockly.Blocks.last_digit = {
     },
 };
 
-Blockly.JavaScript.last_digit = () => ['Bot.getLastDigit()', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock['last_digit'] = () => ['Bot.getLastDigit()', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];

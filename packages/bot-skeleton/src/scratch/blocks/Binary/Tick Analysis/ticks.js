@@ -49,9 +49,9 @@ Blockly.Blocks.ticks_string = {
     onchange: Blockly.Blocks.ticks.onchange,
 };
 
-Blockly.JavaScript.ticks = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['ticks'] = block => {
     const parent = block.getParent();
     const type_list = ['notify', 'text_print'];
-    return [`Bot.getTicks(${type_list.includes(parent?.type)})`, Blockly.JavaScript.ORDER_ATOMIC];
+    return [`Bot.getTicks(${type_list.includes(parent?.type)})`, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };
-Blockly.JavaScript.ticks_string = () => ['Bot.getTicks(true)', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock['ticks_string'] = () => ['Bot.getTicks(true)', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];

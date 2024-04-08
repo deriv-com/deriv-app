@@ -79,7 +79,7 @@ Blockly.Blocks.lists_create_with = {
 };
 
 // Head's up! This is also the code generation for the "text_join" block.
-Blockly.JavaScript.lists_create_with = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['lists_create_with'] = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),

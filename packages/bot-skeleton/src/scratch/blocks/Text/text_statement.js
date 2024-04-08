@@ -73,7 +73,7 @@ Blockly.Blocks.text_statement = {
     onIconClick: Blockly.Blocks.lists_statement.onIconClick,
 };
 
-Blockly.JavaScript.text_statement = block => {
-    const code = `String(${Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC)})`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock['text_statement'] = block => {
+    const code = `String(${Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC)})`;
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

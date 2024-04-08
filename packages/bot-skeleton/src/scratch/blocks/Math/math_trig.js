@@ -48,4 +48,4 @@ Blockly.Blocks.math_trig = {
     },
 };
 
-Blockly.JavaScript.math_trig = Blockly.JavaScript.math_single;
+Blockly.JavaScript.javascriptGenerator.forBlock['math_trig'] = Blockly.JavaScript.math_single;

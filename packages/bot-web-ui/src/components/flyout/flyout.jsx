@@ -67,15 +67,16 @@ const FlyoutContent = props => {
                     </div>
                 ) : (
                     flyout_content.map((node, index) => {
+                        console.log('test node', node)
                         const tag_name = node.tagName.toUpperCase();
-
+                        console.log(tag_name)
                         switch (tag_name) {
                             case Blockly.Xml.NODE_BLOCK: {
                                 const block_type = node.getAttribute('type');
 
                                 return (
                                     <FlyoutBlockGroup
-                                        key={`${node.getAttribute('type')}${Blockly.utils.genUid()}`}
+                                        key={`${node.getAttribute('type')}${Blockly.utils.idGenerator.genUid()}`}
                                         id={`flyout__item-workspace--${index}`}
                                         block_node={node}
                                         should_hide_display_name={
@@ -115,7 +116,7 @@ const FlyoutContent = props => {
                                     />
                                 );
                             }
-                            case Blockly.Xml.NODE_BUTTON: {
+                            case 'BLOCK': {
                                 const callback_key = node.getAttribute('callbackKey');
                                 const callback_id = node.getAttribute('id');
 
@@ -130,13 +131,14 @@ const FlyoutContent = props => {
                                             `${node.getAttribute('className')}`
                                         )}
                                         onClick={button => {
-                                            const workspace = Blockly.derivWorkspace;
+                                            const workspace = Blockly.getMainWorkspace();
                                             const button_cb = workspace.getButtonCallback(callback_key);
                                             const callback = button_cb || (() => {});
 
                                             // Workaround for not having a flyout workspace.
                                             // eslint-disable-next-line no-underscore-dangle
                                             button.targetWorkspace_ = workspace;
+                                            console.log(button.targetWorkspace_)
                                             button.getTargetWorkspace = () => {
                                                 // eslint-disable-next-line no-underscore-dangle
                                                 return button.targetWorkspace_;

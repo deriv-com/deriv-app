@@ -38,7 +38,7 @@ Blockly.Blocks.controls_flow_statements = {
     },
 };
 
-Blockly.JavaScript.controls_flow_statements = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['controls_flow_statements'] = block => {
     const keyword = block.getFieldValue('FLOW') === 'BREAK' ? 'break' : 'continue';
     return `${keyword};\n`;
 };

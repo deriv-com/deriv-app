@@ -63,3 +63,4 @@ const lightMode = () => {
     };
 };
 export const setColors = is_dark_mode => (is_dark_mode ? darkMode() : lightMode());
+console.log('5')

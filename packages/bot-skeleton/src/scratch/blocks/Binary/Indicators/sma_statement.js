@@ -50,7 +50,7 @@ Blockly.Blocks.sma_statement = {
     onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
-Blockly.JavaScript.sma_statement = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['sma_statement'] = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),

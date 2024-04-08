@@ -30,4 +30,4 @@ Blockly.Blocks.signal_ema_period = {
     },
 };
 
-Blockly.JavaScript.signal_ema_period = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['signal_ema_period'] = () => {};

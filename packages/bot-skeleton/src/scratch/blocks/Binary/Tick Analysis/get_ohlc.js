@@ -44,12 +44,11 @@ Blockly.Blocks.get_ohlc = {
         };
     },
 };
-
-Blockly.JavaScript.get_ohlc = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['get_ohlc'] = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
-    const index = Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+    const index = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '1';
 
     const code = `Bot.getOhlcFromEnd({ index: ${index}, granularity: ${granularity} })`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -82,10 +82,10 @@ Blockly.Blocks.text_charAt = {
     },
 };
 
-Blockly.JavaScript.text_charAt = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['text_charAt'] = block => {
     const where = block.getFieldValue('WHERE') || 'FROM_START';
-    const textOrder = where === 'RANDOM' ? Blockly.JavaScript.ORDER_NONE : Blockly.JavaScript.ORDER_MEMBER;
-    const text = Blockly.JavaScript.valueToCode(block, 'VALUE', textOrder) || "''";
+    const textOrder = where === 'RANDOM' ? Blockly.JavaScript.javascriptGenerator.ORDER_NONE : Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+    const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', textOrder) || "''";
 
     let code;
 
@@ -102,7 +102,7 @@ Blockly.JavaScript.text_charAt = block => {
         code = `${text}.slice(-1)`;
     } else if (where === 'RANDOM') {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = Blockly.JavaScript.provideFunction_('textRandomLetter', [
+        const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('textRandomLetter', [
             // eslint-disable-next-line no-underscore-dangle
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(text) {
                 var x = Math.floor(Math.random() * text.length);
@@ -111,5 +111,5 @@ Blockly.JavaScript.text_charAt = block => {
         ]);
         code = `${functionName}(${text})`;
     }
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

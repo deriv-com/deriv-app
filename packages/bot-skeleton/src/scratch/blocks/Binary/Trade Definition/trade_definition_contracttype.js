@@ -61,4 +61,4 @@ Blockly.Blocks.trade_definition_contracttype = {
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
-Blockly.JavaScript.trade_definition_contracttype = () => '';
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_contracttype'] = () => '';

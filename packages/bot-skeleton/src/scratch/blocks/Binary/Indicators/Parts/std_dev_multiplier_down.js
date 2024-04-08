@@ -30,4 +30,4 @@ Blockly.Blocks.std_dev_multiplier_down = {
     },
 };
 
-Blockly.JavaScript.std_dev_multiplier_down = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['std_dev_multiplier_down'] = () => {};

@@ -22,4 +22,4 @@ Blockly.Blocks.useless_block = {
     },
 };
 
-Blockly.JavaScript.useless_block = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['useless_block'] = () => {};

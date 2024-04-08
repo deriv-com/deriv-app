@@ -78,7 +78,7 @@ Blockly.Blocks.text_join = {
 };
 
 // Blockly.JavaScript.text_join = Blockly.JavaScript.lists_create_with;
-Blockly.JavaScript.text_join = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['text_join'] = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),

@@ -118,3 +118,4 @@ Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
 
     return block;
 };
+console.log('13')

@@ -51,8 +51,8 @@ Blockly.Blocks.before_purchase = {
     },
 };
 
-Blockly.JavaScript.before_purchase = block => {
-    const stack = Blockly.JavaScript.statementToCode(block, 'BEFOREPURCHASE_STACK');
+Blockly.JavaScript.javascriptGenerator.forBlock['before_purchase'] = block => {
+    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'BEFOREPURCHASE_STACK');
 
     const code = `BinaryBotPrivateBeforePurchase = function BinaryBotPrivateBeforePurchase() {
         Bot.highlightBlock('${block.id}');

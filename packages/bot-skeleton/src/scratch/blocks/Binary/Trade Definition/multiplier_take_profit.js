@@ -71,4 +71,4 @@ Blockly.Blocks.multiplier_take_profit = {
     },
 };
 
-Blockly.JavaScript.multiplier_take_profit = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['multiplier_take_profit'] = () => {};

@@ -1,5 +1,5 @@
 import { blueInfo } from '../blocks/images';
-
+console.log('28')
 Blockly.Tooltip.HOVER_MS = 50;
 
 Blockly.Tooltip.show_ = () => {
@@ -76,3 +76,4 @@ Blockly.Tooltip.hide = () => {
         Blockly.Tooltip.DIV.style.display = 'none';
     }
 };
+console.log('28')

@@ -62,12 +62,12 @@ Blockly.FieldImage.prototype.init = function () {
     }
     // Build the DOM.
     /** @type {SVGElement} */
-    this.fieldGroup_ = Blockly.utils.createSvgElement('g', {}, null);
+    this.fieldGroup_ = Blockly.utils.dom.createSvgElement('g', {}, null);
     if (!this.visible_) {
         this.fieldGroup_.style.display = 'none';
     }
     /** @type {SVGElement} */
-    this.imageElement_ = Blockly.utils.createSvgElement(
+    this.imageElement_ = Blockly.utils.dom.createSvgElement(
         'image',
         {
             height: `${this.height_}px`,
@@ -106,7 +106,7 @@ Blockly.FieldImage.prototype.dispose = function () {
  */
 Blockly.FieldImage.prototype.maybeAddClickHandler_ = function () {
     if (this.clickHandler_ && !this.sourceBlock_.workspace.options.readOnly && !this.sourceBlock_.isInFlyout) {
-        this.mouseDownWrapper_ = Blockly.bindEventWithChecks_(this.fieldGroup_, 'mousedown', this, this.clickHandler_);
+        this.mouseDownWrapper_ = Blockly.browserEvents.bind(this.fieldGroup_, 'mousedown', this, this.clickHandler_);
         this.fieldGroup_.style.cursor = 'pointer';
     }
 };
@@ -205,4 +205,5 @@ Blockly.FieldImage.prototype.showEditor_ = function () {
     }
 };
 
-Blockly.Field.register('field_image', Blockly.FieldImage);
+Blockly.Extensions.register('field_image', Blockly.FieldImage);
+ console.log('12')

@@ -123,12 +123,12 @@ Blockly.Blocks.procedures_ifreturn = {
     FUNCTION_TYPES: ['procedures_defnoreturn', 'procedures_defreturn'],
 };
 
-Blockly.JavaScript.procedures_ifreturn = block => {
-    const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || 'false';
+Blockly.JavaScript.javascriptGenerator.forBlock['procedures_ifreturn'] = block => {
+    const condition = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'CONDITION', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || 'false';
 
     let branch;
     if (block.hasReturnValue) {
-        const value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_NONE) || 'null';
+        const value = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || 'null';
         branch = `return ${value};\n`;
     } else {
         branch = 'return;\n';

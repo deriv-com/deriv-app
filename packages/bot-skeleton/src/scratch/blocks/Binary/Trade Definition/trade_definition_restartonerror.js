@@ -34,4 +34,5 @@ Blockly.Blocks.trade_definition_restartonerror = {
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['RESTARTONERROR'],
 };
-Blockly.JavaScript.trade_definition_restartonerror = () => {};
+
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_restartonerror'] = () => { };

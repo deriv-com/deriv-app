@@ -92,4 +92,5 @@ Blockly.Blocks.procedures_defreturn = {
     registerWorkspaceListener: Blockly.Blocks.procedures_defnoreturn.registerWorkspaceListener,
 };
 
-Blockly.JavaScript.procedures_defreturn = Blockly.JavaScript.procedures_defnoreturn;
+
+Blockly.JavaScript.javascriptGenerator.forBlock['procedures_defreturn'] = Blockly.JavaScript.procedures_defnoreturn;

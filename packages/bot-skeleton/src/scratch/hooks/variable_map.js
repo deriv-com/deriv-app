@@ -1,3 +1,4 @@
+console.log('20')
 Blockly.VariableMap.prototype.createVariable = function (name, opt_type, opt_id, opt_is_local, opt_is_cloud) {
     let variable = this.getVariable(name, opt_type);
 
@@ -13,18 +14,24 @@ Blockly.VariableMap.prototype.createVariable = function (name, opt_type, opt_id,
         }
     }
 
-    const optional_id = opt_id || Blockly.utils.genUid();
+    const optional_id = opt_id || Blockly.utils.idGenerator.genUid();
     const optional_type = opt_type || '';
 
     variable = new Blockly.VariableModel(this.workspace, name, optional_type, optional_id, opt_is_local, opt_is_cloud);
 
     // If opt_type is not a key, create a new list.
-    if (!this.variableMap_[optional_type]) {
-        this.variableMap_[optional_type] = [variable];
+    console.log({
+        variable: variable,
+        optional_type,
+        variableMap: this
+    })
+    if (!this.variableMap[optional_type]) {
+        this.variableMap[optional_type] = [variable];
     } else {
         // Else append the variable to the preexisting list.
-        this.variableMap_[optional_type].push(variable);
+        this.variableMap[optional_type].push(variable);
     }
 
     return variable;
 };
+console.log('20')

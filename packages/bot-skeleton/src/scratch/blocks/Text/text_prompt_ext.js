@@ -61,7 +61,7 @@ Blockly.Blocks.text_prompt_ext = {
     },
 };
 
-Blockly.JavaScript.text_prompt_ext = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['text_prompt_ext'] = block => {
     let msg, code;
 
     if (block.getField('TEXT')) {
@@ -70,7 +70,7 @@ Blockly.JavaScript.text_prompt_ext = block => {
         msg = Blockly.JavaScript.quote_(block.getFieldValue('TEXT'));
     } else {
         // External message
-        msg = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || "''";
+        msg = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || "''";
     }
 
     if (block.getFieldValue('TYPE') === 'NUMBER') {
@@ -79,5 +79,5 @@ Blockly.JavaScript.text_prompt_ext = block => {
         code = `window.prompt(${msg})`;
     }
 
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

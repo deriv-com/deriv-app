@@ -2,6 +2,7 @@ import { localize } from '@deriv/translations';
 import { config } from '../constants/config';
 import ApiHelpers from '../services/api/api-helpers';
 
+
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
     constructor() {
@@ -238,7 +239,6 @@ export default class BlockConversion {
 
                 Object.keys(block_fields).forEach(child_block_name => {
                     const child_block = this.workspace.newBlock(child_block_name);
-
                     block_fields[child_block_name].forEach(field_name => {
                         child_block.setFieldValue(this.getFieldValue(block_node, field_name), field_name);
                     });
@@ -284,6 +284,15 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
+        Blockly.createVirtualWorkspace_ = function (fragment, options, blockDragSurface, workspaceDragSurface) {
+            options.parentWorkspace = null;
+            const mainWorkspace = new Blockly.WorkspaceSvg(options, blockDragSurface, workspaceDragSurface);
+            mainWorkspace.scale = options.zoomOptions.startScale;
+            fragment.appendChild(mainWorkspace.createDom('blocklyMainBackground'));
+
+            return mainWorkspace;
+        };
+
         const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
         const el_injection_div = new DocumentFragment();
         const workspace = Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
@@ -412,7 +421,7 @@ export default class BlockConversion {
                 showIncompatibleStrategyDialog();
             }
             Blockly.Events.enable();
-            return Blockly.Xml.textToDom('<xml />');
+            return Blockly.utils.xml.textToDom('<xml />');
         }
 
         const variable_nodes = [];

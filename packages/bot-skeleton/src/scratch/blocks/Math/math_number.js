@@ -2,6 +2,8 @@ import { localize } from '@deriv/translations';
 
 Blockly.Blocks.math_number = {
     init() {
+        console.log('test 2')
+
         this.jsonInit(this.definition());
 
         const fieldInput = this.getField('NUM');
@@ -42,7 +44,7 @@ Blockly.Blocks.math_number = {
     },
 };
 
-Blockly.JavaScript.math_number = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['math_number'] = block => {
     const code = block.getFieldValue('NUM');
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

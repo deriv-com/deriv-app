@@ -79,7 +79,7 @@ export default class ToolbarStore implements IToolbarStore {
 
     resetDefaultStrategy = async () => {
         const workspace = window.Blockly.derivWorkspace;
-        workspace.current_strategy_id = window.Blockly.utils.genUid();
+        workspace.current_strategy_id = window.Blockly.utils.idGenerator.genUid();
         await load({
             block_string: workspace.cached_xml.main,
             file_name: config.default_file_name,
@@ -98,7 +98,8 @@ export default class ToolbarStore implements IToolbarStore {
                 indentWorkspace: { x, y },
             },
         } = config;
-        window.Blockly.derivWorkspace.cleanUp(x, y);
+        console.log({ x, y });
+        window.Blockly.getMainWorkspace().cleanUp(x, y);
     };
 
     onUndoClick = (is_redo: boolean): void => {
@@ -119,10 +120,11 @@ export default class ToolbarStore implements IToolbarStore {
     };
 
     setHasUndoStack = (): void => {
-        this.has_undo_stack = window.Blockly.derivWorkspace?.hasUndoStack();
+        
+        this.has_undo_stack = window.Blockly.derivWorkspace?.undoStack_?.length > 0;
     };
 
     setHasRedoStack = (): void => {
-        this.has_redo_stack = window.Blockly.derivWorkspace?.hasRedoStack();
+        this.has_redo_stack = window.Blockly.derivWorkspace?.redoStack_?.length > 0;
     };
 }

@@ -8,6 +8,7 @@ export default class FlyoutStore {
     block_workspaces = [];
     flyout_min_width = 440;
     options = {
+        renderer: 'zelos',
         media: `${__webpack_public_path__}media/`,
         move: { scrollbars: false, drag: true, wheel: false },
         zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
@@ -64,16 +65,18 @@ export default class FlyoutStore {
 
     initFlyout() {
         const workspace = Blockly.derivWorkspace;
-        const options = {
+
+
+        const flyoutWorkspaceOptions = new Blockly.Options({
             parentWorkspace: workspace,
-            RTL: workspace.RTL,
-            horizontalLayout: workspace.horizontalLayout,
-        };
+            rtl: workspace.RTL,
+            horizontalLayout: true,
+        });
 
         if (workspace.horizontalLayout) {
-            this.flyout = new Blockly.HorizontalFlyout(options);
+            this.flyout = new Blockly.HorizontalFlyout(flyoutWorkspaceOptions);
         } else {
-            this.flyout = new Blockly.VerticalFlyout(options);
+            this.flyout = new Blockly.VerticalFlyout(flyoutWorkspaceOptions);
         }
 
         this.flyout.targetWorkspace_ = workspace;
@@ -99,7 +102,8 @@ export default class FlyoutStore {
     initBlockWorkspace(el_block_workspace, block_node) {
         const workspace = Blockly.inject(el_block_workspace, this.options);
 
-        workspace.isFlyout = true;
+        console.log(workspace)
+        workspace.setVisible(true);
         workspace.targetWorkspace = Blockly.derivWorkspace;
 
         const block = Blockly.Xml.domToBlock(block_node, workspace);
@@ -118,15 +122,16 @@ export default class FlyoutStore {
         const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, event => {
+            Blockly.browserEvents.bind(block_svg_root, 'mousedown', null, event => {
                 GTM.pushDataLayer({
                     event: 'dbot_drag_block',
                     block_type: block.type,
                 });
-                this.flyout.blockMouseDown_(block)(event);
+                console.log(this.flyout)
+                this.flyout.blockMouseDown(event);
             }),
-            Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
-            Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect)
+            Blockly.browserEvents.bind(block_svg_root, 'mouseout', block, block.removeSelect),
+            Blockly.browserEvents.bind(block_svg_root, 'mouseover', block, block.addSelect)
         );
 
         this.block_workspaces.push(workspace);
@@ -148,7 +153,7 @@ export default class FlyoutStore {
         const text_limit = 20;
         const processed_xml = xml_list;
 
-        this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
+        this.block_listeners.forEach(listener => Blockly.browserEvents.unbind(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];

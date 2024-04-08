@@ -51,11 +51,11 @@ Blockly.Blocks.controls_whileUntil = {
     },
 };
 
-Blockly.JavaScript.controls_whileUntil = block => {
-    const branch = Blockly.JavaScript.statementToCode(block, 'DO');
+Blockly.JavaScript.javascriptGenerator.forBlock['controls_whileUntil'] = block => {
+    const branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
     const until = block.getFieldValue('MODE') === 'UNTIL';
-    const order = until ? Blockly.JavaScript.ORDER_LOGICAL_NOT : Blockly.JavaScript.ORDER_NONE;
-    let argument0 = Blockly.JavaScript.valueToCode(block, 'BOOL', order) || 'false';
+    const order = until ? Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT : Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
+    let argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'false';
 
     if (until) {
         argument0 = `!${argument0}`;

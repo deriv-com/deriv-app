@@ -5,13 +5,23 @@ import { save, isDarkRgbColour } from '../utils';
 /**
  * Select this block.  Highlight it visually.
  */
+
+const addClass = (element, className) => {
+    const classNames = className.split(' ');
+    if (classNames.every((name) => element.classList.contains(name))) {
+        return false;
+    }
+    element.classList.add(...classNames);
+    return true;
+}
 Blockly.BlockSvg.prototype.addSelect = function () {
     if (!this.isInFlyout) {
         const { flyout } = DBotStore.instance;
         if (flyout) {
             flyout.setVisibility(false);
         }
-        Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
+
+        addClass(/** @type {!Element} */(this.svgGroup_), 'blocklySelected');
     }
 };
 
@@ -36,7 +46,7 @@ Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
  */
 Blockly.BlockSvg.prototype.updateDisabled = function () {
     if (this.disabled || this.getInheritedDisabled()) {
-        Blockly.utils.addClass(this.svgGroup_, 'blocklyDisabled');
+        addClass(this.svgGroup_, 'blocklyDisabled');
 
         const fill = `url(#${this.workspace.options.disabledPatternId})`;
         if (this.svgPath_.getAttribute('fill') !== fill) {
@@ -188,7 +198,7 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function (
 
     if (should_be_error_highlighted) {
         // Below function does its own checks to check if class already exists.
-        Blockly.utils.addClass(this.svgGroup_, highlight_class);
+        addClass(this.svgGroup_, highlight_class);
     } else {
         Blockly.utils.removeClass(this.svgGroup_, highlight_class);
     }
@@ -197,12 +207,21 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function (
     this.error_message = error_message;
 };
 
+
 // Highlight the block that is being executed
 Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
     const highlight_block_class = 'block--execution-highlighted';
-
-    if (!Blockly.utils.hasClass(this.svgGroup_, highlight_block_class)) {
-        Blockly.utils.addClass(this.svgGroup_, highlight_block_class);
+    const hasClass = (element, className) => element.classList.contains(className);
+    const addClass = (element, className) => {
+        const classNames = className.split(' ');
+        if (classNames.every((name) => element.classList.contains(name))) {
+            return false;
+        }
+        element.classList.add(...classNames);
+        return true;
+    }
+    if (!hasClass(this.svgGroup_, highlight_block_class)) {
+        addClass(this.svgGroup_, highlight_block_class);
         setTimeout(() => {
             if (this.svgGroup_) {
                 Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
@@ -217,7 +236,7 @@ Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
 
 Blockly.BlockSvg.prototype.blink = function () {
     const blink_class = 'block--blink';
-    Blockly.utils.addClass(this.svgGroup_, blink_class);
+    addClass(this.svgGroup_, blink_class);
 
     setTimeout(() => {
         Blockly.utils.removeClass(this.svgGroup_, blink_class);
@@ -323,29 +342,36 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
 /**
  * @deriv/bot: Add check for workspace.getCanvas() before appendChild() is called.
  */
-Blockly.BlockSvg.prototype.initSvg = function () {
-    goog.asserts.assert(this.workspace.rendered, 'Workspace is headless.');
-    if (!this.isInsertionMarker()) {
-        // Insertion markers not allowed to have inputs or icons
-        // Input shapes are empty holes drawn when a value input is not connected.
-        // eslint-disable-next-line no-cond-assign
-        for (let i = 0, input; (input = this.inputList[i]); i++) {
-            input.init();
-            input.initOutlinePath(this.svgGroup_);
-        }
-        const icons = this.getIcons();
-        for (let i = 0; i < icons.length; i++) {
-            icons[i].createIcon();
-        }
-    }
-    this.updateColour();
-    this.updateMovable();
-    if (!this.workspace.options.readOnly && !this.eventsInit_) {
-        Blockly.bindEventWithChecks_(this.getSvgRoot(), 'mousedown', this, this.onMouseDown_);
-    }
-    this.eventsInit_ = true;
+// Blockly.BlockSvg.prototype.initSvg = function () {
+//     goog.asserts.assert(this.workspace.rendered, 'Workspace is headless.');
+//     if (!this.isInsertionMarker()) {
+//         // Insertion markers not allowed to have inputs or icons
+//         // Input shapes are empty holes drawn when a value input is not connected.
+//         // eslint-disable-next-line no-cond-assign
+//         this.constants = new Blockly.blockRendering.ConstantProvider();
+//         console.log('test', this.constants)
+//         console.log(this.inputList)
+//         this.inputList.forEach(input => {
+//             console.log(input)
+//             input.init();
+//             console.log(this.svgGroup_)
+//             // input.initOutlinePath(this.svgGroup_);
+//         });
 
-    if (!this.getSvgRoot().parentNode && this.workspace.getCanvas()) {
-        this.workspace.getCanvas().appendChild(this.getSvgRoot());
-    }
-};
+//         const icons = this.getIcons();
+//         for (let i = 0; i < icons.length; i++) {
+//             icons[i].createIcon();
+//         }
+//     }
+//     //this.updateColour();
+//     //this.updateMovable();
+//     if (!this.workspace.options.readOnly && !this.eventsInit_) {
+//         //Blockly.browserEvents.bind(this.getSvgRoot(), 'mousedown', this, this.onMouseDown_);
+//     }
+//     this.eventsInit_ = true;
+
+//     if (!this.getSvgRoot().parentNode && this.workspace.getCanvas()) {
+//         this.workspace.getCanvas().appendChild(this.getSvgRoot());
+//     }
+// };
+console.log('4')

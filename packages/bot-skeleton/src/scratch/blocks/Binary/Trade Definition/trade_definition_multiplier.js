@@ -239,7 +239,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                     stake_shadow_block.render(true);
 
                     this.dispose();
-                    Blockly.derivWorkspace.cleanUp(x, y);
+                    window.Blockly.getMainWorkspace().cleanUp(x, y);
                 });
             });
         }
@@ -271,8 +271,8 @@ Blockly.Blocks.trade_definition_multiplier = {
     },
 };
 
-Blockly.JavaScript.trade_definition_multiplier = block => {
-    const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_multiplier'] = block => {
+    const amount = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'AMOUNT', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '0';
     const { currency } = DBotStore.instance.client;
     const { setContractUpdateConfig } = DBotStore.instance;
     const multiplier_value = block.getFieldValue('MULTIPLIERTYPE_LIST') || '1';

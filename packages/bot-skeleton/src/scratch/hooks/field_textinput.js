@@ -1,6 +1,7 @@
 /**
  * Install this text field on a block.
  */
+console.log('26')
 Blockly.FieldTextInput.prototype.init = function () {
     if (this.fieldGroup_) {
         // Field has already been initialized once.
@@ -15,7 +16,7 @@ Blockly.FieldTextInput.prototype.init = function () {
 
     this.maxDisplayLength = 17;
 
-    Blockly.FieldTextInput.superClass_.init.call(this);
+    Blockly.FieldTextInput.call(this);
 
     // If not in a shadow block, draw a box.
     if (notInShadow) {
@@ -33,3 +34,4 @@ Blockly.FieldTextInput.prototype.init = function () {
         this.fieldGroup_.insertBefore(this.box_, this.textElement_);
     }
 };
+console.log('26')

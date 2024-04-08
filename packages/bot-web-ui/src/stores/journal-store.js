@@ -113,7 +113,7 @@ export default class JournalStore {
 
         const date = formatDate(this.getServerTime());
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
-        const unique_id = Blockly.utils.genUid();
+        const unique_id = Blockly.utils.idGenerator.genUid();
 
         this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id, extra });
         this.unfiltered_messages = this.unfiltered_messages.slice(); // force array update

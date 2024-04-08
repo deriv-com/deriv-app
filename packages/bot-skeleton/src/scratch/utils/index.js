@@ -129,10 +129,15 @@ export const load = async ({
         globalObserver.emit('ui.log.error', error_message);
     };
 
+
+
     // Check if XML can be parsed correctly.
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
-
+        console.log({
+            block_string,
+            xmlDoc
+        })
         if (xmlDoc.getElementsByTagName('parsererror').length) {
             return showInvalidStrategyError();
         }
@@ -143,7 +148,7 @@ export const load = async ({
     let xml;
     // Check if XML can be parsed into a strategy.
     try {
-        xml = Blockly.Xml.textToDom(block_string);
+        xml = Blockly.utils.xml.textToDom(block_string);
     } catch (e) {
         return showInvalidStrategyError();
     }
@@ -188,7 +193,7 @@ export const load = async ({
 
                 save_modal.updateBotName(file_name);
                 workspace.clearUndo();
-                workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
+                workspace.current_strategy_id = strategy_id || Blockly.utils.idGenerator.genUid();
                 await saveWorkspaceToRecent(xml, from);
             }
         }
@@ -225,7 +230,24 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
     }
 };
 
+
 export const loadWorkspace = async (xml, event_group, workspace) => {
+    Blockly.WorkspaceSvg.prototype.asyncClear = function () {
+        const { setLoading } = DBotStore.instance;
+        setLoading(true);
+
+        return new Promise(resolve => {
+            this.clear();
+            setLoading(false);
+            resolve();
+        });
+    };
+    Blockly.WorkspaceSvg.prototype.asyncClear = function () {
+        return new Promise(resolve => {
+            this.clear();
+            resolve();
+        });
+    };
     Blockly.Events.setGroup(event_group);
     await workspace.asyncClear();
     Blockly.Xml.domToWorkspace(xml, workspace);
@@ -237,7 +259,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
         let xml;
 
         try {
-            xml = Blockly.Xml.textToDom(xml_string);
+            xml = Blockly.utils.xml.textToDom(xml_string);
         } catch (error) {
             return reject(localize('Unrecognized file format'));
         }

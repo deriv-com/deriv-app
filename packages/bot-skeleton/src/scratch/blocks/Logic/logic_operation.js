@@ -48,21 +48,21 @@ Blockly.Blocks.logic_operation = {
     },
 };
 
-Blockly.JavaScript.logic_operation = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['logic_operation'] = block => {
     const selectedOperator = block.getFieldValue('OP');
 
     let operator, order;
 
     if (selectedOperator === 'AND') {
         operator = '&&';
-        order = Blockly.JavaScript.ORDER_LOGICAL_AND;
+        order = Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_AND;
     } else if (selectedOperator === 'OR') {
         operator = '||';
-        order = Blockly.JavaScript.ORDER_LOGICAL_OR;
+        order = Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_OR;
     }
 
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || 'false';
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || 'false';
+    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'A', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || 'false';
+    const argument1 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'B', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || 'false';
 
     const code = `${argument0} ${operator} ${argument1}`;
     return [code, order];

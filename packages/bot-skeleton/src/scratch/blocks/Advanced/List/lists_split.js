@@ -75,9 +75,9 @@ Blockly.Blocks.lists_split = {
     },
 };
 
-Blockly.JavaScript.lists_split = block => {
-    const input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_MEMBER);
-    const delimiter = Blockly.JavaScript.valueToCode(block, 'DELIM', Blockly.JavaScript.ORDER_NONE) || "''";
+Blockly.JavaScript.javascriptGenerator.forBlock['lists_split'] = block => {
+    const input = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'INPUT', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER);
+    const delimiter = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'DELIM', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || "''";
     const mode = block.getFieldValue('MODE');
 
     let code;
@@ -88,5 +88,5 @@ Blockly.JavaScript.lists_split = block => {
         code = `${input || '[]'}.join(${delimiter})`;
     }
 
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

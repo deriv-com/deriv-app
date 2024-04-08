@@ -53,28 +53,28 @@ Blockly.Blocks.math_arithmetic = {
     },
 };
 
-Blockly.JavaScript.math_arithmetic = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['math_arithmetic'] = block => {
     const operators = {
-        ADD: ['+', Blockly.JavaScript.ORDER_ADDITION],
-        MINUS: ['-', Blockly.JavaScript.ORDER_SUBTRACTION],
-        MULTIPLY: ['*', Blockly.JavaScript.ORDER_MULTIPLICATION],
-        DIVIDE: ['/', Blockly.JavaScript.ORDER_DIVISION],
-        POWER: [null, Blockly.JavaScript.ORDER_COMMA], // Handle power separately.
+        ADD: ['+', Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION],
+        MINUS: ['-', Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION],
+        MULTIPLY: ['*', Blockly.JavaScript.javascriptGenerator.ORDER_MULTIPLICATION],
+        DIVIDE: ['/', Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION],
+        POWER: [null, Blockly.JavaScript.javascriptGenerator.ORDER_COMMA], // Handle power separately.
     };
 
     const tuple = operators[block.getFieldValue('OP')];
     const operator = tuple[0];
     const order = tuple[1];
 
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || '0';
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || '0';
+    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'A', order) || '0';
+    const argument1 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'B', order) || '0';
 
     let code;
 
     // Power in JavaScript requires a special case since it has no operator.
     if (!operator) {
         code = `Math.pow(${argument0}, ${argument1})`;
-        return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
     }
 
     code = `${argument0} ${operator} ${argument1}`;

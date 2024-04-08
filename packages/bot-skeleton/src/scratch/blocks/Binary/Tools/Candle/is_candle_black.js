@@ -38,9 +38,9 @@ Blockly.Blocks.is_candle_black = {
     },
 };
 
-Blockly.JavaScript.is_candle_black = block => {
-    const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC) || '{}';
+Blockly.JavaScript.javascriptGenerator.forBlock['is_candle_black'] = block => {
+    const ohlcObj = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '{}';
 
     const code = `Bot.isCandleBlack(${ohlcObj})`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

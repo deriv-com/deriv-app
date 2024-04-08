@@ -92,4 +92,5 @@ Blockly.Blocks.loader = {
     },
 };
 
-Blockly.JavaScript.loader = () => {};
+
+Blockly.JavaScript.javascriptGenerator.forBlock['loader'] = () => {};

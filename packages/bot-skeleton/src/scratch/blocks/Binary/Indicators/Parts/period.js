@@ -40,4 +40,4 @@ Blockly.Blocks.period = {
     },
 };
 
-Blockly.JavaScript.period = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['period'] = () => {};

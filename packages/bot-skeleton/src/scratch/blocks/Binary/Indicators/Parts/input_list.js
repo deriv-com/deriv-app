@@ -79,4 +79,4 @@ Blockly.Blocks.input_list = {
     },
 };
 
-Blockly.JavaScript.input_list = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['input_list'] = () => {};

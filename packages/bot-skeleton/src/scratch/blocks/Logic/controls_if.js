@@ -291,19 +291,19 @@ Blockly.Blocks.controls_if = {
     },
 };
 
-Blockly.JavaScript.controls_if = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['controls_if'] = block => {
     // If/elseif/else condition.
     let n = 0;
     let code = '';
 
     do {
-        const condition = Blockly.JavaScript.valueToCode(block, `IF${n}`, Blockly.JavaScript.ORDER_NONE) || 'false';
+        const condition = Blockly.JavaScript.javascriptGenerator.valueToCode(block, `IF${n}`, Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || 'false';
 
         // i.e. (else)? if { // code }
         const keyword = n > 0 ? 'else if' : 'if';
         code += `
         ${keyword} (${condition}) {
-            ${Blockly.JavaScript.statementToCode(block, `DO${n}`)}
+            ${Blockly.JavaScript.javascriptGenerator.statementToCode(block, `DO${n}`)}
         }`;
         n++;
     } while (block.getInput(`IF${n}`));
@@ -311,7 +311,7 @@ Blockly.JavaScript.controls_if = block => {
     if (block.getInput('ELSE')) {
         code += `
         else {
-            ${Blockly.JavaScript.statementToCode(block, 'ELSE')}
+            ${Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'ELSE')}
         }`;
     }
 

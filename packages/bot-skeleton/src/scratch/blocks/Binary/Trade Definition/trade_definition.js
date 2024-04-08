@@ -1,10 +1,209 @@
 import { localize } from '@deriv/translations';
-import { defineContract } from '../../images';
+// import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents } from '../../../utils';
 import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
+goog.provide('Blockly.Blocks.colour');
+
+goog.require('Blockly.Blocks');
+
+goog.require('Blockly.constants');
+
+/**
+ * Pick a random colour.
+ * @return {string} #RRGGBB for random colour.
+ */
+function randomColour() {
+    var num = Math.floor(Math.random() * Math.pow(2, 24));
+    return '#' + ('00000' + num.toString(16)).substr(-6);
+}
+
+Blockly.Blocks['colour_picker'] = {
+    /**
+     * Block for colour picker.
+     * @this Blockly.Block
+     */
+    init: function () {
+        this.jsonInit({
+            "message0": "%1",
+            "args0": [
+                {
+                    "type": "field_colour_slider",
+                    "name": "COLOUR",
+                    "colour": randomColour()
+                }
+            ],
+            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+            "output": "Colour"
+        });
+    }
+};
+goog.provide('Blockly.Blocks.math');
+
+goog.require('Blockly.Blocks');
+
+goog.require('Blockly.Colours');
+
+goog.require('Blockly.constants');
+
+Blockly.Blocks['math_number'] = {
+    /**
+     * Block for generic numeric value.
+     * @this Blockly.Block
+     */
+    init: function () {
+        this.jsonInit({
+            "message0": "%1",
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "NUM",
+                    "value": "0"
+                }
+            ],
+            "output": "Number",
+            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+            "colour": Blockly.Colours.textField,
+            "colourSecondary": Blockly.Colours.textField,
+            "colourTertiary": Blockly.Colours.textField,
+            "colourQuaternary": Blockly.Colours.textField
+        });
+    }
+};
+
+Blockly.Blocks['math_integer'] = {
+    /**
+     * Block for integer value (no decimal, + or -).
+     * @this Blockly.Block
+     */
+    init: function () {
+        this.jsonInit({
+            "message0": "%1",
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "NUM",
+                    "precision": 1
+                }
+            ],
+            "output": "Number",
+            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+            "colour": Blockly.Colours.textField,
+            "colourSecondary": Blockly.Colours.textField,
+            "colourTertiary": Blockly.Colours.textField,
+            "colourQuaternary": Blockly.Colours.textField
+        });
+    }
+};
+
+Blockly.Blocks['math_whole_number'] = {
+    /**
+     * Block for whole number value, no negatives or decimals.
+     * @this Blockly.Block
+     */
+    init: function () {
+        this.jsonInit({
+            "message0": "%1",
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "NUM",
+                    "min": 0,
+                    "precision": 1
+                }
+            ],
+            "output": "Number",
+            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+            "colour": Blockly.Colours.textField,
+            "colourSecondary": Blockly.Colours.textField,
+            "colourTertiary": Blockly.Colours.textField,
+            "colourQuaternary": Blockly.Colours.textField
+        });
+    }
+};
+
+Blockly.Blocks['math_positive_number'] = {
+    /**
+     * Block for positive number value, with decimal.
+     * @this Blockly.Block
+     */
+    init: function () {
+        this.jsonInit({
+            "message0": "%1",
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "NUM",
+                    "min": 0
+                }
+            ],
+            "output": "Number",
+            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+            "colour": Blockly.Colours.textField,
+            "colourSecondary": Blockly.Colours.textField,
+            "colourTertiary": Blockly.Colours.textField,
+            "colourQuaternary": Blockly.Colours.textField
+        });
+    }
+};
+
+Blockly.Blocks['math_angle'] = {
+    /**
+     * Block for angle picker.
+     * @this Blockly.Block
+     */
+    init: function () {
+        this.jsonInit({
+            "message0": "%1",
+            "args0": [
+                {
+                    "type": "field_angle",
+                    "name": "NUM",
+                    "value": 90
+                }
+            ],
+            "output": "Number",
+            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+            "colour": Blockly.Colours.textField,
+            "colourSecondary": Blockly.Colours.textField,
+            "colourTertiary": Blockly.Colours.textField,
+            "colourQuaternary": Blockly.Colours.textField
+        });
+    }
+};
+
+export const defineContract =
+    // 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAgMAAACdGdVrAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAlQTFRFAAAAMzMzMzMzaARWNQAAAAN0Uk5TAID/7PezGAAAACFJREFUeJxjYEAFUqtWLQFSCgwMHDipplXUF0ShoI5ABgDTPwulgF1l+wAAAABJRU5ErkJggg==';
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAAGXcA1uAAAAAXNSR0IArs4c6QAAAK9JREFUSA3tVUkOgCAMROP/f4PfU4iOaWQKLYmBg71AOksXTAyhGkeKKuECjTSDUwcFxVdNawNgQ10omJNKROqiJbMJsKJZgKgEouuESRYVFVxO35JTnxGDvk9aWQ5GCXfSPbRbsLHysr0lBeMESaKE3hkmbKk230SY9Ulky5rG/SVJU8udPrMU5s7w9bEugUlN886MWiJN86/o2dywFQ17g10b+dlJefH9X0t9X+YETM6gfmoeI+MAAAAASUVORK5CYII=';
+
+Blockly.Block.prototype.getBlocksInStatement = function (statementInputName) {
+    const blocksInStatement = [];
+    const firstBlock = this.getInputTargetBlock(statementInputName);
+
+    if (firstBlock) {
+        return firstBlock.getSiblings();
+    }
+    return blocksInStatement;
+};
+
+Blockly.Block.prototype.getSiblings = function () {
+    const siblings = [this];
+    ['getPreviousBlock', 'getNextBlock'].forEach(functionName => {
+        let block = this[functionName]();
+        while (block !== null) {
+            const parent = this.getParent();
+            if (parent && parent.id === block.id) {
+                break;
+            }
+
+            siblings.push(block);
+            block = block[functionName]();
+        }
+    });
+    return siblings;
+};
 Blockly.Blocks.trade_definition = {
     init() {
         this.jsonInit(this.definition());
@@ -25,7 +224,6 @@ Blockly.Blocks.trade_definition = {
                     src: defineContract,
                     width: 25,
                     height: 25,
-                    alt: 'T',
                 },
                 {
                     type: 'field_label',
@@ -45,7 +243,7 @@ Blockly.Blocks.trade_definition = {
             args2: [
                 {
                     type: 'field_image',
-                    src: '', // this is here to add extra padding
+                    src: ' ', // this is here to add extra padding
                     width: 4,
                     height: 25,
                 },
@@ -68,7 +266,7 @@ Blockly.Blocks.trade_definition = {
             args4: [
                 {
                     type: 'field_image',
-                    src: '', // this is here to add extra padding
+                    src: ' ', // this is here to add extra padding
                     width: 4,
                     height: 25,
                 },
@@ -134,7 +332,7 @@ Blockly.Blocks.trade_definition = {
     },
 };
 
-Blockly.JavaScript.trade_definition = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition'] = block => {
     const { client } = DBotStore.instance;
 
     if (!client || !client.is_logged_in) {
@@ -163,8 +361,8 @@ Blockly.JavaScript.trade_definition = block => {
             ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
             : [contract_type];
 
-    const initialization = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
-    const trade_options_statement = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+    const initialization = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'INITIALIZATION');
+    const trade_options_statement = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'SUBMARKET');
 
     const code = `  
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {

@@ -3,12 +3,15 @@
  * @param {number} cursorX Horizontal offset at which to position the icon.
  * @return {number} Horizontal offset for next item to draw.
  */
-Blockly.Icon.prototype.renderIcon = function (cursorX) {
+
+Blockly.Icon = new Blockly.icons.Icon;
+
+Blockly.Icon.renderIcon = function (cursorX) {
+    //console.log('16')
     if (this.collapseHidden && this.block_.isCollapsed()) {
         this.iconGroup_.setAttribute('display', 'none');
         return cursorX;
     }
-
     this.iconGroup_.setAttribute('display', 'block');
 
     let newCursorX = cursorX;
@@ -31,3 +34,4 @@ Blockly.Icon.prototype.renderIcon = function (cursorX) {
 
     return newCursorX;
 };
+console.log('16')

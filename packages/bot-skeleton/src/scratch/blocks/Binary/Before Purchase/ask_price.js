@@ -36,9 +36,9 @@ Blockly.Blocks.ask_price = {
     enforceLimitations: Blockly.Blocks.purchase.enforceLimitations,
 };
 
-Blockly.JavaScript.ask_price = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['ask_price'] = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.getAskPrice('${purchaseList}')`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -10,12 +10,17 @@ Blockly.BlockSvg.EXTRA_STATEMENT_ROW_Y = 10 * Blockly.BlockSvg.GRID_UNIT;
 // @deriv/bot: visual improvement: changed editable field padding from 8 to 16
 Blockly.BlockSvg.EDITABLE_FIELD_PADDING = 16;
 
+Blockly.Field.prototype.setText = function (e) {
+    null !== e && (e = String(e)) !== this.text_ && (this.text_ = e,
+        this.forceRerender())
+}
+
 /**
  * Change the colour of a block.
  */
 Blockly.BlockSvg.prototype.updateColour = function () {
     let strokeColour = this.getColourTertiary();
-    const renderShadowed = this.isShadow() && !Blockly.scratchBlocksUtils.isShadowArgumentReporter(this);
+    const renderShadowed = this.isShadow() //&& !Blockly.scratchBlocksUtils.isShadowArgumentReporter(this);
 
     if (renderShadowed && this.parentBlock_) {
         // Pull shadow block stroke colour from parent block's tertiary if possible.
@@ -32,6 +37,7 @@ Blockly.BlockSvg.prototype.updateColour = function () {
     }
 
     // Render block stroke
+    console.log(this.svgPath_)
     this.svgPath_.setAttribute('stroke', strokeColour);
     let fillColour = this.getColour();
 
@@ -180,3 +186,4 @@ Blockly.BlockSvg.prototype.computeOutputPadding_ = function (input_rows) {
 
     row.paddingEnd += Blockly.BlockSvg.SHAPE_IN_SHAPE_PADDING[shape][otherShape];
 };
+console.log('3')

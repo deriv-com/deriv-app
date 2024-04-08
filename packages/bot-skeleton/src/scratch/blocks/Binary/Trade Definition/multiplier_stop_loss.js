@@ -71,4 +71,5 @@ Blockly.Blocks.multiplier_stop_loss = {
     },
 };
 
-Blockly.JavaScript.multiplier_stop_loss = () => {};
+
+Blockly.JavaScript.javascriptGenerator.forBlock['multiplier_stop_loss'] = () => {};

@@ -94,7 +94,7 @@ Blockly.ContextMenu.wsDeleteOption = function (ws, blocks) {
     // Scratch-specific: don't count shadow blocks in delete count
     const delete_count = delete_list.filter(block => !block.isShadow()).length;
 
-    const event_group = Blockly.utils.genUid();
+    const event_group = Blockly.utils.idGenerator.genUid();
     const DELAY = 10;
 
     const deleteNext = () => {
@@ -273,3 +273,4 @@ Blockly.ContextMenu.blockEnableOption = function (block) {
     };
     return enableStack_option;
 };
+console.log('8')

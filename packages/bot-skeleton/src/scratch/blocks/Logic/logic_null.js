@@ -23,4 +23,4 @@ Blockly.Blocks.logic_null = {
         };
     },
 };
-Blockly.JavaScript.logic_null = () => ['null', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock['logic_null'] = () => ['null', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];

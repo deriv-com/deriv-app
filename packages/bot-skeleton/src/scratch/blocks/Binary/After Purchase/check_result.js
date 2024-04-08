@@ -49,9 +49,9 @@ Blockly.Blocks.contract_check_result = {
     },
 };
 
-Blockly.JavaScript.contract_check_result = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['contract_check_result'] = block => {
     const checkWith = block.getFieldValue('CHECK_RESULT');
 
     const code = `Bot.isResult('${checkWith}')`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -33,9 +33,9 @@ Blockly.Blocks.read_details = {
     restricted_parents: ['after_purchase'],
 };
 
-Blockly.JavaScript.read_details = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['read_details'] = block => {
     const detailIndex = block.getFieldValue('DETAIL_INDEX');
 
     const code = `Bot.readDetails(${detailIndex})`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

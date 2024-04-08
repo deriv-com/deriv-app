@@ -52,7 +52,7 @@ Blockly.Blocks.logic_compare = {
     },
 };
 
-Blockly.JavaScript.logic_compare = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['logic_compare'] = block => {
     const operatorMapping = {
         EQ: '==',
         NEQ: '!=',
@@ -64,11 +64,11 @@ Blockly.JavaScript.logic_compare = block => {
 
     const operator = operatorMapping[block.getFieldValue('OP') || 'EQ'];
     const order = ['==', '!='].includes(operator)
-        ? Blockly.JavaScript.ORDER_EQUALITY
-        : Blockly.JavaScript.ORDER_RELATIONAL;
+        ? Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY
+        : Blockly.JavaScript.javascriptGenerator.ORDER_RELATIONAL;
 
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || 'false';
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || 'false';
+    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'A', order) || 'false';
+    const argument1 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'B', order) || 'false';
 
     const code = `${argument0} ${operator} ${argument1}`;
     return [code, order];

@@ -297,14 +297,14 @@ Blockly.Blocks.procedures_defnoreturn = {
     callType: 'procedures_callnoreturn',
 };
 
-Blockly.JavaScript.procedures_defnoreturn = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['procedures_defnoreturn'] = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
         Blockly.Procedures.NAME_TYPE
     );
 
-    let branch = Blockly.JavaScript.statementToCode(block, 'STACK');
+    let branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'STACK');
 
     if (Blockly.JavaScript.STATEMENT_PREFIX) {
         const id = block.id.replace(/\$/g, '$$$$'); // Issue 251.
@@ -320,7 +320,7 @@ Blockly.JavaScript.procedures_defnoreturn = block => {
         branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g, `'${block.id}'`) + branch;
     }
 
-    let returnValue = Blockly.JavaScript.valueToCode(block, 'RETURN', Blockly.JavaScript.ORDER_NONE) || '';
+    let returnValue = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'RETURN', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || '';
     if (returnValue) {
         returnValue = `${Blockly.JavaScript.INDENT}return ${returnValue};\n`;
     }

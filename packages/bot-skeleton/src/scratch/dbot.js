@@ -5,13 +5,196 @@ import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { compareXml, observer as globalObserver } from '../utils';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
-
 import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
 
 import './blockly';
+import { localize } from '@deriv/translations';
+import PendingPromise from '../utils/pending-promise';
 
+Blockly.Workspace.prototype.wait_events = [];
+
+/**
+ * Clear the undo/redo stacks.
+ * deriv-bot: Sync undo/redo stack with our toolbar store.
+ */
+Blockly.Workspace.prototype.clearUndo = function () {
+    this.undoStack_.length = 0;
+    this.redoStack_.length = 0;
+
+    const { toolbar } = DBotStore.instance;
+
+    toolbar.setHasRedoStack();
+    toolbar.setHasUndoStack();
+
+    // Stop any events already in the firing queue from being undoable.
+    Blockly.Events.clearPendingUndo();
+};
+
+/**
+ * Fire a change event.
+ * deriv-bot: Sync undo/redo stack with our toolbar store.
+ * @param {!Blockly.Events.Abstract} event Event to fire.
+ */
+Blockly.Workspace.prototype.fireChangeListener = function (event) {
+    if (event.recordUndo) {
+        this.undoStack_.push(event);
+        this.redoStack_.length = 0;
+
+        if (this.undoStack_.length > this.MAX_UNDO) {
+            this.undoStack_.unshift();
+        }
+
+        const { toolbar } = DBotStore.instance;
+
+        toolbar.setHasRedoStack();
+        toolbar.setHasUndoStack();
+    }
+
+    // Copy listeners in case a listener attaches/detaches itself.
+    const current_listeners = this.listeners.slice();
+
+    current_listeners.forEach(listener => {
+        listener(event);
+    });
+    /**
+     * Gets a trade definition block instance and returns it.
+     * @returns {Blockly.Block|null} The trade definition or null.
+     */
+};
+
+Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
+    return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
+};
+
+Blockly.Workspace.prototype.waitForBlockEvent = function (block_id, opt_event_type = null) {
+    const event_promise = new PendingPromise();
+
+    if (!this.wait_events.some(event => event.blockId === block_id && event.type === opt_event_type)) {
+        this.wait_events.push({
+            blockId: block_id,
+            promise: event_promise,
+            type: opt_event_type,
+        });
+    }
+
+    return event_promise;
+};
+
+Blockly.Workspace.prototype.waitForBlockEvent = function (options) {
+    const { block_type, event_type, timeout } = options;
+    const promise = new PendingPromise();
+
+    this.wait_events.push({ block_type, event_type, promise });
+
+    if (timeout) {
+        setTimeout(() => {
+            if (promise.isPending) {
+                promise.reject();
+            }
+        }, timeout);
+    }
+
+    return promise;
+};
+
+Blockly.Workspace.prototype.dispatchBlockEventEffects = function (event) {
+    this.wait_events.forEach((wait_event, idx) => {
+        if (!event.blockId) {
+            return;
+        }
+
+        const block = this.getBlockById(event.blockId);
+
+        if (block) {
+            const is_same_block_type = wait_event.block_type === block.type;
+            const is_same_event_type = wait_event.event_type === null || wait_event.event_type === event.type;
+
+            if (is_same_block_type && is_same_event_type) {
+                setTimeout(() => {
+                    wait_event.promise.resolve();
+                    this.wait_events.splice(idx, 1);
+                }, 500);
+            }
+        }
+    });
+};
+
+Blockly.Workspace.prototype.getAllFields = function (is_ordered) {
+    return this.getAllBlocks(is_ordered).reduce((fields, block) => {
+        block.inputList.forEach(input => fields.push(...input.fieldRow));
+        return fields;
+    }, []);
+};
+
+
+Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
+    const hasHighlightedDescendant = child_blocks =>
+        child_blocks.some(child_block => {
+            const is_self_highlighted = child_block.is_error_highlighted;
+            const is_descendant_highlighted = hasHighlightedDescendant(child_block.getChildren());
+
+            return is_self_highlighted || is_descendant_highlighted;
+        });
+
+    return hasHighlightedDescendant(this.getChildren());
+};
+Blockly.Block.prototype.isIndependentBlock = function () {
+    return config.INDEPEDENT_BLOCKS.includes(this.type);
+};
+Blockly.Block.prototype.getTopParent = function () {
+    let parent = this.getParent();
+    while (parent !== null) {
+        const nextParent = parent.getParent();
+        if (!nextParent) {
+            return parent;
+        }
+        parent = nextParent;
+    }
+    return null;
+};
+
+Blockly.utils.removeClass = function (element, className) {
+    const classNames = className.split(' ');
+    if (classNames.every((name) => !element.classList.contains(name))) {
+        return false;
+    }
+    element.classList.remove(...classNames);
+    return true;
+}
+
+
+Blockly.BlockSvg.prototype.setErrorHighlighted = function (
+    should_be_error_highlighted,
+    error_message = localize(
+        'The block(s) highlighted in red are missing input values. Please update them and click "Run bot".'
+    )
+) {
+    if (this.is_error_highlighted === should_be_error_highlighted) {
+        return;
+    }
+
+    const highlight_class = 'block--error-highlighted';
+
+    if (should_be_error_highlighted) {
+        const addClass = (element, className) => {
+            const classNames = className.split(' ');
+            if (classNames.every((name) => element.classList.contains(name))) {
+                return false;
+            }
+            element.classList.add(...classNames);
+            return true;
+        }
+        // Below function does its own checks to check if class already exists.
+        addClass(this.svgGroup_, highlight_class);
+    } else {
+        Blockly.utils.removeClass(this.svgGroup_, highlight_class);
+    }
+
+    this.is_error_highlighted = should_be_error_highlighted;
+    this.error_message = error_message;
+};
 class DBot {
     constructor() {
         this.interpreter = null;
@@ -112,11 +295,14 @@ class DBot {
                 if (!el_scratch_div) {
                     return;
                 }
+
                 this.workspace = Blockly.inject(el_scratch_div, {
                     media: `${__webpack_public_path__}media/`,
+                    renderer: 'zelos',
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },
                     scrollbars: true,
+                    theme: Blockly.Themes.haba,
                 });
 
                 this.workspace.cached_xml = { main: main_xml };
@@ -141,23 +327,24 @@ class DBot {
                 this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
                 // Push main.xml to workspace and reset the undo stack.
-                this.workspace.current_strategy_id = Blockly.utils.genUid();
+                this.workspace.current_strategy_id = Blockly.utils.idGenerator.genUid();
+
                 Blockly.derivWorkspace.strategy_to_load = main_xml;
-                Blockly.mainWorkspace.strategy_to_load = main_xml;
+                Blockly.getMainWorkspace().strategy_to_load = main_xml;
                 let file_name = config.default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
                     Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
-                    Blockly.mainWorkspace.strategy_to_load = latest_file.xml;
+                    Blockly.getMainWorkspace().strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;
                     Blockly.derivWorkspace.current_strategy_id = latest_file.id;
-                    Blockly.mainWorkspace.current_strategy_id = latest_file.id;
+                    Blockly.getMainWorkspace().current_strategy_id = latest_file.id;
                 }
 
                 const event_group = `dbot-load${Date.now()}`;
                 Blockly.Events.setGroup(event_group);
                 Blockly.Xml.domToWorkspace(
-                    Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                    Blockly.utils.xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
                     this.workspace
                 );
                 const { save_modal } = DBotStore.instance;
@@ -235,7 +422,10 @@ class DBot {
 
         try {
             api_base.is_stopping = false;
+            console.log('hhh')
+            console.log(this.generateCode())
             const code = this.generateCode();
+
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
 
@@ -278,7 +468,7 @@ class DBot {
                     }
                     if(typeof(list[i]) == 'number'){
                         final_list.push(list[i]);   
-                                  	
+                                  
                     }
                 }
                 return final_list;
@@ -304,7 +494,7 @@ class DBot {
                 }
             }
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-            ${Blockly.JavaScript.workspaceToCode(this.workspace)}
+            ${Blockly.JavaScript.javascriptGenerator.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);
             while (true) {
                 BinaryBotPrivateTickAnalysis();
@@ -325,7 +515,9 @@ class DBot {
                 if (!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
                     break;
                 }
-            }`;
+            }
+            
+            `;
     }
 
     /**
@@ -375,10 +567,11 @@ class DBot {
      * Disable blocks outside of any main or independent blocks.
      */
     disableStrayBlocks() {
+        const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
         const top_blocks = this.workspace.getTopBlocks();
 
         top_blocks.forEach(block => {
-            if (!block.isMainBlock() && !block.isIndependentBlock()) {
+            if (!isMainBlock() && !block.isIndependentBlock()) {
                 this.disableBlocksRecursively(block);
             }
         });
@@ -386,11 +579,23 @@ class DBot {
         return true;
     }
 
+    // getDiv() {
+    //     return null;
+    // }
+    // setDisabled(isDisabled) {
+    //     this.isDisabled_ = isDisabled;
+    //     this.getDiv().setAttribute('disabled', `${isDisabled}`);
+    //     isDisabled
+    //         ? this.getDiv().setAttribute('disabled', 'true')
+    //         : this.getDiv().removeAttribute('disabled');
+    // }
+
     /**
      * Disable blocks and their optional children.
      */
     disableBlocksRecursively(block) {
-        block.setDisabled(true);
+
+        //this.setDisabled(true);
         if (block.nextConnection?.targetConnection) {
             this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
         }
@@ -462,7 +667,7 @@ class DBot {
             return;
         }
 
-        Blockly.JavaScript.init(this.workspace);
+        Blockly.JavaScript.javascriptGenerator.init(this.workspace);
 
         if (force_check) {
             Blockly.hideChaff(false);
@@ -554,8 +759,8 @@ class DBot {
                             type: block.type,
                         });
                     } else if (input.connection) {
-                        const order = Blockly.JavaScript.ORDER_ATOMIC;
-                        const value = Blockly.JavaScript.valueToCode(block, input_name, order);
+                        const order = Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC;
+                        const value = Blockly.JavaScript.javascriptGenerator.valueToCode(block, input_name, order);
                         const inputValidatorFn = required_inputs_object[input_name];
 
                         // If a custom validator was supplied, use this to determine whether
@@ -577,7 +782,7 @@ class DBot {
                     block.removeSelect();
                 }
 
-                block.setErrorHighlighted(should_highlight, block.error_message || undefined);
+                // block.setErrorHighlighted(should_highlight, block.error_message || undefined);
 
                 // Automatically expand blocks that have been highlighted.
                 if (force_check && (block.is_error_highlighted || block.hasErrorHighlightedDescendant())) {

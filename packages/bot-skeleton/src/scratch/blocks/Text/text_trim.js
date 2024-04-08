@@ -45,7 +45,7 @@ Blockly.Blocks.text_trim = {
     },
 };
 
-Blockly.JavaScript.text_trim = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock['text_trim'] = block => {
     const operators = {
         LEFT: ".replace(/^[\\s\\xa0]+/, '')",
         RIGHT: ".replace(/[\\s\\xa0]+$/, '')",
@@ -53,8 +53,8 @@ Blockly.JavaScript.text_trim = block => {
     };
 
     const operator = operators[block.getFieldValue('MODE')];
-    const text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_MEMBER) || "''";
+    const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER) || "''";
 
     const code = `${text}${operator}`;
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

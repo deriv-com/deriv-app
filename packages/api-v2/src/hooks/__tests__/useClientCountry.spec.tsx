@@ -1,15 +1,15 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useQuery from '../../useQuery';
+import useWebsiteStatus from '../useWebsiteStatus';
 import useClientCountry from '../useClientCountry';
 
-jest.mock('../../useQuery');
+jest.mock('../useWebsiteStatus');
 
-const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery<'website_status'>>;
+const mockWebsiteStatusData = useWebsiteStatus as jest.MockedFunction<typeof useWebsiteStatus>;
 
 describe('useClientCountry', () => {
     it('should return an undefined', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseQuery.mockReturnValue({
+        mockWebsiteStatusData.mockReturnValue({
             data: {
                 website_status: undefined,
             },
@@ -21,7 +21,7 @@ describe('useClientCountry', () => {
 
     it('should return Indonesia country code', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseQuery.mockReturnValue({
+        mockWebsiteStatusData.mockReturnValue({
             data: {
                 website_status: {
                     api_call_limits: {

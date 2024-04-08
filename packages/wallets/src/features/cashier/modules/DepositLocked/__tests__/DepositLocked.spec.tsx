@@ -4,8 +4,8 @@ import {
     useActiveWalletAccount,
     useAuthentication,
     useCashierValidation,
-    useQuery,
     useSettings,
+    useWebsiteStatus,
 } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import DepositLocked from '../DepositLocked';
@@ -13,10 +13,10 @@ import getDepositLockedDesc from '../DepositLockedContent';
 
 jest.mock('@deriv/api-v2', () => ({
     useAccountStatus: jest.fn(),
+    useWebsiteStatus: jest.fn(),
     useActiveWalletAccount: jest.fn(),
     useAuthentication: jest.fn(),
     useCashierValidation: jest.fn(),
-    useQuery: jest.fn(),
     useSettings: jest.fn(),
 }));
 
@@ -49,7 +49,7 @@ describe('DepositLocked', () => {
         };
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
-        (useQuery as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useWebsiteStatus as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockLockedStatusData });
@@ -70,7 +70,7 @@ describe('DepositLocked', () => {
     it('should render children when not in a locked state', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
-        (useQuery as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useWebsiteStatus as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData });

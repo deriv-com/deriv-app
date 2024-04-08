@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
-import { ContentFlag } from '@deriv/shared';
+import { ContentFlag, getPlatformSettingsAppstore } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -12,8 +12,16 @@ import { getHasDivider } from 'Constants/utils';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
-    const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo, content_flag } =
-        traders_hub;
+    const {
+        available_platforms,
+        is_eu_user,
+        is_real,
+        no_MF_account,
+        no_CR_account,
+        is_demo,
+        content_flag,
+        setIsDerivGoModalVisible,
+    } = traders_hub;
     const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
 
     const { setShouldShowCooldownModal, openRealAccountSignup, is_mobile } = ui;
@@ -99,20 +107,30 @@ const OptionsAndMultipliersListing = observer(() => {
             )}
 
             {is_landing_company_loaded ? (
-                available_platforms.map((available_platform: BrandConfig, index: number) => (
-                    <TradingAppCard
-                        key={`trading_app_card_${available_platform.name}`}
-                        {...available_platform}
-                        clickable_icon
-                        action_type={
-                            is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
-                                ? 'trade'
-                                : 'none'
-                        }
-                        is_deriv_platform
-                        has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
-                    />
-                ))
+                available_platforms.map((available_platform: BrandConfig, index: number) => {
+                    const is_deriv_go_platform = available_platform?.name === getPlatformSettingsAppstore('go').name;
+
+                    return (
+                        <TradingAppCard
+                            key={`trading_app_card_${available_platform.name}`}
+                            {...available_platform}
+                            clickable_icon
+                            action_type={
+                                is_demo ||
+                                (!no_CR_account && !is_eu_user) ||
+                                (has_maltainvest_account && is_eu_user) ||
+                                is_deriv_go_platform
+                                    ? 'trade'
+                                    : 'none'
+                            }
+                            is_deriv_platform
+                            has_divider={
+                                (!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)
+                            }
+                            onAction={is_deriv_go_platform ? () => setIsDerivGoModalVisible(true) : undefined}
+                        />
+                    );
+                })
             ) : (
                 <PlatformLoader />
             )}

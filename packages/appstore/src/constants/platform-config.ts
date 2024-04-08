@@ -58,9 +58,8 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('go').name,
         app_desc: localize('Trade on the go with our mobile app.'),
-        link_to: getStaticUrl('/deriv-go'),
-        is_external: true,
-        new_tab: true,
+        is_external: false,
+        new_tab: false,
     },
 ];
 

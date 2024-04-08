@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetTradingPasswordModal } from '@deriv/account';
+import { makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
@@ -24,6 +26,11 @@ import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletModal from './wallet-modal';
 import WalletsUpgradeModal from './wallets-upgrade-modal';
 
+const DerivGoModal = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "modal_deriv-go-modal" */ './deriv-go-modal')),
+    () => <Loading />
+)();
+
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
 };
@@ -46,8 +53,13 @@ const ModalManager = () => {
         getRealSwapfreeAccountsExistingData,
     } = modules.cfd;
     const { enableApp, disableApp, is_reset_trading_password_modal_visible, setResetTradingPasswordModalOpen } = ui;
-    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal, is_real_wallets_upgrade_on } =
-        traders_hub;
+    const {
+        is_demo,
+        is_account_transfer_modal_open,
+        toggleAccountTransferModal,
+        is_real_wallets_upgrade_on,
+        is_deriv_go_modal_visible,
+    } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -156,6 +168,7 @@ const ModalManager = () => {
             <WalletsMigrationFailed />
             <WalletsUpgradeModal />
             {is_wallet_enabled && <WalletModal />}
+            {is_deriv_go_modal_visible && <DerivGoModal />}
         </React.Fragment>
     );
 };

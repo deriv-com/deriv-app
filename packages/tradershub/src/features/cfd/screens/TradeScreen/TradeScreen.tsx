@@ -3,7 +3,7 @@ import ImportantIcon from '@/assets/svgs/ic-important.svg';
 import { useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
-import { MarketType, MarketTypeDetails, PlatformDetails, DesktopLinks } from '@cfd/constants';
+import { DesktopLinks, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { TradeDetailsItem } from './TradeDetailsItem';
@@ -136,7 +136,9 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                         <TradeLink
                             app={DesktopLinks.MT5_WEB}
                             platform={mt5Platform}
-                            webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
+                            webtraderUrl={`${
+                                (details as THooks.MT5AccountsList)?.white_label_links.webtrader_url
+                            }?login=${details.display_login}&server=${details.server_info.environment}`}
                         />
                         {isDesktop && (
                             <Fragment>

@@ -5,10 +5,10 @@ import { Button, Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../../types';
 import {
     AppToContentMapper,
+    DesktopLinks,
     PlatformDetails,
     PlatformToLabelIconMapper,
     PlatformUrls,
-    DesktopLinks,
 } from '../../../constants';
 
 type TTradeLinkProps = {

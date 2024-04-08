@@ -22,6 +22,10 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(),
 }));
 
+global.window.LC_API = {
+    open_chat_window: jest.fn(),
+};
+
 describe('<CFDPersonalDetailsForm />', () => {
     beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
     afterAll(() => ReactDOM.createPortal.mockClear());
@@ -346,5 +350,14 @@ describe('<CFDPersonalDetailsForm />', () => {
 
         expect(screen.queryByRole('textbox', { name: /tax identification number/i })).not.toBeInTheDocument();
         expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+    });
+
+    it('Should show inline message live chat and open chat window when link is clicked', async () => {
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
+
+        const linkElement = screen.getByText(/live chat/i);
+        expect(linkElement).toBeInTheDocument();
+        fireEvent.click(linkElement);
+        expect(window.LC_API.open_chat_window).toHaveBeenCalled();
     });
 });

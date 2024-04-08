@@ -15,8 +15,8 @@
     "dependencies": {
         "@deriv-com/utils": "^0.0.11",
         "@deriv/api-v2": "^1.0.0",
-        "@deriv/quill-icons": "^1.21.0",
         "@deriv/integration": "^1.0.0",
+        "@deriv/quill-icons": "^1.21.0",
         "@deriv/react-joyride": "^2.6.2",
         "@deriv/utils": "^1.0.0",
         "@tanstack/react-table": "^8.10.3",
@@ -49,6 +49,7 @@
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
         "babel-plugin-transform-barrels": "^1.0.12",
+        "compression-webpack-plugin": "^11.1.0",
         "eslint-plugin-local-rules": "2.0.0",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",

@@ -125,6 +125,8 @@ import type {
     P2PAdvertUpdateResponse,
     P2PChatCreateRequest,
     P2PChatCreateResponse,
+    P2PCountryListRequest,
+    P2PCountryListResponse,
     P2POrderCancelRequest,
     P2POrderCancelResponse,
     P2POrderConfirmRequest,
@@ -2413,6 +2415,10 @@ type TSocketEndpoints = {
         request: P2PChatCreateRequest;
         response: P2PChatCreateResponse;
     };
+    p2p_country_list: {
+        request: P2PCountryListRequest;
+        response: P2PCountryListResponse;
+    };
     p2p_order_cancel: {
         request: P2POrderCancelRequest;
         response: P2POrderCancelResponse;
@@ -2645,6 +2651,10 @@ export type TSocketError<T extends TSocketEndpointNames> = {
      * [Optional] Used to map request to response.
      */
     req_id?: number;
+    /**
+     * Error message from useSubscription response
+     */
+    message?: string;
 };
 
 export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<

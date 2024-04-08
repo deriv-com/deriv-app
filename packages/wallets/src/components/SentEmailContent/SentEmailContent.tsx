@@ -2,9 +2,9 @@ import React, { FC, Fragment, useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useCountdown } from 'usehooks-ts';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
+import { DerivLightIcEmailSentIcon } from '@deriv/quill-icons';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
-import ChangePassword from '../../public/images/change-password-email.svg';
 import { TPlatforms } from '../../types';
 import { platformPasswordResetRedirectLink } from '../../utils/cfd';
 import { WalletButton } from '../Base';
@@ -48,7 +48,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
             <WalletsActionScreen
                 description={description ?? `Please click on the link in the email to change your ${title} password.`}
                 descriptionSize={descriptionSize}
-                icon={<ChangePassword />}
+                icon={<DerivLightIcEmailSentIcon width={133} />}
                 renderButtons={() =>
                     shouldShowResendEmailReasons && isInvestorPassword ? null : (
                         <WalletButton

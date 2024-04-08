@@ -17,6 +17,8 @@ import {
     Text,
     ThemedScrollbars,
     Checkbox,
+    InlineMessage,
+    StaticUrl,
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -349,6 +351,24 @@ const CFDPersonalDetailsForm = ({
                                             }
                                         />
                                     </Text>
+                                    <div className='cfd-personal-details-modal__inline-message'>
+                                        <InlineMessage
+                                            type='information'
+                                            size='sm'
+                                            message={
+                                                <Localize
+                                                    i18n_default_text='Need help with tax info? Let us know via <0>live chat</0>.'
+                                                    components={[
+                                                        <span
+                                                            key={0}
+                                                            className='link link--orange'
+                                                            onClick={() => window.LC_API.open_chat_window()}
+                                                        />,
+                                                    ]}
+                                                />
+                                            }
+                                        />
+                                    </div>
                                     <ThemedScrollbars height='512px' is_bypassed={isMobile()}>
                                         <div className='details-form__elements'>
                                             <fieldset className='account-form__fieldset'>

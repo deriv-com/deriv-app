@@ -168,7 +168,7 @@ describe('<AppContent />', () => {
 
     it('should render the CreateEditAd component', async () => {
         const history = createMemoryHistory();
-        history.push('/cashier/p2p-v2/my-ads/create');
+        history.push('/cashier/p2p-v2/my-ads/adForm');
 
         render(
             <Router history={history}>

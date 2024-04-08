@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import initData from '../remote_config.json';
 
 const remoteConfigQuery = async function () {
-    const isProductionOrStaging = process.env.NODE_ENV !== 'production';
+    const isProductionOrStaging = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
     const REMOTE_CONFIG_URL = process.env.REMOTE_CONFIG_URL || '';
     if (isProductionOrStaging && REMOTE_CONFIG_URL === '') {
         throw new Error('Remote Config URL is not set!');

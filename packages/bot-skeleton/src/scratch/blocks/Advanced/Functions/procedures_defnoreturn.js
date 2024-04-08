@@ -27,7 +27,7 @@ Blockly.Blocks.procedures_defnoreturn = {
             16,
             16,
             'v',
-            () => this.setCollapsed(true),
+            () => this.toggleCollapseWithDelay(true),
             false,
             true
         );
@@ -95,7 +95,6 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     onAddClick() {
-        console.log('is_adding', this.is_adding, 'timeout_id', this.timeout_id, 'this.workspace.options.readOnly', this.workspace.options.readOnly, 'this.isInFlyout', this.isInFlyout);
         if (this.is_adding || this.workspace.options.readOnly || this.isInFlyout) {
             return;
         }

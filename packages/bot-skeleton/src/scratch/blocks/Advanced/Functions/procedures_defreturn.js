@@ -25,7 +25,7 @@ Blockly.Blocks.procedures_defreturn = {
             16,
             16,
             'v',
-            () => this.setCollapsed(true),
+            () => this.toggleCollapseWithDelay(true),
             false,
             true
         );

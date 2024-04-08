@@ -1,11 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, P2PSettingsProvider, StoreProvider } from '@deriv/stores';
 import { adverts } from 'Pages/my-ads/__mocks__/mock-data';
 import { useStores } from 'Stores/index';
 import CopyAdvertModal from '../copy-advert-modal';
 
-const wrapper = ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>;
+const wrapper = ({ children }) => (
+    <StoreProvider store={mockStore({})}>
+        <P2PSettingsProvider>{children}</P2PSettingsProvider>
+    </StoreProvider>
+);
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_ads_store: {

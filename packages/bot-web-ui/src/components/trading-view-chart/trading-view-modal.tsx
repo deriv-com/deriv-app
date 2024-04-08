@@ -16,10 +16,10 @@ const TradingViewModal = observer(() => {
                     boundary='.main'
                     header={localize('TradingView Chart')}
                     onClose={setTradingViewModalVisibility}
-                    modalWidth={540}
-                    modalHeight={700}
-                    minWidth={540}
-                    minHeight={590}
+                    modalWidth={526}
+                    modalHeight={595}
+                    minWidth={526}
+                    minHeight={524}
                     enableResizing
                 >
                     <div style={{ height: 'calc(100% - 6rem)', padding: '0.5rem' }}>

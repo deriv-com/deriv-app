@@ -17,7 +17,7 @@ const ChartModalDesktop = observer(() => {
                     header={localize('Chart')}
                     onClose={setChartModalVisibility}
                     modalWidth={526}
-                    modalHeight={524}
+                    modalHeight={595}
                     minWidth={526}
                     minHeight={524}
                     enableResizing

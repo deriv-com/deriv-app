@@ -49,7 +49,6 @@
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
         "babel-plugin-transform-barrels": "^1.0.12",
-        "compression-webpack-plugin": "^11.1.0",
         "eslint-plugin-local-rules": "2.0.0",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",

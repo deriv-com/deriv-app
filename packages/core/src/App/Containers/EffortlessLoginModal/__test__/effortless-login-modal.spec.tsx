@@ -3,6 +3,7 @@ import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Analytics } from '@deriv-com/analytics';
 import { routes } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import EffortlessLoginModal from '../effortless-login-modal';
@@ -11,6 +12,7 @@ describe('EffortlessLoginModal', () => {
     let modal_root_el: HTMLDivElement, mock_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
+        jest.clearAllMocks();
         mock_store = mockStore({
             client: {
                 setShouldShowEffortlessLoginModal: jest.fn(),
@@ -102,6 +104,7 @@ describe('EffortlessLoginModal', () => {
         expect(back_button).toBeInTheDocument();
         userEvent.click(back_button);
         mainScreenCheck();
+        expect(Analytics.trackEvent).toHaveBeenCalled();
     });
 
     it('should leave EffortlessLoginModal', () => {
@@ -114,6 +117,7 @@ describe('EffortlessLoginModal', () => {
         expect(history_object.location.pathname).toBe(routes.traders_hub);
         expect(mock_store.client.setShouldShowEffortlessLoginModal).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalled();
+        expect(Analytics.trackEvent).toHaveBeenCalled();
     });
 
     it('should leave EffortlessLoginModal from "learn more" screen', () => {
@@ -130,6 +134,7 @@ describe('EffortlessLoginModal', () => {
         expect(history_object.location.pathname).toBe(routes.passkeys);
         expect(mock_store.client.setShouldShowEffortlessLoginModal).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalled();
+        expect(Analytics.trackEvent).toHaveBeenCalled();
     });
 
     it('should not render EffortlessLoginModal if there is no portal', () => {
@@ -145,5 +150,6 @@ describe('EffortlessLoginModal', () => {
         descriptions.forEach(description => {
             expect(screen.queryByText(description)).not.toBeInTheDocument();
         });
+        expect(Analytics.trackEvent).not.toHaveBeenCalled();
     });
 });

@@ -110,14 +110,6 @@ export const getMarketNamesMap = () => ({
 });
 
 export const getUnsupportedContracts = () => ({
-    TICKHIGH: {
-        name: 'High Tick',
-        position: 'top',
-    },
-    TICKLOW: {
-        name: 'Low Tick',
-        position: 'bottom',
-    },
     CALLSPREAD: {
         name: 'Spread Up',
         position: 'top',
@@ -191,12 +183,12 @@ export const getSupportedContracts = is_high_low => ({
         position: 'bottom',
     },
     TURBOSLONG: {
-        button_name: 'Long',
+        button_name: 'Up',
         name: 'Turbos',
         position: 'top',
     },
     TURBOSSHORT: {
-        button_name: 'Short',
+        button_name: 'Down',
         name: 'Turbos',
         position: 'bottom',
     },
@@ -251,6 +243,14 @@ export const getSupportedContracts = is_high_low => ({
     LBHIGHLOW: {
         name: 'High-Low',
         position: 'top',
+    },
+    TICKHIGH: {
+        name: 'High Tick',
+        position: 'top',
+    },
+    TICKLOW: {
+        name: 'Low Tick',
+        position: 'bottom',
     },
 });
 

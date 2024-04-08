@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Control, Controller, FieldValues, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { TAdvertType, THooks } from 'types';
-import { BASE_URL, BUY_SELL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
+import { BUY_SELL, ORDERS_URL, RATE_TYPE, VALID_SYMBOLS_PATTERN } from '@/constants';
 import {
     getPaymentMethodObjects,
     getTextFieldError,
@@ -12,7 +12,8 @@ import {
     setDecimalPlaces,
 } from '@/utils';
 import { p2p } from '@deriv/api-v2';
-import { Divider, InlineMessage, Text, TextArea, useDevice } from '@deriv-com/ui';
+import { InlineMessage, Text, TextArea, useDevice } from '@deriv-com/ui';
+import { LightDivider } from '../LightDivider';
 import { BuySellAmount } from './BuySellAmount';
 import { BuySellData } from './BuySellData';
 import BuySellFormDisplayWrapper from './BuySellFormDisplayWrapper';
@@ -148,7 +149,7 @@ const BuySellForm = ({
 
     useEffect(() => {
         if (isSuccess && orderCreatedInfo) {
-            history.push(`${BASE_URL}/orders?order=${orderCreatedInfo.id}`);
+            history.push(`${ORDERS_URL}/${orderCreatedInfo.id}`);
             onRequestClose();
         }
     }, [isSuccess, orderCreatedInfo, history, onRequestClose]);
@@ -184,7 +185,7 @@ const BuySellForm = ({
                     paymentMethods={paymentMethods}
                     rate={displayEffectiveRate}
                 />
-                <Divider />
+                <LightDivider />
                 {isBuy && payment_method_names?.length > 0 && (
                     <BuySellPaymentSection
                         availablePaymentMethods={availablePaymentMethods}
@@ -240,7 +241,7 @@ const BuySellForm = ({
                 )}
                 {isBuy && (
                     <>
-                        <Divider />
+                        <LightDivider />
                         <Controller
                             control={control}
                             name='contact_details'

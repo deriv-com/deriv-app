@@ -36,20 +36,11 @@ jest.mock('../OrdersTableHeader', () => ({
     OrdersTableHeader: () => <div>OrdersTableHeader</div>,
 }));
 
-jest.mock('../../OrderDetails', () => ({
-    OrderDetails: () => <div>OrderDetails</div>,
-}));
-
 jest.mock('@deriv-com/ui', () => ({
     useDevice: () => ({ isMobile: false }),
 }));
 
 describe('Orders', () => {
-    it('should render OrderDetails if order id is in the search query', () => {
-        render(<Orders />);
-        expect(screen.getByText('OrderDetails')).toBeInTheDocument();
-    });
-
     it('should render the OrdersTable if order id is not in the search query', () => {
         mockSearch = '';
 

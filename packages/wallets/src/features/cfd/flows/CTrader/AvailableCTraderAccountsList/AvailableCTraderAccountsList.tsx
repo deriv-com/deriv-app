@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletError } from '../../../../../components';
-import { WalletButton, WalletText } from '../../../../../components/Base';
+import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
-import { getStaticUrl } from '../../../../../helpers/urls';
-import CTrader from '../../../../../public/images/ctrader.svg';
 import { PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
 import './AvailableCTraderAccountsList.scss';
@@ -32,6 +31,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         if (status === 'success') {
             show(
                 <CTraderSuccessModal
+                    displayBalance={activeWallet?.display_balance || ''}
                     isDemo={accountType === 'demo'}
                     walletCurrencyType={activeWallet?.wallet_currency_type || 'USD'}
                 />
@@ -50,45 +50,22 @@ const AvailableCTraderAccountsList: React.FC = () => {
     }, [accountType, activeWallet?.wallet_currency_type, error?.error?.message, status]);
 
     return (
-        <div className='wallets-available-ctrader'>
-            <TradingAccountCard
-                leading={
-                    <div
-                        className='wallets-available-ctrader__icon'
-                        onClick={() => {
-                            window.open(getStaticUrl('/deriv-ctrader'));
-                        }}
-                        // Fix sonarcloud issue
-                        onKeyDown={event => {
-                            if (event.key === 'Enter') {
-                                window.open(getStaticUrl('/deriv-ctrader'));
-                            }
-                        }}
-                    >
-                        <CTrader />
-                    </div>
-                }
-                trailing={
-                    <WalletButton
-                        color='primary-light'
-                        onClick={() => {
-                            onSubmit();
-                        }}
-                    >
-                        {t('Get')}
-                    </WalletButton>
-                }
-            >
-                <div className='wallets-available-ctrader__details'>
-                    <WalletText size='sm' weight='bold'>
-                        {PlatformDetails.ctrader.title}
-                    </WalletText>
-                    <WalletText size='xs'>
-                        {t('This account offers CFDs on a feature-rich trading platform.')}
-                    </WalletText>
+        <TradingAccountCard
+            leading={<div className='wallets-available-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
+            onClick={() => {
+                onSubmit();
+            }}
+            trailing={
+                <div className='wallets-available-ctrader__icon'>
+                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
                 </div>
-            </TradingAccountCard>
-        </div>
+            }
+        >
+            <div className='wallets-available-ctrader__details'>
+                <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
+                <WalletText size='xs'>{t('This account offers CFDs on a feature-rich trading platform.')}</WalletText>
+            </div>
+        </TradingAccountCard>
     );
 };
 

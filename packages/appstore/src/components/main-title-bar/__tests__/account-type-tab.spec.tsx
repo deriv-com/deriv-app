@@ -1,5 +1,5 @@
 import React from 'react';
-import AccountTypeDropdown from '../account-type-active-tab';
+import AccountTypeTab from '../account-type-active-tab';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
@@ -11,7 +11,7 @@ describe('AccountTypeDropdown', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
-        const { container } = render(<AccountTypeDropdown />, { wrapper });
+        const { container } = render(<AccountTypeTab />, { wrapper });
         expect(container).toBeInTheDocument();
     });
 
@@ -21,7 +21,7 @@ describe('AccountTypeDropdown', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
-        render(<AccountTypeDropdown />, { wrapper });
+        render(<AccountTypeTab />, { wrapper });
         expect(screen.getByText('Real')).toBeInTheDocument();
     });
 
@@ -35,7 +35,7 @@ describe('AccountTypeDropdown', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
-        render(<AccountTypeDropdown />, { wrapper });
+        render(<AccountTypeTab />, { wrapper });
         expect(screen.getByText('Demo')).toBeInTheDocument();
     });
 
@@ -45,7 +45,7 @@ describe('AccountTypeDropdown', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
-        render(<AccountTypeDropdown />, { wrapper });
+        render(<AccountTypeTab />, { wrapper });
         userEvent.click(screen.getByText('Real'));
         userEvent.click(screen.getByText('Demo'));
         expect(mock.traders_hub.selectAccountType).toBeCalledTimes(1);

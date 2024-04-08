@@ -133,7 +133,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.tradetype);
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
-        const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
+        const strategy_dom = window.Blockly.Xml.textToDom(strategy_xml.default);
         addDynamicBlockToDOM('PREDICTION', 'last_digit_prediction', trade_type_cat, strategy_dom);
 
         const modifyValueInputs = (key: string, value: number) => {
@@ -179,13 +179,13 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             }
         });
 
-        const { derivWorkspace: workspace } = Blockly;
+        const { derivWorkspace: workspace } = window.Blockly;
 
         if (action === 'RUN') {
             workspace
                 ?.waitForBlockEvent({
                     block_type: 'trade_definition',
-                    event_type: Blockly.Events.BLOCK_CREATE,
+                    event_type: window.Blockly.Events.BLOCK_CREATE,
                     timeout: 5000,
                 })
                 .then(() => {
@@ -196,7 +196,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         this.setFormVisibility(false);
 
         await load({
-            block_string: Blockly.Xml.domToText(strategy_dom),
+            block_string: window.Blockly.Xml.domToText(strategy_dom),
             file_name: selected_strategy.label,
             workspace,
             from: save_types.UNSAVED,

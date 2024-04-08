@@ -1,29 +1,80 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { UpdateContractResponse } from '@deriv/api-types';
 import { getIndicativePrice, isEqualObject, isMultiplierContract, Validator } from '@deriv/shared';
+import { TStores } from '@deriv/stores/types';
+import { TContractInfo } from 'Components/summary/summary-card.types';
 import { getValidationRules } from 'Constants/contract';
 import { contract_stages } from 'Constants/contract-stage';
 import { getContractUpdateConfig } from 'Utils/multiplier';
+import { TServerError } from 'Types';
+import RootStore from './root-store';
 
-export default class SummaryCardStore {
-    contract_info = null;
+type TLimitOrder = {
+    take_profit: number | null;
+    stop_loss: number | null;
+};
+
+interface ISummaryCardStore {
+    contract_info: TContractInfo | null;
+    indicative_movement: string;
+    profit_movement: string;
+    contract_update_take_profit: string | number | null;
+    contract_update_stop_loss: string | number | null;
+    has_contract_update_take_profit: boolean;
+    has_contract_update_stop_loss: boolean;
+    contract_id: null | string;
+    profit: number;
+    indicative: number;
+    is_contract_completed: boolean;
+    is_contract_loading: boolean;
+    is_contract_inactive: boolean;
+    is_multiplier: boolean;
+    clear: (should_unset_contract?: boolean) => void;
+    clearContractUpdateConfigValues: () => void;
+    getLimitOrder: () => TLimitOrder;
+    onBotContractEvent: (contract: TContractInfo) => void;
+    onChange: (params: { name: string; value: string }) => void;
+    populateContractUpdateConfig: (response: { error?: TServerError } & UpdateContractResponse) => void;
+    setContractUpdateConfig: (
+        contract_update_take_profit: string | number | null,
+        contract_update_stop_loss: string | number | null
+    ) => void;
+    updateLimitOrder: () => void;
+    setValidationErrorMessages: (propertyName: string, messages: string[]) => void;
+    validateProperty: (property, value) => void;
+    registerReactions: () => void;
+}
+
+export default class SummaryCardStore implements ISummaryCardStore {
+    root_store: RootStore;
+    core: TStores;
+    disposeReactionsFn: () => void;
+    disposeSwitchAcountListener?: () => void;
+
+    contract_info: null | TContractInfo = null;
     indicative_movement = '';
     profit_movement = '';
 
-    validation_errors = {};
+    validation_errors: Record<string, string[]> = {};
     validation_rules = getValidationRules();
 
     // Multiplier contract update config
-    contract_update_take_profit = '';
-    contract_update_stop_loss = '';
+    contract_update_take_profit: string | number | null = null;
+    contract_update_stop_loss: string | number | null = null;
     has_contract_update_take_profit = false;
     has_contract_update_stop_loss = false;
     contract_update_config = {};
 
-    contract_id = null;
+    contract_id: string | null = null;
+    profit_loss = 0;
     profit = 0;
     indicative = 0;
 
-    constructor(root_store, core) {
+    constructor(root_store: RootStore, core: TStores) {
+        this.root_store = root_store;
+        this.core = core;
+        this.disposeReactionsFn = this.registerReactions();
+
         makeObservable(this, {
             contract_info: observable,
             indicative_movement: observable,
@@ -54,10 +105,6 @@ export default class SummaryCardStore {
             validateProperty: action,
             registerReactions: action.bound,
         });
-
-        this.root_store = root_store;
-        this.core = core;
-        this.disposeReactionsFn = this.registerReactions();
     }
 
     get is_contract_completed() {
@@ -102,7 +149,10 @@ export default class SummaryCardStore {
     }
 
     getLimitOrder() {
-        const limit_order = {};
+        const limit_order: TLimitOrder = {
+            take_profit: null,
+            stop_loss: null,
+        };
 
         // send positive take_profit to update or null to cancel
         limit_order.take_profit = this.has_contract_update_take_profit ? +this.contract_update_take_profit : null;
@@ -113,7 +163,7 @@ export default class SummaryCardStore {
         return limit_order;
     }
 
-    onBotContractEvent(contract) {
+    onBotContractEvent(contract: TContractInfo) {
         const { profit } = contract;
         const indicative = getIndicativePrice(contract);
 
@@ -140,12 +190,12 @@ export default class SummaryCardStore {
         this.contract_info = contract;
     }
 
-    onChange({ name, value }) {
+    onChange({ name, value }: { name: string; value: string }) {
         this[name] = value;
         this.validateProperty(name, this[name]);
     }
 
-    populateContractUpdateConfig(response) {
+    populateContractUpdateConfig(response: { error?: TServerError } & UpdateContractResponse) {
         const contract_update_config = getContractUpdateConfig(response);
 
         if (!isEqualObject(this.contract_update_config, contract_update_config)) {
@@ -153,31 +203,36 @@ export default class SummaryCardStore {
             this.contract_update_config = contract_update_config;
 
             const { contract_update, error } = response;
-            if (contract_update && !error) {
+            if (contract_update && !error && this.contract_info) {
                 this.contract_info.limit_order = Object.assign(this.contract_info.limit_order || {}, contract_update);
             }
         }
     }
 
-    setContractUpdateConfig(contract_update_take_profit, contract_update_stop_loss) {
+    setContractUpdateConfig(
+        contract_update_take_profit: string | number | null,
+        contract_update_stop_loss: string | number | null
+    ) {
         this.has_contract_update_take_profit = !!contract_update_take_profit;
         this.has_contract_update_stop_loss = !!contract_update_stop_loss;
-        this.contract_update_take_profit = this.has_contract_update_take_profit ? +contract_update_take_profit : null;
-        this.contract_update_stop_loss = this.has_contract_update_stop_loss ? +contract_update_stop_loss : null;
+        this.contract_update_take_profit = this.has_contract_update_take_profit
+            ? +(contract_update_take_profit ?? 0)
+            : null;
+        this.contract_update_stop_loss = this.has_contract_update_stop_loss ? +(contract_update_stop_loss ?? 0) : null;
     }
 
     updateLimitOrder() {
         const limit_order = this.getLimitOrder();
+        if (this.contract_info?.contract_id)
+            this.root_store.ws.contractUpdate(this.contract_info.contract_id, limit_order).then(response => {
+                if (response.error) {
+                    this.root_store.run_panel.showContractUpdateErrorDialog(response.error.message);
+                    return;
+                }
 
-        this.root_store.ws.contractUpdate(this.contract_info.contract_id, limit_order).then(response => {
-            if (response.error) {
-                this.root_store.run_panel.showContractUpdateErrorDialog(response.error.message);
-                return;
-            }
-
-            // Update contract store
-            this.populateContractUpdateConfig(response);
-        });
+                // Update contract store
+                this.populateContractUpdateConfig(response);
+            });
     }
 
     /**
@@ -187,7 +242,7 @@ export default class SummaryCardStore {
      * @param [{String}] messages - An array of strings that contains validation error messages for the particular property.
      *
      */
-    setValidationErrorMessages(propertyName, messages) {
+    setValidationErrorMessages(propertyName: string, messages: string[]) {
         const is_different = () =>
             !!this.validation_errors[propertyName]
                 .filter(x => !messages.includes(x))
@@ -204,7 +259,9 @@ export default class SummaryCardStore {
      * @param {object} value    - The value of the property, it can be undefined.
      *
      */
+
     validateProperty(property, value) {
+        // Need to handle later by converting contract.js
         const trigger = this.validation_rules[property].trigger;
         const inputs = { [property]: value !== undefined ? value : this[property] };
         const validation_rules = { [property]: this.validation_rules[property].rules || [] };

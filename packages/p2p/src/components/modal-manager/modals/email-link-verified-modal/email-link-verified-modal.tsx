@@ -12,9 +12,15 @@ const EmailLinkVerifiedModal = () => {
     const { order_store } = useStores();
     const { advertiser_details, amount_display, is_buy_order_for_user, local_currency, rate } =
         order_store.order_information || {};
-    const amount = removeTrailingZeros(
-        formatMoney(local_currency, amount_display * Number(roundOffDecimal(rate, setDecimalPlaces(rate, 6))), true)
-    );
+    const amount = order_store.order_information
+        ? removeTrailingZeros(
+              formatMoney(
+                  local_currency,
+                  amount_display * Number(roundOffDecimal(rate, setDecimalPlaces(rate, 6))),
+                  true
+              )
+          )
+        : 0;
 
     return (
         <React.Fragment>

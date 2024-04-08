@@ -18,7 +18,6 @@ import {
     ThemedScrollbars,
     Checkbox,
     InlineMessage,
-    StaticUrl,
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';

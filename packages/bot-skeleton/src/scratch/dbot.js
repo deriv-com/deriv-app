@@ -5,6 +5,8 @@ import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { compareXml, observer as globalObserver } from '../utils';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
+import { isDbotRTL } from '../utils/workspace';
+
 import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
@@ -128,7 +130,6 @@ Blockly.Workspace.prototype.getAllFields = function (is_ordered) {
     }, []);
 };
 
-
 Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
     const hasHighlightedDescendant = child_blocks =>
         child_blocks.some(child_block => {
@@ -157,13 +158,12 @@ Blockly.Block.prototype.getTopParent = function () {
 
 Blockly.utils.removeClass = function (element, className) {
     const classNames = className.split(' ');
-    if (classNames.every((name) => !element.classList.contains(name))) {
+    if (classNames.every(name => !element.classList.contains(name))) {
         return false;
     }
     element.classList.remove(...classNames);
     return true;
-}
-
+};
 
 Blockly.BlockSvg.prototype.setErrorHighlighted = function (
     should_be_error_highlighted,
@@ -180,12 +180,12 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function (
     if (should_be_error_highlighted) {
         const addClass = (element, className) => {
             const classNames = className.split(' ');
-            if (classNames.every((name) => element.classList.contains(name))) {
+            if (classNames.every(name => element.classList.contains(name))) {
                 return false;
             }
             element.classList.add(...classNames);
             return true;
-        }
+        };
         // Below function does its own checks to check if class already exists.
         addClass(this.svgGroup_, highlight_class);
     } else {
@@ -255,7 +255,7 @@ class DBot {
                             if (run_button) run_button.disabled = true;
 
                             that.interpreter.unsubscribeFromTicksService().then(async () => {
-                                await that.interpreter.bot.tradeEngine.watchTicks(symbol);
+                                await that.interpreter?.bot.tradeEngine.watchTicks(symbol);
                             });
                         }
                     } else if (name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
@@ -305,6 +305,8 @@ class DBot {
                     theme: Blockly.Themes.haba,
                 });
 
+                this.workspace.RTL = isDbotRTL();
+
                 this.workspace.cached_xml = { main: main_xml };
 
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
@@ -331,6 +333,8 @@ class DBot {
 
                 Blockly.derivWorkspace.strategy_to_load = main_xml;
                 Blockly.getMainWorkspace().strategy_to_load = main_xml;
+                Blockly.getMainWorkspace().RTL = isDbotRTL();
+
                 let file_name = config.default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
@@ -413,6 +417,12 @@ class DBot {
         return this.before_run_funcs.every(func => !!func());
     }
 
+    async initializeInterpreter() {
+        if (this.interpreter) {
+            await this.interpreter.terminateSession();
+        }
+        this.interpreter = Interpreter();
+    }
     /**
      * Runs the bot. Does a sanity check before attempting to generate the
      * JavaScript code that's fed to the interpreter.
@@ -422,10 +432,9 @@ class DBot {
 
         try {
             api_base.is_stopping = false;
-            console.log('hhh')
-            console.log(this.generateCode())
+            console.log('hhh');
+            console.log(this.generateCode());
             const code = this.generateCode();
-
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
 
@@ -594,7 +603,6 @@ class DBot {
      * Disable blocks and their optional children.
      */
     disableBlocksRecursively(block) {
-
         //this.setDisabled(true);
         if (block.nextConnection?.targetConnection) {
             this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);

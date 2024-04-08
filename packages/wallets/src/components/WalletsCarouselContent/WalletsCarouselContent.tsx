@@ -7,6 +7,7 @@ import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
+import { useHistory } from 'react-router-dom';
 
 type TProps = {
     onWalletSettled?: (value: boolean) => void;
@@ -14,8 +15,8 @@ type TProps = {
 
 const numberWithinRange = (number: number, min: number, max: number): number => Math.min(Math.max(number, min), max);
 
-// scale based on the width difference between active wallet (288px) and inactive wallets (240px)
-const TRANSITION_FACTOR_SCALE = 1 - 24 / 28.8;
+// scale based on the width difference between active wallet (288px) and inactive wallets + padding (240px + 16px)
+const TRANSITION_FACTOR_SCALE = 1 - 25.6 / 28.8;
 
 /**
  * carousel component
@@ -25,6 +26,7 @@ const TRANSITION_FACTOR_SCALE = 1 - 24 / 28.8;
  */
 const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     const switchWalletAccount = useWalletAccountSwitcher();
+    const history = useHistory();
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
@@ -117,7 +119,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (activeWallet) {
             setSelectedLoginId(activeWallet?.loginid);
         }
-    }, [activeWallet]);
+    }, [activeWallet?.loginid]);
 
     // bind to embla events
     useEffect(() => {
@@ -159,7 +161,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (selectedLoginId) {
             switchWalletAccount(selectedLoginId).then(() => {
                 const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-                walletsCarouselEmblaApi?.scrollTo(index);
+                if (index !== -1) {
+                    walletsCarouselEmblaApi?.scrollTo(index);
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,7 +173,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     useEffect(() => {
         if (walletsCarouselEmblaApi && isInitialDataLoaded) {
             const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-            walletsCarouselEmblaApi?.scrollTo(index, true);
+            if (index !== -1) {
+                walletsCarouselEmblaApi?.scrollTo(index, true);
+            }
 
             walletsCarouselEmblaApi && setTransitionNodes(walletsCarouselEmblaApi);
             walletsCarouselEmblaApi && setTransitionFactor(walletsCarouselEmblaApi);
@@ -223,6 +229,11 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}
                         landingCompanyName={account.landing_company_name}
+                        onClick={() =>
+                            account.is_virtual
+                                ? history.push('/wallets/cashier/reset-balance')
+                                : history.push('/wallets/cashier/deposit')
+                        }
                     />
                 ))}
             </div>

@@ -14,6 +14,7 @@ type TProps = {
     isCarouselContent?: boolean;
     isDemo?: boolean;
     landingCompanyName?: string;
+    onClick?: () => void;
 };
 
 const WalletCard: React.FC<TProps> = ({
@@ -23,11 +24,15 @@ const WalletCard: React.FC<TProps> = ({
     isCarouselContent = false,
     isDemo,
     landingCompanyName,
+    onClick,
 }) => {
     const { isLoading } = useBalance();
 
     return (
-        <div className={classNames('wallets-card', { 'wallets-card__carousel-content': isCarouselContent })}>
+        <button
+            className={classNames('wallets-card', { 'wallets-card__carousel-content': isCarouselContent })}
+            onClick={onClick}
+        >
             <div className='wallets-card__container'>
                 <WalletGradientBackground
                     currency={isDemo ? 'Demo' : currency}
@@ -37,8 +42,9 @@ const WalletCard: React.FC<TProps> = ({
                     type='card'
                 >
                     <div
-                        className={classNames('wallets-card__details', {
+                        className={classNames({
                             'wallets-card__carousel-content-details': isCarouselContent,
+                            'wallets-card__details': !isCarouselContent,
                         })}
                         data-testid='dt_wallet_card_details'
                     >
@@ -78,7 +84,7 @@ const WalletCard: React.FC<TProps> = ({
                     </div>
                 </WalletGradientBackground>
             </div>
-        </div>
+        </button>
     );
 };
 

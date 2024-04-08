@@ -111,4 +111,4 @@ export const getValidationFunction = (rule: string) => {
 
 // Adding string as type because, employment_status can come from Personal details or Financial assessment.
 export const shouldHideOccupationField = (employment_status?: TEmploymentStatus | string) =>
-    [EMPLOYMENT_VALUES.SELF_EMPLOYED, EMPLOYMENT_VALUES.UNEMPLOYED].some(status => status === employment_status);
+    EMPLOYMENT_VALUES.UNEMPLOYED === employment_status;

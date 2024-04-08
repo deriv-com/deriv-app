@@ -6,7 +6,7 @@ import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
-import { log_types } from '../../constants/messages';
+import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
 
 export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
@@ -129,15 +129,13 @@ export const load = async ({
         globalObserver.emit('ui.log.error', error_message);
     };
 
-
-
     // Check if XML can be parsed correctly.
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
         console.log({
             block_string,
-            xmlDoc
-        })
+            xmlDoc,
+        });
         if (xmlDoc.getElementsByTagName('parsererror').length) {
             return showInvalidStrategyError();
         }
@@ -207,7 +205,7 @@ export const load = async ({
         });
 
         if (workspace === Blockly.derivWorkspace) {
-            globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+            globalObserver.emit('ui.log.success', { log_type: LogTypes.LOAD_BLOCK });
         }
     } catch (e) {
         console.error(e); // eslint-disable-line
@@ -229,7 +227,6 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
         workspace.cleanUp();
     }
 };
-
 
 export const loadWorkspace = async (xml, event_group, workspace) => {
     Blockly.WorkspaceSvg.prototype.asyncClear = function () {
@@ -445,10 +442,9 @@ export const isAllRequiredBlocksEnabled = workspace => {
 
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
     const ws_metrics = workspace.getMetrics();
-
     let scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
-    let scroll_y = ws_metrics.viewTop - ws_metrics.contentTop;
-
+    const delta_y = ws_metrics.viewTop - ws_metrics.contentTop;
+    let scroll_y = delta_y;
     if (is_horizontal) {
         scroll_x += is_chronological ? scroll_amount : -scroll_amount;
         scroll_y += -20;
@@ -456,7 +452,17 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         scroll_x += -20;
         scroll_y += is_chronological ? scroll_amount : -scroll_amount;
     }
-
+    const is_RTL = Blockly.derivWorkspace.RTL;
+    if (is_RTL) {
+        // For RTL scroll we need to adjust the scroll amount
+        scroll_x = scroll_amount;
+        // Adjust scroll_y to prevent scrolling vertically on every render
+        const toolbox_top = document.getElementById('gtm-toolbox')?.getBoundingClientRect()?.top;
+        const block_canvas_rect_top = workspace.svgBlockCanvas_?.getBoundingClientRect()?.top;
+        if (block_canvas_rect_top > toolbox_top) {
+            scroll_y = delta_y;
+        }
+    }
     workspace.scrollbar.set(scroll_x, scroll_y);
 };
 

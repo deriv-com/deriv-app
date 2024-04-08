@@ -2,8 +2,8 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import { ButtonGroup } from '@/components';
 import { CUSTOM_STYLES } from '@/helpers';
+import { useQueryParams } from '@/hooks';
 import { Button, Text } from '@deriv-com/ui';
-import { useRealAccountCreationContext } from '../../providers/RealAccountCreationProvider';
 
 type TGetADerivAccountDialog = {
     isOpen: boolean;
@@ -17,7 +17,7 @@ type TGetADerivAccountDialog = {
  * @returns {React.ReactElement} A `<Dialog>` component containing the dialog message and action button.
  */
 const GetADerivAccountDialog = ({ isOpen, onClose }: TGetADerivAccountDialog) => {
-    const { setIsWizardOpen } = useRealAccountCreationContext();
+    const { openModal } = useQueryParams();
 
     return (
         <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
@@ -31,7 +31,7 @@ const GetADerivAccountDialog = ({ isOpen, onClose }: TGetADerivAccountDialog) =>
                     <Button
                         onClick={() => {
                             onClose();
-                            setIsWizardOpen(true);
+                            openModal('RealAccountCreation');
                         }}
                     >
                         Add a Deriv account

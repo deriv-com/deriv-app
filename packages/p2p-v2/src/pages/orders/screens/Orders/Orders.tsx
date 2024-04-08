@@ -9,7 +9,7 @@ import { OrdersTableHeader } from './OrdersTableHeader';
 const Orders = () => {
     const { queryString } = useQueryString();
     const { isMobile } = useDevice();
-    const currentTab = queryString.get('tab') ?? ORDERS_STATUS.ACTIVE_ORDERS;
+    const currentTab = queryString.tab ?? ORDERS_STATUS.ACTIVE_ORDERS;
 
     const {
         data = [],

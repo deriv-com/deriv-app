@@ -4,10 +4,10 @@ import { Icon, Tabs } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import SearchInput from './common/search-input';
-import { TContent } from './constants';
+import { TTutorialsTabItem } from './tutorials';
 
 type TTutorialsTabDesktop = {
-    tutorial_tabs: TContent;
+    tutorial_tabs: TTutorialsTabItem[];
     prev_active_tutorials: number;
 };
 
@@ -28,6 +28,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
         if (faq_search_value !== '') {
             setActiveTabTutorial(3);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab_tutorials]);
 
     return (
@@ -67,7 +68,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                 onTabItemClick={setActiveTabTutorial}
                 top
             >
-                {tutorial_tabs.map(
+                {tutorial_tabs?.map(
                     ({ label, content }) =>
                         content && (
                             <div label={label} key={`${content}_${label}`}>

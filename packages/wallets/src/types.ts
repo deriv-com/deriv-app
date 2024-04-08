@@ -98,3 +98,5 @@ export type TWalletLandingCompanyName =
     | Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'>
     | 'virtual';
 export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];
+
+export type TWalletCarouselItem = Omit<THooks.AllWalletAccounts, 'landing_company_name'>;

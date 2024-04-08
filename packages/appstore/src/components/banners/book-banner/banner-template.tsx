@@ -15,7 +15,7 @@ type TBookBannerTemplate = {
 
 const BookBannerTemplate = ({ e_book_show_way, e_books_url, e_book_from_landing, lang }: TBookBannerTemplate) => {
     const [is_banner_shows, setIsBannerShows] = React.useState(true);
-    const { traders_hub, client, common } = useStore();
+    const { traders_hub, ui } = useStore();
     const { selected_account_type } = traders_hub;
     const analytics_data: Parameters<typeof Analytics.trackEvent>[1] = {
         banner_name: e_book_from_landing,
@@ -38,7 +38,7 @@ const BookBannerTemplate = ({ e_book_show_way, e_books_url, e_book_from_landing,
                         {e_book_show_way === 'banner-with-link' ? (
                             <div className='book-banner-template__content'>
                                 <label>
-                                    <Localize i18n_default_text='Your e-book has been emailed to you and is ready for download.' />
+                                    <Localize i18n_default_text='We’ve sent your e-book to your email. You can also download it here.' />
                                 </label>
                                 <a
                                     href={e_books_url[e_book_from_landing][lang] || e_books_url[e_book_from_landing].EN}
@@ -57,7 +57,7 @@ const BookBannerTemplate = ({ e_book_show_way, e_books_url, e_book_from_landing,
                         ) : (
                             <div className='book-banner-template__content'>
                                 <label>
-                                    <Localize i18n_default_text='Your e-book is now ready for download. You can find it in your email inbox.' />
+                                    <Localize i18n_default_text='We’ve sent your e-book. Check your email to download it.' />
                                 </label>
                             </div>
                         )}
@@ -66,6 +66,7 @@ const BookBannerTemplate = ({ e_book_show_way, e_books_url, e_book_from_landing,
                         className='book-banner-template__cancel'
                         width='24'
                         height='24'
+                        fill='var(--text-prominent)'
                         onClick={() => {
                             Analytics.trackEvent('ce_tradershub_banner', {
                                 action: 'close',

@@ -22,11 +22,12 @@
 
         label {
             padding-inline: 0.8rem;
+            color: var(--text-prominent);
         }
         a {
             font-weight: bold;
             text-decoration-line: underline;
-            color: $color-black-1;
+            color: var(--text-prominent);
         }
         @include mobile {
             flex-direction: column;
@@ -35,7 +36,6 @@
             line-height: 1.8rem;
 
             label {
-                padding-inline: 0;
                 margin-block-end: 1.6rem;
             }
         }

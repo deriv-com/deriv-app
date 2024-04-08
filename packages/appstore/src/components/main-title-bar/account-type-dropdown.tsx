@@ -1,34 +1,33 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown } from '@deriv/components';
-import { getAccountTypes } from 'Constants/platform-config';
+import { ButtonToggle } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import './account-type-dropdown.scss';
 
-const AccountTypeDropdown = observer(() => {
-    const { traders_hub, client, common } = useStore();
+const AccountTypeToggleButton = observer(() => {
+    const { traders_hub, client } = useStore();
     const { selected_account_type, selectAccountType } = traders_hub;
     const { setPrevAccountType } = client;
-    const { current_language } = common;
 
+    const AccountType = [
+        { text: 'Real', value: 'real' },
+        { text: 'Demo', value: 'demo' },
+    ];
     return (
         <div className={classNames('account-type-dropdown--parent')}>
-            <Dropdown
-                classNameIcon={`account-type-dropdown__icon--${selected_account_type}`}
-                value={selected_account_type}
-                classNameDisplay={classNames(
-                    'account-type-dropdown',
-                    `account-type-dropdown--${selected_account_type}`
-                )}
-                list={getAccountTypes()}
-                key={`account-type-dropdown__icon--key-${current_language}`}
+            <ButtonToggle
+                buttons_arr={AccountType}
+                className='traders-hub__button-toggle'
+                has_rounded_button
+                name='account_type'
                 onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                     await selectAccountType(e.target.value);
                     await setPrevAccountType(e.target.value);
                 }}
+                value={selected_account_type}
             />
         </div>
     );
 });
 
-export default AccountTypeDropdown;
+export default AccountTypeToggleButton;

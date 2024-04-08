@@ -19,20 +19,27 @@ const PreferredCountriesDropdown = ({
     setSelectedCountries,
     setShouldDisplayFooter,
 }: TPreferredCountriesDropdownProps) => {
-    const [searchResults, setSearchResults] = useState<TItem[]>(list);
+    const [searchResults, setSearchResults] = useState<TItem[]>([
+        ...list.filter(item => selectedCountries.includes(item.value)),
+        ...list.filter(item => !selectedCountries.includes(item.value)),
+    ]);
     const [searchValue, setSearchValue] = useState('');
 
     const onSearch = (value: string) => {
         if (!value) {
             setShouldDisplayFooter(true);
             setSearchValue('');
-            setSearchResults(list);
+            setSearchResults([
+                ...list.filter(item => selectedCountries.includes(item.value)),
+                ...list.filter(item => !selectedCountries.includes(item.value)),
+            ]);
             return;
         }
         setShouldDisplayFooter(false);
         setSearchValue(value);
         setSearchResults(list.filter(item => item.text.toLowerCase().includes(value.toLowerCase())));
     };
+
     return (
         <div className='p2p-v2-preferred-countries-dropdown'>
             <div className='px-[1.6rem] py-[0.8rem]'>

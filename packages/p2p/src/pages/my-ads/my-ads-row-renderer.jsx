@@ -15,13 +15,15 @@ import { api_error_codes } from 'Constants/api-error-codes';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
 
-const MyAdsRowDropdown = ({ is_advert_active, is_disabled, onSelectMore }) => {
+const MyAdsRowDropdown = ({ handleBlur, is_advert_active, is_disabled, is_nativepicker_visible, onSelectMore }) => {
     return (
         <Dropdown
             className='my-ads-table__status-more'
             classNameDisplay='my-ads-table__status-more--display'
             disabled={is_disabled}
+            handleBlur={handleBlur}
             is_align_text_left
+            is_nativepicker_visible={is_nativepicker_visible}
             list={[
                 {
                     text: localize('Edit'),
@@ -83,6 +85,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [show_warning_icon, setShowWarningIcon] = React.useState(false);
+    const [is_advert_menu_visible, setIsAdvertMenuVisible] = React.useState(false);
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = p2p_settings.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
@@ -198,6 +201,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 break;
             default:
         }
+
+        setIsAdvertMenuVisible(false);
     };
 
     if (isMobile()) {
@@ -232,6 +237,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                     <MyAdsRowDropdown
                         is_advert_active={is_advert_active}
                         is_disabled={general_store.is_barred}
+                        is_nativepicker_visible={false}
                         onSelectMore={onSelectMore}
                     />
                 </div>
@@ -376,13 +382,21 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         classNameBubble='my-ads-table__status-bubble'
                         classNameTarget='my-ads-table__status-target'
                         message={localize('Manage ad')}
+                        onClick={() => {
+                            setIsAdvertMenuVisible(true);
+                        }}
                     >
+                        <Icon icon='IcCashierVerticalEllipsis' />
+                    </Popover>
+                    {is_advert_menu_visible && (
                         <MyAdsRowDropdown
+                            handleBlur={() => setIsAdvertMenuVisible(false)}
                             is_advert_active={is_advert_active}
                             is_disabled={general_store.is_barred}
+                            is_nativepicker_visible
                             onSelectMore={onSelectMore}
                         />
-                    </Popover>
+                    )}
                 </Table.Cell>
             </Table.Row>
         </div>

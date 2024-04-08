@@ -53,6 +53,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         });
     };
     const onSubmit = (values, { setSubmitting }) => {
+        my_ads_store.setAdFormValues(values);
         my_ads_store.handleSubmit(values, { setSubmitting }, true, adverts_archive_period);
     };
 

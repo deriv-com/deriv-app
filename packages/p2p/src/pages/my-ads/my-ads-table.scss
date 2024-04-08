@@ -250,26 +250,35 @@
             .dc-popover__target {
                 display: flex;
             }
-            &__icon {
-                @include mobile {
-                    margin-bottom: 0.8rem;
-                }
-            }
         }
 
         &-more {
-            min-width: 3.2rem;
-            width: 3.2rem;
+            min-width: 0;
             height: 3.2rem;
             margin-left: 0 !important;
 
+            @include mobile {
+                min-width: 3.2rem;
+                width: 3.2rem;
+            }
+
             &--display {
-                background-color: transparent !important;
-                border: 0 !important;
+                @include desktop {
+                    display: none;
+                }
+
+                @include mobile {
+                    background-color: transparent !important;
+                    border: 0 !important;
+                }
             }
 
             .dc-list {
                 right: 0;
+
+                @include desktop {
+                    margin-top: 4.5rem;
+                }
             }
 
             .suffix-icon {
@@ -286,6 +295,10 @@
             border-radius: 0.4rem;
             width: 3.2rem;
             height: 3.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
 
             &:hover {
                 background-color: var(--general-active);

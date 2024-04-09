@@ -30,9 +30,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                         <WalletText size='sm' weight='bold'>
                             {account?.formatted_balance}
                         </WalletText>
-                        <WalletText color='primary' size='xs' weight='bold'>
-                            {account.login}
-                        </WalletText>
+                        <WalletText size='xs'>{account.login}</WalletText>
                     </div>
                 </TradingAccountCard>
             ))}

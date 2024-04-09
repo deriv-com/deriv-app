@@ -69,7 +69,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             // if newValue has no separator, an integer val is being handled (and edited by the user).
             // This would require setting the caret to the end of the integer part of the input val
             const hasSeparator = getSeparatorRegex().test(newValue);
-            const integerEditingCaretOffset = !hasSeparator ? fractionDigits : 0;
+            const integerEditingCaretOffset = !!newValue && !hasSeparator ? fractionDigits : 0;
 
             const newCaretPosition = input.value.length - (input.selectionStart ?? 0) + integerEditingCaretOffset;
             setCaret(newCaretPosition);

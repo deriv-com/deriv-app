@@ -7,7 +7,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
-import { TFormValues } from '../types';
+import { TFormData, TFormValues } from '../types';
 import FormTabs from './form-tabs';
 import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
@@ -43,7 +43,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     const onEdit = async () => {
         await setFieldValue('action', 'EDIT');
         validateForm();
-        submitForm().then(form_data => {
+        submitForm().then((form_data: TFormData | void) => {
             if (isValid && form_data) {
                 onSubmit(form_data); // true to load and run the bot
             }

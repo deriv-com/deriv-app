@@ -22,6 +22,8 @@ const QuickStrategyForm = observer(() => {
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
     const { current_duration_min_max } = quick_strategy;
+    const is_max_stake_enabled = form_data.boolean_max_stake;
+    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(is_max_stake_enabled);
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -29,6 +31,10 @@ const QuickStrategyForm = observer(() => {
             window.removeEventListener('keydown', handleEnter);
         };
     }, []);
+
+    React.useEffect(() => {
+        setIsEnabledToggleSwitch(is_max_stake_enabled);
+    }, [is_max_stake_enabled]);
 
     const onChange = async (key: string, value: string | number | boolean) => {
         setValue(key, value);
@@ -148,6 +154,8 @@ const QuickStrategyForm = observer(() => {
                                         key={key}
                                         name={field.name as string}
                                         label={field.label as string}
+                                        isEnabledToggleSwitch={!!isEnabledToggleSwitch}
+                                        setIsEnabledToggleSwitch={setIsEnabledToggleSwitch}
                                     />
                                 );
                             // Dedicated components only for Quick-Strategy

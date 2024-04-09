@@ -41,7 +41,7 @@ const useQsSubmitHandler = () => {
         } else {
             await setFieldValue('action', 'RUN');
             validateForm();
-            submitForm().then(form_data => {
+            submitForm().then((form_data: TFormData | void) => {
                 if (isValid && form_data) {
                     onSubmit(form_data);
                 }

@@ -10,11 +10,19 @@ type TQSToggleSwitch = {
     label: string;
     description?: string;
     attached?: boolean;
+    isEnabledToggleSwitch: boolean;
+    setIsEnabledToggleSwitch: (isEnabledToggleSwitch: boolean) => void;
 };
 
-const QSToggleSwitch: React.FC<TQSToggleSwitch> = ({ name, label, description, attached = false }) => {
+const QSToggleSwitch: React.FC<TQSToggleSwitch> = ({
+    name,
+    label,
+    description,
+    attached = false,
+    isEnabledToggleSwitch,
+    setIsEnabledToggleSwitch,
+}) => {
     const { values, setFieldValue } = useFormikContext<TFormData>();
-    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(false);
 
     const handleChange = () => {
         setFieldValue(name, !values?.[name]);

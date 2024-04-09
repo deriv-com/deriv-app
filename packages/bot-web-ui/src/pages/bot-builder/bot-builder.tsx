@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
+import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
@@ -26,7 +27,8 @@ const BotBuilder = observer(() => {
     const { is_mobile } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
-    const { data: remote_config_data } = useRemoteConfig();
+    const isMounted = useIsMounted();
+    const { data: remote_config_data } = useRemoteConfig(isMounted());
     let end_drag_id: null | string = null;
     let selection_id: null | string = null;
 

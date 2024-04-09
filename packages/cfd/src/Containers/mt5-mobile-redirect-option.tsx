@@ -19,7 +19,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
             mobile_url = window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);
         }, 1500);
 
-        if (!isSafariBrowser()) {
+        if (!isSafariBrowser() || (isSafariBrowser() && /Version\/17/.test(navigator.userAgent))) {
             window.onblur = () => {
                 clearTimeout(timeout);
             };
@@ -51,7 +51,6 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                     <Icon icon='IcChevronRightLight' size={16} />
                 </div>
             </a>
-
             <Text as='p' size='xxxxs'>
                 <Localize
                     i18n_default_text="Note: Don't have the MT5 app? Tap the <0>Trade with MT5 mobile app</0> button to download. Once you have

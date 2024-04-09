@@ -1,38 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useHistory } from 'react-router';
-import { Analytics } from '@deriv-com/analytics';
 import FormFooter from '@deriv/account/src/Components/form-footer';
 import FormBody from '@deriv/account/src/Components/form-body';
 import { Button, Icon, Text } from '@deriv/components';
-import { mobileOSDetect, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { EffortLessLoginTips } from './effortless-login-tips';
 import { EffortlessLoginDescription } from './effortless-login-description';
 import './effortless-login-modal.scss';
 
-const effortlessLoginModalTrackEvent = (action: string) => {
-    Analytics.trackEvent('ce_passkey_effortless_form', {
-        action,
-        form_name: 'ce_passkey_effortless_form',
-        operating_system: mobileOSDetect(),
-    });
-};
-
 const EffortlessLoginModal = observer(() => {
     const [is_learn_more_opened, setIsLearnMoreOpened] = React.useState(false);
     const portal_element = document.getElementById('effortless_modal_root');
     const history = useHistory();
     const { client } = useStore();
-    const { setShouldShowEffortlessLoginModal } = client;
+    const { setShouldShowEffortlessLoginModal, passkeysTrackEvent } = client;
 
     React.useEffect(() => {
         if (!portal_element) return;
-        effortlessLoginModalTrackEvent('open');
+        passkeysTrackEvent({ action: 'open' }, true);
 
         const track_close = () => {
-            effortlessLoginModalTrackEvent('close');
+            passkeysTrackEvent({ action: 'close' }, true);
         };
         window.addEventListener('beforeunload', track_close);
         return () => {
@@ -44,12 +35,12 @@ const EffortlessLoginModal = observer(() => {
         localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
         history.push(route);
         setShouldShowEffortlessLoginModal(false);
-        effortlessLoginModalTrackEvent(action_event);
+        passkeysTrackEvent({ action: action_event }, true);
     };
 
     const onLearnMoreClick = () => {
         setIsLearnMoreOpened(true);
-        effortlessLoginModalTrackEvent('info_open');
+        passkeysTrackEvent({ action: 'info_open' }, true);
     };
 
     if (!portal_element) return null;

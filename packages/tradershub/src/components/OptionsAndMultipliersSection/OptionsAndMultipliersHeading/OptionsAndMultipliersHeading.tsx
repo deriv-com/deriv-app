@@ -7,17 +7,18 @@ const getDescription = (isEU: boolean) => {
     if (isEU) {
         return (
             <Text className='space-y-0' size='sm'>
-                Get the upside of CFDs without risking more than your initial stake with
-                <StaticLink staticUrl='/trade-types/multiplier/'>multipliers</StaticLink>.
+                Trade
+                <StaticLink staticUrl='/trade-types/multiplier/'>multipliers</StaticLink> with leverage and limited
+                risk.
             </Text>
         );
     }
     return (
         <Text className='space-y-0' size='sm'>
-            Earn a range of payouts by correctly predicting market price movements with
-            <StaticLink staticUrl='/trade-types/options/digital-options/up-and-down/'>options</StaticLink>, or get the
-            upside of CFDs without risking more than your initial stake with
-            <StaticLink staticUrl='/trade-types/multiplier/'>multipliers</StaticLink>.
+            <StaticLink staticUrl='/trade-types/options/digital-options/up-and-down/'>Options</StaticLink>
+            allow you to predict the market direction and earn potential payouts based on the outcome.
+            <StaticLink staticUrl='/trade-types/multiplier/'>Multipliers</StaticLink>
+            let you trade with leverage and limit your risk to your stake.
         </Text>
     );
 };

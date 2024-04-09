@@ -41,7 +41,7 @@ const ListingContainerDescription = ({ landing_company_name }: TProps) =>
     landing_company_name === 'svg' ? (
         <Text size='xs' line_height='s'>
             <Localize
-                i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                i18n_default_text='<0>Options</0> allow you to predict the market direction and earn potential payouts based on the outcome.<1>Multipliers</1> let you trade with leverage and limit your risk to your stake.'
                 components={[
                     <StaticUrl key={0} className='options' href='trade-types/options/digital-options/up-and-down/' />,
                     <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
@@ -51,7 +51,7 @@ const ListingContainerDescription = ({ landing_company_name }: TProps) =>
     ) : (
         <Text size='xs' line_height='s'>
             <Localize
-                i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>multipliers</0>.'
+                i18n_default_text='Trade <0>multipliers</0> with leverage and limited risk.'
                 components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
             />
         </Text>
@@ -66,6 +66,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         real_account_creation_unlock_date,
         is_logging_in,
         is_switching,
+        is_eu,
     } = client;
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
 
@@ -94,6 +95,12 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         }
     };
 
+    const eu_user = is_eu_user || is_eu;
+
+    const description = eu_user
+        ? localize('Get this account to trade multipliers.')
+        : localize('Get this account to trade options and multipliers.');
+
     return (
         <ListingContainer
             wallet_account={wallet_account}
@@ -109,7 +116,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                         availability='All'
                         clickable_icon
                         name={localize('Deriv account')}
-                        description={localize('Get a real Deriv account, start trading and manage your funds.')}
+                        description={description}
                         icon='Options'
                         onAction={derivAccountAction}
                     />

@@ -18,7 +18,7 @@ const OtherCFDPlatformsList = () => {
     );
 
     return (
-        <CFDPlatformLayout title='Other CFD Platforms'>
+        <CFDPlatformLayout title='Deriv X'>
             {!isFetchedAfterMount && <TradingAppCardLoader />}
             {isFetchedAfterMount &&
                 (hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />)}

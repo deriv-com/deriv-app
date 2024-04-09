@@ -13,7 +13,7 @@ const GetADerivAccountBanner = () => {
     const { openModal } = useQueryParams();
     return (
         <div className='flex items-center justify-center w-full gap-16 p-16 rounded-xs bg-system-light-secondary-background'>
-            <Text weight='bold'>You need a Deriv account to create a CFD account.</Text>
+            <Text weight='bold'>Get a Deriv account to trade CFDs.</Text>
             <Button className='rounded-xs' onClick={() => openModal('RealAccountCreation')}>
                 Get a Deriv account
             </Button>

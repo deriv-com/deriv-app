@@ -28,7 +28,7 @@ describe('AddOptionsAccount', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByText('You need a Deriv account to create a CFD account.')).toBeInTheDocument();
+        expect(screen.getByText('Get a Deriv account to trade CFDs.')).toBeInTheDocument();
         expect(screen.getByText('Get a Deriv account')).toBeInTheDocument();
     });
 

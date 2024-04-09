@@ -344,7 +344,7 @@ const CFDsListing = observer(() => {
 
                     <div className='cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>
-                            {localize('Other CFD Platforms')}
+                            {localize('Deriv X')}
                         </Text>
                     </div>
                 </React.Fragment>

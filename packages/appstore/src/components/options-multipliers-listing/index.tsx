@@ -26,6 +26,12 @@ const OptionsAndMultipliersListing = observer(() => {
 
     const cr_demo = content_flag === ContentFlag.CR_DEMO;
 
+    const eu_user = low_risk_cr_eu || is_eu;
+
+    const description = eu_user
+        ? localize('Get this account to trade multipliers.')
+        : localize('Get this account to trade options and multipliers.');
+
     const OptionsTitle = () => {
         if (is_mobile) return null;
         if (low_risk_cr_non_eu || high_risk_cr || cr_demo) {
@@ -34,7 +40,7 @@ const OptionsAndMultipliersListing = observer(() => {
                     <Localize i18n_default_text='Options & Multipliers' />
                 </Text>
             );
-        } else if (low_risk_cr_eu || is_eu) {
+        } else if (eu_user) {
             return (
                 <Text size='sm' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />
@@ -51,8 +57,7 @@ const OptionsAndMultipliersListing = observer(() => {
                 low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Earn a range of payouts by correctly predicting market movements with <0>options</0>, or get the
-                    upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                            i18n_default_text='<0>Options</0> allow you to predict the market direction and earn potential payouts based on the outcome. <1>Multipliers</1> let you trade with leverage and limit your risk to your stake.'
                             components={[
                                 <StaticUrl
                                     key={0}
@@ -66,7 +71,7 @@ const OptionsAndMultipliersListing = observer(() => {
                 ) : (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                            i18n_default_text='Trade <0>multipliers</0> with leverage and limited risk.'
                             components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
                         />
                     </Text>
@@ -81,7 +86,7 @@ const OptionsAndMultipliersListing = observer(() => {
                         availability='All'
                         clickable_icon
                         name={localize('Deriv account')}
-                        description={localize('Get a real Deriv account, start trading and manage your funds.')}
+                        description={description}
                         icon='Options'
                         onAction={() => {
                             if (no_MF_account) {

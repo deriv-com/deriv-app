@@ -26,21 +26,21 @@ export type IconToCurrencyMapperType = {
 
 export const optionsAndMultipliersContent = (isEU: boolean) => [
     {
-        description: isEU ? 'Multipliers trading platform.' : 'Options and multipliers trading platform.',
+        description: isEU ? 'Multipliers trading platform' : 'The options and multipliers trading platform',
         icon: <IconComponent icon='DTrader' />,
         redirect: '/',
         smallIcon: <IconComponent height={32} icon='DTrader' width={32} />,
         title: 'Deriv Trader',
     },
     {
-        description: 'Automate your trading, no coding needed.',
+        description: 'The ultimate bot trading platform',
         icon: <IconComponent icon='DBot' />,
         redirect: '/bot',
         smallIcon: <IconComponent height={32} icon='DBot' width={32} />,
         title: 'Deriv Bot',
     },
     {
-        description: 'Our legacy options trading platform.',
+        description: 'The legacy options trading platform',
         icon: <IconComponent icon='SmartTrader' />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
@@ -48,7 +48,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         title: 'SmartTrader',
     },
     {
-        description: 'Our legacy automated trading platform.',
+        description: 'The legacy bot trading platform',
         icon: <IconComponent icon='BinaryBot' />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
@@ -56,7 +56,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         title: 'Binary Bot',
     },
     {
-        description: 'Trade on the go with our mobile app.',
+        description: 'The mobile trading app for multipliers',
         icon: <IconComponent icon='DerivGo' />,
         isExternal: true,
         redirect: getDerivStaticURL('/deriv-go'),

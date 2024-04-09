@@ -34,7 +34,10 @@ const RouteWithSubRoutes = observer(route => {
             return false;
         } else if (pathname.includes(routes.cashier_v2) && !is_next_cashier_enabled) {
             return false;
-        } else if (pathname === routes.traders_hub_v2 && !is_next_tradershub_enabled) {
+        } else if (
+            (pathname === routes.traders_hub_v2 || pathname === routes.compare_accounts) &&
+            !is_next_tradershub_enabled
+        ) {
             return false;
         }
         return true;

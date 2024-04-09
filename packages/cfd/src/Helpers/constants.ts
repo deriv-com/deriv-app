@@ -144,7 +144,6 @@ const validatePassword = (password: string): string | undefined => {
 };
 
 const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) => {
-    console.log('==>', mobileOSDetect())
     if (mobileOSDetect() === 'iOS') {
         return mt5_trade_account?.white_label_links?.ios;
     } else if (mobileOSDetect() === 'huawei') {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -25,6 +25,10 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
             };
         }
     };
+
+    useEffect(() => {
+        console.log('==>', getMobileAppInstallerURL({ mt5_trade_account }))
+    }, [])
 
     return (
         <div className='mt5-download-container'>

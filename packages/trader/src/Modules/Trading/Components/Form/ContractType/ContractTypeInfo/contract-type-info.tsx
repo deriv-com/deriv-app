@@ -53,7 +53,7 @@ const Info = observer(({ handleSelect, item, selected_value, list, info_banner }
             i.value !== RISE_FALL_EQUAL && i.value !== TURBOS.SHORT && i.value !== VANILLA.PUT
     );
     const has_toggle_buttons = /accumulator|turbos|vanilla|multiplier/i.test(selected_contract_type);
-    const should_show_video = /accumulator|vanilla|high_low|match_diff|over_under|rise_fall|touch/i.test(
+    const should_show_video = /accumulator|vanilla|multiplier|high_low|match_diff|over_under|rise_fall|touch/i.test(
         selected_contract_type
     );
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION || !has_toggle_buttons;

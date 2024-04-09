@@ -12,8 +12,8 @@ import { EffortLessLoginTips } from './effortless-login-tips';
 import { EffortlessLoginDescription } from './effortless-login-description';
 import './effortless-login-modal.scss';
 
+const mobile_os = mobileOSDetect();
 const effortlessLoginModalTrackEvent = (action: string) => {
-    const mobile_os = mobileOSDetect();
     Analytics.trackEvent('ce_passkey_effortless_form', {
         action,
         form_name: 'ce_passkey_effortless_form',

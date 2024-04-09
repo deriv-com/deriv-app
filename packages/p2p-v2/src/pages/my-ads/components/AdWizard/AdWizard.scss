@@ -24,6 +24,7 @@
     }
 
     .p2p-v2-wizard__main-step {
+        padding-top: 1rem;
         @include desktop {
             max-height: calc(100vh - 35rem);
             overflow-y: auto;

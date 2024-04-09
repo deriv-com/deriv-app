@@ -20,6 +20,11 @@ jest.mock('react-hook-form', () => ({
     }),
 }));
 
+jest.mock('@/hooks', () => ({
+    ...jest.requireActual('@/hooks'),
+    useQueryString: jest.fn().mockReturnValue({ queryString: { advertId: '' } }),
+}));
+
 jest.mock('@deriv/api-v2', () => ({
     p2p: {
         paymentMethods: {

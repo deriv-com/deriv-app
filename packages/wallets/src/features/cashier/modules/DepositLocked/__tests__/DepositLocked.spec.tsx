@@ -13,11 +13,11 @@ import getDepositLockedDesc from '../DepositLockedContent';
 
 jest.mock('@deriv/api-v2', () => ({
     useAccountStatus: jest.fn(),
-    useWebsiteStatus: jest.fn(),
     useActiveWalletAccount: jest.fn(),
     useAuthentication: jest.fn(),
     useCashierValidation: jest.fn(),
     useSettings: jest.fn(),
+    useWebsiteStatus: jest.fn(),
 }));
 
 jest.mock('../DepositLockedContent', () => ({
@@ -26,15 +26,15 @@ jest.mock('../DepositLockedContent', () => ({
 }));
 
 const mockActiveWalletData = { currency_config: { minimum_withdrawal: 10 } };
-const mockSettingsData = { client_tnc_status: '' };
-const mockWebsiteStatusData = { website_status: '' };
 const mockAuthenticationData = { is_poa_needed: false, is_poi_needed: false };
 const mockCashierValidationData = { ask_fix_details: false, self_exclusion: false, unwelcome_status: false };
+const mockSettingsData = { client_tnc_status: '' };
 const mockStatusData = {
     is_deposit_locked: false,
     is_financial_information_not_complete: false,
     is_trading_experience_not_complete: false,
 };
+const mockWebsiteStatusData = { website_status: '' };
 
 describe('DepositLocked', () => {
     afterEach(() => {

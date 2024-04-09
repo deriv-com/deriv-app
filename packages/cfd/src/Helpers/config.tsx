@@ -10,6 +10,7 @@ import {
     getCTraderWebTerminalLink,
     platformsText,
     platformsIcons,
+    // getPlatformDerivGoDownloadLink,
 } from './constants';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -23,6 +24,8 @@ export const mobileDownloadLink = (platform: TCFDsPlatformType, type: TMobilePla
             return getPlatformDXTradeDownloadLink(type);
         case CFD_PLATFORMS.CTRADER:
             return getPlatformCTraderDownloadLink(type);
+        // case CFD_PLATFORMS.DERIVGO:
+        //     return getPlatformDerivGoDownloadLink(type);
         default:
             return getPlatformDXTradeDownloadLink(type);
     }
@@ -37,6 +40,8 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
                 return 'https://onelink.to/grmtyx';
             case CFD_PLATFORMS.CTRADER:
                 return 'https://onelink.to/5jgj8z';
+            // case CFD_PLATFORMS.DERIVGO:
+            //     return 'https://static.deriv.com/scripts/storeRedirect?app=deriv-go';
             default:
                 return 'https://onelink.to/grmtyx';
         }

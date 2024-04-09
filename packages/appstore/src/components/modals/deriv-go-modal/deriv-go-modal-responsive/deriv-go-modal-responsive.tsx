@@ -11,6 +11,8 @@ export const DerivGoModalResponsive = observer(() => {
         setIsDerivGoModalVisible(false);
     };
 
+    // width for image is 72%
+
     return (
         <MobileDialog
             portal_element_id='modal_root'

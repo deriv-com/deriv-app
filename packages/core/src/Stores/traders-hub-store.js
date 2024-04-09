@@ -35,7 +35,7 @@ export default class TradersHubStore extends BaseStore {
     is_wallet_migration_failed = false;
     active_modal_tab;
     active_modal_wallet_id;
-    is_deriv_go_modal_visible = false;
+    is_deriv_go_modal_visible = true;
 
     constructor(root_store) {
         super({ root_store });

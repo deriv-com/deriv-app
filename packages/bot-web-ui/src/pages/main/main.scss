@@ -226,7 +226,7 @@
 .dashboard {
     &__chart-wrapper {
         position: relative;
-        height: var(--tab-content-height);
+        height: 100%;
         width: 100%;
         transition: all 0.4s;
 

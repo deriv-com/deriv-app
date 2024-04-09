@@ -10,13 +10,11 @@ type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
 };
 const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
-    let mobile_url;
-
     const mobileURLSet = () => {
-        mobile_url = window.location.replace(DEEP_LINK({ mt5_trade_account }));
+        window.location.replace(DEEP_LINK({ mt5_trade_account }));
 
         const timeout = setTimeout(() => {
-            mobile_url = window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);
+            window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);
         }, 1500);
 
         if (!isSafariBrowser() || (isSafariBrowser() && /Version\/17/.test(navigator.userAgent))) {
@@ -42,7 +40,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                     <Icon icon='IcChevronRight' size={16} />
                 </div>
             </a>
-            <a className='mt5-download-container--option blue' onClick={mobileURLSet} href={mobile_url}>
+            <button className='mt5-download-container--option blue' onClick={mobileURLSet}>
                 <div className='full-row'>
                     <Icon icon='IcMobileOutline' size={16} />
                     <Text align='left' size='xxs' weight='bold' className='title'>
@@ -50,7 +48,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
                     </Text>
                     <Icon icon='IcChevronRightLight' size={16} />
                 </div>
-            </a>
+            </button>
             <Text as='p' size='xxxxs'>
                 <Localize
                     i18n_default_text="Note: Don't have the MT5 app? Tap the <0>Trade with MT5 mobile app</0> button to download. Once you have

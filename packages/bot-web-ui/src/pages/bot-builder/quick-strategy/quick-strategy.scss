@@ -352,12 +352,13 @@
                 margin: 0;
                 padding: 0;
                 top: -3.4rem;
-                right: 4rem;
+                right: 6rem;
                 display: flex;
                 flex-direction: row-reverse;
 
                 @include mobile() {
                     top: -2.8rem;
+                    right: 4rem;
                 }
 
                 .dc-text {

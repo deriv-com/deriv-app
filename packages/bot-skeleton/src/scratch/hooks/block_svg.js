@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import DBotStore from '../dbot-store';
 import { save, isDarkRgbColour } from '../utils';
+import debounce from 'lodash.debounce';
 
 /**
  * Select this block.  Highlight it visually.
@@ -325,9 +326,9 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
  * @param {boolean} collapsed - Whether to collapse the block.
  */
 Blockly.BlockSvg.prototype.toggleCollapseWithDelay = function (collapsed) {
-    setTimeout(() => {
+    debounce(async () => {
         this.setCollapsed(collapsed);
-    }, 100);
+    }, 100)();
 };
 
 /**

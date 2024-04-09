@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
-import { getAppId, LocalStore } from '@deriv/shared';
+import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -26,7 +26,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
 
-    const { data } = useRemoteConfig();
+    const isMounted = useIsMounted();
+    const { data } = useRemoteConfig(isMounted());
     const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
 
     React.useEffect(() => {

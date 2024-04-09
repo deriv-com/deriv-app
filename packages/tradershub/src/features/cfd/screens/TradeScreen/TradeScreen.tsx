@@ -6,6 +6,7 @@ import { THooks, TPlatforms } from '@/types';
 import { DesktopLinks, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
+import MT5MobileRedirectOption from './MT5MobileRedirectOption';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
 
@@ -130,25 +131,24 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                     </Text>
                 </div>
             </div>
-            <div className='w-full'>
-                {platform === mt5Platform && (
-                    <Fragment>
-                        <TradeLink
-                            app={DesktopLinks.MT5_WEB}
-                            platform={mt5Platform}
-                            webtraderUrl={`${
-                                (details as THooks.MT5AccountsList)?.white_label_links.webtrader_url
-                            }?login=${details.display_login}&server=${details.server_info.environment}`}
-                        />
-                        {isDesktop && (
-                            <Fragment>
-                                <TradeLink app={DesktopLinks.MT5_WINDOWS} platform={mt5Platform} />
-                                <TradeLink app={DesktopLinks.MT5_MACOS} platform={mt5Platform} />
-                                <TradeLink app={DesktopLinks.MT5_LINUX} platform={mt5Platform} />
-                            </Fragment>
-                        )}
-                    </Fragment>
-                )}
+            <div className='w-full p-24'>
+                {platform === mt5Platform &&
+                    (isDesktop ? (
+                        <Fragment>
+                            <TradeLink
+                                app={DesktopLinks.MT5_WEB}
+                                platform={mt5Platform}
+                                webtraderUrl={`${details?.white_label_links.webtrader_url}?login=${details?.display_login}&server=${details?.server_info.environment}`}
+                            />
+
+                            <TradeLink app={DesktopLinks.MT5_WINDOWS} platform={mt5Platform} />
+                            <TradeLink app={DesktopLinks.MT5_MACOS} platform={mt5Platform} />
+                            <TradeLink app={DesktopLinks.MT5_LINUX} platform={mt5Platform} />
+                        </Fragment>
+                    ) : (
+                        <MT5MobileRedirectOption />
+                    ))}
+
                 {platform === dxtradePlatform && (
                     <TradeLink
                         app={DesktopLinks.DXTRADE_WEB}

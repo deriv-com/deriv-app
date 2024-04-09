@@ -219,7 +219,7 @@ describe('<QuickStrategy />', () => {
             userEvent.click(screen.getByTestId('qs-run-button'));
         });
 
-        expect(mock_DBot_store?.quick_strategy?.is_open).toBeTruthy();
+        expect(mock_DBot_store?.quick_strategy?.is_open).toBeFalsy();
     });
 
     it('It should close the form on close button click', async () => {

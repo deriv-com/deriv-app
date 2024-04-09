@@ -13,6 +13,14 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
 describe('<QSCheckbox />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mockSetIsEnabledToggleSwitch = jest.fn();
+
+    const mocked_props = {
+        name: 'max-stake',
+        label: 'Max Stake',
+        isEnabledToggleSwitch: false,
+        setIsEnabledToggleSwitch: mockSetIsEnabledToggleSwitch,
+    };
 
     beforeEach(() => {
         const mock_store = mockStore({
@@ -46,7 +54,7 @@ describe('<QSCheckbox />', () => {
     });
 
     it('should render QSToggleSwitch', () => {
-        const { container } = render(<QSToggleSwitch name='max-stake' label='Max Stake' />, {
+        const { container } = render(<QSToggleSwitch {...mocked_props} />, {
             wrapper,
         });
 
@@ -54,7 +62,7 @@ describe('<QSCheckbox />', () => {
     });
 
     it('should render description', () => {
-        render(<QSToggleSwitch name='max-stake' label='Max Stake' description='Max stake field mock description' />, {
+        render(<QSToggleSwitch {...mocked_props} description='Max stake field mock description' />, {
             wrapper,
         });
         userEvent.click(screen.getByTestId('dt_popover_wrapper'));
@@ -65,12 +73,20 @@ describe('<QSCheckbox />', () => {
     });
 
     it('should change value', () => {
-        render(<QSToggleSwitch name='boolean_max_stake' label='Max Stake' />, {
+        const modified_mocked_props = {
+            ...mocked_props,
+            name: 'boolean_max_stake',
+        };
+        const { container } = render(<QSToggleSwitch {...modified_mocked_props} />, {
             wrapper,
         });
-        const toggle_switch = screen.getByRole('checkbox', { name: 'toggle_switch' });
-        userEvent.click(toggle_switch);
-        expect(toggle_switch).toBeChecked();
+        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+        const label = container.querySelector('.dc-toggle-switch__label');
+        if (label) {
+            userEvent.click(label);
+        }
+
+        expect(mockSetIsEnabledToggleSwitch).toHaveBeenCalled();
         expect(screen.getByText('Max Stake')).toBeInTheDocument();
     });
 });

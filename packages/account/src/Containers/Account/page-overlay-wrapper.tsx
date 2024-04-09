@@ -24,7 +24,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { is_mobile } = ui;
-    const { logout } = client;
+    const { logout, passkeysTrackEvent } = client;
     const { is_from_derivgo } = common;
     const { is_next_wallet_enabled } = useFeatureFlags();
 
@@ -34,10 +34,13 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
         subitems: route_group?.subroutes?.length ? route_group.subroutes.map(sub => subroutes.indexOf(sub)) : [],
     }));
 
-    const onClickClose = React.useCallback(
-        () => (is_next_wallet_enabled ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub)),
-        [history, is_next_wallet_enabled]
-    );
+    const onClickClose = React.useCallback(() => {
+        if (location.pathname === shared_routes.passkeys) {
+            passkeysTrackEvent({ action: 'close' });
+        }
+
+        is_next_wallet_enabled ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub);
+    }, [history, is_next_wallet_enabled]);
 
     const selected_route = getSelectedRoute({ routes: subroutes as Array<TRoute>, pathname: location.pathname });
 

@@ -612,6 +612,10 @@ type TClientStore = {
     should_show_effortless_login_modal: boolean;
     setShouldShowEffortlessLoginModal: (value: boolean) => void;
     fetchShouldShowEffortlessLoginModal: () => void;
+    passkeysTrackEvent: (
+        { action, subform_name }: { action: string; subform_name?: string },
+        is_effortless_modal?: boolean
+    ) => void;
 };
 
 type TCommonStoreError = {

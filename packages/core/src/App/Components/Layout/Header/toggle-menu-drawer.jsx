@@ -50,6 +50,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_proof_of_ownership_enabled,
         is_eu,
         is_passkey_supported,
+        passkeysTrackEvent,
     } = client;
     const { cashier } = modules;
     const { payment_agent } = cashier;
@@ -233,7 +234,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_disabled={disableRoute(subroute.path) || subroute.is_disabled}
                                         link_to={subroute.path}
                                         text={subroute.getTitle()}
-                                        onClickLink={toggleDrawer}
+                                        onClickLink={() => {
+                                            toggleDrawer();
+                                            if (subroute.path === routes.passkeys) {
+                                                passkeysTrackEvent({ action: 'open' });
+                                            }
+                                        }}
                                         is_hidden={hideRoute(subroute.path)}
                                     />
                                 ))}

@@ -118,4 +118,4 @@ jobs:
         uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
         with:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          MESSAGE: "$RELEASE_TYPE Docker Publish and Kubernetes Deployment for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }} has Failed"
+          MESSAGE: "${{ env.RELEASE_TYPE }} Docker Publish and Kubernetes Deployment for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }} has Failed"

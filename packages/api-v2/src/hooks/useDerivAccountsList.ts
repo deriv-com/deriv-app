@@ -4,16 +4,23 @@ import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
 import useCurrencyConfig from './useCurrencyConfig';
 import { displayMoney } from '../utils';
+import useAuthorizedQuery from '../useAuthorizedQuery';
 
 /** A custom hook that returns the list of accounts for the current user. */
 const useDerivAccountsList = () => {
-    const { data: authorize_data, isSuccess } = useAuthorize();
-    const { data: account_list_data, ...rest } = useQuery('account_list', {
-        options: {
-            enabled: isSuccess,
-            refetchOnWindowFocus: false,
+    const { data: authorize_data } = useAuthorize();
+
+    // account list is pretty much constant so cache it for 10 minutes
+
+    const { data: account_list_data, ...rest } = useAuthorizedQuery(
+        'account_list',
+        undefined,
+        {
+            staleTime: 10 * 60 * 1000, // 10 minutes
         },
-    });
+        false
+    );
+
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
 

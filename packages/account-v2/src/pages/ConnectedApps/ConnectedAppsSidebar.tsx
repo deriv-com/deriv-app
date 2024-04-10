@@ -12,6 +12,7 @@ export const ConnectedAppsSidebar = () => {
                 actionLabel='Learn more'
                 className='w-auto text-sm'
                 title='Want to know more about APIs?'
+                titleClassName='mb-8'
             >
                 Go to our Deriv community and learn about APIs, API tokens, ways to use Deriv APIs, and more.
             </SideNote>
@@ -21,6 +22,7 @@ export const ConnectedAppsSidebar = () => {
                 actionLabel='Learn more'
                 className='w-auto text-sm'
                 title='Earn more with Deriv API'
+                titleClassName='mb-8'
             >
                 Use our powerful, flexible, and free API to build a custom trading platform for yourself or for your
                 business.

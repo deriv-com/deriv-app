@@ -79,6 +79,7 @@ export type TRoute = {
     component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
     getTitle?: () => string;
     is_disabled?: boolean;
+    is_hidden?: boolean;
     subroutes?: TRoute[];
 };
 

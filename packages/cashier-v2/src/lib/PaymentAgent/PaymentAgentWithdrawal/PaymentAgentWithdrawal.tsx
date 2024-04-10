@@ -37,7 +37,11 @@ const PaymentAgentWithdrawal = () => {
                 Choose your preferred payment agent and enter your withdrawal amount. If your payment agent is not
                 listed,{' '}
                 <Text className={styles['unlisted-withdrawal-link']} color='red' size='sm' weight='bold'>
-                    <span onClick={showUnlistedWithdrawalForm} onKeyDown={showUnlistedWithdrawalForm}>
+                    <span
+                        data-testid='dt_unlisted_withdrawal_link'
+                        onClick={showUnlistedWithdrawalForm}
+                        onKeyDown={showUnlistedWithdrawalForm}
+                    >
                         search for them using their account number
                     </span>
                 </Text>

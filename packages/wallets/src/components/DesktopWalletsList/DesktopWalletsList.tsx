@@ -3,7 +3,7 @@ import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/
 import { AccountsList } from '../AccountsList';
 import { WalletsCardLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';
-import { WalletsCard } from '../WalletsCard';
+import { WalletsContainer } from '../WalletsContainer';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
@@ -17,12 +17,12 @@ const DesktopWalletsList: React.FC = () => {
         <div className='wallets-desktop-wallets-list'>
             {isLoading && <WalletsCardLoader />}
             {!isLoading && (
-                <WalletsCard
+                <WalletsContainer
                     key={activeWallet && `wallets-card-${activeWallet?.loginid}`}
                     renderHeader={() => <WalletListCard />}
                 >
                     <AccountsList />
-                </WalletsCard>
+                </WalletsContainer>
             )}
         </div>
     );

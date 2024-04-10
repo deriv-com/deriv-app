@@ -38,15 +38,20 @@ const Passkeys = observer(() => {
     });
 
     React.useEffect(() => {
-        if (!passkeys_list?.length && !is_passkey_registered) {
+        if (is_passkeys_list_loading) return;
+        if (!passkeys_list?.length) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);
-        } else if (is_passkey_registered) {
-            passkeysTrackActionEvent({ action: 'create_passkey_finished' });
-            setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
         } else {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
         }
-    }, [is_passkey_registered, passkeys_list?.length]);
+    }, [is_passkeys_list_loading]);
+
+    React.useEffect(() => {
+        if (is_passkey_registered) {
+            passkeysTrackActionEvent({ action: 'create_passkey_finished' });
+            setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+        }
+    }, [is_passkey_registered]);
 
     React.useEffect(() => {
         if (!!error || is_passkey_registration_started) {

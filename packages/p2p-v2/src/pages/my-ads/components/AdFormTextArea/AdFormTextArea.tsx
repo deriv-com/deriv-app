@@ -19,7 +19,7 @@ const AdFormTextArea = ({ field, hint = '', label, name, required = false }: TAd
             control={control}
             name={name}
             render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                <div className='px-[1.6rem] mb-[2.4rem] lg:px-[2.4rem] p2p-v2-ad-form-textarea'>
+                <div className='mb-[2.4rem] p2p-v2-ad-form-textarea'>
                     <TextArea
                         hint={error ? error.message : hint}
                         isInvalid={!!error}

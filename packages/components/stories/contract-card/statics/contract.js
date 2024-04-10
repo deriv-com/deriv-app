@@ -183,13 +183,11 @@ export const getSupportedContracts = is_high_low => ({
         position: 'bottom',
     },
     TURBOSLONG: {
-        button_name: 'Up',
-        name: 'Turbos',
+        name: 'Up',
         position: 'top',
     },
     TURBOSSHORT: {
-        button_name: 'Down',
-        name: 'Turbos',
+        name: 'Down',
         position: 'bottom',
     },
     RUNHIGH: {

@@ -21,10 +21,12 @@ const useWalletMigration = () => {
         is_migrated: wallet_migration_state === 'migrated',
         /** A boolean to check if the status is failed */
         is_failed: wallet_migration_state === 'failed',
+        /** A boolean to check if migration is happening */
+        is_migrating: false,
         /** Sends a request to wallet_migration API to start the migration process */
-        start_migration: startWalletMigration,
+        startMigration: startWalletMigration,
         /** Sends a request to wallet_migration API to reset the migration process */
-        reset_migration: resetWalletMigration,
+        resetMigration: resetWalletMigration,
     };
 };
 

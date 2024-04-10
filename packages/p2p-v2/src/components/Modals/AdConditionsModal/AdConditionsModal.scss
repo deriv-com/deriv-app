@@ -1,0 +1,8 @@
+.p2p-v2-ad-conditions-modal {
+    border-radius: 8px;
+    width: 44rem;
+    height: fit-content;
+    @include mobile {
+        max-width: calc(100vw - 3.2rem);
+    }
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { TSocketError } from '@deriv/api/types';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { mobileOSDetect } from '@deriv/shared';
@@ -109,7 +110,11 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     };
 };
 
-type TGetModalContent = { error: TServerError | null; is_passkey_registration_started: boolean };
+// TODO: fix types for TServerError and TSocketError
+type TGetModalContent = {
+    error: TServerError | null | TSocketError<'passkeys_list' | 'passkeys_register' | 'passkeys_register_options'>;
+    is_passkey_registration_started: boolean;
+};
 
 export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
     if (is_passkey_registration_started) {
@@ -127,7 +132,7 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
     }
 
     return {
-        description: error?.message ?? '',
+        description: (error as TServerError)?.message ?? '',
         button_text: error ? <Localize i18n_default_text='Try again' /> : undefined,
     };
 };

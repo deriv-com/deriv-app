@@ -119,6 +119,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (activeWallet) {
             setSelectedLoginId(activeWallet?.loginid);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeWallet?.loginid]);
 
     // bind to embla events

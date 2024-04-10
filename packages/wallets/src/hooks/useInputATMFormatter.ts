@@ -38,12 +38,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
     const [caret, setCaret] = useState<number>(); // counting from right
     useEffect(() => {
         if (caret && caretNeedsRepositioning && input) {
-            const indexBeforeCaret = formattedValue.length - 1 - caret;
-
-            // if before a comma or period, prefer positioning the caret to the left of it
-            const newCaretPosition = getSeparatorRegex().test(formattedValue[indexBeforeCaret])
-                ? indexBeforeCaret
-                : indexBeforeCaret + 1;
+            const newCaretPosition = formattedValue.length - caret;
 
             input.setSelectionRange(newCaretPosition, newCaretPosition);
             setCaretNeedsRepositioning(false);
@@ -62,64 +57,70 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
         [input, maxDigits]
     );
 
-    const handleNewValue = useCallback(
-        (newValue: string) => {
-            if (!input) return;
+    const handleNewValue = useCallback(() => {
+        if (!input) return;
 
-            // if newValue has no separator, an integer val is being handled (and edited by the user).
-            // This would require setting the caret to the end of the integer part of the input val
-            const hasSeparator = getSeparatorRegex().test(newValue);
-            const integerEditingCaretOffset = !!newValue && !hasSeparator ? fractionDigits : 0;
+        // ignore non-digit changes
+        const hasNoChangeInDigits =
+            input.value.length + 1 === prevFormattedValue.length &&
+            input.value.replaceAll(getSeparatorRegex(), '') === prevFormattedValue.replaceAll(getSeparatorRegex(), '');
+        if (hasNoChangeInDigits) return;
 
-            const newCaretPosition = input.value.length - (input.selectionStart ?? 0) + integerEditingCaretOffset;
-            setCaret(newCaretPosition);
-            setCaretNeedsRepositioning(true);
+        // if newValue has no separator, an integer val is being handled (and edited by the user).
+        // This would require setting the caret to the end of the integer part of the input val
+        const hasSeparator = getSeparatorRegex().test(input.value);
+        const integerEditingCaretOffset = !!input.value && !hasSeparator ? fractionDigits + 1 : 0;
 
-            const hasNoChangeInDigits =
-                input.value.length + 1 === prevFormattedValue.length &&
-                input.value.replaceAll(getSeparatorRegex(), '') ===
-                    prevFormattedValue.replaceAll(getSeparatorRegex(), '');
-            if (hasNoChangeInDigits) return;
+        let newCaretPosition = input.value.length - (input.selectionStart ?? 0) + integerEditingCaretOffset;
 
-            const unformatted = unFormatLocaleString(newValue, locale);
-            const shifted = (Number(unformatted) * 10).toFixed(fractionDigits);
-            const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
-            const unformattedFraction = unformatted.split('.')?.[1]?.length || fractionDigits;
+        const caretInFractions = hasSeparator && newCaretPosition <= fractionDigits;
+        if (caretInFractions && newCaretPosition > 0 && input.value[input.value.length - newCaretPosition] === '0') {
+            input.value =
+                input.value.slice(0, input.value.length - newCaretPosition) +
+                input.value.slice(input.value.length - newCaretPosition + 1);
+            newCaretPosition--;
+        }
 
-            // The new value has one more decimal places than the fraction digits,
-            // so we need to shift the decimal point to the left.
-            if (unformattedFraction - 1 === fractionDigits) {
-                return onChangeDecimal({ target: { value: shifted } });
-            }
+        setCaret(newCaretPosition);
+        setCaretNeedsRepositioning(true);
 
-            // The new value has one less decimal places than the fraction digits,
-            // so we need to shift the decimal point to the right.
-            if (unformattedFraction + 1 === fractionDigits) {
-                return onChangeDecimal({ target: { value: unShifted } });
-            }
+        const unformatted = unFormatLocaleString(input.value, locale);
+        const shifted = (Number(unformatted) * 10).toFixed(fractionDigits);
+        const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
+        const unformattedFraction = unformatted.split('.')?.[1]?.length || fractionDigits;
 
-            // The new value has the same number of decimal places as the fraction digits,
-            // so we don't need to shift the decimal point.
-            if (unformattedFraction === fractionDigits) {
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
+        // The new value has one more decimal places than the fraction digits,
+        // so we need to shift the decimal point to the left.
+        if (unformattedFraction - 1 === fractionDigits) {
+            return onChangeDecimal({ target: { value: shifted } });
+        }
 
-            // The new value has more decimal places than the fraction digits,
-            // so we chop the extra decimal points.
-            if (unformattedFraction - 1 > fractionDigits) {
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
+        // The new value has one less decimal places than the fraction digits,
+        // so we need to shift the decimal point to the right.
+        if (unformattedFraction + 1 === fractionDigits) {
+            return onChangeDecimal({ target: { value: unShifted } });
+        }
 
-            // The new value has less decimal places than the fraction digits,
-            // so we add the missing extra decimal point.
-            if (unformattedFraction + 1 < fractionDigits) {
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
-
+        // The new value has the same number of decimal places as the fraction digits,
+        // so we don't need to shift the decimal point.
+        if (unformattedFraction === fractionDigits) {
             return onChangeDecimal({ target: { value: unformatted } });
-        },
-        [input, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
-    );
+        }
+
+        // The new value has more decimal places than the fraction digits,
+        // so we chop the extra decimal points.
+        if (unformattedFraction - 1 > fractionDigits) {
+            return onChangeDecimal({ target: { value: unformatted } });
+        }
+
+        // The new value has less decimal places than the fraction digits,
+        // so we add the missing extra decimal point.
+        if (unformattedFraction + 1 < fractionDigits) {
+            return onChangeDecimal({ target: { value: unformatted } });
+        }
+
+        return onChangeDecimal({ target: { value: unformatted } });
+    }, [input, prevFormattedValue, locale, fractionDigits, onChangeDecimal]);
 
     const onChange = useCallback(
         (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
@@ -147,7 +148,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
                     return onChangeDecimal({ target: { value: unFormatLocaleString(pastedValueFormatted, locale) } });
             } else {
                 if (checkExceedsMaxDigits(newValue)) return;
-                handleNewValue(newValue);
+                handleNewValue();
             }
         },
         [checkExceedsMaxDigits, fractionDigits, handleNewValue, locale, onChangeDecimal]

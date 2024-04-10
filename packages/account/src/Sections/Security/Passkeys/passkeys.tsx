@@ -46,7 +46,7 @@ const Passkeys = observer(() => {
         } else {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
         }
-    }, [is_passkey_registered, passkeys_list]);
+    }, [is_passkey_registered, passkeys_list?.length]);
 
     React.useEffect(() => {
         if (!!error || is_passkey_registration_started) {

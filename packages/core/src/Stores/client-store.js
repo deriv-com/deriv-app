@@ -1778,6 +1778,7 @@ export default class ClientStore extends BaseStore {
                       utm_source: 'no source',
                       utm_medium: 'no medium',
                       utm_campaign: 'no campaign',
+                      utm_content: 'no content',
                   }
                 : Cookies.getJSON('utm_data');
         const broker = LocalStore?.get('active_loginid')
@@ -1795,6 +1796,7 @@ export default class ClientStore extends BaseStore {
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
+                utm_content: ppc_campaign_cookies?.utm_content,
             });
         }, 4);
 

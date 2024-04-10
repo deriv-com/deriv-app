@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import useAuthorizedQuery from '../useAuthorizedQuery';
-import useAuthorize from './useAuthorize';
 
 /** A custom hook that gets the balance for all the user accounts. */
 const useBalance = () => {

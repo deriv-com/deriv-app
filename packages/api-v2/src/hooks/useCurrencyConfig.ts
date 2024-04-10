@@ -1,5 +1,4 @@
 import { useCallback, useMemo } from 'react';
-import useAuthorize from './useAuthorize';
 import useWebsiteStatus from './useWebsiteStatus';
 import useCryptoConfig from './useCryptoConfig';
 

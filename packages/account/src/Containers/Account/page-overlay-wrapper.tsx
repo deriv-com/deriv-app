@@ -24,7 +24,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { is_mobile } = ui;
-    const { logout, passkeysTrackEvent } = client;
+    const { logout, passkeysTrackActionEvent } = client;
     const { is_from_derivgo } = common;
     const { is_next_wallet_enabled } = useFeatureFlags();
 
@@ -36,7 +36,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
 
     const onClickClose = React.useCallback(() => {
         if (location.pathname === shared_routes.passkeys) {
-            passkeysTrackEvent({ action: 'close' });
+            passkeysTrackActionEvent({ action: 'close' });
         }
 
         is_next_wallet_enabled ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub);

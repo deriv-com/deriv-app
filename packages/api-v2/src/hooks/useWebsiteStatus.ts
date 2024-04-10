@@ -6,7 +6,7 @@ const useWebsiteStatus = () => {
         'website_status',
         {},
         {
-            staleTime: 10 * 60 * 1000,
+            staleTime: Infinity,
         },
         false
     );

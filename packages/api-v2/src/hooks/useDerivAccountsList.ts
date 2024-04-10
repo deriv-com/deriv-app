@@ -16,7 +16,7 @@ const useDerivAccountsList = () => {
         'account_list',
         undefined,
         {
-            staleTime: 10 * 60 * 1000, // 10 minutes
+            staleTime: Infinity,
         },
         false
     );

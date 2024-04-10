@@ -7,7 +7,6 @@ import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
 import PasskeysList from '../components/passkeys-list';
-import { beforeEach } from '@jest/globals';
 
 const passkey_name_1 = 'Test Passkey 1';
 const passkey_name_2 = 'Test Passkey 2';
@@ -57,9 +56,10 @@ describe('Passkeys', () => {
     beforeEach(() => {
         mock_store = mockStore({
             ui: { is_mobile: true },
-            client: { is_passkey_supported: true },
+            client: { is_passkey_supported: true, passkeysTrackActionEvent: jest.fn() },
             common: { network_status: { class: 'online' } },
         });
+        jest.clearAllMocks();
     });
 
     afterAll(() => {
@@ -101,6 +101,7 @@ describe('Passkeys', () => {
         const create_passkey_button = screen.getByRole('button', { name: create_passkey });
         userEvent.click(create_passkey_button);
         expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
+        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(1);
     });
     it("renders 'Experience safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
@@ -124,6 +125,7 @@ describe('Passkeys', () => {
         const create_passkey_button = screen.getByRole('button', { name: create_passkey });
         userEvent.click(create_passkey_button);
         expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
+        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(2);
     });
     it('renders success screen when new passkeys created', () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
@@ -152,10 +154,10 @@ describe('Passkeys', () => {
 
         expect(screen.queryByText(passkey_name_1)).not.toBeInTheDocument();
         expect(screen.queryByText(passkey_name_2)).not.toBeInTheDocument();
-
-        mock_store.ui.is_mobile = true;
     });
+
     it('renders loader if passkeys list is loading', () => {
+        mock_store.ui.is_mobile = true;
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             is_passkeys_list_loading: true,
         });
@@ -188,7 +190,6 @@ describe('Passkeys', () => {
             is_passkeys_list_loading: false,
         });
         mock_store.client.is_passkey_supported = true;
-        // mock_store.common.network_status.class = 'online';
 
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             createPasskey: mockCreatePasskey,
@@ -204,6 +205,7 @@ describe('Passkeys', () => {
         const continue_button = screen.getByRole('button', { name: /continue/i });
         userEvent.click(continue_button);
         expect(mockCreatePasskey).toBeCalledTimes(1);
+        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(1);
     });
     it('renders passkeys registration error modal and triggers closing', async () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
@@ -223,6 +225,7 @@ describe('Passkeys', () => {
         await waitFor(() => {
             expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
         });
+        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(1);
     });
     it('renders passkeys list error modal and triggers closing', async () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
@@ -246,5 +249,6 @@ describe('Passkeys', () => {
         await waitFor(() => {
             expect(mockReloadPasskeysList).toBeCalledTimes(1);
         });
+        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(1);
     });
 });

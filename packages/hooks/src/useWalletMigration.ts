@@ -6,7 +6,12 @@ import { useStore } from '@deriv/stores';
  */
 const useWalletMigration = () => {
     const { client } = useStore();
-    const { wallet_migration_state, startWalletMigration, resetWalletMigration } = client;
+    const {
+        wallet_migration_state,
+        startWalletMigration,
+        resetWalletMigration,
+        is_wallet_migration_request_is_in_progress,
+    } = client;
 
     return {
         /** The status of the wallet_migration API */
@@ -22,7 +27,7 @@ const useWalletMigration = () => {
         /** A boolean to check if the status is failed */
         is_failed: wallet_migration_state === 'failed',
         /** A boolean to check if migration is happening */
-        is_migrating: false,
+        is_migrating: is_wallet_migration_request_is_in_progress,
         /** Sends a request to wallet_migration API to start the migration process */
         startMigration: startWalletMigration,
         /** Sends a request to wallet_migration API to reset the migration process */

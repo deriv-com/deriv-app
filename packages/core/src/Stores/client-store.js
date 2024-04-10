@@ -154,6 +154,7 @@ export default class ClientStore extends BaseStore {
     real_account_signup_form_step = 0;
     wallet_migration_state;
     wallet_migration_interval_id;
+    is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
     should_show_effortless_login_modal = false;
@@ -230,6 +231,7 @@ export default class ClientStore extends BaseStore {
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
             wallet_migration_state: observable,
+            is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
             should_show_effortless_login_modal: observable,
             balance: computed,
@@ -2679,19 +2681,33 @@ export default class ClientStore extends BaseStore {
         this.wallet_migration_state = state;
     }
 
+    setIsWalletMigrationRequestIsInProgress(value) {
+        this.is_wallet_migration_request_is_in_progress = value;
+    }
+
     async getWalletMigrationState() {
         const response = await WS.authorized.getWalletMigrationState();
         if (response?.wallet_migration?.state) this.setWalletMigrationState(response?.wallet_migration?.state);
     }
 
     async startWalletMigration() {
-        await WS.authorized.startWalletMigration();
-        this.getWalletMigrationState();
+        this.setIsWalletMigrationRequestIsInProgress(true);
+        try {
+            await WS.authorized.startWalletMigration();
+            this.getWalletMigrationState();
+        } finally {
+            this.setIsWalletMigrationRequestIsInProgress(false);
+        }
     }
 
     async resetWalletMigration() {
-        await WS.authorized.resetWalletMigration();
-        this.getWalletMigrationState();
+        this.setIsWalletMigrationRequestIsInProgress(true);
+        try {
+            await WS.authorized.resetWalletMigration();
+            this.getWalletMigrationState();
+        } finally {
+            this.setIsWalletMigrationRequestIsInProgress(false);
+        }
     }
 
     async setIsPasskeySupported() {

@@ -610,6 +610,7 @@ type TClientStore = {
     wallet_migration_state?: 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
     startWalletMigration: () => void;
     resetWalletMigration: () => void;
+    is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
     should_show_effortless_login_modal: boolean;

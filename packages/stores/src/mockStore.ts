@@ -304,6 +304,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             wallet_migration_state: 'ineligible',
             startWalletMigration: jest.fn(),
             resetWalletMigration: jest.fn(),
+            is_wallet_migration_request_is_in_progress: false,
             is_passkey_supported: false,
             should_show_effortless_login_modal: false,
             setIsPasskeySupported: jest.fn(),

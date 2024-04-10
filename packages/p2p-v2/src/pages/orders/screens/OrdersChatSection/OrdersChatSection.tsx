@@ -17,6 +17,7 @@ const OrdersChatSection = ({ id, isInactive, onReturn, otherUserDetails }: TOrde
     const { is_online: isOnline, last_online_time: lastOnlineTime, name } = otherUserDetails ?? {};
     const { activeChatChannel, isChatLoading, isError, messages, refreshChat, sendFile, sendMessage, userId } =
         useSendbird(id);
+    const isChannelClosed = isInactive || !!activeChatChannel?.isFrozen;
 
     if (isError) {
         return (
@@ -33,11 +34,7 @@ const OrdersChatSection = ({ id, isInactive, onReturn, otherUserDetails }: TOrde
                 //TODO: handle goback based on route
                 onBack={onReturn}
                 renderFooter={() => (
-                    <ChatFooter
-                        isClosed={isInactive || !!activeChatChannel?.isFrozen}
-                        sendFile={sendFile}
-                        sendMessage={sendMessage}
-                    />
+                    <ChatFooter isClosed={isChannelClosed} sendFile={sendFile} sendMessage={sendMessage} />
                 )}
                 renderHeader={() => <ChatHeader isOnline={isOnline} lastOnlineTime={lastOnlineTime} nickname={name} />}
             >
@@ -59,11 +56,7 @@ const OrdersChatSection = ({ id, isInactive, onReturn, otherUserDetails }: TOrde
                     <LightDivider className='w-full' />
                     <ChatMessages chatChannel={activeChatChannel} chatMessages={messages} userId={userId} />
                     <LightDivider className='w-full' />
-                    <ChatFooter
-                        isClosed={!!otherUserDetails?.isInactive || !!activeChatChannel?.isFrozen}
-                        sendFile={sendFile}
-                        sendMessage={sendMessage}
-                    />
+                    <ChatFooter isClosed={isChannelClosed} sendFile={sendFile} sendMessage={sendMessage} />
                 </>
             )}
         </div>

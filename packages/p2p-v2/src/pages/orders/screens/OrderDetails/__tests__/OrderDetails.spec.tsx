@@ -17,6 +17,9 @@ jest.mock('react-router-dom', () => ({
     useLocation: () => ({
         search: mockSearch,
     }),
+    useParams: () => ({
+        orderId: '1',
+    }),
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -29,9 +32,10 @@ jest.mock('@deriv/api-v2', () => ({
         order: {
             useGet: jest.fn().mockReturnValue({
                 data: {},
-                failureReason: {},
-                isError: false,
+                error: undefined,
                 isLoading: true,
+                subscribe: jest.fn(),
+                unsubscribe: jest.fn(),
             }),
         },
     },
@@ -39,6 +43,9 @@ jest.mock('@deriv/api-v2', () => ({
         data: {
             currency: 'USD',
         },
+    })),
+    useAuthorize: jest.fn(() => ({
+        isSuccess: true,
     })),
     useServerTime: jest.fn(() => ({
         data: {
@@ -80,6 +87,18 @@ const mockUseExtendedOrderDetails = useExtendedOrderDetails as jest.Mock;
 
 describe('<OrderDetails />', () => {
     it('should show loading screen if isLoading is true', () => {
+        render(<OrderDetails />);
+
+        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
+    });
+
+    it('should show loading screen if orderInfo is undefined and error is undefined', () => {
+        mockUseGet.mockReturnValue({
+            ...mockUseGet(),
+            data: undefined,
+            isLoading: false,
+        });
+
         render(<OrderDetails orderId='1' />);
 
         expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
@@ -87,11 +106,11 @@ describe('<OrderDetails />', () => {
 
     it('should render Desktop view if isMobile is false', () => {
         mockUseGet.mockReturnValue({
+            ...mockUseGet(),
             data: {},
-            isLoading: false,
         });
 
-        render(<OrderDetails orderId='1' />);
+        render(<OrderDetails />);
 
         expect(screen.getByText('Buy USD order')).toBeInTheDocument();
         expect(
@@ -103,7 +122,7 @@ describe('<OrderDetails />', () => {
     });
 
     it('should call goBack when back button is clicked', () => {
-        render(<OrderDetails orderId='1' />);
+        render(<OrderDetails />);
 
         const backButton = screen.getByTestId('dt_p2p_v2_page_return_btn');
         userEvent.click(backButton);
@@ -114,7 +133,7 @@ describe('<OrderDetails />', () => {
     it('should render Mobile view if isMobile is true', () => {
         mockUseDevice.mockReturnValue({ isMobile: true });
 
-        render(<OrderDetails orderId='1' />);
+        render(<OrderDetails />);
 
         expect(screen.getByText('Buy USD order')).toBeInTheDocument();
         expect(screen.getByText('OrderDetailsCard')).toBeInTheDocument();
@@ -123,7 +142,7 @@ describe('<OrderDetails />', () => {
     });
 
     it('should show OrdersChatSection if Chat icon is clicked', () => {
-        render(<OrderDetails orderId='1' />);
+        render(<OrderDetails />);
 
         const chatButton = screen.getByTestId('dt_p2p_v2_order_details_chat_button');
         userEvent.click(chatButton);
@@ -136,7 +155,7 @@ describe('<OrderDetails />', () => {
     it('should call goBack when back button is clicked in mobile view and showChat is true in search param', () => {
         mockSearch = '?showChat=true';
 
-        render(<OrderDetails orderId='1' />);
+        render(<OrderDetails />);
 
         const backButton = screen.getByTestId('dt_p2p_v2_mobile_wrapper_button');
         userEvent.click(backButton);
@@ -148,26 +167,27 @@ describe('<OrderDetails />', () => {
 
     it('should show Sell USD order if isBuyOrderForUser is false', () => {
         mockUseExtendedOrderDetails.mockReturnValue({
+            ...mockUseGet(),
             data: {
                 isBuyOrderForUser: false,
                 shouldShowLostFundsBanner: true,
             },
         });
 
-        render(<OrderDetails orderId='1' />);
+        render(<OrderDetails />);
 
         expect(screen.getByText('Sell USD order')).toBeInTheDocument();
     });
 
     it('should show error message if isError is true', () => {
         mockUseGet.mockReturnValue({
+            ...mockUseGet(),
             data: {},
-            failureReason: { error: { message: 'error message' } },
-            isError: true,
+            error: { message: 'error message' },
             isLoading: false,
         });
 
-        render(<OrderDetails orderId='1' />);
+        render(<OrderDetails />);
 
         expect(screen.getByText('error message')).toBeInTheDocument();
     });

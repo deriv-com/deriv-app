@@ -18,8 +18,8 @@ jest.mock('@deriv/api-v2', () => ({
     useAuthentication: jest.fn(),
     useCashierValidation: jest.fn(),
     useQuery: jest.fn(),
-    useWebsiteStatus: jest.fn(),
     useSettings: jest.fn(),
+    useWebsiteStatus: jest.fn(),
 }));
 
 jest.mock('../DepositLockedContent', () => ({

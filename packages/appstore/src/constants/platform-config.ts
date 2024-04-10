@@ -81,3 +81,29 @@ export const DERIV_PLATFORM_NAMES = {
     BBOT: 'Binary Bot',
     GO: 'Deriv GO',
 } as const;
+
+export const MOBILE_PLATFORMS = {
+    IOS: 'ios',
+    HAUWEI: 'huawei',
+    ANDROID: 'android',
+} as const;
+
+type TMobilePlatforms = typeof MOBILE_PLATFORMS[keyof typeof MOBILE_PLATFORMS];
+
+const DERIVGO_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go-online-trading-app/id1550561298';
+const DERIVGO_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app';
+const DERIVGO_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C103801913';
+export const DERIVGO_QRCODE_APP_URL = 'https://static.deriv.com/scripts/storeRedirect?app=deriv-go';
+
+export const getPlatformDerivGoDownloadLink = (platform: TMobilePlatforms) => {
+    switch (platform) {
+        case MOBILE_PLATFORMS.IOS:
+            return DERIVGO_IOS_APP_URL;
+        case MOBILE_PLATFORMS.HAUWEI:
+            return DERIVGO_HUAWEI_APP_URL;
+        case MOBILE_PLATFORMS.ANDROID:
+            return DERIVGO_ANDROID_APP_URL;
+        default:
+            return '';
+    }
+};

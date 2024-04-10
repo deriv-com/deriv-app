@@ -11,11 +11,12 @@ import {
 import { WalletsActionScreen } from '../../../../components';
 import getDepositLockedDesc from './DepositLockedContent';
 import './DepositLocked.scss';
+import useWebsiteStatus from '@deriv/api-v2/src/hooks/useWebsiteStatus';
 
 const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: settings } = useSettings();
-    const { data: websiteStatus } = useQuery('website_status');
+    const { data: websiteStatus } = useWebsiteStatus();
     const { data: authentication } = useAuthentication();
     const { data: cashierValidation } = useCashierValidation();
     const { data: status } = useAccountStatus();

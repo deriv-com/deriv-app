@@ -1,19 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
+import useWebsiteStatus from './useWebsiteStatus';
 
 /** A custom hook to get the currency config information from `website_status` endpoint and `crypto_config` endpoint. */
 const useCurrencyConfig = () => {
     const { isSuccess } = useAuthorize();
-    const {
-        data: website_status_data,
-        isLoading: isWebsiteStatusLoading,
-        ...rest
-    } = useQuery('website_status', {
-        options: {
-            enabled: isSuccess,
-        },
-    });
+    const { data: website_status_data, isLoading: isWebsiteStatusLoading, ...rest } = useWebsiteStatus();
     const { data: crypto_config_data, isLoading: isCryptConfigLoading } = useQuery('crypto_config', {
         options: {
             enabled: isSuccess,

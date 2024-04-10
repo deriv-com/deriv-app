@@ -44,6 +44,8 @@ const useRegisterPasskey = () => {
                 if (passkeys_register_response?.passkeys_register?.properties?.name) {
                     invalidate('passkeys_list');
                     setIsPasskeyRegistered(true);
+                } else if (passkeys_register_response?.error) {
+                    setPasskeyRegistrationError(passkeys_register_response?.error);
                 }
             }
         } catch (e) {

@@ -65,10 +65,6 @@ const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=c
 
 const CTRADER_URL = is_staging || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
 
-const DERIVGO_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go-online-trading-app/id1550561298';
-const DERIVGO_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app';
-const DERIVGO_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C103801913';
-
 const getTopUpConfig = () => {
     return {
         minimum_amount: 1000,
@@ -110,19 +106,6 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
             return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
         case MOBILE_PLATFORMS.HAUWEI:
             return 'https://appgallery.huawei.com/#/app/C102015329';
-        default:
-            return '';
-    }
-};
-
-const getPlatformDerivGoDownloadLink = (platform?: TMobilePlatforms) => {
-    switch (platform) {
-        case MOBILE_PLATFORMS.IOS:
-            return DERIVGO_IOS_APP_URL;
-        case MOBILE_PLATFORMS.HAUWEI:
-            return DERIVGO_HUAWEI_APP_URL;
-        case MOBILE_PLATFORMS.ANDROID:
-            return DERIVGO_ANDROID_APP_URL;
         default:
             return '';
     }
@@ -225,7 +208,6 @@ export {
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
     getPlatformMt5DownloadLink,
-    getPlatformDerivGoDownloadLink,
     CTRADER_DESKTOP_MAC_DOWNLOAD,
     CTRADER_DESKTOP_WINDOWS_DOWNLOAD,
     getDXTradeWebTerminalLink,

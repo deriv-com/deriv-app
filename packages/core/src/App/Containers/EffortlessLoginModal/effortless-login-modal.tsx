@@ -16,14 +16,14 @@ const EffortlessLoginModal = observer(() => {
     const portal_element = document.getElementById('effortless_modal_root');
     const history = useHistory();
     const { client } = useStore();
-    const { setShouldShowEffortlessLoginModal, passkeysTrackEvent } = client;
+    const { setShouldShowEffortlessLoginModal, passkeysTrackActionEvent } = client;
 
     React.useEffect(() => {
         if (!portal_element) return;
-        passkeysTrackEvent({ action: 'open' }, true);
+        passkeysTrackActionEvent({ action: 'open' }, true);
 
         const track_close = () => {
-            passkeysTrackEvent({ action: 'close' }, true);
+            passkeysTrackActionEvent({ action: 'close' }, true);
         };
         window.addEventListener('beforeunload', track_close);
         return () => {
@@ -35,12 +35,12 @@ const EffortlessLoginModal = observer(() => {
         localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
         history.push(route);
         setShouldShowEffortlessLoginModal(false);
-        passkeysTrackEvent({ action: action_event }, true);
+        passkeysTrackActionEvent({ action: action_event }, true);
     };
 
     const onLearnMoreClick = () => {
         setIsLearnMoreOpened(true);
-        passkeysTrackEvent({ action: 'info_open' }, true);
+        passkeysTrackActionEvent({ action: 'info_open' }, true);
     };
 
     if (!portal_element) return null;

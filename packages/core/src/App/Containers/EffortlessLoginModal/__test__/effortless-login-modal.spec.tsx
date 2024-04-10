@@ -15,7 +15,7 @@ describe('EffortlessLoginModal', () => {
         mock_store = mockStore({
             client: {
                 setShouldShowEffortlessLoginModal: jest.fn(),
-                passkeysTrackEvent: jest.fn(),
+                passkeysTrackActionEvent: jest.fn(),
             },
         });
     });
@@ -104,7 +104,7 @@ describe('EffortlessLoginModal', () => {
         expect(back_button).toBeInTheDocument();
         userEvent.click(back_button);
         mainScreenCheck();
-        expect(mock_store.client.passkeysTrackEvent).toHaveBeenCalled();
+        expect(mock_store.client.passkeysTrackActionEvent).toHaveBeenCalled();
     });
 
     it('should leave EffortlessLoginModal', () => {
@@ -117,7 +117,7 @@ describe('EffortlessLoginModal', () => {
         expect(history_object.location.pathname).toBe(routes.traders_hub);
         expect(mock_store.client.setShouldShowEffortlessLoginModal).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalled();
-        expect(mock_store.client.passkeysTrackEvent).toHaveBeenCalled();
+        expect(mock_store.client.passkeysTrackActionEvent).toHaveBeenCalled();
     });
 
     it('should leave EffortlessLoginModal from "learn more" screen', () => {
@@ -134,7 +134,7 @@ describe('EffortlessLoginModal', () => {
         expect(history_object.location.pathname).toBe(routes.passkeys);
         expect(mock_store.client.setShouldShowEffortlessLoginModal).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalled();
-        expect(mock_store.client.passkeysTrackEvent).toHaveBeenCalled();
+        expect(mock_store.client.passkeysTrackActionEvent).toHaveBeenCalled();
     });
 
     it('should not render EffortlessLoginModal if there is no portal', () => {
@@ -150,6 +150,6 @@ describe('EffortlessLoginModal', () => {
         descriptions.forEach(description => {
             expect(screen.queryByText(description)).not.toBeInTheDocument();
         });
-        expect(mock_store.client.passkeysTrackEvent).not.toHaveBeenCalled();
+        expect(mock_store.client.passkeysTrackActionEvent).not.toHaveBeenCalled();
     });
 });

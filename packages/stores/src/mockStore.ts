@@ -306,7 +306,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setIsPasskeySupported: jest.fn(),
             setShouldShowEffortlessLoginModal: jest.fn(),
             fetchShouldShowEffortlessLoginModal: jest.fn(),
-            passkeysTrackEvent: jest.fn(),
+            passkeysTrackActionEvent: jest.fn(),
         },
         common: {
             error: common_store_error,

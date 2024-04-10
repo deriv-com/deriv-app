@@ -2,7 +2,6 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { DesktopRealWalletsUpgrade, MobileRealWalletsUpgrade } from './components/modal-elements';
 import { useWalletMigration } from '@deriv/hooks';
-import './real-wallets-upgrade.scss';
 
 const RealWalletsUpgrade = observer(() => {
     const { traders_hub, ui } = useStore();

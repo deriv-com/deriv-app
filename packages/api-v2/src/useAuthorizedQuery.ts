@@ -33,19 +33,21 @@ const useAuthorizedQuery = <T extends TSocketEndpointNames>(
     name: T,
     payload?: TSocketRequestPayload<T>['payload'],
     options?: TSocketRequestQueryOptions<T>,
-    refreshOnAccountSwitch = true,
-    refreshOnAccountAdded = true
+    refreshOnAccountSwitch = true
 ) => {
     const { send } = useAPI();
     const { isSuccess, isLoading, loginid, data } = useAuthorize();
 
-    const keys = getQueryKeys(name, payload);
+    // by default, we gonna invalidate cache when:
+    //  - payload changed (as previously)
+    //  - new account got added as this might have broader hard to predict implications
+    const keys = [`${data?.account_list?.length}`, getQueryKeys(name, payload)];
+
+    // also, we should invalidate cache when account is switched
+    // though thats optional - some requests might not need to be refetched, e.g. accounts_list is global
+    // balance: all is global so no need to refetch, etc,
     if (refreshOnAccountSwitch && loginid) {
         keys.unshift(loginid);
-    }
-
-    if (refreshOnAccountAdded && data?.account_list?.length) {
-        keys.unshift(`${data?.account_list?.length}`);
     }
 
     return _useQuery<TSocketResponseData<T>, TSocketError<T>>(keys, () => send(name, payload), {

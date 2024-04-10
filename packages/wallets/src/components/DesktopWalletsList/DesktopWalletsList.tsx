@@ -11,7 +11,7 @@ const DesktopWalletsList: React.FC = () => {
     const { isLoading: isAuthorizeLoading } = useAuthorize();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    const isLoading = isActiveWalletLoading || isAuthorizeLoading || isCurrencyConfigLoading;
+    const isLoading = isActiveWalletLoading;
 
     return (
         <div className='wallets-desktop-wallets-list'>

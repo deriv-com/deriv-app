@@ -10,8 +10,7 @@ import useAuthorizedQuery from '../useAuthorizedQuery';
 const useDerivAccountsList = () => {
     const { data: authorize_data } = useAuthorize();
 
-    // account list is pretty much constant so cache it for 10 minutes
-
+    // its pretty much stale data, so never refresh, unless user creates a new account
     const { data: account_list_data, ...rest } = useAuthorizedQuery(
         'account_list',
         undefined,

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import ReactDOM from 'react-dom';
+import { useHistory } from 'react-router';
 import FormFooter from '@deriv/account/src/Components/form-footer';
 import FormBody from '@deriv/account/src/Components/form-body';
 import { Button, Icon, Text } from '@deriv/components';
@@ -16,12 +16,31 @@ const EffortlessLoginModal = observer(() => {
     const portal_element = document.getElementById('effortless_modal_root');
     const history = useHistory();
     const { client } = useStore();
-    const { setShouldShowEffortlessLoginModal } = client;
+    const { setShouldShowEffortlessLoginModal, passkeysTrackActionEvent } = client;
 
-    const onClickHandler = (route: string) => {
+    React.useEffect(() => {
+        if (!portal_element) return;
+        passkeysTrackActionEvent({ action: 'open' }, true);
+
+        const track_close = () => {
+            passkeysTrackActionEvent({ action: 'close' }, true);
+        };
+        window.addEventListener('beforeunload', track_close);
+        return () => {
+            window.removeEventListener('beforeunload', track_close);
+        };
+    }, []);
+
+    const onClickHandler = (route: string, action_event: string) => {
         localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
         history.push(route);
         setShouldShowEffortlessLoginModal(false);
+        passkeysTrackActionEvent({ action: action_event }, true);
+    };
+
+    const onLearnMoreClick = () => {
+        setIsLearnMoreOpened(true);
+        passkeysTrackActionEvent({ action: 'info_open' }, true);
     };
 
     if (!portal_element) return null;
@@ -43,7 +62,7 @@ const EffortlessLoginModal = observer(() => {
                     line_height='xl'
                     align='right'
                     className='effortless-login-modal__header'
-                    onClick={() => onClickHandler(routes.traders_hub)}
+                    onClick={() => onClickHandler(routes.traders_hub, 'maybe_later')}
                 >
                     <Localize i18n_default_text='Maybe later' />
                 </Text>
@@ -57,11 +76,17 @@ const EffortlessLoginModal = observer(() => {
                 {is_learn_more_opened ? (
                     <EffortlessLoginDescription />
                 ) : (
-                    <EffortLessLoginTips onLearnMoreClick={() => setIsLearnMoreOpened(true)} />
+                    <EffortLessLoginTips onLearnMoreClick={onLearnMoreClick} />
                 )}
             </FormBody>
             <FormFooter>
-                <Button type='button' has_effect large primary onClick={() => onClickHandler(routes.passkeys)}>
+                <Button
+                    type='button'
+                    has_effect
+                    large
+                    primary
+                    onClick={() => onClickHandler(routes.passkeys, 'get_started')}
+                >
                     <Localize i18n_default_text='Get started' />
                 </Button>
             </FormFooter>

@@ -41,7 +41,7 @@ export const DerivGoModalResponsive = observer(() => {
                                 <Icon icon='IcMobileOutline' size={16} custom_color='var(--text-prominent)' />
                                 <Text align='left' size='xxs' weight='bold' className='title'>
                                     <Localize
-                                        i18n_default_text={'Trade with {{platform}} mobile app'}
+                                        i18n_default_text='Trade with {{platform}} mobile app'
                                         values={{
                                             platform: DERIV_PLATFORM_NAMES.GO,
                                         }}

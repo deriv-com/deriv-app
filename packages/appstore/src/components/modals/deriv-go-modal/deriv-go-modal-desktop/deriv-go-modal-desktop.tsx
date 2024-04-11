@@ -63,10 +63,10 @@ export const DerivGoModalDesktop = observer(() => {
                         </Text>
                         <div className='deriv-go-modal-desktop__links'>
                             <div className='deriv-go-modal-desktop__qr'>
-                                <div className='deriv-go-modal-desktop__qr-image'>
+                                <div className='deriv-go-modal-desktop__qr--image'>
                                     <QRCode size={80} value={DERIVGO_QRCODE_APP_URL} />
                                 </div>
-                                <Text as='p' size='xxs' className='deriv-go-modal-desktop__qr-description'>
+                                <Text as='p' size='xxs' className='deriv-go-modal-desktop__qr--description'>
                                     <Localize
                                         i18n_default_text='Scan the QR code to download {{platform}}'
                                         values={{

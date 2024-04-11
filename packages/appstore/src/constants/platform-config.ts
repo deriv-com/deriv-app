@@ -1,4 +1,4 @@
-import { getUrlBinaryBot, getUrlSmartTrader, getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
+import { getUrlBinaryBot, getUrlSmartTrader, getPlatformSettingsAppstore, routes, mobileOSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { TAccountCategory, TRegionAvailability } from 'Types';
@@ -106,4 +106,15 @@ export const getPlatformDerivGoDownloadLink = (platform: TMobilePlatforms) => {
         default:
             return '';
     }
+};
+
+export const getMobileDerivGoAppInstallerURL = () => {
+    if (mobileOSDetect() === 'iOS') {
+        return getPlatformDerivGoDownloadLink(MOBILE_PLATFORMS.IOS);
+    } else if (mobileOSDetect() === 'huawei') {
+        return getPlatformDerivGoDownloadLink(MOBILE_PLATFORMS.HAUWEI);
+    } else if (mobileOSDetect() === 'Android') {
+        return getPlatformDerivGoDownloadLink(MOBILE_PLATFORMS.ANDROID);
+    }
+    return '';
 };

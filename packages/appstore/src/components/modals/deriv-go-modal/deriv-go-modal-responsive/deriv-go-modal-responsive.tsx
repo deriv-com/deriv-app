@@ -1,6 +1,11 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { MobileDialog } from '@deriv/components';
+import { MobileDialog, Text, Icon } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import { getUrlBase } from '@deriv/shared';
+import { DERIV_PLATFORM_NAMES, getMobileDerivGoAppInstallerURL } from 'Constants/platform-config';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
+
 import './deriv-go-modal-responsive.scss';
 
 export const DerivGoModalResponsive = observer(() => {
@@ -11,18 +16,53 @@ export const DerivGoModalResponsive = observer(() => {
         setIsDerivGoModalVisible(false);
     };
 
-    // width for image is 72%
-
     return (
-        <MobileDialog
-            portal_element_id='modal_root'
-            visible={is_deriv_go_modal_visible}
-            onClose={handleModalClose}
-            wrapper_classname='mobile-real-wallets-upgrade'
-            // footer={<MobileRealWalletsUpgradeFooter wallet_steps={wallet_steps} current_step={current_step} />}
-            footer={<div>Footer</div>}
-        >
-            <div className='mobile-real-wallets-upgrade'>Deriv Go responsive</div>
+        <MobileDialog portal_element_id='modal_root' visible={is_deriv_go_modal_visible} onClose={handleModalClose}>
+            <div className='deriv-go-modal-responsive'>
+                <div className='deriv-go-modal-responsive__logo'>
+                    <TradingPlatformIconProps icon='DerivGo' size={24} />
+                    <Text as='h5' weight='bold'>
+                        {DERIV_PLATFORM_NAMES.GO}
+                    </Text>
+                </div>
+                <div className='deriv-go-modal-responsive__content'>
+                    <img
+                        alt='deriv GO image'
+                        src={getUrlBase('/public/images/common/appstore/deriv_go_image.png')}
+                        width={'72%'}
+                    />
+
+                    <div className='deriv-go-modal-responsive__app-with-note'>
+                        <a
+                            className='deriv-go-modal-responsive__app-with-note--option'
+                            href={getMobileDerivGoAppInstallerURL()}
+                        >
+                            <div className='full-row'>
+                                <Icon icon='IcMobileOutline' size={16} custom_color='var(--text-prominent)' />
+                                <Text align='left' size='xxs' weight='bold' className='title'>
+                                    <Localize
+                                        i18n_default_text={'Trade with {{platform}} mobile app'}
+                                        values={{
+                                            platform: DERIV_PLATFORM_NAMES.GO,
+                                        }}
+                                    />
+                                </Text>
+                                <Icon icon='IcChevronRight' size={16} />
+                            </div>
+                        </a>
+
+                        <Text as='p' size='xxs'>
+                            <Localize
+                                i18n_default_text="Note: Don't have {{platform}} app? Tap the <0>Trade with {{platform}} mobile app</0> button to download. Once you have installed the app, it’ll launch automatically. "
+                                components={[<strong key={0} />]}
+                                values={{
+                                    platform: DERIV_PLATFORM_NAMES.GO,
+                                }}
+                            />
+                        </Text>
+                    </div>
+                </div>
+            </div>
         </MobileDialog>
     );
 });

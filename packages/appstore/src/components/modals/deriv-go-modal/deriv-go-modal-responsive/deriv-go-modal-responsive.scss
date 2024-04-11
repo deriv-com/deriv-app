@@ -1,107 +1,45 @@
 .deriv-go-modal-responsive {
-    display: flex;
-    flex-flow: column nowrap;
-    background: inherit;
-    position: relative;
+    height: calc(100vh - #{$HEADER_HEIGHT});
+    background-image: url('./../../../../public/images/deriv-go-modal-background-responsive.svg');
+    background-repeat: no-repeat;
+    background-position-y: 5.6rem;
 
-    &__table-header,
-    &__table-row {
-        grid-template-columns: 1.58fr 2.3fr 2.3fr;
-        border-bottom: none;
-        min-height: 4rem;
-    }
-
-    &__table-row-wrapper {
-        .regulators-compare-table__table-row {
-            &:first-child {
-                background-color: var(--button-primary-light-default);
-            }
-        }
-    }
-
-    &__table-header-item,
-    &__table-row-item {
-        flex-direction: column;
+    &__logo {
+        font-family: 'Ubuntu', sans-serif;
+        display: flex;
         justify-content: center;
+        gap: 0.8rem;
+        padding: 1.6rem 2.4rem;
     }
 
-    .dc-table {
-        margin: 2.5rem 4.9rem;
-        &__header {
-            border: none;
-            height: 4rem;
-        }
-        &__cell:not(.regulators-compare-table__table-empty-cell),
-        &__head:not(.regulators-compare-table__table-empty-cell) {
-            border: 1px solid var(--general-active);
-            margin-left: -1px;
-            margin-bottom: -1px;
-        }
-        &__cell {
-            padding: 1rem 0.8rem;
-        }
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.4rem;
+        padding: 2.4rem;
     }
-    @include mobile {
-        .dc-table {
-            height: 100%;
-            margin: 1.6rem 1.7rem;
-            overflow-x: auto;
-            overflow-y: hidden;
-            scroll-behavior: auto;
 
-            &__cell {
-                &--fixed {
-                    background-color: var(--general-main-1);
-                }
-            }
-        }
-        &__table {
-            &-header,
-            &-row {
-                width: 120vw;
-                grid-template-columns: 0.36fr 1fr 1fr;
-            }
-        }
+    &__app-with-note {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
 
-        .regulators-compare-table {
-            &__table-empty-cell.dc-table {
-                &__cell--fixed {
-                    margin-left: -1px;
-                    border-right: 1px solid var(--general-active);
-                    background-color: var(--general-main-1);
-                }
-            }
-            &__table-row {
-                .dc-table__cell {
-                    background-color: var(--general-main-1);
-                }
-
-                &:first-child {
-                    background-color: var(--button-primary-light-default);
-
-                    .dc-table__cell {
-                        background-color: unset;
-
-                        &--fixed {
-                            background-color: var(--general-main-1);
-
-                            &:before {
-                                content: '';
-                                position: absolute;
-                                top: 0;
-                                bottom: 0;
-                                right: 0;
-                                left: 0;
-                                z-index: -1;
-                                background-color: var(--button-primary-light-default);
-                            }
-                        }
-                    }
+        &--option {
+            width: 100%;
+            padding: 1.6rem;
+            border-radius: 2 * $BORDER_RADIUS;
+            background-color: var(--general-section-4);
+            text-decoration: none;
+            .full-row {
+                gap: 0.8rem;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                .title {
+                    flex: 1;
                 }
             }
         }
     }
-}
-.dc-modal-header--regulator-modal {
-    border-bottom: 1px solid var(--border-normal);
 }

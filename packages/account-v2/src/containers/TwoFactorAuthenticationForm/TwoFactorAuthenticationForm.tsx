@@ -9,11 +9,11 @@ type TTwoFactorData = {
 };
 
 export const TwoFactorAuthenticationForm = () => {
-    const { data: isTwoFactorAuthenticationEnabled } = useTwoFactorAuthenticationStatus();
+    const { data: isTwoFactorAuthenticationEnabled, isLoading: isStatusLoading } = useTwoFactorAuthenticationStatus();
     const { error, isLoading: isMutationLoading, mutate } = useTwoFactorAuthentication();
     const validationSchema = getTwoFactorAuthenticationFormValidationSchema();
     // TODO: Remember to translate these
-    const buttonText = isTwoFactorAuthenticationEnabled ? 'Disable' : 'Enable';
+    const buttonText = !isStatusLoading && isTwoFactorAuthenticationEnabled ? 'Disable' : 'Enable';
     const initialValues: TTwoFactorData = {
         digitCode: '',
     };

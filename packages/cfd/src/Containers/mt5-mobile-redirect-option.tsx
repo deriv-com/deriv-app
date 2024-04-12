@@ -10,11 +10,14 @@ type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
 };
 const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
-    const mobileURLSet = () => {
-        window.location.replace(DEEP_LINK({ mt5_trade_account }));
+    let mobile_url;
+
+    const mobileURLSet = async () => {
+        mobile_url = window.location.replace(DEEP_LINK({ mt5_trade_account }));
+        const mobileAppURL = await getMobileAppInstallerURL({ mt5_trade_account });
 
         const timeout = setTimeout(() => {
-            window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);
+            mobile_url = mobileAppURL && window.location.replace(mobileAppURL);
         }, 1500);
 
         if (!isSafariBrowser() || (isSafariBrowser() && /Version\/17/.test(navigator.userAgent))) {

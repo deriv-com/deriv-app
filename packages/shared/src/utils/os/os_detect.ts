@@ -117,14 +117,16 @@ export const mobileOSDetectAsync = async () => {
     }
 
     if (/android/i.test(userAgent)) {
+        // Check for Huawei devices first
+        if (huaweiDevicesRegex.test(userAgent) || /huawei/i.test(userAgent)) {
+            return 'huawei';
+        }
         // Check if navigator.userAgentData is available for modern browsers
         if (navigator?.userAgentData) {
             const ua = await navigator.userAgentData.getHighEntropyValues(['model']);
             if (huaweiDevicesRegex.test(ua?.model || '')) {
                 return 'huawei';
             }
-        } else if (huaweiDevicesRegex.test(userAgent) || /huawei/i.test(userAgent)) {
-            return 'huawei';
         }
         return 'Android';
     }

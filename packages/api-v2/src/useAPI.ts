@@ -10,14 +10,14 @@ import type {
 import { useAPIContext } from './APIProvider';
 
 const useAPI = () => {
-    const { derivAPI } = useAPIContext();
+    const { derivAPI, send: apiProviderSend, connection } = useAPIContext();
 
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
             name: T,
             payload?: TSocketRequestPayload<T>
         ): Promise<TSocketResponseData<T>> => {
-            const response = await derivAPI?.send({ [name]: 1, ...(payload || {}) });
+            const response = await apiProviderSend(name, payload);
 
             if (response.error) {
                 throw response.error;
@@ -25,7 +25,7 @@ const useAPI = () => {
 
             return response;
         },
-        [derivAPI]
+        [apiProviderSend, connection]
     );
 
     const subscribe = useCallback(
@@ -49,6 +49,7 @@ const useAPI = () => {
         send,
         subscribe,
         derivAPI,
+        connection,
     };
 };
 

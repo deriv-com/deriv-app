@@ -16,7 +16,6 @@ type AuthContextType = {
     refetch: () => void;
     isFetching: boolean;
     error: unknown;
-    loginid: string | null;
 };
 
 type LoginToken = {
@@ -209,7 +208,6 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isFetching,
             isSuccess: isSuccess && !isLoading,
             error: isError,
-            loginid,
         };
     }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess]);
 

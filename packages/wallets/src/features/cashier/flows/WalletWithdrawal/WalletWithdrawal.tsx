@@ -39,35 +39,18 @@ const WalletWithdrawal = () => {
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
 
-    if (verificationCode) {
-        if (isCurrencyConfigSuccess && activeWallet?.currency) {
-            return (
-                <CashierLocked module='withdrawal'>
-                    <WithdrawalLocked>
-                        {isCrypto ? (
-                            <WithdrawalCryptoModule
-                                onClose={() => {
-                                    setVerificationCode('');
-                                }}
-                                verificationCode={verificationCode}
-                            />
-                        ) : (
-                            <WithdrawalFiatModule verificationCode={verificationCode} />
-                        )}
-                    </WithdrawalLocked>
-                </CashierLocked>
-            );
-        }
-        return <Loader />;
-    }
-
+    
     return (
         <CashierLocked module='withdrawal'>
-            <WithdrawalLocked>
-                <WithdrawalVerificationModule />
-            </WithdrawalLocked>
+            <WithdrawalCryptoModule
+                onClose={() => {
+                    setVerificationCode('');
+                }}
+                verificationCode={verificationCode}
+            />
         </CashierLocked>
     );
+
 };
 
 export default WalletWithdrawal;

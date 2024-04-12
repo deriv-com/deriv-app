@@ -14,8 +14,6 @@ const WithdrawalCrypto: React.FC = () => {
     const { activeWallet, getCurrencyConfig, isWithdrawalSuccess, onClose, withdrawalReceipt } =
         useWithdrawalCryptoContext();
 
-    if (isWithdrawalSuccess) return <WithdrawalCryptoReceipt onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
-
     return (
         <div className='wallets-withdrawal-crypto'>
             <div className='wallets-withdrawal-crypto__side-pane' />

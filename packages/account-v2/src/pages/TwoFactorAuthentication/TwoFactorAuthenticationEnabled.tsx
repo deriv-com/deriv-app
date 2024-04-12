@@ -5,9 +5,8 @@ import { TwoFactorAuthenticationForm } from '../../containers/TwoFactorAuthentic
 
 export const TwoFactorAuthenticationEnabled = () => {
     return (
-        <div className='flex flex-1 flex-col items-center justify-start w-full h-full'>
+        <div className='flex flex-1 flex-col items-center w-full h-full'>
             <div className='w-[8.3rem] h-[12.3rem] mt-[6.4rem]'>
-                {/* TODO: Replace this icon with the one from @deriv/quill-icons when it's available */}
                 <DerivLightQrPhoneSuccessIcon />
             </div>
             <Text
@@ -19,13 +18,7 @@ export const TwoFactorAuthenticationEnabled = () => {
             >
                 2FA enabled
             </Text>
-            <Text
-                align='center'
-                as='h4'
-                className='mt-[1.6rem] mb-0 mx-0 text-[1.4rem] leading-normal'
-                color='general'
-                weight='normal'
-            >
+            <Text align='center' as='h4' className='mt-[1.6rem] mb-0 mx-0 text-[1.4rem] leading-normal' color='general'>
                 You have enabled 2FA for your Deriv account.
             </Text>
             <Text align='center' as='h4' className='mt-[1.6rem] mb-0 mx-0 text-[1.4rem] leading-normal' weight='normal'>

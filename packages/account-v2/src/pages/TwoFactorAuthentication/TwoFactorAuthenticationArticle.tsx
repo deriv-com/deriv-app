@@ -9,10 +9,6 @@ export const TwoFactorAuthenticationArticle = () => {
     return (
         <SideNote
             className={twMerge(
-                // classNames('py-[1.6rem] px-[2.4rem] h-fit w-[25.6rem]', {
-                //     'ml-[1.2rem]': isTablet,
-                //     'w-[calc(100%-3.2rem)] m-[1.6rem]': isMobile,
-                // })
                 classNames('py-[1.6rem] px-[2.4rem] h-fit w-[25.6rem] sm:w-[calc(100%-3.2rem)] sm:m-[1.6rem]', {
                     'ml-[1.2rem]': isTablet,
                 })

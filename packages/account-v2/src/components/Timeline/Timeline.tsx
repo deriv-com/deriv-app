@@ -17,7 +17,7 @@ const TimelineItem = ({ children }: PropsWithChildren<TTimelineItemProps>) => {
 const Marker = ({ label }: { label: number }) => {
     return (
         <div className='border absolute w-24 h-24 pl-px border-solid-red-0 rounded-full bg-solid-red-0 leading-[2.35rem] mr-8 text-center -left-12'>
-            <Text className='relative text-white align-middle text-[1.6rem]' size='md' weight='bold'>
+            <Text className='relative text-white align-middle text-[1.6rem] leading-normal' size='md' weight='bold'>
                 {label}
             </Text>
         </div>

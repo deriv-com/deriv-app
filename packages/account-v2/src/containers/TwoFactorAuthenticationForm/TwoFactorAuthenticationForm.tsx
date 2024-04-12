@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Formik, FormikProps } from 'formik';
+import { Form, Formik, FormikProps } from 'formik';
 import { useTwoFactorAuthentication, useTwoFactorAuthenticationStatus } from '@deriv/api-v2';
 import { InputWithButton } from '../../components/InputWithButton';
 import { ACCOUNT_SECURITY, getTwoFactorAuthenticationFormValidationSchema } from '../../utils';
@@ -30,23 +30,14 @@ export const TwoFactorAuthenticationForm = () => {
     };
     return (
         <Formik initialValues={initialValues} innerRef={formRef} onSubmit={handleSubmit}>
-            {({
-                dirty,
-                errors: { digitCode: digitCodeError },
-                handleBlur,
-                handleChange,
-                isSubmitting,
-                isValid,
-                submitForm,
-            }) => (
-                <div className='sm:w-full'>
+            {({ dirty, handleBlur, handleChange, isSubmitting, isValid, submitForm }) => (
+                <Form noValidate>
                     <InputWithButton
                         buttonText={buttonText}
                         isDisabled={isSubmitting || !isValid || !dirty || isMutationLoading}
                         isLoading={isSubmitting}
                         label='Authentication code'
                         maxLength={6}
-                        message={digitCodeError}
                         name='digitCode'
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -55,7 +46,7 @@ export const TwoFactorAuthenticationForm = () => {
                         }}
                         validationSchema={validationSchema.fields.digitCode}
                     />
-                </div>
+                </Form>
             )}
         </Formik>
     );

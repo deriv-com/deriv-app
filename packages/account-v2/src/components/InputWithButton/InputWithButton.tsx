@@ -12,13 +12,14 @@ type InputWithButtonProps = ComponentProps<typeof FormInputField> & {
 export const InputWithButton = forwardRef<HTMLInputElement, InputWithButtonProps>(
     ({ buttonText, isDisabled, isLoading, label, name, onClick, validationSchema, ...rest }: InputWithButtonProps) => {
         return (
-            <div className='flex w-[40rem] sm:w-full sm:max-w-[40rem] mt-[2.7rem] mx-auto mb-0'>
+            <div className='flex w-[40rem] sm:max-w-[40rem] sm:w-full mt-[2.7rem] mx-auto mb-0'>
                 <FormInputField
                     {...rest}
                     className='rounded-ee-none rounded-se-none border-r-0 h-[4rem]'
                     label={label}
                     name={name}
                     validationSchema={validationSchema}
+                    wrapperClassName='w-full'
                 />
                 <Button
                     className='rounded-es-none rounded-ss-none h-[4rem] m-w-[6.4rem]'

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { InputWithButton } from '../InputWithButton';
 

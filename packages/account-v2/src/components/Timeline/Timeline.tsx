@@ -6,7 +6,6 @@ type TTimelineItemProps = HTMLAttributes<HTMLDivElement> & { itemTitle: React.Re
 
 type TTimelineProps = HTMLAttributes<HTMLOListElement> & {
     children: ReactElement<TTimelineItemProps>[];
-    disabledItems?: number[];
     lineHeight?: ComponentProps<typeof Text>['lineHeight'];
 };
 

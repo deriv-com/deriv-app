@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
-import { Tooltip, useDevice } from '@deriv-com/ui';
 import { LabelPairedCircleCheckCaptionFillIcon, StandaloneCopyRegularIcon } from '@deriv/quill-icons';
+import { Tooltip, useDevice } from '@deriv-com/ui';
 
 type TProps = {
     infoMessage?: string;
@@ -13,7 +13,12 @@ type TProps = {
 /**
  * @depricated TODO: remove this when it's available in @deriv-com/ui. This is temporary.
  */
-const Clipboard: React.FC<TProps> = ({ popoverAlignment, textCopy }) => {
+const Clipboard: React.FC<TProps> = ({
+    infoMessage = 'Copy',
+    popoverAlignment,
+    successMessage = 'Copied',
+    textCopy,
+}) => {
     const [, copy] = useCopyToClipboard();
     const [isCopied, setIsCopied] = useState(false);
     const { isMobile } = useDevice();
@@ -33,12 +38,11 @@ const Clipboard: React.FC<TProps> = ({ popoverAlignment, textCopy }) => {
 
     return (
         <Tooltip
-            message={isCopied ? 'Copied!' : 'Copy'}
+            message={isCopied ? successMessage : infoMessage}
             position={popoverAlignment}
             triggerAction={isMobile ? 'click' : 'hover'}
         >
             <button className='flex items-center cursor-pointer px-0 mx-0 border-0 w-fit' onClick={onClick}>
-                {/* // TODO: replace these icons once they're available in @deriv/quill-icons */}
                 {isCopied ? (
                     <LabelPairedCircleCheckCaptionFillIcon fill='#4bb4b3' height={24} width={24} />
                 ) : (

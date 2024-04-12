@@ -59,6 +59,7 @@ describe('TwoFactorAuthenticationForm', () => {
         const button = screen.getByRole('button', { name: 'Disable' });
         userEvent.type(input, '123');
         userEvent.click(button);
+        userEvent.tab();
         expect(screen.getByText("That's not the right code. Please try again.")).toBeInTheDocument();
     });
     it('should handle submit when the form button is clicked and two factor authentication is disabled', async () => {

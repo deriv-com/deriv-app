@@ -42,7 +42,12 @@ const AddCryptoCurrency = observer(
         hasNoAvailableCrypto,
     }) => {
         const { client, ui } = useStore();
-        const { available_crypto_currencies, upgradeable_currencies: legal_allowed_currencies, has_fiat } = client;
+        const {
+            available_crypto_currencies,
+            upgradeable_currencies: legal_allowed_currencies,
+            has_fiat,
+            currency: selected_currency,
+        } = client;
         const { should_show_cancel } = ui;
         const getReorderedFiatCurrencies = () =>
             reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
@@ -91,6 +96,7 @@ const AddCryptoCurrency = observer(
                                                 name='currency'
                                                 id={currency.value}
                                                 label={currency.name}
+                                                selected={currency.value === selected_currency}
                                             />
                                         ))}
                                     </CurrencyRadioButtonGroup>

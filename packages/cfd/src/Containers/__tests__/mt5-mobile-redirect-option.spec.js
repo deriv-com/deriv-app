@@ -66,7 +66,7 @@ describe('<MT5MobileRedirectOption/>', () => {
         expect(mobileOSDetect()).toBe('iOS');
         expect(isSafariBrowser()).toBe(true);
 
-        const expectedUrl = getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
+        const expectedUrl = await getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
         expect(expectedUrl).toBe(mock_props.mt5_trade_account.white_label_links.ios);
     });
 
@@ -78,7 +78,7 @@ describe('<MT5MobileRedirectOption/>', () => {
         expect(mobileOSDetect()).toBe('Android');
         expect(isSafariBrowser()).toBe(false);
 
-        const expectedUrl = getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
+        const expectedUrl = await getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
         expect(expectedUrl).toBe(mock_props.mt5_trade_account.white_label_links.android);
     });
 
@@ -90,7 +90,7 @@ describe('<MT5MobileRedirectOption/>', () => {
         expect(mobileOSDetect()).toBe('huawei');
         expect(isSafariBrowser()).toBe(false);
 
-        const expectedUrl = getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
+        const expectedUrl = await getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
         expect(expectedUrl).toBe(getPlatformMt5DownloadLink('huawei'));
     });
 

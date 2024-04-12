@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthorize } from '@deriv/api-v2';
-import useAPI from '@deriv/api-v2/src/useAPI';
+import { useAPIContext } from '@deriv/api-v2/src/APIProvider';
 import './DepositFiat.scss';
 import aggreegatedSubscribe from '@deriv/api-v2/src/lightweightApi/aggregatedSubscribe';
 
 
 const DepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { connection } = useAPI();
+    const { connection } = useAPIContext();
 
     const [someData, setSomeData] = useState<Array<any>>([]);
     const [secondDataSet, setSecondDataSet] = useState<any>(null);

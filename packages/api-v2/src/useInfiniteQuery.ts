@@ -10,7 +10,8 @@ import type {
     TSocketResponseData,
 } from '../types';
 
-import useAPI from './useAPI';
+
+import { useAPIContext } from './APIProvider';
 import { getQueryKeys } from './utils';
 
 const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
@@ -20,7 +21,7 @@ const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
     const prop = props?.[0];
     const payload = prop && 'payload' in prop ? (prop.payload as TSocketPaginatateableRequestCleaned<T>) : undefined;
     const options = prop && 'options' in prop ? (prop.options as TSocketRequestInfiniteQueryOptions<T>) : undefined;
-    const { send } = useAPI();
+    const { send } = useAPIContext();
 
     const initial_offset = payload?.offset || 0;
     const limit = payload?.limit || 50;

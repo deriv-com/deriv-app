@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import useMutation from '../useMutation';
 import { compressImageFile, generateChunks, numToUint8Array, readFile } from '../utils';
 import md5 from 'md5';
-import useAPI from '../useAPI';
+import { useAPIContext } from '../APIProvider';
 
 type TDocumentUploadPayload = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
 type TUploadPayload = Omit<TDocumentUploadPayload, 'document_format' | 'expected_checksum' | 'file_size'> & {
@@ -21,7 +21,7 @@ const useDocumentUpload = () => {
     } = useMutation('document_upload');
     const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
 
-    const { derivAPI } = useAPI();
+    const { connection } = useAPIContext();
 
     const isLoading = _isLoading || (!isDocumentUploaded && status === 'success');
     const isSuccess = _isSuccess && isDocumentUploaded;
@@ -57,12 +57,12 @@ const useDocumentUpload = () => {
                 chunks.forEach(chunk => {
                     const size = numToUint8Array(chunk.length);
                     const payload = new Uint8Array([...type, ...id, ...size, ...chunk]);
-                    derivAPI?.connection?.send(payload);
+                    connection?.send(payload);
                 });
                 setIsDocumentUploaded(true);
             });
         },
-        [derivAPI, derivAPI.connection, mutateAsync]
+        [connection, mutateAsync]
     );
 
     const modified_response = useMemo(() => ({ ...data?.document_upload }), [data?.document_upload]);

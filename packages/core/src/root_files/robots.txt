@@ -1,6 +1,6 @@
 User-agent: *
+Disallow: */appstore/*
 Disallow: */cashier/*
-Disallow: */mt5/*
 Disallow: */p2p/*
 Disallow: */reports/*
 Disallow: */account/*

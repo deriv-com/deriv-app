@@ -2,8 +2,9 @@ import { useCallback, useMemo } from 'react';
 import useMutation from '../useMutation';
 import useInvalidateQuery from '../useInvalidateQuery';
 
-type TPayload = Parameters<ReturnType<typeof useMutation<'account_security'>>['mutate']>[0]['payload'];
+type TPayload = NonNullable<Parameters<ReturnType<typeof useMutation<'account_security'>>['mutate']>[0]>['payload'];
 
+/** A custom hook perform mutations for generating, enabling, and disabling 2FA */
 const useTwoFactorAuthentication = () => {
     const invalidate = useInvalidateQuery();
     const {

@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { twMerge } from 'tailwind-merge';
 import { SideNote, Text, useDevice } from '@deriv-com/ui';
 
-/* TODO: Remember to size the SideNote component to the same width as v1 */
 export const TwoFactorAuthenticationArticle = () => {
     const { isTablet } = useDevice();
     return (

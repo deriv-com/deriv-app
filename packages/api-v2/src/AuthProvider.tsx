@@ -1,14 +1,15 @@
 import React, { createContext, useState, useContext, useCallback, useEffect, useMemo } from 'react';
 import { useAPIContext } from './APIProvider';
 
-import { getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
+import { getAccountsFromLocalStorage, getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
 import useMutation from './useMutation';
 import { TSocketResponseData } from '../types';
 
 // Define the type for the context state
 type AuthContextType = {
+    loginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
-    switchAccount: (loginid: string, forceRefresh?: boolean) => void;
+    switchAccount: (loginid: string, forceRefresh?: boolean) => Promise<void>;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -22,15 +23,21 @@ type LoginToken = {
     token: string;
 };
 
-// Create the context
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
 type AuthProviderProps = {
     children: React.ReactNode;
     cookieTimeout?: number;
+    loginIDKey?: string;
+    selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string;
 };
 
-function waitForLoginAndTokenWithTimeout(cookieTimeout = 10000) {
+// Create the context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+function waitForLoginAndTokenWithTimeout(
+    cookieTimeout = 10000,
+    loginIDKey?: string,
+    selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string
+) {
     // Default timeout of 10 seconds
     let timeoutHandle: NodeJS.Timeout | undefined,
         cookieTimeoutHandle: NodeJS.Timeout | undefined, // Handle for the cookieTimeout
@@ -40,12 +47,18 @@ function waitForLoginAndTokenWithTimeout(cookieTimeout = 10000) {
         resolve: (value: { loginId: string; token: string }) => void,
         reject: (reason?: string) => void
     ) => {
-        const loginId = getActiveLoginIDFromLocalStorage();
+        const loginId = getActiveLoginIDFromLocalStorage(loginIDKey);
         const token = getToken(loginId as string);
+        const storedAccounts = getAccountsFromLocalStorage();
         if (loginId && token) {
             clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
             clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
             resolve({ loginId, token });
+        } else if (selectDefaultAccount && storedAccounts && Object.keys(storedAccounts).length > 0) {
+            const selectedLoginId = selectDefaultAccount(storedAccounts);
+            clearTimeout(timeoutHandle); // Clear the checkLogin timeout as we've succeeded
+            clearTimeout(cookieTimeoutHandle); // Clear the cookieTimeout as well
+            resolve({ loginId: selectedLoginId, token: getToken(selectedLoginId) || '' });
         } else {
             timeoutHandle = setTimeout(checkLogin, 100, resolve, reject);
         }
@@ -76,24 +89,57 @@ function waitForLoginAndTokenWithTimeout(cookieTimeout = 10000) {
     };
 }
 
-const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
+const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccount }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient } = useAPIContext();
+    const { queryClient, setOnReconnected, setOnConnected } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
+
     const [data, setData] = useState<TSocketResponseData<'authorize'> | null>();
 
+    const processAuthorizeResponse = useCallback(
+        (authorizeResponse: TSocketResponseData<'authorize'>) => {
+            setData(authorizeResponse);
+
+            const activeLoginID = authorizeResponse.authorize?.loginid;
+            if (!activeLoginID) return;
+
+            setLoginid(activeLoginID);
+
+            const accountList = authorizeResponse.authorize?.account_list;
+            if (!accountList) return;
+
+            const activeAccount = accountList.find(acc => acc.loginid === activeLoginID);
+            if (!activeAccount) return;
+
+            localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
+        },
+        [loginIDKey]
+    );
+
     useEffect(() => {
+        setOnConnected(() => {
+            initialize();
+        });
+    }, []);
+
+    useEffect(() => {
+        setOnReconnected(() => {
+            mutateAsync({ payload: { authorize: getToken(loginid || '') ?? '' } });
+        });
+    }, [loginid]);
+
+    function initialize() {
         setIsLoading(true);
         setIsSuccess(false);
 
-        const { promise, cleanup } = waitForLoginAndTokenWithTimeout(cookieTimeout);
+        const { promise, cleanup } = waitForLoginAndTokenWithTimeout(cookieTimeout, loginIDKey, selectDefaultAccount);
 
         let isMounted = true;
 
@@ -103,10 +149,10 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
                 setIsFetching(true);
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
-                        setData(res);
-                        setLoginid(res?.authorize?.loginid ?? '');
+                        processAuthorizeResponse(res);
                         setIsLoading(false);
                         setIsSuccess(true);
+                        setLoginid(res?.authorize?.loginid ?? '');
                     })
                     .catch(() => {
                         setIsLoading(false);
@@ -128,31 +174,29 @@ const AuthProvider = ({ children, cookieTimeout }: AuthProviderProps) => {
             isMounted = false;
             cleanup();
         };
-    }, []);
+    }
 
     const switchAccount = useCallback(
-        (newLoginid: string, forceRefresh?: boolean) => {
-            if (newLoginid === loginid && !forceRefresh) {
+        async (newLoginId: string, forceRefresh?: boolean) => {
+            if (newLoginId === loginid && !forceRefresh) {
                 return;
             }
-
             queryClient.cancelQueries();
 
             setIsLoading(true);
-            mutateAsync({ payload: { authorize: getToken(newLoginid) || '' } }).then(res => {
-                setLoginid(newLoginid);
-                setData(res);
-                setIsLoading(false);
 
-                localStorage.setItem('active_loginid', newLoginid);
-            });
+            const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
+            setLoginid(newLoginId);
+            processAuthorizeResponse(authorizeResponse);
+
+            setIsLoading(false);
         },
-        [loginid]
+        [loginid, mutateAsync, processAuthorizeResponse, queryClient]
     );
 
     const refetch = useCallback(() => {
         switchAccount(loginid as string);
-    }, [loginid]);
+    }, [loginid, switchAccount]);
 
     const value = useMemo(() => {
         return {

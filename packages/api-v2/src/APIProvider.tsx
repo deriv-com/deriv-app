@@ -1,7 +1,7 @@
-import React, { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { getAppId, getSocketURL, useWS } from '@deriv/shared';
+import { getAppId, getSocketURL } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
     TSocketEndpointNames,
@@ -26,37 +26,12 @@ type TUnsubscribeFunction = (id: string) => void;
 
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
-    switchEnvironment: (loginid: string | null | undefined) => void;
     send: TSendFunction;
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
     queryClient: QueryClient;
-};
-
-const APIContext = createContext<APIContextData | null>(null);
-
-declare global {
-    interface Window {
-        ReactQueryClient?: QueryClient;
-        DerivAPI?: Record<string, DerivAPIBasic>;
-        WSConnections?: Record<string, WebSocket>;
-    }
-}
-
-// This is a temporary workaround to share a single `QueryClient` instance between all the packages.
-const getSharedQueryClientContext = (): QueryClient => {
-    if (!window.ReactQueryClient) {
-        window.ReactQueryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    refetchOnWindowFocus: false,
-                    refetchOnReconnect: false,
-                },
-            },
-        });
-    }
-
-    return window.ReactQueryClient;
+    setOnReconnected: (onReconnected: () => void) => void;
+    setOnConnected: (onConnected: () => void) => void;
 };
 
 /**
@@ -67,180 +42,177 @@ const getWebSocketURL = () => {
     const endpoint = getSocketURL();
     const app_id = getAppId();
     const language = localStorage.getItem('i18n_language');
-    const brand = 'deriv';
-    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
-
-    return wss_url;
+    return `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=deriv`;
 };
 
-/**
- * Retrieves or initializes a WebSocket instance based on the provided URL.
- * @param {string} wss_url - The WebSocket URL.
- * @returns {WebSocket} The WebSocket instance associated with the provided URL.
- */
-const getWebsocketInstance = (wss_url: string, onWSClose: () => void) => {
-    if (!window.WSConnections) {
-        window.WSConnections = {};
-    }
-
-    const existingWebsocketInstance = window.WSConnections[wss_url];
-    if (
-        !existingWebsocketInstance ||
-        !(existingWebsocketInstance instanceof WebSocket) ||
-        [2, 3].includes(existingWebsocketInstance.readyState)
-    ) {
-        window.WSConnections[wss_url] = new WebSocket(wss_url);
-        window.WSConnections[wss_url].addEventListener('close', () => {
-            if (typeof onWSClose === 'function') onWSClose();
-        });
-    }
-
-    return window.WSConnections[wss_url];
-};
+const APIContext = createContext<APIContextData | null>(null);
 
 /**
- * Retrieves the active WebSocket instance.
- * @returns {WebSocket} The WebSocket instance associated with the provided URL.
- */
-export const getActiveWebsocket = () => {
-    const wss_url = getWebSocketURL();
-
-    return window?.WSConnections?.[wss_url];
-};
-
-/**
- * Initializes a DerivAPI instance for the global window. This enables a standalone connection
+ * Initializes a derivAPIRef instance for the global window. This enables a standalone connection
  * without causing race conditions with deriv-app core stores.
- * @returns {DerivAPIBasic} The initialized DerivAPI instance.
+ * @returns {derivAPIRefBasic} The initialized derivAPIRef instance.
  */
-const initializeDerivAPI = (onWSClose: () => void): DerivAPIBasic => {
-    if (!window.DerivAPI) {
-        window.DerivAPI = {};
-    }
-
+const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
     const wss_url = getWebSocketURL();
-    const websocketConnection = getWebsocketInstance(wss_url, onWSClose);
 
-    if (!window.DerivAPI?.[wss_url] || window.DerivAPI?.[wss_url].isConnectionClosed()) {
-        window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: websocketConnection });
-    }
+    const connection = new WebSocket(wss_url);
+    connection.addEventListener('close', () => {
+        onWSClose?.();
+    });
 
-    return window.DerivAPI?.[wss_url];
+    connection.addEventListener('open', () => {
+        onOpen?.();
+    });
+
+    const result = new DerivAPIBasic({ connection });
+
+    return result;
 };
-
-const queryClient = getSharedQueryClientContext();
 
 /**
- * Determines the WS environment based on the login ID and custom server URL.
- * @param {string | null | undefined} loginid - The login ID (can be a string, null, or undefined).
- * @returns {string} Returns the WS environment: 'custom', 'real', or 'demo'.
+ * TODO: standlone no longer exists, as its always standalone,
+ * but I do not want to remove it from all packages withint this PR, so needs to be cleaned up in subsequent PRs
  */
-const getEnvironment = (loginid: string | null | undefined) => {
-    const customServerURL = window.localStorage.getItem('config.server_url');
-    if (customServerURL) return 'custom';
-
-    if (loginid && !/^(VRT|VRW)/.test(loginid)) return 'real';
-    return 'demo';
-};
-
 type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
 };
 
-const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
-    const WS = useWS();
+const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
-    const activeLoginid = window.localStorage.getItem('active_loginid');
-    const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
-    const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
-    const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();
+    const derivAPIRef = useRef<DerivAPIBasic>();
+    const subscriptionsRef = useRef<Record<string, DerivAPIBasic['subscribe']>>();
+    const reactQueryRef = useRef<QueryClient>();
+
+    // on reconnected ref
+    const onReconnectedRef = useRef<() => void>();
+    const onConnectedRef = useRef<() => void>();
+    const isOpenRef = useRef<boolean>(false);
+
+    if (!reactQueryRef.current) {
+        reactQueryRef.current = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    refetchOnWindowFocus: false,
+                    refetchOnReconnect: false,
+                },
+            },
+        });
+    }
+
+    // have to be here and not inside useEffect as there are places in code expecting this to be available
+    if (!derivAPIRef.current) {
+        derivAPIRef.current = initializeDerivAPI(
+            () => setReconnect(true),
+            () => {
+                isOpenRef.current = true;
+                if (onConnectedRef.current) {
+                    onConnectedRef.current();
+                    onConnectedRef.current = undefined;
+                }
+            }
+        );
+    }
+
+    useEffect(() => {
+        return () => {
+            derivAPIRef.current.disconnect();
+            reactQueryRef.current?.clear();
+        };
+    }, []);
+
+    const setOnReconnected = useCallback((onReconnected: () => void) => {
+        onReconnectedRef.current = onReconnected;
+    }, []);
+
+    const setOnConnected = useCallback((onConnected: () => void) => {
+        if (isOpenRef.current) {
+            onConnected();
+        } else {
+            onConnectedRef.current = onConnected;
+        }
+    }, []);
 
     const send: TSendFunction = (name, payload) => {
-        return standaloneDerivAPI.current?.send({ [name]: 1, ...payload });
+        return derivAPIRef.current?.send({ [name]: 1, ...payload });
     };
 
     const subscribe: TSubscribeFunction = async (name, payload) => {
         const id = await hashObject({ name, payload });
-        const matchingSubscription = subscriptions.current?.[id];
+        const matchingSubscription = subscriptionsRef.current?.[id];
         if (matchingSubscription) return { id, subscription: matchingSubscription };
 
         const { payload: _payload } = payload ?? {};
 
-        const subscription = standaloneDerivAPI.current?.subscribe({
+        const subscription = derivAPIRef.current?.subscribe({
             [name]: 1,
             subscribe: 1,
             ...(_payload ?? {}),
         });
 
-        subscriptions.current = { ...(subscriptions.current ?? {}), ...{ [id]: subscription } };
+        subscriptionsRef.current = { ...(subscriptionsRef.current ?? {}), ...{ [id]: subscription } };
         return { id, subscription };
     };
 
     const unsubscribe: TUnsubscribeFunction = id => {
-        const matchingSubscription = subscriptions.current?.[id];
+        const matchingSubscription = subscriptionsRef.current?.[id];
         if (matchingSubscription) matchingSubscription.unsubscribe();
     };
 
     useEffect(() => {
-        const currentDerivApi = standaloneDerivAPI.current;
-        const currentSubscriptions = subscriptions.current;
+        const currentDerivAPIRef = derivAPIRef.current;
+        const currentSubscriptionsRef = subscriptionsRef.current;
 
         return () => {
-            if (currentSubscriptions) {
-                Object.keys(currentSubscriptions).forEach(key => {
-                    currentSubscriptions[key].unsubscribe();
+            if (currentSubscriptionsRef) {
+                Object.keys(currentSubscriptionsRef).forEach(key => {
+                    currentSubscriptionsRef[key].unsubscribe();
                 });
             }
-            if (currentDerivApi && currentDerivApi.connection.readyState === 1) currentDerivApi.disconnect();
+            if (currentDerivAPIRef && currentDerivAPIRef.connection.readyState === 1) currentDerivAPIRef.disconnect();
         };
     }, []);
 
-    const switchEnvironment = useCallback(
-        (loginid: string | null | undefined) => {
-            if (!standalone) return;
-            const currentEnvironment = getEnvironment(loginid);
-            if (currentEnvironment !== 'custom' && currentEnvironment !== environment) {
-                setEnvironment(currentEnvironment);
-            }
-        },
-        [environment, standalone]
-    );
-
     useEffect(() => {
-        let interval_id: ReturnType<typeof setInterval>;
-
-        if (standalone) {
-            interval_id = setInterval(() => standaloneDerivAPI.current?.send({ ping: 1 }), 10000);
-        }
-
+        const interval_id: ReturnType<typeof setInterval> = setInterval(
+            () => derivAPIRef.current?.send({ ping: 1 }),
+            10000
+        );
         return () => clearInterval(interval_id);
-    }, [standalone]);
+    }, []);
 
     useEffect(() => {
         let reconnectTimerId: NodeJS.Timeout;
-        if (standalone || reconnect) {
-            standaloneDerivAPI.current = initializeDerivAPI(() => {
-                reconnectTimerId = setTimeout(() => setReconnect(true), 500);
-            });
+        if (reconnect) {
+            derivAPIRef.current = initializeDerivAPI(
+                () => {
+                    reconnectTimerId = setTimeout(() => setReconnect(true), 500);
+                },
+                () => {
+                    if (onReconnectedRef.current) {
+                        onReconnectedRef.current();
+                    }
+                }
+            );
             setReconnect(false);
         }
 
         return () => clearTimeout(reconnectTimerId);
-    }, [environment, reconnect, standalone]);
+    }, [reconnect]);
 
     return (
         <APIContext.Provider
             value={{
-                derivAPI: standalone ? standaloneDerivAPI.current : WS,
-                switchEnvironment,
+                derivAPI: derivAPIRef.current,
                 send,
                 subscribe,
                 unsubscribe,
-                queryClient,
+                queryClient: reactQueryRef.current,
+                setOnReconnected,
+                setOnConnected,
             }}
         >
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={reactQueryRef.current}>
                 {children}
                 {/* <ReactQueryDevtools /> */}
             </QueryClientProvider>

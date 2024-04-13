@@ -1,9 +1,7 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import moment from 'moment';
 import { unmountComponentAtNode } from 'react-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { act, render, screen, waitFor } from '@testing-library/react';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -17,6 +15,7 @@ const mock_data = {
     },
 };
 const mock_unsubscribe = jest.fn();
+jest.mock('react-toastify/dist/ReactToastify.css', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),

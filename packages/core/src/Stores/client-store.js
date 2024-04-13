@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
+import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -12,6 +13,7 @@ import {
     getUrlSmartTrader,
     isCryptocurrency,
     isDesktopOs,
+    isMobile,
     isEmptyObject,
     isLocal,
     isProduction,
@@ -27,6 +29,7 @@ import {
     State,
     toMoment,
     urlForLanguage,
+    getAppId,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
@@ -152,11 +155,18 @@ export default class ClientStore extends BaseStore {
     real_account_signup_form_data = [];
     real_account_signup_form_step = 0;
 
+    is_passkey_supported = false;
+    should_show_effortless_login_modal = false;
+
+    subscriptions = {};
+    exchange_rates = {};
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
+            exchange_rates: observable,
             loginid: observable,
             external_url_params: observable,
             setExternalParams: action.bound,
@@ -219,6 +229,8 @@ export default class ClientStore extends BaseStore {
             is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
+            is_passkey_supported: observable,
+            should_show_effortless_login_modal: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -276,7 +288,6 @@ export default class ClientStore extends BaseStore {
             is_age_verified: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
-            is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
@@ -394,6 +405,13 @@ export default class ClientStore extends BaseStore {
             setIsP2PEnabled: action.bound,
             setRealAccountSignupFormData: action.bound,
             setRealAccountSignupFormStep: action.bound,
+            setIsPasskeySupported: action.bound,
+            setShouldShowEffortlessLoginModal: action.bound,
+            fetchShouldShowEffortlessLoginModal: action.bound,
+            getExchangeRate: action.bound,
+            subscribeToExchangeRate: action.bound,
+            unsubscribeFromExchangeRate: action.bound,
+            unsubscribeFromAllExchangeRates: action.bound,
         });
 
         reaction(
@@ -437,7 +455,7 @@ export default class ClientStore extends BaseStore {
     }
 
     get account_open_date() {
-        if (isEmptyObject(this.accounts)) return undefined;
+        if (isEmptyObject(this.accounts) || !this.accounts[this.loginid]) return undefined;
         return Object.keys(this.accounts[this.loginid]).includes('created_at')
             ? this.accounts[this.loginid].created_at
             : undefined;
@@ -546,26 +564,22 @@ export default class ClientStore extends BaseStore {
     }
 
     get has_fiat() {
-        const values = Object.values(this.accounts).reduce((acc, item) => {
-            if (!item.is_virtual && item.landing_company_shortcode === this.landing_company_shortcode) {
-                acc.push(item.currency);
-            }
-            return acc;
-        }, []);
-        return !!this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat').length;
+        return Object.values(this.accounts).some(
+            item =>
+                item.currency_type === 'fiat' &&
+                !item.is_virtual &&
+                item.landing_company_shortcode === this.landing_company_shortcode
+        );
     }
 
     get current_fiat_currency() {
-        const values = Object.values(this.accounts).reduce((acc, item) => {
-            if (!item.is_virtual) {
-                acc.push(item.currency);
-            }
-            return acc;
-        }, []);
-
-        return this.has_fiat
-            ? this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat')[0].value
-            : undefined;
+        const account = Object.values(this.accounts).find(
+            item =>
+                item.currency_type === 'fiat' &&
+                !item.is_virtual &&
+                item.landing_company_shortcode === this.landing_company_shortcode
+        );
+        return account?.currency;
     }
 
     // return the landing company object that belongs to the current client by matching shortcode
@@ -780,12 +794,6 @@ export default class ClientStore extends BaseStore {
 
     get landing_company() {
         return this.landing_companies;
-    }
-
-    get is_valid_login() {
-        if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MF|MFW|VRTC|VRW|MLT|CR|CRW)[0-9]+$', 'i');
-        return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
     get is_logged_in() {
@@ -1592,7 +1600,7 @@ export default class ClientStore extends BaseStore {
                 );
 
                 if (has_action) {
-                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
+                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action', 'loginid']);
                     if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
                         // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
                         window.location.replace(`/redirect?${query_string}`);
@@ -1649,6 +1657,8 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
+            await this.setIsPasskeySupported();
+            await this.fetchShouldShowEffortlessLoginModal();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -1776,6 +1786,34 @@ export default class ClientStore extends BaseStore {
         const is_disabled = account.is_disabled;
         const is_virtual = account.is_virtual;
         const account_type = !is_virtual && currency ? currency : this.account_title;
+
+        const ppc_campaign_cookies =
+            Cookies.getJSON('utm_data') === 'null'
+                ? {
+                      utm_source: 'no source',
+                      utm_medium: 'no medium',
+                      utm_campaign: 'no campaign',
+                      utm_content: 'no content',
+                  }
+                : Cookies.getJSON('utm_data');
+        const broker = LocalStore?.get('active_loginid')
+            ?.match(/[a-zA-Z]+/g)
+            ?.join('');
+        setTimeout(() => {
+            Analytics.setAttributes({
+                account_type: broker === 'null' ? 'unlogged' : broker,
+                app_id: String(getAppId()),
+                device_type: isMobile() ? 'mobile' : 'desktop',
+                language: getLanguage(),
+                device_language: navigator?.language || 'en-EN',
+                user_language: getLanguage().toLowerCase(),
+                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+                utm_source: ppc_campaign_cookies?.utm_source,
+                utm_medium: ppc_campaign_cookies?.utm_medium,
+                utm_campaign: ppc_campaign_cookies?.utm_campaign,
+                utm_content: ppc_campaign_cookies?.utm_content,
+            });
+        }, 4);
 
         return {
             loginid,
@@ -2011,6 +2049,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
@@ -2642,4 +2681,137 @@ export default class ClientStore extends BaseStore {
     setRealAccountSignupFormStep(step) {
         this.real_account_signup_form_step = step;
     }
+
+    async setIsPasskeySupported() {
+        try {
+            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
+            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
+            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
+            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
+            const is_supported_by_browser = await browserSupportsWebAuthn();
+            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
+        } catch (e) {
+            //error handling needed
+        }
+    }
+
+    setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
+        this.should_show_effortless_login_modal = should_show_effortless_login_modal;
+    }
+    async fetchShouldShowEffortlessLoginModal() {
+        if (this.is_passkey_supported) {
+            try {
+                const stored_value = localStorage.getItem('show_effortless_login_modal');
+                const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+                if (show_effortless_login_modal) {
+                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
+                }
+
+                const data = await WS.send({ passkeys_list: 1 });
+
+                if (data?.passkeys_list) {
+                    const should_show_effortless_login_modal =
+                        this.root_store.ui.is_mobile &&
+                        !data?.passkeys_list?.length &&
+                        this.is_passkey_supported &&
+                        show_effortless_login_modal &&
+                        this.is_logged_in;
+
+                    this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+                } else {
+                    this.setShouldShowEffortlessLoginModal(false);
+                }
+            } catch (e) {
+                //error handling needed
+            }
+        } else {
+            this.setShouldShowEffortlessLoginModal(false);
+        }
+    }
+
+    addSubscription(name, key, subscription, subscription_id) {
+        this.subscriptions[name] = this.subscriptions[name] ?? {};
+        this.subscriptions[name][key] = this.subscriptions[name][key] ?? { sub: undefined, id: undefined };
+        if (subscription) this.subscriptions[name][key].sub = subscription;
+        if (subscription_id) this.subscriptions[name][key].id = subscription_id;
+    }
+
+    setExchangeRates(rates) {
+        this.exchange_rates = { ...rates };
+    }
+
+    getExchangeRate = (base_currency, target_currency) => {
+        if (this.exchange_rates) {
+            return this.exchange_rates?.[base_currency]?.[target_currency] ?? 1;
+        }
+        return 1;
+    };
+
+    subscribeToEndpoint = async (name, payload) => {
+        const key = JSON.stringify({ name, payload });
+        const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
+        if (matchingSubscription) return { key, subscription: matchingSubscription };
+
+        const subscription = WS?.subscribe({
+            [name]: 1,
+            subscribe: 1,
+            ...(payload ?? {}),
+        });
+
+        this.addSubscription(name, key, subscription);
+        return { name, key, subscription };
+    };
+
+    unsubscribeByKey = async (name, key) => {
+        const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
+        if (matchingSubscription) {
+            await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
+            delete this.subscriptions?.[name]?.[key];
+        }
+    };
+
+    subscribeToExchangeRate = async (base_currency, target_currency) => {
+        if (base_currency === '' || target_currency === '' || base_currency === target_currency) return;
+        if (this.exchange_rates?.[base_currency]?.[target_currency]) return;
+
+        const { key, subscription } = await this.subscribeToEndpoint('exchange_rates', {
+            base_currency,
+            target_currency,
+        });
+
+        subscription.subscribe(response => {
+            const rates = response.exchange_rates?.rates;
+            const subscription_id = String(response.subscription?.id);
+
+            if (rates) {
+                this.addSubscription('exchange_rates', key, undefined, subscription_id);
+
+                const currentData = { ...this.exchange_rates };
+                if (currentData) {
+                    currentData[base_currency] = { ...currentData[base_currency], ...rates };
+                } else currentData = { [base_currency]: rates };
+
+                this.setExchangeRates(currentData);
+            }
+        });
+    };
+
+    unsubscribeFromExchangeRate = async (base_currency, target_currency) => {
+        if (base_currency && target_currency) {
+            const key = JSON.stringify({ name: 'exchange_rates', payload: { base_currency, target_currency } });
+            await this.unsubscribeByKey('exchange_rates', key);
+            delete this.subscriptions?.['exchange_rates']?.[key];
+
+            const currData = { ...this.exchange_rates };
+            delete currData[payload.base_currency];
+            this.setExchangeRates(currData);
+        }
+    };
+
+    unsubscribeFromAllExchangeRates = () => {
+        Object.keys(this.subscriptions?.exchange_rates ?? {})?.forEach(key => {
+            this.unsubscribeByKey('exchange_rates', key);
+        });
+        this.setExchangeRates({});
+    };
 }

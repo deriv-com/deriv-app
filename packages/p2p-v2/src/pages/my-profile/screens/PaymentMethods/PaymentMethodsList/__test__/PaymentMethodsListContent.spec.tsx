@@ -1,10 +1,10 @@
 import React, { ComponentProps } from 'react';
-import { TAdvertiserPaymentMethods } from 'types';
+import { THooks } from 'types';
 import { PaymentMethodErrorModal, PaymentMethodModal } from '@/components/Modals';
 import { APIProvider, AuthProvider, p2p } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import PaymentMethodsListContent from '../PaymentMethodsListContent';
+import { PaymentMethodsListContent } from '../PaymentMethodsListContent';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
@@ -23,7 +23,7 @@ jest.mock('@deriv/api-v2', () => ({
     },
 }));
 
-const mockPaymentMethodsData: TAdvertiserPaymentMethods = [
+const mockPaymentMethodsData: THooks.AdvertiserPaymentMethods.Get = [
     {
         display_name: 'Other',
         fields: {

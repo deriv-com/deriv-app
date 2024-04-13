@@ -1,37 +1,41 @@
 import React from 'react';
-import { useWS } from '@deriv/shared';
 import { act, renderHook } from '@testing-library/react-hooks';
 import APIProvider from '../APIProvider';
 import AuthProvider from '../AuthProvider';
 import useActiveWalletBalance from '../hooks/useActiveWalletBalance';
 
-jest.mock('@deriv/shared');
+let onDataReveal: (response: unknown) => void;
 
-const mockUseWS = useWS as jest.MockedFunction<typeof useWS>;
-describe('useActiveWalletBalance', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element,
-        renderResult: any,
-        onData: (response: unknown) => void;
-    beforeEach(() => {
-        mockUseWS.mockReturnValue({
-            subscribe: jest.fn(() => {
+jest.mock('./../useAPI', () => ({
+    __esModule: true,
+    default() {
+        return {
+            subscribe() {
                 return {
-                    subscribe: async (_onData: (response: unknown) => void) => {
-                        onData = _onData;
-                        const delay = (ms: number) => new Promise<never>(resolve => setTimeout(resolve, ms));
-                        onData({ balance: { balance: 9999.9, currency: 'USD' }, msg_type: 'balance' });
-                        await delay(500);
+                    subscribe: async (onData: (response: unknown) => void, onError: (response: unknown) => void) => {
+                        onDataReveal = onData;
                     },
                 };
-            }),
-        });
+            },
+        };
+    },
+}));
 
+describe('useActiveWalletBalance', () => {
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, renderResult: any;
+
+    beforeEach(() => {
         wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
                 <AuthProvider>{children}</AuthProvider>
             </APIProvider>
         );
+
         renderResult = renderHook(() => useActiveWalletBalance(), { wrapper });
+
+        act(() => {
+            onDataReveal({ balance: { balance: 9999.9, currency: 'USD' }, msg_type: 'balance' });
+        });
     });
 
     test('returns correct displayBalance', async () => {
@@ -44,9 +48,8 @@ describe('useActiveWalletBalance', () => {
 
     test('updates the display balance with data update', async () => {
         const { result } = renderResult;
-
         act(() => {
-            onData({ balance: { balance: 42.0, currency: 'USD' }, msg_type: 'balance' });
+            onDataReveal({ balance: { balance: 42.0, currency: 'USD' }, msg_type: 'balance' });
         });
 
         expect(result.current.displayBalance).toBe('42.00 USD');
@@ -58,7 +61,7 @@ describe('useActiveWalletBalance', () => {
         const { result } = renderResult;
 
         act(() => {
-            onData({ balance: { balance: 42.4242, currency: 'USD' }, msg_type: 'balance' });
+            onDataReveal({ balance: { balance: 42.4242, currency: 'USD' }, msg_type: 'balance' });
         });
 
         expect(result.current.displayBalance).toBe('42.42 USD');

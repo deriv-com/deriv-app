@@ -1,235 +1,49 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { localize } from '@deriv/translations';
-import { useHasActiveRealAccount } from '@deriv/hooks';
-import { isDesktop, routes, ContentFlag } from '@deriv/shared';
-import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
-import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
-import { getTradingHubContents } from 'Constants/trading-hub-content';
-import EmptyOnboarding from './empty-onboarding';
+import { routes, ContentFlag } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useTradersHubTracking } from 'Hooks/index';
+import OnboardingSkeleton from '../../components/loader';
+import TradingPlatformIcon from 'Assets/svgs/trading-platform';
+import './onboarding.scss';
 
-type TOnboardingProps = {
-    contents: Record<
-        string,
-        {
-            component: React.ReactNode;
-            eu_footer_header?: string;
-            eu_non_mt5_footer_header?: string;
-            footer_header: string;
-            eu_footer_text?: string;
-            eu_non_mt5_footer_text?: string;
-            footer_text: string;
-            next_content?: string;
-            has_next_content: boolean;
-        }
-    >;
-};
-
-const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboardingProps) => {
+const Onboarding = observer(() => {
     const history = useHistory();
+
     const { traders_hub, client, ui } = useStore();
-    const {
-        is_eu_country,
-        is_landing_company_loaded,
-        is_logged_in,
-        prev_account_type,
-        setPrevAccountType,
-        is_mt5_allowed,
-    } = client;
-    const { is_mobile, is_from_signup_account } = ui;
+    const { is_landing_company_loaded, is_logged_in, setPrevAccountType } = client;
     const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
-    const [step, setStep] = React.useState<number>(1);
-    const has_active_real_account = useHasActiveRealAccount();
-    const steps_list = Object.keys(contents).filter(key => is_mt5_allowed || key !== 'step3');
+    const { is_from_signup_account } = ui;
 
-    const url_params = new URLSearchParams(window.location.search);
-    const skip_onboarding_flow = url_params.get('skip-onboarding-flow') === 'true';
-
-    const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
-        useTradersHubTracking();
-
-    const prevStep = () => {
-        if (step > 1) {
-            trackStepBack(step);
-            setStep(step - 1);
-        }
-        if (!is_mt5_allowed && step === 4) {
-            trackStepBack(step);
-            setStep(step - 2);
-        }
-    };
-
-    const nextStep = () => {
-        if (step < steps_list.length) {
-            setStep(step + 1);
-            trackStepForward(step);
-        }
-        if (!is_mt5_allowed && step === 2) {
-            setStep(step + 2);
-            trackStepForward(step);
-        }
-        if (step === steps_list.length) {
-            trackStepForward(step);
-            toggleIsTourOpen(true);
+    useEffect(() => {
+        if (is_logged_in && is_landing_company_loaded) {
             history.push(routes.traders_hub);
+            if (is_from_signup_account && content_flag !== ContentFlag.EU_DEMO) {
+                toggleIsTourOpen(true);
+            }
+
             if (is_demo_low_risk) {
                 selectAccountType('real');
                 setPrevAccountType('demo');
             }
         }
-    };
+    }, [
+        is_logged_in,
+        is_landing_company_loaded,
+        is_from_signup_account,
+        content_flag,
+        is_demo_low_risk,
+        history,
+        toggleIsTourOpen,
+        selectAccountType,
+        setPrevAccountType,
+    ]);
 
-    const handleCloseButton = async () => {
-        trackOnboardingClose(step);
-
-        toggleIsTourOpen(false);
-        history.push(routes.traders_hub);
-        if (content_flag === ContentFlag.EU_REAL && !has_active_real_account) {
-            await selectAccountType('demo');
-        } else {
-            await selectAccountType(prev_account_type);
-        }
-    };
-
-    const handleOnboardingStepChange = (step_num: number) => {
-        setStep(step_num);
-        trackDotNavigation(step_num);
-    };
-
-    const eu_user =
-        content_flag === ContentFlag.LOW_RISK_CR_EU ||
-        content_flag === ContentFlag.EU_REAL ||
-        content_flag === ContentFlag.EU_DEMO;
-
-    const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
-    const onboarding_step = steps_list[step - 1];
-
-    const footer_header = contents[onboarding_step]?.footer_header;
-    const footer_text = contents[onboarding_step]?.footer_text;
-
-    const eu_footer_header =
-        (is_mt5_allowed
-            ? contents[onboarding_step]?.eu_footer_header
-            : contents[onboarding_step]?.eu_non_mt5_footer_header) ?? footer_header;
-    const eu_footer_text =
-        (is_mt5_allowed
-            ? contents[onboarding_step]?.eu_footer_text
-            : contents[onboarding_step]?.eu_non_mt5_footer_text) ?? footer_text;
-
-    const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
-
-    const footer_description = is_eu_user ? eu_footer_text : footer_text;
-
-    useEffect(() => {
-        if (is_logged_in && is_landing_company_loaded && !skip_onboarding_flow) {
-            trackOnboardingOpen();
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen]);
-
-    if (!is_logged_in || !is_landing_company_loaded) {
-        return <EmptyOnboarding />;
-    }
-
-    if ((is_logged_in && is_from_signup_account && is_eu_user) || skip_onboarding_flow) {
-        history.push(routes.traders_hub);
-    }
+    if (is_logged_in && !is_landing_company_loaded) return <OnboardingSkeleton />;
 
     return (
-        <div className='onboarding-wrapper'>
-            <div className='onboarding-header'>
-                <div className='onboarding-header--deriv-logo'>
-                    <TradingPlatformIconProps icon='DerivLogo' />
-                </div>
-                <Icon
-                    icon='IcCross'
-                    custom_color='var(--text-general)'
-                    className='onboarding-header__cross-icon'
-                    onClick={handleCloseButton}
-                />
-            </div>
-            <div className='onboarding-body'>
-                <div>{contents[onboarding_step]?.component}</div>
-            </div>
-            <div className='onboarding-footer'>
-                <div className='onboarding-footer-wrapper'>
-                    <div className='onboarding-footer-description'>
-                        <Text
-                            as='h2'
-                            weight='bold'
-                            size={is_mobile ? 's' : 'sm'}
-                            align='center'
-                            className='onboarding-footer-description__header'
-                        >
-                            {footer_header_text}
-                        </Text>
-                        <Text
-                            as='p'
-                            size={is_mobile ? 'xxs' : 'xs'}
-                            align='center'
-                            className='onboarding-footer-description__text'
-                        >
-                            {footer_description}
-                        </Text>
-                    </div>
-                    {isDesktop() && (
-                        <div className='onboarding-footer-buttons'>
-                            <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
-                                {localize('Back')}
-                            </Button>
-                            <ProgressBarTracker
-                                step={step}
-                                steps_list={steps_list}
-                                onStepChange={handleOnboardingStepChange}
-                            />
-                            <Button primary onClick={nextStep} className='onboarding-footer-buttons--full-size'>
-                                {contents[onboarding_step]?.has_next_content
-                                    ? contents[onboarding_step]?.next_content
-                                    : localize('Next')}
-                            </Button>
-                        </div>
-                    )}
-                    {is_mobile && (
-                        <React.Fragment>
-                            <div className='onboarding-footer__progress-bar'>
-                                <ProgressBarTracker
-                                    step={step}
-                                    steps_list={steps_list}
-                                    onStepChange={handleOnboardingStepChange}
-                                />
-                            </div>
-                            <div
-                                className='onboarding-footer-buttons'
-                                style={step === 1 ? { justifyContent: 'start' } : {}}
-                            >
-                                <Button
-                                    secondary
-                                    className={step !== 1 ? 'onboarding-footer-buttons--mobile' : ''}
-                                    onClick={prevStep}
-                                    style={step === 1 ? { display: 'none' } : {}}
-                                >
-                                    {localize('Back')}
-                                </Button>
-                                <Button
-                                    primary
-                                    onClick={nextStep}
-                                    className={
-                                        step === 1
-                                            ? 'onboarding-footer-buttons--full-size'
-                                            : 'onboarding-footer-buttons--mobile'
-                                    }
-                                >
-                                    {contents[onboarding_step]?.has_next_content
-                                        ? contents[onboarding_step]?.next_content
-                                        : localize('Next')}
-                                </Button>
-                            </div>
-                        </React.Fragment>
-                    )}
-                </div>
+        <div className='onboarding'>
+            <div className='onboarding__logo' data-testid='dt_onboarding_logo'>
+                <TradingPlatformIcon icon='DerivLogo' />
             </div>
         </div>
     );

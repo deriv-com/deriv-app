@@ -120,8 +120,8 @@ export default class MyAdsStore extends BaseStore {
             requestWS({ get_account_status: 1 }).then(response => {
                 if (response) {
                     if (!response.error) {
-                        const { get_account_status } = response;
-                        const { authentication } = get_account_status;
+                        const { get_account_status = {} } = response || {};
+                        const { authentication = {} } = get_account_status;
                         const { document, identity } = authentication;
 
                         this.root_store.general_store.setPoiStatus(identity.status);

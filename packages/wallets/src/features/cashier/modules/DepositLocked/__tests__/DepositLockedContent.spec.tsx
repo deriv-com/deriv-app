@@ -24,7 +24,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        expect(result?.description).toBeUndefined();
+        expect(result).toBeFalsy();
     });
 
     it('should render correct message when POI has not been verified', () => {
@@ -44,7 +44,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/To enable deposits, you must check/)).toBeInTheDocument();
         expect(
             screen.getByRole('link', { name: 'proof of identity document verification status' })
@@ -68,7 +68,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/To enable deposits, you must check/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of address document verification status' })).toBeInTheDocument();
     });
@@ -90,7 +90,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/To enable deposits, you must accept/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'updated terms and conditions' })).toBeInTheDocument();
     });
@@ -112,7 +112,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/To enable deposits, you must complete/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment form' })).toBeInTheDocument();
     });
@@ -134,7 +134,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/To enable deposits, you must complete/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment form' })).toBeInTheDocument();
     });
@@ -156,7 +156,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(
             screen.getByText(/Please go to your account settings and complete your personal details to enable deposits/)
         ).toBeInTheDocument();
@@ -180,7 +180,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(
             screen.getByText(
                 /You have chosen to exclude yourself from trading on our website until Fri Jan 01 2100 00:00:00/
@@ -209,7 +209,7 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.description);
+        if (result) render(result);
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();

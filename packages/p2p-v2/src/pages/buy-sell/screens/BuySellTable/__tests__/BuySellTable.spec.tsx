@@ -1,6 +1,7 @@
 import React from 'react';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import BuySellTable from '../BuySellTable';
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -9,12 +10,26 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
     </APIProvider>
 );
 
+const mockPush = jest.fn();
+
 let mockAdvertiserListData = {
     data: [],
     isFetching: false,
     isLoading: true,
     loadMoreAdverts: jest.fn(),
 };
+
+jest.mock('use-query-params', () => ({
+    ...jest.requireActual('use-query-params'),
+    useQueryParams: jest.fn().mockReturnValue([{}, jest.fn()]),
+}));
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockPush,
+    }),
+}));
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
@@ -44,6 +59,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
+jest.mock('../../BuySellHeader/BuySellHeader', () => jest.fn(() => <div>BuySellHeader</div>));
+
 describe('<BuySellTable.spec />', () => {
     beforeEach(() => {
         Object.defineProperty(window, 'location', {
@@ -56,7 +73,7 @@ describe('<BuySellTable.spec />', () => {
     it('should render the BuySellHeader component and loader component if isLoading is true', () => {
         render(<BuySellTable />, { wrapper });
 
-        expect(screen.getByTestId('dt_p2p_v2_buy_sell_header')).toBeInTheDocument();
+        expect(screen.getByText('BuySellHeader')).toBeInTheDocument();
         expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
@@ -100,5 +117,14 @@ describe('<BuySellTable.spec />', () => {
             expect(screen.getByText('Bank transfer')).toBeInTheDocument();
             expect(screen.getByRole('button', { name: 'Buy USD' })).toBeInTheDocument();
         });
+    });
+
+    it('should call history.push when clicking on the table row', () => {
+        render(<BuySellTable />, { wrapper });
+
+        const usernameText = screen.getByText('John Doe');
+        userEvent.click(usernameText);
+
+        expect(mockPush).toHaveBeenCalledWith('/cashier/p2p-v2/advertiser/1');
     });
 });

@@ -11,75 +11,80 @@ type TProps = {
     balance: string;
     currency: string;
     iconSize?: React.ComponentProps<typeof WalletCardIcon>['size'];
-    isActive?: boolean;
     isCarouselContent?: boolean;
     isDemo?: boolean;
     landingCompanyName?: string;
+    onClick?: () => void;
 };
 
 const WalletCard: React.FC<TProps> = ({
     balance,
     currency,
     iconSize = 'lg',
-    isActive = false,
     isCarouselContent = false,
     isDemo,
     landingCompanyName,
+    onClick,
 }) => {
     const { isLoading } = useBalance();
 
     return (
-        <div className='wallets-card'>
-            <WalletGradientBackground
-                currency={isDemo ? 'Demo' : currency}
-                device='mobile'
-                hasShine
-                isDemo={isDemo}
-                type='card'
-            >
-                <div
-                    className={classNames('wallets-card__details', {
-                        'wallets-card__details__carousel-content': isCarouselContent,
-                        'wallets-card__details__carousel-content--active': isCarouselContent && isActive,
-                    })}
-                    data-testid='dt_wallet_card_details'
+        <button
+            className={classNames('wallets-card', { 'wallets-card__carousel-content': isCarouselContent })}
+            onClick={onClick}
+        >
+            <div className='wallets-card__container'>
+                <WalletGradientBackground
+                    currency={isDemo ? 'Demo' : currency}
+                    device='mobile'
+                    hasShine
+                    isDemo={isDemo}
+                    type='card'
                 >
                     <div
-                        className={classNames('wallets-card__details__top', {
-                            'wallets-card__details__top__carousel-content': isCarouselContent,
+                        className={classNames({
+                            'wallets-card__carousel-content-details': isCarouselContent,
+                            'wallets-card__details': !isCarouselContent,
                         })}
+                        data-testid='dt_wallet_card_details'
                     >
-                        <WalletCardIcon size={iconSize} type={isDemo ? 'Demo' : currency} />
-                        {!isCarouselContent && (
-                            <div className='wallets-card__details-landing_company'>
-                                {landingCompanyName && (
-                                    <WalletListCardBadge isDemo={isDemo} label={landingCompanyName} />
-                                )}
-                            </div>
-                        )}
-                    </div>
-                    <div className='wallets-card__details__bottom'>
-                        <WalletText color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
-                            {currency} Wallet
-                        </WalletText>
-                        {isLoading ? (
-                            <div
-                                className='wallets-skeleton wallets-card__balance-loader'
-                                data-testid='dt_wallet_card_balance_loader'
-                            />
-                        ) : (
-                            <WalletText
-                                color={isDemo ? 'white' : 'general'}
-                                size={isCarouselContent ? 'xl' : 'sm'}
-                                weight='bold'
-                            >
-                                {balance}
+                        <div
+                            className={classNames('wallets-card__details-top', {
+                                'wallets-card__carousel-content-details-top': isCarouselContent,
+                            })}
+                        >
+                            <WalletCardIcon size={iconSize} type={isDemo ? 'Demo' : currency} />
+                            {!isCarouselContent && (
+                                <div className='wallets-card__details-landing-company'>
+                                    {landingCompanyName && (
+                                        <WalletListCardBadge isDemo={isDemo} label={landingCompanyName} />
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                        <div className='wallets-card__details-bottom'>
+                            <WalletText color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
+                                {currency} Wallet
                             </WalletText>
-                        )}
+                            {isLoading ? (
+                                <div
+                                    className='wallets-skeleton wallets-card__balance-loader'
+                                    data-testid='dt_wallet_card_balance_loader'
+                                />
+                            ) : (
+                                <WalletText
+                                    color={isDemo ? 'white' : 'general'}
+                                    size={isCarouselContent ? 'xl' : 'sm'}
+                                    weight='bold'
+                                >
+                                    {balance}
+                                </WalletText>
+                            )}
+                        </div>
                     </div>
-                </div>
-            </WalletGradientBackground>
-        </div>
+                </WalletGradientBackground>
+            </div>
+        </button>
     );
 };
 

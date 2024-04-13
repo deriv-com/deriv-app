@@ -136,3 +136,29 @@ export const getDistanceToServerTime = (compareTime: number, serverTime?: Moment
     const distance = time.diff(serverTime, 'milliseconds');
     return distance;
 };
+
+/**
+ * Formats milliseconds into a string according to the specified format.
+ * @param {Number} miliseconds miliseconds
+ * @param {String} strFormat formatting using moment e.g - YYYY-MM-DD HH:mm
+ */
+export const formatMilliseconds = (miliseconds: moment.MomentInput, strFormat: string, isLocalTime = false) => {
+    if (isLocalTime) {
+        return moment(miliseconds).format(strFormat);
+    }
+    return moment.utc(miliseconds).format(strFormat);
+};
+
+/**
+ * Gets the date string after the given number of hours.
+ * @param {Number} initialEpoch - The initial epoch time.
+ * @param {Number} hours - The number of hours to add.
+ * @returns {String} The date string after the given number of hours.
+ */
+export const getDateAfterHours = (initialEpoch: number, hours: number): string => {
+    const milliseconds = hours * 60 * 60 * 1000;
+    const initialDayMilliseconds = convertToMillis(initialEpoch);
+    const totalMilliseconds = initialDayMilliseconds + milliseconds;
+
+    return getFormattedDateString(new Date(totalMilliseconds));
+};

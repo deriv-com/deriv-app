@@ -1202,6 +1202,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
         this.accounts[this.loginid].country = response.country;
+        this.accounts[this.loginid].currency_type = response.authorize.currency_type;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
@@ -1281,6 +1282,11 @@ export default class ClientStore extends BaseStore {
                     new_data.is_virtual = authorize_response.authorize.is_virtual;
                     new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
                     new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
+                    // Temporary fix: PLEASE TELL BE TO GIVE US CURRENCY_TYPE ON FIRST NEW_ACCOUNT_REAL && NEW_ACCOUNT_MALTAINVEST API CALL
+                    const currencies = ['USD', 'EUR', 'AUD', 'GBP'];
+                    new_data.currency_type = currencies.includes(authorize_response.authorize.currency)
+                        ? 'fiat'
+                        : 'crypto';
                     runInAction(() => (client_accounts[client_id] = new_data));
                     this.setLoginInformation(client_accounts, client_id);
                     WS.authorized.storage.getSettings().then(get_settings_response => {

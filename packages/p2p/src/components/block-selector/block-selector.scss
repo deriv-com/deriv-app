@@ -10,6 +10,10 @@
     &__options {
         display: flex;
         column-gap: 1rem;
+
+        @include mobile {
+            justify-content: space-between;
+        }
     }
 
     &__option {

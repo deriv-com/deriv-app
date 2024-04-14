@@ -6,10 +6,11 @@
     padding: 2rem 0;
 
     @include desktop {
-        margin-top: 10rem;
+        margin-top: 5rem;
     }
 
     @include mobile {
-        margin-top: 3rem;
+        margin: 3rem -1.6rem 0;
+        padding-right: 1.6rem;
     }
 }

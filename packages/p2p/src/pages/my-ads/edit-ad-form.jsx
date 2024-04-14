@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
 import { Button, Div100vhContainer, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
+import { useP2PCountryList, useP2PSettings } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -34,6 +34,7 @@ const EditAdForm = () => {
         amount_display,
         contact_info,
         description,
+        eligible_countries,
         max_order_amount_display,
         min_order_amount_display,
         order_expiry_period,
@@ -48,6 +49,7 @@ const EditAdForm = () => {
     const is_buy_advert = type === buy_sell.BUY;
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { useRegisterModalProps } = useModalManagerContext();
+    const { p2p_country_list } = useP2PCountryList();
     const { p2p_settings } = useP2PSettings();
 
     // when editing payment methods in creating an ad, once user declines to save their payment method, flow is to close all add payment method modals
@@ -108,7 +110,8 @@ const EditAdForm = () => {
             <Formik
                 initialValues={{
                     contact_info,
-                    description,
+                    default_advert_description: description,
+                    eligible_countries,
                     float_rate_offset_limit: p2p_settings.float_rate_offset_limit_string,
                     is_active: rate_type !== p2p_settings.rate_type && p2p_settings.reached_target_date ? 1 : is_active,
                     max_transaction: max_order_amount_display,
@@ -132,7 +135,11 @@ const EditAdForm = () => {
                                     <EditAdFormWrapper>
                                         <AdWizard
                                             action='edit'
+                                            country_list={p2p_country_list}
                                             float_rate_offset_limit_string={p2p_settings.float_rate_offset_limit_string}
+                                            onClose={() => {
+                                                my_ads_store.setShowEditAdForm(false);
+                                            }}
                                             rate_type={p2p_settings.rate_type}
                                             steps={steps}
                                         />

@@ -55,12 +55,12 @@
         }
         &--textarea {
             height: 9.6rem;
-            margin-bottom: 0;
+            margin: 2rem 0 0;
             width: 67.2rem;
 
             @include mobile {
                 height: 9.8rem;
-                width: 90vw;
+                width: auto;
             }
 
             .dc-input {

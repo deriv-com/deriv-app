@@ -1,0 +1,9 @@
+.preferred-countries-selector {
+    @include desktop {
+        max-width: 32.8rem !important;
+    }
+
+    &__input {
+        text-overflow: ellipsis;
+    }
+}

@@ -169,6 +169,7 @@ export default class MyAdsStore extends BaseStore {
         const create_advert = {
             p2p_advert_create: 1,
             type: values.type,
+            eligible_countries: values.eligible_countries,
             amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
@@ -305,6 +306,7 @@ export default class MyAdsStore extends BaseStore {
         const update_advert = {
             p2p_advert_update: 1,
             id: this.selected_ad_id,
+            eligible_countries: values.eligible_countries,
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             order_expiry_period: values.order_completion_time,
@@ -324,8 +326,8 @@ export default class MyAdsStore extends BaseStore {
             update_advert.contact_info = values.contact_info;
         }
 
-        if (values.description) {
-            update_advert.description = values.description;
+        if (values.default_advert_description) {
+            update_advert.description = values.default_advert_description;
         }
         if (values.reached_target_date) {
             update_advert.is_active = values.is_active;

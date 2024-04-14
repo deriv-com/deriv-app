@@ -1,16 +1,22 @@
 import React from 'react';
 import { FormikValues, useFormikContext } from 'formik';
-import { Button, Icon, Popover, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import BlockSelector from 'Components/block-selector';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdFormController from 'Pages/my-ads/ad-form-controller';
+import PreferredCountriesSelector from 'Pages/my-ads/preferred-countries-selector';
 import { useStores } from 'Stores';
+import { TCountryListProps } from 'Types';
 import CreateAdSummary from '../create-ad-summary.jsx';
 
-const AdConditionsSection = ({ ...props }) => {
-    const { errors, isSubmitting, isValid, values } = useFormikContext<FormikValues>();
+type TAdConditionsSection = {
+    action: string;
+    country_list: TCountryListProps;
+};
+const AdConditionsSection = ({ action, country_list, ...props }: TAdConditionsSection) => {
     const { showModal } = useModalManagerContext();
+    const { errors, isSubmitting, isValid, values } = useFormikContext<FormikValues>();
     const { my_ads_store } = useStores();
     const { min_completion_rate, min_join_days } = my_ads_store.p2p_advert_information;
     const joining_days = [
@@ -37,7 +43,7 @@ const AdConditionsSection = ({ ...props }) => {
                 price_rate={values.rate_type}
                 type={values.type}
             />
-            <Text as='div' color='prominent' size='xs'>
+            <Text as='div' className='ad-conditions-section__label' color='prominent' size='xs'>
                 <Localize i18n_default_text='Counterparty conditions (optional)' />
             </Text>
             <Text as='div' color='less-prominent' size='xs'>
@@ -61,27 +67,24 @@ const AdConditionsSection = ({ ...props }) => {
                 <Text color='less-prominent' size='xs' line_height='xl'>
                     <Localize i18n_default_text='Preferred countries' />
                 </Text>
-                <Popover
-                    alignment='top'
-                    message={
-                        <Localize i18n_default_text='We’ll only show your ad to people in the countries you choose.' />
-                    }
-                >
-                    <Icon color='disabled' icon='IcInfoOutline' />
-                </Popover>
+                <Icon
+                    color='disabled'
+                    icon='IcInfoOutline'
+                    onClick={() => {
+                        showModal({
+                            key: 'ErrorModal',
+                            props: {
+                                error_message: localize(
+                                    'We’ll only show your ad to people in the countries you choose.'
+                                ),
+                                error_modal_title: localize('Preferred countries'),
+                            },
+                        });
+                    }}
+                />
             </div>
-            <Button
-                onClick={() => {
-                    showModal({
-                        key: 'PreferredCountriesModal',
-                        props: {},
-                    });
-                }}
-                type='button'
-            >
-                <Localize i18n_default_text='All countries' />
-            </Button>
-            <AdFormController {...props} isSubmitting={isSubmitting} isValid={isValid} />
+            <PreferredCountriesSelector country_list={country_list} />
+            <AdFormController {...props} action={action} isSubmitting={isSubmitting} isValid={isValid} />
         </>
     );
 };

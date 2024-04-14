@@ -56,3 +56,7 @@ export type TAdvertProps = {
     type: string;
     visibility_status: string[];
 };
+
+export type TCountryListProps = {
+    [key: string]: { country_name: string };
+};

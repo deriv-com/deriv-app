@@ -33,7 +33,7 @@ const ErrorModal = ({
             width={is_mobile ? '90rem' : '40rem'}
         >
             <Modal.Body className='error-modal__body'>
-                <Text>
+                <Text size='xs'>
                     <Localize i18n_default_text={error_message} />
                 </Text>
             </Modal.Body>

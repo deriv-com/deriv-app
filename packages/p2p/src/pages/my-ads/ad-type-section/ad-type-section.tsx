@@ -128,6 +128,7 @@ const AdTypeSection = ({
                                       })
                             }
                             is_relative_hint
+                            disabled={is_edit}
                         />
                     )}
                 </Field>

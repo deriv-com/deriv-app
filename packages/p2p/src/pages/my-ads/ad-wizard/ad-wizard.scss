@@ -32,6 +32,7 @@
     .dc-form-progress {
         background-color: var(--general-section-1);
         margin-top: 2rem;
+        border-radius: 0.4rem;
 
         &__step {
             width: 24rem;
@@ -40,6 +41,10 @@
         &__steps {
             margin-top: 0;
             margin-bottom: 1.6rem;
+        }
+
+        &__header {
+            margin-bottom: 2rem;
         }
     }
 }

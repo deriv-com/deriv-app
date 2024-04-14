@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Popover, Text } from '@deriv/components';
-import { Localize } from 'Components/i18next';
+import { Icon, Text } from '@deriv/components';
+import { localize, Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 type TBlockSelectorOptionProps = {
     is_selected?: boolean;
@@ -19,6 +20,7 @@ type TBlockSelectorProps = {
 const BlockSelector = ({ label, onSelect, options, tooltip_info, value }: TBlockSelectorProps) => {
     const [selectors, setSelectors] = React.useState(options);
     const [selected_value, setSelectedValue] = React.useState(value);
+    const { showModal } = useModalManagerContext();
     const onClick = e => {
         const selected_value = e.target.getAttribute('data-value');
         onSelect?.(0);
@@ -44,9 +46,19 @@ const BlockSelector = ({ label, onSelect, options, tooltip_info, value }: TBlock
                 <Text color='less-prominent' size='xs' line_height='xl'>
                     <Localize i18n_default_text={label} />
                 </Text>
-                <Popover alignment='top' message={<Localize i18n_default_text={tooltip_info} />}>
-                    <Icon color='disabled' icon='IcInfoOutline' />
-                </Popover>
+                <Icon
+                    color='disabled'
+                    icon='IcInfoOutline'
+                    onClick={() => {
+                        showModal({
+                            key: 'ErrorModal',
+                            props: {
+                                error_message: localize(tooltip_info),
+                                error_modal_title: localize(label),
+                            },
+                        });
+                    }}
+                />
             </div>
             <div className='block-selector__options'>
                 {selectors.map(option => (

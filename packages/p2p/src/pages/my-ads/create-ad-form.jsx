@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
 import { Button, Checkbox, Div100vhContainer, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
+import { useP2PCountryList, useP2PSettings } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { reaction } from 'mobx';
@@ -31,6 +31,7 @@ const CreateAdForm = () => {
             rate_type,
         },
     } = useP2PSettings();
+    const { p2p_country_list = {} } = useP2PCountryList();
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const { useRegisterModalProps } = useModalManagerContext();
@@ -103,9 +104,11 @@ const CreateAdForm = () => {
     return (
         <React.Fragment>
             <Formik
+                enableReinitialize
                 initialValues={{
                     contact_info: general_store.contact_info,
                     default_advert_description: general_store.default_advert_description,
+                    eligible_countries: p2p_country_list ? Object.keys(p2p_country_list) : [],
                     float_rate_offset_limit: float_rate_offset_limit_string,
                     max_transaction: '',
                     min_transaction: '',
@@ -129,7 +132,11 @@ const CreateAdForm = () => {
                                 >
                                     <CreateAdFormWrapper>
                                         <AdWizard
+                                            country_list={p2p_country_list}
                                             float_rate_offset_limit_string={float_rate_offset_limit_string}
+                                            onClose={() => {
+                                                my_ads_store.setShowAdForm(false);
+                                            }}
                                             rate_type={rate_type}
                                             steps={steps}
                                         />

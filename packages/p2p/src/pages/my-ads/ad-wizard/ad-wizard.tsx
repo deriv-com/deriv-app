@@ -5,16 +5,27 @@ import AdConditionsSection from 'Pages/my-ads/ad-conditions-section';
 import AdPaymentDetailsSection from 'Pages/my-ads/ad-payment-details-section';
 import AdProgressBar from 'Pages/my-ads/ad-progress-bar';
 import AdTypeSection from 'Pages/my-ads/ad-type-section';
+import { TCountryListProps } from 'Types';
 
-type TStep = { header: { active_title: string; title: string }; sub_step_count: number };
+type TStep = { header: { title: string }; sub_step_count: number };
 type TAdWizardNav = {
     action: string;
+    country_list: TCountryListProps;
+    default_step?: number;
     float_rate_offset_limit_string: string;
+    onClose: () => void;
     rate_type: string;
     steps: TStep[];
 };
 
-const AdWizard = ({ action, float_rate_offset_limit_string, rate_type, steps }: TAdWizardNav) => {
+const AdWizard = ({
+    action,
+    country_list,
+    float_rate_offset_limit_string,
+    onClose,
+    rate_type,
+    steps,
+}: TAdWizardNav) => {
     const [current_step, setCurrentStep] = React.useState(0);
     const [is_form_dirty, setIsFormDirty] = React.useState(false);
 
@@ -55,7 +66,7 @@ const AdWizard = ({ action, float_rate_offset_limit_string, rate_type, steps }: 
                                     </Text>
                                 )}
                             </div>
-                            <Icon icon='IcCross' />
+                            <Icon icon='IcCross' onClick={onClose} />
                         </div>
                     </MobileWrapper>
                 </>
@@ -68,7 +79,7 @@ const AdWizard = ({ action, float_rate_offset_limit_string, rate_type, steps }: 
                 rate_type={rate_type}
             />
             <AdPaymentDetailsSection setIsFormDirty={setIsFormDirty} />
-            <AdConditionsSection />
+            <AdConditionsSection action={action} country_list={country_list} />
         </Wizard>
     );
 };

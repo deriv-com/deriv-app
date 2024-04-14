@@ -3,31 +3,30 @@ import { Button } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 type TAdFormControllerProps = {
+    action?: string;
     getCurrentStep: () => number;
     getTotalSteps: () => number;
-    goToFirstStep: () => void;
-    goToStep: () => void;
-    goToLastStep: () => void;
     goToNextStep: () => void;
     goToPreviousStep: () => void;
     is_next_btn_disabled: boolean;
-    onCancel: () => void;
+    onCancel?: () => void;
 };
 
 const AdFormController = ({
+    action,
     getCurrentStep,
     getTotalSteps,
-    goToFirstStep,
-    goToStep,
-    goToLastStep,
     goToNextStep,
     goToPreviousStep,
     is_next_btn_disabled,
     onCancel,
 }: TAdFormControllerProps) => {
+    const post_btn_text =
+        action === 'edit' ? <Localize i18n_default_text='Save changes' /> : <Localize i18n_default_text='Post ad' />;
+
     return (
         <div className='ad-form-controller'>
-            {getCurrentStep() === 1 && (
+            {getCurrentStep() === 1 && onCancel && (
                 <Button secondary large type='button' onClick={onCancel}>
                     <Localize i18n_default_text='Cancel' />
                 </Button>
@@ -58,7 +57,7 @@ const AdFormController = ({
                 </Button>
             ) : (
                 <Button primary large>
-                    <Localize i18n_default_text='Post ad' />
+                    {post_btn_text}
                 </Button>
             )}
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-type TStep = { header: { active_title: string; title: string }; sub_step_count: number };
+type TStep = { header: { title: string }; sub_step_count: number };
 type TAdProgressBar = {
     current_step: number;
     steps: TStep[];

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useActiveAccount } from '@deriv/api-v2';
+import { IconMarquee } from '../../../../components';
 import { onboardingCryptoCardIcons } from '../../constants/icons';
 import { CashierOnboardingCard } from '../CashierOnboardingCard';
-import { CashierOnboardingIconMarquee } from '../CashierOnboardingIconMarquee';
 
 type TProps = {
     setIsDeposit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,7 +24,7 @@ const CashierOnboardingCryptoCard: React.FC<TProps> = ({ setIsDeposit }) => {
             onClick={onClickHandler}
             title='Deposit cryptocurrencies'
         >
-            <CashierOnboardingIconMarquee icons={onboardingCryptoCardIcons.light} />
+            <IconMarquee iconHeight={45} iconWidth={72} icons={onboardingCryptoCardIcons.light} />
         </CashierOnboardingCard>
     );
 };

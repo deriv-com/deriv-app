@@ -13,6 +13,7 @@ import {
     getUrlSmartTrader,
     isCryptocurrency,
     isDesktopOs,
+    isMobile,
     isEmptyObject,
     isLocal,
     isProduction,
@@ -28,6 +29,7 @@ import {
     State,
     toMoment,
     urlForLanguage,
+    getAppId,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
@@ -156,11 +158,15 @@ export default class ClientStore extends BaseStore {
     is_passkey_supported = false;
     should_show_effortless_login_modal = false;
 
+    subscriptions = {};
+    exchange_rates = {};
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
+            exchange_rates: observable,
             loginid: observable,
             external_url_params: observable,
             setExternalParams: action.bound,
@@ -402,6 +408,10 @@ export default class ClientStore extends BaseStore {
             setIsPasskeySupported: action.bound,
             setShouldShowEffortlessLoginModal: action.bound,
             fetchShouldShowEffortlessLoginModal: action.bound,
+            getExchangeRate: action.bound,
+            subscribeToExchangeRate: action.bound,
+            unsubscribeFromExchangeRate: action.bound,
+            unsubscribeFromAllExchangeRates: action.bound,
         });
 
         reaction(
@@ -1783,6 +1793,34 @@ export default class ClientStore extends BaseStore {
         const is_virtual = account.is_virtual;
         const account_type = !is_virtual && currency ? currency : this.account_title;
 
+        const ppc_campaign_cookies =
+            Cookies.getJSON('utm_data') === 'null'
+                ? {
+                      utm_source: 'no source',
+                      utm_medium: 'no medium',
+                      utm_campaign: 'no campaign',
+                      utm_content: 'no content',
+                  }
+                : Cookies.getJSON('utm_data');
+        const broker = LocalStore?.get('active_loginid')
+            ?.match(/[a-zA-Z]+/g)
+            ?.join('');
+        setTimeout(() => {
+            Analytics.setAttributes({
+                account_type: broker === 'null' ? 'unlogged' : broker,
+                app_id: String(getAppId()),
+                device_type: isMobile() ? 'mobile' : 'desktop',
+                language: getLanguage(),
+                device_language: navigator?.language || 'en-EN',
+                user_language: getLanguage().toLowerCase(),
+                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+                utm_source: ppc_campaign_cookies?.utm_source,
+                utm_medium: ppc_campaign_cookies?.utm_medium,
+                utm_campaign: ppc_campaign_cookies?.utm_campaign,
+                utm_content: ppc_campaign_cookies?.utm_content,
+            });
+        }, 4);
+
         return {
             loginid,
             is_disabled,
@@ -2696,4 +2734,90 @@ export default class ClientStore extends BaseStore {
             this.setShouldShowEffortlessLoginModal(false);
         }
     }
+
+    addSubscription(name, key, subscription, subscription_id) {
+        this.subscriptions[name] = this.subscriptions[name] ?? {};
+        this.subscriptions[name][key] = this.subscriptions[name][key] ?? { sub: undefined, id: undefined };
+        if (subscription) this.subscriptions[name][key].sub = subscription;
+        if (subscription_id) this.subscriptions[name][key].id = subscription_id;
+    }
+
+    setExchangeRates(rates) {
+        this.exchange_rates = { ...rates };
+    }
+
+    getExchangeRate = (base_currency, target_currency) => {
+        if (this.exchange_rates) {
+            return this.exchange_rates?.[base_currency]?.[target_currency] ?? 1;
+        }
+        return 1;
+    };
+
+    subscribeToEndpoint = async (name, payload) => {
+        const key = JSON.stringify({ name, payload });
+        const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
+        if (matchingSubscription) return { key, subscription: matchingSubscription };
+
+        const subscription = WS?.subscribe({
+            [name]: 1,
+            subscribe: 1,
+            ...(payload ?? {}),
+        });
+
+        this.addSubscription(name, key, subscription);
+        return { name, key, subscription };
+    };
+
+    unsubscribeByKey = async (name, key) => {
+        const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
+        if (matchingSubscription) {
+            await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
+            delete this.subscriptions?.[name]?.[key];
+        }
+    };
+
+    subscribeToExchangeRate = async (base_currency, target_currency) => {
+        if (base_currency === '' || target_currency === '' || base_currency === target_currency) return;
+        if (this.exchange_rates?.[base_currency]?.[target_currency]) return;
+
+        const { key, subscription } = await this.subscribeToEndpoint('exchange_rates', {
+            base_currency,
+            target_currency,
+        });
+
+        subscription.subscribe(response => {
+            const rates = response.exchange_rates?.rates;
+            const subscription_id = String(response.subscription?.id);
+
+            if (rates) {
+                this.addSubscription('exchange_rates', key, undefined, subscription_id);
+
+                const currentData = { ...this.exchange_rates };
+                if (currentData) {
+                    currentData[base_currency] = { ...currentData[base_currency], ...rates };
+                } else currentData = { [base_currency]: rates };
+
+                this.setExchangeRates(currentData);
+            }
+        });
+    };
+
+    unsubscribeFromExchangeRate = async (base_currency, target_currency) => {
+        if (base_currency && target_currency) {
+            const key = JSON.stringify({ name: 'exchange_rates', payload: { base_currency, target_currency } });
+            await this.unsubscribeByKey('exchange_rates', key);
+            delete this.subscriptions?.['exchange_rates']?.[key];
+
+            const currData = { ...this.exchange_rates };
+            delete currData[payload.base_currency];
+            this.setExchangeRates(currData);
+        }
+    };
+
+    unsubscribeFromAllExchangeRates = () => {
+        Object.keys(this.subscriptions?.exchange_rates ?? {})?.forEach(key => {
+            this.unsubscribeByKey('exchange_rates', key);
+        });
+        this.setExchangeRates({});
+    };
 }

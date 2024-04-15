@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
+import { WalletCurrencyIcons, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
@@ -66,7 +66,8 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const history = useHistory();
     const location = useLocation();
 
-    const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
+    const isDemo = activeWallet?.is_virtual;
+    const tabs = isDemo ? virtualAccountTabs : realAccountTabs;
 
     useEffect(() => {
         if (isMobile && activeTabRef.current) {
@@ -114,7 +115,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                     'wallets-cashier-header__currency-icon--hide-currency-icon': hideWalletDetails,
                                 })}
                             >
-                                <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />
+                                <WalletCurrencyIcons currency={isDemo ? 'DEMO' : activeWallet?.currency} size='md' />
                             </div>
                         )}
                         <CloseIcon

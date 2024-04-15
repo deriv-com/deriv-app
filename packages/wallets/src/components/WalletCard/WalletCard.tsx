@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { useBalance } from '@deriv/api-v2';
 import { WalletText } from '../Base';
@@ -9,8 +9,8 @@ import './WalletCard.scss';
 
 type TProps = {
     balance: string;
-    currency: string;
-    iconSize?: React.ComponentProps<typeof WalletCurrencyIcons>['size'];
+    currency: ComponentProps<typeof WalletCurrencyIcons>['currency'];
+    iconSize?: ComponentProps<typeof WalletCurrencyIcons>['size'];
     isCarouselContent?: boolean;
     isDemo?: boolean;
     landingCompanyName?: string;

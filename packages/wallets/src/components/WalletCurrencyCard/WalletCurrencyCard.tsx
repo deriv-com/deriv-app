@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { TGenericSizes, THooks } from '../../types';
 import { WalletCurrencyIcons } from '../WalletCurrencyIcons';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletCurrencyCard.scss';
 
 type TProps = {
-    currency: THooks.WalletAccountsList['wallet_currency_type'];
+    currency: ComponentProps<typeof WalletCurrencyIcons>['currency'];
     isDemo?: THooks.WalletAccountsList['is_virtual'];
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
 };

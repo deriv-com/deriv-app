@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys */
-import React from 'react';
+import React, { ComponentType } from 'react';
 import {
     CurrencyAudIcon,
     CurrencyBtcIcon,
@@ -10,6 +10,7 @@ import {
     CurrencyUsdcIcon,
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
+    IconTypes,
     PaymentMethodBitcoinBrandIcon,
     PaymentMethodDerivDemoBrandDarkIcon,
     PaymentMethodEthereumBrandIcon,
@@ -18,15 +19,17 @@ import {
     PaymentMethodUsdCoinBrandIcon,
 } from '@deriv/quill-icons';
 import CurrencyDemoRoundedIcon from '../../public/images/demo-logo.svg';
+import { THooks } from '../../types';
 
 // TODO: Replace DEMO currency icon with @deriv/quill-icons once available
-export const roundedIcons = {
-    // Fiat Icons:
+export const roundedIcons: Record<
+    THooks.WalletAccountsList['wallet_currency_type'],
+    ComponentType<React.SVGAttributes<SVGElement>> | IconTypes
+> = {
     AUD: CurrencyAudIcon,
     EUR: CurrencyEurIcon,
     GBP: CurrencyGbpIcon,
     USD: CurrencyUsdIcon,
-    // Crypto Icons:
     BTC: CurrencyBtcIcon,
     ETH: CurrencyEthIcon,
     LTC: CurrencyLtcIcon,
@@ -34,11 +37,10 @@ export const roundedIcons = {
     USDT: CurrencyUsdtIcon,
     eUSDT: CurrencyUsdtIcon,
     tUSDT: CurrencyUsdtIcon,
-    // Other Icons:
     DEMO: CurrencyDemoRoundedIcon,
-} as const;
+};
 
-export const defaultIcons = {
+export const defaultIcons: Record<THooks.WalletAccountsList['wallet_currency_type'], IconTypes> = {
     BTC: PaymentMethodBitcoinBrandIcon,
     DEMO: PaymentMethodDerivDemoBrandDarkIcon,
     ETH: PaymentMethodEthereumBrandIcon,
@@ -47,7 +49,7 @@ export const defaultIcons = {
     USDT: PaymentMethodTetherUsdtBrandIcon,
     eUSDT: PaymentMethodTetherUsdtBrandIcon,
     tUSDT: PaymentMethodTetherUsdtBrandIcon,
-} as const;
+};
 
 export const roundedIconWidth = {
     xs: 16,
@@ -68,15 +70,15 @@ export const defaultIconWidth = {
 export const fiatIcons = ['AUD', 'EUR', 'GBP', 'USD'] as const;
 
 type TWalletCurrencyIconsProps = {
-    currency: keyof typeof defaultIcons | keyof typeof roundedIcons;
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
     rounded?: boolean;
     size?: keyof typeof defaultIconWidth | keyof typeof roundedIconWidth;
 };
 
 const WalletCurrencyIcons: React.FC<TWalletCurrencyIconsProps> = ({ currency, rounded = false, size = 'md' }) => {
-    const isFiat = fiatIcons.includes(currency);
+    const isFiat = fiatIcons.includes(currency as typeof fiatIcons[number]);
     const width = rounded || isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
-    const Icon = rounded || isFiat ? roundedIcons[currency] : defaultIcons[currency];
+    const Icon = rounded || isFiat ? roundedIcons[currency] : defaultIcons[currency as keyof typeof defaultIcons];
 
     return <Icon height='auto' width={width} />;
 };

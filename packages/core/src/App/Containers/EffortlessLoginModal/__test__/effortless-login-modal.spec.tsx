@@ -3,9 +3,15 @@ import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Analytics } from '@deriv-com/analytics';
 import { routes } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import EffortlessLoginModal from '../effortless-login-modal';
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    mobileOSDetect: jest.fn(() => 'test OS'),
+}));
 
 describe('EffortlessLoginModal', () => {
     let modal_root_el: HTMLDivElement, mock_store: ReturnType<typeof mockStore>;
@@ -15,7 +21,6 @@ describe('EffortlessLoginModal', () => {
         mock_store = mockStore({
             client: {
                 setShouldShowEffortlessLoginModal: jest.fn(),
-                passkeysTrackActionEvent: jest.fn(),
             },
         });
     });
@@ -36,6 +41,13 @@ describe('EffortlessLoginModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
+    const tracking_event = 'ce_passkey_effortless_form';
+    const getAnalyticsParams = (action: string) => ({
+        action,
+        form_name: 'ce_passkey_effortless_form',
+        operating_system: 'test OS',
+    });
+
     const title = 'Effortless login with passkeys';
     const tips = [
         'No need to remember a password',
@@ -53,6 +65,7 @@ describe('EffortlessLoginModal', () => {
     const tips_title = 'Tips:';
 
     const mainScreenCheck = () => {
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('open'));
         expect(screen.getByText(title)).toBeInTheDocument();
         tips.forEach(tip => {
             expect(screen.getByText(tip)).toBeInTheDocument();
@@ -60,7 +73,6 @@ describe('EffortlessLoginModal', () => {
         descriptions.forEach(description => {
             expect(screen.queryByText(description)).not.toBeInTheDocument();
         });
-
         expect(screen.getByText(learn_more)).toBeInTheDocument();
         expect(screen.queryByText(tips_title)).not.toBeInTheDocument();
     };
@@ -104,7 +116,7 @@ describe('EffortlessLoginModal', () => {
         expect(back_button).toBeInTheDocument();
         userEvent.click(back_button);
         mainScreenCheck();
-        expect(mock_store.client.passkeysTrackActionEvent).toHaveBeenCalled();
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('info_open'));
     });
 
     it('should leave EffortlessLoginModal', () => {
@@ -117,7 +129,7 @@ describe('EffortlessLoginModal', () => {
         expect(history_object.location.pathname).toBe(routes.traders_hub);
         expect(mock_store.client.setShouldShowEffortlessLoginModal).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalled();
-        expect(mock_store.client.passkeysTrackActionEvent).toHaveBeenCalled();
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('maybe_later'));
     });
 
     it('should leave EffortlessLoginModal from "learn more" screen', () => {
@@ -134,7 +146,7 @@ describe('EffortlessLoginModal', () => {
         expect(history_object.location.pathname).toBe(routes.passkeys);
         expect(mock_store.client.setShouldShowEffortlessLoginModal).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalled();
-        expect(mock_store.client.passkeysTrackActionEvent).toHaveBeenCalled();
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('get_started'));
     });
 
     it('should not render EffortlessLoginModal if there is no portal', () => {
@@ -150,6 +162,6 @@ describe('EffortlessLoginModal', () => {
         descriptions.forEach(description => {
             expect(screen.queryByText(description)).not.toBeInTheDocument();
         });
-        expect(mock_store.client.passkeysTrackActionEvent).not.toHaveBeenCalled();
+        expect(Analytics.trackEvent).not.toHaveBeenCalled();
     });
 });

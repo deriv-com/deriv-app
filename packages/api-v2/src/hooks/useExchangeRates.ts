@@ -11,7 +11,7 @@ type TCurrencyRateData = NonNullable<TSocketResponseData<'exchange_rates'>['exch
 type TCurrencyExchangeSubscribeFunction<T> = { base_currency: T; target_currencies: T[] };
 
 const useExchangeRates = <T extends TCurrencyPayload>() => {
-    const { subscribe: _subscribe, unsubscribe: _unsubscribe } = useAPIContext();
+    const { subscribe: _subscribe } = useAPIContext();
     const exchangeRatesSubscriptions = useRef<string[]>([]);
     const [data, setData] = useState<Record<TCurrencyPayload, TCurrencyRateData>>();
 
@@ -42,10 +42,11 @@ const useExchangeRates = <T extends TCurrencyPayload>() => {
     };
 
     const unsubscribe = async (payload: TCurrencyExchangeSubscribeFunction<T>) => {
+        // TODO: fix this hook and unsubscirbe here, which shoudln't be needed to begin with
         if (payload) {
             const id = await hashObject({ name: 'exchange_rates', payload });
             exchangeRatesSubscriptions.current = exchangeRatesSubscriptions.current.filter(s => s !== id);
-            _unsubscribe(id);
+            // _unsubscribe(id);
             setData(prev => {
                 const currData = { ...(prev ?? {}) };
                 delete currData[payload.base_currency];
@@ -53,7 +54,7 @@ const useExchangeRates = <T extends TCurrencyPayload>() => {
             });
             return;
         }
-        exchangeRatesSubscriptions.current.forEach(s => _unsubscribe(s));
+        // exchangeRatesSubscriptions.current.forEach(s => _unsubscribe(s));
     };
 
     const getExchangeRate = (base: string, target: string) => {

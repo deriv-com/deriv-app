@@ -1,6 +1,14 @@
 import _ from 'lodash';
 import lightweightSend from './send';
 
+function generateRandomInteger() {
+    return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 1;
+}
+
+/**
+ * Subscribes directly to backend stream
+ * WARNING: it does not check for dubplicates, its just
+ */
 export default class BackendSubsription {
     ws: WebSocket;
     name: string;
@@ -35,7 +43,7 @@ export default class BackendSubsription {
 
     async unsubscribe() {
         this.ws.removeEventListener('message', this.boundOnWsMessage);
-        await lightweightSend(this.ws, 'forget', { forget: this.subscriptionId });
+        await lightweightSend(this.ws, generateRandomInteger(), 'forget', { forget: this.subscriptionId });
     }
 
     async subscribe() {
@@ -44,7 +52,7 @@ export default class BackendSubsription {
             this.ws.removeEventListener('message', this.boundOnWsMessage);
         });
 
-        const data:any = await lightweightSend(this.ws, this.name, {
+        const data:any = await lightweightSend(this.ws, generateRandomInteger(), this.name, {
             subscribe: 1,
             ...this.payload
         });

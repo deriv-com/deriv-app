@@ -1,15 +1,14 @@
 import _ from 'lodash';
 
 
-let _reqSeqNr = 1000;
 const REQ_TIMEOUT = 20000;
 
 /**
  * responsible for sending request over given WS and thats it, 
  * no handling of reconnections, no state, nothing, just send
+ * even request seq number is outside of its scope (reason being, that req_seq needs to be also used by the subscriptions)
  */
-function send(ws: WebSocket, name: string, payload: object | any) {
-    const req_id = _reqSeqNr++;
+function send(ws: WebSocket, reqSeqNumber: number, name: string, payload: object | any) {
 
     let promise = new Promise((resolve, reject) => {
         let timeout: NodeJS.Timeout = setTimeout(() => {
@@ -19,7 +18,7 @@ function send(ws: WebSocket, name: string, payload: object | any) {
 
         function receive(messageEvent: any) {
             const data = JSON.parse(messageEvent.data);
-            if (data.req_id !== req_id) {
+            if (data.req_id !== reqSeqNumber) {
                 return;
             }
 
@@ -34,7 +33,7 @@ function send(ws: WebSocket, name: string, payload: object | any) {
         ws.send(JSON.stringify({ 
             [name]: 1, 
             ...payload,
-            req_id,
+            req_id: reqSeqNumber,
          }));
      });
 

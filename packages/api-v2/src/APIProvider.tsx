@@ -36,6 +36,11 @@ const getWebSocketURL = () => {
     return `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=deriv`;
 };
 
+
+function generateRandomInteger() {
+    return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 1;
+}
+
 const APIContext = createContext<APIContextData | null>(null);
 
 /**
@@ -128,8 +133,10 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     }, []);
 
     
+    //@ts-ignore
     const send: TSendFunction = (name, payload) => {
-        return lightweightSend(connectionRef?.current, name, payload);
+        //@ts-ignore
+        return lightweightSend(connectionRef?.current, generateRandomInteger(), name, payload);
     };
 
     //@ts-ignore

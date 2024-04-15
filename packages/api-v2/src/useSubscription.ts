@@ -36,8 +36,8 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
         subscribe,
         unsubscribe,
         isLoading,
-        // isSubscribed,
-        // error,
+        isSubscribed: true, // TODO: fix this? 
+        error: false, // TODO: error support?
         data,
     };
 };

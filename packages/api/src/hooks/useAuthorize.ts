@@ -17,7 +17,6 @@ const useAuthorize = () => {
     const { data, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
         options: {
-            dd: 'tet',
             enabled: Boolean(current_token),
             // for authorise request - we cannot affort any race hazards due to it being randomly triggered
             // e.g. during the process of swithcing account or smth

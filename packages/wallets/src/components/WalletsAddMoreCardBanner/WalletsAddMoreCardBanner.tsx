@@ -80,7 +80,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>
-                <WalletCurrencyIcons currency={currency} size={isMobile ? 'sm' : 'md'} />
+                <WalletCurrencyIcons currency={currency ?? 'USD'} size={isMobile ? 'sm' : 'md'} />
             </div>
             <WalletButton
                 color='white'

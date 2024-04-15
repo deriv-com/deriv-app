@@ -1,25 +1,29 @@
-import React, { ComponentType, SVGAttributes } from 'react';
-import CTraderIcon from '../../public/images/ctrader.svg';
-import DerivAppIcon from '../../public/images/deriv-apps.svg';
-import DerivXIcon from '../../public/images/derivx.svg';
-import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
-import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
-import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
+import React from 'react';
+import {
+    AccountsDerivAccountLightIcon,
+    AccountsDerivXIcon,
+    AccountsDmt5DerivedIcon,
+    AccountsDmt5FinancialIcon,
+    AccountsDmt5SwfIcon,
+    PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
+} from '@deriv/quill-icons';
 import { THooks, TPlatforms } from '../../types';
 import { WalletCurrencyIcons } from '../WalletCurrencyIcons';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletMarketCurrencyIcon.scss';
 
-const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
-    all: SwapFreeMT5Icon,
-    financial: FinancialMT5Icon,
-    synthetic: DerivedMT5Icon,
-};
+const iconProps = { className: 'wallets-market-currency-icon__after', height: 38, width: 38 };
 
-const marketTypeToPlatformIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
-    ctrader: CTraderIcon,
-    dxtrade: DerivXIcon,
-};
+const marketTypeToIconMapper = {
+    all: <AccountsDmt5SwfIcon {...iconProps} />,
+    financial: <AccountsDmt5FinancialIcon {...iconProps} />,
+    synthetic: <AccountsDmt5DerivedIcon {...iconProps} />,
+} as const;
+
+const marketTypeToPlatformIconMapper = {
+    ctrader: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon {...iconProps} />,
+    dxtrade: <AccountsDerivXIcon {...iconProps} />,
+} as const;
 
 type TWalletMarketCurrencyIconProps = {
     currency: Exclude<THooks.ActiveWalletAccount['currency'], undefined>;
@@ -34,26 +38,26 @@ const WalletMarketCurrencyIcon: React.FC<TWalletMarketCurrencyIconProps> = ({
     marketType,
     platform,
 }) => {
-    let MarketTypeIcon: ComponentType<SVGAttributes<SVGElement>>;
+    let MarketTypeIcon;
     if (marketType && platform) {
         MarketTypeIcon =
             marketType === 'all' && Object.keys(marketTypeToPlatformIconMapper).includes(platform)
-                ? marketTypeToPlatformIconMapper[platform]
+                ? marketTypeToPlatformIconMapper[platform as keyof typeof marketTypeToPlatformIconMapper]
                 : marketTypeToIconMapper[marketType];
     } else {
-        MarketTypeIcon = DerivAppIcon;
+        MarketTypeIcon = <AccountsDerivAccountLightIcon {...iconProps} />;
     }
 
     return (
         <div className='wallets-market-currency-icon'>
-            <MarketTypeIcon className='wallets-market-currency-icon__after' />
+            {MarketTypeIcon}
             <div
                 className={`wallets-market-currency-icon__before wallets-market-currency-icon__before-${
                     isDemo ? 'demo' : 'real'
                 }`}
             >
                 <WalletGradientBackground currency={currency} hasShine isDemo={isDemo} type='card'>
-                    <WalletCurrencyIcons currency={isDemo ? 'DEMO' : currency} size='lg' />
+                    <WalletCurrencyIcons currency={isDemo ? 'DEMO' : currency} size='md' />
                 </WalletGradientBackground>
             </div>
         </div>

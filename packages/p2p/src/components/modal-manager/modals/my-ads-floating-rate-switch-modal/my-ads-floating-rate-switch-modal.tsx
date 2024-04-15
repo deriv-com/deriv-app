@@ -7,12 +7,24 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 
-const MyAdsFloatingRateSwitchModal = () => {
+type TMyAdsFloatingRateSwitchModalProps = {
+    cancel_btn_text?: string;
+    onSwitch?: () => void;
+};
+
+const MyAdsFloatingRateSwitchModal = ({ cancel_btn_text, onSwitch }: TMyAdsFloatingRateSwitchModalProps) => {
     const { my_ads_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { selected_ad_type, toggleMyAdsRateSwitchModal } = my_ads_store;
     const { p2p_settings } = useP2PSettings();
     const is_float_rate = p2p_settings?.rate_type === ad_type.FLOAT;
+
+    const getCancelButtonText = () => {
+        if (cancel_btn_text) return cancel_btn_text;
+        else if (p2p_settings?.reached_target_date) return <Localize i18n_default_text='Cancel' />;
+
+        return <Localize i18n_default_text="I'll do this later" />;
+    };
 
     return (
         <Modal is_open={is_modal_open} toggleModal={hideModal} small className='my-ads-floating-rate-switch-modal'>
@@ -31,13 +43,13 @@ const MyAdsFloatingRateSwitchModal = () => {
                         onClick={() => toggleMyAdsRateSwitchModal(selected_ad_type, false)}
                         large
                     >
-                        {p2p_settings?.reached_target_date ? (
-                            <Localize i18n_default_text='Cancel' />
-                        ) : (
-                            <Localize i18n_default_text="I'll do this later" />
-                        )}
+                        {getCancelButtonText()}
                     </Button>
-                    <Button primary large onClick={() => toggleMyAdsRateSwitchModal(p2p_settings?.rate_type, true)}>
+                    <Button
+                        primary
+                        large
+                        onClick={onSwitch ?? toggleMyAdsRateSwitchModal(p2p_settings?.rate_type, true)}
+                    >
                         {is_float_rate ? (
                             <Localize i18n_default_text='Set floating rate' />
                         ) : (

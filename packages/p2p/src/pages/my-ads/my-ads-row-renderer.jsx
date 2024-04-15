@@ -130,7 +130,15 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         if (p2p_settings.rate_type === rate_type) {
             my_ads_store.onClickCopy(id, is_desktop);
         } else {
-            onClickSwitchAd();
+            general_store.showModal({
+                key: 'MyAdsFloatingRateSwitchModal',
+                props: {
+                    cancel_btn_text: localize('Cancel'),
+                    onSwitch: () => {
+                        my_ads_store.onClickCopy(id, is_desktop);
+                    },
+                },
+            });
         }
     };
     const onClickSwitchAd = () => {

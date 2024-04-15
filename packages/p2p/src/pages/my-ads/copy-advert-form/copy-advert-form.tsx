@@ -57,6 +57,15 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         my_ads_store.handleSubmit(values, { setSubmitting }, true, adverts_archive_period);
     };
 
+    const getInitialAdRate = () => {
+        if (rate_type !== ad_rate_type) {
+            if (rate_type === ad_type.FLOAT) return type === buy_sell.BUY ? '-0.01' : '+0.01';
+
+            return '';
+        }
+        return rate_display;
+    };
+
     React.useEffect(() => {
         if (type === buy_sell.SELL) {
             Object.entries(payment_method_details).map(payment_method_detail => {
@@ -94,7 +103,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                         order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
                         payment_method_names,
                         rate_type_string: rate_type,
-                        rate_type: rate_type === ad_type.FLOAT ? rate_display : '',
+                        rate_type: getInitialAdRate(),
                         type,
                     }
                 }
@@ -127,7 +136,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                             </Field>
                             <Field name='rate_type'>
                                 {({ field }: FieldProps) =>
-                                    ad_rate_type === ad_type.FLOAT ? (
+                                    rate_type === ad_type.FLOAT ? (
                                         <FloatingRate
                                             className='copy-advert-form__floating-rate'
                                             data_testid='float_rate_type'

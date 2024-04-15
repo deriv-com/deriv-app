@@ -43,7 +43,9 @@ const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }: TButt
     return (
         <div className='btn-purchase__text_wrapper'>
             <Text size='xs' weight='bold' color='colored-background'>
-                {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low, true)}
+                {!should_fade && is_loading
+                    ? ''
+                    : getContractTypeDisplay(type, { isHighLow: is_high_low, showButtonName: true })}
             </Text>
         </div>
     );
@@ -120,8 +122,8 @@ const PurchaseButton = ({
                 'btn-purchase--multiplier': is_multiplier,
                 'btn-purchase--multiplier-deal-cancel': has_deal_cancellation,
                 'btn-purchase--turbos': is_turbos,
-                'btn-purchase--1__vanilla-opts': index === 0 && is_vanilla,
-                'btn-purchase--2__vanilla-opts': index === 1 && is_vanilla,
+                'btn-purchase--has-bottom-gradient-1': index === 0 && (is_accumulator || is_vanilla || is_turbos),
+                'btn-purchase--has-bottom-gradient-2': index === 1 && (is_vanilla || is_turbos),
             })}
             onClick={() => {
                 if (is_multiplier && mf_account_status === MT5_ACCOUNT_STATUS.PENDING) {

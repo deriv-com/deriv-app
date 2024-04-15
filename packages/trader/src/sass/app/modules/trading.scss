@@ -60,6 +60,7 @@
 /** @define trade-container; weak */
 .trade-container {
     background: var(--general-main-1);
+    direction: ltr;
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;
@@ -119,7 +120,7 @@
                     }
 
                     .btn-purchase__effect-detail--arrow {
-                        left: 12rem;
+                        inset-inline-start: 12rem;
                     }
                 }
 
@@ -129,7 +130,7 @@
                     }
 
                     .btn-purchase__effect-detail--arrow {
-                        left: 12rem;
+                        inset-inline-start: 12rem;
                     }
                 }
             }
@@ -151,6 +152,9 @@
                 justify-content: space-between;
                 align-items: center;
                 gap: 0.8rem;
+                @include rtl {
+                    direction: rtl;
+                }
                 .dc-popover__target {
                     height: 1.8rem;
                     border-bottom: 1px dotted var(--text-general);
@@ -340,8 +344,8 @@
                 }
             }
             &-currency {
-                margin-left: 4px;
-                margin-right: 1px;
+                margin-inline-start: 4px;
+                margin-inline-end: 1px;
                 display: inline-block;
                 position: relative;
                 font-weight: bold;
@@ -351,7 +355,7 @@
                 }
             }
             &-movement {
-                margin-left: 4px;
+                margin-inline-start: 4px;
                 width: 16px;
                 height: 16px;
                 bottom: 1px;
@@ -364,6 +368,9 @@
         }
     }
     &__price-info {
+        @include rtl {
+            direction: rtl;
+        }
         &-currency {
             @include mobile-screen {
                 font-size: 0.9rem;
@@ -570,6 +577,9 @@
             }
         }
         & .dc-tooltip--error {
+            @include rtl {
+                direction: rtl;
+            }
             & .dc-input-wrapper {
                 border: 1px solid var(--status-danger);
 
@@ -589,9 +599,11 @@
                 top: 1px;
 
                 &--increment {
+                    /*rtl:ignore*/
                     right: 1px;
                 }
                 &--decrement {
+                    /*rtl:ignore*/
                     left: 1px;
                 }
             }
@@ -750,7 +762,6 @@
             }
         }
     }
-
     &__strike-field {
         display: flex;
         align-items: center;
@@ -900,6 +911,9 @@
 
 .expiry-text-container,
 .range-text-container {
+    @include rtl {
+        direction: rtl;
+    }
     margin-top: 0.5rem;
 
     @include mobile-screen {

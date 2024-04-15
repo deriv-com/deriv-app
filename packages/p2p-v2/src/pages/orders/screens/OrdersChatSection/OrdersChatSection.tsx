@@ -1,7 +1,7 @@
 import React from 'react';
-import { FullPageMobileWrapper } from '@/components';
+import { FullPageMobileWrapper, LightDivider } from '@/components';
 import { useExtendedOrderDetails, useSendbird } from '@/hooks';
-import { Divider, Loader, useDevice } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { ChatError, ChatFooter, ChatHeader, ChatMessages } from '../../components';
 import './OrdersChatSection.scss';
 
@@ -17,6 +17,7 @@ const OrdersChatSection = ({ id, isInactive, onReturn, otherUserDetails }: TOrde
     const { is_online: isOnline, last_online_time: lastOnlineTime, name } = otherUserDetails ?? {};
     const { activeChatChannel, isChatLoading, isError, messages, refreshChat, sendFile, sendMessage, userId } =
         useSendbird(id);
+    const isChannelClosed = isInactive || !!activeChatChannel?.isFrozen;
 
     if (isError) {
         return (
@@ -33,11 +34,7 @@ const OrdersChatSection = ({ id, isInactive, onReturn, otherUserDetails }: TOrde
                 //TODO: handle goback based on route
                 onBack={onReturn}
                 renderFooter={() => (
-                    <ChatFooter
-                        isClosed={isInactive || !!activeChatChannel?.isFrozen}
-                        sendFile={sendFile}
-                        sendMessage={sendMessage}
-                    />
+                    <ChatFooter isClosed={isChannelClosed} sendFile={sendFile} sendMessage={sendMessage} />
                 )}
                 renderHeader={() => <ChatHeader isOnline={isOnline} lastOnlineTime={lastOnlineTime} nickname={name} />}
             >
@@ -56,14 +53,10 @@ const OrdersChatSection = ({ id, isInactive, onReturn, otherUserDetails }: TOrde
             ) : (
                 <>
                     <ChatHeader isOnline={isOnline} lastOnlineTime={lastOnlineTime} nickname={name} />
-                    <Divider className='w-full' color='#f2f3f4' />
+                    <LightDivider className='w-full' />
                     <ChatMessages chatChannel={activeChatChannel} chatMessages={messages} userId={userId} />
-                    <Divider className='w-full' color='#f2f3f4' />
-                    <ChatFooter
-                        isClosed={!!otherUserDetails?.isInactive || !!activeChatChannel?.isFrozen}
-                        sendFile={sendFile}
-                        sendMessage={sendMessage}
-                    />
+                    <LightDivider className='w-full' />
+                    <ChatFooter isClosed={isChannelClosed} sendFile={sendFile} sendMessage={sendMessage} />
                 </>
             )}
         </div>

@@ -1,4 +1,5 @@
 /** @define app-contents; weak */
+/*rtl:begin:ignore*/
 .app-contents {
     &--show-positions-drawer:not(&--is-mobile) {
         @include desktop-screen {
@@ -82,6 +83,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     overflow: hidden;
 
     &__replay {
+        direction: ltr;
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -286,6 +288,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
         .replay-chart__container {
+            direction: ltr;
             width: 100%;
             position: relative;
             margin-left: 24px;
@@ -828,3 +831,4 @@ $FLOATING_HEADER_HEIGHT: 41px;
         );
     }
 }
+/*rtl:end:ignore*/

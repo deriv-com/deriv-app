@@ -15,6 +15,7 @@ import type {
     LogOutResponse,
     Portfolio1,
     ProposalOpenContract,
+    ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
@@ -40,6 +41,7 @@ type TRoutes =
     | '/account/proof-of-ownership'
     | '/account/proof-of-income'
     | '/account/passwords'
+    | '/account/passkeys'
     | '/account/closing-account'
     | '/account/deactivate-account'
     | '/account-closed'
@@ -542,7 +544,7 @@ type TClientStore = {
         upload_file?: string;
         poi_state?: string;
     };
-    residence_list: TResidenceList; // TODO: replace this with ResidenceList from @deriv/api-types once account_opening_self_declaration_required is available
+    residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
     should_show_eu_content: boolean;
@@ -600,49 +602,22 @@ type TClientStore = {
     setAccounts: (accounts: Record<string, TActiveAccount>) => void;
     should_show_eu_error: boolean;
     is_options_blocked: boolean;
+    setIsP2PEnabled: (is_p2p_enabled: boolean) => void;
     real_account_signup_form_data: Array<Record<string, unknown>>;
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
     setRealAccountSignupFormStep: (step: number) => void;
+    is_passkey_supported: boolean;
+    setIsPasskeySupported: (value: boolean) => void;
+    should_show_effortless_login_modal: boolean;
+    setShouldShowEffortlessLoginModal: (value: boolean) => void;
+    fetchShouldShowEffortlessLoginModal: () => void;
+    exchange_rates: Record<string, Record<string, number>>;
+    getExchangeRate: (base_currency: string, target_currency: string) => number;
+    subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
+    unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
+    unsubscribeFromAllExchangeRates: () => void;
 };
-
-// TODO: This is a temporary type. It should be replaced with the actual type from deriv/api-types
-type TResidenceList = {
-    account_opening_self_declaration_required?: boolean;
-    disabled?: string;
-    identity?: {
-        services?: {
-            idv?: {
-                documents_supported?: {
-                    [k: string]: {
-                        additional?: {
-                            display_name?: string;
-                            format?: string;
-                        };
-                        display_name?: string;
-                        format?: string;
-                    };
-                };
-                has_visual_sample?: 0 | 1;
-                is_country_supported?: 0 | 1;
-            };
-            onfido?: {
-                documents_supported?: {
-                    [k: string]: {
-                        display_name?: string;
-                        format?: string;
-                    };
-                };
-                is_country_supported?: 0 | 1;
-            };
-        };
-    };
-    phone_idd?: null | string;
-    selected?: string;
-    text?: string;
-    tin_format?: string[];
-    value?: string;
-}[];
 
 type TCommonStoreError = {
     header?: string | JSX.Element;

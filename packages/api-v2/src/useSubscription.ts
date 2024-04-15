@@ -1,24 +1,21 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type {
-    TSocketAcceptableProps,
-    TSocketError,
     TSocketRequestPayload,
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
 import { useAPIContext } from './APIProvider';
 
-const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, idle_time = 5000) => {
+const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState<TSocketResponseData<T>>();
-    const { connection, send, subscribe: _subscribe } = useAPIContext();
+    const { subscribe: _subscribe } = useAPIContext();
     const unlistenRef = useRef<Function>();
 
     const subscribe = useCallback(
-        (payloadConstruct?: any) => {
+        ({ payload }: TSocketRequestPayload) => {
             setIsLoading(true);
-            _subscribe(name, payloadConstruct?.payload || {}, (data: any) => setData(data)).then((subData: any) => {
-                console.log('>> useSubscription, subription successfull: ', subData);
+            _subscribe(name, payload || {}, (data: TSocketResponseData<T>) => setData(data)).then((subData: any) => {
                 setIsLoading(false);
                 unlistenRef.current = subData.unlisten;
             });
@@ -27,7 +24,6 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
     );
 
     const unsubscribe = useCallback(() => {
-        console.log('>> useSubscription: unsubscribe: ', name, unlistenRef.current);
         unlistenRef.current?.();
     }, []);
     

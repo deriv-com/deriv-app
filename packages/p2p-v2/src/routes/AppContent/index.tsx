@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { CloseHeader } from '@/components';
 import { BUY_SELL_URL } from '@/constants';
-import { p2p, useActiveAccount } from '@deriv/api-v2';
+import { p2p, useActiveAccount, useAuthorize } from '@deriv/api-v2';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import Router from '../Router';
 import { routes } from '../routes-config';
@@ -14,6 +14,7 @@ const AppContent = () => {
     const history = useHistory();
     const location = useLocation();
     const { data: activeAccountData, isLoading } = useActiveAccount();
+    const { isSuccess } = useAuthorize();
 
     const getActiveTab = (pathname: string) => {
         const match = routes.find(route => pathname.startsWith(route.path));
@@ -21,11 +22,20 @@ const AppContent = () => {
     };
 
     const [activeTab, setActiveTab] = useState(() => getActiveTab(location.pathname));
-    const { subscribe } = p2p.settings.useGetSettings();
+    const { subscribe: subscribeP2PSettings } = p2p.settings.useGetSettings();
+    const { subscribe: subscribeAdvertiserInfo } = p2p.advertiser.useGetInfo();
 
     useEffect(() => {
-        if (activeAccountData) subscribe();
-    }, [activeAccountData, subscribe]);
+        if (activeAccountData) {
+            subscribeP2PSettings();
+        }
+    }, [activeAccountData, subscribeP2PSettings]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            subscribeAdvertiserInfo();
+        }
+    }, [isSuccess, subscribeAdvertiserInfo]);
 
     useEffect(() => {
         setActiveTab(getActiveTab(location.pathname));

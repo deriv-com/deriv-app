@@ -50,6 +50,7 @@ const columns = [
 const MyAdsTable = () => {
     const { data = [], isFetching, isLoading, loadMoreAdverts } = p2p.advertiserAdverts.useGet();
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
+    const { is_listed_boolean: isListed } = advertiserInfo;
     const { mutate } = p2p.advert.useUpdate();
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
     const { error, isSuccess, mutate: deleteAd } = p2p.advert.useDelete();
@@ -99,7 +100,7 @@ const MyAdsTable = () => {
         }
     };
 
-    const onClickToggle = () => updateAds({ is_listed: advertiserInfo?.is_listed ? 0 : 1 });
+    const onClickToggle = () => updateAds({ is_listed: isListed ? 0 : 1 });
 
     const onRequestClose = () => {
         if (isModalOpen) {
@@ -113,10 +114,7 @@ const MyAdsTable = () => {
     };
 
     return (
-        <MyAdsDisplayWrapper
-            isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
-            onClickToggle={onClickToggle}
-        >
+        <MyAdsDisplayWrapper isPaused={!!advertiserInfo?.blocked_until || !isListed} onClickToggle={onClickToggle}>
             <div className='p2p-v2-my-ads-table__list'>
                 <Table
                     columns={columns}
@@ -131,7 +129,7 @@ const MyAdsTable = () => {
                             dailyBuyLimit={advertiserInfo?.daily_buy_limit ?? ''}
                             dailySellLimit={advertiserInfo?.daily_sell_limit ?? ''}
                             isBarred={!!advertiserInfo?.blocked_until}
-                            isListed={!!advertiserInfo?.is_listed}
+                            isListed={!!isListed}
                             onClickIcon={onClickIcon}
                         />
                     )}

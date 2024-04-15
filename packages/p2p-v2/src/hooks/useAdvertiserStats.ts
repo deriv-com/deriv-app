@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { daysSince } from '@/utils';
-import { p2p, useAuthentication, useSettings } from '@deriv/api-v2';
+import { p2p, useAuthentication, useAuthorize, useSettings } from '@deriv/api-v2';
 
 /**
  * Formats the advertiser duration into the following format:
@@ -20,14 +20,26 @@ const toAdvertiserMinutes = (duration?: number | null) => {
  * @param advertiserId - ID of the advertiser stats to reveal. If not provided, by default it will return the user's own stats.
  */
 const useAdvertiserStats = (advertiserId?: string) => {
-    const { data, isSuccess, ...rest } = p2p.advertiser.useGetInfo(advertiserId);
+    const { isSuccess } = useAuthorize();
+    const { data, isSubscribed, subscribe, unsubscribe, ...rest } = p2p.advertiser.useGetInfo(advertiserId);
     const { data: settings, isSuccess: isSuccessSettings } = useSettings();
     const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
 
-    const transformedData = useMemo(() => {
-        if (!isSuccess && !isSuccessSettings && !isSuccessAuthenticationStatus) return;
+    useEffect(() => {
+        if (isSuccess && advertiserId) {
+            subscribe({ id: advertiserId });
+        }
 
-        const isAdvertiser = data?.is_approved;
+        return () => {
+            localStorage.removeItem(`p2p_v2_p2p_advertiser_info_${advertiserId}`);
+            unsubscribe();
+        };
+    }, [advertiserId, isSuccess, subscribe, unsubscribe]);
+
+    const transformedData = useMemo(() => {
+        if (!isSubscribed && !data && !isSuccessSettings && !isSuccessAuthenticationStatus) return;
+
+        const isAdvertiser = data.is_approved_boolean;
 
         return {
             ...data,
@@ -51,8 +63,8 @@ const useAdvertiserStats = (advertiserId?: string) => {
             dailyAvailableSellLimit: Number(data?.daily_sell_limit) - Number(data?.daily_sell) || 0,
 
             /** The number of days since the user has became an advertiser */
-            daysSinceJoined: daysSince(
-                data?.created_time ? new Date(data.created_time * 1000).toISOString().split('T')[0] : ''
+            daysSinceJoined: Number(
+                daysSince(data?.created_time ? new Date(data.created_time * 1000).toISOString().split('T')[0] : '')
             ),
 
             /** The advertiser's full name */
@@ -60,7 +72,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** Checks if the advertiser has completed proof of address verification */
             isAddressVerified: isAdvertiser
-                ? data?.full_verification
+                ? data.has_full_verification
                 : authenticationStatus?.document?.status === 'verified',
 
             /** Checks if the user is already an advertiser */
@@ -71,7 +83,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** Checks if the advertiser has completed proof of identity verification */
             isIdentityVerified: isAdvertiser
-                ? data?.basic_verification
+                ? data.has_basic_verification
                 : authenticationStatus?.identity?.status === 'verified',
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */
@@ -95,11 +107,20 @@ const useAdvertiserStats = (advertiserId?: string) => {
             /** The total trade volume since registration */
             tradeVolumeLifetime: Number(data?.total_turnover) || 0,
         };
-    }, [data, settings, isSuccess, isSuccessSettings, isSuccessAuthenticationStatus, authenticationStatus]);
+    }, [
+        isSubscribed,
+        data,
+        isSuccessSettings,
+        isSuccessAuthenticationStatus,
+        settings?.first_name,
+        settings?.last_name,
+        authenticationStatus?.document?.status,
+        authenticationStatus?.identity?.status,
+    ]);
 
     return {
         data: transformedData,
-        isSuccess,
+        isSubscribed,
         ...rest,
     };
 };

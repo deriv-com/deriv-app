@@ -16,7 +16,7 @@ const MyProfile = () => {
     const { isMobile } = useDevice();
     const { queryString, setQueryString } = useQueryString();
     const { data } = usePoiPoaStatus();
-    const { data: advertiserStats, failureReason, isLoading } = useAdvertiserStats();
+    const { data: advertiserStats, error, isLoading } = useAdvertiserStats();
     const { isP2PPoaRequired, isPoaVerified, isPoiVerified } = data || {};
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState<boolean | undefined>(false);
 
@@ -31,8 +31,8 @@ const MyProfile = () => {
 
     useEffect(() => {
         const isPoaPoiVerified = (!isP2PPoaRequired || isPoaVerified) && isPoiVerified;
-        if (isPoaPoiVerified && !!failureReason) setIsNicknameModalOpen(true);
-    }, [failureReason, isP2PPoaRequired, isPoaVerified, isPoiVerified]);
+        if (isPoaPoiVerified && !!error) setIsNicknameModalOpen(true);
+    }, [error, isP2PPoaRequired, isPoaVerified, isPoiVerified]);
 
     if (isLoading && !advertiserStats) {
         return <Loader />;

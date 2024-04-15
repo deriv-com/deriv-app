@@ -30,7 +30,7 @@ export const TwoFactorAuthenticationForm = () => {
     };
     return (
         <Formik initialValues={initialValues} innerRef={formRef} onSubmit={handleSubmit}>
-            {({ dirty, handleBlur, handleChange, isSubmitting, isValid, submitForm }) => (
+            {({ dirty, handleBlur, handleChange, isSubmitting, isValid }) => (
                 <Form noValidate>
                     <InputWithButton
                         buttonText={buttonText}
@@ -41,9 +41,6 @@ export const TwoFactorAuthenticationForm = () => {
                         name='digitCode'
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        onClick={async () => {
-                            await submitForm();
-                        }}
                         validationSchema={validationSchema.fields.digitCode}
                     />
                 </Form>

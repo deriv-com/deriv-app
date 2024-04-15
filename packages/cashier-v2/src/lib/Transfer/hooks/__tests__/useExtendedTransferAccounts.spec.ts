@@ -62,9 +62,9 @@ describe('useExtendedTransferBetweenAccounts', () => {
     fit('should return the correct authorized account', () => {
         const { result } = renderHook(() =>
             useExtendedTransferBetweenAccounts(
-                mockUnorderedTransferAccounts,
                 mockActiveAccount,
-                getCurrencyConfig as THooks.GetCurrencyConfig
+                getCurrencyConfig as THooks.GetCurrencyConfig,
+                mockUnorderedTransferAccounts
             )
         );
         expect(result.current.activeAccount?.loginid).toEqual('CR4');
@@ -73,9 +73,9 @@ describe('useExtendedTransferBetweenAccounts', () => {
     fit('should return the all the accounts in the correct order', () => {
         const { result } = renderHook(() =>
             useExtendedTransferBetweenAccounts(
-                mockUnorderedTransferAccounts,
                 mockActiveAccount,
-                getCurrencyConfig as THooks.GetCurrencyConfig
+                getCurrencyConfig as THooks.GetCurrencyConfig,
+                mockUnorderedTransferAccounts
             )
         );
         const order = ['CR1', 'CR2', 'CR3', 'CR4', 'CR5', 'CR6'];
@@ -85,9 +85,9 @@ describe('useExtendedTransferBetweenAccounts', () => {
     fit('should check if all the accounts contain the correct currency config data', () => {
         const { result } = renderHook(() =>
             useExtendedTransferBetweenAccounts(
-                mockUnorderedTransferAccounts,
                 mockActiveAccount,
-                getCurrencyConfig as THooks.GetCurrencyConfig
+                getCurrencyConfig as THooks.GetCurrencyConfig,
+                mockUnorderedTransferAccounts
             )
         );
         const mockExpectedTransferAccounts = [

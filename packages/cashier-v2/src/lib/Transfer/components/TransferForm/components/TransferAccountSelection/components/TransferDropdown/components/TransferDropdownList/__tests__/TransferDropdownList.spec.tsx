@@ -1,7 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import TransferDropdownList from '../TransferDropdownList';
-import { TTransferableAccounts } from 'src/lib/Transfer/types';
 
 jest.mock('../../TransferAccountTile', () => ({
     ...jest.requireActual('../../TransferAccountTile'),

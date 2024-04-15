@@ -1,12 +1,10 @@
 import React from 'react';
-import { act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import TransferProvider, { useTransfer } from '../TransferProvider';
 import { useExtendedTransferAccounts } from '../../hooks';
-import { getCryptoFiatConverterValidationSchema } from '../../../../components';
 import { THooks } from '../../../../hooks/types';
 import { TTransferableAccounts } from '../../types';
-import { waitFor } from '@testing-library/react';
 
 jest.mock('../../hooks', () => ({
     ...jest.requireActual('../../hooks'),
@@ -74,10 +72,10 @@ const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
 describe('<TransferProvider />', () => {
     it('should test whether the correct validation schema is set', async () => {
         mockUseExtendedTransferAccounts.mockReturnValue(mockExtendedAccounts);
-        const { result, rerender } = renderHook(useTransfer, { wrapper });
+        const { result } = renderHook(useTransfer, { wrapper });
 
-        await act(async () => {
-            await result.current.setTransferValidationSchema(mockExtendedAccounts[0], mockExtendedAccounts[1]);
+        await act(() => {
+            result.current.setTransferValidationSchema(mockExtendedAccounts[0], mockExtendedAccounts[1]);
         });
 
         await waitFor(() => {

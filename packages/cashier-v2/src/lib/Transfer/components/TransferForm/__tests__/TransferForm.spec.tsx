@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { TTransferableAccounts, TTransferFormikContext } from '../../../types';
 import TransferForm from '../TransferForm';
-import { useTransfer } from '../../../provider';
 import { useFormikContext } from 'formik';
 
 const mockAccounts = [

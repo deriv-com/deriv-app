@@ -1,7 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { TCurrency } from '../../../../../../../types';
-import { CryptoFiatConverter } from '../../../../../../../components';
 import TransferCryptoFiatAmountConverter from '../TransferCryptoFiatAmountConverter';
 import { render, screen } from '@testing-library/react';
 

@@ -42,9 +42,9 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     getConfig,
 }) => {
     const { accounts: transferAccounts, activeAccount: transferActiveAccount } = useExtendedTransferAccounts(
-        accounts,
         activeAccount,
-        getConfig
+        getConfig,
+        accounts
     );
     const [validationSchema, setValidationSchema] =
         useState<ReturnType<typeof getCryptoFiatConverterValidationSchema>>();

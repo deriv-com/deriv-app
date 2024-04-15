@@ -47,9 +47,9 @@ const sortedCryptoDerivAccounts = (accounts: TModifiedAccounts) => {
 */
 
 const useExtendedTransferAccounts = (
-    accounts: THooks.TransferAccounts = [],
     activeAccount: THooks.ActiveAccount,
-    getConfig: THooks.GetCurrencyConfig
+    getConfig: THooks.GetCurrencyConfig,
+    accounts: THooks.TransferAccounts = []
 ) => {
     const modifiedAccounts = getModifiedAccounts(accounts, getConfig);
 

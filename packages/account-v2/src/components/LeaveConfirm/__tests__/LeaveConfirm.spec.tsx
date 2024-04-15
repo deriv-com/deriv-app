@@ -1,5 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { createBrowserHistory } from 'history';
+import { Router, useHistory } from 'react-router-dom';
 import { Modal } from '@deriv-com/ui';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,21 +12,14 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-const mockUnblock = jest.fn();
-let mockBlockFn = jest.fn();
-
-jest.mock('react-router-dom', () => ({
-    useHistory: jest.fn(() => ({
-        block: jest.fn(fn => {
-            mockBlockFn = fn;
-            return mockUnblock;
-        }),
-        push: jest.fn(),
-    })),
-}));
-
 afterEach(() => {
     jest.clearAllMocks();
+});
+
+let history: ReturnType<typeof useHistory>;
+
+beforeEach(() => {
+    history = createBrowserHistory();
 });
 
 describe('LeaveConfirm', () => {
@@ -33,20 +28,22 @@ describe('LeaveConfirm', () => {
 
     const wrapper = ({ children }: { children: JSX.Element }) => {
         return (
-            <Formik initialValues={{ name: '' }} onSubmit={jest.fn()}>
-                {({ handleBlur, handleChange, handleSubmit, values }) => (
-                    <form onSubmit={handleSubmit}>
-                        {children}
-                        <input
-                            aria-label='name'
-                            name='name'
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.name}
-                        />
-                    </form>
-                )}
-            </Formik>
+            <Router history={history}>
+                <Formik initialValues={{ name: '' }} onSubmit={jest.fn()}>
+                    {({ handleBlur, handleChange, handleSubmit, values }) => (
+                        <form onSubmit={handleSubmit}>
+                            {children}
+                            <input
+                                aria-label='name'
+                                name='name'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.name}
+                            />
+                        </form>
+                    )}
+                </Formik>
+            </Router>
         );
     };
 
@@ -56,7 +53,7 @@ describe('LeaveConfirm', () => {
         userEvent.type(inputField, 'Hello');
 
         act(() => {
-            mockBlockFn({ pathname: '/something' });
+            history.push('/something');
         });
     };
 
@@ -97,7 +94,7 @@ describe('LeaveConfirm', () => {
         await waitFor(() => {
             expect(screen.queryByText(unsavedChangesText)).not.toBeInTheDocument();
             expect(onLeaveMock).toHaveBeenCalled();
-            expect(mockUnblock).toHaveBeenCalled();
+            expect(history.location.pathname).toBe('/something');
         });
     });
 });

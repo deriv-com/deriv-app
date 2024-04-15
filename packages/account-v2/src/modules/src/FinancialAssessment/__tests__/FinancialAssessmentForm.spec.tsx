@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { ACCOUNT_MODAL_REF } from '../../../../constants';
 import { FinancialAssessmentForm } from '../FinancialAssessmentForm';
 
-jest.mock('../../../components/DemoMessage', () => ({
+jest.mock('../../../../components/DemoMessage', () => ({
     DemoMessage: () => <div>DemoMessage</div>,
 }));
 

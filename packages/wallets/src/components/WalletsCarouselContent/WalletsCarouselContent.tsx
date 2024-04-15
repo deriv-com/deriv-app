@@ -50,8 +50,6 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         });
     }, []);
 
-    const isCrypto = activeWallet?.currency_config?.is_crypto;
-
     // function to set the transition factor based on the number of scroll snaps
     const setTransitionFactor = useCallback((walletsCarouselEmblaApi: EmblaCarouselType) => {
         transitionFactor.current = TRANSITION_FACTOR_SCALE * walletsCarouselEmblaApi.scrollSnapList().length;

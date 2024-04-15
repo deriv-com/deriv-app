@@ -174,17 +174,7 @@ const Trade = observer(() => {
                 <React.Suspense
                     fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || !!is_chart_loading} />}
                 >
-                    {!isMobile && (
-                        <div
-                            className={classNames('chart-container__wrapper', {
-                                'vanilla-trade-chart': is_vanilla,
-                            })}
-                        >
-                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                            <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />
-                        </div>
-                    )}
-                    {isMobile && (
+                    {isMobile ? (
                         <React.Fragment>
                             <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                             <SwipeableWrapper
@@ -209,6 +199,15 @@ const Trade = observer(() => {
                                 />
                             </SwipeableWrapper>
                         </React.Fragment>
+                    ) : (
+                        <div
+                            className={classNames('chart-container__wrapper', {
+                                'vanilla-trade-chart': is_vanilla,
+                            })}
+                        >
+                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                            <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />
+                        </div>
                     )}
                 </React.Suspense>
             </Div100vhContainer>

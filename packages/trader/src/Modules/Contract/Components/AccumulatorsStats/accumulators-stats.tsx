@@ -76,7 +76,9 @@ const AccumulatorsStats = observer(({ is_expandable = true }: TAccumulatorStats)
             </div>
             {is_expandable &&
                 !is_collapsed &&
-                (!isDesktop ? (
+                (isDesktop ? (
+                    <ExpandedTicksHistory history_text_size={history_text_size} rows={rows} />
+                ) : (
                     <MobileDialog
                         onClose={() => setIsCollapsed(!is_collapsed)}
                         portal_element_id='modal_root'
@@ -86,8 +88,6 @@ const AccumulatorsStats = observer(({ is_expandable = true }: TAccumulatorStats)
                     >
                         <ExpandedTicksHistory history_text_size={history_text_size} rows={rows} />
                     </MobileDialog>
-                ) : (
-                    <ExpandedTicksHistory history_text_size={history_text_size} rows={rows} />
                 ))}
             {is_expandable && (
                 <Icon

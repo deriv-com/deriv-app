@@ -132,27 +132,7 @@ const PurchaseButton = ({
                 }
             }}
         >
-            {!isMobile && (
-                <React.Fragment>
-                    <div className='btn-purchase__info btn-purchase__info--left'>
-                        <div className='btn-purchase__type-wrapper'>
-                            <IconComponentWrapper type={getIconType()} />
-                            <ButtonTextWrapper
-                                should_fade={should_fade}
-                                is_loading={is_loading}
-                                type={type}
-                                is_high_low={is_high_low}
-                            />
-                        </div>
-                    </div>
-                    <div className='btn-purchase__effect-detail' />
-                    <div className='btn-purchase__effect-detail--arrow' />
-                    <div className='btn-purchase__info btn-purchase__info--right'>
-                        <div className='btn-purchase__text_wrapper'>{button_value}</div>
-                    </div>
-                </React.Fragment>
-            )}
-            {isMobile && (
+            {isMobile ? (
                 <React.Fragment>
                     <div
                         className={classNames('btn-purchase__top', {
@@ -186,6 +166,25 @@ const PurchaseButton = ({
                             />
                         </div>
                     )}
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    <div className='btn-purchase__info btn-purchase__info--left'>
+                        <div className='btn-purchase__type-wrapper'>
+                            <IconComponentWrapper type={getIconType()} />
+                            <ButtonTextWrapper
+                                should_fade={should_fade}
+                                is_loading={is_loading}
+                                type={type}
+                                is_high_low={is_high_low}
+                            />
+                        </div>
+                    </div>
+                    <div className='btn-purchase__effect-detail' />
+                    <div className='btn-purchase__effect-detail--arrow' />
+                    <div className='btn-purchase__info btn-purchase__info--right'>
+                        <div className='btn-purchase__text_wrapper'>{button_value}</div>
+                    </div>
                 </React.Fragment>
             )}
         </button>

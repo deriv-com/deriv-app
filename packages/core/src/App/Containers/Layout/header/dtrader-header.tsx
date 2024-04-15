@@ -82,15 +82,17 @@ const DTraderHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {isDesktop && (
-                        <PlatformSwitcher
-                            app_routing_history={app_routing_history}
-                            platform_config={filterPlatformsForClients(platform_config)}
-                            setTogglePlatformType={setTogglePlatformType}
-                            current_language={current_language}
-                        />
-                    )}
-                    {!isDesktop && (
+                    {isDesktop ? (
+                        <React.Fragment>
+                            <PlatformSwitcher
+                                app_routing_history={app_routing_history}
+                                platform_config={filterPlatformsForClients(platform_config)}
+                                setTogglePlatformType={setTogglePlatformType}
+                                current_language={current_language}
+                            />
+                            <TradersHubHomeButton />
+                        </React.Fragment>
+                    ) : (
                         <React.Fragment>
                             <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                             {header_extension && is_logged_in && (
@@ -98,7 +100,6 @@ const DTraderHeader = observer(() => {
                             )}
                         </React.Fragment>
                     )}
-                    {isDesktop && <TradersHubHomeButton />}
                     <MenuLinks />
                 </div>
 

@@ -1,0 +1,25 @@
+.p2p-v2-ad-condition-block-element {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.6rem;
+    height: 4rem;
+    width: 100%;
+    border: 1px solid #d6dadb;
+    border-radius: 4px;
+
+    @include desktop {
+        width: 12.4rem;
+    }
+
+    &:hover:not(&--selected) {
+        background-color: #d6dadb;
+        cursor: pointer;
+        color: #ffffff;
+    }
+    &:active,
+    &--selected {
+        background-color: #999999;
+        border-color: #999999;
+    }
+}

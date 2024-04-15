@@ -1,5 +1,4 @@
 import React from 'react';
-import { Analytics } from '@deriv-com/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -45,11 +44,6 @@ const RecentComponent = observer(() => {
             const recent_strategies = await getSavedWorkspaces();
             setDashboardStrategies(recent_strategies);
             if (!get_instacee.current) {
-                const param = recent_strategies?.length > 0 ? 'yes' : 'no';
-                Analytics.trackEvent('ce_bot_dashboard_form', {
-                    action: param,
-                    form_source: 'ce_bot_dashboard_form',
-                });
                 get_instacee.current = true;
             }
         };
@@ -60,14 +54,6 @@ const RecentComponent = observer(() => {
 
     React.useEffect(() => {
         if (!dashboard_strategies?.length && !get_first_strategy_info.current) {
-            const getStratagiesForRudderStack = async () => {
-                const recent_strategies = await getSavedWorkspaces();
-                Analytics.trackEvent('ce_bot_dashboard_form', {
-                    bot_last_modified_time: recent_strategies?.[0]?.timestamp,
-                    form_source: 'bot_header_form',
-                });
-            };
-            getStratagiesForRudderStack();
             get_first_strategy_info.current = true;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

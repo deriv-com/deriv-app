@@ -1,8 +1,10 @@
 import React, { memo, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { THooks } from 'types';
 import { Table } from '@/components';
 import { MyAdsDeleteModal } from '@/components/Modals';
 import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
-import { AD_ACTION } from '@/constants';
+import { AD_ACTION, MY_ADS_URL } from '@/constants';
 import { p2p } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { MyAdsEmpty } from '../../MyAdsEmpty';
@@ -10,9 +12,7 @@ import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
 import MyAdsDisplayWrapper from './MyAdsDisplayWrapper';
 import './MyAdsTable.scss';
 
-export type TMyAdsTableRowRendererProps = Required<
-    NonNullable<ReturnType<typeof p2p.advertiserAdverts.useGet>['data']>[0]
-> & {
+export type TMyAdsTableRowRendererProps = Required<THooks.AdvertiserAdverts.Get>[0] & {
     balanceAvailable: number;
     dailyBuyLimit: string;
     dailySellLimit: string;
@@ -34,7 +34,7 @@ const columns = [
         header: 'Limits',
     },
     {
-        header: 'Rate (1 BTC)',
+        header: 'Rate (1 USD)',
     },
     {
         header: 'Available amount',
@@ -56,6 +56,7 @@ const MyAdsTable = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [advertId, setAdvertId] = useState('');
     const [isShareAdsModalOpen, setIsShareAdsModalOpen] = useState(false);
+    const history = useHistory();
 
     useEffect(() => {
         if (isSuccess) {
@@ -87,6 +88,10 @@ const MyAdsTable = () => {
             case AD_ACTION.SHARE: {
                 setAdvertId(id);
                 setIsShareAdsModalOpen(true);
+                break;
+            }
+            case AD_ACTION.EDIT: {
+                history.push(`${MY_ADS_URL}/adForm?formAction=edit&advertId=${id}`);
                 break;
             }
             default:

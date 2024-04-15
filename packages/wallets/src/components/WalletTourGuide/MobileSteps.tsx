@@ -89,7 +89,7 @@ const getMobileSteps = (
         placement: 'top',
         spotlightPadding: 5,
         styles: { spotlight: { borderRadius: '0.8rem' } },
-        target: '.wallets-mt5-list__content .wallets-trading-account-card',
+        target: '.wallets-cfd-list-accounts__content .wallets-trading-account-card',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 CFDs trading accounts
@@ -100,12 +100,12 @@ const getMobileSteps = (
     {
         content: hasDerivAppsTradingAccount ? (
             <WalletText size='sm'>
-                This is your Deriv Apps trading account balance. Click Transfer to move funds between your Wallet and
-                Deriv Apps trading account.
+                This is your Options trading account balance. Click Transfer to move funds between your Wallet and
+                Options trading account.
             </WalletText>
         ) : (
             <WalletText size='sm'>
-                This is your Deriv Apps trading account. Click Get to create the Deriv Apps trading account for trading.
+                This is your Options trading account. Click Get to create the Options trading account for trading.
             </WalletText>
         ),
         disableBeacon: true,
@@ -116,7 +116,7 @@ const getMobileSteps = (
         target: '.wallets-deriv-apps-section',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
-                Deriv Apps trading account
+                Options trading account
             </WalletText>
         ),
     },
@@ -126,7 +126,7 @@ const getMobileSteps = (
             <WalletText size='sm'>Choose a Deriv app to trade options or multipliers.</WalletText>
         ) : (
             <WalletText size='sm'>
-                Once you have get a Deriv Apps trading account, choose a Deriv app to trade options or multipliers.
+                Once you have get an Options trading account, choose a Deriv app to trade options or multipliers.
             </WalletText>
         ),
         disableBeacon: true,

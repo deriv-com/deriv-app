@@ -11,6 +11,7 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
+import RealAccountCreationBanner from 'Components/real-account-creation-banner';
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -139,6 +140,7 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
+                    <RealAccountCreationBanner />
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
                     <MobileWrapper>

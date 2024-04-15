@@ -7,7 +7,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
-import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
@@ -292,9 +292,7 @@ describe('<PersonalDetails/>', () => {
         let mock_store = mockStore({});
         render(
             <StoreProvider store={store ?? mock_store}>
-                <ExchangeRatesProvider>
-                    <BrowserRouter>{component}</BrowserRouter>
-                </ExchangeRatesProvider>
+                <BrowserRouter>{component}</BrowserRouter>
             </StoreProvider>
         );
     };

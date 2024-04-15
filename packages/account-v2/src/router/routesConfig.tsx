@@ -1,8 +1,8 @@
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
 import { POICountrySelector } from '../containers/POICountrySelector';
-import { FinancialAssessmentForm } from '../modules/FinancialAssessment/FinancialAssessmentForm';
-import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
+import { FinancialAssessmentForm } from '../modules/src/FinancialAssessment/FinancialAssessmentForm';
+import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';
 import { AccountClosure, ConnectedApps, LoginHistory } from '../pages';
 import { DummyRoute } from './components/DummyRoute';
 

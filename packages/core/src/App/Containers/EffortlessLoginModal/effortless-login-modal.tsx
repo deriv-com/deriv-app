@@ -16,31 +16,16 @@ const EffortlessLoginModal = observer(() => {
     const portal_element = document.getElementById('effortless_modal_root');
     const history = useHistory();
     const { client } = useStore();
-    const { setShouldShowEffortlessLoginModal, passkeysTrackActionEvent } = client;
+    const { setShouldShowEffortlessLoginModal } = client;
 
-    React.useEffect(() => {
-        if (!portal_element) return;
-        passkeysTrackActionEvent({ action: 'open' }, true);
-
-        const track_close = () => {
-            passkeysTrackActionEvent({ action: 'close' }, true);
-        };
-        window.addEventListener('beforeunload', track_close);
-        return () => {
-            window.removeEventListener('beforeunload', track_close);
-        };
-    }, []);
-
-    const onClickHandler = (route: string, action_event: string) => {
+    const onClickHandler = (route: string) => {
         localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
         history.push(route);
         setShouldShowEffortlessLoginModal(false);
-        passkeysTrackActionEvent({ action: action_event }, true);
     };
 
     const onLearnMoreClick = () => {
         setIsLearnMoreOpened(true);
-        passkeysTrackActionEvent({ action: 'info_open' }, true);
     };
 
     if (!portal_element) return null;
@@ -62,7 +47,7 @@ const EffortlessLoginModal = observer(() => {
                     line_height='xl'
                     align='right'
                     className='effortless-login-modal__header'
-                    onClick={() => onClickHandler(routes.traders_hub, 'maybe_later')}
+                    onClick={() => onClickHandler(routes.traders_hub)}
                 >
                     <Localize i18n_default_text='Maybe later' />
                 </Text>
@@ -80,13 +65,7 @@ const EffortlessLoginModal = observer(() => {
                 )}
             </FormBody>
             <FormFooter>
-                <Button
-                    type='button'
-                    has_effect
-                    large
-                    primary
-                    onClick={() => onClickHandler(routes.passkeys, 'get_started')}
-                >
+                <Button type='button' has_effect large primary onClick={() => onClickHandler(routes.passkeys)}>
                     <Localize i18n_default_text='Get started' />
                 </Button>
             </FormFooter>

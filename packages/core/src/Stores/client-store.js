@@ -21,7 +21,6 @@ import {
     isTestLink,
     isTestDerivApp,
     LocalStore,
-    mobileOSDetect,
     redirectToLogin,
     removeCookies,
     routes,
@@ -409,7 +408,6 @@ export default class ClientStore extends BaseStore {
             setIsPasskeySupported: action.bound,
             setShouldShowEffortlessLoginModal: action.bound,
             fetchShouldShowEffortlessLoginModal: action.bound,
-            passkeysTrackActionEvent: action.bound,
             getExchangeRate: action.bound,
             subscribeToExchangeRate: action.bound,
             unsubscribeFromExchangeRate: action.bound,
@@ -2724,18 +2722,6 @@ export default class ClientStore extends BaseStore {
         } else {
             this.setShouldShowEffortlessLoginModal(false);
         }
-    }
-
-    passkeysTrackActionEvent({ action, subform_name, error_message }, is_effortless_modal = false) {
-        const event_name = is_effortless_modal ? 'ce_passkey_effortless_form' : 'ce_passkey_account_settings_form';
-
-        Analytics.trackEvent(event_name, {
-            action,
-            form_name: 'ce_passkey_account_settings_form',
-            operating_system: mobileOSDetect(),
-            ...(subform_name ? { subform_name } : {}),
-            ...(error_message ? { error_message } : {}),
-        });
     }
 
     addSubscription(name, key, subscription, subscription_id) {

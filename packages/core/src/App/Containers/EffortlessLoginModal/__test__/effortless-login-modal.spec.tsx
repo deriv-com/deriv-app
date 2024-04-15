@@ -11,7 +11,6 @@ describe('EffortlessLoginModal', () => {
     let modal_root_el: HTMLDivElement, mock_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-        jest.clearAllMocks();
         mock_store = mockStore({
             client: {
                 setShouldShowEffortlessLoginModal: jest.fn(),

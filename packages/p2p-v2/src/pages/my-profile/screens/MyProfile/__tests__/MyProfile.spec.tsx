@@ -61,7 +61,7 @@ jest.mock('@/hooks', () => ({
         data: {
             fullName: 'Jane Done',
         },
-        failureReason: undefined,
+        error: undefined,
         isLoading: false,
     }),
     usePoiPoaStatus: jest.fn().mockReturnValue({
@@ -122,7 +122,7 @@ describe('MyProfile', () => {
             data: {
                 fullName: 'Jane Doe',
             },
-            failureReason: 'Failure',
+            error: 'Failure',
             isLoading: false,
         });
 

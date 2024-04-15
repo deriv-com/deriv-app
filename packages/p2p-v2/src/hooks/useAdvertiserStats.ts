@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { daysSince } from '@/utils';
+import { daysSince, isEmptyObject } from '@/utils';
 import { p2p, useAuthentication, useAuthorize, useSettings } from '@deriv/api-v2';
 
 /**
@@ -37,7 +37,8 @@ const useAdvertiserStats = (advertiserId?: string) => {
     }, [advertiserId, isSuccess, subscribe, unsubscribe]);
 
     const transformedData = useMemo(() => {
-        if (!isSubscribed && !data && !isSuccessSettings && !isSuccessAuthenticationStatus) return;
+        if (!isSubscribed && isEmptyObject(data) && !isSuccessSettings && !isSuccessAuthenticationStatus)
+            return undefined;
 
         const isAdvertiser = data.is_approved_boolean;
 

@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import React from 'react';
 import {
     CurrencyAudIcon,
@@ -10,87 +11,73 @@ import {
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
     PaymentMethodBitcoinBrandIcon,
+    PaymentMethodDerivDemoBrandDarkIcon,
     PaymentMethodEthereumBrandIcon,
     PaymentMethodLitecoinBrandIcon,
     PaymentMethodTetherUsdtBrandIcon,
     PaymentMethodUsdCoinBrandIcon,
 } from '@deriv/quill-icons';
-import CurrencyDemoIcon from '../../public/images/demo.svg';
 import CurrencyDemoRoundedIcon from '../../public/images/demo-logo.svg';
 
-export const currencyIcons = {
-    AUD: {
-        default: CurrencyAudIcon,
-        rounded: CurrencyAudIcon,
-    },
-    BTC: {
-        default: PaymentMethodBitcoinBrandIcon,
-        rounded: CurrencyBtcIcon,
-    },
-    DEMO: {
-        default: CurrencyDemoIcon,
-        rounded: CurrencyDemoRoundedIcon,
-    },
-    ETH: {
-        default: PaymentMethodEthereumBrandIcon,
-        rounded: CurrencyEthIcon,
-    },
-    EUR: {
-        default: CurrencyEurIcon,
-        rounded: CurrencyEurIcon,
-    },
-    eUSDT: {
-        default: PaymentMethodTetherUsdtBrandIcon,
-        rounded: CurrencyUsdtIcon,
-    },
-    GBP: {
-        default: CurrencyGbpIcon,
-        rounded: CurrencyGbpIcon,
-    },
-    LTC: {
-        default: PaymentMethodLitecoinBrandIcon,
-        rounded: CurrencyLtcIcon,
-    },
-    tUSDT: {
-        default: PaymentMethodTetherUsdtBrandIcon,
-        rounded: CurrencyUsdtIcon,
-    },
-    USD: {
-        default: CurrencyUsdIcon,
-        rounded: CurrencyUsdIcon,
-    },
-    USDC: {
-        default: PaymentMethodUsdCoinBrandIcon,
-        rounded: CurrencyUsdcIcon,
-    },
-    UST: {
-        default: PaymentMethodTetherUsdtBrandIcon,
-        rounded: CurrencyUsdtIcon,
-    },
+// TODO: Replace DEMO currency icon with @deriv/quill-icons once available
+export const roundedIcons = {
+    // Fiat Icons:
+    AUD: CurrencyAudIcon,
+    EUR: CurrencyEurIcon,
+    GBP: CurrencyGbpIcon,
+    USD: CurrencyUsdIcon,
+    // Crypto Icons:
+    BTC: CurrencyBtcIcon,
+    ETH: CurrencyEthIcon,
+    LTC: CurrencyLtcIcon,
+    USDC: CurrencyUsdcIcon,
+    USDT: CurrencyUsdtIcon,
+    eUSDT: CurrencyUsdtIcon,
+    tUSDT: CurrencyUsdtIcon,
+    // Other Icons:
+    DEMO: CurrencyDemoRoundedIcon,
 } as const;
 
-export const iconWidth = {
+export const defaultIcons = {
+    BTC: PaymentMethodBitcoinBrandIcon,
+    DEMO: PaymentMethodDerivDemoBrandDarkIcon,
+    ETH: PaymentMethodEthereumBrandIcon,
+    LTC: PaymentMethodLitecoinBrandIcon,
+    USDC: PaymentMethodUsdCoinBrandIcon,
+    USDT: PaymentMethodTetherUsdtBrandIcon,
+    eUSDT: PaymentMethodTetherUsdtBrandIcon,
+    tUSDT: PaymentMethodTetherUsdtBrandIcon,
+} as const;
+
+export const roundedIconWidth = {
     xs: 16,
-    // eslint-disable-next-line sort-keys
     sm: 24,
-    // eslint-disable-next-line sort-keys
     md: 32,
-    // eslint-disable-next-line sort-keys
     lg: 48,
     xl: 64,
-    // eslint-disable-next-line sort-keys
-    '2xl': 84,
 } as const;
 
+export const defaultIconWidth = {
+    xs: 48,
+    sm: 64,
+    md: 72,
+    lg: 90,
+    xl: 120,
+} as const;
+
+export const fiatIcons = ['AUD', 'EUR', 'GBP', 'USD'] as const;
+
 type TWalletCurrencyIconsProps = {
-    currency: keyof typeof currencyIcons;
+    currency: keyof typeof defaultIcons | keyof typeof roundedIcons;
     rounded?: boolean;
-    size?: keyof typeof iconWidth;
+    size?: keyof typeof defaultIconWidth | keyof typeof roundedIconWidth;
 };
 
 const WalletCurrencyIcons: React.FC<TWalletCurrencyIconsProps> = ({ currency, rounded = false, size = 'md' }) => {
-    const width = iconWidth[size];
-    const Icon = currencyIcons[currency][rounded ? 'rounded' : 'default'];
+    const isFiat = fiatIcons.includes(currency);
+    const width = rounded || isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
+    const Icon = rounded || isFiat ? roundedIcons[currency] : defaultIcons[currency];
+
     return <Icon height='auto' width={width} />;
 };
 

@@ -137,13 +137,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         expandSubMenu(false);
     }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
 
-    const passkeysMenuCloseActionEventTrack = () => {
+    const passkeysMenuOpenActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
             action: 'open',
             form_name: 'ce_passkey_account_settings_form',
             operating_system: mobileOSDetect(),
         });
-    };
+    }, []);
 
     const getFilteredRoutesConfig = (all_routes_config, routes_to_filter) => {
         const subroutes_config = all_routes_config.flatMap(i => i.routes || []);
@@ -245,7 +245,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         onClickLink={() => {
                                             toggleDrawer();
                                             if (subroute.path === routes.passkeys) {
-                                                passkeysMenuCloseActionEventTrack();
+                                                passkeysMenuOpenActionEventTrack();
                                             }
                                         }}
                                         is_hidden={hideRoute(subroute.path)}

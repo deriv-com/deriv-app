@@ -1,8 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
-import { getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, mobileOSDetect, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
@@ -24,9 +25,17 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { is_mobile } = ui;
-    const { logout, passkeysTrackActionEvent } = client;
+    const { logout } = client;
     const { is_from_derivgo } = common;
     const { is_next_wallet_enabled } = useFeatureFlags();
+
+    const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
+        Analytics.trackEvent('ce_passkey_account_settings_form', {
+            action: 'close',
+            form_name: 'ce_passkey_account_settings_form',
+            operating_system: mobileOSDetect(),
+        });
+    }, []);
 
     const list_groups = routes.map(route_group => ({
         icon: route_group.icon,
@@ -36,7 +45,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
 
     const onClickClose = React.useCallback(() => {
         if (location.pathname === shared_routes.passkeys) {
-            passkeysTrackActionEvent({ action: 'close' });
+            passkeysMenuCloseActionEventTrack();
         }
 
         is_next_wallet_enabled ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub);

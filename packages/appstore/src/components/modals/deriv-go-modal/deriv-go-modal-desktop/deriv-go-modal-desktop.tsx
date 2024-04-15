@@ -2,21 +2,16 @@ import React from 'react';
 import QRCode from 'qrcode.react';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { Modal, Text, Icon } from '@deriv/components';
+import { Modal, Text } from '@deriv/components';
 import { getUrlBase } from '@deriv/shared';
-import {
-    DERIV_PLATFORM_NAMES,
-    getPlatformDerivGoDownloadLink,
-    MOBILE_PLATFORMS,
-    DERIVGO_QRCODE_APP_URL,
-} from 'Constants/platform-config';
+import { DERIV_PLATFORM_NAMES, DERIVGO_QRCODE_APP_URL } from 'Constants/platform-config';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
+import { DerivGoMoblieAppLinks } from './deriv-go-mobile-app-links';
 import './deriv-go-modal-desktop.scss';
 
 export const DerivGoModalDesktop = observer(() => {
-    const { traders_hub, ui } = useStore();
+    const { traders_hub } = useStore();
     const { is_deriv_go_modal_visible, setIsDerivGoModalVisible } = traders_hub;
-    const { is_dark_mode_on } = ui;
 
     const handleModalClose = () => {
         setIsDerivGoModalVisible(false);
@@ -63,10 +58,10 @@ export const DerivGoModalDesktop = observer(() => {
                         </Text>
                         <div className='deriv-go-modal-desktop__links'>
                             <div className='deriv-go-modal-desktop__qr'>
-                                <div className='deriv-go-modal-desktop__qr--image'>
+                                <div className='deriv-go-modal-desktop__qr-image'>
                                     <QRCode size={80} value={DERIVGO_QRCODE_APP_URL} />
                                 </div>
-                                <Text as='p' size='xxs' className='deriv-go-modal-desktop__qr--description'>
+                                <Text as='p' size='xxs' className='deriv-go-modal-desktop__qr-description'>
                                     <Localize
                                         i18n_default_text='Scan the QR code to download {{platform}}'
                                         values={{
@@ -76,39 +71,7 @@ export const DerivGoModalDesktop = observer(() => {
                                 </Text>
                             </div>
                             <div className='deriv-go-modal-desktop__apps'>
-                                <a
-                                    href={getPlatformDerivGoDownloadLink(MOBILE_PLATFORMS.ANDROID)}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    <Icon
-                                        icon={is_dark_mode_on ? 'IcInstallationGoogle' : 'IcInstallationGoogleLight'}
-                                        width={139}
-                                        height={46}
-                                    />
-                                </a>
-                                <a
-                                    href={getPlatformDerivGoDownloadLink(MOBILE_PLATFORMS.IOS)}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    <Icon
-                                        icon={is_dark_mode_on ? 'IcInstallationApple' : 'IcInstallationAppleLight'}
-                                        width={139}
-                                        height={46}
-                                    />
-                                </a>
-                                <a
-                                    href={getPlatformDerivGoDownloadLink(MOBILE_PLATFORMS.HAUWEI)}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    <Icon
-                                        icon={is_dark_mode_on ? 'IcInstallationHuawei' : 'IcInstallationHuaweiLight'}
-                                        width={139}
-                                        height={46}
-                                    />
-                                </a>
+                                <DerivGoMoblieAppLinks />
                             </div>
                         </div>
                         <Text as='p' size='xxs' className='deriv-go-modal-desktop__note'>

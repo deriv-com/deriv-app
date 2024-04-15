@@ -5,7 +5,6 @@ import { Localize } from '@deriv/translations';
 import { getUrlBase } from '@deriv/shared';
 import { DERIV_PLATFORM_NAMES, getMobileDerivGoAppInstallerURL } from 'Constants/platform-config';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
-
 import './deriv-go-modal-responsive.scss';
 
 export const DerivGoModalResponsive = observer(() => {

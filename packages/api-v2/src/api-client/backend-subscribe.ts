@@ -7,20 +7,20 @@ import lightweightSend from './send';
  * TODO: handle multiple subscriptions to the same channel
  */
 async function backendSubscribe(ws: WebSocket, name: string, payload: any, onData: Function) {
+    let reqId : number | null = null;
+    let subscriptionId : string | null = null;
+    let data : any = null;
 
-    //@ts-ignore
-    window.backendSubscriptions = window.backendSubscriptions || [];
-    //@ts-ignore
-    window.backendSubscriptions.push({ name, payload });
-
-    const data:any = await lightweightSend(ws, name, {
-        subscribe: 1,
-        ...payload
-    });
-    const reqId = data.req_id;
-    const subscriptionId = data.subscription.id;
-
-    onData(data);
+    async function connect(_ws: WebSocket) {
+        ws = _ws;
+        data = await lightweightSend(ws, name, {
+            subscribe: 1,
+            ...payload
+        });
+    
+        onData(data);
+    }
+    
 
     function receive(messageEvent: any) {
         const data = JSON.parse(messageEvent.data);
@@ -32,10 +32,16 @@ async function backendSubscribe(ws: WebSocket, name: string, payload: any, onDat
         onData(data);
     }
 
+    async function reconnect(ws: WebSocket) {
+        connect(ws);
+    }
+    
+    await connect(ws);
     ws.addEventListener('message', receive)
     ws.addEventListener('close', () => {
         ws.removeEventListener('message', receive);
     });
+
 
     return { 
         unsubcribe: () => {
@@ -44,7 +50,8 @@ async function backendSubscribe(ws: WebSocket, name: string, payload: any, onDat
         },
         data, 
         reqId,
-        subscriptionId
+        subscriptionId,
+        reconnect,
     }
 }
 

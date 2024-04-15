@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
+import { Analytics } from '@deriv-com/analytics';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
     useAccountTransferVisible,
@@ -12,7 +13,7 @@ import {
     usePaymentAgentTransferVisible,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
+import { getStaticUrl, mobileOSDetect, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -50,7 +51,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_proof_of_ownership_enabled,
         is_eu,
         is_passkey_supported,
-        passkeysTrackActionEvent,
     } = client;
     const { cashier } = modules;
     const { payment_agent } = cashier;
@@ -136,6 +136,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
         expandSubMenu(false);
     }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
+
+    const passkeysMenuCloseActionEventTrack = () => {
+        Analytics.trackEvent('ce_passkey_account_settings_form', {
+            action: 'open',
+            form_name: 'ce_passkey_account_settings_form',
+            operating_system: mobileOSDetect(),
+        });
+    };
 
     const getFilteredRoutesConfig = (all_routes_config, routes_to_filter) => {
         const subroutes_config = all_routes_config.flatMap(i => i.routes || []);
@@ -237,7 +245,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         onClickLink={() => {
                                             toggleDrawer();
                                             if (subroute.path === routes.passkeys) {
-                                                passkeysTrackActionEvent({ action: 'open' });
+                                                passkeysMenuCloseActionEventTrack();
                                             }
                                         }}
                                         is_hidden={hideRoute(subroute.path)}

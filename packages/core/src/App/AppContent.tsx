@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
-import { getAppId, LocalStore } from '@deriv/shared';
+import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -26,7 +26,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
 
-    const { data } = useRemoteConfig();
+    const isMounted = useIsMounted();
+    const { data } = useRemoteConfig(isMounted());
     const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
 
     React.useEffect(() => {
@@ -37,18 +38,33 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
             };
             Analytics.initialise(config);
+            const ppc_campaign_cookies =
+                Cookies.getJSON('utm_data') === 'null'
+                    ? {
+                          utm_source: 'no source',
+                          utm_medium: 'no medium',
+                          utm_campaign: 'no campaign',
+                          utm_content: 'no content',
+                      }
+                    : Cookies.getJSON('utm_data');
+            const account_type = LocalStore?.get('active_loginid')
+                ?.match(/[a-zA-Z]+/g)
+                ?.join('');
             Analytics.setAttributes({
-                account_type: LocalStore?.get('active_loginid')?.substring(0, 2) ?? 'unlogged',
+                account_type: account_type === 'null' ? 'unlogged' : account_type,
                 app_id: String(getAppId()),
                 device_type: store?.ui?.is_mobile ? 'mobile' : 'desktop',
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
                 country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+                utm_source: ppc_campaign_cookies?.utm_source,
+                utm_medium: ppc_campaign_cookies?.utm_medium,
+                utm_campaign: ppc_campaign_cookies?.utm_campaign,
+                utm_content: ppc_campaign_cookies?.utm_content,
             });
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.marketing_growthbook]);
+    }, [data.marketing_growthbook, tracking_rudderstack]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);

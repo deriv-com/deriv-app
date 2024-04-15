@@ -1,5 +1,18 @@
-.p2p-v2-tab {
-    &__items-wrapper {
+.p2p-v2-app-content {
+    overflow: hidden;
+    min-height: calc(100vh - 48px - 36px - 53px - 2.4rem);
+
+    @include desktop {
+        max-width: 952px;
+        min-width: 672px;
+        margin-left: 2.4rem;
+    }
+
+    @include mobile {
+        width: 100vw;
+    }
+
+    &__tabs {
         width: fit-content;
         & button {
             padding: 0 3rem;
@@ -8,19 +21,10 @@
             @include mobile {
                 width: calc(100vw / 4);
             }
-        }
-    }
-    &__wrapper {
-        min-height: calc(100vh - 48px - 36px - 53px - 2.4rem);
 
-        @include desktop {
-            max-width: 952px;
-            min-width: 672px;
-            margin-left: 2.4rem;
-        }
-
-        @include mobile {
-            width: 100vw;
+            & > span {
+                font-size: 1.4rem;
+            }
         }
     }
 }

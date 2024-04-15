@@ -37,54 +37,54 @@ jest.mock('@/providers/OrderDetailsProvider', () => ({
 const mockUseOrderDetails = useOrderDetails as jest.Mock;
 
 describe('<OrderDetailsCardFooter />', () => {
-    // it('should render cancel and paid buttons', () => {
-    //     render(<OrderDetailsCardFooter />);
-    //     expect(screen.getByRole('button', { name: 'Cancel order' })).toBeInTheDocument();
-    //     expect(screen.getByRole('button', { name: 'I’ve paid' })).toBeInTheDocument();
-    // });
+    it('should render cancel and paid buttons', () => {
+        render(<OrderDetailsCardFooter />);
+        expect(screen.getByRole('button', { name: 'Cancel order' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'I’ve paid' })).toBeInTheDocument();
+    });
 
-    // it('should render complain and received buttons', () => {
-    //     mockUseOrderDetails.mockReturnValue({
-    //         orderDetails: {
-    //             ...mockUseOrderDetails().orderDetails,
-    //             shouldShowCancelAndPaidButton: false,
-    //             shouldShowComplainAndReceivedButton: true,
-    //         },
-    //     });
+    it('should render complain and received buttons', () => {
+        mockUseOrderDetails.mockReturnValue({
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                shouldShowCancelAndPaidButton: false,
+                shouldShowComplainAndReceivedButton: true,
+            },
+        });
 
-    //     render(<OrderDetailsCardFooter />);
+        render(<OrderDetailsCardFooter />);
 
-    //     expect(screen.getByRole('button', { name: 'Complain' })).toBeInTheDocument();
-    //     expect(screen.getByRole('button', { name: 'I’ve received payment' })).toBeInTheDocument();
-    // });
+        expect(screen.getByRole('button', { name: 'Complain' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'I’ve received payment' })).toBeInTheDocument();
+    });
 
-    // it('should render only complain button', () => {
-    //     mockUseOrderDetails.mockReturnValue({
-    //         orderDetails: {
-    //             ...mockUseOrderDetails().orderDetails,
-    //             shouldShowComplainAndReceivedButton: false,
-    //             shouldShowOnlyComplainButton: true,
-    //         },
-    //     });
+    it('should render only complain button', () => {
+        mockUseOrderDetails.mockReturnValue({
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                shouldShowComplainAndReceivedButton: false,
+                shouldShowOnlyComplainButton: true,
+            },
+        });
 
-    //     render(<OrderDetailsCardFooter />);
+        render(<OrderDetailsCardFooter />);
 
-    //     expect(screen.getByRole('button', { name: 'Complain' })).toBeInTheDocument();
-    // });
+        expect(screen.getByRole('button', { name: 'Complain' })).toBeInTheDocument();
+    });
 
-    // it('should render only received button', () => {
-    //     mockUseOrderDetails.mockReturnValue({
-    //         orderDetails: {
-    //             ...mockUseOrderDetails().orderDetails,
-    //             shouldShowOnlyComplainButton: false,
-    //             shouldShowOnlyReceivedButton: true,
-    //         },
-    //     });
+    it('should render only received button', () => {
+        mockUseOrderDetails.mockReturnValue({
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                shouldShowOnlyComplainButton: false,
+                shouldShowOnlyReceivedButton: true,
+            },
+        });
 
-    //     render(<OrderDetailsCardFooter />);
+        render(<OrderDetailsCardFooter />);
 
-    //     expect(screen.getByRole('button', { name: 'I’ve received payment' })).toBeInTheDocument();
-    // });
+        expect(screen.getByRole('button', { name: 'I’ve received payment' })).toBeInTheDocument();
+    });
 
     it('should open the complain modal on clicking the complain button', async () => {
         mockUseOrderDetails.mockReturnValue({

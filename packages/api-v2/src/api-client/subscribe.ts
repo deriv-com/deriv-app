@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import lightweightSubscribe from './backend-subscribe';
+import BackendSubscription from './backend-subscription';
 
 
 type BESubscription = {
@@ -30,8 +30,7 @@ type BESubscription = {
  */
 
 export default (function() {
-    const BEsubscriptionsByKey = new Map<string, BESubscription>();
-    
+    const BEsubscriptionsByKey = new Map<string, BackendSubscription>();
     
     function beReceive(beSubscription: BESubscription, data: any) {
         beSubscription.lastData = data;
@@ -47,7 +46,7 @@ export default (function() {
         }
     }
 
-    async function getBeSubscription(ws: any, name: string, payload: any) : Promise<BESubscription> {
+    async function getBeSubscription(ws: any, name: string, payload: any) : Promise<BackendSubscription> {
         const key = generateUniqueKey({[name]: 1, ...payload});
         
         if (BEsubscriptionsByKey.has(key)) {
@@ -55,33 +54,13 @@ export default (function() {
             return BEsubscriptionsByKey.get(key);
         }
 
-        const beSubscription: BESubscription = {
-            ws,
-            name,
-            payload,
-            reqId: null,
-            subscriptionId: null,
-            unsubcribe: null,
-            listeners: [],
-            lastData: null,
-        }
+        const backendSubscription = new BackendSubscription(ws, name, payload, beReceive);
+        BEsubscriptionsByKey.set(key, backendSubscription);
 
-        BEsubscriptionsByKey.set(key, beSubscription);
+        await backendSubscription.subscribe();
 
-        const {
-            data,
-            reqId,
-            subscriptionId,
-            unsubcribe,
-            // @ts-ignore
-        } = await lightweightSubscribe(ws, name, payload, beReceive.bind(this, beSubscription));
 
-        beSubscription.reqId = reqId;
-        beSubscription.subscriptionId = subscriptionId;
-        beSubscription.lastData = data;
-        beSubscription.unsubcribe = unsubcribe;
-
-        return beSubscription;
+        return backendSubscription;
     }
 
     // TODO: rename this naming
@@ -127,30 +106,8 @@ export default (function() {
         }
     }
 
-    async function reinstantiateOnSocketChange(ws: WebSocket) {
-        // iterate over BEsubscriptionsByKey
-        for (let [key, beSubscription] of BEsubscriptionsByKey) {
-
-            // unsubcribe, just to avoid any dangling listeners
-            // @ts-ignore
-            beSubscription.unsubcribe();
-
-            // reinstantiate new subscription on existing object
-            const {
-                data,
-                reqId,
-                subscriptionId,
-            } = await lightweightSubscribe(ws, beSubscription.name, beSubscription.payload, beReceive.bind(beSubscription));
-    
-            beSubscription.reqId = reqId;
-            beSubscription.subscriptionId = subscriptionId;
-            beSubscription.lastData = data;
-        }
-    }
-
     return {
         listen,
-        reinstantiateOnSocketChange,
     }
 })();
 

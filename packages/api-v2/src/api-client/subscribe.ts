@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import lightweightSubscribe from './backendSubscribe';
+import lightweightSubscribe from './backend-subscribe';
 
 
 type BESubscription = {
@@ -68,8 +68,6 @@ export default (function() {
 
         BEsubscriptionsByKey.set(key, beSubscription);
 
-
-
         const {
             data,
             reqId,
@@ -82,7 +80,6 @@ export default (function() {
         beSubscription.subscriptionId = subscriptionId;
         beSubscription.lastData = data;
         beSubscription.unsubcribe = unsubcribe;
-
 
         return beSubscription;
     }
@@ -122,6 +119,8 @@ export default (function() {
                             break; // Stop the loop if you only expect one match, remove if multiple deletes are possible
                         }
                     }
+
+                    //@ts-ignore
                     await beSubscription.unsubcribe();
                 }
             }
@@ -133,6 +132,7 @@ export default (function() {
         for (let [key, beSubscription] of BEsubscriptionsByKey) {
 
             // unsubcribe, just to avoid any dangling listeners
+            // @ts-ignore
             beSubscription.unsubcribe();
 
             // reinstantiate new subscription on existing object

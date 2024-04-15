@@ -9,8 +9,8 @@ import {
     TSocketSubscribableEndpointNames,
 } from '../types';
 import { hashObject } from './utils';
-import lightweightSend from './lightweightApi/lightweightSend';
-import aggregatedSubscribe from './lightweightApi/aggregatedSubscribe';
+import lightweightSend from './api-client/send';
+import aggregatedSubscribe from './api-client/subscribe';
 
 type TSendFunction = <T extends TSocketEndpointNames>(
     name: T,

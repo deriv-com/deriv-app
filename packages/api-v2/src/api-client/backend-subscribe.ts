@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import lightweightSend from './lightweightSend';
+import lightweightSend from './send';
 
 
 /*

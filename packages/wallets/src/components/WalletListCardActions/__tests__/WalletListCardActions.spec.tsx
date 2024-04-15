@@ -126,7 +126,7 @@ describe('WalletListCardActions', () => {
 
     it('should redirect to cashier page when clicking on transfer', () => {
         render(<WalletListCardActions />, { wrapper });
-        screen.getByRole('button', { name: 'transfer' }).click();
+        screen.getByRole('button', { name: 'account-transfer' }).click();
         expect(history.location.pathname).toBe('/appstore/traders-hub/cashier/account-transfer');
     });
 

@@ -16,7 +16,7 @@ describe('useP2PCountryList', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useQuery
         mockUseQuery.mockReturnValue({ data: {} });
         const { result } = renderHook(() => useP2PCountryList(), { wrapper });
-        expect(result.current.data).toBeUndefined();
+        expect(result.current.p2p_country_list).toBeUndefined();
     });
 
     it('should return country list with the correct details', () => {
@@ -56,7 +56,7 @@ describe('useP2PCountryList', () => {
         });
 
         const { result } = renderHook(() => useP2PCountryList(), { wrapper });
-        const p2p_country_list = result.current.data;
+        const { p2p_country_list } = result.current;
         if (p2p_country_list) {
             expect(p2p_country_list).toEqual(mockQueryData.p2p_country_list);
         }

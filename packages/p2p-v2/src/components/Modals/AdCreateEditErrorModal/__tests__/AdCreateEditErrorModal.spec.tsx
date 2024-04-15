@@ -23,8 +23,8 @@ describe('AdCreateEditErrorModal', () => {
         expect(screen.getByText('You already have an ad with this rate')).toBeInTheDocument();
     });
     it('should render the general error message if no error code is provided', () => {
-        render(<AdCreateEditErrorModal {...mockProps} errorCode={undefined} />);
-        expect(screen.getAllByText('Something’s not right')).toHaveLength(2);
+        render(<AdCreateEditErrorModal {...mockProps} errorCode={undefined} errorMessage='error message' />);
+        expect(screen.getByText('Something’s not right')).toBeInTheDocument();
     });
     it('should call onRequestClose when the button is clicked', () => {
         render(<AdCreateEditErrorModal {...mockProps} />);

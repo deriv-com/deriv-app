@@ -129,6 +129,12 @@ class DBot {
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
                     if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
+                    if (event.type == Blockly.Events.BLOCK_CHANGE) {
+                        const block = this.workspace.getBlockById(event.blockId);
+                        if (block && event.element == 'collapsed') {
+                            block.contextMenu = false;
+                        }
+                    }
                 });
 
                 Blockly.derivWorkspace = this.workspace;

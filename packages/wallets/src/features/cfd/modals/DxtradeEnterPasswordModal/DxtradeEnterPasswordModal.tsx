@@ -54,7 +54,7 @@ const DxtradeEnterPasswordModal = () => {
             if (accountType === 'demo') {
                 return (
                     <div className='wallets-success-btn'>
-                        <WalletButton isFullWidth onClick={hide} size='lg'>
+                        <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
                             OK
                         </WalletButton>
                     </div>
@@ -62,7 +62,7 @@ const DxtradeEnterPasswordModal = () => {
             }
             return (
                 <WalletButtonGroup isFlex isFullWidth>
-                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                    <WalletButton onClick={() => hide()} size={isMobile ? 'lg' : 'md'} variant='outlined'>
                         Maybe later
                     </WalletButton>
                     <WalletButton
@@ -70,7 +70,7 @@ const DxtradeEnterPasswordModal = () => {
                             hide();
                             history.push('/appstore/traders-hub/cashier/account-transfer');
                         }}
-                        size='lg'
+                        size={isMobile ? 'lg' : 'md'}
                     >
                         Transfer funds
                     </WalletButton>
@@ -90,7 +90,7 @@ const DxtradeEnterPasswordModal = () => {
                                 </ModalStepWrapper>
                             );
                         }}
-                        size='lg'
+                        size={isMobile ? 'lg' : 'md'}
                         variant='outlined'
                     >
                         Forgot password?
@@ -100,7 +100,7 @@ const DxtradeEnterPasswordModal = () => {
                         isFullWidth
                         isLoading={isLoading}
                         onClick={onSubmit}
-                        size='lg'
+                        size={isMobile ? 'lg' : 'md'}
                     >
                         Add account
                     </WalletButton>
@@ -114,7 +114,7 @@ const DxtradeEnterPasswordModal = () => {
                 isFullWidth
                 isLoading={isLoading}
                 onClick={onSubmit}
-                size='lg'
+                size={isMobile ? 'lg' : 'md'}
             >
                 {`Create ${PlatformDetails.dxtrade.title} password`}
             </WalletButton>
@@ -126,6 +126,7 @@ const DxtradeEnterPasswordModal = () => {
         history,
         isDxtradePasswordNotSet,
         isLoading,
+        isMobile,
         isSuccess,
         onSubmit,
         password,

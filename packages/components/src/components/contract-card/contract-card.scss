@@ -44,13 +44,13 @@
             &--trader {
                 grid-template-columns: 1.2fr 1fr;
 
-                &--accumulator,
-                &--turbos {
+                &--accumulator {
                     display: flex;
                     grid-gap: 1px;
-                    &-sold {
-                        padding-top: 1rem;
-                    }
+                }
+
+                &--sold {
+                    padding-top: 1rem;
                 }
             }
             &--mobile {
@@ -641,7 +641,8 @@
         /*rtl:ignore*/
         text-align: left;
 
-        &--smarttrader-contract {
+        &--smarttrader-contract,
+        &--multipliers {
             width: 7rem;
             @include mobile {
                 width: 9rem;

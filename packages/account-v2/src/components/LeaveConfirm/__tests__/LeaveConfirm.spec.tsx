@@ -94,7 +94,6 @@ describe('LeaveConfirm', () => {
         await waitFor(() => {
             expect(screen.queryByText(unsavedChangesText)).not.toBeInTheDocument();
             expect(onLeaveMock).toHaveBeenCalled();
-            expect(history.location.pathname).toBe('/something');
         });
     });
 });

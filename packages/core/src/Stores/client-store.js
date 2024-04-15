@@ -408,7 +408,6 @@ export default class ClientStore extends BaseStore {
             setIsPasskeySupported: action.bound,
             setShouldShowEffortlessLoginModal: action.bound,
             fetchShouldShowEffortlessLoginModal: action.bound,
-            passkeysTrackActionEvent: action.bound,
             getExchangeRate: action.bound,
             subscribeToExchangeRate: action.bound,
             unsubscribeFromExchangeRate: action.bound,

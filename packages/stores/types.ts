@@ -612,6 +612,11 @@ type TClientStore = {
     should_show_effortless_login_modal: boolean;
     setShouldShowEffortlessLoginModal: (value: boolean) => void;
     fetchShouldShowEffortlessLoginModal: () => void;
+    exchange_rates: Record<string, Record<string, number>>;
+    getExchangeRate: (base_currency: string, target_currency: string) => number;
+    subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
+    unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
+    unsubscribeFromAllExchangeRates: () => void;
 };
 
 type TCommonStoreError = {

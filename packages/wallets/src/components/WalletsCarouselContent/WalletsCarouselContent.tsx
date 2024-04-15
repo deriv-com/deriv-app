@@ -121,7 +121,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (activeWallet) {
             setSelectedLoginId(activeWallet?.loginid);
         }
-    }, [activeWallet]);
+    }, [activeWallet?.loginid]);
 
     // bind to embla events
     useEffect(() => {
@@ -163,7 +163,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (selectedLoginId) {
             switchWalletAccount(selectedLoginId).then(() => {
                 const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-                walletsCarouselEmblaApi?.scrollTo(index);
+                if (index !== -1) {
+                    walletsCarouselEmblaApi?.scrollTo(index);
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -173,7 +175,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     useEffect(() => {
         if (walletsCarouselEmblaApi && isInitialDataLoaded) {
             const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-            walletsCarouselEmblaApi?.scrollTo(index, true);
+            if (index !== -1) {
+                walletsCarouselEmblaApi?.scrollTo(index, true);
+            }
 
             walletsCarouselEmblaApi && setTransitionNodes(walletsCarouselEmblaApi);
             walletsCarouselEmblaApi && setTransitionFactor(walletsCarouselEmblaApi);

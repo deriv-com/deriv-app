@@ -29,6 +29,6 @@ describe('MyAdsEmpty', () => {
         render(<MyAdsEmpty />);
         const createNewAdButton = screen.getByRole('button', { name: 'Create new ad' });
         userEvent.click(createNewAdButton);
-        expect(mockFn).toHaveBeenCalledWith(`${MY_ADS_URL}?formAction=create`);
+        expect(mockFn).toHaveBeenCalledWith(`${MY_ADS_URL}/adForm?formAction=create`);
     });
 });

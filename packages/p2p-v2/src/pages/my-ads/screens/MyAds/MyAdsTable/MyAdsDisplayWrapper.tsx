@@ -14,7 +14,7 @@ const MyAdsDisplayWrapper = ({ children, isPaused, onClickToggle }: PropsWithChi
     const { isMobile } = useDevice();
     const history = useHistory();
 
-    const goToCreateAd = () => history.push(`${MY_ADS_URL}/create`);
+    const goToCreateAd = () => history.push(`${MY_ADS_URL}/adForm?formAction=create`);
 
     if (isMobile) {
         return (

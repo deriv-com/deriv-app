@@ -1,5 +1,3 @@
-import { mobileVendor } from 'react-device-detect';
-
 declare global {
     interface Window {
         opera?: string;
@@ -82,8 +80,6 @@ export const OSDetect = () => {
 };
 
 export const mobileOSDetect = () => {
-    // eslint-disable-next-line no-console
-    console.log('==>', mobileVendor);
     const userAgent = navigator.userAgent || navigator.vendor || window.opera || '';
     // huawei devices regex from: https://gist.github.com/megaacheyounes/e1c7eec5c790e577db602381b8c50bfa
     const huaweiDevicesRegex =

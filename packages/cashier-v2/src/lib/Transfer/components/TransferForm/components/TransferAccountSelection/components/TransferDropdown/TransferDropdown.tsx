@@ -40,26 +40,26 @@ const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect
 
     return (
         <div className={styles.container} ref={clickOutsideRef}>
-            <button
-                className={styles['selection-container']}
-                data-testid='dt_transfer_dropdown_selection_toggle'
-                onClick={toggleMenu}
-            >
+            <div className={styles['selection-container']}>
                 <div className={styles['selection-label']}>
                     <Text size='2xs'>{label}</Text>
                 </div>
-                <div className={styles['selection-content']}>
+                <button
+                    className={styles['selection-content']}
+                    data-testid='dt_transfer_dropdown_selection_toggle'
+                    onClick={toggleMenu}
+                >
                     {value && <TransferAccountTile account={value} iconSize='xs' />}
                     <LabelPairedChevronDownMdRegularIcon
                         className={clsx(styles.arrow, {
                             [styles['arrow--flip']]: isOpen,
                         })}
                     />
-                </div>
+                </button>
                 <Text className={styles['helper-message']} color='less-prominent' size='xs'>
                     {message}
                 </Text>
-            </button>
+            </div>
             {isOpen && <TransferDropdownList accounts={dropdownAccounts} onSelect={onSelectItem} value={value} />}
         </div>
     );

@@ -13,7 +13,7 @@ type TProps = {
 
 const TransferDropdownList: React.FC<TProps> = ({ accounts, onSelect, value }) => {
     return (
-        <div className={styles['items-container']} data-testid='dt_transfer_dropdown_items'>
+        <div className={styles['items-container']}>
             {Object.entries(accounts).map(([headerTitle, accounts]) => {
                 if (!accounts.length) return null;
 
@@ -30,6 +30,7 @@ const TransferDropdownList: React.FC<TProps> = ({ accounts, onSelect, value }) =
                                     className={clsx(styles.item, {
                                         [styles['item--selected']]: account.loginid === value?.loginid,
                                     })}
+                                    data-testid='dt_transfer_dropdown_items'
                                     key={account.loginid}
                                     onClick={() => onSelect(account)}
                                 >

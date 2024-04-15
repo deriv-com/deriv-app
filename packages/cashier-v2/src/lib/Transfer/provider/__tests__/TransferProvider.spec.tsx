@@ -74,7 +74,7 @@ describe('<TransferProvider />', () => {
         mockUseExtendedTransferAccounts.mockReturnValue(mockExtendedAccounts);
         const { result } = renderHook(useTransfer, { wrapper });
 
-        await act(() => {
+        act(() => {
             result.current.setTransferValidationSchema(mockExtendedAccounts[0], mockExtendedAccounts[1]);
         });
 

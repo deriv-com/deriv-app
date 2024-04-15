@@ -5,8 +5,8 @@ import {
     useCreateNewRealAccount,
     useSettings,
 } from '@deriv/api-v2';
-import { toMoment } from '@deriv/utils';
 import { AccountsDerivAccountLightIcon } from '@deriv/quill-icons';
+import { toMoment } from '@deriv/utils';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
@@ -75,7 +75,7 @@ const DerivAppsGetAccount: React.FC = () => {
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
             <div className='wallets-deriv-apps-section__icon'>
-                <AccountsDerivAccountLightIcon iconSize='lg' />
+                <AccountsDerivAccountLightIcon iconSize={isDesktop ? 'lg' : 'md'} />
             </div>
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>

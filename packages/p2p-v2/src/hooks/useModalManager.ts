@@ -31,7 +31,7 @@ const MODAL_QUERY_SEPARATOR = ',';
  * ```
  */
 export default function useModalManager(config?: TUseModalManagerConfig) {
-    const { deleteQueryString, queryString, setQueryString } = useQueryString();
+    const { deleteQueryString, queryString, setQueryString } = useQueryString('replaceIn');
     const { isMobile } = useDevice();
 
     const [isModalOpenScopes, actions] = useMap();

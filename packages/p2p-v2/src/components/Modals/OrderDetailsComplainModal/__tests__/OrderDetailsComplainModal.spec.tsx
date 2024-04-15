@@ -1,15 +1,15 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import OrderDetailsComplainModal from '../OrderDetailsComplainModal';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: () => ({
-        isMobile: false,
-    }),
+    useDevice: jest.fn().mockReturnValue({ isMobile: false }),
 }));
 
+const mockUseDevice = useDevice as jest.Mock;
 const mockUseDispute = {
     isSuccess: true,
     mutate: jest.fn(),
@@ -34,7 +34,7 @@ const mockProps = {
 describe('OrderDetailsComplainModal', () => {
     it('should render the modal as expected', () => {
         render(<OrderDetailsComplainModal {...mockProps} />);
-        expect(screen.getByText('What’s your complaint')).toBeInTheDocument();
+        expect(screen.getByText('What’s your complaint?')).toBeInTheDocument();
     });
     it('should close the modal on clicking cancel button', () => {
         render(<OrderDetailsComplainModal {...mockProps} />);
@@ -62,5 +62,10 @@ describe('OrderDetailsComplainModal', () => {
         userEvent.click(submitButton);
         expect(mockUseDispute.mutate).toHaveBeenCalledWith({ dispute_reason: 'buyer_underpaid', id: '123' });
         expect(mockProps.onRequestClose).toHaveBeenCalled();
+    });
+    it('should render the full page mobile wrapper when in mobile view', () => {
+        mockUseDevice.mockReturnValue({ isMobile: true });
+        render(<OrderDetailsComplainModal {...mockProps} />);
+        expect(screen.getByTestId('dt_p2p_v2_full_page_mobile_wrapper')).toBeInTheDocument();
     });
 });

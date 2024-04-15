@@ -2,6 +2,7 @@
     width: 44rem;
     &__body {
         padding: 1.6rem;
+        padding-top: 0;
     }
 
     &__explanation {
@@ -12,6 +13,7 @@
     }
 
     &__complain-footer {
+        display: flex;
         gap: 0.8rem;
     }
 

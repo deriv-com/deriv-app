@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { OrderDetailsComplainModal } from '@/components/Modals/OrderDetailsComplainModal';
-import { useModalManager } from '@/hooks';
 import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { Button, useDevice } from '@deriv-com/ui';
 import './OrderDetailsCardFooter.scss';
@@ -17,7 +16,7 @@ const OrderDetailsCardFooter = () => {
         shouldShowOnlyReceivedButton,
     } = orderDetails;
     const { isMobile } = useDevice();
-    const { hideModal, isModalOpenFor, showModal } = useModalManager();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const textSize = isMobile ? 'md' : 'sm';
 
     return (
@@ -37,7 +36,7 @@ const OrderDetailsCardFooter = () => {
                     <Button
                         className='border-2'
                         color='primary-light'
-                        onClick={() => showModal('OrderDetailsComplainModal')}
+                        onClick={() => setIsModalOpen(true)}
                         size='lg'
                         textSize={textSize}
                         variant='ghost'
@@ -54,7 +53,7 @@ const OrderDetailsCardFooter = () => {
                     <Button
                         className='border-2'
                         color='primary-light'
-                        onClick={() => showModal('OrderDetailsComplainModal')}
+                        onClick={() => setIsModalOpen(true)}
                         size='lg'
                         textSize={textSize}
                         variant='ghost'
@@ -70,12 +69,12 @@ const OrderDetailsCardFooter = () => {
                     </Button>
                 </div>
             )}
-            {!!isModalOpenFor('OrderDetailsComplainModal') && (
+            {isModalOpen && (
                 <OrderDetailsComplainModal
                     id={id}
                     isBuyOrderForUser={isBuyOrderForUser}
-                    isModalOpen={!!isModalOpenFor('OrderDetailsComplainModal')}
-                    onRequestClose={hideModal}
+                    isModalOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
                 />
             )}
         </div>

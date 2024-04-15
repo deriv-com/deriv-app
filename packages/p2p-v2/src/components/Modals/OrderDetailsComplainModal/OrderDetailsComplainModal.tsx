@@ -113,7 +113,7 @@ const OrderDetailsComplainModal = ({
             onRequestClose={onRequestClose}
         >
             <Modal.Header onRequestClose={onRequestClose}>
-                <Text weight='bold'>What’s your complaint</Text>
+                <Text weight='bold'>What’s your complaint?</Text>
             </Modal.Header>
             <Modal.Body className='p2p-v2-order-details-complain-modal__body'>
                 <OrderDetailsComplainModalRadioGroup

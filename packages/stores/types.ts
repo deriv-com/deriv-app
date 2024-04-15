@@ -616,6 +616,11 @@ type TClientStore = {
         { action, subform_name, error_message }: { action: string; subform_name?: string; error_message?: string },
         is_effortless_modal?: boolean
     ) => void;
+    exchange_rates: Record<string, Record<string, number>>;
+    getExchangeRate: (base_currency: string, target_currency: string) => number;
+    subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
+    unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
+    unsubscribeFromAllExchangeRates: () => void;
 };
 
 type TCommonStoreError = {

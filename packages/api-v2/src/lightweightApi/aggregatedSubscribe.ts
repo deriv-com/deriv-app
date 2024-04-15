@@ -1,7 +1,4 @@
 import _ from 'lodash';
-import md5 from 'md5';
-
-import lightweightSend from './lightweightSend';
 import lightweightSubscribe from './backendSubscribe';
 
 

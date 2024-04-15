@@ -1,6 +1,4 @@
 import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
-// @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
-import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -19,14 +17,10 @@ type TSendFunction = <T extends TSocketEndpointNames>(
     payload?: TSocketRequestPayload<T>
 ) => Promise<TSocketResponseData<T> & TSocketError<T>>;
 
-type TUnsubscribeFunction = (id: string) => void;
-
 type APIContextData = {
-    derivAPI: DerivAPIBasic | null;
     connection: WebSocket | undefined;
     send: TSendFunction;
     subscribe: Function;
-    unsubscribe: TUnsubscribeFunction;
     queryClient: QueryClient;
     setOnReconnected: (onReconnected: () => void) => void;
     setOnConnected: (onConnected: () => void) => void;
@@ -46,11 +40,8 @@ const getWebSocketURL = () => {
 const APIContext = createContext<APIContextData | null>(null);
 
 /**
- * Initializes a derivAPIRef instance for the global window. This enables a standalone connection
- * without causing race conditions with deriv-app core stores.
- * @returns {derivAPIRefBasic} The initialized derivAPIRef instance.
  */
-const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
+const initializeAPIs = (onWSClose: () => void, onOpen?: () => void): { connection: WebSocket} => {
     const wss_url = getWebSocketURL();
 
     const connection = new WebSocket(wss_url);
@@ -62,10 +53,7 @@ const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAP
         onOpen?.();
     });
 
-    const api = new DerivAPIBasic({ connection });
-
     return {
-        api,
         connection,
     };
 };
@@ -81,9 +69,7 @@ type TAPIProviderProps = {
 
 const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
-    const derivAPIRef = useRef<DerivAPIBasic>();
     const connectionRef = useRef<WebSocket>();
-    const subscriptionsRef = useRef<Record<string, DerivAPIBasic['subscribe']>>();
     const reactQueryRef = useRef<QueryClient>();
 
     // on reconnected ref
@@ -103,8 +89,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     }
 
     // have to be here and not inside useEffect as there are places in code expecting this to be available
-    if (!derivAPIRef.current) {
-        const { api, connection }= initializeDerivAPI(
+    if (!connectionRef.current) {
+        const { connection }= initializeAPIs(
             () => setReconnect(true),
             () => {
                 isOpenRef.current = true;
@@ -115,13 +101,12 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
             }
         );
 
-        derivAPIRef.current = api;
         connectionRef.current = connection;
     }
 
     useEffect(() => {
         return () => {
-            derivAPIRef.current.disconnect();
+            connectionRef?.current?.close(1000, 'Closing connection normally');
             reactQueryRef.current?.clear();
         };
     }, []);
@@ -142,7 +127,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const send: TSendFunction = (name, payload) => {
         //@ts-ignore
         return lightweightSend(connectionRef?.current, name, payload);
-        // return derivAPIRef.current?.send({ [name]: 1, ...payload });
     };
 
     //@ts-ignore
@@ -154,28 +138,9 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         return aggregatedSubscribe.listen(connectionRef.current, name, payload, onData);
     };
 
-    const unsubscribe: TUnsubscribeFunction = id => {
-        const matchingSubscription = subscriptionsRef.current?.[id];
-        if (matchingSubscription) matchingSubscription.unsubscribe();
-    };
-
-    useEffect(() => {
-        const currentDerivAPIRef = derivAPIRef.current;
-        const currentSubscriptionsRef = subscriptionsRef.current;
-
-        return () => {
-            if (currentSubscriptionsRef) {
-                Object.keys(currentSubscriptionsRef).forEach(key => {
-                    currentSubscriptionsRef[key].unsubscribe();
-                });
-            }
-            if (currentDerivAPIRef && currentDerivAPIRef.connection.readyState === 1) currentDerivAPIRef.disconnect();
-        };
-    }, []);
-
     useEffect(() => {
         const interval_id: ReturnType<typeof setInterval> = setInterval(
-            () => derivAPIRef.current?.send({ ping: 1 }),
+            () => send({ ping: 1 } as any),
             10000
         );
         return () => clearInterval(interval_id);
@@ -184,7 +149,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     useEffect(() => {
         let reconnectTimerId: NodeJS.Timeout;
         if (reconnect) {
-            const { api, connection } = initializeDerivAPI(
+            const { connection } = initializeAPIs(
                 () => {
                     reconnectTimerId = setTimeout(() => setReconnect(true), 500);
                 },
@@ -194,7 +159,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                     }
                 }
             );
-            derivAPIRef.current = api;
             connectionRef.current = connection;
             setReconnect(false);
         }
@@ -205,10 +169,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     return (
         <APIContext.Provider
             value={{
-                derivAPI: derivAPIRef.current,
                 send,
                 subscribe,
-                unsubscribe,
                 queryClient: reactQueryRef.current,
                 setOnReconnected,
                 setOnConnected,

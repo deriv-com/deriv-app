@@ -15,9 +15,9 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
     const unlistenRef = useRef<Function>();
 
     const subscribe = useCallback(
-        (payloadConstruct: any) => {
+        (payloadConstruct?: any) => {
             setIsLoading(true);
-            _subscribe(name, payloadConstruct.payload, (data: any) => setData(data)).then((subData: any) => {
+            _subscribe(name, payloadConstruct?.payload || {}, (data: any) => setData(data)).then((subData: any) => {
                 console.log('>> useSubscription, subription successfull: ', subData);
                 setIsLoading(false);
                 unlistenRef.current = subData.unlisten;

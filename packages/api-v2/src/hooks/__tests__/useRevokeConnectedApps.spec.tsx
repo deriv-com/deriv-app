@@ -5,6 +5,7 @@ import { renderHook } from '@testing-library/react-hooks';
 
 jest.mock('../useAuthorize');
 jest.mock('../../useMutation');
+jest.mock('../../useInvalidateQuery');
 
 describe('useRevokeConnectedApps', () => {
     afterEach(() => {

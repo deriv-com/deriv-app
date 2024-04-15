@@ -1,6 +1,7 @@
 export * from './CashierOnboarding';
 export * from './DepositCrypto';
 export * from './DepositFiat';
+export * from './FiatOnRamp';
 export * from './PaymentAgent';
 export * from './PaymentAgentTransfer';
 export * from './Transfer';

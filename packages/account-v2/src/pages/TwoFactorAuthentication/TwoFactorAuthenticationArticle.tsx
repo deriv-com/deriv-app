@@ -1,17 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { twMerge } from 'tailwind-merge';
 import { SideNote, Text, useDevice } from '@deriv-com/ui';
 
 export const TwoFactorAuthenticationArticle = () => {
     const { isTablet } = useDevice();
     return (
         <SideNote
-            className={twMerge(
-                classNames('py-[1.6rem] px-[2.4rem] h-fit w-[25.6rem] sm:w-[calc(100%-3.2rem)] sm:m-[1.6rem]', {
-                    'ml-[1.2rem]': isTablet,
-                })
-            )}
+            className={classNames('py-[1.6rem] px-[2.4rem] h-fit w-[25.6rem] sm:w-[calc(100%-3.2rem)] sm:m-[1.6rem]', {
+                'ml-[1.2rem]': isTablet,
+            })}
             title={' Two-factor authentication (2FA)'}
             titleClassName='mb-[.8rem] text-[1.4rem] text-system-light-prominent-text leading-normal'
         >

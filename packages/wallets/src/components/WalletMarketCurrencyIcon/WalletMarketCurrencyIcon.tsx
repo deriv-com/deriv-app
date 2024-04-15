@@ -6,7 +6,7 @@ import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import { THooks, TPlatforms } from '../../types';
-import { WalletCardIcon } from '../WalletCardIcon';
+import { WalletCurrencyIcons } from '../WalletCurrencyIcons';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletMarketCurrencyIcon.scss';
 
@@ -53,7 +53,7 @@ const WalletMarketCurrencyIcon: React.FC<TWalletMarketCurrencyIconProps> = ({
                 }`}
             >
                 <WalletGradientBackground currency={currency} hasShine isDemo={isDemo} type='card'>
-                    <WalletCardIcon device='desktop' size='lg' type={isDemo ? 'Demo' : currency} />
+                    <WalletCurrencyIcons currency={isDemo ? 'DEMO' : currency} size='lg' />
                 </WalletGradientBackground>
             </div>
         </div>

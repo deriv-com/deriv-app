@@ -9,7 +9,7 @@ import { TWalletCarouselItem } from '../../types';
 import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
-import { WalletCurrencyIcons } from '../WalletCardIcon';
+import { WalletCurrencyIcons } from '../WalletCurrencyIcons';
 import { WalletError } from '../WalletError';
 
 const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({

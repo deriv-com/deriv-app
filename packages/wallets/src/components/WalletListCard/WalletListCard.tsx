@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletCurrencyIcons } from '../WalletCardIcon';
+import { WalletCurrencyIcons } from '../WalletCurrencyIcons';
 import WalletListCardDetails from '../WalletListCardDetails/WalletListCardDetails';
 import './WalletListCard.scss';
 

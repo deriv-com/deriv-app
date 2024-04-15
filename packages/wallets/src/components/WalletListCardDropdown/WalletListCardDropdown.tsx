@@ -4,7 +4,7 @@ import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
-import { WalletCurrencyIcons } from '../WalletCardIcon';
+import { WalletCurrencyIcons } from '../WalletCurrencyIcons';
 import './WalletListCardDropdown.scss';
 
 const WalletListCardDropdown = () => {

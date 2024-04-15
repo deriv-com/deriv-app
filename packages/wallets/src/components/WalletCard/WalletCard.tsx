@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useBalance } from '@deriv/api-v2';
 import { WalletText } from '../Base';
-import { WalletCurrencyIcons } from '../WalletCardIcon';
+import { WalletCurrencyIcons } from '../WalletCurrencyIcons';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import './WalletCard.scss';

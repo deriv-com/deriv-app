@@ -7,7 +7,7 @@ import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { LeaveConfirm } from 'src/components/LeaveConfirm';
 import { IconWithMessage } from '../../components/IconWithMessage';
 import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
-import { AddressFields } from '../../modules/AddressFields';
+import { AddressFields } from '../../modules/src/AddressFields';
 import { DocumentSubmission } from './DocumentSubmission';
 
 type TAddressDetails = {

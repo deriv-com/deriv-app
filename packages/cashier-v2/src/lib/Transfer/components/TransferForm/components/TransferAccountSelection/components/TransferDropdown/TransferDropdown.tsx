@@ -11,7 +11,7 @@ type TProps = {
     label: string;
     message?: string;
     onSelect: (account: TTransferableAccounts[number]) => void;
-    value: TTransferableAccounts[number] | TTransferFormikContext['fromAccount'] | TTransferFormikContext['toAccount'];
+    value: TTransferFormikContext['fromAccount'];
 };
 
 const TransferDropdown: React.FC<TProps> = ({ accounts, label, message, onSelect, value }) => {

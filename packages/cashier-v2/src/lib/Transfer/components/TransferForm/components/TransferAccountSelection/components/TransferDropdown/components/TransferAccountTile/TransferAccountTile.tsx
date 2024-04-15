@@ -10,13 +10,6 @@ type TProps = {
     isActive?: boolean;
 };
 
-// TODO: replace with correct data once it is available in backend and this function is untested for now
-const getAccountName = (account: TTransferableAccounts[number]) => {
-    if (!account.currency) return '';
-
-    return account.currency;
-};
-
 const getIcon = (account: TTransferableAccounts[number], iconSize: NonNullable<TProps['iconSize']>) => {
     if (!account.currency) return null;
 
@@ -35,7 +28,9 @@ const TransferAccountTile: React.FC<TProps> = ({ account, iconSize = 'sm', isAct
                 {getIcon(account, iconSize)}
                 <div className={styles['account-info']}>
                     <Text size='sm' weight={isActive ? 'bold' : 'normal'}>
-                        {getAccountName(account)}
+                        {/* TODO: replace with correct data once it is available in backend and this function is untested
+                        for now */}
+                        {account.currency ?? ''}
                     </Text>
                     <Text color='less-prominent' size='2xs'>
                         {account.loginid}

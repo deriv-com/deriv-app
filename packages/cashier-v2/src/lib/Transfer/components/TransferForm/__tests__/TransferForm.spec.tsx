@@ -75,13 +75,13 @@ jest.mock('../components', () => ({
 }));
 
 describe('TransferForm', () => {
-    it('should test whether the correct initial from and to accounts are set as Formik initialValues', async () => {
+    it('should test whether the correct initial from and to accounts are set as Formik initialValues', () => {
         render(<TransferForm />);
 
         expect(screen.getByText('from-CR1__to-CR2')).toBeInTheDocument();
     });
 
-    it('should test whether the correct initial from and to accounts are set as Formik initialValues', async () => {
+    it('should test whether the correct initial from and to accounts are set as Formik initialValues', () => {
         render(<TransferForm />);
 
         expect(screen.getByText('from-CR1__to-CR2')).toBeInTheDocument();

@@ -1,5 +1,6 @@
 import React from 'react';
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import TransferDropdown from '../TransferDropdown';
 import { TTransferableAccounts } from 'src/lib/Transfer/types';
 
@@ -57,11 +58,11 @@ describe('<TransferDropdown />', () => {
         );
         const transferDropdownToggle = screen.getByTestId('dt_transfer_dropdown_selection_toggle');
 
-        await fireEvent.click(transferDropdownToggle);
+        userEvent.click(transferDropdownToggle);
 
-        await expect(screen.getByTestId('dt_transfer_dropdown_items')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_transfer_dropdown_items')).toBeInTheDocument();
 
-        await fireEvent.click(transferDropdownToggle);
+        userEvent.click(transferDropdownToggle);
 
         expect(screen.queryByTestId('dt_transfer_dropdown_items')).not.toBeInTheDocument();
     });
@@ -73,7 +74,7 @@ describe('<TransferDropdown />', () => {
 
         const transferDropdownToggle = screen.getByTestId('dt_transfer_dropdown_selection_toggle');
 
-        await fireEvent.click(transferDropdownToggle);
+        userEvent.click(transferDropdownToggle);
 
         const transferDropdownItems = screen.getByTestId('dt_transfer_dropdown_items');
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { TTransferableAccounts } from '../../../../../types';
 import TransferAccountSelection from '../TransferAccountSelection';
 
@@ -110,7 +111,7 @@ describe('<TransferAccountSelection />', () => {
 
         const fromDropdown = screen.getByText('From-CR1');
 
-        await fireEvent.click(fromDropdown);
+        userEvent.click(fromDropdown);
 
         await waitFor(() => {
             expect(screen.getByText('From-CR2')).toBeInTheDocument();
@@ -125,7 +126,7 @@ describe('<TransferAccountSelection />', () => {
 
         const fromDropdown = screen.getByText('From-CR1');
 
-        await fireEvent.click(fromDropdown);
+        userEvent.click(fromDropdown);
 
         await waitFor(() => {
             expect(screen.getByText('From-CR3')).toBeInTheDocument();
@@ -140,7 +141,7 @@ describe('<TransferAccountSelection />', () => {
 
         const toDropdown = screen.getByText('To-CR2');
 
-        await fireEvent.click(toDropdown);
+        userEvent.click(toDropdown);
 
         await waitFor(() => {
             expect(screen.getByText('From-CR1')).toBeInTheDocument();

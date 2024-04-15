@@ -11,18 +11,12 @@ const TransferForm = () => {
     const history = useHistory();
     const { accounts, activeAccount, transferValidationSchema } = useTransfer();
 
-    const getInitialAccount = () => {
-        if (!accounts || !activeAccount) return;
-
-        if (activeAccount !== accounts[0]) return accounts[0];
-
-        return accounts[1];
-    };
+    const initialAccount = activeAccount !== accounts[0] ? accounts[0] : accounts[1];
 
     const initialValues: TTransferFormikContext = {
         fromAccount: activeAccount,
         fromAmount: '',
-        toAccount: getInitialAccount(),
+        toAccount: initialAccount,
         toAmount: '',
     };
 

@@ -1,3 +1,10 @@
 .wallets-carousel {
     width: 100%;
+
+    &__header {
+        padding-left: 1.4rem;
+        height: 4.6rem;
+        display: flex;
+        align-items: center;
+    }
 }

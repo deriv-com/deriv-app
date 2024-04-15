@@ -3,7 +3,7 @@ import ImportantIcon from '@/assets/svgs/ic-important.svg';
 import { useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
-import { DesktopLinks, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
+import { DesktopLinks, getWebtraderUrl, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import MT5MobileRedirectOption from './MT5MobileRedirectOption';
@@ -138,7 +138,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                             <TradeLink
                                 app={DesktopLinks.MT5_WEB}
                                 platform={mt5Platform}
-                                webtraderUrl={`${details?.white_label_links.webtrader_url}?login=${details?.display_login}&server=${details?.server_info.environment}`}
+                                webtraderUrl={getWebtraderUrl({ details })}
                             />
 
                             <TradeLink app={DesktopLinks.MT5_WINDOWS} platform={mt5Platform} />
@@ -146,7 +146,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                             <TradeLink app={DesktopLinks.MT5_LINUX} platform={mt5Platform} />
                         </Fragment>
                     ) : (
-                        <MT5MobileRedirectOption />
+                        <MT5MobileRedirectOption details={details} />
                     ))}
 
                 {platform === dxtradePlatform && (

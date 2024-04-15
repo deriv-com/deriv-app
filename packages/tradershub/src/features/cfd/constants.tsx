@@ -10,6 +10,7 @@ import MT5Icon from '@/assets/svgs/ic-mt5.svg';
 import WindowsIcon from '@/assets/svgs/ic-windows-logo.svg';
 import { IconComponent } from '@/components';
 import { TJurisdiction, TMarketTypes, TPlatforms } from '@/types';
+import { mobileOsDetect } from '@/utils';
 
 type TAppContent = {
     description: string;
@@ -248,4 +249,21 @@ export const AppToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElem
     android: InstallationGoogleIcon,
     huawei: InstallationHuaweiIcon,
     ios: InstallationAppleIcon,
+};
+
+export const getWebtraderUrl = ({ details }) => {
+    return `${details?.white_label_links.webtrader_url}?login=${details?.display_login}&server=${details?.server_info.environment}`;
+};
+
+export const getDeeplinkUrl = ({ details }) => {
+    return `metatrader5://account?login=${details?.display_login}&server=${details?.server_info?.environment}`;
+};
+
+export const getMobileAppInstallerUrl = ({ details }) => {
+    if (mobileOsDetect() === 'iOS') {
+        return details?.white_label_links?.ios;
+    } else if (mobileOsDetect() === 'huawei') {
+        return 'https://appgallery.huawei.com/#/app/C102015329';
+    }
+    return details.white_label_links.android;
 };

@@ -8,7 +8,6 @@ import {
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
-import { hashObject } from './utils';
 import lightweightSend from './api-client/send';
 import SubscriptionsManager from './api-client/subscriptions-manager';
 
@@ -128,9 +127,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         }
     }, []);
 
-    //@ts-ignore
+    
     const send: TSendFunction = (name, payload) => {
-        //@ts-ignore
         return lightweightSend(connectionRef?.current, name, payload);
     };
 

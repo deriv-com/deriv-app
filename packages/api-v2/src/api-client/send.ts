@@ -8,7 +8,7 @@ const REQ_TIMEOUT = 20000;
  * responsible for sending request over given WS and thats it, 
  * no handling of reconnections, no state, nothing, just send
  */
-function lightweightSend(ws: WebSocket, name: string, payload: object | any) {
+function send(ws: WebSocket, name: string, payload: object | any) {
     const req_id = _reqSeqNr++;
 
     let promise = new Promise((resolve, reject) => {
@@ -41,4 +41,4 @@ function lightweightSend(ws: WebSocket, name: string, payload: object | any) {
      return promise;
 }
 
-export default lightweightSend;
+export default send;

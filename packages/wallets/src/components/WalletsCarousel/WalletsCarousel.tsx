@@ -55,9 +55,7 @@ const WalletsCarousel: React.FC = () => {
             )}
             <div className='wallets-carousel' ref={containerRef}>
                 <div className='wallets-carousel__header'>
-                    <WalletText size='xl' weight='bold'>
-                        Trader&apos;s Hub
-                    </WalletText>
+                    <WalletText weight='bold'>Trader&apos;s Hub</WalletText>
                 </div>
                 <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
                 <AccountsList isWalletSettled={isWalletSettled} />

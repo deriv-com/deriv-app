@@ -54,6 +54,14 @@ export default class BackendSubsription {
         this.onData(data);
     }
 
+    addListener(onData: Function) {
+        this.listeners.push(onData);
+    }
+
+    removeListener(onData: Function) {
+        _.remove(this.listeners, onData);
+    }
+
     onWsMessage(messageEvent: any) {
         const data = JSON.parse(messageEvent.data);
 

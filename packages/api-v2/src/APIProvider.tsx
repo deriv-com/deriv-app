@@ -10,7 +10,7 @@ import {
 } from '../types';
 import { hashObject } from './utils';
 import lightweightSend from './api-client/send';
-import aggregatedSubscribe from './api-client/subscribe';
+import SubscriptionsManager from './api-client/subscriptions-manager';
 
 type TSendFunction = <T extends TSocketEndpointNames>(
     name: T,
@@ -71,6 +71,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
     const connectionRef = useRef<WebSocket>();
     const reactQueryRef = useRef<QueryClient>();
+    const subscriptionsManagerRef = useRef<SubscriptionsManager>();
 
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
@@ -104,6 +105,10 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         connectionRef.current = connection;
     }
 
+    if (!subscriptionsManagerRef.current) { 
+        subscriptionsManagerRef.current = new SubscriptionsManager(connectionRef.current);
+    }
+
     useEffect(() => {
         return () => {
             connectionRef?.current?.close(1000, 'Closing connection normally');
@@ -135,7 +140,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
             throw new Error('Connection is not available');
         }
 
-        return aggregatedSubscribe.listen(connectionRef.current, name, payload, onData);
+        return subscriptionsManagerRef?.current?.subscribe(name, payload, onData);
     };
 
     useEffect(() => {

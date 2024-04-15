@@ -1,6 +1,3 @@
-import _ from 'lodash';
-
-
 const REQ_TIMEOUT = 20000;
 
 /**
@@ -13,7 +10,7 @@ function send(ws: WebSocket, reqSeqNumber: number, name: string, payload: object
     let promise = new Promise((resolve, reject) => {
         let timeout: NodeJS.Timeout = setTimeout(() => {
             ws.removeEventListener('message', receive);
-            reject('Request timed out: ');
+            reject('Request timed out');
         }, REQ_TIMEOUT);
 
         function receive(messageEvent: any) {

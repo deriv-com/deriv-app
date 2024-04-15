@@ -75,7 +75,9 @@ const WalletListCardActions = () => {
                                 }}
                                 size='lg'
                             />
-                            <WalletText size='sm'>{button.text}</WalletText>
+                            <WalletText size='sm' weight={button.text === 'Deposit' ? 'bold' : 'normal'}>
+                                {button.text}
+                            </WalletText>
                         </div>
                     ))}
                 </div>

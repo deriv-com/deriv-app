@@ -15,7 +15,7 @@ export default class SubscriptionsManager {
         let backendSubscription : BackendSubscription | undefined; 
 
         if (!this.backendSubscriptions.has(key)) {
-            this.backendSubscriptions.set(key, new BackendSubscription(this.ws, name, payload, onData));
+            this.backendSubscriptions.set(key, new BackendSubscription(this.ws, name, payload));
         }
 
         backendSubscription = this.backendSubscriptions.get(key);            

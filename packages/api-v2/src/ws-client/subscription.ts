@@ -1,10 +1,6 @@
 import _ from 'lodash';
 import send from './request';
 
-function generateRandomInteger() {
-    return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 1;
-}
-
 /**
  * Subscribes directly to backend stream
  * WARNING: it does not check for dubplicates, its just
@@ -43,7 +39,7 @@ export default class BackendSubscription {
     async unsubscribe() {
         this.ws.removeEventListener('message', this.boundOnWsMessage);
         this.ws.removeEventListener('close', this.boundOnWsClose);
-        await send(this.ws, generateRandomInteger(), 'forget', { forget: this.subscriptionId });
+        await send(this.ws, 'forget', { forget: this.subscriptionId });
     }
 
     async onWsClose() {
@@ -55,14 +51,13 @@ export default class BackendSubscription {
         this.ws.addEventListener('message', this.boundOnWsMessage)
         this.ws.addEventListener('close', this.boundOnWsClose);
 
-        this.reqId = generateRandomInteger();
-
-        const data:any = await send(this.ws, this.reqId, this.name, {
+        const data:any = await send(this.ws, this.name, {
             subscribe: 1,
             ...this.payload
         });
 
         this.subscriptionId = data.subscription.id;
+        this.reqId = data.req_id;
         this.lastData = data;
         
         this.listeners.forEach(listener => listener(data));

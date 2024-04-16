@@ -8,17 +8,18 @@ import {
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
-import lightweightSend from './ws-client/request';
-import SubscriptionsManager from './ws-client/subscriptions-manager';
+import WSClient from './ws-client/ws-client';
 
-type TSendFunction = <T extends TSocketEndpointNames>(
+type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
     name: T,
     payload?: TSocketRequestPayload<T>
-) => Promise<TSocketResponseData<T> & TSocketError<T>>;
+) => Promise<{ id: string; subscription: any }>;
+
+
 
 type APIContextData = {
     connection: WebSocket | undefined;
-    send: TSendFunction;
+    send: Function,
     subscribe: Function;
     queryClient: QueryClient;
     setOnReconnected: (onReconnected: () => void) => void;
@@ -75,7 +76,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
     const connectionRef = useRef<WebSocket>();
     const reactQueryRef = useRef<QueryClient>();
-    const subscriptionsManagerRef = useRef<SubscriptionsManager>();
+    const wsClientRef = useRef<WSClient>();
 
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
@@ -109,8 +110,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         connectionRef.current = connection;
     }
 
-    if (!subscriptionsManagerRef.current) { 
-        subscriptionsManagerRef.current = new SubscriptionsManager(connectionRef.current);
+    if (!wsClientRef.current) { 
+        wsClientRef.current = new WSClient(connectionRef.current);
     }
 
     useEffect(() => {
@@ -133,19 +134,21 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     }, []);
 
     
-    //@ts-ignore
-    const send: TSendFunction = (name, payload) => {
-        //@ts-ignore
-        return lightweightSend(connectionRef?.current, generateRandomInteger(), name, payload);
-    };
-
-    //@ts-ignore
-    const subscribe: TSubscribeFunction = async (name: any, payload: any, onData: Function) => {
+    const send = (name: TSocketEndpointNames, payload: TSocketRequestPayload<TSocketEndpointNames>) => {  
         if (!connectionRef.current) {
             throw new Error('Connection is not available');
         }
 
-        return subscriptionsManagerRef?.current?.subscribe(name, payload, onData);
+        return wsClientRef?.current?.request(name, payload);
+    };
+
+
+    const subscribe = async (name: TSocketEndpointNames, payload: TSocketRequestPayload<TSocketEndpointNames>, onData: Function) => {
+        if (!connectionRef.current) {
+            throw new Error('Connection is not available');
+        }
+
+        return wsClientRef?.current?.subscribe(name, payload, onData);
     };
 
     useEffect(() => {

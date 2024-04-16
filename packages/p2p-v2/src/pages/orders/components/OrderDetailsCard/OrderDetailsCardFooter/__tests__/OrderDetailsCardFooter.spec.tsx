@@ -1,5 +1,6 @@
 import React from 'react';
 import { useOrderDetails } from '@/providers/OrderDetailsProvider';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import OrderDetailsCardFooter from '../OrderDetailsCardFooter';
@@ -20,13 +21,26 @@ jest.mock('@deriv/api-v2', () => ({
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: () => ({ isMobile: false }),
+    useDevice: jest.fn().mockReturnValue({ isMobile: false }),
 }));
 
-jest.mock('@/components/Modals', () => ({
-    ...jest.requireActual('@/components/Modals'),
-    OrderDetailsComplainModal: () => <div>OrderDetailsComplainModal</div>,
-}));
+const mockUseDevice = useDevice as jest.Mock;
+
+jest.mock('@/hooks', () => {
+    const modalManager = {
+        hideModal: jest.fn(),
+        isModalOpenFor: jest.fn(),
+        showModal: jest.fn(),
+    };
+    modalManager.showModal.mockImplementation(() => {
+        modalManager.isModalOpenFor.mockReturnValue(true);
+    });
+    return {
+        ...jest.requireActual('@/hooks'),
+        useModalManager: jest.fn().mockReturnValue(modalManager),
+    };
+});
+
 jest.mock('@/providers/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
         orderDetails: {
@@ -102,6 +116,7 @@ describe('<OrderDetailsCardFooter />', () => {
         expect(container).toBeEmptyDOMElement();
     });
     it('should open the complain modal on clicking the complain button', async () => {
+        mockUseDevice.mockReturnValue({ isMobile: true });
         mockUseOrderDetails.mockReturnValue({
             orderDetails: {
                 ...mockUseOrderDetails().orderDetails,
@@ -114,7 +129,7 @@ describe('<OrderDetailsCardFooter />', () => {
         expect(complainButton).toBeInTheDocument();
         userEvent.click(complainButton);
         await waitFor(() => {
-            expect(screen.getByText('OrderDetailsComplainModal')).toBeInTheDocument();
+            expect(screen.getByText('I’ve not received any payment.')).toBeInTheDocument();
         });
     });
 });

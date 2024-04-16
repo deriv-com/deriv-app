@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { OrderDetailsComplainModal } from '@/components/Modals';
+import { useModalManager } from '@/hooks';
 import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { Button, useDevice } from '@deriv-com/ui';
 import './OrderDetailsCardFooter.scss';
@@ -16,7 +17,7 @@ const OrderDetailsCardFooter = () => {
         shouldShowOnlyReceivedButton,
     } = orderDetails;
     const { isMobile } = useDevice();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { hideModal, isModalOpenFor, showModal } = useModalManager({ shouldReinitializeModals: false });
     const textSize = isMobile ? 'md' : 'sm';
 
     if (
@@ -31,7 +32,7 @@ const OrderDetailsCardFooter = () => {
     return (
         <div className='p2p-v2-order-details-card-footer'>
             {shouldShowCancelAndPaidButton && (
-                <div className='gap-3 ml-auto'>
+                <div className='flex gap-3 ml-auto'>
                     <Button className='border-2' color='black' size='lg' textSize={textSize} variant='outlined'>
                         Cancel order
                     </Button>
@@ -45,7 +46,7 @@ const OrderDetailsCardFooter = () => {
                     <Button
                         className='border-2'
                         color='primary-light'
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => showModal('OrderDetailsComplainModal')}
                         size='lg'
                         textSize={textSize}
                         variant='ghost'
@@ -62,7 +63,7 @@ const OrderDetailsCardFooter = () => {
                     <Button
                         className='border-2'
                         color='primary-light'
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => showModal('OrderDetailsComplainModal')}
                         size='lg'
                         textSize={textSize}
                         variant='ghost'
@@ -78,14 +79,12 @@ const OrderDetailsCardFooter = () => {
                     </Button>
                 </div>
             )}
-            {isModalOpen && (
-                <OrderDetailsComplainModal
-                    id={id}
-                    isBuyOrderForUser={isBuyOrderForUser}
-                    isModalOpen={isModalOpen}
-                    onRequestClose={() => setIsModalOpen(false)}
-                />
-            )}
+            <OrderDetailsComplainModal
+                id={id}
+                isBuyOrderForUser={isBuyOrderForUser}
+                isModalOpen={!!isModalOpenFor('OrderDetailsComplainModal')}
+                onRequestClose={hideModal}
+            />
         </div>
     );
 };

@@ -7,6 +7,11 @@
         border-bottom: 1px solid #f2f3f4;
         padding: 1.6rem 0;
 
+        @include desktop {
+            padding-left: 1.6rem;
+            padding-right: 1.6rem;
+        }
+
         & .p2p-v2-radio-group__circle {
             align-self: unset;
             border-color: #999999;

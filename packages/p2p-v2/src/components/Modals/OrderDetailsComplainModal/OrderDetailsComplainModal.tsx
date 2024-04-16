@@ -38,6 +38,7 @@ const ComplainFooter = ({ disputeOrderRequest, disputeReason, onRequestClose }: 
     return (
         <div className='p2p-v2-order-details-complain-modal__complain-footer'>
             <Button
+                className='border-2'
                 color='black'
                 onClick={onRequestClose}
                 size='lg'

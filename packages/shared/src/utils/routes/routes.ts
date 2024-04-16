@@ -12,6 +12,7 @@ export const routes = {
     proof_of_ownership: '/account/proof-of-ownership',
     proof_of_income: '/account/proof-of-income',
     passwords: '/account/passwords',
+    passkeys: '/account/passkeys',
     closing_account: '/account/closing-account',
     deactivate_account: '/account/deactivate-account', // TODO: Remove once mobile team has changed this link
     account_closed: '/account-closed',
@@ -81,6 +82,7 @@ export const routes = {
     wallets_cashier: '/wallets/cashier',
     wallets_withdrawal: '/wallets/cashier/withdraw',
     wallets_compare_accounts: '/wallets/compare-accounts',
+    wallets_transfer: '/wallets/cashier/transfer',
 
     // Traders Hub
     traders_hub_v2: '/traders-hub',

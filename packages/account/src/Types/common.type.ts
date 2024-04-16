@@ -79,6 +79,7 @@ export type TRoute = {
     component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
     getTitle?: () => string;
     is_disabled?: boolean;
+    is_hidden?: boolean;
     subroutes?: TRoute[];
 };
 
@@ -139,8 +140,9 @@ export type TIDVFormValues = {
 export type TPlatforms = typeof Platforms[keyof typeof Platforms];
 
 export type TServerError = {
-    code: string;
+    code?: string;
     message: string;
+    name?: string;
     details?: { [key: string]: string };
     fields?: string[];
 };

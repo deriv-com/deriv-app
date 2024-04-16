@@ -1,4 +1,5 @@
 import React, { KeyboardEvent } from 'react';
+import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -72,7 +73,7 @@ const QuickStrategyGuidesDetail = observer(
                                 </div>
                                 <Icon
                                     className='tutorials-quick-strategy__placeholder__icon'
-                                    icon='IcChevronRightBold'
+                                    icon={isDbotRTL() ? 'IcChevronLeftBold' : 'IcChevronRightBold'}
                                 />
                             </div>
                         ))}
@@ -96,6 +97,9 @@ const QuickStrategyGuidesDetail = observer(
                                 <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                             </Text>
                         </div>
+                        <Text color='prominent' line_height='s' size={text_size} weight='bold' as='div'>
+                            <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
+                        </Text>
                         <StrategyTabContent tutorial_selected_strategy={tutorial_selected_strategy} />
                     </>
                 )}

@@ -1,22 +1,27 @@
 import React, { Fragment } from 'react';
-import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api';
-import { Button } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
-import { getPlatformFromUrl } from '../../../../../helpers/urls';
+import { getPlatformFromUrl } from '@/helpers';
+import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api-v2';
+import { Button, Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../../types';
-import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper, PlatformUrls } from '../../../constants';
+import {
+    AppToContentMapper,
+    PlatformDetails,
+    PlatformToLabelIconMapper,
+    PlatformUrls,
+    DesktopLinks,
+} from '../../../constants';
 
 type TTradeLinkProps = {
-    app?: keyof typeof AppToContentMapper;
+    app: keyof typeof AppToContentMapper;
     isDemo?: boolean;
     platform?: TPlatforms.All;
     webtraderUrl?: THooks.MT5AccountsList['webtrader_url'];
 };
 
-const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkProps) => {
+const TradeLink = ({ app, platform, webtraderUrl = '' }: TTradeLinkProps) => {
     const content = AppToContentMapper[app];
-    const { data: ctraderToken } = useCtraderServiceToken();
 
+    const { data: ctraderToken } = useCtraderServiceToken();
     const { data: activeAccount } = useActiveTradingAccount();
 
     const isDemo = activeAccount?.is_virtual;
@@ -42,35 +47,62 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
     };
 
     return (
-        <div className='flex items-center justify-between border-solid border-t-1 border-system-light-secondary-background px-16 py-24'>
+        <div className='flex items-center justify-between px-16 py-24 border-solid border-t-1 border-system-light-secondary-background'>
             <div className='flex items-center gap-16'>
-                {(platform === mt5Platform || app === ctraderPlatform) && (
+                {platform === mt5Platform && (
                     <Fragment>
                         <div className='w-1600 h-1600'>{content.icon}</div>
                         <Text size='sm'>{content.title}</Text>
                     </Fragment>
                 )}
-                {platform !== mt5Platform && app !== ctraderPlatform && (
-                    <Text size='sm'>Run {PlatformDetails[platform ?? dxtradePlatform].title} on your browser</Text>
+                {platform === dxtradePlatform && (
+                    <Text size='sm'>Run {PlatformDetails[platform].title} on your browser</Text>
                 )}
+                {platform === ctraderPlatform && <Text size='sm'>{content.title}</Text>}
             </div>
-            {(platform === mt5Platform || app === ctraderPlatform) && (
+            {platform === mt5Platform && (
                 <Button
-                    className='border-opacity-black-8 rounded-xs px-16'
-                    colorStyle='black'
-                    onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
+                    className='px-16 border-opacity-black-8 rounded-xs'
+                    color='black'
+                    onClick={() => window.open(app === 'mt5_web' ? webtraderUrl : content.link)}
                     size='sm'
-                    variant='secondary'
+                    variant='outlined'
                 >
                     {content.text}
                 </Button>
             )}
-            {platform !== mt5Platform && app !== ctraderPlatform && (
+            {platform === ctraderPlatform && app !== DesktopLinks.CTRADER_WEB && (
                 <Button
-                    className='flex items-center justify-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-8 gap-8'
-                    colorStyle='white'
+                    className='px-16 border-opacity-black-8 rounded-xs'
+                    color='black'
+                    onClick={() => window.open(content.link)}
+                    size='sm'
+                    variant='outlined'
+                >
+                    {content.text}
+                </Button>
+            )}
+            {platform === ctraderPlatform && app === DesktopLinks.CTRADER_WEB && (
+                <Button
+                    className='flex items-center justify-center gap-8 p-8 border-none rounded-md cursor-pointer bg-system-dark-primary-background'
+                    color='white'
                     onClick={onClickWebTerminal}
-                    variant='secondary'
+                    variant='outlined'
+                >
+                    <span className='flex items-center justify-center gap-8'>
+                        {PlatformToLabelIconMapper[platform ?? ctraderPlatform]}
+                        <Text className='text-system-light-primary-background' size='sm' weight='bold'>
+                            Web terminal
+                        </Text>
+                    </span>
+                </Button>
+            )}
+            {platform === dxtradePlatform && (
+                <Button
+                    className='flex items-center justify-center gap-8 p-8 border-none rounded-md cursor-pointer bg-system-dark-primary-background'
+                    color='white'
+                    onClick={onClickWebTerminal}
+                    variant='outlined'
                 >
                     <span className='flex items-center justify-center gap-8'>
                         {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}

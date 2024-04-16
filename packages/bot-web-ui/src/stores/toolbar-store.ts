@@ -1,5 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 import { config, load, runGroupedEvents } from '@deriv/bot-skeleton';
+import RootStore from './root-store';
 
 interface IToolbarStore {
     is_animation_info_modal_open: boolean;
@@ -19,11 +20,10 @@ interface IToolbarStore {
     setHasRedoStack: () => void;
 }
 
-const Blockly = window.Blockly;
 export default class ToolbarStore implements IToolbarStore {
-    root_store: any;
+    root_store: RootStore;
 
-    constructor(root_store: any) {
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             is_animation_info_modal_open: observable,
             is_dialog_open: observable,
@@ -63,6 +63,7 @@ export default class ToolbarStore implements IToolbarStore {
     };
 
     onResetOkButtonClick = (): void => {
+        this.setResetButtonState(true);
         runGroupedEvents(
             false,
             () => {
@@ -71,16 +72,11 @@ export default class ToolbarStore implements IToolbarStore {
             'reset'
         );
         this.is_dialog_open = false;
-        const { run_panel } = this.root_store;
-        const { is_running } = run_panel;
-        if (is_running) {
-            this.is_reset_button_clicked = true;
-        }
     };
 
     resetDefaultStrategy = async () => {
-        const workspace = Blockly.derivWorkspace;
-        workspace.current_strategy_id = Blockly.utils.genUid();
+        const workspace = window.Blockly.derivWorkspace;
+        workspace.current_strategy_id = window.Blockly.utils.genUid();
         await load({
             block_string: workspace.cached_xml.main,
             file_name: config.default_file_name,
@@ -90,26 +86,30 @@ export default class ToolbarStore implements IToolbarStore {
             from: null,
             showIncompatibleStrategyDialog: null,
         });
-        const { is_mobile = false } = this.root_store?.app?.core?.ui || {};
-        await Blockly.derivWorkspace.cleanUp(0, is_mobile ? 60 : 56);
         workspace.strategy_to_load = workspace.cached_xml.main;
+        this.setResetButtonState(false);
     };
 
     onSortClick = () => {
-        Blockly.derivWorkspace.cleanUp();
+        const {
+            workspaces: {
+                indentWorkspace: { x, y },
+            },
+        } = config;
+        window.Blockly.derivWorkspace.cleanUp(x, y);
     };
 
     onUndoClick = (is_redo: boolean): void => {
-        Blockly.Events.setGroup('undo_clicked');
-        Blockly.derivWorkspace.undo(is_redo);
-        Blockly.svgResize(Blockly.derivWorkspace); // Called for CommentDelete event.
+        window.Blockly.Events.setGroup('undo_clicked');
+        window.Blockly.derivWorkspace.undo(is_redo);
+        window.Blockly.svgResize(window.Blockly.derivWorkspace); // Called for CommentDelete event.
         this.setHasRedoStack();
         this.setHasUndoStack();
-        Blockly.Events.setGroup(false);
+        window.Blockly.Events.setGroup(false);
     };
 
     onZoomInOutClick = (is_zoom_in: boolean): void => {
-        const workspace = Blockly.derivWorkspace;
+        const workspace = window.Blockly.derivWorkspace;
         const metrics = workspace.getMetrics();
         const addition = is_zoom_in ? 1 : -1;
 
@@ -117,10 +117,10 @@ export default class ToolbarStore implements IToolbarStore {
     };
 
     setHasUndoStack = (): void => {
-        this.has_undo_stack = Blockly.derivWorkspace?.hasUndoStack();
+        this.has_undo_stack = window.Blockly.derivWorkspace?.hasUndoStack();
     };
 
     setHasRedoStack = (): void => {
-        this.has_redo_stack = Blockly.derivWorkspace?.hasRedoStack();
+        this.has_redo_stack = window.Blockly.derivWorkspace?.hasRedoStack();
     };
 }

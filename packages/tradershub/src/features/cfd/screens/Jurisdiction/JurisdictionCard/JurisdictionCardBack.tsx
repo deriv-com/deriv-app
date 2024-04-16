@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import BackArrowIcon from '@/assets/svgs/ic-back-arrow.svg';
+import { LabelPairedArrowLeftLgRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { verificationIconsMapper, verificationStatusIconsMapper } from '../constants';
 import { jurisdictionVerificationContents } from '../jurisdiction-contents/jurisdiction-verification-contents';
@@ -18,13 +18,15 @@ const JurisdictionCardBack = ({ setIsFlipped, verificationDocs }: TJurisdictionC
     if (!verificationDocs) return null;
     return (
         <div className='absolute flex flex-col h-full backface-hidden [transform:rotateY(180deg)] gap-16 pt-[15px] px-16 pb-[150px]'>
-            <BackArrowIcon
-                className='cursor-pointer'
-                onClick={e => {
-                    e.stopPropagation();
-                    setIsFlipped(false);
-                }}
-            />
+            <div>
+                <LabelPairedArrowLeftLgRegularIcon
+                    className='cursor-pointer'
+                    onClick={e => {
+                        e.stopPropagation();
+                        setIsFlipped(false);
+                    }}
+                />
+            </div>
             <Text size='sm'>{verificationContents.shortDescription}</Text>
             {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem) => {
                 return (

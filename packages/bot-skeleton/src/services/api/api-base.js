@@ -12,6 +12,7 @@ class APIBase {
     subscriptions = [];
     time_interval = null;
     has_activeSymbols = false;
+    is_stopping = false;
 
     async init(force_update = false) {
         if (getLoginId()) {
@@ -47,9 +48,9 @@ class APIBase {
         }
     }
 
-    createNewInstance(account_id) {
+    async createNewInstance(account_id) {
         if (this.account_id !== account_id) {
-            this.init(true);
+            await this.init(true);
         }
     }
 

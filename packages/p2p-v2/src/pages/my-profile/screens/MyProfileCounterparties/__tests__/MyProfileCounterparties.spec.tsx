@@ -1,7 +1,7 @@
 import React from 'react';
-import MyProfileCounterparties from '../MyProfileCounterparties';
-import { render, screen } from '@testing-library/react';
 import { useDevice } from '@/hooks';
+import { render, screen } from '@testing-library/react';
+import MyProfileCounterparties from '../MyProfileCounterparties';
 
 jest.mock('../../MyProfileCounterparties/MyProfileCounterpartiesHeader', () => ({
     MyProfileCounterpartiesHeader: () => <div>MyProfileCounterpartiesHeader</div>,
@@ -11,8 +11,8 @@ jest.mock('../../MyProfileCounterparties/MyProfileCounterpartiesTable', () => ({
     MyProfileCounterpartiesTable: () => <div>MyProfileCounterpartiesTable</div>,
 }));
 
-jest.mock('@/components/Modals/BlockUnblockUserFilterModal', () => ({
-    BlockUnblockUserFilterModal: jest.fn(() => <div>BlockUnblockUserFilterModal</div>),
+jest.mock('@/components/Modals/RadioGroupFilterModal', () => ({
+    RadioGroupFilterModal: jest.fn(() => <div>RadioGroupFilterModal</div>),
 }));
 
 jest.mock('@/hooks/useDevice', () => ({

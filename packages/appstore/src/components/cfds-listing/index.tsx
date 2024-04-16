@@ -49,12 +49,14 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { setAccountType } = cfd;
+    const { setAccountType, toggleCTraderTransferModal } = cfd;
     const {
-        is_landing_company_loaded,
-        real_account_creation_unlock_date,
         account_status,
+        ctrader_accounts_list,
+        is_landing_company_loaded,
         is_populating_mt5_account_list,
+        real_account_creation_unlock_date,
+        ctrader_total_balance,
     } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, setIsMT5VerificationFailedModal } = ui;
@@ -291,7 +293,7 @@ const CFDsListing = observer(() => {
                                   sub_title={account.name}
                                   name={`${formatMoney(
                                       existing_account.currency,
-                                      existing_account.display_balance,
+                                      is_demo ? existing_account.display_balance : ctrader_total_balance,
                                       true
                                   )} ${existing_account.currency}`}
                                   description={existing_account.display_login}
@@ -300,8 +302,7 @@ const CFDsListing = observer(() => {
                                   onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                       const button_name = e?.currentTarget?.name;
                                       if (button_name === 'transfer-btn') {
-                                          toggleAccountTransferModal();
-                                          setSelectedAccount(existing_account);
+                                          toggleCTraderTransferModal();
                                       } else if (button_name === 'topup-btn') {
                                           showTopUpModal(existing_account);
                                           setAppstorePlatform(account.platform);

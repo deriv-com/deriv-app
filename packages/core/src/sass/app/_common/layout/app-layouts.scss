@@ -201,6 +201,8 @@
 }
 
 /** @define advanced-simple-toggle */
+
+/*rtl:begin:ignore*/
 .advanced-simple-toggle {
     display: flex;
     justify-content: center;
@@ -234,6 +236,7 @@
         outline: none;
     }
 }
+/*rtl:end:ignore*/
 
 @mixin contract_type_icon_wrapper {
     width: 2.4em;

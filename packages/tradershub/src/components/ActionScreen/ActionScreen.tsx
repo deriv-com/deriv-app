@@ -1,5 +1,5 @@
 import React, { ComponentProps, isValidElement, ReactNode } from 'react';
-import { qtMerge } from '@deriv/quill-design';
+import { twMerge } from 'tailwind-merge';
 import { Text } from '@deriv-com/ui';
 
 type TActionScreenProps = {
@@ -30,10 +30,7 @@ const ActionScreen = ({
 }: TActionScreenProps) => {
     return (
         <div
-            className={qtMerge([
-                'flex flex-col items-center justify-center gap-24  w-auto h-auto rounded-xs',
-                className,
-            ])}
+            className={twMerge('flex flex-col items-center justify-center gap-24 w-auto h-auto rounded-xs', className)}
         >
             {icon}
             <div className='flex flex-col items-center justify-center gap-8'>

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { addComma, getDisplayStatus, isCryptocurrency } from '@deriv/shared';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -27,18 +28,31 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
     const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit }: TContractInfo =
         contract_info;
     const contract_value = is_sold ? sell_price : bid_price;
-    const { CONTRACT_VALUE, ENTRY_SPOT, PURCHASE_PRICE, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
+    const { CONTRACT_VALUE, ENTRY_SPOT, STAKE, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
 
     return (
         <React.Fragment>
             <DesktopWrapper>
                 <div className='dc-contract-card-items-wrapper'>
-                    <ContractCardItem header={PURCHASE_PRICE}>
+                    <ContractCardItem header={STAKE}>
                         <Money amount={buy_price} currency={currency} />
                     </ContractCardItem>
 
-                    <ContractCardItem header={CONTRACT_VALUE}>
-                        <Money amount={contract_value} currency={currency} />
+                    <ContractCardItem className='dc-contract-card-item__contract-value' header={CONTRACT_VALUE}>
+                        <div
+                            className={classNames({
+                                'dc-contract-card--profit': Number(profit) > 0,
+                                'dc-contract-card--loss': Number(profit) < 0,
+                            })}
+                        >
+                            <Money amount={contract_value} currency={currency} />
+                        </div>
+                        {!is_sold && (
+                            <ArrowIndicator
+                                className='dc-contract-card__indicative--movement'
+                                value={sell_price || contract_value}
+                            />
+                        )}
                     </ContractCardItem>
 
                     <ContractCardItem header={ENTRY_SPOT}>
@@ -61,7 +75,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
             <MobileWrapper>
                 <div className='dc-contract-card-items-wrapper--mobile'>
                     <div className='dc-contract-card-items-wrapper-group'>
-                        <ContractCardItem header={PURCHASE_PRICE}>
+                        <ContractCardItem header={STAKE}>
                             <Money amount={buy_price} currency={currency} />
                         </ContractCardItem>
 
@@ -72,7 +86,20 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
 
                     <div className='dc-contract-card-items-wrapper-group'>
                         <ContractCardItem header={CONTRACT_VALUE}>
-                            <Money amount={contract_value} currency={currency} />
+                            <div
+                                className={classNames({
+                                    'dc-contract-card--profit': Number(profit) > 0,
+                                    'dc-contract-card--loss': Number(profit) < 0,
+                                })}
+                            >
+                                <Money amount={contract_value} currency={currency} />
+                            </div>
+                            {!is_sold && (
+                                <ArrowIndicator
+                                    className='dc-contract-card__indicative--movement'
+                                    value={sell_price || contract_value}
+                                />
+                            )}
                         </ContractCardItem>
 
                         <ContractCardItem header={STRIKE}>{barrier && addComma(barrier)}</ContractCardItem>

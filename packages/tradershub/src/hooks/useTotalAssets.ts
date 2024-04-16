@@ -1,6 +1,6 @@
-import { useActiveTradingAccount, useAuthorize } from '@deriv/api';
-import { Helpers } from '@deriv/library';
-import { useUIContext } from '../components';
+import { displayMoney } from '@/helpers';
+import { useUIContext } from '@/providers';
+import { useActiveTradingAccount, useAuthorize } from '@deriv/api-v2';
 import useCFDAssets from './useCFDAssets';
 import usePlatformAssets from './usePlatformAssets';
 
@@ -11,7 +11,6 @@ import usePlatformAssets from './usePlatformAssets';
 const useTotalAssets = () => {
     const { uiState } = useUIContext();
     const { regulation } = uiState;
-    const { displayMoney } = Helpers;
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { data: authorizeData, isSuccess: isAuthorizeSuccess } = useAuthorize();
     const {

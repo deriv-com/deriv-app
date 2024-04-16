@@ -1,8 +1,9 @@
 import React from 'react';
+import { twMerge } from 'tailwind-merge';
+import { IconComponent } from '@/components';
 import { IconToCurrencyMapper } from '@/constants';
-import { useRegulationFlags } from '@/hooks';
-import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { qtMerge } from '@deriv/quill-design';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
+import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 
 const TradingAccountsList = () => {
@@ -10,6 +11,12 @@ const TradingAccountsList = () => {
     const { data: activeAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
     const { isEU } = useRegulationFlags();
+    const { closeModal } = useQueryParams();
+
+    const handleSwitchAccount = (loginid: string) => {
+        switchAccount(loginid);
+        closeModal();
+    };
 
     return (
         <div className='lg:w-[500px] lg:h-[350px] rounded-default'>
@@ -22,14 +29,14 @@ const TradingAccountsList = () => {
                         const iconCurrency = account.currency ?? 'USD';
                         return (
                             <button
-                                className={qtMerge(
+                                className={twMerge(
                                     'flex items-center self-stretch py-8 px-16 gap-16 rounded-xs cursor-pointer hover:bg-system-light-active-background',
                                     activeAccount?.loginid === account.loginid && 'bg-system-light-active-background'
                                 )}
                                 key={`trading-accounts-list-${account.loginid}`}
-                                onClick={() => switchAccount(account.loginid)}
+                                onClick={() => handleSwitchAccount(account.loginid)}
                             >
-                                {IconToCurrencyMapper[iconCurrency].icon}
+                                <IconComponent height={35} icon={iconCurrency} width={35} />
                                 <div className='flex flex-col items-start flex-1'>
                                     <Text size='sm'>{IconToCurrencyMapper[iconCurrency].text}</Text>
                                     <Text size='sm'>{account.loginid}</Text>

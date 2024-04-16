@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDevice } from '@/hooks';
-import { useExchangeRateSubscription } from '@deriv/api';
+import { useExchangeRateSubscription } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MyAdsTableRow from '../MyAdsTableRow';
@@ -70,15 +70,18 @@ const mockProps = {
     visibility_status: [],
 };
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useExchangeRateSubscription: jest.fn(),
 }));
 
-jest.mock('@/hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        isMobile: false,
-    })),
+jest.mock('@/hooks', () => ({
+    ...jest.requireActual('@/hooks'),
+    useFloatingRate: () => ({ rateType: 'fixed' }),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isMobile: false }),
 }));
 
 const mockUseExchangeRate = useExchangeRateSubscription as jest.Mock;
@@ -107,17 +110,28 @@ describe('MyAdsTableRow', () => {
         expect(screen.getByText('Bank Transfer')).toBeInTheDocument();
         expect(screen.getByText('Active')).toBeInTheDocument();
     });
-    it('should open the popover dropdown on clicking on menu in mobile view', async () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+    it('should open the popover dropdown on clicking on menu', async () => {
         render(<MyAdsTableRow {...mockProps} />);
-        const button = screen.getByTestId('dt_p2p_v2_actions_menu');
+        const button = screen.getByTestId('dt_p2p_v2_popover_dropdown_icon');
         userEvent.click(button);
         await waitFor(() => {
             expect(screen.getByText('Edit')).toBeInTheDocument();
             expect(screen.getByText('Deactivate')).toBeInTheDocument();
             expect(screen.getByText('Delete')).toBeInTheDocument();
-            expect(screen.getByText('Duplicate')).toBeInTheDocument();
+            expect(screen.getByText('Copy')).toBeInTheDocument();
         });
     });
-    //TODO: add test for onclick actions once the component is updated.
+    it('should handle onClick for each menu item', async () => {
+        render(<MyAdsTableRow {...mockProps} />);
+        const button = screen.getByTestId('dt_p2p_v2_popover_dropdown_icon');
+        userEvent.click(button);
+        await waitFor(() => {
+            const edit = screen.getByText('Edit');
+            expect(edit).toBeInTheDocument();
+            userEvent.click(edit);
+        });
+        await waitFor(() => {
+            expect(mockProps.onClickIcon).toHaveBeenCalledWith('138', 'edit');
+        });
+    });
 });

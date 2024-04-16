@@ -1,4 +1,4 @@
-import { useActiveWalletAccount, usePOI } from '@deriv/api';
+import { useActiveWalletAccount, usePOI } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import useTransferMessages from '../useTransferMessages';
 import {
@@ -7,7 +7,7 @@ import {
     lifetimeAccountLimitsBetweenWalletsMessageFn,
 } from '../utils';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({ data: { mockWallets } })),
     useAuthorize: jest.fn(() => ({ data: { preferred_language: 'en' } })),
     usePOI: jest.fn(() => ({ data: { is_verified: true } })),

@@ -44,13 +44,13 @@
             &--trader {
                 grid-template-columns: 1.2fr 1fr;
 
-                &--accumulator,
-                &--turbos {
+                &--accumulator {
                     display: flex;
                     grid-gap: 1px;
-                    &-sold {
-                        padding-top: 1rem;
-                    }
+                }
+
+                &--sold {
+                    padding-top: 1rem;
                 }
             }
             &--mobile {
@@ -232,6 +232,7 @@
         }
     }
     &__symbol {
+        /*rtl:ignore*/
         margin-left: 0.4rem;
         &--smarttrader-contract {
             width: 7rem;
@@ -313,7 +314,8 @@
             }
         }
     }
-    &--turbos {
+    &--turbos,
+    &--lookbacks {
         .dc-contract-card {
             &-item {
                 &__body {
@@ -392,7 +394,7 @@
     }
     &-item {
         &__header {
-            max-width: calc(100% - 2.4rem);
+            max-width: calc(100% - 2rem);
             line-height: 1.4;
             @include mobile {
                 max-width: unset;
@@ -455,6 +457,22 @@
                 line-height: 2rem;
             }
         }
+        &__payout-limit {
+            padding: 0.8rem 0 0;
+            border-top: 1px solid var(--general-section-1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .dc-contract-card-item__body {
+                align-self: center;
+            }
+        }
+        &__footer {
+            .lookbacks--note {
+                margin-top: 0.4rem;
+            }
+        }
     }
     &__sell-button {
         display: flex;
@@ -484,6 +502,7 @@
             grid-template-columns: 1fr 1fr;
 
             .dc-btn--cancel {
+                /*rtl:ignore*/
                 margin-left: 0.8rem;
                 max-width: 10.5rem;
             }
@@ -619,12 +638,20 @@
     &__type-label {
         width: 3.8em;
         line-height: 1.5;
+        /*rtl:ignore*/
         text-align: left;
 
-        &--smarttrader-contract {
+        &--smarttrader-contract,
+        &--multipliers {
             width: 7rem;
             @include mobile {
                 width: 9rem;
+            }
+        }
+        &--lookbacks-contract {
+            width: 5rem;
+            @include mobile {
+                width: initial;
             }
         }
 

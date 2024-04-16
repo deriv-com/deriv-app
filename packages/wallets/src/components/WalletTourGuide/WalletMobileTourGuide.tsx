@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from '@deriv/react-joyride';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { useTabs } from '../WalletsPrimaryTabs/WalletsPrimaryTabs';
 import {
     getFiatWalletLoginId,
@@ -26,13 +27,15 @@ const WalletMobileTourGuide = ({
     isOptionsAndMultipliersLoaded = true,
     isWalletSettled = true,
 }: TProps) => {
+    const switchWalletAccount = useWalletAccountSwitcher();
+
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
     const { isMobile } = useDevice();
     const { activeTabIndex, setActiveTabIndex } = useTabs();
     const [onboardingStep, setOnboardingStep] = useState(0);
     const [run, setRun] = useState(true);
 
-    const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
+    const { isFetching, isLoading, isSuccess } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAllWalletAccounts();
@@ -83,8 +86,9 @@ const WalletMobileTourGuide = ({
     useEffect(() => {
         const switchToFiatWallet = () => {
             if (fiatWalletLoginId && fiatWalletLoginId !== activeWalletLoginId) {
-                switchAccount(fiatWalletLoginId);
-                setRun(false);
+                switchWalletAccount(fiatWalletLoginId).then(() => {
+                    setRun(false);
+                });
             }
         };
 
@@ -92,7 +96,7 @@ const WalletMobileTourGuide = ({
         if (needToStart) {
             switchToFiatWallet();
         }
-    }, [activeWalletLoginId, fiatWalletLoginId, switchAccount, walletsOnboarding]);
+    }, [activeWalletLoginId, fiatWalletLoginId, switchWalletAccount, walletsOnboarding]);
 
     // for isMT5PlatformListLoaded
     useEffect(() => {

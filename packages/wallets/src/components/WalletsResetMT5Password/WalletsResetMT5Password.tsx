@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
-import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api';
+import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
-import { validPassword } from '../../utils/password';
+import { validPassword } from '../../utils/password-validation';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
@@ -66,7 +66,8 @@ const WalletsResetMT5Password = ({
         } else if (isChangePasswordError) {
             hide();
         }
-    }, [hide, platform, title, show, actionParams, isChangePasswordSuccess, isChangePasswordError]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [platform, title, actionParams, isChangePasswordSuccess, isChangePasswordError]);
 
     useEffect(() => {
         if (isChangeInvestorPasswordSuccess) {
@@ -75,7 +76,8 @@ const WalletsResetMT5Password = ({
         } else if (isChangeInvestorPasswordError) {
             hide();
         }
-    }, [hide, platform, title, show, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
     const renderFooter = () => {
         return isMobile ? (

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { Divider, WalletText } from '../../../../components/Base';
 import Warning from '../../../../public/images/warning.svg';

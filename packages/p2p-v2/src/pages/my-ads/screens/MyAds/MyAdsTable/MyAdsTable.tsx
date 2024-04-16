@@ -1,15 +1,18 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { THooks } from 'types';
 import { Table } from '@/components';
-import { useDevice } from '@/hooks';
-import { p2p } from '@deriv/api';
-import { Button, Loader } from '@deriv-com/ui';
+import { MyAdsDeleteModal } from '@/components/Modals';
+import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
+import { AD_ACTION, MY_ADS_URL } from '@/constants';
+import { p2p } from '@deriv/api-v2';
+import { Loader } from '@deriv-com/ui';
+import { MyAdsEmpty } from '../../MyAdsEmpty';
 import MyAdsTableRowView from '../MyAdsTableRow/MyAdsTableRowView';
-import { MyAdsToggle } from '../MyAdsToggle';
+import MyAdsDisplayWrapper from './MyAdsDisplayWrapper';
 import './MyAdsTable.scss';
 
-export type TMyAdsTableRowRendererProps = Required<
-    NonNullable<ReturnType<typeof p2p.advertiserAdverts.useGet>['data']>[0]
-> & {
+export type TMyAdsTableRowRendererProps = Required<THooks.AdvertiserAdverts.Get>[0] & {
     balanceAvailable: number;
     dailyBuyLimit: string;
     dailySellLimit: string;
@@ -31,7 +34,7 @@ const columns = [
         header: 'Limits',
     },
     {
-        header: 'Rate (1 BTC)',
+        header: 'Rate (1 USD)',
     },
     {
         header: 'Available amount',
@@ -49,20 +52,48 @@ const MyAdsTable = () => {
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
     const { mutate } = p2p.advert.useUpdate();
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
-    const { isDesktop } = useDevice();
+    const { error, isSuccess, mutate: deleteAd } = p2p.advert.useDelete();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [advertId, setAdvertId] = useState('');
+    const [isShareAdsModalOpen, setIsShareAdsModalOpen] = useState(false);
+    const history = useHistory();
+
+    useEffect(() => {
+        if (isSuccess) {
+            setAdvertId('');
+        }
+        if (error?.error?.message) {
+            setIsModalOpen(true);
+        }
+    }, [error?.error?.message, isSuccess]);
 
     if (isLoading) return <Loader />;
 
+    if (!data.length) return <MyAdsEmpty />;
+
     const onClickIcon = (id: string, action: string) => {
-        //TODO: to implement the onclick actions
+        //TODO: to implement the onclick actions for share and edit.
         switch (action) {
-            case 'activate':
+            case AD_ACTION.ACTIVATE:
                 mutate({ id, is_active: 1 });
                 break;
-            case 'deactivate':
+            case AD_ACTION.DEACTIVATE:
                 mutate({ id, is_active: 0 });
                 break;
-            case 'edit':
+            case AD_ACTION.DELETE: {
+                setAdvertId(id);
+                setIsModalOpen(true);
+                break;
+            }
+            case AD_ACTION.SHARE: {
+                setAdvertId(id);
+                setIsShareAdsModalOpen(true);
+                break;
+            }
+            case AD_ACTION.EDIT: {
+                history.push(`${MY_ADS_URL}/adForm?formAction=edit&advertId=${id}`);
+                break;
+            }
             default:
                 break;
         }
@@ -70,19 +101,22 @@ const MyAdsTable = () => {
 
     const onClickToggle = () => updateAds({ is_listed: advertiserInfo?.is_listed ? 0 : 1 });
 
+    const onRequestClose = () => {
+        if (isModalOpen) {
+            setIsModalOpen(false);
+        }
+    };
+
+    const onClickDelete = () => {
+        deleteAd({ id: advertId });
+        onRequestClose();
+    };
+
     return (
-        <>
-            <div className='p2p-v2-my-ads-table__header'>
-                {isDesktop && (
-                    <Button size='lg' textSize='sm'>
-                        Create new ad
-                    </Button>
-                )}
-                <MyAdsToggle
-                    isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
-                    onClickToggle={onClickToggle}
-                />
-            </div>
+        <MyAdsDisplayWrapper
+            isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
+            onClickToggle={onClickToggle}
+        >
             <div className='p2p-v2-my-ads-table__list'>
                 <Table
                     columns={columns}
@@ -104,7 +138,26 @@ const MyAdsTable = () => {
                     tableClassname=''
                 />
             </div>
-        </>
+            {(isModalOpen || error?.error?.message) && (
+                <MyAdsDeleteModal
+                    error={error?.error?.message}
+                    id={advertId}
+                    isModalOpen={isModalOpen || !!error?.error?.message}
+                    onClickDelete={onClickDelete}
+                    onRequestClose={onRequestClose}
+                />
+            )}
+            {isShareAdsModalOpen && (
+                <ShareAdsModal
+                    id={advertId}
+                    isModalOpen={isShareAdsModalOpen}
+                    onRequestClose={() => {
+                        setIsShareAdsModalOpen(false);
+                        setAdvertId('');
+                    }}
+                />
+            )}
+        </MyAdsDisplayWrapper>
     );
 };
 

@@ -1,6 +1,13 @@
 import React from 'react';
 import { usePrevious } from '@deriv/components';
-import { getDurationPeriod, getDurationUnitText, getEndTime, getPlatformRedirect, isDesktop } from '@deriv/shared';
+import {
+    getDurationPeriod,
+    getDurationUnitText,
+    getEndTime,
+    getPlatformRedirect,
+    isDesktop,
+    hasContractStarted,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';
@@ -23,13 +30,14 @@ const ReplayChart = observer(
         const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
         const { contract_config, is_digit_contract, barriers_array, getContractsArray, markers_array, contract_info } =
             contract_store;
-        const { underlying: symbol, audit_details } = contract_info;
+        const { underlying: symbol, audit_details, barrier_count } = contract_info;
         const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
         const { app_routing_history, current_language, is_socket_opened } = common;
         const { is_chart_layout_default, is_chart_countdown_visible, is_mobile } = ui;
         const { end_epoch, chart_type, start_epoch, granularity } = contract_config || {};
         const is_dark_theme = is_dark_theme_prop || ui.is_dark_mode_on;
-
+        const is_sold_before_started =
+            !!contract_info?.is_forward_starting && !hasContractStarted(contract_info) && !!contract_info.is_sold;
         /**
          * TODO: remove forcing light theme once DBot supports dark theme
          * DBot does not support for dark theme since till now,
@@ -91,7 +99,7 @@ const ReplayChart = observer(
                 maxTick={is_mobile ? 8 : undefined}
                 requestSubscribe={wsSubscribe}
                 settings={settings}
-                startEpoch={start_epoch}
+                startEpoch={is_sold_before_started ? contract_info.purchase_time : start_epoch}
                 scrollToEpoch={scroll_to_epoch}
                 stateChangeListener={chartStateChange}
                 symbol={symbol}
@@ -116,8 +124,13 @@ const ReplayChart = observer(
                 isLive={!has_ended}
                 startWithDataFitMode={true}
             >
-                {markers_array.map(({ content_config, marker_config, react_key }) => (
-                    <ChartMarker key={react_key} marker_config={marker_config} marker_content_props={content_config} />
+                {markers_array.map(({ content_config, marker_config, react_key, type }) => (
+                    <ChartMarker
+                        key={react_key}
+                        marker_config={marker_config}
+                        marker_content_props={content_config}
+                        is_positioned_before={(type === 'SPOT_ENTRY' || type === 'SPOT_EXIT') && barrier_count === 2}
+                    />
                 ))}
                 {is_reset_contract && contract_info?.reset_time && (
                     <ResetContractChartElements contract_info={contract_info} />

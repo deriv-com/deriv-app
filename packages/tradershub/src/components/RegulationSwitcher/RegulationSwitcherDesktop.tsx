@@ -1,14 +1,12 @@
 import React from 'react';
-import { useUIContext } from '@/components';
-import { useRegulationSwitcher } from '@/hooks';
-import { RegulationModal } from '@/modals';
-import { Provider } from '@deriv/library';
+import { useQueryParams, useRegulationSwitcher } from '@/hooks';
+import { useUIContext } from '@/providers';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import { Tab, Tabs, Text } from '@deriv-com/ui';
 
 const RegulationSwitcherDesktop = () => {
     const { uiState } = useUIContext();
-    const { show } = Provider.useModal();
+    const { openModal } = useQueryParams();
     const { buttons, handleButtonClick } = useRegulationSwitcher();
     const activeRegulation = uiState.regulation;
 
@@ -18,7 +16,7 @@ const RegulationSwitcherDesktop = () => {
                 <Text size='sm'>Regulation:</Text>
                 <LabelPairedCircleInfoMdRegularIcon
                     className='cursor-pointer'
-                    onClick={() => show(<RegulationModal />)}
+                    onClick={() => openModal('RegulationModal')}
                 />
             </div>
             <Tabs

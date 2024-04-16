@@ -2,29 +2,25 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
 import ChangePassword from '@/assets/svgs/change-password-email.svg';
 import { ActionScreen } from '@/components';
+import { useCFDContext } from '@/providers';
 import { platformPasswordResetRedirectLink } from '@/utils';
 import { PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
-import { Button, useBreakpoint } from '@deriv/quill-design';
-import { TPlatforms } from '../../types';
+import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
+import { Button, useDevice } from '@deriv-com/ui';
 
-type TSentEmailContentProps = {
-    description?: string;
-    isInvestorPassword?: boolean;
-    platform?: TPlatforms.All;
-};
-
-const SentEmailContent = ({ description, isInvestorPassword = false, platform }: TSentEmailContentProps) => {
+const SentEmailContent = () => {
+    const { cfdState } = useCFDContext();
+    const { platform, description, isInvestorPassword } = cfdState;
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const mt5Platform = PlatformDetails.mt5.platform;
     const title = PlatformDetails[platform ?? mt5Platform].title;
     const titleSize = 'md';
     const descriptionSize = 'sm';
-    const emailLinkSize = isMobile ? 'lg' : 'md';
+    const emailLinkSize = isDesktop ? 'md' : 'lg';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
         intervalMs: 1000,
@@ -43,12 +39,12 @@ const SentEmailContent = ({ description, isInvestorPassword = false, platform }:
         return (
             <Button
                 className='border-none'
-                colorStyle='coral'
+                color='primary-light'
                 onClick={() => {
                     setShouldShowResendEmailReasons(true);
                 }}
                 size={emailLinkSize}
-                variant='secondary'
+                variant='ghost'
             >
                 Didn&apos;t receive the email?
             </Button>

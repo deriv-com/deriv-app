@@ -1,13 +1,16 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../AuthProvider';
 import WalletCashierHeader from '../WalletCashierHeader';
 
 const DISPLAY_BALANCE = 'RM42';
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useActiveWalletBalance: jest.fn().mockReturnValue({
-        displayBalance: DISPLAY_BALANCE,
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useActiveWalletAccount: jest.fn().mockReturnValue({
+        data: {
+            display_balance: DISPLAY_BALANCE,
+        },
     }),
 }));
 
@@ -21,7 +24,9 @@ describe('<WalletCashierHeader/>', () => {
     it('renders', () => {
         render(
             <APIProvider>
-                <WalletCashierHeader hideWalletDetails={false} />
+                <WalletsAuthProvider>
+                    <WalletCashierHeader hideWalletDetails={false} />
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -32,7 +37,9 @@ describe('<WalletCashierHeader/>', () => {
     it('displays balance', () => {
         render(
             <APIProvider>
-                <WalletCashierHeader hideWalletDetails={false} />
+                <WalletsAuthProvider>
+                    <WalletCashierHeader hideWalletDetails={false} />
+                </WalletsAuthProvider>
             </APIProvider>
         );
 

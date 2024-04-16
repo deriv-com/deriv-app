@@ -5,34 +5,45 @@
     flex-direction: column;
     gap: 1.6rem;
     width: 100%;
-    padding-block: 2rem;
+    padding-block: 0.8rem;
 
     &__actions {
         display: flex;
-        justify-content: space-evenly;
+        padding-left: 2.4rem;
+        padding-right: 2.4rem;
+        gap: 3.2rem;
+        justify-content: center;
         padding-inline: 2.4rem;
 
         &-button {
             width: 4.2rem;
             height: 4.2rem;
-            border-radius: 100%;
+            border-radius: 1.2rem;
         }
     }
 
     &__card {
-        height: 11rem;
+        height: 14.6rem;
         border-radius: 0.8rem;
-        padding-right: 2.4rem;
+
+        &:first-child {
+            height: 17.6rem;
+        }
 
         &-body {
-            width: 16rem;
+            width: 24rem;
+
+            &:first-child {
+                width: 28.8rem;
+            }
         }
 
         &-container {
             display: flex;
+            align-items: center;
             gap: 1.6rem;
             overflow: hidden;
-            padding-left: 30vw;
+            transform: translateX(calc(50% - 14.4rem));
         }
     }
 

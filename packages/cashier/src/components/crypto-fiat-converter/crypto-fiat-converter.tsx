@@ -28,8 +28,8 @@ type TCryptoFiatConverterProps = {
     ) => void;
     onChangeConverterToAmount: (
         event: TReactChangeEvent,
-        from_currency: string,
         to_currency: string,
+        from_currency: string,
         converted_amount?: number
     ) => void;
     resetConverter: VoidFunction;
@@ -88,7 +88,7 @@ const CryptoFiatConverter = observer(
                                 setArrowIconDirection('right');
                             }}
                             onChange={(e: TReactChangeEvent) => {
-                                const rate = exchange_rates?.[from_currency]?.[to_currency] ?? 1;
+                                const rate = exchange_rates?.[from_currency]?.[to_currency] ?? 0;
                                 const converted_amount = Number(e.target.value) * rate;
                                 onChangeConverterFromAmount(e, from_currency, to_currency, converted_amount);
                                 handleChange(e);
@@ -128,7 +128,7 @@ const CryptoFiatConverter = observer(
                                     setArrowIconDirection('left');
                                 }}
                                 onChange={(e: TReactChangeEvent) => {
-                                    const rate = exchange_rates?.[to_currency]?.[from_currency] ?? 1;
+                                    const rate = exchange_rates?.[to_currency]?.[from_currency] ?? 0;
                                     const converted_amount = Number(e.target.value) * rate;
                                     onChangeConverterToAmount(e, to_currency, from_currency, converted_amount);
                                     handleChange(e);

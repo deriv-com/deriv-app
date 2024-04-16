@@ -29,6 +29,11 @@
         display: flex;
         align-items: center;
 
+        &--listcard {
+            border: unset;
+            background: transparent;
+        }
+
         .wallets-textfield__field {
             cursor: pointer;
         }
@@ -98,6 +103,16 @@
         box-shadow: 0 3.2rem 6.4rem 0 rgba(14, 14, 14, 0.14);
         overflow-y: auto;
 
+        &--listcard {
+            width: 26.9rem;
+            padding: 0 0.8rem;
+            top: 3.2rem;
+
+            & > .wallets-dropdown__item:last-child {
+                margin-bottom: 0.4rem;
+            }
+        }
+
         & > :first-child {
             border-radius: 0.4rem 0.4rem 0 0;
         }
@@ -139,5 +154,20 @@
         &--active {
             background: var(--system-light-5-active-background, #d6dadb);
         }
+
+        &--listcard {
+            height: 6.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: 0.4rem;
+        }
+    }
+
+    &__list-header {
+        padding: 1rem;
+        margin-bottom: 0.4rem;
+        border-bottom: 0.1rem solid #f2f3f4;
+        width: 100%;
     }
 }

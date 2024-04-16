@@ -1,41 +1,41 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import { Modal } from '@/components';
-import { THooks, TMarketTypes, TPlatforms } from '@/types';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
+import { THooks } from '@/types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '@cfd/constants';
 import { TradeScreen } from '@cfd/screens';
-import { Provider } from '@deriv/library';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui';
+import { Modal, Text, useDevice } from '@deriv-com/ui';
 
-type TTradeModalProps = {
-    account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
-    marketType?: TMarketTypes.All;
-    platform: TPlatforms.All;
-};
+const TradeModal = () => {
+    const { isDesktop } = useDevice();
+    const { setCfdState, cfdState } = useCFDContext();
+    const { isModalOpen, closeModal } = useQueryParams();
 
-const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
-    const { isDesktop } = useBreakpoint();
-    const { setCfdState } = Provider.useCFDContext();
+    const { account, marketType, platform = CFDPlatforms.MT5 } = cfdState;
 
     useEffect(() => {
-        setCfdState('marketType', marketType);
-        setCfdState('platform', platform);
-        if (platform === CFDPlatforms.MT5) setCfdState('accountId', (account as THooks.MT5AccountsList)?.loginid);
+        setCfdState({
+            marketType,
+            platform,
+        });
+        if (platform === CFDPlatforms.MT5) setCfdState({ accountId: (account as THooks.MT5AccountsList)?.loginid });
     }, [account, marketType, platform, setCfdState]);
 
     const appOrder = ['ios', 'android', 'huawei'];
 
     return (
-        <Modal>
-            <Modal.Header title='Trade' />
-            <Modal.Content>
+        <Modal ariaHideApp={false} isOpen={isModalOpen('TradeModal')} onRequestClose={closeModal}>
+            <Modal.Header onRequestClose={closeModal}>
+                <Text weight='bold'>Trade</Text>
+            </Modal.Header>
+            <Modal.Body className='w-auto h-auto'>
                 <TradeScreen account={account} />
-            </Modal.Content>
-            <Modal.Footer align='center'>
+            </Modal.Body>
+            <Modal.Footer>
                 <div className='pt-0 min-h-[190px] flex justify-center items-center flex-col h-fit w-full gap-16'>
                     <Text align='center' size='xs' weight='bold'>
-                        Download {PlatformDetails[platform].title} on your phone to trade with the{' '}
+                        Download {PlatformDetails[platform]?.title} on your phone to trade with the{' '}
                         {PlatformDetails[platform].title} account
                     </Text>
                     <div className='flex gap-16'>

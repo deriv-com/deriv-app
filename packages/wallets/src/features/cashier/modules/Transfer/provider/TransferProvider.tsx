@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useAccountLimits, useAuthorize, useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api';
+import { useAccountLimits, useAuthorize, useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api-v2';
 import type { THooks } from '../../../../../types';
 import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from '../hooks';
 import type { TInitialTransferFormValues } from '../types';

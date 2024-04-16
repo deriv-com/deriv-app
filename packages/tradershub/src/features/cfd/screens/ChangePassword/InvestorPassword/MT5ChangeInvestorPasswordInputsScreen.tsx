@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
 import { Formik } from 'formik';
-import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
-import { Provider } from '@deriv/library';
-import { TextField, useBreakpoint } from '@deriv/quill-design';
-import { Button, Text } from '@deriv-com/ui';
+import { useCFDContext } from '@/providers';
+import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
+import { Button, Input, Text, useDevice } from '@deriv-com/ui';
 import { ActionScreen } from '../../../../../components';
 import { validPassword } from '../../../../../utils/password';
 import { CFDPlatforms } from '../../../constants';
@@ -22,9 +21,10 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
     sendEmail,
     setNextScreen,
 }: TMT5ChangeInvestorPasswordInputsScreen) => {
-    const { isMobile } = useBreakpoint();
-    const { getCFDState } = Provider.useCFDContext();
-    const mt5AccountId = getCFDState('accountId') ?? '';
+    const { isDesktop } = useDevice();
+    const { cfdState } = useCFDContext();
+    const { accountId } = cfdState;
+    const mt5AccountId = accountId ?? '';
 
     const {
         error: changeInvestorPasswordError,
@@ -69,7 +69,7 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                 {({ handleChange, handleSubmit, values }) => (
                     <form className='flex flex-col content-center gap-24' onSubmit={handleSubmit}>
                         <div className='flex flex-col content-center gap-16 w-[328px]'>
-                            <TextField
+                            <Input
                                 autoComplete='current-password'
                                 className='h-40 border-solid text-default rounded-xs border-1 border-system-light-active-background'
                                 label='Current investor password'
@@ -77,7 +77,7 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                                 onChange={handleChange}
                                 value={values.currentPassword}
                             />
-                            <TextField
+                            <Input
                                 autoComplete='new-password'
                                 className='h-40 border-solid text-default rounded-xs border-xs border-system-light-active-background'
                                 label='New investor password'
@@ -90,11 +90,11 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                             <Button
                                 disabled={!validPassword(values.currentPassword) || !validPassword(values.newPassword)}
                                 isLoading={changeInvestorPasswordStatus === 'loading'}
-                                size={isMobile ? 'lg' : 'md'}
+                                size={isDesktop ? 'md' : 'lg'}
                             >
                                 Change investor password
                             </Button>
-                            <Button className='border-none' onClick={sendEmail} size={isMobile ? 'lg' : 'md'}>
+                            <Button className='border-none' onClick={sendEmail} size={isDesktop ? 'md' : 'lg'}>
                                 Create or reset investor password
                             </Button>
                         </div>

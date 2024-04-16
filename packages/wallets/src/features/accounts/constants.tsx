@@ -1,9 +1,9 @@
+import Ic12MonthsIssuedDocument from '../../public/images/accounts/ic-12-months-expiry.svg';
 import IcBlurryDocument from '../../public/images/accounts/ic-blurry-document.svg';
 import IcCroppedDocument from '../../public/images/accounts/ic-cropped-document.svg';
 import IcDocumentAddressMismatch from '../../public/images/accounts/ic-document-address-mismatch.svg';
 import IcDocumentNameMismatch from '../../public/images/accounts/ic-document-name-mismatch.svg';
 import IcEnvelope from '../../public/images/accounts/ic-envelop.svg';
-import IcOldIssuedDocument from '../../public/images/accounts/ic-old-issued-document.svg';
 import i18n from '../../translations/i18n';
 import { THooks } from '../../types';
 
@@ -24,8 +24,8 @@ export const getExampleImagesConfig = (): TExampleImageConfig[] => [
         image: IcDocumentAddressMismatch,
     },
     {
-        description: i18n.t('Document issued more than 6-months ago.'),
-        image: IcOldIssuedDocument,
+        description: i18n.t('Document issued more than 12-months ago.'),
+        image: Ic12MonthsIssuedDocument,
     },
     {
         description: i18n.t('Blurry document. All information must be clear and visible.'),

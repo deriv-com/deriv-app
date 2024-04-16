@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { DesktopWrapper, Loading, Text } from '@deriv/components';
-import { isEmptyObject, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import Verification from 'Components/verification';
@@ -33,7 +33,7 @@ const MyProfile = () => {
     }, []);
 
     React.useEffect(() => {
-        if (is_poi_poa_verified && !general_store.is_advertiser) {
+        if (is_poi_poa_verified && !general_store.is_advertiser && !general_store.is_loading) {
             showModal({
                 key: 'NicknameModal',
                 props: {
@@ -43,13 +43,9 @@ const MyProfile = () => {
                 },
             });
         }
-    }, [is_poi_poa_verified]);
+    }, [is_poi_poa_verified, general_store.is_advertiser, general_store.is_loading]);
 
-    if (
-        isEmptyObject(general_store.advertiser_info) &&
-        !general_store.poi_status &&
-        !general_store.should_show_dp2p_blocked
-    ) {
+    if (general_store.is_p2p_user === null) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -63,7 +59,7 @@ const MyProfile = () => {
         );
     }
 
-    if (general_store.is_advertiser || is_poi_poa_verified) {
+    if (general_store.is_advertiser || is_poi_poa_verified || general_store.is_p2p_user) {
         return (
             <div className='my-profile'>
                 <div className='my-profile__content'>

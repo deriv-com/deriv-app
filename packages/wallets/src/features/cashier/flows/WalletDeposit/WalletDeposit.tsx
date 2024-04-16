@@ -1,16 +1,16 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
-import { DepositCryptoModule, DepositFiatModule } from '../../modules';
+import { useActiveWalletAccount } from '@deriv/api-v2';
+import { CashierLocked, DepositCryptoModule, DepositFiatModule, DepositLocked } from '../../modules';
 
 const WalletDeposit = () => {
     const { data } = useActiveWalletAccount();
     const isCrypto = data?.currency_config?.is_crypto;
 
-    if (isCrypto) {
-        return <DepositCryptoModule />;
-    }
-
-    return <DepositFiatModule />;
+    return (
+        <CashierLocked module='deposit'>
+            <DepositLocked>{isCrypto ? <DepositCryptoModule /> : <DepositFiatModule />}</DepositLocked>
+        </CashierLocked>
+    );
 };
 
 export default WalletDeposit;

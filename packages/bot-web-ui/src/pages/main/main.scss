@@ -1,5 +1,12 @@
 @import '../../styles/mixins.scss';
 
+.run-panel {
+    // fix for the RTL issue on tab active line
+    .dc-tabs__active-line {
+        right: auto;
+    }
+}
+
 .main {
     display: flex;
     overflow: hidden;
@@ -126,11 +133,11 @@
                 svg {
                     width: 1.6rem;
                     height: 1.6rem;
-                    padding-right: 0;
-                    margin-right: 0.8rem;
+                    padding-inline-end: 0;
+                    margin-inline-end: 0.8rem;
 
                     @include mobile {
-                        margin-right: 0.2rem;
+                        margin-inline-end: 0.2rem;
                         // gave this -ve margin becaues we cannot
                         // overwrite the default core padding which
                         // will make the icon bigger
@@ -146,7 +153,7 @@
             position: absolute;
         }
 
-        right: 1.6rem;
+        inset-inline-end: 1.6rem;
         top: 1.6rem;
         z-index: 2;
 
@@ -246,11 +253,10 @@
             width: 40rem;
         }
     }
-
     &__toolbox {
         position: absolute;
         top: 0;
-        left: 0;
+        inset-inline-start: 0;
         width: 23.6rem;
         padding: 0.8rem;
         background: var(--general-main-1);
@@ -265,7 +271,7 @@
 
                 &__chevron {
                     position: absolute;
-                    right: 0;
+                    inset-inline-end: 0;
                     top: 0.3rem;
                     transition: transform 0.3s ease;
 
@@ -299,12 +305,42 @@
             }
         }
     }
+    &__run-strategy-wrapper {
+        @include desktop {
+            position: absolute;
+        }
+
+        inset-inline-end: 1.6rem;
+        top: 1.6rem;
+        z-index: 2;
+
+        .animation {
+            &__button {
+                background-color: var(--purchase-main-1);
+            }
+
+            &__container {
+                background-color: var(--general-main-1);
+            }
+        }
+    }
+
+    &__sidebar-wrapper {
+        &--active {
+            position: fixed;
+            inset-inline-end: 0;
+        }
+
+        &--hidden {
+            display: none;
+        }
+    }
 }
 
 .bot-builder {
     position: absolute;
     top: 6.6rem;
-    left: 1.6rem;
+    inset-inline-start: 1.6rem;
     z-index: -1;
     background: var(--general-main-1);
     height: var(--tab-content-height);
@@ -335,7 +371,7 @@
 
     @include mobile {
         top: 5.6rem;
-        left: 0;
+        inset-inline-start: 0;
         width: 100vw;
         height: var(--tab-content-height-mobile);
     }
@@ -344,6 +380,14 @@
 #react-joyride-step-6 {
     .onboard__label {
         margin-bottom: 1.6rem;
+    }
+}
+
+#react-joyride-step-4 {
+    .__floater__arrow {
+        span {
+            inset-inline-end: 0;
+        }
     }
 }
 
@@ -391,6 +435,10 @@
     &__content {
         text-align: left;
 
+        @include rtl {
+            text-align: right;
+        }
+
         p {
             font-size: 1.4rem;
         }
@@ -412,7 +460,7 @@
     }
 
     &__left {
-        text-align: left;
+        text-align: start;
 
         &__step-three {
             margin-bottom: 0.8rem;
@@ -552,7 +600,7 @@
             border-radius: 0.4rem;
             outline: none;
             cursor: pointer;
-            margin-right: 0.8rem;
+            margin-inline-end: 0.8rem;
 
             &.default {
                 background: transparent;
@@ -585,7 +633,7 @@
                 width: 50%;
                 margin-bottom: unset;
                 @include flex-center(flex-start);
-                margin-left: 1rem;
+                margin-inline-start: 1rem;
 
                 .progress-bar-circle {
                     opacity: 0.16;
@@ -609,21 +657,6 @@
     }
 }
 
-.bot-notification {
-    .dc-toast__message {
-        background: var(--text-prominent);
-        font-size: 1.2rem;
-        position: absolute;
-        top: -5rem;
-        left: 20rem;
-
-        @include mobile {
-            top: -12rem;
-            left: 10rem;
-        }
-    }
-}
-
 @keyframes blink {
     0%,
     100% {
@@ -643,25 +676,4 @@
     height: 2.5rem !important;
     width: 2.5rem !important;
     padding: 0.2rem 0;
-}
-
-.import-notification {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    right: 0;
-    bottom: 7rem;
-
-    .dc-toast {
-        width: 100%;
-
-        &__message {
-            background: var(--text-prominent);
-            color: var(--general-main-1);
-        }
-    }
-
-    @include mobile {
-        bottom: 10rem;
-    }
 }

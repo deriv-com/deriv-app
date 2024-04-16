@@ -1,5 +1,4 @@
 import { cva, VariantProps } from 'class-variance-authority';
-import { ExcludeAllNull } from '@deriv/quill-design';
 
 export const TooltipClass = cva('z-1 absolute invisible flex flex-col group-hover:visible', {
     variants: {
@@ -23,4 +22,4 @@ export const TooltipPointerClass = cva('absolute transform rotate-45 h-8 w-8 bg-
     },
 });
 
-export type TooltipProps = ExcludeAllNull<VariantProps<typeof TooltipClass>>;
+export type TooltipProps = NonNullable<VariantProps<typeof TooltipClass>>;

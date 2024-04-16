@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { FullPageMobileWrapper } from '@/components';
-import { BlockUnblockUserFilterModal } from '@/components/Modals';
+import { RadioGroupFilterModal } from '@/components/Modals';
+import { COUNTERPARTIES_DROPDOWN_LIST } from '@/constants';
 import { useDevice, useQueryString } from '@/hooks';
 import { Text } from '@deriv-com/ui';
 import { MyProfileCounterpartiesHeader } from './MyProfileCounterpartiesHeader';
@@ -14,6 +15,7 @@ const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<u
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                className='absolute top-16'
                 onBack={() =>
                     setQueryString({
                         tab: 'default',
@@ -65,8 +67,9 @@ const MyProfileCounterparties = () => {
                         setShowHeader={setShowHeader}
                     />
                 </div>
-                <BlockUnblockUserFilterModal
+                <RadioGroupFilterModal
                     isModalOpen={isFilterModalOpen}
+                    list={COUNTERPARTIES_DROPDOWN_LIST}
                     onRequestClose={() => setIsFilterModalOpen(false)}
                     onToggle={onToggle}
                     selected={dropdownValue}

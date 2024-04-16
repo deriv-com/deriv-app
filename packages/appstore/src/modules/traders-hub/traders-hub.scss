@@ -3,6 +3,10 @@
     margin: auto;
     padding: 4rem;
 
+    &:has(.wallets-banner__container) {
+        padding-top: 0;
+    }
+
     @include new-not-desktop {
         max-width: 60rem;
         padding: 1.6rem;
@@ -18,6 +22,18 @@
         }
     }
 
+    &--eu-user {
+        @include mobile {
+            min-height: 650px;
+        }
+
+        &-without-mt5 {
+            @include mobile {
+                min-height: 540px;
+            }
+        }
+    }
+
     &__button-toggle {
         margin-top: 3rem;
         border-radius: $BORDER_RADIUS;
@@ -27,12 +43,6 @@
 
     &--mobile {
         overflow: scroll !important;
-
-        &--eu-user {
-            @include new-not-desktop {
-                height: calc(55rem) !important;
-            }
-        }
 
         &::-webkit-scrollbar {
             display: none;
@@ -65,5 +75,15 @@
         @include new-not-desktop {
             padding: 0 1.5rem;
         }
+    }
+
+    &__bottom-plug {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 3.6rem;
+        z-index: 3;
+        backface-visibility: hidden;
+        background: var(--general-main-1);
     }
 }

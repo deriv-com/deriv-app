@@ -1,8 +1,6 @@
 import React from 'react';
-import Cookies from 'js-cookie';
 import WS from 'Services/ws-methods';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv/quill-design';
@@ -16,11 +14,10 @@ import {
     setUrlLanguage,
     setWebsocket,
     useOnLoadTranslation,
-    LocalStore,
-    getAppId,
 } from '@deriv/shared';
-import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
+import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
+import { withTranslation, useTranslation } from 'react-i18next';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
@@ -36,9 +33,15 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
         root_store.modules.cashier.general_store.init();
     };
+    const { i18n } = useTranslation();
     const initCFDStore = () => {
         root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
     };
+
+    React.useEffect(() => {
+        const dir = i18n.dir(i18n.language.toLowerCase());
+        document.documentElement.dir = dir;
+    }, [i18n, i18n.language]);
 
     React.useEffect(() => {
         initCashierStore();
@@ -47,32 +50,17 @@ const AppWithoutTranslation = ({ root_store }) => {
             import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
-        const loadExternalScripts = () => {
-            // Load external scripts once the app is fully loaded
-            setTimeout(() => {
-                initHotjar(root_store.client);
-            }, 5000);
+        const loadExternalScripts = async () => {
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+            await delay(3000);
+            window.LiveChatWidget.init();
+
+            await delay(2000);
+            initHotjar(root_store.client);
         };
 
         initializeTranslations();
-        if (process.env.RUDDERSTACK_KEY) {
-            const config = {
-                growthbookKey:
-                    process.env.IS_GROWTHBOOK_ENABLED === 'true' ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
-                growthbookDecryptionKey:
-                    process.env.IS_GROWTHBOOK_ENABLED === 'true' ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
-                rudderstackKey: process.env.RUDDERSTACK_KEY,
-            };
-            Analytics.initialise(config);
-            Analytics.setAttributes({
-                account_type: LocalStore?.get('active_loginid')?.substring(0, 2) ?? 'unlogged',
-                app_id: getAppId(),
-                device_type: root_store?.ui?.is_mobile ? 'mobile' : 'desktop',
-                device_language: navigator?.language || 'en-EN',
-                user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies.getJSON('website_status'),
-            });
-        }
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
@@ -81,7 +69,13 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.common.setPlatform();
         loadSmartchartsStyles();
 
-        window.addEventListener('load', loadExternalScripts);
+        // Set maximum timeout before we load livechat in case if page loading is disturbed or takes too long
+        const max_timeout = setTimeout(loadExternalScripts, 15 * 1000); // 15 seconds
+
+        window.addEventListener('load', () => {
+            clearTimeout(max_timeout);
+            loadExternalScripts();
+        });
 
         return () => {
             window.removeEventListener('load', loadExternalScripts);
@@ -111,9 +105,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                             <APIProvider>
                                 <POIProvider>
                                     <StoreProvider store={root_store}>
-                                        <ExchangeRatesProvider>
+                                        <P2PSettingsProvider>
                                             <AppContent passthrough={platform_passthrough} />
-                                        </ExchangeRatesProvider>
+                                        </P2PSettingsProvider>
                                     </StoreProvider>
                                 </POIProvider>
                             </APIProvider>

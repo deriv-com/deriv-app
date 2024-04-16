@@ -1,19 +1,40 @@
 .db-toolbox {
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 23.6rem;
+    height: 100%;
+    padding: 0.8rem;
+    background: var(--general-main-1);
+    z-index: 1;
     $toolbox: &;
     $category-text-spacing: 10px;
 
-    width: 25.6rem !important;
-    position: absolute;
-    top: 0 !important;
-    height: 100%;
+    &__title {
+        height: 2.6rem;
+        line-height: 2.6rem;
+        position: relative;
+        cursor: pointer;
+
+        &__chevron {
+            position: absolute;
+            right: 0;
+            top: 0.3rem;
+            transition: transform 0.3s ease;
+
+            &--active {
+                transform: rotate(180deg);
+                top: -0.2rem;
+            }
+        }
+    }
 
     &__search {
-        padding: 0.8rem;
-        height: 5rem;
+        padding: 1.3rem 0.8rem;
+        height: 6rem;
 
         &-field {
             margin-bottom: 0 !important;
-            padding-left: 0.8rem;
 
             input::-ms-clear {
                 display: none;
@@ -22,11 +43,22 @@
             .dc-input {
                 justify-content: center;
 
+                &__container {
+                    height: 3.2rem;
+                    padding: 0.6rem 0.8rem;
+                    border-radius: 8px;
+
+                    &:focus-within {
+                        border-color: var(--text-general);
+                    }
+                }
+
                 &__field {
                     width: unset;
-                    height: 3.2rem;
+                    height: 2.8rem;
                     flex-grow: 1;
                     padding: 0.8rem;
+                    color: var(--text-general);
                 }
 
                 &__leading-icon {
@@ -46,6 +78,15 @@
         user-select: none;
         z-index: 1;
         visibility: visible;
+        border: solid 1px var(--general-section-1);
+    }
+
+    &__content-wrapper {
+        height: 0;
+    }
+
+    &__content-wrapper.active {
+        height: 100%;
     }
 
     &__header {
@@ -81,12 +122,8 @@
     }
 
     &__category-menu {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        min-height: 0;
-        overflow-y: auto;
-        overflow-x: hidden;
+        height: calc(100vh - 33.6rem);
+        overflow-y: scroll;
     }
 
     &__category-text {
@@ -100,17 +137,6 @@
     &__description {
         font-size: 12px;
         line-height: 1.4;
-    }
-
-    &__icon {
-        display: flex;
-        align-self: center;
-        margin-right: $category-text-spacing;
-
-        > svg {
-            height: 25px;
-            width: 25px;
-        }
     }
 
     &__label {

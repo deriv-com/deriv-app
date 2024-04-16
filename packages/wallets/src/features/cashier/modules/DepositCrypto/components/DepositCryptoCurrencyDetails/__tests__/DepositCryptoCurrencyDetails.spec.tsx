@@ -1,9 +1,9 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import DepositCryptoCurrencyDetails from '../DepositCryptoCurrencyDetails';
 
-jest.mock('@deriv/api');
+jest.mock('@deriv/api-v2');
 
 describe('DepositCryptoCurrencyDetails', () => {
     const mockData = {

@@ -21,20 +21,13 @@
     &__details-container {
         display: flex;
         flex: 1;
-        align-items: center;
+        align-items: flex-start;
         gap: 2.4rem;
         align-self: stretch;
         border-radius: 1.6rem;
 
         &-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            border-radius: 0.4rem;
-            padding: 1rem 1.6rem;
-            min-width: 12.2rem;
-            min-height: 7.5rem;
+            padding-top: 0.8rem;
         }
     }
 }

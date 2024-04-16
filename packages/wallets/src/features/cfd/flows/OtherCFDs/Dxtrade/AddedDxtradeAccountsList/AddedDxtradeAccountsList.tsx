@@ -17,22 +17,20 @@ const AddedDxtradeAccountsList: React.FC = () => {
             {data?.map(account => (
                 <TradingAccountCard
                     key={account?.account_id}
-                    leading={<div className='wallets-available-dxtrade__icon'>{PlatformDetails.dxtrade.icon}</div>}
+                    leading={<div className='wallets-added-dxtrade__icon'>{PlatformDetails.dxtrade.icon}</div>}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}
                     trailing={
-                        <div className='wallets-available-dxtrade__icon'>
+                        <div className='wallets-added-dxtrade__icon'>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />
                         </div>
                     }
                 >
-                    <div className='wallets-available-dxtrade__details'>
+                    <div className='wallets-added-dxtrade__details'>
                         <WalletText size='sm'>{PlatformDetails.dxtrade.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
                             {account?.display_balance}
                         </WalletText>
-                        <WalletText color='primary' size='xs'>
-                            {account?.login}
-                        </WalletText>
+                        <WalletText size='xs'>{account?.login}</WalletText>
                     </div>
                 </TradingAccountCard>
             ))}

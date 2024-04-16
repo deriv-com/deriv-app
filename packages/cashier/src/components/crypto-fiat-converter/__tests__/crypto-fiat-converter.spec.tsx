@@ -4,7 +4,7 @@ import CryptoFiatConverter from '../crypto-fiat-converter';
 import { Formik } from 'formik';
 import * as formik from 'formik';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoFiatConverter />', () => {
     let mockRootStore: ReturnType<typeof mockStore>, mockProps: React.ComponentProps<typeof CryptoFiatConverter>;
@@ -38,11 +38,9 @@ describe('<CryptoFiatConverter />', () => {
     const renderCryptoFiatConverter = () => {
         return render(
             <CashierProviders store={mockRootStore}>
-                <ExchangeRatesProvider>
-                    <Formik initialValues={{}} onSubmit={() => Promise.resolve()}>
-                        <CryptoFiatConverter {...mockProps} />
-                    </Formik>
-                </ExchangeRatesProvider>
+                <Formik initialValues={{}} onSubmit={() => Promise.resolve()}>
+                    <CryptoFiatConverter {...mockProps} />
+                </Formik>
             </CashierProviders>
         );
     };

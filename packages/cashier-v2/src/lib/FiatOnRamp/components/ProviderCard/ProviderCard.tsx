@@ -18,7 +18,9 @@ const ProviderCard: React.FC<TProps> = ({ handleDisclaimerDialog, provider }) =>
 
     return (
         <div className={styles.container}>
-            <div className={styles.logo}>{theme === 'light' ? <LogoLight /> : <LogoDark />}</div>
+            <div className={styles.logo}>
+                {theme === 'light' ? <LogoLight data-testid='dt_logo' /> : <LogoDark data-testid='dt_logo' />}
+            </div>
             <div className={styles.content}>
                 <Text color='prominent' size='md' weight='bold'>
                     {name}

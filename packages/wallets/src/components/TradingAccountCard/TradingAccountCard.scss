@@ -7,7 +7,7 @@
     background: none;
 
     @include desktop {
-        padding: 0 2.3rem 0 1.6rem;
+        padding: 0 1.6rem;
         $columns: 3;
         $grid-last-row-children: '&:nth-last-child(-n+#{$columns})';
         #{$grid-last-row-children} > &__content,

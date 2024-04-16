@@ -16,11 +16,27 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
 const mockedMutate = jest.fn();
 const mockedReset = jest.fn();
 const mockedUseAdvertiserCreate = p2p.advertiser.useCreate as jest.MockedFunction<typeof p2p.advertiser.useCreate>;
+const mockPush = jest.fn();
 
 jest.mock('lodash', () => ({
     ...jest.requireActual('lodash'),
     debounce: jest.fn(f => f),
 }));
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(() => ({
+        push: mockPush,
+    })),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({
+        isMobile: false,
+    }),
+}));
+
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     p2p: {
@@ -36,20 +52,11 @@ jest.mock('@deriv/api-v2', () => ({
     },
 }));
 
-jest.mock('@/hooks', () => ({
-    ...jest.requireActual('@/hooks'),
-    useDevice: jest.fn().mockReturnValue({
-        isDesktop: true,
-        isMobile: false,
-    }),
-    useSwitchTab: jest.fn().mockReturnValue(jest.fn),
-}));
-
 describe('NicknameModal', () => {
     it('should render title and description correctly', () => {
         render(<NicknameModal isModalOpen setIsModalOpen={jest.fn()} />, { wrapper });
-        expect(screen.getByText('Choose your nickname')).toBeVisible();
-        expect(screen.getByText('This nickname will be visible to other Deriv P2P users.')).toBeVisible();
+        expect(screen.getByText('What’s your nickname?')).toBeVisible();
+        expect(screen.getByText('Others will see this on your profile, ads and charts.')).toBeVisible();
     });
     it('should allow users to type and submit nickname', async () => {
         render(<NicknameModal isModalOpen setIsModalOpen={jest.fn()} />, { wrapper });
@@ -100,6 +107,7 @@ describe('NicknameModal', () => {
         });
         userEvent.click(cancelBtn);
 
+        expect(mockPush).toBeCalledWith('/cashier/p2p-v2/buy-sell');
         expect(mockIsModalOpen).toBeCalledWith(false);
     });
 });

@@ -108,12 +108,15 @@ export const FinancialAssessmentForm = () => {
             />
         );
 
+    const showInCompleteFinancialInfoMessage =
+        isEUCountry && isFinancialInformationNotComplete && !isFinancialAssessmentUpdateSuccess;
+
     return (
         <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
             {({ dirty, isSubmitting, isValid }) => (
                 <Form>
                     <LeaveConfirm />
-                    {isEUCountry && isFinancialInformationNotComplete && !isFinancialAssessmentUpdateSuccess && (
+                    {showInCompleteFinancialInfoMessage && (
                         <InlineMessage type='filled' variant='warning'>
                             {isMobile
                                 ? 'To enable withdrawals, please complete your financial assessment.'

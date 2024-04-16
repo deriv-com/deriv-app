@@ -1,14 +1,19 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { APIProvider, AuthProvider, useTwoFactorAuthentication, useTwoFactorAuthenticationStatus } from '@deriv/api-v2';
-import { act, render, screen } from '@testing-library/react';
+import {
+    APIProvider,
+    AuthProvider,
+    useIsTwoFactorAuthenticationEnabled,
+    useTwoFactorAuthentication,
+} from '@deriv/api-v2';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TwoFactorAuthenticationForm } from '../TwoFactorAuthenticationForm';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
+    useIsTwoFactorAuthenticationEnabled: jest.fn(),
     useTwoFactorAuthentication: jest.fn(),
-    useTwoFactorAuthenticationStatus: jest.fn(),
 }));
 
 const renderComponent = () => {
@@ -29,8 +34,8 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
 const mockUseTwoFactorAuthentication = useTwoFactorAuthentication as jest.MockedFunction<
     typeof useTwoFactorAuthentication
 >;
-const mockUseTwoFactorAuthenticationStatus = useTwoFactorAuthenticationStatus as jest.MockedFunction<
-    typeof useTwoFactorAuthenticationStatus
+const mockuseIsTwoFactorAuthenticationEnabled = useIsTwoFactorAuthenticationEnabled as jest.MockedFunction<
+    typeof useIsTwoFactorAuthenticationEnabled
 >;
 
 describe('TwoFactorAuthenticationForm', () => {
@@ -39,7 +44,7 @@ describe('TwoFactorAuthenticationForm', () => {
         (mockUseTwoFactorAuthentication as jest.Mock).mockReturnValueOnce({
             isLoading: false,
         });
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValueOnce({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValueOnce({
             data: true,
         });
         renderComponent();
@@ -51,7 +56,7 @@ describe('TwoFactorAuthenticationForm', () => {
             error: { error: { code: 'InvalidOTP' } },
             isLoading: false,
         });
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValueOnce({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValueOnce({
             data: true,
         });
         renderComponent();
@@ -69,7 +74,7 @@ describe('TwoFactorAuthenticationForm', () => {
             isLoading: false,
             mutate: mockMutate,
         });
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValueOnce({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValueOnce({
             data: false,
             isLoading: false,
         });
@@ -79,10 +84,10 @@ describe('TwoFactorAuthenticationForm', () => {
         userEvent.type(input, otp);
         const input2 = screen.getByDisplayValue(otp);
         expect(input2).toBeInTheDocument();
-        await act(async () => {
-            await userEvent.click(button);
+        userEvent.click(button);
+        await waitFor(() => {
+            expect(mockMutate).toHaveBeenCalledWith({ otp, totp_action: 'enable' });
         });
-        expect(mockMutate).toHaveBeenCalledWith({ otp, totp_action: 'enable' });
     });
     it('should handle submit when the form button is clicked and two factor authentication is enabled', async () => {
         const otp = '123456';
@@ -91,7 +96,7 @@ describe('TwoFactorAuthenticationForm', () => {
             isLoading: false,
             mutate: mockMutate,
         });
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValueOnce({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValueOnce({
             data: true,
             isLoading: false,
         });
@@ -101,9 +106,9 @@ describe('TwoFactorAuthenticationForm', () => {
         userEvent.type(input, otp);
         const input2 = screen.getByDisplayValue(otp);
         expect(input2).toBeInTheDocument();
-        await act(async () => {
-            await userEvent.click(button);
+        userEvent.click(button);
+        await waitFor(() => {
+            expect(mockMutate).toHaveBeenCalledWith({ otp, totp_action: 'disable' });
         });
-        expect(mockMutate).toHaveBeenCalledWith({ otp, totp_action: 'disable' });
     });
 });

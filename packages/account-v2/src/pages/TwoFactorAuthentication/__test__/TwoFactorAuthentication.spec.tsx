@@ -1,13 +1,18 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { APIProvider, AuthProvider, useTwoFactorAuthentication, useTwoFactorAuthenticationStatus } from '@deriv/api-v2';
+import {
+    APIProvider,
+    AuthProvider,
+    useIsTwoFactorAuthenticationEnabled,
+    useTwoFactorAuthentication,
+} from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { TwoFactorAuthentication } from '../TwoFactorAuthentication';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
+    useIsTwoFactorAuthenticationEnabled: jest.fn(),
     useTwoFactorAuthentication: jest.fn(),
-    useTwoFactorAuthenticationStatus: jest.fn(),
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -33,13 +38,13 @@ const renderComponent = () => {
 const mockUseTwoFactorAuthentication = useTwoFactorAuthentication as jest.MockedFunction<
     typeof useTwoFactorAuthentication
 >;
-const mockUseTwoFactorAuthenticationStatus = useTwoFactorAuthenticationStatus as jest.MockedFunction<
-    typeof useTwoFactorAuthenticationStatus
+const mockuseIsTwoFactorAuthenticationEnabled = useIsTwoFactorAuthenticationEnabled as jest.MockedFunction<
+    typeof useIsTwoFactorAuthenticationEnabled
 >;
 
 describe('TwoFactorAuthentication', () => {
     it('should render the correct component when two factor authentication is enabled', () => {
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValue({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValue({
             data: true,
         });
         (mockUseTwoFactorAuthentication as jest.Mock).mockReturnValueOnce({
@@ -50,7 +55,7 @@ describe('TwoFactorAuthentication', () => {
         expect(screen.getByText(/2FA enabled/)).toBeInTheDocument();
     });
     it('should render the correct component when two factor authentication is disabled and the secretKey is defined', () => {
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValue({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValue({
             data: false,
         });
         (mockUseTwoFactorAuthentication as jest.Mock).mockReturnValue({
@@ -66,7 +71,7 @@ describe('TwoFactorAuthentication', () => {
         ).toBeInTheDocument();
     });
     it('should render the correct component when two factor authentication is disabled and the secretKey is undefined', () => {
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValue({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValue({
             data: false,
         });
         (mockUseTwoFactorAuthentication as jest.Mock).mockReturnValue({
@@ -81,7 +86,7 @@ describe('TwoFactorAuthentication', () => {
         ).not.toBeInTheDocument();
     });
     it('should render the loader when data is undefined and isLoading is true', () => {
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValue({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValue({
             data: undefined,
             isLoading: true,
         });

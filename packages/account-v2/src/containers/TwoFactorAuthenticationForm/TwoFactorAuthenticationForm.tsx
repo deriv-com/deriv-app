@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
-import { useTwoFactorAuthentication, useTwoFactorAuthenticationStatus } from '@deriv/api-v2';
+import { useIsTwoFactorAuthenticationEnabled, useTwoFactorAuthentication } from '@deriv/api-v2';
 import { InputWithButton } from '../../components/InputWithButton';
 import { API_ERROR_CODES, getTwoFactorAuthenticationFormValidationSchema } from '../../utils';
 
 type TTwoFactorData = Yup.InferType<ReturnType<typeof getTwoFactorAuthenticationFormValidationSchema>>;
 
 export const TwoFactorAuthenticationForm = () => {
-    const { data: isTwoFactorAuthenticationEnabled, isLoading: isStatusLoading } = useTwoFactorAuthenticationStatus();
+    const { data: isTwoFactorAuthenticationEnabled, isLoading: isStatusLoading } =
+        useIsTwoFactorAuthenticationEnabled();
     const { error, isLoading: isMutationLoading, mutate } = useTwoFactorAuthentication();
     const validationSchema = getTwoFactorAuthenticationFormValidationSchema();
     // TODO: Remember to translate these

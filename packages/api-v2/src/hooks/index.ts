@@ -73,7 +73,7 @@ export { default as useTradingPlatformPasswordChange } from './useTradingPlatfor
 export { default as useTransactions } from './useTransactions';
 export { default as useInfiniteTransactions } from './useInfiniteTransactions';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
-export { default as useTwoFactorAuthenticationStatus } from './useTwoFactorAuthenticationStatus';
+export { default as useIsTwoFactorAuthenticationEnabled } from './useIsTwoFactorAuthenticationEnabled';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useWalletMigration } from './useWalletMigration';

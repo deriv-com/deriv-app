@@ -1,13 +1,13 @@
 import React from 'react';
-import { useAuthorize, useTwoFactorAuthentication, useTwoFactorAuthenticationStatus } from '@deriv/api-v2';
+import { useAuthorize, useIsTwoFactorAuthenticationEnabled, useTwoFactorAuthentication } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { TwoFactorAuthenticationDisabled } from '../TwoFactorAuthenticationDisabled';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useAuthorize: jest.fn(),
+    useIsTwoFactorAuthenticationEnabled: jest.fn(),
     useTwoFactorAuthentication: jest.fn(),
-    useTwoFactorAuthenticationStatus: jest.fn(),
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -18,8 +18,8 @@ jest.mock('@deriv-com/ui', () => ({
 const mockUseTwoFactorAuthentication = useTwoFactorAuthentication as jest.MockedFunction<
     typeof useTwoFactorAuthentication
 >;
-const mockUseTwoFactorAuthenticationStatus = useTwoFactorAuthenticationStatus as jest.MockedFunction<
-    typeof useTwoFactorAuthenticationStatus
+const mockuseIsTwoFactorAuthenticationEnabled = useIsTwoFactorAuthenticationEnabled as jest.MockedFunction<
+    typeof useIsTwoFactorAuthenticationEnabled
 >;
 const mockUseAuthorize = useAuthorize as jest.MockedFunction<typeof useAuthorize>;
 
@@ -33,7 +33,7 @@ describe('TwoFactorAuthenticationDisabled', () => {
         (mockUseAuthorize as jest.Mock).mockReturnValue({
             data: undefined,
         });
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValue({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValue({
             data: false,
         });
 
@@ -50,7 +50,7 @@ describe('TwoFactorAuthenticationDisabled', () => {
         (mockUseAuthorize as jest.Mock).mockReturnValue({
             data: undefined,
         });
-        (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValue({
+        (mockuseIsTwoFactorAuthenticationEnabled as jest.Mock).mockReturnValue({
             data: false,
         });
         render(<TwoFactorAuthenticationDisabled />);

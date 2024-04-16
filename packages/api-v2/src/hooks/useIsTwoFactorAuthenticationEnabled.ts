@@ -2,7 +2,7 @@ import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 
 /** A custom hook to get the two factor authentication status. i.e. Whether it's enabled or not */
-const useTwoFactorAuthenticationStatus = () => {
+const useIsTwoFactorAuthenticationEnabled = () => {
     const { isSuccess } = useAuthorize();
     const { data, ...rest } = useQuery('account_security', {
         payload: { totp_action: 'status' },
@@ -15,4 +15,4 @@ const useTwoFactorAuthenticationStatus = () => {
     };
 };
 
-export default useTwoFactorAuthenticationStatus;
+export default useIsTwoFactorAuthenticationEnabled;

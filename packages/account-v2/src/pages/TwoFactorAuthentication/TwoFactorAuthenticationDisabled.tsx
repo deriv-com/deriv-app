@@ -1,4 +1,5 @@
 import React, { ComponentProps, useEffect } from 'react';
+import classNames from 'classnames';
 import { useAuthorize, useTwoFactorAuthentication } from '@deriv/api-v2';
 import { Loader, Text } from '@deriv-com/ui';
 import { Timeline } from '../../components/Timeline';
@@ -6,13 +7,14 @@ import { TwoFactorAuthenticationForm } from '../../containers/TwoFactorAuthentic
 import { TwoFactorAuthenticationArticle } from './TwoFactorAuthenticationArticle';
 import { TwoFactorAuthenticationQRCode } from './TwoFactorAuthenticationQRCode';
 
-const TwoFactorAuthenticationLink = ({
-    children,
-    className = 'hover:underline font-bold',
-    ...rest
-}: ComponentProps<'a'>) => {
+const TwoFactorAuthenticationLink = ({ children, className = '', ...rest }: ComponentProps<'a'>) => {
     return (
-        <a {...rest} className={className} rel='noopener noreferrer' target='_blank'>
+        <a
+            {...rest}
+            className={classNames('hover:underline font-bold', className)}
+            rel='noopener noreferrer'
+            target='_blank'
+        >
             {children}
         </a>
     );

@@ -13,7 +13,7 @@ export const ConnectedAppsRevokeModal = ({
     handleToggleModal,
     isModalOpen,
 }: TConnectedAppsRevokeModalProps) => (
-    <Modal className='p-24 md:w-[440px] sm:w-[328px] h-auto rounded-default' isOpen={isModalOpen}>
+    <Modal className='p-24 md:w-[440px] sm:w-[328px]' isOpen={isModalOpen}>
         <Modal.Body className='flex flex-col items-center justify-center'>
             {/* TODO: Replace this svg with trashIcon when quill-icons is updated */}
             <TrashIcon height={128} width={128} />

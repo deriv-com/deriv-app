@@ -29,6 +29,7 @@ describe('POICountrySelector', () => {
     });
 
     it('should render error message when Verification failed', () => {
+        // @ts-expect-error ignore this as this is used to test default error message when API error code dosen't match  Error code config
         render(<POICountrySelector errorStatus='error' handleNext={jest.fn()} onCountrySelect={jest.fn()} />);
         expect(screen.getByText('Your identity verification failed because:')).toBeInTheDocument();
         expect(

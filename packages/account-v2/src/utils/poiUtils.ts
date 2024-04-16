@@ -53,7 +53,7 @@ export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig): 
         return IDV_ERROR_CODES.expired.code;
     }
 
-    if (!errors || !errors?.length) {
+    if (!errors?.length) {
         return null;
     }
 
@@ -68,7 +68,7 @@ export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig): 
 
 export const shouldSkipCountrySelector = (service: TPOIService, errors?: string[]) => {
     if (service === POI_SERVICE.idv) {
-        if (!errors || !errors?.length) {
+        if (!errors?.length) {
             return false;
         }
         const errorStatus = checkIDVErrorStatus({ errors });

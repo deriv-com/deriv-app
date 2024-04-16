@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
 import { Checkbox, InlineMessage, Text } from '@deriv-com/ui';

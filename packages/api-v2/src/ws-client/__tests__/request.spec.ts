@@ -32,12 +32,12 @@ describe('send function', () => {
 
     beforeEach(() => {
         request = require('../request').default;
-        jest.clearAllMocks();
-        jest.resetModules();
         mockWebSocket = mockWebSocketFactory();
     });
 
     afterEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
         mockWebSocket = null;
     });
 

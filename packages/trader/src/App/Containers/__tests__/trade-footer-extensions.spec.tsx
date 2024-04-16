@@ -41,7 +41,7 @@ describe('<TradeFooterExtensions>', () => {
         mock_store.client.is_logged_in = true;
         router_prop = {
             location: {
-                pathname: '/',
+                pathname: '/dtrader',
             },
         };
         renderTraderFooterExtensions(router_prop);

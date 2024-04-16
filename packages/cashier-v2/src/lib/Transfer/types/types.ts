@@ -9,8 +9,8 @@ export type TTransferReceipt = {
 };
 
 export type TTransferFormikContext = {
-    fromAccount: TTransferableAccounts[number];
+    fromAccount?: TTransferableAccounts[number];
     fromAmount: string;
-    toAccount: TTransferableAccounts[number];
+    toAccount?: TTransferableAccounts[number];
     toAmount: string;
 };

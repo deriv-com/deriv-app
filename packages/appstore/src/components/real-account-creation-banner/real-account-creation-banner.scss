@@ -8,6 +8,7 @@
         width: 100%;
         object-fit: contain;
     }
+
     &__content {
         @include mobile {
             padding: 1.4rem 1.6rem;

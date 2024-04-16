@@ -9,11 +9,13 @@ const RealAccountCreationBanner = () => {
     const {
         ui: { is_mobile },
     } = useStore();
+
     const { client, traders_hub, ui } = useStore();
     const { real_account_creation_unlock_date } = client;
     const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const { is_real, content_flag } = traders_hub;
     const eu_user = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
+
     return (
         <div className='real-account-creation-banner'>
             {is_mobile ? (

@@ -13,6 +13,8 @@ const Advertiser = () => {
     const { advertiserId } = useParams<{ advertiserId: string }>();
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
 
+    // Need to return undefined if the id is the same as the logged in user
+    // This will prevent the API from trying to resubscribe to the same user and grab the data from local storage
     const id = advertiserId !== advertiserInfo.id ? advertiserId : undefined;
     const history = useHistory();
     const location = useLocation();

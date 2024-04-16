@@ -64,8 +64,8 @@ const useAdvertiserStats = (advertiserId?: string) => {
             dailyAvailableSellLimit: Number(data?.daily_sell_limit) - Number(data?.daily_sell) || 0,
 
             /** The number of days since the user has became an advertiser */
-            daysSinceJoined: Number(
-                daysSince(data?.created_time ? new Date(data.created_time * 1000).toISOString().split('T')[0] : '')
+            daysSinceJoined: daysSince(
+                data?.created_time ? new Date(data.created_time * 1000).toISOString().split('T')[0] : ''
             ),
 
             /** The advertiser's full name */

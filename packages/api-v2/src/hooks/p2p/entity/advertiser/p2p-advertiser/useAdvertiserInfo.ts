@@ -19,8 +19,15 @@ type TPayload = NonNullable<TSocketRequestPayload<'p2p_advertiser_info'>> & { id
 /** This custom hook returns information about the given advertiser ID */
 const useAdvertiserInfo = (id?: string) => {
     const { data, subscribe: subscribeAdvertiserInfo, ...rest } = useSubscription('p2p_advertiser_info');
+
+    /**
+     * Use different local storage key for each advertiser, one to keep the current user's info, the other to keep the advertiser's info
+     * This is to prevent the current user's info from being overwritten by the advertiser's info when the current user views the advertiser's profile.
+     *
+     * Key removal is handled in useAdvertiserStats hook's useEffect.
+     * */
     const local_storage_key = id ? `p2p_v2_p2p_advertiser_info_${id}` : 'p2p_v2_p2p_advertiser_info';
-    const [p2pAdvertiserInfo, setP2PAdvertiserInfo] = useLocalStorage<DeepPartial<TP2PAdvertiserInfo>>(
+    const [p2p_advertiser_info, setP2PAdvertiserInfo] = useLocalStorage<DeepPartial<TP2PAdvertiserInfo>>(
         local_storage_key,
         {}
     );
@@ -74,7 +81,7 @@ const useAdvertiserInfo = (id?: string) => {
 
     return {
         /** P2P advertiser information */
-        data: p2pAdvertiserInfo,
+        data: p2p_advertiser_info,
         subscribe,
         ...rest,
     };

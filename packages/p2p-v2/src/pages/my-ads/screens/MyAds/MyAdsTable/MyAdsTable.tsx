@@ -50,7 +50,13 @@ const columns = [
 const MyAdsTable = () => {
     const { data = [], isFetching, isLoading, loadMoreAdverts } = p2p.advertiserAdverts.useGet();
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
-    const { is_listed_boolean: isListed } = advertiserInfo;
+    const {
+        balance_available: balanceAvailable,
+        blocked_until: blockedUntil,
+        daily_buy_limit: dailyBuyLimit,
+        daily_sell_limit: dailySellLimit,
+        is_listed_boolean: isListed,
+    } = advertiserInfo || {};
     const { mutate } = p2p.advert.useUpdate();
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
     const { error, isSuccess, mutate: deleteAd } = p2p.advert.useDelete();
@@ -114,7 +120,7 @@ const MyAdsTable = () => {
     };
 
     return (
-        <MyAdsDisplayWrapper isPaused={!!advertiserInfo?.blocked_until || !isListed} onClickToggle={onClickToggle}>
+        <MyAdsDisplayWrapper isPaused={!!blockedUntil || !isListed} onClickToggle={onClickToggle}>
             <div className='p2p-v2-my-ads-table__list'>
                 <Table
                     columns={columns}
@@ -125,10 +131,10 @@ const MyAdsTable = () => {
                     rowRender={(rowData: unknown) => (
                         <MyAdsTableRowRenderer
                             {...(rowData as TMyAdsTableRowRendererProps)}
-                            balanceAvailable={advertiserInfo?.balance_available ?? 0}
-                            dailyBuyLimit={advertiserInfo?.daily_buy_limit ?? ''}
-                            dailySellLimit={advertiserInfo?.daily_sell_limit ?? ''}
-                            isBarred={!!advertiserInfo?.blocked_until}
+                            balanceAvailable={balanceAvailable ?? 0}
+                            dailyBuyLimit={dailyBuyLimit ?? ''}
+                            dailySellLimit={dailySellLimit ?? ''}
+                            isBarred={!!blockedUntil}
                             isListed={!!isListed}
                             onClickIcon={onClickIcon}
                         />

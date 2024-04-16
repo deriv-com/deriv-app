@@ -138,7 +138,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                             <TradeLink
                                 app={DesktopLinks.MT5_WEB}
                                 platform={mt5Platform}
-                                webtraderUrl={getWebtraderUrl({ details })}
+                                webtraderUrl={getWebtraderUrl({ details } as { details: THooks.MT5AccountsList })}
                             />
 
                             <TradeLink app={DesktopLinks.MT5_WINDOWS} platform={mt5Platform} />

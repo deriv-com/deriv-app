@@ -9,7 +9,7 @@ import MacOSIcon from '@/assets/svgs/ic-macos-logo.svg';
 import MT5Icon from '@/assets/svgs/ic-mt5.svg';
 import WindowsIcon from '@/assets/svgs/ic-windows-logo.svg';
 import { IconComponent } from '@/components';
-import { TJurisdiction, TMarketTypes, TPlatforms } from '@/types';
+import { THooks, TJurisdiction, TMarketTypes, TPlatforms } from '@/types';
 import { mobileOsDetect } from '@/utils';
 
 type TAppContent = {
@@ -251,15 +251,15 @@ export const AppToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElem
     ios: InstallationAppleIcon,
 };
 
-export const getWebtraderUrl = ({ details }) => {
+export const getWebtraderUrl = ({ details }: { details: THooks.MT5AccountsList }) => {
     return `${details?.white_label_links.webtrader_url}?login=${details?.display_login}&server=${details?.server_info.environment}`;
 };
 
-export const getDeeplinkUrl = ({ details }) => {
+export const getDeeplinkUrl = ({ details }: { details: THooks.MT5AccountsList }) => {
     return `metatrader5://account?login=${details?.display_login}&server=${details?.server_info?.environment}`;
 };
 
-export const getMobileAppInstallerUrl = ({ details }) => {
+export const getMobileAppInstallerUrl = ({ details }: { details: THooks.MT5AccountsList }) => {
     if (mobileOsDetect() === 'iOS') {
         return details?.white_label_links?.ios;
     } else if (mobileOsDetect() === 'huawei') {

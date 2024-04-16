@@ -2,14 +2,8 @@
     width: 100%;
 
     &__header {
-        padding-left: 1.4rem;
-        height: 4.6rem;
         display: flex;
         align-items: center;
-
-        span {
-            font-size: 2rem;
-            line-height: 1.3rem;
-        }
+        padding: 0.8rem 1.4rem;
     }
 }

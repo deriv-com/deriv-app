@@ -19,6 +19,10 @@ const mockUnorderedTransferAccounts = [
     { account_type: 'binary', balance: '500', currency: 'BTC', loginid: 'CR5' },
 ] as THooks.TransferAccounts;
 
+const mockActiveAccount = {
+    loginid: 'CR4',
+} as THooks.ActiveAccount;
+
 const getCurrencyConfig = (currency: string) => {
     let is_fiat = false,
         is_crypto = false,
@@ -55,19 +59,37 @@ describe('useExtendedTransferBetweenAccounts', () => {
     });
     afterEach(cleanup);
 
-    it('should return the correct authorized account', () => {
-        const { result } = renderHook(() => useExtendedTransferBetweenAccounts(mockUnorderedTransferAccounts));
+    fit('should return the correct authorized account', () => {
+        const { result } = renderHook(() =>
+            useExtendedTransferBetweenAccounts(
+                mockActiveAccount,
+                getCurrencyConfig as THooks.GetCurrencyConfig,
+                mockUnorderedTransferAccounts
+            )
+        );
         expect(result.current.activeAccount?.loginid).toEqual('CR4');
     });
 
-    it('should return the all the accounts in the correct order', () => {
-        const { result } = renderHook(() => useExtendedTransferBetweenAccounts(mockUnorderedTransferAccounts));
+    fit('should return the all the accounts in the correct order', () => {
+        const { result } = renderHook(() =>
+            useExtendedTransferBetweenAccounts(
+                mockActiveAccount,
+                getCurrencyConfig as THooks.GetCurrencyConfig,
+                mockUnorderedTransferAccounts
+            )
+        );
         const order = ['CR1', 'CR2', 'CR3', 'CR4', 'CR5', 'CR6'];
         expect(result.current.accounts.map(account => account.loginid)).toEqual(order);
     });
 
-    it('should check if all the accounts contain the correct currency config data', () => {
-        const { result } = renderHook(() => useExtendedTransferBetweenAccounts(mockUnorderedTransferAccounts));
+    fit('should check if all the accounts contain the correct currency config data', () => {
+        const { result } = renderHook(() =>
+            useExtendedTransferBetweenAccounts(
+                mockActiveAccount,
+                getCurrencyConfig as THooks.GetCurrencyConfig,
+                mockUnorderedTransferAccounts
+            )
+        );
         const mockExpectedTransferAccounts = [
             {
                 account_type: 'mt5',

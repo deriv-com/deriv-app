@@ -14,11 +14,12 @@ const remoteConfigQuery = async function () {
     return response.json();
 };
 
-function useRemoteConfig() {
+function useRemoteConfig(enabled = false) {
     return useQuery({
         queryKey: ['remoteConfig'],
         queryFn: remoteConfigQuery,
         initialData: initData,
+        enabled,
     });
 }
 

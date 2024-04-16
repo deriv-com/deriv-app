@@ -1,42 +1,48 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import {
+    LabelPairedArrowsRotateMdBoldIcon,
+    LabelPairedArrowUpArrowDownMdBoldIcon,
+    LabelPairedMinusMdBoldIcon,
+    LabelPairedPlusMdBoldIcon,
+} from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
-import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
-import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
-import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo?: boolean) => {
     const buttons = [
         {
-            icon: <IcCashierAdd />,
+            className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
+            color: isDemo ? 'transparent' : 'primary',
+            icon: isDemo ? <LabelPairedArrowsRotateMdBoldIcon /> : <LabelPairedPlusMdBoldIcon fill='#FFF' />,
             name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? 'Reset balance' : 'Deposit',
+            variant: isDemo ? 'outlined' : 'contained',
         },
         {
-            icon: <IcCashierWithdrawal />,
+            className: 'wallets-mobile-actions-content-icon',
+            color: 'white',
+            icon: <LabelPairedMinusMdBoldIcon />,
             name: 'withdraw',
             text: 'Withdraw',
+            variant: 'outlined',
         },
         {
-            icon: <IcCashierTransfer />,
+            className: 'wallets-mobile-actions-content-icon',
+            color: 'white',
+            icon: <LabelPairedArrowUpArrowDownMdBoldIcon />,
             name: 'transfer',
             text: 'Transfer',
-        },
-        {
-            icon: <IcCashierStatement />,
-            name: 'transactions',
-            text: 'Transactions',
+            variant: 'outlined',
         },
     ] as const;
 
     // Filter out the "Withdraw" button when is_demo is true
     const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
 
-    const orderForDemo = ['reset-balance', 'transfer', 'transactions'];
+    const orderForDemo = ['reset-balance', 'transfer'];
 
     const sortedButtons = isDemo
         ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))
@@ -61,16 +67,17 @@ const WalletListCardActions = () => {
                         <div className='wallets-mobile-actions-content' key={button.name}>
                             <IconButton
                                 aria-label={button.name}
-                                className='wallets-mobile-actions-content-icon'
-                                color='transparent'
+                                className={button.className}
+                                color={button.color}
                                 icon={button.icon}
-                                isRound
                                 onClick={() => {
                                     history.push(`/wallets/cashier/${button.name}`);
                                 }}
                                 size='lg'
                             />
-                            <WalletText size='sm'>{button.text}</WalletText>
+                            <WalletText size='sm' weight={button.text === 'Deposit' ? 'bold' : 'normal'}>
+                                {button.text}
+                            </WalletText>
                         </div>
                     ))}
                 </div>
@@ -87,8 +94,8 @@ const WalletListCardActions = () => {
                     onClick={() => {
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
-                    rounded='md'
-                    variant='outlined'
+                    rounded='lg'
+                    variant={button.variant}
                 >
                     {isActive ? button.text : ''}
                 </WalletButton>

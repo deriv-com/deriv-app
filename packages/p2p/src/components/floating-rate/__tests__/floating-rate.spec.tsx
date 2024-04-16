@@ -2,14 +2,12 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { APIProvider } from '@deriv/api';
 import { useP2PSettings } from '@deriv/hooks';
-import { ExchangeRatesProvider, mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import FloatingRate from '../floating-rate';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
     <APIProvider>
-        <StoreProvider store={mockStore({})}>
-            <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-        </StoreProvider>
+        <StoreProvider store={mockStore({})}>{children}</StoreProvider>
     </APIProvider>
 );
 

@@ -10,35 +10,41 @@ type TProps = {
     isActive?: boolean;
 };
 
-const getIcon = (account: TTransferableAccounts[number], iconSize: NonNullable<TProps['iconSize']>) => {
-    if (!account.currency) return null;
+const getIcon = (
+    accountType: TTransferableAccounts[number]['account_type'],
+    currency: TTransferableAccounts[number]['currency'],
+    iconSize: NonNullable<TProps['iconSize']>
+) => {
+    if (!currency) return null;
 
-    if (account.account_type === 'binary') return <CurrencyIcon currency={account.currency} size={iconSize} />;
+    if (accountType === 'binary') return <CurrencyIcon currency={currency} size={iconSize} />;
 
-    if (account.account_type === 'dxtrade') return <TradingAppIcon name='DERIVX' size={iconSize} />;
+    if (accountType === 'dxtrade') return <TradingAppIcon name='DERIVX' size={iconSize} />;
 
-    if (account.account_type === 'mt5') return <TradingAppIcon name='DMT5_DERIVED' size={iconSize} />;
+    if (accountType === 'mt5') return <TradingAppIcon name='DMT5_DERIVED' size={iconSize} />;
 };
 
 const TransferAccountTile: React.FC<TProps> = ({ account, iconSize = 'sm', isActive = false }) => {
+    const { account_type: accountType, currency, displayBalance, loginid } = account;
     const { isMobile } = useDevice();
+
     return (
         <div className={styles.container}>
             <div className={styles.account}>
-                {getIcon(account, iconSize)}
+                {getIcon(accountType, currency, iconSize)}
                 <div className={styles['account-info']}>
                     <Text size='sm' weight={isActive ? 'bold' : 'normal'}>
                         {/* TODO: replace with correct data once it is available in backend and this function is untested
                         for now */}
-                        {account.currency ?? ''}
+                        {currency}
                     </Text>
                     <Text color='less-prominent' size='2xs'>
-                        {account.loginid}
+                        {loginid}
                     </Text>
                 </div>
             </div>
             <Text size={isMobile ? 'md' : 'sm'} weight={isActive ? 'bold' : 'normal'}>
-                {account.displayBalance}
+                {displayBalance}
             </Text>
         </div>
     );

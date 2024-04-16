@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import TransferDropdownList from '../TransferDropdownList';
 
 jest.mock('../../TransferAccountTile', () => ({
@@ -61,12 +62,12 @@ describe('<TransferDropdownList />', () => {
         );
         const firstAccount = screen.getByText('TransferAccountTile-CR1-false');
 
-        await fireEvent.click(firstAccount);
+        await userEvent.click(firstAccount);
 
         expect(mockOnSelect).toBeCalledWith(mockAccounts['Deriv MT5 accounts'][0]);
     });
 
-    it('should test if selected account is passed with isActive prop as true', async () => {
+    it('should test if selected account is passed with isActive prop as true', () => {
         render(
             <TransferDropdownList
                 //@ts-expect-error since this is a mock, we only need partial properties of accounts data

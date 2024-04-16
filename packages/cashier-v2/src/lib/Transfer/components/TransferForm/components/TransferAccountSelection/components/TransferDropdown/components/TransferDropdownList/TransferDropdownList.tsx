@@ -8,7 +8,7 @@ import styles from './TransferDropdownList.module.scss';
 type TProps = {
     accounts: Record<string, TTransferableAccounts>;
     onSelect: (account: TTransferableAccounts[number]) => void;
-    value: TTransferFormikContext['fromAccount'] | TTransferFormikContext['toAccount'];
+    value: TTransferFormikContext['fromAccount' | 'toAccount'];
 };
 
 const TransferDropdownList: React.FC<TProps> = ({ accounts, onSelect, value }) => {

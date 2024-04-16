@@ -526,11 +526,11 @@ export default class AccountTransferStore {
             this.onChangeTransferTo({ target: { value: this.selected_from.value } });
         } else if (isBetweenCFDsTransfer) {
             // not allowed to transfer from MT5 to MT5
-            // not allowed to transfer from Dxtrade to Dxtrade
+            // not allowed to transfer from DerivX to DerivX
             // not allowed to transfer from cTrader to cTrader
-            // not allowed to transfer between MT and Dxtrade and visa versa
-            // not allowed to transfer between Dxtrade and cTrader and visa versa
-            // not allowed to transfer between MT and cTrader and visa versa
+            // not allowed to transfer between MT5 and DerivX and visa versa
+            // not allowed to transfer between DerivX and cTrader and visa versa
+            // not allowed to transfer between MT5 and cTrader and visa versa
             // if new value of selected_from is different from selected_to
             // switch the value of selected_to to current client loginid
             this.onChangeTransferTo({ target: { value: this.root_store.client.loginid } });

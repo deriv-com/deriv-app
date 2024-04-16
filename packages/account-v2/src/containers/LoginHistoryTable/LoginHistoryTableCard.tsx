@@ -13,7 +13,6 @@ export const LoginHistoryTableCard = ({ loginHistory }: TLoginHistoryProps) => {
                     className='shadow-md p-16 rounded-lg background: var(--system-light-8-primary-background, #FFF) w-full'
                     key={index}
                 >
-                    {/* <div className='shadow-lg p-16 rounded-md background: var(--system-light-8-primary-background, #FFF) w-full'> */}
                     <div className='flex gap-100'>
                         <div className='justify-left flex flex-col items-start gap-8 row-span-3'>
                             <div className='grid grid-row-2 gap-4'>

@@ -7,7 +7,7 @@ import {
     POI_SERVICE,
     POI_SUBMISSION_STATUS,
 } from '../constants';
-import { TPOIService, TPOIStatus } from '../types';
+import { TIDVErrorStatusCode, TPOIService, TPOIStatus } from '../types';
 
 export type TPOISubmissionStatus = typeof POI_SUBMISSION_STATUS[keyof typeof POI_SUBMISSION_STATUS];
 
@@ -48,7 +48,7 @@ type TIDVErrorStatusConfig = {
     status?: TPOIStatus;
 };
 
-export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig) => {
+export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig): TIDVErrorStatusCode | null => {
     if (status === AUTH_STATUS_CODES.EXPIRED) {
         return IDV_ERROR_CODES.expired.code;
     }
@@ -63,7 +63,7 @@ export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig) =
     ) {
         return IDV_ERROR_CODES.nameDobMismatch.code;
     }
-    return errors[0];
+    return errors[0] as TIDVErrorStatusCode;
 };
 
 export const shouldSkipCountrySelector = (service: TPOIService, errors?: string[]) => {
@@ -72,11 +72,12 @@ export const shouldSkipCountrySelector = (service: TPOIService, errors?: string[
             return false;
         }
         const errorStatus = checkIDVErrorStatus({ errors });
-        return [
-            IDV_ERROR_CODES.dobMismatch.code,
-            IDV_ERROR_CODES.nameMismatch.code,
-            IDV_ERROR_CODES.nameDobMismatch.code,
-        ].includes(errorStatus);
+
+        return (
+            errorStatus === IDV_ERROR_CODES.nameMismatch.code ||
+            errorStatus === IDV_ERROR_CODES.dobMismatch.code ||
+            errorStatus === IDV_ERROR_CODES.nameDobMismatch.code
+        );
     } else if (service === POI_SERVICE.onfido) {
         return true;
     }

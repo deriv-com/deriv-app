@@ -2,9 +2,10 @@ import React, { Fragment, useState } from 'react';
 import { Button, Divider, InlineMessage, Text } from '@deriv-com/ui';
 import { CountrySelector } from '../../components/CountrySelector';
 import { API_ERROR_CODES, IDV_ERROR_CODES } from '../../constants';
+import { TIDVErrorStatusCode } from '../../types';
 
 type TPOICountrySelectorProps = {
-    errorStatus: string | null;
+    errorStatus: TIDVErrorStatusCode | null;
     handleNext: () => void;
     onCountrySelect: (value: string) => void;
 };
@@ -22,7 +23,8 @@ export const POICountrySelector = ({ errorStatus, handleNext, onCountrySelect }:
                         </Text>
                         <InlineMessage type='filled' variant='error'>
                             <Text size='sm'>
-                                {IDV_ERROR_CODES[errorStatus]?.message ?? API_ERROR_CODES.generic.message}
+                                {Object.values(IDV_ERROR_CODES).find(error => error.code === errorStatus)?.message ??
+                                    API_ERROR_CODES.generic.message}
                             </Text>
                         </InlineMessage>
                     </Fragment>

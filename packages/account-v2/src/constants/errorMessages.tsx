@@ -1,6 +1,4 @@
-type TErrorConfig = Readonly<Record<string, Readonly<{ code: string | null; message: string }>>>;
-
-export const API_ERROR_CODES: TErrorConfig = {
+export const API_ERROR_CODES = {
     claimedDocument: {
         code: 'ClaimedDocument',
         message:
@@ -15,13 +13,13 @@ export const API_ERROR_CODES: TErrorConfig = {
         code: null,
         message: 'Sorry, an internal error occurred. Hit the above checkbox to try again.',
     },
-};
+} as const;
 
 const documentRejectedMessage = 'We were unable to verify the identity document with the details provided.';
 const dataComparisonMessage = 'Your document type is not supported.';
 const dataValidationMessage = 'Some details on your document appear to be invalid, missing, or unclear.';
 
-export const IDV_ERROR_CODES: TErrorConfig = {
+export const IDV_ERROR_CODES = {
     deceased: {
         code: 'Deceased',
         message: 'The document’s owner is deceased.',
@@ -91,9 +89,9 @@ export const IDV_ERROR_CODES: TErrorConfig = {
         code: 'Underage',
         message: 'You’re under legal age.',
     },
-};
+} as const;
 
-export const ONFIDO_ERROR_CODES: TErrorConfig = {
+export const ONFIDO_ERROR_CODES = {
     ageValidationMinimumAcceptAge: {
         code: 'AgeValidationMinimumAcceptedAge',
         message:
@@ -163,4 +161,4 @@ export const ONFIDO_ERROR_CODES: TErrorConfig = {
         code: 'ImageIntegrityColourPicture',
         message: 'Your document appears to be in black and white. Please upload a colour photo of your document.',
     },
-};
+} as const;

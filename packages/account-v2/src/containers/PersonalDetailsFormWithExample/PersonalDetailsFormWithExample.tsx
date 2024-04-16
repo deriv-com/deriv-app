@@ -34,9 +34,7 @@ export const PersonalDetailsFormWithExample = ({ errorStatus, onConfirm }: TPers
 
     const validationSchema = getNameDOBValidationSchema().pick(fieldsToDisplay);
 
-    const isDisabled = useMemo(() => {
-        return fieldsToDisplay.every(field => !values[field] || !!errors[field]);
-    }, [values, errors, fieldsToDisplay]);
+    const isDisabled = fieldsToDisplay.every(field => !values[field] || !!errors[field]);
 
     const shouldDisplayField = (field: ReturnType<typeof generateRequiredNameDOBFields>[number]) =>
         fieldsToDisplay?.includes(field) ?? true;

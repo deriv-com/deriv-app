@@ -21,8 +21,8 @@ const ServerBot = observer(() => {
     const { is_virtual } = client;
 
     React.useEffect(() => {
-        setTimeout(() => getBotList(), 2000)
-        
+        setTimeout(() => getBotList(), 2000);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_virtual]);
 
@@ -35,29 +35,37 @@ const ServerBot = observer(() => {
 
     const handleMessage = ({ data }) => {
         if (data?.msg_type === 'bot_notification' && !data?.error) {
+            const contract_ids = [];
+            const { msg: bot_notification_msg } = data.bot_notification;
 
-            let contract_ids = [];
-
-            if (data.bot_notification.msg?.longcode) {
-                setNotifications(`${data.bot_notification.msg.longcode} barrier: ${data.bot_notification.msg.barrier} current_spot: ${data.bot_notification.msg.current_spot} payout: ${data.bot_notification.msg.payout} profit: ${data.bot_notification.msg.profit}`);
+            if (bot_notification_msg?.longcode) {
+                setNotifications(
+                    `${bot_notification_msg.longcode} barrier: ${bot_notification_msg.barrier} current_spot: ${bot_notification_msg.current_spot} payout: ${bot_notification_msg.payout} profit: ${bot_notification_msg.profit}`
+                );
             }
             if (data.bot_notification.msg_type === 'buy') {
-                setNotifications(`msg_type: ${data.bot_notification.msg_type} action: ${data.bot_notification.msg.action} payout: ${data.bot_notification.msg.payout} price: ${data.bot_notification.msg.price}`);
-                contract_ids.push(data.bot_notification.msg.contract_id)
-                if (contract_ids.includes(data.bot_notification.msg.contract_id) &&
-                data.bot_notification.msg.contract_id === contract_ids.some((el) => el === data.bot_notification.msg.contract_id)) {
-                    setNotifications('!!' + data.bot_notification.msg[`${data.bot_notification.msg.contract_id}`].barrier)
+                setNotifications(
+                    `msg_type: ${data.bot_notification.msg_type} action: ${bot_notification_msg.action} payout: ${bot_notification_msg.payout} price: ${bot_notification_msg.price}`
+                );
+                contract_ids.push(bot_notification_msg.contract_id);
+                if (
+                    contract_ids.includes(bot_notification_msg.contract_id) &&
+                    bot_notification_msg.contract_id ===
+                        contract_ids.some(el => el === bot_notification_msg.contract_id)
+                ) {
+                    setNotifications(`!!${bot_notification_msg[`${bot_notification_msg.contract_id}`].barrier}`);
                 } else {
-                    contract_ids.push(data.bot_notification.msg.contract_id)
+                    contract_ids.push(bot_notification_msg.contract_id);
                 }
             }
             if (data.bot_notification.msg_type === 'sell') {
-                setNotifications(`msg_type: ${data.bot_notification.msg_type} action: ${data.bot_notification.msg.action} payout: ${data.bot_notification.msg.payout} price: ${data.bot_notification.msg.price} profit: ${data.bot_notification.msg.profit}`);
+                setNotifications(
+                    `msg_type: ${data.bot_notification.msg_type} action: ${bot_notification_msg.action} payout: ${bot_notification_msg.payout} price: ${bot_notification_msg.price} profit: ${bot_notification_msg.profit}`
+                );
             }
             if (data.bot_notification.msg_type === 'stop') {
-                setNotifications(`msg_type: ${data.bot_notification.msg_type} reason: ${data.bot_notification.msg.reason}`);
+                setNotifications(`msg_type: ${data.bot_notification.msg_type} reason: ${bot_notification_msg.reason}`);
             }
-
         }
     };
 

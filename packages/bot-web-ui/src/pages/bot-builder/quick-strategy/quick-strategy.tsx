@@ -6,6 +6,7 @@ import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import { rudderStackSendQsCloseEvent } from './analytics/rudderstack-quick-strategy';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
@@ -68,9 +69,12 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) =
     const { setValueServerBot, createBot, setFormValues } = server_bot;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
+    const { BOT_BUILDER } = DBOT_TABS;
 
     React.useEffect(() => {
-        const data = JSON.parse(localStorage.getItem(active_tab === 4 ? 'server-form-fields' : 'qs-fields') || '{}');
+        const data = JSON.parse(
+            localStorage.getItem(active_tab === BOT_BUILDER ? 'server-form-fields' : 'qs-fields') || '{}'
+        );
         Object.keys(data).forEach(key => {
             initial_value[key as keyof TFormData] = data[key];
             setValue(key, data[key]);
@@ -162,7 +166,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) =
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        const is_server_qs_form = active_tab === 4;
+        const is_server_qs_form = active_tab === BOT_BUILDER;
         if (is_server_qs_form) {
             localStorage?.setItem('server-form-fields', JSON.stringify(form_data));
             setValueServerBot(form_data);

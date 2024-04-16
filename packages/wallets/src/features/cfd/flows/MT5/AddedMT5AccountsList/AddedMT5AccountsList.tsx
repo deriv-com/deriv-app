@@ -67,7 +67,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     </WalletText>
                 )}
 
-                <WalletText as='p' color='primary' size='xs' weight='bold'>
+                <WalletText as='p' size='xs'>
                     {account.display_login}
                 </WalletText>
                 {jurisdictionStatus.is_pending && (

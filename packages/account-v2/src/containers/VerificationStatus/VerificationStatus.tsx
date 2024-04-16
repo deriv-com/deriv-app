@@ -44,7 +44,6 @@ export const VerificationStatus = ({ isPOARequired, service, status }: TVerifica
             </IconWithMessage>
         );
     }
-
     return (
         <IconWithMessage
             actionButton={

@@ -65,7 +65,7 @@ jobs:
 
   send_slack_failure:
     name: Send Release Slack notification failure
-    runs-on: ubuntu-default
+    runs-on: ubuntu-latest
     if: failure()
     needs: [build_test_and_publish]
     steps:
@@ -76,7 +76,7 @@ jobs:
 
   send_slack_success:
     name: Send Release Slack notification success
-    runs-on: ubuntu-default
+    runs-on: ubuntu-latest
     if: success()
     needs: [build_test_and_publish]
     steps:

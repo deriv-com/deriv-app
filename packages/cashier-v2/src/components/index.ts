@@ -6,6 +6,7 @@ export { CurrencyIcon } from './CurrencyIcon';
 export { DummyComponent } from './DummyComponent';
 export { ErrorScreen } from './ErrorScreen';
 export { ExpansionPanel } from './ExpansionPanel';
+export { IconMarquee } from './IconMarquee';
 export { NewsTicker } from './NewsTicker';
 export { PageContainer } from './PageContainer';
 export { PercentageSelector } from './PercentageSelector';

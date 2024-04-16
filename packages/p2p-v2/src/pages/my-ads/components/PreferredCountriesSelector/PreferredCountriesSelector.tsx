@@ -1,38 +1,36 @@
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { TCountryListItem } from 'types';
 import { PreferredCountriesModal } from '@/components/Modals';
-import { AD_CONDITION_TYPES, DUMMY_COUNTRIES } from '@/constants';
+import { AD_CONDITION_TYPES } from '@/constants';
 import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
 import { AdConditionContentHeader } from '../AdConditionContentHeader';
 import './PreferredCountriesSelector.scss';
 
 type TPreferredCountriesSelectorProps = {
+    countryList: TCountryListItem;
     type: typeof AD_CONDITION_TYPES[keyof typeof AD_CONDITION_TYPES];
 };
 
-//TODO: replace dummyCountries after creation and integration of the country list hook
-
-const PreferredCountriesSelector = ({ type }: TPreferredCountriesSelectorProps) => {
+const PreferredCountriesSelector = ({ countryList, type }: TPreferredCountriesSelectorProps) => {
     const { isMobile } = useDevice();
     const { getValues, setValue } = useFormContext();
-    const dummyCountries = Object.keys(DUMMY_COUNTRIES).map(key => ({
-        text: DUMMY_COUNTRIES[key]?.country_name,
+    const countries = Object.keys(countryList).map(key => ({
+        text: countryList[key]?.country_name,
         value: key,
     }));
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedValues, setSelectedValues] = useState<string[]>(
-        getValues('preferred-countries')
-            ? getValues('preferred-countries')
-            : dummyCountries.map(country => country.value)
+        getValues('preferred-countries') ? getValues('preferred-countries') : countries.map(country => country.value)
     );
 
     const getSelectedCountriesText = () => {
         const selectedCountries = getValues('preferred-countries');
-        if (selectedCountries?.length === dummyCountries.length) {
+        if (selectedCountries?.length === countries.length) {
             return 'All countries';
         }
-        return selectedCountries?.map((value: string) => DUMMY_COUNTRIES[value]?.country_name).join(', ');
+        return selectedCountries?.map((value: string) => countryList[value]?.country_name).join(', ');
     };
 
     return (
@@ -50,7 +48,7 @@ const PreferredCountriesSelector = ({ type }: TPreferredCountriesSelectorProps) 
             </div>
             {isModalOpen && (
                 <PreferredCountriesModal
-                    countryList={dummyCountries}
+                    countryList={countries}
                     isModalOpen={isModalOpen}
                     onClickApply={() => {
                         setValue('preferred-countries', selectedValues);

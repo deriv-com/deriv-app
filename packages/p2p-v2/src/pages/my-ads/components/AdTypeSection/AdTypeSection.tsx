@@ -1,8 +1,8 @@
 import React, { MouseEventHandler } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 import { RadioGroup } from '@/components';
-import { BUY_SELL, MY_ADS_URL, RATE_TYPE } from '@/constants';
+import { BUY_SELL, RATE_TYPE } from '@/constants';
+import { useQueryString } from '@/hooks';
 import { Text, useDevice } from '@deriv-com/ui';
 import { AdFormController } from '../AdFormController';
 import { AdFormInput } from '../AdFormInput';
@@ -16,21 +16,24 @@ type TAdTypeSectionProps = {
     goToNextStep: MouseEventHandler<HTMLButtonElement>;
     goToPreviousStep: MouseEventHandler<HTMLButtonElement>;
     localCurrency?: string;
+    onCancel: () => void;
     rateType: string;
 };
 
-const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeSectionProps) => {
+const AdTypeSection = ({ currency, localCurrency, onCancel, rateType, ...props }: TAdTypeSectionProps) => {
+    const { queryString } = useQueryString();
+    const { advertId = '' } = queryString;
+    const isEdit = !!advertId;
     const { isMobile } = useDevice();
     const {
         control,
-        formState: { isDirty, isValid },
+        formState: { isValid },
         getValues,
         setValue,
         trigger,
         watch,
     } = useFormContext();
 
-    const history = useHistory();
     const isSell = watch('ad-type') === BUY_SELL.SELL;
 
     const onChangeAdTypeHandler = (userInput: 'buy' | 'sell') => {
@@ -43,12 +46,6 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
                 setValue('rate-value', '-0.01');
             }
         }
-    };
-
-    const onCancel = () => {
-        if (isDirty) {
-            //TODO:  display cancel modal
-        } else history.push(MY_ADS_URL);
     };
 
     const triggerValidation = (fieldNames: string[]) => {
@@ -64,33 +61,36 @@ const AdTypeSection = ({ currency, localCurrency, rateType, ...props }: TAdTypeS
 
     return (
         <div className='p2p-v2-ad-type-section'>
-            <Controller
-                control={control}
-                defaultValue={BUY_SELL.BUY}
-                name='ad-type'
-                render={({ field: { onChange, value } }) => {
-                    return (
-                        <div className='mb-[3.5rem]'>
-                            <RadioGroup
-                                name='type'
-                                onToggle={event => {
-                                    onChangeAdTypeHandler(event.target.value as 'buy' | 'sell');
-                                    onChange(event);
-                                }}
-                                required
-                                selected={value}
-                                textSize={isMobile ? 'md' : 'sm'}
-                            >
-                                <RadioGroup.Item label='Buy USD' value={BUY_SELL.BUY} />
-                                <RadioGroup.Item label='Sell USD' value={BUY_SELL.SELL} />
-                            </RadioGroup>
-                        </div>
-                    );
-                }}
-                rules={{ required: true }}
-            />
+            {!isEdit && (
+                <Controller
+                    control={control}
+                    defaultValue={BUY_SELL.BUY}
+                    name='ad-type'
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <div className='mb-[3.5rem]'>
+                                <RadioGroup
+                                    name='type'
+                                    onToggle={event => {
+                                        onChangeAdTypeHandler(event.target.value as 'buy' | 'sell');
+                                        onChange(event);
+                                    }}
+                                    required
+                                    selected={value}
+                                    textSize={isMobile ? 'md' : 'sm'}
+                                >
+                                    <RadioGroup.Item label='Buy USD' value={BUY_SELL.BUY} />
+                                    <RadioGroup.Item label='Sell USD' value={BUY_SELL.SELL} />
+                                </RadioGroup>
+                            </div>
+                        );
+                    }}
+                    rules={{ required: true }}
+                />
+            )}
             <div className='flex flex-col lg:flex-row lg:gap-[1.6rem]'>
                 <AdFormInput
+                    isDisabled={isEdit}
                     label='Total amount'
                     name='amount'
                     rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}

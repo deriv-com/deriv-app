@@ -22,7 +22,7 @@ const getDesktopSteps = (
         placement: 'bottom',
         spotlightPadding: 0,
         styles: { spotlight: { borderRadius: '1.6rem 1.6rem 0rem 0rem' } },
-        target: `.wallets-card__header`,
+        target: `.wallets-container__header`,
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallets
@@ -51,7 +51,7 @@ const getDesktopSteps = (
                 borderRadius: '6.4rem',
             },
         },
-        target: `.wallets-card__header .wallets-header__actions`,
+        target: `.wallets-container__header .wallets-header__actions`,
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallet actions

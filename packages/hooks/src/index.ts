@@ -40,6 +40,7 @@ export { default as useIsAccountStatusPresent } from './useIsAccountStatusPresen
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
 export { default as useIsP2PEnabled } from './useIsP2PEnabled';
 export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';
+export { default as useIsRtl } from './useIsRtl';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
 export { default as useLandingCompanyDetails } from './useLandingCompanyDetails';
 export { default as useLocalStorageData } from './useLocalStorageData';
@@ -80,3 +81,4 @@ export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletsList } from './useWalletsList';
 export { default as useGrowthbookFeatureFlag } from './useGrowthbookFeatureFlag';
 export { default as useResidenceSelfDeclaration } from './useResidenceSelfDeclaration';
+export { default as useTotalAssetCurrency } from './useTotalAssetCurrency';

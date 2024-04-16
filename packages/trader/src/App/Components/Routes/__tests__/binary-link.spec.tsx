@@ -1,6 +1,6 @@
 import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
-import { BrowserRouter, Link, Route } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { BinaryLink } from '../index';
 import userEvent from '@testing-library/user-event';
 
@@ -17,7 +17,6 @@ const MockBinaryLink = ({ to }: TMockBinaryLink) => (
 );
 
 describe('BinaryLink component', () => {
-    beforeEach(() => cleanup());
     it('should render "children" when passed in', () => {
         render(<MockBinaryLink to='/dtrader' />);
         expect(screen.getByTestId('dt_child')).toBeInTheDocument();

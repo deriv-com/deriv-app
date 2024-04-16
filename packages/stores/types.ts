@@ -244,6 +244,8 @@ type TTradingPlatformAvailableAccount = {
     };
     shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
+    max_count?: number;
+    available_count?: number;
 };
 
 type TAvailableCFDAccounts = {
@@ -411,6 +413,7 @@ type TClientStore = {
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    ctrader_trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;
@@ -428,6 +431,7 @@ type TClientStore = {
     setCFDScore: (score: number) => void;
     country_standpoint: TCountryStandpoint;
     currency: string;
+    ctrader_total_balance: number;
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
     current_fiat_currency?: string;

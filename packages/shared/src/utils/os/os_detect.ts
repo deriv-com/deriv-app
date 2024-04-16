@@ -125,13 +125,7 @@ export const mobileOSDetectAsync = async () => {
         if (navigator?.userAgentData) {
             const ua = await navigator.userAgentData.getHighEntropyValues(['model']);
             // eslint-disable-next-line no-console
-            console.log(
-                '==>',
-                ua?.model,
-                regex.test(ua?.model || ''),
-                regex2.test(ua?.model || ''),
-                regex3.test(ua?.model || '')
-            );
+            console.log('==>', ua?.model && regex.test(ua.model) && regex2.test(ua.model) && regex3.test(ua.model));
             if (ua?.model && regex.test(ua.model) && regex2.test(ua.model) && regex3.test(ua.model)) {
                 return 'huawei';
             }

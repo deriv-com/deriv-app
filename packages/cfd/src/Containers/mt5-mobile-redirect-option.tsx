@@ -29,7 +29,9 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
 
     useEffect(() => {
         async function fetchData() {
-            await mobileOSDetectAsync();
+            const os = await mobileOSDetectAsync();
+            // eslint-disable-next-line no-console
+            console.log('==>', os);
         }
         fetchData();
     }, []);

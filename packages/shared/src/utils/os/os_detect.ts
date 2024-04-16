@@ -111,10 +111,6 @@ export const mobileOSDetectAsync = async () => {
     const huaweiDevicesRegex =
         /\b(ALP-|AMN-|ANA-|ANE-|ANG-|AQM-|ARS-|ART-|ATU-|BAC-|BLA-|BRQ-|CAG-|CAM-|CAN-|CAZ-|CDL-|CDY-|CLT-|CRO-|CUN-|DIG-|DRA-|DUA-|DUB-|DVC-|ELE-|ELS-|EML-|EVA-|EVR-|FIG-|FLA-|FRL-|GLK-|HMA-|HW-|HWI-|INE-|JAT-|JEF-|JER-|JKM-|JNY-|JSC-|LDN-|LIO-|LON-|LUA-|LYA-|LYO-|MAR-|MED-|MHA-|MLA-|MRD-|MYA-|NCE-|NEO-|NOH-|NOP-|OCE-|PAR-|PIC-|POT-|PPA-|PRA-|RNE-|SEA-|SLA-|SNE-|SPN-|STK-|TAH-|TAS-|TET-|TRT-|VCE-|VIE-|VKY-|VNS-|VOG-|VTR-|WAS-|WKG-|WLZ-|JAD-|MLD-|RTE-|NAM-|NEN-|BAL-|JLN-|YAL|MGA-|FGD-|XYAO-|BON-|ALN-|ALT-|BRA-|DBY2-|STG-|MAO-|LEM-|GOA-|FOA-|MNA-|LNA-)\b/i;
 
-    const regex = /\b((?:ag[rs][23]?|bah2?|sht?|btv)-a?[lw]\d{2})\b(?!.+d\/s)/i;
-    const regex2 = /(?:huawei|honor)([-\w ]+)[;\)]/i;
-    const regex3 = /\b(nexus 6p|\w{2,4}e?-[atu]?[ln][\dx][012359c][adn]?)\b(?!.+d\/s)/i;
-
     // Windows Phone must come first because its UA also contains "Android"
     if (/windows phone/i.test(userAgent)) {
         return 'Windows Phone';
@@ -124,9 +120,7 @@ export const mobileOSDetectAsync = async () => {
         // Check if navigator.userAgentData is available for modern browsers
         if (navigator?.userAgentData) {
             const ua = await navigator.userAgentData.getHighEntropyValues(['model']);
-            // eslint-disable-next-line no-console
-            console.log('==>', ua?.model && regex.test(ua.model) && regex2.test(ua.model) && regex3.test(ua.model));
-            if (ua?.model && regex.test(ua.model) && regex2.test(ua.model) && regex3.test(ua.model)) {
+            if (huaweiDevicesRegex.test(ua?.model || '')) {
                 return 'huawei';
             }
         } else if (huaweiDevicesRegex.test(userAgent) || /huawei/i.test(userAgent)) {

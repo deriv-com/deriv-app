@@ -4,7 +4,7 @@ import { Loader } from '@deriv-com/ui';
 import { POI_SERVICE } from '../../../constants';
 import { ErrorList } from '../../../containers';
 import { translateErrorCode } from '../../../utils';
-import { OnfidoContainer } from '../../dist/types';
+import { OnfidoContainer } from '../Onfido/OnfidoContainer';
 
 type TOnfidoServiceProps = {
     countryCode: string;

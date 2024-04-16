@@ -1,4 +1,4 @@
-import { StringParam, UrlUpdateType, useQueryParams } from 'use-query-params';
+import { StringParam, useQueryParams } from 'use-query-params';
 
 /**
  * A hook that uses `use-query-params` to sync URL params to the React lifecycle
@@ -17,7 +17,7 @@ import { StringParam, UrlUpdateType, useQueryParams } from 'use-query-params';
  *      // Show Stats component
  * }
  */
-function useQueryString(action = 'pushIn') {
+function useQueryString() {
     const [query, setQuery] = useQueryParams({
         advertId: StringParam,
         formAction: StringParam,
@@ -42,7 +42,7 @@ function useQueryString(action = 'pushIn') {
             {
                 [key]: undefined,
             },
-            action as UrlUpdateType
+            'pushIn'
         );
     }
 

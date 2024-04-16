@@ -85,7 +85,18 @@ describe('<OrderDetailsCardFooter />', () => {
 
         expect(screen.getByRole('button', { name: 'I’ve received payment' })).toBeInTheDocument();
     });
+    it('should not render any buttons', () => {
+        mockUseOrderDetails.mockReturnValue({
+            orderDetails: {
+                ...mockUseOrderDetails().orderDetails,
+                shouldShowOnlyReceivedButton: false,
+            },
+        });
 
+        const { container } = render(<OrderDetailsCardFooter />);
+
+        expect(container).toBeEmptyDOMElement();
+    });
     it('should open the complain modal on clicking the complain button', async () => {
         mockUseOrderDetails.mockReturnValue({
             orderDetails: {

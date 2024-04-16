@@ -19,6 +19,15 @@ const OrderDetailsCardFooter = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const textSize = isMobile ? 'md' : 'sm';
 
+    if (
+        !shouldShowCancelAndPaidButton &&
+        !shouldShowComplainAndReceivedButton &&
+        !shouldShowOnlyComplainButton &&
+        !shouldShowOnlyReceivedButton
+    ) {
+        return null;
+    }
+
     return (
         <div className='p2p-v2-order-details-card-footer'>
             {shouldShowCancelAndPaidButton && (

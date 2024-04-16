@@ -68,4 +68,12 @@ describe('OrderDetailsComplainModal', () => {
         render(<OrderDetailsComplainModal {...mockProps} />);
         expect(screen.getByTestId('dt_p2p_v2_full_page_mobile_wrapper')).toBeInTheDocument();
     });
+    it('should render the corresponding labels for sell order', () => {
+        mockProps.isBuyOrderForUser = false;
+        render(<OrderDetailsComplainModal {...mockProps} />);
+        expect(screen.getByRole('radio', { name: 'I’ve not received any payment.' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'I’ve received less than the agreed amount.' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'I’ve received more than the agreed amount.' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'I’ve received payment from 3rd party.' })).toBeInTheDocument();
+    });
 });

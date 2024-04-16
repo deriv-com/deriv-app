@@ -23,6 +23,10 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: () => ({ isMobile: false }),
 }));
 
+jest.mock('@/components/Modals', () => ({
+    ...jest.requireActual('@/components/Modals'),
+    OrderDetailsComplainModal: () => <div>OrderDetailsComplainModal</div>,
+}));
 jest.mock('@/providers/OrderDetailsProvider', () => ({
     useOrderDetails: jest.fn().mockReturnValue({
         orderDetails: {
@@ -101,16 +105,16 @@ describe('<OrderDetailsCardFooter />', () => {
         mockUseOrderDetails.mockReturnValue({
             orderDetails: {
                 ...mockUseOrderDetails().orderDetails,
-                shouldShowComplainAndReceivedButton: false,
+                shouldShowCancelAndPaidButton: false,
                 shouldShowOnlyComplainButton: true,
             },
         });
         render(<OrderDetailsCardFooter />);
         const complainButton = screen.getByRole('button', { name: 'Complain' });
         expect(complainButton).toBeInTheDocument();
-        await userEvent.click(complainButton);
-        await (() => {
-            expect(screen.getByText('What’s your complaint?')).toBeInTheDocument();
+        userEvent.click(complainButton);
+        await waitFor(() => {
+            expect(screen.getByText('OrderDetailsComplainModal')).toBeInTheDocument();
         });
     });
 });

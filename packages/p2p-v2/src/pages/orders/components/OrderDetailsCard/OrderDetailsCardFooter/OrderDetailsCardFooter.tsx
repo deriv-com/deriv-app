@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { OrderDetailsComplainModal } from '@/components/Modals/OrderDetailsComplainModal';
+import { OrderDetailsComplainModal } from '@/components/Modals';
 import { useOrderDetails } from '@/providers/OrderDetailsProvider';
 import { Button, useDevice } from '@deriv-com/ui';
 import './OrderDetailsCardFooter.scss';

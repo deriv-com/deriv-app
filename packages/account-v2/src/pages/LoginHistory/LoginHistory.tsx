@@ -12,4 +12,5 @@ export const LoginHistory = () => {
         if (!isMobile) return <LoginHistoryTable loginHistory={loginHistory} />;
         return <LoginHistoryTableCard loginHistory={loginHistory} />;
     }
+    return null;
 };

@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
+import * as Yup from 'yup';
 import { useTwoFactorAuthentication, useTwoFactorAuthenticationStatus } from '@deriv/api-v2';
 import { InputWithButton } from '../../components/InputWithButton';
 import { API_ERROR_CODES, getTwoFactorAuthenticationFormValidationSchema } from '../../utils';
 
-type TTwoFactorData = {
-    digitCode: string;
-};
+type TTwoFactorData = Yup.InferType<ReturnType<typeof getTwoFactorAuthenticationFormValidationSchema>>;
 
 export const TwoFactorAuthenticationForm = () => {
     const { data: isTwoFactorAuthenticationEnabled, isLoading: isStatusLoading } = useTwoFactorAuthenticationStatus();
@@ -19,7 +18,7 @@ export const TwoFactorAuthenticationForm = () => {
     };
     const formRef = useRef<FormikProps<TTwoFactorData>>(null);
     useEffect(() => {
-        if (error && error.error.code === API_ERROR_CODES.INVALID_OTP) {
+        if (error && error.error.code === API_ERROR_CODES.invalidOTP) {
             formRef.current?.setFieldError('digitCode', "That's not the right code. Please try again.");
         }
         formRef.current?.setSubmitting(false);

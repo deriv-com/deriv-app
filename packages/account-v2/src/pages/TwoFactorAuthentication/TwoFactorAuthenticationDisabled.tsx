@@ -9,12 +9,10 @@ import { TwoFactorAuthenticationQRCode } from './TwoFactorAuthenticationQRCode';
 const TwoFactorAuthenticationLink = ({
     children,
     className = 'hover:underline font-bold',
-    rel = 'noopener noreferrer',
-    target = '_blank',
     ...rest
 }: ComponentProps<'a'>) => {
     return (
-        <a {...rest} className={className} rel={rel} target={target}>
+        <a {...rest} className={className} rel='noopener noreferrer' target='_blank'>
             {children}
         </a>
     );

@@ -8,8 +8,8 @@ import {
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
-import lightweightSend from './api-client/send';
-import SubscriptionsManager from './api-client/subscriptions-manager';
+import lightweightSend from './ws-client/request';
+import SubscriptionsManager from './ws-client/subscriptions-manager';
 
 type TSendFunction = <T extends TSocketEndpointNames>(
     name: T,

@@ -5,7 +5,7 @@ const REQ_TIMEOUT = 20000;
  * no handling of reconnections, no state, nothing, just send
  * even request seq number is outside of its scope (reason being, that req_seq needs to be also used by the subscriptions)
  */
-function send(ws: WebSocket, reqSeqNumber: number, name: string, payload: object) {
+function request(ws: WebSocket, reqSeqNumber: number, name: string, payload: object) {
     let promise = new Promise((resolve, reject) => {
         let timeout: NodeJS.Timeout = setTimeout(() => {
             ws.removeEventListener('message', receive);
@@ -35,4 +35,4 @@ function send(ws: WebSocket, reqSeqNumber: number, name: string, payload: object
      return promise;
 }
 
-export default send;
+export default request;

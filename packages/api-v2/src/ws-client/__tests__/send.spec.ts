@@ -1,4 +1,4 @@
-import send from '../send';  // Adjust the import path as needed
+import send from '../request';  // Adjust the import path as needed
 
 function mockWebSocketFactory() {
     let handlers: any = {};

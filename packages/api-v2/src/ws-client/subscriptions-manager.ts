@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import BackendSubscription from './backend-subscription';
+import BackendSubscription from './subscription';
 
 export default class SubscriptionsManager {
     backendSubscriptions: Map<string, BackendSubscription> = new Map();

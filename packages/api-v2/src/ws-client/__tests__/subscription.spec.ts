@@ -1,5 +1,5 @@
-import BackendSubscription from '../backend-subscription';
-import send from '../send';
+import BackendSubscription from '../subscription';
+import send from '../request';
 
 function mockWebSocketFactory() {
     let handlers: any = {};

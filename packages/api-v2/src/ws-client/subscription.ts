@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import send from './send';
+import send from './request';
 
 function generateRandomInteger() {
     return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 1;

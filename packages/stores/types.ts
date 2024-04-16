@@ -431,6 +431,7 @@ type TClientStore = {
     setCFDScore: (score: number) => void;
     country_standpoint: TCountryStandpoint;
     currency: string;
+    ctrader_total_balance: number;
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
     current_fiat_currency?: string;

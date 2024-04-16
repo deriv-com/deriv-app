@@ -92,17 +92,11 @@ const CTraderDerivXTradeModal = ({
         modules: { cfd },
     } = useStore();
 
-    const { ctrader_accounts_list, ctrader_trading_platform_available_accounts } = client;
+    const { ctrader_accounts_list, ctrader_trading_platform_available_accounts, ctrader_total_balance } = client;
     const { setAccountType, toggleMT5TradeModal, is_account_being_created } = cfd;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal } = ui;
     const { selected_account_type, no_CR_account, is_real, has_any_real_account, getAccount } = traders_hub;
-
-    const total_balance =
-        ctrader_accounts_list &&
-        ctrader_accounts_list
-            .filter(ctrader_account => ctrader_account.account_type === 'real')
-            .reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0);
 
     const message = {
         header: (
@@ -222,7 +216,7 @@ const CTraderDerivXTradeModal = ({
                             weight='bold'
                         >
                             <Money
-                                amount={is_real ? total_balance : ctrader_derivx_trade_account.display_balance}
+                                amount={is_real ? ctrader_total_balance : ctrader_derivx_trade_account.display_balance}
                                 currency={ctrader_derivx_trade_account.currency}
                                 has_sign={
                                     !!ctrader_derivx_trade_account.balance && ctrader_derivx_trade_account.balance < 0

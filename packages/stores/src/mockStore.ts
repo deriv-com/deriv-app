@@ -127,6 +127,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             current_landing_company: { support_professional_client: '' },
             cfd_score: 0,
             ctrader_accounts_list: [],
+            ctrader_total_balance: 0,
             email_address: '',
             setCFDScore: jest.fn(),
             getLimits: jest.fn(),

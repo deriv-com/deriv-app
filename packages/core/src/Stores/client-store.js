@@ -395,6 +395,7 @@ export default class ClientStore extends BaseStore {
             is_high_risk: computed,
             is_low_risk: computed,
             has_residence: computed,
+            ctrader_total_balance: computed,
             fetchFinancialAssessment: action.bound,
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
@@ -2617,6 +2618,12 @@ export default class ClientStore extends BaseStore {
 
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    get ctrader_total_balance() {
+        return this.ctrader_accounts_list
+            ?.filter(ctrader_account => ctrader_account.account_type === 'real')
+            .reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0);
     }
 
     get is_proof_of_ownership_enabled() {

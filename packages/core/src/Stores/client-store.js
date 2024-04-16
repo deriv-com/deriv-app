@@ -28,6 +28,7 @@ import {
     setCurrencies,
     State,
     toMoment,
+    sortApiData,
     urlForLanguage,
     getAppId,
 } from '@deriv/shared';
@@ -59,6 +60,7 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
+    ctrader_trading_platform_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
     is_switching = false;
@@ -176,6 +178,7 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
+            ctrader_trading_platform_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
@@ -384,6 +387,7 @@ export default class ClientStore extends BaseStore {
             responseMt5LoginList: action.bound,
             responseDxtradeTradingServers: action.bound,
             responseTradingPlatformAvailableAccounts: action.bound,
+            responseCTraderTradingPlatformAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
@@ -391,6 +395,7 @@ export default class ClientStore extends BaseStore {
             is_high_risk: computed,
             is_low_risk: computed,
             has_residence: computed,
+            ctrader_total_balance: computed,
             fetchFinancialAssessment: action.bound,
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
@@ -1640,6 +1645,9 @@ export default class ClientStore extends BaseStore {
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
+            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(
+                this.responseCTraderTradingPlatformAvailableAccounts
+            );
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
@@ -2501,6 +2509,12 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    responseCTraderTradingPlatformAvailableAccounts(response) {
+        if (!response.error) {
+            this.ctrader_trading_platform_available_accounts = response.trading_platform_available_accounts;
+        }
+    }
+
     responseTradingPlatformAccountsList(response) {
         const { platform } = response.echo_req || {};
 
@@ -2508,7 +2522,7 @@ export default class ClientStore extends BaseStore {
         this[`${platform}_accounts_list_error`] = null;
 
         if (!response.error) {
-            this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {
+            this[`${platform}_accounts_list`] = sortApiData(response.trading_platform_accounts).map(account => {
                 const display_login = account.error ? account.error.details.account_id : account.account_id;
                 if (account.error) {
                     const { account_type, server } = account.error.details;
@@ -2604,6 +2618,12 @@ export default class ClientStore extends BaseStore {
 
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    get ctrader_total_balance() {
+        return this.ctrader_accounts_list
+            ?.filter(ctrader_account => ctrader_account.account_type === 'real')
+            .reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0);
     }
 
     get is_proof_of_ownership_enabled() {

@@ -27,6 +27,7 @@ export const TwoFactorAuthenticationForm = () => {
     const handleSubmit = (values: TTwoFactorData) => {
         const totpAction = isTwoFactorAuthenticationEnabled ? 'disable' : 'enable';
         mutate({ otp: values.digitCode, totp_action: totpAction });
+        // TODO: Handle notification
     };
     return (
         <Formik initialValues={initialValues} innerRef={formRef} onSubmit={handleSubmit}>

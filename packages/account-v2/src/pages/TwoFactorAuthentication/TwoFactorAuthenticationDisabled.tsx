@@ -35,7 +35,7 @@ export const TwoFactorAuthenticationDisabled = () => {
                 <Text
                     align='start'
                     as='h2'
-                    className='ml-[1.2rem] mb-[1.5] text-[1.6rem] text-system-light-prominent-text leading-normal sm:mr-1.2rem'
+                    className='ml-[1.2rem] mb-[1.5rem] text-[1.6rem] text-system-light-prominent-text leading-normal sm:mr-1.2rem'
                     weight='bold'
                 >
                     How to set up 2FA for your Deriv account

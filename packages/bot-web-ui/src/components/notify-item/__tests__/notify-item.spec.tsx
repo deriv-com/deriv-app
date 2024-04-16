@@ -36,13 +36,6 @@ describe('messageWithButtonMockProps', () => {
         expect(screen.getByText('sample text')).toBeInTheDocument();
         expect(screen.getByRole('img')).toBeInTheDocument();
     });
-
-    it('777should render messageWithImage', () => {
-        const { container } = render(messageWithImage('sample text', ''));
-        expect(container).toBeInTheDocument();
-        expect(screen.getByText('sample text')).toBeInTheDocument();
-        expect(screen.getByRole('img')).toBeInTheDocument();
-    });
 });
 
 describe('arrayAsMessage', () => {

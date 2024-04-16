@@ -21,6 +21,7 @@ const AvailableP2PBalanceModal = ({ isModalOpen, onRequestClose }: TAvailableP2P
             onRequestClose={onRequestClose}
             shouldCloseOnOverlayClick={false}
             style={customStyles}
+            testId='dt_p2p_v2_available_p2p_balance_modal'
         >
             <Text as='p' weight='bold'>
                 Available Deriv P2P Balance

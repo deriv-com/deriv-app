@@ -1,15 +1,24 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { ValidationError } from 'yup';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import { dictionary } from '@zxcvbn-ts/language-common';
-import { passwordErrorMessage, passwordRegex, warningMessages } from '../../../constants/password';
-import { calculateScore, isPasswordValid, passwordKeys, Score, validPassword } from '../../../utils/password';
+import { passwordErrorMessage, warningMessages } from '../../../constants/password';
+import {
+    calculateScore,
+    cfdSchema,
+    mt5Schema,
+    passwordKeys,
+    Score,
+    validPassword,
+    validPasswordMT5,
+} from '../../../utils/password-validation';
 import { WalletPasswordFieldProps } from '../WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 import { WalletTextField } from '../WalletTextField';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-export const validatePassword = (password: string) => {
+export const validatePassword = (password: string, mt5Policy: boolean) => {
     const score = calculateScore(password);
     let errorMessage = '';
 
@@ -17,19 +26,27 @@ export const validatePassword = (password: string) => {
     zxcvbnOptions.setOptions(options);
 
     const { feedback } = zxcvbn(password);
-    if (!passwordRegex.isLengthValid.test(password)) {
-        errorMessage = passwordErrorMessage.invalidLength;
-    } else if (!isPasswordValid(password)) {
-        errorMessage = passwordErrorMessage.missingCharacter;
-    } else {
+    try {
+        if (mt5Policy) {
+            mt5Schema.validateSync(password);
+        } else {
+            cfdSchema.validateSync(password);
+        }
         errorMessage = warningMessages[feedback.warning as passwordKeys] ?? '';
+    } catch (err) {
+        if (err instanceof ValidationError) {
+            errorMessage = err?.message;
+        }
     }
+
     return { errorMessage, score };
 };
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     autoComplete,
     label,
+    message,
+    mt5Policy = false,
     name = 'walletPasswordField',
     onChange,
     password,
@@ -40,7 +57,8 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
 
-    const { errorMessage, score } = useMemo(() => validatePassword(password), [password]);
+    const { errorMessage, score } = useMemo(() => validatePassword(password, mt5Policy), [password, mt5Policy]);
+    const passwordValidation = mt5Policy ? !validPasswordMT5(password) : !validPassword(password);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,22 +76,30 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
         }
     }, [isTouched]);
 
+    function getMessage() {
+        if (isTouched) {
+            if (errorMessage) {
+                return errorMessage;
+            }
+            return message;
+        }
+    }
+
     return (
         <div className='wallets-password'>
             <WalletTextField
                 autoComplete={autoComplete}
                 errorMessage={isTouched && (passwordError ? passwordErrorMessage.PasswordError : errorMessage)}
-                isInvalid={(!validPassword(password) && isTouched) || passwordError}
+                isInvalid={(passwordValidation && isTouched) || passwordError}
                 label={label}
-                message={isTouched ? errorMessage : ''}
-                messageVariant='warning'
+                message={getMessage()}
+                messageVariant={errorMessage ? 'warning' : undefined}
                 name={name}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
                 )}
-                shouldShowWarningMessage
                 showMessage={showMessage}
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={password}

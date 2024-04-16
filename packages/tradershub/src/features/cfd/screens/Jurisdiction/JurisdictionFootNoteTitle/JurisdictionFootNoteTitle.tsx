@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv/quill-design';
-import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
+import { THooks } from '@/types';
+import { MarketTypeDetails } from '@cfd/constants';
+import { Text } from '@deriv-com/ui';
 
 type TJurisdictionFootNoteTitle = {
     marketType: Exclude<THooks.SortedMT5Accounts['market_type'], undefined>;
@@ -38,7 +38,7 @@ const JurisdictionFootNoteTitle = ({ marketType, selectedJurisdiction }: TJurisd
     }
 
     return (
-        <Text bold size='sm'>
+        <Text size='sm' weight='bold'>
             {footnoteText}
         </Text>
     );

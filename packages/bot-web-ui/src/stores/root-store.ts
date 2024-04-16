@@ -5,7 +5,6 @@ import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';
 import DashboardStore from './dashboard-store';
 import DataCollectionStore from './data-collection-store';
-import DownloadStore from './download-store';
 import FlyoutHelpStore from './flyout-help-store';
 import FlyoutStore from './flyout-store';
 import GoogleDriveStore from './google-drive-store';
@@ -29,7 +28,6 @@ export default class RootStore {
     public dbot: TDbot;
     public app: AppStore;
     public summary_card: SummaryCardStore;
-    public download: DownloadStore;
     public flyout: FlyoutStore;
     public flyout_help: FlyoutHelpStore;
     public google_drive: GoogleDriveStore;
@@ -57,7 +55,6 @@ export default class RootStore {
         this.dbot = dbot;
         this.app = new AppStore(this, core);
         this.summary_card = new SummaryCardStore(this, core);
-        this.download = new DownloadStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);
         this.google_drive = new GoogleDriveStore(this);

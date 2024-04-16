@@ -45,6 +45,28 @@ $HEIGHT: calc(100vh - 34em);
         display: flex;
         align-items: flex-start;
         margin-right: 8px;
+
+        .lookbacks-marker {
+            &__wrapper {
+                height: 2.4rem;
+                width: 2.4rem;
+                border-radius: $BORDER_RADIUS;
+                background-color: var(--general-section-1);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            &__asset {
+                height: 1.6rem;
+                width: 1.6rem;
+                border-radius: 50%;
+                background-color: var(--text-status-info-blue);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
     }
     &__item {
         display: flex;

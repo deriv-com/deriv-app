@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
-import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
-import { InlineMessage, WalletButton, WalletText } from '../../../../../components/Base';
+import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import { getStaticUrl } from '../../../../../helpers/urls';
+import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails, PlatformDetails } from '../../../constants';
 import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
@@ -15,64 +15,40 @@ type TProps = {
     account: THooks.MT5AccountsList;
 };
 
-const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
-    const IconToLink = () => {
-        switch (account.market_type) {
-            case 'financial':
-            case 'synthetic':
-            case 'all':
-                return window.open(getStaticUrl('/dmt5'));
-            default:
-                return window.open(getStaticUrl('/dmt5'));
-        }
-    };
-    return (
-        <div className='wallets-added-mt5__icon' onClick={() => IconToLink()}>
-            {MarketTypeDetails[account.market_type || 'all'].icon}
-        </div>
-    );
-};
-
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
-    const history = useHistory();
     const { getVerificationStatus } = useJurisdictionStatus();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
     const { title } = MarketTypeDetails[account.market_type ?? 'all'];
+    const { isMobile } = useDevice();
     const { show } = useModal();
     const { t } = useTranslation();
 
     return (
         <TradingAccountCard
-            leading={<MT5AccountIcon account={account} />}
+            disabled={jurisdictionStatus.is_pending}
+            leading={
+                <div className='wallets-added-mt5__icon'>{MarketTypeDetails[account.market_type || 'all'].icon}</div>
+            }
+            onClick={() => {
+                jurisdictionStatus.is_failed
+                    ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
+                          defaultRootId: 'wallets_modal_root',
+                      })
+                    : show(
+                          <MT5TradeModal
+                              marketType={account.market_type ?? 'all'}
+                              mt5Account={account}
+                              platform={PlatformDetails.mt5.platform}
+                          />
+                      );
+            }}
             trailing={
-                <div className='wallets-added-mt5__actions'>
-                    <WalletButton
-                        disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
-                        onClick={() => {
-                            history.push(`/wallets/cashier/transfer`, { toAccountLoginId: account.loginid });
-                        }}
-                        variant='outlined'
-                    >
-                        {t('Transfer')}
-                    </WalletButton>
-                    <WalletButton
-                        disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
-                        onClick={() =>
-                            show(
-                                <MT5TradeModal
-                                    marketType={account.market_type ?? 'all'}
-                                    mt5Account={account}
-                                    platform={PlatformDetails.mt5.platform}
-                                />
-                            )
-                        }
-                    >
-                        {t('Open')}
-                    </WalletButton>
+                <div className='wallets-added-mt5__icon'>
+                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
                 </div>
             }
         >
@@ -81,7 +57,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <WalletText size='sm'>{title}</WalletText>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
-                            <WalletText size='2xs' weight='bold'>
+                            <WalletText color='black' size={isMobile ? 'sm' : 'xs'}>
                                 {account.landing_company_short?.toUpperCase()}
                             </WalletText>
                         </div>
@@ -93,7 +69,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     </WalletText>
                 )}
 
-                <WalletText as='p' color='primary' size='xs' weight='bold'>
+                <WalletText as='p' size='xs'>
                     {account.display_login}
                 </WalletText>
                 {jurisdictionStatus.is_pending && (
@@ -113,9 +89,14 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 {t('Verification failed.')}{' '}
                                 <a
                                     onClick={() =>
-                                        show(<VerificationFailedModal />, {
-                                            defaultRootId: 'wallets_modal_root',
-                                        })
+                                        show(
+                                            <VerificationFailedModal
+                                                selectedJurisdiction={account.landing_company_short}
+                                            />,
+                                            {
+                                                defaultRootId: 'wallets_modal_root',
+                                            }
+                                        )
                                     }
                                 >
                                     {t('Why?')}

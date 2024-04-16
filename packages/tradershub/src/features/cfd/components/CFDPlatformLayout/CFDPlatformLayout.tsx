@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Text } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 type TCFDPlatformLayout = {
     children: ReactNode;
@@ -7,11 +7,11 @@ type TCFDPlatformLayout = {
 };
 
 const CFDPlatformLayout = ({ children, title }: TCFDPlatformLayout) => (
-    <div className='border-solid border-b-xs border-b-system-light-hover-background pb-400 lg:border-none'>
-        <Text bold className='pb-800'>
+    <div className='pb-8 border-solid border-b-1 border-b-system-light-hover-background lg:border-none'>
+        <Text className='pb-16' weight='bold'>
             {title}
         </Text>
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>{children}</div>
+        <div className='grid grid-cols-1 gap-24 lg:grid-cols-3'>{children}</div>
     </div>
 );
 

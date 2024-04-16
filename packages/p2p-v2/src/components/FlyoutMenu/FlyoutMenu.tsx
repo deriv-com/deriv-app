@@ -12,10 +12,17 @@ type TFlyoutMenuProps = HTMLAttributes<HTMLDivElement> & {
 const FlyoutMenu = ({ listItems, renderIcon, ...props }: TFlyoutMenuProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const flyoutMenuRef = useRef<HTMLDivElement>(null);
-    useOnClickOutside(flyoutMenuRef, () => setIsOpen(false));
+    useOnClickOutside(flyoutMenuRef, () => {
+        setIsOpen(false);
+    });
     return (
         <div ref={flyoutMenuRef} {...props}>
-            <FlyoutMenuToggle onClick={() => setIsOpen(!isOpen)} renderIcon={renderIcon} />
+            <FlyoutMenuToggle
+                onClick={() => {
+                    setIsOpen(!isOpen);
+                }}
+                renderIcon={renderIcon}
+            />
             <FlyoutMenuList isOpen={isOpen} listItems={listItems} />
         </div>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus } from '@deriv/shared';
+import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus, getTotalProfit } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -12,20 +12,21 @@ import AccumulatorCardBody from './accumulator-card-body';
 import MultiplierCardBody from './multiplier-card-body';
 import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
+import LookBacksCardBody from './lookbacks-card-body';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
 import ArrowIndicator from '../../arrow-indicator';
 
 export type TContractCardBodyProps = {
     is_accumulator?: boolean;
+    is_lookbacks?: boolean;
     is_multiplier: boolean;
-    server_time: moment.Moment;
     is_turbos?: boolean;
     is_vanilla?: boolean;
+    server_time: moment.Moment;
 } & TGeneralContractCardBodyProps;
 
 const ContractCardBody = ({
     addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
@@ -41,6 +42,7 @@ const ContractCardBody = ({
     is_sold,
     is_turbos,
     is_vanilla,
+    is_lookbacks,
     onMouseLeave,
     removeToast,
     server_time,
@@ -51,8 +53,7 @@ const ContractCardBody = ({
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
-    const { INDICATIVE_PRICE, PAYOUT, POTENTIAL_PAYOUT, POTENTIAL_PROFIT_LOSS, PROFIT_LOSS, PURCHASE_PRICE } =
-        getCardLabels();
+    const { CONTRACT_VALUE, POTENTIAL_PAYOUT, TOTAL_PROFIT_LOSS, STAKE } = getCardLabels();
 
     const progress_slider_mobile_el = (
         <ProgressSliderMobile
@@ -68,13 +69,13 @@ const ContractCardBody = ({
 
     const toggle_card_dialog_props = {
         addToast,
-        connectWithContractUpdate,
         current_focus,
         error_message_alignment,
         getContractById,
         onMouseLeave,
         removeToast,
         setCurrentFocus,
+        totalProfit: is_multiplier && !isNaN(Number(profit)) ? getTotalProfit(contract_info) : Number(profit),
     };
 
     let card_body;
@@ -95,7 +96,7 @@ const ContractCardBody = ({
                 {...toggle_card_dialog_props}
             />
         );
-    } else if (is_accumulator && indicative !== null) {
+    } else if (is_accumulator) {
         card_body = (
             <AccumulatorCardBody
                 contract_info={contract_info}
@@ -130,12 +131,22 @@ const ContractCardBody = ({
                 progress_slider={progress_slider_mobile_el}
             />
         );
+    } else if (is_lookbacks) {
+        card_body = (
+            <LookBacksCardBody
+                contract_info={contract_info}
+                currency={currency}
+                is_sold={is_sold}
+                indicative={indicative}
+                progress_slider_mobile_el={progress_slider_mobile_el}
+            />
+        );
     } else {
         card_body = (
             <React.Fragment>
                 <div className='dc-contract-card-items-wrapper'>
                     <ContractCardItem
-                        header={is_sold ? PROFIT_LOSS : POTENTIAL_PROFIT_LOSS}
+                        header={TOTAL_PROFIT_LOSS}
                         is_crypto={isCryptocurrency(currency)}
                         is_loss={Number(profit) < 0}
                         is_won={Number(profit) > 0}
@@ -145,8 +156,15 @@ const ContractCardBody = ({
                             <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
                         )}
                     </ContractCardItem>
-                    <ContractCardItem header={is_sold ? PAYOUT : INDICATIVE_PRICE}>
-                        <Money currency={currency} amount={Number(sell_price || indicative)} />
+                    <ContractCardItem header={CONTRACT_VALUE}>
+                        <div
+                            className={classNames({
+                                'dc-contract-card--profit': Number(profit) > 0,
+                                'dc-contract-card--loss': Number(profit) < 0,
+                            })}
+                        >
+                            <Money currency={currency} amount={Number(sell_price || indicative)} />
+                        </div>
                         {!is_sold && (
                             <ArrowIndicator
                                 className='dc-contract-card__indicative--movement'
@@ -154,7 +172,7 @@ const ContractCardBody = ({
                             />
                         )}
                     </ContractCardItem>
-                    <ContractCardItem header={PURCHASE_PRICE}>
+                    <ContractCardItem header={STAKE}>
                         <Money amount={buy_price} currency={currency} />
                     </ContractCardItem>
                     <ContractCardItem header={POTENTIAL_PAYOUT}>
@@ -184,7 +202,7 @@ const ContractCardBody = ({
             <MobileWrapper>
                 <div
                     className={classNames('dc-contract-card__separatorclass', {
-                        'dc-contract-card__body-wrapper': !is_multiplier && !is_turbos,
+                        'dc-contract-card__body-wrapper': !is_multiplier && !is_turbos && !is_lookbacks,
                     })}
                 >
                     {card_body}

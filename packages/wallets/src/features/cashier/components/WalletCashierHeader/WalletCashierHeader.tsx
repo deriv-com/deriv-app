@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useActiveWalletAccount, useActiveWalletBalance } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
@@ -48,14 +48,14 @@ const virtualAccountTabs = [
         text: i18n.t('Transfer'),
     },
     {
-        icon: <IcCashierStatement />,
-        path: 'transactions',
-        text: i18n.t('Transactions'),
-    },
-    {
         icon: <ResetBalance />,
         path: 'reset-balance',
         text: i18n.t('Reset Balance'),
+    },
+    {
+        icon: <IcCashierStatement />,
+        path: 'transactions',
+        text: i18n.t('Transactions'),
     },
 ] as const;
 
@@ -65,7 +65,6 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
-    const { displayBalance } = useActiveWalletBalance();
 
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
 
@@ -105,7 +104,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             )}
                         </div>
                         <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
-                            {displayBalance}
+                            {activeWallet?.display_balance}
                         </WalletText>
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>

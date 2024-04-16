@@ -1,23 +1,26 @@
 import React from 'react';
-import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { qtMerge, Text } from '@deriv/quill-design';
-import { IconToCurrencyMapper } from '../../constants/constants';
-import useRegulationFlags from '../../hooks/useRegulationFlags';
-import { useUIContext } from '../UIProvider';
+import { twMerge } from 'tailwind-merge';
+import { IconComponent } from '@/components';
+import { IconToCurrencyMapper } from '@/constants';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
+import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api-v2';
+import { Text } from '@deriv-com/ui';
 
 const TradingAccountsList = () => {
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { data: activeAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
+    const { isEU } = useRegulationFlags();
+    const { closeModal } = useQueryParams();
 
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const handleSwitchAccount = (loginid: string) => {
+        switchAccount(loginid);
+        closeModal();
+    };
 
     return (
-        <div className='lg:w-[500px] lg:h-[350px] rounded-400'>
-            <div className='flex flex-col items-start self-stretch p-400 gap-200'>
+        <div className='lg:w-[500px] lg:h-[350px] rounded-default'>
+            <div className='flex flex-col items-start self-stretch gap-4 p-8'>
                 {tradingAccountsList
                     ?.filter(
                         account => !account.is_virtual && (isEU ? account.broker === 'MF' : account.broker === 'CR')
@@ -26,14 +29,14 @@ const TradingAccountsList = () => {
                         const iconCurrency = account.currency ?? 'USD';
                         return (
                             <button
-                                className={qtMerge(
-                                    'flex items-center self-stretch py-400 px-800 gap-800 rounded-200 cursor-pointer hover:bg-system-light-active-background',
+                                className={twMerge(
+                                    'flex items-center self-stretch py-8 px-16 gap-16 rounded-xs cursor-pointer hover:bg-system-light-active-background',
                                     activeAccount?.loginid === account.loginid && 'bg-system-light-active-background'
                                 )}
                                 key={`trading-accounts-list-${account.loginid}`}
-                                onClick={() => switchAccount(account.loginid)}
+                                onClick={() => handleSwitchAccount(account.loginid)}
                             >
-                                {IconToCurrencyMapper[iconCurrency].icon}
+                                <IconComponent height={35} icon={iconCurrency} width={35} />
                                 <div className='flex flex-col items-start flex-1'>
                                     <Text size='sm'>{IconToCurrencyMapper[iconCurrency].text}</Text>
                                     <Text size='sm'>{account.loginid}</Text>

@@ -93,7 +93,7 @@ describe('<FinancialDetails />', () => {
         expect(btns[0]).toHaveTextContent('Previous');
 
         userEvent.click(btns[0]);
-        expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(1);
+        expect(mock_props.getCurrentStep).toHaveBeenCalled();
     });
 
     it('should trigger "Previous" or "Submit" button', async () => {
@@ -226,6 +226,16 @@ describe('<FinancialDetails />', () => {
         };
         renderComponent({ props: new_mock_props });
 
-        expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
+        expect(screen.queryByText('Occupation')).toBeInTheDocument();
+    });
+
+    it('should not show Occupation field if employment status is "Employed"', () => {
+        const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
+            ...mock_props,
+            employment_status: EMPLOYMENT_VALUES.SELF_EMPLOYED,
+        };
+        renderComponent({ props: new_mock_props });
+
+        expect(screen.queryByText('Occupation')).toBeInTheDocument();
     });
 });

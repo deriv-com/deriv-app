@@ -1,12 +1,15 @@
 import React from 'react';
-import { PlatformsDerivAppsLightIcon } from '@deriv/quill-icons';
-import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
+import { useQueryParams } from '@/hooks';
+import { IconComponent } from '../IconComponent';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
 
 const TrailingButton = () => {
-    const { setIsWizardOpen } = useSignupWizardContext();
-    return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
+    const { openModal } = useQueryParams();
+
+    return <TradingAccountCardLightButton onSubmit={() => openModal('RealAccountCreation')} />;
 };
+
+const LeadingIcon = () => <IconComponent icon='DerivApps' width={60} />;
 
 const GetDerivAccount = () => {
     const title = 'Deriv account';
@@ -14,11 +17,8 @@ const GetDerivAccount = () => {
     const description = 'Get a real Deriv account, start trading and manage your funds.';
 
     return (
-        <div className='grid grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
-            <TradingAccountCard
-                leading={() => <PlatformsDerivAppsLightIcon height='60px' width='60px' />}
-                trailing={TrailingButton}
-            >
+        <div className='grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-4'>
+            <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
                 <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
             </TradingAccountCard>
         </div>

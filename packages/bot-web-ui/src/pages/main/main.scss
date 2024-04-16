@@ -1,63 +1,21 @@
-.position-center {
+@import '../../styles/mixins.scss';
+
+.run-panel {
+    // fix for the RTL issue on tab active line
+    .dc-tabs__active-line {
+        right: auto;
+    }
+}
+
+.main {
     display: flex;
-    justify-content: center;
-}
-
-.bot-stopped-dialog {
+    overflow: hidden;
+    width: 100%;
+    height: calc(100vh - 9rem);
+    padding: 1.6rem;
     @include mobile {
-        padding: 2rem;
-    }
-
-    .dc-dialog {
-        position: relative;
-
-        &__header-wrapper {
-            margin: 0 0 2.4rem;
-        }
-
-        &__content {
-            &__header {
-                display: flex;
-                justify-content: space-between;
-                margin: 0 0 2.4rem;
-
-                .dc-icon {
-                    cursor: pointer;
-                }
-            }
-        }
-
-        @include mobile {
-            &__footer {
-                flex-wrap: unset;
-
-                .dc-dialog__button {
-                    &:first-child {
-                        margin-right: 1rem;
-                    }
-
-                    padding: 0;
-                    width: 40%;
-                    min-width: unset;
-                    flex-basis: unset;
-                }
-            }
-        }
-    }
-}
-
-.dashboard {
-    &__main {
-        width: 100%;
-        height: calc(100vh - 9rem);
-        padding: 1.6rem;
-        display: flex;
-        overflow: hidden;
-
-        @include mobile {
-            height: calc(100vh - 6rem);
-            padding: 0;
-        }
+        height: calc(100vh - 6rem);
+        padding: 0;
     }
 
     &__container {
@@ -108,7 +66,7 @@
                 }
 
                 &--header {
-                    &--dashboard {
+                    &--main {
                         &__tabs {
                             @include mobile {
                                 width: 100%;
@@ -130,15 +88,35 @@
                 @include mobile {
                     width: 100%;
                     overflow-x: auto;
+
+                    &--no-result {
+                        @include flex-center;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        height: 100vh;
+                        margin-top: 5rem;
+
+                        svg {
+                            margin-bottom: 2.4rem;
+                        }
+                        h1 {
+                            margin-bottom: 0.8rem;
+                        }
+                        span {
+                            word-break: break-word;
+                            text-align: center;
+                        }
+                    }
                 }
 
-                &--dashboard {
+                &--main {
                     &__tabs {
                         display: flex;
                         justify-content: space-between;
 
                         @include mobile {
                             flex-direction: column;
+                            background-color: var(--general-section-1);
                         }
                     }
                 }
@@ -150,26 +128,16 @@
                 height: 4.8rem;
                 padding: 0 2.4rem;
                 width: auto;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                &__loaded {
-                    @include mobile {
-                        text-align: left;
-                    }
-
-                    padding-left: 1.5rem;
-                }
+                @include flex-center;
 
                 svg {
                     width: 1.6rem;
                     height: 1.6rem;
-                    padding-right: 0;
-                    margin-right: 0.8rem;
+                    padding-inline-end: 0;
+                    margin-inline-end: 0.8rem;
 
                     @include mobile {
-                        margin-right: 0.2rem;
+                        margin-inline-end: 0.2rem;
                         // gave this -ve margin becaues we cannot
                         // overwrite the default core padding which
                         // will make the icon bigger
@@ -180,6 +148,82 @@
         }
     }
 
+    &__run-strategy-wrapper {
+        @include desktop {
+            position: absolute;
+        }
+
+        inset-inline-end: 1.6rem;
+        top: 1.6rem;
+        z-index: 2;
+
+        .animation {
+            &__button {
+                background-color: var(--purchase-main-1);
+            }
+
+            &__container {
+                background-color: var(--general-main-1);
+            }
+        }
+    }
+
+    &__sidebar-wrapper {
+        &--active {
+            position: fixed;
+            right: 0;
+        }
+
+        &--hidden {
+            display: none;
+        }
+    }
+}
+
+.bot-stopped-dialog {
+    @include mobile {
+        padding: 2rem;
+    }
+
+    .dc-dialog {
+        position: relative;
+
+        &__header-wrapper {
+            margin: 0 0 2.4rem;
+        }
+
+        &__content {
+            &__header {
+                display: flex;
+                justify-content: space-between;
+                margin: 0 0 2.4rem;
+
+                .dc-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        @include mobile {
+            &__footer {
+                flex-wrap: unset;
+
+                .dc-dialog__button {
+                    &:first-child {
+                        margin-right: 1rem;
+                    }
+
+                    padding: 0;
+                    width: 40%;
+                    min-width: unset;
+                    flex-basis: unset;
+                }
+            }
+        }
+    }
+}
+
+.dashboard {
     &__chart-wrapper {
         position: relative;
         height: var(--tab-content-height);
@@ -209,11 +253,10 @@
             width: 40rem;
         }
     }
-
     &__toolbox {
         position: absolute;
         top: 0;
-        left: 0;
+        inset-inline-start: 0;
         width: 23.6rem;
         padding: 0.8rem;
         background: var(--general-main-1);
@@ -228,7 +271,7 @@
 
                 &__chevron {
                     position: absolute;
-                    right: 0;
+                    inset-inline-end: 0;
                     top: 0.3rem;
                     transition: transform 0.3s ease;
 
@@ -262,13 +305,12 @@
             }
         }
     }
-
     &__run-strategy-wrapper {
         @include desktop {
             position: absolute;
         }
 
-        right: 1.6rem;
+        inset-inline-end: 1.6rem;
         top: 1.6rem;
         z-index: 2;
 
@@ -286,7 +328,7 @@
     &__sidebar-wrapper {
         &--active {
             position: fixed;
-            right: 0;
+            inset-inline-end: 0;
         }
 
         &--hidden {
@@ -298,7 +340,7 @@
 .bot-builder {
     position: absolute;
     top: 6.6rem;
-    left: 1.6rem;
+    inset-inline-start: 1.6rem;
     z-index: -1;
     background: var(--general-main-1);
     height: var(--tab-content-height);
@@ -329,7 +371,7 @@
 
     @include mobile {
         top: 5.6rem;
-        left: 0;
+        inset-inline-start: 0;
         width: 100vw;
         height: var(--tab-content-height-mobile);
     }
@@ -338,6 +380,14 @@
 #react-joyride-step-6 {
     .onboard__label {
         margin-bottom: 1.6rem;
+    }
+}
+
+#react-joyride-step-4 {
+    .__floater__arrow {
+        span {
+            inset-inline-end: 0;
+        }
     }
 }
 
@@ -385,6 +435,10 @@
     &__content {
         text-align: left;
 
+        @include rtl {
+            text-align: right;
+        }
+
         p {
             font-size: 1.4rem;
         }
@@ -406,7 +460,7 @@
     }
 
     &__left {
-        text-align: left;
+        text-align: start;
 
         &__step-three {
             margin-bottom: 0.8rem;
@@ -455,12 +509,9 @@
 }
 
 .dbot-slider {
-    display: flex;
-    justify-content: flex-start;
+    @include flex-center(flex-start);
     flex-direction: column;
-    align-items: center;
     position: fixed;
-
     left: 0;
     bottom: 0;
     width: 100%;
@@ -549,7 +600,7 @@
             border-radius: 0.4rem;
             outline: none;
             cursor: pointer;
-            margin-right: 0.8rem;
+            margin-inline-end: 0.8rem;
 
             &.default {
                 background: transparent;
@@ -575,18 +626,14 @@
             width: 100%;
 
             &__status {
-                display: flex;
-                @extend .position-center;
-                justify-content: flex-start;
+                @include flex-center(flex-start);
             }
 
             &__progress-bar {
                 width: 50%;
                 margin-bottom: unset;
-                @extend .position-center;
-                align-items: center;
-                justify-content: flex-start;
-                margin-left: 1rem;
+                @include flex-center(flex-start);
+                margin-inline-start: 1rem;
 
                 .progress-bar-circle {
                     opacity: 0.16;
@@ -595,7 +642,8 @@
 
             &__button-group {
                 width: 50%;
-                @extend .position-center;
+                display: flex;
+                justify-content: center;
 
                 .default {
                     background: transparent;
@@ -605,21 +653,6 @@
                     }
                 }
             }
-        }
-    }
-}
-
-.bot-notification {
-    .dc-toast__message {
-        background: var(--text-prominent);
-        font-size: 1.2rem;
-        position: absolute;
-        top: -5rem;
-        left: 20rem;
-
-        @include mobile {
-            top: -12rem;
-            left: 10rem;
         }
     }
 }
@@ -643,25 +676,4 @@
     height: 2.5rem !important;
     width: 2.5rem !important;
     padding: 0.2rem 0;
-}
-
-.import-notification {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    right: 0;
-    bottom: 7rem;
-
-    .dc-toast {
-        width: 100%;
-
-        &__message {
-            background: var(--text-prominent);
-            color: var(--general-main-1);
-        }
-    }
-
-    @include mobile {
-        bottom: 10rem;
-    }
 }

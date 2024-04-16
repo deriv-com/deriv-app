@@ -190,7 +190,7 @@ export default class AppStore {
         // Ensure account switch is re-enabled.
         const { ui } = this.core;
 
-        ui.setAccountSwitcherDisabledMessage(false);
+        ui.setAccountSwitcherDisabledMessage();
         ui.setPromptHandler(false);
 
         if (this.timer) clearInterval(this.timer);
@@ -264,6 +264,7 @@ export default class AppStore {
                                 });
                         });
                     }
+                    DBot.initializeInterpreter();
                 }
             }
         );

@@ -16,24 +16,17 @@ import Money from '../../money';
 import ArrowIndicator from '../../arrow-indicator';
 
 const MultiplierCardBody = ({
-    addToast,
     contract_info,
     contract_update,
-    connectWithContractUpdate,
     currency,
-    current_focus,
-    error_message_alignment,
     getCardLabels,
-    getContractById,
     has_progress_slider,
     progress_slider,
     is_mobile,
     is_sold,
-    onMouseLeave,
-    removeToast,
-    setCurrentFocus,
     should_show_cancellation_warning,
     toggleCancellationWarning,
+    ...toggle_card_dialog_props
 }) => {
     const { buy_price, bid_price, limit_order, underlying } = contract_info;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
@@ -42,8 +35,8 @@ const MultiplierCardBody = ({
     const is_valid_to_sell = isValidToSell(contract_info);
     const total_profit = getTotalProfit(contract_info);
     const {
-        BUY_PRICE,
-        CURRENT_STAKE,
+        CONTRACT_COST,
+        CONTRACT_VALUE,
         DEAL_CANCEL_FEE,
         NOT_AVAILABLE,
         STAKE,
@@ -61,10 +54,10 @@ const MultiplierCardBody = ({
                     'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
                 })}
             >
-                <ContractCardItem header={STAKE} className='dc-contract-card__stake'>
+                <ContractCardItem header={CONTRACT_COST} className='dc-contract-card__stake'>
                     <Money amount={buy_price - cancellation_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
+                <ContractCardItem header={CONTRACT_VALUE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
                             'dc-contract-card--profit': total_profit > 0,
@@ -73,6 +66,9 @@ const MultiplierCardBody = ({
                     >
                         <Money amount={bid_price} currency={currency} />
                     </div>
+                    {!is_sold && (
+                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={total_profit} />
+                    )}
                 </ContractCardItem>
                 <ContractCardItem header={DEAL_CANCEL_FEE} className='dc-contract-card__deal-cancel-fee'>
                     {cancellation_price ? (
@@ -83,7 +79,7 @@ const MultiplierCardBody = ({
                         </React.Fragment>
                     )}
                 </ContractCardItem>
-                <ContractCardItem header={BUY_PRICE} className='dc-contract-card__buy-price'>
+                <ContractCardItem header={STAKE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
                 {has_progress_slider && is_mobile && !is_sold && (
@@ -105,19 +101,12 @@ const MultiplierCardBody = ({
                     </ContractCardItem>
                     {(is_valid_to_sell || is_valid_to_cancel) && (
                         <ToggleCardDialog
-                            addToast={addToast}
-                            connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
-                            current_focus={current_focus}
-                            error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
-                            getContractById={getContractById}
                             is_valid_to_cancel={is_valid_to_cancel}
-                            onMouseLeave={onMouseLeave}
-                            removeToast={removeToast}
-                            setCurrentFocus={setCurrentFocus}
                             should_show_cancellation_warning={should_show_cancellation_warning}
                             toggleCancellationWarning={toggleCancellationWarning}
+                            {...toggle_card_dialog_props}
                         />
                     )}
                 </div>
@@ -138,7 +127,6 @@ const MultiplierCardBody = ({
 
 MultiplierCardBody.propTypes = {
     addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
     contract_info: PropTypes.object,
     contract_update: PropTypes.object,
     currency: PropTypes.string,
@@ -154,6 +142,7 @@ MultiplierCardBody.propTypes = {
     setCurrentFocus: PropTypes.func,
     should_show_cancellation_warning: PropTypes.bool,
     toggleCancellationWarning: PropTypes.func,
+    totalProfit: PropTypes.number.isRequired,
     has_progress_slider: PropTypes.bool,
 };
 

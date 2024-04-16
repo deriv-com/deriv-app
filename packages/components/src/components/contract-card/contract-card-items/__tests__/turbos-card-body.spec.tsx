@@ -17,7 +17,6 @@ const contract_info = mockContractInfo({
 describe('TurbosCardBody', () => {
     const mock_props = {
         addToast: jest.fn(),
-        connectWithContractUpdate: jest.fn(),
         contract_info,
         contract_update: {
             take_profit: {
@@ -37,6 +36,7 @@ describe('TurbosCardBody', () => {
         setCurrentFocus: jest.fn(),
         status: 'profit',
         progress_slider_mobile_el: false,
+        totalProfit: 50,
     };
     beforeAll(() => {
         (ReactDOM.createPortal as jest.Mock) = jest.fn(component => {
@@ -46,7 +46,7 @@ describe('TurbosCardBody', () => {
 
     it('renders header and values correctly', () => {
         render(<TurbosCardBody {...mock_props} />);
-        const buy_price_header = screen.getByText(getCardLabels().PURCHASE_PRICE);
+        const buy_price_header = screen.getByText(getCardLabels().STAKE);
         expect(buy_price_header).toBeInTheDocument();
         const buy_price_amount = screen.getByText('1,044.00');
         expect(buy_price_amount).toBeInTheDocument();

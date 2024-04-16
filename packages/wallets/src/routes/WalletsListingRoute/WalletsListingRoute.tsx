@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
+import React, { useEffect, useMemo } from 'react';
 import {
     DesktopWalletsList,
     WalletsAddMoreCarousel,
@@ -9,28 +8,24 @@ import {
 } from '../../components';
 import { useModal } from '../../components/ModalProvider';
 import { CFD_PLATFORMS } from '../../features/cfd/constants';
+import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import { getActionFromUrl } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
-import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
-import './WalletsListingRoute.scss';
 import { TPlatforms } from '../../types';
+import './WalletsListingRoute.scss';
 
 const WalletsListingRoute: React.FC = () => {
     const { isMobile } = useDevice();
-    const { data: walletAccounts } = useWalletAccountsList();
-    const { switchAccount } = useAuthorize();
-    const { data: activeWallet } = useActiveWalletAccount();
     const { show } = useModal();
-
-    const [password, setPassword] = useState('');
     const resetTradingPlatformActionParams = getActionFromUrl();
 
-    const firstLoginid = walletAccounts?.[0]?.loginid;
-
-    const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = {
-        trading_platform_dxtrade_password_reset: CFD_PLATFORMS.DXTRADE,
-        trading_platform_mt5_password_reset: CFD_PLATFORMS.MT5,
-    };
+    const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = useMemo(
+        () => ({
+            trading_platform_dxtrade_password_reset: CFD_PLATFORMS.DXTRADE,
+            trading_platform_mt5_password_reset: CFD_PLATFORMS.MT5,
+        }),
+        []
+    );
 
     useEffect(() => {
         const platformKey = resetTradingPlatformActionParams ? platformMapping[resetTradingPlatformActionParams] : null;
@@ -43,22 +38,14 @@ const WalletsListingRoute: React.FC = () => {
                 show(
                     <WalletsResetMT5Password
                         actionParams={resetTradingPlatformActionParams ?? ''}
-                        onChange={e => setPassword(e.target.value)}
-                        password={password}
                         platform={platformKey}
                         verificationCode={verificationCode}
-                    />
+                    />,
+                    { defaultRootId: 'wallets_modal_root' }
                 );
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [password]);
-
-    useEffect(() => {
-        if (!activeWallet && firstLoginid) {
-            switchAccount(firstLoginid);
-        }
-    }, [activeWallet, firstLoginid, switchAccount]);
+    }, [platformMapping, resetTradingPlatformActionParams, show]);
 
     return (
         <div className='wallets-listing-route'>

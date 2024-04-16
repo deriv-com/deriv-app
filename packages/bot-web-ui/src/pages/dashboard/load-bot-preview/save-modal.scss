@@ -1,3 +1,5 @@
+@import '../../../styles/mixins.scss';
+
 .dc-modal {
     $save-modal: 'modal--save';
 
@@ -20,9 +22,7 @@
             }
 
             .modal__content-row {
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include flex-center;
             }
 
             & form {

@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
 import { useHover } from 'usehooks-ts';
-import { useAllWalletAccounts, useAuthorize } from '@deriv/api';
+import { useAllWalletAccounts, useAuthorize } from '@deriv/api-v2';
+import { LabelPairedChevronLeftLgFillIcon, LabelPairedChevronRightLgFillIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import LeftArrow from '../../public/images/left-arrow.svg';
-import RightArrow from '../../public/images/right-arrow.svg';
 import { IconButton, WalletText } from '../Base';
 import { WalletsAddMoreLoader } from '../SkeletonLoader';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
@@ -64,8 +63,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                                 currency={wallet.currency}
                                 is_added={wallet.is_added}
                                 is_crypto={wallet.is_crypto}
-                                key={`wallets_add_more_${wallet.currency}-${wallet.landing_company_name}`}
-                                landing_company_name={wallet.landing_company_name}
+                                key={`wallets_add_more_${wallet.currency}-${wallet.landing_company_name}-${wallet.is_added}`}
                             />
                         ))}
                 </div>
@@ -75,7 +73,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                             className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--prev'
                             color='white'
                             disabled={!prevBtnEnabled}
-                            icon={<LeftArrow />}
+                            icon={<LabelPairedChevronLeftLgFillIcon fill='#333333' />}
                             isRound
                             onClick={scrollPrev}
                             size='lg'
@@ -84,7 +82,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                             className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--next'
                             color='white'
                             disabled={!nextBtnEnabled}
-                            icon={<RightArrow />}
+                            icon={<LabelPairedChevronRightLgFillIcon fill='#333333' />}
                             isRound
                             onClick={scrollNext}
                             size='lg'

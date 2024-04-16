@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Text } from '@deriv-com/ui';
-import { FullPageMobileWrapper, PaymentMethodsHeader } from '../../../../../components';
-import { setQueryString, useDevice } from '../../../../../hooks';
-import WalletIcon from '../../../../../public/ic-payment-methods-wallet.svg';
+import { FullPageMobileWrapper } from '@/components';
+import { useQueryString } from '@/hooks';
+import { DerivLightIcPaymentMethodsWalletIcon } from '@deriv/quill-icons';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import './PaymentMethodsEmpty.scss';
 
 type TPaymentMethodsEmptyProps = {
@@ -17,25 +17,36 @@ type TPaymentMethodsEmptyProps = {
  * **/
 const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) => {
     const { isMobile } = useDevice();
+    const { setQueryString } = useQueryString();
 
     if (isMobile) {
         return (
             <FullPageMobileWrapper
-                onBack={() =>
+                className='absolute top-16'
+                onBack={() => {
                     setQueryString({
                         tab: 'default',
-                    })
-                }
-                renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
+                    });
+                }}
+                renderHeader={() => (
+                    <Text size='lg' weight='bold'>
+                        Payment Methods
+                    </Text>
+                )}
             >
                 <div className='p2p-v2-payment-methods-empty'>
-                    <WalletIcon />
-                    {/* TODO: Remember to localise the text below */}
+                    <DerivLightIcPaymentMethodsWalletIcon height='16rem' />
+                    {/* TODO: Remember to localize the text below */}
                     <Text className='p2p-v2-payment-methods-empty__heading' size='lg' weight='bold'>
                         You haven’t added any payment methods yet
                     </Text>
                     <Text size='lg'>Hit the button below to add payment methods.</Text>
-                    <Button className='p2p-v2-payment-methods-empty__button' onClick={() => onAddPaymentMethod()}>
+                    <Button
+                        className='p2p-v2-payment-methods-empty__button'
+                        onClick={() => {
+                            onAddPaymentMethod();
+                        }}
+                    >
                         Add payment methods
                     </Button>
                 </div>
@@ -45,13 +56,18 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
 
     return (
         <div className='p2p-v2-payment-methods-empty'>
-            <WalletIcon />
-            {/* TODO: Remember to localise the text below */}
+            <DerivLightIcPaymentMethodsWalletIcon height='16rem' />
+            {/* TODO: Remember to localize the text below */}
             <Text className='p2p-v2-payment-methods-empty__heading' weight='bold'>
                 You haven’t added any payment methods yet
             </Text>
             <Text>Hit the button below to add payment methods.</Text>
-            <Button className='p2p-v2-payment-methods-empty__button' onClick={() => onAddPaymentMethod()}>
+            <Button
+                className='p2p-v2-payment-methods-empty__button'
+                onClick={() => {
+                    onAddPaymentMethod();
+                }}
+            >
                 Add payment methods
             </Button>
         </div>

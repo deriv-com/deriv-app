@@ -1,13 +1,17 @@
 import React from 'react';
-import { Modal } from '../../../../components';
-import { VerificationFailed } from '../../screens';
+import { useQueryParams } from '@/hooks';
+import { VerificationFailed } from '@cfd/screens';
+import { Modal } from '@deriv-com/ui';
 
-const VerificationFailedModal = () => (
-    <Modal>
-        <Modal.Content>
-            <VerificationFailed />
-        </Modal.Content>
-    </Modal>
-);
+const VerificationFailedModal = () => {
+    const { closeModal, isModalOpen } = useQueryParams();
+    return (
+        <Modal isOpen={isModalOpen('VerificationFailedModal')} onRequestClose={closeModal}>
+            <Modal.Body>
+                <VerificationFailed />
+            </Modal.Body>
+        </Modal>
+    );
+};
 
 export default VerificationFailedModal;

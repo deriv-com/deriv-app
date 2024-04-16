@@ -1,8 +1,9 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { APIProvider, useActiveWalletAccount, useJurisdictionStatus, usePOI } from '@deriv/api';
+import { APIProvider, useActiveWalletAccount, useJurisdictionStatus, usePOI } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../AuthProvider';
 import { ModalProvider } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import MT5AccountAdded from '../MT5AccountAdded';
@@ -17,8 +18,8 @@ jest.mock('../../../../../components/ModalProvider', () => ({
     }),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
     useJurisdictionStatus: jest.fn(() => ({
         getVerificationStatus: jest.fn(() => ({
@@ -54,9 +55,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <ModalProvider>
-                    <MT5AccountAdded marketType='financial' platform='mt5' />
-                </ModalProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                    </ModalProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Your Financial demo account is ready')).toBeInTheDocument();
@@ -78,9 +81,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <ModalProvider>
-                    <MT5AccountAdded marketType='financial' platform='mt5' />
-                </ModalProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                    </ModalProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Your Financial (SVG) account is ready')).toBeInTheDocument();
@@ -109,9 +114,11 @@ describe('MT5AccountAdded', () => {
         render(
             <Router history={history}>
                 <APIProvider>
-                    <ModalProvider>
-                        <MT5AccountAdded account={mockAddedAccount} marketType='financial' platform='mt5' />
-                    </ModalProvider>
+                    <WalletsAuthProvider>
+                        <ModalProvider>
+                            <MT5AccountAdded account={mockAddedAccount} marketType='financial' platform='mt5' />
+                        </ModalProvider>
+                    </WalletsAuthProvider>
                 </APIProvider>
             </Router>
         );
@@ -152,9 +159,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <ModalProvider>
-                    <MT5AccountAdded marketType='financial' platform='mt5' />
-                </ModalProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                    </ModalProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Almost there')).toBeInTheDocument();
@@ -195,9 +204,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <ModalProvider>
-                    <MT5AccountAdded marketType='financial' platform='mt5' />
-                </ModalProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                    </ModalProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Almost there')).toBeInTheDocument();

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import Draggable from 'Components/draggable';
+import DraggableResizeWrapper from 'Components/draggable/draggable-resize-wrapper';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DesktopTransactionTable from './desktop-transaction-table';
 import { TColumn, TRunPanelStore, TTransactionStore } from './transaction-details.types';
@@ -41,50 +41,30 @@ const TransactionDetailsDesktop = observer(() => {
     }: Partial<TTransactionStore> = transactions;
     const { statistics }: Partial<TRunPanelStore> = run_panel;
 
-    const [screenDimensions, setScreenDimensions] = useState({ width: 0, height: 0 });
-
-    const handleResize = () => {
-        setScreenDimensions({ width: window.innerWidth, height: window.innerHeight });
-    };
-
-    useEffect(() => {
-        window.addEventListener('resize', handleResize);
-        setScreenDimensions({ width: window.innerWidth, height: window.innerHeight });
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    // Calculate xaxis and yaxis to center the modal on open
-    const modalWidth = 882;
-    const modalHeight = 404;
-    const xaxis = (screenDimensions.width - modalWidth) / 2;
-    const yAxisValue = (screenDimensions.height - modalHeight) / 2;
-    const yaxis = yAxisValue >= 0 ? yAxisValue : 0;
-
     return (
-        <Draggable
-            bounds='.dashboard__main'
-            dragHandleClassName='react-rnd-wrapper-header'
-            is_visible={is_transaction_details_modal_open}
-            minWidth={modalWidth}
-            onCloseDraggable={() => toggleTransactionDetailsModal(false)}
-            width={modalWidth}
-            height={modalHeight}
-            xaxis={xaxis}
-            yaxis={yaxis}
-            header_title={'Transactions detailed summary'}
-        >
-            <DesktopTransactionTable
-                transaction_columns={transaction_columns}
-                transactions={transaction_list}
-                result_columns={result_columns}
-                result={statistics}
-                account={loginid ?? ''}
-                balance={balance ?? 0}
-            />
-        </Draggable>
+        <React.Fragment>
+            {is_transaction_details_modal_open && (
+                <DraggableResizeWrapper
+                    boundary='.main'
+                    header={localize('Transactions detailed summary')}
+                    onClose={() => toggleTransactionDetailsModal(false)}
+                    modalWidth={882}
+                    modalHeight={404}
+                    minWidth={882}
+                    minHeight={404}
+                    enableResizing
+                >
+                    <DesktopTransactionTable
+                        transaction_columns={transaction_columns}
+                        transactions={transaction_list}
+                        result_columns={result_columns}
+                        result={statistics}
+                        account={loginid ?? ''}
+                        balance={balance ?? 0}
+                    />
+                </DraggableResizeWrapper>
+            )}
+        </React.Fragment>
     );
 });
 

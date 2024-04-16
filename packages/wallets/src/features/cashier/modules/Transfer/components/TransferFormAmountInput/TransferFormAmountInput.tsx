@@ -155,12 +155,15 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             }
         });
     }, [
-        fromAmount,
-        fromAccount?.currency,
         refetchExchangeRatesAndLimits,
-        setFieldValue,
+        fromAccount?.currency,
+        fromAccount?.currencyConfig?.fractional_digits,
         toAccount?.currency,
         toAccount?.currencyConfig?.fractional_digits,
+        toAmount,
+        fromAmount,
+        values.activeAmountFieldName,
+        setFieldValue,
     ]);
 
     return (

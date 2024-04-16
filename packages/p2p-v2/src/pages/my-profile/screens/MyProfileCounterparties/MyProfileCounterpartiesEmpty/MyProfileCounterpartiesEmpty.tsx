@@ -1,11 +1,11 @@
 import React from 'react';
+import { DerivLightIcEmptyBlockedAdvertisersIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import EmptyCounterpartiesIcon from '../../../../../public/ic-empty-blocked-advertisers.svg';
 import './MyProfileCounterpartiesEmpty.scss';
 
 const MyProfileCounterpartiesEmpty = () => (
     <div className='p2p-v2-my-profile-counterparties-empty'>
-        <EmptyCounterpartiesIcon />
+        <DerivLightIcEmptyBlockedAdvertisersIcon height='12.8rem' width='12.8rem' />
         <Text weight='bold'>No one to show here</Text>
     </div>
 );

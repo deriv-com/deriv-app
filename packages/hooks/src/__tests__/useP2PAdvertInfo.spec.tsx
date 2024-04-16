@@ -1,15 +1,15 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider, useSubscription } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import useP2PAdvertInfo from '../useP2PAdvertInfo';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
+    useSubscription: jest.fn(),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'p2p_advert_info'>>;
+const mockUseSubscription = useSubscription as jest.MockedFunction<typeof useSubscription<'p2p_advert_info'>>;
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
@@ -20,16 +20,16 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
 describe('useP2PAdvertInfo', () => {
     it('should return undefined if there is no response', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: {} });
+        mockUseSubscription.mockReturnValue({ data: {}, subscribe: jest.fn() });
 
-        const { result } = renderHook(() => useP2PAdvertInfo('1', { enabled: true }), { wrapper });
+        const { result } = renderHook(() => useP2PAdvertInfo('1'), { wrapper });
 
         expect(result.current.data).toBe(undefined);
     });
 
-    it('should return advert info if id and enabled option has been passed', () => {
+    it('should return advert info if id has been passed', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
+        mockUseSubscription.mockReturnValue({
             data: {
                 p2p_advert_info: {
                     advertiser_details: {
@@ -51,9 +51,10 @@ describe('useP2PAdvertInfo', () => {
                     type: 'buy',
                 },
             },
+            subscribe: jest.fn(),
         });
 
-        const { result } = renderHook(() => useP2PAdvertInfo('1', { enabled: true }), { wrapper });
+        const { result } = renderHook(() => useP2PAdvertInfo('1'), { wrapper });
         const advertiser_details = result.current.data?.advertiser_details;
 
         expect(advertiser_details?.completed_orders_count).toBe(0);

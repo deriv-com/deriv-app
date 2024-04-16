@@ -1,6 +1,5 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import { useDBotStore } from 'Stores/useDBotStore';
 import Toolbar from '..';
@@ -32,6 +31,12 @@ const mockDbotStore = {
     dashboard: {},
 };
 
+jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
+jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
+    saveRecentWorkspace: jest.fn(),
+    unHighlightAllBlocks: jest.fn(),
+}));
+jest.mock('@deriv/bot-skeleton/src/scratch/xml/main.xml', () => '<xml>sample</xml>');
 jest.mock('Stores/useDBotStore', () => ({
     useDBotStore: jest.fn(() => mockDbotStore),
 }));

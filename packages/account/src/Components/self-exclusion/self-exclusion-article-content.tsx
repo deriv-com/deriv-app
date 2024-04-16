@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { getBrandWebsiteName, getStaticUrl, getPlatformSettings, PlatformContext } from '@deriv/shared';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
@@ -15,23 +15,13 @@ type TSelfExclusionArticleContent = {
     is_in_overlay: boolean;
 };
 
-export const selfExclusionArticleItems = ({
-    is_eu,
-    is_uk,
-    is_deriv_crypto,
-    is_app_settings,
-}: TSelfExclusionArticleItems) => {
-    const platform_name_trader = getPlatformSettings('trader').name;
-    const platform_name_dbot = getPlatformSettings('dbot').name;
-    const platform_name_bbot = getPlatformSettings('bbot').name;
-    const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
-
+export const selfExclusionArticleItems = ({ is_eu, is_deriv_crypto, is_app_settings }: TSelfExclusionArticleItems) => {
     const getEuItems = () => {
         const eu_items = [
             {
                 component: (
                     <Localize
-                        i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on {{brand_website_name}} and exercise <0>responsible trading</0>.'
+                        i18n_default_text='We’ve introduced these limits to encourage <0>responsible trading</0>. They are optional, and you can adjust them anytime.'
                         components={[
                             <a
                                 key={0}
@@ -41,56 +31,39 @@ export const selfExclusionArticleItems = ({
                                 href={getStaticUrl('/responsible', { is_deriv_crypto })}
                             />,
                         ]}
-                        values={{ brand_website_name: getBrandWebsiteName() }}
+                    />
+                ),
+            },
+            {
+                component: (
+                    <Localize i18n_default_text='You decide how much and how long to trade. You can take a break from trading whenever you want. This break can be from 6 weeks to 5 years. When it’s over, you can extend it or resume trading after a 24-hour cooling-off period. If you don’t want to set a specific limit, leave the field empty.' />
+                ),
+            },
+            {
+                component: (
+                    <Localize
+                        i18n_default_text='These limits apply to your multipliers trades only. For example, <0>maximum total loss</0> refers to the losses on your multipliers trades.'
+                        components={[<strong key={0} />]}
                     />
                 ),
             },
         ];
 
-        if (is_uk) {
-            eu_items.push({
-                component: (
-                    <Localize i18n_default_text='These trading limits are optional, and you can strengthen them at any time. If you don’t wish to set a specific limit, leave the field blank. If you live in the United Kingdom, Customer Support can only remove or weaken your trading limits after 24 hours of receiving the request. If you live in the Isle of Man, Customer Support can only remove or weaken your trading limits after your trading limit period has expired.' />
-                ),
-            });
-        } else {
-            eu_items.push({
-                component: (
-                    <Localize i18n_default_text='These trading limits are optional, and you can strengthen them at any time. If you don’t wish to set a specific limit, leave the field blank. Customer Support can only remove or weaken your trading limits after 24 hours of receiving the request.' />
-                ),
-            });
-        }
-
-        eu_items.push({
-            component: (
-                <Localize
-                    i18n_default_text='When you set your limits or self-exclusion, they will be aggregated across all your account types in {{platform_name_trader}} and {{platform_name_dbot}}. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.'
-                    values={{ platform_name_trader, platform_name_dbot }}
-                />
-            ),
-        });
-
-        if (is_uk && !is_app_settings) {
+        if (!is_app_settings) {
             eu_items.push({
                 component: (
                     <Localize
-                        i18n_default_text='You can also exclude yourself entirely for a specified duration. This can only be removed once your self-exclusion has expired. If you wish to continue trading once your self-exclusion period expires, you must contact Customer Support by calling <0>+447723580049</0> to lift this self-exclusion. Requests by chat or email shall not be entertained. There will be a 24-hour cooling-off period before you can resume trading.'
+                        i18n_default_text='If you want to adjust your limits, <0>contact us via live chat</0>. We’ll make the adjustments within 24 hours.'
                         components={[
                             <a
                                 key={0}
                                 className='link'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href='tel:+447723580049'
+                                href={getStaticUrl('/contact_us', { is_deriv_crypto })}
                             />,
                         ]}
                     />
-                ),
-            });
-        } else if (!is_app_settings) {
-            eu_items.push({
-                component: (
-                    <Localize i18n_default_text='You can also exclude yourself entirely for a specified duration. If, at any time, you decide to trade again, you must then contact our Customer Support to remove this self-exclusion. There will be a 24-hour-cooling-off period before you can resume trading. ' />
                 ),
             });
         }
@@ -102,7 +75,7 @@ export const selfExclusionArticleItems = ({
         {
             component: (
                 <Localize
-                    i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on {{platform_name_trader}}, {{platform_name_dbot}}, {{platform_name_smarttrader}} and {{platform_name_bbot}} on Deriv. The limits you set here will help you exercise <0>responsible trading</0>.'
+                    i18n_default_text='We’ve introduced these limits to encourage <0>responsible trading</0>. They are optional, and you can adjust them anytime.'
                     components={[
                         <a
                             key={0}
@@ -112,20 +85,19 @@ export const selfExclusionArticleItems = ({
                             href={getStaticUrl('/responsible', { is_deriv_crypto })}
                         />,
                     ]}
-                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader, platform_name_bbot }}
                 />
             ),
         },
         {
             component: (
-                <Localize i18n_default_text='These limits are optional, and you can adjust them at any time. You decide how much and how long you’d like to trade. If you don’t wish to set a specific limit, leave the field blank.' />
+                <Localize i18n_default_text='You decide how much and how long to trade. You can take a break from trading whenever you want. This break can be from 6 weeks to 5 years. When it’s over, you can extend it or log in to resume trading. If you don’t want to set a specific limit, leave the field empty.' />
             ),
         },
         {
             component: (
                 <Localize
-                    i18n_default_text='When you set your limits, they will be aggregated across all your account types in {{platform_name_trader}}, {{platform_name_dbot}}, {{platform_name_smarttrader}} and {{platform_name_bbot}} on Deriv. For example, the losses made on all four platforms will add up and be counted towards the loss limit you set.'
-                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader, platform_name_bbot }}
+                    i18n_default_text='These limits apply to your options trades only. For example, <0>maximum total loss</0> refers to the losses on all your trades on options trading platforms.'
+                    components={[<strong key={0} />]}
                 />
             ),
         },
@@ -134,7 +106,7 @@ export const selfExclusionArticleItems = ({
                   {
                       component: (
                           <Localize
-                              i18n_default_text='You can also exclude yourself entirely for a specified duration. Once the self-exclusion period has ended, you can either extend it further or resume trading immediately. If you wish to reduce or remove the self-exclusion period, contact our <0>Customer Support</0>.'
+                              i18n_default_text='If you want to adjust your self-exclusion limits, <0>contact us via live chat.</0>'
                               components={[
                                   <a
                                       key={0}

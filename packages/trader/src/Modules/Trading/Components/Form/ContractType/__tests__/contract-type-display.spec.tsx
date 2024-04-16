@@ -1,11 +1,16 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { TRADE_TYPES } from '@deriv/shared';
+import { isMobile, isDesktop, TRADE_TYPES } from '@deriv/shared';
 import Display from '../contract-type-display';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Icon: () => <div>MockedIcon</div>,
+}));
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(() => true),
 }));
 
 jest.mock('Assets/Trading/Categories/icon-trade-categories', () => jest.fn(() => 'IconTradeCategories'));
@@ -99,5 +104,12 @@ describe('<Display />', () => {
     it('should have contract-type-widget__display--clicked class when is_open is true', () => {
         render(<Display name='contract-type-display' list={list} {...mocked_props} is_open />);
         expect(screen.getByTestId('dt_contract_dropdown')).toHaveClass('contract-type-widget__display--clicked');
+    });
+    it('should render icon if it is mobile', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        render(<Display name='contract-type-display' list={list} {...mocked_props} is_open />);
+
+        expect(screen.getByText(/mockedicon/i)).toBeInTheDocument();
     });
 });

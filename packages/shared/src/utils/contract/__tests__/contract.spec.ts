@@ -44,13 +44,13 @@ describe('getIndicativePrice', () => {
         });
         expect(ContractUtils.getIndicativePrice(contract_info)).toEqual(12345);
     });
-    it("should return null if it doesn't have final price, bid_price and contract is not ended", () => {
+    it("should return zero if it doesn't have final price, bid_price and contract is not ended", () => {
         const contract_info = mockContractInfo({
             status: 'open',
             sell_price: 0,
             bid_price: 0,
         });
-        expect(ContractUtils.getIndicativePrice(contract_info)).toEqual(null);
+        expect(ContractUtils.getIndicativePrice(contract_info)).toEqual(0);
     });
     it("should return bid_price if it doesn't have final price, has bid_price and contract is not ended", () => {
         const contract_info = mockContractInfo({
@@ -631,17 +631,17 @@ describe('getLastContractMarkerIndex', () => {
 describe('getLocalizedTurbosSubtype', () => {
     it('should return an empty string for non-turbos contracts', () => {
         render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.CALL) as JSX.Element);
-        expect(screen.queryByText('Long')).not.toBeInTheDocument();
-        expect(screen.queryByText('Short')).not.toBeInTheDocument();
+        expect(screen.queryByText('Up')).not.toBeInTheDocument();
+        expect(screen.queryByText('Down')).not.toBeInTheDocument();
         expect(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.CALL)).toBe('');
     });
-    it('should render "Long" for CONTRACT_TYPES.TURBOS.LONG contract', () => {
+    it('should render "Up" for CONTRACT_TYPES.TURBOS.LONG contract', () => {
         render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.TURBOS.LONG) as JSX.Element);
-        expect(screen.getByText('Long')).toBeInTheDocument();
+        expect(screen.getByText('Up')).toBeInTheDocument();
     });
-    it('should render "Short" for CONTRACT_TYPES.TURBOS.SHORT contract', () => {
+    it('should render "Down" for CONTRACT_TYPES.TURBOS.SHORT contract', () => {
         render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.TURBOS.SHORT) as JSX.Element);
-        expect(screen.getByText('Short')).toBeInTheDocument();
+        expect(screen.getByText('Down')).toBeInTheDocument();
     });
 });
 
@@ -650,17 +650,17 @@ describe('getSortedTradeTypes', () => {
         const array = [ContractUtils.TRADE_TYPES.RISE_FALL, ContractUtils.TRADE_TYPES.HIGH_LOW];
         expect(ContractUtils.getSortedTradeTypes(array)).toEqual(array);
     });
-    it('should return an array with turboslong as the 1st element if multipliers are not present', () => {
+    it('should return an array with accumulators as the 1st element if multipliers are not present', () => {
         const sortedArrayWithTurbos = ContractUtils.getSortedTradeTypes([
             ContractUtils.TRADE_TYPES.RISE_FALL,
-            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.ACCUMULATOR,
         ]);
         expect(sortedArrayWithTurbos).toEqual([
-            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.ACCUMULATOR,
             ContractUtils.TRADE_TYPES.RISE_FALL,
         ]);
     });
-    it('should return an array with multipliers as the 1st element if turboslong is not present', () => {
+    it('should return an array with multipliers as the 1st element if accumulators is not present', () => {
         const sortedArrayWithMultipliers = ContractUtils.getSortedTradeTypes([
             ContractUtils.TRADE_TYPES.RISE_FALL,
             ContractUtils.TRADE_TYPES.MULTIPLIER,
@@ -670,15 +670,15 @@ describe('getSortedTradeTypes', () => {
             ContractUtils.TRADE_TYPES.RISE_FALL,
         ]);
     });
-    it('should return an array with turboslong as the 1st element and disregard multipliers', () => {
+    it('should return an array with accumulators as the 1st element and disregard multipliers', () => {
         const sortedArrayWithTurbosAndMultipliers = ContractUtils.getSortedTradeTypes([
-            ContractUtils.TRADE_TYPES.RISE_FALL,
             ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.ACCUMULATOR,
             ContractUtils.TRADE_TYPES.MULTIPLIER,
         ]);
         expect(sortedArrayWithTurbosAndMultipliers).toEqual([
+            ContractUtils.TRADE_TYPES.ACCUMULATOR,
             ContractUtils.TRADE_TYPES.TURBOS.LONG,
-            ContractUtils.TRADE_TYPES.RISE_FALL,
             ContractUtils.TRADE_TYPES.MULTIPLIER,
         ]);
     });
@@ -689,11 +689,13 @@ describe('getSortedTradeTypes', () => {
 });
 
 describe('isSmartTraderContract', () => {
-    it('should return true if contract_type is RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
-        expect(ContractUtils.isSmartTraderContract('range')).toBe(true);
+    it('should return true if contract_type is RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK|LB', () => {
+        expect(ContractUtils.isSmartTraderContract(CONTRACT_TYPES.EXPIRYRANGEE)).toBe(true);
+        expect(ContractUtils.isSmartTraderContract(CONTRACT_TYPES.TICK_HIGH_LOW.HIGH)).toBe(true);
+        expect(ContractUtils.isSmartTraderContract(CONTRACT_TYPES.LB_PUT)).toBe(true);
     });
-    it('should return false if contract_type is not RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
-        expect(ContractUtils.isSmartTraderContract('call')).toBe(false);
+    it('should return false if contract_type is not RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK|LB', () => {
+        expect(ContractUtils.isSmartTraderContract(CONTRACT_TYPES.VANILLA.CALL)).toBe(false);
     });
     it('should return false if contract_type was not passed', () => {
         expect(ContractUtils.isSmartTraderContract('')).toBe(false);
@@ -702,10 +704,10 @@ describe('isSmartTraderContract', () => {
 
 describe('isResetContract', () => {
     it('should return true if contract_type is RESET', () => {
-        expect(ContractUtils.isResetContract('reset')).toBe(true);
+        expect(ContractUtils.isResetContract(CONTRACT_TYPES.RESET.CALL)).toBe(true);
     });
     it('should return false if contract_type is not RESET', () => {
-        expect(ContractUtils.isResetContract('put')).toBe(false);
+        expect(ContractUtils.isResetContract(CONTRACT_TYPES.ASIAN.DOWN)).toBe(false);
     });
     it('should return false if contract_type was not passed', () => {
         expect(ContractUtils.isResetContract('')).toBe(false);
@@ -714,10 +716,10 @@ describe('isResetContract', () => {
 
 describe('isAsiansContract', () => {
     it('should return true if contract_type is ASIAN', () => {
-        expect(ContractUtils.isAsiansContract('asian')).toBe(true);
+        expect(ContractUtils.isAsiansContract(CONTRACT_TYPES.ASIAN.DOWN)).toBe(true);
     });
     it('should return false if contract_type is not ASIAN', () => {
-        expect(ContractUtils.isAsiansContract('put')).toBe(false);
+        expect(ContractUtils.isAsiansContract(CONTRACT_TYPES.TURBOS.LONG)).toBe(false);
     });
     it('should return false if contract_type was not passed', () => {
         expect(ContractUtils.isAsiansContract('')).toBe(false);
@@ -726,12 +728,61 @@ describe('isAsiansContract', () => {
 
 describe('hasTwoBarriers', () => {
     it('should return true if contract_type is EXPIRY|RANGE|UPORDOWN', () => {
-        expect(ContractUtils.hasTwoBarriers('EXPIRY')).toBe(true);
+        expect(ContractUtils.hasTwoBarriers(CONTRACT_TYPES.EXPIRYRANGEE)).toBe(true);
     });
     it('should return false if contract_type is not EXPIRY', () => {
-        expect(ContractUtils.hasTwoBarriers('turbos')).toBe(false);
+        expect(ContractUtils.hasTwoBarriers(CONTRACT_TYPES.TURBOS.LONG)).toBe(false);
     });
     it('should return false if contract_type was not passed', () => {
         expect(ContractUtils.hasTwoBarriers('')).toBe(false);
+    });
+});
+
+describe('isLookBacksContract', () => {
+    it('should return true if contract_type is LB', () => {
+        expect(ContractUtils.isLookBacksContract(CONTRACT_TYPES.LB_HIGH_LOW)).toBe(true);
+    });
+    it('should return false if contract_type is not LB', () => {
+        expect(ContractUtils.isLookBacksContract(CONTRACT_TYPES.TURBOS.LONG)).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isLookBacksContract('')).toBe(false);
+    });
+});
+
+describe('isTicksContract', () => {
+    it('should return true if contract_type is TICK', () => {
+        expect(ContractUtils.isTicksContract(CONTRACT_TYPES.TICK_HIGH_LOW.HIGH)).toBe(true);
+    });
+    it('should return false if contract_type is not TICK', () => {
+        expect(ContractUtils.isTicksContract(CONTRACT_TYPES.TURBOS.LONG)).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isTicksContract('')).toBe(false);
+    });
+});
+
+describe('isForwardStartingBuyTransaction', () => {
+    const forwardStartingShortcode = 'CALL_1HZ10V_19.54_1710485400F_1710486300_S0P_0';
+    const transactionTime = 12316253761253;
+
+    it('should return true if transaction type is buy and it is forward starting contract', () => {
+        expect(ContractUtils.isForwardStartingBuyTransaction('buy', forwardStartingShortcode, transactionTime)).toBe(
+            true
+        );
+    });
+    it('should return false if transaction type is not buy', () => {
+        expect(ContractUtils.isForwardStartingBuyTransaction('sell', forwardStartingShortcode, transactionTime)).toBe(
+            false
+        );
+    });
+    it('should return false if transaction type is buy and but it is not forward starting contract', () => {
+        expect(
+            ContractUtils.isForwardStartingBuyTransaction(
+                'buy',
+                'CALL_1HZ10V_19.54_1710485400_1710486300_S0P_0',
+                transactionTime
+            )
+        ).toBe(false);
     });
 });

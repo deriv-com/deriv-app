@@ -20,13 +20,7 @@ export const tourStepConfig = (
 ): Step[] =>
     isMobile
         ? getMobileSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded, walletIndex)
-        : getDesktopSteps(
-              isDemoWallet,
-              hasMT5Account,
-              hasDerivAppsTradingAccount,
-              isAllWalletsAlreadyAdded,
-              walletIndex
-          );
+        : getDesktopSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded);
 
 export const TooltipComponent = ({
     backProps,

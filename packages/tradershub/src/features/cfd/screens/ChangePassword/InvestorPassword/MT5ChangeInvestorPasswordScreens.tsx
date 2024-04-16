@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Provider } from '@deriv/library';
+import { useQueryParams } from '@/hooks';
 import MT5ChangeInvestorPasswordInputsScreen from './MT5ChangeInvestorPasswordInputsScreen';
 import MT5ChangeInvestorPasswordSavedScreen from './MT5ChangeInvestorPasswordSavedScreen';
 
@@ -12,19 +12,19 @@ type TMT5ChangeInvestorPasswordScreens = {
 const MT5ChangeInvestorPasswordScreens = ({ setShowEmailSentScreen }: TMT5ChangeInvestorPasswordScreens) => {
     const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
-    const { hide } = Provider.useModal();
+    const { openModal } = useQueryParams();
 
     switch (activeScreen) {
         case 'savedScreen':
             return (
-                <div className='mt-1600 md:mt-2000'>
-                    <MT5ChangeInvestorPasswordSavedScreen setNextScreen={hide} />
+                <div className='mt-32 md:mt-40'>
+                    <MT5ChangeInvestorPasswordSavedScreen setNextScreen={() => openModal} />
                 </div>
             );
         case 'introScreen':
         default:
             return (
-                <div className='mt-1600 md:mt-2000'>
+                <div className='mt-32 md:mt-40'>
                     <MT5ChangeInvestorPasswordInputsScreen
                         sendEmail={() => {
                             setShowEmailSentScreen?.(true);

@@ -38,7 +38,6 @@ module.exports = function (env) {
         },
         externals: [
             {
-                '@deriv/api': true,
                 classnames: true,
                 react: true,
                 'react-dom': true,
@@ -109,7 +108,7 @@ module.exports = function (env) {
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
                                     ...require('../shared/src/styles/index.js'),
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    // ...require('./src/styles/index.js'),
+                                    ...require('./styles/index.js'),
                                 ],
                             },
                         },
@@ -184,6 +183,9 @@ module.exports = function (env) {
             publicPath: base,
         },
         resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'src'),
+            },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
     };

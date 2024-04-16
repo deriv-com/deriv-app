@@ -351,11 +351,6 @@ const FinancialAssessment = observer(() => {
         return '8rem';
     };
 
-    const getFormattedOccupationValues = (values: TFinancialInformationForm) =>
-        values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
-            ? ''
-            : values?.occupation;
-
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage />;
@@ -410,6 +405,7 @@ const FinancialAssessment = observer(() => {
                 setFieldTouched,
                 dirty,
                 setFieldValue,
+                isValid,
             }) => (
                 <React.Fragment>
                     {is_mobile && is_confirmation_visible && (
@@ -488,7 +484,14 @@ const FinancialAssessment = observer(() => {
                                                     name='employment_status'
                                                     list={getEmploymentStatusList()}
                                                     value={values.employment_status}
-                                                    onChange={handleChange}
+                                                    onChange={e => {
+                                                        handleChange(e);
+                                                        setFieldValue(
+                                                            'occupation',
+                                                            '',
+                                                            !shouldHideOccupationField(e.target.value)
+                                                        );
+                                                    }}
                                                     handleBlur={handleBlur}
                                                     error={touched.employment_status && errors.employment_status}
                                                 />
@@ -506,6 +509,11 @@ const FinancialAssessment = observer(() => {
                                                     onChange={e => {
                                                         setFieldTouched('employment_status', true);
                                                         handleChange(e);
+                                                        setFieldValue(
+                                                            'occupation',
+                                                            '',
+                                                            !shouldHideOccupationField(e.target.value)
+                                                        );
                                                     }}
                                                 />
                                             </MobileWrapper>
@@ -552,15 +560,8 @@ const FinancialAssessment = observer(() => {
                                                     list={getFormattedOccupationList(
                                                         (values.employment_status || employment_status) ?? ''
                                                     )} // employment_status may come as part of the FA form or Personal details form
-                                                    value={getFormattedOccupationValues(values)}
-                                                    onChange={e => {
-                                                        setFieldValue(
-                                                            'occupation',
-                                                            getFormattedOccupationValues(values),
-                                                            true
-                                                        );
-                                                        handleChange(e);
-                                                    }}
+                                                    value={values.occupation}
+                                                    onChange={handleChange}
                                                     handleBlur={handleBlur}
                                                     error={touched.occupation && errors.occupation}
                                                     test_id='occupation'
@@ -574,14 +575,9 @@ const FinancialAssessment = observer(() => {
                                                     list_items={getFormattedOccupationList(
                                                         (values.employment_status || employment_status) ?? ''
                                                     )}
-                                                    value={getFormattedOccupationValues(values)}
+                                                    value={values.occupation}
                                                     error={touched.occupation ? errors.occupation : undefined}
                                                     onChange={e => {
-                                                        setFieldValue(
-                                                            'occupation',
-                                                            getFormattedOccupationValues(values),
-                                                            true
-                                                        );
                                                         setFieldTouched('occupation', true);
                                                         handleChange(e);
                                                     }}
@@ -1049,16 +1045,7 @@ const FinancialAssessment = observer(() => {
                                         'dc-btn--green': is_submit_success,
                                     })}
                                     onClick={() => onClickSubmit(handleSubmit)}
-                                    is_disabled={
-                                        isSubmitting ||
-                                        !dirty ||
-                                        is_btn_loading ||
-                                        Object.keys(errors).length > 0 ||
-                                        !!(
-                                            values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
-                                            values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
-                                        )
-                                    }
+                                    is_disabled={isSubmitting || !dirty || is_btn_loading || !isValid}
                                     has_effect
                                     is_loading={is_btn_loading}
                                     is_submit_success={is_submit_success}

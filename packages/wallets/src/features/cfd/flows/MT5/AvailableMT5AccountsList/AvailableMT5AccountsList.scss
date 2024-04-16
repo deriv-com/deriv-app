@@ -1,6 +1,6 @@
 .wallets-available-mt5 {
     &__icon {
-        cursor: pointer;
+        width: fit-content;
     }
 
     &__text {
@@ -15,22 +15,9 @@
     }
 
     &__details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
         flex-grow: 1;
-        user-select: none;
-        &-title {
-            font-weight: bold;
-            font-size: 1.4rem;
-            line-height: 2rem;
-        }
-
-        &-description {
-            font-size: 1.2rem;
-            line-height: 1.4rem;
-
-            @include mobile {
-                font-size: 1.4rem;
-                line-height: 2rem;
-            }
-        }
     }
 }

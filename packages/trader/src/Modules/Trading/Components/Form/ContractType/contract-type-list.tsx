@@ -4,10 +4,9 @@ import { localize } from '@deriv/translations';
 import { TRADE_TYPES } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import classNames from 'classnames';
-import { TContractType, TContractCategory } from './types';
+import { TContractType, TContractCategory, TFilteredContractType } from './types';
 
 type TListProps = {
-    handleInfoClick?: (clicked_item: TContractType) => void;
     handleSelect?: (
         clicked_item: TContractType,
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
@@ -17,21 +16,28 @@ type TListProps = {
     value?: string;
 };
 
-const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, value }: TListProps) => (
+const List = ({ handleSelect, list, should_show_info_banner, value }: TListProps) => (
     <React.Fragment>
         {list.map((contract_category, index) => {
-            const contract_types = contract_category.contract_types?.filter(contract_type => {
-                const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
-                const { TURBOS, VANILLA } = TRADE_TYPES;
-                if (contract_type.value === TURBOS.SHORT || contract_type.value === VANILLA.PUT) {
-                    return false;
+            const tradeTypes = contract_category.contract_types;
+            const contract_types = tradeTypes?.reduce<TFilteredContractType[]>((acc, contract_type) => {
+                let newValue: string | string[] = contract_type.value;
+                const { RISE_FALL, RISE_FALL_EQUAL, TURBOS, VANILLA } = TRADE_TYPES;
+                if (contract_type.value === RISE_FALL && tradeTypes.some(c => c.value === RISE_FALL_EQUAL)) {
+                    newValue = [RISE_FALL, RISE_FALL_EQUAL];
                 }
-                if (base_contract_type) {
-                    return !contract_category.contract_types.some(c => c.value === base_contract_type);
+                if (contract_type.value === TURBOS.LONG && tradeTypes.some(c => c.value === TURBOS.SHORT)) {
+                    newValue = [TURBOS.LONG, TURBOS.SHORT];
                 }
+                if (contract_type.value === VANILLA.CALL && tradeTypes.some(c => c.value === VANILLA.PUT)) {
+                    newValue = [VANILLA.CALL, VANILLA.PUT];
+                }
+                if ([TURBOS.SHORT, VANILLA.PUT, RISE_FALL_EQUAL].includes(contract_type.value)) {
+                    return acc;
+                }
+                return [...acc, { ...contract_type, value: newValue }];
+            }, []);
 
-                return true;
-            });
             const is_new = /(Accumulators|Turbos|Vanillas)/i.test(contract_category.key);
 
             return (
@@ -57,7 +63,6 @@ const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, va
                         <Item
                             contract_types={contract_types}
                             handleSelect={contract_category.is_unavailable ? undefined : handleSelect}
-                            handleInfoClick={contract_category.is_unavailable ? undefined : handleInfoClick}
                             value={value}
                         />
                     </div>

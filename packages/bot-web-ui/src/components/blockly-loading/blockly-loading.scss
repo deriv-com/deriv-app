@@ -1,7 +1,7 @@
 .bot {
     &__loading {
         position: fixed;
-        z-index: 9999999;
+        z-index: 99999;
         top: 0;
         bottom: 0;
         background-color: var(--overlay-outside-dialog);

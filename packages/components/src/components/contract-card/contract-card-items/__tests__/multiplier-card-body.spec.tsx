@@ -46,12 +46,13 @@ describe('MultiplierCardBody', () => {
             setCurrentFocus: jest.fn(),
             should_show_cancellation_warning: false,
             toggleCancellationWarning: jest.fn(),
+            totalProfit: -0.44,
         };
     });
 
     const testCardContent = () => {
-        expect(screen.getByText(getCardLabels().BUY_PRICE)).toBeInTheDocument();
-        expect(screen.getByText(getCardLabels().CURRENT_STAKE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CONTRACT_COST)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().DEAL_CANCEL_FEE)).toBeInTheDocument();
         expect(screen.queryByText(getCardLabels().NOT_AVAILABLE)).not.toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STAKE)).toBeInTheDocument();
@@ -61,6 +62,7 @@ describe('MultiplierCardBody', () => {
     };
 
     it('should render the correct content for a Cancelled contract with Deal cancel.fee and negative Total profit/loss', () => {
+        // @ts-expect-error Check if error is gone after migrating MultiplierCardBody to TS
         render(<MultiplierCardBody {...mock_props} />);
 
         testCardContent();
@@ -76,7 +78,7 @@ describe('MultiplierCardBody', () => {
         mock_props.contract_info.status = 'open';
         mock_props.is_sold = false;
         delete mock_props.contract_info.sell_price;
-
+        // @ts-expect-error Check if error is gone after migrating MultiplierCardBody to TS
         render(<MultiplierCardBody {...mock_props} />);
 
         testCardContent();
@@ -91,6 +93,7 @@ describe('MultiplierCardBody', () => {
         delete mock_props.contract_info.cancellation;
         delete mock_props.contract_info.sell_price;
 
+        // @ts-expect-error Check if error is gone after migrating MultiplierCardBody to TS
         render(<MultiplierCardBody {...mock_props} />);
 
         expect(screen.getByText(mock_props.getCardLabels().NOT_AVAILABLE)).toBeInTheDocument();
@@ -98,12 +101,14 @@ describe('MultiplierCardBody', () => {
     });
 
     it('should not render arrow indicator if the contract was sold (is_sold === true)', () => {
+        // @ts-expect-error Check if error is gone after migrating MultiplierCardBody to TS
         render(<MultiplierCardBody {...mock_props} />);
 
         expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
     });
 
     it('should render arrow indicator if the contract is not sold (is_sold === false)', () => {
+        // @ts-expect-error Check if error is gone after migrating MultiplierCardBody to TS
         render(<MultiplierCardBody {...mock_props} is_sold={false} />);
 
         expect(screen.getAllByTestId('dt_arrow_indicator')).not.toHaveLength(0);

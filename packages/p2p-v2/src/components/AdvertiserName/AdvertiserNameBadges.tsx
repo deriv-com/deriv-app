@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAdvertiserStats } from '../../hooks';
-import { Badge } from '../Badge';
+import { TAdvertiserStats } from 'types';
+import { Badge } from '@/components';
 import './AdvertiserNameBadges.scss';
 
 /**
@@ -9,14 +9,12 @@ import './AdvertiserNameBadges.scss';
  *
  * Use cases are usually in My Profile page and Advertiser page used under the advertiser's name
  */
-const AdvertiserNameBadges = () => {
-    const { data: advertiserStats } = useAdvertiserStats();
-
+const AdvertiserNameBadges = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
     const { isAddressVerified, isIdentityVerified, totalOrders } = advertiserStats || {};
 
     return (
-        <div className='p2p-v2-advertiser-name-badges'>
-            {totalOrders >= 100 && <Badge label='100+' status='trades' variant='warning' />}
+        <div className='p2p-v2-advertiser-name-badges' data-testid='dt_p2p_v2_advertiser_name_badges'>
+            {(totalOrders || 0) >= 100 && <Badge label='100+' status='trades' variant='warning' />}
             <Badge
                 label='ID'
                 status={isIdentityVerified ? 'verified' : 'not verified'}

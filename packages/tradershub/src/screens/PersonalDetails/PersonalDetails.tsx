@@ -1,8 +1,12 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
-import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
-import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
-import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
+import { WizardScreenActions, WizardScreenWrapper } from '@/flows';
+import { ScrollToFieldError } from '@/helpers';
+import { ACTION_TYPES, useRealAccountCreationContext } from '@/providers';
+import { personalDetails } from '@/utils';
+import { Text } from '@deriv-com/ui';
+import AdditionalInformation from './Sections/AdditionalInformation';
+import Details from './Sections/Details';
 
 /**
  * @name PersonalDetails
@@ -11,28 +15,47 @@ import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWiza
  * @returns {React.ReactNode}
  */
 const PersonalDetails = () => {
-    const { dispatch } = useSignupWizardContext();
+    const { dispatch, helpers, state } = useRealAccountCreationContext();
 
     const handleSubmit = (values: FormikValues) => {
-        dispatch({ payload: { firstName: values.firstName }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
+        dispatch({ payload: { ...values }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
+        helpers.goToNextStep();
+    };
+
+    const initialValues = {
+        firstName: state.firstName ?? '',
+        lastName: state.lastName ?? '',
+        dateOfBirth: state.dateOfBirth ?? '',
+        detailsConfirmation: state.detailsConfirmation ?? false,
+        phoneNumber: state.phoneNumber ?? '',
+        placeOfBirth: state.placeOfBirth ?? '',
+        taxResidence: state.taxResidence ?? '',
+        taxIdentificationNumber: state.taxIdentificationNumber ?? '',
+        accountOpeningReason: state.accountOpeningReason ?? '',
+        taxInfoConfirmation: state.taxInfoConfirmation ?? false,
     };
     return (
         <WizardScreenWrapper heading='Complete your personal details'>
             <Formik
-                initialValues={{
-                    firstName: '',
-                }}
+                enableReinitialize
+                initialValues={initialValues}
                 onSubmit={handleSubmit}
+                validateOnBlur
+                validateOnChange
+                validationSchema={personalDetails}
             >
                 {() => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
-                        <div className='flex-1 overflow-y-auto p-1200'>
-                            <p className='text-75'>
+                        <ScrollToFieldError fieldOrder={Object.keys(initialValues)} />
+                        <div className='flex-1 p-16 overflow-y-auto lg:p-24'>
+                            <Text className='text-sm lg:text-default'>
                                 Any information you provide is confidential and will be used for verification purposes
                                 only.
-                            </p>
+                            </Text>
+                            <Details />
+                            <AdditionalInformation />
                         </div>
-                        <Actions />
+                        <WizardScreenActions />
                     </Form>
                 )}
             </Formik>

@@ -1,0 +1,74 @@
+.p2p-v2-buy-sell-header {
+    padding: 2.5rem 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    @include mobile {
+        padding: 0;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid #f2f3f4;
+    }
+
+    .deriv-input {
+        padding: 6px 8px;
+
+        @include mobile {
+            height: 3.2rem;
+            display: flex;
+            align-items: center;
+            line-height: 1rem;
+        }
+
+        &__helper-message {
+            display: none;
+        }
+    }
+
+    &__tabs {
+        @include mobile {
+            padding: 1.6rem;
+        }
+
+        & .derivs-primary-tabs {
+            height: 4rem;
+            width: 18rem;
+            border-radius: 0.6rem;
+            padding: 0.5rem;
+        }
+
+        & .derivs-primary-tabs__btn--active {
+            border-radius: 0.4rem;
+            padding: 0.8rem 0.6rem;
+        }
+    }
+
+    &__row {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+
+        @include mobile {
+            width: 100%;
+            padding: 1.6rem;
+            border-top: 1px solid #f2f3f4;
+        }
+
+        &-search {
+            .p2p-v2-search {
+                .deriv-input {
+                    &__container {
+                        width: 24rem;
+
+                        @include mobile {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

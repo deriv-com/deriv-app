@@ -6,7 +6,7 @@ export type TRowItem = {
     options?: {
         align?: ComponentProps<typeof Text>['align'];
         color?: ComponentProps<typeof Text>['color'];
-        shouldShowAsterickAtEnd?: boolean;
+        shouldShowAsteriskAtEnd?: boolean;
         weight?: ComponentProps<typeof Text>['weight'];
     };
     text: string;
@@ -67,7 +67,7 @@ export const getCFDContents: TRegulatorsContentProps[] = [
         attribute: 'Leverage',
         content: {
             euRegulator: { text: '30' },
-            nonEuRegulator: { text: '100-1000' },
+            nonEuRegulator: { text: '100-20' },
         },
         id: 'leverage',
     },
@@ -75,7 +75,7 @@ export const getCFDContents: TRegulatorsContentProps[] = [
         attribute: 'Assets',
         content: {
             euRegulator: [
-                { options: { shouldShowAsterickAtEnd: true }, text: 'Synthetics' },
+                { options: { shouldShowAsteriskAtEnd: true }, text: 'Synthetics' },
                 { text: 'Forex' },
                 { text: 'Stocks' },
                 { text: 'Stock indices' },
@@ -143,7 +143,7 @@ export const getOptionsContents: TRegulatorsContentProps[] = [
         content: {
             euRegulator: [
                 {
-                    options: { shouldShowAsterickAtEnd: true },
+                    options: { shouldShowAsteriskAtEnd: true },
                     text: 'Synthetics',
                 },
                 { text: 'Forex' },

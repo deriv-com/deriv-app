@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { p2p } from '@deriv/api';
+import { FullPageMobileWrapper, TextArea } from '@/components';
+import { useDevice, useQueryString } from '@/hooks';
+import { p2p } from '@deriv/api-v2';
 import { Button, Loader } from '@deriv-com/ui';
-import { FullPageMobileWrapper, TextArea } from '../../../../components';
-import { useDevice, useQueryString } from '../../../../hooks';
 import './MyProfileAdDetails.scss';
+import { THooks } from 'types';
 
 type TMYProfileAdDetailsTextAreaProps = {
-    advertiserInfo: NonNullable<ReturnType<typeof p2p.advertiser.useGetInfo>>['data'];
+    advertiserInfo: THooks.Advertiser.GetInfo;
     setAdvertDescription: React.Dispatch<React.SetStateAction<string>>;
     setContactInfo: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -21,12 +22,14 @@ const MyProfileAdDetailsTextArea = ({
             <TextArea
                 onChange={e => setContactInfo(e.target.value)}
                 placeholder='My contact details'
+                testId='dt_p2p_v2_profile_ad_details_contact'
                 value={advertiserInfo?.contact_info || ''}
             />
             <TextArea
                 label='This information will be visible to everyone.'
                 onChange={e => setAdvertDescription(e.target.value)}
                 placeholder='Instructions'
+                testId='dt_p2p_v2_profile_ad_details_description'
                 value={advertiserInfo?.default_advert_description || ''}
             />
         </>
@@ -65,6 +68,7 @@ const MyProfileAdDetails = () => {
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                className='p2p-v2-my-profile-ad-details__mobile-wrapper'
                 onBack={() =>
                     setQueryString({
                         tab: 'default',
@@ -95,7 +99,7 @@ const MyProfileAdDetails = () => {
                 setContactInfo={setContactInfo}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
-            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg'>
+            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg' textSize='sm'>
                 Save
             </Button>
         </div>

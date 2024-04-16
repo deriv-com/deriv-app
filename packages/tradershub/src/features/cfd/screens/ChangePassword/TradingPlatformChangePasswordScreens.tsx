@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
+import DerivXPasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
+import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
+import { ActionScreen, SentEmailContent } from '@/components';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
+import { TPlatforms } from '@/types';
+import { platformPasswordResetRedirectLink } from '@/utils';
+import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
+import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
-import { SentEmailContent, ActionScreen } from '../../../../components';
-import { Provider } from '@deriv/library';
-import DerivXPasswordIcon from '../../../../public/images/ic-derivx-password-updated.svg';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { TPlatforms } from '../../../../types';
-import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
-import { CFDPlatforms, PlatformDetails } from '../../constants';
 
 type TradingPlatformChangePasswordScreensProps = {
-    isVirtual?: boolean;
     platform: TPlatforms.All;
 };
 
@@ -19,10 +19,11 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
     const [activeScreen, setActiveScreen] = useState<TChangePasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);
 
-    const { hide } = Provider.useModal();
+    const { closeModal } = useQueryParams();
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
     const { data: activeTrading } = useActiveTradingAccount();
+    const { setCfdState } = useCFDContext();
 
     const { title } = PlatformDetails[platform];
 
@@ -48,13 +49,14 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
                 </Text>
             ),
             button: (
-                <div className='flex gap-400'>
-                    <Button onClick={() => hide()} size='lg' variant='outlined'>
+                <div className='flex gap-8'>
+                    <Button color='black' onClick={closeModal} size='lg' variant='outlined'>
                         Cancel
                     </Button>
                     <Button
-                        className='rounded-200'
+                        className='rounded-xs'
                         onClick={() => {
+                            setCfdState({ platform });
                             handleSendEmail();
                             handleClick('emailVerification');
                         }}
@@ -69,7 +71,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
         introScreen: {
             bodyText: `Use this password to log in to your ${title} accounts on the desktop, web, and mobile apps.`,
             button: (
-                <Button className='rounded-200' onClick={() => handleClick('confirmationScreen')} size='lg'>
+                <Button className='rounded-xs' onClick={() => handleClick('confirmationScreen')} size='lg'>
                     Change password
                 </Button>
             ),
@@ -79,13 +81,13 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
 
     if (activeScreen === 'emailVerification')
         return (
-            <div className='w-full mt-1600 md:mt-2000'>
-                <SentEmailContent platform={platform} />
+            <div className='w-full mt-32 md:mt-40'>
+                <SentEmailContent />
             </div>
         );
 
     return (
-        <div className='mt-1600 lg:mt-2000'>
+        <div className='mt-32 lg:mt-40'>
             <ActionScreen
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'

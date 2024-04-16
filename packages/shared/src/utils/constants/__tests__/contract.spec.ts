@@ -5,13 +5,14 @@ import {
     getSupportedContracts,
     getContractConfig,
     getContractTypeDisplay,
+    getContractCategoriesConfig,
     getContractTypePosition,
     getCleanedUpCategories,
 } from '../contract';
 import { CONTRACT_TYPES, TRADE_TYPES } from '../../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
-const card_label = 'Apply';
+const card_labels = { APPLY: 'Apply', MULTIPLIER: 'Multiplier:' };
 const markets_name = 'AUD/CAD';
 const unsupported_contract = {
     name: 'Spread Up',
@@ -34,8 +35,9 @@ jest.mock('../../storage', () => ({
 }));
 
 describe('getCardLabels', () => {
-    it('should return an object with card labels, e.g. such as Apply', () => {
-        expect(getCardLabels().APPLY).toEqual(card_label);
+    it('should return an object with card labels, e.g. such as Apply or Multiplier', () => {
+        expect(getCardLabels().APPLY).toEqual(card_labels.APPLY);
+        expect(getCardLabels().MULTIPLIER).toEqual(card_labels.MULTIPLIER);
     });
 });
 
@@ -56,8 +58,11 @@ describe('getUnsupportedContracts', () => {
     it('should return an object with unsupported contracts, e.g. such as Spread Up', () => {
         expect(getUnsupportedContracts().CALLSPREAD).toEqual(unsupported_contract);
     });
-    it('should not return TICKHIGH as a part of unsupported contracts', () => {
-        expect(Object.keys(getUnsupportedContracts())).not.toContain('TICKHIGH');
+    it('should not return High Tick contract type as a part of unsupported contracts', () => {
+        expect(Object.keys(getUnsupportedContracts())).not.toContain(CONTRACT_TYPES.TICK_HIGH_LOW.HIGH);
+    });
+    it('should not return High-Close contract type as a part of unsupported contracts', () => {
+        expect(Object.keys(getUnsupportedContracts())).not.toContain(CONTRACT_TYPES.LB_PUT);
     });
 });
 
@@ -87,19 +92,47 @@ describe('getContractConfig', () => {
 
 describe('getContractTypeDisplay', () => {
     it('should return a specific button name if show_button_name === true and contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCUMULATOR, false, true)).toEqual('Buy');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCUMULATOR, { showButtonName: true })).toEqual('Buy');
     });
     it('should return a specific contract name if show_button_name === false but contract_config has a button_name field', () => {
         expect(getContractTypeDisplay(CONTRACT_TYPES.ACCUMULATOR)).toEqual('Accumulators');
     });
     it('should return a specific contract name if show_button_name === true but contract_config has no button_name field', () => {
-        expect(getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN, true, true)).toEqual('Down');
+        expect(
+            getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN, { isHighLow: true, showButtonName: true })
+        ).toEqual('Down');
     });
     it('should return an empty string if show_button_name === false and contract_config has no name field', () => {
-        expect(getContractTypeDisplay('TEST', true, false)).toBe('');
+        expect(getContractTypeDisplay('TEST', { isHighLow: true })).toBe('');
     });
     it('should return an empty string if show_button_name === true and contract_config has no name field and no button_name', () => {
-        expect(getContractTypeDisplay('TEST', true, true)).toBe('');
+        expect(getContractTypeDisplay('TEST', { isHighLow: true, showButtonName: true })).toBe('');
+    });
+    it('should return main title for contracts which have such field if show_main_title is true', () => {
+        expect(
+            getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN, {
+                isHighLow: true,
+                showMainTitle: true,
+            })
+        ).toBe('Multipliers');
+        expect(
+            getContractTypeDisplay(CONTRACT_TYPES.TURBOS.LONG, {
+                showMainTitle: true,
+            })
+        ).toBe('Turbos');
+        expect(
+            getContractTypeDisplay(CONTRACT_TYPES.VANILLA.CALL, {
+                showMainTitle: true,
+            })
+        ).toBe('Vanillas');
+    });
+    it('should not return main title for contracts which have such field but show_main_title is false', () => {
+        expect(getContractTypeDisplay(CONTRACT_TYPES.TURBOS.LONG)).not.toBe('Turbos');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.VANILLA.CALL)).not.toBe('Vanillas');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN)).not.toBe('Multipliers');
+    });
+    it('should not return main title for contracts which have not such field if show_main_title is true', () => {
+        expect(getContractTypeDisplay(CONTRACT_TYPES.FALL, { showMainTitle: true })).toBeFalsy();
     });
 });
 
@@ -184,5 +217,43 @@ describe('getCleanedUpCategories', () => {
             },
         };
         expect(getCleanedUpCategories(initial_categories)).toEqual(resulting_categories);
+    });
+});
+
+describe('getContractCategoriesConfig', () => {
+    it('should return object with categories', () => {
+        const categories = {
+            Turbos: { name: 'Turbos', categories: [TRADE_TYPES.TURBOS.LONG, TRADE_TYPES.TURBOS.SHORT] },
+            Multipliers: { name: 'Multipliers', categories: [TRADE_TYPES.MULTIPLIER] },
+            'Ups & Downs': {
+                name: 'Ups & Downs',
+                categories: [
+                    TRADE_TYPES.RISE_FALL,
+                    TRADE_TYPES.RISE_FALL_EQUAL,
+                    TRADE_TYPES.HIGH_LOW,
+                    TRADE_TYPES.RUN_HIGH_LOW,
+                    TRADE_TYPES.RESET,
+                    TRADE_TYPES.ASIAN,
+                    TRADE_TYPES.CALL_PUT_SPREAD,
+                ],
+            },
+            'Highs & Lows': {
+                name: 'Highs & Lows',
+                categories: [TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
+            },
+            'Ins & Outs': { name: 'Ins & Outs', categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
+            'Look Backs': {
+                name: 'Look Backs',
+                categories: [TRADE_TYPES.LB_HIGH_LOW, TRADE_TYPES.LB_PUT, TRADE_TYPES.LB_CALL],
+            },
+            Digits: {
+                name: 'Digits',
+                categories: [TRADE_TYPES.MATCH_DIFF, TRADE_TYPES.EVEN_ODD, TRADE_TYPES.OVER_UNDER],
+            },
+            Vanillas: { name: 'Vanillas', categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT] },
+            Accumulators: { name: 'Accumulators', categories: [TRADE_TYPES.ACCUMULATOR] },
+        };
+
+        expect(getContractCategoriesConfig()).toEqual(categories);
     });
 });

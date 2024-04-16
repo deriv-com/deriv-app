@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSettings, useStatesList } from '@deriv/api';
+import { useSettings, useStatesList } from '@deriv/api-v2';
 import { FlowTextField, useFlow } from '../../../../components';
 import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
 import { letterRequiredValidator, requiredValidator } from '../../validations';

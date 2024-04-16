@@ -14,7 +14,6 @@ import ArrowIndicator from '../../arrow-indicator';
 
 type TAccumulatorCardBody = {
     addToast: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate?: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
     contract_info: TContractInfo;
     contract_update?: ContractUpdate;
     currency: Required<TContractInfo>['currency'];
@@ -26,31 +25,25 @@ type TAccumulatorCardBody = {
     is_sold: boolean;
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
-    setCurrentFocus: (value: string) => void;
+    setCurrentFocus: (value: string | null) => void;
+    totalProfit: number;
     is_positions?: boolean;
 };
 
 const AccumulatorCardBody = ({
-    addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
-    current_focus,
-    error_message_alignment,
     getCardLabels,
-    getContractById,
     indicative,
     is_sold,
-    onMouseLeave,
-    removeToast,
-    setCurrentFocus,
     is_positions,
+    ...toggle_card_dialog_props
 }: TAccumulatorCardBody) => {
     const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const { CURRENT_STAKE, INITIAL_STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
+    const { CONTRACT_VALUE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
     let is_won, is_loss;
     if (profit) {
         is_won = +profit > 0;
@@ -60,10 +53,10 @@ const AccumulatorCardBody = ({
     return (
         <React.Fragment>
             <div className='dc-contract-card-items-wrapper'>
-                <ContractCardItem header={INITIAL_STAKE} className='dc-contract-card__stake'>
+                <ContractCardItem header={STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
+                <ContractCardItem header={CONTRACT_VALUE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
                             'dc-contract-card--profit': is_won,
@@ -92,17 +85,10 @@ const AccumulatorCardBody = ({
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                     {is_valid_to_sell && (
                         <ToggleCardDialog
-                            addToast={addToast}
-                            connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
-                            current_focus={current_focus}
-                            error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
-                            getContractById={getContractById}
                             is_accumulator
-                            onMouseLeave={onMouseLeave}
-                            removeToast={removeToast}
-                            setCurrentFocus={setCurrentFocus}
+                            {...toggle_card_dialog_props}
                         />
                     )}
                 </ContractCardItem>

@@ -21,7 +21,11 @@ type TDialog = {
     onCategoryClick?: (e: React.ComponentProps<typeof VerticalTab.Headers>['selected']) => void;
     onChangeInput?: (e: string) => void;
     onSearchBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | null>;
+    onClose?: () => void;
     show_loading?: boolean;
+    learn_more_banner?: React.ReactNode;
+    hide_back_button?: boolean;
+    title?: string;
 };
 
 const Dialog = ({
@@ -35,8 +39,12 @@ const Dialog = ({
     onCategoryClick,
     onChangeInput,
     onSearchBlur,
+    onClose,
     selected,
     show_loading,
+    learn_more_banner,
+    hide_back_button,
+    title,
 }: React.PropsWithChildren<TDialog>) => {
     const input_ref = React.useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(null);
     const [input_value, setInputValue] = React.useState('');
@@ -113,6 +121,7 @@ const Dialog = ({
                                         <div className='dc-vertical-tab__content-container'>
                                             {selected_category_contract && <NoResultsMessage text={input_value} />}
                                             {info_banner}
+                                            {learn_more_banner}
                                             {renderChildren()}
                                         </div>
                                     </div>
@@ -120,7 +129,13 @@ const Dialog = ({
                             ) : (
                                 <React.Fragment>
                                     <div className='dc-vertical-tab__action-bar dc-vertical-tab__action-bar--contract-type-info-header'>
-                                        <Header title={item.text || ''} onClickGoBack={onBackButtonClick} />
+                                        <Header
+                                            title={title || item.text || ''}
+                                            onClickBack={onBackButtonClick}
+                                            onClose={onClose}
+                                            should_render_arrow={!hide_back_button}
+                                            should_render_close={hide_back_button}
+                                        />
                                     </div>
                                     {renderChildren()}
                                 </React.Fragment>

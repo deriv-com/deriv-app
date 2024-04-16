@@ -21,6 +21,7 @@ type TMobileDialog = {
     title?: React.ReactNode;
     visible?: boolean;
     wrapper_classname?: string;
+    learn_more_banner?: React.ReactNode;
 };
 
 const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
@@ -36,6 +37,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         title,
         visible,
         wrapper_classname,
+        learn_more_banner,
     } = props;
 
     const footer_ref = React.useRef<HTMLDivElement>(null);
@@ -100,16 +102,25 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                 <Div100vhContainer
                     className={classNames('dc-mobile-dialog__container', {
                         'dc-mobile-dialog__container--has-scroll': props.has_content_scroll,
-                        'dc-mobile-dialog__container--has-info-banner': info_banner,
+                        'dc-mobile-dialog__container--has-info-banner': info_banner || learn_more_banner,
                     })}
                     height_offset={props.content_height_offset || '8px'}
                 >
                     <ThemedScrollbars
-                        is_bypassed={!info_banner}
+                        is_bypassed={!info_banner && !learn_more_banner}
                         is_scrollbar_hidden
-                        className={info_banner ? classNames('dc-mobile-dialog__header-wrapper', header_classname) : ''}
+                        className={
+                            info_banner || learn_more_banner
+                                ? classNames('dc-mobile-dialog__header-wrapper', header_classname)
+                                : ''
+                        }
                     >
-                        <div className={classNames('dc-mobile-dialog__header', !info_banner && header_classname)}>
+                        <div
+                            className={classNames(
+                                'dc-mobile-dialog__header',
+                                !info_banner && !learn_more_banner && header_classname
+                            )}
+                        >
                             <Text
                                 as='h2'
                                 size='xs'
@@ -131,6 +142,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                             )}
                         </div>
                         {info_banner}
+                        {learn_more_banner}
                     </ThemedScrollbars>
                     <div
                         className={classNames('dc-mobile-dialog__content', {

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';
 import TransactionStatusSuccess from '../TransactionStatusSuccess';
 
@@ -86,6 +87,7 @@ const mockWallet = {
     is_active: true,
     is_crypto: true,
     is_disabled: false,
+    is_linked_account_active: false,
     is_malta_wallet: false,
     is_mf: false,
     is_trading: false,
@@ -106,13 +108,15 @@ describe('TransactionStatusSuccess', () => {
     it('should render winthdrawal info for withdrawal transactions', () => {
         render(
             <APIProvider>
-                <ModalProvider>
-                    <TransactionStatusSuccess
-                        transactionType='withdrawal'
-                        transactions={mockTransactions}
-                        wallet={mockWallet}
-                    />
-                </ModalProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TransactionStatusSuccess
+                            transactionType='withdrawal'
+                            transactions={mockTransactions}
+                            wallet={mockWallet}
+                        />
+                    </ModalProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -147,13 +151,15 @@ describe('TransactionStatusSuccess', () => {
 
         render(
             <APIProvider>
-                <ModalProvider>
-                    <TransactionStatusSuccess
-                        transactionType='deposit'
-                        transactions={mockDeposit}
-                        wallet={mockWallet}
-                    />
-                </ModalProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TransactionStatusSuccess
+                            transactionType='deposit'
+                            transactions={mockDeposit}
+                            wallet={mockWallet}
+                        />
+                    </ModalProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -166,9 +172,11 @@ describe('TransactionStatusSuccess', () => {
     it('should render "No recent transactions" when there are no transactions', () => {
         render(
             <APIProvider>
-                <ModalProvider>
-                    <TransactionStatusSuccess transactions={[]} wallet={mockWallet} />
-                </ModalProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TransactionStatusSuccess transactions={[]} wallet={mockWallet} />
+                    </ModalProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
@@ -192,7 +200,7 @@ describe('TransactionStatusSuccess', () => {
                 formatted_amount: '',
                 formatted_confirmations: '',
                 formatted_transaction_hash: '',
-                id: '',
+                id: `transaction_${i}`,
                 is_deposit: false,
                 is_valid_to_cancel: 1 as const,
                 is_withdrawal: true,
@@ -208,13 +216,15 @@ describe('TransactionStatusSuccess', () => {
 
         render(
             <APIProvider>
-                <ModalProvider>
-                    <TransactionStatusSuccess
-                        transactionType='withdrawal'
-                        transactions={mockTransactions}
-                        wallet={mockWallet}
-                    />
-                </ModalProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TransactionStatusSuccess
+                            transactionType='withdrawal'
+                            transactions={mockTransactions}
+                            wallet={mockWallet}
+                        />
+                    </ModalProvider>
+                </WalletsAuthProvider>
             </APIProvider>
         );
 

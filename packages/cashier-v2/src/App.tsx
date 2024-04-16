@@ -1,15 +1,13 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
-import { BreakpointProvider } from '@deriv/quill-design';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import AppContent from './AppContent';
-import './index.scss';
 
 const App: React.FC = () => {
     return (
         <APIProvider standalone>
-            <BreakpointProvider>
+            <AuthProvider>
                 <AppContent />
-            </BreakpointProvider>
+            </AuthProvider>
         </APIProvider>
     );
 };

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import Modal from 'react-modal';
-import { p2p } from '@deriv/api';
+import { useDevice } from '@/hooks';
+import { p2p } from '@deriv/api-v2';
 import { Button, Loader, Text } from '@deriv-com/ui';
-import { useDevice } from '../../../hooks';
 import { customStyles } from '../helpers';
 import './DailyLimitModal.scss';
 
@@ -84,6 +84,7 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
             isOpen={isModalOpen}
             onRequestClose={onRequestClose}
             style={customStyles}
+            testId='dt_p2p_v2_daily_limit_modal'
         >
             {getModalContent()}
         </Modal>

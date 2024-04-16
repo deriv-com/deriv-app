@@ -110,26 +110,6 @@ export const getMarketNamesMap = () => ({
 });
 
 export const getUnsupportedContracts = () => ({
-    TICKHIGH: {
-        name: 'High Tick',
-        position: 'top',
-    },
-    TICKLOW: {
-        name: 'Low Tick',
-        position: 'bottom',
-    },
-    LBFLOATCALL: {
-        name: 'Close-to-Low',
-        position: 'top',
-    },
-    LBFLOATPUT: {
-        name: 'High-to-Close',
-        position: 'top',
-    },
-    LBHIGHLOW: {
-        name: 'High-to-Low',
-        position: 'top',
-    },
     CALLSPREAD: {
         name: 'Spread Up',
         position: 'top',
@@ -203,13 +183,11 @@ export const getSupportedContracts = is_high_low => ({
         position: 'bottom',
     },
     TURBOSLONG: {
-        button_name: 'Long',
-        name: 'Turbos',
+        name: 'Up',
         position: 'top',
     },
     TURBOSSHORT: {
-        button_name: 'Short',
-        name: 'Turbos',
+        name: 'Down',
         position: 'bottom',
     },
     RUNHIGH: {
@@ -250,6 +228,26 @@ export const getSupportedContracts = is_high_low => ({
     },
     RESETPUT: {
         name: 'Reset Put',
+        position: 'bottom',
+    },
+    LBFLOATCALL: {
+        name: 'Close-Low',
+        position: 'top',
+    },
+    LBFLOATPUT: {
+        name: 'High-Close',
+        position: 'top',
+    },
+    LBHIGHLOW: {
+        name: 'High-Low',
+        position: 'top',
+    },
+    TICKHIGH: {
+        name: 'High Tick',
+        position: 'top',
+    },
+    TICKLOW: {
+        name: 'Low Tick',
         position: 'bottom',
     },
 });

@@ -1,6 +1,14 @@
 import React from 'react';
-import { Button, Text } from '@deriv/quill-design';
-import { Dialog } from '../Dialog';
+import ReactModal from 'react-modal';
+import { ButtonGroup } from '@/components';
+import { CUSTOM_STYLES } from '@/helpers';
+import { useQueryParams } from '@/hooks';
+import { Button, Text } from '@deriv-com/ui';
+
+type TGetADerivAccountDialog = {
+    isOpen: boolean;
+    onClose: () => void;
+};
 
 /**
  * `GetADerivAccountDialog`  is opened when user tried to create a CFD account without a Deriv account
@@ -8,22 +16,29 @@ import { Dialog } from '../Dialog';
  *
  * @returns {React.ReactElement} A `<Dialog>` component containing the dialog message and action button.
  */
-const GetADerivAccountDialog = () => {
+const GetADerivAccountDialog = ({ isOpen, onClose }: TGetADerivAccountDialog) => {
+    const { openModal } = useQueryParams();
+
     return (
-        <Dialog className='lg:w-[440px]'>
-            <Dialog.Header heading='h5' hideCloseButton title="You'll need a Deriv account" />
-            <Dialog.Content>
-                <Text size='sm'>A Deriv account will allow you to fund (and withdraw from) your MT5 account(s). </Text>
-            </Dialog.Content>
-            <Dialog.Action align='right'>
-                <Button className='rounded-200 h-2000 px-500' colorStyle='black' size='md' variant='secondary'>
-                    Cancel
-                </Button>
-                <Button className='rounded-200 h-2000 px-500' colorStyle='coral' size='md' variant='primary'>
-                    Add a Deriv account
-                </Button>
-            </Dialog.Action>
-        </Dialog>
+        <ReactModal ariaHideApp={false} isOpen={isOpen} shouldCloseOnOverlayClick={false} style={CUSTOM_STYLES}>
+            <div className='w-[440px] bg-system-light-primary-background rounded-default flex justify-between flex-col gap-24'>
+                <Text weight='bold'>You&apos;ll need a Deriv account</Text>
+                <Text size='sm'>A Deriv account will allow you to fund (and withdraw from) your CFDs account(s).</Text>
+                <ButtonGroup className='justify-end '>
+                    <Button color='black' onClick={onClose} variant='outlined'>
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            onClose();
+                            openModal('RealAccountCreation');
+                        }}
+                    >
+                        Add a Deriv account
+                    </Button>
+                </ButtonGroup>
+            </div>
+        </ReactModal>
     );
 };
 

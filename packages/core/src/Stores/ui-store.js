@@ -39,7 +39,6 @@ export default class UIStore extends BaseStore {
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
     is_services_error_visible = false;
-    is_unsupported_contract_modal_visible = false;
     is_new_account = localStorage.getItem('isNewAccount') || false;
     is_account_signup_modal_visible = false;
     is_link_expired_modal_visible = false;
@@ -177,6 +176,7 @@ export default class UIStore extends BaseStore {
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     is_mt5_migration_modal_enabled = false;
+    isUrlUnavailableModalVisible = false;
     sub_section_index = 0;
 
     is_additional_kyc_info_modal_open = false;
@@ -220,7 +220,6 @@ export default class UIStore extends BaseStore {
             is_ready_to_deposit_modal_visible: observable,
             is_need_real_account_for_cashier_modal_visible: observable,
             is_services_error_visible: observable,
-            is_unsupported_contract_modal_visible: observable,
             is_new_account: observable,
             is_account_signup_modal_visible: observable,
             is_link_expired_modal_visible: observable,
@@ -292,6 +291,7 @@ export default class UIStore extends BaseStore {
             is_verification_submitted: observable,
             is_mt5_migration_modal_open: observable,
             is_mt5_migration_modal_enabled: observable,
+            isUrlUnavailableModalVisible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
             notification_messages_ui: observable,
@@ -421,12 +421,12 @@ export default class UIStore extends BaseStore {
             toggleSetResidenceModal: action.bound,
             toggleSettingsModal: action.bound,
             toggleLanguageSettingsModal: action.bound,
-            toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
             toggleAccountSuccessModal: action.bound,
             toggleAdditionalKycInfoModal: action.bound,
             toggleKycInformationSubmittedModal: action.bound,
             toggleMT5MigrationModal: action.bound,
+            toggleUrlUnavailableModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -679,6 +679,9 @@ export default class UIStore extends BaseStore {
     }
 
     closeRealAccountSignup() {
+        this.root_store.client.setRealAccountSignupFormData([]);
+        this.root_store.client.setRealAccountSignupFormStep(0);
+
         this.is_real_acc_signup_on = false;
         this.resetRealAccountSignupTarget();
         setTimeout(() => {
@@ -732,10 +735,6 @@ export default class UIStore extends BaseStore {
 
     setHasOnlyForwardingContracts(has_only_forward_starting_contracts) {
         this.has_only_forward_starting_contracts = has_only_forward_starting_contracts;
-    }
-
-    toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
-        this.is_unsupported_contract_modal_visible = state_change;
     }
 
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
@@ -990,7 +989,11 @@ export default class UIStore extends BaseStore {
         this.is_mt5_migration_modal_enabled = value;
     }
 
-    toggleMT5MigrationModal() {
-        this.is_mt5_migration_modal_open = !this.is_mt5_migration_modal_open;
+    toggleMT5MigrationModal(value) {
+        this.is_mt5_migration_modal_open = value;
+    }
+
+    toggleUrlUnavailableModal(value) {
+        this.isUrlUnavailableModalVisible = value;
     }
 }

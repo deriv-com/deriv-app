@@ -1,6 +1,18 @@
 import { useMemo } from 'react';
-import { p2p, useAuthentication, useSettings } from '@deriv/api';
-import { daysSince } from '../utils';
+import { daysSince } from '@/utils';
+import { p2p, useAuthentication, useSettings } from '@deriv/api-v2';
+
+/**
+ * Formats the advertiser duration into the following format:
+ * -1 if duration is not provided, in this case "-" would be displayed in the advertiser stats
+ * otherwise, converts the duration to minutes, and
+ * 1 if the duration is less than 60 seconds
+ */
+const toAdvertiserMinutes = (duration?: number | null) => {
+    if (!duration) return -1;
+    if (duration > 60) return Math.round(duration / 60);
+    return 1;
+};
 
 /**
  * Hook to calculate an advertiser's stats based on their information.
@@ -21,11 +33,10 @@ const useAdvertiserStats = (advertiserId?: string) => {
             ...data,
 
             /** The average buy time in minutes */
-            averagePayTime: data?.buy_time_avg && data.buy_time_avg > 60 ? Math.round(data.buy_time_avg / 60) : 1,
+            averagePayTime: toAdvertiserMinutes(data?.buy_time_avg),
 
             /** The average release time in minutes */
-            averageReleaseTime:
-                data?.release_time_avg && data.release_time_avg > 60 ? Math.round(data.release_time_avg / 60) : 1,
+            averageReleaseTime: toAdvertiserMinutes(data?.release_time_avg),
 
             /** The percentage of completed orders out of total orders as a buyer within the past 30 days. */
             buyCompletionRate: data?.buy_completion_rate || 0,
@@ -45,10 +56,12 @@ const useAdvertiserStats = (advertiserId?: string) => {
             ),
 
             /** The advertiser's full name */
-            fullName: (settings?.first_name || '') + (settings?.last_name || ''),
+            fullName: `${settings?.first_name || ''} ${settings?.last_name || ''}`,
 
             /** Checks if the advertiser has completed proof of address verification */
-            isAddressVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.document?.status,
+            isAddressVerified: isAdvertiser
+                ? data?.full_verification
+                : authenticationStatus?.document?.status === 'verified',
 
             /** Checks if the user is already an advertiser */
             isAdvertiser,
@@ -57,7 +70,9 @@ const useAdvertiserStats = (advertiserId?: string) => {
             isEligibleForLimitUpgrade: Boolean(data?.upgradable_daily_limits),
 
             /** Checks if the advertiser has completed proof of identity verification */
-            isIdentityVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.identity?.status,
+            isIdentityVerified: isAdvertiser
+                ? data?.basic_verification
+                : authenticationStatus?.identity?.status === 'verified',
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */
             sellCompletionRate: data?.sell_completion_rate || 0,

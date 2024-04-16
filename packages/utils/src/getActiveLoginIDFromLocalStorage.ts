@@ -1,13 +1,12 @@
 /**
  * Gets the active `loginid` for the current user from the `localStorage`.
  */
-const getActiveLoginIDFromLocalStorage = () => {
-    const active_loginid = localStorage.getItem('active_loginid');
-
-    // If there is no active loginid, return undefined.
-    if (!active_loginid) return;
-
-    return active_loginid;
+/**
+ * @deprecated Please use 'WebSocketUtils.getActiveLoginid' from '@deriv-com/utils' instead of this.
+ */
+const getActiveLoginIDFromLocalStorage = (loginid_key = 'active_loginid') => {
+    const active_custom_loginid = localStorage.getItem(loginid_key);
+    return active_custom_loginid ?? undefined;
 };
 
 export default getActiveLoginIDFromLocalStorage;

@@ -1,12 +1,14 @@
-import React from 'react';
-import { Formik } from 'formik';
-import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
+import React, { useState } from 'react';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
+import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
 import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
+import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
+import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
-import { validPassword } from '../../../../../utils/password';
+import { validPasswordMT5 } from '../../../../../utils/password-validation';
 import { PlatformDetails } from '../../../constants';
-import { WalletPasswordFieldLazy } from '../../../../../components/Base';
 
 type TFormInitialValues = {
     currentPassword: string;
@@ -22,6 +24,9 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     const { isMobile } = useDevice();
     const { getModalState } = useModal();
     const mt5AccountId = getModalState('accountId') ?? '';
+    const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
+    const [hasCurrentPasswordFieldTouched, setHasCurrentPasswordFieldTouched] = useState(false);
+    const { t } = useTranslation();
 
     const {
         error: changeInvestorPasswordError,
@@ -30,6 +35,11 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     } = useTradingPlatformInvestorPasswordChange();
 
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
+
+    const validateCurrentPassword = (value: string) => {
+        if (!value) return 'The field is required';
+        return undefined;
+    };
 
     const onFormSubmitHandler = async (values: TFormInitialValues) => {
         await changeInvestorPassword({
@@ -63,29 +73,53 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
             descriptionSize='sm'
             renderButtons={() => (
                 <Formik initialValues={initialValues} onSubmit={onFormSubmitHandler}>
-                    {({ handleChange, handleSubmit, values }) => (
-                        <form className='wallets-change-investor-password-screens__form' onSubmit={handleSubmit}>
+                    {({ handleChange, values }) => (
+                        <Form className='wallets-change-investor-password-screens__form'>
                             <div className='wallets-change-investor-password-screens__form-fields'>
-                                <WalletPasswordFieldLazy
-                                    autoComplete='current-password'
-                                    label='Current investor password'
-                                    name='currentPassword'
-                                    onChange={handleChange}
-                                    password={values.currentPassword}
-                                />
+                                <Field name='currentPassword' validate={validateCurrentPassword}>
+                                    {({ field, form }: FieldProps) => {
+                                        return (
+                                            <WalletTextField
+                                                autoComplete='current-password'
+                                                errorMessage={hasCurrentPasswordFieldTouched && form.errors[field.name]}
+                                                isInvalid={
+                                                    hasCurrentPasswordFieldTouched && Boolean(form.errors[field.name])
+                                                }
+                                                label='Current investor password'
+                                                name={field.name}
+                                                onBlur={e => {
+                                                    setHasCurrentPasswordFieldTouched(true);
+                                                    field.onBlur(e);
+                                                }}
+                                                onChange={field.onChange}
+                                                renderRightIcon={() => (
+                                                    <PasswordViewerIcon
+                                                        setViewPassword={setIsCurrentPasswordVisible}
+                                                        viewPassword={isCurrentPasswordVisible}
+                                                    />
+                                                )}
+                                                type={isCurrentPasswordVisible ? 'text' : 'password'}
+                                                value={values.currentPassword}
+                                            />
+                                        );
+                                    }}
+                                </Field>
                                 <WalletPasswordFieldLazy
                                     autoComplete='new-password'
                                     label='New investor password'
+                                    message={t(
+                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                    )}
+                                    mt5Policy
                                     name='newPassword'
                                     onChange={handleChange}
                                     password={values.newPassword}
+                                    showMessage
                                 />
                             </div>
                             <div className='wallets-change-investor-password-screens__form-buttons'>
                                 <WalletButton
-                                    disabled={
-                                        !validPassword(values.currentPassword) || !validPassword(values.newPassword)
-                                    }
+                                    disabled={!values.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size={isMobile ? 'lg' : 'md'}
                                     type='submit'
@@ -96,7 +130,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     Create or reset investor password
                                 </WalletButton>
                             </div>
-                        </form>
+                        </Form>
                     )}
                 </Formik>
             )}

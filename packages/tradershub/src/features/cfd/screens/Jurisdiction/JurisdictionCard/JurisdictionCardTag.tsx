@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 type TJurisdictionCardTagProps = {
     tag: string;
 };
 
 const JurisdictionCardTag = ({ tag }: TJurisdictionCardTagProps) => (
-    <div className='absolute top-50 left-50 w-full p-400 text-center rounded-t-[13px] rounded-b-50 bg-system-light-text-info-blue-background'>
-        <Text bold className='text-random-blue text-50'>
+    <div className='absolute top-0 left-0 w-full p-8 text-center rounded-t-lg rounded-b-none bg-system-light-text-info-blue-background'>
+        <Text className='text-random-blue' size='sm' weight='bold'>
             {tag}
         </Text>
     </div>

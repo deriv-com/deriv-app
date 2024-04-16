@@ -1,0 +1,16 @@
+.p2p-v2-alert-component {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    right: 4.7rem;
+    height: 100%;
+
+    span {
+        display: flex;
+    }
+    @include mobile {
+        position: unset;
+        margin-left: 1rem;
+    }
+}

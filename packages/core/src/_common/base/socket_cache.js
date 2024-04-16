@@ -54,7 +54,7 @@ const SocketCache = (() => {
             if (!can_cache) return;
         }
 
-        if (response.echo_req.end === 'latest') return;
+        if (response?.echo_req?.end === 'latest') return;
 
         if (!config[msg_type]) return;
         // prevent unwanted page behaviour

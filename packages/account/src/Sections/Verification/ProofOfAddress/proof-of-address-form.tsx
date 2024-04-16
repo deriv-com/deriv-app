@@ -45,7 +45,8 @@ const ProofOfAddressForm = observer(
         className,
     }: Partial<TProofOfAddressForm>) => {
         const { client, notifications, ui } = useStore();
-        const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list } = client;
+        const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list, is_eu } =
+            client;
         const {
             addNotificationMessageByKey: addNotificationByKey,
             removeNotificationMessage,
@@ -72,7 +73,7 @@ const ProofOfAddressForm = observer(
 
         const [should_scroll_to_top, setShouldScrollToTop] = React.useState(false);
 
-        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa'), []);
+        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa', is_eu), []);
 
         const { upload } = useFileUploader();
 
@@ -108,10 +109,6 @@ const ProofOfAddressForm = observer(
         const changeable_fields = getChangeableFields();
 
         const validateFields = (values: TFormInitialValues) => {
-            (Object.entries(values) as ObjectEntries<TFormInitialValues>).forEach(
-                ([key, value]) => (values[key] = value.trim())
-            );
-
             setFormState({ ...form_state, ...{ should_allow_submit: false } });
             const errors: FormikErrors<TFormInitialValues> = {};
             const validateValues = validate(errors, values);
@@ -213,7 +210,7 @@ const ProofOfAddressForm = observer(
 
                 const get_account_status_response = await WS.authorized.getAccountStatus();
 
-                if (get_account_status_response.error) {
+                if (!get_account_status_response || get_account_status_response.error) {
                     setAPIInitialLoadError(get_account_status_response.error.message);
                     setSubmitting(false);
                     return;

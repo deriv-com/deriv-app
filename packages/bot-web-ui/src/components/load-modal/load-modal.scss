@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+
 #modal_root {
     .load-strategy {
         &__recent {
@@ -12,11 +14,9 @@
             }
 
             &__empty {
-                display: flex;
+                @include flex-center;
                 align-items: center;
                 flex-direction: column;
-                justify-content: center;
-                text-align: center;
 
                 &-icon {
                     margin-bottom: 1.6rem;
@@ -87,7 +87,7 @@
                 &-text {
                     height: unset;
                     flex-direction: column;
-                    text-align: left;
+                    text-align: start;
                     padding-right: 0.8rem;
                 }
 
@@ -110,16 +110,14 @@
                 }
 
                 &-saved {
-                    margin-left: 1rem;
+                    margin-inline-start: 1rem;
                     font-size: var(--text-size-xs);
                     line-height: 1.43;
                     word-break: break-word;
                 }
 
                 &-location {
-                    justify-content: flex-start;
-                    display: flex;
-                    align-items: center;
+                    @include flex-center(flex-start);
                     width: 100%;
                     word-break: break-word;
                     color: var(--text-general);

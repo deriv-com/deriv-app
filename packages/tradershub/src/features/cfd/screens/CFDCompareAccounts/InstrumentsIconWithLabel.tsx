@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { Text } from '@deriv/quill-design';
-import InstrumentsIcons from '../../../../public/images/cfd/tradingInstruments';
+import InstrumentsIcons from '@/assets/cfd/tradingInstruments';
+import { Text } from '@deriv-com/ui';
 
 type TInstrumentsIcon = {
     highlighted: boolean;
@@ -13,19 +13,19 @@ const InstrumentsIconWithLabel: FC<TInstrumentsIcon> = ({ highlighted, icon, isA
     const InstrumentIcon = InstrumentsIcons[icon];
     return (
         <div
-            className='flex items-center cursor-not-allowed m-100'
+            className='flex items-center m-2 cursor-not-allowed'
             data-testid='dt_instruments_icon_container'
             style={{
                 opacity: highlighted ? '' : '0.2',
             }}
         >
             <InstrumentIcon height={24} width={24} />
-            <div className='ml-[5px]'>
-                <Text bold size='sm'>
+            <div className='ml-5'>
+                <Text className='text-xs lg:text-sm' weight='bold'>
                     {text}
                 </Text>
             </div>
-            {isAsterisk && <span className='relative text-[16px] top-100 text-brand-red-light'>*</span>}
+            {isAsterisk && <span className='relative text-lg top-2 text-brand-red-light'>*</span>}
         </div>
     );
 };

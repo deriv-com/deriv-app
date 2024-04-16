@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api';
+import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -44,7 +44,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             if (isTransferAllowed) {
                 return (
                     <WalletButtonGroup isFlex isFullWidth>
-                        <WalletButton onClick={hide} size='lg' variant='outlined'>
+                        <WalletButton onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
                             Maybe later
                         </WalletButton>
                         <WalletButton
@@ -52,7 +52,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                                 hide();
                                 history.push(`/wallets/cashier/transfer`, { toAccountLoginId: addedAccount?.loginid });
                             }}
-                            size='lg'
+                            size={isMobile ? 'lg' : 'md'}
                         >
                             Transfer funds
                         </WalletButton>
@@ -61,13 +61,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             }
             return (
                 <div className='wallets-success-btn'>
-                    <WalletButton isFullWidth onClick={hide} size='lg'>
+                    <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
                         OK
                     </WalletButton>
                 </div>
             );
         },
-        [hide, history, addedAccount?.loginid]
+        [hide, history, addedAccount?.loginid, isMobile]
     );
 
     const renderMainContent = useMemo(() => {

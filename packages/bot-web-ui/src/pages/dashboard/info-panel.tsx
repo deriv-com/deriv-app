@@ -1,12 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import { SIDEBAR_INTRO } from './constants';
 
 const InfoPanel = observer(() => {
@@ -14,11 +11,18 @@ const InfoPanel = observer(() => {
         ui: { is_mobile },
     } = useStore();
     const { dashboard } = useDBotStore();
-    const { active_tour, is_info_panel_visible, setActiveTab, setActiveTabTutorial, setInfoPanelVisibility } =
-        dashboard;
-    const switchTab = (link: boolean, label: string) => {
+    const {
+        active_tour,
+        is_info_panel_visible,
+        setActiveTab,
+        setActiveTabTutorial,
+        setInfoPanelVisibility,
+        setFaqTitle,
+    } = dashboard;
+    const switchTab = (link: boolean, label: string, faq_id: string) => {
         const tutorial_link = link ? setActiveTab(DBOT_TABS.TUTORIAL) : null;
         const tutorial_label = label === 'Guide' ? setActiveTabTutorial(0) : setActiveTabTutorial(1);
+        setFaqTitle(faq_id);
         return {
             tutorial_link,
             tutorial_label,
@@ -45,17 +49,17 @@ const InfoPanel = observer(() => {
                         </Text>
                         {content.map(text => (
                             <Text
-                                key={`info-panel-tour${text}`}
+                                key={`info-panel-tour${text.data}`}
                                 className={classNames('db-info-panel__card', {
                                     'db-info-panel__content': link,
                                 })}
                                 color='prominent'
                                 line_height='xl'
                                 as='p'
-                                onClick={() => switchTab(link, label)}
+                                onClick={() => switchTab(link, label, text.faq_id)}
                                 size={is_mobile ? 'xxs' : 's'}
                             >
-                                {text}
+                                {text.data}
                             </Text>
                         ))}
                     </div>

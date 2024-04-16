@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import Cookies from 'js-cookie';
 import { withRouter } from 'react-router';
 import {
     Button,
@@ -17,10 +16,9 @@ import {
     Loading,
 } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { routes, formatMoney, ContentFlag, getStaticUrl, getAppId, LocalStore } from '@deriv/shared';
-import { getLanguage, localize, Localize } from '@deriv/translations';
+import { routes, formatMoney, ContentFlag, getStaticUrl } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
-import { Analytics } from '@deriv-com/analytics';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';
@@ -102,8 +100,9 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         if (is_positions_drawer_on) {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
+        await logoutClient();
+        window.location.href = getStaticUrl('/');
         history.push(routes.index);
-        await logoutClient().then(() => (window.location.href = getStaticUrl('/')));
     };
 
     const closeAccountsDialog = () => {
@@ -123,14 +122,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         closeAccountsDialog();
         if (account_loginid === loginid) return;
         await switchAccount(loginid);
-        Analytics.setAttributes({
-            account_type: LocalStore?.get('active_loginid')?.substring(0, 2) ?? 'unlogged',
-            app_id: getAppId(),
-            device_type: is_mobile ? 'mobile' : 'desktop',
-            device_language: navigator?.language || 'en-EN',
-            user_language: getLanguage().toLowerCase(),
-            country: Cookies.get('clients_country') || Cookies.getJSON('website_status'),
-        });
     };
 
     const resetBalance = async () => {

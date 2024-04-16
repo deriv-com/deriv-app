@@ -1,14 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
-import { optionsAndMultipliersContent } from '../../../constants/constants';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
-import useRegulationFlags from '../../../hooks/useRegulationFlags';
-import { TradingAppCardLoader } from '../../Loaders';
-import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
-import { useUIContext } from '../../UIProvider';
+import { TradingAccountCard, TradingAccountCardContent, TradingAppCardLoader } from '@/components';
+import { optionsAndMultipliersContent } from '@/constants';
+import { getUrlBinaryBot, getUrlSmartTrader } from '@/helpers';
+import { useRegulationFlags } from '@/hooks';
+import { useActiveTradingAccount } from '@deriv/api-v2';
+import { Button, useDevice } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -18,6 +16,8 @@ type OptionsAndMultipliersContentItem = {
     smallIcon: JSX.Element;
     title: string;
 };
+
+const { getDerivStaticURL } = URLUtils;
 
 type TShowButtonProps = Pick<OptionsAndMultipliersContentItem, 'isExternal' | 'redirect'>;
 
@@ -33,10 +33,10 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
         event.persist();
         switch (title) {
             case 'Deriv Trader':
-                window.open(getStaticUrl(`/dtrader`));
+                window.open(getDerivStaticURL(`/dtrader`));
                 break;
             case 'Deriv Bot':
-                window.open(getStaticUrl(`/dbot`));
+                window.open(getDerivStaticURL(`/dbot`));
                 break;
             case 'SmartTrader':
                 window.open(getUrlSmartTrader());
@@ -45,7 +45,7 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
                 window.open(getUrlBinaryBot());
                 break;
             case 'Deriv GO':
-                window.open(getStaticUrl('/deriv-go'));
+                window.open(getDerivStaticURL('/deriv-go'));
                 break;
             default:
                 break;
@@ -70,10 +70,7 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { uiState } = useUIContext();
-    const { accountType, regulation } = uiState;
-
-    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags();
 
     if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
 
@@ -97,14 +94,11 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
  * @returns {React.ElementType} The `OptionsAndMultipliersContent` component.
  */
 const OptionsAndMultipliersContent = () => {
-    const { isMobile } = useBreakpoint();
+    const { isDesktop } = useDevice();
     const { data } = useActiveTradingAccount();
-    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useRegulationFlags();
 
-    const { uiState } = useUIContext();
-    const activeRegulation = uiState.regulation;
-
-    const { isEU } = useRegulationFlags(activeRegulation);
+    const { isEU } = useRegulationFlags();
 
     const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 
@@ -114,20 +108,20 @@ const OptionsAndMultipliersContent = () => {
 
     if (!isRegulationAccessible)
         return (
-            <div className='pt-2000'>
+            <div className='pt-40'>
                 <TradingAppCardLoader />
             </div>
         );
 
     return (
-        <div className='grid w-full grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
+        <div className='grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-4'>
             {filteredContent.map(account => {
                 const { description, icon, isExternal, redirect, smallIcon, title } = account;
 
                 const trailingComponent = () => <ShowOpenButton isExternal={isExternal} redirect={redirect} />;
 
                 const leadingComponent = () => (
-                    <LinkTitle icon={data?.loginid || !isMobile ? icon : smallIcon} title={title} />
+                    <LinkTitle icon={data?.loginid || isDesktop ? icon : smallIcon} title={title} />
                 );
 
                 return (

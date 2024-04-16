@@ -90,6 +90,7 @@ const Unsupported = ({
                 onClickBack={() => setDetail(null)}
                 handlePOIforMT5Complete={handlePOIforMT5Complete}
                 handleComplete={handleViewComplete}
+                is_for_mt5={is_for_mt5}
                 {...props}
             />
         );

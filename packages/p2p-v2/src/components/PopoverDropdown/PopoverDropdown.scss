@@ -1,0 +1,40 @@
+.p2p-v2-popover-dropdown {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &__icon {
+        margin-left: 1rem;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        border-radius: 0.4rem;
+        width: 19.5rem;
+        box-shadow: 0px 32px 64px 0px #0e0e0e24;
+        z-index: 999;
+        top: 2.8rem;
+        position: absolute;
+        background: #fff;
+        right: 0;
+
+        &-item {
+            padding: 1rem 1.6rem;
+            height: inherit;
+            justify-content: start;
+            border-radius: unset;
+
+            // TODO: remove this once hover styles can be removed from the button component
+            &:hover {
+                // stylelint-disable-next-line declaration-no-important
+                background-color: #e6e9e9 !important;
+
+                & span {
+                    // stylelint-disable-next-line declaration-no-important
+                    color: #333 !important;
+                }
+            }
+        }
+    }
+}

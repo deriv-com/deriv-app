@@ -6,15 +6,6 @@ import { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../../../../trader-providers';
 import TradeModals from '../trade-modals';
 
-jest.mock('App/Components/Elements/Modals/UnsupportedContractModal', () =>
-    jest.fn(props => (
-        <div>
-            <div>Unsupported contract modal</div>
-            <button onClick={props.onConfirm}>onConfirm unsupported</button>
-            <button onClick={props.onClose}>onClose unsupported</button>
-        </div>
-    ))
-);
 jest.mock('App/Components/Elements/Modals/MarketUnavailableModal', () =>
     jest.fn(props => (
         <div>
@@ -57,41 +48,8 @@ describe('TradeModals', () => {
 
         render(mockTradeModals(mock_root_store));
 
-        expect(screen.getByText('Unsupported contract modal')).toBeInTheDocument();
         expect(screen.getByText('Market unavailable modal')).toBeInTheDocument();
         expect(screen.getByText('Services error modal')).toBeInTheDocument();
-    });
-    it('should call function unsupportedContractOnConfirm if button onConfirm in UnsupportedContractModal component was clicked', () => {
-        const mock_root_store = mockStore({
-            modules: {
-                trade: {
-                    resetPreviousSymbol: jest.fn(),
-                    clearPurchaseInfo: jest.fn(),
-                    requestProposal: jest.fn(),
-                },
-            },
-        });
-
-        render(mockTradeModals(mock_root_store));
-        userEvent.click(screen.getByText('onConfirm unsupported'));
-
-        expect(mock_root_store.ui.toggleUnsupportedContractModal).toHaveBeenCalled();
-    });
-    it('should call function unsupportedContractOnClose if button onClose in UnsupportedContractModal component was clicked', () => {
-        const mock_root_store = mockStore({
-            modules: {
-                trade: {
-                    resetPreviousSymbol: jest.fn(),
-                    clearPurchaseInfo: jest.fn(),
-                    requestProposal: jest.fn(),
-                },
-            },
-        });
-
-        render(mockTradeModals(mock_root_store));
-        userEvent.click(screen.getByText('onClose unsupported'));
-
-        expect(mock_root_store.ui.toggleUnsupportedContractModal).toHaveBeenCalled();
     });
     it('should call function marketUnavailableOnConfirm if button onConfirm in MarketUnavailableModal component was clicked', () => {
         const mock_root_store = mockStore({

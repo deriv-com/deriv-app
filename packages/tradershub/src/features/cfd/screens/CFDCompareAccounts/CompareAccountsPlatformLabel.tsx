@@ -1,6 +1,7 @@
 import React from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
-import { TPlatforms } from '../../../../types';
+import { twMerge } from 'tailwind-merge';
+import { TPlatforms } from '@/types';
+import { Text } from '@deriv-com/ui';
 import {
     CompareAccountsPlatformLabelClass,
     CompareAccountsPlatformLabelTextColorClass,
@@ -19,20 +20,20 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
 
     return (
         <div
-            className={qtMerge(
+            className={twMerge(
                 CompareAccountsPlatformLabelClass({
                     background: platformType,
                 } as unknown as TCompareAccountsPlatformLabelClassProps)
             )}
         >
             <Text
-                bold
-                className={qtMerge(
+                className={twMerge(
                     CompareAccountsPlatformLabelTextColorClass({
                         label: platformType,
                     } as unknown as TCompareAccountsPlatformLabelTextClassProps)
                 )}
                 size='sm'
+                weight='bold'
             >
                 {platformLabel[platformType]}
             </Text>

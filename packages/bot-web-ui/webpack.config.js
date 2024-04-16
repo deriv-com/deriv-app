@@ -23,7 +23,7 @@ module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     return {
-        entry: [path.join(__dirname, 'src', 'app', 'app.js')],
+        entry: [path.join(__dirname, 'src', 'app', 'index.ts')],
         output: {
             ...output,
             publicPath: base,
@@ -130,6 +130,7 @@ module.exports = function (env) {
                     process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS
                 ),
                 'process.env.REF_NAME': JSON.stringify(process.env.REF_NAME),
+                'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
             }),
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({

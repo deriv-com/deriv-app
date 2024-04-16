@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Loader, Tab, Tabs } from '@deriv-com/ui';
-import { NicknameModal } from '../../../../components/Modals/NicknameModal';
-import { Verification } from '../../../../components/Verification';
-import { useAdvertiserStats, useDevice, usePoiPoaStatus, useQueryString } from '../../../../hooks';
+import { ProfileContent, Verification } from '@/components';
+import { NicknameModal } from '@/components/Modals';
+import { useAdvertiserStats, usePoiPoaStatus, useQueryString } from '@/hooks';
+import { Loader, Tab, Tabs, useDevice } from '@deriv-com/ui';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
-import { MyProfileContent } from '../MyProfileContent';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import { MyProfileStats } from '../MyProfileStats';
 import { PaymentMethods } from '../PaymentMethods';
@@ -21,7 +20,14 @@ const MyProfile = () => {
     const { isP2PPoaRequired, isPoaVerified, isPoiVerified } = data || {};
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState<boolean | undefined>(false);
 
-    const currentTab = queryString.get('tab');
+    const currentTab = queryString.tab;
+
+    const tabs = [
+        { component: <MyProfileStats />, title: 'Stats' },
+        { component: <PaymentMethods />, title: 'Payment methods' },
+        { component: <MyProfileAdDetails />, title: 'Ad details' },
+        { component: <MyProfileCounterparties />, title: 'My counterparties' },
+    ];
 
     useEffect(() => {
         const isPoaPoiVerified = (!isP2PPoaRequired || isPoaVerified) && isPoiVerified;
@@ -47,29 +53,22 @@ const MyProfile = () => {
 
     return (
         <div className='p2p-v2-my-profile'>
-            <MyProfileContent />
+            <ProfileContent />
             <Tabs
                 activeTab={(currentTab !== 'default' && currentTab) || 'Stats'}
+                className='p2p-v2-my-profile__tabs'
                 onChange={index => {
                     setQueryString({
                         tab: TABS[index],
                     });
                 }}
                 variant='primary'
-                wrapperClassName='p2p-v2-my-profile__tabs'
             >
-                <Tab title='Stats'>
-                    <MyProfileStats />
-                </Tab>
-                <Tab title='Payment methods'>
-                    <PaymentMethods />
-                </Tab>
-                <Tab title='Ad details'>
-                    <MyProfileAdDetails />
-                </Tab>
-                <Tab title='My counterparties'>
-                    <MyProfileCounterparties />
-                </Tab>
+                {tabs.map(tab => (
+                    <Tab className='p2p-v2-my-profile__tabs-tab' key={tab.title} title={tab.title}>
+                        {tab.component}
+                    </Tab>
+                ))}
             </Tabs>
             <NicknameModal isModalOpen={isNicknameModalOpen} setIsModalOpen={setIsNicknameModalOpen} />
         </div>

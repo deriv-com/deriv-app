@@ -1,25 +1,10 @@
 import { GetSettings, ProfitTable, ResidenceList, Statement } from '@deriv/api-types';
-import {
-    getContractTypeFeatureFlag,
-    getUnsupportedContracts,
-    STATUS_CODES,
-    IDV_ERROR_STATUS,
-    ONFIDO_ERROR_STATUS,
-} from '../constants';
+import { getContractTypeFeatureFlag, STATUS_CODES, IDV_ERROR_STATUS, ONFIDO_ERROR_STATUS } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
 import { LocalStore } from '../storage';
 import { extractInfoFromShortcode, isHighLow } from '../shortcode';
-
-type TIsUnSupportedContract = {
-    contract_type?: string;
-    is_forward_starting?: 0 | 1;
-};
-
-const isUnSupportedContract = (portfolio_pos: TIsUnSupportedContract) =>
-    !!getUnsupportedContracts()[portfolio_pos.contract_type as keyof typeof getUnsupportedContracts] || // check unsupported contract type
-    !!portfolio_pos.is_forward_starting; // for forward start contracts
 
 export const filterDisabledPositions = (
     position:
@@ -58,7 +43,6 @@ export const formatPortfolioPosition = (
         purchase,
         reference: Number(transaction_id),
         type: portfolio_pos.contract_type,
-        is_unsupported: isUnSupportedContract(portfolio_pos),
         contract_update: portfolio_pos.limit_order,
     };
 };
@@ -74,7 +58,10 @@ const isVerifiedOrNone = (errors: Array<TIDVErrorStatus>, status_code: string, i
     );
 };
 
-const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>) => {
+export const isIDVReportNotAvailable = (idv: Record<string, unknown>) =>
+    'report_available' in idv && idv?.report_available === 0;
+
+const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>, is_report_not_available?: boolean) => {
     const status: Array<TIDVErrorStatus> = [];
     errors.forEach(error => {
         const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error]?.code;
@@ -82,8 +69,10 @@ const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>) => {
             status.push(error_key);
         }
     });
-
-    if (status.includes(IDV_ERROR_STATUS.ReportNotAvailable.code)) {
+    if (
+        is_report_not_available &&
+        (status.includes(IDV_ERROR_STATUS.NameMismatch.code) || status.includes(IDV_ERROR_STATUS.DobMismatch.code))
+    ) {
         return IDV_ERROR_STATUS.ReportNotAvailable.code;
     }
 
@@ -98,7 +87,12 @@ const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>) => {
 };
 
 // formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
-export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: string, is_high_risk?: boolean) => {
+export const formatIDVError = (
+    errors: Array<TIDVErrorStatus>,
+    status_code: string,
+    is_high_risk?: boolean,
+    is_report_not_available?: boolean
+) => {
     /**
      * Check required incase of DIEL client
      */
@@ -118,7 +112,7 @@ export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: stri
         return IDV_ERROR_STATUS.Expired.code;
     }
 
-    return getIDVErrorStatus(errors);
+    return getIDVErrorStatus(errors, is_report_not_available);
 };
 
 export const formatOnfidoError = (status_code: string, errors: Array<TOnfidoErrorStatus> = []) => {

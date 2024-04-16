@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
-import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api';
-import { PlatformDetails } from '../../features/cfd/constants';
+import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
+import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
-import { validPassword } from '../../utils/password';
-import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletText } from '../Base';
-import { WalletPasswordFieldProps } from '../Base/WalletPasswordFieldLazy/WalletPasswordFieldLazy';
+import { validPassword } from '../../utils/password-validation';
+import { ModalWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
@@ -14,8 +13,6 @@ import './WalletsResetMT5Password.scss';
 type WalletsResetMT5PasswordProps = {
     actionParams: string;
     isInvestorPassword?: boolean;
-    onChange: WalletPasswordFieldProps['onChange'];
-    password: WalletPasswordFieldProps['password'];
     platform: Exclude<TPlatforms.All, 'ctrader'>;
     verificationCode: string;
 };
@@ -23,8 +20,6 @@ type WalletsResetMT5PasswordProps = {
 const WalletsResetMT5Password = ({
     actionParams,
     isInvestorPassword = false,
-    onChange,
-    password,
     platform,
     verificationCode,
 }: WalletsResetMT5PasswordProps) => {
@@ -43,7 +38,8 @@ const WalletsResetMT5Password = ({
     } = useTradingPlatformInvestorPasswordReset();
 
     const { hide, show } = useModal();
-    const { isDesktop, isMobile } = useDevice();
+    const [password, setPassword] = useState('');
+    const { isMobile } = useDevice();
 
     const handleSubmit = () => {
         if (isInvestorPassword) {
@@ -63,6 +59,15 @@ const WalletsResetMT5Password = ({
         }
     };
 
+    const description = {
+        [CFD_PLATFORMS.DXTRADE]:
+            'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.',
+        [CFD_PLATFORMS.MT5]:
+            'Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).',
+    } as const;
+
+    const isMT5 = platform === CFD_PLATFORMS.MT5;
+
     useEffect(() => {
         if (isChangePasswordSuccess) {
             localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
@@ -70,7 +75,8 @@ const WalletsResetMT5Password = ({
         } else if (isChangePasswordError) {
             hide();
         }
-    }, [hide, platform, title, show, actionParams, isChangePasswordSuccess, isChangePasswordError]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [platform, title, actionParams, isChangePasswordSuccess, isChangePasswordError]);
 
     useEffect(() => {
         if (isChangeInvestorPasswordSuccess) {
@@ -79,61 +85,39 @@ const WalletsResetMT5Password = ({
         } else if (isChangeInvestorPasswordError) {
             hide();
         }
-    }, [hide, platform, title, show, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
-
-    const renderFooter = () => {
-        return isMobile ? (
-            <WalletButtonGroup isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
-                    <Trans defaults='Cancel' />
-                </WalletButton>
-                <WalletButton
-                    disabled={!validPassword(password)}
-                    isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
-                    onClick={handleSubmit}
-                    size='lg'
-                    variant='contained'
-                >
-                    <Trans defaults='Create' />
-                </WalletButton>
-            </WalletButtonGroup>
-        ) : null;
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
     return (
-        <ModalStepWrapper renderFooter={renderFooter} shouldHideHeader={isDesktop} title={`Manage ${title} password`}>
+        <ModalWrapper hideCloseButton={isMobile}>
             <div className='wallets-reset-mt5-password'>
                 <WalletText weight='bold'>
                     Create a new {title} {isInvestorPassword && 'investor'} Password
                 </WalletText>
+                {isMT5 && !isInvestorPassword && (
+                    <WalletText size='sm'>You can use this password for all your {title} accounts.</WalletText>
+                )}
                 <WalletPasswordFieldLazy
                     label={isInvestorPassword ? 'New investor password' : `${title} password`}
-                    onChange={onChange}
+                    onChange={e => setPassword(e.target.value)}
                     password={password}
                 />
-                {!isInvestorPassword && (
-                    <WalletText size='sm'>
-                        Strong passwords contain at least 8 characters, combine uppercase and lowercase letters,
-                        numbers, and symbols.
-                    </WalletText>
-                )}
-                {isDesktop && (
-                    <div className='wallets-reset-mt5-password__button-group'>
-                        <WalletButton onClick={() => hide()} variant='outlined'>
-                            <Trans defaults='Cancel' />
-                        </WalletButton>
-                        <WalletButton
-                            disabled={!validPassword(password)}
-                            isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
-                            onClick={handleSubmit}
-                            variant='contained'
-                        >
-                            <Trans defaults='Create' />
-                        </WalletButton>
-                    </div>
-                )}
+                <WalletText size='sm'>{description[platform]}</WalletText>
+                <div className='wallets-reset-mt5-password__button-group'>
+                    <WalletButton onClick={() => hide()} variant='outlined'>
+                        <Trans defaults='Cancel' />
+                    </WalletButton>
+                    <WalletButton
+                        disabled={!validPassword(password)}
+                        isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
+                        onClick={handleSubmit}
+                        variant='contained'
+                    >
+                        <Trans defaults='Create' />
+                    </WalletButton>
+                </div>
             </div>
-        </ModalStepWrapper>
+        </ModalWrapper>
     );
 };
 

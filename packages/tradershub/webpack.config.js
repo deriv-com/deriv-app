@@ -40,8 +40,6 @@ module.exports = function (env) {
         },
         externals: [
             {
-                '@deriv/api': true,
-                '@deriv/library': true,
                 classnames: true,
                 react: true,
                 'react-dom': true,
@@ -119,16 +117,16 @@ module.exports = function (env) {
                 {
                     exclude: /node_modules/,
                     generator: {
-                        filename: 'tradershub/public/[name].[contenthash][ext]',
+                        filename: 'tradershub/assets/[name].[contenthash][ext]',
                     },
-                    include: /public\//,
+                    include: /assets\//,
                     issuer: /\/packages\/tradershub\/.*(\/)?.*.scss/,
                     test: /\.svg$/,
                     type: 'asset/resource',
                 },
                 {
                     exclude: /node_modules/,
-                    include: /public\//,
+                    include: /assets\//,
                     issuer: /\/packages\/tradershub\/.*(\/)?.*.tsx/,
                     test: /\.svg$/,
                     use: svgLoaders,
@@ -185,6 +183,11 @@ module.exports = function (env) {
             publicPath: base,
         },
         resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'src'),
+                '@cfd': path.resolve(__dirname, 'src/features/cfd'),
+                '@deriv-lib/account-v2-lib': path.resolve(__dirname, '../account-v2/src/modules'),
+            },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
     };

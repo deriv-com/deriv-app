@@ -13,7 +13,7 @@ import {
 } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useP2PExchangeRate } from '@deriv/hooks';
+import { useP2PExchangeRate, useP2PSettings } from '@deriv/hooks';
 import { reaction } from 'mobx';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
@@ -24,6 +24,7 @@ import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
+import OrderTimeSelection from './order-time-selection';
 import './create-ad-form.scss';
 
 const CreateAdFormWrapper = ({ children }) => {
@@ -38,7 +39,15 @@ const CreateAdForm = () => {
         client: { currency, local_currency_config },
     } = useStore();
 
-    const { buy_sell_store, floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { buy_sell_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const {
+        p2p_settings: {
+            adverts_archive_period,
+            float_rate_offset_limit_string,
+            order_payment_period_string,
+            rate_type,
+        },
+    } = useP2PSettings();
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
@@ -85,7 +94,6 @@ const CreateAdForm = () => {
 
     const onCleanup = () => {
         my_ads_store.setApiErrorMessage('');
-        floating_rate_store.setApiErrorMessage('');
         my_ads_store.setShowAdForm(false);
         buy_sell_store.setCreateSellAdFromNoAds(false);
     };
@@ -94,14 +102,13 @@ const CreateAdForm = () => {
         my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
+
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => {
                 if (my_ads_store.api_error_message) general_store.showModal({ key: 'AdCreateEditErrorModal' });
             }
         );
-        // P2P configuration is not subscribable. Hence need to fetch it on demand
-        general_store.setP2PConfig();
 
         return () => {
             disposeApiErrorReaction();
@@ -111,30 +118,20 @@ const CreateAdForm = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    React.useEffect(() => {
-        const ad_website_status = setInterval(() => {
-            if (my_ads_store.is_ad_created_modal_visible) {
-                my_ads_store.getWebsiteStatus();
-            }
-        }, 10000);
-
-        return () => {
-            clearInterval(ad_website_status);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [my_ads_store.is_ad_created_modal_visible]);
-
     return (
         <React.Fragment>
             <Formik
                 initialValues={{
                     contact_info: general_store.contact_info,
                     default_advert_description: general_store.default_advert_description,
+                    float_rate_offset_limit: float_rate_offset_limit_string,
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
+                    order_completion_time: order_payment_period_string,
                     payment_info: my_ads_store.payment_info,
-                    rate_type: floating_rate_store.rate_type === ad_type.FLOAT ? '-0.01' : '',
+                    rate_type_string: rate_type,
+                    rate_type: rate_type === ad_type.FLOAT ? '-0.01' : '',
                     type: buy_sell_store.create_sell_ad_from_no_ads ? buy_sell.SELL : buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
@@ -144,7 +141,7 @@ const CreateAdForm = () => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     const onChangeAdTypeHandler = user_input => {
-                        if (floating_rate_store.rate_type === ad_type.FLOAT) {
+                        if (rate_type === ad_type.FLOAT) {
                             if (user_input === buy_sell.SELL) {
                                 setFieldValue('rate_type', '+0.01');
                             } else {
@@ -186,11 +183,7 @@ const CreateAdForm = () => {
                                                 )}
                                             </Field>
                                             <CreateAdSummary
-                                                market_feed={
-                                                    floating_rate_store.rate_type === ad_type.FLOAT
-                                                        ? exchange_rate
-                                                        : null
-                                                }
+                                                market_feed={rate_type === ad_type.FLOAT ? exchange_rate : null}
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 price_rate={values.rate_type}
                                                 type={values.type}
@@ -246,7 +239,7 @@ const CreateAdForm = () => {
                                                 </Field>
                                                 <Field name='rate_type'>
                                                     {({ field }) =>
-                                                        floating_rate_store.rate_type === ad_type.FLOAT ? (
+                                                        rate_type === ad_type.FLOAT ? (
                                                             <FloatingRate
                                                                 className='create-ad-form__field'
                                                                 data_testid='float_rate_type'
@@ -256,13 +249,8 @@ const CreateAdForm = () => {
                                                                 onChange={handleChange}
                                                                 onFocus={() => setFieldTouched('rate_type', true)}
                                                                 offset={{
-                                                                    upper_limit: parseInt(
-                                                                        floating_rate_store.float_rate_offset_limit
-                                                                    ),
-                                                                    lower_limit:
-                                                                        parseInt(
-                                                                            floating_rate_store.float_rate_offset_limit
-                                                                        ) * -1,
+                                                                    upper_limit: float_rate_offset_limit_string,
+                                                                    lower_limit: float_rate_offset_limit_string * -1,
                                                                 }}
                                                                 required
                                                                 change_handler={e => {
@@ -413,6 +401,9 @@ const CreateAdForm = () => {
                                                     />
                                                 )}
                                             </Field>
+                                            <Field name='order_completion_time'>
+                                                {({ field }) => <OrderTimeSelection {...field} />}
+                                            </Field>
                                             <div className='create-ad-form__payment-methods--text'>
                                                 <Text color='prominent'>
                                                     <Localize i18n_default_text='Payment methods' />
@@ -472,7 +463,7 @@ const CreateAdForm = () => {
                     <Text as='p' size='xs' color='prominent'>
                         <Localize
                             i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be deactivated."
-                            values={{ adverts_archive_period: my_ads_store.adverts_archive_period }}
+                            values={{ adverts_archive_period }}
                         />
                     </Text>
                     <br />

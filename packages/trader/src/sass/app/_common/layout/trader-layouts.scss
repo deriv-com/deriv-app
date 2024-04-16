@@ -1,4 +1,5 @@
 /** @define app-contents; weak */
+/*rtl:begin:ignore*/
 .app-contents {
     &--show-positions-drawer:not(&--is-mobile) {
         .trade-container {
@@ -43,7 +44,6 @@
         .top-widgets-portal {
             position: absolute;
             top: 0px;
-            width: 100%;
             display: flex;
             align-items: center;
             flex-wrap: wrap;
@@ -52,7 +52,7 @@
             .recent-trade-info {
                 min-width: 8rem;
                 line-height: 2.4rem;
-                margin-left: 0.8rem;
+                margin-left: 1.6rem;
             }
         }
         .cq-chart-title {
@@ -81,6 +81,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     overflow: hidden;
 
     &__replay {
+        direction: ltr;
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -280,6 +281,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
         .replay-chart__container {
+            direction: ltr;
             width: 100%;
             position: relative;
             margin-left: 24px;
@@ -406,13 +408,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
     padding: 0 0.8rem;
     display: flex;
     flex-direction: column;
-    height: 212px;
+    height: 218px;
     position: relative;
     z-index: 2;
 
     .trade-container--accumulators &,
     .trade-container--turbos & {
-        height: 24.8rem;
+        height: 25.4rem;
     }
     &__content-loader {
         position: absolute;
@@ -486,9 +488,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
     .smartcharts-mobile {
         .sc-categorical-display {
             height: calc(100% - 8px) !important;
-        }
-        .ciq-chart {
-            padding: 0 0.8rem;
         }
     }
     .cq-context {
@@ -821,3 +820,4 @@ $FLOATING_HEADER_HEIGHT: 41px;
         );
     }
 }
+/*rtl:end:ignore*/

@@ -1,0 +1,20 @@
+.p2p-v2-ad-error-tooltip-modal {
+    width: 44rem;
+    padding: 2.4rem;
+
+    @include mobile {
+        padding: 1.6rem;
+        width: 32.8rem;
+    }
+
+    &__content {
+        margin-bottom: 2.4rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 23rem;
+
+        @include mobile {
+            margin-bottom: 1.6rem;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text } from '@deriv/quill-design';
+import { useRegulationFlags } from '@/hooks';
+import { Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms } from '../../constants';
 import CompareAccountsButton from './CompareAccountsButton';
@@ -10,55 +11,29 @@ import InstrumentsLabelHighlighted from './InstrumentsLabelHighlighted';
 
 type TCompareAccountsCard = {
     isAccountAdded: boolean;
-    isDemo: boolean;
-    isEuRegion: boolean;
-    isEuUser: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsCard = ({
-    isAccountAdded,
-    isDemo,
-    isEuRegion,
-    isEuUser,
-    marketType,
-    platform,
-    shortCode,
-}: TCompareAccountsCard) => {
+const CompareAccountsCard = ({ isAccountAdded, marketType, platform, shortCode }: TCompareAccountsCard) => {
+    const { isEU } = useRegulationFlags();
     return (
         <div>
-            <div className='w-[180px] lg:w-[270px] relative overflow-hidden rounded-1200 my-50 mx-500 border-solid border-75 border-system-light-hover-background hover:shadow-230 text-center'>
+            <div className='w-[180px] lg:w-[270px] relative overflow-hidden rounded-[24px] my-0 mx-10 border-solid border-1 border-system-light-hover-background hover:shadow-7 text-center flex flex-col justify-between h-full'>
                 <CompareAccountsPlatformLabel platform={platform} />
                 {platform === CFDPlatforms.CTRADER && (
-                    <div className='p-75 lg:p-[15px] absolute z-10 flex items-center justify-center w-[150px] h-1000 bg-brand-orange text-system-light-primary-background translate-x-400 -translate-y-1000 rotate-45 lg:translate-x-[170px] transform'>
-                        <Text bold className='text-system-light-primary-background' size='sm'>
+                    <div className='p-1 lg:p-12 absolute z-10 flex items-center justify-center w-[150px] h-20 bg-brand-orange text-system-light-primary-background translate-x-[85px] translate-y-12 rotate-45 lg:translate-x-[170px] transform'>
+                        <Text className='text-sm text-system-light-primary-background' weight='bold'>
                             New!
                         </Text>
                     </div>
                 )}
-                <CompareAccountsTitleIcon
-                    isDemo={isDemo}
-                    marketType={marketType}
-                    platform={platform}
-                    shortCode={shortCode}
-                />
-                <CompareAccountsDescription
-                    isDemo={isDemo}
-                    isEuRegion={isEuRegion}
-                    marketType={marketType}
-                    shortCode={shortCode}
-                />
-                <InstrumentsLabelHighlighted
-                    isDemo={isDemo}
-                    isEuRegion={isEuRegion}
-                    marketType={marketType}
-                    platform={platform}
-                    shortCode={shortCode}
-                />
-                {isEuUser && (
-                    <div className='relative text-center top-[5px]'>
+                <CompareAccountsTitleIcon marketType={marketType} platform={platform} shortCode={shortCode} />
+                <CompareAccountsDescription marketType={marketType} shortCode={shortCode} />
+                <InstrumentsLabelHighlighted marketType={marketType} platform={platform} shortCode={shortCode} />
+                {isEU && (
+                    <div className='relative text-center top-5'>
                         <Text color='red' size='2xs' weight='bold'>
                             *Boom 300 and Crash 300 Index
                         </Text>

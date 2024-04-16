@@ -1,13 +1,23 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../AuthProvider';
 import FiatOnRamp from '../FiatOnRamp';
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }));
 const mockUseHistory = useHistory as jest.Mock;
+
+jest.mock('../components', () => ({
+    FiatOnRampDisclaimer: jest.fn(({ handleDisclaimer }) => (
+        <button onClick={handleDisclaimer}>Fiat OnRamp Disclaimer</button>
+    )),
+    FiatOnRampProviderCard: jest.fn(({ handleDisclaimer }) => (
+        <button onClick={handleDisclaimer}>Fiat OnRamp Provider Card</button>
+    )),
+}));
 
 describe('FiatOnRamp', () => {
     beforeEach(() => {
@@ -18,9 +28,7 @@ describe('FiatOnRamp', () => {
         render(<FiatOnRamp />);
 
         expect(screen.getByText(/Fiat onramp is a cashier service/)).toBeInTheDocument();
-        expect(screen.getByText('Banxa')).toBeInTheDocument();
-        expect(screen.getByText(/A fast and secure fiat-to-crypto payment service/)).toBeInTheDocument();
-        expect(screen.getByText('Select')).toBeInTheDocument();
+        expect(screen.getByText('Fiat OnRamp Provider Card')).toBeInTheDocument();
     });
 
     it('should navigate to /wallets/cashier/deposit on Back button click', () => {
@@ -36,33 +44,32 @@ describe('FiatOnRamp', () => {
     it('should render FiatOnRampDisclaimer on click of the button in the provider card', () => {
         render(
             <APIProvider>
-                <FiatOnRamp />
+                <WalletsAuthProvider>
+                    <FiatOnRamp />
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
-        fireEvent.click(screen.getByText('Select'));
-        expect(screen.getByText('Disclaimer')).toBeInTheDocument();
-        expect(
-            screen.getByText(/Please note that Deriv is not responsible for the content or services provided by Banxa./)
-        ).toBeInTheDocument();
+        expect(screen.getByText('Fiat OnRamp Provider Card')).toBeInTheDocument();
+        fireEvent.click(screen.getByText('Fiat OnRamp Provider Card'));
+        expect(screen.getByText('Fiat OnRamp Disclaimer')).toBeInTheDocument();
     });
 
     it('should handle disclaimer toggle correctly', () => {
         render(
             <APIProvider>
-                <FiatOnRamp />
+                <WalletsAuthProvider>
+                    <FiatOnRamp />
+                </WalletsAuthProvider>
             </APIProvider>
         );
 
-        expect(screen.getByText('Banxa')).toBeInTheDocument();
+        expect(screen.getByText('Fiat OnRamp Provider Card')).toBeInTheDocument();
 
-        fireEvent.click(screen.getByText('Select'));
-        expect(screen.getByText('Disclaimer')).toBeInTheDocument();
-        expect(
-            screen.getByText(/Please note that Deriv is not responsible for the content or services provided by Banxa./)
-        ).toBeInTheDocument();
+        fireEvent.click(screen.getByText('Fiat OnRamp Provider Card'));
+        expect(screen.getByText('Fiat OnRamp Disclaimer')).toBeInTheDocument();
 
-        fireEvent.click(screen.getByText('Back'));
-        expect(screen.getByText('Banxa')).toBeInTheDocument();
+        fireEvent.click(screen.getByText('Fiat OnRamp Disclaimer'));
+        expect(screen.getByText('Fiat OnRamp Provider Card')).toBeInTheDocument();
     });
 });

@@ -1,13 +1,15 @@
 import React, { ComponentProps } from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import * as Yup from 'yup';
-import { useBreakpoint } from '@deriv/quill-design';
-import { WalletDropdown as DropDown } from '../base/WalletDropdown';
+import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
+import { Dropdown, useDevice } from '@deriv-com/ui';
+import { validateField } from '../../utils/validation';
 
 type FormDropDownFieldProps = Omit<
-    ComponentProps<typeof DropDown>,
-    'errorMessage' | 'isRequired' | 'onSelect' | 'variant'
+    ComponentProps<typeof Dropdown>,
+    'dropdownIcon' | 'errorMessage' | 'isRequired' | 'name' | 'onSelect' | 'variant'
 > & {
+    handleSelect?: (value: string) => void;
     name: string;
     validationSchema?: Yup.AnySchema;
 };
@@ -19,33 +21,31 @@ type FormDropDownFieldProps = Omit<
  * @param [props] - Other props to pass to Input
  * @returns ReactNode
  */
-const FormDropDownField = ({ name, validationSchema, ...rest }: FormDropDownFieldProps) => {
-    const { isMobile } = useBreakpoint();
+export const FormDropDownField = ({ handleSelect, name, validationSchema, ...rest }: FormDropDownFieldProps) => {
+    const { isMobile } = useDevice();
+    const formik = useFormikContext();
 
-    const validateField = (value: unknown) => {
-        try {
-            if (validationSchema) {
-                validationSchema.validateSync(value);
-            }
-        } catch (err: unknown) {
-            return (err as Yup.ValidationError).message;
-        }
-    };
+    if (!formik) {
+        throw new Error('FormDropDownField must be used within a Formik component');
+    }
 
     return (
-        <Field name={name} validate={validateField}>
+        <Field name={name} validate={validateField(validationSchema)}>
             {({ field, form, meta: { error, touched } }: FieldProps<string>) => (
-                <DropDown
+                <Dropdown
                     {...field}
                     {...rest}
-                    errorMessage={error}
+                    aria-label={rest.label}
+                    dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
+                    errorMessage={touched && error ? error : ''}
                     isRequired={touched && !!error}
-                    onSelect={(value: string) => form.setFieldValue(name, value)}
+                    onSearch={field.onChange}
+                    onSelect={
+                        handleSelect ? value => handleSelect(value as string) : value => form.setFieldValue(name, value)
+                    }
                     variant={isMobile ? 'prompt' : 'comboBox'}
                 />
             )}
         </Field>
     );
 };
-
-export default FormDropDownField;

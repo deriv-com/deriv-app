@@ -3,7 +3,8 @@ import { Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { useIsTwoFactorAuthenticationEnabled, useTwoFactorAuthentication } from '@deriv/api-v2';
 import { InputWithButton } from '../../components/InputWithButton';
-import { API_ERROR_CODES, getTwoFactorAuthenticationFormValidationSchema } from '../../utils';
+import { API_ERROR_CODES } from '../../constants';
+import { getTwoFactorAuthenticationFormValidationSchema } from '../../utils';
 
 type TTwoFactorData = Yup.InferType<ReturnType<typeof getTwoFactorAuthenticationFormValidationSchema>>;
 
@@ -19,8 +20,8 @@ export const TwoFactorAuthenticationForm = () => {
     };
     const formRef = useRef<FormikProps<TTwoFactorData>>(null);
     useEffect(() => {
-        if (error && error.error.code === API_ERROR_CODES.invalidOTP) {
-            formRef.current?.setFieldError('digitCode', "That's not the right code. Please try again.");
+        if (error && error.error.code === API_ERROR_CODES.invalidOTP.code) {
+            formRef.current?.setFieldError('digitCode', API_ERROR_CODES.invalidOTP.message);
         }
         formRef.current?.setSubmitting(false);
     }, [error]);

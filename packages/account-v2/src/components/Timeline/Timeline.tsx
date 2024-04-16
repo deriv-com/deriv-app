@@ -32,7 +32,7 @@ export const Timeline = ({ children, className, lineHeight }: TTimelineProps) =>
             {children.map((child, idx) => {
                 return (
                     <li
-                        className='relative mb-[0] ms-0 block w-full border-solid-red-0 border-l-1 border-solid last-of-type:border-l-0 pb-[1.6rem]'
+                        className='relative mb-0 ms-0 block w-full border-solid-red-0 border-l-1 border-solid last-of-type:border-l-0 pb-[1.6rem]'
                         key={idx}
                     >
                         <Marker label={idx + 1} />
@@ -40,7 +40,7 @@ export const Timeline = ({ children, className, lineHeight }: TTimelineProps) =>
                             <Text as='h2' className='max-w-[500px]' color='prominent' lineHeight={lineHeight} size='xs'>
                                 {child.props.itemTitle}
                             </Text>
-                            <div className='my-16 mx-[0] text-system-light-prominent-text last-of-type:mb-[0]'>
+                            <div className='my-16 mx-[0] text-system-light-prominent-text last-of-type:mb-0'>
                                 {child}
                             </div>
                         </div>

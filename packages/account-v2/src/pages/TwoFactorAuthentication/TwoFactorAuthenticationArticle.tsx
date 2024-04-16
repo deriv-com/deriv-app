@@ -9,7 +9,7 @@ export const TwoFactorAuthenticationArticle = () => {
             className={classNames('py-[1.6rem] px-[2.4rem] h-fit w-[25.6rem] sm:w-[calc(100%-3.2rem)] sm:m-[1.6rem]', {
                 'ml-[1.2rem]': isTablet,
             })}
-            title={'Two-factor authentication (2FA)'}
+            title='Two-factor authentication (2FA)'
             titleClassName='mb-[.8rem] text-[1.4rem] text-system-light-prominent-text leading-normal'
         >
             <Text align='start' className='text-[1.2rem] text-system-light-prominent-text leading-normal'>

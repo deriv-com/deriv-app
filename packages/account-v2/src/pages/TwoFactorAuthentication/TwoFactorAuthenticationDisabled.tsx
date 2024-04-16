@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useAuthorize, useTwoFactorAuthentication } from '@deriv/api-v2';
 import { Loader, Text } from '@deriv-com/ui';
 import { Timeline } from '../../components/Timeline';
+import { TWO_FACTOR_AUTHENTICATION_URLS } from '../../constants';
 import { TwoFactorAuthenticationForm } from '../../containers/TwoFactorAuthenticationForm';
 import { TwoFactorAuthenticationArticle } from './TwoFactorAuthenticationArticle';
 import { TwoFactorAuthenticationQRCode } from './TwoFactorAuthenticationQRCode';
@@ -30,7 +31,7 @@ export const TwoFactorAuthenticationDisabled = () => {
     }, [mutate]);
 
     return (
-        <div className='flex flex-1 w-full h-full sm:flex-col-reverse'>
+        <div className='flex flex-1 w-full h-full sm:flex-col-reverse sm:col-span-2'>
             <section className='py-0 px-[1.4rem]'>
                 <Text
                     align='start'
@@ -50,14 +51,14 @@ export const TwoFactorAuthenticationDisabled = () => {
                                 Scan the QR code below with your 2FA app. We recommend{' '}
                                 <TwoFactorAuthenticationLink
                                     aria-label='Authy' // TODO: Remember to localize this
-                                    href='https://authy.com/'
+                                    href={TWO_FACTOR_AUTHENTICATION_URLS.authy}
                                 >
                                     Authy
                                 </TwoFactorAuthenticationLink>{' '}
                                 or{' '}
                                 <TwoFactorAuthenticationLink
                                     aria-label='Google Authenticator' // TODO: Remember to localize this
-                                    href='https://github.com/google/google-authenticator/wiki#implementations'
+                                    href={TWO_FACTOR_AUTHENTICATION_URLS.googleAuthenticator}
                                 >
                                     Google Authenticator
                                 </TwoFactorAuthenticationLink>

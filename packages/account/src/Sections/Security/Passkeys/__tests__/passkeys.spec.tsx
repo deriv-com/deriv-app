@@ -2,6 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Analytics } from '@deriv-com/analytics';
 import { APIProvider } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
@@ -43,9 +44,25 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>MockLoading</div>,
 }));
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    mobileOSDetect: jest.fn(() => 'test OS'),
+}));
+
 describe('Passkeys', () => {
     let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;
     const create_passkey = 'Create passkey';
+
+    const tracking_event = 'ce_passkey_account_settings_form';
+    const getAnalyticsParams = (
+        action: string,
+        additional_data: { error_message?: string; subform_name?: string } = {}
+    ) => ({
+        action,
+        form_name: tracking_event,
+        operating_system: 'test OS',
+        ...additional_data,
+    });
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -56,7 +73,7 @@ describe('Passkeys', () => {
     beforeEach(() => {
         mock_store = mockStore({
             ui: { is_mobile: true },
-            client: { is_passkey_supported: true, passkeysTrackActionEvent: jest.fn() },
+            client: { is_passkey_supported: true },
             common: { network_status: { class: 'online' } },
         });
         jest.clearAllMocks();
@@ -82,6 +99,56 @@ describe('Passkeys', () => {
     const mockClearPasskeyRegistrationError = jest.fn();
     const mockReloadPasskeysList = jest.fn();
 
+    it("doesn't render existed passkeys for desktop", () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            passkeys_list: mock_passkeys_list,
+        });
+
+        mock_store.ui.is_mobile = false;
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        expect(screen.queryByText(passkey_name_1)).not.toBeInTheDocument();
+        expect(screen.queryByText(passkey_name_2)).not.toBeInTheDocument();
+        expect(Analytics.trackEvent).not.toHaveBeenCalled();
+    });
+
+    it('renders loader if passkeys list is loading', () => {
+        mock_store.ui.is_mobile = true;
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            is_passkeys_list_loading: true,
+        });
+
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        expect(screen.getByText('MockLoading')).toBeInTheDocument();
+        expect(Analytics.trackEvent).not.toHaveBeenCalled();
+    });
+
+    it('renders loader if network_status is offline', () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            is_passkeys_list_loading: false,
+        });
+
+        mock_store.common.network_status.class = 'offline';
+
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        expect(screen.getByText('MockLoading')).toBeInTheDocument();
+        expect(Analytics.trackEvent).not.toHaveBeenCalled();
+    });
+
     it('renders existed passkeys correctly and triggers new passkey creation', async () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: mock_passkeys_list,
@@ -101,8 +168,12 @@ describe('Passkeys', () => {
         const create_passkey_button = screen.getByRole('button', { name: create_passkey });
         userEvent.click(create_passkey_button);
         expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
-        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(1);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('create_passkey_started', { subform_name: 'passkey_main' })
+        );
     });
+
     it("renders 'Experience safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: [],
@@ -120,13 +191,19 @@ describe('Passkeys', () => {
         expect(screen.getByText('Experience safer logins')).toBeInTheDocument();
         const learn_more_button = screen.getByRole('button', { name: 'Learn more' });
         userEvent.click(learn_more_button);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('info_open'));
+
         expect(screen.getByText('Effortless login with passkeys')).toBeInTheDocument();
         expect(screen.getByText('Tips:')).toBeInTheDocument();
         const create_passkey_button = screen.getByRole('button', { name: create_passkey });
         userEvent.click(create_passkey_button);
         expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
-        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(2);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('create_passkey_started', { subform_name: 'passkey_info' })
+        );
     });
+
     it('renders success screen when new passkeys created', () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             is_passkey_registered: true,
@@ -139,52 +216,12 @@ describe('Passkeys', () => {
         );
 
         expect(screen.getByText('Success!')).toBeInTheDocument();
-    });
-    it("doesn't render existed passkeys for desktop", () => {
-        (useGetPasskeysList as jest.Mock).mockReturnValue({
-            passkeys_list: mock_passkeys_list,
-        });
-
-        mock_store.ui.is_mobile = false;
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('create_passkey_finished')
         );
-
-        expect(screen.queryByText(passkey_name_1)).not.toBeInTheDocument();
-        expect(screen.queryByText(passkey_name_2)).not.toBeInTheDocument();
     });
 
-    it('renders loader if passkeys list is loading', () => {
-        mock_store.ui.is_mobile = true;
-        (useGetPasskeysList as jest.Mock).mockReturnValue({
-            is_passkeys_list_loading: true,
-        });
-
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
-
-        expect(screen.getByText('MockLoading')).toBeInTheDocument();
-    });
-    it('renders loader if network_status is offline', () => {
-        (useGetPasskeysList as jest.Mock).mockReturnValue({
-            is_passkeys_list_loading: false,
-        });
-
-        mock_store.common.network_status.class = 'offline';
-
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
-
-        expect(screen.getByText('MockLoading')).toBeInTheDocument();
-    });
     it('renders passkeys creation modal and triggers new passkey creation', async () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             is_passkeys_list_loading: false,
@@ -205,11 +242,16 @@ describe('Passkeys', () => {
         const continue_button = screen.getByRole('button', { name: /continue/i });
         userEvent.click(continue_button);
         expect(mockCreatePasskey).toBeCalledTimes(1);
-        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(1);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('create_passkey_reminder_passed')
+        );
     });
+
     it('renders passkeys registration error modal and triggers closing', async () => {
+        const mock_error = 'registration test error';
         (useRegisterPasskey as jest.Mock).mockReturnValue({
-            passkey_registration_error: { message: 'registration test error' },
+            passkey_registration_error: { message: mock_error },
             clearPasskeyRegistrationError: mockClearPasskeyRegistrationError,
         });
 
@@ -220,20 +262,26 @@ describe('Passkeys', () => {
         );
 
         const try_again_button = screen.getByRole('button', { name: /try again/i });
-        expect(screen.getByText('registration test error')).toBeInTheDocument();
+        expect(screen.getByText(mock_error)).toBeInTheDocument();
         userEvent.click(try_again_button);
         await waitFor(() => {
             expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
         });
-        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(1);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('error', { error_message: mock_error })
+        );
     });
+
     it('renders passkeys list error modal and triggers closing', async () => {
+        const mock_error = 'list test error';
+
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             passkey_registration_error: null,
         });
 
         (useGetPasskeysList as jest.Mock).mockReturnValue({
-            passkeys_list_error: { message: 'list test error' },
+            passkeys_list_error: { message: mock_error },
             reloadPasskeysList: mockReloadPasskeysList,
         });
 
@@ -244,11 +292,14 @@ describe('Passkeys', () => {
         );
 
         const try_again_button = screen.getByRole('button', { name: /try again/i });
-        expect(screen.getByText('list test error')).toBeInTheDocument();
+        expect(screen.getByText(mock_error)).toBeInTheDocument();
         userEvent.click(try_again_button);
         await waitFor(() => {
             expect(mockReloadPasskeysList).toBeCalledTimes(1);
         });
-        expect(mock_store.client.passkeysTrackActionEvent).toBeCalledTimes(1);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('error', { error_message: mock_error })
+        );
     });
 });

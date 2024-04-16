@@ -1,5 +1,6 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api/types';
+import { Analytics } from '@deriv-com/analytics';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { mobileOSDetect } from '@deriv/shared';
@@ -135,4 +136,16 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
         description: (error as TServerError)?.message ?? '',
         button_text: error ? <Localize i18n_default_text='Try again' /> : undefined,
     };
+};
+
+export const passkeysMenuActionEventTrack = (
+    action: string,
+    additional_data: { error_message?: string; subform_name?: string } = {}
+) => {
+    Analytics.trackEvent('ce_passkey_account_settings_form', {
+        action,
+        form_name: 'ce_passkey_account_settings_form',
+        operating_system: mobileOSDetect(),
+        ...additional_data,
+    });
 };

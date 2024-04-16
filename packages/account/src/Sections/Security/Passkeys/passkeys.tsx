@@ -7,14 +7,19 @@ import { observer, useStore } from '@deriv/stores';
 import PasskeysStatusContainer from './components/passkeys-status-container';
 import PasskeysList from './components/passkeys-list';
 import PasskeyModal from './components/passkey-modal';
-import { getModalContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
+import {
+    getModalContent,
+    PASSKEY_STATUS_CODES,
+    passkeysMenuActionEventTrack,
+    TPasskeysStatus,
+} from './passkeys-configs';
 import './passkeys.scss';
 import { TServerError } from 'Types';
 
 const Passkeys = observer(() => {
     const { ui, client, common } = useStore();
     const { is_mobile } = ui;
-    const { is_passkey_supported, passkeysTrackActionEvent } = client;
+    const { is_passkey_supported } = client;
     let timeout: ReturnType<typeof setTimeout>;
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
@@ -48,7 +53,7 @@ const Passkeys = observer(() => {
 
     React.useEffect(() => {
         if (is_passkey_registered) {
-            passkeysTrackActionEvent({ action: 'create_passkey_finished' });
+            passkeysMenuActionEventTrack('create_passkey_finished');
             setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
         }
     }, [is_passkey_registered]);
@@ -56,9 +61,8 @@ const Passkeys = observer(() => {
     React.useEffect(() => {
         if (!!error || is_passkey_registration_started) {
             setIsModalOpen(true);
-            if (error) {
-                passkeysTrackActionEvent({
-                    action: 'error',
+            if (error && !is_passkey_registration_started) {
+                passkeysMenuActionEventTrack('error', {
                     error_message: (error as TServerError)?.message,
                 });
             }
@@ -95,7 +99,7 @@ const Passkeys = observer(() => {
         if (error) {
             onCloseModal(onCloseError);
         } else {
-            passkeysTrackActionEvent({ action: 'create_passkey_reminder_passed' });
+            passkeysMenuActionEventTrack('create_passkey_reminder_passed');
             createPasskey();
             setIsModalOpen(false);
         }
@@ -107,7 +111,7 @@ const Passkeys = observer(() => {
 
     const startRegistration = () => {
         const subform_name = passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE ? 'passkey_info' : 'passkey_main';
-        passkeysTrackActionEvent({ action: 'create_passkey_started', subform_name });
+        passkeysMenuActionEventTrack('create_passkey_started', { subform_name });
         startPasskeyRegistration();
     };
 
@@ -124,7 +128,7 @@ const Passkeys = observer(() => {
                     passkeys_list={passkeys_list || []}
                     onPrimaryButtonClick={startRegistration}
                     onSecondaryButtonClick={() => {
-                        passkeysTrackActionEvent({ action: 'info_open' });
+                        passkeysMenuActionEventTrack('info_open');
                         setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
                     }}
                 />

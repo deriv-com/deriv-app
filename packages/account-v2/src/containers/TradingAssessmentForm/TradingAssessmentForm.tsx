@@ -38,7 +38,7 @@ export const TradingAssessmentForm = () => {
                 <div>
                     <FormSubHeader>Trading assessment</FormSubHeader>
                     {tradingAssessmentQuestions.map(item => {
-                        if (item.fieldType === 'radio') {
+                        if (item.answerOptions) {
                             return (
                                 <TradingAssessmentContainer
                                     answerList={item.answerOptions}

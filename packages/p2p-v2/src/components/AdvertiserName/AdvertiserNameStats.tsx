@@ -40,7 +40,10 @@ const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: DeepPartial
                 {!isMyProfile && (
                     <div className='border-r-[1px] border-solid border-r-[#ededed]'>
                         <OnlineStatusIcon isOnline={!!isOnline} isRelative size='0.8em' />
-                        <OnlineStatusLabel isOnline={!!isOnline} lastOnlineTime={lastOnlineTime} />
+                        <OnlineStatusLabel
+                            isOnline={!!isOnline}
+                            lastOnlineTime={lastOnlineTime === null ? undefined : lastOnlineTime}
+                        />
                     </div>
                 )}
                 <Text color='less-prominent' size='sm'>

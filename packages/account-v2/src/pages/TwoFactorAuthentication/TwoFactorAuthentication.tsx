@@ -5,8 +5,8 @@ import { TwoFactorAuthenticationDisabled } from './TwoFactorAuthenticationDisabl
 import { TwoFactorAuthenticationEnabled } from './TwoFactorAuthenticationEnabled';
 
 export const TwoFactorAuthentication = () => {
-    const { data: isTwoFactorAuthenticationEnabled } = useTwoFactorAuthenticationStatus();
-    if (isTwoFactorAuthenticationEnabled === undefined) {
+    const { data: isTwoFactorAuthenticationEnabled, isLoading: isStatusLoading } = useTwoFactorAuthenticationStatus();
+    if (isStatusLoading) {
         return <Loader isFullScreen={true} />;
     }
     return (

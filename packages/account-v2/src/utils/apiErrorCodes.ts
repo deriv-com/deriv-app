@@ -1,3 +1,3 @@
-export const ACCOUNT_SECURITY = {
+export const API_ERROR_CODES = {
     INVALID_OTP: 'InvalidOTP',
 } as const;

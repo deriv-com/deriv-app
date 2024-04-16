@@ -4,7 +4,7 @@ import useInvalidateQuery from '../useInvalidateQuery';
 
 type TPayload = NonNullable<Parameters<ReturnType<typeof useMutation<'account_security'>>['mutate']>[0]>['payload'];
 
-/** A custom hook perform mutations for generating, enabling, and disabling 2FA */
+/** A custom hook to perform mutations for generating, enabling, and disabling 2-FA */
 const useTwoFactorAuthentication = () => {
     const invalidate = useInvalidateQuery();
     const {

@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 
@@ -9,20 +8,9 @@ const useTwoFactorAuthenticationStatus = () => {
         payload: { totp_action: 'status' },
         options: { enabled: isSuccess },
     });
-    const modifiedData = useMemo(() => {
-        if (!data?.account_security) return undefined;
-        const { is_enabled: isEnabled, secret_key: secretKey } = data.account_security.totp;
-        return {
-            ...data.account_security,
-            /** Indicates whether 2-Factor authentication is enabled or disabled. */
-            isEnabled: Boolean(isEnabled),
-            /* The secret key for the 2-Factor authentication. **/
-            secretKey,
-        };
-    }, [data?.account_security]);
     return {
         /** The two factor authentication status */
-        data: modifiedData?.isEnabled,
+        data: data?.account_security ? Boolean(data?.account_security?.totp.is_enabled) : undefined,
         ...rest,
     };
 };

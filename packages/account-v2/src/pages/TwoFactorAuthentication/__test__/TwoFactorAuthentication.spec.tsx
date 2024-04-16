@@ -15,6 +15,12 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isTablet: false })),
 }));
 
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
+
 const renderComponent = () => {
     return render(
         <Formik initialValues={{}} onSubmit={jest.fn()}>
@@ -23,12 +29,6 @@ const renderComponent = () => {
         { wrapper }
     );
 };
-
-const wrapper = ({ children }: { children: JSX.Element }) => (
-    <APIProvider>
-        <AuthProvider>{children}</AuthProvider>
-    </APIProvider>
-);
 
 const mockUseTwoFactorAuthentication = useTwoFactorAuthentication as jest.MockedFunction<
     typeof useTwoFactorAuthentication

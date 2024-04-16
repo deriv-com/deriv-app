@@ -39,11 +39,4 @@ describe('BinaryLink component', () => {
         const viewComponent = () => render(<MockBinaryLink to='/invalid' />);
         expect(viewComponent).toThrowError('Route not found: /invalid');
     });
-
-    // There is no active path right now and there will be when tradershub become the default page.
-    // That's when we can run this test case
-    // it('should render "a" element when property "to" is not passed', () => {
-    //     render(<MockBinaryLink />);
-    //     expect(screen.getByTestId('dt_binary_link')).toBeInTheDocument();
-    // });
 });

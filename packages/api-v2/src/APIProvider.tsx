@@ -150,7 +150,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
     useEffect(() => {
         const interval_id: ReturnType<typeof setInterval> = setInterval(
-            () => send({ ping: 1 } as any),
+            //@ts-ignore
+            () => send('ping', {}),
             10000
         );
         return () => clearInterval(interval_id);

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import lightweightSend from './send';
+import send from './send';
 
 function generateRandomInteger() {
     return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 1;
@@ -9,7 +9,7 @@ function generateRandomInteger() {
  * Subscribes directly to backend stream
  * WARNING: it does not check for dubplicates, its just
  */
-export default class BackendSubsription {
+export default class BackendSubscription {
     ws: WebSocket;
     name: string;
     payload: any;
@@ -19,12 +19,12 @@ export default class BackendSubsription {
 
     lastData: any;
 
-    onData: Function;
     boundOnWsMessage: any;
+    boundOnWsClose: any;
 
     listeners: Function[];
 
-    constructor(ws: WebSocket, name: string, payload: any, onData: Function) {
+    constructor(ws: WebSocket, name: string, payload: any) {
         this.ws = ws;
         this.name = name;
         this.payload = payload;
@@ -34,32 +34,38 @@ export default class BackendSubsription {
     
         this.lastData = null;
 
-        this.onData = onData;
-
         this.boundOnWsMessage = this.onWsMessage.bind(this);
+        this.boundOnWsClose = this.onWsClose.bind(this);
 
         this.listeners = [];
     }
 
     async unsubscribe() {
         this.ws.removeEventListener('message', this.boundOnWsMessage);
-        await lightweightSend(this.ws, generateRandomInteger(), 'forget', { forget: this.subscriptionId });
+        this.ws.removeEventListener('close', this.boundOnWsClose);
+        await send(this.ws, generateRandomInteger(), 'forget', { forget: this.subscriptionId });
+    }
+
+    async onWsClose() {
+        this.ws.removeEventListener('message', this.boundOnWsMessage);
+        this.ws.removeEventListener('close', this.boundOnWsClose);
     }
 
     async subscribe() {
         this.ws.addEventListener('message', this.boundOnWsMessage)
-        this.ws.addEventListener('close', () => {
-            this.ws.removeEventListener('message', this.boundOnWsMessage);
-        });
+        this.ws.addEventListener('close', this.boundOnWsClose);
 
-        const data:any = await lightweightSend(this.ws, generateRandomInteger(), this.name, {
+        this.reqId = generateRandomInteger();
+
+        const data:any = await send(this.ws, this.reqId, this.name, {
             subscribe: 1,
             ...this.payload
         });
-        
+
+        this.subscriptionId = data.subscription.id;
         this.lastData = data;
         
-        this.onData(data);
+        this.listeners.forEach(listener => listener(data));
     }
 
     addListener(onData: Function) {
@@ -78,6 +84,6 @@ export default class BackendSubsription {
         }
 
         this.lastData = data;
-        this.onData(data);
+        this.listeners.forEach(listener => listener(data));
     }
 }

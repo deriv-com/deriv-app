@@ -1,34 +1,19 @@
 import * as Yup from 'yup';
+import { ValidationConstants } from '@deriv-com/utils';
 
-const regexChecks = {
-    addressCity: /^\p{L}[\p{L}\s'.-]{0,99}$/u,
-    addressLine1: /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{1,70}$/u,
-    addressLine2: /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
-    addressPostcode: /^[a-zA-Z0-9\s-]{0,20}$/,
-    addressState: /^[\w\s'.;,-]{0,99}$/,
-    nonJerseyPostcode: /^(?!\s*je.*)[a-z0-9\s-]*/i,
-};
+const { messagesHints, patterns } = ValidationConstants;
+const { addressPermittedSpecialCharacters } = messagesHints;
+const { address, addressCity, addressState, postalCode } = patterns;
 
-/**
- * @deprecated Please use 'ValidationConstants.messagesHints.addressPermittedSpecialCharacters' from '@deriv-com/utils' instead of this.
- */
-export const addressPermittedSpecialCharactersMessage = ". , ' : ; ( ) ° @ # / -";
-
-/**
- * @deprecated Please use 'ValidationConstants.patterns' from '@deriv-com/utils' instead of this.
- */
 export const addressDetailValidations = (countryCode: string, isSvg: boolean) => ({
     addressCity: Yup.string()
         .required('City is required')
         .max(99, 'Only 99 characters, please.')
-        .matches(regexChecks.addressCity, 'Only letters, periods, hyphens, apostrophes, and spaces, please.'),
+        .matches(addressCity, 'Only letters, periods, hyphens, apostrophes, and spaces, please.'),
     addressLine1: Yup.string()
         .required('First line of address is required')
         .max(70, 'Only 70 characters, please.')
-        .matches(
-            regexChecks.addressLine1,
-            `Use only the following special characters: ${addressPermittedSpecialCharactersMessage}`
-        )
+        .matches(address, `Use only the following special characters: ${addressPermittedSpecialCharacters}`)
         .when({
             is: () => isSvg,
             then: Yup.string().test(
@@ -39,10 +24,7 @@ export const addressDetailValidations = (countryCode: string, isSvg: boolean) =>
         }),
     addressLine2: Yup.string()
         .max(70, 'Only 70 characters, please.')
-        .matches(
-            regexChecks.addressLine2,
-            `Use only the following special characters: ${addressPermittedSpecialCharactersMessage}`
-        )
+        .matches(address, `Use only the following special characters: ${addressPermittedSpecialCharacters}`)
         .when({
             is: () => isSvg,
             then: Yup.string().test(
@@ -53,15 +35,6 @@ export const addressDetailValidations = (countryCode: string, isSvg: boolean) =>
         }),
     addressPostcode: Yup.string()
         .max(20, 'Please enter a postal/ZIP code under 20 characters.')
-        .matches(regexChecks.addressPostcode, 'Only letters, numbers, space and hyphen are allowed.')
-        .when({
-            is: () => countryCode === 'gb',
-            then: Yup.string().matches(
-                regexChecks.nonJerseyPostcode,
-                'Our accounts and services are unavailable for the Jersey postal code.'
-            ),
-        }),
-    addressState: Yup.string()
-        .required('State is required')
-        .matches(regexChecks.addressState, 'State is not in a proper format'),
+        .matches(postalCode, 'Only letters, numbers, space and hyphen are allowed.'),
+    addressState: Yup.string().required('State is required').matches(addressState, 'State is not in a proper format'),
 });

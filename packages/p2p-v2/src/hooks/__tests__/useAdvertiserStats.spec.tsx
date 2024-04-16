@@ -95,13 +95,11 @@ describe('useAdvertiserStats', () => {
         });
         const { result } = renderHook(() => useAdvertiserStats('2'), { wrapper });
 
-        if (result.current.data) {
-            expect(result.current.data.fullName).toBe('Jane Doe');
-            expect(result.current.data.tradePartners).toBe(1);
-            expect(result.current.data.buyOrdersCount).toBe(10);
-            expect(result.current.data.sellOrdersCount).toBe(5);
-            expect(result.current.data.daysSinceJoined).toBe(120);
-        }
+        expect(result?.current?.data?.fullName).toBe('Jane Doe');
+        expect(result?.current?.data?.tradePartners).toBe(1);
+        expect(result?.current?.data?.buyOrdersCount).toBe(10);
+        expect(result?.current?.data?.sellOrdersCount).toBe(5);
+        expect(result?.current?.data?.daysSinceJoined).toBe(120);
     });
     test('should return the correct total count and lifetime', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -124,12 +122,10 @@ describe('useAdvertiserStats', () => {
         });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
-        if (result.current.data) {
-            expect(result.current.data.totalOrders).toBe(15);
-            expect(result.current.data.totalOrdersLifetime).toBe(30);
-            expect(result.current.data.tradeVolume).toBe(60);
-            expect(result.current.data.tradeVolumeLifetime).toBe(100);
-        }
+        expect(result?.current?.data?.totalOrders).toBe(15);
+        expect(result?.current?.data?.totalOrdersLifetime).toBe(30);
+        expect(result?.current?.data?.tradeVolume).toBe(60);
+        expect(result?.current?.data?.tradeVolumeLifetime).toBe(100);
     });
     test('should return the correct rates and limits', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -154,13 +150,11 @@ describe('useAdvertiserStats', () => {
         });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
-        if (result.current.data) {
-            expect(result.current.data.buyCompletionRate).toBe(1.4);
-            expect(result.current.data.sellCompletionRate).toBe(2.4);
-            expect(result.current.data.dailyAvailableBuyLimit).toBe(90);
-            expect(result.current.data.dailyAvailableSellLimit).toBe(10);
-            expect(result.current.data.isEligibleForLimitUpgrade).toBe(true);
-        }
+        expect(result?.current?.data?.buyCompletionRate).toBe(1.4);
+        expect(result?.current?.data?.sellCompletionRate).toBe(2.4);
+        expect(result?.current?.data?.dailyAvailableBuyLimit).toBe(90);
+        expect(result?.current?.data?.dailyAvailableSellLimit).toBe(10);
+        expect(result?.current?.data?.isEligibleForLimitUpgrade).toBe(true);
     });
     test('should return the correct buy/release times', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -177,10 +171,8 @@ describe('useAdvertiserStats', () => {
         });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
-        if (result.current.data) {
-            expect(result.current.data.averagePayTime).toBe(3);
-            expect(result.current.data.averageReleaseTime).toBe(1);
-        }
+        expect(result?.current?.data?.averagePayTime).toBe(3);
+        expect(result?.current?.data?.averageReleaseTime).toBe(1);
     });
     test('should return the correct verification statuses', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -206,10 +198,8 @@ describe('useAdvertiserStats', () => {
         });
         const { result } = renderHook(() => useAdvertiserStats(), { wrapper });
 
-        if (result.current.data) {
-            expect(result.current.data.isAddressVerified).toBe(true);
-            expect(result.current.data.isIdentityVerified).toBe(false);
-        }
+        expect(result?.current?.data?.isAddressVerified).toBe(true);
+        expect(result?.current?.data?.isIdentityVerified).toBe(false);
 
         (mockUseAdvertiserInfo as jest.Mock).mockReturnValueOnce({
             data: {
@@ -229,9 +219,7 @@ describe('useAdvertiserStats', () => {
         });
         const { result: verifiedResult } = renderHook(() => useAdvertiserStats(), { wrapper });
 
-        if (verifiedResult.current.data) {
-            expect(verifiedResult.current.data.isAddressVerified).toBe(true);
-            expect(verifiedResult.current.data.isIdentityVerified).toBe(undefined);
-        }
+        expect(verifiedResult?.current?.data?.isAddressVerified).toBe(true);
+        expect(verifiedResult?.current?.data?.isIdentityVerified).toBe(undefined);
     });
 });

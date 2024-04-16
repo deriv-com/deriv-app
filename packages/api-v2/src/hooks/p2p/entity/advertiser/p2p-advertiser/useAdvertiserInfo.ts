@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import useSubscription from '../../../../../useSubscription';
-import { TSocketResponseData } from '../../../../../../types';
+import { TSocketRequestPayload, TSocketResponseData } from '../../../../../../types';
 
 type TP2PAdvertiserInfo = TSocketResponseData<'p2p_advertiser_info'>['p2p_advertiser_info'] & {
     has_basic_verification: boolean;
@@ -14,10 +14,7 @@ type TP2PAdvertiserInfo = TSocketResponseData<'p2p_advertiser_info'>['p2p_advert
     should_show_name: boolean;
 };
 
-type TPayload = WithRequiredProperty<
-    NonNullable<Parameters<ReturnType<typeof useSubscription<'p2p_advertiser_info'>>['subscribe']>>[0]['payload'],
-    'id'
->;
+type TPayload = NonNullable<TSocketRequestPayload<'p2p_advertiser_info'>> & { id: string };
 
 /** This custom hook returns information about the given advertiser ID */
 const useAdvertiserInfo = (id?: string) => {

@@ -5,7 +5,7 @@ import { TwoFactorAuthenticationForm } from '../../containers/TwoFactorAuthentic
 
 export const TwoFactorAuthenticationEnabled = () => {
     return (
-        <div className='flex flex-1 flex-col items-center w-full h-full sm:col-span-2'>
+        <div className='flex flex-1 flex-col items-center w-full h-full'>
             <div className='w-[8.3rem] h-[12.3rem] mt-[6.4rem]'>
                 <DerivLightQrPhoneSuccessIcon />
             </div>

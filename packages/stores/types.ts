@@ -66,6 +66,7 @@ type TRoutes =
     | '/reports/positions'
     | '/reports/profit'
     | '/reports'
+    | '/'
     | '/dtrader'
     | '/redirect'
     | '/settings'

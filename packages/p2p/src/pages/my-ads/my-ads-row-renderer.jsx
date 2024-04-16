@@ -59,7 +59,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         ui: { is_desktop },
     } = useStore();
     const { general_store, my_ads_store, my_profile_store } = useStores();
-    const { showModal } = useModalManagerContext();
+    const { hideModal, showModal } = useModalManagerContext();
     const { p2p_settings } = useP2PSettings();
 
     const {
@@ -133,8 +133,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
             general_store.showModal({
                 key: 'MyAdsFloatingRateSwitchModal',
                 props: {
-                    cancel_btn_text: localize('Cancel'),
                     onSwitch: () => {
+                        hideModal();
                         my_ads_store.onClickCopy(id, is_desktop);
                     },
                 },

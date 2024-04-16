@@ -68,11 +68,13 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
 
     React.useEffect(() => {
         if (type === buy_sell.SELL) {
-            Object.entries(payment_method_details).map(payment_method_detail => {
-                my_ads_store.payment_method_ids.push(payment_method_detail[0]);
-            });
+            if (payment_method_details) {
+                Object.entries(payment_method_details).map(payment_method_detail => {
+                    my_ads_store.payment_method_ids.push(payment_method_detail[0]);
+                });
+            }
         } else {
-            my_profile_store.payment_methods_list.map(({ text, value }) => {
+            my_profile_store.payment_methods_list?.map(({ text, value }) => {
                 if (payment_method_names.includes(text)) my_ads_store.payment_method_names.push(value);
             });
         }

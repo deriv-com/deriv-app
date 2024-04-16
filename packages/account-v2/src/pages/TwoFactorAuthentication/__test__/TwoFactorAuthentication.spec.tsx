@@ -80,9 +80,10 @@ describe('TwoFactorAuthentication', () => {
             screen.queryByText(/If you are unable to scan the QR code, you can manually enter this code instead:/)
         ).not.toBeInTheDocument();
     });
-    it('should render the loader when data is undefined', () => {
+    it('should render the loader when data is undefined and isLoading is true', () => {
         (mockUseTwoFactorAuthenticationStatus as jest.Mock).mockReturnValue({
             data: undefined,
+            isLoading: true,
         });
         renderComponent();
         expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();

@@ -250,7 +250,6 @@ const PersonalDetailsForm = props => {
                                 type='text'
                                 maxLength={70}
                                 required
-                                onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={touched.address_line_1 && errors.address_line_1}
                                 value={values.address_line_1}
@@ -266,7 +265,6 @@ const PersonalDetailsForm = props => {
                                 data-lpignore='true'
                                 type='text'
                                 maxLength={70}
-                                onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={touched.address_line_2 && errors.address_line_2}
                                 value={values.address_line_2}
@@ -283,7 +281,6 @@ const PersonalDetailsForm = props => {
                                 type='text'
                                 maxLength={70}
                                 required
-                                onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={touched.address_city && errors.address_city}
                                 value={values.address_city}
@@ -331,7 +328,6 @@ const PersonalDetailsForm = props => {
                                     label={localize('State/Province')}
                                     value={values.address_state}
                                     error={touched.address_state && errors.address_state}
-                                    onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
                             ))}
@@ -345,7 +341,6 @@ const PersonalDetailsForm = props => {
                                 data-lpignore='true'
                                 type='text'
                                 maxLength={70}
-                                onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={touched.address_postcode && errors.address_postcode}
                                 value={values.address_postcode}

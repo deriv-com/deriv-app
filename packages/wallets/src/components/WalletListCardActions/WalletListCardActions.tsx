@@ -15,7 +15,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
     const buttons = [
         {
             className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
-            color: isDemo ? 'transparent' : 'primary',
+            color: isDemo ? 'white' : 'primary',
             icon: isDemo ? <LabelPairedArrowsRotateMdBoldIcon /> : <LabelPairedPlusMdBoldIcon fill='#FFF' />,
             name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? 'Reset balance' : 'Deposit',

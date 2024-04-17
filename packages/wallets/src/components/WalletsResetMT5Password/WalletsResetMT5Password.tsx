@@ -4,7 +4,7 @@ import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordRese
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
-import { validPassword } from '../../utils/password-validation';
+import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
 import { ModalWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
@@ -99,6 +99,7 @@ const WalletsResetMT5Password = ({
                 )}
                 <WalletPasswordFieldLazy
                     label={isInvestorPassword ? 'New investor password' : `${title} password`}
+                    mt5Policy={isMT5}
                     onChange={e => setPassword(e.target.value)}
                     password={password}
                 />
@@ -108,7 +109,7 @@ const WalletsResetMT5Password = ({
                         <Trans defaults='Cancel' />
                     </WalletButton>
                     <WalletButton
-                        disabled={!validPassword(password)}
+                        disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
                         isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                         onClick={handleSubmit}
                         variant='contained'

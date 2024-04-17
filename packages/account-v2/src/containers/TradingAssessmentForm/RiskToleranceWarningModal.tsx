@@ -2,6 +2,7 @@ import React from 'react';
 import { StandaloneTriangleExclamationFillIcon } from '@deriv/quill-icons';
 import { Button, Modal, Text } from '@deriv-com/ui';
 import { ACCOUNT_MODAL_REF } from '../../constants';
+import { riskToleranceWarningModalConfig } from '../../modules/src/TradingAssessmentConfig';
 
 type TRiskToleranceWarningModal = {
     handleSubmit: () => void;
@@ -14,7 +15,7 @@ export const RiskToleranceWarningModal = ({ handleSubmit, isModalOpen }: TRiskTo
         <Modal className='md:w-[440px] sm:w-[312px]' isOpen={isModalOpen}>
             <Modal.Header className='py-0' hideCloseIcon>
                 <Text as='h1' size='md' weight='bold'>
-                    Risk Tolerance Warning
+                    {riskToleranceWarningModalConfig.title}
                 </Text>
             </Modal.Header>
             <Modal.Body className='flex flex-col mx-24'>
@@ -23,18 +24,16 @@ export const RiskToleranceWarningModal = ({ handleSubmit, isModalOpen }: TRiskTo
                     iconSize='2xl'
                 />
                 <Text align='center' as='p' className='mt-10' size='sm'>
-                    CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage.
-                    You should consider whether you understand how CFDs and other financial instruments work and whether
-                    you can afford to take the high risk of losing your money.
+                    {riskToleranceWarningModalConfig.riskToleranceContent}
                 </Text>
                 <br />
                 <Text align='center' as='p' className='mt-10' size='sm'>
-                    To continue, you must confirm that you understand your capital is at risk.
+                    {riskToleranceWarningModalConfig.continueMessage}
                 </Text>
             </Modal.Body>
             <Modal.Footer className='mt-10 flex gap-x-16 justify-center' hideBorder>
                 <Button color='primary' onClick={handleSubmit} rounded='sm'>
-                    Yes, I understand the risk.
+                    {riskToleranceWarningModalConfig.buttonText}
                 </Button>
             </Modal.Footer>
         </Modal>

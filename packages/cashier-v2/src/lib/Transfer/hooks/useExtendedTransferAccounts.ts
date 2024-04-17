@@ -1,14 +1,10 @@
 import { useMemo } from 'react';
-import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../hooks/types';
 
 type TModifiedAccounts = ReturnType<typeof getModifiedAccounts>;
 
-const getModifiedAccounts = (
-    accounts: THooks.TransferAccounts,
-    getConfig: ReturnType<typeof useCurrencyConfig>['getConfig']
-) => {
+const getModifiedAccounts = (accounts: THooks.TransferAccounts, getConfig: THooks.GetCurrencyConfig) => {
     return accounts.map(account => {
         const currencyConfig = account?.currency ? getConfig(account.currency) : undefined;
         return {
@@ -49,15 +45,15 @@ const sortedCryptoDerivAccounts = (accounts: TModifiedAccounts) => {
     - sorts the mt5 accounts based on group type
     - sorts the crypto accounts alphabetically
 */
-const useExtendedTransferAccounts = (accounts: THooks.TransferAccounts) => {
-    const { data: activeAccount, isLoading: isActiveAccountLoading } = useActiveAccount();
-    const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    const isLoading = !accounts || isActiveAccountLoading || isCurrencyConfigLoading;
-
+const useExtendedTransferAccounts = (
+    activeAccount: THooks.ActiveAccount,
+    getConfig: THooks.GetCurrencyConfig,
+    accounts: THooks.TransferAccounts = []
+) => {
     const modifiedAccounts = getModifiedAccounts(accounts, getConfig);
 
-    const extendedTransferableAccounts = useMemo(() => {
+    const sortedTransferableAccounts = useMemo(() => {
         return [
             ...sortedMT5Accounts(modifiedAccounts),
             ...derivCTrader(modifiedAccounts),
@@ -67,16 +63,11 @@ const useExtendedTransferAccounts = (accounts: THooks.TransferAccounts) => {
         ];
     }, [modifiedAccounts]);
 
-    const transferableActiveAccount = useMemo(() => {
-        if (!extendedTransferableAccounts) return undefined;
-
-        return extendedTransferableAccounts.find(account => account.loginid === activeAccount?.loginid);
-    }, [activeAccount, extendedTransferableAccounts]);
+    const transferableActiveAccount = modifiedAccounts.find(account => account.loginid === activeAccount.loginid);
 
     return {
-        accounts: extendedTransferableAccounts,
+        accounts: sortedTransferableAccounts,
         activeAccount: transferableActiveAccount,
-        isLoading: isLoading || !extendedTransferableAccounts || !transferableActiveAccount,
     };
 };
 

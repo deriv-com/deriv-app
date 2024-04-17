@@ -1,5 +1,5 @@
 import { useKycAuthStatus } from '@deriv/api-v2';
-import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../constants/manualFormConstants';
+import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../constants';
 
 /** A custom hook used for manual verification flow */
 export const useManualForm = (countryCode: string, selectedDocument: TManualDocumentTypes) => {

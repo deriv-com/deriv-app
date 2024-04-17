@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop, routes, ContentFlag, checkServerMaintenance } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -11,7 +11,8 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
-import RealAccountCreationBanner from 'Components/real-account-creation-banner';
+
+const DerivRealAccountBanner = lazy(() => import('Components/real-account-creation-banner'));
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -40,7 +41,6 @@ const TradersHub = observer(() => {
         is_eu_user,
         no_CR_account,
         no_MF_account,
-        is_real,
     } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
@@ -136,16 +136,6 @@ const TradersHub = observer(() => {
         return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
     };
 
-    const ShowRealAccountCreationBanner = () => {
-        if ((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)) {
-            return (
-                <div>
-                    <RealAccountCreationBanner />
-                </div>
-            );
-        }
-        return null;
-    };
     return (
         <React.Fragment>
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
@@ -158,7 +148,12 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    <ShowRealAccountCreationBanner />
+                    {(no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user) ? (
+                        <Suspense fallback={<div />}>
+                            <DerivRealAccountBanner />
+                        </Suspense>
+                    ) : null}
+
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
                     <MobileWrapper>

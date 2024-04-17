@@ -22,7 +22,7 @@ describe('TestWarningModal', () => {
     const testWarningModalMessage = [
         /Appropriateness Test Warning/,
         /In providing our services to you, we are required to ask you for some information to assess if a given/,
-        /Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs/,
+        /Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs./,
         /Please note that by clicking ‘OK’, you may be exposing yourself to risks. You may not have the knowledge/,
     ];
 

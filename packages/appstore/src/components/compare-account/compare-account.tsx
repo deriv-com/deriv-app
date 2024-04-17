@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 
@@ -16,6 +17,11 @@ const CompareAccount = ({ accounts_sub_text, is_desktop }: TCompareAccount) => {
             className='cfd-accounts__compare-table-title'
             onClick={() => {
                 history.push(routes.compare_cfds);
+                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                    action: 'compare_accounts_push',
+                    form_name: 'traders_hub_default',
+                    account_mode: document.getElementById('dropdown-display')?.innerText,
+                });
             }}
         >
             <Text

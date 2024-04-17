@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import { Button, Text } from '@deriv/components';
 import { getCurrencyName, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import { useStore, observer } from '@deriv/stores';
@@ -50,6 +51,11 @@ const RealAccountCard = observer(() => {
                 currency && (
                     <Button
                         onClick={(e: MouseEvent) => {
+                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                action: 'deposit_balance',
+                                form_name: 'traders_hub_default',
+                                account_mode: document.getElementById('dropdown-display')?.innerText,
+                            });
                             e.stopPropagation();
                             history.push(`${routes.cashier_deposit}#deposit`);
                         }}

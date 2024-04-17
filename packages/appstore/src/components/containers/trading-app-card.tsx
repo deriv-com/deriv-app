@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     BrandConfig,
@@ -95,6 +96,12 @@ const TradingAppCard = ({
     };
 
     const openStaticPage = () => {
+        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+            action: 'account_logo_push',
+            form_name: 'traders_hub_default',
+            account_mode: document.getElementById('dropdown-display')?.innerText,
+            account_name: !is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name,
+        });
         if (is_deriv_platform) {
             switch (name) {
                 case DERIV_PLATFORM_NAMES.TRADER:

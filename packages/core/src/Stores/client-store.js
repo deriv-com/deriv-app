@@ -1486,6 +1486,11 @@ export default class ClientStore extends BaseStore {
     }
 
     async resetVirtualBalance() {
+        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+            action: 'reset_balance',
+            form_name: 'traders_hub_default',
+            account_mode: document.getElementById('dropdown-display')?.innerText,
+        });
         this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
         this.root_store.notifications.removeNotificationMessage({
             key: 'reset_virtual_balance',

@@ -6,9 +6,9 @@ export const getTradingAssessmentQuestions = () => [
             { text: 'No', value: 'No' },
         ],
         fieldType: 'radio',
-        formControl: 'risk_tolerance',
+        formControl: 'riskTolerance',
         questionText: 'Do you understand that you could potentially lose 100% of the money you use to trade?',
-        section: 'risk_tolerance',
+        section: 'riskTolerance',
     },
     {
         answerOptions: [
@@ -34,9 +34,9 @@ export const getTradingAssessmentQuestions = () => [
             },
         ],
         fieldType: 'radio',
-        formControl: 'source_of_experience',
+        formControl: 'sourceOfExperience',
         questionText: 'How much knowledge and experience do you have in relation to online trading?',
-        section: 'source_of_experience',
+        section: 'sourceOfExperience',
     },
     {
         questions: [
@@ -60,7 +60,7 @@ export const getTradingAssessmentQuestions = () => [
                     },
                 ],
                 fieldType: 'dropdown',
-                formControl: 'cfd_experience',
+                formControl: 'cfdExperience',
                 questionText: 'How much experience do you have in CFD trading?',
             },
             {
@@ -87,7 +87,7 @@ export const getTradingAssessmentQuestions = () => [
                     },
                 ],
                 fieldType: 'dropdown',
-                formControl: 'cfd_frequency',
+                formControl: 'cfdFrequency',
                 questionText: 'How many CFD trades have you placed in the past 12 months?',
             },
             {
@@ -110,7 +110,7 @@ export const getTradingAssessmentQuestions = () => [
                     },
                 ],
                 fieldType: 'dropdown',
-                formControl: 'trading_experience_financial_instruments',
+                formControl: 'tradingExperienceFinancialInstruments',
                 questionText: 'How much experience do you have with other financial instruments?',
             },
             {
@@ -137,11 +137,11 @@ export const getTradingAssessmentQuestions = () => [
                     },
                 ],
                 fieldType: 'dropdown',
-                formControl: 'trading_frequency_financial_instruments',
+                formControl: 'tradingFrequencyFinancialInstruments',
                 questionText: 'How many trades have you placed with other financial instruments in the past 12 months?',
             },
         ],
-        section: 'trading_experience',
+        section: 'tradingExperience',
     },
     {
         answerOptions: [
@@ -163,9 +163,9 @@ export const getTradingAssessmentQuestions = () => [
             },
         ],
         fieldType: 'radio',
-        formControl: 'cfd_trading_definition',
+        formControl: 'cfdTradingDefinition',
         questionText: 'In your understanding, CFD trading allows you to',
-        section: 'trading_knowledge',
+        section: 'tradingKnowledge',
     },
     {
         answerOptions: [
@@ -184,9 +184,9 @@ export const getTradingAssessmentQuestions = () => [
             },
         ],
         fieldType: 'radio',
-        formControl: 'leverage_impact_trading',
+        formControl: 'leverageImpactTrading',
         questionText: 'How does leverage affect CFD trading?',
-        section: 'trading_knowledge',
+        section: 'tradingKnowledge',
     },
     {
         answerOptions: [
@@ -208,10 +208,10 @@ export const getTradingAssessmentQuestions = () => [
             },
         ],
         fieldType: 'radio',
-        formControl: 'leverage_trading_high_risk_stop_loss',
+        formControl: 'leverageTradingHighRiskStopLoss',
         questionText:
             "Leverage trading is high-risk, so it's a good idea to use risk management features such as stop loss. Stop loss allows you to",
-        section: 'trading_knowledge',
+        section: 'tradingKnowledge',
     },
     {
         answerOptions: [
@@ -227,8 +227,8 @@ export const getTradingAssessmentQuestions = () => [
             { text: 'All of the above.', value: 'All of the above.' },
         ],
         fieldType: 'radio',
-        formControl: 'required_initial_margin',
+        formControl: 'requiredInitialMargin',
         questionText: 'When are you required to pay an initial margin?',
-        section: 'trading_knowledge',
+        section: 'tradingKnowledge',
     },
 ];

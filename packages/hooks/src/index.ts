@@ -1,4 +1,3 @@
-export { default as useAccountTransferVisible } from './useAccountTransferVisible';
 export { default as useActiveWallet } from './useActiveWallet';
 export { default as useAuthorize } from './useAuthorize';
 export { default as useAvailableWallets } from './useAvailableWallets';

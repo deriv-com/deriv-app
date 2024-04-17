@@ -2767,21 +2767,30 @@ export default class ClientStore extends BaseStore {
         const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
         if (matchingSubscription) return { key, subscription: matchingSubscription };
 
-        const subscription = WS?.subscribe({
-            [name]: 1,
-            subscribe: 1,
-            ...(payload ?? {}),
-        });
+        try {
+            const subscription = await WS?.subscribe({
+                [name]: 1,
+                subscribe: 1,
+                ...(payload ?? {}),
+            });
 
-        this.addSubscription(name, key, subscription);
-        return { name, key, subscription };
+            this.addSubscription(name, key, subscription);
+            return { key, subscription };
+        } catch (e) {
+            // error handling needed
+            return {};
+        }
     };
 
     unsubscribeByKey = async (name, key) => {
         const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
         if (matchingSubscription) {
-            await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
-            delete this.subscriptions?.[name]?.[key];
+            try {
+                await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
+                delete this.subscriptions?.[name]?.[key];
+            } catch (e) {
+                // error handling needed
+            }
         }
     };
 
@@ -2794,21 +2803,26 @@ export default class ClientStore extends BaseStore {
             target_currency,
         });
 
-        subscription.subscribe(response => {
-            const rates = response.exchange_rates?.rates;
-            const subscription_id = String(response.subscription?.id);
+        subscription.subscribe(
+            response => {
+                const rates = response.exchange_rates?.rates;
+                const subscription_id = String(response.subscription?.id);
 
-            if (rates) {
-                this.addSubscription('exchange_rates', key, undefined, subscription_id);
+                if (rates) {
+                    this.addSubscription('exchange_rates', key, undefined, subscription_id);
 
-                const currentData = { ...this.exchange_rates };
-                if (currentData) {
-                    currentData[base_currency] = { ...currentData[base_currency], ...rates };
-                } else currentData = { [base_currency]: rates };
+                    const currentData = { ...this.exchange_rates };
+                    if (currentData) {
+                        currentData[base_currency] = { ...currentData[base_currency], ...rates };
+                    } else currentData = { [base_currency]: rates };
 
-                this.setExchangeRates(currentData);
+                    this.setExchangeRates(currentData);
+                }
+            },
+            error => {
+                // error handling needed
             }
-        });
+        );
     };
 
     unsubscribeFromExchangeRate = async (base_currency, target_currency) => {

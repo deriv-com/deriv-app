@@ -13,7 +13,7 @@ export const AccountClosureConfirmModal = ({
     handleSubmit,
     isModalOpen,
 }: TAccountClosureConfirmModalProps) => (
-    <Modal className='p-24 md:w-[440px] sm:w-[312px] h-auto rounded-default' isOpen={isModalOpen}>
+    <Modal className='p-24 md:w-[440px] sm:w-[312px]' isOpen={isModalOpen}>
         <Modal.Body className='flex flex-col'>
             <StandaloneTriangleExclamationRegularIcon className='self-center fill-status-light-danger' iconSize='2xl' />
             <Text align='center' as='h4' size='md' weight='bold'>
@@ -24,7 +24,7 @@ export const AccountClosureConfirmModal = ({
                 as our legal obligations are met.
             </Text>
         </Modal.Body>
-        <Modal.Footer className='mt-24 flex gap-x-16 justify-end' hideBorder>
+        <Modal.Footer className='flex justify-end mt-24 gap-x-16' hideBorder>
             <Button color='black' onClick={handleCancel} rounded='sm' size='md' type='button' variant='outlined'>
                 Go back
             </Button>

@@ -1,12 +1,11 @@
-import React, { ComponentType, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { debounce } from 'lodash';
 import { Controller, useForm } from 'react-hook-form';
-import Modal from 'react-modal';
-import { useDevice, useSwitchTab } from '@/hooks';
+import { useHistory } from 'react-router-dom';
+import { BUY_SELL_URL } from '@/constants';
 import { p2p } from '@deriv/api-v2';
 import { DerivLightIcCashierUserIcon } from '@deriv/quill-icons';
-import { Button, Input, Text } from '@deriv-com/ui';
-import { customStyles } from '../helpers';
+import { Button, Input, Modal, Text, useDevice } from '@deriv-com/ui';
 import './NicknameModal.scss';
 
 type TNicknameModalProps = {
@@ -15,7 +14,6 @@ type TNicknameModalProps = {
 };
 
 const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => {
-    const ReactModal = Modal as ComponentType<ReactModal['props']>;
     const {
         control,
         formState: { isDirty, isValid },
@@ -28,7 +26,7 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
         mode: 'onChange',
     });
 
-    const switchTab = useSwitchTab();
+    const history = useHistory();
     const { error: createError, isError, isSuccess, mutate, reset } = p2p.advertiser.useCreate();
     const { isMobile } = useDevice();
     const textSize = isMobile ? 'md' : 'sm';
@@ -39,10 +37,6 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
     };
 
     useEffect(() => {
-        Modal.setAppElement('#v2_modal_root');
-    }, []);
-
-    useEffect(() => {
         if (isSuccess) {
             setIsModalOpen(false);
         } else if (isError) {
@@ -51,63 +45,63 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
     }, [isError, isSuccess]);
 
     return (
-        <ReactModal className='p2p-v2-nickname-modal' isOpen={!!isModalOpen} style={customStyles}>
-            <form className='p2p-v2-nickname-modal__form' onSubmit={handleSubmit(onSubmit)}>
-                <DerivLightIcCashierUserIcon height='12.8rem' width='12.8rem' />
-                <Text className='p2p-v2-nickname-modal__form-title' weight='bold'>
-                    Choose your nickname
-                </Text>
-                <Text align='center' className='mt-4 mb-6' size={textSize}>
-                    This nickname will be visible to other Deriv P2P users.
-                </Text>
-                <Controller
-                    control={control}
-                    name='nickname'
-                    render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                        <Input
-                            data-testid='dt_p2p_v2_nickname_modal_input'
-                            error={!!error?.message || isError}
-                            label='Your nickname'
-                            message={createError?.error?.message || error?.message}
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            value={value}
-                        />
-                    )}
-                    rules={{
-                        pattern: {
-                            message: 'Can only contain letters, numbers, and special characters .-_@.',
-                            value: /^[a-zA-Z0-9.@_-]*$/,
-                        },
-                        required: 'Nickname is required',
-                    }}
-                />
-                <Text className='my-10' size={textSize}>
-                    Your nickname cannot be changed later.
-                </Text>
-                <div className='p2p-v2-nickname-modal__form__button-group'>
+        <Modal className='p2p-v2-nickname-modal' isOpen={!!isModalOpen}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Modal.Body className='p2p-v2-nickname-modal__body'>
+                    <DerivLightIcCashierUserIcon height='12.8rem' width='12.8rem' />
+                    <Text className='p2p-v2-nickname-modal__body-title' weight='bold'>
+                        What’s your nickname?
+                    </Text>
+                    <Text align='center' className='mt-4 mb-6' size={textSize}>
+                        Others will see this on your profile, ads and charts.
+                    </Text>
+                    <Controller
+                        control={control}
+                        name='nickname'
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            <Input
+                                data-testid='dt_p2p_v2_nickname_modal_input'
+                                error={!!error?.message || isError}
+                                label='Your nickname'
+                                message={createError?.error?.message || error?.message}
+                                onBlur={onBlur}
+                                onChange={onChange}
+                                value={value}
+                            />
+                        )}
+                        rules={{
+                            pattern: {
+                                message: 'Can only contain letters, numbers, and special characters .-_@.',
+                                value: /^[a-zA-Z0-9.@_-]*$/,
+                            },
+                            required: 'Nickname is required',
+                        }}
+                    />
+                    <Text className='my-10' size={textSize}>
+                        Your nickname cannot be changed later.
+                    </Text>
+                </Modal.Body>
+                <Modal.Footer className='p-0 min-h-0' hideBorder>
                     <Button
-                        className='p2p-v2-nickname-modal__form__button-group__cancel'
+                        className='border-2 mr-[0.8rem]'
+                        color='black'
                         onClick={() => {
-                            switchTab('buy-sell');
+                            history.push(BUY_SELL_URL);
                             setIsModalOpen(false);
                         }}
                         size='lg'
+                        textSize={textSize}
                         type='button'
                         variant='outlined'
                     >
-                        <Text size={textSize} weight='bold'>
-                            Cancel
-                        </Text>
+                        Cancel
                     </Button>
-                    <Button disabled={!isValid || !isDirty || isError} size='lg' type='submit'>
-                        <Text color='white' size={textSize} weight='bold'>
-                            Confirm
-                        </Text>
+                    <Button disabled={!isValid || !isDirty || isError} size='lg' textSize={textSize} type='submit'>
+                        Confirm
                     </Button>
-                </div>
+                </Modal.Footer>
             </form>
-        </ReactModal>
+        </Modal>
     );
 };
 

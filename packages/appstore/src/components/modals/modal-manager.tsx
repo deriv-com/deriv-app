@@ -166,6 +166,17 @@ const ResetTradingPasswordModal = makeLazyLoader(
     () => <Loading />
 )();
 
+const CTraderTransferModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_ctrader-transfer-modal" */ '@deriv/cfd/src/Containers/ctrader-transfer-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
 };
@@ -193,6 +204,7 @@ const ModalManager = () => {
         is_cfd_password_modal_enabled,
         is_cfd_success_dialog_enabled,
         is_sent_email_modal_enabled,
+        is_ctrader_transfer_modal_visible,
     } = modules.cfd;
     const {
         enableApp,
@@ -288,6 +300,7 @@ const ModalManager = () => {
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
             {is_cfd_reset_password_modal_enabled && <CFDResetPasswordModal platform={platform} />}
+            {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}
             {(is_top_up_virtual_open || is_top_up_virtual_success) && <CFDTopUpDemoModal platform={platform} />}
             {is_mt5_trade_modal_visible && (

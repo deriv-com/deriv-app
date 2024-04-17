@@ -2,10 +2,27 @@ import moment from 'moment';
 import { isEmptyObject } from '../object';
 import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';
-import { TickSpotData, WebsiteStatus } from '@deriv/api-types';
+import { TickSpotData, WebsiteStatus, AccountListResponse } from '@deriv/api-types';
 import { getSupportedContracts } from '../constants/contract';
 
 type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start'>>;
+
+export const sortApiData = (arr: AccountListResponse[]) => {
+    return arr.slice().sort((a, b) => {
+        const loginA = a?.login;
+        const loginB = b?.login;
+
+        if (loginA && loginB) {
+            if (loginA < loginB) {
+                return -1;
+            }
+            if (loginA > loginB) {
+                return 1;
+            }
+        }
+        return 0;
+    });
+};
 
 export const isContractElapsed = (contract_info: TContractInfo, tick?: null | TickSpotData) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;

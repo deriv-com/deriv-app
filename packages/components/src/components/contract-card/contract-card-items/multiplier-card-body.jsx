@@ -8,7 +8,6 @@ import {
     getTotalProfit,
     isValidToCancel,
     isValidToSell,
-    shouldShowCancellation,
 } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
@@ -28,22 +27,14 @@ const MultiplierCardBody = ({
     toggleCancellationWarning,
     ...toggle_card_dialog_props
 }) => {
-    const { buy_price, bid_price, limit_order, underlying } = contract_info;
+    const { buy_price, bid_price, limit_order } = contract_info;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
     const cancellation_price = getCancellationPrice(contract_info);
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
     const total_profit = getTotalProfit(contract_info);
-    const {
-        BUY_PRICE,
-        CURRENT_STAKE,
-        DEAL_CANCEL_FEE,
-        NOT_AVAILABLE,
-        STAKE,
-        STOP_LOSS,
-        TAKE_PROFIT,
-        TOTAL_PROFIT_LOSS,
-    } = getCardLabels();
+    const { BUY_PRICE, CURRENT_STAKE, DEAL_CANCEL_FEE, STAKE, STOP_LOSS, TAKE_PROFIT, TOTAL_PROFIT_LOSS } =
+        getCardLabels();
 
     return (
         <React.Fragment>
@@ -67,13 +58,16 @@ const MultiplierCardBody = ({
                         <Money amount={bid_price} currency={currency} />
                     </div>
                 </ContractCardItem>
-                <ContractCardItem header={DEAL_CANCEL_FEE} className='dc-contract-card__deal-cancel-fee'>
+                <ContractCardItem
+                    header={DEAL_CANCEL_FEE}
+                    className={classNames('dc-contract-card__deal-cancel-fee', {
+                        'dc-contract-card__deal-cancel-fee__disabled': !cancellation_price,
+                    })}
+                >
                     {cancellation_price ? (
                         <Money amount={cancellation_price} currency={currency} />
                     ) : (
-                        <React.Fragment>
-                            {shouldShowCancellation(underlying) ? <strong>-</strong> : NOT_AVAILABLE}
-                        </React.Fragment>
+                        <React.Fragment>-</React.Fragment>
                     )}
                 </ContractCardItem>
                 <ContractCardItem header={BUY_PRICE} className='dc-contract-card__buy-price'>

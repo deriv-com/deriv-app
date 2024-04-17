@@ -561,6 +561,12 @@
     }
     &__deal-cancel-fee {
         grid-area: deal-cancel-fee;
+        &__disabled {
+            color: $color-grey-6;
+            .dc-contract-card-item__body {
+                color: inherit;
+            }
+        }
     }
     &__stake {
         grid-area: stake;

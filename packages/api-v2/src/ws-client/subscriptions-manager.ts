@@ -9,7 +9,7 @@ export default class SubscriptionsManager {
         this.ws = ws;
     }
 
-    async subscribe(name: string, payload: any, onData: Function) {
+    async subscribe(name: string, payload: any, onData: Function): Promise<{unsubscribe: () => Promise<void>}> {
         const key : string = generateUniqueKey({[name]: 1, ...payload});
         
         let backendSubscription : BackendSubscription | undefined; 

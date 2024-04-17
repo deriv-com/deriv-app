@@ -12,10 +12,9 @@ import WSClient from './ws-client/ws-client';
 
 type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
     name: T,
-    payload?: TSocketRequestPayload<T>
-) => Promise<{ id: string; subscription: any }>;
-
-
+    payload: TSocketRequestPayload<T>,
+    onData: (data: TSocketResponseData<T> | TSocketError<T>) => void
+) => Promise<{ unsubscribe: () => Promise<void> } | undefined>;
 
 type APIContextData = {
     connection: WebSocket | undefined;
@@ -36,11 +35,6 @@ const getWebSocketURL = () => {
     const language = localStorage.getItem('i18n_language');
     return `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=deriv`;
 };
-
-
-function generateRandomInteger() {
-    return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 1;
-}
 
 const APIContext = createContext<APIContextData | null>(null);
 
@@ -135,29 +129,27 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
     
     const send = (name: TSocketEndpointNames, payload: TSocketRequestPayload<TSocketEndpointNames>) => {  
-        if (!connectionRef.current) {
-            throw new Error('Connection is not available');
+        if (!wsClientRef.current) {
+            throw new Error('WsClient is not yet available');
         }
 
-        return wsClientRef?.current?.request(name, payload);
+        return wsClientRef.current.request(name, payload);
     };
 
-
-    const subscribe = async (name: TSocketEndpointNames, payload: TSocketRequestPayload<TSocketEndpointNames>, onData: Function) => {
-        if (!connectionRef.current) {
-            throw new Error('Connection is not available');
+    const subscribe : TSubscribeFunction = async (name, payload, onData) => {
+        if (!wsClientRef.current) {
+            throw new Error('WsClient is not yet available in subscribe function');
         }
 
-        return wsClientRef?.current?.subscribe(name, payload, onData);
+        return wsClientRef.current.subscribe(name, payload, onData);
     };
 
     useEffect(() => {
-        const interval_id: ReturnType<typeof setInterval> = setInterval(
-            //@ts-ignore
+        const pingInterval: ReturnType<typeof setInterval> = setInterval(
             () => send('ping', {}),
             10000
         );
-        return () => clearInterval(interval_id);
+        return () => clearInterval(pingInterval);
     }, []);
 
     useEffect(() => {

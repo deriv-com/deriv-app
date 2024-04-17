@@ -9,23 +9,30 @@ import { WalletsActionScreen } from '../WalletsActionScreen';
 
 type WalletSuccessResetMT5PasswordProps = {
     isInvestorPassword?: boolean;
+    onClickSuccess?: () => void;
     title: string;
 };
 
 const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     isInvestorPassword = false,
+    onClickSuccess,
     title,
 }) => {
     const { hide } = useModal();
     const { isMobile } = useDevice();
 
+    const handleSuccess = useCallback(() => {
+        onClickSuccess?.();
+        hide();
+    }, [onClickSuccess, hide]);
+
     const renderButtons = useCallback(() => {
         return (
-            <WalletButton onClick={() => hide()} size='lg'>
+            <WalletButton onClick={handleSuccess} size='lg'>
                 {isInvestorPassword ? <Trans defaults='Ok' /> : <Trans defaults='Done' />}
             </WalletButton>
         );
-    }, [hide, isInvestorPassword]);
+    }, [handleSuccess, isInvestorPassword]);
 
     return (
         <ModalWrapper hideCloseButton={isMobile || !isInvestorPassword}>

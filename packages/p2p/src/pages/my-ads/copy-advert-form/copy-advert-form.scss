@@ -30,6 +30,7 @@
             border: 0;
             height: auto;
             pointer-events: none;
+            background-color: var(--general-main-2);
         }
 
         &-icon {
@@ -106,5 +107,9 @@
         .dc-dropdown__display-text {
             padding-left: 0;
         }
+    }
+
+    .dc-input__label {
+        background-color: var(--general-main-2);
     }
 }

@@ -119,7 +119,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                             <Text color='less-prominent' size='xxs'>
                                 <Localize i18n_default_text='Ad type' />
                             </Text>
-                            <Text as='div' className='copy-advert-form__field' size='xs'>
+                            <Text as='div' color='prominent' className='copy-advert-form__field' size='xs'>
                                 {type === buy_sell.BUY ? localize('Buy') : localize('Sell')}
                             </Text>
                             <Field name='offer_amount'>
@@ -198,12 +198,37 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                     />
                                 )}
                             </Field>
+                            {type === buy_sell.SELL && (
+                                <>
+                                    <Text color='less-prominent' size='xxs'>
+                                        <Localize i18n_default_text='Contact details' />
+                                    </Text>
+                                    <Field name='contact_info'>
+                                        {({ field }: FieldProps) => (
+                                            <Input
+                                                {...field}
+                                                className='copy-advert-form__field'
+                                                type='text'
+                                                readOnly
+                                            />
+                                        )}
+                                    </Field>
+                                </>
+                            )}
                             <Text color='less-prominent' size='xxs'>
                                 <Localize i18n_default_text='Instructions' />
                             </Text>
                             <Field name='default_advert_description'>
                                 {({ field }: FieldProps) => (
-                                    <Input {...field} className='copy-advert-form__field' type='text' readOnly />
+                                    <Text
+                                        {...field}
+                                        as='div'
+                                        color='prominent'
+                                        className='copy-advert-form__field'
+                                        size='xs'
+                                    >
+                                        {field.value}
+                                    </Text>
                                 )}
                             </Field>
                             <Text color='less-prominent' size='xxs'>
@@ -222,7 +247,7 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                             <Text color='less-prominent' size='xxs'>
                                 <Localize i18n_default_text='Payment methods' />
                             </Text>
-                            <Text as='div' className='copy-advert-form__field' size='xs'>
+                            <Text as='div' color='prominent' className='copy-advert-form__field' size='xs'>
                                 {payment_method_names.join(', ')}
                             </Text>
                             <div className='copy-advert-form__container'>

@@ -15,6 +15,15 @@ const TradersHubHomeButton = observer(() => {
     const { pathname } = location;
     const { is_next_tradershub_enabled, is_next_wallet_enabled } = useFeatureFlags();
 
+    let TradersHubIcon;
+    if (is_next_wallet_enabled) {
+        TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
+    } else if (is_dark_mode_on) {
+        TradersHubIcon = 'IcAppstoreHomeDark';
+    } else {
+        TradersHubIcon = 'IcAppstoreTradersHubHome';
+    }
+
     const redirectRoutes = () => {
         if (is_next_wallet_enabled) {
             return routes.wallets;
@@ -22,12 +31,6 @@ const TradersHubHomeButton = observer(() => {
             return routes.traders_hub_v2;
         }
         return routes.traders_hub;
-    };
-
-    const TradershubIcon = {
-        default: 'IcAppstoreTradersHubHome',
-        dark: 'IcAppstoreHomeDark',
-        wallet: 'IcAppstoreTradersHubHomeUpdated',
     };
 
     return (
@@ -42,14 +45,7 @@ const TradersHubHomeButton = observer(() => {
             onClick={() => history.push(redirectRoutes())}
         >
             <div className='traders-hub-header__tradershub--home-logo'>
-                <Icon
-                    icon={classNames({
-                        [TradershubIcon.default]: !is_next_wallet_enabled && !is_dark_mode_on,
-                        [TradershubIcon.wallet]: is_next_wallet_enabled,
-                        [TradershubIcon.dark]: !is_next_wallet_enabled && is_dark_mode_on,
-                    })}
-                    size={is_dark_mode_on ? 15 : 17}
-                />
+                <Icon icon={TradersHubIcon} size={is_dark_mode_on ? 15 : 17} />
             </div>
             <Text className='traders-hub-header__tradershub--text'>
                 <Localize i18n_default_text="Trader's Hub" />

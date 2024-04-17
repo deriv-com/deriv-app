@@ -85,11 +85,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         p2p_settings,
     } = useP2PSettings();
 
-    const TradershubIcon = {
-        default: 'IcAppstoreTradersHubHome',
-        dark: 'IcAppstoreHomeDark',
-        wallet: 'IcAppstoreTradersHubHomeUpdated',
-    };
+    let TradersHubIcon;
+    if (is_next_wallet_enabled) {
+        TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
+    } else if (is_dark_mode) {
+        TradersHubIcon = 'IcAppstoreHomeDark';
+    } else {
+        TradersHubIcon = 'IcAppstoreTradersHubHome';
+    }
 
     React.useEffect(() => {
         if (isSuccess && !isSubscribed) {
@@ -323,11 +326,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={is_next_wallet_enabled ? routes.wallets : routes.traders_hub}
-                                            icon={classNames({
-                                                [TradershubIcon.default]: !is_next_wallet_enabled && !is_dark_mode,
-                                                [TradershubIcon.wallet]: is_next_wallet_enabled,
-                                                [TradershubIcon.dark]: !is_next_wallet_enabled && is_dark_mode,
-                                            })}
+                                            icon={TradersHubIcon}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
                                         />

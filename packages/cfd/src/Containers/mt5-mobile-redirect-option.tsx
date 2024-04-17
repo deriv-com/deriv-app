@@ -1,22 +1,20 @@
 import React from 'react';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { DEEP_LINK, WEBTRADER_URL, getMobileAppInstallerURL } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
 import { isSafariBrowser } from '@deriv/shared';
+import { TDetailsOfEachMT5Loginid } from 'Components/props.types';
 
-type TMT5MobileRedirectOptionProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
-};
-const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOptionProps) => {
+const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) => {
     let mobile_url;
 
     const mobileURLSet = () => {
         mobile_url = window.location.replace(DEEP_LINK({ mt5_trade_account }));
 
         const timeout = setTimeout(() => {
-            mobile_url = window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);
+            const url = getMobileAppInstallerURL({ mt5_trade_account });
+            if (url) mobile_url = window.location.replace(url);
         }, 1500);
 
         if (!isSafariBrowser()) {

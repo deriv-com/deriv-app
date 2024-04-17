@@ -15,21 +15,13 @@ import { WEBTRADER_URL, getPlatformMt5DownloadLink } from '../../Helpers/constan
 import SpecBox from '../../Components/specbox';
 import PasswordBox from '../../Components/passwordbox';
 import TradingPlatformIcon from '../../Assets/svgs/trading-platform';
-import { TTradingPlatformAccounts } from '../../Components/props.types';
+import { TDetailsOfEachMT5Loginid, TTradingPlatformAccounts } from '../../Components/props.types';
 
 import { TCFDPasswordReset } from '../../Containers/props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid & {
-        display_login?: string;
-        white_label_links: {
-            webtrader_url: string;
-            android: string;
-            ios: string;
-            windows: string;
-        };
-    };
+    mt5_trade_account: TDetailsOfEachMT5Loginid;
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,

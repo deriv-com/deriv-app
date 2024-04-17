@@ -1,5 +1,16 @@
 import { toast, ToastPosition, TypeOptions } from 'react-toastify';
 import { localize } from '@deriv/translations';
+import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
+
+const is_RTL = isDbotRTL() ? 'rtl' : 'ltr';
+const getToastPosition = (layoutDirection: string) => {
+    switch (layoutDirection) {
+        case 'rtl':
+            return toast.POSITION.BOTTOM_RIGHT;
+        default:
+            return toast.POSITION.BOTTOM_LEFT;
+    }
+};
 
 export type TNotificationContent = {
     message: string;
@@ -37,7 +48,7 @@ export const notification_message = {
 
 export const notification_style = {
     type: toast.TYPE.DEFAULT,
-    position: toast.POSITION.BOTTOM_LEFT,
+    position: getToastPosition(is_RTL),
     autoClose: 6000,
     hideProgressBar: true,
     closeOnClick: false,

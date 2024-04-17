@@ -1,7 +1,7 @@
 /** @define dc-modal; weak */
 .dc-modal {
     &__container {
-        @include tablet {
+        @include tablet-screen {
             width: unset !important;
             right: 0;
         }

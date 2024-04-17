@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { CloseHeader } from '@/components';
 import { BUY_SELL_URL } from '@/constants';
+import { AdvertiserInfoStateProvider } from '@/providers/AdvertiserInfoStateProvider';
 import { p2p, useActiveAccount, useAuthorize } from '@deriv/api-v2';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import Router from '../Router';
@@ -13,7 +14,7 @@ const tabRoutesConfiguration = routes.filter(route => route.name !== 'Advertiser
 const AppContent = () => {
     const history = useHistory();
     const location = useLocation();
-    const { data: activeAccountData, isLoading } = useActiveAccount();
+    const { data: activeAccountData, isLoading: isLoadingActiveAccount } = useActiveAccount();
     const { isSuccess } = useAuthorize();
 
     const getActiveTab = (pathname: string) => {
@@ -23,7 +24,7 @@ const AppContent = () => {
 
     const [activeTab, setActiveTab] = useState(() => getActiveTab(location.pathname));
     const { subscribe: subscribeP2PSettings } = p2p.settings.useGetSettings();
-    const { subscribe: subscribeAdvertiserInfo } = p2p.advertiser.useGetInfo();
+    const { error, isIdle, isLoading, isSubscribed, subscribe: subscribeAdvertiserInfo } = p2p.advertiser.useGetInfo();
 
     useEffect(() => {
         if (activeAccountData) {
@@ -41,13 +42,20 @@ const AppContent = () => {
         setActiveTab(getActiveTab(location.pathname));
     }, [location]);
 
-    if (isLoading || !activeAccountData) return <Loader color='#85acb0' />;
+    if (isLoadingActiveAccount || !activeAccountData) return <Loader color='#85acb0' />;
 
     // NOTE: Replace this with P2PBlocked component later and a custom hook useIsP2PEnabled, P2P is only available for USD accounts
     if (activeAccountData?.currency !== 'USD') return <h1>P2P is only available for USD accounts.</h1>;
 
     return (
-        <>
+        <AdvertiserInfoStateProvider
+            value={{
+                error,
+                isIdle,
+                isLoading,
+                isSubscribed,
+            }}
+        >
             <CloseHeader />
             <div className='p2p-v2-app-content'>
                 <Tabs
@@ -65,7 +73,7 @@ const AppContent = () => {
                 </Tabs>
                 <Router />
             </div>
-        </>
+        </AdvertiserInfoStateProvider>
     );
 };
 

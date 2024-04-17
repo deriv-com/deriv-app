@@ -44,7 +44,7 @@ const useAdvertiserInfo = (id?: string) => {
         if (data) {
             const advertiser_info = data?.p2p_advertiser_info;
 
-            if (!advertiser_info) return undefined;
+            if (!advertiser_info) return;
 
             const {
                 basic_verification,

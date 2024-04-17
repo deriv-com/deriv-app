@@ -5,6 +5,7 @@ import { Table } from '@/components';
 import { MyAdsDeleteModal } from '@/components/Modals';
 import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
 import { AD_ACTION, MY_ADS_URL } from '@/constants';
+import { useIsAdvertiser } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { MyAdsEmpty } from '../../MyAdsEmpty';
@@ -48,7 +49,15 @@ const columns = [
 ];
 
 const MyAdsTable = () => {
-    const { data = [], isFetching, isLoading, loadMoreAdverts } = p2p.advertiserAdverts.useGet();
+    const isAdvertiser = useIsAdvertiser();
+    const {
+        data = [],
+        isFetching,
+        isLoading,
+        loadMoreAdverts,
+    } = p2p.advertiserAdverts.useGet(undefined, {
+        enabled: isAdvertiser,
+    });
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
     const {
         balance_available: balanceAvailable,
@@ -74,7 +83,7 @@ const MyAdsTable = () => {
         }
     }, [error?.error?.message, isSuccess]);
 
-    if (isLoading) return <Loader />;
+    if (isLoading && isFetching) return <Loader />;
 
     if (!data.length) return <MyAdsEmpty />;
 

@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { useAdvertiserInfoState } from '@/providers/AdvertiserInfoStateProvider';
 import { daysSince, isEmptyObject } from '@/utils';
 import { p2p, useAuthentication, useAuthorize, useSettings } from '@deriv/api-v2';
 
@@ -21,9 +22,10 @@ const toAdvertiserMinutes = (duration?: number | null) => {
  */
 const useAdvertiserStats = (advertiserId?: string) => {
     const { isSuccess } = useAuthorize();
-    const { data, isSubscribed, subscribe, unsubscribe, ...rest } = p2p.advertiser.useGetInfo(advertiserId);
+    const { data, subscribe, unsubscribe } = p2p.advertiser.useGetInfo(advertiserId);
     const { data: settings, isSuccess: isSuccessSettings } = useSettings();
     const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
+    const { error, isIdle, isLoading, isSubscribed } = useAdvertiserInfoState();
 
     useEffect(() => {
         if (isSuccess && advertiserId) {
@@ -121,8 +123,10 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
     return {
         data: transformedData,
+        error,
+        isIdle,
+        isLoading,
         isSubscribed,
-        ...rest,
     };
 };
 

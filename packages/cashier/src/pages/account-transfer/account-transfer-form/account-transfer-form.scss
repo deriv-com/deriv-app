@@ -1,6 +1,7 @@
 .account-transfer-form {
     max-width: 36rem;
     width: 100%;
+    margin: 0 auto;
 
     @include mobile {
         width: 100%;
@@ -116,7 +117,7 @@
     &__bullet {
         background-color: var(--text-general);
         border-radius: 100%;
-        margin-right: 0.8rem;
+        margin-inline-end: 0.8rem;
         width: 0.4rem;
         height: 0.4rem;
         flex: none;

@@ -2,7 +2,7 @@ import { useCFDAccounts, useExchangeRate, usePlatformAccounts } from '@deriv/hoo
 
 export const isRatesLoaded = (
     is_real: boolean,
-    total_assets_real_currency: string,
+    total_assets_real_currency: string | undefined,
     platform_real_accounts: ReturnType<typeof usePlatformAccounts>['real'],
     cfd_real_accounts: ReturnType<typeof useCFDAccounts>['real'],
     exchange_rates: ReturnType<typeof useExchangeRate>['exchange_rates']

@@ -13,7 +13,7 @@ const TradersHubHomeButton = observer(() => {
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
-    const { is_next_wallet_enabled, is_next_tradershub_enabled } = useFeatureFlags();
+    const { is_next_tradershub_enabled, is_next_wallet_enabled } = useFeatureFlags();
 
     const redirectRoutes = () => {
         if (is_next_wallet_enabled) {
@@ -21,7 +21,6 @@ const TradersHubHomeButton = observer(() => {
         } else if (is_next_tradershub_enabled) {
             return routes.traders_hub_v2;
         }
-
         return routes.traders_hub;
     };
 

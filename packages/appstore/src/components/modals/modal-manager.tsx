@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetTradingPasswordModal } from '@deriv/account';
+import { useWalletMigration } from '@deriv/hooks';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
@@ -14,6 +15,7 @@ import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';
 import MT5TradeModal from '@deriv/cfd/src/Containers/mt5-trade-modal';
 import CFDPasswordManagerModal from '@deriv/cfd/src/Containers/cfd-password-manager-modal';
 import MT5MigrationModal from '@deriv/cfd/src/Containers/mt5-migration-modal';
+import CTraderTransferModal from '@deriv/cfd/src/Containers/ctrader-transfer-modal';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
@@ -28,6 +30,7 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 
 const ModalManager = () => {
     const store = useStores();
+    const { is_in_progress } = useWalletMigration();
     const { common, client, modules, traders_hub, ui } = store;
     const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
     const { platform } = common;
@@ -113,6 +116,7 @@ const ModalManager = () => {
             <CFDDbviOnBoarding />
             <CFDResetPasswordModal platform={platform} />
             <CFDServerErrorDialog />
+            <CTraderTransferModal />
             <CFDTopUpDemoModal platform={platform} />
             <MT5TradeModal
                 is_open={is_mt5_trade_modal_visible}
@@ -148,7 +152,7 @@ const ModalManager = () => {
                 toggleModal={toggleAccountTransferModal}
             />
             <FailedVerificationModal />
-            {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
+            {(is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />}
             <WalletsMigrationFailed />
             <WalletsUpgradeModal />
         </React.Fragment>

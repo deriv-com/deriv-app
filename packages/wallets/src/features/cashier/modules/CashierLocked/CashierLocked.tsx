@@ -36,7 +36,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const noResidence = cashierValidation?.no_residence;
 
     const isSystemMaintenance = cashierValidation?.system_maintenance && !isVirtual;
-    const isCashierLocked = status?.is_cashier_locked && !isVirtual && !isFetchingAccountStatus;
+    const isCashierLocked = !isFetchingAccountStatus && status?.is_cashier_locked && !isVirtual;
     const isDepositLocked = status?.is_deposit_locked && module === 'deposit';
     const isWithdrawalLocked = status?.is_withdrawal_locked && module === 'withdrawal';
 

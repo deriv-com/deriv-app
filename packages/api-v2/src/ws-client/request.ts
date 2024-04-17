@@ -1,3 +1,5 @@
+import TSocketResponseData from '../types/TSocketResponseData';
+
 const REQ_TIMEOUT = 20000;
 
 // sequence number for requests
@@ -8,7 +10,7 @@ let reqSeqNumber = 0;
  * no handling of reconnections, no state, nothing, just send
  * even request seq number is outside of its scope (reason being, that req_seq needs to be also used by the subscriptions)
  */
-function request(ws: WebSocket, name: string, payload: object) {
+function request(ws: WebSocket, name: string, payload: object): Promise<TSocketResponseData> {
     const req_id = ++reqSeqNumber;
 
     let promise = new Promise((resolve, reject) => {

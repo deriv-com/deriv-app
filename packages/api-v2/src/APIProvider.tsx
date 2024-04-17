@@ -10,6 +10,11 @@ import {
 } from '../types';
 import WSClient from './ws-client/ws-client';
 
+type TSendFunction = <T extends TSocketEndpointNames>(
+    name: T,
+    payload?: TSocketRequestPayload<T>['payload']
+) => Promise<TSocketResponseData<T> | undefined>;
+
 type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
     name: T,
     payload: TSocketRequestPayload<T>,
@@ -18,8 +23,8 @@ type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
 
 type APIContextData = {
     connection: WebSocket | undefined;
-    send: Function,
-    subscribe: Function;
+    send: TSendFunction,
+    subscribe: TSubscribeFunction;
     queryClient: QueryClient;
     setOnReconnected: (onReconnected: () => void) => void;
     setOnConnected: (onConnected: () => void) => void;
@@ -128,7 +133,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     }, []);
 
     
-    const send = (name: TSocketEndpointNames, payload: TSocketRequestPayload<TSocketEndpointNames>) => {  
+    const send : TSendFunction = (name, payload) => {  
         if (!wsClientRef.current) {
             throw new Error('WsClient is not yet available');
         }

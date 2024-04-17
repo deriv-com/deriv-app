@@ -14,7 +14,7 @@ export default class WSClient {
         this.subscriptionManager = new SubscriptionsManager(ws);
     }
 
-    request(name: string, payload: object) {
+    request(name: string, payload: any) {
        return request(this.ws, name, payload);
     }
 

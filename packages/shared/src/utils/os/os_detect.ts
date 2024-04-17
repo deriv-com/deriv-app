@@ -120,6 +120,8 @@ export const mobileOSDetectAsync = async () => {
         // Check if navigator.userAgentData is available for modern browsers
         if (navigator?.userAgentData) {
             const ua = await navigator.userAgentData.getHighEntropyValues(['model']);
+            // eslint-disable-next-line no-console
+            console.log('==>', 'huaweiDevicesRegex', huaweiDevicesRegex.test(ua?.model || ''));
             if (huaweiDevicesRegex.test(ua?.model || '')) {
                 return 'huawei';
             }

@@ -108,7 +108,6 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         needs_poi,
         resubmit_poa,
         has_submitted_poa,
-        is_age_verified,
         poa_address_mismatch,
     } = authentication_status;
 

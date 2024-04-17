@@ -109,7 +109,7 @@ export const mobileOSDetect = () => {
 export const mobileOSDetectAsync = async () => {
     const userAgent = navigator.userAgent ?? window.opera ?? '';
     const huaweiDevicesRegex =
-        /\b(ALP-|AMN-|ANA-|ANE-|ANG-|AQM-|ARS-|ART-|ATU-|BAC-|BLA-|BRQ-|CAG-|CAM-|CAN-|CAZ-|CDL-|CDY-|CLT-|CRO-|CUN-|DIG-|DRA-|DUA-|DUB-|DVC-|ELE-|ELS-|EML-|EVA-|EVR-|FIG-|FLA-|FRL-|GLK-|HMA-|HW-|HWI-|INE-|JAT-|JEF-|JER-|JKM-|JNY-|JSC-|LDN-|LIO-|LON-|LUA-|LYA-|LYO-|MAR-|MED-|MHA-|MLA-|MRD-|MYA-|NCE-|NEO-|NOH-|NOP-|OCE-|PAR-|PIC-|POT-|PPA-|PRA-|RNE-|SEA-|SLA-|SNE-|SPN-|STK-|TAH-|TAS-|TET-|TRT-|VCE-|VIE-|VKY-|VNS-|VOG-|VTR-|WAS-|WKG-|WLZ-|JAD-|MLD-|RTE-|NAM-|NEN-|BAL-|JLN-|YAL|MGA-|FGD-|XYAO-|BON-|ALN-|ALT-|BRA-|DBY2-|STG-|MAO-|LEM-|GOA-|FOA-|MNA-|LNA-)\b/i;
+        /\b(AL[PN]|AMN|AN[AE]|A(N[EG]|QM|RS|RT|TU)|B([AL]|AC|LA)|BRQ|C(A[GMN]|AZ|DL|DY|LT|RO|UN)|D(IG|RA|UA|UB|VC)|E(L[ES]|ML|VA|VR)|F(IG|LA|RL)|G(LK|OA)|H(MA|WI?)|I(N[EY]|NE)|J(AT|EF|ER|KM|NY|SC)|L(DN|IO|ON|UA)|LY[AO]|M(A[ORD]|ED|HA|LA)|M(YA|R[DE]|NA)|N(AM|CE|EN|EO|OH|OP)|OCE|P([AIR]|AR|IC|OT|PA|P[AE]|RA)|R(NE|TE)|S(EA|LA|NE|PN)|STK|T(A[HST]|ET|RT)|V(CE|IE|KY|NS|OG|TR)|W(A[SZ]|KG|LZ)|XYAO|F(GD|OA)|DBY2|STG|LEM|MNA|LNA)\b/gi;
 
     // Windows Phone must come first because its UA also contains "Android"
     if (/windows phone/i.test(userAgent)) {

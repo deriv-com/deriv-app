@@ -8,7 +8,7 @@ import { TradingAssessmentContainer } from './TradingAssessmentContainer';
 
 export const TradingAssessmentForm = () => {
     const [shouldShowRiskTolerance, setShouldShowRiskTolerance] = useState(false);
-    const [shouldShowTestWarningModal, setShouldShowTestWarningModal] = useState(true);
+    const [shouldShowTestWarningModal, setShouldShowTestWarningModal] = useState(false);
     const tradingAssessmentQuestions = getTradingAssessmentQuestions();
 
     const handleAcceptRiskTolerance = () => {

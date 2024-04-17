@@ -4,6 +4,7 @@ import { FormDropDownField } from '../../components/FormFields';
 
 type TTradingAssessmentContainer = {
     answerList: { text: string; value: string }[];
+    key?: string;
     name: string;
     question: string;
 };

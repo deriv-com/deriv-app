@@ -15,8 +15,8 @@ const TimelineItem = ({ children }: PropsWithChildren<TTimelineItemProps>) => {
 
 const Marker = ({ label }: { label: number }) => {
     return (
-        <div className='border absolute w-24 h-24 pl-px border-solid-red-0 rounded-full bg-solid-red-0 leading-[2.35rem] mr-8 text-center -left-12'>
-            <Text className='relative text-white align-middle text-[1.6rem] leading-normal' size='md' weight='bold'>
+        <div className='border absolute w-24 h-24 pl-px border-solid-red-0 rounded-full bg-solid-red-0 leading-[23.5px] mr-8 text-center -left-12'>
+            <Text className='relative text-white align-middle text-[16px] leading-normal' size='md' weight='bold'>
                 {label}
             </Text>
         </div>
@@ -28,11 +28,11 @@ const Marker = ({ label }: { label: number }) => {
 export const Timeline = ({ children, className, lineHeight }: TTimelineProps) => {
     if (!Array.isArray(children)) return null;
     return (
-        <ol className={twMerge('ml-[1.2rem]', className)}>
+        <ol className={twMerge('ml-[12px]', className)}>
             {children.map((child, idx) => {
                 return (
                     <li
-                        className='relative mb-0 ms-0 block w-full border-solid-red-0 border-l-1 border-solid last-of-type:border-l-0 pb-[1.6rem]'
+                        className='relative mb-0 ms-0 block w-full border-solid-red-0 border-l-1 border-solid last-of-type:border-l-0 pb-[16px]'
                         key={idx}
                     >
                         <Marker label={idx + 1} />

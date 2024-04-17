@@ -4,14 +4,13 @@ import { FormDropDownField } from '../../components/FormFields';
 
 type TTradingAssessmentContainer = {
     answerList: { text: string; value: string }[];
-    key: React.Key;
     name: string;
     question: string;
 };
 
-export const TradingAssessmentContainer = ({ answerList, key, name, question }: TTradingAssessmentContainer) => {
+export const TradingAssessmentContainer = ({ answerList, name, question }: TTradingAssessmentContainer) => {
     return (
-        <div className='flex flex-col gap-16' key={key}>
+        <div className='flex flex-col gap-16'>
             <Text as='p' size='sm' weight='bold'>
                 {question}
             </Text>

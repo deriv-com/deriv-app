@@ -16,17 +16,14 @@ export const TestWarningModal = ({ handleSubmit, isModalOpen }: TTestWarningModa
                 <Text as='h1' className='my-16' size='md' weight='bold'>
                     {testWarningModalConfig.title}
                 </Text>
-                <Text as='p' className='mt-16' size='sm'>
-                    {testWarningModalConfig.requireUsersInfoMessage}
-                </Text>
-                <br />
-                <Text as='p' className='mt-10' size='sm'>
-                    {testWarningModalConfig.insufficientKnowledgeMessage}
-                </Text>
-                <br />
-                <Text as='p' className='mt-10' size='sm'>
-                    {testWarningModalConfig.warnsUserMessage}
-                </Text>
+                {testWarningModalConfig.testWarningModalMessage.map((value, index) => (
+                    <>
+                        <Text as='p' className='mt-10' size='sm'>
+                            {value}
+                        </Text>
+                        {index < testWarningModalConfig.testWarningModalMessage.length - 1 && <br />}
+                    </>
+                ))}
             </Modal.Body>
             <Modal.Footer className='mt-16 flex gap-x-16 justify-end' hideBorder>
                 <Button color='primary' onClick={handleSubmit} rounded='sm' size='lg'>

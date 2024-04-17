@@ -168,6 +168,12 @@ module.exports = function (env) {
                         priority: -20,
                         reuseExistingChunk: true,
                     },
+                    components: {
+                        test: module => {
+                            return module.resource && module.resource.includes('src/components/Base');
+                        },
+                        name: 'components',
+                    },
                     defaultVendors: {
                         idHint: 'vendors',
                         test: /[\\/]node_modules[\\/]/,
@@ -188,6 +194,7 @@ module.exports = function (env) {
                 'react-dom': true,
                 classnames: true,
                 'react-router-dom': true,
+                moment: true,
             },
         ],
     };

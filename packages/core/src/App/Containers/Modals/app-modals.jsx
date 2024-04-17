@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { useStoreWalletAccountsList, useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
@@ -15,6 +16,9 @@ import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
+import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
+import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
+import EffortlessLoginModal from '../EffortlessLoginModal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
@@ -89,8 +93,9 @@ const AppModals = observer(() => {
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
         mt5_login_list,
+        should_show_effortless_login_modal,
     } = client;
-    const { content_flag } = traders_hub;
+    const { content_flag, is_tour_open } = traders_hub;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -122,6 +127,14 @@ const AppModals = observer(() => {
         is_logged_in && mt5_login_list.length > 0
             ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
             : false;
+
+    const { is_migrated } = useWalletMigration();
+
+    const { has_wallet } = useStoreWalletAccountsList();
+
+    const should_show_wallets_upgrade_completed_modal = localStorage.getItem(
+        'should_show_wallets_upgrade_completed_modal'
+    );
 
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
@@ -192,6 +205,19 @@ const AppModals = observer(() => {
     } else if (isUrlUnavailableModalVisible) {
         ComponentToLoad = <UrlUnavailableModal />;
     }
+
+    if (has_wallet && should_show_wallets_upgrade_completed_modal) {
+        ComponentToLoad = <WalletsUpgradeCompletedModal />;
+    }
+
+    if (!has_wallet && is_migrated) {
+        ComponentToLoad = <WalletsUpgradeLogoutModal />;
+    }
+
+    if (should_show_effortless_login_modal && !is_tour_open) {
+        ComponentToLoad = <EffortlessLoginModal />;
+    }
+
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;
     }

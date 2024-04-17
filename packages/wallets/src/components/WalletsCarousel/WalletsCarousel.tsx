@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { AccountsList } from '../AccountsList';
+import { WalletText } from '../Base';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
 import { WalletsCarouselHeader } from '../WalletsCarouselHeader';
 import './WalletsCarousel.scss';
@@ -28,6 +29,7 @@ const WalletsCarousel: React.FC = () => {
     useEventListener('touchmove', handleScroll, containerRef);
     useEventListener('touchend', handleScroll, containerRef);
     useEventListener('scroll', handleScroll, containerRef);
+    useEventListener('wheel', handleScroll, containerRef);
 
     useEffect(() => {
         let isMounted = true;
@@ -52,6 +54,11 @@ const WalletsCarousel: React.FC = () => {
                 />
             )}
             <div className='wallets-carousel' ref={containerRef}>
+                <div className='wallets-carousel__header'>
+                    <WalletText size='xl' weight='bold'>
+                        Trader&apos;s Hub
+                    </WalletText>
+                </div>
                 <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
                 <AccountsList isWalletSettled={isWalletSettled} />
             </div>

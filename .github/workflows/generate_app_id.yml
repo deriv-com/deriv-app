@@ -25,7 +25,7 @@ jobs:
                   preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
             - name: Generate Deriv App ID for deployment Preview URL
               id: generate_app_id
-              uses: binary-com/deriv-app-id-action@v1
+              uses: deriv-com/deriv-app-id-action@v1
               with:
                   DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
                   DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}
@@ -35,7 +35,7 @@ jobs:
             - name: Comment on pull request with App ID and URLs
               id: sticky_comment_on_pr
               if: steps.generate_app_id.outputs.should_post_comment
-              uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd
+              uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   header: deriv-app-id-action

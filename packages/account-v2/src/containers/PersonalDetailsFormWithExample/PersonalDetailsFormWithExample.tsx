@@ -1,18 +1,17 @@
-import React, { lazy, Suspense, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
-import { Checkbox, InlineMessage, Loader, Text } from '@deriv-com/ui';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
+import { Checkbox, InlineMessage, Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
 import { FormInputField } from '../../components/FormFields';
-import { getNameDOBValidationSchema } from '../../utils/personal-details-utils';
+import { getNameDOBValidationSchema } from '../../utils';
 import { validateField } from '../../utils/validation';
-
-const ExampleImage = lazy(() => import('../../assets/proof-of-identity/personal-details-example.svg'));
 
 type TPersonalDetailsFormWithExampleValues = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
 
 type TPersonalDetailsFormWithExampleProps = {
-    onConfirm: () => void;
+    onConfirm?: () => void;
 };
 
 export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFormWithExampleProps) => {
@@ -38,14 +37,14 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
     const validationSchema = getNameDOBValidationSchema();
 
     return (
-        <section className='p-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
+        <section className='p-16 outline outline-1 outline-system-light-active-background rounded-default'>
             <InlineMessage className='items-start mb-16' variant='warning'>
                 <Text as='p' className='text-sm lg:text-default'>
                     To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
                     <span className='font-bold'>date of birth</span> exactly as they appear on your identity document.
                 </Text>
             </InlineMessage>
-            <div className='grid grid-cols-2 gap-16'>
+            <div className='grid sm:grid-rows-2 md:grid-cols-2 gap-16'>
                 <div className='flex flex-col gap-16'>
                     <FormInputField
                         isFullWidth
@@ -84,9 +83,7 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                     <Text as='p' className='mt-2 mb-4' size='xs' weight='bold'>
                         Example:
                     </Text>
-                    <Suspense fallback={<Loader isFullScreen={false} />}>
-                        <ExampleImage />
-                    </Suspense>
+                    <DerivLightNameDobPoiIcon height='200px' />
                 </div>
             </div>
             <div>
@@ -105,7 +102,7 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                             onChange={value => {
                                 form.setFieldValue(field.name, value.target.checked);
                                 if (value.target.checked) {
-                                    onConfirm();
+                                    onConfirm?.();
                                 }
                             }}
                         />

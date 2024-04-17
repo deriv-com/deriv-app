@@ -10,14 +10,9 @@ const useDerivAccountsList = () => {
     const { data: authorize_data } = useAuthorize();
 
     // its pretty much stale data, so never refresh, unless user creates a new account
-    const { data: account_list_data, ...rest } = useAuthorizedQuery(
-        'account_list',
-        undefined,
-        {
-            staleTime: Infinity,
-        },
-        false
-    );
+    const { data: account_list_data, ...rest } = useAuthorizedQuery('account_list', undefined, {
+        staleTime: Infinity,
+    });
 
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();

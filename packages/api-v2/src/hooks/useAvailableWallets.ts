@@ -11,8 +11,7 @@ const useAvailableWallets = () => {
         },
         {
             staleTime: Infinity,
-        },
-        false
+        }
     );
 
     const modifiedData = useMemo(() => {

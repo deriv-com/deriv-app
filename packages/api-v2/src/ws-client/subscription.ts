@@ -1,33 +1,37 @@
-import _ from 'lodash';
-import send from './request';
+import request from './request';
+import { TSocketResponse, TSocketRequestPayload, TSocketSubscribableEndpointNames } from '../../types';
 
 /**
  * Subscribes directly to backend stream
  * WARNING: it does not check for dubplicates, its just
  */
-export default class BackendSubscription {
+export default class Subscription {
     ws: WebSocket;
-    name: string;
-    payload: any;
+    name: TSocketSubscribableEndpointNames;
+    payload: TSocketRequestPayload<TSocketSubscribableEndpointNames>['payload'];
 
     reqId: number | null;
     subscriptionId: string | null;
 
-    lastData: any;
+    lastData: TSocketResponse<TSocketSubscribableEndpointNames> | null;
 
-    boundOnWsMessage: any;
-    boundOnWsClose: any;
+    boundOnWsMessage: (messageEvent: MessageEvent) => void;
+    boundOnWsClose: () => void;
 
-    listeners: Function[];
+    listeners: Array<(data: TSocketResponse<TSocketSubscribableEndpointNames>) => void>;
 
-    constructor(ws: WebSocket, name: string, payload: any) {
+    constructor(
+        ws: WebSocket,
+        name: TSocketSubscribableEndpointNames,
+        payload: TSocketRequestPayload<TSocketSubscribableEndpointNames>['payload']
+    ) {
         this.ws = ws;
         this.name = name;
         this.payload = payload;
 
         this.reqId = null;
         this.subscriptionId = null;
-    
+
         this.lastData = null;
 
         this.boundOnWsMessage = this.onWsMessage.bind(this);
@@ -39,7 +43,7 @@ export default class BackendSubscription {
     async unsubscribe() {
         this.ws.removeEventListener('message', this.boundOnWsMessage);
         this.ws.removeEventListener('close', this.boundOnWsClose);
-        await send(this.ws, 'forget', { forget: this.subscriptionId });
+        await request(this.ws, 'forget', { forget: this.subscriptionId });
     }
 
     async onWsClose() {
@@ -48,31 +52,31 @@ export default class BackendSubscription {
     }
 
     async subscribe() {
-        this.ws.addEventListener('message', this.boundOnWsMessage)
+        this.ws.addEventListener('message', this.boundOnWsMessage);
         this.ws.addEventListener('close', this.boundOnWsClose);
 
-        const data:any = await send(this.ws, this.name, {
+        const data: TSocketResponse<TSocketSubscribableEndpointNames> = await request(this.ws, this.name, {
             subscribe: 1,
-            ...this.payload
+            ...this.payload,
         });
 
         this.subscriptionId = data.subscription.id;
         this.reqId = data.req_id;
         this.lastData = data;
-        
+
         this.listeners.forEach(listener => listener(data));
     }
 
-    addListener(onData: Function) {
+    addListener(onData: (data: TSocketResponse<TSocketSubscribableEndpointNames>) => void) {
         this.listeners.push(onData);
     }
 
-    removeListener(onData: Function) {
+    removeListener(onData: (data: TSocketResponse<TSocketSubscribableEndpointNames>) => void) {
         this.listeners = this.listeners.filter(listener => listener !== onData);
     }
 
-    onWsMessage(messageEvent: any) {
-        const data = JSON.parse(messageEvent.data);
+    onWsMessage(messageEvent: MessageEvent) {
+        const data = JSON.parse(messageEvent.data) as TSocketResponse<TSocketSubscribableEndpointNames>;
 
         if (data.req_id !== this.reqId) {
             return;

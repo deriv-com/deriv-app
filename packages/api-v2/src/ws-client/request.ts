@@ -1,4 +1,4 @@
-import TSocketResponseData from '../types/TSocketResponseData';
+import { TSocketResponseData, TSocketEndpointNames, TSocketRequestPayload } from '../../types';
 
 const REQ_TIMEOUT = 20000;
 
@@ -6,15 +6,19 @@ const REQ_TIMEOUT = 20000;
 let reqSeqNumber = 0;
 
 /**
- * responsible for sending request over given WS and thats it, 
+ * responsible for sending request over given WS and thats it,
  * no handling of reconnections, no state, nothing, just send
  * even request seq number is outside of its scope (reason being, that req_seq needs to be also used by the subscriptions)
  */
-function request(ws: WebSocket, name: string, payload: object): Promise<TSocketResponseData> {
+function request(
+    ws: WebSocket,
+    name: TSocketEndpointNames,
+    payload: TSocketRequestPayload<TSocketEndpointNames>['payload']
+): Promise<TSocketResponseData<TSocketEndpointNames>> {
     const req_id = ++reqSeqNumber;
 
-    let promise = new Promise((resolve, reject) => {
-        let timeout: NodeJS.Timeout = setTimeout(() => {
+    const promise: Promise<TSocketResponseData<TSocketEndpointNames>> = new Promise((resolve, reject) => {
+        const timeout: NodeJS.Timeout = setTimeout(() => {
             ws.removeEventListener('message', receive);
             reject(new Error('Request timeout'));
         }, REQ_TIMEOUT);
@@ -32,14 +36,16 @@ function request(ws: WebSocket, name: string, payload: object): Promise<TSocketR
 
         ws.addEventListener('message', receive);
 
-        ws.send(JSON.stringify({ 
-            [name]: 1, 
-            ...payload,
-            req_id, 
-         }));
-     });
+        ws.send(
+            JSON.stringify({
+                [name]: 1,
+                ...payload,
+                req_id,
+            })
+        );
+    });
 
-     return promise;
+    return promise;
 }
 
 export default request;

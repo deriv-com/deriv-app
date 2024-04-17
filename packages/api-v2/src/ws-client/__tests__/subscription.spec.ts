@@ -1,6 +1,6 @@
 import BackendSubscription from '../subscription';
 import request from '../request';
-import mockWebSocketFactory from "../mock-websocket-factory";
+import mockWebSocketFactory from '../mock-websocket-factory';
 
 // Mock the lightweightSend function
 jest.mock('../request', () =>
@@ -11,11 +11,8 @@ jest.mock('../request', () =>
         )
 );
 
-
-
 describe('Subscription', () => {
-    let mockWs: any;
-    let backendSubscription: BackendSubscription;
+    let mockWs: any, backendSubscription: BackendSubscription;
 
     beforeEach(() => {
         mockWs = mockWebSocketFactory();

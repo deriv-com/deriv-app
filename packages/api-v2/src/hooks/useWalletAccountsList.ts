@@ -6,9 +6,9 @@ import { displayMoney } from '../utils';
 
 /** A custom hook that gets the list of all wallet accounts for the current user. */
 const useWalletAccountsList = () => {
-    const { data: authorize_data, isLoading: isAuthorizeLoading, isSuccess: isAuthorizeSuccess, ...rest } = useAuthorize();
-    const { data: balance_data, isLoading: isBalanceLoading, isSuccess: isBalanceSuccess } = useBalance();
-    const { data: currencies_config, isLoading: isCurrencyConfigLoading, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
+    const { data: authorize_data, ...rest } = useAuthorize();
+    const { data: balance_data } = useBalance();
+    const { getConfig } = useCurrencyConfig();
 
     // Filter out non-wallet accounts.
     const filtered_accounts = useMemo(
@@ -21,7 +21,7 @@ const useWalletAccountsList = () => {
         return filtered_accounts?.map(wallet => {
             const wallet_currency_type = wallet.is_virtual ? 'Demo' : wallet.currency || '';
             const dtrade_loginid = wallet.linked_to?.find(account => account.platform === 'dtrade')?.loginid;
-            const currency_config = currencies_config && currencies_config[wallet.currency || ''];
+            const currency_config = wallet.currency ? getConfig(wallet.currency) : undefined;
 
             return {
                 ...wallet,
@@ -55,7 +55,7 @@ const useWalletAccountsList = () => {
                 is_malta_wallet: wallet.landing_company_name === 'maltainvest',
             } as const;
         });
-    }, [filtered_accounts, currencies_config]);
+    }, [filtered_accounts, getConfig]);
 
     // Add balance to each wallet account
     const modified_accounts_with_balance = useMemo(
@@ -92,16 +92,9 @@ const useWalletAccountsList = () => {
         });
     }, [modified_accounts_with_balance]);
 
-    const isLoading = isAuthorizeLoading || isBalanceLoading || isCurrencyConfigLoading;
-    const isSuccess = isAuthorizeSuccess && isBalanceSuccess && isCurrencyConfigSuccess;
-
-    const resultingData = (!isLoading && isSuccess) ? sorted_accounts : undefined;
-   
     return {
         /** The list of wallet accounts for the current user. */
-        data: resultingData,
-        isLoading,
-        isSuccess,
+        data: sorted_accounts,
         ...rest,
     };
 };

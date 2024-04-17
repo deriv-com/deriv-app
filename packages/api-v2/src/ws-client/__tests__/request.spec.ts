@@ -1,30 +1,4 @@
- // Adjust the import path as needed
-
-function mockWebSocketFactory() {
-    let handlers: any = {};
-    let requests: any = [];
-
-    return jest.fn().mockImplementation(() => ({
-        send: jest.fn((req) => {
-            requests.push(JSON.parse(req));
-        }),
-        close: jest.fn(),
-        addEventListener: jest.fn((event, handler) => {
-            handlers[event] = handler;
-        }),
-        removeEventListener: jest.fn(),
-
-        respondFromServer: (data: string) => {
-                handlers.message({ data: JSON.stringify({
-                    req_id: requests[requests.length - 1]?.req_id,
-                    ...JSON.parse(data),
-                }), 
-            });        
-        },
-
-        requests,
-    }))();
-}
+import mockWebSocketFactory from "../mock-websocket-factory";
 
 describe('send function', () => {
     let mockWebSocket : any;
@@ -45,7 +19,7 @@ describe('send function', () => {
         const name = 'test_action';
 
         const promise = request(mockWebSocket as unknown as WebSocket, name, {});
-        mockWebSocket.respondFromServer(JSON.stringify({}));
+        mockWebSocket.respondFromServer(JSON.stringify({ req_id: 1 }));
 
         await promise;
 
@@ -57,7 +31,7 @@ describe('send function', () => {
         const payload = { key: 'value' };
 
         const promise = request(mockWebSocket as unknown as WebSocket, name, payload);
-        mockWebSocket.respondFromServer(JSON.stringify({}));
+        mockWebSocket.respondFromServer(JSON.stringify({ req_id: 1 }));
 
         await promise;
 
@@ -113,7 +87,7 @@ describe('send function', () => {
         const name = 'test_action';
 
         const promise = request(mockWebSocket as unknown as WebSocket, name, {});
-        mockWebSocket.respondFromServer(JSON.stringify({}));
+        mockWebSocket.respondFromServer(JSON.stringify({ req_id: 1 }));
 
         await promise;
 

@@ -1,25 +1,6 @@
 import BackendSubscription from '../subscription';
 import request from '../request';
-
-function mockWebSocketFactory() {
-    let handlers: any = {};
-
-    return jest.fn().mockImplementation(() => ({
-        send: jest.fn(),
-        close: jest.fn(() => {
-            handlers?.close();
-        }),
-        addEventListener: jest.fn((event: string, handler: Function) => {
-            handlers[event] = handler;
-        }),
-        removeEventListener: jest.fn((event: string, handler: Function) => {
-            handlers[event] = undefined;
-        }),
-        respondFromServer: (response: string) => {
-            handlers?.message?.({ data: response });
-        },
-    }))();
-}
+import mockWebSocketFactory from "../mock-websocket-factory";
 
 // Mock the lightweightSend function
 jest.mock('../request', () =>

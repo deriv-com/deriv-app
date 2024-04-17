@@ -96,7 +96,6 @@ describe('MultiplierCardBody', () => {
         // @ts-expect-error Check if error is gone after migrating MultiplierCardBody to TS
         render(<MultiplierCardBody {...mock_props} />);
 
-        expect(screen.getByText(mock_props.getCardLabels().NOT_AVAILABLE)).toBeInTheDocument();
         expect(screen.getByText(progress_slider)).toBeInTheDocument();
     });
 

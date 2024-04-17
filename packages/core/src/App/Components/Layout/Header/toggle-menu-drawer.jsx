@@ -224,8 +224,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                             (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                            (route.path !== routes.cashier_onramp || is_onramp_visible) &&
-                            route.path !== routes.cashier_acc_transfer
+                            (route.path !== routes.cashier_onramp || is_onramp_visible)
                         ) {
                             return (
                                 <MobileDrawer.Item key={index}>

@@ -15,14 +15,14 @@ export const InputWithButton = forwardRef<HTMLInputElement, InputWithButtonProps
             <div className='flex w-[400px] sm:max-w-[400px] sm:w-full mt-[27px] mx-auto mb-0'>
                 <FormInputField
                     {...rest}
-                    className='rounded-ee-none rounded-se-none border-r-0 h-[40px]'
+                    className='rounded-ee-none rounded-se-none border-r-0 h-40'
                     label={label}
                     name={name}
                     validationSchema={validationSchema}
                     wrapperClassName='w-full'
                 />
                 <Button
-                    className='rounded-es-none rounded-ss-none h-[40px] m-w-[64px]'
+                    className='rounded-es-none rounded-ss-none h-40 min-w-64'
                     disabled={isDisabled}
                     isLoading={isLoading}
                     onClick={onClick}

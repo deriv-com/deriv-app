@@ -16,7 +16,7 @@ const TimelineItem = ({ children }: PropsWithChildren<TTimelineItemProps>) => {
 const Marker = ({ label }: { label: number }) => {
     return (
         <div className='border absolute w-24 h-24 pl-px border-solid-red-0 rounded-full bg-solid-red-0 leading-[23.5px] mr-8 text-center -left-12'>
-            <Text className='relative text-white align-middle text-[16px] leading-normal' size='md' weight='bold'>
+            <Text className='relative text-white align-middle text-lg leading-normal' size='md' weight='bold'>
                 {label}
             </Text>
         </div>
@@ -28,11 +28,11 @@ const Marker = ({ label }: { label: number }) => {
 export const Timeline = ({ children, className, lineHeight }: TTimelineProps) => {
     if (!Array.isArray(children)) return null;
     return (
-        <ol className={twMerge('ml-[12px]', className)}>
+        <ol className={twMerge('ml-12', className)}>
             {children.map((child, idx) => {
                 return (
                     <li
-                        className='relative mb-0 ms-0 block w-full border-solid-red-0 border-l-1 border-solid last-of-type:border-l-0 pb-[16px]'
+                        className='relative mb-0 ms-0 block w-full border-solid-red-0 border-l-1 border-solid last-of-type:border-l-0 pb-16'
                         key={idx}
                     >
                         <Marker label={idx + 1} />
@@ -40,9 +40,7 @@ export const Timeline = ({ children, className, lineHeight }: TTimelineProps) =>
                             <Text as='h2' className='max-w-[500px]' color='prominent' lineHeight={lineHeight} size='xs'>
                                 {child.props.itemTitle}
                             </Text>
-                            <div className='my-16 mx-[0] text-system-light-prominent-text last-of-type:mb-0'>
-                                {child}
-                            </div>
+                            <div className='my-16 mx-0 text-system-light-prominent-text last-of-type:mb-0'>{child}</div>
                         </div>
                     </li>
                 );

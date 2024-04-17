@@ -44,7 +44,11 @@ const Clipboard: React.FC<TProps> = ({
         >
             <button className='flex items-center cursor-pointer px-0 mx-0 border-0 w-fit' onClick={onClick}>
                 {isCopied ? (
-                    <LabelPairedCircleCheckCaptionFillIcon fill='#4bb4b3' height={24} width={24} />
+                    <LabelPairedCircleCheckCaptionFillIcon
+                        className='fill-status-light-success'
+                        height={24}
+                        width={24}
+                    />
                 ) : (
                     <StandaloneCopyRegularIcon height={24} iconSize='sm' width={24} />
                 )}

@@ -68,7 +68,7 @@ export default class BackendSubscription {
     }
 
     removeListener(onData: Function) {
-        _.remove(this.listeners, onData);
+        this.listeners = this.listeners.filter(listener => listener !== onData);
     }
 
     onWsMessage(messageEvent: any) {

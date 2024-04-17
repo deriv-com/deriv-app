@@ -32,7 +32,7 @@ jest.mock('../request', () =>
 
 
 
-describe('BackendSubscription', () => {
+describe('Subscription', () => {
     let mockWs: any;
     let backendSubscription: BackendSubscription;
 

@@ -15,14 +15,14 @@ export default class SubscriptionsManager {
         let backendSubscription : BackendSubscription | undefined; 
 
         if (!this.backendSubscriptions.has(key)) {
-            this.backendSubscriptions.set(key, new BackendSubscription(this.ws, name, payload));
-        }
+            backendSubscription = new BackendSubscription(this.ws, name, payload);
+            this.backendSubscriptions.set(key, backendSubscription);
+
+            // @ts-ignore
+            await backendSubscription.subscribe();
+        } 
 
         backendSubscription = this.backendSubscriptions.get(key);            
-
-        // @ts-ignore
-        await backendSubscription.subscribe();
-
         backendSubscription?.addListener(onData);
         
         if (backendSubscription?.lastData) {

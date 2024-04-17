@@ -24,7 +24,7 @@ export const isRatesLoaded = (
         }
     });
 
-    const exchange_rates_keys = Object.keys(exchange_rates?.[total_assets_real_currency ?? '']);
+    const exchange_rates_keys = Object.keys(exchange_rates?.[total_assets_real_currency ?? ''] ?? {});
     const is_all_currencies_inside = currencies_need_exchange_rates.every(currency =>
         exchange_rates_keys.includes(currency)
     );

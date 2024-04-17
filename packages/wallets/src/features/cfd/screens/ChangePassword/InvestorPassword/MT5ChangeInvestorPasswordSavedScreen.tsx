@@ -18,7 +18,7 @@ const MT5ChangeInvestorPasswordSavedScreen: React.FC<TProps> = ({ setNextScreen 
             icon={<DerivLightIcMt5PasswordUpdatedIcon height={120} width={120} />}
             renderButtons={() => (
                 <WalletButton onClick={setNextScreen} size='lg'>
-                    Okay
+                    OK
                 </WalletButton>
             )}
             title='Password saved'

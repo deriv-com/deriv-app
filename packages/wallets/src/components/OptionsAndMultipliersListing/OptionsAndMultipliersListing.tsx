@@ -98,8 +98,7 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                 })}
             >
                 {optionsAndMultipliersContent.map(account => {
-                    const title = account.title;
-                    const description = account.description;
+                    const { description, title } = account;
 
                     return (
                         <TradingAccountCard

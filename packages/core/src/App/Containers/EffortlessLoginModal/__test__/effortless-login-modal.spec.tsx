@@ -111,12 +111,13 @@ describe('EffortlessLoginModal', () => {
         expect(learn_more_link).toBeInTheDocument();
         userEvent.click(learn_more_link);
         learnMoreScreenCheck();
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('info_open'));
         expect(learn_more_link).not.toBeInTheDocument();
         const back_button = screen.getByTestId('effortless_login_modal__back-button');
         expect(back_button).toBeInTheDocument();
         userEvent.click(back_button);
         mainScreenCheck();
-        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('info_open'));
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('info_back'));
     });
 
     it('should leave EffortlessLoginModal', () => {

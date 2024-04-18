@@ -1,8 +1,9 @@
 import React, { MouseEventHandler } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { RadioGroup } from '@/components';
+import { RadioGroup, FloatingRate } from '@/components';
 import { BUY_SELL, RATE_TYPE } from '@/constants';
 import { useQueryString } from '@/hooks';
+import { getValidationRules, restrictDecimalPlace } from '@/utils';
 import { Text, useDevice } from '@deriv-com/ui';
 import { AdFormController } from '../AdFormController';
 import { AdFormInput } from '../AdFormInput';
@@ -35,6 +36,7 @@ const AdTypeSection = ({ currency, localCurrency, onCancel, rateType, ...props }
     } = useFormContext();
 
     const isSell = watch('ad-type') === BUY_SELL.SELL;
+    const textSize = isMobile ? 'md' : 'sm';
 
     const onChangeAdTypeHandler = (userInput: 'buy' | 'sell') => {
         setValue('ad-type', userInput);
@@ -77,7 +79,7 @@ const AdTypeSection = ({ currency, localCurrency, onCancel, rateType, ...props }
                                     }}
                                     required
                                     selected={value}
-                                    textSize={isMobile ? 'md' : 'sm'}
+                                    textSize={textSize}
                                 >
                                     <RadioGroup.Item label='Buy USD' value={BUY_SELL.BUY} />
                                     <RadioGroup.Item label='Sell USD' value={BUY_SELL.SELL} />
@@ -93,27 +95,63 @@ const AdTypeSection = ({ currency, localCurrency, onCancel, rateType, ...props }
                     isDisabled={isEdit}
                     label='Total amount'
                     name='amount'
-                    rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                    rightPlaceholder={
+                        <Text color='general' size={textSize}>
+                            {currency}
+                        </Text>
+                    }
                     triggerValidationFunction={() => triggerValidation(['min-order', 'max-order'])}
                 />
-                {/* TODO: Add FLOATING type component */}
-                <AdFormInput
-                    label='Fixed rate'
-                    name='rate-value'
-                    rightPlaceholder={<Text color='less-prominent'>{localCurrency}</Text>}
-                />
+
+                {rateType === RATE_TYPE.FLOAT ? (
+                    <Controller
+                        control={control}
+                        name='rate-value'
+                        render={({ field: { onChange, value }, fieldState: { error } }) => {
+                            return (
+                                <FloatingRate
+                                    changeHandler={e => restrictDecimalPlace(e, onChange)}
+                                    errorMessages={error?.message ?? ''}
+                                    fiatCurrency={currency}
+                                    localCurrency={localCurrency ?? ''}
+                                    onChange={onChange}
+                                    value={value}
+                                />
+                            );
+                        }}
+                        rules={{ validate: getValidationRules('rate-value', getValues) }}
+                    />
+                ) : (
+                    <AdFormInput
+                        label='Fixed rate'
+                        name='rate-value'
+                        rightPlaceholder={
+                            <Text color='general' size={textSize}>
+                                {localCurrency}
+                            </Text>
+                        }
+                    />
+                )}
             </div>
             <div className='flex flex-col lg:flex-row lg:gap-[1.6rem]'>
                 <AdFormInput
                     label='Min order'
                     name='min-order'
-                    rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                    rightPlaceholder={
+                        <Text color='general' size={textSize}>
+                            {currency}
+                        </Text>
+                    }
                     triggerValidationFunction={() => triggerValidation(['amount', 'max-order'])}
                 />
                 <AdFormInput
                     label='Max order'
                     name='max-order'
-                    rightPlaceholder={<Text color='less-prominent'>{currency}</Text>}
+                    rightPlaceholder={
+                        <Text color='general' size={textSize}>
+                            {currency}
+                        </Text>
+                    }
                     triggerValidationFunction={() => triggerValidation(['amount', 'min-order'])}
                 />
             </div>

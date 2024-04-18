@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { PaymentMethodLabel, PopoverDropdown } from '@/components';
-import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
+import { AD_ACTION, ADVERT_TYPE, RATE_TYPE } from '@/constants';
 import { useFloatingRate } from '@/hooks';
 import { formatMoney, generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
 import { useExchangeRateSubscription } from '@deriv/api-v2';
@@ -21,16 +21,16 @@ const getList = (isActive = false) => [
 ];
 
 type TProps = {
-    setIsModalOpen: (value: boolean) => void;
+    currentRateType: ReturnType<typeof useFloatingRate>['rateType'];
+    showModal: (value: string) => void;
 };
 
 type TMyAdsTableProps = Omit<TMyAdsTableRowRendererProps, 'balanceAvailable' | 'dailyBuyLimit' | 'dailySellLimit'> &
     TProps;
 
-const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
+const MyAdsTableRow = ({ currentRateType, showModal, ...rest }: TMyAdsTableProps) => {
     const { isMobile } = useDevice();
     const { data: exchangeRateValue, subscribe } = useExchangeRateSubscription();
-    const { rateType: currentRateType } = useFloatingRate();
 
     const {
         account_currency: accountCurrency,
@@ -92,8 +92,14 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
 
     const advertType = type === 'buy' ? ADVERT_TYPE.BUY : ADVERT_TYPE.SELL;
 
-    const onClickActionItem = (value: string) => {
-        onClickIcon(id, value);
+    const handleClick = (action: string) => {
+        if (action === AD_ACTION.EDIT || action === AD_ACTION.COPY) {
+            if (enableActionPoint && rateType !== currentRateType) {
+                showModal('AdRateSwitchModal');
+                return;
+            }
+        }
+        onClickIcon(action);
     };
 
     if (isMobile) {
@@ -112,10 +118,10 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                     </Text>
                     <div className='p2p-v2-my-ads-table-row__line__type-and-status__wrapper'>
                         <AdStatus isActive={isAdActive} />
-                        {showAlertIcon && <AlertComponent setIsModalOpen={setIsModalOpen} />}
+                        {showAlertIcon && <AlertComponent onClick={() => showModal('AdErrorTooltipModal')} />}
                         <PopoverDropdown
                             dropdownList={getList(isAdActive)}
-                            onClick={value => onClickActionItem(value)}
+                            onClick={handleClick}
                             tooltipMessage='Manage ad'
                         />
                     </div>
@@ -203,12 +209,8 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
             </div>
             <div className='p2p-v2-my-ads-table-row__actions'>
                 <AdStatus isActive={isAdActive} />
-                <PopoverDropdown
-                    dropdownList={getList(isAdActive)}
-                    onClick={value => onClickActionItem(value)}
-                    tooltipMessage='Manage ad'
-                />
-                {showAlertIcon && <AlertComponent setIsModalOpen={setIsModalOpen} />}
+                <PopoverDropdown dropdownList={getList(isAdActive)} onClick={handleClick} tooltipMessage='Manage ad' />
+                {showAlertIcon && <AlertComponent onClick={() => showModal('AdErrorTooltipModal')} />}
             </div>
         </div>
     );

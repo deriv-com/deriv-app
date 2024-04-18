@@ -3,6 +3,7 @@ export * from './AdConditionsModal';
 export * from './AdCreateEditErrorModal';
 export * from './AdCreateEditSuccessModal';
 export * from './AdErrorTooltipModal';
+export * from './AdRateSwitchModal';
 export * from './AvailableP2PBalanceModal';
 export * from './BlockUnblockUserModal';
 export * from './DailyLimitModal';

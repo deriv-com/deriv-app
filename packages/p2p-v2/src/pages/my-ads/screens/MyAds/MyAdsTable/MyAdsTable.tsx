@@ -1,10 +1,6 @@
-import React, { memo, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { memo } from 'react';
 import { THooks } from 'types';
 import { Table } from '@/components';
-import { MyAdsDeleteModal } from '@/components/Modals';
-import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
-import { AD_ACTION, MY_ADS_URL } from '@/constants';
 import { p2p } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { MyAdsEmpty } from '../../MyAdsEmpty';
@@ -18,7 +14,7 @@ export type TMyAdsTableRowRendererProps = Required<THooks.AdvertiserAdverts.Get>
     dailySellLimit: string;
     isBarred: boolean;
     isListed: boolean;
-    onClickIcon: (id: string, action: string) => void;
+    onClickIcon: (action: string) => void;
 };
 
 const MyAdsTableRowRenderer = memo((values: TMyAdsTableRowRendererProps) => <MyAdsTableRowView {...values} />);
@@ -50,67 +46,13 @@ const columns = [
 const MyAdsTable = () => {
     const { data = [], isFetching, isLoading, loadMoreAdverts } = p2p.advertiserAdverts.useGet();
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
-    const { mutate } = p2p.advert.useUpdate();
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
-    const { error, isSuccess, mutate: deleteAd } = p2p.advert.useDelete();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [advertId, setAdvertId] = useState('');
-    const [isShareAdsModalOpen, setIsShareAdsModalOpen] = useState(false);
-    const history = useHistory();
-
-    useEffect(() => {
-        if (isSuccess) {
-            setAdvertId('');
-        }
-        if (error?.error?.message) {
-            setIsModalOpen(true);
-        }
-    }, [error?.error?.message, isSuccess]);
 
     if (isLoading) return <Loader />;
 
     if (!data.length) return <MyAdsEmpty />;
 
-    const onClickIcon = (id: string, action: string) => {
-        //TODO: to implement the onclick actions for share and edit.
-        switch (action) {
-            case AD_ACTION.ACTIVATE:
-                mutate({ id, is_active: 1 });
-                break;
-            case AD_ACTION.DEACTIVATE:
-                mutate({ id, is_active: 0 });
-                break;
-            case AD_ACTION.DELETE: {
-                setAdvertId(id);
-                setIsModalOpen(true);
-                break;
-            }
-            case AD_ACTION.SHARE: {
-                setAdvertId(id);
-                setIsShareAdsModalOpen(true);
-                break;
-            }
-            case AD_ACTION.EDIT: {
-                history.push(`${MY_ADS_URL}/adForm?formAction=edit&advertId=${id}`);
-                break;
-            }
-            default:
-                break;
-        }
-    };
-
     const onClickToggle = () => updateAds({ is_listed: advertiserInfo?.is_listed ? 0 : 1 });
-
-    const onRequestClose = () => {
-        if (isModalOpen) {
-            setIsModalOpen(false);
-        }
-    };
-
-    const onClickDelete = () => {
-        deleteAd({ id: advertId });
-        onRequestClose();
-    };
 
     return (
         <MyAdsDisplayWrapper
@@ -132,31 +74,11 @@ const MyAdsTable = () => {
                             dailySellLimit={advertiserInfo?.daily_sell_limit ?? ''}
                             isBarred={!!advertiserInfo?.blocked_until}
                             isListed={!!advertiserInfo?.is_listed}
-                            onClickIcon={onClickIcon}
                         />
                     )}
                     tableClassname=''
                 />
             </div>
-            {(isModalOpen || error?.error?.message) && (
-                <MyAdsDeleteModal
-                    error={error?.error?.message}
-                    id={advertId}
-                    isModalOpen={isModalOpen || !!error?.error?.message}
-                    onClickDelete={onClickDelete}
-                    onRequestClose={onRequestClose}
-                />
-            )}
-            {isShareAdsModalOpen && (
-                <ShareAdsModal
-                    id={advertId}
-                    isModalOpen={isShareAdsModalOpen}
-                    onRequestClose={() => {
-                        setIsShareAdsModalOpen(false);
-                        setAdvertId('');
-                    }}
-                />
-            )}
         </MyAdsDisplayWrapper>
     );
 };

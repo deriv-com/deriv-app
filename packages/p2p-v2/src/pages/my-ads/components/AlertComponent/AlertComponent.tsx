@@ -4,13 +4,13 @@ import AlertIcon from '../../../../public/ic-alert-warning.svg';
 import './AlertComponent.scss';
 
 type TProps = {
-    setIsModalOpen: (value: boolean) => void;
+    onClick: () => void;
 };
 
-const AlertComponent = ({ setIsModalOpen }: TProps) => (
+const AlertComponent = ({ onClick }: TProps) => (
     <div className='p2p-v2-alert-component'>
         <Tooltip message='Ad not listed' position='bottom'>
-            <Button className='p-0 hover:bg-none' color='white' onClick={() => setIsModalOpen(true)} variant='outlined'>
+            <Button className='p-0 hover:bg-none' color='white' onClick={onClick} variant='outlined'>
                 <AlertIcon data-testid='dt_p2p_v2_alert_icon' />
             </Button>
         </Tooltip>

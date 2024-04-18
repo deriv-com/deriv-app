@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AdTypeSection from '../AdTypeSection';
+import { useFloatingRate } from '@/hooks';
 
 jest.mock('../../AdFormTextArea', () => ({
     AdFormTextArea: () => <div>AdFormTextArea</div>,
@@ -50,6 +51,11 @@ const mockProps = {
     onCancel: jest.fn(),
     rateType: 'float',
 };
+
+jest.mock('@/components', () => ({
+    ...jest.requireActual('@/components'),
+    FloatingRate: () => <div>FloatingRate</div>,
+}));
 
 describe('AdTypeSection', () => {
     it('should render the ad type section component', () => {

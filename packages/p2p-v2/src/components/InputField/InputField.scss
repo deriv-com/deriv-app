@@ -1,0 +1,47 @@
+/** @define dc-input-field; weak */
+.p2p-v2-input-field {
+    width: 100%;
+    position: relative;
+    &__prefix {
+        position: absolute;
+        right: 33%;
+        top: 1rem;
+
+        @include mobile {
+            right: 45%;
+        }
+    }
+    .deriv-input {
+        position: relative;
+        border-radius: 4px 0px 0px 4px;
+        @include mobile {
+            border-radius: 4px 4px 0px 0px;
+        }
+
+        &__field {
+            padding-right: 3rem;
+            @include desktop {
+                padding-right: 40%;
+            }
+        }
+
+        &__left-content {
+            position: absolute;
+            left: 0;
+            & .deriv-text {
+                display: flex;
+            }
+        }
+
+        &__right-content {
+            position: absolute;
+            right: 0;
+            & .deriv-text {
+                display: flex;
+            }
+        }
+        &__helper-message {
+            display: none;
+        }
+    }
+}

@@ -15,8 +15,6 @@ const mockProps = {
     visibilityStatus: [],
 };
 
-let element: HTMLElement;
-
 jest.mock('@deriv/api-v2', () => ({
     useAuthorize: () => ({
         data: {
@@ -25,16 +23,17 @@ jest.mock('@deriv/api-v2', () => ({
     }),
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: () => ({ isMobile: false }),
+}));
+
+jest.mock('@/pages/my-ads/components', () => ({
+    ...jest.requireActual('@/pages/my-ads/components'),
+    AdRateError: () => <div>AdRateError</div>,
+}));
+
 describe('AdErrorTooltipModal', () => {
-    beforeAll(() => {
-        element = document.createElement('div');
-        element.setAttribute('id', 'v2_modal_root');
-        document.body.appendChild(element);
-        Modal.setAppElement('#v2_modal_root');
-    });
-    afterAll(() => {
-        document.body.removeChild(element);
-    });
     it('should render the component as expected', () => {
         render(<AdErrorTooltipModal {...mockProps} />);
         expect(
@@ -129,11 +128,7 @@ describe('AdErrorTooltipModal', () => {
             visibilityStatus: ['advert_inactive'],
         };
         render(<AdErrorTooltipModal {...newProps} />);
-        expect(
-            screen.getByText(
-                'Floating rates are enabled for USD. Ads with fixed rates will be deactivated. Switch to floating rates by 2024/12/31.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText('AdRateError')).toBeInTheDocument();
     });
     it('should display the corresponding reasons when there are multiple reasons', () => {
         const newProps = {

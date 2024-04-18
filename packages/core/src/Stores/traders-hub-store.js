@@ -382,7 +382,7 @@ export default class TradersHubStore extends BaseStore {
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
                 ? localize('This account offers CFDs on financial instruments.')
-                : localize('This MFSA-regulated account offers CFDs on derived and financial instruments.');
+                : localize('CFDs on derived and financial instruments.');
         };
         const getSwapFreeAccountDesc = () => {
             return localize(

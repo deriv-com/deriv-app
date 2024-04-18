@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Text } from '@deriv/components';
-import { getCurrencyName, routes } from '@deriv/shared';
+import { getCurrencyName, routes, isCryptocurrency, startPerformanceEventTimer } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
@@ -50,6 +50,9 @@ const RealAccountCard = observer(() => {
                 currency && (
                     <Button
                         onClick={(e: MouseEvent) => {
+                            if (isCryptocurrency(currency))
+                                startPerformanceEventTimer('load_crypto_deposit_cashier_time');
+                            else startPerformanceEventTimer('load_fiat_deposit_cashier_time');
                             e.stopPropagation();
                             history.push(`${routes.cashier_deposit}#deposit`);
                         }}

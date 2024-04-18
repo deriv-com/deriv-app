@@ -52,6 +52,11 @@ const EffortlessLoginModal = observer(() => {
         passkeysEffortlessModalActionEventTrack('info_open');
     };
 
+    const onBackClick = () => {
+        setIsLearnMoreOpened(false);
+        passkeysEffortlessModalActionEventTrack('info_back');
+    };
+
     if (!portal_element) return null;
     return ReactDOM.createPortal(
         <div className={'effortless-login-modal'}>
@@ -59,7 +64,7 @@ const EffortlessLoginModal = observer(() => {
                 <Icon
                     data_testid='effortless_login_modal__back-button'
                     icon='IcBackButton'
-                    onClick={() => setIsLearnMoreOpened(false)}
+                    onClick={onBackClick}
                     className='effortless-login-modal__back-button'
                 />
             ) : (

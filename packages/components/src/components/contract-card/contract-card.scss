@@ -564,7 +564,7 @@
     &__deal-cancel-fee {
         grid-area: deal-cancel-fee;
         &__disabled {
-            color: $color-grey-6;
+            color: var(--text-disabled-1);
             .dc-contract-card-item__body {
                 color: inherit;
             }

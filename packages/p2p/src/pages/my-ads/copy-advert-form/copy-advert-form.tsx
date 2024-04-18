@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Field, FieldProps, Form } from 'formik';
-import { Button, InlineMessage, Input, Text } from '@deriv/components';
+import { Button, InlineMessage, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import FloatingRate from 'Components/floating-rate';
@@ -10,6 +10,7 @@ import { ad_type } from 'Constants/floating-rate';
 import OrderTimeSelection from 'Pages/my-ads/order-time-selection';
 import { useStores } from 'Stores';
 import { TAdvertProps } from 'Types';
+import { getInlineTextSize } from 'Utils/responsive';
 import CopyAdvertFormTrailingIcon from './copy-advert-from-trailing-icon';
 
 type TCopyAdvertFormProps = {
@@ -20,6 +21,7 @@ type TCopyAdvertFormProps = {
 const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
     const {
         client: { currency, local_currency_config },
+        ui: { is_desktop },
     } = useStore();
     const local_currency = local_currency_config.currency;
     const { general_store, my_ads_store, my_profile_store } = useStores();
@@ -87,12 +89,6 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
 
     return (
         <div className='copy-advert-form'>
-            <InlineMessage
-                message={
-                    <Localize i18n_default_text='Review your settings and create a new ad. Every ad must have unique limits and rates.' />
-                }
-                type='information'
-            />
             <Formik
                 initialValues={
                     my_ads_store.ad_form_values ?? {
@@ -116,140 +112,155 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                 {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
                     return (
                         <Form noValidate>
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize i18n_default_text='Ad type' />
-                            </Text>
-                            <Text as='div' color='prominent' className='copy-advert-form__field' size='xs'>
-                                {type === buy_sell.BUY ? localize('Buy') : localize('Sell')}
-                            </Text>
-                            <Field name='offer_amount'>
-                                {({ field }: FieldProps) => (
-                                    <Input
-                                        {...field}
-                                        data-testid='offer_amount'
-                                        data-lpignore='true'
-                                        type='text'
-                                        error={errors.offer_amount}
-                                        label={localize('Total amount')}
-                                        trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
-                                        is_relative_hint
-                                    />
-                                )}
-                            </Field>
-                            <Field name='rate_type'>
-                                {({ field }: FieldProps) =>
-                                    rate_type === ad_type.FLOAT ? (
-                                        <FloatingRate
-                                            className='copy-advert-form__floating-rate'
-                                            data_testid='float_rate_type'
-                                            error_messages={errors.rate_type}
-                                            fiat_currency={currency}
-                                            local_currency={local_currency}
-                                            onChange={handleChange}
-                                            offset={{
-                                                upper_limit: float_rate_offset_limit_string,
-                                                lower_limit: float_rate_offset_limit_string * -1,
-                                            }}
-                                            required
-                                            change_handler={e => {
-                                                my_ads_store.restrictDecimalPlace(e, handleChange);
-                                            }}
-                                            {...field}
-                                        />
-                                    ) : (
+                            <ThemedScrollbars
+                                className='copy-advert-form__scrollbar'
+                                height={is_desktop ? 'calc(100vh - 15rem)' : '100%'}
+                            >
+                                <InlineMessage
+                                    message={
+                                        <Localize i18n_default_text='Review your settings and create a new ad. Every ad must have unique limits and rates.' />
+                                    }
+                                    size={getInlineTextSize('sm', 'xs')}
+                                    type='information'
+                                />
+                                <Text color='less-prominent' size='xxs'>
+                                    <Localize i18n_default_text='Ad type' />
+                                </Text>
+                                <Text as='div' color='prominent' className='copy-advert-form__field' size='xs'>
+                                    {type === buy_sell.BUY ? localize('Buy') : localize('Sell')}
+                                </Text>
+                                <Field name='offer_amount'>
+                                    {({ field }: FieldProps) => (
                                         <Input
                                             {...field}
-                                            data-testid='fixed_rate_type'
+                                            data-testid='offer_amount'
                                             data-lpignore='true'
                                             type='text'
-                                            error={touched.rate_type && errors.rate_type}
-                                            label={localize('Fixed Rate')}
-                                            trailing_icon={<CopyAdvertFormTrailingIcon label={local_currency} />}
-                                            required
+                                            error={errors.offer_amount}
+                                            label={localize('Total amount')}
+                                            trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
+                                            is_relative_hint
                                         />
-                                    )
-                                }
-                            </Field>
-                            <Field name='min_transaction'>
-                                {({ field }: FieldProps) => (
-                                    <Input
-                                        {...field}
-                                        data-lpignore='true'
-                                        data-testid='min_transaction'
-                                        label={localize('Min order')}
-                                        type='text'
-                                        error={touched.min_transaction && errors.min_transaction}
-                                        trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
-                                        required
-                                    />
-                                )}
-                            </Field>
-                            <Field name='max_transaction'>
-                                {({ field }: FieldProps) => (
-                                    <Input
-                                        {...field}
-                                        data-testid='max_transaction'
-                                        data-lpignore='true'
-                                        label={localize('Max order')}
-                                        type='text'
-                                        error={touched.max_transaction && errors.max_transaction}
-                                        trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
-                                        required
-                                    />
-                                )}
-                            </Field>
-                            {type === buy_sell.SELL && (
-                                <>
-                                    <Text color='less-prominent' size='xxs'>
-                                        <Localize i18n_default_text='Contact details' />
-                                    </Text>
-                                    <Field name='contact_info'>
-                                        {({ field }: FieldProps) => (
+                                    )}
+                                </Field>
+                                <Field name='rate_type'>
+                                    {({ field }: FieldProps) =>
+                                        rate_type === ad_type.FLOAT ? (
+                                            <FloatingRate
+                                                className='copy-advert-form__floating-rate'
+                                                data_testid='float_rate_type'
+                                                error_messages={errors.rate_type}
+                                                fiat_currency={currency}
+                                                local_currency={local_currency}
+                                                onChange={handleChange}
+                                                offset={{
+                                                    upper_limit: float_rate_offset_limit_string,
+                                                    lower_limit: float_rate_offset_limit_string * -1,
+                                                }}
+                                                required
+                                                change_handler={e => {
+                                                    my_ads_store.restrictDecimalPlace(e, handleChange);
+                                                }}
+                                                {...field}
+                                            />
+                                        ) : (
                                             <Input
                                                 {...field}
-                                                className='copy-advert-form__field'
+                                                data-testid='fixed_rate_type'
+                                                data-lpignore='true'
                                                 type='text'
-                                                readOnly
+                                                error={touched.rate_type && errors.rate_type}
+                                                label={localize('Fixed Rate')}
+                                                trailing_icon={<CopyAdvertFormTrailingIcon label={local_currency} />}
+                                                required
                                             />
-                                        )}
-                                    </Field>
-                                </>
-                            )}
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize i18n_default_text='Instructions' />
-                            </Text>
-                            <Field name='default_advert_description'>
-                                {({ field }: FieldProps) => (
-                                    <Text
-                                        {...field}
-                                        as='div'
-                                        color='prominent'
-                                        className='copy-advert-form__field'
-                                        size='xs'
-                                    >
-                                        {field.value}
-                                    </Text>
+                                        )
+                                    }
+                                </Field>
+                                <Field name='min_transaction'>
+                                    {({ field }: FieldProps) => (
+                                        <Input
+                                            {...field}
+                                            data-lpignore='true'
+                                            data-testid='min_transaction'
+                                            label={localize('Min order')}
+                                            type='text'
+                                            error={touched.min_transaction && errors.min_transaction}
+                                            trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
+                                            required
+                                        />
+                                    )}
+                                </Field>
+                                <Field name='max_transaction'>
+                                    {({ field }: FieldProps) => (
+                                        <Input
+                                            {...field}
+                                            data-testid='max_transaction'
+                                            data-lpignore='true'
+                                            label={localize('Max order')}
+                                            type='text'
+                                            error={touched.max_transaction && errors.max_transaction}
+                                            trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
+                                            required
+                                        />
+                                    )}
+                                </Field>
+                                {type === buy_sell.SELL && (
+                                    <>
+                                        <Text color='less-prominent' size='xxs'>
+                                            <Localize i18n_default_text='Contact details' />
+                                        </Text>
+                                        <Field name='contact_info'>
+                                            {({ field }: FieldProps) => (
+                                                <Text
+                                                    {...field}
+                                                    as='div'
+                                                    color='prominent'
+                                                    className='copy-advert-form__field'
+                                                    size='xs'
+                                                >
+                                                    {field.value}
+                                                </Text>
+                                            )}
+                                        </Field>
+                                    </>
                                 )}
-                            </Field>
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize i18n_default_text='Order must be completed in' />
-                            </Text>
-                            <Field name='order_completion_time'>
-                                {({ field }: FieldProps) => (
-                                    <OrderTimeSelection
-                                        {...field}
-                                        classNameDisplay='copy-advert-form__dropdown-display'
-                                        classNameIcon='copy-advert-form__dropdown-icon'
-                                        is_label_hidden
-                                    />
-                                )}
-                            </Field>
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize i18n_default_text='Payment methods' />
-                            </Text>
-                            <Text as='div' color='prominent' className='copy-advert-form__field' size='xs'>
-                                {payment_method_names.join(', ')}
-                            </Text>
+                                <Text color='less-prominent' size='xxs'>
+                                    <Localize i18n_default_text='Instructions' />
+                                </Text>
+                                <Field name='default_advert_description'>
+                                    {({ field }: FieldProps) => (
+                                        <Text
+                                            {...field}
+                                            as='div'
+                                            color='prominent'
+                                            className='copy-advert-form__field'
+                                            size='xs'
+                                        >
+                                            {field.value}
+                                        </Text>
+                                    )}
+                                </Field>
+                                <Text color='less-prominent' size='xxs'>
+                                    <Localize i18n_default_text='Order must be completed in' />
+                                </Text>
+                                <Field name='order_completion_time'>
+                                    {({ field }: FieldProps) => (
+                                        <OrderTimeSelection
+                                            {...field}
+                                            classNameDisplay='copy-advert-form__dropdown-display'
+                                            classNameIcon='copy-advert-form__dropdown-icon'
+                                            is_label_hidden
+                                        />
+                                    )}
+                                </Field>
+                                <Text color='less-prominent' size='xxs'>
+                                    <Localize i18n_default_text='Payment methods' />
+                                </Text>
+                                <Text as='div' color='prominent' className='copy-advert-form__field' size='xs'>
+                                    {payment_method_names.join(', ')}
+                                </Text>
+                            </ThemedScrollbars>
                             <div className='copy-advert-form__container'>
                                 <Button type='button' has_effect onClick={() => onClickCancel(values)} secondary large>
                                     <Localize i18n_default_text='Cancel' />

@@ -8,6 +8,14 @@
         column-gap: 0.8rem;
         justify-content: end;
 
+        @include desktop {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--general-main-2);
+            padding: 2.4rem;
+        }
+
         @include mobile {
             border-top: 2px solid var(--general-section-1);
             padding: 1.6rem 1.6rem 0;
@@ -30,7 +38,10 @@
             border: 0;
             height: auto;
             pointer-events: none;
-            background-color: var(--general-main-2);
+
+            @include desktop {
+                background-color: var(--general-main-2);
+            }
         }
 
         &-icon {
@@ -110,6 +121,14 @@
     }
 
     .dc-input__label {
-        background-color: var(--general-main-2);
+        @include desktop {
+            background-color: var(--general-main-2);
+        }
+    }
+
+    &__scrollbar {
+        @include desktop {
+            padding: 0 2.4rem 8.8rem;
+        }
     }
 }

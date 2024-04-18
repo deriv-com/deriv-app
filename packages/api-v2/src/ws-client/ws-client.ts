@@ -19,7 +19,10 @@ export default class WSClient {
         this.subscriptionManager = new SubscriptionsManager(ws);
     }
 
-    request(name: TSocketEndpointNames, payload: TSocketRequestPayload<TSocketEndpointNames>['payload']) {
+    request<T extends TSocketEndpointNames>(
+        name: TSocketEndpointNames,
+        payload?: TSocketRequestPayload<T>['payload']
+    ): Promise<TSocketResponse<T>> {
         return request(this.ws, name, payload);
     }
 

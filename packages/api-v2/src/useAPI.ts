@@ -8,21 +8,25 @@ import type {
     TSocketSubscribableEndpointNames,
 } from '../types';
 import { useAPIContext } from './APIProvider';
+import WSClient from './ws-client/ws-client';
 
 const useAPI = () => {
-    const { derivAPI, connection } = useAPIContext();
+    const { derivAPI, wsClient } = useAPIContext();
 
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
             name: T,
             payload?: TSocketRequestPayload<T>
         ): Promise<TSocketResponseData<T>> => {
-            const response = await derivAPI?.send({ [name]: 1, ...(payload || {}) });
+            // casting needed as there is genuine type mismatch which have been there already
+            const response = await wsClient?.request<T>(
+                name,
+                payload as unknown as TSocketRequestPayload<T>['payload']
+            );
 
-            if (response.error) {
-                throw response.error;
-            }
-
+            // if (response.error) {
+            //     throw response.error;
+            // }
             return response;
         },
         [derivAPI]

@@ -11,6 +11,7 @@ import {
     TSocketSubscribableEndpointNames,
 } from '../types';
 import { hashObject } from './utils';
+import WSClient from './ws-client/ws-client';
 
 type TSendFunction = <T extends TSocketEndpointNames>(
     name: T,
@@ -33,6 +34,7 @@ type APIContextData = {
     setOnReconnected: (onReconnected: () => void) => void;
     setOnConnected: (onConnected: () => void) => void;
     connection: WebSocket;
+    wsClient: WSClient;
 };
 
 /**
@@ -89,6 +91,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const onReconnectedRef = useRef<() => void>();
     const onConnectedRef = useRef<() => void>();
     const isOpenRef = useRef<boolean>(false);
+    const wsClientRef = useRef<WSClient>();
 
     if (!reactQueryRef.current) {
         reactQueryRef.current = new QueryClient({
@@ -113,6 +116,10 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 }
             }
         );
+    }
+
+    if (!wsClientRef.current) {
+        wsClientRef.current = new WSClient(derivAPIRef.current.connection);
     }
 
     useEffect(() => {
@@ -212,6 +219,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 setOnReconnected,
                 setOnConnected,
                 connection: derivAPIRef.current?.connection,
+                wsClient: wsClientRef.current,
             }}
         >
             <QueryClientProvider client={reactQueryRef.current}>

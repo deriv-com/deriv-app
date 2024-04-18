@@ -94,6 +94,7 @@ const DERIVGO_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go-online-tradi
 const DERIVGO_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app';
 const DERIVGO_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C103801913';
 export const DERIVGO_QRCODE_APP_URL = 'https://static.deriv.com/scripts/storeRedirect?app=deriv-go';
+export const DERIVGO_OPEN_APP_URL = 'https://app.deriv.com/redirect/derivgo';
 
 export const getPlatformDerivGoDownloadLink = (platform: TMobilePlatforms) => {
     switch (platform) {

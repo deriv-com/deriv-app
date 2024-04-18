@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEventListener } from 'usehooks-ts';
 import {
     DesktopWalletsList,
     WalletsAddMoreCarousel,
@@ -15,9 +16,40 @@ import { TPlatforms } from '../../types';
 import './WalletsListingRoute.scss';
 
 const WalletsListingRoute: React.FC = () => {
+    const [showWalletsCarouselHeader, setShowWalletsCarouselHeader] = useState(false);
+    const [heightFromTop, setHeightFromTop] = useState(0);
     const { isMobile } = useDevice();
     const { show } = useModal();
+    const containerRef = useRef<HTMLDivElement>(null);
     const resetTradingPlatformActionParams = getActionFromUrl();
+
+    // function to handle scrolling event for hiding/displaying WalletsCarouselHeader
+    // walletsCarouselHeader will be displayed when height from top of screen is more than 100px
+    const handleScroll = useCallback(() => {
+        if (containerRef.current) {
+            const newHeightFromTop = containerRef.current.getBoundingClientRect().top;
+            setHeightFromTop(newHeightFromTop);
+            heightFromTop && setShowWalletsCarouselHeader(heightFromTop < -100);
+        }
+    }, [heightFromTop]);
+
+    //listen to various scroll events to handle wheel scrolling on desktop responsive and drag scrolling on mobile for various platforms
+    useEventListener('touchmove', handleScroll, containerRef);
+    useEventListener('touchend', handleScroll, containerRef);
+    useEventListener('scroll', handleScroll, containerRef);
+    useEventListener('wheel', handleScroll, containerRef);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        if (isMounted) {
+            handleScroll();
+        }
+
+        return () => {
+            isMounted = false;
+        };
+    }, [handleScroll, heightFromTop]);
 
     const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = useMemo(
         () => ({
@@ -48,8 +80,12 @@ const WalletsListingRoute: React.FC = () => {
     }, [platformMapping, resetTradingPlatformActionParams, show]);
 
     return (
-        <div className='wallets-listing-route'>
-            {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
+        <div className='wallets-listing-route' ref={containerRef}>
+            {isMobile ? (
+                <WalletsCarousel showWalletsCarouselHeader={showWalletsCarouselHeader} />
+            ) : (
+                <DesktopWalletsList />
+            )}
             <WalletsAddMoreCarousel />
             {!isMobile && <WalletTourGuide />}
             <ResetMT5PasswordHandler />

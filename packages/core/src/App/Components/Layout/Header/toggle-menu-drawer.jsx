@@ -11,6 +11,7 @@ import {
     useOnrampVisible,
     usePaymentAgentTransferVisible,
     useP2PSettings,
+    useStoreWalletAccountsList,
 } from '@deriv/hooks';
 import { getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -60,6 +61,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { is_p2p_enabled } = useIsP2PEnabled();
+    const { is_next_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useStoreWalletAccountsList();
 
     const { pathname: route } = useLocation();
 
@@ -78,7 +81,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const timeout = React.useRef();
     const history = useHistory();
-    const { is_next_wallet_enabled } = useFeatureFlags();
     const {
         subscribe,
         rest: { isSubscribed },
@@ -182,6 +184,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         const hideRoute = route_path => {
             if (/passkeys/.test(route_path)) {
                 return should_hide_passkeys_route;
+            } else if (/languages/.test(route_path)) {
+                return has_wallet;
             }
             return false;
         };
@@ -336,23 +340,27 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}
-                                <MobileDrawer.Item
-                                    className='header__menu-mobile-theme'
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        toggleTheme(!is_dark_mode);
-                                    }}
-                                >
-                                    <div className={classNames('header__menu-mobile-link')}>
-                                        <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                        <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>
-                                        <ToggleSwitch
-                                            id='dt_mobile_drawer_theme_toggler'
-                                            handleToggle={() => toggleTheme(!is_dark_mode)}
-                                            is_enabled={is_dark_mode}
-                                        />
-                                    </div>
-                                </MobileDrawer.Item>
+                                {!has_wallet && (
+                                    <MobileDrawer.Item
+                                        className='header__menu-mobile-theme'
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            toggleTheme(!is_dark_mode);
+                                        }}
+                                    >
+                                        <div className={classNames('header__menu-mobile-link')}>
+                                            <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
+                                            <span className='header__menu-mobile-link-text'>
+                                                {localize('Dark theme')}
+                                            </span>
+                                            <ToggleSwitch
+                                                id='dt_mobile_drawer_theme_toggler'
+                                                handleToggle={() => toggleTheme(!is_dark_mode)}
+                                                is_enabled={is_dark_mode}
+                                            />
+                                        </div>
+                                    </MobileDrawer.Item>
+                                )}
 
                                 {HelpCentreRoute()}
                                 {is_logged_in && (

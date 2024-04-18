@@ -2,7 +2,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -24,6 +24,7 @@ import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useStoreWalletAccountsList();
     const store = useStore();
 
     const isMounted = useIsMounted();
@@ -69,6 +70,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     React.useEffect(() => {
         initDatadog(tracking_datadog);
     }, [tracking_datadog]);
+
+    // intentionally switch the user with wallets to light mode
+    React.useLayoutEffect(() => {
+        if (has_wallet) {
+            store.ui.setDarkMode(false);
+        }
+    }, [has_wallet, store.ui]);
 
     return (
         <PlatformContainer>

@@ -21,8 +21,6 @@ export const ProofOfOwnership = () => {
         return <Loader isFullScreen />;
     }
 
-    const paymentMethodData = useMemo(() => {}, [ownership?.requests]);
-
     if (ownership?.requests?.length && status !== AUTH_STATUS_CODES.REJECTED) {
         return <div>ProofOfOwnership</div>;
     }

@@ -5,6 +5,7 @@ import { useRemoteConfig } from '@deriv/api';
 import { Analytics } from '@deriv-com/analytics';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
+    useAccountTransferVisible,
     useAuthorize,
     useFeatureFlags,
     useIsP2PEnabled,
@@ -56,6 +57,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { payment_agent } = cashier;
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content, setTogglePlatformType } = traders_hub;
+    const is_account_transfer_visible = useAccountTransferVisible();
     const { isSuccess } = useAuthorize();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
@@ -224,7 +226,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                             (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                            (route.path !== routes.cashier_onramp || is_onramp_visible)
+                            (route.path !== routes.cashier_onramp || is_onramp_visible) &&
+                            (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                         ) {
                             return (
                                 <MobileDrawer.Item key={index}>

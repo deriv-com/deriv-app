@@ -1,5 +1,11 @@
 import request from './request';
-import { TSocketResponse, TSocketRequestPayload, TSocketSubscribableEndpointNames } from '../../types';
+import {
+    TSocketResponse,
+    TSocketRequestPayload,
+    TSocketSubscribableEndpointNames,
+    TSocketError,
+    TSocketResponseData,
+} from '../../types';
 
 /**
  * Subscribes directly to backend stream
@@ -55,13 +61,15 @@ export default class Subscription {
         this.ws.addEventListener('message', this.boundOnWsMessage);
         this.ws.addEventListener('close', this.boundOnWsClose);
 
-        const data: TSocketResponse<TSocketSubscribableEndpointNames> = await request(this.ws, this.name, {
+        const data: TSocketResponseData<TSocketSubscribableEndpointNames> = await request(this.ws, this.name, {
             subscribe: 1,
             ...this.payload,
         });
 
-        this.subscriptionId = data.subscription.id;
+        // @ts-expect-error due to incorrect type defintion, to be fixed later
         this.reqId = data.req_id;
+        // @ts-expect-error due to incorrect type definition, to be fixed later
+        this.subscriptionId = data.subscription.id;
         this.lastData = data;
 
         this.listeners.forEach(listener => listener(data));
@@ -75,8 +83,8 @@ export default class Subscription {
         this.listeners = this.listeners.filter(listener => listener !== onData);
     }
 
-    onWsMessage(messageEvent: MessageEvent) {
-        const data = JSON.parse(messageEvent.data) as TSocketResponse<TSocketSubscribableEndpointNames>;
+    onWsMessage<T extends TSocketSubscribableEndpointNames>(messageEvent: MessageEvent) {
+        const data = JSON.parse(messageEvent.data) as TSocketResponse<T> & TSocketError<T>;
 
         if (data.req_id !== this.reqId) {
             return;

@@ -1,4 +1,10 @@
-import { TSocketResponseData, TSocketEndpointNames, TSocketRequestPayload } from '../../types';
+import {
+    TSocketResponseData,
+    TSocketResponse,
+    TSocketEndpointNames,
+    TSocketRequestPayload,
+    TSocketSubscribableEndpointNames,
+} from '../../types';
 
 const REQ_TIMEOUT = 20000;
 
@@ -10,14 +16,14 @@ let reqSeqNumber = 0;
  * no handling of reconnections, no state, nothing, just send
  * even request seq number is outside of its scope (reason being, that req_seq needs to be also used by the subscriptions)
  */
-function request(
+function request<T extends TSocketSubscribableEndpointNames>(
     ws: WebSocket,
     name: TSocketEndpointNames,
-    payload: TSocketRequestPayload<TSocketEndpointNames>['payload']
-): Promise<TSocketResponseData<TSocketEndpointNames>> {
+    payload: TSocketRequestPayload<T>['payload']
+): Promise<TSocketResponse<T>> {
     const req_id = ++reqSeqNumber;
 
-    const promise: Promise<TSocketResponseData<TSocketEndpointNames>> = new Promise((resolve, reject) => {
+    const promise: Promise<TSocketResponseData<T>> = new Promise((resolve, reject) => {
         const timeout: NodeJS.Timeout = setTimeout(() => {
             ws.removeEventListener('message', receive);
             reject(new Error('Request timeout'));

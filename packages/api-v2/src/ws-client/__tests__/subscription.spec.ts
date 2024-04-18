@@ -1,8 +1,7 @@
 import BackendSubscription from '../subscription';
 import request from '../request';
 import mockWebSocketFactory, { WebSocketMock } from '../mock-websocket-factory';
-
-// Mock the lightweightSend function
+// Mock the request function
 jest.mock('../request', () =>
     jest
         .fn()
@@ -11,6 +10,8 @@ jest.mock('../request', () =>
         )
 );
 
+const ENDPOINT = 'balance';
+
 describe('Subscription', () => {
     let mockWs: WebSocketMock, backendSubscription: BackendSubscription;
 
@@ -18,13 +19,12 @@ describe('Subscription', () => {
         mockWs = mockWebSocketFactory();
 
         // Initialize BackendSubscription with mocked WebSocket
-        backendSubscription = new BackendSubscription(mockWs, 'test-subscription', { key: 'value' });
+        backendSubscription = new BackendSubscription(mockWs as unknown as WebSocket, ENDPOINT, { key: 'value' });
     });
 
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetModules();
-        mockWs = null;
     });
 
     test('calls listener with initial data', async () => {

@@ -239,7 +239,7 @@ const CreateAdForm = () => {
                                                 </Field>
                                                 <Field name='rate_type'>
                                                     {({ field }) =>
-                                                        true ? (
+                                                        rate_type === ad_type.FLOAT ? (
                                                             <FloatingRate
                                                                 className='create-ad-form__field'
                                                                 data_testid='float_rate_type'

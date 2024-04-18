@@ -9,7 +9,6 @@ type TReturnType = {
 };
 
 const useFloatingRate = (): TReturnType => {
-    // TODO: to implement rest of the floating rate functionalities
     const { data } = p2p.settings.useGetSettings();
     const isFloatingRateEnabled = data?.float_rate_adverts === 'enabled';
     const fixedRateAdvertsEndDate = data?.fixed_rate_adverts_end_date ?? '';

@@ -46,7 +46,10 @@ const MyAdsFloatingRateSwitchModal = ({ onSwitch }: TMyAdsFloatingRateSwitchModa
                     <Button
                         primary
                         large
-                        onClick={onSwitch ?? toggleMyAdsRateSwitchModal(p2p_settings?.rate_type, true)}
+                        onClick={() => {
+                            if (onSwitch) onSwitch();
+                            else toggleMyAdsRateSwitchModal(p2p_settings?.rate_type, true);
+                        }}
                     >
                         {is_float_rate ? (
                             <Localize i18n_default_text='Set floating rate' />

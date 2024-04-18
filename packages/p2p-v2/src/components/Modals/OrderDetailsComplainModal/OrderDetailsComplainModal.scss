@@ -1,0 +1,39 @@
+.p2p-v2-order-details-complain-modal {
+    width: 44rem;
+    &__body {
+        padding: 1.6rem;
+        padding-top: 0;
+    }
+
+    &__explanation {
+        background-color: #f2f3f4;
+        margin-top: 1.6rem;
+        padding: 1.6rem;
+        border-radius: 4px;
+    }
+
+    &__complain-footer {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    @include mobile {
+        width: unset;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        height: calc(100vh - 8rem);
+
+        & .p2p-v2-mobile-wrapper__body {
+            padding: 0 1.6rem;
+        }
+
+        &__complain-footer {
+            padding: 2rem;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 2px solid #f2f3f4;
+        }
+    }
+}

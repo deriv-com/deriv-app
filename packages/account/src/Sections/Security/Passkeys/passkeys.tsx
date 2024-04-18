@@ -61,11 +61,6 @@ const Passkeys = observer(() => {
     React.useEffect(() => {
         if (!!error || is_passkey_registration_started) {
             setIsModalOpen(true);
-            if (error && !is_passkey_registration_started) {
-                passkeysMenuActionEventTrack('error', {
-                    error_message: (error as TServerError)?.message,
-                });
-            }
         }
         return () => {
             clearTimeout(timeout);

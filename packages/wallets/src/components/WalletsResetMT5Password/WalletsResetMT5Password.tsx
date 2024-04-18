@@ -33,12 +33,14 @@ const WalletsResetMT5Password = ({
 }: WalletsResetMT5PasswordProps) => {
     const { title } = PlatformDetails[platform];
     const {
+        error: changePasswordError,
         isError: isChangePasswordError,
         isLoading: isChangePasswordLoading,
         isSuccess: isChangePasswordSuccess,
         mutate: changePassword,
     } = useTradingPlatformPasswordReset();
     const {
+        error: changeInvestorPasswordError,
         isError: isChangeInvestorPasswordError,
         isLoading: isChangeInvestorPasswordLoading,
         isSuccess: isChangeInvestorPasswordSuccess,
@@ -76,12 +78,12 @@ const WalletsResetMT5Password = ({
         } else if (isChangePasswordError) {
             show(
                 <WalletError
-                    errorMessage={isChangePasswordError?.error?.message}
+                    errorMessage={changePasswordError?.error?.message}
                     onClick={hide}
-                    title={isChangePasswordError?.error?.code}
+                    title={changePasswordError?.error?.code}
                 />
             );
-        } else hide();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, title, actionParams, isChangePasswordSuccess, isChangePasswordError]);
 
@@ -94,12 +96,12 @@ const WalletsResetMT5Password = ({
         } else if (isChangeInvestorPasswordError) {
             show(
                 <WalletError
-                    errorMessage={isChangeInvestorPasswordError?.error?.message}
+                    errorMessage={changeInvestorPasswordError?.error?.message}
                     onClick={hide}
-                    title={isChangeInvestorPasswordError?.error?.code}
+                    title={changeInvestorPasswordError?.error?.code}
                 />
             );
-        } else hide();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 

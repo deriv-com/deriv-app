@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Loading } from '@deriv/components';
 import { useDepositFiatAddress } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
+import { setPerformanceValue } from '@deriv/shared';
 import { ErrorState } from '../../../../components/error-state';
 import './deposit-fiat-iframe.scss';
 
@@ -13,6 +14,8 @@ const DepositFiatIframe: React.FC = observer(() => {
     useEffect(() => {
         setIsLoading(true);
     }, [iframe_url]);
+
+    if (!is_loading) setPerformanceValue('load_fiat_deposit_cashier_time');
 
     if (error) return <ErrorState error={error} />;
 

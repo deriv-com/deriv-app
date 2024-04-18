@@ -32,7 +32,7 @@ const EffortlessLoginModal = observer(() => {
         passkeysEffortlessModalActionEventTrack('open');
 
         const track_close = () => {
-            passkeysEffortlessModalActionEventTrack('close)');
+            passkeysEffortlessModalActionEventTrack('close');
         };
         window.addEventListener('beforeunload', track_close);
         return () => {

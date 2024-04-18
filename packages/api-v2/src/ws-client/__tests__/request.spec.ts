@@ -2,7 +2,7 @@ import mockWebSocketFactory, { WebSocketMock } from '../mock-websocket-factory';
 import request, { resetReqSeqNumber } from '../request';
 
 describe('send function', () => {
-    let mockWebSocket: WebSocketMock, request: any;
+    let mockWebSocket: WebSocketMock;
 
     beforeEach(() => {
         resetReqSeqNumber();

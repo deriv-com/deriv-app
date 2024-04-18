@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetAccountStatus } from '@deriv/api-v2';
 import { DerivLightWaitingPoaIcon } from '@deriv/quill-icons';
 import { Button, Loader, Text } from '@deriv-com/ui';

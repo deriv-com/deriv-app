@@ -32,6 +32,7 @@ type APIContextData = {
     queryClient: QueryClient;
     setOnReconnected: (onReconnected: () => void) => void;
     setOnConnected: (onConnected: () => void) => void;
+    connection: WebSocket;
 };
 
 /**
@@ -210,6 +211,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 queryClient: reactQueryRef.current,
                 setOnReconnected,
                 setOnConnected,
+                connection: derivAPIRef.current?.connection,
             }}
         >
             <QueryClientProvider client={reactQueryRef.current}>

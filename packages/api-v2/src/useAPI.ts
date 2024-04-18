@@ -10,7 +10,7 @@ import type {
 import { useAPIContext } from './APIProvider';
 
 const useAPI = () => {
-    const { derivAPI } = useAPIContext();
+    const { derivAPI, connection } = useAPIContext();
 
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(

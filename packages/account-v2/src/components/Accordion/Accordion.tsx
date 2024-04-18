@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
 import { StandaloneChevronDownRegularIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { accordionTransitionStyle, accordionVariant } from './Accordion.classnames';
 
 type TAccordionProps = {
@@ -19,18 +19,15 @@ export const Accordion = ({ children, icon, title }: PropsWithChildren<TAccordio
                 <Text as='h2' className='flex-grow' size='sm' weight='bold'>
                     {title}
                 </Text>
-                <StandaloneChevronDownRegularIcon
-                    className={twMerge('cursor-pointer', accordionTransitionStyle, isExpanded && 'rotate-180')}
-                    iconSize='sm'
-                    onClick={() => setIsExpanded(prev => !prev)}
-                    role='button'
-                />
+                <Button color='white' onClick={() => setIsExpanded(prev => !prev)} type='button' variant='ghost'>
+                    <StandaloneChevronDownRegularIcon
+                        className={clsx(accordionTransitionStyle, isExpanded && 'rotate-180')}
+                        iconSize='sm'
+                    />
+                </Button>
             </section>
-            <section
-                className={twMerge(accordionTransitionStyle, accordionVariant({ expanded: isExpanded }))}
-                data-testid='dt_expanded_content'
-            >
-                {children}
+            <section className={accordionVariant({ expanded: isExpanded })} data-testid='dt_expanded_content'>
+                <div className='overflow-hidden'>{children}</div>
             </section>
         </div>
     );

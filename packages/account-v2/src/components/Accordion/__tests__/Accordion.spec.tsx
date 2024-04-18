@@ -12,7 +12,7 @@ describe('Accordion', () => {
         );
 
         expect(screen.getByText('Title')).toBeVisible();
-        expect(screen.getByTestId('dt_expanded_content')).toHaveClass('max-h-0 overflow-hidden');
+        expect(screen.getByTestId('dt_expanded_content')).toHaveClass('grid-rows-[0fr]');
     });
 
     it('should expand content when clicked', () => {
@@ -25,7 +25,7 @@ describe('Accordion', () => {
         const elExpandButton = screen.getByRole('button');
         userEvent.click(elExpandButton);
 
-        expect(screen.getByTestId('dt_expanded_content')).toHaveClass('h-fit');
+        expect(screen.getByTestId('dt_expanded_content')).toHaveClass('grid-rows-[1fr]');
     });
 
     it('should collapse content when clicked', () => {
@@ -39,6 +39,6 @@ describe('Accordion', () => {
         userEvent.click(elExpandButton);
         userEvent.click(elExpandButton);
 
-        expect(screen.getByTestId('dt_expanded_content')).toHaveClass('max-h-0 overflow-hidden');
+        expect(screen.getByTestId('dt_expanded_content')).toHaveClass('grid-rows-[0fr]');
     });
 });

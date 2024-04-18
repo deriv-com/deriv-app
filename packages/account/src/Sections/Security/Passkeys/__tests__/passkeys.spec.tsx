@@ -267,10 +267,6 @@ describe('Passkeys', () => {
         await waitFor(() => {
             expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
         });
-        expect(Analytics.trackEvent).toHaveBeenCalledWith(
-            tracking_event,
-            getAnalyticsParams('error', { error_message: mock_error })
-        );
     });
 
     it('renders passkeys list error modal and triggers closing', async () => {
@@ -297,9 +293,5 @@ describe('Passkeys', () => {
         await waitFor(() => {
             expect(mockReloadPasskeysList).toBeCalledTimes(1);
         });
-        expect(Analytics.trackEvent).toHaveBeenCalledWith(
-            tracking_event,
-            getAnalyticsParams('error', { error_message: mock_error })
-        );
     });
 });

@@ -14,7 +14,6 @@ export type TMyAdsTableRowRendererProps = Required<THooks.AdvertiserAdverts.Get>
     dailySellLimit: string;
     isBarred: boolean;
     isListed: boolean;
-    onClickIcon: (action: string) => void;
 };
 
 const MyAdsTableRowRenderer = memo((values: TMyAdsTableRowRendererProps) => <MyAdsTableRowView {...values} />);

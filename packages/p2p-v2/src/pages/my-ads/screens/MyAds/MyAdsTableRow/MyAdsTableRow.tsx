@@ -22,6 +22,7 @@ const getList = (isActive = false) => [
 
 type TProps = {
     currentRateType: ReturnType<typeof useFloatingRate>['rateType'];
+    onClickIcon: (value: string) => void;
     showModal: (value: string) => void;
 };
 

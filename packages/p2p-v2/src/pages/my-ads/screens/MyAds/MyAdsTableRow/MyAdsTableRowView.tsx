@@ -1,7 +1,6 @@
 import React, { memo, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AdErrorTooltipModal, AdRateSwitchModal, MyAdsDeleteModal } from '@/components/Modals';
-import { ShareAdsModal } from '@/components/Modals/ShareAdsModal';
+import { AdErrorTooltipModal, AdRateSwitchModal, MyAdsDeleteModal, ShareAdsModal } from '@/components/Modals';
 import { AD_ACTION, MY_ADS_URL } from '@/constants';
 import { useFloatingRate, useModalManager } from '@/hooks';
 import { getVisibilityErrorCodes } from '@/utils';
@@ -38,7 +37,6 @@ const MyAdsTableRowView = ({
     }, [error?.error?.message, isError, isSuccess, showModal]);
 
     const onClickIcon = (action: string) => {
-        //TODO: to implement the onclick actions for share and edit.
         switch (action) {
             case AD_ACTION.ACTIVATE:
                 mutate({ id, is_active: 1 });
@@ -71,9 +69,9 @@ const MyAdsTableRowView = ({
             <MyAdsTableRow
                 currentRateType={currentRateType}
                 isListed={isListed}
+                onClickIcon={onClickIcon}
                 showModal={showModal}
                 {...rest}
-                onClickIcon={onClickIcon}
             />
             <AdErrorTooltipModal
                 accountCurrency={accountCurrency}

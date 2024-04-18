@@ -17,3 +17,4 @@ export * from './PaymentMethods';
 export * from './PreferredCountriesModal';
 export * from './RadioGroupFilterModal';
 export * from './RatingModal';
+export * from './ShareAdsModal';

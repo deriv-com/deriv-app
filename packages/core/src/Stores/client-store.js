@@ -48,8 +48,8 @@ import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_co
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
-const eu_shortcode_regex = new RegExp('^maltainvest$');
-const eu_excluded_regex = new RegExp('^mt$');
+const eu_shortcode_regex = /^maltainvest$/;
+const eu_excluded_regex = /^mt$/;
 
 export default class ClientStore extends BaseStore {
     loginid;

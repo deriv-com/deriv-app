@@ -4,7 +4,7 @@ import { TradingAssessmentForm } from '../containers/TradingAssessmentForm';
 import { FinancialAssessmentForm } from '../modules/src/FinancialAssessment/FinancialAssessmentForm';
 import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';
 import { ProofOfIdentity } from '../modules/src/POI/POI';
-import { AccountClosure, ConnectedApps, LoginHistory } from '../pages';
+import { AccountClosure, AccountLimits, ConnectedApps, LoginHistory } from '../pages';
 import { DummyRoute } from './components/DummyRoute/DummyRoute';
 
 export const routes = [
@@ -59,7 +59,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.SelfExclusion,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: AccountLimits,
         routeName: 'Account limits',
         routePath: ACCOUNT_V2_ROUTES.AccountLimits,
     },

@@ -7,6 +7,7 @@ import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
 import { ModalWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
+import { WalletError } from '../WalletError';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
 
@@ -73,8 +74,14 @@ const WalletsResetMT5Password = ({
             localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
             show(<WalletSuccessResetMT5Password title={title} />, { defaultRootId: 'wallets_modal_root' });
         } else if (isChangePasswordError) {
-            hide();
-        }
+            show(
+                <WalletError
+                    errorMessage={isChangePasswordError?.error?.message}
+                    onClick={hide}
+                    title={isChangePasswordError?.error?.code}
+                />
+            );
+        } else hide();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, title, actionParams, isChangePasswordSuccess, isChangePasswordError]);
 
@@ -85,8 +92,14 @@ const WalletsResetMT5Password = ({
                 defaultRootId: 'wallets_modal_root',
             });
         } else if (isChangeInvestorPasswordError) {
-            hide();
-        }
+            show(
+                <WalletError
+                    errorMessage={isChangeInvestorPasswordError?.error?.message}
+                    onClick={hide}
+                    title={isChangeInvestorPasswordError?.error?.code}
+                />
+            );
+        } else hide();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 

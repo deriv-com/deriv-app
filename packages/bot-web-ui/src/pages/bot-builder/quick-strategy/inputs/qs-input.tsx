@@ -38,6 +38,7 @@ const QSInput: React.FC<TQSInput> = observer(
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
+        const max_value = 999999999999;
 
         const handleButtonInputChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
@@ -114,7 +115,11 @@ const QSInput: React.FC<TQSInput> = observer(
                                         trailing_icon={
                                             is_number ? (
                                                 <button
-                                                    disabled={disabled || (!!max && field.value >= max)}
+                                                    disabled={
+                                                        disabled ||
+                                                        field.value == max_value ||
+                                                        (!!max && field.value >= max)
+                                                    }
                                                     data-testid='qs-input-increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;

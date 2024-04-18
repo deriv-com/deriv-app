@@ -89,8 +89,8 @@ jest.mock('@/hooks', () => {
 jest.mock('@deriv/api-v2', () => ({
     p2p: {
         advert: {
-            useDelete: jest.fn().mockReturnValue({ error: null, isError: false, isSuccess: false, mutate: jest.fn() }),
-            useUpdate: jest.fn().mockReturnValue({ mutate: jest.fn() }),
+            useDelete: jest.fn().mockReturnValue({ error: null, isError: false, mutate: jest.fn() }),
+            useUpdate: jest.fn().mockReturnValue({ error: null, isError: false, mutate: jest.fn() }),
         },
     },
 }));
@@ -100,6 +100,7 @@ jest.mock('@/components/Modals', () => ({
     AdRateSwitchModal: () => <div>AdRateSwitchModal</div>,
     MyAdsDeleteModal: () => <div>MyAdsDeleteModal</div>,
     ShareAdsModal: () => <div>ShareAdsModal</div>,
+    ErrorModal: () => <div>ErrorModal</div>,
 }));
 
 jest.mock('../MyAdsTableRow', () => {

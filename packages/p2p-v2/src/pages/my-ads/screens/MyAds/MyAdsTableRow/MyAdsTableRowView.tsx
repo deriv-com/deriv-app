@@ -1,6 +1,12 @@
 import React, { memo, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AdErrorTooltipModal, AdRateSwitchModal, MyAdsDeleteModal, ShareAdsModal } from '@/components/Modals';
+import {
+    AdErrorTooltipModal,
+    AdRateSwitchModal,
+    ErrorModal,
+    MyAdsDeleteModal,
+    ShareAdsModal,
+} from '@/components/Modals';
 import { AD_ACTION, MY_ADS_URL } from '@/constants';
 import { useFloatingRate, useModalManager } from '@/hooks';
 import { getVisibilityErrorCodes } from '@/utils';
@@ -17,8 +23,8 @@ const MyAdsTableRowView = ({
 }: TMyAdsTableRowRendererProps) => {
     const { hideModal, isModalOpenFor, showModal } = useModalManager({ shouldReinitializeModals: false });
     const { rateType: currentRateType, reachedTargetDate } = useFloatingRate();
-    const { mutate } = p2p.advert.useUpdate();
-    const { error, isError, isSuccess, mutate: deleteAd } = p2p.advert.useDelete();
+    const { error: updateError, isError: isErrorUpdate, mutate } = p2p.advert.useUpdate();
+    const { error, isError, mutate: deleteAd } = p2p.advert.useDelete();
     const history = useHistory();
 
     const {
@@ -34,7 +40,13 @@ const MyAdsTableRowView = ({
         if (isError && error?.error?.message) {
             showModal('MyAdsDeleteModal');
         }
-    }, [error?.error?.message, isError, isSuccess, showModal]);
+    }, [error?.error?.message, isError]);
+
+    useEffect(() => {
+        if (isErrorUpdate && updateError?.error?.message) {
+            showModal('ErrorModal');
+        }
+    }, [updateError?.error?.message]);
 
     const onClickIcon = (action: string) => {
         switch (action) {
@@ -98,6 +110,11 @@ const MyAdsTableRowView = ({
                 onRequestClose={hideModal}
                 rateType={currentRateType}
                 reachedEndDate={reachedTargetDate}
+            />
+            <ErrorModal
+                isModalOpen={!!isModalOpenFor('ErrorModal')}
+                message={updateError?.error?.message}
+                onRequestClose={hideModal}
             />
         </>
     );

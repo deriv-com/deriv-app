@@ -1,7 +1,6 @@
-.p2p-v2-ad-rate-switch-modal {
+.p2p-v2-error-modal {
     width: 44rem;
-    height: fit-content;
-    border-radius: 8px;
+    height: unset;
 
     @include mobile {
         max-width: calc(100% - 3.2rem);
@@ -13,9 +12,5 @@
         @include mobile {
             padding: 1.6rem;
         }
-    }
-
-    &__footer {
-        gap: 1.6rem;
     }
 }

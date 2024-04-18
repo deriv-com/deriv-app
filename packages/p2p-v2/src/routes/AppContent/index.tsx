@@ -23,6 +23,7 @@ const AppContent = () => {
     };
 
     const [activeTab, setActiveTab] = useState(() => getActiveTab(location.pathname));
+    const [hasCreatedAdvertiser, setHasCreatedAdvertiser] = useState(false);
     const { subscribe: subscribeP2PSettings } = p2p.settings.useGetSettings();
     const { error, isIdle, isLoading, isSubscribed, subscribe: subscribeAdvertiserInfo } = p2p.advertiser.useGetInfo();
 
@@ -37,6 +38,14 @@ const AppContent = () => {
             subscribeAdvertiserInfo();
         }
     }, [isSuccess, subscribeAdvertiserInfo]);
+
+    // Need this to subscribe to advertiser info after user has created an advertiser.
+    // setHasCreatedAdvertiser is triggered inside of NicknameModal.
+    useEffect(() => {
+        if (isSuccess && hasCreatedAdvertiser) {
+            subscribeAdvertiserInfo();
+        }
+    }, [hasCreatedAdvertiser, isSuccess, subscribeAdvertiserInfo]);
 
     useEffect(() => {
         setActiveTab(getActiveTab(location.pathname));
@@ -54,6 +63,7 @@ const AppContent = () => {
                 isIdle,
                 isLoading,
                 isSubscribed,
+                setHasCreatedAdvertiser,
             }}
         >
             <CloseHeader />

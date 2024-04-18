@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAdvertiserStats, usePoiPoaStatus } from '@/hooks';
+import { useAdvertiserStats, useIsAdvertiser, usePoiPoaStatus } from '@/hooks';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
@@ -56,6 +56,7 @@ jest.mock('../MyProfileMobile', () => ({
 const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 const mockUsePoiPoaStatus = usePoiPoaStatus as jest.MockedFunction<typeof usePoiPoaStatus>;
 const mockUseAdvertiserStats = useAdvertiserStats as jest.MockedFunction<typeof useAdvertiserStats>;
+const mockUseIsAdvertiser = useIsAdvertiser as jest.MockedFunction<typeof useIsAdvertiser>;
 jest.mock('@/hooks', () => ({
     useAdvertiserStats: jest.fn().mockReturnValue({
         data: {
@@ -64,6 +65,7 @@ jest.mock('@/hooks', () => ({
         error: undefined,
         isLoading: false,
     }),
+    useIsAdvertiser: jest.fn().mockReturnValue(true),
     usePoiPoaStatus: jest.fn().mockReturnValue({
         data: {
             isP2PPoaRequired: false,
@@ -117,6 +119,8 @@ describe('MyProfile', () => {
             data: { isPoaVerified: true, isPoiVerified: true },
             isLoading: false,
         });
+
+        (mockUseIsAdvertiser as jest.Mock).mockReturnValueOnce(false);
 
         (mockUseAdvertiserStats as jest.Mock).mockReturnValueOnce({
             data: {

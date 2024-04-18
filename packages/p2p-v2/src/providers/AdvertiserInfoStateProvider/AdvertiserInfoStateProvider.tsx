@@ -6,6 +6,7 @@ type TContextValue = {
     isIdle: boolean;
     isLoading: boolean;
     isSubscribed: boolean;
+    setHasCreatedAdvertiser: (hasCreatedAdvertiser: boolean) => void;
 };
 
 const AdvertiserInfoStateContext = createContext<TContextValue>({} as TContextValue);

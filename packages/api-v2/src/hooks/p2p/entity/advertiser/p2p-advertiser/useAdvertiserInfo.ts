@@ -14,11 +14,11 @@ type TP2PAdvertiserInfo = TSocketResponseData<'p2p_advertiser_info'>['p2p_advert
     should_show_name: boolean;
 };
 
-type TPayload = NonNullable<TSocketRequestPayload<'p2p_advertiser_info'>> & { id: string };
+type TPayload = NonNullable<TSocketRequestPayload<'p2p_advertiser_info'>> & { id?: string };
 
 /** This custom hook returns information about the given advertiser ID */
 const useAdvertiserInfo = (id?: string) => {
-    const { data, subscribe: subscribeAdvertiserInfo, ...rest } = useSubscription('p2p_advertiser_info');
+    const { data, error, subscribe: subscribeAdvertiserInfo, ...rest } = useSubscription('p2p_advertiser_info');
 
     /**
      * Use different local storage key for each advertiser, one to keep the current user's info, the other to keep the advertiser's info
@@ -76,12 +76,15 @@ const useAdvertiserInfo = (id?: string) => {
                 /** When true, the advertiser's real name will be displayed on to other users on adverts and orders. */
                 should_show_name: Boolean(show_name),
             });
+        } else if (error) {
+            setP2PAdvertiserInfo({});
         }
-    }, [data, setP2PAdvertiserInfo]);
+    }, [data, error, setP2PAdvertiserInfo]);
 
     return {
         /** P2P advertiser information */
         data: p2p_advertiser_info,
+        error,
         subscribe,
         ...rest,
     };

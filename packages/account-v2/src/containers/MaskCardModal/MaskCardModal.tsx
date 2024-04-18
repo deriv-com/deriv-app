@@ -19,6 +19,7 @@ export const MaskCardModal = ({ isOpen, onClose }: TMaskCardModal) => {
                 <Text as='p' className='pt-20 pb-24 pr-24 pl-24' size='sm'>
                     Black out digits 7 to 12 of the card number that’s shown on the front of your debit/credit card.⁤
                 </Text>
+                {/*  TODO: Use actual icon once available in Quill */}
                 <SampleCreditCard />
             </Modal.Body>
         </Modal>

@@ -12,11 +12,11 @@
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
-        "@deriv-com/ui": "^1.12.17",
+        "@deriv-com/ui": "^1.14.1",
         "@deriv-com/utils": "^0.0.14",
         "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
-        "@deriv/quill-icons": "^1.21.0",
+        "@deriv/quill-icons": "^1.22.1",
         "@deriv/react-joyride": "^2.6.2",
         "@sendbird/chat": "^4.9.7",
         "@tanstack/react-table": "^8.10.3",

@@ -69,10 +69,15 @@ jobs:
     if: failure()
     needs: [build_test_and_publish]
     steps:
-    - name: Create Slack Message
-      id: create_slack_message
-      run: |
-        echo "MESSAGE=${{ env.RELEASE_TYPE }} Release failed for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
+      - name: Create Slack Message
+        id: create_slack_message
+        run: |
+          echo "MESSAGE=${{ env.RELEASE_TYPE }} Release failed for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
+      - name: Send Slack Notification
+        uses: "./.github/actions/send_slack_notifications"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MESSAGE: ${{ steps.create_slack_message.outputs.MESSAGE }}
 
   send_slack_success:
     name: Send Release Slack notification success
@@ -80,10 +85,15 @@ jobs:
     if: success()
     needs: [build_test_and_publish]
     steps:
-    - name: Create Slack Message
-      id: create_slack_message
-      run: |
-        echo "MESSAGE=${{ env.RELEASE_TYPE }} Release succeeded for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
+      - name: Create Slack Message
+        id: create_slack_message
+        run: |
+          echo "MESSAGE=${{ env.RELEASE_TYPE }} Release succeeded for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
+      - name: Send Slack Notification
+        uses: "./.github/actions/send_slack_notifications"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MESSAGE: ${{ steps.create_slack_message.outputs.MESSAGE }}
 
   build_and_publish_to_docker_k8s:
     name: Build Docker image and push to Docker hub and K8S

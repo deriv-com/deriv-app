@@ -16,10 +16,15 @@ const useGetPasskeysList = () => {
 
     useEffect(() => {
         if (error) {
+            // TODO: remove ts ignore after adding types to Analytics
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             Analytics.trackEvent('ce_passkey_account_settings_form', {
                 action: 'error',
                 form_name: 'ce_passkey_account_settings_form',
                 operating_system: mobileOSDetect(),
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 error_message: error?.message,
             });
         }

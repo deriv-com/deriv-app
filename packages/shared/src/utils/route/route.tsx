@@ -3,7 +3,6 @@
 // TODO: Add test cases for this
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { routes } from '../routes';
 
 export type TRoute = Partial<{
     component: React.ElementType | null | ((routes?: TRoute[]) => JSX.Element) | typeof Redirect;
@@ -40,18 +39,3 @@ export const getSelectedRoute = ({ routes, pathname }: TGetSelectedRoute) => {
 
 export const isRouteVisible = (route: TRoute, is_logged_in: boolean) =>
     !(route && route.is_authenticated && !is_logged_in);
-
-export const removeExactRouteFromRoutes = (routes_array: TRoute[], route_to_remove: keyof typeof routes) => {
-    return routes_array.filter((route: TRoute) => {
-        if (route.path === routes[route_to_remove]) {
-            return false;
-        }
-        if (route.routes) {
-            route.routes = removeExactRouteFromRoutes(route.routes, route_to_remove);
-        }
-        if (route.subroutes) {
-            route.subroutes = removeExactRouteFromRoutes(route.subroutes, route_to_remove);
-        }
-        return true;
-    });
-};

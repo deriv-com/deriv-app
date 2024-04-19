@@ -49,6 +49,8 @@ export namespace TIconTypes {
         dark: TIcon[];
         light: TIcon[];
     };
+
+    export type TIconSize = 'lg' | 'md' | 'sm' | 'xl' | 'xs';
 }
 
 export type DeepNonNullable<T> = NonNullable<

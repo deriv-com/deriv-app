@@ -1,8 +1,7 @@
 import React, { Fragment, useReducer, useRef } from 'react';
 import { Field, Form, Formik, FormikProps } from 'formik';
-import { Button, Checkbox, Modal, Text, TextArea } from '@deriv-com/ui';
+import { Button, Checkbox, Text, TextArea } from '@deriv-com/ui';
 import {
-    ACCOUNT_MODAL_REF,
     accountClosureReasons,
     CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT,
     MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT,
@@ -17,7 +16,6 @@ import { AccountClosureConfirmModal } from './AccountClosureConfirmModal';
 import { AccountClosureSuccessModal } from './AccountClosureSuccessModal';
 
 export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void }) => {
-    Modal.setAppElement(ACCOUNT_MODAL_REF);
     const reasons = accountClosureReasons();
     const validationSchema = getAccountClosureValidationSchema();
 
@@ -74,7 +72,7 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                 {({ dirty, setFieldValue, values }) => (
                     <Form>
                         <section>
-                            <div className='gap-8 flex flex-col my-16'>
+                            <div className='flex flex-col gap-8 my-16'>
                                 {reasons.map(({ label, ref, value }) => (
                                     <Field
                                         as={Checkbox}
@@ -129,7 +127,7 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                                 textSize='sm'
                             />
                         </section>
-                        <section className='mt-24 flex gap-x-16 justify-end'>
+                        <section className='flex justify-end mt-24 gap-x-16'>
                             <Button
                                 color='black'
                                 onClick={handleOnBack}
@@ -140,14 +138,7 @@ export const AccountClosureForm = ({ handleOnBack }: { handleOnBack: () => void 
                             >
                                 Back
                             </Button>
-                            <Button
-                                color='primary'
-                                disabled={!dirty || isReasonNotSelected}
-                                rounded='sm'
-                                size='md'
-                                type='submit'
-                                variant='contained'
-                            >
+                            <Button disabled={!dirty || isReasonNotSelected} rounded='sm' size='md' type='submit'>
                                 Continue
                             </Button>
                         </section>

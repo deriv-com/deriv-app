@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import { Form, Formik } from 'formik';
 import { Checkbox, Text } from '@deriv-com/ui';
+import { LeaveConfirm } from 'src/components/LeaveConfirm';
 import { FormSubHeader } from '../../components/FormSubHeader';
 import { usePersonalDetails } from '../../hooks/usePersonalDetails';
-import { AddressFields } from '../../modules/AddressFields';
+import { AddressFields } from '../../modules/src/AddressFields';
 import { getPersonalDetailsValidationSchema } from '../../utils';
 import { PersonalDetails } from './PersonalDetails';
 import { SupportProfessionalClient } from './SupportProfessionalClient';
@@ -25,6 +26,7 @@ export const PersonalDetailsForm = () => {
             validationSchema={validationSchema}
         >
             <Form>
+                <LeaveConfirm />
                 <FormSubHeader>Details</FormSubHeader>
                 <PersonalDetails />
                 <FormSubHeader>Tax information</FormSubHeader>

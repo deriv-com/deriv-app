@@ -47,16 +47,16 @@ describe('PasskeysStatusContainer', () => {
 
                 if (status === PASSKEY_STATUS_CODES.LEARN_MORE || status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
                     userEvent.click(primary_button);
-                    userEvent.click(secondary_button);
                     expect(createPasskeyMock).toHaveBeenCalled();
+                    userEvent.click(secondary_button);
                     expect(setPasskeyStatusMock).toHaveBeenCalled();
                 }
 
                 if (status === PASSKEY_STATUS_CODES.CREATED) {
                     userEvent.click(primary_button);
+                    expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
                     userEvent.click(secondary_button);
                     expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
-                    expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
                 }
 
                 if (status === PASSKEY_STATUS_CODES.REMOVED) {

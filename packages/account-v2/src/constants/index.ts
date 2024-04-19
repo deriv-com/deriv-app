@@ -7,4 +7,5 @@ export {
 export * from './constants';
 export * from './errorMessages';
 export * from './manualFormConstants';
+export * from './paymentMethodsConfig';
 export * from './routes';

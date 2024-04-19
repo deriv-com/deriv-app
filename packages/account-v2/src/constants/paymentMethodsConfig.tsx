@@ -30,6 +30,16 @@ import { Text } from '@deriv-com/ui';
 
 const iconSize = { height: '40px', width: '64px' };
 
+export const PAYMENT_METHOD_IDENTIFIER = Object.freeze({
+    accountID: 'account_id',
+    accountNumber: 'account_number',
+    bankAccountNumber: 'bank_account_number',
+    cardNumber: 'card_number',
+    email: 'email_address',
+    mobileNumber: 'mobile_number',
+    userID: 'user_id',
+});
+
 export const getPaymentMethodsConfig = () => ({
     advCash: {
         icon: {
@@ -49,7 +59,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodAstropayBrandDarkIcon {...iconSize} />,
             light: <PaymentMethodAstropayBrandIcon {...iconSize} />,
         },
-        identifier: 'account_number',
+        identifier: PAYMENT_METHOD_IDENTIFIER.accountNumber,
         inputLabel: 'Account number',
         instructions: (
             <div key={0}>
@@ -72,7 +82,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodBeyonicBrandIcon {...iconSize} />,
             light: <PaymentMethodBeyonicBrandIcon {...iconSize} />,
         },
-        identifier: 'mobile_number',
+        identifier: PAYMENT_METHOD_IDENTIFIER.mobileNumber,
         inputLabel: 'Mobile number',
         instructions: (
             <Text as='p' key={0} size='xs'>
@@ -85,7 +95,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodBoletoWhiteIcon {...iconSize} />,
             light: <PaymentMethodBoletoBrandIcon {...iconSize} />,
         },
-        identifier: 'bank_account_number',
+        identifier: PAYMENT_METHOD_IDENTIFIER.bankAccountNumber,
         inputLabel: 'Bank account number',
         instructions: (
             <Text as='p' key={0} size='xs'>
@@ -98,7 +108,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodJetonBrandIcon {...iconSize} />,
             light: <PaymentMethodJetonBrandIcon {...iconSize} />,
         },
-        identifier: 'account_number',
+        identifier: PAYMENT_METHOD_IDENTIFIER.accountNumber,
         inputLabel: 'Account number',
         instructions: (
             <Text as='p' size='xs'>
@@ -111,7 +121,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodMastercardBrandDarkIcon {...iconSize} />,
             light: <PaymentMethodMastercardBrandIcon {...iconSize} />,
         },
-        identifier: 'card_number',
+        identifier: PAYMENT_METHOD_IDENTIFIER.cardNumber,
         inputLabel: 'Card number',
         instructions: (
             <Text as='p' key={0} size='xs'>
@@ -126,7 +136,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodNetellerWhiteIcon {...iconSize} />,
             light: <PaymentMethodNetellerBrandIcon {...iconSize} />,
         },
-        identifier: 'email_address',
+        identifier: PAYMENT_METHOD_IDENTIFIER.email,
         inputLabel: 'Email address',
         instructions: (
             <Text as='p' size='xs'>
@@ -139,7 +149,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodOnlinenairaBrandIcon {...iconSize} />,
             light: <PaymentMethodOnlinenairaBrandIcon {...iconSize} />,
         },
-        identifier: 'account_id',
+        identifier: PAYMENT_METHOD_IDENTIFIER.accountID,
         inputLabel: 'Account ID',
         instructions: (
             <ol>
@@ -190,7 +200,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodPixWhiteIcon {...iconSize} />,
             light: <PaymentMethodPixBrandIcon {...iconSize} />,
         },
-        identifier: 'user_id',
+        identifier: PAYMENT_METHOD_IDENTIFIER.userID,
         inputLabel: 'User ID',
         instructions: (
             <div>
@@ -214,7 +224,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodSkrillWhiteIcon {...iconSize} />,
             light: <PaymentMethodSkrillBrandIcon {...iconSize} />,
         },
-        identifier: 'email_address',
+        identifier: PAYMENT_METHOD_IDENTIFIER.email,
         inputLabel: 'Email address',
         instructions: (
             <Text as='p' size='xs'>
@@ -228,7 +238,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodSticpayBrandIcon {...iconSize} />,
             light: <PaymentMethodSticpayBrandIcon {...iconSize} />,
         },
-        identifier: 'email_address',
+        identifier: PAYMENT_METHOD_IDENTIFIER.email,
         inputLabel: 'Email address',
         instructions: (
             <Text as='p' size='xs'>
@@ -241,7 +251,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodVisaWhiteIcon {...iconSize} />,
             light: <PaymentMethodVisaBrandIcon {...iconSize} />,
         },
-        identifier: 'card_number',
+        identifier: PAYMENT_METHOD_IDENTIFIER.cardNumber,
         inputLabel: 'Card number',
         instructions: (
             <Text as='p' size='xs'>
@@ -256,7 +266,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodWebmoneyBrandIcon {...iconSize} />,
             light: <PaymentMethodWebmoneyBrandIcon {...iconSize} />,
         },
-        identifier: 'account_number',
+        identifier: PAYMENT_METHOD_IDENTIFIER.accountNumber,
         inputLabel: 'Account number',
         instructions: (
             <Text as='p' size='xs'>
@@ -270,7 +280,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodZingpayBrandDarkIcon {...iconSize} />,
             light: <PaymentMethodZingpayBrandIcon {...iconSize} />,
         },
-        identifier: 'bank_account_number',
+        identifier: PAYMENT_METHOD_IDENTIFIER.bankAccountNumber,
         inputLabel: 'Bank account number',
         instructions: (
             <Text as='p' size='xs'>

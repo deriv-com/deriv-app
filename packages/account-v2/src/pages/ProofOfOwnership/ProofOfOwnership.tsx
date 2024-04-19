@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useGetAccountStatus } from '@deriv/api-v2';
 import { DerivLightWaitingPoaIcon } from '@deriv/quill-icons';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import { IconWithMessage } from 'src/components';
 import { AUTH_STATUS_CODES } from 'src/constants';
+import { usePaymentMethodDetails } from 'src/hooks';
 import { TAuthStatusCodes } from 'src/types';
 
 export const ProofOfOwnership = () => {
-    const { data, isLoading } = useGetAccountStatus();
+    const { isLoading, ownershipStatus, paymentMethodData } = usePaymentMethodDetails();
 
     const [status, setStatus] = useState<TAuthStatusCodes>();
 
-    const ownership = data?.authentication?.ownership;
-
     useEffect(() => {
-        setStatus(ownership?.status?.toLowerCase() as TAuthStatusCodes);
-    }, [ownership?.status]);
+        setStatus(ownershipStatus as TAuthStatusCodes);
+    }, [ownershipStatus]);
 
     if (isLoading) {
         return <Loader isFullScreen />;
     }
 
-    if (ownership?.requests?.length && status !== AUTH_STATUS_CODES.REJECTED) {
+    if (Object.keys(paymentMethodData)?.length && status !== AUTH_STATUS_CODES.REJECTED) {
         return <div>ProofOfOwnership</div>;
     }
 

@@ -1,8 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { routes } from '@deriv/shared';
 import { getStatusContent, PASSKEY_STATUS_CODES } from '../../passkeys-configs';
 import PasskeysStatusContainer from '../passkeys-status-container';
+
+const mockHistoryPush = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}));
 
 describe('PasskeysStatusContainer', () => {
     const createPasskeyMock = jest.fn();
@@ -42,7 +52,14 @@ describe('PasskeysStatusContainer', () => {
                     expect(setPasskeyStatusMock).toHaveBeenCalled();
                 }
 
-                if (status === PASSKEY_STATUS_CODES.CREATED || status === PASSKEY_STATUS_CODES.REMOVED) {
+                if (status === PASSKEY_STATUS_CODES.CREATED) {
+                    userEvent.click(primary_button);
+                    userEvent.click(secondary_button);
+                    expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
+                    expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
+                }
+
+                if (status === PASSKEY_STATUS_CODES.REMOVED) {
                     userEvent.click(primary_button);
                     expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
                 }

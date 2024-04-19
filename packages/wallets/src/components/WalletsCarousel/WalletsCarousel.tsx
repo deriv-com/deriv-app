@@ -35,7 +35,7 @@ const WalletsCarousel: React.FC = () => {
                 observer.unobserve(currentContentRef);
             }
         };
-    }, [contentRef]);
+    }, []);
 
     return (
         <React.Fragment>

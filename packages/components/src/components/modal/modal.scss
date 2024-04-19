@@ -83,7 +83,7 @@
                 }
             }
         }
-        @include desktop {
+        @include desktop-screen {
             min-width: 440px !important;
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
         }

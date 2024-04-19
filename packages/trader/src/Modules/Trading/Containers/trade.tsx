@@ -69,7 +69,7 @@ const Trade = observer(() => {
     } = ui;
     const { is_eu } = client;
     const { network_status } = common;
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop, isMobile, isTabletPortrait } = useDevice();
 
     const [digits, setDigits] = React.useState<number[]>([]);
     const [tick, setTick] = React.useState<null | TickSpotData>(null);

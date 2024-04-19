@@ -9,6 +9,7 @@ import type { TWebSocket } from 'Types';
 import initStore from './init-store';
 import 'Sass/app.scss';
 import type { TCoreStores } from '@deriv/stores/types';
+import { useDevice } from '@deriv/hooks';
 import TraderProviders from '../trader-providers';
 
 type Apptypes = {
@@ -25,13 +26,14 @@ const TradeModals = Loadable({
 
 const App = ({ passthrough }: Apptypes) => {
     const root_store = initStore(passthrough.root_store, passthrough.WS);
+    const { isTabletPortrait } = useDevice();
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, [root_store]);
 
     React.useEffect(() => {
         const landscapeBlockerElement = document.querySelector('.landscape-blocker');
-        if (landscapeBlockerElement) {
+        if (landscapeBlockerElement && !isTabletPortrait) {
             landscapeBlockerElement.classList.add('landscape-blocker--hidden');
         }
 
@@ -40,7 +42,7 @@ const App = ({ passthrough }: Apptypes) => {
                 landscapeBlockerElement.classList.remove('landscape-blocker--hidden');
             }
         };
-    }, []);
+    }, [isTabletPortrait]);
 
     return (
         <TraderProviders store={root_store}>

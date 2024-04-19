@@ -138,10 +138,8 @@
         display: none;
     }
 
-    @include mobile {
-        @media screen and (max-aspect-ratio: 13/9) {
-            display: none;
-        }
+    @include mobile-screen {
+        display: none;
     }
 }
 

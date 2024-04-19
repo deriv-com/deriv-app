@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
+import { useDevice } from '@deriv/hooks';
 import AccountSwitcher from 'App/Containers/AccountSwitcher';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
 import AccountInfoWrapper from './account-info-wrapper';
@@ -27,6 +28,7 @@ const AccountInfo = ({
     is_mobile,
 }) => {
     const currency_lower = currency?.toLowerCase();
+    const { isDesktop } = useDevice();
 
     return (
         <div className='acc-info__wrapper'>
@@ -47,14 +49,13 @@ const AccountInfo = ({
                     onClick={is_disabled ? undefined : () => toggleDialog()}
                 >
                     <span className='acc-info__id'>
-                        <DesktopWrapper>
+                        {isDesktop ? (
                             <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            {(is_virtual || currency) && (
+                        ) : (
+                            (is_virtual || currency) && (
                                 <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
-                            )}
-                        </MobileWrapper>
+                            )
+                        )}
                     </span>
                     {(typeof balance !== 'undefined' || !currency) && (
                         <div className='acc-info__account-type-and-balance'>
@@ -90,15 +91,7 @@ const AccountInfo = ({
                     )}
                 </div>
             </AccountInfoWrapper>
-            <MobileWrapper>
-                <AccountSwitcherMobile
-                    is_visible={is_dialog_on}
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    toggle={toggleDialog}
-                />
-            </MobileWrapper>
-            <DesktopWrapper>
+            {isDesktop ? (
                 <CSSTransition
                     in={is_dialog_on}
                     timeout={200}
@@ -113,7 +106,14 @@ const AccountInfo = ({
                         <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
                     </div>
                 </CSSTransition>
-            </DesktopWrapper>
+            ) : (
+                <AccountSwitcherMobile
+                    is_visible={is_dialog_on}
+                    disableApp={disableApp}
+                    enableApp={enableApp}
+                    toggle={toggleDialog}
+                />
+            )}
         </div>
     );
 };

@@ -5,17 +5,17 @@ import APIProvider from '../APIProvider';
 import AuthProvider from '../AuthProvider';
 import useMutation from '../useMutation';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    useWS: () => ({
-        send: jest.fn(() =>
-            Promise.resolve<TSocketResponse<'verify_email'>>({
-                msg_type: 'verify_email',
-                verify_email: 1,
-                echo_req: {},
-            })
-        ),
-    }),
+jest.mock('../ws-client/request', () => ({
+    __esModule: true,
+    default: jest.fn(() =>
+        Promise.resolve<TSocketResponse<'verify_email'>>({
+            msg_type: 'verify_email',
+            verify_email: 1,
+            echo_req: {
+                req_id: 1,
+            },
+        })
+    ),
 }));
 
 describe('useMutation', () => {

@@ -5,18 +5,16 @@ import APIProvider from '../APIProvider';
 import AuthProvider from '../AuthProvider';
 import useQuery from '../useQuery';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    useWS: () => ({
-        send: jest.fn(() =>
-            Promise.resolve<TSocketResponse<'ping'>>({
-                msg_type: 'ping',
-                ping: 'pong',
-                echo_req: {},
-            })
-        ),
-        subscribe: jest.fn(),
-    }),
+jest.mock('../ws-client/request', () => ({
+    __esModule: true,
+    default: jest.fn(() =>
+        Promise.resolve<TSocketResponse<'ping'>>({
+            msg_type: 'ping',
+            ping: 'pong',
+            echo_req: {},
+            req_id: 1,
+        })
+    ),
 }));
 
 describe('useQuery', () => {

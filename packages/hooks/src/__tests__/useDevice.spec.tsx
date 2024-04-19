@@ -30,4 +30,13 @@ describe('useDevice', () => {
         expect(result.current.isDesktop).toBe(false);
         expect(result.current.isMobile).toBe(false);
     });
+
+    it('should correctly identify a tablet device in portrait mode', () => {
+        mockWindowSize.mockReturnValue({ width: 768, height: 1024 });
+        const { result } = renderHook(() => useDevice());
+        expect(result.current.isTabletPortrait).toBe(true);
+        expect(result.current.isDesktop).toBe(false);
+        expect(result.current.isMobile).toBe(false);
+        expect(result.current.isTablet).toBe(true);
+    });
 });

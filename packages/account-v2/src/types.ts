@@ -27,7 +27,7 @@ export type TPaymentMethodIdentifier = typeof PAYMENT_METHOD_IDENTIFIER[keyof ty
 export type TPaymentMethodInfo = {
     documentsRequired?: number;
     icon: JSX.Element;
-    identifier: TPaymentMethodIdentifier | '';
+    identifier: TPaymentMethodIdentifier | 'none';
     inputLabel: string | null;
     instructions: JSX.Element;
     isGenericPM: boolean;

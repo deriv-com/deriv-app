@@ -46,7 +46,7 @@ export const getPaymentMethodsConfig = () => ({
             dark: <PaymentMethodAdvcashBrandDarkIcon {...iconSize} />,
             light: <PaymentMethodAdvcashBrandIcon {...iconSize} />,
         },
-        identifier: 'email_address',
+        identifier: PAYMENT_METHOD_IDENTIFIER.email,
         inputLabel: 'Email address',
         instructions: (
             <Text as='p' size='xs'>
@@ -62,7 +62,7 @@ export const getPaymentMethodsConfig = () => ({
         identifier: PAYMENT_METHOD_IDENTIFIER.accountNumber,
         inputLabel: 'Account number',
         instructions: (
-            <div key={0}>
+            <div>
                 <Text size='xs'>
                     Upload 2 separate screenshots from the personal details page and the account page via{' '}
                 </Text>
@@ -85,7 +85,7 @@ export const getPaymentMethodsConfig = () => ({
         identifier: PAYMENT_METHOD_IDENTIFIER.mobileNumber,
         inputLabel: 'Mobile number',
         instructions: (
-            <Text as='p' key={0} size='xs'>
+            <Text as='p' size='xs'>
                 Upload your mobile bill statement showing your name and phone number.
             </Text>
         ),
@@ -98,7 +98,7 @@ export const getPaymentMethodsConfig = () => ({
         identifier: PAYMENT_METHOD_IDENTIFIER.bankAccountNumber,
         inputLabel: 'Bank account number',
         instructions: (
-            <Text as='p' key={0} size='xs'>
+            <Text as='p' size='xs'>
                 Upload your bank statement showing your name and account details.
             </Text>
         ),
@@ -124,7 +124,7 @@ export const getPaymentMethodsConfig = () => ({
         identifier: PAYMENT_METHOD_IDENTIFIER.cardNumber,
         inputLabel: 'Card number',
         instructions: (
-            <Text as='p' key={0} size='xs'>
+            <Text as='p' size='xs'>
                 Upload a photo showing your name and the first six and last four digits of your card number. If the card
                 does not display your name, upload the bank statement showing your name and card number in the
                 transaction history.

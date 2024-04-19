@@ -6,6 +6,8 @@ import {
     WS,
     Jurisdiction,
     JURISDICTION_MARKET_TYPES,
+    setPerformanceValue,
+    startPerformanceEventTimer,
 } from '@deriv/shared';
 import BaseStore from '../../base-store';
 
@@ -295,6 +297,8 @@ export default class CFDStore extends BaseStore {
                 this.demoCFDSignup();
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
+            startPerformanceEventTimer('create_ctrader_account_time');
+
             this.setJurisdictionSelectedShortcode('svg');
             if (this.account_type.category === 'demo') {
                 this.setIsAccountBeingCreated(true);
@@ -305,6 +309,7 @@ export default class CFDStore extends BaseStore {
                 market_type: this.account_type.type,
                 company: this.jurisdiction_selected_shortcode,
             };
+
             const response = await this.openCFDAccount(account_creation_values);
             if (!response.error) {
                 this.setError(false);
@@ -322,6 +327,7 @@ export default class CFDStore extends BaseStore {
                 );
                 this.setCFDSuccessDialog(true);
                 this.setIsAccountBeingCreated(false);
+                setPerformanceValue('create_ctrader_account_time');
             } else {
                 this.setError(true, response.error);
                 this.setIsAccountBeingCreated(false);
@@ -593,6 +599,8 @@ export default class CFDStore extends BaseStore {
     }
 
     async submitMt5Password(values, actions) {
+        startPerformanceEventTimer('create_mt5_account_time');
+
         if (this.root_store.client.is_mt5_password_not_set) {
             const has_error = await this.creatMT5Password(values, actions);
             if (has_error) return;
@@ -617,6 +625,7 @@ export default class CFDStore extends BaseStore {
                 WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
                 this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
                 this.setCFDNewAccount(response.mt5_new_account);
+                setPerformanceValue('create_mt5_account_time');
             } else {
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
                 this.setError(true, response.error);
@@ -644,6 +653,8 @@ export default class CFDStore extends BaseStore {
     }
 
     async submitCFDPassword(values, actions) {
+        startPerformanceEventTimer('create_dxtrade_account_time');
+
         if (CFD_PLATFORMS.DXTRADE && this.root_store.client.is_dxtrade_password_not_set) {
             const has_error = await this.createCFDPassword(values, actions);
             if (has_error) return;
@@ -671,6 +682,7 @@ export default class CFDStore extends BaseStore {
 
         WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
         this.setCFDNewAccount(response.trading_platform_new_account);
+        setPerformanceValue('create_dxtrade_account_time');
     }
 
     toggleCompareAccountsModal() {

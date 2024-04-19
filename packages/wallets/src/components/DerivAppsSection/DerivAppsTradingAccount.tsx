@@ -1,8 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useBalance } from '@deriv/api-v2';
+import { LabelPairedArrowsRotateSmBoldIcon, LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import { WalletButton, WalletText } from '../Base';
+import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletResponsiveSvg } from '../WalletResponsiveSvg';
 
@@ -34,17 +35,22 @@ const DerivAppsTradingAccount: React.FC = () => {
                     {activeLinkedToTradingAccount?.loginid}
                 </WalletText>
             </div>
-            <WalletButton
-                color='white'
+            <button
+                className='wallets-deriv-apps-section__button'
                 onClick={() => {
-                    history.push('/wallets/cashier/transfer', {
-                        toAccountLoginId: activeLinkedToTradingAccount?.loginid,
-                    });
+                    activeWallet?.is_virtual
+                        ? history.push('/wallets/cashier/reset-balance')
+                        : history.push('/wallets/cashier/transfer', {
+                              toAccountLoginId: activeLinkedToTradingAccount?.loginid,
+                          });
                 }}
-                variant='outlined'
             >
-                Transfer
-            </WalletButton>
+                {activeWallet?.is_virtual ? (
+                    <LabelPairedArrowsRotateSmBoldIcon />
+                ) : (
+                    <LabelPairedArrowUpArrowDownSmBoldIcon />
+                )}
+            </button>
         </div>
     );
 };

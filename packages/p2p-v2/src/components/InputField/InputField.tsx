@@ -172,7 +172,7 @@ const InputField = ({ decimalPointChange, isError, name = '', onBlur, onChange, 
                         variant='outlined'
                         {...getPressEvents(decrementValue)}
                     >
-                        <LabelPairedMinusSmBoldIcon />
+                        <LabelPairedMinusSmBoldIcon data-testid='dt_p2p_v2_input_field_decrement' />
                     </Button>
                 }
                 onBlur={onBlur}
@@ -187,7 +187,7 @@ const InputField = ({ decimalPointChange, isError, name = '', onBlur, onChange, 
                         variant='outlined'
                         {...getPressEvents(incrementValue)}
                     >
-                        <LabelPairedPlusSmBoldIcon />
+                        <LabelPairedPlusSmBoldIcon data-testid='dt_p2p_v2_input_field_increment' />
                     </Button>
                 }
                 value={value}

@@ -1,15 +1,9 @@
 import React, { ChangeEvent, FocusEvent, useEffect } from 'react';
 import clsx from 'clsx';
-import {
-    formatMoney,
-    mobileOSDetect,
-    percentOf,
-    removeTrailingZeros,
-    roundOffDecimal,
-    setDecimalPlaces,
-} from '@/utils';
+import { mobileOSDetect, percentOf, removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from '@/utils';
 import { p2p, useExchangeRateSubscription } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
+import { FormatUtils } from '@deriv-com/utils';
 import InputField from '../InputField';
 import './FloatingRate.scss';
 
@@ -92,7 +86,13 @@ const FloatingRate = ({
                         color='prominent'
                         size={isMobile ? 'sm' : 'xs'}
                     >
-                        1 {fiatCurrency} = {removeTrailingZeros(formatMoney(localCurrency, marketRate, true, 6))}
+                        1 {fiatCurrency} ={' '}
+                        {removeTrailingZeros(
+                            FormatUtils.formatMoney(marketRate, {
+                                currency: localCurrency,
+                                decimalPlaces: decimalPlace,
+                            })
+                        )}
                     </Text>
                 </div>
             </div>
@@ -115,7 +115,10 @@ const FloatingRate = ({
                 >
                     Your rate is ={' '}
                     {removeTrailingZeros(
-                        formatMoney(localCurrency, roundOffDecimal(marketFeed, decimalPlace), true, decimalPlace)
+                        FormatUtils.formatMoney(Number(roundOffDecimal(marketFeed, decimalPlace)), {
+                            currency: localCurrency,
+                            decimalPlaces: decimalPlace,
+                        })
                     )}{' '}
                     {localCurrency}
                 </Text>

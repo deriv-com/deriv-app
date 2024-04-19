@@ -98,9 +98,9 @@ jest.mock('@deriv/api-v2', () => ({
 jest.mock('@/components/Modals', () => ({
     AdErrorTooltipModal: () => <div>AdErrorTooltipModal</div>,
     AdRateSwitchModal: () => <div>AdRateSwitchModal</div>,
+    ErrorModal: () => <div>ErrorModal</div>,
     MyAdsDeleteModal: () => <div>MyAdsDeleteModal</div>,
     ShareAdsModal: () => <div>ShareAdsModal</div>,
-    ErrorModal: () => <div>ErrorModal</div>,
 }));
 
 jest.mock('../MyAdsTableRow', () => {

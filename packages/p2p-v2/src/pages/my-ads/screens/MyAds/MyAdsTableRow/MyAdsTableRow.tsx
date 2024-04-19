@@ -3,9 +3,10 @@ import clsx from 'clsx';
 import { PaymentMethodLabel, PopoverDropdown } from '@/components';
 import { AD_ACTION, ADVERT_TYPE, RATE_TYPE } from '@/constants';
 import { useFloatingRate } from '@/hooks';
-import { formatMoney, generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
+import { generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
 import { useExchangeRateSubscription } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
+import { FormatUtils } from '@deriv-com/utils';
 import { AdStatus, AdType, AlertComponent, ProgressIndicator } from '../../../components';
 import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';
 import './MyAdsTableRow.scss';
@@ -129,7 +130,8 @@ const MyAdsTableRow = ({ currentRateType, showModal, ...rest }: TMyAdsTableProps
                 </div>
                 <div className='p2p-v2-my-ads-table-row__line-details'>
                     <Text color='success' size='sm'>
-                        {`${formatMoney(accountCurrency, amountDealt, true)}`} {accountCurrency}&nbsp;
+                        {`${FormatUtils.formatMoney(amountDealt, { currency: accountCurrency })}`} {accountCurrency}
+                        &nbsp;
                         {advertType === 'Buy' ? 'Bought' : 'Sold'}
                     </Text>
                     <Text color='less-prominent' size='sm'>

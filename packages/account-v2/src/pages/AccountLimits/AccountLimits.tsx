@@ -4,11 +4,12 @@ import { StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
 import { Loader, Table, Text } from '@deriv-com/ui';
 import { getAccountLimitValues } from '../../utils/accountLimitsUtils';
 
-const RenderTable = ({ row }: any) => (
+const RenderRow = ({ row }: any) => (
     <div className='grid grid-flow-col justify-between'>
         <div>
             {row.title && (
                 <Text
+                    className={row.isSubCategory ? 'px-16' : ''}
                     color={row.isLessProminent ? 'less-prominent' : 'general'}
                     size={row.isFooter ? 'xs' : 'sm'}
                     weight={row.isHeader ? 'bold' : ''}
@@ -45,20 +46,7 @@ export const AccountLimits = () => {
                         isFetching={false}
                         //eslint-disable-next-line
                         loadMoreFunction={() => {}}
-                        rowRender={row => (
-                            <>
-                                <RenderTable row={row} />
-                                {row.subCategory && (
-                                    <Table
-                                        data={row.subCategory}
-                                        isFetching={false}
-                                        //eslint-disable-next-line
-                                        loadMoreFunction={() => {}}
-                                        rowRender={subCategoryRow => <RenderTable row={subCategoryRow} />}
-                                    />
-                                )}
-                            </>
-                        )}
+                        rowRender={row => <RenderRow row={row} />}
                     />
                 </React.Fragment>
             ))}

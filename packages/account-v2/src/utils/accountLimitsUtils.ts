@@ -47,36 +47,38 @@ export const getMaximumDailyLimiitsTableData = () => [
         value: 'open_positions',
     },
     {
-        subCategory: [
-            {
-                title: 'Major pairs',
-                value: '10',
-            },
-            {
-                title: 'Minor Pairs',
-                value: '10',
-            },
-        ],
         title: 'Forex',
         value: 'Not set',
     },
+    {
+        isSubCategory: true,
+        title: 'Major pairs',
+        value: '10',
+    },
+    {
+        isSubCategory: true,
+        title: 'Minor Pairs',
+        value: '10',
+    },
+
     {
         title: 'Stock Indices',
         value: '0.00',
     },
     {
-        subCategory: [
-            {
-                title: 'Commodities Basket',
-                value: 'ss',
-            },
-            {
-                title: 'Forex Basket',
-                value: '',
-            },
-        ],
         title: 'Forex',
         value: 'Not set',
+    },
+
+    {
+        isSubCategory: true,
+        title: 'Commodities Basket',
+        value: 'ss',
+    },
+    {
+        isSubCategory: true,
+        title: 'Forex Basket',
+        value: '',
     },
 ];
 

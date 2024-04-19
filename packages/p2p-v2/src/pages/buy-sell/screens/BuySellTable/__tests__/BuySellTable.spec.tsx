@@ -52,6 +52,10 @@ jest.mock('@deriv/api-v2', () => ({
             })),
         },
     },
+    useExchangeRateSubscription: jest.fn(() => ({
+        data: { exchange_rates: { USD: 1.2 } },
+        subscribe: jest.fn(),
+    })),
 }));
 
 jest.mock('@deriv-com/ui', () => ({

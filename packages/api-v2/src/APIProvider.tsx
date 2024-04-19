@@ -1,13 +1,7 @@
 import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { getAppId, getSocketURL } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import {
-    TSocketEndpointNames,
-    TSocketError,
-    TSocketRequestPayload,
-    TSocketResponseData,
-    TSocketSubscribableEndpointNames,
-} from '../types';
+import { TSocketRequestPayload, TSocketResponseData, TSocketSubscribableEndpointNames } from '../types';
 import { hashObject } from './utils';
 import WSClient from './ws-client/ws-client';
 

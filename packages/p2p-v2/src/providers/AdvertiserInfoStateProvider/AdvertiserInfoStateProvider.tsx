@@ -15,6 +15,9 @@ type TAdvertiserInfoStateProviderProps = {
     value: TContextValue;
 };
 
+/**
+ * A provider that contains the state of the current logged in user's advertiser info.
+ */
 export const AdvertiserInfoStateProvider = ({
     children,
     value,
@@ -22,4 +25,8 @@ export const AdvertiserInfoStateProvider = ({
     <AdvertiserInfoStateContext.Provider value={value}>{children}</AdvertiserInfoStateContext.Provider>
 );
 
+/**
+ * Custom hook to access the current logged in user's advertiser info state.
+ * @returns {TContextValue} The current logged in user's advertiser info state.
+ */
 export const useAdvertiserInfoState = (): TContextValue => useContext(AdvertiserInfoStateContext);

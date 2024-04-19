@@ -10,7 +10,7 @@
     background-color: var(--general-main-1);
 
     @include mobile {
-        height: fit-content;
+        height: 64px;
         position: absolute;
         overflow-y: auto;
         inset-inline-start: 4rem;

@@ -71,12 +71,17 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         initDatadog(tracking_datadog);
     }, [tracking_datadog]);
 
-    // intentionally switch the user with wallets to light mode
+    // intentionally switch the user with wallets to light mode and EN language
     React.useLayoutEffect(() => {
         if (has_wallet) {
-            store.ui.setDarkMode(false);
+            if (store.ui.is_dark_mode_on) {
+                store.ui.setDarkMode(false);
+            }
+            if (store.common.current_language !== 'EN') {
+                store.common.changeSelectedLanguage('EN');
+            }
         }
-    }, [has_wallet, store.ui]);
+    }, [has_wallet, store.common, store.ui]);
 
     return (
         <PlatformContainer>

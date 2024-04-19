@@ -1,6 +1,4 @@
 import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
-// @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
-import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -15,12 +13,12 @@ import WSClient from './ws-client/ws-client';
 
 type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
     name: T,
-    payload?: TSocketRequestPayload<T>
+    payload: TSocketRequestPayload<T> | undefined
 ) => Promise<{
     id: string;
     subscription: {
         unsubscribe: () => void;
-        subscribe: (onData: (response: TSocketResponseData<T>) => void) => { unsubscribe: () => void };
+        subscribe: (onData: (response: TSocketResponseData<TSocketSubscribableEndpointNames>) => void) => void;
     };
 }>;
 
@@ -54,7 +52,7 @@ const APIContext = createContext<APIContextData | null>(null);
  * without causing race conditions with deriv-app core stores.
  * @returns {derivAPIRefBasic} The initialized derivAPIRef instance.
  */
-const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAPIBasic => {
+const initializeConnection = (onWSClose: () => void, onOpen?: () => void): WebSocket => {
     const wss_url = getWebSocketURL();
 
     const connection = new WebSocket(wss_url);
@@ -66,9 +64,7 @@ const initializeDerivAPI = (onWSClose: () => void, onOpen?: () => void): DerivAP
         onOpen?.();
     });
 
-    const result = new DerivAPIBasic({ connection });
-
-    return result;
+    return connection;
 };
 
 /**
@@ -80,10 +76,13 @@ type TAPIProviderProps = {
     standalone?: boolean;
 };
 
+type SubscribeReturnType = ReturnType<TSubscribeFunction>; // This captures the entire return type of TSubscribeFunction
+type UnwrappedSubscription = Awaited<SubscribeReturnType>;
+
 const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
-    const derivAPIRef = useRef<DerivAPIBasic>();
-    const subscriptionsRef = useRef<Record<string, DerivAPIBasic['subscribe']>>();
+    const connectionRef = useRef<WebSocket>();
+    const subscriptionsRef = useRef<Record<string, UnwrappedSubscription['subscription']>>();
     const reactQueryRef = useRef<QueryClient>();
 
     // on reconnected ref
@@ -104,8 +103,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     }
 
     // have to be here and not inside useEffect as there are places in code expecting this to be available
-    if (!derivAPIRef.current) {
-        derivAPIRef.current = initializeDerivAPI(
+    if (!connectionRef.current) {
+        connectionRef.current = initializeConnection(
             () => setReconnect(true),
             () => {
                 isOpenRef.current = true;
@@ -118,12 +117,12 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     }
 
     if (!wsClientRef.current) {
-        wsClientRef.current = new WSClient(derivAPIRef.current.connection);
+        wsClientRef.current = new WSClient(connectionRef.current);
     }
 
     useEffect(() => {
         return () => {
-            derivAPIRef.current.disconnect();
+            connectionRef.current?.close();
             reactQueryRef.current?.clear();
         };
     }, []);
@@ -147,10 +146,12 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
         const { payload: _payload } = payload ?? {};
 
-        const result = {
+        const result: Awaited<ReturnType<TSubscribeFunction>> = {
             id,
             subscription: {
-                subscribe: (onData: (response: TSocketResponseData<TSocketSubscribableEndpointNames>) => void) => {
+                subscribe: async (
+                    onData: (response: TSocketResponseData<TSocketSubscribableEndpointNames>) => void
+                ) => {
                     return wsClientRef.current?.subscribe(name, _payload, onData);
                 },
                 unsubscribe: () => {
@@ -169,7 +170,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     };
 
     useEffect(() => {
-        const currentDerivAPIRef = derivAPIRef.current;
         const currentSubscriptionsRef = subscriptionsRef.current;
 
         return () => {
@@ -178,22 +178,24 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                     currentSubscriptionsRef[key].unsubscribe();
                 });
             }
-            if (currentDerivAPIRef && currentDerivAPIRef.connection.readyState === 1) currentDerivAPIRef.disconnect();
+
+            connectionRef.current?.close();
         };
     }, []);
 
     useEffect(() => {
-        const interval_id: ReturnType<typeof setInterval> = setInterval(
-            () => derivAPIRef.current?.send({ ping: 1 }),
-            10000
-        );
+        const interval_id: ReturnType<typeof setInterval> = setInterval(() => {
+            if (wsClientRef.current) {
+                wsClientRef.current.request('ping');
+            }
+        }, 10000);
         return () => clearInterval(interval_id);
     }, []);
 
     useEffect(() => {
         let reconnectTimerId: NodeJS.Timeout;
         if (reconnect) {
-            derivAPIRef.current = initializeDerivAPI(
+            connectionRef.current = initializeConnection(
                 () => {
                     reconnectTimerId = setTimeout(() => setReconnect(true), 500);
                 },
@@ -217,7 +219,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 queryClient: reactQueryRef.current,
                 setOnReconnected,
                 setOnConnected,
-                connection: derivAPIRef.current?.connection,
+                connection: connectionRef.current,
                 wsClient: wsClientRef.current,
             }}
         >

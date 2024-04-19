@@ -154,7 +154,7 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    {(featureFlagValue && no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user) ? (
+                    {featureFlagValue && ((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)) ? (
                         <Suspense fallback={<div />}>
                             <DerivRealAccountBanner />
                         </Suspense>

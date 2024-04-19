@@ -1,0 +1,65 @@
+.phone-verification {
+    &__redirect_button {
+        display: flex;
+        align-items: center;
+
+        &--text {
+            padding-inline-start: 1.6rem;
+        }
+
+        &--icon {
+            cursor: pointer;
+        }
+
+        @include mobile {
+            margin-top: 1.6rem;
+            padding-inline-start: 1.6rem;
+        }
+    }
+
+    &__card {
+        width: 60rem;
+        height: 60rem;
+        border: 1px solid var(--core-color-solid-slate-100, #ebecef);
+        border-radius: 2 * $BORDER_RADIUS;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.6rem;
+        margin-top: 2.4rem;
+
+        .dc-input {
+            width: 60%;
+            margin-top: 2.4rem;
+        }
+
+        &--buttons_container {
+            width: 100%;
+            display: flex;
+            gap: 1.6rem;
+            margin-top: 0.8rem;
+
+            .quill-button {
+                height: auto;
+                padding: 1.2rem 0;
+            }
+
+            @include mobile {
+                flex-direction: column;
+                position: fixed;
+                padding: 0 1.6rem;
+                bottom: 1.6rem;
+            }
+        }
+
+        @include mobile {
+            width: 100vw;
+            border: none;
+            margin-top: 0.8rem;
+
+            .dc-input {
+                width: 100%;
+            }
+        }
+    }
+}

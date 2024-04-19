@@ -30,6 +30,7 @@
         "@binary-com/binary-document-uploader": "^2.4.8",
         "@deriv/api-types": "^1.0.172",
         "@deriv/api": "^1.0.0",
+        "@deriv-com/quill-ui": "^1.7.8",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/integration": "1.0.0",

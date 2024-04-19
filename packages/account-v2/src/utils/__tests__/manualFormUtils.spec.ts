@@ -1,4 +1,4 @@
-import { MANUAL_DOCUMENT_TYPES } from '../../constants/manualFormConstants';
+import { MANUAL_DOCUMENT_TYPES } from '../../constants';
 import { getManualFormValidationSchema } from '../manualFormUtils';
 
 describe('getManualFormValidationSchema', () => {

@@ -49,13 +49,14 @@ const useAPI = () => {
             return {
                 subscribe(onData: (response: any) => void, onError: (response: any) => void) {
                     const subscribeResponse = wsClient?.subscribe(name, payload, onData);
+                    const unsubscribe = () => {
+                        return subscribeResponse?.then(response => {
+                            return response.unsubscribe?.();
+                        });
+                    };
 
                     return {
-                        unsubscribe: () => {
-                            subscribeResponse?.then(response => {
-                                response.unsubscribe?.();
-                            });
-                        },
+                        unsubscribe,
                     };
                 },
             };

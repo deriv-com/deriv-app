@@ -37,7 +37,7 @@ describe('SubscriptionsManager', () => {
         );
         await subscriptionPromise;
 
-        await mockWs.respondFromServer(
+        mockWs.respondFromServer(
             JSON.stringify({ data: 'updated data', req_id: 1, subscription: { id: 'SUBSCRIPTION_ID' } })
         );
 
@@ -164,13 +164,13 @@ describe('SubscriptionsManager', () => {
         // now, if we send an update, onData should not be called
         // I'm sending 3 updates for 3 different req_ids
         // just to really make sure that there are no hanging listeners triggering onData
-        await mockWs.respondFromServer(
+        mockWs.respondFromServer(
             JSON.stringify({ data: 'updated data', req_id: 1, subscription: { id: 'SUBSCRIPTION_ID' } })
         );
-        await mockWs.respondFromServer(
+        mockWs.respondFromServer(
             JSON.stringify({ data: 'updated data', req_id: 2, subscription: { id: 'SUBSCRIPTION_ID' } })
         );
-        await mockWs.respondFromServer(
+        mockWs.respondFromServer(
             JSON.stringify({ data: 'updated data', req_id: 3, subscription: { id: 'SUBSCRIPTION_ID' } })
         );
 
@@ -197,7 +197,7 @@ describe('SubscriptionsManager', () => {
         await unsubscribePromise;
 
         // now updates should be received only by onData2
-        await mockWs.respondFromServer(
+        mockWs.respondFromServer(
             JSON.stringify({ data: 'updated data', req_id: 1, subscription: { id: 'SUBSCRIPTION_ID' } })
         );
 

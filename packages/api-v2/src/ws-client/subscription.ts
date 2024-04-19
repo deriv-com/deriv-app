@@ -52,7 +52,7 @@ export default class Subscription {
         await request(this.ws, 'forget', { forget: this.subscriptionId });
     }
 
-    async onWsClose() {
+    onWsClose() {
         this.ws.removeEventListener('message', this.boundOnWsMessage);
         this.ws.removeEventListener('close', this.boundOnWsClose);
     }

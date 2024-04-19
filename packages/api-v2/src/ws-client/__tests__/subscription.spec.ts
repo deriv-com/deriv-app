@@ -128,7 +128,7 @@ describe('Subscription', () => {
 
         // Simulate server response with different req_id
         const fakeBadResponse = {
-            req_id: +(backendSubscription.reqId || 1) + 3,
+            req_id: +(backendSubscription.reqId ?? 1) + 3,
             data: 'test data 2',
             subscription: { id: 'SUBSCRIPTION_ID' },
         };

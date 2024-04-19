@@ -19,7 +19,7 @@ import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractDrawerCard from './contract-drawer-card';
 import { SwipeableContractAudit } from './swipeable-components';
 import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TContractDrawerCardProps = React.ComponentProps<typeof ContractDrawerCard>;
 type TContractDrawerProps = RouteComponentProps & {

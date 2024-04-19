@@ -6,7 +6,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>

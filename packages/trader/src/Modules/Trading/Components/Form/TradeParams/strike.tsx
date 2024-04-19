@@ -8,7 +8,7 @@ import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const Strike = observer(() => {
     const { ui, common } = useStore();

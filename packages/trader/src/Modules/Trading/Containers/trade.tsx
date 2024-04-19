@@ -11,7 +11,7 @@ import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-over
 import { ChartTopWidgets, DigitsWidget } from './chart-widgets';
 import FormLayout from '../Components/Form/form-layout';
 import TradeChart from './trade-chart';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 export type TBottomWidgetsParams = {
     digits: number[];
@@ -69,7 +69,7 @@ const Trade = observer(() => {
     } = ui;
     const { is_eu } = client;
     const { network_status } = common;
-    const { isDesktop, isMobile, isTabletPortrait } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
 
     const [digits, setDigits] = React.useState<number[]>([]);
     const [tick, setTick] = React.useState<null | TickSpotData>(null);

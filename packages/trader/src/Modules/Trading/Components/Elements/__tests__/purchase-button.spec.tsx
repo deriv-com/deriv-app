@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PurchaseButton from '../purchase-button';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const default_mocked_props: React.ComponentProps<typeof PurchaseButton> = {
     basis: '',
@@ -47,8 +47,8 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseButton> = {
     type: CONTRACT_TYPES.VANILLA.CALL,
 };
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 jest.mock('@deriv/components', () => ({

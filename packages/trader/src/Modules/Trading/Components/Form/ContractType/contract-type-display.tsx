@@ -4,7 +4,7 @@ import { Icon } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories';
 import { findContractCategory } from '../../../Helpers/contract-type';
 import { TContractCategory, TContractType, TList } from './types';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TDisplay = {
     is_open: boolean;

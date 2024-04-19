@@ -1,7 +1,8 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
-import { useDevice, useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';

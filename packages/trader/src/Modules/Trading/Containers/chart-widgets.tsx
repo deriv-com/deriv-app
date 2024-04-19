@@ -6,7 +6,7 @@ import TopWidgets from '../../SmartChart/Components/top-widgets';
 import { symbolChange } from '../../SmartChart/Helpers/symbol';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TDigits = React.ComponentProps<typeof Digits>;
 

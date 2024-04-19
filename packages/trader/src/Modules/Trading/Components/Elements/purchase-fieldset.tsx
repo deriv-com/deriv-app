@@ -6,7 +6,7 @@ import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TPurchaseFieldset = {
     basis: string;

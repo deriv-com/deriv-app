@@ -7,7 +7,7 @@ import { ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 

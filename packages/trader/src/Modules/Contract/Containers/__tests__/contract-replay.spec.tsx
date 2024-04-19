@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import ContractReplay from '../contract-replay';
 import { Router } from 'react-router-dom';
 import { mockStore } from '@deriv/stores';
@@ -10,6 +10,10 @@ import { createMemoryHistory } from 'history';
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 

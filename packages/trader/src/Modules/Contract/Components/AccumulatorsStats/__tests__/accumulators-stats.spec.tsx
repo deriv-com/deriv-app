@@ -4,7 +4,7 @@ import AccumulatorsStats, { ROW_SIZES } from '../accumulators-stats';
 import { TraderProviders } from '../../../../../trader-providers';
 import { mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const mock_connect_props = {
     modules: {
@@ -23,8 +23,8 @@ jest.mock('@deriv/shared', () => ({
     getUrlBase: jest.fn(() => 'video_src.mp4'),
 }));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isDesktop: true, isMobile: false })),
 }));
 

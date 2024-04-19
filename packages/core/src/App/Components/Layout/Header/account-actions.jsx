@@ -8,7 +8,7 @@ import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
 import { BinaryLink } from '../../Routes';
 import 'Sass/app/_common/components/account-switcher.scss';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const AccountInfo = React.lazy(() =>
     moduleLoader(() =>

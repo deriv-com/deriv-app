@@ -12,7 +12,7 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TradersHubHomeButton from './traders-hub-home-button';
 import HeaderAccountActions from './header-account-actions';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const DTraderHeader = observer(() => {
     const { client, common, ui, notifications, traders_hub } = useStore();

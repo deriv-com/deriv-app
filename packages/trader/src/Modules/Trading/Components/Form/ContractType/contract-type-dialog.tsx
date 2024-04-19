@@ -1,6 +1,6 @@
 import React from 'react';
 import { MobileDialog } from '@deriv/components';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import { Header } from './ContractTypeInfo';
 import { localize } from '@deriv/translations';
 import ContractTypeMenu from './ContractTypeMenu';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import userEvent from '@testing-library/user-event';
 import PurchaseFieldset from '../purchase-fieldset';
 
@@ -47,8 +47,8 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseFieldset> = {
     type: '',
 };
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 jest.mock('Modules/Trading/Components/Form/Purchase/contract-info', () => jest.fn(() => <div>ContractInfo</div>));

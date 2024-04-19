@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import { mockStore } from '@deriv/stores';
 import { Router } from 'react-router';
 import { toMoment } from '@deriv/shared';
@@ -52,8 +52,8 @@ jest.mock('@deriv/shared', () => ({
     isUserSold: jest.fn(() => true),
 }));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 

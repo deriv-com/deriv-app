@@ -8,7 +8,7 @@ import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card';
 import TogglePositions from './toggle-positions';
 import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TTogglePositionsMobile = Pick<
     ReturnType<typeof useStore>['portfolio'],

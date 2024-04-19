@@ -7,7 +7,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import CancelDealInfo from './cancel-deal-info';
 import ValueMovement from './value-movement';
 import { TProposalTypeInfo } from 'Types';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TContractInfo = Pick<
     ReturnType<typeof useTraderStore>,

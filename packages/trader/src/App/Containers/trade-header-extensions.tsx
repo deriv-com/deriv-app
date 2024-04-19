@@ -5,7 +5,7 @@ import PopulateHeader from './populate-header';
 import { observer, useStore } from '@deriv/stores';
 import TraderProviders from '../../trader-providers';
 import { TCoreStores } from '@deriv/stores/types';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TradeHeaderExtensionsProps = {
     store: TCoreStores;

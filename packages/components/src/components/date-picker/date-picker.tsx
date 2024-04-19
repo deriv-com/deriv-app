@@ -6,7 +6,7 @@ import Native from './date-picker-native';
 import { useOnClickOutside } from '../../hooks/use-onclickoutside';
 import moment, { MomentInput } from 'moment';
 import { TDatePickerOnChangeEvent } from '../types';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TDatePicker = Omit<
     React.ComponentProps<typeof Native> & React.ComponentProps<typeof Input> & React.ComponentProps<typeof Calendar>,

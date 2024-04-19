@@ -5,7 +5,8 @@ import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags, useDevice } from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import './menu-links.scss';
 import { useHistory } from 'react-router';
 

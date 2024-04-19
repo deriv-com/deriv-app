@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { getLocalizedBasis, TRADE_TYPES } from '@deriv/shared';
 import ContractInfo from '../contract-info';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const test_message = 'Some test message';
 const value_movement = 'ValueMovement';
@@ -47,7 +47,7 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Popover: jest.fn(props => <div>{props.message}</div>),
 }));
-jest.mock('@deriv/hooks', () => ({
+jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 

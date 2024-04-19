@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader';
 import React from 'react';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const TradeParamsLoader = ({ speed }: { speed: number }) => {
     const { isMobile } = useDevice();

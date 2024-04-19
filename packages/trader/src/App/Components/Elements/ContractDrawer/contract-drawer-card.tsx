@@ -15,7 +15,7 @@ import { SwipeableContractDrawer } from './swipeable-components';
 import MarketClosedContractOverlay from './market-closed-contract-overlay';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TContractCardBodyProps = React.ComponentProps<typeof ContractCard.Body>;
 type TContractCardFooterProps = React.ComponentProps<typeof ContractCard.Footer>;

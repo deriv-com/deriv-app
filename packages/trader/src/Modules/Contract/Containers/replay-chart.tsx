@@ -13,7 +13,7 @@ import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';
 import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/reset-contract-chart-elements';
 import { SmartChart } from 'Modules/SmartChart';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const ReplayChart = observer(
     ({

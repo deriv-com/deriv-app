@@ -5,7 +5,7 @@ import Fieldset from 'App/Components/Form/fieldset';
 import { Localize, localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const BarrierSelector = observer(() => {
     const { barrier_1, onChange, setHoveredBarrier, barrier_choices } = useTraderStore();

@@ -2,7 +2,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores.js';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 type TFormLayout = {
     is_market_closed: ReturnType<typeof useTraderStore>['is_market_closed'];

@@ -14,7 +14,8 @@ import {
     isLookBacksContract,
 } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { useDevice, useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import { DigitsWidget, InfoBoxWidget } from './contract-replay-widget';

@@ -5,7 +5,7 @@ import Trader from '../trade';
 import TraderProviders from '../../../../trader-providers';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import { TCoreStores } from '@deriv/stores/types';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('App/Components/Elements/PositionsDrawer', () => jest.fn(() => <div>PositionsDrawer</div>));
 jest.mock('../trade-chart', () => jest.fn(() => <div>TradeChart</div>));
@@ -14,8 +14,8 @@ jest.mock('App/Components/Elements/chart-loader', () =>
     jest.fn(({ is_visible }: ComponentProps<typeof ChartLoader>) => (is_visible ? <div>ChartLoader</div> : null))
 );
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isDesktop: true, isMobile: false, isTablet: false })),
 }));
 

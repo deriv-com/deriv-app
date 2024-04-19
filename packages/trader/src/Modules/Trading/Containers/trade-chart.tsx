@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActiveSymbols } from '@deriv/api-types';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets } from './chart-widgets';

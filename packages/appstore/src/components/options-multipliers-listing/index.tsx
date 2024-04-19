@@ -9,6 +9,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
+import { Analytics } from '@deriv-com/analytics';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -110,6 +111,13 @@ const OptionsAndMultipliersListing = observer(() => {
                                 : 'none'
                         }
                         is_deriv_platform
+                        onAction={() => {
+                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                action: 'account_open',
+                                form_name: 'traders_hub_default',
+                                account_mode: document.getElementById('dropdown-display')?.innerText,
+                            });
+                        }}
                         has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                     />
                 ))

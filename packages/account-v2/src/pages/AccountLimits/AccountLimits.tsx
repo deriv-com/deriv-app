@@ -39,17 +39,13 @@ export const AccountLimits = () => {
 
     return accountLimits ? (
         <div>
-            {getAccountLimitValues(accountLimits, currency).map(item => (
-                <React.Fragment key={item.id}>
-                    <Table
-                        data={item.data}
-                        isFetching={false}
-                        //eslint-disable-next-line
-                        loadMoreFunction={() => {}}
-                        rowRender={row => <RenderRow row={row} />}
-                    />
-                </React.Fragment>
-            ))}
+            <Table
+                data={getAccountLimitValues(accountLimits, currency)}
+                isFetching={false}
+                //eslint-disable-next-line
+                loadMoreFunction={() => {}}
+                rowRender={rowData => <RenderRow row={rowData} />}
+            />
         </div>
     ) : null;
 };

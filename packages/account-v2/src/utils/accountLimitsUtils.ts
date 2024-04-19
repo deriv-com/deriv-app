@@ -1,8 +1,8 @@
 import { GetLimits } from '@deriv/api-types';
-import { FormatUtils } from '@deriv-com/utils';
+import { CurrencyConstants, FormatUtils } from '@deriv-com/utils';
 
-export const getTradingLimitsTableData = (accountLimits, currency) => {
-    const { account_balance: accountBalance, open_positions: openPositions, payout } = accountLimits;
+export const getAccountLimitValues = (accountLimits: GetLimits, currency: CurrencyConstants.Currency) => {
+    const { account_balance: accountBalance, open_positions: openPositions, payout = 0 } = accountLimits;
     return [
         {
             isHeader: true,
@@ -31,81 +31,60 @@ export const getTradingLimitsTableData = (accountLimits, currency) => {
             isFooter: true,
             title: '*Any limits in your Self-exclusion settings will override these default limits.',
         },
+        {
+            isHeader: true,
+            title: 'Maximum daily turnover',
+            value: '0.00',
+        },
+        {
+            hintInfo:
+                'Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.',
+            title: 'Commodities',
+            value: 'open_positions',
+        },
+        {
+            title: 'Forex',
+            value: 'Not set',
+        },
+        {
+            isSubCategory: true,
+            title: 'Major pairs',
+            value: '10',
+        },
+        {
+            isSubCategory: true,
+            title: 'Minor Pairs',
+            value: '10',
+        },
+
+        {
+            title: 'Stock Indices',
+            value: '0.00',
+        },
+        {
+            title: 'Forex',
+            value: 'Not set',
+        },
+
+        {
+            isSubCategory: true,
+            title: 'Commodities Basket',
+            value: 'ss',
+        },
+        {
+            isSubCategory: true,
+            title: 'Forex Basket',
+            value: '',
+        },
+        {
+            isHeader: true,
+            title: 'Withdrawal limits',
+            value: 'Limits',
+        },
+        {
+            isFooter: true,
+            isLessProminent: true,
+            title: 'Your account is fully authenticated and your withdrawal limits have been lifted',
+        },
     ];
 };
-
-export const getMaximumDailyLimiitsTableData = () => [
-    {
-        isHeader: true,
-        title: 'Maximum daily turnover',
-        value: '0.00',
-    },
-    {
-        hintInfo:
-            'Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.',
-        title: 'Commodities',
-        value: 'open_positions',
-    },
-    {
-        title: 'Forex',
-        value: 'Not set',
-    },
-    {
-        isSubCategory: true,
-        title: 'Major pairs',
-        value: '10',
-    },
-    {
-        isSubCategory: true,
-        title: 'Minor Pairs',
-        value: '10',
-    },
-
-    {
-        title: 'Stock Indices',
-        value: '0.00',
-    },
-    {
-        title: 'Forex',
-        value: 'Not set',
-    },
-
-    {
-        isSubCategory: true,
-        title: 'Commodities Basket',
-        value: 'ss',
-    },
-    {
-        isSubCategory: true,
-        title: 'Forex Basket',
-        value: '',
-    },
-];
-
-export const getWithdrawalLimitsTableData = () => [
-    {
-        isHeader: true,
-        title: 'Withdrawal limits',
-        value: 'Limits',
-    },
-    {
-        isFooter: true,
-        isLessProminent: true,
-        title: 'Your account is fully authenticated and your withdrawal limits have been lifted',
-    },
-];
-
-export const getAccountLimitValues = (accountLimits: GetLimits, currency?: string) => [
-    {
-        data: getTradingLimitsTableData(accountLimits, currency),
-        id: 'trading_limits',
-    },
-    {
-        data: getMaximumDailyLimiitsTableData(),
-        id: 'daily_turnover',
-    },
-    {
-        data: getWithdrawalLimitsTableData(),
-        id: 'withdrawal_limits',
-    },
-];

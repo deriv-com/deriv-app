@@ -6,7 +6,10 @@
     align-items: center;
     justify-content: center;
     gap: 2.4rem;
-    -webkit-overflow-scrolling: none; // disable inertia for scroll events
+
+    @include mobile {
+        background-color: var(--general-main-1, #ffffff);
+    }
 
     @include desktop {
         padding: 4rem;

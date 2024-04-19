@@ -36,6 +36,7 @@ const FloatingRate = ({
     const os = mobileOSDetect();
     const marketFeed = value ? percentOf(marketRate, Number(value)) : marketRate;
     const decimalPlace = setDecimalPlaces(marketFeed, 6);
+    const textSize = isMobile ? 'sm' : 'xs';
 
     useEffect(() => {
         if (localCurrency) {
@@ -46,7 +47,7 @@ const FloatingRate = ({
         }
     }, [localCurrency, subscribe]);
 
-    // // Input mask for formatting value on blur of floating rate field
+    // Input mask for formatting value on blur of floating rate field
     const onBlurHandler = (event: FocusEvent<HTMLInputElement>) => {
         let floatRate = event.target.value;
         if (!isNaN(parseFloat(floatRate)) && floatRate.trim().length) {
@@ -77,14 +78,10 @@ const FloatingRate = ({
                     value={value ?? ''}
                 />
                 <div className='p2p-v2-floating-rate__mkt-rate'>
-                    <Text className='p2p-v2-floating-rate__mkt-rate--label' size={isMobile ? 'sm' : 'xs'}>
+                    <Text className='p2p-v2-floating-rate__mkt-rate--label' size={textSize}>
                         of the market rate
                     </Text>
-                    <Text
-                        className='p2p-v2-floating-rate__mkt-rate--msg'
-                        color='prominent'
-                        size={isMobile ? 'sm' : 'xs'}
-                    >
+                    <Text className='p2p-v2-floating-rate__mkt-rate--msg' color='prominent' size={textSize}>
                         1 {fiatCurrency} ={' '}
                         {removeTrailingZeros(
                             FormatUtils.formatMoney(marketRate, {
@@ -96,16 +93,11 @@ const FloatingRate = ({
                 </div>
             </div>
             {errorMessages ? (
-                <Text
-                    as='div'
-                    className='p2p-v2-floating-rate__error-message'
-                    color='red'
-                    size={isMobile ? 'sm' : 'xs'}
-                >
+                <Text as='div' className='p2p-v2-floating-rate__error-message' color='red' size={textSize}>
                     {errorMessages}
                 </Text>
             ) : (
-                <Text as='div' className='p2p-v2-floating-rate__hint' color='blue' size={isMobile ? 'sm' : 'xs'}>
+                <Text as='div' className='p2p-v2-floating-rate__hint' color='blue' size={textSize}>
                     Your rate is ={' '}
                     {removeTrailingZeros(
                         FormatUtils.formatMoney(Number(roundOffDecimal(marketFeed, decimalPlace)), {

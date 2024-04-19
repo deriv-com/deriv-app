@@ -22,9 +22,10 @@ const InputField = ({ decimalPointChange, isError, name = '', onBlur, onChange, 
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
     const isLongPressRef = useRef(false);
 
-    const handleButtonPress =
-        (onChange: (e: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>, step: number) => void) =>
-        (ev: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>) => {
+    const handleButtonPress = (
+        onChange: (e: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>, step: number) => void
+    ) => {
+        const handleTimeout = (ev: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>) => {
             timeoutRef.current = setTimeout(() => {
                 isLongPressRef.current = true;
                 let step = 1;
@@ -34,6 +35,11 @@ const InputField = ({ decimalPointChange, isError, name = '', onBlur, onChange, 
                 }, 50);
             }, 300);
         };
+
+        return (ev: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>) => {
+            handleTimeout(ev);
+        };
+    };
 
     const handleButtonRelease = () => {
         clearInterval(intervalRef.current);

@@ -137,15 +137,22 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     return (
                         !formValues.drivingLicenceNumber ||
                         !formValues.drivingLicenseExpiryDate ||
+                        !!errors.drivingLicenseExpiryDate ||
                         !formValues.drivingLicenseCardFront ||
                         !formValues.drivingLicenseCardBack
                     );
                 } else if (formValues.selectedManualDocument === 'passport') {
-                    return !formValues.passportNumber || !formValues.passportExpiryDate || !formValues.passportCard;
+                    return (
+                        !formValues.passportNumber ||
+                        !formValues.passportExpiryDate ||
+                        !!errors.passportExpiryDate ||
+                        !formValues.passportCard
+                    );
                 } else if (formValues.selectedManualDocument === 'identity-card') {
                     return (
                         !formValues.identityCardNumber ||
                         !formValues.identityCardExpiryDate ||
+                        !!errors.identityCardExpiryDate ||
                         !formValues.identityCardFront ||
                         !formValues.identityCardBack
                     );

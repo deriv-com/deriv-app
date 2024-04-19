@@ -7,6 +7,7 @@ import FlowTextField, { TFlowFieldProps } from '../FlowField/FlowTextField';
 import customFormatShortWeekday from './utils';
 import 'react-calendar/dist/Calendar.css';
 import './DatePicker.scss';
+import { useFlow } from '../FlowProvider';
 
 interface TDatePickerProps extends TFlowFieldProps {
     maxDate?: Date;
@@ -30,6 +31,7 @@ const DatePicker = ({
     const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
+    const { formValues } = useFlow();
 
     const toggleCalendar = () => {
         setIsCalendarOpen(prevState => !prevState);
@@ -73,7 +75,7 @@ const DatePicker = ({
                 showMessage
                 type='date'
                 validationSchema={validationSchema}
-                value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
+                value={selectedDate !== null ? unixToDateString(selectedDate) : formValues[name]}
             />
             {isCalendarOpen && (
                 <div

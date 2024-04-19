@@ -5,7 +5,7 @@ import { ErrorListItem } from './ErrorListItem';
 
 export const ErrorList = ({ errorList }: { errorList: string[] }) => (
     <IconWithMessage
-        icon={<DerivLightDeclinedPoiIcon height='128px' />}
+        icon={<DerivLightDeclinedPoiIcon height={128} />}
         title='Your proof of identity submission failed because:'
     >
         <div>

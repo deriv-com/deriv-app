@@ -13,21 +13,21 @@ import {
 import { hashObject } from './utils';
 import WSClient from './ws-client/ws-client';
 
-type TSendFunction = <T extends TSocketEndpointNames>(
-    name: T,
-    payload?: TSocketRequestPayload<T>
-) => Promise<TSocketResponseData<T> & TSocketError<T>>;
-
 type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
     name: T,
     payload?: TSocketRequestPayload<T>
-) => Promise<{ id: string; subscription: DerivAPIBasic['subscribe'] }>;
+) => Promise<{
+    id: string;
+    subscription: {
+        unsubscribe: () => void;
+        subscribe: (onData: (response: TSocketResponseData<T>) => void) => { unsubscribe: () => void };
+    };
+}>;
 
 type TUnsubscribeFunction = (id: string) => void;
 
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
-    send: TSendFunction;
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
     queryClient: QueryClient;
@@ -141,10 +141,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         }
     }, []);
 
-    const send: TSendFunction = (name, payload) => {
-        return derivAPIRef.current?.send({ [name]: 1, ...payload });
-    };
-
     const subscribe: TSubscribeFunction = async (name, payload) => {
         const id = await hashObject({ name, payload });
         const matchingSubscription = subscriptionsRef.current?.[id];
@@ -152,14 +148,20 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
         const { payload: _payload } = payload ?? {};
 
-        const subscription = derivAPIRef.current?.subscribe({
-            [name]: 1,
-            subscribe: 1,
-            ...(_payload ?? {}),
-        });
+        const result = {
+            id,
+            subscription: {
+                subscribe: (onData: (response: TSocketResponseData<TSocketSubscribableEndpointNames>) => void) => {
+                    return wsClientRef.current?.subscribe(name, _payload, onData);
+                },
+                unsubscribe: () => {
+                    unsubscribe(id);
+                },
+            },
+        };
 
-        subscriptionsRef.current = { ...(subscriptionsRef.current ?? {}), ...{ [id]: subscription } };
-        return { id, subscription };
+        subscriptionsRef.current = { ...(subscriptionsRef.current ?? {}), ...{ [id]: result.subscription } };
+        return result;
     };
 
     const unsubscribe: TUnsubscribeFunction = id => {
@@ -212,7 +214,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         <APIContext.Provider
             value={{
                 derivAPI: derivAPIRef.current,
-                send,
                 subscribe,
                 unsubscribe,
                 queryClient: reactQueryRef.current,

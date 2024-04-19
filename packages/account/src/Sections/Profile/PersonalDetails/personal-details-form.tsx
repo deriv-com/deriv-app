@@ -48,7 +48,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
 
-    const { showPhoneVerificationPage, setShowPhoneVerificationPage } = usePhoneVerification();
+    const { show_phone_verification_page, set_show_phone_verification_page } = usePhoneVerification();
     const {
         client,
         notifications,
@@ -220,8 +220,8 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list);
 
-    if (showPhoneVerificationPage) {
-        return <PhoneVerificationPage setShowPhoneVerificationPage={setShowPhoneVerificationPage} />;
+    if (show_phone_verification_page) {
+        return <PhoneVerificationPage setShowPhoneVerificationPage={set_show_phone_verification_page} />;
     }
 
     return (

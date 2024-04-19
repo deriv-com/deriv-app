@@ -1,11 +1,11 @@
 import React from 'react';
 
 const usePhoneVerification = () => {
-    const [showPhoneVerificationPage, setShowPhoneVerificationPage] = React.useState(true);
+    const [show_phone_verification_page, set_show_phone_verification_page] = React.useState(true);
 
     return {
-        showPhoneVerificationPage,
-        setShowPhoneVerificationPage,
+        show_phone_verification_page,
+        set_show_phone_verification_page,
     };
 };
 

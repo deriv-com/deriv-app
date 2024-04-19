@@ -2776,8 +2776,9 @@ export default class ClientStore extends BaseStore {
 
             this.addSubscription(name, key, subscription);
             return { key, subscription };
-        } catch (e) {
-            // error handling needed
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             return {};
         }
     };
@@ -2788,8 +2789,9 @@ export default class ClientStore extends BaseStore {
             try {
                 await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
                 delete this.subscriptions?.[name]?.[key];
-            } catch (e) {
-                // error handling needed
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         }
     };
@@ -2820,7 +2822,8 @@ export default class ClientStore extends BaseStore {
                 }
             },
             error => {
-                // error handling needed
+                // eslint-disable-next-line no-console
+                console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         );
     };

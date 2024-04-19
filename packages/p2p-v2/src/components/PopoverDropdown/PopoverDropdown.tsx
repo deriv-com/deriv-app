@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { Button, Text } from '@deriv-com/ui';
 import { useOnClickOutside } from 'usehooks-ts';
 import { LabelPairedEllipsisVerticalMdRegularIcon } from '@deriv/quill-icons';
+import { Button, Text, Tooltip, useDevice } from '@deriv-com/ui';
 import './PopoverDropdown.scss';
 
 type TItem = {
@@ -10,35 +10,42 @@ type TItem = {
 };
 
 type TPopoverDropdownProps = {
-    dataTestId?: string;
     dropdownList: TItem[];
     onClick: (value: string) => void;
+    tooltipMessage: string;
 };
 
-const PopoverDropdown = ({ dataTestId, dropdownList, onClick }: TPopoverDropdownProps) => {
+const PopoverDropdown = ({ dropdownList, onClick, tooltipMessage }: TPopoverDropdownProps) => {
     const [visible, setVisible] = useState(false);
     const ref = useRef(null);
     useOnClickOutside(ref, () => setVisible(false));
+    const { isMobile } = useDevice();
 
     return (
         <div className='p2p-v2-popover-dropdown' ref={ref}>
-            <LabelPairedEllipsisVerticalMdRegularIcon
-                className='p2p-v2-popover-dropdown__icon'
-                data-testid={dataTestId}
-                onClick={() => setVisible(prevState => !prevState)}
-            />
+            <Tooltip message={tooltipMessage} position='bottom' triggerAction='hover'>
+                <LabelPairedEllipsisVerticalMdRegularIcon
+                    className='p2p-v2-popover-dropdown__icon'
+                    data-testid='dt_p2p_v2_popover_dropdown_icon'
+                    onClick={() => setVisible(prevState => !prevState)}
+                />
+            </Tooltip>
             {visible && (
                 <div className='p2p-v2-popover-dropdown__list'>
                     {dropdownList.map(item => (
                         <Button
                             className='p2p-v2-popover-dropdown__list-item'
+                            color='black'
                             key={item.value}
                             onClick={() => {
                                 onClick(item.value);
                                 setVisible(false);
                             }}
+                            variant='ghost'
                         >
-                            <Text key={item.value}>{item.label}</Text>
+                            <Text key={item.value} size={isMobile ? 'md' : 'sm'}>
+                                {item.label}
+                            </Text>
                         </Button>
                     ))}
                 </div>

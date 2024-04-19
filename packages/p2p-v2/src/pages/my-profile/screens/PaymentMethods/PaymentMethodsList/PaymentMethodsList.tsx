@@ -1,10 +1,11 @@
 import React from 'react';
-import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
-import { FullPageMobileWrapper, PaymentMethodsHeader } from '@/components';
-import { useDevice, useQueryString } from '@/hooks';
+import { THooks, TSelectedPaymentMethod } from 'types';
+import { FullPageMobileWrapper } from '@/components';
+import { useQueryString } from '@/hooks';
 import { TFormState } from '@/reducers/types';
+import { Text, useDevice } from '@deriv-com/ui';
 import AddNewButton from './AddNewButton';
-import PaymentMethodsListContent from './PaymentMethodsListContent';
+import { PaymentMethodsListContent } from './PaymentMethodsListContent';
 import './PaymentMethodsList.scss';
 
 type TPaymentMethodsListProps = {
@@ -13,7 +14,7 @@ type TPaymentMethodsListProps = {
     onDelete: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onEdit: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onResetFormState: () => void;
-    p2pAdvertiserPaymentMethods: TAdvertiserPaymentMethods;
+    p2pAdvertiserPaymentMethods: THooks.AdvertiserPaymentMethods.Get;
 };
 
 /**
@@ -36,6 +37,7 @@ const PaymentMethodsList = ({
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                className='p2p-v2-payment-methods-list__mobile-wrapper'
                 onBack={() =>
                     setQueryString({
                         tab: 'default',
@@ -43,7 +45,11 @@ const PaymentMethodsList = ({
                 }
                 renderFooter={() => <AddNewButton isMobile={isMobile} onAdd={onAdd} />}
                 // TODO: Remember to translate the title
-                renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
+                renderHeader={() => (
+                    <Text size='lg' weight='bold'>
+                        Payment methods
+                    </Text>
+                )}
             >
                 {!!p2pAdvertiserPaymentMethods?.length && (
                     <PaymentMethodsListContent

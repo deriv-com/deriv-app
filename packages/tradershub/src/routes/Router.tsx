@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { TradersHub } from '@/components';
 import { CompareAccountsScreen } from '@cfd/screens';
-import { TradersHubRoute } from './TradersHubRoute';
 
 const prefix = '/traders-hub';
 
@@ -9,6 +9,7 @@ type TRoutes = `${typeof prefix}${'' | '/compare-accounts' | '/onboarding'}`;
 
 declare module 'react-router-dom' {
     export function useHistory(): {
+        action: 'POP' | 'PUSH' | 'REPLACE';
         location: { pathname: string; search: string };
         push: (path: string | { pathname: string; search: string; state?: Record<string, unknown> }) => void;
     };
@@ -18,8 +19,9 @@ declare module 'react-router-dom' {
 const Router = () => {
     return (
         <Switch>
-            <Route component={CompareAccountsScreen} path={`${prefix}/compare-accounts`} />
-            <Route component={TradersHubRoute} path={prefix} />
+            <Route component={CompareAccountsScreen} exact path={`${prefix}/compare-accounts`} />
+            <Route component={TradersHub} exact path={prefix} />
+            <Route component={() => <Redirect to='/404' />} />
         </Switch>
     );
 };

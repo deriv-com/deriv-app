@@ -20,7 +20,15 @@ type TAppContent = {
     title: string;
 };
 
-type TPlatform = 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
+type TDesktopLinks =
+    | 'ctrader_mac'
+    | 'ctrader_web'
+    | 'ctrader_windows'
+    | 'dxtrade_web'
+    | 'mt5_linux'
+    | 'mt5_macos'
+    | 'mt5_web'
+    | 'mt5_windows';
 
 export type TTM5FilterLandingCompany = Exclude<TJurisdiction, 'malta' | 'seychelles' | undefined>;
 type TLandingCompanyDetails = { name: string; shortcode: string; tncUrl: string };
@@ -34,7 +42,7 @@ type TcompanyNamesAndUrls = {
 };
 
 type TAppToContentMapper = {
-    [key in TPlatform]: Omit<TAppContent, 'description'>;
+    [key in TDesktopLinks]: Omit<TAppContent, 'description'>;
 };
 
 type TPlatformUrls = {
@@ -50,6 +58,17 @@ export const CFDPlatforms = {
     CTRADER: 'ctrader',
     DXTRADE: 'dxtrade',
     MT5: 'mt5',
+} as const;
+
+export const DesktopLinks = {
+    CTRADER_WINDOWS: 'ctrader_windows',
+    CTRADER_MAC: 'ctrader_mac',
+    CTRADER_WEB: 'ctrader_web',
+    MT5_LINUX: 'mt5_linux',
+    MT5_MACOS: 'mt5_macos',
+    MT5_WEB: 'mt5_web',
+    MT5_WINDOWS: 'mt5_windows',
+    DXTRADE_WEB: 'dxtrade_web',
 } as const;
 
 export const MarketType = {
@@ -80,7 +99,7 @@ export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
     },
     financial: {
         description: isEU
-            ? 'This MFSA-regulated account offers CFDs on derived and financial instruments.'
+            ? 'CFDs on derived and financial instruments.'
             : 'This account offers CFDs on financial instruments.',
         icon: <IconComponent icon={isEU ? 'CFDs' : 'Financial'} />,
         iconWithWidth: (width: number) => <IconComponent icon={isEU ? 'CFDs' : 'Financial'} width={width} />,
@@ -97,7 +116,7 @@ export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
 export const PlatformDetails = {
     ctrader: {
         icon: (width?: number) => <IconComponent icon='CTrader' width={width} />,
-        link: 'https://onelink.to/hyqpv7',
+        link: 'https://onelink.to/5jgj8z',
         platform: 'ctrader' as TPlatforms.OtherAccounts,
         title: 'Deriv cTrader',
     },
@@ -128,31 +147,49 @@ export const companyNamesAndUrls: TcompanyNamesAndUrls = {
 };
 
 export const AppToContentMapper: TAppToContentMapper = {
-    ctrader: {
+    ctrader_web: {
+        icon: '',
+        link: '',
+        text: 'Open',
+        title: 'cTrader web',
+    },
+    dxtrade_web: {
+        icon: '',
+        link: '',
+        text: 'Open',
+        title: 'DerivX web',
+    },
+    ctrader_windows: {
         icon: <WindowsIcon />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
         text: 'Download',
-        title: 'CTrader Windows App',
+        title: 'cTrader Windows App',
     },
-    linux: {
+    ctrader_mac: {
+        icon: <MacOSIcon />,
+        link: 'https://getctradermac.com/deriv/ctrader-deriv-setup.dmg',
+        text: 'Download',
+        title: 'cTrader MacOS App',
+    },
+    mt5_linux: {
         icon: <LinuxIcon />,
         link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
         text: 'Learn more',
         title: 'MetaTrader 5 Linux app',
     },
-    macos: {
+    mt5_macos: {
         icon: <MacOSIcon />,
         link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
         text: 'Download',
         title: 'MetaTrader 5 MacOS app',
     },
-    web: {
+    mt5_web: {
         icon: <MT5Icon />,
         link: '',
         text: 'Open',
         title: 'MetaTrader 5 web',
     },
-    windows: {
+    mt5_windows: {
         icon: <WindowsIcon />,
         link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: 'Download',
@@ -193,7 +230,7 @@ export type TAppLinks = {
 export const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     ctrader: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
-        ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
+        ios: 'https://apps.apple.com/us/app/deriv-ctrader/id6466996509',
     },
     dxtrade: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',

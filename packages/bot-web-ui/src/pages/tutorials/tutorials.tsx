@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import { useDBotStore } from 'Stores/useDBotStore';
 import NoSearchResult from './common/no-search-result-found';
 import QuickStrategyGuides from './quick-strategy-content/quick-strategy-guides';
@@ -12,6 +11,11 @@ import TutorialsTabMobile from './tutorials-tab-mobile';
 
 type TTutorialsTab = {
     handleTabChange: (active_number: number) => void;
+};
+
+export type TTutorialsTabItem = {
+    label: string;
+    content?: JSX.Element;
 };
 
 const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
@@ -30,21 +34,7 @@ const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
     } = dashboard;
 
     React.useEffect(() => {
-        Analytics.trackEvent('ce_bot_tutorial_form', {
-            action: 'open',
-            form_source: 'bot_header_form',
-        });
-        return () => {
-            Analytics.trackEvent('ce_bot_tutorial_form', {
-                action: 'close',
-                form_source: 'bot_header_form',
-            });
-        };
-    }, []);
-
-    React.useEffect(() => {
-        const _active_tab = [0, 1, 2];
-        if (_active_tab.includes(active_tab_tutorials)) {
+        if ([0, 1, 2].includes(active_tab_tutorials)) {
             setPrevActiveTutorialsTab(active_tab_tutorials);
         }
     }, [active_tab_tutorials]);
@@ -55,7 +45,7 @@ const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
         faq_tab_content.length > 0 ||
         quick_strategy_tab_content.length > 0;
 
-    const tutorial_tabs = [
+    const tutorial_tabs: TTutorialsTabItem[] = [
         {
             label: localize('Guide'),
             content: (

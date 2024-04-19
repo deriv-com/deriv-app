@@ -1,4 +1,5 @@
 import { configure } from 'mobx';
+import { excludeParamsFromUrlQuery, startPerformanceEventTimer } from '@deriv/shared';
 import NetworkMonitor from 'Services/network-monitor';
 import RootStore from 'Stores';
 
@@ -30,11 +31,37 @@ const setStorageEvents = root_store => {
     });
 };
 
+const startPerformanceMetrics = (url_query_string, url_params) => {
+    // start the timer for signup
+    if (url_params.get('action') === 'signup') startPerformanceEventTimer('signup_time');
+
+    // start the timer for login
+    if (url_params.get('acct1')) startPerformanceEventTimer('login_time');
+
+    // start the timer for redirect from deriv.com
+    if (url_params.get('redirect_from') === 'deriv_com') {
+        startPerformanceEventTimer('redirect_from_deriv_com_time');
+
+        // remove 'redirect_from' query param
+        history.replaceState(
+            null,
+            null,
+            window.location.href.replace(
+                `${url_query_string}`,
+                excludeParamsFromUrlQuery(url_query_string, ['redirect_from'])
+            )
+        );
+    }
+};
+
 const initStore = notification_messages => {
     // Check Endpoint from URL need to be done before initializing store to avoid
     // race condition with setting up user session from URL
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
+    // start timers to measure performance
+    startPerformanceMetrics(url_query_string, url_params);
+
     if (url_params.get('action') === 'signup') {
         // If a user comes from the signup process,
         // we need to give him a clean setup

@@ -1,11 +1,22 @@
-import { useMemo } from 'react';
-import useQuery from '../../../../../useQuery';
-import useAuthorize from '../../../../useAuthorize';
+import { useCallback, useMemo } from 'react';
+import useSubscription from '../../../../../useSubscription';
 
+type TPayload = WithRequiredProperty<
+    NonNullable<Parameters<ReturnType<typeof useSubscription<'p2p_order_info'>>['subscribe']>>[0]['payload'],
+    'id'
+>;
+
+// TODO: Convert this to use useSubscribe as it is a subscribable endpoint
 /** This custom hook that returns information about the given order ID */
-const useOrderInfo = (id: string) => {
-    const { isSuccess } = useAuthorize();
-    const { data, ...rest } = useQuery('p2p_order_info', { payload: { id }, options: { enabled: isSuccess } });
+const useOrderInfo = () => {
+    const { data, subscribe: subscribeOrderInfo, ...rest } = useSubscription('p2p_order_info');
+
+    const subscribe = useCallback(
+        (payload: TPayload) => {
+            subscribeOrderInfo({ payload });
+        },
+        [subscribeOrderInfo]
+    );
 
     // modify the data to add additional information
     const modified_data = useMemo(() => {
@@ -53,13 +64,15 @@ const useOrderInfo = (id: string) => {
             is_reviewable: Boolean(is_reviewable),
             /** Indicates if the latest order changes have been seen by the current client. */
             is_seen: Boolean(is_seen),
-            review_details: {
-                ...review_details,
-                /** Indicates if the advertiser is recommended or not. */
-                is_recommended: Boolean(review_details?.recommended),
-                /** Indicates that the advertiser has not been recommended yet. */
-                has_not_been_recommended: review_details?.recommended === null,
-            },
+            review_details: review_details
+                ? {
+                      ...review_details,
+                      /** Indicates if the advertiser is recommended or not. */
+                      is_recommended: Boolean(review_details?.recommended),
+                      /** Indicates that the advertiser has not been recommended yet. */
+                      has_not_been_recommended: review_details?.recommended === null,
+                  }
+                : undefined,
             /** Indicates that the seller in the process of confirming the order. */
             is_verification_pending: Boolean(verification_pending),
         };
@@ -68,6 +81,7 @@ const useOrderInfo = (id: string) => {
     return {
         /** The 'p2p_order_info' response. */
         data: modified_data,
+        subscribe,
         ...rest,
     };
 };

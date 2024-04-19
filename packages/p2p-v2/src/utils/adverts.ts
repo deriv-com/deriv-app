@@ -52,11 +52,11 @@ const getTimeDifference = (lastSeenOnline: number) => {
 /**
  * Function to generate the status label for the user based on the given online status and last online time.
  *
- * @param {0|1} isOnline - The online status of the user
+ * @param {boolean} isOnline - The online status of the user
  * @param {number} lastOnlineTime - The last online time in epoch
  * @returns {string} The status label to be shown.
  */
-export const getLastOnlineLabel = (isOnline: 0 | 1, lastOnlineTime?: number): string => {
+export const getLastOnlineLabel = (isOnline: boolean, lastOnlineTime?: number): string => {
     if (!isOnline) {
         if (lastOnlineTime) {
             const diff = getTimeDifference(lastOnlineTime);

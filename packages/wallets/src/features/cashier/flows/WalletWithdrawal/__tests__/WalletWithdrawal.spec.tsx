@@ -1,12 +1,13 @@
 import React, { PropsWithChildren } from 'react';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { CashierLocked, WithdrawalLocked } from '../../../modules';
 import WalletWithdrawal from '../WalletWithdrawal';
 
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
     CashierLocked: jest.fn(({ children }) => <>{children}</>),
+    SystemMaintenance: jest.fn(({ children }) => <>{children}</>),
     WithdrawalCryptoModule: jest.fn(({ onClose, verificationCode }) => {
         return (
             <>
@@ -34,6 +35,7 @@ jest.mock('../../../../../components', () => ({
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
+    useAuthorize: jest.fn(() => ({ switchAccount: jest.fn() })),
     useCurrencyConfig: jest.fn(),
 }));
 
@@ -52,7 +54,7 @@ describe('WalletWithdrawal', () => {
 
     beforeEach(() => {
         Object.defineProperty(window, 'location', {
-            value: new URL('http://localhost/redirect?verification=1234'),
+            value: new URL('http://localhost/redirect?verification=1234&loginid=CR42069'),
             writable: true,
         });
     });
@@ -70,6 +72,7 @@ describe('WalletWithdrawal', () => {
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'USD',
+                loginid: 'CR42069',
             },
         });
 
@@ -94,6 +97,7 @@ describe('WalletWithdrawal', () => {
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'USD',
+                loginid: 'CR42069',
             },
         });
 
@@ -112,6 +116,7 @@ describe('WalletWithdrawal', () => {
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'USD',
+                loginid: 'CR42069',
             },
         });
 
@@ -128,41 +133,50 @@ describe('WalletWithdrawal', () => {
 
     it('should render withdrawal crypto module if withdrawal is for crypto wallet', async () => {
         mockUseActiveWalletAccount.mockReturnValue({
-            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'BTC',
+                // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+                currency_config: { is_crypto: true },
+                loginid: 'CR42069',
             },
         });
 
-        mockUseCurrencyConfig.mockReturnValue({
+        mockUseCurrencyConfig.mockReturnValue(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            getConfig: jest.fn(() => ({ is_fiat: false })),
-            isSuccess: true,
-        });
+            {
+                isSuccess: true,
+            }
+        );
 
         render(<WalletWithdrawal />, { wrapper });
         expect(screen.getByText('WithdrawalCryptoModule')).toBeInTheDocument();
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
 
-    it('should render withdrawal email verification module when onClose is triggered on the withdrawal crypto module', () => {
+    it('should render withdrawal email verification module when onClose is triggered on the withdrawal crypto module', async () => {
         mockUseActiveWalletAccount.mockReturnValue({
-            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'BTC',
+                // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+                currency_config: { is_crypto: true },
+                loginid: 'CR42069',
             },
         });
 
-        mockUseCurrencyConfig.mockReturnValue({
+        mockUseCurrencyConfig.mockReturnValue(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            getConfig: jest.fn(() => ({ is_fiat: false })),
-            isSuccess: true,
-        });
+            {
+                isSuccess: true,
+            }
+        );
 
         render(<WalletWithdrawal />, { wrapper });
-        const button = screen.getByRole('button');
-        fireEvent.click(button);
-        expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
+        await waitFor(() => {
+            const button = screen.getByRole('button');
+            fireEvent.click(button);
+
+            expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
+        });
     });
 
     it('should show loader if verification code is there but currency config is yet to be loaded', () => {
@@ -170,6 +184,7 @@ describe('WalletWithdrawal', () => {
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 currency: 'BTC',
+                loginid: 'CR42069',
             },
         });
 

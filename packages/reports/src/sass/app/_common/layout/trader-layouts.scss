@@ -10,6 +10,9 @@
                 .sc-toolbar-widget,
                 .stx-panel-control {
                     transform: translate3d(248px, 0, 0);
+                    @include rtl {
+                        transform: translate3d(-248px, 0, 0);
+                    }
                 }
                 .cq-chart-controls {
                     transform: translate3d(130px, 0, 0) !important;
@@ -43,7 +46,6 @@
         .top-widgets-portal {
             position: absolute;
             top: 0px;
-            width: 100%;
             display: flex;
             align-items: center;
             flex-wrap: wrap;
@@ -52,7 +54,7 @@
             .recent-trade-info {
                 min-width: 8rem;
                 line-height: 2.4rem;
-                margin-left: 0.8rem;
+                margin-left: 1.6rem;
             }
         }
         .cq-chart-title {

@@ -73,7 +73,7 @@ describe('<BuySellHeader />', () => {
         const sellTab = screen.getByRole('button', { name: 'Sell' });
 
         userEvent.click(sellTab);
-        expect(mockProps.setActiveTab).toHaveBeenCalledWith('Sell');
+        expect(mockProps.setActiveTab).toHaveBeenCalledWith(1);
     });
 
     it('should call setActiveTab when Buy tab is clicked', () => {
@@ -82,7 +82,7 @@ describe('<BuySellHeader />', () => {
         const buyTab = screen.getByRole('button', { name: 'Buy' });
 
         userEvent.click(buyTab);
-        expect(mockProps.setActiveTab).toHaveBeenCalledWith('Buy');
+        expect(mockProps.setActiveTab).toHaveBeenCalledWith(0);
     });
 
     it('should call setSearchValue when a value is entered in the search input', () => {

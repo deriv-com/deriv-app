@@ -1,0 +1,46 @@
+.p2p-v2-ad-wizard {
+    @include desktop {
+        width: 67.2rem;
+    }
+
+    > div:first-child {
+        @include mobile {
+            display: flex;
+            align-items: center;
+            column-gap: 1rem;
+            padding: 0.8rem 2rem;
+            background-color: #f2f3f4;
+
+            > div {
+                flex: 1;
+
+                @include mobile {
+                    & .deriv-button {
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+
+    .p2p-v2-wizard__main-step {
+        padding-top: 1rem;
+        @include desktop {
+            max-height: calc(100vh - 35rem);
+            overflow-y: auto;
+        }
+    }
+
+    .p2p-v2-form-progress {
+        background-color: #f2f3f4;
+        margin-top: 2rem;
+
+        &__step {
+            width: 24rem;
+        }
+
+        &__steps {
+            margin-bottom: 1.6rem;
+        }
+    }
+}

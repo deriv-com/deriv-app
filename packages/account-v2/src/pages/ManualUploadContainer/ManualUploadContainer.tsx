@@ -1,45 +1,73 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
-import { InferType, object } from 'yup';
+import { useDocumentUpload } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
-import { TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../../constants';
 import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
 import { useManualForm } from '../../hooks';
-import { OnfidoContainer } from '../../modules/Onfido';
-import { getManualFormValidationSchema, getSelfieValidationSchema } from '../../utils/manualFormUtils';
+import { OnfidoContainer } from '../../modules/src/Onfido';
+import { getUploadConfig, TManualDocumentUploadFormData } from '../../utils';
 
 type TManualUploadContainerProps = {
+    countryCode: string;
+    onDocumentSubmit: () => void;
     selectedDocument: string | null;
     setSelectedDocument: (value: string | null) => void;
 };
 
-export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }: TManualUploadContainerProps) => {
+export const ManualUploadContainer = ({
+    countryCode,
+    onDocumentSubmit,
+    selectedDocument,
+    setSelectedDocument,
+}: TManualUploadContainerProps) => {
     const { isExpiryDateRequired, isLoading, poiService } = useManualForm(
-        'ng',
+        countryCode,
         selectedDocument as TManualDocumentTypes
     );
 
-    const documentUploadSchema = getManualFormValidationSchema(
-        selectedDocument as TManualDocumentTypes,
-        isExpiryDateRequired
-    );
-
-    const selfieUploadSchema = getSelfieValidationSchema();
-
-    const manualUploadSchema = object({
-        ...documentUploadSchema.fields,
-        ...selfieUploadSchema.fields,
-    });
-
-    type TManualUploadFormData = InferType<typeof manualUploadSchema>;
-
-    const [formData, setFormData] = useState<Partial<TManualUploadFormData>>({});
+    const [formData, setFormData] = useState<Partial<TManualDocumentUploadFormData>>({});
     const [shouldUploadSelfie, setShouldUploadSelfie] = useState(false);
+    const { upload } = useDocumentUpload();
 
     if (isLoading || poiService === null) {
         return <Loader />;
     }
+
+    const processDocuments = (
+        values: TManualDocumentUploadFormData,
+        item: ReturnType<typeof getUploadConfig>[number]
+    ): Parameters<typeof upload>[0] => {
+        const { documentType, pageType } = item;
+        return {
+            document_id: values.documentNumber,
+            document_issuing_country: countryCode,
+            document_type: documentType,
+            expiration_date: values?.documentExpiry?.toString() ?? undefined,
+            file:
+                documentType === MANUAL_DOCUMENT_TYPES.selfieWithID
+                    ? (values.selfieWithID as File)
+                    : (values[pageType] as File),
+            lifetime_valid: isExpiryDateRequired ? 0 : 1,
+            page_type: documentType === MANUAL_DOCUMENT_TYPES.selfieWithID ? 'photo' : pageType,
+        };
+    };
+
+    const handleSubmit = async (values: TManualDocumentUploadFormData) => {
+        const uploadDocumentConfig = getUploadConfig(selectedDocument as TManualDocumentTypes);
+
+        try {
+            await uploadDocumentConfig.reduce(async (promise, item) => {
+                await promise;
+                const payload = await processDocuments(values, item);
+                await upload(payload);
+            }, Promise.resolve());
+            onDocumentSubmit();
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        }
+    };
 
     if (shouldUploadSelfie) {
         return (
@@ -47,7 +75,7 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
                 formData={formData}
                 handleCancel={() => setShouldUploadSelfie(false)}
                 handleSubmit={values => {
-                    setFormData(prev => ({ ...prev, ...values }));
+                    handleSubmit({ ...formData, ...values } as TManualDocumentUploadFormData);
                 }}
             />
         );
@@ -59,11 +87,9 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
                 formData={formData}
                 isExpiryDateRequired={isExpiryDateRequired}
                 onCancel={() => {
-                    // TODO: Implement manual cancel
                     setSelectedDocument(null);
                 }}
                 onSubmit={values => {
-                    // TODO: Implement manual submit
                     setFormData(prev => ({ ...prev, ...values }));
                     setShouldUploadSelfie(true);
                 }}
@@ -73,11 +99,9 @@ export const ManualUploadContainer = ({ selectedDocument, setSelectedDocument }:
     }
     return (
         <OnfidoContainer
-            country='ng'
+            countryCode={countryCode}
             isEnabledByDefault
-            onOnfidoSubmit={() => {
-                // TODO: Implement onfido submit
-            }}
+            onOnfidoSubmit={onDocumentSubmit}
             selectedDocument={selectedDocument as TManualDocumentTypes}
         />
     );

@@ -7,7 +7,7 @@ const useCreateNewRealAccount = () => {
     const invalidate = useInvalidateQuery();
     const { data, ...rest } = useMutation('new_account_real', {
         onSuccess: () => {
-            invalidate('authorize');
+            invalidate('account_list');
         },
     });
 

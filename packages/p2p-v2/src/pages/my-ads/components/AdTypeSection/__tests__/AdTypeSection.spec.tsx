@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AdTypeSection from '../AdTypeSection';
-import { useFloatingRate } from '@/hooks';
 
 jest.mock('../../AdFormTextArea', () => ({
     AdFormTextArea: () => <div>AdFormTextArea</div>,

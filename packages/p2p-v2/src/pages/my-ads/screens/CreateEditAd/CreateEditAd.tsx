@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { THooks } from 'types';
 import { AdCancelCreateEditModal, AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
-import { ADVERT_TYPE, MY_ADS_URL, RATE_TYPE } from '@/constants';
+import { MY_ADS_URL, RATE_TYPE } from '@/constants';
 import { useFloatingRate, useModalManager, useQueryString } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';

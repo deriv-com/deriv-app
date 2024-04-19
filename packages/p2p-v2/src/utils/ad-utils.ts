@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent } from 'react';
+import { ChangeEvent } from 'react';
 import { TCountryListItem } from 'types';
 import { ERROR_CODES, RATE_TYPE } from '@/constants';
 import { rangeValidator } from './format-value';

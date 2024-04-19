@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
 import AdErrorTooltipModal from '../AdErrorTooltipModal';
 

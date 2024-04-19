@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { RadioGroup, FloatingRate } from '@/components';
+import { FloatingRate, RadioGroup } from '@/components';
 import { BUY_SELL, RATE_TYPE } from '@/constants';
 import { useQueryString } from '@/hooks';
 import { getValidationRules, restrictDecimalPlace } from '@/utils';

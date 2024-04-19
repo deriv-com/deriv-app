@@ -96,8 +96,8 @@ const InputField = ({ decimalPointChange, isError, name = '', onBlur, onChange, 
 
         const newValue =
             parseFloat(currentValue || '0') +
-            parseFloat((1 * 10 ** (0 - (decimalPointChange || decimalPlaces))).toString());
-        const incrementValue = parseFloat(newValue.toString()).toFixed(decimalPointChange || decimalPlaces);
+            parseFloat((1 * 10 ** (0 - (decimalPointChange ?? decimalPlaces))).toString());
+        const incrementValue = parseFloat(newValue.toString()).toFixed(decimalPointChange ?? decimalPlaces);
 
         updateValue(incrementValue);
     };
@@ -108,8 +108,8 @@ const InputField = ({ decimalPointChange, isError, name = '', onBlur, onChange, 
         const decimalPlaces = currentValue ? getDecimals(currentValue) : 0;
         const newValue =
             parseFloat(currentValue || '0') -
-            parseFloat((1 * 10 ** (0 - (decimalPointChange || decimalPlaces))).toString());
-        const decrementValue = parseFloat(newValue.toString()).toFixed(decimalPointChange || decimalPlaces);
+            parseFloat((1 * 10 ** (0 - (decimalPointChange ?? decimalPlaces))).toString());
+        const decrementValue = parseFloat(newValue.toString()).toFixed(decimalPointChange ?? decimalPlaces);
 
         return decrementValue;
     };
@@ -146,7 +146,7 @@ const InputField = ({ decimalPointChange, isError, name = '', onBlur, onChange, 
         if (navigator.userAgent.indexOf('Safari') !== -1 && type !== 'checkbox') {
             const cursor = e.target.selectionStart;
             changeValue(e, evt => {
-                (evt as ChangeEvent<HTMLInputElement>).target.selectionEnd = cursor; // reset the cursor position in callback
+                evt.target.selectionEnd = cursor; // reset the cursor position in callback
             });
         } else {
             changeValue(e);

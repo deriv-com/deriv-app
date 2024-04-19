@@ -1,5 +1,4 @@
 import React from 'react';
-import { useModalManager } from '@/hooks';
 import { useExchangeRateSubscription } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';

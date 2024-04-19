@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FocusEvent, useEffect } from 'react';
-import clsx from 'clsx';
 import { mobileOSDetect, percentOf, removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from '@/utils';
 import { p2p, useExchangeRateSubscription } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
@@ -63,8 +62,8 @@ const FloatingRate = ({
     };
 
     return (
-        <div className={clsx('p2p-v2-floating-rate')}>
-            <div className={clsx('p2p-v2-floating-rate__field')}>
+        <div className='p2p-v2-floating-rate'>
+            <div className='p2p-v2-floating-rate__field'>
                 <Text as='div' className='p2p-v2-floating-rate__field--prefix' size={isMobile ? 'lg' : 'md'}>
                     at
                 </Text>
@@ -106,13 +105,7 @@ const FloatingRate = ({
                     {errorMessages}
                 </Text>
             ) : (
-                <Text
-                    as='div'
-                    className='p2p-v2-floating-rate__hint'
-                    color='blue'
-                    line_height='xs'
-                    size={isMobile ? 'sm' : 'xs'}
-                >
+                <Text as='div' className='p2p-v2-floating-rate__hint' color='blue' size={isMobile ? 'sm' : 'xs'}>
                     Your rate is ={' '}
                     {removeTrailingZeros(
                         FormatUtils.formatMoney(Number(roundOffDecimal(marketFeed, decimalPlace)), {

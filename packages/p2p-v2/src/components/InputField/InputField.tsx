@@ -6,7 +6,7 @@ import './InputField.scss';
 export type TChangeEvent = ChangeEvent<HTMLInputElement>;
 
 type TInputField = {
-    decimalPointChange?: number; // Specify which decimal point must be updated when the increment/decrement button is pressed
+    decimalPointChange?: number;
     isError?: boolean;
     name?: string;
     onBlur?: FocusEventHandler<HTMLInputElement>;

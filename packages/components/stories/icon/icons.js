@@ -665,7 +665,7 @@ export const icons =
         'IcWip',
         'IcWithdrawRequestVerificationSent',
         'IcWithdrawRequestVerification',
-        'IcXIcon',
+        'IcX',
         'IcZingpay',
         'IcZoomIn',
         'IcZoomOut',

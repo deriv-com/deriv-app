@@ -21,7 +21,7 @@ const ShareMyAdsSocials = ({ advert_url, custom_message }: TShareMyAdsSocialsPro
         { ShareButton: TelegramShareButton, icon: 'IcTelegram', messagePropName: 'title', size: 34, text: 'Telegram' },
         {
             ShareButton: TwitterShareButton,
-            icon: 'IcXIcon',
+            icon: 'IcX',
             messagePropName: 'title',
             size: 28,
             small_icon: true,

@@ -51,7 +51,8 @@ export const personal_details_config = ({
             default_value: account_settings.first_name ?? '',
             rules: [
                 ['req', localize('First name is required.')],
-                ['length', localize('First name should be between 1 and 50 characters.'), { min: 1, max: 50 }],
+                //TODO: This message should be adjusted to due the new validation message from content team
+                ['length', localize('First name should be up 50 characters.'), { max: 50 }],
                 ['name', getErrorMessages().name()],
             ],
         },
@@ -60,7 +61,8 @@ export const personal_details_config = ({
             default_value: account_settings.last_name ?? '',
             rules: [
                 ['req', localize('Last name is required.')],
-                ['length', localize('Last name should be between 1 and 50 characters.'), { min: 1, max: 50 }],
+                //TODO: This message should be adjusted to due the new validation message from content team
+                ['length', localize('Last name should be up to 50 characters.'), { max: 50 }],
                 ['name', getErrorMessages().name()],
             ],
         },

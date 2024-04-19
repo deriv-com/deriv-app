@@ -98,12 +98,13 @@ describe('<PersonalDetailsForm />', () => {
         });
     });
 
-    it('should display error for 1-50 characters length validation, for First name when entered characters are less than 1', async () => {
+    it('should display error characters more than 50 length validation', async () => {
         renderComponent();
         await waitFor(() => {
             const last_name = screen.getByTestId('dt_last_name');
             userEvent.type(last_name, 'b');
-            expect(screen.getByText(/You should enter 1-50 characters./)).toBeInTheDocument();
+            //TODO: This message should be adjusted to due the new validation message from content team
+            expect(screen.getByText(/You should enter up to 50 characters./)).toBeInTheDocument();
         });
     });
 

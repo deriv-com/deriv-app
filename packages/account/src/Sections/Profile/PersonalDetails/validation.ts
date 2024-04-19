@@ -7,19 +7,25 @@ const getBaseSchema = () =>
     Yup.object().shape({
         first_name: Yup.string()
             .required(localize('First name is required.'))
-            .min(1, localize('You should enter 1-50 characters.'))
-            .max(50, localize('You should enter 1-50 characters.'))
+            //TODO: This message should be adjusted to due the new validation message from content team
+            .max(50, localize('You should enter at most 50 characters.'))
             .matches(
-                /^(?!.*\s{2,})[\p{L}\s'.-]{1,50}$/u,
-                localize('Letters, spaces, periods, hyphens, apostrophes only.')
+                /^(?!.*\s{2,})(?:[一-鿿㐀-䶿]{1,16}|[\p{L}\s'.-]{2,50})$/u,
+                //TODO: This message should be adjusted to due the new validation message from content team
+                localize(
+                    'Letters, spaces, periods, hyphens, apostrophes only. It should be 1-50 characters for Chinese Characters and 2-50 characters for other languages.'
+                )
             ),
         last_name: Yup.string()
             .required(localize('Last name is required.'))
-            .min(1, localize('You should enter 1-50 characters.'))
+            //TODO: This message should be adjusted to due the new validation message from content team
             .max(50, localize('You should enter 1-50 characters.'))
             .matches(
-                /^(?!.*\s{2,})[\p{L}\s'.-]{1,50}$/u,
-                localize('Letters, spaces, periods, hyphens, apostrophes only.')
+                /^(?!.*\s{2,})(?:[一-鿿㐀-䶿]{1,16}|[\p{L}\s'.-]{2,50})$/u,
+                //TODO: This message should be adjusted to due the new validation message from content team
+                localize(
+                    'Letters, spaces, periods, hyphens, apostrophes only. It should be 1-50 characters for Chinese Characters and 2-50 characters for other languages.'
+                )
             ),
         phone: Yup.string()
             .required(localize('Phone is required.'))

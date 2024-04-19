@@ -5,7 +5,7 @@
         }
     }
     &__button {
-        @include new-desktop {
+        @include desktop-screen {
             margin-inline-end: 1rem;
         }
     }
@@ -30,7 +30,7 @@
             }
         }
 
-        @include new-not-desktop {
+        @include mobile-or-tablet-screen {
             width: 100%;
         }
 
@@ -46,7 +46,7 @@
         }
 
         &__arrow {
-            @include new-not-desktop {
+            @include mobile-or-tablet-screen {
                 margin-inline-start: 1.5rem;
             }
 
@@ -62,7 +62,7 @@
             display: inline-flex;
             align-items: center;
 
-            @include new-not-desktop {
+            @include mobile-or-tablet-screen {
                 .currency-switcher__button {
                     white-space: unset;
                     height: 4rem;

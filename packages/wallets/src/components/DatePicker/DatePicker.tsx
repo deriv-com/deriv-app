@@ -75,7 +75,7 @@ const DatePicker = ({
                 showMessage
                 type='date'
                 validationSchema={validationSchema}
-                value={selectedDate !== null ? unixToDateString(selectedDate) : formValues[name]}
+                value={selectedDate !== null ? unixToDateString(selectedDate) : formValues?.[name] || ''}
             />
             {isCalendarOpen && (
                 <div

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useActiveWalletAccount, useAuthorize, usePOI, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney as displayMoney_ } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../../../../types';
@@ -46,49 +46,67 @@ const useTransferMessages = ({
         [preferredLanguage]
     );
 
-    if (!activeWallet || !fromAccount) return [];
+    const memoizedMessages = useMemo(() => {
+        const fiatAccount = walletAccounts?.find(account => account.account_type === 'doughflow');
 
-    const fiatAccount = walletAccounts?.find(account => account.account_type === 'doughflow');
+        const sourceAmount = formData.fromAmount;
+        const targetAmount = formData.toAmount;
 
-    const sourceAmount = formData.fromAmount;
-    const targetAmount = formData.toAmount;
+        const messageFns: ((props: TMessageFnProps) => TTransferMessage | null)[] = [];
+        const messages: TTransferMessage[] = [];
 
-    const messageFns: ((props: TMessageFnProps) => TTransferMessage | null)[] = [];
-    const messages: TTransferMessage[] = [];
+        messageFns.push(insufficientBalanceMessageFn);
 
-    messageFns.push(insufficientBalanceMessageFn);
+        if (!isAccountVerified && isTransferBetweenWallets) {
+            messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+        }
+        if (isAccountVerified || (!isAccountVerified && !isTransferBetweenWallets)) {
+            messageFns.push(cumulativeAccountLimitsMessageFn);
+        }
+        if (isTransferBetweenWallets) {
+            messageFns.push(transferFeesBetweenWalletsMessageFn);
+        }
 
-    if (!isAccountVerified && isTransferBetweenWallets) {
-        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
-    }
-    if (isAccountVerified || (!isAccountVerified && !isTransferBetweenWallets)) {
-        messageFns.push(cumulativeAccountLimitsMessageFn);
-    }
-    if (isTransferBetweenWallets) {
-        messageFns.push(transferFeesBetweenWalletsMessageFn);
-    }
+        messageFns.forEach(messageFn => {
+            if (!activeWallet || !fromAccount) return;
 
-    messageFns.forEach(messageFn => {
-        const message = messageFn({
-            activeWallet,
-            activeWalletExchangeRates,
-            displayMoney,
-            fiatAccount,
-            limits: accountLimits,
-            sourceAccount: fromAccount,
-            sourceAmount,
-            targetAccount: toAccount,
-            targetAmount,
-            USDExchangeRates,
+            const message = messageFn({
+                activeWallet,
+                activeWalletExchangeRates,
+                displayMoney,
+                fiatAccount,
+                limits: accountLimits,
+                sourceAccount: fromAccount,
+                sourceAmount,
+                targetAccount: toAccount,
+                targetAmount,
+                USDExchangeRates,
+            });
+
+            if (message) messages.push(message);
         });
-        if (message) messages.push(message);
-    });
 
-    if (messages.some(message => message.type === 'error')) {
-        return messages.filter(message => message.type === 'error');
-    }
+        if (messages.some(message => message.type === 'error')) {
+            return messages.filter(message => message.type === 'error');
+        }
 
-    return messages;
+        return messages;
+    }, [
+        USDExchangeRates,
+        accountLimits,
+        activeWallet,
+        activeWalletExchangeRates,
+        displayMoney,
+        formData.fromAmount,
+        formData.toAmount,
+        fromAccount,
+        isAccountVerified,
+        isTransferBetweenWallets,
+        toAccount,
+        walletAccounts,
+    ]);
+
+    return memoizedMessages;
 };
 
 export default useTransferMessages;

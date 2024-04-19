@@ -174,6 +174,10 @@
         @include mobile-or-tablet-screen {
             height: 2.4rem;
         }
+
+        &--wallets {
+            margin-left: 0;
+        }
     }
 
     &__redirect {

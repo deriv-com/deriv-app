@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useGetAccountStatus } from '@deriv/api-v2';
 import { getPaymentMethodsConfig } from 'src/constants';
-import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo } from 'src/types';
+import { TPaymentMethod, TPaymentMethodData, TPaymentMethodIdentifier, TPaymentMethodInfo } from 'src/types';
 
 export const usePaymentMethodDetails = () => {
     const { data: accountStatus, ...rest } = useGetAccountStatus();
@@ -10,7 +10,7 @@ export const usePaymentMethodDetails = () => {
     const ownershipStatus = ownership?.status?.toLowerCase();
 
     const paymentMethodData = useMemo(() => {
-        const groups: Partial<Record<TPaymentMethod, TPaymentMethodInfo>> = {};
+        const groups: Partial<TPaymentMethodData> = {};
         const paymentMethodConfig = getPaymentMethodsConfig();
         ownership?.requests?.forEach(request => {
             const paymentMethod = request?.payment_method?.toLowerCase() as TPaymentMethod;

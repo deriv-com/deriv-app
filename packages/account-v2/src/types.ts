@@ -40,3 +40,18 @@ export type TPaymentMethodInfo = {
     >['requests'];
     paymentMethod: string;
 };
+
+export type TFile = File & { file: Blob };
+
+export type TPaymentMethodData = Record<TPaymentMethod, TPaymentMethodInfo>;
+
+export type TProofOfOwnershipData = {
+    documentsRequired: number;
+    files: TFile[];
+    id: number;
+    identifierType: TPaymentMethodIdentifier | 'none';
+    isGenericPM: boolean;
+    paymentMethodIdentifier: string;
+};
+
+export type TProofOfOwnershipFormValue = Record<TPaymentMethod, Record<number | string, TProofOfOwnershipData>>;

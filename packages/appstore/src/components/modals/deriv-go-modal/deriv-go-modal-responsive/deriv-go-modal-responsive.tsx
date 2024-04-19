@@ -2,29 +2,14 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { MobileDialog, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getUrlBase, isSafariBrowser } from '@deriv/shared';
-import { DERIVGO_OPEN_APP_URL, DERIV_PLATFORM_NAMES, getMobileDerivGoAppInstallerURL } from 'Constants/platform-config';
+import { getUrlBase } from '@deriv/shared';
+import { DERIV_PLATFORM_NAMES, getMobileDerivGoAppInstallerURL } from 'Constants/platform-config';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import './deriv-go-modal-responsive.scss';
 
 export const DerivGoModalResponsive = observer(() => {
     const { traders_hub } = useStore();
     const { is_deriv_go_modal_visible, setIsDerivGoModalVisible } = traders_hub;
-
-    let mobile_url;
-    const mobileURLSet = () => {
-        mobile_url = window.location.replace(DERIVGO_OPEN_APP_URL);
-
-        const timeout = setTimeout(() => {
-            mobile_url = window.location.replace(getMobileDerivGoAppInstallerURL());
-        }, 1500);
-
-        if (!isSafariBrowser()) {
-            window.onblur = () => {
-                clearTimeout(timeout);
-            };
-        }
-    };
 
     const handleModalClose = () => {
         setIsDerivGoModalVisible(false);
@@ -49,8 +34,7 @@ export const DerivGoModalResponsive = observer(() => {
                     <div className='deriv-go-modal-responsive__app-with-note'>
                         <a
                             className='deriv-go-modal-responsive__app-with-note--option'
-                            onClick={mobileURLSet}
-                            href={mobile_url}
+                            href={getMobileDerivGoAppInstallerURL()}
                         >
                             <div className='full-row'>
                                 <Icon icon='IcMobileOutline' size={16} custom_color='var(--text-prominent)' />

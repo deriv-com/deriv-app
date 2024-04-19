@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { FacebookShareButton, TelegramShareButton, TwitterShareButton, WhatsappShareButton } from 'react-share';
-import { Icon, Text } from '@deriv/components';
-import { Localize } from 'Components/i18next';
+import { Icon } from '@deriv/components';
 
 type TShareMyAdsSocialsProps = {
     advert_url: string;
@@ -22,11 +21,11 @@ const ShareMyAdsSocials = ({ advert_url, custom_message }: TShareMyAdsSocialsPro
         { ShareButton: TelegramShareButton, icon: 'IcTelegram', messagePropName: 'title', size: 34, text: 'Telegram' },
         {
             ShareButton: TwitterShareButton,
-            icon: 'IcStockTwitter',
+            icon: 'IcXIcon',
             messagePropName: 'title',
             size: 28,
             small_icon: true,
-            text: 'Twitter',
+            text: 'X',
         },
         {
             ShareButton: 'a',
@@ -60,9 +59,6 @@ const ShareMyAdsSocials = ({ advert_url, custom_message }: TShareMyAdsSocialsPro
                             size={size}
                         />
                     </div>
-                    <Text size='xxxs'>
-                        <Localize i18n_default_text={text} />
-                    </Text>
                 </ShareButton>
             ))}
         </div>

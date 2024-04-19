@@ -12,6 +12,7 @@ export * from './ErrorModal';
 export * from './FilterModal';
 export * from './MyAdsDeleteModal';
 export * from './NicknameModal';
+export * from './OrderDetailsComplainModal';
 export * from './OrderDetailsConfirmModal';
 export * from './OrderTimeTooltipModal';
 export * from './PaymentMethods';

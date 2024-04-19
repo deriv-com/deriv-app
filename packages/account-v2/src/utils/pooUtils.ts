@@ -1,10 +1,10 @@
 import { TPaymentMethod, TPaymentMethodData, TProofOfOwnershipData, TProofOfOwnershipFormValue } from 'src/types';
 
 const defaultValue: TProofOfOwnershipData = {
-    documents_required: 0,
+    documentsRequired: 0,
     files: [],
     id: 0,
-    identifierType: '',
+    identifierType: 'none',
     isGenericPM: false,
     paymentMethodIdentifier: '',
 };
@@ -12,7 +12,7 @@ const defaultValue: TProofOfOwnershipData = {
 export const generatePOOInitialValues = (paymentMethodData: TPaymentMethodData) => {
     const paymentMethods = Object.keys(paymentMethodData) as TPaymentMethod[];
 
-    return paymentMethods.reduce<Partial<TProofOfOwnershipFormValue>>((acc, paymentMethod) => {
+    return paymentMethods.reduce<TProofOfOwnershipFormValue>((acc, paymentMethod) => {
         const documentsRequired = paymentMethodData[paymentMethod]?.documentsRequired ?? 0;
         const items = paymentMethodData[paymentMethod]?.items;
         const identifierType = paymentMethodData[paymentMethod]?.identifier ?? 'none';
@@ -28,5 +28,5 @@ export const generatePOOInitialValues = (paymentMethodData: TPaymentMethodData) 
             };
         });
         return acc;
-    }, {});
+    }, {} as TProofOfOwnershipFormValue);
 };

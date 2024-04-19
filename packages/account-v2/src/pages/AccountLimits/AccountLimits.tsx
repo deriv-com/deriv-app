@@ -2,74 +2,66 @@ import React from 'react';
 import { useAccountLimits, useActiveAccount } from '@deriv/api-v2';
 import { StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
 import { Loader, Table, Text } from '@deriv-com/ui';
-import { getMaximumDailyLimiitsTableData, getTradingLimitsTableData } from '../../utils/accountLimitsUtils';
+import { getAccountLimitValues } from '../../utils/accountLimitsUtils';
+
+const RenderTable = ({ row }: any) => (
+    <div className='grid grid-flow-col justify-between'>
+        <div>
+            {row.title && (
+                <Text
+                    color={row.isLessProminent ? 'less-prominent' : 'general'}
+                    size={row.isFooter ? 'xs' : 'sm'}
+                    weight={row.isHeader ? 'bold' : ''}
+                >
+                    {row.title}
+                </Text>
+            )}
+            {row.hintInfo && (
+                <span className='px-8'>
+                    <StandaloneCircleInfoRegularIcon fill='#b5abab' iconSize='md' />
+                </span>
+            )}
+        </div>
+        {row.value && (
+            <Text size='sm' weight={row.isHeader ? 'bold' : ''}>
+                {row.value}
+            </Text>
+        )}
+    </div>
+);
 
 export const AccountLimits = () => {
     const { data: accountLimits, isLoading } = useAccountLimits();
     const { data: activeAccount } = useActiveAccount();
-    const currency = activeAccount?.currency || 0;
+    const currency = activeAccount?.currency;
     if (isLoading) return <Loader isFullScreen={false} />;
 
-    const getValues = () => [
-        {
-            data: getTradingLimitsTableData(accountLimits, currency),
-            header: [
-                {
-                    header: 'Trading limits',
-                },
-                {
-                    header: 'Limit',
-                },
-            ],
-            id: 'trading_limits',
-        },
-        {
-            data: getMaximumDailyLimiitsTableData(),
-            header: [
-                {
-                    header: 'Maximum daily turnover',
-                },
-                {
-                    header: 'Limit',
-                },
-            ],
-            id: 'daily_turnover',
-        },
-        {
-            data: getMaximumDailyLimiitsTableData(),
-            header: [
-                {
-                    header: 'Withdrawal limits',
-                },
-                {
-                    header: '',
-                    id: 'empty_header',
-                },
-            ],
-            id: 'withdrawal_limits',
-        },
-    ];
-    return (
+    return accountLimits ? (
         <div>
-            {getValues().map(item => (
+            {getAccountLimitValues(accountLimits, currency).map(item => (
                 <React.Fragment key={item.id}>
                     <Table
-                        columns={item.header}
                         data={item.data}
                         isFetching={false}
                         //eslint-disable-next-line
                         loadMoreFunction={() => {}}
-                        renderHeader={header => <span>{header}</span>}
                         rowRender={row => (
-                            <div className='grid grid-flow-col'>
-                                {row.title && <Text size='xs'>{row.title}</Text>}
-                                {row.hintInfo && <StandaloneCircleInfoRegularIcon fill='#b5abab' iconSize='md' />}
-                                {row.value && <Text size='xs'>{row.value}</Text>}
-                            </div>
+                            <>
+                                <RenderTable row={row} />
+                                {row.subCategory && (
+                                    <Table
+                                        data={row.subCategory}
+                                        isFetching={false}
+                                        //eslint-disable-next-line
+                                        loadMoreFunction={() => {}}
+                                        rowRender={subCategoryRow => <RenderTable row={subCategoryRow} />}
+                                    />
+                                )}
+                            </>
                         )}
                     />
                 </React.Fragment>
             ))}
         </div>
-    );
+    ) : null;
 };

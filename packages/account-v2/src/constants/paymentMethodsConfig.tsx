@@ -28,7 +28,7 @@ import {
 } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 
-const iconSize = { height: '40px', width: '64px' };
+const iconSize = { height: 40, width: 64 };
 
 export const PAYMENT_METHOD_IDENTIFIER = Object.freeze({
     accountID: 'account_id',

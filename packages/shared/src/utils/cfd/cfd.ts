@@ -1,8 +1,7 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-
 import { CFD_PLATFORMS } from '../platform';
-import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants/jurisdictions-config';
+import { AUTH_STATUS_CODES, Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -514,7 +513,7 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
 
 export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
     const { document } = account_status?.authentication || {};
-    if (document?.status === 'pending') {
+    if (document?.status === AUTH_STATUS_CODES.PENDING) {
         return false;
     }
     // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatu

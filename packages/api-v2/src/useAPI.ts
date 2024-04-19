@@ -10,7 +10,7 @@ import type {
 import { useAPIContext } from './APIProvider';
 
 const useAPI = () => {
-    const { derivAPI, wsClient } = useAPIContext();
+    const { wsClient, connection } = useAPIContext();
 
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
@@ -28,7 +28,7 @@ const useAPI = () => {
             // }
             return response;
         },
-        [derivAPI]
+        [wsClient]
     );
 
     const subscribe = useCallback(
@@ -60,13 +60,13 @@ const useAPI = () => {
                 },
             };
         },
-        [derivAPI]
+        [wsClient]
     );
 
     return {
         send,
         subscribe,
-        derivAPI,
+        connection,
     };
 };
 

@@ -27,7 +27,6 @@ type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
 type TUnsubscribeFunction = (id: string) => void;
 
 type APIContextData = {
-    derivAPI: DerivAPIBasic | null;
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
     queryClient: QueryClient;
@@ -213,7 +212,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     return (
         <APIContext.Provider
             value={{
-                derivAPI: derivAPIRef.current,
                 subscribe,
                 unsubscribe,
                 queryClient: reactQueryRef.current,

@@ -1,11 +1,25 @@
 import { GetLimits } from '@deriv/api-types';
 import { CurrencyConstants, FormatUtils } from '@deriv-com/utils';
 
-export const getAccountLimitValues = (accountLimits: GetLimits, currency: CurrencyConstants.Currency) => {
+export const CATEGORY = {
+    footer: 'footer',
+    header: 'header',
+    sub_row: 'sub_row',
+};
+
+export type TRowData = {
+    category?: string;
+    hintInfo?: string;
+    isLessProminent?: boolean;
+    title: string;
+    value?: number | string;
+};
+
+export const getAccountLimitValues = (accountLimits: GetLimits, currency: CurrencyConstants.Currency): TRowData[] => {
     const { account_balance: accountBalance, open_positions: openPositions, payout = 0 } = accountLimits;
     return [
         {
-            isHeader: true,
+            category: CATEGORY.header,
             title: 'Trading limits',
             value: 'Limit',
         },
@@ -28,11 +42,11 @@ export const getAccountLimitValues = (accountLimits: GetLimits, currency: Curren
             value: FormatUtils.formatMoney(payout, { currency }),
         },
         {
-            isFooter: true,
+            category: CATEGORY.footer,
             title: '*Any limits in your Self-exclusion settings will override these default limits.',
         },
         {
-            isHeader: true,
+            category: CATEGORY.header,
             title: 'Maximum daily turnover',
             value: '0.00',
         },
@@ -47,12 +61,12 @@ export const getAccountLimitValues = (accountLimits: GetLimits, currency: Curren
             value: 'Not set',
         },
         {
-            isSubCategory: true,
+            category: CATEGORY.sub_row,
             title: 'Major pairs',
             value: '10',
         },
         {
-            isSubCategory: true,
+            category: CATEGORY.sub_row,
             title: 'Minor Pairs',
             value: '10',
         },
@@ -67,22 +81,22 @@ export const getAccountLimitValues = (accountLimits: GetLimits, currency: Curren
         },
 
         {
-            isSubCategory: true,
+            category: CATEGORY.sub_row,
             title: 'Commodities Basket',
             value: 'ss',
         },
         {
-            isSubCategory: true,
+            category: CATEGORY.sub_row,
             title: 'Forex Basket',
             value: '',
         },
         {
-            isHeader: true,
+            category: CATEGORY.header,
             title: 'Withdrawal limits',
             value: 'Limits',
         },
         {
-            isFooter: true,
+            category: CATEGORY.footer,
             isLessProminent: true,
             title: 'Your account is fully authenticated and your withdrawal limits have been lifted',
         },

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
     DesktopWalletsList,
     WalletsAddMoreCarousel,
@@ -17,7 +17,6 @@ import './WalletsListingRoute.scss';
 const WalletsListingRoute: React.FC = () => {
     const { isMobile } = useDevice();
     const { show } = useModal();
-    const containerRef = useRef<HTMLDivElement>(null);
     const resetTradingPlatformActionParams = getActionFromUrl();
 
     const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = useMemo(
@@ -49,7 +48,7 @@ const WalletsListingRoute: React.FC = () => {
     }, [platformMapping, resetTradingPlatformActionParams, show]);
 
     return (
-        <div className='wallets-listing-route' ref={containerRef}>
+        <div className='wallets-listing-route'>
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
             <WalletsAddMoreCarousel />
             {!isMobile && <WalletTourGuide />}

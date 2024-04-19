@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import Onboarding from 'Modules/onboarding';
 import TradersHub from 'Modules/traders-hub';
+import TradersHubLoggedOut from 'Modules/traders-hub-logged-out';
 import { Switch, useHistory } from 'react-router-dom';
 import RouteWithSubroutes from './route-with-sub-routes.jsx';
 
@@ -24,12 +25,17 @@ const Routes: React.FC = observer(() => {
         <React.Suspense fallback={<Loading />}>
             <Switch>
                 <RouteWithSubroutes
-                    path={'/appstore/traders-hub'}
+                    path={routes.root}
+                    component={TradersHubLoggedOut}
+                    getTitle={() => localize('Deriv App')}
+                />
+                <RouteWithSubroutes
+                    path={routes.traders_hub}
                     component={TradersHub}
                     getTitle={() => localize("Trader's Hub")}
                 />
                 <RouteWithSubroutes
-                    path={'/appstore/onboarding'}
+                    path={routes.onboarding}
                     component={Onboarding}
                     getTitle={() => localize('Onboarding')}
                 />

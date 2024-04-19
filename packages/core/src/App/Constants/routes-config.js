@@ -428,7 +428,7 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.root,
+            path: routes.trade,
             component: Trader,
             getTitle: () => localize('Trader'),
             routes: [
@@ -440,6 +440,12 @@ const getModules = () => {
                 },
                 { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
             ],
+        },
+        {
+            path: routes.root,
+            component: AppStore,
+            is_authenticated: false,
+            getTitle: () => localize('Deriv App'),
         },
     ];
 

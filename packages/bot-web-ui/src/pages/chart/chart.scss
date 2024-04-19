@@ -101,6 +101,11 @@
                 margin-bottom: 3rem !important;
             }
         }
+        & .cq-chart-title {
+            @include mobile {
+                margin: 0.8rem;
+            }
+        }
 
         & .cq-chart-title .cq-menu-dropdown {
             position: fixed;

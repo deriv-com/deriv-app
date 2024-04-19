@@ -45,7 +45,6 @@ const useAPI = () => {
                 onError: (response: any) => void
             ) => { unsubscribe?: VoidFunction };
         } => {
-            //return derivAPI?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) })
             return {
                 subscribe(onData: (response: any) => void, onError: (response: any) => void) {
                     const subscribeResponse = wsClient?.subscribe(name, payload, onData);

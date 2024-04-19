@@ -42,9 +42,7 @@ const getWebSocketURL = () => {
 const APIContext = createContext<APIContextData | null>(null);
 
 /**
- * Initializes a derivAPIRef instance for the global window. This enables a standalone connection
- * without causing race conditions with deriv-app core stores.
- * @returns {derivAPIRefBasic} The initialized derivAPIRef instance.
+ * @returns {WebSocket} The initialized WebSocket instance.
  */
 const initializeConnection = (onWSClose: () => void, onOpen?: () => void): WebSocket => {
     const wss_url = getWebSocketURL();

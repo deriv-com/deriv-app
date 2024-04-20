@@ -1,5 +1,6 @@
 export { AccountClosureForm } from './AccountClosureForm/AccountClosureForm';
 export { AccountClosureSteps } from './AccountClosureSteps/AccountClosureSteps';
+export { AccountLimitsSideNote } from './AccountLimitsContainer/AccountLimitsSideNote';
 export { LoginHistoryTable } from './LoginHistoryTable/LoginHistoryTable';
 export { OnfidoView } from './Onfido/OnfidoView';
 export { PersonalDetailsFormWithExample } from './PersonalDetailsFormWithExample/PersonalDetailsFormWithExample';

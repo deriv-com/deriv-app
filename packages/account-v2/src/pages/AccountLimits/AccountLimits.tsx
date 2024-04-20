@@ -1,55 +1,31 @@
 import React from 'react';
 import { useAccountLimits, useActiveAccount } from '@deriv/api-v2';
-import { StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
-import { Loader, Table, Text } from '@deriv-com/ui';
-import { CATEGORY, getAccountLimitValues, TRowData } from '../../utils/accountLimitsUtils';
-
-const RenderRow = ({ row }: { row: TRowData }) => {
-    const { category, hintInfo, isLessProminent, title, value } = row;
-    return (
-        <div className='grid grid-flow-col justify-between'>
-            <div>
-                {title && (
-                    <Text
-                        className={category === CATEGORY.sub_row ? 'px-16' : ''}
-                        color={isLessProminent ? 'less-prominent' : 'general'}
-                        size={category === CATEGORY.footer ? 'xs' : 'sm'}
-                        weight={category === CATEGORY.header ? 'bold' : ''}
-                    >
-                        {title}
-                    </Text>
-                )}
-                {hintInfo && (
-                    <span className='px-8'>
-                        <StandaloneCircleInfoRegularIcon fill='#b5abab' iconSize='md' />
-                    </span>
-                )}
-            </div>
-            {value && (
-                <Text size='sm' weight={category === CATEGORY.header ? 'bold' : ''}>
-                    {value}
-                </Text>
-            )}
-        </div>
-    );
-};
+import { Loader } from '@deriv-com/ui';
+import { AccountLimitsSideNote } from 'src/containers';
+import { AccountLimitsTable } from 'src/containers/AccountLimitsContainer/AccountLimitsTable';
+import { DemoMessage } from '../../components/DemoMessage';
+import { getAccountLimitValues } from '../../utils/accountLimitsUtils';
 
 export const AccountLimits = () => {
     const { data: accountLimits, isLoading } = useAccountLimits();
     const { data: activeAccount } = useActiveAccount();
     const currency = activeAccount?.currency;
+    const isVirtual = activeAccount?.is_virtual;
 
     if (isLoading) return <Loader isFullScreen={false} />;
 
-    return accountLimits ? (
-        <div>
-            <Table
-                data={getAccountLimitValues(accountLimits, currency)}
-                isFetching={false}
-                //eslint-disable-next-line
-                loadMoreFunction={() => {}}
-                rowRender={rowData => <RenderRow row={rowData} />}
-            />
-        </div>
-    ) : null;
+    if (isVirtual) {
+        return <DemoMessage className='items-center' />;
+    }
+
+    if (accountLimits) {
+        const tableData = getAccountLimitValues(accountLimits, currency);
+        return (
+            <div className='grid md:grid-cols-[auto,256px] gap-16'>
+                <AccountLimitsTable accountLimitValues={tableData} />
+                <AccountLimitsSideNote />
+            </div>
+        );
+    }
+    return null;
 };

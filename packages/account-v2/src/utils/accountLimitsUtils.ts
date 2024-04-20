@@ -7,7 +7,7 @@ export const CATEGORY = {
     sub_row: 'sub_row',
 };
 
-export type TRowData = {
+export type TAccountLimitValues = {
     category?: string;
     hintInfo?: string;
     isLessProminent?: boolean;
@@ -15,7 +15,10 @@ export type TRowData = {
     value?: number | string;
 };
 
-export const getAccountLimitValues = (accountLimits: GetLimits, currency: CurrencyConstants.Currency): TRowData[] => {
+export const getAccountLimitValues = (
+    accountLimits: GetLimits,
+    currency: CurrencyConstants.Currency
+): TAccountLimitValues[] => {
     const { account_balance: accountBalance, open_positions: openPositions, payout = 0 } = accountLimits;
     return [
         {

@@ -4,7 +4,7 @@ import { CurrencyConstants, FormatUtils } from '@deriv-com/utils';
 export const CATEGORY = {
     footer: 'footer',
     header: 'header',
-    sub_row: 'sub_row',
+    submarket: 'submarket',
 };
 
 export type TAccountLimitValues = {
@@ -19,7 +19,26 @@ export const getAccountLimitValues = (
     accountLimits: GetLimits,
     currency: CurrencyConstants.Currency
 ): TAccountLimitValues[] => {
-    const { account_balance: accountBalance, open_positions: openPositions, payout = 0 } = accountLimits;
+    const {
+        account_balance: accountBalance,
+        market_specific,
+        open_positions: openPositions,
+        payout = 0,
+    } = accountLimits;
+    const { commodities = [], forex = [], indices = [], synthetic_index = [] } = { ...market_specific };
+
+    const marketValues = (collection: any[]) => {
+        const formattedCollection = collection
+            ?.slice()
+            .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));
+
+        return formattedCollection?.map(data => ({
+            category: data?.level,
+            title: data?.name,
+            value: FormatUtils.formatMoney(data?.turnover_limit, { currency }),
+        }));
+    };
+
     return [
         {
             category: CATEGORY.header,
@@ -50,49 +69,14 @@ export const getAccountLimitValues = (
         },
         {
             category: CATEGORY.header,
+            hintInfo: 'Represents the maximum volume of contracts that you may purchase in any given trading day.',
             title: 'Maximum daily turnover',
-            value: '0.00',
+            value: 'Limit',
         },
-        {
-            hintInfo:
-                'Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.',
-            title: 'Commodities',
-            value: 'open_positions',
-        },
-        {
-            title: 'Forex',
-            value: 'Not set',
-        },
-        {
-            category: CATEGORY.sub_row,
-            title: 'Major pairs',
-            value: '10',
-        },
-        {
-            category: CATEGORY.sub_row,
-            title: 'Minor Pairs',
-            value: '10',
-        },
-
-        {
-            title: 'Stock Indices',
-            value: '0.00',
-        },
-        {
-            title: 'Forex',
-            value: 'Not set',
-        },
-
-        {
-            category: CATEGORY.sub_row,
-            title: 'Commodities Basket',
-            value: 'ss',
-        },
-        {
-            category: CATEGORY.sub_row,
-            title: 'Forex Basket',
-            value: '',
-        },
+        ...marketValues(commodities),
+        ...marketValues(forex),
+        ...marketValues(indices),
+        ...marketValues(synthetic_index),
         {
             category: CATEGORY.header,
             title: 'Withdrawal limits',

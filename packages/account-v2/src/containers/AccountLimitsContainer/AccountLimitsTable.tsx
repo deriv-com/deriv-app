@@ -10,7 +10,7 @@ const RenderRow = ({ row }: { row: TAccountLimitValues }) => {
             <div>
                 {title && (
                     <Text
-                        className={category === CATEGORY.sub_row ? 'px-16' : ''}
+                        className={category === CATEGORY.submarket ? 'px-16' : ''}
                         color={isLessProminent ? 'less-prominent' : 'general'}
                         size={category === CATEGORY.footer ? 'xs' : 'sm'}
                         weight={category === CATEGORY.header ? 'bold' : ''}

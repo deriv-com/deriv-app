@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useGetAccountStatus } from '@deriv/api-v2';
 import { getPaymentMethodsConfig } from 'src/constants';
-import { TPaymentMethod, TPaymentMethodData, TPaymentMethodIdentifier, TPaymentMethodInfo } from 'src/types';
+import { TPaymentMethod, TPaymentMethodData, TPaymentMethodIdentifier } from 'src/types';
 
 export const usePaymentMethodDetails = () => {
     const { data: accountStatus, ...rest } = useGetAccountStatus();

@@ -50,7 +50,7 @@ const getTradingLimitsTableData = (
     },
 ];
 type TMarketSpecific = GetLimits['market_specific'];
-const getMarketValues = (collection: any, currency: any) => {
+const getMarketValues = (collection: any = [], currency: any) => {
     const formattedCollection = collection
         ?.slice()
         .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));

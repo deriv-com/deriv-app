@@ -6,12 +6,15 @@ import { Localize } from '@deriv/translations';
 import ConfirmPhoneNumber from './confirm-phone-number';
 import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
+import ConfirmYourEmail from './confirm-your-email';
 
 const PhoneVerificationPage = () => {
+    const [show_email_verification, should_show_email_verification] = React.useState(true);
     const history = useHistory();
     const handleBackButton = () => {
         history.push(routes.personal_details);
     };
+
     return (
         <div>
             <div className='phone-verification__redirect_button'>
@@ -25,7 +28,7 @@ const PhoneVerificationPage = () => {
                     <Localize i18n_default_text='Phone number verification' />
                 </Text>
             </div>
-            <ConfirmPhoneNumber />
+            {show_email_verification ? <ConfirmYourEmail /> : <ConfirmPhoneNumber />}
         </div>
     );
 };

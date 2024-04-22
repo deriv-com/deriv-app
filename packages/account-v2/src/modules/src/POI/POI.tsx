@@ -19,6 +19,7 @@ export const ProofOfIdentity = () => {
     const service = kycAuthStatus?.identity.service;
     const isPOARequired = kycAuthStatus?.address.status === AUTH_STATUS_CODES.NONE;
     const rejectedReasons = kycAuthStatus?.identity.last_rejected?.rejected_reasons;
+    const isReportAvailable = kycAuthStatus?.identity.last_rejected?.report_available;
 
     const initialState: TPOIInitialState = {
         selectedCountry: '',
@@ -49,11 +50,11 @@ export const ProofOfIdentity = () => {
         if (
             !isLoading &&
             poiStatus === AUTH_STATUS_CODES.REJECTED &&
-            shouldSkipCountrySelector(service as TPOIService, rejectedReasons)
+            shouldSkipCountrySelector({ errors: rejectedReasons, isReportAvailable, service: service as TPOIService })
         ) {
             dispatch({ payload: POI_SUBMISSION_STATUS.submitting, type: 'setSubmissionStatus' });
         }
-    }, [poiStatus, isLoading, rejectedReasons, service]);
+    }, [poiStatus, isLoading, rejectedReasons, service, isReportAvailable]);
 
     if (isLoading) {
         return <Loader />;
@@ -73,7 +74,7 @@ export const ProofOfIdentity = () => {
                 />
             );
         default: {
-            const errorStatus = checkIDVErrorStatus({ status: poiStatus });
+            const errorStatus = checkIDVErrorStatus({ isReportAvailable, status: poiStatus });
             return (
                 <POICountrySelector
                     errorStatus={errorStatus}

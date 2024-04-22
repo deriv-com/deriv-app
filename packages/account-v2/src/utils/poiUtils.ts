@@ -45,10 +45,15 @@ export const translateErrorCode = (errorCode: string | null, service: TPOIServic
 
 type TIDVErrorStatusConfig = {
     errors?: string[];
+    isReportAvailable?: 0 | 1;
     status?: TPOIStatus;
 };
 
-export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig): TIDVErrorStatusCode | null => {
+export const checkIDVErrorStatus = ({
+    errors,
+    isReportAvailable,
+    status,
+}: TIDVErrorStatusConfig): TIDVErrorStatusCode | null => {
     if (status === AUTH_STATUS_CODES.EXPIRED) {
         return IDV_ERROR_CODES.expired.code;
     }
@@ -57,6 +62,9 @@ export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig): 
         return null;
     }
 
+    if (isReportAvailable === 0) {
+        return IDV_ERROR_CODES.reportNotAvailable.code;
+    }
     if (
         errors.includes(IDV_ERROR_CODES.nameMismatch.code as string) &&
         errors.includes(IDV_ERROR_CODES.dobMismatch.code as string)
@@ -66,9 +74,11 @@ export const checkIDVErrorStatus = ({ errors, status }: TIDVErrorStatusConfig): 
     return errors[0] as TIDVErrorStatusCode;
 };
 
-export const shouldSkipCountrySelector = (service: TPOIService, errors?: string[]) => {
+type TSkipCountrySelectorConfig = { errors?: string[]; isReportAvailable?: 0 | 1; service: TPOIService };
+
+export const shouldSkipCountrySelector = ({ errors, isReportAvailable, service }: TSkipCountrySelectorConfig) => {
     if (service === POI_SERVICE.idv) {
-        if (!errors?.length) {
+        if (!errors?.length || isReportAvailable === 0) {
             return false;
         }
         const errorStatus = checkIDVErrorStatus({ errors });

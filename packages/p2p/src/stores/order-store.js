@@ -494,7 +494,7 @@ export default class OrderStore {
                     if (!response.error) {
                         clearTimeout(wait);
                         const wait = setTimeout(
-                            () => general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
+                            () => general_store?.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
                             650
                         );
                     } else if (response.error) {

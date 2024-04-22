@@ -59,7 +59,7 @@ Blockly.Blocks.bb_statement = {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const blocksInStatement = this.getBlocksInStatement('STATEMENT');
             blocksInStatement.forEach(block => {
                 if (!this.required_child_blocks.includes(block.type)) {

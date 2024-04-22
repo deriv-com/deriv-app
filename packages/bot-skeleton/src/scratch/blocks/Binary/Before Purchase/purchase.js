@@ -50,7 +50,7 @@ Blockly.Blocks.purchase = {
             if (event.name === 'TYPE_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.populatePurchaseList(event);
             }
-        } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
+        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
             const purchase_type_list = this.getField('PURCHASE_LIST');
             const purchase_options = purchase_type_list.menuGenerator_; // eslint-disable-line
 

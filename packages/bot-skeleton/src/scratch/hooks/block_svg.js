@@ -32,7 +32,6 @@ Blockly.BlockSvg.prototype.addSelect = function () {
  */
 Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
     if (this.disabled !== disabled) {
-        Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
 
         if (this.rendered) {
             this.updateDisabled();
@@ -49,14 +48,11 @@ Blockly.BlockSvg.prototype.updateDisabled = function () {
         addClass(this.svgGroup_, 'blocklyDisabled');
 
         const fill = `url(#${this.workspace.options.disabledPatternId})`;
-        if (this.svgPath_.getAttribute('fill') !== fill) {
-            this.svgPath_.setAttribute('fill', fill);
+        if (this.svgGroup_.getAttribute('fill') !== fill) {
+            this.svgGroup_.setAttribute('fill', fill);
         }
     } else {
-        const removed = Blockly.utils.removeClass(this.svgGroup_, 'blocklyDisabled');
-        if (removed) {
-            this.updateColour();
-        }
+        Blockly.utils.removeClass(this.svgGroup_, 'blocklyDisabled');
     }
 
     const children = this.getChildren(false);
@@ -275,7 +271,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     if (collapsed) {
         this.getIcons()
             // Never hide ScratchBlockComments!
-            .filter(icon => !(icon instanceof Blockly.ScratchBlockComment))
+            .filter(icon => !(icon instanceof Blockly.WorkspaceComment))
             .forEach(icon => icon.setVisible(false));
 
         // Ensure class persists through collapse. Falls back to first
@@ -321,7 +317,8 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.
     }
 
-    Blockly.BlockSvg.superClass_.setCollapsed.call(this, collapsed);
+    const Blockly_SVG = new Blockly.BlockSvg();
+    Blockly_SVG.setCollapsed.call(this, collapsed);
 
     if (!render_list.length) {
         render_list.push(this); // No child blocks, just render this block.
@@ -349,13 +346,9 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
 //         // Input shapes are empty holes drawn when a value input is not connected.
 //         // eslint-disable-next-line no-cond-assign
 //         this.constants = new Blockly.blockRendering.ConstantProvider();
-//         console.log('test', this.constants)
-//         console.log(this.inputList)
 //         this.inputList.forEach(input => {
-//             console.log(input)
 //             input.init();
-//             console.log(this.svgGroup_)
-//             // input.initOutlinePath(this.svgGroup_);
+//             input.initOutlinePath(this.svgGroup_);
 //         });
 
 //         const icons = this.getIcons();
@@ -366,7 +359,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
 //     //this.updateColour();
 //     //this.updateMovable();
 //     if (!this.workspace.options.readOnly && !this.eventsInit_) {
-//         //Blockly.browserEvents.bind(this.getSvgRoot(), 'mousedown', this, this.onMouseDown_);
+//         Blockly.browserEvents.bind(this.getSvgRoot(), 'mousedown', this, this.onMouseDown_);
 //     }
 //     this.eventsInit_ = true;
 
@@ -374,4 +367,3 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
 //         this.workspace.getCanvas().appendChild(this.getSvgRoot());
 //     }
 // };
-console.log('4')

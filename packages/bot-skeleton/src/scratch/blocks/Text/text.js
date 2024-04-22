@@ -32,7 +32,7 @@ Blockly.Blocks.text = {
 
 Blockly.JavaScript.javascriptGenerator.forBlock['text'] = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const code = Blockly.JavaScript.quote_(block.getFieldValue('TEXT'));
+    const code = Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };
 

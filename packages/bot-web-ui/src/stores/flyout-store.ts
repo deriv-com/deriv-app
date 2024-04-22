@@ -116,18 +116,18 @@ export default class FlyoutStore implements IFlyoutStore {
             this.flyout = new window.Blockly.VerticalFlyout(flyoutWorkspaceOptions);
         }
 
-        this.flyout.targetWorkspace_ = workspace;
+        this.flyout.targetWorkspace = workspace;
         this.flyout.workspace_.targetWorkspace = workspace;
 
         // A flyout connected to a workspace doesn't have its own current gesture.
-        this.flyout.workspace_.getGesture = this.flyout.targetWorkspace_.getGesture.bind(this.flyout.targetWorkspace_);
+        this.flyout.workspace_.getGesture = this.flyout.targetWorkspace.getGesture.bind(this.flyout.targetWorkspace_);
 
         // Get variables from the main workspace rather than the target workspace.
-        workspace.variableMap_ = this.flyout.targetWorkspace_.getVariableMap();
+        workspace.variableMap_ = this.flyout.targetWorkspace.getVariableMap();
 
         this.flyout.workspace_.createPotentialVariableMap();
 
-        workspace.flyout_ = this.flyout;
+        workspace.flyout = this.flyout;
     }
 
     /**
@@ -139,8 +139,6 @@ export default class FlyoutStore implements IFlyoutStore {
     initBlockWorkspace(el_block_workspace: HTMLElement, block_node: Node) {
         const workspace = window.Blockly.inject(el_block_workspace, this.options);
 
-        console.log(workspace);
-        workspace.setVisible(true);
         workspace.targetWorkspace = window.Blockly.derivWorkspace;
 
         const block = window.Blockly.Xml.domToBlock(block_node, workspace);
@@ -159,13 +157,12 @@ export default class FlyoutStore implements IFlyoutStore {
         const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            window.Blockly.browserEvents.bind(block_svg_root, 'mousedown', null, event => {
+            window.Blockly.browserEvents.conditionalBind(block_svg_root, 'mousedown', null, event => {
                 GTM.pushDataLayer({
                     event: 'dbot_drag_block',
                     block_type: block.type,
                 });
-                console.log(this.flyout);
-                this.flyout.blockMouseDown(event as Blockly.Events.UiBase);
+                this.flyout.blockMouseDown(block)(event as Blockly.Events.UiBase);
             }),
             window.Blockly.browserEvents.bind(block_svg_root, 'mouseout', block, block.removeSelect),
             window.Blockly.browserEvents.bind(block_svg_root, 'mouseover', block, block.addSelect)

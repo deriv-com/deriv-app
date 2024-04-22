@@ -2,7 +2,6 @@ import { config } from '../../constants/config';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import DBotStore from '../dbot-store';
 
-console.log('24');
 /**
  * Handle a mouse-down on SVG drawing surface.
  * deriv-bot: We bubble the mousedown event for Core to be reactive.
@@ -12,7 +11,7 @@ console.log('24');
 // Blockly.WorkspaceSvg.prototype.onMouseDown_ = function (e) {
 //     // Bubble mousedown event up for some Core elements to react correctly.
 //     if (e instanceof MouseEvent) {
-//         Blockly.derivWorkspace.cachedParentSvg_.dispatchEvent(new e.constructor(e.type, e));
+//         Blockly.derivWorkspace.cachedParentSvg.dispatchEvent(new e.constructor(e.type, e));
 //     }
 //     const gesture = this.getGesture(e);
 //     if (gesture) {
@@ -89,7 +88,7 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function (id, hideChaff = true) {
  */
 Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     const { flyout } = DBotStore.instance;
-    const block = Blockly.Xml.domToBlock(block_node, flyout.getFlyout().workspace_);
+    const block = Blockly.Xml.domToBlock(block_node, flyout.getFlyout().targetWorkspace);
     const top_blocks = this.getTopBlocks(true);
     const new_block = flyout.getFlyout().createBlock(false, block);
 
@@ -375,7 +374,8 @@ Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) 
     //     if (this.currentGesture_) {
     //         this.currentGesture_.cancel();
     //     }
-    //     new Blockly.WorkspaceSvg.call(this);
+    //     //new Blockly.WorkspaceSvg.constructor.call(this);
+    //     console.log(this)
     //     if (this.svgGroup_) {
     //         goog.dom.removeNode(this.svgGroup_);
     //         this.svgGroup_ = null;
@@ -386,9 +386,9 @@ Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) 
     //         this.toolbox_.dispose();
     //         this.toolbox_ = null;
     //     }
-    //     if (this.flyout_) {
-    //         this.flyout_.dispose();
-    //         this.flyout_ = null;
+    //     if (this.flyout) {
+    //         this.flyout.dispose();
+    //         this.flyout = null;
     //     }
     //     if (this.trashcan) {
     //         this.trashcan.dispose();
@@ -403,44 +403,44 @@ Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) 
     //         this.zoomControls_ = null;
     //     }
 
-    //     if (this.audioManager_) {
-    //         this.audioManager_.dispose();
-    //         this.audioManager_ = null;
+    //     if (this.audioManager) {
+    //         this.audioManager.dispose();
+    //         this.audioManager = null;
     //     }
 
-    //     if (this.grid_) {
-    //         this.grid_.dispose();
-    //         this.grid_ = null;
+    //     if (this.grid) {
+    //         this.grid.dispose();
+    //         this.grid = null;
     //     }
 
-    //     if (this.toolboxCategoryCallbacks_) {
-    //         this.toolboxCategoryCallbacks_ = null;
+    //     if (this.toolboxCategoryCallbacks) {
+    //         this.toolboxCategoryCallbacks = null;
     //     }
-    //     if (this.flyoutButtonCallbacks_) {
-    //         this.flyoutButtonCallbacks_ = null;
+    //     if (this.flyoutButtonCallbacks) {
+    //         this.flyoutButtonCallbacks = null;
     //     }
     //     if (!this.options.parentWorkspace) {
     //         // Top-most workspace.  Dispose of the div that the
     //         // SVG is injected into (i.e. injectionDiv).
     //         goog.dom.removeNode(this.getParentSvg().parentNode);
     //     }
-    //     if (this.resizeHandlerWrapper_) {
-    //         Blockly.unbindEvent_(this.resizeHandlerWrapper_);
-    //         this.resizeHandlerWrapper_ = null;
+    //     if (this.resizeHandlerWrapper) {
+    //         Blockly.utils.browserEvents.unbind(this.resizeHandlerWrapper);
+    //         this.resizeHandlerWrapper = null;
     //     }
     // };
 
-    if (should_show_loading) {
-        const { setLoading } = DBotStore.instance;
-        setLoading(true);
+    // if (should_show_loading) {
+    //     const { setLoading } = DBotStore.instance;
+    //     setLoading(true);
 
-        setTimeout(() => {
-            //disposeFn();
-            setLoading(false);
-        }, 50);
-    } else {
-        //disposeFn();
-    }
+    //     setTimeout(() => {
+    //         disposeFn();
+    //         setLoading(false);
+    //     }, 50);
+    // } else {
+    //     disposeFn();
+    // }
 };
 
 /**
@@ -456,4 +456,3 @@ Blockly.WorkspaceSvg.prototype.asyncClear = function () {
         resolve();
     });
 };
-console.log('24');

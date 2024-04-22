@@ -47,7 +47,7 @@ Blockly.Blocks.text_statement = {
             }
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const stack_blocks = Blockly.getMainWorkspace().getBlockById(event.blockId);
 
             if (this.required_parent_id && (!surround_parent || surround_parent.id !== this.required_parent_id)) {

@@ -67,9 +67,7 @@ const FlyoutContent = props => {
                     </div>
                 ) : (
                     flyout_content.map((node, index) => {
-                        console.log('test node', node)
                         const tag_name = node.tagName.toUpperCase();
-                        console.log(tag_name)
                         switch (tag_name) {
                             case Blockly.Xml.NODE_BLOCK: {
                                 const block_type = node.getAttribute('type');
@@ -116,10 +114,9 @@ const FlyoutContent = props => {
                                     />
                                 );
                             }
-                            case 'BLOCK': {
+                            case Blockly.Xml.NODE_BUTTON: {
                                 const callback_key = node.getAttribute('callbackKey');
                                 const callback_id = node.getAttribute('id');
-
                                 return (
                                     <button
                                         id={callback_id}
@@ -131,14 +128,13 @@ const FlyoutContent = props => {
                                             `${node.getAttribute('className')}`
                                         )}
                                         onClick={button => {
-                                            const workspace = Blockly.getMainWorkspace();
+                                            const workspace = Blockly.derivWorkspace;
                                             const button_cb = workspace.getButtonCallback(callback_key);
                                             const callback = button_cb || (() => {});
 
                                             // Workaround for not having a flyout workspace.
                                             // eslint-disable-next-line no-underscore-dangle
                                             button.targetWorkspace_ = workspace;
-                                            console.log(button.targetWorkspace_)
                                             button.getTargetWorkspace = () => {
                                                 // eslint-disable-next-line no-underscore-dangle
                                                 return button.targetWorkspace_;
@@ -177,6 +173,7 @@ const Flyout = observer(() => {
         selected_category,
         first_get_variable_block_index,
     } = flyout;
+
     const { pushDataLayer } = gtm;
 
     React.useEffect(() => {

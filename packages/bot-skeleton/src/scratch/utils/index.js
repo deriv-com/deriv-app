@@ -28,7 +28,7 @@ export const matchTranslateAttribute = translateString => {
 };
 
 export const extractTranslateValues = () => {
-    const transform_value = Blockly?.derivWorkspace?.trashcan?.svgGroup_.getAttribute('transform');
+    const transform_value = Blockly?.derivWorkspace?.trashcan?.svgGroup.getAttribute('transform');
     const translate_xy = matchTranslateAttribute(transform_value);
 
     if (!translate_xy) {
@@ -44,21 +44,21 @@ export const extractTranslateValues = () => {
 export const validateErrorOnBlockDelete = () => {
     // Get the bounding rectangle of the selected block
     const { translate_X, translate_Y } = extractTranslateValues();
-    const blockRect = Blockly.selected?.getSvgRoot().getBoundingClientRect();
+    const blockRect = Blockly.getSelected()?.getSvgRoot().getBoundingClientRect();
     const translate_offset = 200;
     // Extract coordinates from the bounding rectangles
     const blockX = blockRect?.left || 0;
     const blockY = blockRect?.top || 0;
     const mandatory_trade_option_block = getSelectedTradeType();
     const required_block_types = [mandatory_trade_option_block, 'trade_definition', 'purchase', 'before_purchase'];
-    if (required_block_types?.includes(Blockly?.selected?.type)) {
+    if (required_block_types?.includes(Blockly?.getSelected()?.type)) {
         if (
             blockY >= translate_Y - translate_offset &&
             blockY <= translate_Y + translate_offset &&
             blockX >= translate_X - translate_offset &&
             blockX <= translate_X + translate_offset
         ) {
-            globalObserver.emit('ui.log.error', error_message_map[Blockly.selected.category_]?.default);
+            globalObserver.emit('ui.log.error', error_message_map[Blockly?.getSelected()?.type]?.default);
         }
     }
 };
@@ -132,10 +132,6 @@ export const load = async ({
     // Check if XML can be parsed correctly.
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
-        console.log({
-            block_string,
-            xmlDoc,
-        });
         if (xmlDoc.getElementsByTagName('parsererror').length) {
             return showInvalidStrategyError();
         }
@@ -509,7 +505,7 @@ export const runInvisibleEvents = callbackFn => {
 };
 
 export const updateDisabledBlocks = (workspace, event) => {
-    if (event.type === Blockly.Events.END_DRAG) {
+    if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
         workspace.getAllBlocks().forEach(block => {
             if (!block.getParent() || block.is_user_disabled_state) {
                 return;

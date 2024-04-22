@@ -73,7 +73,7 @@ Blockly.Blocks.math_number_property = {
                 this.render(false);
             }
         } else {
-            this.removeInput('DIVISOR');
+            //this.removeInput('DIVISOR');
         }
     },
     getRequiredValueInputs() {

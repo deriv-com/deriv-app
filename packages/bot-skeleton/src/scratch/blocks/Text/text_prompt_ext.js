@@ -67,7 +67,7 @@ Blockly.JavaScript.javascriptGenerator.forBlock['text_prompt_ext'] = block => {
     if (block.getField('TEXT')) {
         // Internal message
         // eslint-disable-next-line no-underscore-dangle
-        msg = Blockly.JavaScript.quote_(block.getFieldValue('TEXT'));
+        msg = Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
     } else {
         // External message
         msg = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || "''";

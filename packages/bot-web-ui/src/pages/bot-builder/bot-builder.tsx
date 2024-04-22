@@ -86,7 +86,8 @@ const BotBuilder = observer(() => {
         if (e.type === 'ui' && e.element === 'selected' && !e.group?.includes('dbot-')) {
             selection_id = e.oldValue;
         }
-        if (e.type === 'endDrag' && !e.group?.includes('dbot-')) {
+
+        if (e.type === 'drag' && !e.isStart && !e.group?.includes('dbot-')) {
             end_drag_id = e.group;
         }
         if (e.type === 'delete' && (end_drag_id === e.group || selection_id === e.blockId)) {

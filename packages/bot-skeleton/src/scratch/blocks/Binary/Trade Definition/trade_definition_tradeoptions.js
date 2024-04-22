@@ -10,10 +10,7 @@ Blockly.Block.prototype.getChildByType = function (type) {
 };
 
 //
-Blockly.Field.prototype.setText = function (e) {
-    null !== e && (e = String(e)) !== this.text_ && (this.text_ = e,
-        this.forceRerender())
-}
+Blockly.Field.prototype.setText = (e) => null !== e && (e = String(e)) !== this.text_ && (this.text_ = e, this.forceRerender());
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     durations: [],
@@ -86,7 +83,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 .forEach(input => {
                     const input_target = input.connection.targetBlock();
                     const value = input_target.getFieldValue('NUM');
-                    console.log(value, 'value')
                     if (value) {
                         const new_value = value;
                         input_target.setFieldValue(new_value.toString(), 'NUM');
@@ -124,7 +120,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === Blockly.Events.END_DRAG
+            event.type === Blockly.Events.BLOCK_DRAG && !event.isStart
         ) {
             this.setCurrency();
             this.updateAmountLimits();
@@ -177,10 +173,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updatePredictionInput(true);
                 this.updateAmountLimits();
             }
-        } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
+        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
             if (!this.selected_duration) {
-                const fake_creation_event = new Blockly.Events.Create(this);
+                const fake_creation_event = new Blockly.Events.BlockCreate(this);
                 fake_creation_event.recordUndo = false;
                 Blockly.Events.fire(fake_creation_event);
             } else if (this.selected_trade_type === 'multiplier') {

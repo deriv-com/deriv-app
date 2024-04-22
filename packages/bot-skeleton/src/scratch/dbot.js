@@ -313,7 +313,7 @@ class DBot {
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
-                    if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
+                    if (event.type === 'drag' && !event.isStart && !is_mobile) validateErrorOnBlockDelete();
                 });
 
                 Blockly.derivWorkspace = this.workspace;
@@ -432,8 +432,6 @@ class DBot {
 
         try {
             api_base.is_stopping = false;
-            console.log('hhh');
-            console.log(this.generateCode());
             const code = this.generateCode();
 
             if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
@@ -681,7 +679,7 @@ class DBot {
             Blockly.hideChaff(false);
         }
 
-        const isGlobalEndDragEvent = () => event.type === Blockly.Events.END_DRAG;
+        const isGlobalEndDragEvent = () => event.type === Blockly.Events.BLOCK_DRAG && !event.isStart;
         const isGlobalDeleteEvent = () => event.type === Blockly.Events.BLOCK_DELETE;
         const isGlobalCreateEvent = () => event.type === Blockly.Events.BLOCK_CREATE;
         const isClickEvent = () =>

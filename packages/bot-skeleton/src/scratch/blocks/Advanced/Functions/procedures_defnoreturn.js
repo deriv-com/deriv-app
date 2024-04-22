@@ -8,9 +8,6 @@ Blockly.Blocks.procedures_defnoreturn = {
 
         this.jsonInit(this.definition());
 
-        // Enforce unique procedure names
-        const nameField = this.getField('NAME');
-        nameField.setValidator(Blockly.Procedures.rename);
 
         // Render a ➕-icon for adding parameters
         const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
@@ -162,7 +159,6 @@ Blockly.Blocks.procedures_defnoreturn = {
 
         this.argument_var_models.forEach((arg, i) => {
             const parameter = document.createElement('arg');
-
             parameter.setAttribute('name', arg.name);
             parameter.setAttribute('varid', arg.getId());
 
@@ -330,7 +326,7 @@ Blockly.JavaScript.javascriptGenerator.forBlock['procedures_defnoreturn'] = bloc
     );
 
     // eslint-disable-next-line no-underscore-dangle
-    const code = Blockly.JavaScript.scrub_(
+    const code = Blockly.JavaScript.javascriptGenerator.scrub_(
         block,
         `
     function ${functionName}(${args.join(', ')}) {
@@ -341,6 +337,6 @@ Blockly.JavaScript.javascriptGenerator.forBlock['procedures_defnoreturn'] = bloc
 
     // Add % so as not to collide with helper functions in definitions list.
     // eslint-disable-next-line no-underscore-dangle
-    Blockly.JavaScript.definitions_[`%${functionName}`] = code;
+    Blockly.JavaScript.javascriptGenerator.definitions_[`%${functionName}`] = code;
     return null;
 };

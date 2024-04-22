@@ -48,7 +48,7 @@ Blockly.Blocks.lists_statement = {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const surround_parent = this.getSurroundParent();
 
             if (!surround_parent) {

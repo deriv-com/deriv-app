@@ -36,7 +36,7 @@ Blockly.Blocks.input_list = {
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             setParentId();
-        } else if (event.type === Blockly.Events.END_DRAG) {
+        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             setParentId();
 
             const surround_parent = this.getSurroundParent();

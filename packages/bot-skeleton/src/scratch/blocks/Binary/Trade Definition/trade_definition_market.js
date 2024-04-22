@@ -86,7 +86,7 @@ Blockly.Blocks.trade_definition_market = {
         this.setDeletable(false);
     },
     onchange(event) {
-        const allowed_events = ['BLOCK_CREATE', 'BLOCK_CHANGE', 'END_DRAG'];
+        const allowed_events = ['BLOCK_CREATE', 'BLOCK_CHANGE', 'BLOCK_DRAG'];
         const is_allowed_event =
             allowed_events.findIndex(event_name => event.type === Blockly.Events[event_name]) !== -1;
 
@@ -104,8 +104,6 @@ Blockly.Blocks.trade_definition_market = {
         const submarket = submarket_dropdown.getValue();
         const symbol = symbol_dropdown.getValue();
 
-        
-        
         // Temporary solution to remove Crytocurrencies from
         // market options until multipliers are available for DBot
         const market_options = active_symbols
@@ -136,7 +134,7 @@ Blockly.Blocks.trade_definition_market = {
                     event_group: event.group,
                 });
             }
-        } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.getRootBlock().id) {
+        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart && !event.isStart && event.blockId === this.getRootBlock().id) {
             if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {
                 populateMarketDropdown();
             }
@@ -166,4 +164,4 @@ Blockly.Blocks.trade_definition_market = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_market'] = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_market'] = () => { };

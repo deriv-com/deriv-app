@@ -101,9 +101,6 @@ const Toolbox = observer(() => {
                                                 <div
                                                     className='db-toolbox__item'
                                                     onClick={() => {
-                                                        console.log({
-                                                            category,
-                                                        });
                                                         // eslint-disable-next-line no-unused-expressions
                                                         has_sub_category
                                                             ? onToolboxItemExpand(index)

@@ -21,10 +21,9 @@ Blockly.Blocks.procedures_defreturn = {
     },
     definition() {
         return {
-            message0: localize('function {{ function_name }} {{ function_params }} {{ dummy }}', {
+            message0: localize('function {{ function_name }} {{ function_params }}', {
                 function_name: '%1',
                 function_params: '%2',
-                dummy: '%3',
             }),
             message1: 'return %1',
             args0: [
@@ -38,16 +37,12 @@ Blockly.Blocks.procedures_defreturn = {
                     name: 'PARAMS',
                     text: '',
                 },
-                {
-                    type: 'input_dummy',
-                },
             ],
             args1: [
                 {
                     type: 'input_value',
                     name: 'RETURN',
                     check: null,
-                    align: Blockly.ALIGN_RIGHT,
                 },
             ],
             colour: Blockly.Colours.Special2.colour,
@@ -93,4 +88,4 @@ Blockly.Blocks.procedures_defreturn = {
 };
 
 
-Blockly.JavaScript.javascriptGenerator.forBlock['procedures_defreturn'] = Blockly.JavaScript.procedures_defnoreturn;
+Blockly.JavaScript.javascriptGenerator.forBlock['procedures_defreturn'] = Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn;

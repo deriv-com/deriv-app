@@ -5,12 +5,6 @@ import { runIrreversibleEvents } from '../../../utils';
 import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
-goog.provide('Blockly.Blocks.colour');
-
-goog.require('Blockly.Blocks');
-
-goog.require('Blockly.constants');
-
 /**
  * Pick a random colour.
  * @return {string} #RRGGBB for random colour.
@@ -40,13 +34,6 @@ Blockly.Blocks['colour_picker'] = {
         });
     }
 };
-goog.provide('Blockly.Blocks.math');
-
-goog.require('Blockly.Blocks');
-
-goog.require('Blockly.Colours');
-
-goog.require('Blockly.constants');
 
 Blockly.Blocks['math_number'] = {
     /**
@@ -311,7 +298,7 @@ Blockly.Blocks.trade_definition = {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
 

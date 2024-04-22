@@ -93,7 +93,7 @@ const AppWrapper = observer(() => {
                 //initTrashCan(isDbotRTL() ? -200 : 20);
             }
             setTimeout(() => {
-                window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
+               // window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
             }, 500);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

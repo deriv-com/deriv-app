@@ -20,11 +20,11 @@ Blockly.Blocks.lists_setIndex = {
         this.appendValueInput('TO').appendField(localize('as'));
 
         // eslint-disable-next-line no-underscore-dangle
-        this.setColourFromRawValues_(
-            Blockly.Colours.Base.colour,
-            Blockly.Colours.Base.colourSecondary,
-            Blockly.Colours.Base.colourTertiary
-        );
+        // this.setColourFromRawValues_(
+        //     Blockly.Colours.Base.colour,
+        //     Blockly.Colours.Base.colourSecondary,
+        //     Blockly.Colours.Base.colourTertiary
+        // );
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setTooltip(

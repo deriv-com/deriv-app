@@ -166,14 +166,14 @@ Blockly.Blocks.trade_definition_multiplier = {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             this.setCurrency();
             this.updateAmountLimits();
             this.validateBlocksInStatement();
             if (event.blockId === this.id) {
                 // Ensure this block is populated after initial drag from flyout.
                 if (!this.selected_multiplier) {
-                    const fake_creation_event = new Blockly.Events.Create(this);
+                    const fake_creation_event = new Blockly.Events.BlockCreate(this);
                     fake_creation_event.recordUndo = false;
                     Blockly.Events.fire(fake_creation_event);
                 } else if (this.selected_trade_type !== 'multiplier') {

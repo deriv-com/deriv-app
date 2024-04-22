@@ -35,7 +35,7 @@ Blockly.Blocks.contract_check_result = {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const top_parent = this.getTopParent();
 
             if (top_parent) {

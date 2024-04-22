@@ -64,7 +64,7 @@ Blockly.Blocks.lists_create_with = {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             // Only allow "text_statement" type blocks
             const blocks_in_stack = this.getBlocksInStatement('STACK');
             blocks_in_stack.forEach(block => {

@@ -49,7 +49,7 @@ Blockly.Blocks.multiplier_stop_loss = {
         }
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === Blockly.Events.END_DRAG
+            event.type === Blockly.Events.BLOCK_DRAG && !event.isStart
         ) {
             this.setCurrency();
         }

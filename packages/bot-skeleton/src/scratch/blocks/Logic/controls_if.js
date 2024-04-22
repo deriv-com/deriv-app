@@ -209,7 +209,7 @@ Blockly.Blocks.controls_if = {
         );
 
         this.initSvg();
-        this.render();
+        //this.render();
     },
     storeConnections(arg = 0) {
         this.value_connections = [null];

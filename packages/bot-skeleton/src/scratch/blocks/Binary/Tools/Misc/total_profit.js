@@ -30,7 +30,7 @@ Blockly.Blocks.total_profit = {
         }
 
         if (
-            event.type === Blockly.Events.END_DRAG ||
+            event.type === Blockly.Events.BLOCK_DRAG && !event.isStart ||
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
         ) {
             const input_statement = this.getRootInputTargetBlock();

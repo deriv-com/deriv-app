@@ -96,8 +96,7 @@ export default class ToolbarStore implements IToolbarStore {
                 indentWorkspace: { x, y },
             },
         } = config;
-        console.log({ x, y });
-        window.Blockly.getMainWorkspace().cleanUp(x, y);
+        window.Blockly.derivWorkspace.cleanUp(x, y);
     };
 
     onUndoClick = (is_redo: boolean): void => {

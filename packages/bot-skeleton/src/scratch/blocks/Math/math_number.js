@@ -2,8 +2,6 @@ import { localize } from '@deriv/translations';
 
 Blockly.Blocks.math_number = {
     init() {
-        console.log('test 2')
-
         this.jsonInit(this.definition());
 
         const fieldInput = this.getField('NUM');

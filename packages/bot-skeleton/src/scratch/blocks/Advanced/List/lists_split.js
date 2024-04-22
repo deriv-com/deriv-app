@@ -21,11 +21,11 @@ Blockly.Blocks.lists_split = {
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
 
         // eslint-disable-next-line no-underscore-dangle
-        this.setColourFromRawValues_(
-            Blockly.Colours.Base.colour,
-            Blockly.Colours.Base.colourSecondary,
-            Blockly.Colours.Base.colourTertiary
-        );
+        // this.setColourFromRawValues_(
+        //     Blockly.Colours.Base.colour,
+        //     Blockly.Colours.Base.colourSecondary,
+        //     Blockly.Colours.Base.colourTertiary
+        // );
         this.setTooltip(
             localize(
                 'This block creates a list from a given string of text, splitting it with the given delimiter. It can also join items in a list into a string of text.'

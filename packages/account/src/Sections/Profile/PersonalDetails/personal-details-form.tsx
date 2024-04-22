@@ -31,8 +31,6 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
-import PhoneVerificationPage from '../PhoneVerification/PhoneVerificationPage';
-import { usePhoneVerification } from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
@@ -48,7 +46,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
 
-    const { show_phone_verification_page, set_show_phone_verification_page } = usePhoneVerification();
     const {
         client,
         notifications,
@@ -219,10 +216,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_eu);
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list);
-
-    if (show_phone_verification_page) {
-        return <PhoneVerificationPage setShowPhoneVerificationPage={set_show_phone_verification_page} />;
-    }
 
     return (
         <Formik

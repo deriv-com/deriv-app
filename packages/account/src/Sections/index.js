@@ -18,6 +18,7 @@ import LoginHistory from 'Sections/Security/LoginHistory';
 import AccountClosed from 'Sections/Security/AccountClosed';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Remove once mobile team has changed this link
 import LanguageSettings from 'Sections/Profile/LanguageSettings';
+import PhoneVerificationPage from 'Sections/Profile/PhoneVerification';
 
 export {
     AccountLimits,
@@ -31,6 +32,7 @@ export {
     ProofOfAddress,
     ProofOfOwnership,
     ProofOfIncome,
+    PhoneVerificationPage,
     TwoFactorAuthentication,
     ApiToken,
     SelfExclusion,

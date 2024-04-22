@@ -1,15 +1,17 @@
 import React from 'react';
-import './phoneVerification.scss';
+import './phone-verification.scss';
 import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import ConfirmPhoneNumber from './ConfirmPhoneNumber';
+import ConfirmPhoneNumber from './confirm-phone-number';
+import { useHistory } from 'react-router';
+import { routes } from '@deriv/shared';
 
-type TPhoneVerificationPage = {
-    setShowPhoneVerificationPage: (value: boolean) => void;
-};
-
-const PhoneVerificationPage = ({ setShowPhoneVerificationPage }: TPhoneVerificationPage) => {
+const PhoneVerificationPage = () => {
+    const history = useHistory();
+    const handleBackButton = () => {
+        history.push(routes.personal_details);
+    };
     return (
         <div>
             <div className='phone-verification__redirect_button'>
@@ -17,7 +19,7 @@ const PhoneVerificationPage = ({ setShowPhoneVerificationPage }: TPhoneVerificat
                     width={24}
                     height={24}
                     className='phone-verification__redirect_button--icon'
-                    onClick={() => setShowPhoneVerificationPage(false)}
+                    onClick={handleBackButton}
                 />
                 <Text className='phone-verification__redirect_button--text' bold>
                     <Localize i18n_default_text='Phone number verification' />

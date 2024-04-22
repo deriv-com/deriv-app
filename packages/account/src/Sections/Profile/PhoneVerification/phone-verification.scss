@@ -39,11 +39,6 @@
             gap: 1.6rem;
             margin-top: 0.8rem;
 
-            .quill-button {
-                height: auto;
-                padding: 1.2rem 0;
-            }
-
             @include mobile {
                 flex-direction: column;
                 position: fixed;

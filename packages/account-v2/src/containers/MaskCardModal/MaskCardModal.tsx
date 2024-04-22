@@ -1,6 +1,6 @@
 import React from 'react';
+import { DerivLightCreditCardSampleIcon } from '@deriv/quill-icons';
 import { Modal, Text } from '@deriv-com/ui';
-import SampleCreditCard from '../../assets/manual-upload/ic-poi-passport.svg';
 
 type TMaskCardModal = {
     isOpen: boolean;
@@ -19,8 +19,7 @@ export const MaskCardModal = ({ isOpen, onClose }: TMaskCardModal) => {
                 <Text as='p' className='pt-20 pb-24 px-24' size='sm'>
                     Black out digits 7 to 12 of the card number that’s shown on the front of your debit/credit card.⁤
                 </Text>
-                {/*  TODO: Use actual icon once available in Quill */}
-                <SampleCreditCard />
+                <DerivLightCreditCardSampleIcon height={120} width={120} />
             </Modal.Body>
         </Modal>
     );

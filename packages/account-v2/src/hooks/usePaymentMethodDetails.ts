@@ -24,7 +24,6 @@ export const usePaymentMethodDetails = () => {
                     icon: paymentMethodDetails?.icon?.light,
                     identifier: paymentMethodDetails.identifier as TPaymentMethodIdentifier,
                     inputLabel: paymentMethodDetails.inputLabel,
-                    instructions: paymentMethodDetails.instructions,
                     isGenericPM: !paymentMethodDetails.inputLabel,
                     items: [request],
                     paymentMethod,

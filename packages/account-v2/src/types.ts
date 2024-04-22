@@ -29,7 +29,6 @@ export type TPaymentMethodInfo = {
     icon: JSX.Element;
     identifier: TPaymentMethodIdentifier | 'none';
     inputLabel: string | null;
-    instructions: JSX.Element;
     isGenericPM: boolean;
     items: Exclude<
         Exclude<

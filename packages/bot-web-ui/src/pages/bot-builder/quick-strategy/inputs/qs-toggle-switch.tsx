@@ -11,7 +11,7 @@ type TQSToggleSwitch = {
     description?: string;
     attached?: boolean;
     isEnabledToggleSwitch: boolean;
-    setIsEnabledToggleSwitch: (isEnabledToggleSwitch: boolean) => void;
+    setIsEnabledToggleSwitch: () => void;
 };
 
 const QSToggleSwitch: React.FC<TQSToggleSwitch> = ({
@@ -24,9 +24,10 @@ const QSToggleSwitch: React.FC<TQSToggleSwitch> = ({
 }) => {
     const { values, setFieldValue } = useFormikContext<TFormData>();
 
-    const handleChange = () => {
-        setFieldValue(name, !values?.[name]);
-        setIsEnabledToggleSwitch(!isEnabledToggleSwitch);
+    const handleChange = async () => {
+        setIsEnabledToggleSwitch();
+        await setFieldValue(name, !values?.[name], true);
+        await setFieldValue('max_stake', values?.max_stake, true);
     };
 
     return (

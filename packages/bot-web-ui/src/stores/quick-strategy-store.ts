@@ -42,7 +42,7 @@ interface IQuickStrategyStore {
     onSubmit: (data: TFormData) => void;
     toggleStopBotDialog: () => void;
     setCurrentDurationMinMax: (min: number, max: number) => void;
-    setIsEnabledToggleSwitch: (is_enabled_toggle_switch: boolean) => void;
+    setIsEnabledToggleSwitch: () => void;
 }
 
 export default class QuickStrategyStore implements IQuickStrategyStore {
@@ -84,6 +84,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             setValue: action,
             toggleStopBotDialog: action,
             is_enabled_toggle_switch: observable,
+            setIsEnabledToggleSwitch: action,
         });
         this.root_store = root_store;
         reaction(
@@ -111,8 +112,8 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         };
     };
 
-    setIsEnabledToggleSwitch = (is_enabled_toggle_switch: boolean) => {
-        this.is_enabled_toggle_switch = is_enabled_toggle_switch;
+    setIsEnabledToggleSwitch = () => {
+        this.is_enabled_toggle_switch = !this.is_enabled_toggle_switch;
     };
 
     setFormVisibility = (is_open: boolean) => {

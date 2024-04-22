@@ -21,20 +21,13 @@ const QuickStrategyForm = observer(() => {
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
-    const { current_duration_min_max } = quick_strategy;
-    const is_max_stake_enabled = form_data.boolean_max_stake;
-    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(is_max_stake_enabled);
-
+    const { current_duration_min_max, is_enabled_toggle_switch, setIsEnabledToggleSwitch } = quick_strategy;
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
         return () => {
             window.removeEventListener('keydown', handleEnter);
         };
     }, []);
-
-    React.useEffect(() => {
-        setIsEnabledToggleSwitch(is_max_stake_enabled);
-    }, [is_max_stake_enabled]);
 
     const onChange = async (key: string, value: string | number | boolean) => {
         setValue(key, value);
@@ -154,7 +147,7 @@ const QuickStrategyForm = observer(() => {
                                         key={key}
                                         name={field.name as string}
                                         label={field.label as string}
-                                        isEnabledToggleSwitch={!!isEnabledToggleSwitch}
+                                        isEnabledToggleSwitch={!!is_enabled_toggle_switch}
                                         setIsEnabledToggleSwitch={setIsEnabledToggleSwitch}
                                     />
                                 );

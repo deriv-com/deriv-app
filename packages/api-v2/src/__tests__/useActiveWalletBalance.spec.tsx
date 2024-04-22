@@ -58,11 +58,11 @@ describe('useActiveWalletBalance', () => {
         const { result } = renderResult;
 
         act(() => {
-            onData({ balance: { balance: 42.4242, currency: 'USD' }, msg_type: 'balance' });
+            onData({ balance: { balance: 42.4, currency: 'USD' }, msg_type: 'balance' });
         });
 
-        expect(result.current.displayBalance).toBe('42.42 USD');
-        expect(result.current.data.balance.balance).toBe(42.4242);
+        expect(result.current.displayBalance).toBe('42.40 USD');
+        expect(result.current.data.balance.balance).toBe(42.4);
         expect(result.current.data.balance.currency).toBe('USD');
     });
 });

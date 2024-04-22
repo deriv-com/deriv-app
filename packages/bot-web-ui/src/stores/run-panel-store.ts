@@ -316,10 +316,6 @@ export default class RunPanelStore implements IRunPanelStore {
 
     setActiveTabIndex = (index: number) => {
         this.active_index = index;
-
-        if (this.active_index !== 1) {
-            this.root_store.transactions.setActiveTransactionId(null);
-        }
     };
 
     onCloseDialog = () => {
@@ -594,10 +590,6 @@ export default class RunPanelStore implements IRunPanelStore {
             }
             case 'contract.purchase_received': {
                 this.setContractStage(contract_stages.PURCHASE_RECEIVED);
-
-                // Close transaction-specific popover, if any.
-                this.root_store.transactions.setActiveTransactionId(null);
-
                 const { buy } = contract_status;
                 const { is_virtual } = this.core.client;
 

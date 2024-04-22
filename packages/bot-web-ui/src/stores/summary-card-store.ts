@@ -1,11 +1,35 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { ProposalOpenContract, UpdateContractResponse } from '@deriv/api-types';
 import { getIndicativePrice, isEqualObject, isMultiplierContract, Validator } from '@deriv/shared';
+import { TStores } from '@deriv/stores/types';
 import { getValidationRules } from 'Constants/contract';
 import { contract_stages } from 'Constants/contract-stage';
 import { getContractUpdateConfig } from 'Utils/multiplier';
+import RootStore from './root-store';
+
+type TLimitOrder = {
+    take_profit?: number;
+    stop_loss?: number;
+};
+
+type TMovements = {
+    profit?: number;
+    indicative?: number;
+};
+
+type TEventName =
+    | 'has_contract_update_take_profit'
+    | 'has_contract_update_stop_loss'
+    | 'contract_update_take_profit'
+    | 'contract_update_stop_loss';
 
 export default class SummaryCardStore {
-    contract_info = null;
+    root_store: RootStore;
+    core: TStores;
+    disposeReactionsFn: () => void | null;
+    disposeSwitchAcountListener: (() => void | null) | undefined;
+    contract_info: ProposalOpenContract | null = null;
+    is_loading = false;
     indicative_movement = '';
     profit_movement = '';
 
@@ -13,17 +37,17 @@ export default class SummaryCardStore {
     validation_rules = getValidationRules();
 
     // Multiplier contract update config
-    contract_update_take_profit = '';
-    contract_update_stop_loss = '';
+    contract_update_take_profit?: number | null = null;
+    contract_update_stop_loss?: number | null = null;
     has_contract_update_take_profit = false;
     has_contract_update_stop_loss = false;
     contract_update_config = {};
+    profit_loss?: number = 0;
+    contract_id?: string | null = null;
+    profit?: number = 0;
+    indicative?: number = 0;
 
-    contract_id = null;
-    profit = 0;
-    indicative = 0;
-
-    constructor(root_store, core) {
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             contract_info: observable,
             indicative_movement: observable,
@@ -102,18 +126,18 @@ export default class SummaryCardStore {
     }
 
     getLimitOrder() {
-        const limit_order = {};
+        const limit_order: TLimitOrder = {};
 
         // send positive take_profit to update or null to cancel
-        limit_order.take_profit = this.has_contract_update_take_profit ? +this.contract_update_take_profit : null;
+        limit_order.take_profit = this.has_contract_update_take_profit ? +this.contract_update_take_profit : 0;
 
         // send positive stop_loss to update or null to cancel
-        limit_order.stop_loss = this.has_contract_update_stop_loss ? +this.contract_update_stop_loss : null;
+        limit_order.stop_loss = this.has_contract_update_stop_loss ? +this.contract_update_stop_loss : 0;
 
         return limit_order;
     }
 
-    onBotContractEvent(contract) {
+    onBotContractEvent(contract: ProposalOpenContract) {
         const { profit } = contract;
         const indicative = getIndicativePrice(contract);
 
@@ -124,28 +148,35 @@ export default class SummaryCardStore {
             this.indicative = indicative;
         }
 
-        const movements = { profit, indicative };
+        const movements: TMovements = { profit, indicative };
 
         Object.keys(movements).forEach(name => {
-            if (movements[name] !== this[name]) {
-                this[`${name}_movement`] = movements[name] > this[name] ? 'profit' : 'loss';
-            } else if (this[`${name}_movement`] !== '') {
+            const movement = movements[name as keyof TMovements];
+            const current_movement = this[name as keyof TMovements];
+
+            if (name in this && movement && movement !== current_movement) {
+                this[`${name as keyof TMovements}_movement`] =
+                    movement && movement > (this[name as keyof TMovements] || 0) ? 'profit' : 'loss';
+            } else if (this[`${name as keyof TMovements}_movement`] !== '') {
                 this.indicative_movement = '';
             }
 
-            this[name] = movements[name];
+            if (name === 'profit') this.profit_loss = movement;
+            if (name === 'indicative') this.indicative = movement;
         });
 
         // TODO only add props that is being used
         this.contract_info = contract;
     }
 
-    onChange({ name, value }) {
-        this[name] = value;
-        this.validateProperty(name, this[name]);
+    onChange({ name, value }: { name: TEventName; value: any }) {
+        if (name in this) {
+            this[name] = value;
+            this.validateProperty(name, this[name]);
+        }
     }
 
-    populateContractUpdateConfig(response) {
+    populateContractUpdateConfig(response: UpdateContractResponse) {
         const contract_update_config = getContractUpdateConfig(response);
 
         if (!isEqualObject(this.contract_update_config, contract_update_config)) {
@@ -153,31 +184,37 @@ export default class SummaryCardStore {
             this.contract_update_config = contract_update_config;
 
             const { contract_update, error } = response;
-            if (contract_update && !error) {
-                this.contract_info.limit_order = Object.assign(this.contract_info.limit_order || {}, contract_update);
+            if (this.contract_info && contract_update && !error) {
+                this.contract_info.limit_order = Object.assign(this.contract_info?.limit_order || {}, contract_update);
             }
         }
     }
 
-    setContractUpdateConfig(contract_update_take_profit, contract_update_stop_loss) {
-        this.has_contract_update_take_profit = !!contract_update_take_profit;
-        this.has_contract_update_stop_loss = !!contract_update_stop_loss;
-        this.contract_update_take_profit = this.has_contract_update_take_profit ? +contract_update_take_profit : null;
-        this.contract_update_stop_loss = this.has_contract_update_stop_loss ? +contract_update_stop_loss : null;
+    setContractUpdateConfig(contract_update_take_profit?: number | null, contract_update_stop_loss?: number | null) {
+        if (contract_update_take_profit && contract_update_stop_loss) {
+            this.has_contract_update_take_profit = !!contract_update_take_profit;
+            this.has_contract_update_stop_loss = !!contract_update_stop_loss;
+            this.contract_update_take_profit = this.has_contract_update_take_profit
+                ? +contract_update_take_profit
+                : null;
+            this.contract_update_stop_loss = this.has_contract_update_stop_loss ? +contract_update_stop_loss : null;
+        }
     }
 
     updateLimitOrder() {
         const limit_order = this.getLimitOrder();
 
-        this.root_store.ws.contractUpdate(this.contract_info.contract_id, limit_order).then(response => {
-            if (response.error) {
-                this.root_store.run_panel.showContractUpdateErrorDialog(response.error.message);
-                return;
-            }
+        if (this.contract_info?.contract_id) {
+            this.root_store.ws.contractUpdate(this.contract_info?.contract_id, limit_order).then(response => {
+                if (response.error) {
+                    this.root_store.run_panel.showContractUpdateErrorDialog(response.error.message);
+                    return;
+                }
 
-            // Update contract store
-            this.populateContractUpdateConfig(response);
-        });
+                // Update contract store
+                this.populateContractUpdateConfig(response);
+            });
+        }
     }
 
     /**

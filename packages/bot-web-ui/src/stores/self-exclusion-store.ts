@@ -2,24 +2,7 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import { TStores } from '@deriv/stores/types';
 import RootStore from './root-store';
 
-interface ISelfExclusionStore {
-    api_max_losses: number;
-    run_limit: number;
-    is_restricted: boolean;
-    form_max_losses: number | undefined;
-    initial_values: {
-        form_max_losses: string | number | '';
-        run_limit: string | number | '';
-    };
-    should_bot_run: boolean;
-    setIsRestricted: (is_restricted: boolean) => void;
-    setApiMaxLosses: (api_max_losses: number) => void;
-    setRunLimit: (run_limit: number) => void;
-    resetSelfExclusion: () => void;
-    checkRestriction: () => Promise<void>;
-}
-
-export default class SelfExclusionStore implements ISelfExclusionStore {
+export default class SelfExclusionStore {
     root_store: RootStore;
     core: TStores;
     constructor(root_store: RootStore, core: TStores) {

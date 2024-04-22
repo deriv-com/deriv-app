@@ -4,6 +4,7 @@ module.exports = {
     ...baseConfigForPackages,
     clearMocks: true,
     moduleNameMapper: {
+        '\\.css$': '<rootDir>/../../__mocks__/styleMock.js',
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
         '^Assets/(.*)$': '<rootDir>/src/assets/$1',
@@ -32,5 +33,5 @@ module.exports = {
         '<rootDir>/coverage/lcov-report',
         '<rootDir>/dist',
     ],
-    transformIgnorePatterns: ['/node_modules/(?!(@sendbird/chat|@simplewebauthn/browser)).+\\.js$'],
+    transformIgnorePatterns: ['/node_modules/(?!(@sendbird/chat|@simplewebauthn/browser|@deriv-com/ui)).+\\.js$'],
 };

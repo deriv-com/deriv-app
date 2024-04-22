@@ -9,6 +9,12 @@ import type { TTransferableAccounts, TTransferReceipt } from '../types';
 export type TTransferContext = {
     accounts: TTransferableAccounts;
     activeAccount?: TTransferableAccounts[number];
+    isTransferring: boolean;
+    requestForTransfer: (
+        amount: string,
+        fromAccount?: TTransferableAccounts[number],
+        toAccount?: TTransferableAccounts[number]
+    ) => void;
     setTransferReceipt: React.Dispatch<React.SetStateAction<TTransferReceipt | undefined>>;
     setTransferValidationSchema: (
         fromAccount: TTransferableAccounts[number],
@@ -42,15 +48,15 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     children,
     getConfig,
 }) => {
-    const { data, mutate } = useTransferBetweenAccounts();
+    const { data, isLoading: isTransferring, mutate, mutateAsync } = useTransferBetweenAccounts();
     const { accounts: transferAccounts, activeAccount: transferActiveAccount } = useExtendedTransferAccounts(
         activeAccount,
         getConfig,
         data?.accounts ?? accounts
     );
+
     const [validationSchema, setValidationSchema] =
         useState<ReturnType<typeof getCryptoFiatConverterValidationSchema>>();
-
     const [transferReceipt, setTransferReceipt] = useState<TTransferReceipt>();
 
     const setTransferValidationSchema = useCallback(
@@ -59,10 +65,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
                 balance: parseFloat(fromAccount.balance ?? ''),
                 currency: fromAccount.currency as TCurrency,
                 fractionalDigits: fromAccount.currencyConfig?.fractional_digits,
-                limits: {
-                    max: 100,
-                    min: 1,
-                },
+                limits: fromAccount.limits,
             };
 
             const modifiedToAccount = {
@@ -84,11 +87,33 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
         if (!accounts) mutate({ accounts: 'all' });
     }, [accounts, mutate]);
 
+    const requestForTransfer = useCallback(
+        (amount: string, fromAccount?: TTransferableAccounts[number], toAccount?: TTransferableAccounts[number]) => {
+            if (Number(amount) && fromAccount && toAccount) {
+                mutateAsync({
+                    account_from: fromAccount.loginid,
+                    account_to: toAccount.loginid,
+                    amount: Number(amount),
+                    currency: fromAccount.currency,
+                }).then(() => {
+                    setTransferReceipt({
+                        amount,
+                        fromAccount,
+                        toAccount,
+                    });
+                });
+            }
+        },
+        [mutateAsync]
+    );
+
     return (
         <TransferContext.Provider
             value={{
                 accounts: transferAccounts,
                 activeAccount: transferActiveAccount,
+                isTransferring,
+                requestForTransfer,
                 setTransferReceipt,
                 setTransferValidationSchema,
                 transferReceipt,

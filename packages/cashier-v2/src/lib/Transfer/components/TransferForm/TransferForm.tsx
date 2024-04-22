@@ -9,7 +9,7 @@ import styles from './TransferForm.module.scss';
 
 const TransferForm = () => {
     const history = useHistory();
-    const { accounts, activeAccount, transferValidationSchema } = useTransfer();
+    const { accounts, activeAccount, isTransferring, requestForTransfer, transferValidationSchema } = useTransfer();
 
     const initialAccount = activeAccount !== accounts[0] ? accounts[0] : accounts[1];
 
@@ -28,7 +28,7 @@ const TransferForm = () => {
             }}
             validationSchema={transferValidationSchema}
         >
-            {() => {
+            {({ errors, isSubmitting, values }) => {
                 return (
                     <div className={styles.container}>
                         <Text className={styles.title} weight='bold'>
@@ -46,7 +46,23 @@ const TransferForm = () => {
                             >
                                 Deposit
                             </Button>
-                            <Button size='lg'>Transfer</Button>
+                            <Button
+                                disabled={!!errors.fromAmount || !!errors.toAmount || !Number(values.fromAmount)}
+                                isLoading={isSubmitting || isTransferring}
+                                onClick={() => {
+                                    requestForTransfer(
+                                        Number(values.fromAmount).toFixed(
+                                            values.fromAccount?.currencyConfig?.fractional_digits
+                                        ),
+                                        values.fromAccount,
+                                        values.toAccount
+                                    );
+                                }}
+                                role='submit'
+                                size='lg'
+                            >
+                                Transfer
+                            </Button>
                         </div>
                     </div>
                 );

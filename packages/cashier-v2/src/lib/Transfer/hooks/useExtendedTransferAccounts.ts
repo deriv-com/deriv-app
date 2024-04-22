@@ -4,6 +4,46 @@ import { THooks } from '../../../hooks/types';
 
 type TModifiedAccounts = ReturnType<typeof getModifiedAccounts>;
 
+type TLimits = {
+    max: number;
+    min: number;
+};
+
+const getTransferMinMaxLimits = (
+    account: THooks.TransferAccounts[number],
+    currencyConfig: THooks.GetCurrencyConfig
+) => {
+    const {
+        limits,
+        limits_ctrader: limitsCTrader,
+        limits_dxtrade: limitsDXTrade,
+        limits_mt5: limitsMT5,
+    } = currencyConfig.transfer_between_accounts;
+
+    switch (account.account_type) {
+        case 'ctrader':
+            return {
+                max: limitsCTrader.max,
+                min: limitsCTrader.min,
+            } as TLimits;
+        case 'dxtrade':
+            return {
+                max: limitsDXTrade.max,
+                min: limitsDXTrade.min,
+            } as TLimits;
+        case 'mt5':
+            return {
+                max: limitsMT5.max,
+                min: limitsMT5.min,
+            } as TLimits;
+        default:
+            return {
+                max: limits.max,
+                min: limits.min,
+            } as TLimits;
+    }
+};
+
 const getModifiedAccounts = (accounts: THooks.TransferAccounts, getConfig: THooks.GetCurrencyConfig) => {
     return accounts.map(account => {
         const currencyConfig = account?.currency ? getConfig(account.currency) : undefined;
@@ -13,6 +53,7 @@ const getModifiedAccounts = (accounts: THooks.TransferAccounts, getConfig: THook
             displayBalance: displayMoney(Number(account.balance), account.currency ?? '', {
                 fractional_digits: currencyConfig?.fractional_digits,
             }),
+            limits: getTransferMinMaxLimits(account, currencyConfig),
         };
     });
 };

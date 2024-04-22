@@ -118,10 +118,10 @@ type TGetModalContent = {
 
 export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
     const error_message =
-        (error as TServerError).name === 'NotSupportedError' ? (
+        (error as TServerError)?.name === 'NotSupportedError' ? (
             <Localize i18n_default_text='Passkey isn’t supported on this device.' />
         ) : (
-            (error as TServerError).message
+            (error as TServerError)?.message
         );
 
     if (is_passkey_registration_started) {

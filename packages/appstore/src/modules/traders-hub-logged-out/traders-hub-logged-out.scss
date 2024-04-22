@@ -18,7 +18,7 @@
         }
     }
 
-    &--eu-user {
+    &__eu-user {
         @include mobile {
             min-height: 650px;
         }
@@ -37,49 +37,14 @@
         background-color: var(--general-section-1);
     }
 
-    &--mobile {
+    &__mobile {
         overflow: scroll !important;
 
         &::-webkit-scrollbar {
             display: none;
         }
     }
-    &--mt5-not-allowed {
+    &__mt5-not-allowed {
         margin-top: 2rem;
-    }
-}
-
-.disclaimer {
-    position: fixed;
-    bottom: 3.6rem;
-    width: 100%;
-    min-height: 5rem;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    backface-visibility: hidden;
-    background: var(--icon-grey-background);
-
-    @include mobile {
-        min-height: 8rem;
-        border: 1px solid var(--icon-grey-background);
-    }
-
-    &-text {
-        padding: 0 3rem;
-
-        @include mobile {
-            padding: 0 1.5rem;
-        }
-    }
-
-    &__bottom-plug {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        height: 3.6rem;
-        z-index: 3;
-        backface-visibility: hidden;
-        background: var(--general-main-1);
     }
 }

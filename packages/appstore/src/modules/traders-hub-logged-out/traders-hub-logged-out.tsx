@@ -3,59 +3,60 @@ import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { ButtonToggle, Div100vhContainer, DesktopWrapper, MobileWrapper, Text, Loading } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import { ContentFlag, routes } from '@deriv/shared';
-import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import { Localize } from '@deriv/translations';
+import { routes, isEuCountry } from '@deriv/shared';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import CFDsListing from 'Components/cfds-listing';
+import { getPlatformToggleOptions } from '../../helpers';
 import './traders-hub-logged-out.scss';
 
-const TradersHubLoggedOut = observer(() => {
-    const { traders_hub, client, ui } = useStore();
-    const { openRealAccountSignup, is_from_signup_account, is_desktop, is_mobile, setIsFromSignupAccount } = ui;
-    const {
-        is_landing_company_loaded,
-        is_logged_in,
-        is_switching,
-        is_logging_in,
-        is_account_setting_loaded,
-        is_mt5_allowed,
-        has_active_real_account,
-        website_status,
-    } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
-    const traders_hub_ref = React.useRef<HTMLDivElement>(null);
+const GetOrderedPlatformSections = observer(({ isDesktop = false }: { isDesktop?: boolean }) => {
+    const { traders_hub, client } = useStore();
+    const { is_mt5_allowed } = client;
+    const { selected_platform_type } = traders_hub;
 
-    React.useEffect(() => {
-        if (is_eu_user) setTogglePlatformType('cfd');
-        if (
-            !has_active_real_account &&
-            is_logged_in &&
-            is_from_signup_account &&
-            content_flag === ContentFlag.EU_DEMO
-        ) {
-            openRealAccountSignup('maltainvest');
-            setIsFromSignupAccount(false);
-        }
-    }, [
-        content_flag,
-        has_active_real_account,
-        is_eu_user,
-        is_from_signup_account,
-        is_logged_in,
-        openRealAccountSignup,
-        setIsFromSignupAccount,
-        setTogglePlatformType,
-    ]);
+    if (is_mt5_allowed) {
+        return isDesktop ? (
+            <OrderedPlatformSections />
+        ) : (
+            <OrderedPlatformSections
+                is_cfd_visible={selected_platform_type === 'cfd'}
+                is_options_and_multipliers_visible={selected_platform_type === 'options'}
+            />
+        );
+    }
+    return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
+});
 
-    const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
+const OrderedPlatformSections = ({
+    is_cfd_visible = true,
+    is_options_and_multipliers_visible = true,
+    is_eu_user = false,
+}: {
+    is_cfd_visible?: boolean;
+    is_options_and_multipliers_visible?: boolean;
+    is_eu_user?: boolean;
+}) => (
+    <div
+        data-testid='dt_traders_hub'
+        className={classNames('traders-hub__main-container', {
+            'traders-hub__main-container-reversed': is_eu_user,
+        })}
+    >
+        {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
+        {is_cfd_visible && <CFDsListing />}
+    </div>
+);
 
-    const getPlatformToggleOptions = () => [
-        { text: eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
-        { text: localize('CFDs'), value: 'cfd' },
-    ];
-    const platform_toggle_options = getPlatformToggleOptions();
-    const platform_toggle_options_eu = getPlatformToggleOptions().reverse();
+const TabsOrTitle = observer(() => {
+    const { traders_hub, client } = useStore();
+    const { is_mt5_allowed, clients_country } = client;
+    const { selected_platform_type, setTogglePlatformType } = traders_hub;
+
+    const is_eu_user = isEuCountry(clients_country);
+
+    const platform_toggle_options = getPlatformToggleOptions(is_eu_user);
+    const platform_toggle_options_eu = getPlatformToggleOptions(is_eu_user).reverse();
 
     const platformTypeChange = (event: {
         target: {
@@ -66,82 +67,65 @@ const TradersHubLoggedOut = observer(() => {
         setTogglePlatformType(event.target.value);
     };
 
-    const OrderedPlatformSections = ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }) => {
-        return (
-            <div
-                data-testid='dt_traders_hub'
-                className={classNames('traders-hub__main-container', {
-                    'traders-hub__main-container-reversed': is_eu_user,
-                })}
-            >
-                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
-                {is_cfd_visible && <CFDsListing />}
-            </div>
-        );
-    };
+    return is_mt5_allowed ? (
+        <ButtonToggle
+            buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
+            className='traders-hub-logged-out__button-toggle'
+            has_rounded_button
+            is_traders_hub
+            name='platform_type'
+            onChange={platformTypeChange}
+            value={selected_platform_type}
+        />
+    ) : (
+        <div className='traders-hub-logged-out__mt5-not-allowed'>
+            <Text size='s' weight='bold' color='prominent'>
+                <Localize i18n_default_text='Multipliers' />
+            </Text>
+        </div>
+    );
+});
 
-    const getOrderedPlatformSections = (isDesktop = false) => {
-        if (is_mt5_allowed) {
-            return isDesktop ? (
-                <OrderedPlatformSections />
-            ) : (
-                <OrderedPlatformSections
-                    is_cfd_visible={selected_platform_type === 'cfd'}
-                    is_options_and_multipliers_visible={selected_platform_type === 'options'}
-                />
-            );
-        }
-        return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
-    };
+const TradersHubLoggedOut = observer(() => {
+    const { traders_hub, client, ui } = useStore();
+    const { is_desktop } = ui;
+    const {
+        is_logged_in,
+        is_mt5_allowed,
+        // website_status,
+        clients_country,
+    } = client;
+    const { setTogglePlatformType } = traders_hub;
 
-    if (!website_status) return <Loading is_fullscreen />;
+    const is_eu_user = isEuCountry(clients_country);
+
+    React.useEffect(() => {
+        if (is_eu_user) setTogglePlatformType('cfd');
+    }, [is_eu_user]);
 
     if (is_logged_in) return <Redirect to={routes.traders_hub} />;
 
+    if (!clients_country) return <Loading is_fullscreen />;
+
     return (
-        <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={is_desktop}>
+        <Div100vhContainer className='traders-hub-logged-out__mobile' height_offset='50px' is_disabled={is_desktop}>
             <div
                 id='traders-hub-logged-out'
                 className={classNames('traders-hub-logged-out', {
-                    'traders-hub--eu-user': is_eu_user && is_mt5_allowed,
-                    'traders-hub--eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
+                    'traders-hub-logged-out__eu-user': is_eu_user && is_mt5_allowed,
+                    'traders-hub-logged-out__eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
                 })}
-                ref={traders_hub_ref}
             >
-                <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
+                <DesktopWrapper>
+                    <GetOrderedPlatformSections isDesktop />
+                </DesktopWrapper>
                 <MobileWrapper>
-                    {is_mt5_allowed &&
-                        (is_landing_company_loaded ? (
-                            <ButtonToggle
-                                buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
-                                className='traders-hub__button-toggle'
-                                has_rounded_button
-                                is_traders_hub={window.location.pathname === routes.traders_hub}
-                                name='platforn_type'
-                                onChange={platformTypeChange}
-                                value={selected_platform_type}
-                            />
-                        ) : (
-                            <ButtonToggleLoader />
-                        ))}
-                    {!is_mt5_allowed && (
-                        <div className='traders-hub--mt5-not-allowed'>
-                            <Text size='s' weight='bold' color='prominent'>
-                                <Localize i18n_default_text='Multipliers' />
-                            </Text>
-                        </div>
-                    )}
-                    {getOrderedPlatformSections()}
+                    <TabsOrTitle />
+                    <GetOrderedPlatformSections />
                 </MobileWrapper>
             </div>
         </Div100vhContainer>
     );
-
-    // return (
-    //     <React.Fragment>
-    //         <h1>Its logged out version of TH</h1>
-    //     </React.Fragment>
-    // );
 });
 
 export default TradersHubLoggedOut;

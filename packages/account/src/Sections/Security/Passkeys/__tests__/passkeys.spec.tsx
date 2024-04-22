@@ -239,6 +239,11 @@ describe('Passkeys', () => {
             </RenderWrapper>
         );
 
+        expect(screen.getByText('Just a reminder')).toBeInTheDocument();
+        expect(screen.getByText('Enable screen lock on your device.')).toBeInTheDocument();
+        expect(screen.getByText('Enable bluetooth.')).toBeInTheDocument();
+        expect(screen.getByText('Sign in to your Google or iCloud account.')).toBeInTheDocument();
+
         const continue_button = screen.getByRole('button', { name: /continue/i });
         userEvent.click(continue_button);
         expect(mockCreatePasskey).toBeCalledTimes(1);

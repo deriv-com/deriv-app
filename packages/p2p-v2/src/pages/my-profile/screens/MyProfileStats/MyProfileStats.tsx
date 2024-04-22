@@ -16,7 +16,7 @@ const MyProfileStats = ({ advertiserId }: TMyProfileStatsProps) => {
     const { data, isLoading } = useAdvertiserStats(advertiserId);
     const { data: activeAccount } = useActiveAccount();
 
-    if (isLoading || !data) return <Loader />;
+    if (isLoading || !data) return <Loader className='relative mt-16' />;
 
     const {
         averagePayTime,

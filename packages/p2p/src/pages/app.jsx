@@ -263,8 +263,8 @@ const App = () => {
             // Do not remove.
             order_store.setVerificationCode(code_param);
         }
-        if (action_param && code_param) {
-            general_store?.showModal({ key: 'LoadingModal', props: {} });
+        if (action_param && code_param && typeof general_store.showModal === 'function') {
+            general_store.showModal({ key: 'LoadingModal', props: {} });
             order_store.verifyEmailVerificationCode(action_param, code_param);
         }
 

@@ -137,7 +137,7 @@ const TradersHub = observer(() => {
         return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
     };
 
-    const featureFlagValue = useGrowthbookFeatureFlag({
+    const should_show_banner = useGrowthbookFeatureFlag({
         featureFlag: 'traders-hub-real-account-banner',
         defaultValue: false,
     });
@@ -154,7 +154,7 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    {featureFlagValue && ((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)) ? (
+                    {should_show_banner && ((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)) ? (
                         <Suspense fallback={<div />}>
                             <DerivRealAccountBanner />
                         </Suspense>

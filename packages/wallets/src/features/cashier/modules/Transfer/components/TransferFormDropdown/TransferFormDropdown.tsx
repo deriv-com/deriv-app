@@ -127,7 +127,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 ) : (
                     <div className='wallets-transfer-form-dropdown__select-account-cta'>
                         <WalletText size='sm' weight='bold'>
-                            Select a trading account or a Wallet
+                            Select a trading account{activeWallet?.demo_account === 0 ? ` or a Wallet` : ''}
                         </WalletText>
                     </div>
                 )}

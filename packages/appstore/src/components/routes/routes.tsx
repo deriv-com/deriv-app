@@ -25,11 +25,6 @@ const Routes: React.FC = observer(() => {
         <React.Suspense fallback={<Loading />}>
             <Switch>
                 <RouteWithSubroutes
-                    path={routes.root}
-                    component={TradersHubLoggedOut}
-                    getTitle={() => localize('Deriv App')}
-                />
-                <RouteWithSubroutes
                     path={routes.traders_hub}
                     component={TradersHub}
                     getTitle={() => localize("Trader's Hub")}
@@ -38,6 +33,11 @@ const Routes: React.FC = observer(() => {
                     path={routes.onboarding}
                     component={Onboarding}
                     getTitle={() => localize('Onboarding')}
+                />
+                <RouteWithSubroutes
+                    path={routes.root}
+                    component={TradersHubLoggedOut}
+                    getTitle={() => localize('Deriv App')}
                 />
             </Switch>
         </React.Suspense>

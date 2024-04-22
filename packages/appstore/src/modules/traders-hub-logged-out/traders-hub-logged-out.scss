@@ -1,11 +1,8 @@
 .traders-hub-logged-out {
-    max-width: 123.2rem;
+    // max-width: 123.2rem;
+    max-width: 120rem;
     margin: auto;
-    padding: 5rem 0;
-
-    &:has(.wallets-banner__container) {
-        padding-top: 0;
-    }
+    padding: 4rem;
 
     @include mobile {
         padding: 2rem;

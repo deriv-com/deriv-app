@@ -9,7 +9,7 @@ import type { TWebSocket } from 'Types';
 import initStore from './init-store';
 import 'Sass/app.scss';
 import type { TCoreStores } from '@deriv/stores/types';
-import { useDevice } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import TraderProviders from '../trader-providers';
 
 type Apptypes = {

@@ -9,7 +9,6 @@ import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets';
 import type { TBottomWidgetsParams } from './trade';
 import { SmartChart } from 'Modules/SmartChart';
 import { ChartBarrierStore } from 'Stores/Modules/SmartChart/chart-barrier-store';
-import { isMobile as isMobileShared } from '@deriv/shared';
 
 type TTradeChartProps = {
     bottomWidgets?: (props: TBottomWidgetsParams) => React.ReactElement;
@@ -119,7 +118,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
             enabledNavigationWidget={!isMobile}
             enabledChartFooter={false}
             id='trade'
-            isMobile={isMobileShared()}
+            isMobile={isMobile}
             maxTick={isMobile ? max_ticks : undefined}
             granularity={show_digits_stats || is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}

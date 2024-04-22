@@ -24,7 +24,7 @@
     "README.md"
   ],
   "peerDependencies": {
-    "@deriv-com/ui": "1.11.2",
+    "@deriv-com/ui": "^1.14.2",
     "@deriv/quill-icons": "^1.18.3",
     "@deriv/api-v2": "1.0.0",
     "yup": "^0.32.11",

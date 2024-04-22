@@ -1,26 +1,23 @@
-import React, { useCallback, useEffect } from 'react';
-import { useActiveAccount, useCurrencyConfig, useTransferBetweenAccounts } from '@deriv/api-v2';
+import React from 'react';
+import { THooks } from 'src/hooks/types';
+import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { TransferForm } from './components';
 import { TransferProvider } from './provider';
+
+type TTransferModuleProps = {
+    accounts: THooks.TransferAccounts;
+};
 
 const Transfer = () => {
     return <TransferForm />;
 };
 
-const TransferModule = () => {
+const TransferModule: React.FC<TTransferModuleProps> = ({ accounts }) => {
     const { data: activeAccount } = useActiveAccount();
-    const { getConfig } = useCurrencyConfig();
-    const { data: transferAccounts, mutate } = useTransferBetweenAccounts();
-    const accounts = transferAccounts?.accounts;
+    const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    const requestForAccounts = useCallback(() => mutate({ accounts: 'all' }), [mutate]);
-
-    useEffect(() => {
-        requestForAccounts();
-    }, [requestForAccounts]);
-
-    const isLoading = !accounts || !activeAccount || !getConfig;
+    const isLoading = !accounts || !activeAccount || isCurrencyConfigLoading;
 
     if (isLoading) return <Loader />;
 

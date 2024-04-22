@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useTransferBetweenAccounts } from '@deriv/api-v2';
 import { getCryptoFiatConverterValidationSchema } from '../../../components';
 import type { THooks } from '../../../hooks/types';
 import type { TCurrency } from '../../../types';
@@ -41,10 +42,11 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     children,
     getConfig,
 }) => {
+    const { data, mutate } = useTransferBetweenAccounts();
     const { accounts: transferAccounts, activeAccount: transferActiveAccount } = useExtendedTransferAccounts(
         activeAccount,
         getConfig,
-        accounts
+        data?.accounts ?? accounts
     );
     const [validationSchema, setValidationSchema] =
         useState<ReturnType<typeof getCryptoFiatConverterValidationSchema>>();
@@ -77,6 +79,10 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
         },
         []
     );
+
+    useEffect(() => {
+        if (!accounts) mutate({ accounts: 'all' });
+    }, [accounts, mutate]);
 
     return (
         <TransferContext.Provider

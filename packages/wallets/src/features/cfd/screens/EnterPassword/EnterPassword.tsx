@@ -54,6 +54,7 @@ const EnterPassword: React.FC<TProps> = ({
                         label={`${title} password`}
                         onChange={onPasswordChange}
                         password={password}
+                        passwordError={passwordError}
                         shouldDisablePasswordMeter
                         showMessage={false}
                     />

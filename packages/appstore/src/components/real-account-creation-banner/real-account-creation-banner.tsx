@@ -34,12 +34,12 @@ const RealAccountCreationBanner = () => {
         <div className='real-account-creation-banner'>
             {is_mobile ? (
                 <img
-                    alt='Deriv real account banner desktop'
+                    alt='Deriv real account banner mobile'
                     src={getUrlBase('/public/images/common/real-account-banner-mobile.png')}
                 />
             ) : (
                 <img
-                    alt='Deriv real account banner mobile'
+                    alt='Deriv real account banner desktop'
                     src={getUrlBase('/public/images/common/real-account-banner-desktop.png')}
                 />
             )}

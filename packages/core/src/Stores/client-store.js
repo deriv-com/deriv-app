@@ -417,6 +417,7 @@ export default class ClientStore extends BaseStore {
             subscribeToExchangeRate: action.bound,
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
+            setExchangeRates: action.bound,
         });
 
         reaction(

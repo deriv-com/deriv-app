@@ -7,6 +7,7 @@ import {
     AccountsDmt5SwfIcon as DMT5_ALL,
     IconTypes,
 } from '@deriv/quill-icons';
+import { TIconTypes } from '../../types';
 
 const iconMapper: Record<string, IconTypes> = {
     DERIVX,
@@ -18,7 +19,7 @@ const iconMapper: Record<string, IconTypes> = {
 
 type TProps = {
     name: keyof typeof iconMapper;
-    size: 'lg' | 'md' | 'sm' | 'xl';
+    size: TIconTypes.TIconSize;
 };
 
 const TradingAppIcon: React.FC<TProps> = ({ name, size }) => {

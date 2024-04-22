@@ -11,6 +11,11 @@ jest.mock('@deriv/api-v2', () => ({
     useCashierValidation: jest.fn(),
 }));
 
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    Loader: jest.fn(() => <div>Loading...</div>),
+}));
+
 jest.mock('../CashierLockedContent', () => ({
     __esModule: true,
     default: jest.fn(() => 'Locked Description'),
@@ -25,6 +30,22 @@ const mockStatusData = { is_cashier_locked: false, is_deposit_locked: false, is_
 describe('CashierLocked', () => {
     afterEach(() => {
         jest.clearAllMocks();
+    });
+
+    it('should render loader when currency config is loading', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
+        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData, isLoading: true });
+
+        render(
+            <CashierLocked>
+                <div>Test Child Component</div>
+            </CashierLocked>
+        );
+
+        expect(screen.queryByText('Test Child Component')).not.toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('should render locked screen for cashier locked system maintenance', () => {

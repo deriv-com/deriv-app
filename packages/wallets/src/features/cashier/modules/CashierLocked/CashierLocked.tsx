@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import { useAccountStatus, useActiveWalletAccount, useAuthentication, useCashierValidation } from '@deriv/api-v2';
-import { WalletsActionScreen } from '../../../../components';
+import { Loader, WalletsActionScreen } from '../../../../components';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from './CashierLockedContent';
 import './CashierLocked.scss';
 
@@ -14,7 +14,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: authentication } = useAuthentication();
     const { data: cashierValidation } = useCashierValidation();
-    const { data: status } = useAccountStatus();
+    const { data: status, isLoading: isAccountStatusLoading } = useAccountStatus();
 
     const currency = activeWallet?.currency || 'USD';
     const isVirtual = activeWallet?.is_virtual;
@@ -64,6 +64,10 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
         poaNeedsVerification,
         poiNeedsVerification,
     });
+
+    if (isAccountStatusLoading) {
+        return <Loader />;
+    }
 
     if (isSystemMaintenance && systemMaintenanceContent) {
         return (

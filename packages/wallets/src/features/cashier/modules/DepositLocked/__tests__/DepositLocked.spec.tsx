@@ -20,6 +20,11 @@ jest.mock('@deriv/api-v2', () => ({
     useSettings: jest.fn(),
 }));
 
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    Loader: jest.fn(() => <div>Loading...</div>),
+}));
+
 jest.mock('../DepositLockedContent', () => ({
     __esModule: true,
     default: jest.fn(),
@@ -39,6 +44,24 @@ const mockStatusData = {
 describe('DepositLocked', () => {
     afterEach(() => {
         jest.clearAllMocks();
+    });
+
+    it('should render loader when account status is loading', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
+        (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
+        (useQuery as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData, isLoading: true });
+
+        render(
+            <DepositLocked>
+                <div>Test Child Component</div>
+            </DepositLocked>
+        );
+
+        expect(screen.queryByText('Test Child Component')).not.toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('should render locked screen when in a locked state', () => {

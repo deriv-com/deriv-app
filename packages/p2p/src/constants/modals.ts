@@ -4,6 +4,9 @@ export const Modals = {
     AdCancelModal: React.lazy(
         () => import(/* webpackChunkName: "ad-cancel-modal" */ 'Components/modal-manager/modals/ad-cancel-modal')
     ),
+    AdCreatedModal: React.lazy(
+        () => import(/* webpackChunkName: "ad-created-modal" */ 'Components/modal-manager/modals/ad-created-modal')
+    ),
     AdCreateEditErrorModal: React.lazy(
         () =>
             import(
@@ -57,6 +60,9 @@ export const Modals = {
             import(
                 /* webpackChunkName: "confirm-delete-payment-method-modal" */ 'Components/modal-manager/modals/confirm-delete-payment-method-modal'
             )
+    ),
+    CopyAdvertModal: React.lazy(
+        () => import(/* webpackChunkName: "copy-advert-modal" */ 'Components/modal-manager/modals/copy-advert-modal')
     ),
     CreateAdAddPaymentMethodModal: React.lazy(
         () =>

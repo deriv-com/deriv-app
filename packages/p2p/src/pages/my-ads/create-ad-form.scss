@@ -84,4 +84,10 @@
         align-items: center;
         justify-content: center;
     }
+
+    &__dropdown {
+        &-display {
+            height: 4rem;
+        }
+    }
 }

@@ -52,6 +52,7 @@ const AdTypeSection = ({
                 general_store.showModal({
                     key: 'AdCancelModal',
                     props: {
+                        confirm_label: localize("Don't cancel"),
                         message: localize('If you choose to cancel, the edited details will be lost.'),
                         onConfirm: () => {
                             my_ads_store.setShowEditAdForm(false);
@@ -66,6 +67,7 @@ const AdTypeSection = ({
             general_store.showModal({
                 key: 'AdCancelModal',
                 props: {
+                    confirm_label: localize("Don't cancel"),
                     message: localize("If you choose to cancel, the details you've entered will be lost."),
                     onConfirm: () => {
                         my_ads_store.setApiErrorMessage('');

@@ -12,9 +12,15 @@ export const displayMoney = (
     }
 ) => {
     try {
+        const fractional_digits = Math.max(
+            // whichever is bigger:
+            options?.fractional_digits || 2, // currency's number of decimal places
+            [...amount.toString()].reverse().indexOf('.') // amount's decimal places
+        );
+
         return `${Intl.NumberFormat(options?.preferred_language || 'en-US', {
-            minimumFractionDigits: options?.fractional_digits || 2,
-            maximumFractionDigits: options?.fractional_digits || 2,
+            minimumFractionDigits: fractional_digits,
+            maximumFractionDigits: fractional_digits,
             minimumIntegerDigits: 1,
         }).format(amount)} ${currency}`;
     } catch (error) {

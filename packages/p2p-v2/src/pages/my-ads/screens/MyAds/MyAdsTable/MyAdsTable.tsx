@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { THooks } from 'types';
 import { Table } from '@/components';
+import { useIsAdvertiser } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { MyAdsEmpty } from '../../MyAdsEmpty';
@@ -43,21 +44,33 @@ const columns = [
 ];
 
 const MyAdsTable = () => {
-    const { data = [], isFetching, isLoading, loadMoreAdverts } = p2p.advertiserAdverts.useGet();
+    const isAdvertiser = useIsAdvertiser();
+    const {
+        data = [],
+        isFetching,
+        isLoading,
+        loadMoreAdverts,
+    } = p2p.advertiserAdverts.useGet(undefined, {
+        enabled: isAdvertiser,
+    });
     const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
+    const {
+        balance_available: balanceAvailable,
+        blocked_until: blockedUntil,
+        daily_buy_limit: dailyBuyLimit,
+        daily_sell_limit: dailySellLimit,
+        is_listed_boolean: isListed,
+    } = advertiserInfo || {};
     const { mutate: updateAds } = p2p.advertiser.useUpdate();
 
-    if (isLoading) return <Loader />;
+    if (isLoading && isFetching) return <Loader />;
 
     if (!data.length) return <MyAdsEmpty />;
 
-    const onClickToggle = () => updateAds({ is_listed: advertiserInfo?.is_listed ? 0 : 1 });
+    const onClickToggle = () => updateAds({ is_listed: isListed ? 0 : 1 });
 
     return (
-        <MyAdsDisplayWrapper
-            isPaused={!!advertiserInfo?.blocked_until || !advertiserInfo?.is_listed}
-            onClickToggle={onClickToggle}
-        >
+        <MyAdsDisplayWrapper isPaused={!!blockedUntil || !isListed} onClickToggle={onClickToggle}>
             <div className='p2p-v2-my-ads-table__list'>
                 <Table
                     columns={columns}
@@ -68,11 +81,11 @@ const MyAdsTable = () => {
                     rowRender={(rowData: unknown) => (
                         <MyAdsTableRowRenderer
                             {...(rowData as TMyAdsTableRowRendererProps)}
-                            balanceAvailable={advertiserInfo?.balance_available ?? 0}
-                            dailyBuyLimit={advertiserInfo?.daily_buy_limit ?? ''}
-                            dailySellLimit={advertiserInfo?.daily_sell_limit ?? ''}
-                            isBarred={!!advertiserInfo?.blocked_until}
-                            isListed={!!advertiserInfo?.is_listed}
+                            balanceAvailable={balanceAvailable ?? 0}
+                            dailyBuyLimit={dailyBuyLimit ?? ''}
+                            dailySellLimit={dailySellLimit ?? ''}
+                            isBarred={!!blockedUntil}
+                            isListed={!!isListed}
                         />
                     )}
                     tableClassname=''

@@ -17,6 +17,7 @@ const RealAccountCreationBanner = () => {
     const { is_real } = traders_hub;
     const { is_eu_real, is_low_risk_cr_eu } = useContentFlag();
     const eu_user = is_eu_real || is_low_risk_cr_eu;
+    const device = is_mobile ? 'mobile' : 'desktop';
 
     const handleClick = () => {
         if (is_real && eu_user) {
@@ -32,17 +33,10 @@ const RealAccountCreationBanner = () => {
 
     return (
         <div className='real-account-creation-banner'>
-            {is_mobile ? (
-                <img
-                    alt='Deriv real account banner mobile'
-                    src={getUrlBase('/public/images/common/real-account-banner-mobile.png')}
-                />
-            ) : (
-                <img
-                    alt='Deriv real account banner desktop'
-                    src={getUrlBase('/public/images/common/real-account-banner-desktop.png')}
-                />
-            )}
+            <img
+                alt='Deriv real account banner'
+                src={getUrlBase(`/public/images/common/real-account-banner-${device}.png`)}
+            />
 
             <div className='real-account-creation-banner__content'>
                 <Text size={is_mobile ? 'xs' : 'm'}>

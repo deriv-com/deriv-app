@@ -36,12 +36,14 @@ const WalletsResetMT5Password = ({
         isLoading: isChangePasswordLoading,
         isSuccess: isChangePasswordSuccess,
         mutate: changePassword,
+        status: changePasswordStatus,
     } = useTradingPlatformPasswordReset();
     const {
         isError: isChangeInvestorPasswordError,
         isLoading: isChangeInvestorPasswordLoading,
         isSuccess: isChangeInvestorPasswordSuccess,
         mutate: changeInvestorPassword,
+        status: changeInvestorPasswordStatus,
     } = useTradingPlatformInvestorPasswordReset();
 
     const { hide, show } = useModal();
@@ -70,17 +72,15 @@ const WalletsResetMT5Password = ({
 
     useEffect(() => {
         if (isChangePasswordSuccess) {
-            localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
             show(<WalletSuccessResetMT5Password title={title} />, { defaultRootId: 'wallets_modal_root' });
         } else if (isChangePasswordError) {
             hide();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [platform, title, actionParams, isChangePasswordSuccess, isChangePasswordError]);
+    }, [platform, title, isChangePasswordSuccess, isChangePasswordError]);
 
     useEffect(() => {
         if (isChangeInvestorPasswordSuccess) {
-            localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
             show(<WalletSuccessResetMT5Password isInvestorPassword title={title} />, {
                 defaultRootId: 'wallets_modal_root',
             });
@@ -88,7 +88,13 @@ const WalletsResetMT5Password = ({
             hide();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
+    }, [platform, title, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
+
+    useEffect(() => {
+        if (changeInvestorPasswordStatus || changePasswordStatus) {
+            localStorage.removeItem(`verification_code.${actionParams}`);
+        }
+    }, [actionParams, changeInvestorPasswordStatus, changePasswordStatus]);
 
     return (
         <ModalWrapper hideCloseButton={isMobile}>

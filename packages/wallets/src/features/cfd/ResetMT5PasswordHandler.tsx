@@ -2,29 +2,30 @@ import React, { useEffect } from 'react';
 import { WalletsResetMT5Password } from '../../components';
 import { useModal } from '../../components/ModalProvider';
 import { getActionFromUrl } from '../../helpers/urls';
-import { TPlatforms } from '../../types';
 import { CFD_PLATFORMS } from './constants';
+
+const platformMapping = {
+    trading_platform_dxtrade_password_reset: CFD_PLATFORMS?.DXTRADE,
+    trading_platform_investor_password_reset: CFD_PLATFORMS?.MT5,
+    trading_platform_mt5_password_reset: CFD_PLATFORMS?.MT5,
+} as const;
 
 const ResetMT5PasswordHandler = () => {
     const { show } = useModal();
     const resetTradingPlatformActionParams = getActionFromUrl();
 
-    const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = {
-        trading_platform_dxtrade_password_reset: CFD_PLATFORMS?.DXTRADE,
-        trading_platform_investor_password_reset: CFD_PLATFORMS?.MT5,
-        trading_platform_mt5_password_reset: CFD_PLATFORMS?.MT5,
-    };
-
-    const platformKey = resetTradingPlatformActionParams ? platformMapping[resetTradingPlatformActionParams] : null;
+    const platformKey = resetTradingPlatformActionParams
+        ? platformMapping[resetTradingPlatformActionParams as keyof typeof platformMapping]
+        : null;
 
     useEffect(() => {
         if (platformKey) {
             const verificationCode = localStorage.getItem(`verification_code.${resetTradingPlatformActionParams}`);
 
-            if (verificationCode) {
+            if (verificationCode && resetTradingPlatformActionParams) {
                 show(
                     <WalletsResetMT5Password
-                        actionParams={resetTradingPlatformActionParams ?? ''}
+                        actionParams={resetTradingPlatformActionParams}
                         isInvestorPassword={
                             resetTradingPlatformActionParams === 'trading_platform_investor_password_reset'
                         }

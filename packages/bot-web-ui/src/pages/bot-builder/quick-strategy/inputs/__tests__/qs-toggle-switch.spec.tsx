@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -10,6 +10,13 @@ import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import QSToggleSwitch from '../qs-toggle-switch';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
+jest.mock('formik', () => ({
+    ...jest.requireActual('formik'),
+    useFormikContext: () => ({
+        values: { max_stake: 10 },
+        setFieldValue: jest.fn(),
+    }),
+}));
 
 describe('<QSCheckbox />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
@@ -32,6 +39,7 @@ describe('<QSCheckbox />', () => {
         const mock_onSubmit = jest.fn();
         const initial_value = {
             symbol: 'R_100',
+            max_stake: 10,
             boolean_max_stake: false,
             duration: 1,
         };
@@ -65,10 +73,10 @@ describe('<QSCheckbox />', () => {
         render(<QSToggleSwitch {...mocked_props} description='Max stake field mock description' />, {
             wrapper,
         });
+
         userEvent.click(screen.getByTestId('dt_popover_wrapper'));
-        act(() => {
-            userEvent.hover(screen.getByText('Max Stake'));
-        });
+        userEvent.hover(screen.getByText('Max Stake'));
+
         expect(screen.getByText('Max stake field mock description')).toBeInTheDocument();
     });
 
@@ -85,7 +93,6 @@ describe('<QSCheckbox />', () => {
         if (label) {
             userEvent.click(label);
         }
-
         expect(mockSetIsEnabledToggleSwitch).toHaveBeenCalled();
         expect(screen.getByText('Max Stake')).toBeInTheDocument();
     });

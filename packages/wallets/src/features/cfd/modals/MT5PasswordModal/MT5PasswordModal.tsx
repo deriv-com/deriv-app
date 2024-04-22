@@ -248,6 +248,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 password={password}
                 passwordError={createMT5AccountError?.error?.code === 'PasswordError'}
                 platform={mt5Platform}
+                setPassword={setPassword}
             />
         );
     }, [

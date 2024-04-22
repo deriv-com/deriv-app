@@ -13,4 +13,5 @@ export const API_ERROR_CODES = {
         code: null,
         message: 'Sorry, an internal error occurred. Hit the above checkbox to try again.',
     },
+    invalidOTP: { code: 'InvalidOTP', message: "That's not the right code. Please try again." },
 } as const;

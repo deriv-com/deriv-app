@@ -18,7 +18,7 @@ export const LoginHistoryTableCard = ({ loginHistory }: TLoginHistoryProps) => {
                     <div className='flex gap-40'>
                         <div className='justify-left flex flex-col items-start gap-8 row-span-3'>
                             {[
-                                { label: 'Date and Time', value: item.date },
+                                { label: 'Date and time', value: item.date },
                                 { label: 'Browser', value: item.browser },
                                 { label: 'IP Address', value: item.ip },
                             ].map((gridItem, gridIndex) => (

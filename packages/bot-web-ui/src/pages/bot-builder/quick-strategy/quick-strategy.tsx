@@ -42,6 +42,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
+    const is_mounted = useRef(true);
 
     const initial_value: TFormData = {
         symbol: qs_config.QUICK_STRATEGY.DEFAULT.symbol,
@@ -58,6 +59,12 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         boolean_max_stake: false,
         last_digit_prediction: 1,
     };
+
+    React.useEffect(() => {
+        return () => {
+            is_mounted.current = false;
+        };
+    }, []);
 
     React.useEffect(() => {
         const data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
@@ -148,7 +155,9 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                 }
             });
         });
-        setDynamicSchema(Yup.object().shape(sub_schema));
+        if (is_mounted.current) {
+            setDynamicSchema(Yup.object().shape(sub_schema));
+        }
     };
 
     const handleSubmit = (form_data: TFormData) => {

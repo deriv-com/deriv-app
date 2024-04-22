@@ -210,7 +210,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <WalletsUpgradeCompletedModal />;
     }
 
-    if (!has_wallet && is_migrated) {
+    if (!has_wallet && is_migrated && is_logged_in) {
         ComponentToLoad = <WalletsUpgradeLogoutModal />;
     }
 

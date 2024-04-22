@@ -3,6 +3,7 @@ import { debounce } from 'lodash';
 import { Controller, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { BUY_SELL_URL } from '@/constants';
+import { useAdvertiserInfoState } from '@/providers/AdvertiserInfoStateProvider';
 import { p2p } from '@deriv/api-v2';
 import { DerivLightIcCashierUserIcon } from '@deriv/quill-icons';
 import { Button, Input, Modal, Text, useDevice } from '@deriv-com/ui';
@@ -28,6 +29,7 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
 
     const history = useHistory();
     const { error: createError, isError, isSuccess, mutate, reset } = p2p.advertiser.useCreate();
+    const { setHasCreatedAdvertiser } = useAdvertiserInfoState();
     const { isMobile } = useDevice();
     const textSize = isMobile ? 'md' : 'sm';
     const debouncedReset = debounce(reset, 3000);
@@ -39,13 +41,14 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
     useEffect(() => {
         if (isSuccess) {
             setIsModalOpen(false);
+            setHasCreatedAdvertiser(true);
         } else if (isError) {
             debouncedReset();
         }
-    }, [isError, isSuccess]);
+    }, [isError, isSuccess, setHasCreatedAdvertiser]);
 
     return (
-        <Modal className='p2p-v2-nickname-modal' isOpen={!!isModalOpen}>
+        <Modal ariaHideApp={false} className='p2p-v2-nickname-modal' isOpen={!!isModalOpen}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Modal.Body className='p2p-v2-nickname-modal__body'>
                     <DerivLightIcCashierUserIcon height='12.8rem' width='12.8rem' />

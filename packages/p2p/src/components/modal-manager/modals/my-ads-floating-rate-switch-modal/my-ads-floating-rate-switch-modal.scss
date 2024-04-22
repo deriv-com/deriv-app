@@ -2,4 +2,8 @@
     @include mobile {
         min-width: 328px !important;
     }
+
+    .my-ads-floating-rate-switch-modal__cancel-button {
+        margin-right: 0;
+    }
 }

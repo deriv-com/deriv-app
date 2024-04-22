@@ -32,6 +32,11 @@ jest.mock('@deriv/api-v2', () => ({
     },
 }));
 
+jest.mock('@/hooks', () => ({
+    ...jest.requireActual('@/hooks'),
+    useIsAdvertiser: jest.fn(() => true),
+}));
+
 const mockProps = {
     onSelectPaymentMethod: jest.fn(),
     selectedPaymentMethodIds: [],

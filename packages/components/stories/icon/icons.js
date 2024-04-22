@@ -57,11 +57,6 @@ export const icons =
         'IcAppstoreWalletUsdcLight',
         'IcAppstoreWalletUsdtLight',
         'IcAppstoreWalletsLink',
-        'IcAppstoreWalletsUpgradeCoinsHorizontal',
-        'IcAppstoreWalletsUpgradeCoins',
-        'IcAppstoreWalletsUpgradeStepOne',
-        'IcAppstoreWalletsUpgradeStepTwo',
-        'IcAppstoreWalletsUpgradeUnsuccessful',
         'IcAppstoreWarning',
     ],
     'brand': [
@@ -734,6 +729,7 @@ export const icons =
         'IcDxtradeSyntheticPlatform',
     ],
     'flag': [
+        //change to arabic flag when there's any
         'IcFlagAr',
         'IcFlagBn',
         'IcFlagDe',
@@ -1111,8 +1107,6 @@ export const icons =
         'IcWalletSuccessMessage',
         'IcWalletTetherDark',
         'IcWalletTetherLight',
-        'IcWalletUpgradeCompleted',
-        'IcWalletUpgradeLogout',
         'IcWalletUsdCoinDark',
         'IcWalletUsdCoinLight',
     ],

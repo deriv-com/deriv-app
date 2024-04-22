@@ -3,10 +3,10 @@ import './real-account-creation-banner.scss';
 import { getUrlBase, Jurisdiction } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Text, Button } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { useContentFlag } from '@deriv/hooks';
 
-const RealAccountCreationBanner = () => {
+const RealAccountCreationBanner = observer(() => {
     const {
         ui: { is_mobile },
     } = useStore();
@@ -48,6 +48,6 @@ const RealAccountCreationBanner = () => {
             </div>
         </div>
     );
-};
+});
 
 export default RealAccountCreationBanner;

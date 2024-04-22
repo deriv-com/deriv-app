@@ -137,21 +137,36 @@ const Dropzone: React.FC<TProps> = ({
                     )}
                     {!showHoverMessage && file && (
                         <React.Fragment key={file.name}>
-                            <div
-                                className={classNames('wallets-dropzone__thumb', {
-                                    'wallets-dropzone__thumb--has-frame': hasFrame,
-                                })}
-                                style={{ backgroundImage: `url(${file.preview})` }}
-                            >
-                                {hasFrame && <DropzoneFrame />}
-                                <IconButton
-                                    className='wallets-dropzone__remove-file'
-                                    data-testid='dt_remove-button'
-                                    icon={<CloseIcon width={12} />}
-                                    onClick={removeFile}
-                                    size='sm'
-                                />
-                            </div>
+                            {file.file.type.indexOf('pdf') !== -1 ? (
+                                <div className='wallets-dropzone__thumb wallets-dropzone__thumb--pdf'>
+                                    <IconButton
+                                        className='wallets-dropzone__remove-file'
+                                        data-testid='dt_remove-button'
+                                        icon={<CloseIcon width={12} />}
+                                        onClick={removeFile}
+                                        size='sm'
+                                    />
+                                    <WalletText align='center' size='xs' weight='bold'>
+                                        {file.name.length > 30 ? `${file.name.slice(0, 30)}....pdf` : file.name}
+                                    </WalletText>
+                                </div>
+                            ) : (
+                                <div
+                                    className={classNames('wallets-dropzone__thumb', {
+                                        'wallets-dropzone__thumb--has-frame': hasFrame,
+                                    })}
+                                    style={{ backgroundImage: `url(${file.preview})` }}
+                                >
+                                    {hasFrame && <DropzoneFrame />}
+                                    <IconButton
+                                        className='wallets-dropzone__remove-file'
+                                        data-testid='dt_remove-button'
+                                        icon={<CloseIcon width={12} />}
+                                        onClick={removeFile}
+                                        size='sm'
+                                    />
+                                </div>
+                            )}
                             {description && (
                                 <WalletText align='center' color={descriptionColor}>
                                     {description}

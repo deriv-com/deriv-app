@@ -17,13 +17,7 @@ export type TAccountLimitValues = {
 };
 
 type TMarketSpecific = GetLimits['market_specific'];
-type TMarketSpecificData = {
-    level?: string;
-    name?: string;
-    payout_limit?: number;
-    profile_name?: string;
-    turnover_limit?: number;
-}[];
+type TMarketSpecificData = Exclude<TMarketSpecific, undefined>[string];
 
 const markets = ['commodities', 'forex', 'indices', 'synthetic_index'];
 

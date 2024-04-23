@@ -30,7 +30,9 @@
 
         &-disabled {
             span:not(.p2p-v2-my-ads-table-row__actions span) {
-                color: #999;
+                &:not(.p2p-v2-popover-dropdown__list-item span) {
+                    color: #999;
+                }
             }
             .p2p-v2-progress-indicator {
                 &__container {

@@ -50,6 +50,7 @@ export type TTransactionStore = {
     transactions: TTransactions[];
     is_transaction_details_modal_open: boolean;
     toggleTransactionDetailsModal: (is_open: boolean) => void;
+    statistics: TStatistics;
 };
 
 export type TRunPanelStore = {

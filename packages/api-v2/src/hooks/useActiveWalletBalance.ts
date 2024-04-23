@@ -26,6 +26,7 @@ const useActiveWalletBalance = () => {
     const displayBalance = displayMoney(balance, currencyCode, {
         fractional_digits: activeWallet?.currency_config?.fractional_digits,
         preferred_language: account?.preferred_language,
+        shouldKeepPrecision: true,
     });
 
     return {

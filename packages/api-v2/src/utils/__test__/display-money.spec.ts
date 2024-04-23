@@ -52,10 +52,17 @@ describe('displayMoney', () => {
         expect(display_money).toBe('1234 USD');
     });
 
-    it("should work for en_US, USDt; don't lose precision", async () => {
-        const preferred_language = 'en_US';
+    it('should work for en-US, USDt', async () => {
+        const preferred_language = 'en-US';
         const display_money = displayMoney(1234.56789, 'USDt', { preferred_language });
 
-        expect(display_money).toBe('1234.56789 USDt');
+        expect(display_money).toBe('1,234.57 USDt');
+    });
+
+    it('should work for en-US, USDt; keep precision', async () => {
+        const preferred_language = 'en-US';
+        const display_money = displayMoney(1234.56789, 'USDt', { preferred_language, shouldKeepPrecision: true });
+
+        expect(display_money).toBe('1,234.56789 USDt');
     });
 });

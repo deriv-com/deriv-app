@@ -49,7 +49,7 @@ export const POAFormContainer = () => {
         return !isRedirectedFromPlatform ? (
             <Button
                 onClick={() => {
-                    history.push('/');
+                    history.push('/dtrader');
                 }}
             >
                 Continue trading

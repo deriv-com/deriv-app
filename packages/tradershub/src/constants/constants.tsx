@@ -28,7 +28,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
     {
         description: isEU ? 'Multipliers trading platform.' : 'Options and multipliers trading platform.',
         icon: <IconComponent icon='DTrader' />,
-        redirect: '/',
+        redirect: '/dtrader',
         smallIcon: <IconComponent height={32} icon='DTrader' width={32} />,
         title: 'Deriv Trader',
     },

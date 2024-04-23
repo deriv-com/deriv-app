@@ -6,6 +6,7 @@ export * from './file-uploader';
 export * from './format-value';
 export * from './loader';
 export * from './object';
+export * from './os';
 export * from './payment-methods';
 export * from './react-node-to-string';
 export * from './routes';

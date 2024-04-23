@@ -5,8 +5,8 @@ import {
     useCreateNewRealAccount,
     useSettings,
 } from '@deriv/api-v2';
-import { toMoment } from '@deriv/utils';
 import { AccountsDerivAccountLightIcon } from '@deriv/quill-icons';
+import { toMoment } from '@deriv/utils';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';

@@ -16,6 +16,12 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     p2p: {
+        advertiser: {
+            useGetInfo: jest.fn().mockReturnValue({
+                data: {},
+                subscribe: jest.fn(),
+            }),
+        },
         settings: {
             useGetSettings: jest.fn().mockReturnValue({
                 data: {},
@@ -26,6 +32,9 @@ jest.mock('@deriv/api-v2', () => ({
     useActiveAccount: jest.fn().mockReturnValue({
         data: { currency: 'EUR' },
         isLoading: true,
+    }),
+    useAuthorize: jest.fn().mockReturnValue({
+        isSuccess: true,
     }),
 }));
 
@@ -168,7 +177,7 @@ describe('<AppContent />', () => {
 
     it('should render the CreateEditAd component', async () => {
         const history = createMemoryHistory();
-        history.push('/cashier/p2p-v2/my-ads/create');
+        history.push('/cashier/p2p-v2/my-ads/adForm');
 
         render(
             <Router history={history}>

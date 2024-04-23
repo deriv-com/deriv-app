@@ -1,13 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
-import { DerivLightIcPoaLockIcon, StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
-import { ActionScreen, Button, InlineMessage, Loader, Modal, Text, useDevice } from '@deriv-com/ui';
+import { DerivLightIcPoaLockIcon } from '@deriv/quill-icons';
+import { ActionScreen, Button, InlineMessage, Loader, Text, useDevice } from '@deriv-com/ui';
 import IcSuccess from '../../../assets/status-message/ic-success.svg';
 import { DemoMessage } from '../../../components/DemoMessage';
-import { ACCOUNT_MODAL_REF } from '../../../constants';
-import { ACCOUNT_V2_DEFAULT_ROUTE, ACCOUNT_V2_ROUTES, DERIV_GO_URL, P2P_URL } from '../../../constants/routes';
+import { LeaveConfirm } from '../../../components/LeaveConfirm';
+import { ACCOUNT_V2_ROUTES, DERIV_GO_URL, P2P_URL } from '../../../constants/routes';
 import { shouldHideOccupation } from '../../../utils/financialAssessmentUtils';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../../utils/platform';
 import { FinancialAssessmentFields } from '../FinancialAssessmentFields';
@@ -18,8 +18,6 @@ export const FinancialAssessmentForm = () => {
     const { isEUCountry } = useIsEuRegion();
     const { isMobile } = useDevice();
     const history = useHistory();
-
-    Modal.setAppElement(ACCOUNT_MODAL_REF);
 
     const redirect = isNavigationFromDerivGO() || isNavigationFromP2P();
     const redirectPlatformName = isNavigationFromDerivGO() ? 'Deriv GO' : 'Deriv P2P';
@@ -78,7 +76,7 @@ export const FinancialAssessmentForm = () => {
             income_source: values.incomeSource,
             net_income: values.netIncome,
             source_of_wealth: values.sourceOfWealth,
-            ...(shouldHideOccupation(values.employmentStatus) ? {} : { occupation: values.occupation }),
+            ...(!shouldHideOccupation(values.employmentStatus) && { occupation: values.occupation }),
         });
     };
 
@@ -110,65 +108,54 @@ export const FinancialAssessmentForm = () => {
             />
         );
 
+    const showInCompleteFinancialInfoMessage =
+        isEUCountry && isFinancialInformationNotComplete && !isFinancialAssessmentUpdateSuccess;
+
     return (
-        <Fragment>
-            {isMobile && (
-                <div className='grid grid-cols-[auto_25px] items-center pb-6 mb-10 border-solid border-b-1 border-solid-grey-2'>
-                    <Text align='center' size='lg' weight='bold'>
-                        Financial Assessment
-                    </Text>
-                    <StandaloneXmarkBoldIcon
-                        iconSize='md'
-                        onClick={() => {
-                            history.push(ACCOUNT_V2_DEFAULT_ROUTE);
-                        }}
-                    />
-                </div>
-            )}
-            <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
-                {({ dirty, isSubmitting, isValid }) => (
-                    <Form>
-                        {isEUCountry && isFinancialInformationNotComplete && !isFinancialAssessmentUpdateSuccess && (
-                            <InlineMessage type='filled' variant='warning'>
-                                {isMobile
-                                    ? 'To enable withdrawals, please complete your financial assessment.'
-                                    : 'You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.'}
-                            </InlineMessage>
-                        )}
-                        <div className='flex flex-col w-full min-h-screen space-y-16 lg:w-auto'>
-                            <div className='m-0 overflow-y-auto'>
-                                <div className='flex mb-12 h-24 gap-8 self-stretch lg:self-auto justify-center items-center lg:gap-[11px]'>
-                                    <Text weight='bold'>Financial information</Text>
-                                    <Text size='xs'>(All fields are required)</Text>
-                                    <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 lg:flex-shrink-0' />
-                                </div>
-                                <FinancialAssessmentFields />
+        <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit}>
+            {({ dirty, isSubmitting, isValid }) => (
+                <Form>
+                    <LeaveConfirm />
+                    {showInCompleteFinancialInfoMessage && (
+                        <InlineMessage type='filled' variant='warning'>
+                            {isMobile
+                                ? 'To enable withdrawals, please complete your financial assessment.'
+                                : 'You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.'}
+                        </InlineMessage>
+                    )}
+                    <div className='flex flex-col w-full min-h-screen space-y-16 lg:w-auto'>
+                        <div className='m-0 overflow-y-auto'>
+                            <div className='flex mb-12 h-24 gap-8 self-stretch lg:self-auto justify-center items-center lg:gap-[11px]'>
+                                <Text weight='bold'>Financial information</Text>
+                                <Text size='xs'>(All fields are required)</Text>
+                                <div className='w-full h-1 flex-[1_1_0] bg-solid-grey-2 lg:flex-shrink-0' />
                             </div>
-                            <div className='sticky bottom-0 flex justify-end flex-shrink-0 w-full px-24 py-16 border-solid bg-solid-slate-0 border-t-1 border-solid-grey-2'>
-                                {financialAssessmentUpdateError && (
-                                    <InlineMessage type='filled' variant='error'>
-                                        {financialAssessmentUpdateError.error.message}
-                                    </InlineMessage>
-                                )}
-                                {isMobile && !isEUCountry && (
-                                    <Text align='center' size='xs'>
-                                        All fields are required
-                                    </Text>
-                                )}
-                                <Button
-                                    disabled={isSubmitting || !isValid || !dirty}
-                                    isFullWidth={isMobile}
-                                    isLoading={isFinancialAssessmentUpdating}
-                                    size='lg'
-                                    type='submit'
-                                >
-                                    Submit
-                                </Button>
-                            </div>
+                            <FinancialAssessmentFields />
                         </div>
-                    </Form>
-                )}
-            </Formik>
-        </Fragment>
+                        <div className='sticky bottom-0 flex justify-end flex-shrink-0 w-full px-24 py-16 border-solid bg-solid-slate-0 border-t-1 border-solid-grey-2'>
+                            {financialAssessmentUpdateError && (
+                                <InlineMessage type='filled' variant='error'>
+                                    {financialAssessmentUpdateError.error.message}
+                                </InlineMessage>
+                            )}
+                            {isMobile && !isEUCountry && (
+                                <Text align='center' size='xs'>
+                                    All fields are required
+                                </Text>
+                            )}
+                            <Button
+                                disabled={isSubmitting || !isValid || !dirty}
+                                isFullWidth={isMobile}
+                                isLoading={isFinancialAssessmentUpdating}
+                                size='lg'
+                                type='submit'
+                            >
+                                Submit
+                            </Button>
+                        </div>
+                    </div>
+                </Form>
+            )}
+        </Formik>
     );
 };

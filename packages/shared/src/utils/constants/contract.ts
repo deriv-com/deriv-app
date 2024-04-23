@@ -3,6 +3,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 
 import { shouldShowCancellation, shouldShowExpiration, CONTRACT_TYPES, TRADE_TYPES } from '../contract';
+import { TContractOptions } from '../contract/contract-types';
 import { cloneObject } from '../object';
 import { LocalStore } from '../storage';
 
@@ -37,6 +38,7 @@ type TContractConfig = {
     feature_flag?: string;
     name: React.ReactNode;
     position: string;
+    main_title?: JSX.Element;
 };
 
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
@@ -485,14 +487,12 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
             main_title: localize('Multipliers'),
         },
         [CONTRACT_TYPES.TURBOS.LONG]: {
-            name: localize('Turbos'),
-            button_name: localize('Up'),
+            name: localize('Up'),
             position: 'top',
             main_title: localize('Turbos'),
         },
         [CONTRACT_TYPES.TURBOS.SHORT]: {
-            name: localize('Turbos'),
-            button_name: localize('Down'),
+            name: localize('Down'),
             position: 'bottom',
             main_title: localize('Turbos'),
         },
@@ -605,13 +605,12 @@ export const getContractConfig = (is_high_low?: boolean) => ({
     ...getUnsupportedContracts(),
 });
 
-/*
-// TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
-the difference between these two functions is just the property they return. (name/position)
-*/
-export const getContractTypeDisplay = (type: string, is_high_low = false, show_button_name = false) => {
-    const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
-    return (show_button_name && contract_config?.button_name) || contract_config?.name || '';
+export const getContractTypeDisplay = (type: string, options: TContractOptions = {}) => {
+    const { isHighLow = false, showButtonName = false, showMainTitle = false } = options;
+
+    const contract_config = getContractConfig(isHighLow)[type as TGetSupportedContracts] as TContractConfig;
+    if (showMainTitle) return contract_config?.main_title ?? '';
+    return (showButtonName && contract_config?.button_name) || contract_config?.name || '';
 };
 
 export const getContractTypeFeatureFlag = (type: string, is_high_low = false) => {

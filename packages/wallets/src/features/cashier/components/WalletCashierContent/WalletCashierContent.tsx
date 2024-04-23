@@ -6,6 +6,7 @@ import { WalletResetBalance } from '../../flows/WalletResetBalance';
 import { WalletTransactions } from '../../flows/WalletTransactions';
 import { WalletTransfer } from '../../flows/WalletTransfer';
 import { WalletWithdrawal } from '../../flows/WalletWithdrawal';
+import { CashierLocked, DepositLocked, WithdrawalLocked } from '../../modules';
 
 const WalletCashierContent = () => {
     const history = useHistory();
@@ -24,18 +25,41 @@ const WalletCashierContent = () => {
         }
     }, [isTransfer, isDeposit, isTransactions, isWithdraw, isResetBalance, isFiatOnRamp, history]);
 
-    if (isDeposit) return <WalletDeposit />;
+    if (isDeposit)
+        return (
+            <CashierLocked module='deposit'>
+                <DepositLocked>
+                    <WalletDeposit />
+                </DepositLocked>
+            </CashierLocked>
+        );
 
-    if (isFiatOnRamp) return <WalletFiatOnRamp />;
+    if (isFiatOnRamp)
+        return (
+            <CashierLocked module='deposit'>
+                <WalletFiatOnRamp />
+            </CashierLocked>
+        );
 
     if (isResetBalance) return <WalletResetBalance />;
 
-    if (isTransfer) return <WalletTransfer />;
+    if (isTransfer)
+        return (
+            <CashierLocked>
+                <WalletTransfer />
+            </CashierLocked>
+        );
 
     if (isTransactions) return <WalletTransactions />;
 
     if (isWithdraw) {
-        return <WalletWithdrawal />;
+        return (
+            <CashierLocked module='withdrawal'>
+                <WithdrawalLocked>
+                    <WalletWithdrawal />
+                </WithdrawalLocked>
+            </CashierLocked>
+        );
     }
 
     return <></>;

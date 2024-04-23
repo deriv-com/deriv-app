@@ -28,6 +28,10 @@
         padding: 1.6rem;
         margin-top: 2.4rem;
 
+        &--small-card {
+            height: 40rem;
+        }
+
         .dc-input {
             width: 60%;
             margin-top: 2.4rem;
@@ -44,6 +48,23 @@
                 position: fixed;
                 padding: 0 1.6rem;
                 bottom: 1.6rem;
+            }
+        }
+
+        &--email-verification {
+            &-content {
+                width: 100%;
+                margin-top: 2.4rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            &-otp-container {
+                width: 60%;
+                .dc-input {
+                    width: 100%;
+                }
             }
         }
 

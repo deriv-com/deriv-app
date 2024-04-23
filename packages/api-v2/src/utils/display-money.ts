@@ -1,3 +1,4 @@
+import { FormatUtils } from '@deriv-com/utils';
 import { useAuthorize } from '../hooks';
 
 type TCurrency = NonNullable<ReturnType<typeof useAuthorize>['data']['currency']>;
@@ -11,19 +12,19 @@ export const displayMoney = (
         preferred_language?: TPreferredLanguage;
     }
 ) => {
-    try {
-        const fractional_digits = Math.max(
-            // whichever is bigger:
-            options?.fractional_digits || 2, // currency's number of decimal places
-            [...amount.toString()].reverse().indexOf('.') // amount's decimal places
-        );
+    const formattedAmountIntended = FormatUtils.formatMoney(amount, {
+        locale: options?.preferred_language ?? undefined,
+        decimalPlaces: options?.fractional_digits,
+    });
+    const formattedAmountPrecise = FormatUtils.formatMoney(amount, {
+        locale: options?.preferred_language ?? undefined,
+    });
 
-        return `${Intl.NumberFormat(options?.preferred_language || 'en-US', {
-            minimumFractionDigits: fractional_digits,
-            maximumFractionDigits: fractional_digits,
-            minimumIntegerDigits: 1,
-        }).format(amount)} ${currency}`;
-    } catch (error) {
-        return `${amount} ${currency}`;
-    }
+    // if formatting hurts precision, go for precision
+    const formattedAmount =
+        formattedAmountPrecise.length > formattedAmountIntended.length
+            ? formattedAmountPrecise
+            : formattedAmountIntended;
+
+    return `${formattedAmount} ${currency}`;
 };

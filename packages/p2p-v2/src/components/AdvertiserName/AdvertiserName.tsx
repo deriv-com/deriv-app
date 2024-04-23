@@ -10,7 +10,7 @@ import AdvertiserNameStats from './AdvertiserNameStats';
 import AdvertiserNameToggle from './AdvertiserNameToggle';
 import './AdvertiserName.scss';
 
-const AdvertiserName = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
+const AdvertiserName = ({ advertiserStats }: { advertiserStats: DeepPartial<TAdvertiserStats> }) => {
     const {
         data: { email },
     } = useSettings();
@@ -27,7 +27,7 @@ const AdvertiserName = ({ advertiserStats }: { advertiserStats: TAdvertiserStats
                     <Text size='md' weight='bold'>
                         {name}
                     </Text>
-                    {(advertiserStats?.show_name || !isMyProfile) && (
+                    {(advertiserStats?.should_show_name || !isMyProfile) && (
                         <Text color='less-prominent' size='sm'>
                             ({advertiserStats?.fullName})
                         </Text>

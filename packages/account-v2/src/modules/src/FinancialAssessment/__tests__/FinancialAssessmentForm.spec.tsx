@@ -1,13 +1,17 @@
 import React from 'react';
 import { useAccountStatus, useActiveTradingAccount, useFinancialAssessment, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ACCOUNT_MODAL_REF } from '../../../../constants';
 import { FinancialAssessmentForm } from '../FinancialAssessmentForm';
 
 jest.mock('../../../../components/DemoMessage', () => ({
     DemoMessage: () => <div>DemoMessage</div>,
+}));
+
+jest.mock('src/components/LeaveConfirm', () => ({
+    LeaveConfirm: () => <div>LeaveConfirm</div>,
 }));
 
 jest.mock('@deriv/api-v2', () => ({
@@ -176,15 +180,11 @@ describe('FinancialAssessmentForm', () => {
     it('calls update function with valid values on form submission', async () => {
         render(<FinancialAssessmentForm />);
 
-        act(() => {
-            const wealthSourceField = screen.getByRole('combobox', { name: 'Source of wealth' });
-            userEvent.type(wealthSourceField, 'Inheritance');
-        });
+        const wealthSourceField = screen.getByRole('combobox', { name: 'Source of wealth' });
+        userEvent.type(wealthSourceField, 'Inheritance');
 
-        act(() => {
-            const inheritanceOption = screen.getByRole('option', { name: 'Inheritance' });
-            userEvent.click(inheritanceOption);
-        });
+        const inheritanceOption = screen.getByRole('option', { name: 'Inheritance' });
+        userEvent.click(inheritanceOption);
 
         const submitButton = screen.getByRole('button', { name: 'Submit' });
 
@@ -202,15 +202,11 @@ describe('FinancialAssessmentForm', () => {
     it('calls update function without occupation if employment status un-employed on form submission', async () => {
         render(<FinancialAssessmentForm />);
 
-        act(() => {
-            const employmentStatusField = screen.getByRole('combobox', { name: 'Employment status' });
-            userEvent.type(employmentStatusField, 'Unemployed');
-        });
+        const employmentStatusField = screen.getByRole('combobox', { name: 'Employment status' });
+        userEvent.type(employmentStatusField, 'Unemployed');
 
-        act(() => {
-            const unemploymentOption = screen.getByRole('option', { name: 'Unemployed' });
-            userEvent.click(unemploymentOption);
-        });
+        const unemploymentOption = screen.getByRole('option', { name: 'Unemployed' });
+        userEvent.click(unemploymentOption);
 
         const submitButton = screen.getByRole('button', { name: 'Submit' });
 

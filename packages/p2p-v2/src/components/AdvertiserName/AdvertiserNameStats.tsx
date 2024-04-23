@@ -15,7 +15,7 @@ import './AdvertiserNameStats.scss';
  *
  * Use cases are to show this in My Profile and Advertiser page
  */
-const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
+const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: DeepPartial<TAdvertiserStats> }) => {
     const { isMobile } = useDevice();
     const isMyProfile = getCurrentRoute() === 'my-profile';
 
@@ -39,12 +39,15 @@ const AdvertiserNameStats = ({ advertiserStats }: { advertiserStats: TAdvertiser
             <div>
                 {!isMyProfile && (
                     <div className='border-r-[1px] border-solid border-r-[#ededed]'>
-                        <OnlineStatusIcon isOnline={isOnline} isRelative size='0.8em' />
-                        <OnlineStatusLabel isOnline={isOnline} lastOnlineTime={lastOnlineTime} />
+                        <OnlineStatusIcon isOnline={!!isOnline} isRelative size='0.8em' />
+                        <OnlineStatusLabel
+                            isOnline={!!isOnline}
+                            lastOnlineTime={lastOnlineTime === null ? undefined : lastOnlineTime}
+                        />
                     </div>
                 )}
                 <Text color='less-prominent' size='sm'>
-                    Joined {daysSinceJoined}d
+                    Joined {daysSinceJoined && daysSinceJoined > 0 ? `${daysSinceJoined}d` : 'Today'}
                 </Text>
             </div>
             {!ratingAverage && (

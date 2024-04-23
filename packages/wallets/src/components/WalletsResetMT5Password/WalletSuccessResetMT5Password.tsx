@@ -1,8 +1,9 @@
 import React, { FC, useCallback } from 'react';
 import { Trans } from 'react-i18next';
 import { DerivLightIcMt5PasswordUpdatedIcon, DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
+import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
-import { ModalStepWrapper, WalletButton } from '../Base';
+import { ModalWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 
@@ -18,37 +19,29 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     title,
 }) => {
     const { hide } = useModal();
-    const { isDesktop, isMobile } = useDevice();
+    const { isMobile } = useDevice();
 
     const handleSuccess = useCallback(() => {
         onClickSuccess?.();
         hide();
     }, [onClickSuccess, hide]);
 
-    const renderFooter = useCallback(() => {
-        return isMobile ? (
-            <WalletButton isFullWidth onClick={handleSuccess} size='lg'>
-                <Trans defaults='Done' />
-            </WalletButton>
-        ) : null;
-    }, [isMobile, handleSuccess]);
-
     const renderButtons = useCallback(() => {
-        return isDesktop ? (
+        return (
             <WalletButton onClick={handleSuccess} size='lg'>
-                <Trans defaults='Done' />
+                {isInvestorPassword ? <Trans defaults='Ok' /> : <Trans defaults='Done' />}
             </WalletButton>
-        ) : null;
-    }, [isDesktop, handleSuccess]);
+        );
+    }, [handleSuccess, isInvestorPassword]);
 
     return (
-        <ModalStepWrapper
-            renderFooter={isMobile ? renderFooter : undefined}
-            shouldFixedFooter={isMobile}
-            shouldHideHeader={!isMobile}
-            title={`Manage ${title} password`}
-        >
+        <ModalWrapper hideCloseButton={isMobile || !isInvestorPassword}>
             <div className='wallets-reset-mt5-password'>
+                {isInvestorPassword && (
+                    <WalletText size='md' weight='bold'>
+                        Reset {PlatformDetails.mt5.title} investor password
+                    </WalletText>
+                )}
                 <WalletsActionScreen
                     description={
                         isInvestorPassword
@@ -67,7 +60,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
                     title={isInvestorPassword ? 'Password saved' : 'Success'}
                 />
             </div>
-        </ModalStepWrapper>
+        </ModalWrapper>
     );
 };
 

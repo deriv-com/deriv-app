@@ -1,5 +1,6 @@
 import { useGetAccountStatus } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
+import { AUTH_STATUS_CODES } from 'src/constants';
 import { TPaymentMethod, TPaymentMethodInfo } from 'src/types';
 import { usePaymentMethodDetails } from '../usePaymentMethodDetails';
 
@@ -69,7 +70,7 @@ describe('usePaymentMethodDetails', () => {
                                 payment_method: 'SKRILL',
                             },
                         ],
-                        status: 'VERIFIED',
+                        status: AUTH_STATUS_CODES.VERIFIED.toUpperCase(),
                     },
                 },
             },
@@ -101,7 +102,7 @@ describe('usePaymentMethodDetails', () => {
                                 payment_method: 'UPI',
                             },
                         ],
-                        status: 'VERIFIED',
+                        status: AUTH_STATUS_CODES.VERIFIED.toUpperCase(),
                     },
                 },
             },
@@ -136,7 +137,7 @@ describe('usePaymentMethodDetails', () => {
                                 payment_method: 'VISA',
                             },
                         ],
-                        status: 'VERIFIED',
+                        status: AUTH_STATUS_CODES.VERIFIED.toUpperCase(),
                     },
                 },
             },

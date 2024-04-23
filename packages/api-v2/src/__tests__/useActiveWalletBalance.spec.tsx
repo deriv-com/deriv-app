@@ -57,7 +57,7 @@ describe('useActiveWalletBalance', () => {
         expect(result.current.data.balance.currency).toBe('USD');
     });
 
-    test('displays correct number of decimal places', async () => {
+    test('displays correct number of decimal places for USD', async () => {
         const { result } = renderResult;
 
         act(() => {
@@ -67,5 +67,17 @@ describe('useActiveWalletBalance', () => {
         expect(result.current.displayBalance).toBe('42.40 USD');
         expect(result.current.data.balance.balance).toBe(42.4);
         expect(result.current.data.balance.currency).toBe('USD');
+    });
+
+    test('displays correct number of decimal places for USDt', async () => {
+        const { result } = renderResult;
+
+        act(() => {
+            onDataReveal({ balance: { balance: 42.4242, currency: 'USDt' }, msg_type: 'balance' });
+        });
+
+        expect(result.current.displayBalance).toBe('42.4242 USDt');
+        expect(result.current.data.balance.balance).toBe(42.4242);
+        expect(result.current.data.balance.currency).toBe('USDt');
     });
 });

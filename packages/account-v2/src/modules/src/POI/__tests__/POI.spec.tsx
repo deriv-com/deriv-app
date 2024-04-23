@@ -2,6 +2,7 @@ import React from 'react';
 import { useKycAuthStatus, useResidenceList } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AUTH_STATUS_CODES, POI_SERVICE } from '../../../../constants';
 import { usePOIInfo } from '../../../../hooks';
 import { ProofOfIdentity } from '../POI';
 
@@ -9,11 +10,11 @@ const mockKycAuthStatusResponse = {
     isLoading: false,
     kyc_auth_status: {
         address: {
-            status: 'none',
+            status: AUTH_STATUS_CODES.NONE,
         },
         identity: {
             service: '',
-            status: 'none',
+            status: AUTH_STATUS_CODES.NONE,
         },
     },
 };
@@ -60,11 +61,11 @@ describe('POI', () => {
             isLoading: false,
             kyc_auth_status: {
                 address: {
-                    status: 'none',
+                    status: AUTH_STATUS_CODES.NONE,
                 },
                 identity: {
-                    service: 'idv',
-                    status: 'verified',
+                    service: POI_SERVICE.idv,
+                    status: AUTH_STATUS_CODES.VERIFIED,
                 },
             },
         });
@@ -78,11 +79,11 @@ describe('POI', () => {
             isLoading: false,
             kyc_auth_status: {
                 address: {
-                    status: 'none',
+                    status: AUTH_STATUS_CODES.NONE,
                 },
                 identity: {
-                    service: 'onfido',
-                    status: 'pending',
+                    service: POI_SERVICE.onfido,
+                    status: AUTH_STATUS_CODES.PENDING,
                 },
             },
         });
@@ -98,11 +99,11 @@ describe('POI', () => {
             isLoading: false,
             kyc_auth_status: {
                 address: {
-                    status: 'none',
+                    status: AUTH_STATUS_CODES.NONE,
                 },
                 identity: {
-                    service: 'onfido',
-                    status: 'none',
+                    service: POI_SERVICE.onfido,
+                    status: AUTH_STATUS_CODES.NONE,
                 },
             },
         });
@@ -131,11 +132,11 @@ describe('POI', () => {
             isLoading: false,
             kyc_auth_status: {
                 address: {
-                    status: 'none',
+                    status: AUTH_STATUS_CODES.NONE,
                 },
                 identity: {
-                    service: 'idv',
-                    status: 'expired',
+                    service: POI_SERVICE.idv,
+                    status: AUTH_STATUS_CODES.EXPIRED,
                 },
             },
         });

@@ -31,7 +31,7 @@ export const translateErrorCode = (errorCode: string | null, service: TPOIServic
     if (!errorCode) {
         return '';
     }
-    if (service === 'idv') {
+    if (service === POI_SERVICE.idv) {
         return (
             Object.values(IDV_ERROR_CODES).find(error => error.code === errorCode)?.message ??
             IDV_ERROR_CODES.generic.message

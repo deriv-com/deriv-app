@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
 import { useSafeState } from '@deriv/components';
@@ -13,12 +14,25 @@ const mock_store = {
         order_id: null,
         order_information: '',
         orders: [],
+        verification_code: '123456',
         onOrderIdUpdate: jest.fn(),
         onOrdersUpdate: jest.fn(),
         onUnmount: jest.fn(),
         setForceRerenderOrders: jest.fn(),
+        verifyEmailVerificationCode: jest.fn(),
     },
 };
+
+const mock_modal_manager = {
+    showModal: jest.fn(),
+};
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn().mockReturnValue({
+        search: '',
+    }),
+}));
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -28,6 +42,11 @@ jest.mock('Stores', () => ({
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     useSafeState: jest.fn().mockReturnValue([{}, jest.fn()]),
+}));
+
+jest.mock('Components/modal-manager/modal-manager-context', () => ({
+    ...jest.requireActual('Components/modal-manager/modal-manager-context'),
+    useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
 jest.mock('Pages/orders/order-table/order-table.jsx', () => jest.fn(() => <div>Order Table</div>));
@@ -57,5 +76,16 @@ describe('<Orders/>', () => {
         render(<Orders />);
 
         expect(screen.getByText('Order Details')).toBeInTheDocument();
+    });
+
+    it('should call showModal and verifyEmailVerification when verification code and action_param is present', () => {
+        useLocation.mockReturnValue({
+            search: '?action=p2p_order_confirm',
+        });
+
+        render(<Orders />);
+
+        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'LoadingModal', props: {} });
+        expect(mock_store.order_store.verifyEmailVerificationCode).toHaveBeenCalledWith('p2p_order_confirm', '123456');
     });
 });

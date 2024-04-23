@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { useSafeState } from '@deriv/components';
 import { reaction } from 'mobx';
 import { observer } from '@deriv/stores';

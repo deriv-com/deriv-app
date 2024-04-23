@@ -41,6 +41,7 @@ const NIMCSlipDocumentUpload = () => {
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<ProofOfAgeIcon />}
                             maxSize={8388608}
+                            noClick
                             onFileChange={(file: File) => setFormValues('nimcCardBack', file)}
                         />
                     </div>

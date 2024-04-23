@@ -26,6 +26,7 @@ type TProps = {
     hoverMessage?: ReactNode;
     icon: ReactNode;
     maxSize?: NonNullable<Parameters<typeof useDropzone>[0]>['maxSize'];
+    noClick?: NonNullable<Parameters<typeof useDropzone>[0]>['noClick'];
     onFileChange?: (file: File) => void;
     title?: ReactNode;
     titleType?: ComponentProps<typeof WalletText>['weight'];
@@ -48,6 +49,7 @@ const Dropzone: React.FC<TProps> = ({
     hoverMessage = 'Drop file here',
     icon,
     maxSize,
+    noClick = false,
     onFileChange,
     title = false,
     titleType = 'normal',
@@ -61,7 +63,7 @@ const Dropzone: React.FC<TProps> = ({
         accept: fileFormats,
         maxSize,
         multiple: false,
-        noClick: true,
+        noClick,
         onDragEnter: () => setShowHoverMessage(true),
         onDragLeave: () => setShowHoverMessage(false),
         onDrop: acceptedFiles => {

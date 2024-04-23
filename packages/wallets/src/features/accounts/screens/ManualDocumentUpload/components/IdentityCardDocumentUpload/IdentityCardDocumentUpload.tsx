@@ -46,6 +46,7 @@ const IdentityCardDocumentUpload = () => {
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<IdentityCardFront />}
                             maxSize={8388608}
+                            noClick
                             onFileChange={(file: File) => setFormValues('identityCardFront', file)}
                         />
                     </div>
@@ -57,6 +58,7 @@ const IdentityCardDocumentUpload = () => {
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<IdentityCardBack />}
                             maxSize={8388608}
+                            noClick
                             onFileChange={(file: File) => setFormValues('identityCardBack', file)}
                         />
                     </div>

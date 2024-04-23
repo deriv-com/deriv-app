@@ -46,6 +46,7 @@ const DrivingLicenseDocumentUpload = () => {
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<DrivingLicenseCardFront />}
                             maxSize={8388608}
+                            noClick
                             onFileChange={(file: File) => setFormValues('drivingLicenseCardFront', file)}
                         />
                     </div>
@@ -57,6 +58,7 @@ const DrivingLicenseDocumentUpload = () => {
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<DrivingLicenseCardBack />}
                             maxSize={8388608}
+                            noClick
                             onFileChange={(file: File) => setFormValues('drivingLicenseCardBack', file)}
                         />
                     </div>

@@ -14,11 +14,6 @@ const useCurrencyConfig = () => {
             enabled: isSuccess,
         },
     });
-    const { data: crypto_config_data, isLoading: isCryptConfigLoading } = useQuery('crypto_config', {
-        options: {
-            enabled: isSuccess,
-        },
-    });
 
     // Add additional information to the currency config.
     const modified_currencies_config = useMemo(() => {
@@ -85,9 +80,8 @@ const useCurrencyConfig = () => {
     const modified_crypto_config = useMemo(() => {
         return modified_currencies_config?.map(currency_config => ({
             ...currency_config,
-            ...crypto_config_data?.crypto_config?.currencies_config[currency_config.code],
         }));
-    }, [crypto_config_data?.crypto_config?.currencies_config, modified_currencies_config]);
+    }, [modified_currencies_config]);
 
     // Transform the currency config array into a record object.
     const transformed_currencies_config = useMemo(() => {
@@ -107,7 +101,7 @@ const useCurrencyConfig = () => {
         data: transformed_currencies_config,
         /** Returns the currency config object for the given currency */
         getConfig,
-        isLoading: isWebsiteStatusLoading || isCryptConfigLoading,
+        isLoading: isWebsiteStatusLoading,
         ...rest,
     };
 };

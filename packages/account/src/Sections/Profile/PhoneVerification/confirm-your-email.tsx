@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { CaptionText, Text } from '@deriv-com/quill-ui';
+import { Button, CaptionText, Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
@@ -54,9 +54,11 @@ const ConfirmYourEmail = observer(() => {
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
                 <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
-                <CaptionText bold underlined onClick={resendCode}>
-                    <Localize i18n_default_text='{{resendCode}}' values={{ resendCode: resendCodeText.current }} />
-                </CaptionText>
+                <Button variant='tertiary' onClick={resendCode} disabled={startTimer} color='black'>
+                    <CaptionText bold underlined>
+                        <Localize i18n_default_text='{{resendCode}}' values={{ resendCode: resendCodeText.current }} />
+                    </CaptionText>
+                </Button>
             </div>
         </PhoneVerificationCard>
     );

@@ -70,15 +70,14 @@ describe('WithdrawalLocked', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
-    it('should render loader when account status is loading', () => {
-        const mockStatusData = { is_withdrawal_locked: false };
+    it('should render loader when no account status data', () => {
         const mockAccountLimitsData = { remainder: 20 };
 
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
         (useAccountLimits as jest.Mock).mockReturnValueOnce({ data: mockAccountLimitsData });
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
-        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData, isLoading: true });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: null });
         (useCurrencyConfig as jest.Mock).mockReturnValueOnce({ isLoading: false });
 
         render(

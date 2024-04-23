@@ -14,7 +14,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: authentication } = useAuthentication();
     const { data: cashierValidation } = useCashierValidation();
-    const { data: status, isFetching: isFetchingAccountStatus, isLoading: isAccountStatusLoading } = useAccountStatus();
+    const { data: status } = useAccountStatus();
 
     const currency = activeWallet?.currency || 'USD';
     const isVirtual = activeWallet?.is_virtual;
@@ -36,7 +36,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const noResidence = cashierValidation?.no_residence;
 
     const isSystemMaintenance = cashierValidation?.system_maintenance && !isVirtual;
-    const isCashierLocked = !isFetchingAccountStatus && status?.is_cashier_locked && !isVirtual;
+    const isCashierLocked = status?.is_cashier_locked && !isVirtual;
     const isDepositLocked = status?.is_deposit_locked && module === 'deposit';
     const isWithdrawalLocked = status?.is_withdrawal_locked && module === 'withdrawal';
 
@@ -65,7 +65,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
         poiNeedsVerification,
     });
 
-    if (isAccountStatusLoading) {
+    if (!status) {
         return <Loader />;
     }
 

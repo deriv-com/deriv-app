@@ -48,6 +48,22 @@ describe('CashierLocked', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
+    it('should render loader when no account status data', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
+        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: null });
+
+        render(
+            <CashierLocked>
+                <div>Test Child Component</div>
+            </CashierLocked>
+        );
+
+        expect(screen.queryByText('Test Child Component')).not.toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+
     it('should render locked screen for cashier locked system maintenance', () => {
         const mockLockedValidationData = { system_maintenance: true };
         const mockLockedStatusData = {

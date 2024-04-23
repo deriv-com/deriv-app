@@ -46,13 +46,13 @@ describe('DepositLocked', () => {
         jest.clearAllMocks();
     });
 
-    it('should render loader when account status is loading', () => {
+    it('should render loader when no account status data', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
         (useQuery as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
-        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData, isLoading: true });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: null });
 
         render(
             <DepositLocked>

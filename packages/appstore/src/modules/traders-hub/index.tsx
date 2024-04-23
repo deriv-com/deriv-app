@@ -1,6 +1,7 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { isDesktop, routes, ContentFlag, checkServerMaintenance } from '@deriv/shared';
+import { useContentFlag } from '@deriv/hooks';
+import { isDesktop, routes, checkServerMaintenance } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
@@ -31,7 +32,9 @@ const TradersHub = observer(() => {
         has_active_real_account,
         website_status,
     } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
+
+    const { is_cr_demo, is_eu_demo, is_eu_real } = useContentFlag();
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify =
@@ -48,18 +51,20 @@ const TradersHub = observer(() => {
     }, [is_tour_open]);
 
     React.useEffect(() => {
-        if (is_eu_user) setTogglePlatformType('cfd');
-        if (
-            !has_active_real_account &&
-            is_logged_in &&
-            is_from_signup_account &&
-            content_flag === ContentFlag.EU_DEMO
-        ) {
-            openRealAccountSignup('maltainvest');
-            setIsFromSignupAccount(false);
+        if (is_eu_user) {
+            setTogglePlatformType('cfd');
+        }
+        if (!has_active_real_account && is_from_signup_account && is_logged_in) {
+            if (is_cr_demo) {
+                openRealAccountSignup('svg');
+            } else if (is_eu_demo) {
+                openRealAccountSignup('maltainvest');
+                setIsFromSignupAccount(false);
+            }
         }
     }, [
-        content_flag,
+        is_cr_demo,
+        is_eu_demo,
         has_active_real_account,
         is_eu_user,
         is_from_signup_account,
@@ -80,7 +85,7 @@ const TradersHub = observer(() => {
         return () => clearTimeout(timer);
     }, [handleScroll, is_eu_user, is_tour_open, setTogglePlatformType]);
 
-    const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
+    const eu_title = is_eu_demo || is_eu_real || is_eu_user;
 
     const getPlatformToggleOptions = () => [
         { text: eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },

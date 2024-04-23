@@ -20,6 +20,12 @@
     }
 }
 
+.landscape-blocker {
+    &--hidden {
+        display: none !important;
+    }
+}
+
 .app-contents {
     &--contract-mode,
     &--is-disabled {
@@ -63,7 +69,7 @@
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
-        @include mobile {
+        @include mobile-screen {
             padding: 0;
             margin-bottom: 0.8rem;
             background-color: transparent;
@@ -267,7 +273,7 @@
             justify-self: left;
             align-items: center;
 
-            @include mobile {
+            @include mobile-screen {
                 color: var(--text-colored-background);
                 width: 100%;
                 justify-content: space-between;
@@ -323,7 +329,7 @@
                 opacity: 1;
                 transition: 0.3s;
 
-                @include mobile {
+                @include mobile-screen {
                     color: var(--text-colored-background);
                 }
             }
@@ -332,7 +338,7 @@
                 font-weight: normal;
                 @include typeface(--paragraph-left-normal-black);
                 color: var(--text-less-prominent);
-                @include mobile {
+                @include mobile-screen {
                     @include typeface(--xsmall-left-normal-black);
                     color: var(--text-colored-background);
                 }
@@ -366,7 +372,7 @@
             direction: rtl;
         }
         &-currency {
-            @include mobile {
+            @include mobile-screen {
                 font-size: 0.9rem;
             }
         }
@@ -654,7 +660,7 @@
             background-color: var(--general-section-1);
             border-color: var(--general-section-1);
             color: var(--text-general);
-            @include mobile {
+            @include mobile-screen {
                 width: 45%;
                 padding: 0;
                 margin-bottom: 0rem;
@@ -683,7 +689,7 @@
             .trade-container__price-info-currency {
                 margin-left: -0.1rem;
             }
-            @include mobile {
+            @include mobile-screen {
                 padding: 0.4rem 0 0 !important;
                 margin-bottom: -0.5rem;
 
@@ -698,7 +704,7 @@
         .trade-container__price-info-currency {
             font-size: 1.2rem;
         }
-        @include mobile {
+        @include mobile-screen {
             padding: 0 0.4rem;
             min-height: 1.4rem;
             margin-bottom: 0.4rem;
@@ -839,7 +845,7 @@
                 }
             }
         }
-        @include mobile {
+        @include mobile-screen {
             padding: initial;
             position: relative;
 
@@ -878,7 +884,7 @@
         height: calc(100% + 2px);
         left: -2px;
     }
-    @include mobile {
+    @include mobile-screen {
         display: grid;
         grid-template-areas: 'a b';
         grid-column-gap: 0.5rem;
@@ -910,7 +916,7 @@
     }
     margin-top: 0.5rem;
 
-    @include mobile {
+    @include mobile-screen {
         margin: 0 0 0.8rem;
         position: relative;
         top: -0.8rem;
@@ -971,7 +977,7 @@
 /** @define market-unavailable-modal */
 @include mobile {
     .market-unavailable-modal {
-        @media only screen and (max-height: 600px) {
+        @include mobile-screen {
             align-items: flex-start;
             padding-top: 10rem;
 

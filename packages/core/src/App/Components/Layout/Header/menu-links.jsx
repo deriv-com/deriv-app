@@ -7,8 +7,8 @@ import { observer, useStore } from '@deriv/stores';
 import { routes, startPerformanceEventTimer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
-import './menu-links.scss';
 import { useHistory } from 'react-router';
+import './menu-links.scss';
 
 const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
     return (

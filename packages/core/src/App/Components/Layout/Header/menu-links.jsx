@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Text, Icon, Counter } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
-import { routes } from '@deriv/shared';
+import { routes, startPerformanceEventTimer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
@@ -63,6 +63,7 @@ const CashierTab = observer(() => {
         if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
             toggleModal();
         } else {
+            startPerformanceEventTimer('load_cashier_time');
             history.push(routes.cashier_deposit);
         }
     };

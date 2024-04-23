@@ -23,6 +23,8 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     const learn_more_button_text = <Localize i18n_default_text='Learn more' />;
     const create_passkey_button_text = <Localize i18n_default_text='Create passkey' />;
     const continue_button_text = <Localize i18n_default_text='Continue' />;
+    const continue_trading_button_text = <Localize i18n_default_text='Continue trading' />;
+    const add_more_passkeys_button_text = <Localize i18n_default_text='Add more passkeys' />;
 
     const getPasskeysRemovedDescription = () => {
         const os_type = mobileOSDetect();
@@ -64,12 +66,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
                 <TipsBlock />
             </React.Fragment>
         ),
-        no_passkey: (
-            <Localize
-                i18n_default_text='Enhanced security is just a tap away.<0/>Hit <1>Learn more</1> to explore passkeys or <1>Create passkey</1> to get started.'
-                components={[<br key={0} />, <strong key={1} />]}
-            />
-        ),
+        no_passkey: <Localize i18n_default_text='Enhanced security is just a tap away.' />,
         removed: getPasskeysRemovedDescription(),
         renaming: '',
         verifying: (
@@ -84,16 +81,16 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
         renaming: 'IcEditPasskey',
         verifying: 'IcVerifyPasskey',
     };
-    const button_texts = {
-        created: continue_button_text,
+    const primary_button_texts = {
+        created: continue_trading_button_text,
         learn_more: create_passkey_button_text,
         no_passkey: create_passkey_button_text,
         removed: continue_button_text,
         renaming: <Localize i18n_default_text='Save changes' />,
         verifying: <Localize i18n_default_text='Send email' />,
     };
-    const back_button_texts = {
-        created: undefined,
+    const secondary_button_texts = {
+        created: add_more_passkeys_button_text,
         learn_more: undefined,
         no_passkey: learn_more_button_text,
         removed: undefined,
@@ -105,8 +102,8 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
         title: titles[status],
         description: descriptions[status],
         icon: icons[status],
-        primary_button_text: button_texts[status],
-        secondary_button_text: back_button_texts[status],
+        primary_button_text: primary_button_texts[status],
+        secondary_button_text: secondary_button_texts[status],
     };
 };
 
@@ -124,10 +121,23 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
             (error as TServerError)?.message
         );
 
+    const reminder_tips = [
+        <Localize i18n_default_text='Enable screen lock on your device.' key='tip_1' />,
+        <Localize i18n_default_text='Enable bluetooth.' key='tip_2' />,
+        <Localize i18n_default_text='Sign in to your Google or iCloud account.' key='tip_3' />,
+    ];
     if (is_passkey_registration_started) {
         return {
             description: (
-                <Localize i18n_default_text='Make sure the screen lock and Bluetooth on your device are active and you are signed in to your Google or iCloud account.' />
+                <ul>
+                    {reminder_tips.map(tip => (
+                        <li key={tip.key}>
+                            <Text size='xxs' line_height='l'>
+                                {tip}
+                            </Text>
+                        </li>
+                    ))}
+                </ul>
             ),
             button_text: <Localize i18n_default_text='Continue' />,
             header: (

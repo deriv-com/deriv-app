@@ -1,6 +1,6 @@
 import React from 'react';
 import { THooks } from 'src/hooks/types';
-import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { useAccountLimits, useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { TransferForm, TransferReceipt } from './components';
 import { TransferProvider, useTransfer } from './provider';
@@ -20,8 +20,9 @@ const Transfer = () => {
 const TransferModule: React.FC<TTransferModuleProps> = ({ accounts }) => {
     const { data: activeAccount } = useActiveAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+    const { data: accountLimits } = useAccountLimits();
 
-    const isLoading = !activeAccount || isCurrencyConfigLoading;
+    const isLoading = !activeAccount || !accountLimits || isCurrencyConfigLoading;
 
     if (isLoading) return <Loader />;
 

@@ -28,7 +28,7 @@ const TransferReceipt: React.FC<TProps> = ({ amount, fromAccount, resetTransferR
                     >
                         View transaction details
                     </Button>
-                    <Button onClick={() => resetTransferReceipt()} size='lg' textSize='sm'>
+                    <Button onClick={() => resetTransferReceipt(undefined)} size='lg' textSize='sm'>
                         Make a new transfer
                     </Button>
                 </div>

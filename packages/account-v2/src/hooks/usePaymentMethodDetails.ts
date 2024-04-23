@@ -21,7 +21,6 @@ export const usePaymentMethodDetails = () => {
             } else {
                 groups[paymentMethod] = {
                     documentsRequired: request?.documents_required,
-                    icon: paymentMethodDetails?.icon?.light,
                     identifier: paymentMethodDetails.identifier as TPaymentMethodIdentifier,
                     inputLabel: paymentMethodDetails.inputLabel,
                     isGenericPM: !paymentMethodDetails.inputLabel,

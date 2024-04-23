@@ -1,5 +1,6 @@
 import { GetLimits } from '@deriv/api-types';
-import { CurrencyConstants, FormatUtils } from '@deriv-com/utils';
+import { FormatUtils } from '@deriv-com/utils';
+import { TCurrency } from '../types';
 
 export const CATEGORY = {
     footer: 'footer',
@@ -11,15 +12,26 @@ export type TAccountLimitValues = {
     category?: string;
     hintInfo?: string;
     isLessProminent?: boolean;
-    title: string;
+    title?: string;
     value?: number | string;
 };
 
+type TMarketSpecific = GetLimits['market_specific'];
+type TMarketSpecificData = {
+    level?: string;
+    name?: string;
+    payout_limit?: number;
+    profile_name?: string;
+    turnover_limit?: number;
+}[];
+
+const markets = ['commodities', 'forex', 'indices', 'synthetic_index'];
+
 const getTradingLimitsTableData = (
-    currency: CurrencyConstants.Currency,
-    openPositions: number,
+    currency: TCurrency,
     payout: number,
-    accountBalance?: number
+    openPositions?: number,
+    accountBalance?: number | null
 ): TAccountLimitValues[] => [
     {
         category: CATEGORY.header,
@@ -49,21 +61,18 @@ const getTradingLimitsTableData = (
         title: '*Any limits in your Self-exclusion settings will override these default limits.',
     },
 ];
-type TMarketSpecific = GetLimits['market_specific'];
-const getMarketValues = (collection: any = [], currency: any) => {
-    const formattedCollection = collection
-        ?.slice()
-        .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));
 
+const getMarketValues = (collection: TMarketSpecificData = [], currency: TCurrency) => {
+    const formattedCollection = collection?.slice().sort((a, b) => ((a?.level || '') > (b?.level || '') ? 1 : -1));
     return formattedCollection?.map(data => ({
         category: data?.level,
         title: data?.name,
-        value: FormatUtils.formatMoney(data?.turnover_limit, { currency }),
+        value: FormatUtils.formatMoney(data?.turnover_limit ?? 0, { currency }),
     }));
 };
 
-const getMaximumDailyLimiitsTableData = (marketSpecific: any, currency) => {
-    const markets = ['commodities', 'forex', 'indices', 'synthetic_index'];
+const getMaximumDailyLimiitsTableData = (marketSpecific: TMarketSpecific, currency: TCurrency) => {
+    if (!marketSpecific) return [];
     return [
         {
             category: CATEGORY.header,
@@ -76,11 +85,11 @@ const getMaximumDailyLimiitsTableData = (marketSpecific: any, currency) => {
 };
 
 const getWithdrawalLimitsTableData = (
-    isAuthenticated = false,
+    isAuthenticated: boolean,
+    currency: TCurrency,
     numberOfDaysLimit?: number,
     withdrawalSinceInceptionMonetary?: number,
-    remainder?: number,
-    currency: any
+    remainder?: number
 ) => [
     {
         category: CATEGORY.header,
@@ -112,7 +121,7 @@ const getWithdrawalLimitsTableData = (
     },
 ];
 
-export const getAccountLimitValues = (accountLimits: GetLimits, isAuthenticated?: boolean, currency?: string) => {
+export const getAccountLimitValues = (accountLimits: GetLimits, currency: TCurrency, isAuthenticated = false) => {
     const {
         account_balance: accountBalance,
         market_specific: marketSpecific,
@@ -124,14 +133,14 @@ export const getAccountLimitValues = (accountLimits: GetLimits, isAuthenticated?
     } = accountLimits;
 
     return [
-        ...getTradingLimitsTableData(currency, openPositions, payout, accountBalance),
+        ...getTradingLimitsTableData(currency, payout, openPositions, accountBalance),
         ...getMaximumDailyLimiitsTableData(marketSpecific, currency),
         ...getWithdrawalLimitsTableData(
             isAuthenticated,
+            currency,
             numberOfDaysLimit,
             withdrawalSinceInceptionMonetary,
-            remainder,
-            currency
+            remainder
         ),
     ];
 };

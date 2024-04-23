@@ -88,7 +88,15 @@ const EditAdForm = () => {
 
     const handleEditAdFormCancel = is_form_edited => {
         if (is_form_edited || payment_methods_changed) {
-            general_store.showModal({ key: 'EditAdCancelModal', props: {} });
+            general_store.showModal({
+                key: 'AdCancelModal',
+                props: {
+                    confirm_label: localize("Don't cancel"),
+                    message: localize('If you choose to cancel, the edited details will be lost.'),
+                    onConfirm: () => my_ads_store.setShowEditAdForm(false),
+                    title: localize('Cancel your edits?'),
+                },
+            });
         } else {
             my_ads_store.setShowEditAdForm(false);
         }
@@ -388,7 +396,12 @@ const EditAdForm = () => {
                                                 )}
                                             </Field>
                                             <Field name='order_completion_time'>
-                                                {({ field }) => <OrderTimeSelection {...field} />}
+                                                {({ field }) => (
+                                                    <OrderTimeSelection
+                                                        classNameDisplay='edit-ad-form__dropdown-display'
+                                                        {...field}
+                                                    />
+                                                )}
                                             </Field>
                                             <div className='edit-ad-form__payment-methods--text'>
                                                 <Text color='prominent'>

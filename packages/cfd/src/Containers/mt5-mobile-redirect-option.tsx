@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { DEEP_LINK, WEBTRADER_URL, getMobileAppInstallerURL } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
-import { isSafariBrowser } from '@deriv/shared';
+import { isSafariBrowser, mobileOSDetectAsync } from '@deriv/shared';
 
 type TMT5MobileRedirectOptionProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
@@ -26,6 +26,13 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
             };
         }
     };
+
+    useEffect(() => {
+        async function test() {
+            await mobileOSDetectAsync();
+        }
+        test();
+    }, []);
 
     return (
         <div className='mt5-download-container'>

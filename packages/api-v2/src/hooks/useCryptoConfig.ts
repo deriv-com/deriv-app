@@ -1,4 +1,3 @@
-import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 import useAuthorizedQuery from '../useAuthorizedQuery';
 
@@ -6,11 +5,7 @@ import useAuthorizedQuery from '../useAuthorizedQuery';
 const useCryptoConfig = () => {
     const { data: authorizeData, isLoading: isAuthorizeLoading } = useAuthorize();
 
-    const {
-        data,
-        isLoading: isCryptConfigLoading,
-        ...rest
-    } = useAuthorizedQuery('crypto_config');
+    const { data, isLoading: isCryptConfigLoading, ...rest } = useAuthorizedQuery('crypto_config');
 
     const cryptoConfig = authorizeData?.currency
         ? data?.crypto_config?.currencies_config[authorizeData?.currency]

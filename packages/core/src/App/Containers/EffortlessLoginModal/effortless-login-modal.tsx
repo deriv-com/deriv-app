@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useHistory } from 'react-router';
+import UAParser from 'ua-parser-js';
 import FormFooter from '@deriv/account/src/Components/form-footer';
 import FormBody from '@deriv/account/src/Components/form-body';
 import { Analytics } from '@deriv-com/analytics';
 import { Button, Icon, Text } from '@deriv/components';
-import { mobileOSDetect, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { EffortLessLoginTips } from './effortless-login-tips';
@@ -16,7 +17,7 @@ const passkeysEffortlessModalActionEventTrack = (action: string) => {
     Analytics.trackEvent('ce_passkey_effortless_form', {
         action,
         form_name: 'ce_passkey_effortless_form',
-        operating_system: mobileOSDetect(),
+        operating_system: UAParser().os.name,
     });
 };
 

@@ -12,19 +12,16 @@ export const displayMoney = (
         preferred_language?: TPreferredLanguage;
     }
 ) => {
-    const formattedAmountIntended = FormatUtils.formatMoney(amount, {
-        locale: options?.preferred_language ?? undefined,
-        decimalPlaces: options?.fractional_digits,
-    });
-    const formattedAmountPrecise = FormatUtils.formatMoney(amount, {
-        locale: options?.preferred_language ?? undefined,
-    });
+    const decimalPlaces = Math.max(
+        // whichever is bigger:
+        options?.fractional_digits ?? 2, // currency's number of decimal places
+        [...amount.toString()].reverse().indexOf('.') // amount value's decimal places
+    );
 
-    // if formatting hurts precision, go for precision
-    const formattedAmount =
-        formattedAmountPrecise.length > formattedAmountIntended.length
-            ? formattedAmountPrecise
-            : formattedAmountIntended;
+    const formattedAmount = FormatUtils.formatMoney(amount, {
+        decimalPlaces,
+        locale: options?.preferred_language ?? undefined,
+    });
 
     return `${formattedAmount} ${currency}`;
 };

@@ -112,13 +112,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             balance: '',
             can_change_fiat_currency: false,
             clients_country: '',
-            country_standpoint: {
-                is_belgium: false,
-                is_france: false,
-                is_other_eu: false,
-                is_rest_of_eu: false,
-                is_united_kingdom: false,
-            },
             currency: '',
             currencies_list: [{ text: '', value: '', has_tool_tip: false }],
             current_currency_type: '',

@@ -10,6 +10,7 @@ export const RATE_TYPE = Object.freeze({
 
 export const AD_ACTION = {
     ACTIVATE: 'activate',
+    COPY: 'copy',
     CREATE: 'create',
     DEACTIVATE: 'deactivate',
     DELETE: 'delete',

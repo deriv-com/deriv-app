@@ -158,6 +158,10 @@
         flex: 1;
         height: #{$HEADER_HEIGHT - 1px};
 
+        @include desktop {
+            align-items: center;
+        }
+
         &-extensions {
             display: flex;
             align-items: center;

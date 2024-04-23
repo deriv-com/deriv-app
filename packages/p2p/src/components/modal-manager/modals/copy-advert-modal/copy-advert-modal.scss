@@ -1,0 +1,9 @@
+.copy-advert-modal {
+    @include desktop {
+        padding: 1rem 0 0;
+    }
+
+    @include mobile {
+        padding: 1rem;
+    }
+}

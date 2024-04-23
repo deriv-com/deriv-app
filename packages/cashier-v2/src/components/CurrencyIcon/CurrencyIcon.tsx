@@ -12,6 +12,7 @@ import {
     CurrencyUsdtIcon as Tether,
     IconTypes,
 } from '@deriv/quill-icons';
+import { TIconTypes } from '../../types';
 
 const iconMapper: Record<string, IconTypes> = {
     AUD,
@@ -29,7 +30,7 @@ const iconMapper: Record<string, IconTypes> = {
 
 type TProps = {
     currency: keyof typeof iconMapper;
-    size: 'lg' | 'md' | 'sm' | 'xl';
+    size: TIconTypes.TIconSize;
 };
 
 const CurrencyIcon: React.FC<TProps> = ({ currency, size }) => {

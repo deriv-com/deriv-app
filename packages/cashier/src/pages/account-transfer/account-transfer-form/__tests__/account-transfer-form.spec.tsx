@@ -2,7 +2,7 @@ import React from 'react';
 import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { TError } from '../../../../types';
 import AccountTransferForm from '../account-transfer-form';
 import userEvent from '@testing-library/user-event';
@@ -130,11 +130,7 @@ describe('<AccountTransferForm />', () => {
 
     const renderAccountTransferForm = () => {
         render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore}>
-                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-                </CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
     };
 

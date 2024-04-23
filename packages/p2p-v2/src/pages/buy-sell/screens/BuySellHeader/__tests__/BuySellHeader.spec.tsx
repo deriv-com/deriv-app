@@ -18,11 +18,15 @@ const mockProps = {
         },
     ],
     selectedCurrency: 'IDR',
+    selectedPaymentMethods: [],
     setActiveTab: jest.fn(),
     setIsFilterModalOpen: jest.fn(),
     setSearchValue: jest.fn(),
     setSelectedCurrency: jest.fn(),
+    setSelectedPaymentMethods: jest.fn(),
+    setShouldUseClientLimits: jest.fn(),
     setSortDropdownValue: jest.fn(),
+    shouldUseClientLimits: false,
     sortDropdownValue: 'rate' as TSortByValues,
 };
 
@@ -45,6 +49,7 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 jest.mock('../../../components/CurrencyDropdown/CurrencyDropdown', () => jest.fn(() => <div>CurrencyDropdown</div>));
+jest.mock('@/components/Modals/FilterModal/FilterModal', () => jest.fn(() => <div>FilterModal</div>));
 
 const mockUseDevice = useDevice as jest.Mock;
 
@@ -68,7 +73,7 @@ describe('<BuySellHeader />', () => {
         const sellTab = screen.getByRole('button', { name: 'Sell' });
 
         userEvent.click(sellTab);
-        expect(mockProps.setActiveTab).toHaveBeenCalledWith('Sell');
+        expect(mockProps.setActiveTab).toHaveBeenCalledWith(1);
     });
 
     it('should call setActiveTab when Buy tab is clicked', () => {
@@ -77,7 +82,7 @@ describe('<BuySellHeader />', () => {
         const buyTab = screen.getByRole('button', { name: 'Buy' });
 
         userEvent.click(buyTab);
-        expect(mockProps.setActiveTab).toHaveBeenCalledWith('Buy');
+        expect(mockProps.setActiveTab).toHaveBeenCalledWith(0);
     });
 
     it('should call setSearchValue when a value is entered in the search input', () => {
@@ -120,5 +125,15 @@ describe('<BuySellHeader />', () => {
         userEvent.click(filterButton);
 
         expect(mockProps.setIsFilterModalOpen).toHaveBeenCalledWith(true);
+    });
+
+    it('should allow users to click on filter button', () => {
+        render(<BuySellHeader {...mockProps} />);
+
+        const filterButton = screen.getByTestId('dt_p2p_v2_buy_sell_header_filter_button');
+
+        userEvent.click(filterButton);
+
+        expect(screen.getByText('FilterModal')).toBeInTheDocument();
     });
 });

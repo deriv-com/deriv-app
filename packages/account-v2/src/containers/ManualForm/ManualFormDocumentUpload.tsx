@@ -1,12 +1,18 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { Text } from '@deriv-com/ui';
 import { FormDocumentUploadField } from '../../components/FormFields/FormDocumentUploadField';
-import { TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { TManualDocumentTypes } from '../../constants';
 import { getTitleForDocumentUpload, getUploadConfig } from '../../utils/manualFormUtils';
 
 type TManualFormDocumentUploadProps = { selectedDocument: TManualDocumentTypes };
 
 export const ManualFormDocumentUpload = ({ selectedDocument }: TManualFormDocumentUploadProps) => {
+    const formik = useFormikContext();
+
+    if (!formik) {
+        throw new Error('ManualFormDocumentUpload must be wrapped with Formik');
+    }
     const uploadConfig = getUploadConfig(selectedDocument);
 
     return (
@@ -18,7 +24,7 @@ export const ManualFormDocumentUpload = ({ selectedDocument }: TManualFormDocume
                         <FormDocumentUploadField
                             buttonText='Drop file or click here to upload'
                             className='h-full'
-                            description={upload.text}
+                            description={upload.text ?? ''}
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={upload.icon}
                             maxSize={8388608}

@@ -47,11 +47,6 @@ const BinarySocketGeneral = (() => {
         }, 30000);
 
         if (is_ready) {
-            if (!client_store.is_valid_login) {
-                client_store.logout();
-                return;
-            }
-
             if (client_store.is_logged_in || client_store.is_logging_in) {
                 WS.get()
                     .expectResponse('authorize')

@@ -12,6 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import {
+    useAuthorize,
     useOnrampVisible,
     useAccountTransferVisible,
     useIsP2PEnabled,
@@ -19,7 +20,7 @@ import {
     useP2PNotificationCount,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getSelectedRoute, getStaticUrl, routes, WS } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS } from '@deriv/shared';
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';
 import { localize } from '@deriv/translations';
@@ -70,8 +71,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, is_mobile, toggleCashier, toggleReadyToDepositModal } = ui;
-    const { currency, is_account_setting_loaded, is_authorize, is_logged_in, is_logging_in, is_svg, is_virtual } =
-        client;
+    const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -81,6 +81,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         rest: { isSubscribed },
     } = useP2PSettings();
     const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
+    const { isSuccess } = useAuthorize();
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = useMemo(() => {
@@ -186,10 +187,10 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
     React.useEffect(() => {
-        if (is_authorize && !isSubscribed) {
+        if (isSuccess && !isSubscribed) {
             subscribe();
         }
-    }, [is_authorize, p2p_settings, subscribe, isSubscribed]);
+    }, [isSuccess, p2p_settings, subscribe, isSubscribed]);
 
     useEffect(() => {
         if (
@@ -247,6 +248,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     ) {
         return <Loading is_fullscreen />;
     }
+
+    // measure performance metrics (load cashier time)
+    setPerformanceValue('load_cashier_time');
 
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>

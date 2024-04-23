@@ -4,7 +4,8 @@ import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { TAdvertsTableRowRenderer } from 'types';
 import { Badge, BuySellForm, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
-import { BUY_SELL } from '@/constants';
+import { ADVERTISER_URL, BUY_SELL } from '@/constants';
+import { useIsAdvertiser } from '@/hooks';
 import { generateEffectiveRate, getCurrentRoute } from '@/utils';
 import { p2p, useExchangeRateSubscription } from '@deriv/api-v2';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
@@ -20,8 +21,9 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
     const history = useHistory();
     const isBuySellPage = getCurrentRoute() === 'buy-sell';
 
+    const isAdvertiser = useIsAdvertiser();
     const { data: paymentMethods } = p2p.paymentMethods.useGet();
-    const { data: advertiserPaymentMethods } = p2p.advertiserPaymentMethods.useGet();
+    const { data: advertiserPaymentMethods } = p2p.advertiserPaymentMethods.useGet(isAdvertiser);
     const { data } = p2p.advertiser.useGetInfo() || {};
     const { daily_buy = 0, daily_buy_limit = 0, daily_sell = 0, daily_sell_limit = 0 } = data || {};
 
@@ -77,7 +79,7 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                 {isBuySellPage && (
                     <div
                         className='flex gap-4 items-center cursor-pointer'
-                        onClick={() => history.push(`/cashier/p2p-v2/advertiser?id=${id}`)}
+                        onClick={() => history.push(`${ADVERTISER_URL}/${id}`)}
                     >
                         <UserAvatar
                             isOnline={is_online}
@@ -100,15 +102,16 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                             <div className='flex items-center'>
                                 {hasRating ? (
                                     <>
-                                        <Text className='lg:mr-0 mr-[-1.2rem]' color='less-prominent' size='xs'>
+                                        <Text className='lg:mr-0' color='less-prominent' size='xs'>
                                             {ratingAverageDecimal}
                                         </Text>
                                         <StarRating
+                                            allowHalfIcon
                                             isReadonly
                                             ratingValue={Number(ratingAverageDecimal)}
                                             starsScale={isMobile ? 0.7 : 0.9}
                                         />
-                                        <Text className='lg:ml-1 ml-[-1rem]' color='less-prominent' size='xs'>
+                                        <Text className='lg:ml-[-0.5rem] ml-[-2.5rem]' color='less-prominent' size='xs'>
                                             ({rating_count})
                                         </Text>
                                     </>
@@ -160,12 +163,12 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
                     })}
                 >
                     {isMobile && isBuySellPage && (
-                        <LabelPairedChevronRightMdRegularIcon className='absolute top-0 right-4' />
+                        <LabelPairedChevronRightMdRegularIcon className='absolute top-0 right-0' />
                     )}
                     <Button
                         className='lg:w-[7.5rem]'
                         onClick={() => setIsModalOpen(true)}
-                        size={isMobile ? 'md' : 'sm'}
+                        size={isMobile ? 'lg' : 'sm'}
                         textSize={isMobile ? 'md' : 'xs'}
                     >
                         {isBuyAdvert ? 'Buy' : 'Sell'} {account_currency}

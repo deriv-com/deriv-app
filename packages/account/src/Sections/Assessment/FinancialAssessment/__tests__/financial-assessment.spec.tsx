@@ -73,7 +73,35 @@ describe('<FinancialAssessment/>', () => {
         });
     });
 
-    it('should render FinancialAssessment component without occupation field when Employment status is self employed', async () => {
+    it('should render FinancialAssessment component without occupation field when Employment status is un employed', async () => {
+        WS.authorized.storage.getFinancialAssessment = jest.fn(() =>
+            Promise.resolve({
+                get_financial_assessment: {
+                    account_turnover: '',
+                    cfd_score: 0,
+                    education_level: '',
+                    employment_industry: '',
+                    employment_status: 'Unemployed',
+                    estimated_worth: '',
+                    financial_information_score: '',
+                    income_source: '',
+                    net_income: '',
+                    occupation: '',
+                    source_of_wealth: '',
+                    total_score: '',
+                    trading_score: '',
+                },
+            })
+        );
+        rendercomponent();
+        await waitFor(() => {
+            expect(screen.getByText('Employment status')).toBeInTheDocument();
+            expect(screen.getByText('Industry of employment')).toBeInTheDocument();
+            expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
+        });
+    });
+
+    it('should render FinancialAssessment component without occupation field when Employment status is Self-Employed', async () => {
         WS.authorized.storage.getFinancialAssessment = jest.fn(() =>
             Promise.resolve({
                 get_financial_assessment: {
@@ -97,7 +125,7 @@ describe('<FinancialAssessment/>', () => {
         await waitFor(() => {
             expect(screen.getByText('Employment status')).toBeInTheDocument();
             expect(screen.getByText('Industry of employment')).toBeInTheDocument();
-            expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
+            expect(screen.queryByText('Occupation')).toBeInTheDocument();
         });
     });
 });

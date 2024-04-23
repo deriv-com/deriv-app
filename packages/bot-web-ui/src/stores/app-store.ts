@@ -190,7 +190,7 @@ export default class AppStore {
         // Ensure account switch is re-enabled.
         const { ui } = this.core;
 
-        ui.setAccountSwitcherDisabledMessage(false);
+        ui.setAccountSwitcherDisabledMessage();
         ui.setPromptHandler(false);
 
         if (this.timer) clearInterval(this.timer);
@@ -264,6 +264,7 @@ export default class AppStore {
                                 });
                         });
                     }
+                    DBot.initializeInterpreter();
                 }
             }
         );
@@ -295,6 +296,9 @@ export default class AppStore {
         const { handleFileChange } = load_modal;
         const { setLoading } = blockly_store;
         const { setContractUpdateConfig } = summary_card;
+        const {
+            ui: { is_mobile },
+        } = this.core;
 
         this.dbot_store = {
             client,
@@ -307,6 +311,7 @@ export default class AppStore {
             setLoading,
             setContractUpdateConfig,
             handleFileChange,
+            is_mobile,
         };
 
         this.api_helpers_store = {

@@ -179,6 +179,7 @@ type TBarriersData = Record<string, never> | { barrier: string; barrier_choices:
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m
+const ANALYTICS_DURATIONS = ['ticks', 'seconds', 'minutes', 'hours', 'days'];
 
 export default class TradeStore extends BaseStore {
     // Control values
@@ -267,7 +268,7 @@ export default class TradeStore extends BaseStore {
         ticks_stayed_in?: number[];
         last_tick_epoch?: number;
     } = {};
-    tick_size_barrier = 0;
+    tick_size_barrier_percentage = '';
 
     // Multiplier trade params
     multiplier = 0;
@@ -303,7 +304,9 @@ export default class TradeStore extends BaseStore {
         }
         Analytics.trackEvent('ce_contracts_set_up_form', payload);
     }, 2000);
-
+    debouncedSetChartStatus = debounce((status: boolean) => {
+        this.is_chart_loading = status;
+    }); // no time is needed here, the only goal is to put the call into macrotasks queue
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
     is_purchasing_contract = false;
@@ -431,7 +434,7 @@ export default class TradeStore extends BaseStore {
             stop_out: observable,
             symbol: observable,
             take_profit: observable,
-            tick_size_barrier: observable,
+            tick_size_barrier_percentage: observable,
             ticks_history_stats: observable,
             trade_types: observable,
             accountSwitcherListener: action.bound,
@@ -1018,14 +1021,13 @@ export default class TradeStore extends BaseStore {
                                 const durationMode =
                                     this.root_store.ui.is_advanced_duration && this.expiry_type
                                         ? this.expiry_type
-                                        : this.duration_units_list.find(({ value }) => value === this.duration_unit)
-                                              ?.text ?? '';
+                                        : ANALYTICS_DURATIONS.find(value => value.startsWith(this.duration_unit)) ?? '';
                                 this.sendTradeParamsAnalytics({
                                     action: 'run_contract',
-                                    ...(this.duration_units_list.length > 1
-                                        ? { switcher_duration_mode_name: durationMode.toLowerCase() }
+                                    ...(this.duration_units_list.length && durationMode
+                                        ? { switcher_duration_mode_name: durationMode }
                                         : {}),
-                                    ...(this.basis_list.length > 1
+                                    ...(this.basis_list.length > 1 && this.basis
                                         ? { switcher_stakepayout_mode_name: this.basis }
                                         : {}),
                                 });
@@ -1061,11 +1063,20 @@ export default class TradeStore extends BaseStore {
         })();
     };
 
-    sendTradeParamsAnalytics = (options: Partial<TEvents['ce_contracts_set_up_form']>, isDebounced?: boolean) => {
+    sendTradeParamsAnalytics = (
+        options: Partial<TEvents['ce_contracts_set_up_form']> & { durationUnit?: string },
+        isDebounced?: boolean
+    ) => {
+        const { durationUnit, ...passThrough } = options;
         const payload = {
+            ...passThrough,
             form_name: 'default',
             trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
-            ...options,
+            ...(durationUnit
+                ? {
+                      duration_type: ANALYTICS_DURATIONS.find(value => value.startsWith(durationUnit ?? '')) ?? '',
+                  }
+                : {}),
         } as TEvents['ce_contracts_set_up_form'];
         if (isDebounced) {
             this.debouncedSendTradeParamsAnalytics(payload);
@@ -1340,7 +1351,7 @@ export default class TradeStore extends BaseStore {
                 barrier_spot_distance,
                 maximum_ticks = 0,
                 ticks_stayed_in,
-                tick_size_barrier = 0,
+                tick_size_barrier_percentage = '',
                 last_tick_epoch,
                 maximum_payout = 0,
                 high_barrier,
@@ -1354,7 +1365,7 @@ export default class TradeStore extends BaseStore {
             });
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
-            this.tick_size_barrier = tick_size_barrier;
+            this.tick_size_barrier_percentage = tick_size_barrier_percentage;
             const { updateAccumulatorBarriersData } = this.root_store.contract_trade || {};
             if (updateAccumulatorBarriersData) {
                 updateAccumulatorBarriersData({
@@ -1582,8 +1593,9 @@ export default class TradeStore extends BaseStore {
         });
     }
 
-    setChartStatus(status: boolean) {
-        this.is_chart_loading = status;
+    setChartStatus(status: boolean, isFromChart?: boolean) {
+        if (isFromChart) this.debouncedSetChartStatus(status);
+        else this.is_chart_loading = status;
     }
 
     async initAccountCurrency(new_currency: string) {

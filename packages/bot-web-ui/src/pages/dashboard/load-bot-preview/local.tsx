@@ -3,10 +3,8 @@ import classNames from 'classnames';
 import { Dialog, MobileWrapper } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderstackDashboardOpenButton } from '../analytics/rudderstack-dashboard';
 import BotPreview from './bot-preview';
 import './index.scss';
 
@@ -20,14 +18,6 @@ const LocalComponent = observer(() => {
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     const has_strategies = !!dashboard_strategies?.length;
 
-    const sendToRudderStackForOpenButton = () => {
-        //this is to track from which open button user has come to bot builder tab
-        Analytics.trackEvent('ce_bot_builder_form', {
-            action: 'open',
-            form_source: 'bot_dashboard_form_open',
-        });
-    };
-
     React.useEffect(() => {
         if (el_ref.current?.children.length === 3) {
             el_ref?.current?.removeChild(el_ref?.current?.children[1]);
@@ -38,8 +28,6 @@ const LocalComponent = observer(() => {
         <button
             className='load-strategy__button-group--open'
             onClick={() => {
-                rudderstackDashboardOpenButton();
-                sendToRudderStackForOpenButton();
                 setPreviewOnDialog(false);
                 loadFileFromRecent();
                 setActiveTab(DBOT_TABS.BOT_BUILDER);

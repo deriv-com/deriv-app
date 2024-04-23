@@ -26,8 +26,8 @@ jest.mock('../../../../../components', () => ({
 
 jest.mock('../WithdrawalLockedContent', () => ({
     __esModule: true,
-    default: jest.fn(() => ({ description: <div>Locked Description</div> })),
-    getWithdrawalLimitReachedDesc: jest.fn(() => ({ description: <div>Locked Description</div> })),
+    default: jest.fn(() => 'Locked Description'),
+    getWithdrawalLimitReachedDesc: jest.fn(() => 'Locked Description'),
 }));
 
 const mockActiveWalletData = { currency: 'USD', currency_config: { is_crypto: false, minimum_withdrawal: 10 } };

@@ -1,7 +1,27 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-type ModalId = 'GetADerivAccountDialog' | 'JurisdictionModal' | 'MT5PasswordModal';
+type ModalId =
+    | 'AccountSelector'
+    | 'AddOrManageAccount'
+    | 'ChangePassword'
+    | 'CTraderSuccessModal'
+    | 'DummyComponentModal'
+    | 'DxtradePasswordModal'
+    | 'DxtradeSuccessModal'
+    | 'GetADerivAccountDialog'
+    | 'JurisdictionModal'
+    | 'MT5AccountTypeModal'
+    | 'MT5ChangePasswordModal'
+    | 'MT5PasswordModal'
+    | 'MT5SuccessModal'
+    | 'RealAccountCreation'
+    | 'RegulationModal'
+    | 'SentEmailContentModal'
+    | 'Signup'
+    | 'TopUpModal'
+    | 'TradeModal'
+    | 'VerificationFailedModal';
 
 /**
  * @description A hook to manage query params for modals
@@ -21,7 +41,7 @@ const useQueryParams = () => {
 
     const queryParams = useMemo(() => new URLSearchParams(search), [search]);
 
-    const isOpen = useCallback((modalId: ModalId) => queryParams.get('modal') === modalId, [queryParams]);
+    const isModalOpen = useCallback((modalId: ModalId) => queryParams.get('modal') === modalId, [queryParams]);
 
     const openModal = useCallback(
         (modalId: string) => {
@@ -44,12 +64,14 @@ const useQueryParams = () => {
     }, [queryParams, history]);
 
     useEffect(() => {
-        closeModal();
+        if (history.action === 'POP') {
+            closeModal();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return {
-        isOpen,
+        isModalOpen,
         openModal,
         closeModal,
         queryParams,

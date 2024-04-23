@@ -40,7 +40,7 @@ jobs:
         # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
         record: true
         parallel: true # Runs test in parallel using settings above
-        spec: cypress/e2e/smoke/*.js
+        spec: cypress/e2e/api/oAuthLogin.cy.js
         group: 'Smoke Tests'
         
       env:

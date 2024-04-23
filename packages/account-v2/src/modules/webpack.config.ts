@@ -142,7 +142,7 @@ export default () => ({
     },
     resolve: {
         alias: {
-            src: path.resolve(__dirname, 'src'),
+            src: path.resolve(__dirname, '../'),
         },
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },

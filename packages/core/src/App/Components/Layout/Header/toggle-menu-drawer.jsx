@@ -12,7 +12,7 @@ import {
     usePaymentAgentTransferVisible,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getStaticUrl, routes, whatsapp_url } from '@deriv/shared';
+import { getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -66,7 +66,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_trading_hub_category =
         route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
-    const { data } = useRemoteConfig();
+    const isMounted = useIsMounted();
+    const { data } = useRemoteConfig(isMounted());
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
     const liveChat = useLiveChat(false, loginid);
@@ -83,6 +84,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         rest: { isSubscribed },
         p2p_settings,
     } = useP2PSettings();
+
+    let TradersHubIcon;
+    if (is_next_wallet_enabled) {
+        TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
+    } else if (is_dark_mode) {
+        TradersHubIcon = 'IcAppstoreHomeDark';
+    } else {
+        TradersHubIcon = 'IcAppstoreTradersHubHome';
+    }
 
     React.useEffect(() => {
         if (isSuccess && !isSubscribed) {
@@ -316,7 +326,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={is_next_wallet_enabled ? routes.wallets : routes.traders_hub}
-                                            icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
+                                            icon={TradersHubIcon}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
                                         />

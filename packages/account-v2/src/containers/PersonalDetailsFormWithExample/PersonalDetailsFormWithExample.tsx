@@ -11,7 +11,7 @@ import { validateField } from '../../utils/validation';
 type TPersonalDetailsFormWithExampleValues = InferType<ReturnType<typeof getNameDOBValidationSchema>>;
 
 type TPersonalDetailsFormWithExampleProps = {
-    onConfirm: () => void;
+    onConfirm?: () => void;
 };
 
 export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFormWithExampleProps) => {
@@ -37,7 +37,7 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
     const validationSchema = getNameDOBValidationSchema();
 
     return (
-        <section className='p-16 outline outline-1 outline-system-light-active-background lg:mx-24 rounded-default'>
+        <section className='p-16 outline outline-1 outline-system-light-active-background rounded-default'>
             <InlineMessage className='items-start mb-16' variant='warning'>
                 <Text as='p' className='text-sm lg:text-default'>
                     To avoid delays, enter your <span className='font-bold'>name</span> and{' '}
@@ -102,7 +102,7 @@ export const PersonalDetailsFormWithExample = ({ onConfirm }: TPersonalDetailsFo
                             onChange={value => {
                                 form.setFieldValue(field.name, value.target.checked);
                                 if (value.target.checked) {
-                                    onConfirm();
+                                    onConfirm?.();
                                 }
                             }}
                         />

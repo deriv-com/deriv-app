@@ -32,6 +32,7 @@ const App = () => {
     const lang = getLanguage();
 
     const [order_id, setOrderId] = React.useState(null);
+    const [code_param, setCodeParam] = React.useState();
 
     useP2PCompletedOrdersNotification();
 
@@ -157,6 +158,16 @@ const App = () => {
 
         let passed_order_id;
 
+        if (is_mobile) {
+            setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
+        } else if (!code_param) {
+            if (url_params.has('code')) {
+                setCodeParam(url_params.get('code'));
+            } else if (localStorage.getItem('verification_code.p2p_order_confirm')) {
+                setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
+            }
+        }
+
         // Different emails give us different params (order / order_id),
         // don't remove order_id since it's consistent for mobile and web for 2FA
         if (url_params.has('order_id')) {
@@ -243,6 +254,16 @@ const App = () => {
         general_store.setAccountBalance(balance);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [balance]);
+
+    React.useEffect(() => {
+        if (code_param) {
+            // We need an extra state since we delete the code from the query params.
+            // Do not remove.
+            order_store.setVerificationCode(code_param);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [code_param]);
 
     if (is_logging_in || general_store.is_loading) {
         return <Loading className='p2p__loading' is_fullscreen={false} />;

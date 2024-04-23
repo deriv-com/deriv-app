@@ -36,27 +36,29 @@ const Orders = observer(() => {
             { fireImmediately: true }
         );
 
+        const disposeOrderVerificationReaction = reaction(
+            () => order_store.verification_code,
+            () => {
+                const url_params = new URLSearchParams(location.search);
+                const action_param = url_params.get('action');
+
+                if (order_store.verification_code && action_param) {
+                    showModal({ key: 'LoadingModal', props: {} });
+                    order_store.verifyEmailVerificationCode(action_param, order_store.verification_code);
+                }
+            },
+            { fireImmediately: true }
+        );
+
         return () => {
             disposeOrderIdReaction();
             disposeOrdersUpdateReaction();
+            disposeOrderVerificationReaction();
             order_store.onUnmount();
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    React.useEffect(() => {
-        const url_params = new URLSearchParams(location.search);
-        const action_param = url_params.get('action');
-        const code_param = url_params.get('code');
-
-        if (code_param) order_store.setVerificationCode(code_param);
-
-        if (order_store.verification_code && action_param) {
-            showModal({ key: 'LoadingModal', props: {} });
-            order_store.verifyEmailVerificationCode(action_param, code_param);
-        }
-    }, [location.search, order_store]);
 
     if (order_store.order_information) {
         return (

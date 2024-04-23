@@ -13,7 +13,8 @@ type TBuyAdPaymentSelectionProps = {
 };
 
 const BuyAdPaymentSelection = ({ onSelectPaymentMethod, selectedPaymentMethods }: TBuyAdPaymentSelectionProps) => {
-    const { data: paymentMethodList } = p2p.paymentMethods.useGet();
+    // Enabled for payment method modal
+    const { data: paymentMethodList } = p2p.paymentMethods.useGet(false);
     const list = (
         paymentMethodList?.map(paymentMethod => ({
             text: paymentMethod.display_name,

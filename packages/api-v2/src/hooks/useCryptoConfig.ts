@@ -1,19 +1,16 @@
 import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
+import useAuthorizedQuery from '../useAuthorizedQuery';
 
 /** A custom hook to get the cryptocurrencies config information from `crypto_config` endpoint. */
 const useCryptoConfig = () => {
-    const { data: authorizeData, isSuccess, isLoading: isAuthorizeLoading } = useAuthorize();
+    const { data: authorizeData, isLoading: isAuthorizeLoading } = useAuthorize();
 
     const {
         data,
         isLoading: isCryptConfigLoading,
         ...rest
-    } = useQuery('crypto_config', {
-        options: {
-            enabled: isSuccess && Boolean(authorizeData?.currency),
-        },
-    });
+    } = useAuthorizedQuery('crypto_config');
 
     const cryptoConfig = authorizeData?.currency
         ? data?.crypto_config?.currencies_config[authorizeData?.currency]

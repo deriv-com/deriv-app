@@ -2,6 +2,7 @@ export { AccountClosureForm } from './AccountClosureForm/AccountClosureForm';
 export { AccountClosureSteps } from './AccountClosureSteps/AccountClosureSteps';
 export { AccountLimitsSideNote } from './AccountLimitsContainer/AccountLimitsSideNote';
 export { LoginHistoryTable } from './LoginHistoryTable/LoginHistoryTable';
+export { LoginHistoryTableCard } from './LoginHistoryTable/LoginHistoryTableCard';
 export { OnfidoView } from './Onfido/OnfidoView';
 export { PersonalDetailsFormWithExample } from './PersonalDetailsFormWithExample/PersonalDetailsFormWithExample';
 export { POICountrySelector } from './POICountrySelector/POICountrySelector';

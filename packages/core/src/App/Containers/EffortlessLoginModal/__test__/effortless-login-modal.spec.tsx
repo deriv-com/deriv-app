@@ -8,10 +8,11 @@ import { routes } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import EffortlessLoginModal from '../effortless-login-modal';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    mobileOSDetect: jest.fn(() => 'test OS'),
-}));
+jest.mock('ua-parser-js', () =>
+    jest.fn(() => ({
+        os: { name: 'test OS' },
+    }))
+);
 
 describe('EffortlessLoginModal', () => {
     let modal_root_el: HTMLDivElement, mock_store: ReturnType<typeof mockStore>;

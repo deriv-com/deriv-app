@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useFetchConnectedApps, useRevokeConnectedApps } from '@deriv/api-v2';
 import { Loader, useDevice } from '@deriv-com/ui';
 import { ErrorMessage } from '../../components/ErrorMessage';
-import { ConnectedAppsEmpty } from './ConnectedAppsEmpty';
-import { ConnectedAppsInfo } from './ConnectedAppsInfo';
-import { ConnectedAppsResponsive } from './ConnectedAppsResponsive';
-import { ConnectedAppsRevokeModal } from './ConnectedAppsRevokeModal';
-import { ConnectedAppsSidebar } from './ConnectedAppsSidebar';
-import { ConnectedAppsTable } from './ConnectedAppsTable';
+import { ConnectedAppsEmpty } from '../../containers/ConnectedAppsContainer/ConnectedAppsEmpty';
+import { ConnectedAppsInfo } from '../../containers/ConnectedAppsContainer/ConnectedAppsInfo';
+import { ConnectedAppsResponsive } from '../../containers/ConnectedAppsContainer/ConnectedAppsResponsive';
+import { ConnectedAppsRevokeModal } from '../../containers/ConnectedAppsContainer/ConnectedAppsRevokeModal';
+import { ConnectedAppsSidebar } from '../../containers/ConnectedAppsContainer/ConnectedAppsSidebar';
+import { ConnectedAppsTable } from '../../containers/ConnectedAppsContainer/ConnectedAppsTable';
 
 export const ConnectedApps = () => {
     const { data: connectedApps, isError: isFetchError, isLoading: isFetchLoading } = useFetchConnectedApps();

@@ -22,6 +22,7 @@ import {
     TUserGuideContent,
 } from '../pages/tutorials/tutorials.types';
 import RootStore from './root-store';
+import DOMPurify from 'dompurify';
 
 type TDialogOptions = {
     title?: string;
@@ -124,7 +125,6 @@ export default class DashboardStore implements IDashboardStore {
         });
         this.root_store = root_store;
         this.core = core;
-        const removeHTMLTagsFromString = (param = '') => param.replace(/<.*?>/g, '');
 
         const getUserGuideContent = [...user_guide_content].map(
             item => `${item.search_id}# ${item.content.toLowerCase()}`
@@ -135,7 +135,9 @@ export default class DashboardStore implements IDashboardStore {
         const getFaqContent = faq_content.map(item => {
             return `${item.search_id}# ${item.title.toLowerCase()} ${item.description
                 .map(inner_item => {
-                    const itemWithoutHTML = removeHTMLTagsFromString(inner_item.content);
+                    const itemWithoutHTML = DOMPurify.sanitize(inner_item.content, {
+                        ALLOWED_TAGS: [], //kept empty to remove all tags
+                    });
                     return itemWithoutHTML?.toLowerCase();
                 })
                 .join(' ')}`;

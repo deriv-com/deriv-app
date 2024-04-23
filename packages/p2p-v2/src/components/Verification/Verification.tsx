@@ -81,7 +81,7 @@ const Verification = () => {
 
     return (
         <div className='p2p-v2-verification'>
-            <DerivLightIcCashierSendEmailIcon className='p2p-v2-verification__icon' />
+            <DerivLightIcCashierSendEmailIcon className='p2p-v2-verification__icon' height={128} width={128} />
             <Text className='p2p-v2-verification__text' size={isMobile ? 'lg' : 'md'} weight='bold'>
                 Verify your P2P account
             </Text>

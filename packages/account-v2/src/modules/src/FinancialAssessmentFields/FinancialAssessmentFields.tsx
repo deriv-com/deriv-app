@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { useIsEuRegion } from '@deriv/api-v2';
 import { FormDropDownField } from '../../../components/FormFields';
@@ -31,7 +31,7 @@ export const FinancialAssessmentFields = () => {
 
     const hideOccupation = shouldHideOccupation(employmentStatus);
 
-    const filteredOccupationList = useMemo(() => filterOccupationList(employmentStatus), [employmentStatus]);
+    const filteredOccupationList = filterOccupationList(employmentStatus);
 
     useEffect(() => {
         if (employmentStatus === EMPLOYMENT_VALUES.employed && occupation === EMPLOYMENT_VALUES.unemployed) {

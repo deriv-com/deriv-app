@@ -1,8 +1,11 @@
 import React from 'react';
 import { FacebookShareButton, TelegramShareButton, TwitterShareButton, WhatsappShareButton } from 'react-share';
-import { SocialFacebookBrandIcon, SocialGoogleBrandIcon, SocialTelegramBrandIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
-import XIcon from '../../../public/ic-stock-twitter.svg';
+import {
+    LabelPairedXTwitterLgIcon,
+    SocialFacebookBrandIcon,
+    SocialGoogleBrandIcon,
+    SocialTelegramBrandIcon,
+} from '@deriv/quill-icons';
 import WhatsappIcon from '../../../public/ic-whatsapp-filled.svg';
 import './ShareAdsSocials.scss';
 
@@ -17,38 +20,31 @@ const getShareButtons = (advertUrl: string) => [
         icon: <WhatsappIcon className='h-[34px] w-[34px]' />,
         messagePropName: 'title',
         ShareButton: WhatsappShareButton,
-        size: 34,
         text: 'WhatsApp',
     },
     {
         icon: <SocialFacebookBrandIcon />,
         messagePropName: 'quote',
         ShareButton: FacebookShareButton,
-        size: 34,
         text: 'Facebook',
     },
     {
         icon: <SocialTelegramBrandIcon />,
         messagePropName: 'title',
         ShareButton: TelegramShareButton,
-        size: 34,
         text: 'Telegram',
     },
     {
-        icon: <XIcon />,
+        icon: <LabelPairedXTwitterLgIcon height={36} width={36} />,
         messagePropName: 'title',
         ShareButton: TwitterShareButton,
-        size: 28,
-        smallIcon: true,
-        text: 'Twitter',
+        text: 'X',
     },
     {
         href: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(advertUrl)}`,
         icon: <SocialGoogleBrandIcon />,
         rel: 'noreferrer',
         ShareButton: 'a',
-        size: 28,
-        smallIcon: true,
         target: '_blank',
         text: 'Gmail',
     },
@@ -66,7 +62,6 @@ const ShareMyAdsSocials = ({ advertUrl, customMessage }: TShareMyAdsSocialsProps
                 {...(rel && { rel: 'noreferrer' })}
             >
                 <div className='p2p-v2-share-ads-socials__circle'>{icon}</div>
-                <Text size='2xs'>{text}</Text>
             </ShareButton>
         ))}
     </div>

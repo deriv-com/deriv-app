@@ -1,17 +1,35 @@
 import { localize } from '@deriv/translations';
 import { plusIconLight } from '../../images';
+import { isDarkRgbColour } from '../../../utils';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
         this.arguments = [];
         this.argument_var_models = [];
+        this.is_adding = false;
+        this.timeout_id;
 
         this.jsonInit(this.definition());
 
 
         // Render a ➕-icon for adding parameters
         const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
+
+        const dropdown_path =
+            this.workspace.options.pathToMedia +
+            (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
+        // Render a v-icon for adding parameters
+        const fieldImageCollapse = new Blockly.FieldImage(
+            dropdown_path,
+            16,
+            16,
+            'v',
+            () => this.toggleCollapseWithDelay(true),
+            false,
+            true
+        );
         this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.appendDummyInput('COLLAPSED_INPUT').appendField(fieldImageCollapse);
 
         this.setStatements(true);
     },
@@ -74,12 +92,15 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     onAddClick() {
-        if (this.workspace.options.readOnly || this.isInFlyout) {
+        if (this.is_adding || this.workspace.options.readOnly || this.isInFlyout) {
             return;
         }
 
+        this.is_adding = true;
+        clearTimeout(this.timeout_id);
+
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
-        setTimeout(() => {
+        this.timeout_id = setTimeout(() => {
             const promptMessage = localize('Specify a parameter name:');
             Blockly.prompt(promptMessage, '', paramName => {
                 if (paramName) {
@@ -98,8 +119,9 @@ Blockly.Blocks.procedures_defnoreturn = {
                         });
                     }
                 }
+                this.is_adding = false;
             });
-        }, 200);
+        }, 0);
     },
     /**
      * Add or remove the statement block from this function definition.

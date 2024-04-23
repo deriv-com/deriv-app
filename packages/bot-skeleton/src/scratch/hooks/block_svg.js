@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import DBotStore from '../dbot-store';
 import { save, isDarkRgbColour } from '../utils';
+import debounce from 'lodash.debounce';
 
 /**
  * Select this block.  Highlight it visually.
@@ -294,7 +295,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
             this.workspace.options.pathToMedia +
             (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
         const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
-            this.setCollapsed(false)
+            this.toggleCollapseWithDelay(false)
         );
 
         if (this.type === 'procedures_defreturn' || this.type === 'procedures_defnoreturn') {
@@ -334,6 +335,16 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
 
     // Check whether the collapsed block needs to be highlighted.
     this.setErrorHighlighted(collapsed && this.hasErrorHighlightedDescendant());
+};
+
+/**
+ * Toggles the collapse state of the block after a short delay to prevent workspace freezing.
+ * @param {boolean} collapsed - Whether to collapse the block.
+ */
+Blockly.BlockSvg.prototype.toggleCollapseWithDelay = function (collapsed) {
+    debounce(async () => {
+        this.setCollapsed(collapsed);
+    }, 100)();
 };
 
 /**

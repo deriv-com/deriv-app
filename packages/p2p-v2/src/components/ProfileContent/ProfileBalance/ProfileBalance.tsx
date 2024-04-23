@@ -9,7 +9,7 @@ import { Text } from '@deriv-com/ui';
 import { ProfileDailyLimit } from '../ProfileDailyLimit';
 import './ProfileBalance.scss';
 
-const ProfileBalance = ({ advertiserStats }: { advertiserStats: TAdvertiserStats }) => {
+const ProfileBalance = ({ advertiserStats }: { advertiserStats: DeepPartial<TAdvertiserStats> }) => {
     const { data: activeAccount } = useActiveAccount();
     const { isDesktop } = useDevice();
     const [shouldShowAvailableBalanceModal, setShouldShowAvailableBalanceModal] = useState(false);

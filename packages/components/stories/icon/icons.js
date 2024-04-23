@@ -32,6 +32,7 @@ export const icons =
         'IcAppstoreSuccess',
         'IcAppstoreTickWhite',
         'IcAppstoreTick',
+        'IcAppstoreTradersHubHomeUpdated',
         'IcAppstoreTradersHubHome',
         'IcAppstoreTradingHubBeta',
         'IcAppstoreTradingHubOnboardingDark',
@@ -62,7 +63,8 @@ export const icons =
         'IcAppstoreWalletsUpgradeStepOne',
         'IcAppstoreWalletsUpgradeStepTwo',
         'IcAppstoreWalletsUpgradeUnsuccessful',
-        'IcAppstoreWarning'
+        'IcAppstoreWarning',
+
     ],
     'brand': [
         'IcBrandCtraderWordmark',
@@ -664,6 +666,7 @@ export const icons =
         'IcWip',
         'IcWithdrawRequestVerificationSent',
         'IcWithdrawRequestVerification',
+        'IcX',
         'IcZingpay',
         'IcZoomIn',
         'IcZoomOut'

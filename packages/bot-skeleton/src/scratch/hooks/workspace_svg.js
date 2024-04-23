@@ -204,7 +204,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean
     const filtered_top_blocks = top_blocks.filter(block => !block.isMainBlock());
 
     filtered_top_blocks.forEach(block => {
-        if (this.RTL) {
+        if (this.RTL && block.comment) {
             block.RTL = true;
             block.comment.needsAutoPositioning_ = true;
         }

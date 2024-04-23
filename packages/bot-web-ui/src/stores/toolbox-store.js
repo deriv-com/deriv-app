@@ -38,6 +38,7 @@ export default class ToolboxStore {
     sub_category_index = [];
     toolbox_dom = null;
     toolbox_examples = null;
+    is_workspace_scroll_adjusted = false;
 
     onMount(toolbox_ref) {
         this.adjustWorkspace();
@@ -49,7 +50,7 @@ export default class ToolboxStore {
             () => this.is_toolbox_open,
             is_toolbox_open => {
                 if (is_toolbox_open) {
-                    this.adjustWorkspace();
+                    // this.adjustWorkspace();
                     // Emit event to GTM
                     const { gtm } = this.core;
                     gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
@@ -91,18 +92,26 @@ export default class ToolboxStore {
     }
     // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
-        setTimeout(() => {
+        if (!this.is_workspace_scroll_adjusted) {
             const workspace = Blockly.derivWorkspace;
-            const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
-            const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
+            this.is_workspace_scroll_adjusted = true;
 
-            if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
-                const scroll_distance = this.core.ui.is_mobile
-                    ? toolbox_width - block_canvas_rect.left + 20
-                    : toolbox_width - block_canvas_rect.left + 36;
-                scrollWorkspace(workspace, scroll_distance, true, false);
-            }
-        }, 300);
+            setTimeout(() => {
+                const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
+                const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
+
+                if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
+                    const scroll_distance = this.core.ui.is_mobile
+                        ? toolbox_width - block_canvas_rect.left + 20
+                        : toolbox_width - block_canvas_rect.left + 36;
+
+                    if ((workspace.RTL && scroll_distance > toolbox_width - 56) || !workspace.RTL) {
+                        scrollWorkspace(workspace, scroll_distance, true, false);
+                    }
+                }
+                this.is_workspace_scroll_adjusted = false;
+            }, 300);
+        }
     }
 
     toggleDrawer() {

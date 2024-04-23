@@ -7,7 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 import PasskeysStatusContainer from './components/passkeys-status-container';
 import PasskeysList from './components/passkeys-list';
 import PasskeyModal from './components/passkey-modal';
-import { getModalContent, not_supported_error_name, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
+import { getModalContent, NOT_SUPPORTED_ERROR_NAME, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
 import { TServerError } from '../../../Types/common.type';
 
@@ -83,7 +83,7 @@ const Passkeys = observer(() => {
     const onModalButtonClick = () => {
         if (error) {
             onCloseModal(onCloseError);
-            if ((error as TServerError).name === not_supported_error_name) {
+            if ((error as TServerError).name === NOT_SUPPORTED_ERROR_NAME) {
                 history.push(routes.traders_hub);
             }
         } else {

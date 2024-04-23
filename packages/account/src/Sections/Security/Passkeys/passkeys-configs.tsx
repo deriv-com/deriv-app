@@ -113,17 +113,17 @@ type TGetModalContent = {
     is_passkey_registration_started: boolean;
 };
 
-export const not_supported_error_name = 'NotSupportedError';
+export const NOT_SUPPORTED_ERROR_NAME = 'NotSupportedError';
 
 export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
     const error_message =
-        (error as TServerError)?.name === not_supported_error_name ? (
+        (error as TServerError)?.name === NOT_SUPPORTED_ERROR_NAME ? (
             <Localize i18n_default_text='Passkey isn’t supported on this device.' />
         ) : (
             (error as TServerError)?.message
         );
     const button_text =
-        (error as TServerError)?.name === not_supported_error_name ? (
+        (error as TServerError)?.name === NOT_SUPPORTED_ERROR_NAME ? (
             <Localize i18n_default_text='Continue trading' />
         ) : (
             <Localize i18n_default_text='Try again' />

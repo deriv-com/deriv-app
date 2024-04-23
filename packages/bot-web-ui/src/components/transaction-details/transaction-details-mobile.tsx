@@ -20,8 +20,9 @@ const TransactionDetailsMobile = observer(() => {
         toggleTransactionDetailsModal,
         is_transaction_details_modal_open,
         transactions: transaction_list,
+        statistics,
     }: Partial<TTransactionStore> = transactions;
-    const { statistics, toggleStatisticsInfoModal }: Partial<TRunPanelStore> = run_panel;
+    const { toggleStatisticsInfoModal }: Partial<TRunPanelStore> = run_panel;
 
     return (
         <MobileFullPageModal
@@ -49,15 +50,15 @@ const TransactionDetailsMobile = observer(() => {
             </div>
             <div className='transaction-details-modal-mobile__card__footer'>
                 <StatisticsSummary
+                    is_mobile
                     currency={client?.currency}
-                    is_mobile={true}
                     lost_contracts={statistics?.lost_contracts ?? 0}
                     number_of_runs={statistics?.number_of_runs ?? 0}
-                    toggleStatisticsInfoModal={toggleStatisticsInfoModal}
                     total_payout={statistics?.total_payout ?? 0}
                     total_profit={statistics?.total_profit ?? 0}
                     total_stake={statistics?.total_stake ?? 0}
                     won_contracts={statistics?.won_contracts ?? 0}
+                    toggleStatisticsInfoModal={toggleStatisticsInfoModal}
                 />
             </div>
         </MobileFullPageModal>

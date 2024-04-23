@@ -56,7 +56,7 @@ const getTradingLimitsTableData = (
     },
 ];
 
-const getMarketValues = (collection: TMarketSpecificData = [], currency: TCurrency) => {
+const getMarketValues = (collection: TMarketSpecificData, currency: TCurrency) => {
     const formattedCollection = collection?.slice().sort((a, b) => ((a?.level || '') > (b?.level || '') ? 1 : -1));
     return formattedCollection?.map(data => ({
         category: data?.level,
@@ -74,7 +74,7 @@ const getMaximumDailyLimiitsTableData = (marketSpecific: TMarketSpecific, curren
             title: 'Maximum daily turnover',
             value: 'Limit',
         },
-        ...markets.flatMap(market => getMarketValues(marketSpecific[market], currency)),
+        ...markets.flatMap(market => (marketSpecific[market] ? getMarketValues(marketSpecific[market], currency) : [])),
     ];
 };
 

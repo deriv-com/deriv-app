@@ -1,4 +1,5 @@
-import UAParser from 'ua-parser-js';
+import { UAClientHints } from 'ua-client-hints-js';
+import { UAParser } from 'ua-parser-js';
 
 declare global {
     interface Window {
@@ -235,10 +236,18 @@ function validateHuaweiCodes(inputString: string) {
 
 export const mobileOSDetectAsync = async () => {
     const userAgent = navigator.userAgent ?? window.opera ?? '';
-    const parser = new UAParser(userAgent);
+    const uap = new UAParser(userAgent).getResult();
 
+    const ch = new UAClientHints();
+    ch.setValuesFromUAParser(uap);
+
+    const chData = ch.getValues();
     // eslint-disable-next-line no-console
-    console.log('==>', parser.getDevice());
+    console.log('==>', { chData });
+
+    const chHeaders = ch.getValuesAsHeaders();
+    // eslint-disable-next-line no-console
+    console.log('==>', { chHeaders });
 
     // Windows Phone must come first because its UA also contains "Android"
     if (/windows phone/i.test(userAgent)) {

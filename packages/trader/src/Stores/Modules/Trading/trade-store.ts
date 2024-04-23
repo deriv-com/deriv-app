@@ -13,10 +13,8 @@ import {
     isBarrierSupported,
     isAccumulatorContract,
     isCryptocurrency,
-    isDesktop,
     isEmptyObject,
     isMarketClosed,
-    isMobile,
     isMultiplierContract,
     isTurbosContract,
     isVanillaFxContract,
@@ -906,7 +904,7 @@ export default class TradeStore extends BaseStore {
 
     onPurchase = debounce(this.processPurchase, 300);
 
-    processPurchase(proposal_id: string, price: string | number, type: string) {
+    processPurchase(proposal_id: string, price: string | number, type: string, isMobile: boolean) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
@@ -932,7 +930,7 @@ export default class TradeStore extends BaseStore {
                             });
 
                             // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
-                            if (isMobile() && this.root_store.common?.services_error?.type === 'buy') {
+                            if (isMobile && this.root_store.common?.services_error?.type === 'buy') {
                                 setTimeout(() => {
                                     this.clearPurchaseInfo();
                                     this.requestProposal();
@@ -992,7 +990,7 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            if (isDesktop()) {
+                            if (!isMobile) {
                                 this.root_store.ui.openPositionsDrawer();
                             }
                             this.proposal_info = {};

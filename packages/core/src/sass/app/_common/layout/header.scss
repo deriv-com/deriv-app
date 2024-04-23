@@ -284,7 +284,7 @@
         height: 100%;
         align-self: center;
 
-        @media (max-width: 520px) {
+        @include mobile-or-tablet-screen {
             display: none;
         }
     }

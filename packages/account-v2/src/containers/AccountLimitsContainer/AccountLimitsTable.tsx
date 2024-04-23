@@ -20,7 +20,7 @@ const RenderRow = ({ row }: { row: TAccountLimitValues }) => {
                 )}
                 {hintInfo && (
                     <span className='px-8'>
-                        <StandaloneCircleInfoRegularIcon fill='#b5abab' iconSize='md' />
+                        <StandaloneCircleInfoRegularIcon className='fill-solid-grey-1' iconSize='sm' />
                     </span>
                 )}
             </div>
@@ -37,8 +37,9 @@ export const AccountLimitsTable = ({ accountLimitValues }: { accountLimitValues:
     <Table
         data={accountLimitValues}
         isFetching={false}
-        //eslint-disable-next-line
-        loadMoreFunction={() => {}}
+        loadMoreFunction={() => {
+            //[TODO]: Add load more function
+        }}
         rowRender={rowData => <RenderRow row={rowData} />}
     />
 );

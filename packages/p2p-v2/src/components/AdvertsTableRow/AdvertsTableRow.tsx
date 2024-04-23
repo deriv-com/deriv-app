@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { TAdvertsTableRowRenderer } from 'types';
 import { Badge, BuySellForm, PaymentMethodLabel, StarRating, UserAvatar } from '@/components';
 import { ADVERTISER_URL, BUY_SELL } from '@/constants';
+import { useIsAdvertiser } from '@/hooks';
 import { generateEffectiveRate, getCurrentRoute } from '@/utils';
 import { p2p, useExchangeRateSubscription } from '@deriv/api-v2';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
@@ -20,8 +21,9 @@ const AdvertsTableRow = memo((props: TAdvertsTableRowRenderer) => {
     const history = useHistory();
     const isBuySellPage = getCurrentRoute() === 'buy-sell';
 
+    const isAdvertiser = useIsAdvertiser();
     const { data: paymentMethods } = p2p.paymentMethods.useGet();
-    const { data: advertiserPaymentMethods } = p2p.advertiserPaymentMethods.useGet();
+    const { data: advertiserPaymentMethods } = p2p.advertiserPaymentMethods.useGet(isAdvertiser);
     const { data } = p2p.advertiser.useGetInfo() || {};
     const { daily_buy = 0, daily_buy_limit = 0, daily_sell = 0, daily_sell_limit = 0 } = data || {};
 

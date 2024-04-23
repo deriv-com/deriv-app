@@ -20,7 +20,7 @@ import {
     useP2PNotificationCount,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getSelectedRoute, getStaticUrl, routes, WS } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS } from '@deriv/shared';
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';
 import { localize } from '@deriv/translations';
@@ -248,6 +248,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     ) {
         return <Loading is_fullscreen />;
     }
+
+    // measure performance metrics (load cashier time)
+    setPerformanceValue('load_cashier_time');
 
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>

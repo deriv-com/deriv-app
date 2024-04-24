@@ -1,14 +1,22 @@
-/* eslint-disable no-console */
-import { useContext } from 'react';
-import { ExchangeRatesContext } from '@deriv/stores';
+import { useStore } from '@deriv/stores';
 
 export const useExchangeRate = () => {
-    const context = useContext(ExchangeRatesContext);
+    const { client } = useStore();
+    const {
+        exchange_rates,
+        subscribeToExchangeRate,
+        getExchangeRate,
+        unsubscribeFromExchangeRate,
+        unsubscribeFromAllExchangeRates,
+    } = client;
 
-    if (!context) {
-        throw new Error('useExchangeRate must be used within a ExchangeRatesProvider');
-    }
-    return context;
+    return {
+        handleSubscription: subscribeToExchangeRate,
+        exchange_rates,
+        getExchangeRate,
+        unsubscribe: unsubscribeFromExchangeRate,
+        unsubscribeAll: unsubscribeFromAllExchangeRates,
+    };
 };
 
 export default useExchangeRate;

@@ -28,7 +28,7 @@ const CashierLocked = observer(() => {
     const history = useHistory();
 
     const state = getMessage({
-        cashier_validation: account_status.cashier_validation,
+        cashier_validation: account_status?.cashier_validation,
         closeAccountTransferModal,
         excluded_until: loginid ? accounts[loginid]?.excluded_until : undefined,
         history,

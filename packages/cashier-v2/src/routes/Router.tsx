@@ -7,9 +7,8 @@ import DepositIcon from '../assets/images/ic-cashier-add.svg';
 import WithdrawalIcon from '../assets/images/ic-cashier-minus.svg';
 import OnRampIcon from '../assets/images/ic-cashier-on-ramp.svg';
 import PaymentAgentIcon from '../assets/images/ic-payment-agent.svg';
-import { DummyComponent } from '../components';
 import { Cashier } from '../containers';
-import { Deposit, PaymentAgentTransfer, Withdrawal } from '../flows';
+import { AccountTransfer, Deposit, FiatOnRamp, PaymentAgent, PaymentAgentTransfer, Withdrawal } from '../flows';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -44,13 +43,13 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
             },
             {
                 path: cashierPathRoutes.cashierPaymentAgents,
-                component: DummyComponent,
+                component: PaymentAgent,
                 icon: <PaymentAgentIcon />,
                 title: 'Payment agents',
             },
             {
                 path: cashierPathRoutes.cashierAccountTransfer,
-                component: DummyComponent,
+                component: AccountTransfer,
                 icon: <TransferIcon />,
                 title: 'Transfer',
             },
@@ -62,7 +61,7 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
             },
             {
                 path: cashierPathRoutes.cashierOnRamp,
-                component: DummyComponent,
+                component: FiatOnRamp,
                 icon: <OnRampIcon />,
                 title: 'Fiat onramp',
             },

@@ -33,9 +33,9 @@ describe('<AccumulatorCardBody />', () => {
     };
     it('should display all contract card items, label, and values', () => {
         render(<AccumulatorCardBody {...mock_props} />);
-        expect(screen.getByText(getCardLabels().INITIAL_STAKE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().STAKE)).toBeInTheDocument();
         expect(screen.getByText('123.00')).toBeInTheDocument();
-        expect(screen.getByText(getCardLabels().CURRENT_STAKE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText('234.00')).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
         expect(screen.getByText('111.00')).toBeInTheDocument();

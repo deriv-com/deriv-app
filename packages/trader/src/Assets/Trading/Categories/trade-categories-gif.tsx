@@ -5,13 +5,11 @@ import ImageEndsInOut from 'Assets/SvgComponents/trade_explanations/img-ends-in-
 import ImageEvenOdd from 'Assets/SvgComponents/trade_explanations/img-even-odd.svg';
 import ImageHighToClose from 'Assets/SvgComponents/trade_explanations/img-high-to-close.svg';
 import ImageHighToLow from 'Assets/SvgComponents/trade_explanations/img-high-to-low.svg';
-import ImageMatchDiff from 'Assets/SvgComponents/trade_explanations/img-match-diff.svg';
-import ImageMultiplier from 'Assets/SvgComponents/trade_explanations/img-multiplier.svg';
-import ImageOverUnder from 'Assets/SvgComponents/trade_explanations/img-over-under.svg';
 import ImageReset from 'Assets/SvgComponents/trade_explanations/img-reset.svg';
 import ImageRunHighLow from 'Assets/SvgComponents/trade_explanations/img-run-high-low.svg';
 import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg';
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
+import ImageTurbos from 'Assets/SvgComponents/trade_explanations/img-turbos.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
 import { TRADE_TYPES } from '@deriv/shared';
 
@@ -44,11 +42,11 @@ const TradeCategoriesGIF = ({
         case TRADE_TYPES.RISE_FALL_EQUAL:
             return <ContractTypeDescriptionVideo selected_contract_type='rise_fall' />;
         case TRADE_TYPES.MATCH_DIFF:
-            return <ImageMatchDiff />;
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.MULTIPLIER:
-            return <ImageMultiplier />;
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.OVER_UNDER:
-            return <ImageOverUnder />;
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.RESET:
             return <ImageReset />;
         case TRADE_TYPES.RUN_HIGH_LOW:
@@ -61,7 +59,7 @@ const TradeCategoriesGIF = ({
             return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.TURBOS.LONG:
         case TRADE_TYPES.TURBOS.SHORT:
-            return <ContractTypeDescriptionVideo selected_contract_type='turbos' />;
+            return <ImageTurbos />;
         case TRADE_TYPES.VANILLA.CALL:
         case TRADE_TYPES.VANILLA.PUT:
             return <ContractTypeDescriptionVideo selected_contract_type='vanilla' />;

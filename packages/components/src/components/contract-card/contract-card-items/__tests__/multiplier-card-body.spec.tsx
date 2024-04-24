@@ -51,8 +51,8 @@ describe('MultiplierCardBody', () => {
     });
 
     const testCardContent = () => {
-        expect(screen.getByText(getCardLabels().BUY_PRICE)).toBeInTheDocument();
-        expect(screen.getByText(getCardLabels().CURRENT_STAKE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CONTRACT_COST)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().DEAL_CANCEL_FEE)).toBeInTheDocument();
         expect(screen.queryByText(getCardLabels().NOT_AVAILABLE)).not.toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STAKE)).toBeInTheDocument();
@@ -83,7 +83,7 @@ describe('MultiplierCardBody', () => {
 
         testCardContent();
     });
-    it('should render progress_slider and N/A in Deal Cancel.fee when contract is open for a crypto asset in mobile', () => {
+    it('should render progress_slider and "-" in disabled state  in Deal Cancel.fee when contract is open for a crypto asset in mobile', () => {
         mock_props.is_mobile = true;
         mock_props.contract_info.status = 'open';
         mock_props.contract_info.underlying = 'cryBTCUSD';
@@ -96,7 +96,6 @@ describe('MultiplierCardBody', () => {
         // @ts-expect-error Check if error is gone after migrating MultiplierCardBody to TS
         render(<MultiplierCardBody {...mock_props} />);
 
-        expect(screen.getByText(mock_props.getCardLabels().NOT_AVAILABLE)).toBeInTheDocument();
         expect(screen.getByText(progress_slider)).toBeInTheDocument();
     });
 

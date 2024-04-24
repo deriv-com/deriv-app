@@ -5,7 +5,6 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import ToggleAds from 'Pages/my-ads/toggle-ads.jsx';
-import TableError from 'Components/section-error';
 import { useStores } from 'Stores';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import NoAds from 'Pages/buy-sell/no-ads';
@@ -22,7 +21,7 @@ const getHeaders = offered_currency => [
 ];
 
 const MyAdsTable = () => {
-    const { floating_rate_store, general_store, my_ads_store } = useStores();
+    const { general_store, my_ads_store } = useStores();
     const {
         client: { currency },
     } = useStore();
@@ -31,20 +30,15 @@ const MyAdsTable = () => {
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
-        general_store.setP2PConfig();
+
         return () => {
             my_ads_store.setApiErrorCode(null);
-            floating_rate_store.setChangeAdAlert(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (my_ads_store.is_table_loading) {
         return <Loading is_fullscreen={false} />;
-    }
-
-    if (my_ads_store.api_error_message) {
-        return <TableError message={my_ads_store.api_error_message} className='section-error__table' size='xs' />;
     }
 
     if (my_ads_store.adverts.length) {

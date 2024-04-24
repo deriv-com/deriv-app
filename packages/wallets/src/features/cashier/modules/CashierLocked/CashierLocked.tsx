@@ -2,17 +2,23 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 import { useAccountStatus, useActiveWalletAccount, useAuthentication, useCashierValidation } from '@deriv/api-v2';
 import { WalletsActionScreen } from '../../../../components';
-import getCashierLockedDesc from './CashierLockedContent';
+import getCashierLockedDesc, { getSystemMaintenanceContent } from './CashierLockedContent';
 import './CashierLocked.scss';
 
-const CashierLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
+type TCashierLockedProps = {
+    children?: React.ReactNode;
+    module?: 'deposit' | 'withdrawal';
+};
+
+const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: authentication } = useAuthentication();
     const { data: cashierValidation } = useCashierValidation();
-    const { data: status } = useAccountStatus();
+    const { data: status, isFetching: isFetchingAccountStatus } = useAccountStatus();
 
     const currency = activeWallet?.currency || 'USD';
     const isVirtual = activeWallet?.is_virtual;
+    const isCrypto = activeWallet?.is_crypto;
 
     const poaNeedsVerification = authentication?.is_poa_needed;
     const poiNeedsVerification = authentication?.is_poa_needed;
@@ -29,30 +35,52 @@ const CashierLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const financialAssessmentRequired = cashierValidation?.financial_assessment_required;
     const noResidence = cashierValidation?.no_residence;
 
-    const isCashierLocked = status?.is_cashier_locked && !isVirtual;
+    const isSystemMaintenance = cashierValidation?.system_maintenance && !isVirtual;
+    const isCashierLocked = !isFetchingAccountStatus && status?.is_cashier_locked && !isVirtual;
+    const isDepositLocked = status?.is_deposit_locked && module === 'deposit';
+    const isWithdrawalLocked = status?.is_withdrawal_locked && module === 'withdrawal';
+
+    const systemMaintenanceContent = getSystemMaintenanceContent({
+        currency,
+        isCashierLocked,
+        isCrypto,
+        isDepositLocked,
+        isWithdrawalLocked,
+    });
+
+    const cashierLockedDescription = getCashierLockedDesc({
+        askAuthenticate,
+        askCurrency,
+        askFinancialRiskApproval,
+        askFixDetails,
+        askSelfExclusionMaxTurnoverSet,
+        askTinInformation,
+        cashierLockedStatus,
+        currency,
+        disabledStatus,
+        documentsExpired,
+        financialAssessmentRequired,
+        noResidence,
+        poaNeedsVerification,
+        poiNeedsVerification,
+    });
+
+    if (isSystemMaintenance && systemMaintenanceContent) {
+        return (
+            <div className='wallets-cashier-locked'>
+                <WalletsActionScreen
+                    description={systemMaintenanceContent?.description}
+                    title={systemMaintenanceContent?.title}
+                />
+            </div>
+        );
+    }
 
     if (isCashierLocked) {
         return (
             <div className='wallets-cashier-locked'>
                 <WalletsActionScreen
-                    description={
-                        getCashierLockedDesc({
-                            askAuthenticate,
-                            askCurrency,
-                            askFinancialRiskApproval,
-                            askFixDetails,
-                            askSelfExclusionMaxTurnoverSet,
-                            askTinInformation,
-                            cashierLockedStatus,
-                            currency,
-                            disabledStatus,
-                            documentsExpired,
-                            financialAssessmentRequired,
-                            noResidence,
-                            poaNeedsVerification,
-                            poiNeedsVerification,
-                        })?.description
-                    }
+                    description={cashierLockedDescription}
                     title={<Trans defaults='Your {{currency}} Wallet is temporarily locked.' values={{ currency }} />}
                 />
             </div>

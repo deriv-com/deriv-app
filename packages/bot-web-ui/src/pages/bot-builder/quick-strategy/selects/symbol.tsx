@@ -5,8 +5,6 @@ import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
-import { setRsDropdownTextToLocalStorage } from '../analytics/utils';
 import { TFormData } from '../types';
 
 type TSymbol = {
@@ -63,10 +61,6 @@ const SymbolSelect: React.FC = () => {
         if (!has_symbol) {
             setFieldValue('symbol', symbols?.[0]?.value);
             setValue('symbol', symbols?.[0]?.value);
-            setRsDropdownTextToLocalStorage(symbols?.[0]?.text, 'symbol');
-        } else {
-            const selected_item = symbols?.find(symbol => symbol?.value === values?.symbol);
-            setRsDropdownTextToLocalStorage(selected_item?.text ?? '', 'symbol');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -91,16 +85,10 @@ const SymbolSelect: React.FC = () => {
 
     const handleItemSelection = (item: TItem) => {
         if (item) {
-            const { value, text } = item as TSymbol;
+            const { value } = item as TSymbol;
             setFieldValue('symbol', value);
             setValue('symbol', value);
             setIsInputStarted(false);
-            rudderStackSendQsParameterChangeEvent({
-                parameter_type: 'symbol',
-                parameter_value: text,
-                parameter_field_type: 'dropdown',
-            });
-            setRsDropdownTextToLocalStorage(text, 'symbol');
         }
     };
 

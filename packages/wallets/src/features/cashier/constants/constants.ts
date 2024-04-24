@@ -21,6 +21,10 @@ export const walletIconMapper = {
         dark: 'IcWalletCurrencyEur',
         light: 'IcWalletCurrencyEur',
     },
+    eUSDT: {
+        dark: 'IcWalletTetherDark',
+        light: 'IcWalletTetherLight',
+    },
     eUST: {
         dark: 'IcWalletTetherDark',
         light: 'IcWalletTetherLight',
@@ -32,6 +36,10 @@ export const walletIconMapper = {
     LTC: {
         dark: 'IcWalletLiteCoinDark',
         light: 'IcWalletLiteCoinLight',
+    },
+    tUSDT: {
+        dark: 'IcWalletTetherDark',
+        light: 'IcWalletTetherLight',
     },
     tUST: {
         dark: 'IcWalletTetherDark',
@@ -193,6 +201,6 @@ export const PlatformDetails = {
             light: 'IcWalletOptionsLight',
         },
         name: 'standard',
-        title: 'Deriv Apps',
+        title: 'Options',
     },
 } as const;

@@ -1,116 +1,72 @@
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useEventListener } from 'usehooks-ts';
-
-declare global {
-    interface WindowEventMap {
-        queryChange: CustomEvent;
-    }
-}
-
-type TSetQueryStringOptions = {
-    clearAllQueries?: boolean;
-};
-
-type TQueryString = {
-    advertId?: string;
-    form?: string;
-    modal?: string;
-    paymentMethodId?: string;
-    tab?: string;
-};
-
-function mergeParams(params1: URLSearchParams, params2: URLSearchParams) {
-    const payload1 = paramsToPayload(params1);
-    const payload2 = paramsToPayload(params2);
-    const formattedParams = payloadToParams({
-        ...payload1,
-        ...payload2,
-    });
-
-    return formattedParams;
-}
-
-const payloadToParams = (payload: TQueryString) => new URLSearchParams(Object.entries(payload));
-const paramsToPayload = (params: URLSearchParams) => Object.fromEntries(params.entries());
-const queryEvent = new Event('queryChange');
-
-// TODO: Add validations for query strings once My Profile page is merged
-// type TQueryStringConfig = {
-//     tab?: {
-//         default: string;
-//         values: string[];
-//     };
-// };
+import { StringParam, useQueryParams } from 'use-query-params';
 
 /**
- * A hook that syncs URL params to the rendering lifecycle.
+ * A hook that uses `use-query-params` to sync URL params to the React lifecycle
  * You can use this hook to conditionally render tabs, forms or other screens based on what the current URL parameters are.
  * For instance, `/p2p-v2/my-profile?tab=Stats`:
- * - calling this hook returns `queryString` which is a Map that has a key of `tab` and value of `Stats`
- * - You can use this to conditionally render the `Stats` tab screen by checking if `queryString.get('tab') === 'Stats'`
+ * - calling this hook returns `queryString` which is an object that has a key of `tab` and value of `Stats`
+ * - You can use this to conditionally render the `Stats` tab screen by checking if `queryString.tab === 'Stats'`
  *
- * This avoids props drilling for passing boolean screen setters into its child components to switch between different screens/tabs
+ * This avoids props drilling for passing boolean screen setters into its child components to switch between different screens/tabs.
+ *
+ * @example
+ * // Call the hook and render the tab based on `?=tab...`
+ * const { queryString } = useQueryString()
+ *
+ * if (queryString.tab === 'Stats') {
+ *      // Show Stats component
+ * }
  */
 function useQueryString() {
-    const [params, setParams] = useState(() => new URLSearchParams(window.location.search));
-    const history = useHistory();
+    const [query, setQuery] = useQueryParams({
+        advertId: StringParam,
+        formAction: StringParam,
+        modal: StringParam,
+        paymentMethodId: StringParam,
+        tab: StringParam,
+    });
 
-    const syncParamsWithLifecycle = () => {
-        const newParams = new URLSearchParams(window.location.search);
-        history.replace({
-            pathname: location.pathname,
-            search: newParams.toString(),
-        });
-        setParams(newParams);
-    };
-
-    useEventListener('queryChange', syncParamsWithLifecycle);
-
-    function replaceQueryString<T extends keyof TQueryString>(queryString: Record<T, TQueryString[T]>) {
-        const replacedParams = payloadToParams(queryString);
-
-        history.replace({
-            pathname: window.location.pathname,
-            search: replacedParams.toString(),
-        });
-        setParams(replacedParams);
-        dispatchEvent(queryEvent);
+    /**
+     * Removes the query string from the URL search string.
+     * The rest of the query strings will be preserved.
+     *
+     * @param key - The search name to delete from the search string
+     *
+     * @example
+     * // Deletes the search name `tab` from the URL search string.
+     * // p2p-v2/my-profile?tab=Stats&modal=NicknameModal` ->  p2p-v2/my-profile?modal=NicknameModal`
+     * deleteQueryString('tab')
+     */
+    function deleteQueryString(key: keyof typeof query) {
+        setQuery(
+            {
+                [key]: undefined,
+            },
+            'pushIn'
+        );
     }
 
-    function deleteQueryString<T extends keyof TQueryString>(key: T) {
-        const newPayload = paramsToPayload(params);
-        delete newPayload[key];
-        const newParams = payloadToParams(newPayload);
-
-        history.replace({
-            pathname: window.location.pathname,
-            search: newParams.toString(),
-        });
-        setParams(newParams);
-        dispatchEvent(queryEvent);
-    }
-
-    function setQueryString<T extends keyof TQueryString>(
-        queryStrings: Record<T, TQueryString[T]>,
-        options?: TSetQueryStringOptions
-    ) {
-        const newParams = options?.clearAllQueries
-            ? payloadToParams(queryStrings)
-            : mergeParams(params, payloadToParams(queryStrings));
-
-        history.replace({
-            pathname: window.location.pathname,
-            search: newParams.toString(),
-        });
-        setParams(newParams);
-        dispatchEvent(queryEvent);
+    /**
+     * Add or replace a query string from the URL search string.
+     * The rest of the query strings will not be replaced unless specified in the argument.
+     *
+     * @param queryStrings - An object with the key as the search name, and value as the search value
+     *
+     * @example
+     * // Set a new query string 'modal' and replace the current query string 'tab' with 'Payment methods'
+     * // p2p-v2/my-profile?tab=Stats ->  p2p-v2/my-profile?tab=Payment+methods&modal=NicknameModal`
+     * setQueryString({
+     *      modal: 'NicknameModal',
+     *      tab: 'Payment methods'
+     * })
+     */
+    function setQueryString(queryStrings: Parameters<typeof setQuery>[0]) {
+        setQuery(queryStrings, 'pushIn');
     }
 
     return {
         deleteQueryString,
-        queryString: params,
-        replaceQueryString,
+        queryString: query,
         setQueryString,
     };
 }

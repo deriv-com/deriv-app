@@ -83,10 +83,10 @@
     },
     "dependencies": {
         "@deriv-com/analytics": "1.4.13",
-        "@deriv-com/utils": "latest",
+        "@deriv-com/utils": "^0.0.14",
         "@deriv/account": "^1.0.0",
         "@deriv/api": "^1.0.0",
-        "@deriv/api-types": "^1.0.118",
+        "@deriv/api-types": "^1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",
         "@deriv/hooks": "^1.0.0",

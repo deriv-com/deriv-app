@@ -1,3 +1,28 @@
+import {
+    DerivLightWalletIcon,
+    IconTypes,
+    PaymentMethodAdvcashBrandDarkIcon,
+    PaymentMethodAdvcashBrandIcon,
+    PaymentMethodAstropayBrandDarkIcon,
+    PaymentMethodAstropayBrandIcon,
+    PaymentMethodBeyonicBrandIcon,
+    PaymentMethodBoletoBrandIcon,
+    PaymentMethodBoletoWhiteIcon,
+    PaymentMethodJetonBrandIcon,
+    PaymentMethodMastercardBrandDarkIcon,
+    PaymentMethodMastercardBrandIcon,
+    PaymentMethodNetellerBrandIcon,
+    PaymentMethodNetellerWhiteIcon,
+    PaymentMethodOnlinenairaBrandDarkIcon,
+    PaymentMethodOnlinenairaBrandIcon,
+    PaymentMethodSkrillBrandIcon,
+    PaymentMethodSkrillWhiteIcon,
+    PaymentMethodSticpayBrandIcon,
+    PaymentMethodVisaBrandIcon,
+    PaymentMethodVisaWhiteIcon,
+} from '@deriv/quill-icons';
+import { TPaymentMethod } from 'src/types';
+
 /* eslint-disable sonarjs/no-duplicate-string */
 export const PAYMENT_METHOD_IDENTIFIER = Object.freeze({
     accountID: 'account_id',
@@ -71,3 +96,72 @@ export const getPaymentMethodsConfig = () => ({
         inputLabel: 'Bank account number',
     },
 });
+
+type TPaymentMethodIcon = Record<TPaymentMethod, { dark: IconTypes; light: IconTypes }>;
+
+export const getPaymentMethodIcon: TPaymentMethodIcon = {
+    advcash: {
+        dark: PaymentMethodAdvcashBrandDarkIcon,
+        light: PaymentMethodAdvcashBrandIcon,
+    },
+    astropay: {
+        dark: PaymentMethodAstropayBrandDarkIcon,
+        light: PaymentMethodAstropayBrandIcon,
+    },
+    beyonic: {
+        dark: PaymentMethodBeyonicBrandIcon,
+        light: PaymentMethodBeyonicBrandIcon,
+    },
+    'boleto (d24 voucher)': {
+        dark: PaymentMethodBoletoWhiteIcon,
+        light: PaymentMethodBoletoBrandIcon,
+    },
+    jeton: {
+        dark: PaymentMethodJetonBrandIcon,
+        light: PaymentMethodJetonBrandIcon,
+    },
+    mastercard: {
+        dark: PaymentMethodMastercardBrandDarkIcon,
+        light: PaymentMethodMastercardBrandIcon,
+    },
+    neteller: {
+        dark: PaymentMethodNetellerWhiteIcon,
+        light: PaymentMethodNetellerBrandIcon,
+    },
+    onlinenaira: {
+        dark: PaymentMethodOnlinenairaBrandDarkIcon,
+        light: PaymentMethodOnlinenairaBrandIcon,
+    },
+    other: {
+        // TODO: Change this icon once actual icon is available
+        dark: DerivLightWalletIcon,
+        light: DerivLightWalletIcon,
+    },
+    pix: {
+        // TODO: Change this icon once actual icon is available
+        dark: DerivLightWalletIcon,
+        light: DerivLightWalletIcon,
+    },
+    skrill: {
+        dark: PaymentMethodSkrillWhiteIcon,
+        light: PaymentMethodSkrillBrandIcon,
+    },
+    sticpay: {
+        dark: PaymentMethodSticpayBrandIcon,
+        light: PaymentMethodSticpayBrandIcon,
+    },
+    visa: {
+        dark: PaymentMethodVisaWhiteIcon,
+        light: PaymentMethodVisaBrandIcon,
+    },
+    webmoney: {
+        // TODO: Change this icon once actual icon is available
+        dark: DerivLightWalletIcon,
+        light: DerivLightWalletIcon,
+    },
+    zingpay: {
+        // TODO: Change this icon once actual icon is available
+        dark: DerivLightWalletIcon,
+        light: DerivLightWalletIcon,
+    },
+};

@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
-import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
 import useCurrencyConfig from './useCurrencyConfig';
 import { displayMoney } from '../utils';
+import useAuthorizedQuery from '../useAuthorizedQuery';
 
 /** A custom hook that returns the list of accounts for the current user. */
 const useDerivAccountsList = () => {
-    const { data: authorize_data, isSuccess } = useAuthorize();
-    const { data: account_list_data, ...rest } = useQuery('account_list', {
-        options: {
-            enabled: isSuccess,
-            refetchOnWindowFocus: false,
-        },
+    const { data: authorize_data } = useAuthorize();
+
+    // its pretty much stale data, so never refresh, unless user creates a new account
+    const { data: account_list_data, ...rest } = useAuthorizedQuery('account_list', undefined, {
+        staleTime: Infinity,
     });
+
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
 

@@ -135,8 +135,8 @@ const ProofOfIdentityContainer = observer(
                 />
             </Button>
         );
-
         const should_show_mismatch_form =
+            identity_status != identity_status_codes.verified &&
             idv.submissions_left > 0 &&
             [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
                 idv.status

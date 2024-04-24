@@ -116,7 +116,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
     // set login ID once wallet changes
     useEffect(() => {
-        if (activeWallet) {
+        if (activeWallet?.loginid) {
             setSelectedLoginId(activeWallet?.loginid);
         }
     }, [activeWallet?.loginid]);

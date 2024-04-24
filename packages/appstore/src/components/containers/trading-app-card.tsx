@@ -58,7 +58,7 @@ const TradingAppCard = ({
         client,
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
+    const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
     const { account_status: { authentication } = {} } = client;
@@ -99,7 +99,7 @@ const TradingAppCard = ({
         Analytics.trackEvent('ce_tradershub_dashboard_form', {
             action: 'account_logo_push',
             form_name: 'traders_hub_default',
-            account_mode: document.getElementById('dropdown-display')?.innerText,
+            account_mode: selected_account_type,
             account_name: !is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name,
         });
         if (is_deriv_platform) {

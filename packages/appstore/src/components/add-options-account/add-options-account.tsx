@@ -8,7 +8,7 @@ import { Analytics } from '@deriv-com/analytics';
 
 const AddOptions = observer(() => {
     const { client, traders_hub, ui } = useStore();
-    const { is_real, content_flag } = traders_hub;
+    const { is_real, content_flag, selected_account_type } = traders_hub;
     const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const { real_account_creation_unlock_date } = client;
 
@@ -33,7 +33,7 @@ const AddOptions = observer(() => {
                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
                             action: 'account_get',
                             form_name: 'traders_hub_default',
-                            account_mode: document.getElementById('dropdown-display')?.innerText,
+                            account_mode: selected_account_type,
                             account_name: 'cfd_banner',
                         });
                         if (is_real && eu_user) {

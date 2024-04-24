@@ -29,7 +29,7 @@ const AccountTypeDropdown = observer(() => {
                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
                         action: 'switch_account_mode',
                         form_name: 'traders_hub_default',
-                        account_mode: document.getElementById('dropdown-display')?.innerText,
+                        account_mode: selected_account_type,
                     });
                 }}
             />

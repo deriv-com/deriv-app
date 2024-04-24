@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 
 type TCompareAccount = {
     accounts_sub_text: string;
@@ -12,6 +13,8 @@ type TCompareAccount = {
 
 const CompareAccount = ({ accounts_sub_text, is_desktop }: TCompareAccount) => {
     const history = useHistory();
+    const { traders_hub } = useStore();
+    const { selected_account_type } = traders_hub;
     return (
         <div
             className='cfd-accounts__compare-table-title'
@@ -20,7 +23,7 @@ const CompareAccount = ({ accounts_sub_text, is_desktop }: TCompareAccount) => {
                 Analytics.trackEvent('ce_tradershub_dashboard_form', {
                     action: 'compare_accounts_push',
                     form_name: 'traders_hub_default',
-                    account_mode: document.getElementById('dropdown-display')?.innerText,
+                    account_mode: selected_account_type,
                 });
             }}
         >

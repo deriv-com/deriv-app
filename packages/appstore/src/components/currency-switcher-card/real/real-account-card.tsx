@@ -19,7 +19,7 @@ const RealAccountCard = observer(() => {
     const { accounts, loginid } = client;
     const { current_language } = common;
     const { current_list } = modules.cfd;
-    const { openModal, is_eu_user } = traders_hub;
+    const { openModal, is_eu_user, selected_account_type } = traders_hub;
 
     const { balance, currency } = loginid ? accounts[loginid] : default_balance;
 
@@ -54,7 +54,7 @@ const RealAccountCard = observer(() => {
                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                 action: 'deposit_balance',
                                 form_name: 'traders_hub_default',
-                                account_mode: document.getElementById('dropdown-display')?.innerText,
+                                account_mode: selected_account_type,
                             });
                             e.stopPropagation();
                             history.push(`${routes.cashier_deposit}#deposit`);

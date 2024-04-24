@@ -7,14 +7,15 @@ import classNames from 'classnames';
 import './app.scss';
 
 const AppContent: React.FC = observer(() => {
-    const { ui } = useStore();
+    const { ui, traders_hub } = useStore();
     const { is_dark_mode_on } = ui;
+    const { selected_account_type } = traders_hub;
 
     useEffect(() => {
         Analytics.trackEvent('ce_tradershub_dashboard_form', {
             action: 'open',
             form_name: 'traders_hub_default',
-            account_mode: document.getElementById('dropdown-display')?.innerText,
+            account_mode: selected_account_type,
         });
     }, []);
 

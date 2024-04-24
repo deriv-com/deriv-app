@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
 import { routes, isDisabledLandscapeBlockerRoute } from '@deriv/shared';
 import { DesktopWrapper } from '@deriv/components';
-import DefaultFooter from './default-footer';
 import TradingHubFooter from './trading-hub-footer';
 
 const Footer = () => {
@@ -21,20 +20,13 @@ const Footer = () => {
             if (isDesktop) return <TradingHubFooter />;
             if (isTablet && show_in_tablet_routes.includes(pathname)) return <TradingHubFooter />;
             return null;
-        } return (
-                <DesktopWrapper>
-                    <TradingHubFooter />
-                </DesktopWrapper>
-            );
+        }
+        return (
+            <DesktopWrapper>
+                <TradingHubFooter />
+            </DesktopWrapper>
+        );
     }
-
-    // this is unreachable code for now, but I didn't delete it.
-    // because later we can change the conditions above and show default footer
-    return (
-        <DesktopWrapper>
-            <DefaultFooter />
-        </DesktopWrapper>
-    );
 };
 
 export default Footer;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { isDisabledLandscapeRoute } from '@deriv/shared';
+import { isDisabledLandscapeBlockerRoute } from '@deriv/shared';
 import './landscape-blocker.scss';
 
 const LandscapeBlocker = () => {
     const location = useLocation();
     const pathname = location?.pathname;
-    const is_hidden_landscape_blocker = isDisabledLandscapeRoute(pathname);
+    const is_hidden_landscape_blocker = isDisabledLandscapeBlockerRoute(pathname);
 
     if (is_hidden_landscape_blocker) return null;
 

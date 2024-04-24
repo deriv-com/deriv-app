@@ -1,11 +1,8 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDevice } from '@deriv-com/ui';
 import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
-import { DesktopWrapper } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
-import { getAppId, LocalStore, useIsMounted, isDisabledLandscapeRoute } from '@deriv/shared';
+import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -26,12 +23,8 @@ import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
-    const { isDesktop } = useDevice();
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
-    const location = useLocation();
-    const pathname = location?.pathname;
-    const is_hidden_landscape_blocker = isDisabledLandscapeRoute(pathname);
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -87,13 +80,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            {is_hidden_landscape_blocker ? (
-                isDesktop && <Footer />
-            ) : (
-                <DesktopWrapper>
-                    <Footer />
-                </DesktopWrapper>
-            )}
+            <Footer />
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>

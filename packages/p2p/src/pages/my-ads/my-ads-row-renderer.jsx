@@ -15,10 +15,17 @@ import { api_error_codes } from 'Constants/api-error-codes';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
 
-const MyAdsRowDropdown = ({ handleBlur, is_advert_active, is_disabled, is_nativepicker_visible, onSelectMore }) => {
+const MyAdsRowDropdown = ({
+    className,
+    handleBlur,
+    is_advert_active,
+    is_disabled,
+    is_nativepicker_visible,
+    onSelectMore,
+}) => {
     return (
         <Dropdown
-            className='my-ads-table__status-more'
+            className={classNames(className, 'my-ads-table__status-more')}
             classNameDisplay='my-ads-table__status-more--display'
             disabled={is_disabled}
             handleBlur={handleBlur}
@@ -54,7 +61,7 @@ const MyAdsRowDropdown = ({ handleBlur, is_advert_active, is_disabled, is_native
     );
 };
 
-const MyAdsRowRenderer = observer(({ row: advert }) => {
+const MyAdsRowRenderer = observer(({ row: advert, table_ref }) => {
     const {
         ui: { is_desktop },
     } = useStore();
@@ -81,7 +88,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         type,
         visibility_status = [],
     } = advert;
-
+    const row_ref = React.useRef(null);
+    const [is_custom_dropdown, setIsCustomDropdown] = React.useState(false);
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [show_warning_icon, setShowWarningIcon] = React.useState(false);
@@ -170,6 +178,9 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
+        my_ads_store.setTableHeight(my_ads_store.table_height + row_ref?.current?.clientHeight);
+        setIsCustomDropdown(table_ref?.current?.clientHeight - my_ads_store.table_height < 260);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -310,7 +321,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     }
 
     return (
-        <div>
+        <div ref={row_ref}>
             <Table.Row
                 className={classNames('my-ads-table__row', {
                     'my-ads-table__row-disabled': !is_advert_active,
@@ -398,6 +409,9 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                     </Popover>
                     {is_advert_menu_visible && (
                         <MyAdsRowDropdown
+                            className={classNames({
+                                'my-ads-table__dropdown-custom': is_custom_dropdown,
+                            })}
                             handleBlur={() => setIsAdvertMenuVisible(false)}
                             is_advert_active={is_advert_active}
                             is_disabled={general_store.is_barred}

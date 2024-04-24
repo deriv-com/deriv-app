@@ -276,6 +276,11 @@
             .dc-list {
                 right: 0;
 
+                @include rtl {
+                    left: 0;
+                    right: unset;
+                }
+
                 @include desktop {
                     margin-top: 4.5rem;
                 }
@@ -284,6 +289,10 @@
             .suffix-icon {
                 top: 0.8rem;
                 left: 0.8rem;
+
+                @include rtl {
+                    margin-right: 0;
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui';
+import { EXTERNAL_LINKS } from 'src/constants';
 import { TPaymentMethod } from 'src/types';
 
 type TPaymentMethodInstructionsProps = { paymentMethod: TPaymentMethod };
@@ -22,11 +23,11 @@ export const PaymentMethodInstructions = ({ paymentMethod }: TPaymentMethodInstr
                     </Text>
                     <a
                         aria-label='Read more on AstroPay'
-                        href='https://app.astropay.com/profile'
+                        href={EXTERNAL_LINKS.astroPayURL}
                         rel='noreferrer'
                         target='_blank'
                     >
-                        <Text size='xs'>https://app.astropay.com/profile</Text>
+                        <Text size='xs'>{EXTERNAL_LINKS.astroPayURL}</Text>
                     </a>
                 </div>
             );
@@ -69,11 +70,11 @@ export const PaymentMethodInstructions = ({ paymentMethod }: TPaymentMethodInstr
                         <span>Upload a screenshot of your account profile section on the website.</span>
                         <a
                             aria-label='Read more on OnlineNaira'
-                            href='https://onlinenaira.com/members/index.htm'
+                            href={EXTERNAL_LINKS.onlinenairaProfileURL}
                             rel='noreferrer'
                             target='_blank'
                         >
-                            https://onlinenaira.com/members/index.htm
+                            {EXTERNAL_LINKS.onlinenairaProfileURL}
                         </a>
                     </Text>
                     <Text as='li' size='xs'>
@@ -83,11 +84,11 @@ export const PaymentMethodInstructions = ({ paymentMethod }: TPaymentMethodInstr
                         </span>
                         <a
                             aria-label='Read more on OnlineNaira'
-                            href='https://onlinenaira.com/members/bank.htm'
+                            href={EXTERNAL_LINKS.onlinenairaBankURL}
                             rel='noreferrer'
                             target='_blank'
                         >
-                            https://onlinenaira.com/members/bank.htm
+                            {EXTERNAL_LINKS.onlinenairaBankURL}
                         </a>
                     </Text>
                 </ol>

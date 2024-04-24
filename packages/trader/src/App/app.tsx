@@ -11,6 +11,7 @@ import 'Sass/app.scss';
 import type { TCoreStores } from '@deriv/stores/types';
 import { useDevice } from '@deriv-com/ui';
 import TraderProviders from '../trader-providers';
+import { isTabletOs } from '@deriv/shared';
 
 type Apptypes = {
     passthrough: {
@@ -26,39 +27,22 @@ const TradeModals = Loadable({
 
 const App = ({ passthrough }: Apptypes) => {
     const root_store = initStore(passthrough.root_store, passthrough.WS);
-    const { isTabletPortrait, isTablet } = useDevice();
-    const isRealTablet = /ipad|android|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(
-        navigator.userAgent.toLowerCase()
-    );
+    const { isTabletPortrait } = useDevice();
 
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, [root_store]);
 
     React.useEffect(() => {
-        const landscapeBlockerElement = document.querySelector('.landscape-blocker');
-        const isDesktopTablet = (isTablet || isTabletPortrait) && !isRealTablet;
-        if (landscapeBlockerElement && !isDesktopTablet) {
-            landscapeBlockerElement.classList.add('landscape-blocker--hidden');
-        }
-
-        return () => {
-            if (landscapeBlockerElement) {
-                landscapeBlockerElement.classList.remove('landscape-blocker--hidden');
-            }
-        };
-    }, [isRealTablet, isTablet, isTabletPortrait]);
-
-    React.useEffect(() => {
         const html = document.querySelector('html');
-        if (isTabletPortrait && isRealTablet) {
+        if (isTabletPortrait && isTabletOs) {
             html?.classList.add('tablet-landscape');
         }
 
         return () => {
             html?.classList.remove('tablet-landscape');
         };
-    }, [isRealTablet, isTabletPortrait]);
+    }, [isTabletPortrait]);
 
     return (
         <TraderProviders store={root_store}>

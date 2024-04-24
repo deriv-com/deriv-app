@@ -20,6 +20,7 @@ import AppModals from './Containers/Modals';
 import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
+import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
@@ -72,6 +73,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     return (
         <PlatformContainer>
+            <LandscapeBlocker />
             <Header />
             <ErrorBoundary root_store={store}>
                 <AppContents>

@@ -5,17 +5,16 @@ import { TTransferableAccounts, TTransferFormikContext } from '../../../../types
 import { TransferDropdown } from './components';
 import styles from './TransferAccountSelection.module.scss';
 
-const TransferAccountSelection = () => {
+type TProps = {
+    fromAccountLimit?: number;
+};
+
+const TransferAccountSelection: React.FC<TProps> = ({ fromAccountLimit }) => {
     const { setValues, values } = useFormikContext<TTransferFormikContext>();
     const { accountLimits, accounts, setTransferValidationSchema } = useTransfer();
 
     const { fromAccount, toAccount } = values;
     const filteredToAccounts = accounts?.filter(account => account.loginid !== fromAccount?.loginid);
-
-    const dailyTransferCountLimit =
-        accountLimits?.daily_transfers && fromAccount?.account_type && fromAccount?.account_type === 'binary'
-            ? accountLimits?.daily_transfers.internal.available
-            : accountLimits?.daily_transfers[fromAccount?.account_type];
 
     useEffect(() => {
         if (fromAccount && toAccount) {
@@ -45,7 +44,7 @@ const TransferAccountSelection = () => {
                 label='To'
                 message={
                     accountLimits?.daily_transfers && fromAccount?.account_type
-                        ? `You have ${dailyTransferCountLimit} transfers remaining for today.`
+                        ? `You have ${fromAccountLimit} transfers remaining for today.`
                         : ''
                 }
                 onSelect={onSelectToAccount}

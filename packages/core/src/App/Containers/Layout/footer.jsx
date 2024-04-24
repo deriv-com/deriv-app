@@ -13,9 +13,7 @@ const Footer = () => {
 
     if (pathname === routes.onboarding) {
         return null;
-    }
-
-    if (pathname !== routes.onboarding) {
+    } 
         if (is_hidden_landscape_blocker) {
             if (isDesktop) return <TradingHubFooter />;
             if (isTablet && show_in_tablet_routes.includes(pathname)) return <TradingHubFooter />;
@@ -26,7 +24,7 @@ const Footer = () => {
                 <TradingHubFooter />
             </DesktopWrapper>
         );
-    }
+    
 };
 
 export default Footer;

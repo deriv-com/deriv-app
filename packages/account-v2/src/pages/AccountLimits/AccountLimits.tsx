@@ -25,7 +25,7 @@ export const AccountLimits = () => {
         const tableData = getAccountLimitValues(accountLimits, currency, isAuthenticated);
 
         return (
-            <div className='grid md:grid-cols-[auto,256px] gap-16'>
+            <div className='sm:flex sm:flex-col-reverse md:grid md:grid-cols-[auto,256px] gap-16'>
                 <AccountLimitsTable accountLimitValues={tableData} />
                 <AccountLimitsSideNote />
             </div>

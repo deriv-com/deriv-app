@@ -1,5 +1,6 @@
 import React from 'react';
 import { PaymentMethodCard } from '@/components';
+import { useIsAdvertiser } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 import { LabelPairedPlusLgBoldIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
@@ -10,7 +11,8 @@ type TSellAdPaymentSelectionProps = {
     selectedPaymentMethodIds: number[];
 };
 const SellAdPaymentSelection = ({ onSelectPaymentMethod, selectedPaymentMethodIds }: TSellAdPaymentSelectionProps) => {
-    const { data: advertiserPaymentMethods } = p2p.advertiserPaymentMethods.useGet();
+    const isAdvertiser = useIsAdvertiser();
+    const { data: advertiserPaymentMethods } = p2p.advertiserPaymentMethods.useGet(isAdvertiser);
 
     return (
         <div className='p2p-v2-sell-ad-payment-selection__card'>

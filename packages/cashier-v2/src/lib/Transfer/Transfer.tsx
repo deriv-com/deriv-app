@@ -27,7 +27,12 @@ const TransferModule: React.FC<TTransferModuleProps> = ({ accounts }) => {
     if (isLoading) return <Loader />;
 
     return (
-        <TransferProvider accounts={accounts} activeAccount={activeAccount} getConfig={getConfig}>
+        <TransferProvider
+            accountLimits={accountLimits}
+            accounts={accounts}
+            activeAccount={activeAccount}
+            getConfig={getConfig}
+        >
             <Transfer />
         </TransferProvider>
     );

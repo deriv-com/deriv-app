@@ -142,7 +142,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                                     error={Boolean(errors.toAmount)}
                                     isFullWidth
                                     label={`Amount (${toAccount.currency})`}
-                                    message={errors.toAmount}
+                                    message={errors.toAmount ?? 'Approximate value'}
                                     onChange={handleToAmountChange}
                                     onFocus={() => {
                                         setIsFromInputField(false);

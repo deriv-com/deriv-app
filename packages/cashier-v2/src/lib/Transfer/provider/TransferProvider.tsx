@@ -7,6 +7,7 @@ import { useExtendedTransferAccounts } from '../hooks';
 import type { TTransferableAccounts, TTransferReceipt } from '../types';
 
 export type TTransferContext = {
+    accountLimits?: THooks.AccountLimits;
     accounts: TTransferableAccounts;
     activeAccount?: TTransferableAccounts[number];
     isTransferring: boolean;
@@ -37,18 +38,21 @@ export const useTransfer = () => {
 };
 
 type TTransferProviderProps = {
+    accountLimits: THooks.AccountLimits;
     accounts: THooks.TransferAccounts;
     activeAccount: THooks.ActiveAccount;
     getConfig: THooks.GetCurrencyConfig;
 };
 
 const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>> = ({
+    accountLimits,
     accounts,
     activeAccount,
     children,
     getConfig,
 }) => {
     const { data, isLoading: isTransferring, mutate, mutateAsync } = useTransferBetweenAccounts();
+
     const { accounts: transferAccounts, activeAccount: transferActiveAccount } = useExtendedTransferAccounts(
         activeAccount,
         getConfig,
@@ -110,6 +114,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     return (
         <TransferContext.Provider
             value={{
+                accountLimits,
                 accounts: transferAccounts,
                 activeAccount: transferActiveAccount,
                 isTransferring,

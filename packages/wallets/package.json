@@ -16,7 +16,7 @@
         "@deriv-com/utils": "^0.0.14",
         "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
-        "@deriv/quill-icons": "^1.22.3",
+        "@deriv/quill-icons": "^1.22.4",
         "@deriv/react-joyride": "^2.6.2",
         "@deriv/utils": "^1.0.0",
         "@tanstack/react-table": "^8.10.3",

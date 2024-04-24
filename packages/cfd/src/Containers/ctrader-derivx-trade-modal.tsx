@@ -32,6 +32,7 @@ type TTradeModalProps = {
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
+    ctraderTokenCall: () => void;
     is_demo: string;
     platform: TCFDsPlatformType;
     is_mobile?: boolean;
@@ -80,6 +81,7 @@ const CTraderDerivXTradeModal = ({
     toggleModal,
     dxtrade_tokens,
     ctrader_tokens,
+    ctraderTokenCall,
     is_demo,
     platform,
     is_mobile,
@@ -193,6 +195,7 @@ const CTraderDerivXTradeModal = ({
                     is_demo={is_demo}
                     dxtrade_tokens={dxtrade_tokens}
                     ctrader_tokens={ctrader_tokens}
+                    ctraderTokenCall={ctraderTokenCall}
                 />
             </div>
         );

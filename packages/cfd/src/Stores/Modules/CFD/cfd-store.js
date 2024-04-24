@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
+import { action, computed, observable, runInAction, makeObservable, override } from 'mobx';
 import {
     getAccountListKey,
     getAccountTypeFields,
@@ -146,24 +146,6 @@ export default class CFDStore extends BaseStore {
             setIsMt5PasswordInvalidFormatModalVisible: action.bound,
             setIsMt5PasswordChangedModalVisible: action.bound,
         });
-
-        // reaction(
-        //     () => [this.root_store.client.dxtrade_accounts_list],
-        //     () => {
-        //         if (this.root_store.client.dxtrade_accounts_list.length > 0) {
-        //             this.loadDxtradeTokens();
-        //         }
-        //     }
-        // );
-
-        reaction(
-            () => [this.root_store.client.ctrader_accounts_list],
-            () => {
-                if (this.root_store.client.ctrader_accounts_list.length > 0) {
-                    this.loadCTraderTokens();
-                }
-            }
-        );
     }
 
     get account_title() {

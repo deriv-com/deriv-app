@@ -64,12 +64,14 @@ type TPlatformsDesktopDownload = {
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
     is_demo: string;
+    ctraderTokenCall: () => void;
 };
 
 export const PlatformsDesktopDownload = ({
     platform,
     dxtrade_tokens,
     ctrader_tokens,
+    ctraderTokenCall,
     is_demo,
 }: TPlatformsDesktopDownload) => {
     const PlatformsDesktopDownloadLinks = () => {
@@ -96,6 +98,7 @@ export const PlatformsDesktopDownload = ({
                 href={PlatformsDesktopDownloadLinks()}
                 target='_blank'
                 rel='noopener noreferrer'
+                onClick={ctraderTokenCall}
             >
                 {platform === CFD_PLATFORMS.CTRADER ? (
                     <Icon

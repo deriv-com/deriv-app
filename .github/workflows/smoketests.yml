@@ -28,7 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
     - name: Checkout external repository with Cypress tests
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      uses: actions/checkout@v4
       with:
         repository: deriv-com/e2e-deriv-app
 
@@ -40,7 +40,7 @@ jobs:
         # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
         record: true
         parallel: true # Runs test in parallel using settings above
-        spec: cypress/e2e/smoke/*.js
+        spec: cypress/e2e/api/oAuthLogin.cy.js
         group: 'Smoke Tests'
         
       env:
@@ -52,7 +52,7 @@ jobs:
         # Set Base Url from client_payload.
         CYPRESS_BASE_URL: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
         # Send PR details to Cypress test run
-        COMMIT_INFO_MESSAGE: PR "${{ github.event.issue.number }}" in Repo "${{ github.repository }}"
+        COMMIT_INFO_MESSAGE: PR "${{ github.event.issue_number }}" Changed By "${{ github.event.pull_request.user.login }}" in Branch "${{ github.head_ref }}" (draft? "${{ github.event.pull_request.draft }} )"
         # Set login env variables
         E2E_OAUTH_URL: ${{ secrets.E2E_OAUTH_URL }}
         E2E_CONFIG_APPID: ${{ secrets.E2E_CONFIG_APPID }}

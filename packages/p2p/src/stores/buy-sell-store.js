@@ -2,6 +2,7 @@ import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { formatMoney, getDecimalPlaces } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
@@ -32,6 +33,7 @@ export default class BuySellStore extends BaseStore {
     show_advertiser_page = false;
     show_filter_payment_methods = false;
     sort_by = 'rate';
+    submitForm = null;
     table_type = buy_sell.BUY;
     form_props = {};
     is_create_order_subscribed = false;
@@ -71,6 +73,7 @@ export default class BuySellStore extends BaseStore {
             show_advertiser_page: observable,
             show_filter_payment_methods: observable,
             sort_by: observable,
+            submitForm: observable,
             table_type: observable,
             form_props: observable,
             is_create_order_subscribed: observable,
@@ -114,6 +117,7 @@ export default class BuySellStore extends BaseStore {
             setShowAdvertiserPage: action.bound,
             setShowFilterPaymentMethods: action.bound,
             setSortBy: action.bound,
+            setSubmitForm: action.bound,
             setTableType: action.bound,
             setSelectedAdvert: action.bound,
             showAdvertiserPage: action.bound,
@@ -185,12 +189,22 @@ export default class BuySellStore extends BaseStore {
 
     handleResponse = async order => {
         const { sendbird_store, order_store, general_store } = this.root_store;
-        const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
+        const { setErrorMessage, setHasRateChanged, handleConfirm, handleClose } = this.form_props;
         const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
 
         if (error) {
-            setErrorMessage(error.message);
-            this.setFormErrorCode(error.code);
+            const { code, message } = error;
+
+            if (code === api_error_codes.ORDER_CREATE_FAIL_RATE_SLIPPAGE) {
+                general_store.showModal({
+                    key: 'MarketRateChangeErrorModal',
+                    props: { message },
+                });
+                setHasRateChanged(true);
+            } else {
+                setErrorMessage(message);
+                this.setFormErrorCode(code);
+            }
         } else {
             if (subscription?.id && !this.is_create_order_subscribed) {
                 this.setIsCreateOrderSubscribed(true);
@@ -360,6 +374,10 @@ export default class BuySellStore extends BaseStore {
 
     setSortBy(sort_by) {
         this.sort_by = sort_by;
+    }
+
+    setSubmitForm(submitForm) {
+        this.submitForm = submitForm;
     }
 
     setTableType(table_type) {

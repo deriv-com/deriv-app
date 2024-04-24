@@ -52,7 +52,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             title: localize('Spreads from'),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('0.6 pips'),
+                display_text: localize('1.4 pips'),
                 display_text_skin_color: 'violet-dark',
             },
         },

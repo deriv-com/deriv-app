@@ -1,7 +1,9 @@
 import { unix } from 'dayjs';
+import { FormikValues } from 'formik';
 import * as Yup from 'yup';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 import { ValidationConstants } from '@deriv-com/utils';
+import { IDV_ERROR_CODES } from '../constants';
 import { TGetSettingsResponse } from '../types';
 
 type TInitialValues = {
@@ -130,7 +132,7 @@ export const getPersonalDetailsBaseValidationSchema = () => {
             .min(2, characterLengthMessage)
             .max(50, characterLengthMessage)
             .matches(regexPattern.name, 'Letters, spaces, periods, hyphens, apostrophes only.'),
-        nameDOBConfirmation: Yup.boolean().required(),
+        nameDOBConfirmation: Yup.boolean().required().oneOf([true], 'Please confirm your name and date of birth.'),
         phoneNumber: Yup.string()
             .required('Phone number is required.')
             .matches(regexPattern.phoneNumber, 'Please enter a valid phone number.')
@@ -195,14 +197,48 @@ export const isFieldDisabled = (accountSettings: GetSettings, fieldName: string)
     return accountSettings?.immutable_fields?.includes(fieldName);
 };
 
-export const generateNameDOBPayloadData = (values: Yup.InferType<ReturnType<typeof getNameDOBValidationSchema>>) => ({
-    date_of_birth: values.dateOfBirth.toString(),
-    first_name: values.firstName.trim(),
-    last_name: values.lastName.trim(),
-});
+export const generateNameDOBPayloadData = (
+    values: Yup.InferType<ReturnType<typeof getNameDOBValidationSchema>>,
+    errorStatus: string | null
+) => {
+    const fields = generateRequiredNameDOBFields(errorStatus);
 
-export const generateNameDOBFormData = (values: TGetSettingsResponse) => ({
-    dateOfBirth: values.date_of_birth ? unix(values.date_of_birth as number).format('YYYY-MM-DD') : '',
-    firstName: values.first_name,
-    lastName: values.last_name,
-});
+    return fields.reduce((acc: FormikValues, field) => {
+        if (field === 'dateOfBirth') {
+            acc.date_of_birth = values.dateOfBirth.toString();
+        } else if (field === 'firstName') {
+            acc.first_name = values.firstName.trim();
+        } else if (field === 'lastName') {
+            acc.last_name = values.lastName.trim();
+        }
+        return acc;
+    }, {});
+};
+
+const keysList = getNameDOBValidationSchema().fields;
+
+type TFieldsToDisplay = keyof typeof keysList;
+
+export const generateRequiredNameDOBFields = (errorStatus: string | null): TFieldsToDisplay[] => {
+    if (errorStatus === IDV_ERROR_CODES.nameMismatch.code) {
+        return ['firstName', 'lastName', 'nameDOBConfirmation'];
+    } else if (errorStatus === IDV_ERROR_CODES.dobMismatch.code) {
+        return ['dateOfBirth', 'nameDOBConfirmation'];
+    }
+    return ['firstName', 'lastName', 'dateOfBirth', 'nameDOBConfirmation'];
+};
+
+export const generateNameDOBFormData = (values: TGetSettingsResponse, errorStatus: string | null) => {
+    const fields = generateRequiredNameDOBFields(errorStatus);
+
+    return fields.reduce((acc: FormikValues, field) => {
+        if (field === 'dateOfBirth') {
+            acc[field] = values.date_of_birth ? unix(values.date_of_birth).format('YYYY-MM-DD') : '';
+        } else if (field === 'firstName') {
+            acc[field] = values.first_name;
+        } else if (field === 'lastName') {
+            acc[field] = values.last_name;
+        }
+        return acc;
+    }, {});
+};

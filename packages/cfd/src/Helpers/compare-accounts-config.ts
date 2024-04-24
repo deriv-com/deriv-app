@@ -218,7 +218,8 @@ const getJuridisctionDescription = (shortcode: string) => {
         regulator: string,
         regulator_license: string | undefined,
         regulator_description: string,
-        leverage: string = cfd_config().leverage
+        leverage: string = cfd_config().leverage,
+        spread: string = cfd_config().spread
     ) => ({
         ...cfd_config(),
         counterparty_company,
@@ -227,6 +228,7 @@ const getJuridisctionDescription = (shortcode: string) => {
         regulator_license,
         regulator_description,
         leverage,
+        spread,
     });
 
     switch (shortcode) {
@@ -255,7 +257,8 @@ const getJuridisctionDescription = (shortcode: string) => {
                 localize('Labuan Financial Services Authority'),
                 localize('(licence no. MB/18/0024)'),
                 localize('Regulator/External dispute resolution'),
-                '1:100'
+                '1:100',
+                '1.4 pips'
             );
         case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
             return createDescription(

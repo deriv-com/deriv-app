@@ -1,11 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { OpenPositionsTable } from '../open-positions';
-import { isMobile } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 describe('OpenPositionsTable', () => {
@@ -21,7 +20,7 @@ describe('OpenPositionsTable', () => {
     });
 
     it('should render "DataList" component and it\'s properties when "is_loading" property is "false" and the "currency" property is passed in the "mobile" view', () => {
-        isMobile.mockReturnValue(true);
+        useDevice.mockImplementation(() => ({ isDesktop: false }));
         render(<OpenPositionsTable currency='USD' active_positions={[100]} columns={[]} className='test-class' />);
         expect(screen.getByTestId('dt_data_list')).toBeInTheDocument();
         expect(screen.getByTestId('dt_data_list')).toHaveClass('test-class');

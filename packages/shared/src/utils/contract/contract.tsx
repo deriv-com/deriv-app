@@ -122,21 +122,21 @@ export const getCancellationPrice = (contract_info: TContractInfo) => {
 
 export const isEnded = (contract_info: TContractInfo) =>
     !!(
-        (contract_info.status && contract_info.status !== 'open') ||
-        contract_info.is_expired ||
-        contract_info.is_settleable
+        (contract_info?.status && contract_info.status !== 'open') ||
+        contract_info?.is_expired ||
+        contract_info?.is_settleable
     );
 
 export const isOpen = (contract_info: TContractInfo) => getContractStatus(contract_info) === 'open';
 
-export const isUserSold = (contract_info: TContractInfo) => contract_info.status === 'sold';
+export const isUserSold = (contract_info: TContractInfo) => contract_info?.status === 'sold';
 
-export const isValidToCancel = (contract_info: TContractInfo) => !!contract_info.is_valid_to_cancel;
+export const isValidToCancel = (contract_info: TContractInfo) => !!contract_info?.is_valid_to_cancel;
 
 export const isValidToSell = (contract_info: TContractInfo) =>
-    !isEnded(contract_info) && !isUserSold(contract_info) && !!contract_info.is_valid_to_sell;
+    !isEnded(contract_info) && !isUserSold(contract_info) && !!contract_info?.is_valid_to_sell;
 
-export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
+export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info?.entry_spot;
 
 export const hasBarrier = (contract_type = '') => /VANILLA|TURBOS|HIGH_LOW|TOUCH/i.test(contract_type);
 

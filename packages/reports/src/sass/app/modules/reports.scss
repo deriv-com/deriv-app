@@ -12,7 +12,7 @@ $side-padding: 1.2em;
         justify-content: space-between;
         padding: 0 2.4rem 1.6rem 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0 1.6rem 1.6rem;
         }
 
@@ -23,22 +23,22 @@ $side-padding: 1.2em;
             position: relative;
             display: flex;
             width: 100%;
-            @include desktop {
+            @include desktop-screen {
                 max-width: 36rem;
                 margin-left: auto;
             }
             &--statement {
-                @include desktop {
+                @include desktop-screen {
                     max-width: 50rem;
                 }
             }
         }
 
-        @include desktop {
+        @include desktop-screen {
             align-items: center;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex-direction: column;
             padding-bottom: 0;
 
@@ -64,7 +64,7 @@ $side-padding: 1.2em;
         display: flex;
         flex: 1;
         flex-direction: column;
-        @media only screen and (min-width: 1280px) {
+        @include desktop-screen {
             overflow: visible;
         }
     }
@@ -133,15 +133,15 @@ $side-padding: 1.2em;
         .table__cell {
             height: auto;
         }
-        @include desktop {
+        @include desktop-screen {
             white-space: normal;
         }
     }
 
-    @include desktop {
+    @include desktop-screen {
         height: 100%;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         flex: 1;
 
         &__data-list-body {
@@ -204,7 +204,7 @@ $side-padding: 1.2em;
         }
     }
     .market-symbol-icon {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 80px;
         }
     }
@@ -248,11 +248,11 @@ $side-padding: 1.2em;
     }
     &__account-statistics {
         background-color: var(--general-section-1);
-        @include desktop {
+        @include desktop-screen {
             margin: 1.6rem 0;
             width: 100%;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 0.8rem 0 1.6rem;
             order: 1;
         }
@@ -278,10 +278,10 @@ $side-padding: 1.2em;
             }
         }
         &-total-withdrawal {
-            @include desktop {
+            @include desktop-screen {
                 min-width: 19rem;
             }
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 min-width: 12.3rem;
             }
         }
@@ -291,17 +291,17 @@ $side-padding: 1.2em;
             justify-content: center;
             margin: auto;
 
-            @include desktop {
+            @include desktop-screen {
                 padding: 0.4rem 1.6rem;
             }
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 flex-direction: column;
             }
         }
         &-title {
             margin: auto;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 font-size: 1rem;
                 margin-bottom: 0;
             }
@@ -309,10 +309,10 @@ $side-padding: 1.2em;
         &-amount {
             margin: auto;
 
-            @include desktop {
+            @include desktop-screen {
                 margin-left: 1rem;
             }
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 font-size: 1.4rem;
                 margin-top: 1rem;
             }
@@ -411,11 +411,11 @@ $side-padding: 1.2em;
         justify-self: flex-start;
     }
 
-    @include desktop {
+    @include desktop-screen {
         height: 100%;
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         flex: 1;
 
         &__data-list-body {
@@ -468,7 +468,7 @@ $side-padding: 1.2em;
     .sell_price,
     .profit_loss {
         justify-content: center;
-        @include desktop {
+        @include desktop-screen {
             text-align: right;
         }
     }
@@ -479,10 +479,10 @@ $side-padding: 1.2em;
     }
     .profit_loss {
         font-weight: bold;
-        @include tablet-up {
+        @include desktop-screen {
             word-break: break-word;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
 
             &__row-title {
@@ -499,7 +499,7 @@ $side-padding: 1.2em;
         }
     }
     .market-symbol-icon {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 80px;
         }
     }
@@ -563,7 +563,7 @@ $side-padding: 1.2em;
 .open-positions {
     height: 100%;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         flex: 1;
         padding-top: 0.8rem;
 
@@ -759,7 +759,7 @@ $side-padding: 1.2em;
         &--amount {
             display: flex;
             align-items: center;
-            @include desktop {
+            @include desktop-screen {
                 line-height: 2;
             }
         }
@@ -858,7 +858,7 @@ $side-padding: 1.2em;
         }
     }
     &__reports-meta {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding-bottom: 0px;
         }
     }
@@ -870,7 +870,7 @@ $side-padding: 1.2em;
     .multiplier,
     .currency,
     .profit {
-        @include desktop {
+        @include desktop-screen {
             justify-content: center;
         }
     }
@@ -975,7 +975,7 @@ $side-padding: 1.2em;
             .limit_order,
             .cancellation,
             .bid_price {
-                @include desktop {
+                @include desktop-screen {
                     justify-content: center;
                     text-align: center;
                     width: 100%;
@@ -1032,7 +1032,7 @@ $side-padding: 1.2em;
                 minmax(112px, 1fr) minmax(149px, 1fr) minmax(90px, 1fr);
 
             .limit_order {
-                @include desktop {
+                @include desktop-screen {
                     justify-content: center;
                     align-items: center;
                 }
@@ -1085,7 +1085,7 @@ $side-padding: 1.2em;
     justify-content: center;
     margin: auto;
 
-    @media only screen and (max-width: 769px) {
+    @include mobile-or-tablet-screen {
         position: static;
         width: 50%;
     }

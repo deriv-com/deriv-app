@@ -36,7 +36,7 @@
         margin: 0 0 0.4rem 0.4rem;
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 0.8rem;
 
         &__full-title {

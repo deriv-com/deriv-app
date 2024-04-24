@@ -8,7 +8,7 @@
         background-color: var(--general-main-2);
         opacity: 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             top: $MOBILE_HEADER_HEIGHT;
         }
     }
@@ -40,7 +40,7 @@
             font-weight: bold;
             line-height: 1.5;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 font-size: 1.6rem;
             }
         }
@@ -53,7 +53,7 @@
             & .dc-icon {
                 --fill-color1: var(--text-prominent);
             }
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 right: 1.2rem;
             }
         }
@@ -62,12 +62,12 @@
             display: flex;
             align-items: center;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: 100%;
                 padding: 0;
             }
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 4rem;
             z-index: 3;
             padding: 0;
@@ -83,7 +83,7 @@
             min-width: 256px;
             margin-left: 2.4rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex: 1;
             padding: 0;
         }
@@ -94,11 +94,11 @@
         margin: auto;
         position: relative;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         display: flex;
         flex-direction: column;
         height: 100%;

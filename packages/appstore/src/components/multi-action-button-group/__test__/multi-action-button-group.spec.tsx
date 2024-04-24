@@ -64,7 +64,6 @@ describe('Test Cases for Multi Action Button Group:', () => {
 
     it('should redirect to Trade page after "Open" button is clicked', () => {
         const history = createBrowserHistory();
-
         render(
             <Router history={history}>
                 <MultiActionButtonGroup {...mock_props} is_real />

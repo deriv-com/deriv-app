@@ -265,6 +265,10 @@
             height: 3.2rem;
             margin-left: 0 !important;
 
+            @include rtl {
+                margin-right: 0;
+            }
+
             @include mobile {
                 min-width: 3.2rem;
                 width: 3.2rem;
@@ -283,6 +287,11 @@
 
             .dc-list {
                 right: 0;
+
+                @include rtl {
+                    left: 0;
+                    right: unset;
+                }
 
                 @include desktop {
                     margin-top: 4.5rem;

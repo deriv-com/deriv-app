@@ -322,7 +322,7 @@ describe('JurisdictionModalContent', () => {
             screen.getByText('Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs')
         ).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('0.6 pips')).toBeInTheDocument();
+        expect(screen.getByText('0.5 pips')).toBeInTheDocument();
     });
 
     it('should display only synthetic svg for highrisk clients', () => {

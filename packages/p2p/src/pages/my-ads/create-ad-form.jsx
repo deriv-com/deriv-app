@@ -5,7 +5,6 @@ import { Button, Div100vhContainer, Input, RadioGroup, Text, ThemedScrollbars } 
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useP2PExchangeRate, useP2PSettings } from '@deriv/hooks';
-import { reaction } from 'mobx';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -72,15 +71,7 @@ const CreateAdForm = () => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
 
-        const disposeApiErrorReaction = reaction(
-            () => my_ads_store.api_error_message,
-            () => {
-                if (my_ads_store.api_error_message) general_store.showModal({ key: 'AdCreateEditErrorModal' });
-            }
-        );
-
         return () => {
-            disposeApiErrorReaction();
             onCleanup();
         };
 

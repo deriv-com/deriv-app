@@ -55,15 +55,17 @@ const NotificationsDialog = observer(() => {
     useOnClickOutside(wrapper_ref, handleClickOutside);
 
     if (isMobile) {
-        <MobileDialog
-            portal_element_id='modal_root'
-            title={<Localize i18n_default_text='Notifications' />}
-            wrapper_classname='notifications-mobile-dialog'
-            visible={is_notifications_visible}
-            onClose={toggleNotificationsModal}
-        >
-            <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
-        </MobileDialog>;
+        return (
+            <MobileDialog
+                portal_element_id='modal_root'
+                title={<Localize i18n_default_text='Notifications' />}
+                wrapper_classname='notifications-mobile-dialog'
+                visible={is_notifications_visible}
+                onClose={toggleNotificationsModal}
+            >
+                <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
+            </MobileDialog>
+        );
     }
 
     return (

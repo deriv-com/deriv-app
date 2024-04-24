@@ -33,7 +33,7 @@ const App = ({ passthrough }: Apptypes) => {
 
     React.useEffect(() => {
         const landscapeBlockerElement = document.querySelector('.landscape-blocker');
-        if (landscapeBlockerElement && !isTabletPortrait) {
+        if (landscapeBlockerElement) {
             landscapeBlockerElement.classList.add('landscape-blocker--hidden');
         }
 
@@ -41,6 +41,17 @@ const App = ({ passthrough }: Apptypes) => {
             if (landscapeBlockerElement) {
                 landscapeBlockerElement.classList.remove('landscape-blocker--hidden');
             }
+        };
+    }, []);
+
+    React.useEffect(() => {
+        const html = document.querySelector('html');
+        if (isTabletPortrait) {
+            html?.classList.add('tablet-landscape');
+        }
+
+        return () => {
+            html?.classList.remove('tablet-landscape');
         };
     }, [isTabletPortrait]);
 

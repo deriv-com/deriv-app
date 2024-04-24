@@ -1,10 +1,12 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { Modal, MobileDialog, UILoader } from '@deriv/components';
 import RegulatorsCompareModalContent from './regulators-compare-modal-content';
-import { Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
 
 const RegulatorsCompareModal = () => {
+    const { isDesktop } = useDevice();
     const { traders_hub, ui } = useStore();
     const { is_regulators_compare_modal_visible, toggleRegulatorsCompareModal } = traders_hub;
     const { disableApp, enableApp } = ui;
@@ -14,7 +16,7 @@ const RegulatorsCompareModal = () => {
 
     return (
         <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
+            {isDesktop ? (
                 <Modal
                     disableApp={disableApp}
                     enableApp={enableApp}
@@ -26,8 +28,7 @@ const RegulatorsCompareModal = () => {
                 >
                     <RegulatorsCompareModalContent />
                 </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
+            ) : (
                 <MobileDialog
                     portal_element_id='deriv_app'
                     title={localize('Non-EU and EU regulation')}
@@ -36,7 +37,7 @@ const RegulatorsCompareModal = () => {
                 >
                     <RegulatorsCompareModalContent />
                 </MobileDialog>
-            </MobileWrapper>
+            )}
         </React.Suspense>
     );
 };

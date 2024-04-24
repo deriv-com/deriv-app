@@ -16,7 +16,8 @@ import NetworkStatus, {
 import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
-import { routes } from '@deriv/shared';
+import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { routes, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
@@ -56,6 +57,7 @@ const TradingHubFooter = observer(() => {
         is_dark_mode_on: is_dark_mode,
         setDarkMode,
     } = ui;
+    const { has_wallet } = useStoreWalletAccountsList();
 
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -68,8 +70,10 @@ const TradingHubFooter = observer(() => {
         setDarkMode(!is_dark_mode);
     };
 
+    const isMounted = useIsMounted();
+
     const location = window.location.pathname;
-    const { data } = useRemoteConfig();
+    const { data } = useRemoteConfig(isMounted());
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
     return (
         <footer
@@ -101,15 +105,17 @@ const TradingHubFooter = observer(() => {
                         show_eu_related_content={show_eu_related_content}
                     />
                 )}
-                <div className='footer__links--dark-mode'>
-                    <Popover alignment='top' message={localize('Change theme')} zIndex={9999}>
-                        {is_dark_mode ? (
-                            <LightModeToggleIcon onClick={changeTheme} />
-                        ) : (
-                            <DarkModeToggleIcon onClick={changeTheme} />
-                        )}
-                    </Popover>
-                </div>
+                {!has_wallet && (
+                    <div className='footer__links--dark-mode'>
+                        <Popover alignment='top' message={localize('Change theme')} zIndex={9999}>
+                            {is_dark_mode ? (
+                                <LightModeToggleIcon onClick={changeTheme} />
+                            ) : (
+                                <DarkModeToggleIcon onClick={changeTheme} />
+                            )}
+                        </Popover>
+                    </div>
+                )}
                 <FooterIconSeparator />
                 <HelpCentre />
                 {location === routes.trade && (
@@ -121,11 +127,13 @@ const TradingHubFooter = observer(() => {
                         settings_extension={settings_extension}
                     />
                 )}
-                <ToggleLanguageSettings
-                    is_settings_visible={is_language_settings_modal_on}
-                    toggleSettings={toggleLanguageSettingsModal}
-                    lang={current_language}
-                />
+                {!has_wallet && (
+                    <ToggleLanguageSettings
+                        is_settings_visible={is_language_settings_modal_on}
+                        toggleSettings={toggleLanguageSettingsModal}
+                        lang={current_language}
+                    />
+                )}
                 <ToggleFullScreen />
             </div>
         </footer>

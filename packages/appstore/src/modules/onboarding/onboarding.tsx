@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes, ContentFlag } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
@@ -14,20 +14,31 @@ const Onboarding = observer(() => {
     const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const { is_from_signup_account } = ui;
 
-    if (is_logged_in) {
-        if (!is_landing_company_loaded) {
-            return <OnboardingSkeleton />;
-        }
-        history.push(routes.traders_hub);
-        if (is_from_signup_account && content_flag !== ContentFlag.EU_DEMO) {
-            toggleIsTourOpen(true);
-        }
+    useEffect(() => {
+        if (is_logged_in && is_landing_company_loaded) {
+            history.push(routes.traders_hub);
+            if (is_from_signup_account && content_flag !== ContentFlag.EU_DEMO) {
+                toggleIsTourOpen(true);
+            }
 
-        if (is_demo_low_risk) {
-            selectAccountType('real');
-            setPrevAccountType('demo');
+            if (is_demo_low_risk) {
+                selectAccountType('real');
+                setPrevAccountType('demo');
+            }
         }
-    }
+    }, [
+        is_logged_in,
+        is_landing_company_loaded,
+        is_from_signup_account,
+        content_flag,
+        is_demo_low_risk,
+        history,
+        toggleIsTourOpen,
+        selectAccountType,
+        setPrevAccountType,
+    ]);
+
+    if (is_logged_in && !is_landing_company_loaded) return <OnboardingSkeleton />;
 
     return (
         <div className='onboarding'>

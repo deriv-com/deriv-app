@@ -40,7 +40,8 @@ const WalletsListingRoute: React.FC = () => {
                         actionParams={resetTradingPlatformActionParams ?? ''}
                         platform={platformKey}
                         verificationCode={verificationCode}
-                    />
+                    />,
+                    { defaultRootId: 'wallets_modal_root' }
                 );
             }
         }

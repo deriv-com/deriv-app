@@ -12,7 +12,7 @@
     width: 100%;
     z-index: 1;
     opacity: 1;
-    transition: all 0.3s ease-in;
+    transition: all 0.2s ease-out;
 
     &--hidden {
         z-index: -1;

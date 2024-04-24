@@ -105,7 +105,7 @@ export default class RunPanelStore implements IRunPanelStore {
             is_stop_button_visible: computed,
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
-            // toggleDrawer: action,
+            toggleDrawer: action,
         });
 
         this.root_store = root_store;

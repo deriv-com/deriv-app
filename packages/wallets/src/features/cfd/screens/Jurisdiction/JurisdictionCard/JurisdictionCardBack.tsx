@@ -40,6 +40,7 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
     if (verificationDocs)
         return (
             <div className='wallets-jurisdiction-card-back'>
+                {/* TODO: Update with legacy icon after quill-icons version update */}
                 <BackArrowIcon
                     className='wallets-jurisdiction-card-back__icon'
                     onClick={e => {

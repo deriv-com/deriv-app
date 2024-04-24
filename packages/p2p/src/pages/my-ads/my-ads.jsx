@@ -22,6 +22,7 @@ const MyAds = () => {
     const is_poi_poa_verified =
         general_store.poi_status === identity_status_codes.VERIFIED &&
         (!general_store.p2p_poa_required || general_store.poa_status === document_status_codes.VERIFIED);
+    const table_ref = React.useRef(null);
 
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);
@@ -64,8 +65,8 @@ const MyAds = () => {
         }
 
         return (
-            <div className='my-ads'>
-                <MyAdsTable />
+            <div className='my-ads' ref={table_ref}>
+                <MyAdsTable table_ref={table_ref} />
             </div>
         );
     }

@@ -82,6 +82,7 @@ describe('WithdrawalLocked', () => {
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: null });
+        (useCryptoConfig as jest.Mock).mockReturnValueOnce({ data: mockCryptoConfigData });
         (useCurrencyConfig as jest.Mock).mockReturnValueOnce({ isLoading: false });
 
         render(

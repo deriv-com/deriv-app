@@ -46,7 +46,7 @@ describe('DepositLocked', () => {
     });
 
     it('should render loader when no account status data', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
+        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({});
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
         (useWebsiteStatus as jest.Mock).mockReturnValueOnce({ data: mockWebsiteStatusData });
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });

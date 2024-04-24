@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import { InlineMessage, Input, Text } from '@deriv/components';
+import { Input, Text, Tooltip } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods, useP2PExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
@@ -17,7 +17,6 @@ import { countDecimalPlaces } from 'Utils/string';
 import { formatTime } from 'Utils/orders';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import PaymentMethodIcon from 'Components/payment-method-icon';
-import { getInlineTextSize } from 'Utils/responsive';
 import './buy-sell-form.scss';
 
 const BuySellForm = props => {
@@ -71,6 +70,8 @@ const BuySellForm = props => {
     };
 
     const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));
+
+    const is_float = rate_type === ad_type.FLOAT;
 
     React.useEffect(
         () => {
@@ -142,7 +143,7 @@ const BuySellForm = props => {
                 amount: min_order_amount_limit,
                 contact_info: general_store.contact_info,
                 payment_info: general_store.payment_info,
-                rate: rate_type === ad_type.FLOAT ? current_effective_rate : null,
+                rate: is_float ? current_effective_rate : null,
             },
             initialErrors: buy_sell_store.is_sell_advert ? { contact_info: true } : {},
             onSubmit: (...args) => buy_sell_store.handleSubmit(...args),
@@ -177,17 +178,6 @@ const BuySellForm = props => {
 
     return (
         <React.Fragment>
-            {rate_type === ad_type.FLOAT && !should_disable_field && (
-                <div className='buy-sell-form__inline-message'>
-                    <InlineMessage
-                        message={localize(
-                            "If the market rate changes from the rate shown here, we won't be able to process your order."
-                        )}
-                        size={getInlineTextSize('sm', 'xs')}
-                        type='information'
-                    />
-                </div>
-            )}
             <form noValidate onSubmit={submitForm}>
                 <div className='buy-sell-form__content'>
                     <div className='buy-sell-form__field-wrapper'>
@@ -204,13 +194,30 @@ const BuySellForm = props => {
                             </Text>
                         </div>
                         <div className='buy-sell-form__field'>
-                            <Text as='p' color='less-prominent' size='xxs'>
-                                <Localize
-                                    i18n_default_text='Rate (1 {{ currency }})'
-                                    values={{ currency: buy_sell_store.account_currency }}
-                                />
-                            </Text>
-                            <Text as='p' size='xs'>
+                            <div
+                                className={classNames('buy-sell-form__field-rate', {
+                                    'buy-sell-form__field-rate--floating': is_float,
+                                })}
+                            >
+                                <Text as='p' color='less-prominent' size='xxs'>
+                                    <Localize
+                                        i18n_default_text='Rate (1 {{ currency }})'
+                                        values={{ currency: buy_sell_store.account_currency }}
+                                    />
+                                </Text>
+                                {is_float && (
+                                    <Tooltip alignment='top' message={localize('Periodically changing market rate')}>
+                                        <Text as='p' className='buy-sell-form__field-rate--float' size='xxs'>
+                                            <Localize i18n_default_text='Float' />
+                                        </Text>
+                                    </Tooltip>
+                                )}
+                            </div>
+                            <Text
+                                as='p'
+                                className={classNames({ 'buy-sell-form__field--floating': is_float })}
+                                size='xs'
+                            >
                                 {display_effective_rate} {local_currency}
                             </Text>
                         </div>

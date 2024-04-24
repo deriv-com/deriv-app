@@ -28,9 +28,7 @@ describe('<MarketRateChangeErrorModal />', () => {
     it('should render MarketRateChangeErrorModal', () => {
         render(<MarketRateChangeErrorModal />);
 
-        expect(
-            screen.getByText('The rate of the advert has changed. Please try creating your order again.')
-        ).toBeInTheDocument();
+        expect(screen.getByText('The advertiser changed the rate before you confirmed the order.')).toBeInTheDocument();
     });
 
     it('should render message if message is passed as a prop', () => {

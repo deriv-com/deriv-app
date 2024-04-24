@@ -218,7 +218,12 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={!!is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm}
+                                onSubmit={() => {
+                                    showModal({
+                                        key: 'MarketRateChangeErrorModal',
+                                        props: { show_confirm_continue: true, show_message: true, show_title: true },
+                                    });
+                                }}
                             />
                         </Modal.Footer>
                     )}

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { ProgressBar } from '../Base';
@@ -7,7 +8,6 @@ import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
-import { useHistory } from 'react-router-dom';
 
 type TProps = {
     onWalletSettled?: (value: boolean) => void;
@@ -116,10 +116,10 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
     // set login ID once wallet changes
     useEffect(() => {
-        if (activeWallet) {
+        if (activeWallet?.loginid) {
             setSelectedLoginId(activeWallet?.loginid);
         }
-    }, [activeWallet]);
+    }, [activeWallet?.loginid]);
 
     // bind to embla events
     useEffect(() => {
@@ -161,7 +161,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (selectedLoginId) {
             switchWalletAccount(selectedLoginId).then(() => {
                 const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-                walletsCarouselEmblaApi?.scrollTo(index);
+                if (index !== -1) {
+                    walletsCarouselEmblaApi?.scrollTo(index);
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,7 +173,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     useEffect(() => {
         if (walletsCarouselEmblaApi && isInitialDataLoaded) {
             const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-            walletsCarouselEmblaApi?.scrollTo(index, true);
+            if (index !== -1) {
+                walletsCarouselEmblaApi?.scrollTo(index, true);
+            }
 
             walletsCarouselEmblaApi && setTransitionNodes(walletsCarouselEmblaApi);
             walletsCarouselEmblaApi && setTransitionFactor(walletsCarouselEmblaApi);

@@ -4,6 +4,8 @@ import { Dropdown } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
 import { getAccountTypes } from 'Constants/platform-config';
 import { useStore, observer } from '@deriv/stores';
+import { startPerformanceEventTimer } from '@deriv/shared';
+import { TAccountCategory } from 'Types';
 import './account-type-dropdown.scss';
 
 const AccountTypeDropdown = observer(() => {
@@ -24,6 +26,10 @@ const AccountTypeDropdown = observer(() => {
                 list={getAccountTypes()}
                 key={`account-type-dropdown__icon--key-${current_language}`}
                 onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                    if ((selected_account_type as TAccountCategory) === 'real')
+                        startPerformanceEventTimer('switch_from_real_to_demo_time');
+                    else if ((selected_account_type as TAccountCategory) === 'demo')
+                        startPerformanceEventTimer('switch_from_demo_to_real_time');
                     await selectAccountType(e.target.value);
                     await setPrevAccountType(e.target.value);
                     Analytics.trackEvent('ce_tradershub_dashboard_form', {

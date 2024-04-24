@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Text } from '@deriv/components';
-import { getCurrencyName, routes } from '@deriv/shared';
+import { getCurrencyName, routes, isCryptocurrency, startPerformanceEventTimer } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import BalanceText from 'Components/elements/text/balance-text';
@@ -56,6 +56,9 @@ const RealAccountCard = observer(() => {
                                 form_name: 'traders_hub_default',
                                 account_mode: selected_account_type,
                             });
+                            if (isCryptocurrency(currency))
+                                startPerformanceEventTimer('load_crypto_deposit_cashier_time');
+                            else startPerformanceEventTimer('load_fiat_deposit_cashier_time');
                             e.stopPropagation();
                             history.push(`${routes.cashier_deposit}#deposit`);
                         }}

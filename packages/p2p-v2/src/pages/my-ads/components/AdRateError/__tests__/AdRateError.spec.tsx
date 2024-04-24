@@ -10,6 +10,16 @@ jest.mock('@deriv/api-v2', () => ({
     }),
 }));
 
+const mockFloatingRateHook = {
+    fixedRateAdvertsEndDate: '2024/12/31',
+    rateType: 'float',
+    reachedTargetDate: false,
+};
+
+jest.mock('@/hooks', () => ({
+    useFloatingRate: () => mockFloatingRateHook,
+}));
+
 describe('AdRateError', () => {
     it('should render the component as expected', () => {
         render(<AdRateError />);
@@ -19,6 +29,18 @@ describe('AdRateError', () => {
             )
         );
     });
-
-    //TODO: add test for other cases after implementation of floating rate hook
+    it('should render the corresponding message when rateType is fixed', () => {
+        mockFloatingRateHook.rateType = 'fixed';
+        render(<AdRateError />);
+        expect(
+            screen.getByText('Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.')
+        );
+    });
+    it('should render the corresponding message when reachedTargetDate is true', () => {
+        mockFloatingRateHook.reachedTargetDate = true;
+        render(<AdRateError />);
+        expect(
+            screen.getByText('Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.')
+        );
+    });
 });

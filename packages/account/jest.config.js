@@ -3,7 +3,7 @@ const baseConfigForPackages = require('../../jest.config.base');
 module.exports = {
     ...baseConfigForPackages,
     moduleNameMapper: {
-        '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
+        '\\.(s(c|a)ss|css|less)$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
         '^Assets/(.*)$': '<rootDir>/src/Assets/$1',
         '^Components/(.*)$': '<rootDir>/src/Components/$1',

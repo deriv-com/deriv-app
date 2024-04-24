@@ -244,8 +244,8 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getAllByText('1:1000')).toHaveLength(3);
         expect(screen.getByText('1:100')).toBeInTheDocument();
         expect(screen.getAllByText('Spreads from')).toHaveLength(4);
-        expect(screen.getAllByText('0.6 pips')).toHaveLength(2);
-        expect(screen.getAllByText('0.5 pips')).toHaveLength(2);
+        expect(screen.getByText('1.4 pips')).toBeInTheDocument();
+        expect(screen.getAllByText('0.5 pips')).toHaveLength(3);
         expect(screen.getAllByText('Verifications')).toHaveLength(4);
         expect(
             screen.getByText('You will need to submit proof of identity and address once you reach certain thresholds.')

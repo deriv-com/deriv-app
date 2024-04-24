@@ -9,11 +9,11 @@ export type TContractInfo = Omit<
     accountID?: number | string;
     is_completed?: boolean;
     run_id?: string;
-    date_start: TDateType;
-    entry_tick: TDateType;
-    entry_tick_time: TDateType;
-    exit_tick: TDateType;
-    exit_tick_time: TDateType;
+    date_start?: TDateType;
+    entry_tick?: TDateType;
+    entry_tick_time?: TDateType;
+    exit_tick?: TDateType;
+    exit_tick_time?: TDateType;
 };
 
 export interface TSummaryCardProps {

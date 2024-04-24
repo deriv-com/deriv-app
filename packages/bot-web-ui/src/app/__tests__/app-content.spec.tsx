@@ -7,11 +7,12 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import { mock_ws } from '../../utils/mock';
 import AppContent from '../app-content';
+import { transaction_elements } from 'Constants/transactions';
 
 const mock_data = {
     data: {
         msg_type: 'proposal_open_contract',
-        proposal_open_contract: { status: 'close', contract_id: 'test_contract_id' },
+        proposal_open_contract: { status: 'close', contract_id: 22 },
     },
 };
 const mock_unsubscribe = jest.fn();
@@ -67,6 +68,9 @@ jest.mock('Components/route-prompt-dialog', () => ({
 
 window.Blockly = {
     Colours: { RootBlock: {} },
+    utils: {
+        genUid: jest.fn(() => 'test_uid'),
+    },
 };
 describe('AppContent', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
@@ -105,14 +109,23 @@ describe('AppContent', () => {
     });
 
     it('should settle open contracts if there is any', async () => {
-        mock_store.client.is_logged_in = false;
-        mock_DBot_store?.transactions?.recovered_transactions.push('test_trx_id_2');
-        mock_DBot_store?.transactions?.transactions.push({
-            data: {
-                contract_id: 'test_contract_id_1',
-                is_completed: false,
-            },
-        });
+        mock_store.client.is_logged_in = true;
+        mock_store.client.loginid = 'cr1';
+
+        mock_DBot_store?.transactions?.recovered_transactions.push(11);
+        if (mock_DBot_store)
+            mock_DBot_store.transactions.elements = {
+                cr1: [
+                    {
+                        type: transaction_elements.CONTRACT,
+                        data: {
+                            contract_id: 22,
+                            is_completed: false,
+                        },
+                    },
+                ],
+            };
+
         render(<AppContent />, {
             wrapper,
         });
@@ -123,13 +136,21 @@ describe('AppContent', () => {
 
     it('should unsubscribe message handler on component unmount', async () => {
         mock_store.client.is_logged_in = false;
-        mock_DBot_store?.transactions?.recovered_transactions.push('test_trx_id_2');
-        mock_DBot_store?.transactions?.transactions.push({
-            data: {
-                contract_id: 'test_contract_id_1',
-                is_completed: false,
-            },
-        });
+        mock_DBot_store?.transactions?.recovered_transactions.push(11);
+
+        if (mock_DBot_store)
+            mock_DBot_store.transactions.elements = {
+                cr1: [
+                    {
+                        type: transaction_elements.CONTRACT,
+                        data: {
+                            contract_id: 22,
+                            is_completed: false,
+                        },
+                    },
+                ],
+            };
+
         const { container } = render(<AppContent />, {
             wrapper,
         });

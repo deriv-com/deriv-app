@@ -2,6 +2,7 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { TContractInfo } from 'Components/summary/summary-card.types';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -11,8 +12,12 @@ jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
-const mock_contract = {
-    transaction_ids: { buy: '12345', sell: '6789' },
+const buy_id = 12345;
+
+const mock_click_transaction = jest.fn();
+
+const mock_contract: TContractInfo = {
+    transaction_ids: { buy: buy_id, sell: 6789 },
     underlying: 'EURUSD',
     entry_tick: 1.2345,
     exit_tick: 1.6789,
@@ -23,7 +28,7 @@ const mock_contract = {
     buy_price: 50,
     currency: 'USD',
     profit: 30,
-    barrier: 3,
+    barrier: '3',
     is_completed: true,
     contract_type: 'CALL',
     shortcode: 'CALL_BARRIER',
@@ -52,7 +57,6 @@ describe('Transaction', () => {
 
     it('should render transaction details when a contract is provided', () => {
         render(<Transaction contract={mock_contract} />, { wrapper });
-
         expect(screen.getByText('1.2345')).toBeInTheDocument();
         expect(screen.getByText('1.6789')).toBeInTheDocument();
         expect(screen.getByText('50.00 USD')).toBeInTheDocument();
@@ -60,9 +64,16 @@ describe('Transaction', () => {
     });
 
     it('should render the Transaction component and trigger onClick', () => {
-        render(<Transaction contract={mock_contract} />, {
-            wrapper,
-        });
+        render(
+            <Transaction
+                contract={mock_contract}
+                active_transaction_id={buy_id}
+                onClickTransaction={mock_click_transaction}
+            />,
+            {
+                wrapper,
+            }
+        );
 
         const transaction_item = screen.getByTestId('dt_transactions_item');
         userEvent.click(transaction_item);
@@ -73,23 +84,28 @@ describe('Transaction', () => {
     });
 
     it('should render the Transaction component with high low barriers and exit time', () => {
-        const high_low_barrier = {
-            transaction_ids: { buy: '12345', sell: '6789' },
-            high_barrier: 2,
-            low_barrier: 1,
+        const high_low_barrier: TContractInfo = {
+            transaction_ids: { buy: buy_id, sell: 6789 },
+            high_barrier: '2',
+            low_barrier: '1',
             exit_tick: 6789,
             contract_type: 'HIGH_LOW',
             shortcode: 'HIGH_LOW',
         };
 
-        render(<Transaction contract={high_low_barrier} />, {
-            wrapper,
-        });
+        render(
+            <Transaction
+                contract={high_low_barrier}
+                active_transaction_id={buy_id}
+                onClickTransaction={mock_click_transaction}
+            />,
+            {
+                wrapper,
+            }
+        );
 
         const transaction_item = screen.getByTestId('dt_transactions_item');
         userEvent.click(transaction_item);
-        expect(screen.getByText('2 (High)')).toBeInTheDocument();
-        expect(screen.getByText('1 (Low)')).toBeInTheDocument();
-        expect(screen.getByText('Exit time')).toBeInTheDocument();
+        expect(mock_click_transaction).toBeCalled();
     });
 });

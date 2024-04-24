@@ -257,6 +257,10 @@
             height: 3.2rem;
             margin-left: 0 !important;
 
+            @include rtl {
+                margin-right: 0;
+            }
+
             @include mobile {
                 min-width: 3.2rem;
                 width: 3.2rem;
@@ -289,10 +293,6 @@
             .suffix-icon {
                 top: 0.8rem;
                 left: 0.8rem;
-
-                @include rtl {
-                    margin-right: 0;
-                }
             }
         }
 

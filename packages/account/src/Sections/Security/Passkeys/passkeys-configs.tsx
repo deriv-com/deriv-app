@@ -1,9 +1,9 @@
 import React from 'react';
+import UAParser from 'ua-parser-js';
 import { TSocketError } from '@deriv/api/types';
 import { Analytics } from '@deriv-com/analytics';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { mobileOSDetect } from '@deriv/shared';
 import { DescriptionContainer } from './components/description-container';
 import { TipsBlock } from './components/tips-block';
 import { TServerError } from '../../../Types/common.type';
@@ -28,8 +28,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     const add_more_passkeys_button_text = <Localize i18n_default_text='Add more passkeys' />;
 
     const getPasskeysRemovedDescription = () => {
-        const os_type = mobileOSDetect();
-
+        const os_type = UAParser().os.name;
         switch (os_type) {
             case 'Android':
                 return (
@@ -155,7 +154,7 @@ export const passkeysMenuActionEventTrack = (
     Analytics.trackEvent('ce_passkey_account_settings_form', {
         action,
         form_name: 'ce_passkey_account_settings_form',
-        operating_system: mobileOSDetect(),
+        operating_system: UAParser().os.name,
         ...additional_data,
     });
 };

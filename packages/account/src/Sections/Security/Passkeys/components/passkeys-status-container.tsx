@@ -4,9 +4,6 @@ import { routes } from '@deriv/shared';
 import {
     getStatusContent,
     PASSKEY_STATUS_CODES,
-    TPasskeysStatus,
-    getStatusContent,
-    PASSKEY_STATUS_CODES,
     passkeysMenuActionEventTrack,
     TPasskeysStatus,
 } from '../passkeys-configs';
@@ -34,7 +31,7 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
             return;
         }
         if (passkey_status === PASSKEY_STATUS_CODES.CREATED) {
-            passkeysMenuActionEventTrack('create_passkey_continue');
+            passkeysMenuActionEventTrack('create_passkey_continue_trading');
             history.push(routes.traders_hub);
             return;
         }
@@ -57,6 +54,7 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
         }
 
         if (passkey_status === PASSKEY_STATUS_CODES.CREATED) {
+            passkeysMenuActionEventTrack('add_more_passkeys');
             setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
             return;
         }

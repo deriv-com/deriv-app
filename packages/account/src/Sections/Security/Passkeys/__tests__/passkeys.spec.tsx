@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
 import { APIProvider } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
 import PasskeysList from '../components/passkeys-list';
@@ -33,6 +34,15 @@ export const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['pass
     },
 ];
 
+const mockHistoryPush = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}));
+
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useGetPasskeysList: jest.fn(() => ({})),
@@ -44,10 +54,11 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>MockLoading</div>,
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    mobileOSDetect: jest.fn(() => 'test OS'),
-}));
+jest.mock('ua-parser-js', () =>
+    jest.fn(() => ({
+        os: { name: 'test OS' },
+    }))
+);
 
 describe('Passkeys', () => {
     let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;
@@ -204,7 +215,7 @@ describe('Passkeys', () => {
         );
     });
 
-    it('renders success screen when new passkeys created', () => {
+    it('renders success screen when new passkeys created and open "add more passkeys" ', () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             is_passkey_registered: true,
         });
@@ -220,6 +231,39 @@ describe('Passkeys', () => {
             tracking_event,
             getAnalyticsParams('create_passkey_finished')
         );
+        const add_more_passkeys_button = screen.getByRole('button', { name: 'Add more passkeys' });
+        userEvent.click(add_more_passkeys_button);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('add_more_passkeys'));
+
+        const create_passkey_button = screen.getByRole('button', { name: 'Create passkey' });
+        expect(create_passkey_button).toBeInTheDocument();
+        expect(screen.queryByText('Success!')).not.toBeInTheDocument();
+    });
+
+    it('renders success screen when new passkeys created and open tradershub ', () => {
+        (useRegisterPasskey as jest.Mock).mockReturnValue({
+            is_passkey_registered: true,
+        });
+
+        render(
+            <RenderWrapper>
+                <Passkeys />
+            </RenderWrapper>
+        );
+
+        expect(screen.getByText('Success!')).toBeInTheDocument();
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('create_passkey_finished')
+        );
+
+        const continue_trading_button = screen.getByRole('button', { name: 'Continue trading' });
+        userEvent.click(continue_trading_button);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('create_passkey_continue_trading')
+        );
+        expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
     });
 
     it('renders passkeys creation modal and triggers new passkey creation', async () => {

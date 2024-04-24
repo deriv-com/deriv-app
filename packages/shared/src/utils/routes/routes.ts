@@ -100,7 +100,6 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.traders_hub,
     routes.onboarding,
     routes.compare_cfds,
-    routes.root,
     routes.contract,
 ];
 

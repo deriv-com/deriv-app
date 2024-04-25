@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { useContentFlag } from '@deriv/hooks';
+import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
 import { isDesktop, routes, checkServerMaintenance } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -50,12 +50,17 @@ const TradersHub = observer(() => {
         }
     }, [is_tour_open]);
 
+    const direct_to_real_account_creation = useGrowthbookFeatureFlag({
+        featureFlag: 'direct_real_account_creation_flow',
+        defaultValue: false,
+    });
+
     React.useEffect(() => {
         if (is_eu_user) {
             setTogglePlatformType('cfd');
         }
         if (!has_active_real_account && is_from_signup_account && is_logged_in) {
-            if (is_cr_demo) {
+            if (direct_to_real_account_creation && is_cr_demo) {
                 openRealAccountSignup('svg');
             } else if (is_eu_demo) {
                 openRealAccountSignup('maltainvest');
@@ -69,6 +74,7 @@ const TradersHub = observer(() => {
         is_eu_user,
         is_from_signup_account,
         is_logged_in,
+        direct_to_real_account_creation,
         openRealAccountSignup,
         setIsFromSignupAccount,
         setTogglePlatformType,

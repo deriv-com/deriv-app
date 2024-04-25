@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Formik, FormikHelpers } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 import { InferType } from 'yup';
@@ -80,7 +80,7 @@ export const OnfidoContainer = ({
 
     const initialValues = {
         ...validationSchema.getDefault(),
-        ...generateNameDOBFormData(personalInfo),
+        ...generateNameDOBFormData(personalInfo, null),
     };
 
     const handlePersonalDetailsUpdate = async (
@@ -89,7 +89,7 @@ export const OnfidoContainer = ({
     ) => {
         setStatus({ error: '' });
         setSubmitting(true);
-        const personalDetailsPayload = generateNameDOBPayloadData(values);
+        const personalDetailsPayload = generateNameDOBPayloadData(values, null);
         try {
             await updateAsync({ payload: personalDetailsPayload });
             setSubmitting(false);
@@ -155,9 +155,11 @@ export const OnfidoContainer = ({
                         validateOnMount
                         validationSchema={validationSchema}
                     >
-                        {({ submitForm }) => {
-                            return <PersonalDetailsFormWithExample onConfirm={submitForm} />;
-                        }}
+                        {({ submitForm }) => (
+                            <Form>
+                                <PersonalDetailsFormWithExample errorStatus={null} onConfirm={submitForm} />
+                            </Form>
+                        )}
                     </Formik>
                 </div>
             )}

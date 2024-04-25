@@ -7,16 +7,11 @@ import { WalletsContainer } from '../WalletsContainer';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
-    const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
-    const { isLoading: isAuthorizeLoading } = useAuthorize();
-    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
-
-    const isLoading = isActiveWalletLoading || isAuthorizeLoading || isCurrencyConfigLoading;
-
+    const { data: activeWallet, isInitializing } = useActiveWalletAccount();
     return (
         <div className='wallets-desktop-wallets-list'>
-            {isLoading && <WalletsCardLoader />}
-            {!isLoading && (
+            {isInitializing && <WalletsCardLoader />}
+            {!isInitializing && (
                 <WalletsContainer
                     key={activeWallet && `wallets-card-${activeWallet?.loginid}`}
                     renderHeader={() => <WalletListCard />}

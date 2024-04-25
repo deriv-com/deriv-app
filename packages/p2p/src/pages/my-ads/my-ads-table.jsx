@@ -20,7 +20,7 @@ const getHeaders = offered_currency => [
     { text: '' }, // empty header for delete and archive icons
 ];
 
-const MyAdsTable = () => {
+const MyAdsTable = ({ table_ref }) => {
     const { general_store, my_ads_store } = useStores();
     const {
         client: { currency },
@@ -33,6 +33,7 @@ const MyAdsTable = () => {
 
         return () => {
             my_ads_store.setApiErrorCode(null);
+            my_ads_store.setTableHeight(0);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -78,7 +79,7 @@ const MyAdsTable = () => {
                             items={my_ads_store.adverts}
                             keyMapperFn={item => item.id}
                             loadMoreRowsFn={my_ads_store.loadMoreAds}
-                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
+                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} table_ref={table_ref} />}
                         />
                     </Table.Body>
                 </Table>

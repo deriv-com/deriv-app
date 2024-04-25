@@ -4,14 +4,14 @@ import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 
 type TCompareAccount = {
     accounts_sub_text: string;
     is_desktop?: boolean;
 };
 
-const CompareAccount = ({ accounts_sub_text, is_desktop }: TCompareAccount) => {
+const CompareAccount = observer(({ accounts_sub_text, is_desktop }: TCompareAccount) => {
     const history = useHistory();
     const { traders_hub } = useStore();
     const { selected_account_type } = traders_hub;
@@ -38,6 +38,6 @@ const CompareAccount = ({ accounts_sub_text, is_desktop }: TCompareAccount) => {
             </Text>
         </div>
     );
-};
+});
 
 export default CompareAccount;

@@ -1503,7 +1503,7 @@ export default class ClientStore extends BaseStore {
         Analytics.trackEvent('ce_tradershub_dashboard_form', {
             action: 'reset_balance',
             form_name: 'traders_hub_default',
-            account_mode: { ...this.accounts[this.loginid] }.is_virtual === 1 ? 'demo' : 'real',
+            account_mode: 'demo',
         });
         this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
         this.root_store.notifications.removeNotificationMessage({

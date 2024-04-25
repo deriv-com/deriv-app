@@ -233,7 +233,6 @@ describe('ProofOfIdentityContainer', () => {
             idv: { submissions_left: 3, status: identity_status_codes.verified },
         });
         renderComponent({});
-        await waitFor(() => {});
         expect(await screen.findByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
     });
 

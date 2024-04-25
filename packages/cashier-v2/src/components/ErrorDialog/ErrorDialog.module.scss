@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.4rem;
+}
+
+.header {
+    align-items: flex-start;
+    padding: 0;
+}
+
+.footer {
+    align-items: flex-end;
+    padding: 0;
+}

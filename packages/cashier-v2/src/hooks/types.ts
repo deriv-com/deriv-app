@@ -29,6 +29,7 @@ export namespace THooks {
     export type TransferAccounts = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >;
+    export type TransferBetweenAccounts = NonNullable<NonNullable<ReturnType<typeof useTransferBetweenAccounts>>>;
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace

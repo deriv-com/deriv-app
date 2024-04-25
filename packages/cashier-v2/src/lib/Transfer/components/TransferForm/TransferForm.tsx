@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { THooks } from 'src/hooks/types';
 import { Button, InlineMessage, Text } from '@deriv-com/ui';
 import { useTransfer } from '../../provider';
 import { TTransferFormikContext } from '../../types';
@@ -37,6 +38,12 @@ const TransferForm = () => {
                             : accountLimits?.daily_transfers[values.fromAccount?.account_type].available;
                 };
 
+                const isTransferDisabled =
+                    !!errors.fromAmount ||
+                    !!errors.toAmount ||
+                    !Number(values.fromAmount) ||
+                    !getDailyTransferCountLimit();
+
                 return (
                     <div className={styles.container}>
                         <Text className={styles.title} weight='bold'>
@@ -60,7 +67,7 @@ const TransferForm = () => {
                                 Deposit
                             </Button>
                             <Button
-                                disabled={!!errors.fromAmount || !!errors.toAmount || !Number(values.fromAmount)}
+                                disabled={isTransferDisabled}
                                 isLoading={isSubmitting || isTransferring}
                                 onClick={() => {
                                     requestForTransfer(

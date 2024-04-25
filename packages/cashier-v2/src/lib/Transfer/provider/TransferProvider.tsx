@@ -21,6 +21,7 @@ export type TTransferContext = {
         fromAccount: TTransferableAccounts[number],
         toAccount: TTransferableAccounts[number]
     ) => void;
+    transferError: THooks.TransferBetweenAccounts['error'];
     transferReceipt?: TTransferReceipt;
     transferValidationSchema?: ReturnType<typeof getCryptoFiatConverterValidationSchema>;
 };
@@ -51,7 +52,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     children,
     getConfig,
 }) => {
-    const { data, isLoading: isTransferring, mutate, mutateAsync } = useTransferBetweenAccounts();
+    const { data, error: transferError, isLoading: isTransferring, mutate, mutateAsync } = useTransferBetweenAccounts();
 
     const { accounts: transferAccounts, activeAccount: transferActiveAccount } = useExtendedTransferAccounts(
         activeAccount,
@@ -121,6 +122,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
                 requestForTransfer,
                 setTransferReceipt,
                 setTransferValidationSchema,
+                transferError,
                 transferReceipt,
                 transferValidationSchema: validationSchema,
             }}

@@ -10,7 +10,7 @@ import {
     LegacyTransferIcon,
     LegacyWithdrawalIcon,
 } from '@deriv/quill-icons';
-import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
+import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
 import i18n from '../../../../translations/i18n';
@@ -116,7 +116,14 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                     'wallets-cashier-header__currency-icon--hide-currency-icon': hideWalletDetails,
                                 })}
                             >
-                                <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />
+                                <WalletCurrencyIcon
+                                    currency={
+                                        activeWallet?.wallet_currency_type === 'Demo'
+                                            ? 'DEMO'
+                                            : activeWallet?.wallet_currency_type
+                                    }
+                                    size='xl'
+                                />
                             </div>
                         )}
                         <LegacyClose2pxIcon

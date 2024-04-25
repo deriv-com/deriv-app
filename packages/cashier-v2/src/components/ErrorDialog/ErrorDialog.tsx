@@ -3,11 +3,10 @@ import { Button, Dialog } from '@deriv-com/ui';
 import styles from './ErrorDialog.module.scss';
 
 type TErrorDialogProps = {
-    header?: React.ReactNode;
     isOpen: boolean;
 };
 
-const ErrorDialog: React.FC<React.PropsWithChildren<TErrorDialogProps>> = ({ children, header, isOpen }) => {
+const ErrorDialog: React.FC<React.PropsWithChildren<TErrorDialogProps>> = ({ children, isOpen }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     useEffect(() => {
@@ -23,11 +22,12 @@ const ErrorDialog: React.FC<React.PropsWithChildren<TErrorDialogProps>> = ({ chi
                     setIsDialogOpen(false);
                 }}
             >
-                {header ?? `Cashier Error`}
+                Cashier Error
             </Dialog.Header>
             <Dialog.Body>{children}</Dialog.Body>
             <Dialog.Footer className={styles.footer}>
                 <Button
+                    data-testid='dt_error_dialog_ok_button'
                     onClick={() => {
                         setIsDialogOpen(false);
                     }}

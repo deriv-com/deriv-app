@@ -1,7 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { THooks } from 'src/hooks/types';
 import { Button, InlineMessage, Text } from '@deriv-com/ui';
 import { useTransfer } from '../../provider';
 import { TTransferFormikContext } from '../../types';

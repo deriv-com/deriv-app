@@ -6,7 +6,19 @@ import { useAuthContext } from '../AuthProvider';
  */
 const useAuthorize = () => {
     const ctx = useAuthContext();
-    const { data, switchAccount, isLoading, isSuccess, isFetching, isError, refetch, error, loginid } = ctx;
+    const {
+        data,
+        switchAccount,
+        isLoading,
+        isSuccess,
+        isFetching,
+        isError,
+        refetch,
+        error,
+        loginid,
+        isSwitching,
+        isInitializing,
+    } = ctx;
 
     const modifiedData = useMemo(() => {
         return { ...data?.authorize };
@@ -25,6 +37,8 @@ const useAuthorize = () => {
             refetch,
             error,
             loginid,
+            isSwitching,
+            isInitializing,
         };
     }, [modifiedData, switchAccount, isLoading, isSuccess, isFetching, isError, refetch, error, loginid]);
 

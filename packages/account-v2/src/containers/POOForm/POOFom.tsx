@@ -5,6 +5,7 @@ import { Accordion, Loader } from '@deriv-com/ui';
 import { Timeline } from 'src/components/Timeline';
 import { TPaymentMethod, TPaymentMethodData, TProofOfOwnershipFormValue } from 'src/types';
 import { generatePOOInitialValues } from 'src/utils';
+import { PaymentMethodTitle } from '../PaymentMethods';
 
 type TPOOFormProps = {
     paymentMethodData: TPaymentMethodData;
@@ -41,7 +42,10 @@ export const POOForm = ({ paymentMethodData }: TPOOFormProps) => {
                     <Timeline className='pt-0 px-14 pb-16 m-12 w-full text-lg'>
                         {paymentMethods.map((type, index) => (
                             <Timeline.Item key={`${type}_${index}`}>
-                                <Accordion title={paymentMethodData[type].paymentMethod} variant='bordered'>
+                                <Accordion
+                                    title={<PaymentMethodTitle paymentMethod={paymentMethodData[type].paymentMethod} />}
+                                    variant='bordered'
+                                >
                                     <div>POO item</div>
                                 </Accordion>
                             </Timeline.Item>

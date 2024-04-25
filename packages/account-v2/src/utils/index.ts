@@ -1,4 +1,5 @@
 export * from './accountClosureUtils';
+export * from './fileUtils';
 export * from './formattedLoginHistoryData';
 export * from './idvFormUtils';
 export * from './manualFormUtils';

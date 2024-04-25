@@ -1,4 +1,5 @@
 import { useGetAccountStatus, useKycAuthStatus, useSettings } from '@deriv/api-v2';
+import { CurrencyConstants } from '@deriv-com/utils';
 import {
     AUTH_STATUS_CODES,
     getPaymentMethodsConfig,

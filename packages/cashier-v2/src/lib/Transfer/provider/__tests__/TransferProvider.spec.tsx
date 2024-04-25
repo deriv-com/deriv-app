@@ -6,6 +6,15 @@ import { useExtendedTransferAccounts } from '../../hooks';
 import { THooks } from '../../../../hooks/types';
 import { TTransferableAccounts } from '../../types';
 
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useTransferBetweenAccounts: jest.fn(() => ({
+        data: 'transfer-between-accounts-data',
+        mutate: jest.fn(),
+        mutateAsync: jest.fn(),
+    })),
+}));
+
 jest.mock('../../hooks', () => ({
     ...jest.requireActual('../../hooks'),
     useExtendedTransferAccounts: jest.fn(),
@@ -19,6 +28,11 @@ jest.mock('../../../../components', () => ({
         return params;
     }),
 }));
+
+const mockTransferLimits = {
+    max: 1000,
+    min: 1,
+} as THooks.AccountLimits;
 
 const mockAccounts = [
     {
@@ -41,6 +55,7 @@ const mockExtendedAccounts = [
         currencyConfig: {
             fractional_digits: 2,
         },
+        limits: mockTransferLimits,
         loginid: 'CR1',
     },
     {
@@ -50,6 +65,7 @@ const mockExtendedAccounts = [
         currencyConfig: {
             fractional_digits: 8,
         },
+        limits: mockTransferLimits,
         loginid: 'CR3',
     },
 ] as TTransferableAccounts;
@@ -63,7 +79,12 @@ const mockGetConfig = jest.fn();
 
 const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
-        <TransferProvider accounts={mockAccounts} activeAccount={mockActiveAccount} getConfig={mockGetConfig}>
+        <TransferProvider
+            accountLimits={mockTransferLimits}
+            accounts={mockAccounts}
+            activeAccount={mockActiveAccount}
+            getConfig={mockGetConfig}
+        >
             {children}
         </TransferProvider>
     );
@@ -85,7 +106,7 @@ describe('<TransferProvider />', () => {
                     currency: 'USD',
                     fractionalDigits: 2,
                     limits: {
-                        max: 100,
+                        max: 1000,
                         min: 1,
                     },
                 },

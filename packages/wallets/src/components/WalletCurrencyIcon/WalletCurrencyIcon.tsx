@@ -85,7 +85,7 @@ const WalletCurrencyIcon: React.FC<TWalletCurrencyIconsProps> = ({
     const width = rounded || isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
     const Icon = rounded || isFiat ? roundedIcons[currency] : defaultIcons[currency];
 
-    return <Icon height={height ?? '100%'} width={width} />;
+    return <Icon data-testid='dt_wallet_currency_icon' height={height ?? '100%'} width={width} />;
 };
 
 export default WalletCurrencyIcon;

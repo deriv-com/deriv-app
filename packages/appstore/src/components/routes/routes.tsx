@@ -6,9 +6,12 @@ import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import Onboarding from 'Modules/onboarding';
 import TradersHub from 'Modules/traders-hub';
-import TradersHubLoggedOut from 'Modules/traders-hub-logged-out';
 import { Switch, useHistory } from 'react-router-dom';
 import RouteWithSubroutes from './route-with-sub-routes.jsx';
+
+const TradersHubLoggedOut = React.lazy(
+    () => import(/* webpackChunkName: "modules-traders-hub-logged-out" */ 'Modules/traders-hub-logged-out')
+);
 
 const Routes: React.FC = observer(() => {
     //TODO: Uncomment once useWalletList hook is optimized for production release.

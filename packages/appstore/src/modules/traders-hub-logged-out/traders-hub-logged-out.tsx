@@ -7,6 +7,7 @@ import { Localize } from '@deriv/translations';
 import { routes, isEuCountry } from '@deriv/shared';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import CFDsListing from 'Components/cfds-listing';
+import TrustpilotWidget from 'Components/trustpilot-widget';
 import { getPlatformToggleOptions } from '../../helpers';
 import './traders-hub-logged-out.scss';
 
@@ -101,11 +102,11 @@ const TradersHubLoggedOut = observer(() => {
 
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
-    }, [is_eu_user]);
-
-    if (is_logged_in) return <Redirect to={routes.traders_hub} />;
+    }, [is_eu_user, setTogglePlatformType]);
 
     if (!clients_country) return <Loading is_fullscreen />;
+
+    if (is_logged_in) return <Redirect to={routes.traders_hub} />;
 
     return (
         <Div100vhContainer className='traders-hub-logged-out__mobile' height_offset='50px' is_disabled={is_desktop}>
@@ -117,6 +118,7 @@ const TradersHubLoggedOut = observer(() => {
                 })}
             >
                 <DesktopWrapper>
+                    <TrustpilotWidget />
                     <GetOrderedPlatformSections isDesktop />
                 </DesktopWrapper>
                 <MobileWrapper>

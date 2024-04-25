@@ -80,3 +80,4 @@ export { default as useWalletsList } from './useWalletsList';
 export { default as useGrowthbookFeatureFlag } from './useGrowthbookFeatureFlag';
 export { default as useResidenceSelfDeclaration } from './useResidenceSelfDeclaration';
 export { default as useTotalAssetCurrency } from './useTotalAssetCurrency';
+export { default as useScript } from './useScript';

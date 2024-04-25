@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import DesktopTransactionTable from '../desktop-transaction-table';
 import { TTransactions } from '../transaction-details.types';

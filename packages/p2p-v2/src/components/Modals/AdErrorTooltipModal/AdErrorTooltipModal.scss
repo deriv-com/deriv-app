@@ -1,10 +1,12 @@
 .p2p-v2-ad-error-tooltip-modal {
     width: 44rem;
     padding: 2.4rem;
+    height: fit-content;
+    border-radius: 8px;
 
     @include mobile {
         padding: 1.6rem;
-        width: 32.8rem;
+        max-width: calc(100vw - 3.2rem);
     }
 
     &__content {

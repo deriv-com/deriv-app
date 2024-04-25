@@ -1,15 +1,19 @@
-import classNames from 'classnames';
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+import { useRemoteConfig } from '@deriv/api';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
-    useOnrampVisible,
     useAccountTransferVisible,
-    useIsP2PEnabled,
-    usePaymentAgentTransferVisible,
+    useAuthorize,
     useFeatureFlags,
+    useIsP2PEnabled,
+    useOnrampVisible,
+    usePaymentAgentTransferVisible,
+    useP2PSettings,
+    useStoreWalletAccountsList,
 } from '@deriv/hooks';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
+import { getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -17,10 +21,9 @@ import ServerTime from 'App/Containers/server-time.jsx';
 import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
-import PlatformSwitcher from './platform-switcher';
+import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
 import MenuLink from './menu-link';
-import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
-import { useRemoteConfig } from '@deriv/api';
+import PlatformSwitcher from './platform-switcher';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
@@ -28,6 +31,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const {
         disableApp,
         enableApp,
+        is_mobile,
         is_mobile_language_menu_open,
         is_dark_mode_on: is_dark_mode,
         setDarkMode: toggleTheme,
@@ -46,15 +50,29 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_landing_company_loaded,
         is_proof_of_ownership_enabled,
         is_eu,
+        is_passkey_supported,
     } = client;
     const { cashier } = modules;
     const { payment_agent } = cashier;
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
+    const { isSuccess } = useAuthorize();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
-    const { data: is_p2p_enabled } = useIsP2PEnabled();
+    const { is_p2p_enabled } = useIsP2PEnabled();
+    const { is_next_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useStoreWalletAccountsList();
+
+    const { pathname: route } = useLocation();
+
+    const is_trading_hub_category =
+        route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
+    const is_wallets_category = route.startsWith(routes.wallets);
+
+    const isMounted = useIsMounted();
+    const { data } = useRemoteConfig(isMounted());
+    const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
     const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
@@ -62,28 +80,37 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
     const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
-    const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
     const history = useHistory();
-    const { is_next_wallet_enabled } = useFeatureFlags();
+    const {
+        subscribe,
+        rest: { isSubscribed },
+        p2p_settings,
+    } = useP2PSettings();
+
+    let TradersHubIcon;
+    if (is_next_wallet_enabled) {
+        TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
+    } else if (is_dark_mode) {
+        TradersHubIcon = 'IcAppstoreHomeDark';
+    } else {
+        TradersHubIcon = 'IcAppstoreTradersHubHome';
+    }
+
+    React.useEffect(() => {
+        if (isSuccess && !isSubscribed) {
+            subscribe();
+        }
+    }, [isSuccess, p2p_settings, subscribe, isSubscribed]);
 
     React.useEffect(() => {
         const processRoutes = () => {
-            const routes_config = getRoutesConfig({ is_appstore });
+            const routes_config = getRoutesConfig({});
             let primary_routes = [];
 
             const location = window.location.pathname;
 
-            if (is_appstore) {
-                primary_routes = [
-                    routes.my_apps,
-                    routes.explore,
-                    routes.wallets,
-                    routes.platforms,
-                    routes.trade_types,
-                    routes.markets,
-                ];
-            } else if (location === routes.traders_hub || is_trading_hub_category) {
+            if (location === routes.traders_hub || is_trading_hub_category) {
                 primary_routes = [routes.account, routes.cashier];
             } else if (location === routes.wallets || is_next_wallet_enabled) {
                 primary_routes = [routes.reports, routes.account];
@@ -98,7 +125,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         return () => clearTimeout(timeout.current);
-    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
+    }, [
+        account_status,
+        should_allow_authentication,
+        is_trading_hub_category,
+        is_next_wallet_enabled,
+        is_mobile,
+        is_passkey_supported,
+        is_p2p_enabled,
+    ]);
 
     const toggleDrawer = React.useCallback(() => {
         if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);
@@ -139,6 +174,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         const has_subroutes = route_config.routes.some(route => route.subroutes);
+        const should_hide_passkeys_route = !is_mobile || !is_passkey_supported;
 
         const disableRoute = route_path => {
             if (/financial-assessment/.test(route_path)) {
@@ -154,6 +190,16 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             }
             return false;
         };
+
+        const hideRoute = route_path => {
+            if (/passkeys/.test(route_path)) {
+                return should_hide_passkeys_route;
+            } else if (/languages/.test(route_path)) {
+                return has_wallet;
+            }
+            return false;
+        };
+
         return (
             <MobileDrawer.SubMenu
                 key={idx}
@@ -202,6 +248,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         link_to={subroute.path}
                                         text={subroute.getTitle()}
                                         onClickLink={toggleDrawer}
+                                        is_hidden={hideRoute(subroute.path)}
                                     />
                                 ))}
                             </MobileDrawer.SubMenuSection>
@@ -233,24 +280,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         );
     };
 
-    const { pathname: route } = useLocation();
-    const { data } = useRemoteConfig();
-    const { cs_chat_livechat, cs_chat_whatsapp } = data;
-    const is_trading_hub_category =
-        route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
-
     return (
         <React.Fragment>
             <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
-                <Icon
-                    icon={is_appstore && !is_logged_in ? 'IcHamburgerWhite' : 'IcHamburger'}
-                    width='16px'
-                    height='16px'
-                    className='header__mobile-drawer-icon'
-                />
+                <Icon icon='IcHamburger' width='16px' height='16px' className='header__mobile-drawer-icon' />
             </a>
             <MobileDrawer
-                alignment={is_appstore ? 'right' : 'left'}
+                alignment='left'
                 icon_class='header__menu-toggle'
                 is_open={is_open}
                 transitionExit={transitionExit}
@@ -265,15 +301,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             >
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
-                        {is_appstore && (
-                            <MobileDrawer.Body>
-                                {primary_routes_config.map((route_config, idx) =>
-                                    getRoutesWithSubMenu(route_config, idx)
-                                )}
-                            </MobileDrawer.Body>
-                        )}
                         <React.Fragment>
-                            {!is_trading_hub_category && (
+                            {!is_trading_hub_category && !is_wallets_category && (
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -294,7 +323,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             )}
                             <MobileDrawer.Body
                                 className={classNames({
-                                    'header__menu-mobile-traders-hub': is_trading_hub_category,
+                                    'header__menu-mobile-traders-hub': is_trading_hub_category || is_wallets_category,
                                 })}
                             >
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
@@ -302,13 +331,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={is_next_wallet_enabled ? routes.wallets : routes.traders_hub}
-                                            icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
+                                            icon={TradersHubIcon}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {!is_trading_hub_category && (
+                                {!is_trading_hub_category && !is_wallets_category && (
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={routes.trade}
@@ -321,23 +350,27 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}
-                                <MobileDrawer.Item
-                                    className='header__menu-mobile-theme'
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        toggleTheme(!is_dark_mode);
-                                    }}
-                                >
-                                    <div className={classNames('header__menu-mobile-link')}>
-                                        <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                        <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>
-                                        <ToggleSwitch
-                                            id='dt_mobile_drawer_theme_toggler'
-                                            handleToggle={() => toggleTheme(!is_dark_mode)}
-                                            is_enabled={is_dark_mode}
-                                        />
-                                    </div>
-                                </MobileDrawer.Item>
+                                {!has_wallet && (
+                                    <MobileDrawer.Item
+                                        className='header__menu-mobile-theme'
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            toggleTheme(!is_dark_mode);
+                                        }}
+                                    >
+                                        <div className={classNames('header__menu-mobile-link')}>
+                                            <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
+                                            <span className='header__menu-mobile-link-text'>
+                                                {localize('Dark theme')}
+                                            </span>
+                                            <ToggleSwitch
+                                                id='dt_mobile_drawer_theme_toggler'
+                                                handleToggle={() => toggleTheme(!is_dark_mode)}
+                                                is_enabled={is_dark_mode}
+                                            />
+                                        </div>
+                                    </MobileDrawer.Item>
+                                )}
 
                                 {HelpCentreRoute()}
                                 {is_logged_in && (

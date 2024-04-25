@@ -1,14 +1,23 @@
-import { TOrders, TServerTime } from 'types';
+import { THooks, TServerTime } from 'types';
 import { BUY_SELL, ORDERS_STATUS } from '@/constants'; // Update your import path
-import { convertToMillis, getFormattedDateString, toMoment } from '@/utils';
+import {
+    convertToMillis,
+    getFormattedDateString,
+    removeTrailingZeros,
+    roundOffDecimal,
+    setDecimalPlaces,
+    toMoment,
+} from '@/utils';
+import { FormatUtils } from '@deriv-com/utils';
 
-type TOrder = TOrders[number];
+type TOrder = THooks.Order.Get;
 
 type TUserDetails = TOrder['advertiser_details'] | TOrder['client_details'];
 
 type TObject = Record<string, string>;
 interface ExtendedOrderDetails extends TOrder {
     counterpartyAdStatusString: TObject;
+    displayPaymentAmount: string;
     hasReviewDetails: boolean;
     hasTimerExpired: boolean;
     isActiveOrder: boolean;
@@ -36,6 +45,7 @@ interface ExtendedOrderDetails extends TOrder {
     orderExpiryMilliseconds: number;
     otherUserDetails: TUserDetails;
     purchaseTime: string;
+    rateAmount: string;
     remainingSeconds: number;
     shouldHighlightAlert: boolean;
     shouldHighlightDanger: boolean;
@@ -78,6 +88,14 @@ const useExtendedOrderDetails = ({
                     : `You sold ${this.amount_display}${this.account_currency}`,
                 rightSendOrReceive: this.isBuyOrder ? 'Receive' : 'Send',
             };
+        },
+        get displayPaymentAmount() {
+            return removeTrailingZeros(
+                FormatUtils.formatMoney(
+                    Number(this.amount_display) * Number(roundOffDecimal(this.rate, setDecimalPlaces(this.rate, 6))),
+                    { currency: this.local_currency }
+                )
+            );
         },
         get hasReviewDetails() {
             return !!this.review_details;
@@ -180,6 +198,14 @@ const useExtendedOrderDetails = ({
                 true,
                 false,
                 this.isInactiveOrder
+            );
+        },
+        get rateAmount() {
+            return removeTrailingZeros(
+                FormatUtils.formatMoney(this.rate, {
+                    currency: this.local_currency,
+                    decimalPlaces: setDecimalPlaces(this.rate, 6),
+                })
             );
         },
         get remainingSeconds() {

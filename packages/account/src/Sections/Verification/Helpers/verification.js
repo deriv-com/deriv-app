@@ -1,4 +1,6 @@
 export const populateVerificationStatus = account_status => {
+    if (!account_status || !account_status.authentication) return {};
+
     const { attempts, document, identity, income, needs_verification } = account_status.authentication;
 
     const identity_status = identity.status;

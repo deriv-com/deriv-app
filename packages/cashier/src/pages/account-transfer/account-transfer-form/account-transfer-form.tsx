@@ -11,6 +11,7 @@ import {
     getPlatformSettings,
     MT5_ACCOUNT_STATUS,
     routes,
+    startPerformanceEventTimer,
     validNumber,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -451,6 +452,7 @@ const AccountTransferForm = observer(
         );
 
         const depositClick = () => {
+            startPerformanceEventTimer('load_cashier_time');
             if (onClickDeposit) {
                 onClickDeposit();
             }

@@ -228,8 +228,7 @@
     height: 100%;
     @include mobile {
         width: 100%;
-        display: grid;
-        grid-template-rows: 1fr auto;
+
         padding: unset;
     }
 }

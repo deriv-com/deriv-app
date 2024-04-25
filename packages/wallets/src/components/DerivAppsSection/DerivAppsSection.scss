@@ -64,6 +64,22 @@
             height: 3.2rem;
         }
     }
+
+    &__button {
+        height: 3.2rem;
+        width: 3.2rem;
+        border-radius: 1.2rem;
+        background: none;
+        border: 1px solid var(--icon-black-plus, #000);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            cursor: pointer;
+            background: var(--system-light-6-hover-background, #e6e9e9);
+        }
+    }
 }
 
 .wallets-deriv-apps-balance-loader {

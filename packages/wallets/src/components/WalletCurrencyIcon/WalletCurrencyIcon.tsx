@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys */
-import React, { ComponentType } from 'react';
+import React, { ComponentType, CSSProperties } from 'react';
 import {
     CurrencyAudIcon,
     CurrencyBtcIcon,
@@ -70,16 +70,22 @@ export const fiatIcons = ['AUD', 'EUR', 'GBP', 'USD'] as const;
 
 type TWalletCurrencyIconsProps = {
     currency: THooks.WalletAccountsList['wallet_currency_type'];
+    height?: CSSProperties['height'];
     rounded?: boolean;
     size?: keyof typeof defaultIconWidth | keyof typeof roundedIconWidth;
 };
 
-const WalletCurrencyIcon: React.FC<TWalletCurrencyIconsProps> = ({ currency, rounded = false, size = 'md' }) => {
+const WalletCurrencyIcon: React.FC<TWalletCurrencyIconsProps> = ({
+    currency,
+    height,
+    rounded = false,
+    size = 'md',
+}) => {
     const isFiat = fiatIcons.includes(currency as typeof fiatIcons[number]);
     const width = rounded || isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
     const Icon = rounded || isFiat ? roundedIcons[currency] : defaultIcons[currency];
 
-    return <Icon height='auto' width={width} />;
+    return <Icon height={height ?? '100%'} width={width} />;
 };
 
 export default WalletCurrencyIcon;

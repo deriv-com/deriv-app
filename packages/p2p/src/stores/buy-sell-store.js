@@ -189,7 +189,7 @@ export default class BuySellStore extends BaseStore {
 
     handleResponse = async order => {
         const { sendbird_store, order_store, general_store } = this.root_store;
-        const { setErrorMessage, setHasRateChanged, handleConfirm, handleClose } = this.form_props;
+        const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
         const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
 
         if (error) {
@@ -197,10 +197,21 @@ export default class BuySellStore extends BaseStore {
 
             if (code === api_error_codes.ORDER_CREATE_FAIL_RATE_SLIPPAGE) {
                 general_store.showModal({
-                    key: 'MarketRateChangeErrorModal',
-                    props: { message },
+                    key: 'ErrorModal',
+                    props: {
+                        error_message:
+                            'We’re unable to create your order due to fluctuating market rates. Please try creating a new order.',
+                        error_modal_button_text: 'Create new order',
+                        error_modal_title: 'Order unsuccessful',
+                        has_close_icon: false,
+                        onClose: () => {
+                            general_store.showModal({
+                                key: 'BuySellModal',
+                            });
+                        },
+                        text_size: 'xs',
+                    },
                 });
-                setHasRateChanged(true);
             } else {
                 setErrorMessage(message);
                 this.setFormErrorCode(code);

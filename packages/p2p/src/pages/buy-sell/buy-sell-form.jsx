@@ -24,10 +24,6 @@ const BuySellForm = props => {
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
 
-    React.useEffect(() => {
-        buy_sell_store.setFormProps(props);
-    }, [props, buy_sell_store]);
-
     const { advert, has_rate_changed, setHasRateChanged, setPageFooterParent } = props;
     const {
         advertiser_details,
@@ -48,6 +44,11 @@ const BuySellForm = props => {
     const order_completion_time = order_expiry_period / 60;
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
     const [current_effective_rate, setCurrentEffectiveRate] = React.useState(0);
+    const [changed_rate, setChangedRate] = React.useState(undefined);
+
+    React.useEffect(() => {
+        buy_sell_store.setFormProps({ ...props, input_amount });
+    }, [props, buy_sell_store, input_amount]);
 
     const { effective_rate, display_effective_rate } = generateEffectiveRate({
         price,
@@ -112,11 +113,16 @@ const BuySellForm = props => {
     }, [input_amount, calculated_rate]);
 
     React.useEffect(() => {
-        if (isMobile() && has_rate_changed) {
-            setCurrentEffectiveRate(effective_rate);
-            setHasRateChanged(false);
+        if (isMobile() && has_rate_changed && current_effective_rate !== effective_rate) {
+            setChangedRate(effective_rate);
         }
-    }, [effective_rate, has_rate_changed, setHasRateChanged]);
+    }, [current_effective_rate, effective_rate, has_rate_changed]);
+
+    React.useEffect(() => {
+        if (current_effective_rate !== effective_rate && current_effective_rate !== 0) setHasRateChanged(true);
+    }, [current_effective_rate, effective_rate, setHasRateChanged]);
+
+    const default_effective_rate = changed_rate ?? effective_rate;
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {
@@ -143,7 +149,7 @@ const BuySellForm = props => {
                 amount: min_order_amount_limit,
                 contact_info: general_store.contact_info,
                 payment_info: general_store.payment_info,
-                rate: is_float ? current_effective_rate : null,
+                rate: is_float ? default_effective_rate : null,
             },
             initialErrors: buy_sell_store.is_sell_advert ? { contact_info: true } : {},
             onSubmit: (...args) => buy_sell_store.handleSubmit(...args),
@@ -206,7 +212,10 @@ const BuySellForm = props => {
                                     />
                                 </Text>
                                 {is_float && (
-                                    <Tooltip alignment='top' message={localize('Periodically changing market rate')}>
+                                    <Tooltip
+                                        alignment='top'
+                                        message={localize('Changing rates due to market fluctuations')}
+                                    >
                                         <Text as='p' className='buy-sell-form__field-rate--float' size='xxs'>
                                             <Localize i18n_default_text='Float' />
                                         </Text>

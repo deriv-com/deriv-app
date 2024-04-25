@@ -54,14 +54,23 @@
 
             &--floating {
                 position: fixed;
+
+                @include mobile {
+                    position: absolute;
+                }
             }
 
             .dc-tooltip[data-tooltip]:before {
                 background: $color-black-7;
-                width: 19rem;
+                width: 24rem;
                 border-radius: 0.8rem;
                 left: 9rem;
                 text-align: center;
+
+                @include mobile {
+                    font-size: 10px;
+                    width: 19rem;
+                }
             }
 
             .dc-tooltip[data-tooltip]:after {
@@ -74,6 +83,7 @@
                 background: rgba(44, 154, 255, 0.08);
                 padding: 0.2rem 0.4rem;
                 border-radius: 0.4rem;
+                cursor: pointer;
             }
         }
 

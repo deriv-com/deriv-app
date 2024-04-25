@@ -12,6 +12,7 @@ import AddPaymentMethodForm from 'Components/add-payment-method-form';
 import BuySellForm from 'Pages/buy-sell/buy-sell-form.jsx';
 import BuySellFormReceiveAmount from 'Pages/buy-sell/buy-sell-form-receive-amount.jsx';
 import { useStores } from 'Stores';
+import { getTextSize } from 'Utils/responsive';
 import BuySellModalFooter from './buy-sell-modal-footer';
 import BuySellModalTitle from './buy-sell-modal-title';
 import BuySellModalError from './buy-sell-modal-error';
@@ -88,6 +89,25 @@ const BuySellModal = () => {
         }
     };
 
+    const onSubmit = () => {
+        if (has_rate_changed) {
+            showModal({
+                key: 'MarketRateChangeErrorModal',
+                props: {
+                    submitForm,
+                    values: {
+                        currency: buy_sell_store.account_currency,
+                        input_amount: buy_sell_store.form_props.input_amount.toFixed(2),
+                        local_currency: buy_sell_store?.advert?.local_currency,
+                        received_amount: buy_sell_store?.receive_amount.toFixed(2),
+                    },
+                },
+            });
+        } else {
+            submitForm();
+        }
+    };
+
     React.useEffect(() => {
         const balance_check =
             parseFloat(balance) === 0 || parseFloat(balance) < buy_sell_store.advert?.min_order_amount_limit;
@@ -117,7 +137,14 @@ const BuySellModal = () => {
                 // check to see if user is not switching between different adverts, it should not trigger rate change modal
                 const is_the_same_advert = previous_advert?.id === new_advert.id;
                 if (rate_has_changed && is_the_same_advert) {
-                    showModal({ key: 'MarketRateChangeErrorModal', props: {} });
+                    showModal({
+                        key: 'ErrorModal',
+                        props: {
+                            error_modal_button_text: localize('Try again'),
+                            error_message: localize('The advertiser changed the rate before you confirmed the order.'),
+                            text_size: getTextSize('xxs', 'xs'),
+                        },
+                    });
                     setHasRateChanged(true);
                     buy_sell_store.setFormErrorCode('');
                     invalidate('p2p_advert_list');
@@ -143,7 +170,7 @@ const BuySellModal = () => {
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell-modal__header'
                     renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy_advert} onReturn={onReturn} />}
-                    pageHeaderReturnFn={onCancel}
+                    pageHeaderReturnFn={onSubmit}
                 >
                     <ThemedScrollbars refSetter={scroll_ref}>
                         <BuySellModalError
@@ -167,7 +194,7 @@ const BuySellModal = () => {
                                 <BuySellModalFooter
                                     is_submit_disabled={!!is_submit_disabled}
                                     onCancel={onCancel}
-                                    onSubmit={submitForm}
+                                    onSubmit={onSubmit}
                                 />
                             </React.Fragment>
                         )}
@@ -218,12 +245,7 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={!!is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={() => {
-                                    showModal({
-                                        key: 'MarketRateChangeErrorModal',
-                                        props: { show_confirm_continue: true, show_message: true, show_title: true },
-                                    });
-                                }}
+                                onSubmit={onSubmit}
                             />
                         </Modal.Footer>
                     )}

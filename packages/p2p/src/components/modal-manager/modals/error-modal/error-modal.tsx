@@ -10,6 +10,7 @@ type TErrorModalProps = {
     error_modal_title?: string;
     has_close_icon?: boolean;
     onClose?: () => void;
+    text_size?: string;
 };
 
 const ErrorModal = ({
@@ -18,6 +19,7 @@ const ErrorModal = ({
     error_modal_title,
     has_close_icon,
     onClose,
+    text_size = 's',
 }: TErrorModalProps) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
@@ -33,7 +35,7 @@ const ErrorModal = ({
             width={is_mobile ? '90rem' : '40rem'}
         >
             <Modal.Body className='error-modal__body'>
-                <Text>
+                <Text size={text_size}>
                     <Localize i18n_default_text={error_message} />
                 </Text>
             </Modal.Body>

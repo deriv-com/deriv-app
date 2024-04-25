@@ -1,12 +1,12 @@
 import React from 'react';
 import {
     AccountsDerivAccountLightIcon,
+    AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
     AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5SwfIcon,
     IconTypes,
-    PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { MARKET_TYPE } from '../../features/cfd/constants';
 import { THooks, TPlatforms } from '../../types';
@@ -20,7 +20,7 @@ const mt5MarketTypeIcon: Record<string, IconTypes> = {
 };
 
 const cfdPlatformIcon: Record<string, IconTypes> = {
-    ctrader: PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
+    ctrader: AccountsDerivCtraderIcon,
     dxtrade: AccountsDerivXIcon,
 };
 

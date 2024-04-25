@@ -168,9 +168,7 @@ const ReviewMessageForMT5 = ({
     } else if (jurisdiction_selected_shortcode === JURISDICTION.LABUAN) {
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     } else if (jurisdiction_selected_shortcode === JURISDICTION.MALTA_INVEST) {
-        return (
-            <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
-        );
+        return <Localize i18n_default_text='Enable trading with your first transfer.' />;
     }
     return null;
 };
@@ -854,13 +852,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             return (
                 <React.Fragment>
                     <Localize
-                        i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} {{jurisdiction_selected_shortcode}} account. '
+                        i18n_default_text='Your Deriv MT5 {{type}} account is ready. '
                         values={{
                             type: accountTypes(),
-                            platform:
-                                platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
-                            category: category_label,
-                            jurisdiction_selected_shortcode: platform === CFD_PLATFORMS.MT5 ? jurisdiction_label : '',
                         }}
                         components={[<br key={0} />]}
                     />
@@ -885,11 +879,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. '
+                i18n_default_text='Your demo {{type}} account is ready.'
                 values={{
                     type: accountTypes(),
-                    platform: is_eu_user ? '' : getCFDPlatformLabel(platform),
-                    category: category_label,
                 }}
                 components={[<br key={0} />]}
             />

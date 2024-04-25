@@ -20,11 +20,6 @@ const Onboarding = observer(() => {
             if (is_from_signup_account && content_flag !== ContentFlag.EU_DEMO) {
                 toggleIsTourOpen(true);
             }
-
-            if (is_demo_low_risk) {
-                selectAccountType('real');
-                setPrevAccountType('demo');
-            }
         }
     }, [
         is_logged_in,

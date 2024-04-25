@@ -224,7 +224,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                     <WalletCard
                         balance={account.display_balance}
                         currency={account.currency || 'USD'}
-                        iconSize='xl'
+                        iconSize='lg'
                         isCarouselContent
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}

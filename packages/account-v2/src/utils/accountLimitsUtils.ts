@@ -1,20 +1,12 @@
 import { GetLimits } from '@deriv/api-types';
 import { FormatUtils } from '@deriv-com/utils';
-import { TCurrency } from '../types';
+import { TAccountLimitValues, TCurrency } from '../types';
 
 export const CATEGORY = {
     footer: 'footer',
     header: 'header',
     submarket: 'submarket',
-};
-
-export type TAccountLimitValues = {
-    category?: string;
-    hintInfo?: string;
-    isLessProminent?: boolean;
-    title?: string;
-    value?: number | string;
-};
+} as const;
 
 type TMarketSpecific = GetLimits['market_specific'];
 type TMarketSpecificData = Exclude<TMarketSpecific, undefined>[string];

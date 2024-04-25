@@ -1,7 +1,8 @@
 import React from 'react';
 import { StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
 import { InlineMessage, Table, Text, Tooltip, useDevice } from '@deriv-com/ui';
-import { CATEGORY, TAccountLimitValues } from '../../utils/accountLimitsUtils';
+import { TAccountLimitValues } from '../../types';
+import { CATEGORY } from '../../utils/accountLimitsUtils';
 
 type TPopoverProps = {
     description: string;
@@ -14,15 +15,13 @@ const HintInfo = ({ description }: TPopoverProps) => (
 );
 
 const PopoverMessage = ({ description }: TPopoverProps) => (
-    <Tooltip message={<HintInfo description={description} />} position='right' triggerAction='click'>
+    <Tooltip message={<HintInfo description={description} />} position='right'>
         <StandaloneCircleInfoRegularIcon className='fill-solid-grey-1' iconSize='sm' />
     </Tooltip>
 );
 
-const RenderRow = ({ row }: { row: TAccountLimitValues }) => {
+const RenderRow = ({ category, hintInfo, isLessProminent, title, value }: TAccountLimitValues) => {
     const { isMobile } = useDevice();
-    const { category, hintInfo, isLessProminent, title, value } = row;
-
     return (
         <div className='grid grid-flow-col justify-between'>
             <div className='flex gap-8 sm:flex-col sm:gap-4'>
@@ -61,6 +60,6 @@ export const AccountLimitsTable = ({ accountLimitValues }: { accountLimitValues:
         loadMoreFunction={() => {
             //[TODO]: Add load more function
         }}
-        rowRender={rowData => <RenderRow row={rowData} />}
+        rowRender={RenderRow}
     />
 );

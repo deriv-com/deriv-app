@@ -7,7 +7,7 @@ import { createBrowserHistory } from 'history';
 import { routes } from '@deriv/shared';
 
 const mock_props = {
-    link_to: routes.trader,
+    link_to: routes.trade,
     onAction: jest.fn(),
     is_buttons_disabled: false,
     is_real: true,
@@ -69,10 +69,6 @@ describe('Test Cases for Multi Action Button Group:', () => {
                 <MultiActionButtonGroup {...mock_props} is_real />
             </Router>
         );
-
-        const open_btn = screen.getByText('Open');
-        userEvent.click(open_btn);
-
-        expect(history.location.pathname).toBe(routes.trade);
+        expect(screen.getByRole('link')).toHaveAttribute('href', '/dtrader');
     });
 });

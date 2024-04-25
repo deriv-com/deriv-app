@@ -62,11 +62,11 @@ describe('Routes Config', () => {
 
     it('should return routes with trade route', async () => {
         const routes = getRoutesConfig();
-        expect(routes?.[1]?.path).toBe('/');
+        expect(routes?.[1]?.path).toBe('/dtrader');
         expect(routes?.[1]?.getTitle?.()).toBe('Trader');
         expect(routes?.[1]?.exact).toBe(true);
         const history = createMemoryHistory();
-        history.push('/');
+        history.push('/dtrader');
         render(<MockBinaryRoutes store={mockStore({})} history={history} is_logged_in is_logging_in />);
         await waitFor(() => {
             expect(screen.getByText('Trader')).toBeInTheDocument();

@@ -66,7 +66,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         has_residence,
         current_landing_company,
         updateAccountStatus,
-        is_social_signup,
     } = client;
 
     const {
@@ -114,7 +113,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
             getSettings();
         }
         setIsLoading(false);
-    }, [account_settings, is_eu, is_social_signup]);
+    }, [account_settings, is_eu]);
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
@@ -215,12 +214,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_eu);
 
-    const initialValues = getPersonalDetailsInitialValues(
-        account_settings,
-        residence_list,
-        states_list,
-        is_social_signup
-    );
+    const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list);
 
     return (
         <Formik

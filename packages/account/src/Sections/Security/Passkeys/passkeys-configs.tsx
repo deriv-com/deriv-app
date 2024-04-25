@@ -116,15 +116,18 @@ type TGetModalContent = {
 export const NOT_SUPPORTED_ERROR_NAME = 'NotSupportedError';
 
 export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
+    const error_message_header = (error as TServerError)?.name === NOT_SUPPORTED_ERROR_NAME && (
+        <Localize i18n_default_text='Passkey Creation Unsupported' />
+    );
     const error_message =
         (error as TServerError)?.name === NOT_SUPPORTED_ERROR_NAME ? (
-            <Localize i18n_default_text='Passkey isn’t supported on this device.' />
+            <Localize i18n_default_text='Passkey creation is not available on your device. We apologize for any inconvenience this may cause.' />
         ) : (
             (error as TServerError)?.message
         );
     const button_text =
         (error as TServerError)?.name === NOT_SUPPORTED_ERROR_NAME ? (
-            <Localize i18n_default_text='Continue trading' />
+            <Localize i18n_default_text='OK' />
         ) : (
             <Localize i18n_default_text='Try again' />
         );
@@ -157,6 +160,7 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
     }
 
     return {
+        header: error_message_header,
         description: error_message ?? '',
         button_text: error ? button_text : undefined,
     };

@@ -67,8 +67,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             }
         };
         fetchIsPasskeySupported();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [attributes, store.client]);
 
     React.useEffect(() => {
         if (process.env.RUDDERSTACK_KEY && tracking_rudderstack) {

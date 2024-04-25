@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TContractInfo } from 'Components/summary/summary-card.types';
 import { mock_ws } from 'Utils/mock';
+import { mock_contract } from 'Utils/mock/contract';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Transaction from '../transaction';
@@ -13,26 +14,9 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 const buy_id = 12345;
+mock_contract.transaction_ids = { buy: buy_id, sell: 6789 };
 
 const mock_click_transaction = jest.fn();
-
-const mock_contract: TContractInfo = {
-    transaction_ids: { buy: buy_id, sell: 6789 },
-    underlying: 'EURUSD',
-    entry_tick: 1.2345,
-    exit_tick: 1.6789,
-    entry_tick_time: '5pm',
-    exit_tick_time: '6pm',
-    date_start: 10,
-    tick_count: 100,
-    buy_price: 50,
-    currency: 'USD',
-    profit: 30,
-    barrier: '3',
-    is_completed: true,
-    contract_type: 'CALL',
-    shortcode: 'CALL_BARRIER',
-};
 
 describe('Transaction', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;

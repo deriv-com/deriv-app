@@ -1,34 +1,10 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { mock_contract } from 'Utils/mock/contract';
 import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import TransactionDetailsMobile from '../transaction-details-mobile';
-
-const mock_row_data = {
-    barrier: '8641.67',
-    buy_price: 1,
-    contract_id: 211133945828,
-    contract_type: 'CALL',
-    currency: 'USD',
-    date_start: '2023-6-21 06:10:20 GMT',
-    display_name: 'Volatility 10 (1s) Index',
-    entry_tick: '8641.67',
-    entry_tick_time: '2023-6-21 06:10:21 GMT',
-    exit_tick: '8641.36',
-    exit_tick_time: '2023-6-21 06:10:22 GMT',
-    is_completed: true,
-    payout: 1.95,
-    profit: -1,
-    run_id: 'run-1687327817157',
-    shortcode: 'CALL_1HZ10V_1.95_1687327820_1T_S0P_0',
-    tick_count: 1,
-    transaction_ids: {
-        buy: 421306672788,
-        sell: 421306674448,
-    },
-    underlying: '1HZ10V',
-};
 
 jest.mock('../../../utils/session-storage', () => ({
     ...jest.requireActual('../../../utils/session-storage'),
@@ -36,7 +12,7 @@ jest.mock('../../../utils/session-storage', () => ({
         {
             type: 'contract',
             data: {
-                ...mock_row_data,
+                ...mock_contract,
             },
         },
         {
@@ -114,7 +90,7 @@ describe('TransactionDetailsMobile', () => {
         if (mock_DBot_store) {
             mock_DBot_store.transactions.toggleTransactionDetailsModal(true);
             mock_DBot_store.transactions.onBotContractEvent({
-                ...mock_row_data,
+                ...mock_contract,
                 is_completed: false,
             });
         }

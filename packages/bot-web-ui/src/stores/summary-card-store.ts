@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { ProposalOpenContract, UpdateContractResponse } from '@deriv/api-types';
 import { getIndicativePrice, isEqualObject, isMultiplierContract, Validator } from '@deriv/shared';
 import { TStores } from '@deriv/stores/types';
+import { TContractInfo } from 'Components/summary/summary-card.types';
 import { getValidationRules } from 'Constants/contract';
 import { contract_stages } from 'Constants/contract-stage';
 import { getContractUpdateConfig } from 'Utils/multiplier';
@@ -137,9 +138,9 @@ export default class SummaryCardStore {
         return limit_order;
     }
 
-    onBotContractEvent(contract: ProposalOpenContract) {
+    onBotContractEvent(contract: TContractInfo) {
         const { profit } = contract;
-        const indicative = getIndicativePrice(contract);
+        const indicative = getIndicativePrice(contract as ProposalOpenContract);
 
         if (this.contract_id !== contract.id) {
             this.clear(false);

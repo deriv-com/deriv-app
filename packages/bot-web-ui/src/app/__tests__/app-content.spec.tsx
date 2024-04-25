@@ -3,11 +3,11 @@ import moment from 'moment';
 import { unmountComponentAtNode } from 'react-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { act, render, screen, waitFor } from '@testing-library/react';
+import { transaction_elements } from 'Constants/transactions';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import { mock_ws } from '../../utils/mock';
 import AppContent from '../app-content';
-import { transaction_elements } from 'Constants/transactions';
 
 const mock_data = {
     data: {

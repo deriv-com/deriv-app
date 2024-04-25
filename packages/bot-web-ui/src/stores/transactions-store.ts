@@ -98,12 +98,12 @@ export default class TransactionsStore {
         this.is_transaction_details_modal_open = is_open;
     }
 
-    onBotContractEvent(data: ProposalOpenContract) {
+    onBotContractEvent(data: TContractInfo) {
         this.pushTransaction(data);
     }
 
-    pushTransaction(data: ProposalOpenContract) {
-        const is_completed = isEnded(data);
+    pushTransaction(data: TContractInfo) {
+        const is_completed = isEnded(data as ProposalOpenContract);
         const { run_id } = this.root_store.run_panel;
         const current_account = this.core?.client?.loginid as string;
 

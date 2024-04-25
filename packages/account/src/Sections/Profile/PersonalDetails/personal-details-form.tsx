@@ -349,23 +349,21 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                         )}
                                     </React.Fragment>
                                 )}
-                                <React.Fragment>
-                                    <fieldset className='account-form__fieldset'>
-                                        <Input
-                                            data-lpignore='true'
-                                            type='text'
-                                            name='residence'
-                                            id={'residence'}
-                                            label={localize('Country of residence*')}
-                                            //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
-                                            value={values.residence}
-                                            required
-                                            disabled={isFieldDisabled('residence')}
-                                            error={errors.residence}
-                                            onChange={handleChange}
-                                        />
-                                    </fieldset>
-                                </React.Fragment>
+                                <fieldset className='account-form__fieldset'>
+                                    <Input
+                                        data-lpignore='true'
+                                        type='text'
+                                        name='residence'
+                                        id={'residence'}
+                                        label={localize('Country of residence*')}
+                                        //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
+                                        value={values.residence}
+                                        required
+                                        disabled={isFieldDisabled('residence')}
+                                        error={errors.residence}
+                                        onChange={handleChange}
+                                    />
+                                </fieldset>
                                 {!is_virtual && (
                                     <fieldset className='account-form__fieldset'>
                                         <Input

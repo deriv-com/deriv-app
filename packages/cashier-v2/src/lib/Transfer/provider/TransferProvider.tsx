@@ -40,7 +40,7 @@ export const useTransfer = () => {
 
 type TTransferProviderProps = {
     accountLimits: THooks.AccountLimits;
-    accounts: THooks.TransferAccounts;
+    accounts?: THooks.TransferAccounts;
     activeAccount: THooks.ActiveAccount;
     getConfig: THooks.GetCurrencyConfig;
 };

@@ -371,22 +371,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             onChange={handleChange}
                                         />
                                     </fieldset>
-                                    {is_social_signup && (
-                                        <fieldset className='account-form__fieldset'>
-                                            <Input
-                                                data-lpignore='true'
-                                                type='text'
-                                                name='email'
-                                                id={'email'}
-                                                label={localize('Email address*')}
-                                                value={values.email}
-                                                required
-                                                disabled={isFieldDisabled('email')}
-                                                error={errors.email}
-                                                onChange={handleChange}
-                                            />
-                                        </fieldset>
-                                    )}
                                 </React.Fragment>
                                 {!is_virtual && (
                                     <fieldset className='account-form__fieldset'>

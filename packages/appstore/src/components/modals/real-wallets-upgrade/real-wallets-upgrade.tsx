@@ -7,15 +7,15 @@ const RealWalletsUpgrade = observer(() => {
     const { traders_hub, ui } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
     const { is_mobile } = ui;
-    const { startMigration, is_ineligible, is_migrating } = useWalletMigration();
+    const { startMigration, is_in_progress, is_ineligible, is_migrated, is_migrating } = useWalletMigration();
 
     const [current_step, setCurrentStep] = React.useState(0);
 
     React.useEffect(() => {
-        if (is_ineligible) {
+        if (is_in_progress || is_ineligible || is_migrated) {
             toggleWalletsUpgrade(false);
         }
-    }, [is_ineligible, toggleWalletsUpgrade]);
+    }, [is_in_progress, is_ineligible, is_migrated, toggleWalletsUpgrade]);
 
     React.useEffect(() => {
         if (!is_real_wallets_upgrade_on) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
+import UAParser from 'ua-parser-js';
 import { useRemoteConfig } from '@deriv/api';
 import { Analytics } from '@deriv-com/analytics';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
@@ -14,7 +15,7 @@ import {
     useP2PSettings,
     useStoreWalletAccountsList,
 } from '@deriv/hooks';
-import { getStaticUrl, mobileOSDetect, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
+import { getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -153,7 +154,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
             action: 'open',
             form_name: 'ce_passkey_account_settings_form',
-            operating_system: mobileOSDetect(),
+            operating_system: UAParser().os.name,
         });
     }, []);
 

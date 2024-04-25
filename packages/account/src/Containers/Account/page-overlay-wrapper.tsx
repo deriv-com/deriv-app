@@ -1,9 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import UAParser from 'ua-parser-js';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
-import { getSelectedRoute, getStaticUrl, mobileOSDetect, routes as shared_routes } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
@@ -33,7 +34,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
         Analytics.trackEvent('ce_passkey_account_settings_form', {
             action: 'close',
             form_name: 'ce_passkey_account_settings_form',
-            operating_system: mobileOSDetect(),
+            operating_system: UAParser().os.name,
         });
     }, []);
 

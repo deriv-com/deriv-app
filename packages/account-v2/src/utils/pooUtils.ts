@@ -1,4 +1,12 @@
-import { TPaymentMethod, TPaymentMethodData, TProofOfOwnershipData, TProofOfOwnershipFormValue } from 'src/types';
+import { ValidationConstants } from '@deriv-com/utils';
+import { PAYMENT_METHOD_IDENTIFIER } from 'src/constants';
+import {
+    TPaymentMethod,
+    TPaymentMethodData,
+    TPaymentMethodIdentifier,
+    TProofOfOwnershipData,
+    TProofOfOwnershipFormValue,
+} from 'src/types';
 
 const defaultValue: TProofOfOwnershipData = {
     documentsRequired: 0,
@@ -29,4 +37,27 @@ export const generatePOOInitialValues = (paymentMethodData: TPaymentMethodData) 
         });
         return acc;
     }, {} as TProofOfOwnershipFormValue);
+};
+
+const maskCardNumber = (cardNumber: string) => {
+    if (
+        cardNumber.length !== 16 ||
+        (cardNumber.length === 16 && ValidationConstants.patterns.invalidFormattedCardNumberCharacters.test(cardNumber))
+    ) {
+        return cardNumber;
+    }
+    return `${cardNumber.substring(0, 6)}XXXXXX${cardNumber.substring(12)}`;
+};
+
+export const formatIdentifier = (identifierType: TPaymentMethodIdentifier, paymentMethodIdentifier?: string) => {
+    const formattedId = paymentMethodIdentifier?.replace(/\s/g, '') ?? '';
+    if (identifierType === PAYMENT_METHOD_IDENTIFIER.cardNumber) {
+        return maskCardNumber(formattedId);
+    } else if (
+        PAYMENT_METHOD_IDENTIFIER.email === identifierType ||
+        PAYMENT_METHOD_IDENTIFIER.userID === identifierType
+    ) {
+        return formattedId;
+    }
+    return formattedId.replace(/(\w{4})/g, '$1 ').trim();
 };

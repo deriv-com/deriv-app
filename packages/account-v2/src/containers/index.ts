@@ -8,4 +8,5 @@ export { PaymentMethodInstructions } from './PaymentMethods/PaymentMethodInstruc
 export { PersonalDetailsFormWithExample } from './PersonalDetailsFormWithExample/PersonalDetailsFormWithExample';
 export { POICountrySelector } from './POICountrySelector/POICountrySelector';
 export { POIFlowContainer } from './POIFlowContainer/POIFlowContainer';
+export { POOForm } from './POOForm/POOFom';
 export { ErrorList, VerificationStatus } from './VerificationStatus';

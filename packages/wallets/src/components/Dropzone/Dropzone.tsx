@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
-import CloseIcon from '../../public/images/close-icon.svg';
+import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import DropzoneFrame from '../../public/images/dropzone-frame.svg';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './Dropzone.scss';
@@ -147,7 +147,7 @@ const Dropzone: React.FC<TProps> = ({
                                 <IconButton
                                     className='wallets-dropzone__remove-file'
                                     data-testid='dt_remove-button'
-                                    icon={<CloseIcon width={12} />}
+                                    icon={<LegacyClose2pxIcon iconSize='xs' width={12} />}
                                     onClick={removeFile}
                                     size='sm'
                                 />

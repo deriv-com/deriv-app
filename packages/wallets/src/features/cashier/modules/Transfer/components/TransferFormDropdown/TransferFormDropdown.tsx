@@ -51,6 +51,20 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { location } = useHistory();
     const toAccountLoginId =
         location.pathname === '/wallets/cashier/transfer' ? location.state?.toAccountLoginId : undefined;
+    const shouldDefaultUSDWallet =
+        location.pathname === '/wallets/cashier/transfer' ? location.state?.shouldSelectDefaultWallet : false;
+
+    const toDefaultAccount = useMemo(
+        () => toAccountList.walletAccounts.find(wallet => wallet.currency === 'USD'),
+        [toAccountList.walletAccounts]
+    );
+    // This sets a 'To transfer' to USD Wallet account to be selected by default when user transfers from a crypto wallet
+    if (!toAccount && toDefaultAccount && shouldDefaultUSDWallet) {
+        setValues(prev => ({
+            ...prev,
+            toAccount: toDefaultAccount,
+        }));
+    }
 
     useEffect(() => {
         const toAccount: TToAccount = Object.values(accounts)
